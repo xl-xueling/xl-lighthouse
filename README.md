@@ -23,6 +23,16 @@ XL-LightHouse可以帮助企业更快速的搭建起一套较为完善的、稳�
 * 便于数据在企业内部的共享和互通。
   此外，XL-LightHouse对中小企业友好，它大大降低了中小企业使用流式大数据统计的技术门槛，通过简单的页面配置和数据接入即可应对繁杂的流式数据统计需求。
 
+### 版权声明
+
+为保障创作者的合法权益以及支持XL-LightHouse项目的发展，本项目在Apache2.0开源协议的基础上，增加如下补充条款，如果以下条款与Apache2.0协议内容有所冲突，以该补充条款为准。
+1、企业或机构内部使用XL-LightHouse源程序以及XL-Formula标准不受任何限制，但不可删除源程序中的版权声明、原作者邮箱以及项目网址等信息。
+2、企业、机构或个人如有以下行为需要得到本人许可并支付一定比例的授权费用。
+a、销售直接或间接包含XL-LightHouse源程序（超过1000行源码）的软硬件产品或服务。
+b、销售直接或间接借鉴XL-LightHouse系统设计方法的软硬件产品或服务。
+c、销售直接或间接包含XL-Formula设计标准（包括在此基础上修改演变而来的标准）的软硬件产品或服务。
+d、销售直接或间接依赖XL-LightHouse或XL-Formula相关的数据指标可视化产品或服务，包括但不限于插件、终端等任何形式的产品或服务。
+如上所述的“服务”指为购买者提供统计数据类服务或提供相应产品的技术支持维护服务，为避免不必要的版权纠纷， 在销售相关产品或服务前请务必查阅【<a href="https://dtstep.com/archives/4206.html" target="_blank" rel="noopener">版权声明</a>】，本协议最终解释权归原作者所有。
 
 ### 相关文档
 
@@ -46,7 +56,7 @@ XL-LightHouse可以帮助企业更快速的搭建起一套较为完善的、稳�
 
 - <a href="https://dtstep.com/archives/4233.html" target="_blank" rel="noopener">dtstep.com/archives/4233.html</a>
 
-##### 6、HelloWorld
+##### 6、Hello World
 
 - <a href="https://dtstep.com/archives/4301.html" target="_blank" rel="noopener">dtstep.com/archives/4301.html</a>
 
