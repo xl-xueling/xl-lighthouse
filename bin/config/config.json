@@ -1,7 +1,7 @@
 {
   "lighthouse": {
     "deploy_user": "work",
-    "deploy_user_passwd": "Test123456",
+    "deploy_user_passwd": "test123456",
     "ice_nodes_size": 3,
     "ice_xmx_memory": "1600M",
     "ice_xms_memory": "800M",
