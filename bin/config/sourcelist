@@ -1,5 +1,5 @@
 cmake=https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.tar.gz
-jdk=https://mirrors.tuna.tsinghua.edu.cn/Adoptium/11/jdk/x64/linux/OpenJDK11U-jdk_x64_linux_hotspot_11.0.19_7.tar.gz
+jdk=https://mirrors.tuna.tsinghua.edu.cn/Adoptium/11/jdk/x64/linux/OpenJDK11U-jdk_x64_linux_hotspot_11.0.20_8.tar.gz
 scala=https://downloads.lightbend.com/scala/2.13.10/scala-2.13.10.tgz
 zookeeper=https://archive.apache.org/dist/zookeeper/zookeeper-3.7.1/apache-zookeeper-3.7.1.tar.gz
 kafka=https://archive.apache.org/dist/kafka/2.8.2/kafka_2.12-2.8.2.tgz
