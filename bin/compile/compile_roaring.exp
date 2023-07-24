@@ -1,0 +1,28 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set dest_ip [lindex $argv 1]
+set dest_passwd [lindex $argv 2]
+set ldp_home [lindex $argv 3]
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+spawn ssh ${user}@${dest_ip}
+
+set timeout -1
+expect {     
+        -nocase "yes/no" {send "yes\n";exp_continue} 
+        -nocase "password" {send "$dest_passwd\n"}
+}
+expect "${prompt}"
+send "cd ${ldp_home}/plugins/\r"
+expect "${prompt}"
+send "tar -zxvf redis-roaring.tar.gz \r"
+expect "${prompt}"
+send "cd redis-roaring\r"
+expect "${prompt}"
+send "./configure.sh \r"
+expect "${prompt}"
+send "exit\r"
+expect eof

@@ -1,0 +1,24 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set ip [lindex $argv 1]
+set passwd [lindex $argv 2]
+set ldp_home [lindex $argv 3]
+set mysql_home ${ldp_home}/dependency/mysql
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+spawn ssh ${user}@${ip}
+set timeout -1
+expect {     
+        -nocase  "yes/no" {send "yes\n";exp_continue}
+        -nocase  "password" {send "$passwd\n"}
+        "${prompt}" {send "\r"}
+}
+expect "${prompt}"
+send "rm -f /tmp/mysqld.pid && rm -f /tmp/mysql.sock.lock && rm -f /tmp/mysqlx.sock && rm -f mysqlx.sock.lock\r"
+expect "${prompt}"
+send "${mysql_home}/bin/mysqld_safe --defaults-file=${mysql_home}/support-files/my.cnf --user=mysql &\r\n"
+send "exit\r"
+expect eof

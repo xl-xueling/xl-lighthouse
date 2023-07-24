@@ -1,0 +1,54 @@
+package com.dtstep.lighthouse.core.functions;
+/*
+ * Copyright (C) 2022-2023 XueLing.雪灵
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import com.dtstep.lighthouse.common.aggregator.EventPool;
+import com.dtstep.lighthouse.common.entity.calculate.MicroBucket;
+import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
+import com.dtstep.lighthouse.common.entity.state.StatState;
+import com.dtstep.lighthouse.common.hash.HashUtil;
+
+import java.io.Serializable;
+import java.util.List;
+
+
+abstract class StatProcess<T> extends Process implements Serializable{
+
+    final static int batchSize = 5000;
+
+    private static final long serialVersionUID = 4826897175811264880L;
+
+    abstract void evaluate(StatState statState, List<T> messageList, long batchTime) throws Exception;
+
+    StatExtEntity statExtEntity;
+
+    String metaName;
+
+    String aggregateKey;
+
+    String rowKey;
+
+    String delta;
+
+    String dimensValue;
+
+    long ttl;
+
+    void produce(EventPool<MicroBucket> eventPool, MicroBucket microBucket) throws Exception {
+        eventPool.put(HashUtil.getHashIndex(microBucket.getRowKey() + "_" + microBucket.getColumn(),eventPool.slotSize()),microBucket);
+    }
+}

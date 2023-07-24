@@ -1,0 +1,28 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set ip [lindex $argv 1]
+set passwd [lindex $argv 2]
+set dir [exec pwd]
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+spawn sh -c "ssh ${user}@$ip"
+set timeout -1
+expect {     
+        -nocase "yes/no" {send "yes\n";exp_continue} 
+        -nocase "password" {send "$passwd\n"}
+        "${prompt}" {send "\r"}
+}
+expect "${prompt}"
+send "sed -i '1,\$d' /etc/hosts\r"
+expect "${prompt}"
+send "echo \"127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4\" >> /etc/hosts\r"
+expect "${prompt}"
+send "echo \"::0         localhost localhost.localdomain localhost4 localhost4.localdomain4\" >> /etc/hosts\r"
+expect "${prompt}"
+send "cat \"${dir}/hosts\" >> /etc/hosts\r"
+expect "${prompt}"
+send "exit\r"
+expect eof

@@ -1,0 +1,34 @@
+set user [lindex $argv 0]
+set ip [lindex $argv 1]
+set passwd [lindex $argv 2]
+set ldp_home [lindex $argv 3]
+set port [lindex $argv 4]
+set cluster_pwd [lindex $argv 5]
+set redis_home ${ldp_home}/dependency/redis
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+spawn ssh ${user}@${ip}
+set timeout -1
+expect {     
+        -nocase "yes/no" {send "yes\n";exp_continue} 
+        -nocase "password" {send "$passwd\n"}
+	"${prompt}" {send "\r"}
+}
+expect "${prompt}"
+send "${redis_home}/bin/redis-cli -h 127.0.0.1 -p ${port} -a $cluster_pwd\r"
+expect {
+	-nocase "not connected" {
+		send "exit\r\n";
+		exit 0;
+		expect eof}
+	"127.0.0.1*\\\>" {send "shutdown\r"}
+}
+expect "not connected>"
+send "exit\r"
+expect "*\\\>"
+send "exit\r"
+expect "${prompt}"
+send "exit\r"
+expect eof

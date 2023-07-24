@@ -1,0 +1,42 @@
+server:
+  port: 9089
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: utf-8
+spring:
+  mvc:
+    static-path-pattern: /static/**
+    hiddenmethod:
+      filter:
+        enabled: true
+  freemarker:
+    suffix: .ftl
+    content-type: text/html
+    charset: UTF-8
+    cache: false
+    template-loader-path: classpath:/templates
+    settings:
+      template_update_delay: 0
+      number_format: 0.##
+  redis:
+    cluster:
+      max-redirects: 3
+    lettuce:
+      pool:
+        max-active: 100
+        max-wait: -1ms
+        max-idle: 10
+        min-idle: 5
+      cluster:
+        refresh:
+          adaptive: true
+          period: 20
+  main:
+    allow-circular-references: true
+  devtools:
+    restart:
+      enabled: true
+  cache:
+    redis:
+      time-to-live: 86400000

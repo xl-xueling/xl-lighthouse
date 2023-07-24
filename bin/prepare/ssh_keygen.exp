@@ -1,0 +1,40 @@
+set user [lindex $argv 0]
+set ip [lindex $argv 1]
+set passwd [lindex $argv 2]
+set managerIP [lindex $argv 3]
+set home /home/${user}
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+spawn ssh ${user}@${ip}
+set timeout -1
+expect {
+        -nocase "yes/no" {send "yes\n";exp_continue}
+        -nocase "password" {send "$passwd\n"}
+        "${prompt}" {send "\r"}
+}
+expect "${prompt}"
+send "rm -rf ${home}/.ssh/\r"
+expect "${prompt}"
+send "ssh-keygen -t rsa -P '' -f ${home}/.ssh/id_rsa \r"
+expect "${prompt}"
+send "touch ${home}/.ssh/authorized_keys\r"
+expect "${prompt}"
+send "chmod 710 ${home}/.ssh/authorized_keys \r"
+expect "${prompt}"
+send "mv ${home}/.ssh/id_rsa.pub ${home}/.ssh/id_rsa_${ip}.pub\r"
+expect "${prompt}"
+if { $ip != $managerIP } {
+	send "scp -r ${home}/.ssh/id_rsa_${ip}.pub ${user}@${managerIP}:${home}/.ssh/\r"
+	expect {
+        	-nocase "yes/no" {send "yes\n";exp_continue}
+        	-nocase "'yes' or 'no'" {send "yes\n";exp_continue}
+        	-nocase "password" {send "$passwd\r"}
+	}
+	expect "${prompt}"
+	send "exit\r"
+} else {
+	send "exit\r"
+}
+expect eof

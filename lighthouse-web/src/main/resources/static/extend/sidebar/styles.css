@@ -1,0 +1,248 @@
+
+h1 {
+	font-size: 25px;
+	font-weight: normal;
+	margin: 0;
+}
+h2 {
+	font-size: 20px;
+	font-weight: normal;
+	margin: 0 0 15px;
+}
+h3 {
+	margin: 15px 0 5px;
+	font-size: 16px;
+}
+.intro {
+	font-size: 18px;
+	margin: 0;
+	padding-top: 20px;
+}
+.column {
+	float: left;
+	width: 50%;
+	text-align: left;
+	box-sizing: border-box;
+	padding: 30px 2%;
+}
+.column ul {
+	padding: 0;
+	margin: 5px 0 30px 20px;
+}
+.clr {
+	clear: both;
+}
+.left {
+	text-align: left;
+	font-weight: bold;
+}
+.demo-buttons {
+	text-align: center;
+	font-size: 14px;
+}
+.demo-buttons span {
+	box-sizing: border-box;
+	display: inline-block;
+    vertical-align: middle;
+    margin: 5px;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    line-height: 1;
+    text-align: center;
+    cursor: pointer;
+    background: #444;
+    color: #fefefe;
+}
+.demolist {
+	text-align: left;
+}
+.menubar {
+	background: #444;
+	padding: 0 15px;
+	margin: 0;
+	color: #fff;
+	list-style: none;
+	height: 50px;
+	line-height: 50px;
+	display: none;
+}
+.menubar > li {
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
+	display: inline-block;
+	-webkit-user-select: none;
+  	-moz-user-select: none;
+  	-ms-user-select: none;
+  	user-select: none;
+}
+.menubar ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	position: absolute;
+	left: -15px;
+	top: 50px;
+	color: #000;
+	background: #fff;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.4;
+	width: 180px;
+	display: none;
+}
+.menubar li:hover > ul {
+	display: block;
+}
+.menubar li {
+	position: relative;
+}
+.menubar li li ul {
+	left: 178px;
+	top: -1px;
+	border-top: 1px solid #444;
+	width: 140px;
+}
+.menubar li li {
+	padding: 10px 15px;
+	border: solid #444;
+	border-width: 0 1px 1px;
+	cursor: text;
+}
+.menubar li li.opener {
+	padding: 0;
+}
+.menubar li li.opener span {
+	display: block;
+	padding: 10px 15px;
+	cursor: pointer;
+	background-color: rgba(68,68,68,0.8);
+	color: #fff;
+}
+.menubar ul .fa {
+	position: absolute;
+	right: 10px;
+	top: 12px;
+}
+.menubar .opener span .fa {
+	font-size: 12px;
+	margin: 2px 0 0 10px;
+}
+@media screen and (max-width: 768px) {
+	.menubar {
+		display: block;
+	}
+	.demo-buttons {
+		display: none;
+	}
+	.column {
+		width: 100%;
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.demo-buttons span {
+		width: 100%;
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
+.fancynav-logo .fancynav-title::before {
+	content: ' ';
+	display: block;
+	width: 202px;
+	height: 41px;
+	background: url(logo.png) no-repeat;
+}
+.fancynav-logo .fancynav-close {
+	font-size: 25px;
+	padding-top: 20px;
+}
+.fancynav-animation-flip .fancynav-mainnav {
+	visibility: visible;
+	-moz-transform: rotateY(180deg);
+	-o-transform: rotateY(180deg);
+	-webkit-transform: rotateY(180deg);
+	-ms-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+	-moz-transition-delay: 0.5s;
+	-o-transition-delay: 0.5s;
+	-webkit-transition-delay: 0.5s;
+	transition-delay: 0.5s;
+}
+.fancynav-animation-flip.fancynav-opened .fancynav-mainnav {
+	-moz-transform: rotateY(360deg);
+	-o-transform: rotateY(360deg);
+	-webkit-transform: rotateY(360deg);
+	-ms-transform: rotateY(360deg);
+	transform: rotateY(360deg);
+}
+.fancynav-animation-flip .fancynav-inner {
+	z-index: 1001;
+}
+.fancynav-animation-flip.fancynav-opened .fancynav-inner {
+	-moz-transform: translate(300px, 0);
+	-o-transform: translate(300px, 0);
+	-webkit-transform: translate(300px, 0);
+	-ms-transform: translate(300px, 0);
+	transform: translate(300px, 0);
+}
+.fancynav-icons .fancynav-back {
+	padding-left: 15px;
+}
+.fancynav-icons .fancynav-close::before,
+.fancynav-icons .fancynav-next::before,
+.fancynav-icons .fancynav-back::before,
+.fancynav-icons .fancynav-mainnav ul > li > a::before {
+	display: inline-block;
+ 	font: normal normal normal 14px/1 FontAwesome;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.fancynav-icons .fancynav-close::before {
+	content: "\f05c";
+	font-size: 24px;
+}
+.fancynav-icons .fancynav-next::before,
+.fancynav-icons .fancynav-back::before {
+	transform: none;
+	background: none;
+	border-radius: 0;
+	width: auto;
+	height: auto;
+	font-size: 24px;
+}
+.fancynav-icons .fancynav-next::before {
+	content: "\f18e";
+	margin: -13px 0 0 -5px;
+}
+.fancynav-icons .fancynav-back::before {
+	content: "\f190";
+	margin: 0 10px 0 0;
+	position: static;
+	vertical-align: sub;
+}
+.fancynav-icons .fancynav-next::after,
+.fancynav-icons .fancynav-back::after {
+	content: none;
+}
+.fancynav-icons .fancynav-mainnav ul > li > a::before {
+	margin-right: 10px;
+	line-height: 1.2;
+}
+.fancynav-icons .fancynav-item-1 > a::before {
+	content: "\f015";
+}
+.fancynav-icons .fancynav-item-2 > a::before {
+	content: "\f2b5";
+}
+.fancynav-icons .fancynav-item-3 > a::before {
+	content: "\f1e0";
+}
+.fancynav-icons .fancynav-item-4 > a::before {
+	content: "\f09a";
+}
+.fancynav-icons .fancynav-item-5 > a::before {
+	content: "\f099";
+}

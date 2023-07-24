@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="600">
+    <Properties>
+        <Property name="LOG_HOME">${ldp_lighthouse_home}/logs/lighthouse-web/</Property>
+    </Properties>
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%p]  (%F:%L) %m%n"/>
+        </Console>
+        <RollingRandomAccessFile name="TraceAppender"
+                                 immediateFlush="true" fileName="${LOG_HOME}/web_trace.log"
+                                 filePattern="${LOG_HOME}/web_trace/web_trace-%d{yyyyMMddHHmm}.log.gz">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] (%F:%L) %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500MB"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="debug" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="DebugAppender"
+                                 immediateFlush="true" fileName="${LOG_HOME}/web_debug.log"
+                                 filePattern="${LOG_HOME}/web_debug/web_debug-%d{yyyyMMddHHmm}.log.gz">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] (%F:%L) %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500MB"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="info" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="InfoAppender"
+                                 immediateFlush="true" fileName="${LOG_HOME}/web_info.log"
+                                 filePattern="${LOG_HOME}/web_info/web_info-%d{yyyyMMddHHmm}.log.gz">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] (%F:%L) %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500MB"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="WarnAppender"
+                                 immediateFlush="true" fileName="${LOG_HOME}/web_warn.log"
+                                 filePattern="${LOG_HOME}/web_warn/web_warn-%d{yyyyMMddHHmm}.log.gz">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] (%F:%L) %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500MB"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="ErrorAppender"
+                                 immediateFlush="true" fileName="${LOG_HOME}/web_error.log"
+                                 filePattern="${LOG_HOME}/web_error/web_error-%d{yyyyMMddHHmm}.log.gz">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] (%F:%L) %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500MB"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingRandomAccessFile>
+    </Appenders>
+    <Loggers>
+        <root level="info">
+            <appender-ref ref="ConsoleAppender"/>
+            <appender-ref ref="TraceAppender"/>
+            <appender-ref ref="DebugAppender"/>
+            <appender-ref ref="InfoAppender"/>
+            <appender-ref ref="WarnAppender"/>
+            <appender-ref ref="ErrorAppender"/>
+        </root>
+        <logger name="io.netty" level="info"/>
+        <logger name="org.apache" level="info"/>
+        <logger name="org.redisson" level="info"/>
+        <logger name="org.springframework" level="info"/>
+    </Loggers>
+</Configuration>

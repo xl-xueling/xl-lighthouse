@@ -1,0 +1,68 @@
+{
+  "lighthouse": {
+    "deploy_user": "work",
+    "deploy_user_passwd": "Test123456",
+    "ice_nodes_size": 3,
+    "ice_xmx_memory": "1600M",
+    "ice_xms_memory": "800M",
+    "tasks_driver_memory": "512M",
+    "tasks_executor_memory": "2000M",
+    "tasks_direct_memory": "256M",
+    "tasks_num_executors": 6,
+    "tasks_executor_cores": 2,
+    "web_nodes_size": 1,
+    "web_xmx_memory": "256M",
+    "web_xms_memory": "256M"
+  },
+  "zookeeper": {
+    "nodes_size": 3,
+    "xmx_memory": "500M",
+    "xms_memory": "500M"
+  },
+  "hadoop": {
+    "nodes_size": 3,
+    "namenode_xmx_memory": "1000M",
+    "namenode_xms_memory": "500M",
+    "datanode_xmx_memory": "768M",
+    "datanode_xms_memory": "768M",
+    "secondarynamenode_xmx_memory": "512M",
+    "secondarynamenode_xms_memory": "512M",
+    "resourcemanager_xmx_memory": "512M",
+    "resourcemanager_xms_memory": "512M",
+    "nodemanager_xmx_memory": "768M",
+    "nodemanager_xms_memory": "768M",
+    "yarn.scheduler.maximum-allocation-mb": "160000",
+    "yarn.nodemanager.resource.memory-mb": "168000",
+    "yarn.scheduler.maximum-allocation-vcores": "32",
+    "yarn.nodemanager.resource.cpu-vcores": "32"
+  },
+  "hbase": {
+    "nodes_size": 3,
+    "master_xmx_memory": "512M",
+    "master_xms_memory": "512M",
+    "master_direct_memory": "512M",
+    "regionserver_xmx_memory": "5000M",
+    "regionserver_xms_memory": "5000M",
+    "regionserver_direct_memory": "760M"
+  },
+  "spark": {
+    "nodes_size": 3
+  },
+  "kafka": {
+    "nodes_size": 3,
+    "topic_name": "lighthouse-topic-v1",
+    "xmx_memory": "1280M",
+    "xms_memory": "500M"
+  },
+  "mysql": {
+    "nodes_size": 1,
+    "root_passwd": "root",
+    "operate_user": "lighthouse",
+    "operate_user_passwd": "cXvsaGWExxG0082sZ"
+  },
+  "redis": {
+    "nodes_size": 3,
+    "max_memory": "1600M",
+    "cluster_passwd": "naJKcZEoGGeSSAad"
+  }
+}

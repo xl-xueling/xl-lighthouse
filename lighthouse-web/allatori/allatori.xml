@@ -1,0 +1,17 @@
+<config>
+    <input>
+        <jar in="../target/lighthouse-web-1.0.1.war"  out="../target/lighthouse-web-1.0.1-obfuscated.war" />
+    </input>
+    <classpath>
+        <jar name="../target/**/*.jar"/>
+    </classpath>
+    <keep-names>
+        <class access="private+">
+        </class>
+        <method template="*(**)" parameters="keep"/>
+    </keep-names>
+    <ignore-classes>
+        <class template="class *springframework*"/>
+    </ignore-classes>
+    <property name="log-file" value="log.xml"/>
+</config>

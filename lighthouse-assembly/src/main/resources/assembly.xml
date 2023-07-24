@@ -1,0 +1,37 @@
+<assembly>
+    <id>deploy</id>
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>${project.parent.basedir}/bin</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>/bin</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/plugins</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>/plugins</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/lighthouse-assembly/target/lib/</directory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <outputDirectory>/lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/lighthouse-web/target/resources/</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>/light-webapps</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>

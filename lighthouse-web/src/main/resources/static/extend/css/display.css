@@ -1,0 +1,24 @@
+.table.display>thead>tr>th,.table.display>tbody>tr>th,.table.display>tfoot>tr>th,.table.display>thead>tr>td,.table.display>tbody>tr>td,.table.display>tfoot>tr>td {
+    border: 1px solid #e1a7a7;
+}
+.fa-align-left{
+    padding-top:3px;
+}
+.fa-align-center {
+    padding-top:3px;
+}
+.fa-align-right {
+    padding-top:3px;
+}
+.xm-select * {
+    font-size:10px !important;
+}
+.ul-rymodal{
+    display: block;padding: 0;
+    white-space: nowrap;
+    overflow-y:auto;
+}
+.label{
+    font-size:80%;
+    line-height:none;
+}

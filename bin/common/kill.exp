@@ -1,0 +1,62 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set ip [lindex $argv 1]
+set passwd [lindex $argv 2]
+set service [lindex $argv 3]
+spawn ssh ${user}@${ip}
+set timeout -1
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+expect {     
+        -nocase "yes/no" {send "yes\n";exp_continue} 
+        -nocase "password" {send "$passwd\n"}
+        "${prompt}" {send "\r"}
+}
+expect "${prompt}"
+if { $service == "all" } {
+	send "ps -ef|grep 'icegridregistry'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+        send "ps -ef|grep 'icegridnode'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+	send "ps -ef|grep 'kafka'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+	send "ps -ef|grep 'hadoop'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+	send "ps -ef|grep 'zookeeper'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+	send "ps -ef|grep 'hbase'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+	send "ps -ef|grep 'spark'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+	send "ps -ef|grep 'redis'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+	send "ps -ef|grep 'mysql'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+} elseif { $service == "zookeeper" } {
+	send "jps -l|grep 'org.apache.zookeeper.server.quorum.QuorumPeerMain'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+} elseif { $service == "hadoop" } {
+	 send "jps -l|grep 'org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+	 send "jps -l|grep 'org.apache.hadoop.hdfs.server.namenode.NameNode'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+	 send "jps -l|grep 'org.apache.hadoop.yarn.server.nodemanager.NodeManager'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+	 send "jps -l|grep 'org.apache.hadoop.yarn.server.resourcemanager.ResourceManager'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+} elseif { $service == "hbase" } {
+	send "jps -l|grep 'org.apache.hadoop.hbase.master.HMaster'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+	send "jps -l|grep 'org.apache.hadoop.hbase.regionserver.HRegionServer'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+} elseif { $service == "spark" } {
+	send "jps -l|grep 'org.apache.spark.deploy.master.Master'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+	send "jps -l|grep 'org.apache.spark.deploy.worker.Worker'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+} elseif { $service == "kafka"} {
+	send "jps -l|grep 'kafka.Kafka'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+} elseif { $service == "redis" } {
+	send "ps -ef|grep '/bin/redis-server'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"	
+} elseif { $service == "mysql" } {
+	send "ps -ef|grep '/bin/mysqld_safe' | grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+        send "ps -ef|grep '/bin/mysqld' | grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+} elseif { $service == "lighthouse-ice" } {
+	send "ps -ef|grep 'icegridregistry'|grep '\\\-\\\-Ice.Config'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+	send "ps -ef|grep 'icegridnode'|grep '\\\-\\\-Ice.Config'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+	send "jps -l|grep 'IceBox.Server'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+} elseif  { $service == "lighthouse-web" } {
+	send "jps -l|grep 'lighthouse-web' | grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+} elseif { $service == "lighthouse-tasks" } {
+	send "jps -l|grep 'org.apache.spark.deploy.SparkSubmit' | grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+} else {
+	send "pwd\r"
+}
+expect "${prompt}"
+send "exit\r"
+expect eof

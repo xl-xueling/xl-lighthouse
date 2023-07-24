@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/lighthouse-client/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lighthouse-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lighthouse-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lighthouse-ice/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lighthouse-ice/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lighthouse-tasks/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lighthouse-tasks/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lighthouse-test/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lighthouse-web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lighthouse-web/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

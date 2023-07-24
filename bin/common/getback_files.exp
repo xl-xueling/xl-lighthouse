@@ -1,0 +1,33 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set source_ip [lindex $argv 1]
+set source_passwd [lindex $argv 2]
+set source_path [lindex $argv 3]
+set dest_ip [lindex $argv 4]
+set dest_passwd [lindex $argv 5]
+set dest_path [lindex $argv 6]
+set dir [exec pwd]
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+spawn sh -c "ssh ${user}@${source_ip}"
+set timeout -1
+
+expect {
+        -nocase "yes/no" {send "yes\n";exp_continue}
+        -nocase "'yes' or 'no'" {send "yes\n";exp_continue}
+	-nocase "password" {send "$source_passwd\r"}
+}
+expect "${prompt}"
+send "scp -r ${source_path} ${user}@${dest_ip}:${dest_path}\r"
+expect {
+        -nocase "yes/no" {send "yes\n";exp_continue}
+        -nocase "'yes' or 'no'" {send "yes\n";exp_continue}
+        -nocase "password" {send "$dest_passwd\r"}
+}
+expect "${prompt}"
+send "exit\n\n"
+expect eof
+

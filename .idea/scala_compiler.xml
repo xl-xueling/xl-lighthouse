@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <profile name="Maven 1" modules="lighthouse-assembly,lighthouse-client,lighthouse-common,lighthouse-core,lighthouse-ice,lighthouse-tasks,lighthouse-test,lighthouse-web,xl-lighthouse_PRO" />
+  </component>
+</project>

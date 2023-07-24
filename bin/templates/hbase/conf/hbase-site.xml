@@ -1,0 +1,238 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<configuration>
+    <!--
+      The following properties are set for running HBase as a single process on a
+      developer workstation. With this configuration, HBase is running in
+      "stand-alone" mode and without a distributed file system. In this mode, and
+      without further configuration, HBase and ZooKeeper data are stored on the
+      local filesystem, in a path under the value configured for `hbase.tmp.dir`.
+      This value is overridden from its default value of `/tmp` because many
+      systems clean `/tmp` on a regular basis. Instead, it points to a path within
+      this HBase installation directory.
+
+      Running against the `LocalFileSystem`, as opposed to a distributed
+      filesystem, runs the risk of data integrity issues and data loss. Normally
+      HBase will refuse to run in such an environment. Setting
+      `hbase.unsafe.stream.capability.enforce` to `false` overrides this behavior,
+      permitting operation. This configuration is for the developer workstation
+      only and __should not be used in production!__
+      See also https://hbase.apache.org/book.html#standalone_dist
+    -->
+    <property>
+        <name>hbase.cluster.distributed</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hbase.tmp.dir</name>
+        <value>${ldp_data_dir}/hbase/tmp</value>
+    </property>
+    <property>
+        <name>hbase.unsafe.stream.capability.enforce</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hbase.rootdir</name>
+        <value>hdfs://${ldp_hadoop_namenode_ip}:9000/hbase</value>
+    </property>
+    <property>
+        <name>hbase.master</name>
+        <value>${ldp_hbase_master}</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.property.clientPort</name>
+        <value>2181</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.wal.tags.enablecompression</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hbase.cluster.distributed</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.handler.count</name>
+        <value>30</value>
+    </property>
+    <property>
+        <name>hbase.hstore.blockingStoreFiles</name>
+        <value>60</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.quorum</name>
+        <value>${ldp_zookeeper_nodes_ips}</value>
+    </property>
+    <property>
+        <name>zookeeper.session.timeout</name>
+        <value>300000</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.wal.tags.enablecompression</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hbase.hregion.compacting.memstore.type</name>
+        <value>basic</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.lease.period</name>
+        <value>180000</value>
+    </property>
+    <property>
+        <name>hbase.rpc.timeout</name>
+        <value>180000</value>
+    </property>
+    <property>
+        <name>hbase.client.scanner.timeout.period</name>
+        <value>180000</value>
+    </property>
+    <property>
+        <name>hbase.client.scanner.caching</name>
+        <value>50</value>
+    </property>
+    <property>
+        <name>hbase.bucketcache.ioengine</name>
+        <value>offheap</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.throughput.controller</name>
+        <value>org.apache.hadoop.hbase.regionserver.compactions.PressureAwareCompactionThroughputController</value>
+    </property>
+    <property>
+        <name>hbase.hstore.compaction.throughput.higher.bound</name>
+        <value>30000000</value>
+    </property>
+    <property>
+        <name>hbase.hstore.compaction.throughput.lower.bound</name>
+        <value>3000000</value>
+    </property>
+    <property>
+        <name>hbase.hstore.compaction.throughput.offpeak</name>
+        <value>30000000</value>
+    </property>
+    <property>
+        <name>hbase.offpeak.start.hour</name>
+        <value>22</value>
+    </property>
+    <property>
+        <name>hbase.offpeak.end.hour</name>
+        <value>23</value>
+    </property>
+    <property>
+        <name>hbase.hstore.compaction.throughput.tune.period</name>
+        <value>60000</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.optionalcacheflushinterval</name>
+        <value>3600000</value>
+    </property>
+    <property>
+	    <name>hbase.hregion.majorcompaction</name>
+	    <value>0</value>
+    </property>
+    <property>
+        <name>hbase.hregion.memstore.mslab.enabled</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hbase.bucketcache.size</name>
+        <value>256</value>
+    </property>
+    <property>
+        <name>hfile.block.cache.size</name>
+        <value>0.4</value>
+    </property>
+    <property>
+        <name>hbase.hstore.flusher.count</name>
+        <value>20</value>
+    </property>
+    <property>
+        <name>hbase.hregion.memstore.block.multiplier</name>
+        <value>4</value>
+    </property>
+    <property>
+        <name>hbase.master.ipc.address</name>
+        <value>0.0.0.0</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.ipc.address</name>
+        <value>0.0.0.0</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.thread.compaction.small</name>
+        <value>2</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.thread.compaction.large</name>
+        <value>5</value>
+    </property>
+    <property>
+        <name>hbase.hstore.compaction.min</name>
+        <value>3</value>
+    </property>
+    <property>
+        <name>hbase.hstore.compaction.max</name>
+        <value>60</value>
+    </property>
+    <property>
+	    <name>hbase.hregion.max.filesize</name>
+	    <value>20474836480</value>
+    </property>
+    <property>
+	    <name>hbase.hstore.engine.class</name>
+	    <value>org.apache.hadoop.hbase.regionserver.DateTieredStoreEngine</value>
+    </property>	    
+    <property>
+        <name>hbase.regionserver.global.memstore.size</name>
+        <value>0.4</value>
+    </property>
+    <property>
+        <name>hbase.hregion.memstore.flush.size</name>
+        <value>128435456</value>
+    </property>
+    <property>
+        <name>dfs.client.socket-timeout</name>
+        <value>900000</value>
+    </property>
+    <property>
+        <name>dfs.datanode.socket.write.timeout</name>
+        <value>1200000</value>
+    </property>
+    <property>
+        <name>hbase.hstore.compaction.max.size</name>
+        <value>2342880000</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.flush.policy</name>
+        <value>org.apache.hadoop.hbase.regionserver.FlushAllLargeStoresPolicy</value>
+    </property>
+    <property>
+        <name>io.storefile.bloom.max.keys</name>
+        <value>328000000</value>
+    </property>
+    <property>
+        <name>hbase.hregion.percolumnfamilyflush.size.lower.bound.min</name>
+        <value>36777216</value>
+    </property>
+</configuration>
+

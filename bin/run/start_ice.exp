@@ -1,0 +1,36 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set ip [lindex $argv 1]
+set passwd [lindex $argv 2]
+set ldp_home [lindex $argv 3]
+set ldp_data_dir [lindex $argv 4]
+set operate_type [lindex $argv 5]
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+spawn ssh ${user}@${ip}
+set timeout -1
+expect {     
+        -nocase "yes/no" {send "yes\n";exp_continue} 
+        -nocase "password" {send "$passwd\n"}
+        "${prompt}" {send "\r"}
+}
+if { ${operate_type} == "register_master" } {
+	expect "${prompt}"
+	send "rm -rf ${ldp_data_dir}/ice/nodedata/* ${ldp_data_dir}/ice/nodeoutput/* ${ldp_data_dir}/ice/registdata/*\r"
+	expect "${prompt}"
+	send "icegridregistry --Ice.Config=${ldp_home}/conf/ice_registry_master.cfg --nowarn &\r"
+} elseif { ${operate_type} == "register_slaver" } {
+	expect "${prompt}"
+	send "rm -rf ${ldp_data_dir}/ice/nodedata/* ${ldp_data_dir}/ice/nodeoutput/* ${ldp_data_dir}/ice/registdata/*\r"
+        expect "${prompt}"
+	send "icegridregistry --Ice.Config=${ldp_home}/conf/ice_registry_slaver.cfg --nowarn &\r"
+} elseif { ${operate_type} == "start_node" } {
+	expect "${prompt}"
+	send "icegridnode --Ice.Config=${ldp_home}/conf/ice_node.cfg &\r"
+}
+expect "${prompt}"
+send "exit\r"
+expect eof

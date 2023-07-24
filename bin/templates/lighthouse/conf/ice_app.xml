@@ -1,0 +1,59 @@
+<icegrid>
+    <application name="LightHouseServerApp">
+        <properties id="MultiThreaded">
+            <property name="Ice.PrintStackTraces" value="1"/>
+            <property name="IceSSL.Trace.Security" value="2"/>
+            <property name="Ice.ThreadPool.Client.Size" value="50"/>
+            <property name="Ice.ThreadPool.Client.SizeMax" value="500"/>
+            <property name="Ice.ThreadPool.Server.Size" value="50"/>
+            <property name="Ice.ThreadPool.Server.SizeMax" value="500"/>
+            <property name="IceBox.InheritProperties" value="1"/>
+            <property name="Ice.Override.ConnectTimeout" value="2000"/>
+            <property name="Ice.Override.Timeout" value="2000" />
+            <property name="IceBox.Trace.ServiceObserver" value="1"/>
+            <property name="Ice.Default.Timeout" value="2000"/>
+            <property name="Ice.Default.LocatorCacheTimeout" value="1200" />
+            <property name="Ice.BackgroundLocatorCacheUpdates" value="1"/>
+        </properties>
+        <server-template id="LightHouseServerIceBoxTemplate">
+            <parameter name="index" default="0"/>
+            <icebox id="lighthouse-icebox${index}" exe="java" activation="on-demand" >
+                <properties>
+                    <properties refid="MultiThreaded" />
+                </properties>
+                <option>-Xmx${ldp_lighthouse_ice_xmx_memory}</option>
+                <option>-Xms${ldp_lighthouse_ice_xms_memory}</option>
+                <option>-XX:+UseCompressedOops</option>
+                <option>-XX:+HeapDumpOnOutOfMemoryError</option>
+                <option>-XX:+UseG1GC</option>
+                <option>-XX:-UseBiasedLocking</option>
+                <option>-XX:G1HeapRegionSize=4M</option>
+                <option>-Dlog4j.configurationFile=${ldp_lighthouse_home}/conf/log4j2-ice.xml</option>
+                <option>IceBox.Server</option>
+                <env>CLASSPATH=.:${ldp_lighthouse_home}/lib/*</env>
+                <service name="ReceiverService" entry="com.dtstep.lighthouse.ice.servant.ReceiverService">
+                    <adapter name="ReceiverService" id="ReceiverService${index}" endpoints="default" replica-group="ReceiverServiceRep" />
+                </service>
+                <service name="AuxService" entry="com.dtstep.lighthouse.ice.servant.AuxService">
+                    <adapter name="AuxService" id="AuxService${index}" endpoints="default" replica-group="AuxServiceRep" />
+                </service>
+                <service name="DataQueryService" entry="com.dtstep.lighthouse.ice.servant.DataQueryService">
+                    <adapter name="DataQueryService" id="DataQueryService${index}" endpoints="default" replica-group="DataQueryServiceRep" />
+                </service>
+            </icebox>
+        </server-template>
+        <replica-group id="ReceiverServiceRep">
+            <load-balancing type="adaptive" n-replicas="0" />
+            <object identity="identity_receiver" type="::LightHouseServer::ReceiverInterface"/>
+        </replica-group>
+        <replica-group id="AuxServiceRep">
+            <load-balancing type="adaptive" n-replicas="0" />
+            <object identity="identity_aux" type="::LightHouseServer::AuxInterface"/>
+        </replica-group>
+        <replica-group id="DataQueryServiceRep">
+            <load-balancing type="adaptive" n-replicas="0" />
+            <object identity="identity_dataquery" type="::LightHouseServer::DataQueryInterface"/>
+        </replica-group>
+    	${ldp_lighthouse_ice_nodes}
+     </application>
+</icegrid>

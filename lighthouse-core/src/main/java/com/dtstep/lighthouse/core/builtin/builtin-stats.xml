@@ -1,0 +1,48 @@
+<monitor-groups>
+    <monitor-group id="101" token="_builtin_msg_stat">
+        <columns>
+            <column name="groupId" type="string"/>
+            <column name="captcha" type="string"/>
+        </columns>
+        <monitor-items>
+            <monitor-item id="1011" timeparam="1-minute">
+                <template>
+                    <stat-item title="1_minute_messages_size" stat="count()"/>
+                </template>
+            </monitor-item>
+            <monitor-item id="1012" timeparam="1-day">
+                <template>
+                    <stat-item title="1_day_total_messages_size" stat="count()"/>
+                </template>
+            </monitor-item>
+            <monitor-item id="1013" timeparam="1-minute">
+                <template>
+                    <stat-item title="1_minute_group_messages_size" stat="count()" dimens="groupId;captcha"/>
+                </template>
+            </monitor-item>
+            <monitor-item id="1014" timeparam="10-minute">
+                <template>
+                    <stat-item title="10_minute_group_messages_size" stat="count()" dimens="groupId;captcha" limit="top50"/>
+                </template>
+            </monitor-item>
+        </monitor-items>
+    </monitor-group>
+    <monitor-group id="102" token="_builtin_result_stat">
+        <columns>
+            <column name="statId" type="string"/>
+            <column name="resultKey" type="string"/>
+        </columns>
+        <monitor-items>
+            <monitor-item id="1021" timeparam="1-minute">
+                <template>
+                    <stat-item title="1_minute_stat_result_size" stat="bitcount(resultKey)" dimens="statId"/>
+                </template>
+            </monitor-item>
+            <monitor-item id="1022" timeparam="10-minute">
+                <template>
+                    <stat-item title="10_minute_stat_result_size" stat="bitcount(resultKey)" dimens="statId" limit="top50"/>
+                </template>
+            </monitor-item>
+        </monitor-items>
+    </monitor-group>
+</monitor-groups>

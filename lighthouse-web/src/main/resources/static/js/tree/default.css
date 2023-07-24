@@ -1,0 +1,79 @@
+body {
+    background-color: #EEE; text-align: left; margin: 0; font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif; min-width: 1010px;
+}
+.hr { height: 12px; background: transparent url(/css/images/nm-b.png) repeat-x; }
+a { text-decoration: none; color: #339; }
+a:hover { color: #9C3; text-decoration: underline; }
+a.new { color: red; }
+a.update { color: #9900CC; font-weight: bold; }
+
+#nav { border-bottom: 1px solid #CCC; height: 24px; }
+#nav_path { float: left; margin-top: 2px; }
+#nav_back { float: right; }
+iframe.related { width: 100%; border: 0px; height: 204px; overflow: hidden; }
+
+[action] { cursor: pointer; color: #339; }
+[action]:hover { color: #9C3; }
+.picker { cursor: pointer; background-color: #FFF; }
+
+.toolbar { padding: 0; margin: 0; list-style: none; }
+.toolbar .item {
+    float: left; height: 20px; line-height: 20px;
+    padding: 2px 4px; margin: 2px 2px 2px 0px;
+}
+.toolbar .sqrt { float: left; height: 12px; width: 1px; margin: 4px; }
+.toolbar .button { cursor: pointer; border: 1px solid #4790C5; }
+.toolbar .button:hover { color: #CC6601; }
+
+.form .item { margin: 8px 0 8px 0; clear: both; }
+.form .label {
+    float: left; width: 100px; height: 24px; line-height: 24px;
+    text-align: right; margin-right: 8px;
+}
+.form .txtll {
+    float: left; width: 100px; height: 24px; line-height: 24px;
+    text-align: left; margin-right: 8px;
+}
+.form .trigger { width: 24px; height: 24px; }
+.form .msg {
+    height: 32px; line-height: 32px; margin: 4px;
+    text-align: center; color: red;
+}
+.form .bottom { text-align: center; }
+
+.demoInfo { margin: 4px; }
+.demoPanel {
+    margin: 2px; height: 420px; width: 49%; float: left;
+    border: 1px solid #CCC;	overflow: hidden;
+}
+.demoSource {
+    margin: 2px; width: 49%; height: 420px; border: 1px solid #CCC;
+    background-color: #FFF; font-size: 12px; overflow: scroll;
+}
+
+/* shared CSS for widgets, required */
+.fl { float: left; }
+.fr { float: right; }
+.clear { clear: both; }
+.hidden { display: none; }
+
+/* icons from JQueryUI, required by widgets */
+.icon {
+    overflow: hidden; float: left; width: 16px; height: 16px;
+    background-image: url(images/icons.png);
+}
+.icon-none { background: none; }
+.icon-triangle-1-e { background-position: -32px -16px; }
+.icon-triangle-1-n { background-position: 0 -16px; }
+.icon-triangle-1-s { background-position: -64px -16px; }
+.icon-minus { background-position: -48px -128px; }
+.icon-plus { background-position: -16px -128px; }
+
+/* other icons, not required */
+.icon-pencil { background-position: -64px -112px; }
+.icon-disk { background-position: -96px -112px; }
+.icon-newwin { background-position: -48px -80px; }
+.icon-close { background-position: -80px -128px; }
+.icon-arrowthick-1-e { background-position: -32px -48px; }
+.icon-arrowthick-1-w { background-position: -96px -48px; }

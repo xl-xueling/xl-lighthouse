@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/lighthouse-assembly/lighthouse-assembly.iml" filepath="$PROJECT_DIR$/lighthouse-assembly/lighthouse-assembly.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lighthouse-client/lighthouse-client.iml" filepath="$PROJECT_DIR$/lighthouse-client/lighthouse-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lighthouse-common/lighthouse-common.iml" filepath="$PROJECT_DIR$/lighthouse-common/lighthouse-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lighthouse-core/lighthouse-core.iml" filepath="$PROJECT_DIR$/lighthouse-core/lighthouse-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lighthouse-ice/lighthouse-ice.iml" filepath="$PROJECT_DIR$/lighthouse-ice/lighthouse-ice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lighthouse-tasks/lighthouse-tasks.iml" filepath="$PROJECT_DIR$/lighthouse-tasks/lighthouse-tasks.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lighthouse-test/lighthouse-test.iml" filepath="$PROJECT_DIR$/lighthouse-test/lighthouse-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lighthouse-web/lighthouse-web.iml" filepath="$PROJECT_DIR$/lighthouse-web/lighthouse-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/xl-lighthouse_PRO.iml" filepath="$PROJECT_DIR$/.idea/xl-lighthouse_PRO.iml" />
+    </modules>
+  </component>
+</project>

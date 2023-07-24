@@ -1,0 +1,78 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set ip [lindex $argv 1]
+set passwd [lindex $argv 2]
+set ldp_home [lindex $argv 3]
+set ldp_data_dir [lindex $argv 4]
+set root_pwd [lindex $argv 5]
+set operate_user [lindex $argv 6]
+set operate_user_passwd [lindex $argv 7]
+set mysql_home ${ldp_home}/dependency/mysql
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+spawn ssh ${user}@${ip}
+set timeout -1
+expect {     
+        -nocase  "yes/no" {send "yes\n";exp_continue}
+        -nocase  "password" {send "$passwd\n"}
+        "${prompt}" {send "\r"}
+}
+expect "${prompt}"
+send "rm -f /tmp/mysqld.pid\r"
+expect "${prompt}"
+send "rm -rf ${ldp_data_dir}/mysql/*\r"
+expect "${prompt}"
+send "rm -f /tmp/mysql*\r"
+expect "${prompt}"
+send "mkdir -p ${mysql_home}/log \r"
+expect "${prompt}"
+send "touch ${mysql_home}/log/mysql-error.log\r"
+expect "${prompt}"
+send "${mysql_home}/bin/mysqld --defaults-file=${mysql_home}/support-files/my.cnf --initialize-insecure --user=mysql\r"
+expect "${prompt}"
+send "${mysql_home}/bin/mysqld_safe --defaults-file=${mysql_home}/support-files/my.cnf --user=mysql &\r\n"
+send "exit\r"
+expect eof
+
+after 5000
+
+spawn sh -c "ssh ${user}@${ip}"
+set timeout -1
+expect {     
+        -nocase "yes/no" {send "yes\n";exp_continue}
+        -nocase "password" {send "$passwd\n"}
+}
+expect "${prompt}"
+send "${mysql_home}/bin/mysql -u root -h localhost\r"
+expect "*>"
+send "alter user 'root'@'localhost' identified by '${root_pwd}';\r"
+expect "*>"
+send "use mysql;\r"
+expect "*>"
+send "create user '${operate_user}'@'%' identified with mysql_native_password by '${operate_user_passwd}';\r"
+expect "*>"
+send "grant all privileges on *.* to '${operate_user}'@'%' with grant option;\r"
+expect "*>"
+send "flush privileges;\r"
+send "exit\r"
+expect "${prompt}"
+send "exit\r"
+expect eof
+
+spawn sh -c "ssh ${user}@${ip}"
+set timeout -1
+expect {
+        -nocase "yes/no" {send "yes\n";exp_continue}
+        -nocase "password" {send "$passwd\n"}
+}
+expect "${prompt}"
+send "${mysql_home}/bin/mysql -u root -h localhost -p'root'\r"
+expect "*>"
+send "source ${ldp_home}/conf/ldp_db.sql;\r"
+send "exit\r"
+expect "${prompt}"
+send "exit\r"
+expect eof
