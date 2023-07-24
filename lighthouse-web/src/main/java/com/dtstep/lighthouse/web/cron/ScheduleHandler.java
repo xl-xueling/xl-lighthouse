@@ -17,13 +17,7 @@ package com.dtstep.lighthouse.web.cron;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.web.manager.meta.MetaTableManager;
-import com.dtstep.lighthouse.web.manager.tasks.TasksHistoryManager;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.dtstep.lighthouse.common.entity.meta.MetaTableEntity;
-import com.dtstep.lighthouse.common.entity.tasks.TasksHistoryEntity;
-import com.dtstep.lighthouse.common.enums.tasks.TaskTypeEnum;
-import com.dtstep.lighthouse.common.util.DateUtil;
-import com.dtstep.lighthouse.web.service.cron.CronService;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
