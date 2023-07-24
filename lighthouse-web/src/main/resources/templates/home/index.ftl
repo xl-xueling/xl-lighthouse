@@ -125,9 +125,9 @@
             </div>
             <div class="box-footer no-padding">
               <ul class="nav nav-stacked">
-                <li><a onclick="window.open('https://www.dtstep.com/archives/4231.html?fk=${_ldp_cluster}')"><samp class="i18n" i18n_code="ldp_i18n_homepage_1015"></samp></a></li>
-                <li><a onclick="window.open('https://www.dtstep.com/community/ldp-issue?fk=${_ldp_cluster}')"><samp class="i18n" i18n_code="ldp_i18n_homepage_1016"></samp></a></li>
-                <li><a onclick="window.open('https://www.dtstep.com?fk=${_ldp_cluster}')"><samp class="i18n" i18n_code="ldp_i18n_homepage_1017"></samp></a></li>
+                <li><a onclick="window.open('https://dtstep.com/archives/4231.html?fk=${_ldp_cluster}')"><samp class="i18n" i18n_code="ldp_i18n_homepage_1015"></samp></a></li>
+                <li><a onclick="window.open('https://dtstep.com/community/ldp-issue?fk=${_ldp_cluster}')"><samp class="i18n" i18n_code="ldp_i18n_homepage_1016"></samp></a></li>
+                <li><a onclick="window.open('https://dtstep.com/?fk=${_ldp_cluster}')"><samp class="i18n" i18n_code="ldp_i18n_homepage_1017"></samp></a></li>
               </ul>
             </div>
           </div>
