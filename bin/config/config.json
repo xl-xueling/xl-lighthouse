@@ -16,8 +16,8 @@
   },
   "zookeeper": {
     "nodes_size": 3,
-    "xmx_memory": "500M",
-    "xms_memory": "500M"
+    "xmx_memory": "480M",
+    "xms_memory": "480M"
   },
   "hadoop": {
     "nodes_size": 3,
