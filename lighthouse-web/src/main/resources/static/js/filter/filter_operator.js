@@ -90,6 +90,7 @@ var FILTER_OPERATOR = {
         let catData = typeof renderObj.data == "string" ? JSON.parse(renderObj.data):renderObj.data;
         let obj  =  xmSelect.render({
             el: "#" + elemId,
+            filterable: true,
             toolbar: {
                 show: true,
                 list: ['ALL', 'CLEAR']
