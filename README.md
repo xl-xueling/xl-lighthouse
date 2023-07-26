@@ -184,7 +184,7 @@ XL-LightHouse可以帮助企业更快速的搭建起一套较为完善的、稳�
 
 + 查看统计结果
 
-<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/7.png"  width="800px" height="420px" />
+<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/7.png?t=1"  width="800px" height="420px" />
 
 ### 更多适用场景举例
 
