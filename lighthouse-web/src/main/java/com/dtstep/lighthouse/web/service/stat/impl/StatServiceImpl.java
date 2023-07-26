@@ -277,6 +277,6 @@ public class StatServiceImpl implements StatService {
 
     @Override
     public void update(StatExtEntity statExtEntity) throws Exception {
-        statDao.update(statExtEntity);
+        statManager.update(statExtEntity);
     }
 }

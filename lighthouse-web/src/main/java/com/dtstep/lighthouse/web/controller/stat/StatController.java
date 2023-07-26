@@ -227,7 +227,7 @@ public class StatController extends BaseController{
         try{
             statService.update(statExtEntity);
         }catch (Exception ex){
-            ex.printStackTrace();
+            logger.error("update stat info error,statId:{}!",statId,ex);
             return RequestCodeEnum.toJSON(RequestCodeEnum.SYSTEM_ERROR);
         }
         return RequestCodeEnum.toJSON(RequestCodeEnum.SUCCESS);

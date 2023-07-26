@@ -37,7 +37,9 @@ import com.dtstep.lighthouse.web.manager.meta.MetaTableManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -82,6 +84,13 @@ public class StatManager {
     @Cacheable(value = "normal",key = "#targetClass + '_' + 'queryListByGroupId' + '_' + #groupId",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public List<StatExtEntity> queryListByGroupId(int groupId) throws Exception{
         return statDao.queryListByGroupId(groupId);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "normal",key = "#targetClass + '_' + 'queryById' + '_' + #statExtEntity.id",cacheManager = "caffeineCacheManager"),
+            @CacheEvict(value = "normal",key = "#targetClass + '_' + 'queryListByGroupId' + '_' + #statExtEntity.groupId",cacheManager = "caffeineCacheManager")})
+    public void update(StatExtEntity statExtEntity) throws Exception {
+        statDao.update(statExtEntity);
     }
 
     public List<StatExtEntity> actualQueryListByGroupId(int groupId) throws Exception{
