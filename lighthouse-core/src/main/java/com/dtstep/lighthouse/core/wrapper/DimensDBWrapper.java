@@ -43,7 +43,7 @@ public final class DimensDBWrapper {
     private static final Logger logger = LoggerFactory.getLogger(DimensDBWrapper.class);
 
     private final static Cache<String, Optional<List<String>>> DIMENS_CACHE = Caffeine.newBuilder()
-            .expireAfterWrite(3, TimeUnit.MINUTES)
+            .expireAfterWrite(2, TimeUnit.MINUTES)
             .maximumSize(90000)
             .softValues()
             .build();
