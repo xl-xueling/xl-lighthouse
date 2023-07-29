@@ -83,7 +83,8 @@ function downloads() {
 
 
 function dependencyInstall() {
-  	downloads;
+  source ~/.bashrc;
+  downloads;
 	for service in "${SERVICES[@]}"; do
 		local path=$(find ${source_dir}/${service} -maxdepth 1 -mindepth 1 -type d | grep ${service} | head -n 1)
 		if [ ! -n "${path}" ]; then
@@ -91,6 +92,10 @@ function dependencyInstall() {
 			exit -1
 		fi
 		local dirname=${path##*/}
+		if [ "$service" == "redis" ];then
+         		local path=${source_dir}/${service}/${dirname}
+         		localCompileRedis $path;
+    fi
 		local IPArray=($(getServiceIPS ${service}))
 		for ip in ${IPArray[@]}; do
 			syncComponents ${service} ${ip} ${source_dir} ${dirname} "${LDP_HOME}/dependency"
@@ -111,8 +116,17 @@ function dependencyInstall() {
 				syncComponents ${service} ${ip} ${source_dir} ${dirname} "${LDP_HOME}/proxy"
                 	fi
 		done
-	done	
+	done
+}
 
+function pluginsInstall() {
+    source ~/.bashrc;
+    cd ${LDP_HOME}/plugins/ && tar -zxvf redis-roaring.tar.gz;
+    cd ${LDP_HOME}/plugins/redis-roaring && ./configure.sh
+    for ip in "${NODES[@]:1}"
+                do
+			remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${CUR_USER} "" ${LDP_HOME}/plugins ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}
+		done
 
 }
 

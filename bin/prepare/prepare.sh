@@ -47,8 +47,6 @@ syncPackage(){
                 do
       remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${CUR_USER} "nodelist" ${LDP_HOME}/bin ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}
       remoteExecute ${CUR_DIR}/check/check_file_exist.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}/bin
-			remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${CUR_USER} "" ${LDP_HOME}/plugins ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}
-      remoteExecute ${CUR_DIR}/check/check_file_exist.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}/plugins
 			remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${CUR_USER} "" ${LDP_HOME}/lib ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}
 			remoteExecute ${CUR_DIR}/check/check_file_exist.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}/lib
       remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${CUR_USER} "" ${LDP_HOME}/light-webapps ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}

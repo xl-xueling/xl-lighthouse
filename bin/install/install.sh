@@ -22,7 +22,6 @@ function authorization(){
 			remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[${ip}]} "chown -R ${user}:${user} ${LDP_HOME}"
 			remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[${ip}]} "chown -R ${user}:${user} /home/${user}/.ssh"
 			remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[${ip}]} "chown -R ${user}:${user} ${LDP_DATA_DIR}"
-			remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[${ip}]} "chown -R ${user}:${user} /tmp/lighthouse"
 		done
 	log_info "Program progress,authorization complete!"
 }
@@ -40,6 +39,7 @@ function installICE() {
 install(){
 	baseInstall;
 	dependencyInstall;
+	pluginsInstall;
 	reloadClusterConfig;
 	installICE;
 	authorization;

@@ -31,7 +31,6 @@ easy_deploy(){
 	prepare_for_deploy;
 	killAll;
   	install;
-  	compile;
   	deploy;
 	source ~/.bashrc;
 	checkInstall;

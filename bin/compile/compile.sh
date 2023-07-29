@@ -5,7 +5,7 @@
 # Email:better_xueling@126.com
 #-----------------------------------------
 
-function compileRoaring(){
+function remoteCompileRoaring(){
 	checkCMake;
         local IPArray=($(getServiceIPS 'redis'))
 	local exec_dir=${LDP_HOME}/plugins
@@ -17,7 +17,7 @@ function compileRoaring(){
 	log_info "Program progress,compile roaring complete!"
 }
 
-function compileRedis(){
+function remoteCompileRedis(){
         local IPArray=($(getServiceIPS 'redis'))
 	local exec_dir=${LDP_HOME}/plugins
         for ip in "${IPArray[@]}"
@@ -27,12 +27,19 @@ function compileRedis(){
 	log_info "Program progress,compile redis complete!"
 }
 
+function localCompileRedis() {
+    local path=${1};
+    cd ${path} && make;
+    make test;
+    make PREFIX=${path} install
+}
+
 
 function compile(){
   source ~/.bashrc;
 	if [[ "${SERVICES[@]}" =~ "redis" ]];then
-		compileRoaring;
-		compileRedis;
+		remoteCompileRoaring;
+		remoteCompileRedis;
 	fi
 	authorization;
 }

@@ -11,34 +11,26 @@ source ${LDP_HOME}/bin/common/common.sh
 
 installICEONCentOS(){
   local major=($(getLSBMajorVersion))
-  if [ $(ls /etc/yum.repos.d|grep 'zeroc-ice'|grep -v grep |wc -l) -le 0 ];then
-                wget https://zeroc.com/download/ice/3.7/el${major}/zeroc-ice3.7.repo -P /etc/yum.repos.d --no-check-certificate
-  fi
+  sudo yum install -y https://zeroc.com/download/ice/3.7/el${major}/ice-repo-3.7.el${major}.noarch.rpm
 	sudo yum install -y ice-all-runtime ice-all-devel
 }
 
 installICEONAlma(){
   local major=($(getLSBMajorVersion))
-  if [ $(ls /etc/yum.repos.d|grep 'zeroc-ice'|grep -v grep |wc -l) -le 0 ];then
-                wget https://zeroc.com/download/ice/3.7/el${major}/zeroc-ice3.7.repo -P /etc/yum.repos.d --no-check-certificate
-        fi
+  sudo yum install -y https://zeroc.com/download/ice/3.7/el${major}/ice-repo-3.7.el${major}.noarch.rpm
   sudo yum install -y ice-all-runtime ice-all-devel
 }
 
 installICEONRocky(){
   local major=($(getLSBMajorVersion))
-  if [ $(ls /etc/yum.repos.d|grep 'zeroc-ice'|grep -v grep |wc -l) -le 0 ];then
-      wget https://zeroc.com/download/ice/3.7/el${major}/zeroc-ice3.7.repo -P /etc/yum.repos.d --no-check-certificate
-  fi
+  sudo yum install -y https://zeroc.com/download/ice/3.7/el${major}/ice-repo-3.7.el${major}.noarch.rpm
   sudo yum install -y ice-all-runtime ice-all-devel
 }
 
 
 installICEONRHEL(){
   local major=($(getLSBMajorVersion))
-  if [ $(ls /etc/yum.repos.d|grep 'zeroc-ice'|grep -v grep |wc -l) -le 0 ];then
-                wget https://zeroc.com/download/ice/3.7/el${major}/zeroc-ice3.7.repo -P /etc/yum.repos.d --no-check-certificate
-  fi
+  sudo yum install -y https://zeroc.com/download/ice/3.7/el${major}/ice-repo-3.7.el${major}.noarch.rpm
 	sudo yum install -y ice-all-runtime ice-all-devel
 }
 
