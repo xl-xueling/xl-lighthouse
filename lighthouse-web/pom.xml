@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.dtstep.lighthouse</groupId>
     <artifactId>lighthouse-base</artifactId>
-    <version>1.0.1</version>
+    <version>${revision}</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>lighthouse-web</artifactId>
@@ -115,12 +115,12 @@
     <dependency>
       <groupId>com.dtstep.lighthouse</groupId>
       <artifactId>lighthouse-common</artifactId>
-      <version>1.0.1</version>
+      <version>${revision}</version>
     </dependency>
     <dependency>
       <groupId>com.dtstep.lighthouse</groupId>
       <artifactId>lighthouse-core</artifactId>
-      <version>1.0.1</version>
+      <version>${revision}</version>
       <exclusions>
         <exclusion>
           <groupId>org.glassfish.web</groupId>

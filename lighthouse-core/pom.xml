@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.dtstep.lighthouse</groupId>
         <artifactId>lighthouse-base</artifactId>
-        <version>1.0.1</version>
+        <version>${revision}</version>
     </parent>
     <artifactId>lighthouse-core</artifactId>
     <packaging>jar</packaging>
@@ -57,12 +57,12 @@
         <dependency>
             <groupId>com.dtstep.lighthouse</groupId>
             <artifactId>lighthouse-common</artifactId>
-            <version>1.0.1</version>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.dtstep.lighthouse</groupId>
             <artifactId>lighthouse-client</artifactId>
-            <version>1.0.1</version>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.sun.activation</groupId>

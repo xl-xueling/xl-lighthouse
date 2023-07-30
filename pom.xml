@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.dtstep.lighthouse</groupId>
   <artifactId>lighthouse-base</artifactId>
-  <version>1.0.1</version>
+  <version>${revision}</version>
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -23,6 +23,7 @@
   <name>lighthouse-base</name>
   <url>http://maven.apache.org</url>
   <properties>
+    <revision>1.0.2</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <PermGen>64m</PermGen>
