@@ -221,7 +221,7 @@ d、销售直接或间接依赖XL-LightHouse或XL-Formula相关的数据指标�
 
 ##### 2、Git地址
 - https://github.com/xl-xueling/xl-lighthouse.git
-- https://gitee.com/xl-xueling/xl-lighthouse.git
+- https://gitee.com/mirrors/XL-LightHouse.git
 
 ##### 3、交流社区
 
