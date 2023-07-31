@@ -5,8 +5,8 @@
 # Email:better_xueling@126.com
 #-----------------------------------------
 
-CUR_DIR="$PWD"
-LDP_HOME=$(dirname "$PWD")
+CUR_DIR=$(cd "$(dirname "$0")";pwd)
+LDP_HOME=$(dirname "$CUR_DIR")
 ROOT_HOME=$(dirname "$LDP_HOME")
 CUR_USER=${USER}
 LOCKFILE=/tmp/lighthouse_run.lock
