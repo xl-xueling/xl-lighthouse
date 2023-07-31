@@ -7,7 +7,6 @@ set source_path [lindex $argv 3]
 set dest_ip [lindex $argv 4]
 set dest_passwd [lindex $argv 5]
 set dest_path [lindex $argv 6]
-set dir [exec pwd]
 set prompt "*${user}@*\\\$"
 if { $user == "root" } {
         set prompt "*${user}@*#"

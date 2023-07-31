@@ -106,7 +106,7 @@ hostsInit(){
                 done
         for ip in "${NODES[@]}"
                 do
-                        remoteExecute ${CUR_DIR}/prepare/init_hosts.exp ${CUR_USER} ${ip} ${NODES_MAP[${ip}]}
+                        remoteExecute ${CUR_DIR}/prepare/init_hosts.exp ${CUR_USER} ${ip} ${NODES_MAP[${ip}]} ${LDP_HOME}
                 done
         log_info "Program progress,init hosts complete!"
 }

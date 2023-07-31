@@ -3,7 +3,7 @@
 set user [lindex $argv 0]
 set ip [lindex $argv 1]
 set passwd [lindex $argv 2]
-set dir [exec pwd]
+set ldp_home [lindex $argv 3]
 set prompt "*${user}@*\\\$"
 if { $user == "root" } {
         set prompt "*${user}@*#"
@@ -22,7 +22,7 @@ send "echo \"127.0.0.1   localhost localhost.localdomain localhost4 localhost4.l
 expect "${prompt}"
 send "echo \"::0         localhost localhost.localdomain localhost4 localhost4.localdomain4\" >> /etc/hosts\r"
 expect "${prompt}"
-send "cat \"${dir}/hosts\" >> /etc/hosts\r"
+send "cat \"${ldp_home}/bin/hosts\" >> /etc/hosts\r"
 expect "${prompt}"
 send "exit\r"
 expect eof
