@@ -1,4 +1,5 @@
 ### **一键部署，轻松实现海量数据实时统计，使用XL-LightHouse后不再需要用FlinkSQL、SparkSQL、ClickHouse这种臃肿笨重的方案跑数了！**
+## **还有些为了统计个PV、UV，在自己搭建Redis集群的小伙伴们，可以体验一下xl-lighthouse,或许更适合你~~**
 
 ### 概述
 
