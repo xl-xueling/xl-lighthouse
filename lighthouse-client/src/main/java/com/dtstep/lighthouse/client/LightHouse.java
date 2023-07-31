@@ -47,7 +47,7 @@ public final class LightHouse {
 
     private static Consumer _consumer;
 
-    private static final EventPool<SimpleSlotEvent> eventPool = new BlockingEventPool<>("ClientEventPool",3,20000);
+    private static final EventPool<SimpleSlotEvent> eventPool = new BlockingEventPool<>("ClientEventPool",3,200000);
 
     private static DataQueryHandler _dataQueryHandler;
 
