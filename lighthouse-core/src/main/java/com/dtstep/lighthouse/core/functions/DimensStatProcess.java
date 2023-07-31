@@ -40,7 +40,7 @@ import java.util.concurrent.*;
 
 public final class DimensStatProcess extends Process {
 
-    private static final EventPool<DimensBucket> eventPool = new BlockingEventPool<>("DimensStorageEventPool",4,30000);
+    private static final EventPool<DimensBucket> eventPool = new BlockingEventPool<>("DimensStorageEventPool",4,100000);
 
     private static final DimensStatProcess instance  = new DimensStatProcess();
 
