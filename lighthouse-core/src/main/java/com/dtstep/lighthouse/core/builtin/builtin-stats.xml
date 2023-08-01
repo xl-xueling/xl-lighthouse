@@ -17,10 +17,15 @@
             </monitor-item>
             <monitor-item id="1013" timeparam="1-minute">
                 <template>
-                    <stat-item title="1_minute_group_messages_size" stat="count()" dimens="groupId;captcha"/>
+                    <stat-item title="1_minute_group_captcha_msg_size" stat="count()" dimens="groupId;captcha"/>
                 </template>
             </monitor-item>
-            <monitor-item id="1014" timeparam="10-minute">
+            <monitor-item id="1014" timeparam="1-minute">
+                <template>
+                    <stat-item title="1_minute_group_messages_size" stat="count()" dimens="groupId"/>
+                </template>
+            </monitor-item>
+            <monitor-item id="1015" timeparam="10-minute">
                 <template>
                     <stat-item title="10_minute_group_messages_size" stat="count()" dimens="groupId;captcha" limit="top50"/>
                 </template>

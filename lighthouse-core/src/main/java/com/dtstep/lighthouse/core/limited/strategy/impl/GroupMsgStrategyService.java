@@ -30,7 +30,7 @@ public class GroupMsgStrategyService extends AbstractStrategy<GroupExtEntity> {
 
     private static final List<CountingDevice> countingDeviceList = getDeviceList(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT);
 
-    private static final StatExtEntity builtInStat = BuiltinLoader.getBuiltinStat(1013);
+    private static final StatExtEntity builtInStat = BuiltinLoader.getBuiltinStat(1014);
 
     @Override
     public boolean process(GroupExtEntity groupExtEntity, int permitsPerSecond, int step) throws Exception {
