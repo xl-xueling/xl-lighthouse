@@ -58,7 +58,7 @@ public final class ImitateCompile {
             }
             AviatorHandler.compileStatFormula(tempFormula);
         }catch (Exception ex){
-            logger.error("xl-formula stat format check failed,statId:[{}],formula:[{}]!",statId,formula,ex);
+            logger.error("xl-formula stat format check failed,statId:[{}],formula:[{}]!",statId,formula);
             return false;
         }
         return true;
@@ -81,7 +81,7 @@ public final class ImitateCompile {
             }
             AviatorHandler.compileDimensFormula(formula,paramMap);
         }catch (Exception ex){
-            logger.error("xl-formula dimens format check failed,statId:[{}],formula:[{}]!",statId,formula,ex);
+            logger.error("xl-formula dimens format check failed,statId:[{}],formula:[{}]!",statId,formula);
             return false;
         }
         return true;
