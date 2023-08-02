@@ -234,6 +234,16 @@ public final class DateUtil {
         return localDateTime.minusMinutes(n).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
+    public static long getSecondBefore(long t,int n){
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(t), ZoneId.systemDefault());
+        return localDateTime.minusSeconds(n).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    public static long getSecondAfter(long t,int n){
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(t), ZoneId.systemDefault());
+        return localDateTime.plusSeconds(n).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
     public static long getMinuteAfter(long t,int n){
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(t), ZoneId.systemDefault());
         return localDateTime.plusMinutes(n).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
@@ -247,8 +257,8 @@ public final class DateUtil {
 
     public static List<String> getBetweenDays(long startTime,long endTime){
         List<String> list = new ArrayList<>();
-        LocalDate startDate = Instant.ofEpochMilli(startTime).atZone(ZoneOffset.ofHours(8)).toLocalDate();
-        LocalDate endDate = Instant.ofEpochMilli(endTime).atZone(ZoneOffset.ofHours(8)).toLocalDate();
+        LocalDate startDate = Instant.ofEpochMilli(startTime).atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate endDate = Instant.ofEpochMilli(endTime).atZone(ZoneId.systemDefault()).toLocalDate();
         if(startTime == endTime){
             list.add(startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return list;

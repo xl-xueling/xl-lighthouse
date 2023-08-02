@@ -63,6 +63,9 @@ public class GroupEntity implements Serializable  {
     @DBColumnAnnotation(basic="update_time")
     private Date updateTime;
 
+    @DBColumnAnnotation(basic="refresh_time")
+    private Date refreshTime;
+
     @DBColumnAnnotation(basic="debug_mode")
     private int debugMode;
 
@@ -180,5 +183,13 @@ public class GroupEntity implements Serializable  {
 
     public void setDebugParams(String debugParams) {
         this.debugParams = debugParams;
+    }
+
+    public Date getRefreshTime() {
+        return refreshTime;
+    }
+
+    public void setRefreshTime(Date refreshTime) {
+        this.refreshTime = refreshTime;
     }
 }

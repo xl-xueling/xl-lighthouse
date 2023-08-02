@@ -69,6 +69,7 @@ public class GroupDao {
         Date date = new Date();
         groupEntity.setCreateTime(date);
         groupEntity.setUpdateTime(date);
+        groupEntity.setRefreshTime(date);
         groupEntity.setSecretKey(RandomStringUtils.randomAlphanumeric(32));
         groupEntity.setState(GroupStateEnum.RUNNING.getState());
         return DaoHelper.sql.insert(groupEntity);
@@ -78,12 +79,15 @@ public class GroupDao {
     public void update(GroupEntity groupEntity) throws Exception {
         Date date = new Date();
         groupEntity.setUpdateTime(date);
-        DaoHelper.sql.execute("update ldp_stat_group set columns = ?,update_time= ? where id = ?", groupEntity.getColumns(), groupEntity.getUpdateTime(), groupEntity.getId());
+        groupEntity.setRefreshTime(date);
+        DaoHelper.sql.execute("update ldp_stat_group set columns = ?,update_time = ?,refresh_time = ? where id = ?", groupEntity.getColumns()
+                , groupEntity.getUpdateTime(), groupEntity.getRefreshTime(), groupEntity.getId());
     }
 
     @CacheEvict(value = "GROUP",key = "'queryById' + '_' + #groupId",cacheManager = "redisCacheManager")
     public void updateThreshold(int groupId,String thresholdConfig) throws Exception {
-        DaoHelper.sql.execute("update ldp_stat_group set limited_threshold = ?,update_time = ? where id = ?", thresholdConfig,new Date(),groupId);
+        Date date = new Date();
+        DaoHelper.sql.execute("update ldp_stat_group set limited_threshold = ?,update_time = ?,refresh_time = ? where id = ?", thresholdConfig,date,date,groupId);
     }
 
     @Caching(evict = {
@@ -95,7 +99,8 @@ public class GroupDao {
 
     @CacheEvict(value = "GROUP",key = "'queryById' + '_' + #groupId",cacheManager = "redisCacheManager")
     public void changeDebugMode(int groupId, int debugMode,String debugParams) throws Exception {
-        DaoHelper.sql.execute("update ldp_stat_group set debug_mode = ?,update_time = ?,debug_params = ? where id = ?",debugMode,new Date(),debugParams,groupId);
+        Date date = new Date();
+        DaoHelper.sql.execute("update ldp_stat_group set debug_mode = ?,update_time = ?,refresh_time = ?,debug_params = ? where id = ?",debugMode,date,date,debugParams,groupId);
     }
 
 }

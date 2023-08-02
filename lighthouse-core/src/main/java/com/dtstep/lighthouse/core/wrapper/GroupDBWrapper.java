@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.wrapper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.util.*;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.redis.RedisHandler;
@@ -32,15 +33,14 @@ import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
 import com.dtstep.lighthouse.common.enums.meta.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
-import com.dtstep.lighthouse.common.util.CalculateUtil;
-import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.common.util.Md5Util;
-import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -68,6 +68,11 @@ public final class GroupDBWrapper {
         return optional.orElse(null);
     }
 
+    static {
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(1,
+                new BasicThreadFactory.Builder().namingPattern("group-cache-refresh-schedule-pool-%d").daemon(true).build());
+        service.scheduleWithFixedDelay(new RefreshThread(),0,20, TimeUnit.SECONDS);
+    }
 
     public static Optional<GroupExtEntity> actualQueryGroupByToken(String token){
         if(BuiltinLoader.isBuiltinGroup(token)){
@@ -227,6 +232,29 @@ public final class GroupDBWrapper {
         assert groupExtEntity != null;
         groupCache.invalidate(groupId);
         groupCache.invalidate(groupExtEntity.getToken());
+    }
+
+    static class RefreshThread implements Runnable {
+
+        @Override
+        public void run() {
+            long time = DateUtil.getSecondBefore(System.currentTimeMillis(),20);
+            try{
+                List<Integer> ids = DaoHelper.sql.getList(Integer.class,"select id from ldp_stat_group where create_time != refresh_time and refresh_time > ?",new Date(time));
+                if(CollectionUtils.isNotEmpty(ids)){
+                    for(int groupId:ids){
+                        GroupEntity groupEntity = GroupDBWrapper.queryById(groupId);
+                        if(groupEntity != null){
+                            clearLocalCache(groupId);
+                            StatDBWrapper.clearLocalCacheByGroupId(groupId);
+                            logger.info("refresh group cache success,groupId:{}",groupId);
+                        }
+                    }
+                }
+            }catch (Exception ex){
+                logger.error("statistic group cache refresh error!",ex);
+            }
+        }
     }
 
 }

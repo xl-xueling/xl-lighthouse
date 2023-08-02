@@ -167,7 +167,7 @@ var TRACK_OPERATOR = {
             if(!Validate.isNull(debugStartTime)){
                 TRACK_OPERATOR.loadTrackRecords(statId,debugStartTime,debugEndTime);
             }
-        }, 10000)
+        }, 5000)
     }
 
 };

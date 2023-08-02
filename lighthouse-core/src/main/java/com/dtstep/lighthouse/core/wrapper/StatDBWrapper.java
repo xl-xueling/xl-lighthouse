@@ -148,7 +148,7 @@ public final class StatDBWrapper {
         statExtEntity.setStatStateEnum(stateEnum);
         if(!isBuiltIn){
             GroupStateEnum groupStateEnum = GroupDBWrapper.getState(statEntity.getGroupId());
-            if(groupStateEnum == GroupStateEnum.LIMITING){
+            if(groupStateEnum == GroupStateEnum.LIMITING && stateEnum == StatStateEnum.RUNNING){
                 statExtEntity.setStatStateEnum(StatStateEnum.LIMITING);
             }else if(StatExtEntity.isLimitedExpired(statExtEntity)){
                 DaoHelper.sql.execute("update ldp_stat_item set state = ?,update_time = ? where id = ?", StatStateEnum.RUNNING.getState(),new Date(), statExtEntity.getId());
@@ -199,6 +199,10 @@ public final class StatDBWrapper {
         StatEntity statEntity = queryById(statId);
         statCache.invalidate(statId);
         groupStatListCache.invalidate(statEntity.getGroupId());
+    }
+
+    public static void clearLocalCacheByGroupId(int groupId){
+        groupStatListCache.invalidate(groupId);
     }
 
     public static int changeState(StatExtEntity statExtEntity, StatStateEnum stateEnum) throws Exception{

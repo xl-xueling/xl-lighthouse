@@ -275,4 +275,12 @@ public class DateUtilTest {
         long t = DateUtil.batchTime(1,TimeUnit.MINUTES,System.currentTimeMillis());
         System.out.println("t:" + t + ",date:" + DateUtil.formatTimeStamp(t,"yyyy-MM-dd HH:mm:ss"));
     }
+
+    @Test
+    public void testSecondsBefore() throws Exception {
+        long current = System.currentTimeMillis();
+        long time = DateUtil.getSecondBefore(current,20);
+        System.out.println("current:" + DateUtil.formatTimeStamp(current,"yyyy-MM-dd HH:mm:ss"));
+        System.out.println("time:" + DateUtil.formatTimeStamp(time,"yyyy-MM-dd HH:mm:ss"));
+    }
 }
