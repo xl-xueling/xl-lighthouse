@@ -9,9 +9,10 @@ public class AviatorHandlerTest {
 
     @Test
     public void testFormula() throws Exception {
-        String formula = "a = 'abc'";
+        String formula = "'province'";
         HashMap<String,Object> envMap = new HashMap<>();
-        envMap.put("a","abc");
+        envMap.put("province","abc");
+        envMap.put("city","eee");
         Object obj = AviatorHandler.execute(formula,envMap);
         System.out.println("obj:" + obj);
     }

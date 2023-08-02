@@ -38,7 +38,7 @@ public class LDPTest {
     @Test
     public void orderStatTest() throws Exception {
         //连接RPC模块注册中心，默认为RPC服务部署的前两个节点（一主一从）
-        LightHouse.init("10.206.7.15:4061,10.206.7.5:4061");
+        LightHouse.init("10.206.6.21:4061");
         for(int i=0;i<1000;i++){
             HashMap<String,Object> paramMap = new HashMap<>();
             paramMap.put("userId",userId_RandomId +"_" + ThreadLocalRandom.current().nextLong(100L));
@@ -51,7 +51,7 @@ public class LDPTest {
             double amount = ThreadLocalRandom.current().nextDouble(1,9999);
             paramMap.put("amount",String.format("%.2f", amount));
             paramMap.put("orderId","order_"+i);
-            LightHouse.stat("order_stat","AZ6ReXXskkRQuzcq33urcwWwPhpMqp1n",paramMap,System.currentTimeMillis());
+            LightHouse.stat("order_stat","do1dT214eMxRnt3K4vKKwI0ZEhsRrTFl",paramMap,System.currentTimeMillis());
         }
         //注意：stat方法为异步发送，如果进程直接退出可能会导致部分消息没有发送出去，所以这里加一个sleep。
         Thread.sleep(10 * 1000);

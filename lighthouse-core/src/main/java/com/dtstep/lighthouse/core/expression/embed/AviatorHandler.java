@@ -311,7 +311,6 @@ public final class AviatorHandler {
                     BigDecimal b = new BigDecimal(temp2);
                     return AviatorDecimal.valueOf(a.multiply(b).setScale(3,RoundingMode.HALF_UP));
                 }
-                //throw new IllegalArgumentException("Execution of arithmetic operation is abnormal，Illegal parameter ("+temp1+" * "+ temp2+")");
                 return AviatorNil.NIL;
             }
 
@@ -334,7 +333,6 @@ public final class AviatorHandler {
                     BigDecimal b = new BigDecimal(temp2);
                     return AviatorDecimal.valueOf(a.divide(b,3, RoundingMode.HALF_UP));
                 }
-                //throw new IllegalArgumentException("Execution of arithmetic operation is abnormal，Illegal parameter ("+temp1+" / "+ temp2+")");
                 return AviatorNil.NIL;
             }
 
@@ -356,7 +354,6 @@ public final class AviatorHandler {
                     BigDecimal b = new BigDecimal(temp2);
                     return AviatorDecimal.valueOf(a.subtract(b).setScale(3,RoundingMode.HALF_UP));
                 }
-                //throw new IllegalArgumentException("Execution of arithmetic operation is abnormal，Illegal parameter ("+temp1+" - "+ temp2+")");
                 return AviatorNil.NIL;
             }
 
@@ -412,9 +409,13 @@ public final class AviatorHandler {
         }
     }
 
-    public static void compileXLFormula(String str) throws Exception {
+    public static void compileStatFormula(String str) throws Exception {
         Object object = aviatorEvaluatorInstance.execute(str,null,true);
         Validate.isTrue(StringUtil.isNumber(object.toString()));
+    }
+
+    public static void compileDimensFormula(String str,Map<String,Object> envMap) throws Exception {
+        aviatorEvaluatorInstance.execute(str,null,true);
     }
 
     public static Object execute(String str,Map<String,Object> envMap){

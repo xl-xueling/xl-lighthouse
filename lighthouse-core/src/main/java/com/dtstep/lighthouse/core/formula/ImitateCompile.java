@@ -31,7 +31,7 @@ public final class ImitateCompile {
 
     private static final Logger logger = LoggerFactory.getLogger(ImitateCompile.class);
 
-    public boolean imitate(int statId,final String formula, List<MetaColumn> columnList){
+    public static boolean imitateStatFormula(int statId, final String formula, List<MetaColumn> columnList){
         try{
             String tempFormula = formula;
             Pair<String, List<StatState>> pair = FormulaTranslate.translate(formula);
@@ -51,14 +51,37 @@ public final class ImitateCompile {
             for (StatState statState : stateList) {
                 boolean valid = FormulaCalculate.valid(statState, paramMap, System.currentTimeMillis());
                 if (!valid) {
-                    logger.error("xl-formula format check failed,statId:[{}],formula:[{}]!",statId,formula);
+                    logger.error("xl-formula stat format check failed,statId:[{}],formula:[{}]!",statId,formula);
                     return false;
                 }
                 tempFormula = tempFormula.replace(statState.getStateBody(), String.valueOf(1.0D));
             }
-            AviatorHandler.compileXLFormula(tempFormula);
+            AviatorHandler.compileStatFormula(tempFormula);
         }catch (Exception ex){
-            logger.error("xl-formula format check failed,statId:[{}],formula:[{}]!",statId,formula,ex);
+            logger.error("xl-formula stat format check failed,statId:[{}],formula:[{}]!",statId,formula,ex);
+            return false;
+        }
+        return true;
+    }
+
+
+    public static boolean imitateDimensFormula(int statId, final String formula, List<MetaColumn> columnList){
+        try{
+            Map<String,Object> paramMap = new HashMap<>();
+            if(columnList != null){
+                for (MetaColumn metaColumn : columnList) {
+                    if (metaColumn.getColumnTypeEnum() == ColumnTypeEnum.String) {
+                        paramMap.put(metaColumn.getColumnName(), UUID.randomUUID().toString());
+                    } else if (metaColumn.getColumnTypeEnum() == ColumnTypeEnum.Numeric) {
+                        paramMap.put(metaColumn.getColumnName(), new Random().nextInt(10000));
+                    } else if (metaColumn.getColumnTypeEnum() == ColumnTypeEnum.TimeStamp) {
+                        paramMap.put(metaColumn.getColumnName(), System.currentTimeMillis());
+                    }
+                }
+            }
+            AviatorHandler.compileDimensFormula(formula,paramMap);
+        }catch (Exception ex){
+            logger.error("xl-formula dimens format check failed,statId:[{}],formula:[{}]!",statId,formula,ex);
             return false;
         }
         return true;

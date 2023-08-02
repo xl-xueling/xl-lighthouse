@@ -38,7 +38,6 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class IterativeParsePattern implements Parser {
 
@@ -105,11 +104,17 @@ public final class IterativeParsePattern implements Parser {
             templateEntity.setVariableEntityList(variableEntityList);
         }
         List<MetaColumn> columnList = context.getColumnList();
-        String dimens = element.attr("dimens");
-        if(!StringUtil.isEmpty(dimens)){
-            String[] dimensArray = dimens.split(StatConst.DIMENS_SEPARATOR);
-            FormulaTranslate.checkVariableExist(dimens,columnList,variableEntityList);
-            templateEntity.setDimens(dimens);
+        String dimensFormula = element.attr("dimens");
+        if(!StringUtil.isEmpty(dimensFormula)){
+            String[] dimensArray = dimensFormula.split(StatConst.DIMENS_SEPARATOR);
+            FormulaTranslate.checkVariableExist(dimensFormula,columnList,variableEntityList);
+            for(String dimens:dimensArray){
+                boolean checkFlag = ImitateCompile.imitateDimensFormula(context.getStatId(),dimens,columnList);
+                if(!checkFlag){
+                    throw new TemplateParseException(String.format("i18n<<ldp_i18n_template_parse_1019#%s>>",dimensFormula));
+                }
+            }
+            templateEntity.setDimens(dimensFormula);
             templateEntity.setDimensArr(dimensArray);
         }
 
@@ -139,7 +144,7 @@ public final class IterativeParsePattern implements Parser {
                 }
             }
 
-            if(StringUtil.isEmpty(dimens)){
+            if(StringUtil.isEmpty(dimensFormula)){
                 throw new TemplateParseException("i18n(ldp_i18n_template_parse_1012)");
             }
             templateEntity.setLimit(limit);
@@ -158,7 +163,7 @@ public final class IterativeParsePattern implements Parser {
             throw new TemplateParseException(String.format("i18n<<ldp_i18n_template_parse_1013#%s>>",stat));
         }
         String completeStat = statePair.getLeft();
-        boolean checkFlag = new ImitateCompile().imitate(context.getStatId(),completeStat,columnList);
+        boolean checkFlag = ImitateCompile.imitateStatFormula(context.getStatId(),completeStat,columnList);
         if(!checkFlag){
             throw new TemplateParseException(String.format("i18n<<ldp_i18n_template_parse_1013#%s>>",stat));
         }
