@@ -198,7 +198,8 @@ public class StatServiceImpl implements StatService {
 
     @Override
     public void changeState(int statId, StatStateEnum stateEnum) throws Exception {
-        statDao.changeState(statId,stateEnum);
+        StatExtEntity statExtEntity = statManager.queryById(statId);
+        statManager.changeState(statExtEntity,stateEnum);
     }
 
     @Override

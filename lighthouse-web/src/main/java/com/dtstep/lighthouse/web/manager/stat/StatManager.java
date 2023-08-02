@@ -72,11 +72,6 @@ public class StatManager {
         return statDao.queryById(statId);
     }
 
-    public void changeState(int statId, StatStateEnum stateEnum) throws Exception {
-        StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
-        StatDBWrapper.changeState(statExtEntity,stateEnum);
-    }
-
     public void changeFilterConfig(int statId,String filterConfig) throws Exception {
         statDao.changeFilterConfig(statId,filterConfig);
     }
@@ -84,6 +79,13 @@ public class StatManager {
     @Cacheable(value = "normal",key = "#targetClass + '_' + 'queryListByGroupId' + '_' + #groupId",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public List<StatExtEntity> queryListByGroupId(int groupId) throws Exception{
         return statDao.queryListByGroupId(groupId);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "normal",key = "#targetClass + '_' + 'queryById' + '_' + #statExtEntity.id",cacheManager = "caffeineCacheManager"),
+            @CacheEvict(value = "normal",key = "#targetClass + '_' + 'queryListByGroupId' + '_' + #statExtEntity.groupId",cacheManager = "caffeineCacheManager")})
+    public void changeState(StatExtEntity statExtEntity, StatStateEnum stateEnum) throws Exception {
+        statDao.changeState(statExtEntity,stateEnum);
     }
 
     @Caching(evict = {

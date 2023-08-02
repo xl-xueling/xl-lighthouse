@@ -49,9 +49,10 @@ public class StatDao {
         return StatDBWrapper.actualQueryListByGroupId(groupId).orElse(null);
     }
 
-    @CacheEvict(value = "STAT",key = "'queryById' + '_' + #statId",cacheManager = "redisCacheManager")
-    public void changeState(int statId, StatStateEnum stateEnum) throws Exception {
-        StatExtEntity statExtEntity = queryById(statId);
+    @Caching(evict = {
+            @CacheEvict(value = "STAT",key = "'queryById' + '_' + #statExtEntity.id",cacheManager = "redisCacheManager"),
+            @CacheEvict(value = "STAT",key = "'queryListByGroupId' + '_' + #statExtEntity.groupId",cacheManager = "redisCacheManager")})
+    public void changeState(StatExtEntity statExtEntity, StatStateEnum stateEnum) throws Exception {
         StatDBWrapper.changeState(statExtEntity,stateEnum);
     }
 

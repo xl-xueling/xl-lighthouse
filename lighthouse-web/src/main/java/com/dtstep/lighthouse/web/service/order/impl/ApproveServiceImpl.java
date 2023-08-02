@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.web.service.order.impl;
 
+import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Sets;
@@ -186,10 +187,11 @@ public class ApproveServiceImpl implements ApproveService {
             groupManager.updateThreshold(groupId,thresholdNode);
         }else if(orderTypeEnum == OrderTypeEnum.STAT_ITEM_APPROVE){
             int statId = paramNode.get("statId").asInt();
-            if(!statManager.isExist(statId)){
+            StatExtEntity statExtEntity = statManager.queryById(statId);
+            if(statExtEntity == null){
                 return;
             }
-            statManager.changeState(statId, StatStateEnum.RUNNING);
+            statManager.changeState(statExtEntity, StatStateEnum.RUNNING);
         }
     }
 
@@ -198,10 +200,11 @@ public class ApproveServiceImpl implements ApproveService {
         JsonNode paramNode = JsonUtil.readTree(orderEntity.getParams());
         if(orderTypeEnum == OrderTypeEnum.STAT_ITEM_APPROVE){
             int statId = paramNode.get("statId").asInt();
-            if(!statManager.isExist(statId)){
+            StatExtEntity statExtEntity = statManager.queryById(statId);
+            if(statExtEntity == null){
                 return;
             }
-            statManager.changeState(statId, StatStateEnum.REJECTED);
+            statManager.changeState(statExtEntity, StatStateEnum.REJECTED);
         }
     }
 
