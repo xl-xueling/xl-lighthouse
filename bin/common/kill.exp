@@ -33,6 +33,7 @@ if { $service == "all" } {
 	 send "jps -l|grep 'org.apache.hadoop.hdfs.server.namenode.NameNode'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
 	 send "jps -l|grep 'org.apache.hadoop.yarn.server.nodemanager.NodeManager'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
 	 send "jps -l|grep 'org.apache.hadoop.yarn.server.resourcemanager.ResourceManager'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+	 send "jps -l|grep 'org.apache.hadoop.hdfs.server.datanode.DataNode'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
 } elseif { $service == "hbase" } {
 	send "jps -l|grep 'org.apache.hadoop.hbase.master.HMaster'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
 	send "jps -l|grep 'org.apache.hadoop.hbase.regionserver.HRegionServer'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
