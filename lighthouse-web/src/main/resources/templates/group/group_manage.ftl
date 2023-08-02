@@ -83,18 +83,11 @@
                                             <#if statItem.state == 6>
                                                 <span class="col-md-1 col-sm-2 i18n" title="i18n(ldp_i18n_group_manage_1012)"><a href="javascript:STAT_OPERATOR.enableStatConfirm('${statItem.id}','${statItem.title}','${statItem.groupId}');" style="color:#000000;"><i class="fa fa-fw fa-play"></i></a></span>
                                                 <span class="col-md-1 col-sm-2 i18n" title="i18n(ldp_i18n_group_manage_1016)"><a href="javascript:STAT_OPERATOR.deleteStatConfirm('${statItem.id}','${statItem.title}','${statItem.groupId}');" style="color:#000000;"><i class="fa fa-fw fa-minus-circle"></i></a></span>
-                                            <#elseif statItem.state == 3>
-                                                <span class="col-md-1 col-sm-2 i18n" title="i18n(ldp_i18n_group_manage_1012)"><a href="javascript:STAT_OPERATOR.enableStatConfirm('${statItem.id}','${statItem.title}','${statItem.groupId}');" style="color:#000000;"><i class="fa fa-fw fa-play"></i></a></span>
-                                                <span class="col-md-1 col-sm-2 i18n" title="i18n(ldp_i18n_group_manage_1013)"><a href="javascript:STAT_OPERATOR.frozenStatConfirm('${statItem.id}','${statItem.title}','${statItem.groupId}');" style="color:#000000;"><i class="fa fa-fw fa-empire"></i></a></span>
                                             <#else>
                                                 <span class="col-md-1 col-sm-2 i18n" title="i18n(ldp_i18n_group_manage_1013)"><a href="javascript:STAT_OPERATOR.frozenStatConfirm('${statItem.id}','${statItem.title}','${statItem.groupId}');" style="color:#000000;"><i class="fa fa-fw fa-empire"></i></a></span>
                                             </#if>
                                         <#else >
-                                            <#if (statItem.state == 1)>
-                                                <span class="col-md-1 col-sm-2 i18n" title="i18n(ldp_i18n_group_manage_1015)"><a href="javascript:STAT_OPERATOR.disableStatConfirm('${statItem.id}','${statItem.title}','${statItem.groupId}');" style="color:#000000;"><i class="fa fa-fw fa-pause"></i></a></span>
-                                                <span class="col-md-1 col-sm-2 i18n" title="i18n(ldp_i18n_group_manage_1016)"><a href="javascript:MsgBox.Alert($.i18n.prop('ldp_i18n_group_manage_1021'))" style="color:#cabebe;"><i class="fa fa-fw fa-minus-circle"></i></a></span>
-                                            <#elseif statItem.state == 3>
-                                                <span class="col-md-1 col-sm-2 i18n" title="i18n(ldp_i18n_group_manage_1012)"><a href="javascript:STAT_OPERATOR.enableStatConfirm('${statItem.id}','${statItem.title}','${statItem.groupId}');" style="color:#000000;"><i class="fa fa-fw fa-play"></i></a></span>
+                                            <#if (statItem.state == 1 || statItem.state == 3)>
                                                 <span class="col-md-1 col-sm-2 i18n" title="i18n(ldp_i18n_group_manage_1015)"><a href="javascript:STAT_OPERATOR.disableStatConfirm('${statItem.id}','${statItem.title}','${statItem.groupId}');" style="color:#000000;"><i class="fa fa-fw fa-pause"></i></a></span>
                                                 <span class="col-md-1 col-sm-2 i18n" title="i18n(ldp_i18n_group_manage_1016)"><a href="javascript:MsgBox.Alert($.i18n.prop('ldp_i18n_group_manage_1021'))" style="color:#cabebe;"><i class="fa fa-fw fa-minus-circle"></i></a></span>
                                             <#elseif statItem.state == 2>
