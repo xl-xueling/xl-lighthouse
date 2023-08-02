@@ -66,7 +66,7 @@ public class ApplyServiceImpl implements ApplyService {
     public int countApplyByParam(int state) throws Exception {
         SqlBinder sqlBinder = new SqlBinder.Builder()
                 .appendSegment("select count(1) from ldp_order a left join ldp_user b on a.user_id = b.id")
-                .appendWhere("c.state",state)
+                .appendWhere("a.state",state)
                 .create();
         return DaoHelper.sql.count(sqlBinder.toString());
     }

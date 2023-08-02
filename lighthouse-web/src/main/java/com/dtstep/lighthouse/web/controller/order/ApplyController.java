@@ -126,8 +126,6 @@ public class ApplyController extends BaseController {
         return RequestCodeEnum.toJSON(RequestCodeEnum.SUCCESS);
     }
 
-
-    @AuthorityPermission(roleTypeEnum = PrivilegeTypeEnum.USER)
     @RequestMapping("/apply/list.shtml")
     public ModelAndView applyList(HttpServletRequest request, ModelMap model) throws Exception{
         int state = ParamWrapper.getIntValueOrElse(request,"state",-1);

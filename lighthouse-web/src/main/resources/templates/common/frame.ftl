@@ -57,33 +57,22 @@
       </ul>
       <h3 class="control-sidebar-heading"><samp class="i18n" i18n_code="ldp_i18n_right_menu_1002"></samp></h3>
       <ul class="control-sidebar-menu">
-        <#if Session["user"].userName == 'admin'>
-          <li>
-            <a href="/approve/list.shtml">
-              <i class="menu-icon fa fa-plus-square-o bg-green"></i>
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading"><samp class="i18n" i18n_code="ldp_i18n_right_menu_1003"></samp></h4>
-              </div>
-            </a>
-          </li>
-        <#else>
-          <li>
-            <a href="/approve/list.shtml">
-              <i class="menu-icon fa fa-plus-square-o bg-green"></i>
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading"><samp class="i18n" i18n_code="ldp_i18n_right_menu_1012"></samp></h4>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="/apply/list.shtml">
-              <i class="menu-icon fa fa-plus-square-o bg-green"></i>
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading"><samp class="i18n" i18n_code="ldp_i18n_right_menu_1011"></samp></h4>
-              </div>
-            </a>
-          </li>
-        </#if>
+        <li>
+          <a href="/approve/list.shtml">
+            <i class="menu-icon fa fa-plus-square-o bg-green"></i>
+            <div class="menu-info">
+              <h4 class="control-sidebar-subheading"><samp class="i18n" i18n_code="ldp_i18n_right_menu_1012"></samp></h4>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="/apply/list.shtml">
+            <i class="menu-icon fa fa-plus-square-o bg-green"></i>
+            <div class="menu-info">
+              <h4 class="control-sidebar-subheading"><samp class="i18n" i18n_code="ldp_i18n_right_menu_1011"></samp></h4>
+            </div>
+          </a>
+        </li>
       </ul>
       <h3 class="control-sidebar-heading"><samp class="i18n" i18n_code="ldp_i18n_right_menu_1004"></samp></h3>
       <ul class="control-sidebar-menu">
