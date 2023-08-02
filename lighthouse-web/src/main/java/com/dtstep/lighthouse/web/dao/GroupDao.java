@@ -90,6 +90,10 @@ public class GroupDao {
         DaoHelper.sql.execute("update ldp_stat_group set limited_threshold = ?,update_time = ?,refresh_time = ? where id = ?", thresholdConfig,date,date,groupId);
     }
 
+    public void refresh(int groupId) throws Exception{
+        DaoHelper.sql.execute("update ldp_stat_group set refresh_time = ? where id = ?", new Date(),groupId);
+    }
+
     @Caching(evict = {
             @CacheEvict(value = "GROUP",key = "'queryById' + '_' + #groupExtEntity.id",cacheManager = "redisCacheManager"),
             @CacheEvict(value = "GROUP",key = "'queryListByProjectId' + '_' + #groupExtEntity.projectId",cacheManager = "redisCacheManager")})

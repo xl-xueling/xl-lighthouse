@@ -86,6 +86,15 @@ public class StatManager {
             @CacheEvict(value = "normal",key = "#targetClass + '_' + 'queryListByGroupId' + '_' + #statExtEntity.groupId",cacheManager = "caffeineCacheManager")})
     public void changeState(StatExtEntity statExtEntity, StatStateEnum stateEnum) throws Exception {
         statDao.changeState(statExtEntity,stateEnum);
+        groupManager.refresh(statExtEntity.getGroupId());
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "normal",key = "#targetClass + '_' + 'queryById' + '_' + #statExtEntity.id",cacheManager = "caffeineCacheManager"),
+            @CacheEvict(value = "normal",key = "#targetClass + '_' + 'queryListByGroupId' + '_' + #statExtEntity.groupId",cacheManager = "caffeineCacheManager")})
+    public void delete(StatExtEntity statExtEntity) throws Exception{
+        statDao.delete(statExtEntity.getId());
+        groupManager.refresh(statExtEntity.getGroupId());
     }
 
     @Caching(evict = {

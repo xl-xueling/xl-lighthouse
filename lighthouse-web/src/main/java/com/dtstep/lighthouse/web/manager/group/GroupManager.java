@@ -72,6 +72,10 @@ public class GroupManager {
         return DaoHelper.sql.count("select count(1) from ldp_stat_group where project_id = ?",projectId);
     }
 
+    public void refresh(int groupId) throws Exception{
+        groupDao.refresh(groupId);
+    }
+
     public void changeDebugMode(int groupId, int debugMode) throws Exception {
         String debugParams = null;
         if(debugMode == 1){

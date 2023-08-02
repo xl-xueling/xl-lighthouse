@@ -20,6 +20,7 @@ import com.dtstep.lighthouse.common.entity.group.GroupEntity;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.web.manager.department.DepartmentManager;
+import com.dtstep.lighthouse.web.manager.group.GroupManager;
 import com.dtstep.lighthouse.web.manager.order.OrderManager;
 import com.dtstep.lighthouse.web.manager.privilege.PrivilegeManager;
 import com.dtstep.lighthouse.web.manager.project.ProjectManager;
@@ -86,6 +87,9 @@ public class StatServiceImpl implements StatService {
 
     @Autowired
     private StatManager statManager;
+
+    @Autowired
+    private GroupManager groupManager;
 
     @Override
     public ListViewDataObject queryListByPage(UserEntity currentUser, int page, int departmentId, int projectId, String search) throws Exception {
@@ -198,8 +202,20 @@ public class StatServiceImpl implements StatService {
 
     @Override
     public void changeState(int statId, StatStateEnum stateEnum) throws Exception {
-        StatExtEntity statExtEntity = statManager.queryById(statId);
-        statManager.changeState(statExtEntity,stateEnum);
+        DBConnection dbConnection = ConnectionManager.getConnection();
+        ConnectionManager.beginTransaction(dbConnection);
+        try{
+            StatExtEntity statExtEntity = statManager.queryById(statId);
+            statManager.changeState(statExtEntity,stateEnum);
+            ConnectionManager.commitTransaction(dbConnection);
+            logger.info("change stat state success,statId:{}!",statId);
+        }catch (Exception ex){
+            logger.error("change stat state error,statId:{}!",statId,ex);
+            ConnectionManager.rollbackTransaction(dbConnection);
+            throw ex;
+        }finally {
+            ConnectionManager.close(dbConnection);
+        }
     }
 
     @Override
@@ -212,7 +228,8 @@ public class StatServiceImpl implements StatService {
         DBConnection connection = ConnectionManager.getConnection();
         ConnectionManager.beginTransaction(connection);
         try{
-            statDao.delete(statId);
+            StatExtEntity statExtEntity = statManager.queryById(statId);
+            statManager.delete(statExtEntity);
             privilegeManager.deleteByRelationId(statId, PrivilegeTypeEnum.STAT_ITEM_USER.getPrivilegeType());
             relationManager.delete(statId,RelationTypeEnum.FAVORITE_ITEM);
             ConnectionManager.commitTransaction(connection);
