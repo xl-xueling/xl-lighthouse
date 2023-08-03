@@ -77,7 +77,9 @@
                           </span>
                     </li>
                   </ul>
-                  <button type="button" onclick="MsgBox.Open('/track/stat.shtml?statId=${statEntity.id}')" class="btn btn-box-tool"><i class="fa  fa-flash (alias)"></i></button>
+                  <#if statEntity.state == '1'>
+                    <button type="button" onclick="MsgBox.Open('/track/stat.shtml?statId=${statEntity.id}')" class="btn btn-box-tool"><i class="fa  fa-flash (alias)"></i></button>
+                  </#if>
                   <div class="btn-group">
                     <button type="button" class="btn btn-box-tool btn-open" aria-expanded="false">
                       <i class="fa fa-ellipsis-v"></i></button>
