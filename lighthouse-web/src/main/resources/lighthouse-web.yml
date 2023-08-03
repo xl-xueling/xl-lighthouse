@@ -26,10 +26,10 @@ spring:
     timeout: 60000ms
     lettuce:
       pool:
-        max-active: 20
+        max-active: 30
         max-wait: -1
-        max-idle: 50
-        min-idle: 5
+        max-idle: 30
+        min-idle: 3
       cluster:
         refresh:
           adaptive: true
