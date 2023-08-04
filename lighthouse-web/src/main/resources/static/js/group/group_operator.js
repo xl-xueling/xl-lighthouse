@@ -59,7 +59,7 @@ var GROUP_OPERATOR = {
             MsgBox.Alert($.i18n.prop('ldp_i18n_group_create_1032'));
             return;
         }
-        if(token.length < 5 || token.length > 30){
+        if(token.length < 5 || token.length > 28){
             MsgBox.Alert($.i18n.prop('ldp_i18n_group_create_1033'));
             return;
         }
@@ -208,7 +208,7 @@ var GROUP_OPERATOR = {
             MsgBox.Alert($.i18n.prop('ldp_i18n_group_update_1028'));
             return;
         }
-        if(groupToken.length < 5 || groupToken.length > 30){
+        if(groupToken.length < 5 || groupToken.length > 28){
             MsgBox.Alert($.i18n.prop('ldp_i18n_group_update_1029'));
             return;
         }
