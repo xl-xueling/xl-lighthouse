@@ -70,7 +70,7 @@ public final class IterativeParsePattern implements Parser {
         if(StringUtil.getBLen(title.trim()) < 5){
             throw new TemplateParseException(String.format("i18n(ldp_i18n_template_parse_1018,%s,%s,%s)",title,title.length(),5));
         }
-        if(StringUtil.getBLen(title.trim()) >= 35){
+        if(StringUtil.getBLen(title.trim()) >= 40){
             throw new TemplateParseException(String.format("i18n(ldp_i18n_template_parse_1004,%s)",title));
         }
         templateEntity.setTitle(title);
