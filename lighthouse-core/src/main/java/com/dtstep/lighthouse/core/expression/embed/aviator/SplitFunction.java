@@ -33,13 +33,13 @@ public class SplitFunction extends AbstractFunction{
     public AviatorObject call(Map<String,Object> env, AviatorObject arg1, AviatorObject arg2, AviatorObject arg3){
         String a = String.valueOf(arg1.getValue(env));
         String b = String.valueOf(arg2.getValue(env));
+        String c = String.valueOf(arg3.getValue(env));
         if(StringUtil.isEmpty(a)){
             return AviatorNil.NIL;
         }
         if(StringUtil.isEmpty(b)){
             return AviatorNil.NIL;
         }
-        String c = String.valueOf(arg3.getValue(env));
         if(StringUtil.isEmpty(c) || !StringUtil.isNumber(c)){
             return AviatorNil.NIL;
         }
