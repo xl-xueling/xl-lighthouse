@@ -16,11 +16,11 @@ var PROJECT_OPERATOR = {
             MsgBox.Alert($.i18n.prop('ldp_i18n_project_create_1012'));
             return;
         }
-        if(name.length < 4){
+        if(name.gblen() < 4){
             MsgBox.Alert($.i18n.prop('ldp_i18n_project_create_1014'));
             return;
         }
-        if(name.length > 40){
+        if(name.gblen >= 35){
             MsgBox.Alert($.i18n.prop('ldp_i18n_project_create_1015'));
             return;
         }
@@ -106,11 +106,11 @@ var PROJECT_OPERATOR = {
             MsgBox.Alert($.i18n.prop('ldp_i18n_project_update_1012'));
             return;
         }
-        if(name.length < 4){
+        if(name.gblen < 4){
             MsgBox.Alert($.i18n.prop('ldp_i18n_project_update_1014'));
             return;
         }
-        if(name.length > 40){
+        if(name.gblen >= 35){
             MsgBox.Alert($.i18n.prop('ldp_i18n_project_update_1015'));
             return;
         }
