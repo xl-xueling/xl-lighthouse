@@ -140,7 +140,7 @@
           <span><samp class="i18n" i18n_code="ldp_i18n_left_menu_1006"></samp></span>
         </a>
         <ul class="treeview-menu" style="margin-top: -4px;">
-          <li><a href="/project/list.shtml?owner=1"><i class="fa fa-circle-o"></i><samp class="i18n" i18n_code="ldp_i18n_left_menu_1007"></samp></a></li>
+          <li><a href="/project/list.shtml"><i class="fa fa-circle-o"></i><samp class="i18n" i18n_code="ldp_i18n_left_menu_1007"></samp></a></li>
           <li><a href="/stat/list.shtml"><i class="fa fa-circle-o"></i><samp class="i18n" i18n_code="ldp_i18n_left_menu_1008"></samp></a></li>
         </ul>
       </li>
