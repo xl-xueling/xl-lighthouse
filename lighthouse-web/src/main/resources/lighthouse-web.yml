@@ -3,7 +3,7 @@ server:
   servlet:
     context-path: /
     session:
-      timeout: 7200
+      timeout: 18000
   tomcat:
     uri-encoding: utf-8
 spring:
