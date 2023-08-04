@@ -708,7 +708,7 @@ String.prototype.startWith=function(str){
     return reg.test(this);
 };
 
-String.prototype.gblen = function() {
+String.prototype.blen = function() {
     let len = 0;
     for (let i=0; i<this.length; i++) {
         if (this.charCodeAt(i)>127 || this.charCodeAt(i) === 94) {
