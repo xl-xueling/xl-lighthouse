@@ -98,7 +98,7 @@ public class GroupController extends BaseController {
         String remark = ParamWrapper.getValue(request,"remark");
         String columns = request.getParameter("columnArray");
         ParamWrapper.valid(GroupExtEntity.class,"token",token);
-        ParamWrapper.valid(GroupExtEntity.class,"token",token);
+        ParamWrapper.valid(GroupExtEntity.class,"remark",remark);
         ParamWrapper.valid(GroupExtEntity.class,"projectId",projectId);
         ParamWrapper.valid(GroupExtEntity.class,"columns",columns);
         List<MetaColumn> columnList = JsonUtil.toJavaObjectList(columns,MetaColumn.class);
@@ -211,6 +211,7 @@ public class GroupController extends BaseController {
         int projectId = ParamWrapper.getIntValue(request,"projectId");
         String remark = ParamWrapper.getValue(request,"remark");
         ParamWrapper.valid(GroupExtEntity.class,"token",token);
+        ParamWrapper.valid(GroupExtEntity.class,"remark",remark);
         String columns = request.getParameter("columnArray");
         ParamWrapper.valid(GroupExtEntity.class,"columns",columns);
         ObjectMapper objectMapper = new ObjectMapper();
