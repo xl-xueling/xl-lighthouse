@@ -293,7 +293,7 @@ var GROUP_OPERATOR = {
         formOBJ.groupToken = groupToken;
         formOBJ.projectId = projectId;
         formOBJ.statType = statType;
-        formOBJ.remark= remark;
+        formOBJ.remark = remark;
         let encryptParams = Encrypt.encryptParams(formOBJ);
         $.ajax({
             type:"POST",
