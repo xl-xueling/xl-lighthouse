@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `cluster_${ldp_lighthouse_cluster_id}_ldp_mysqldb
 USE `cluster_${ldp_lighthouse_cluster_id}_ldp_mysqldb`;
 -- MySQL dump 10.13  Distrib 8.0.30, for macos12 (x86_64)
 --
--- Host: 10.206.6.21    Database: cluster_0153a074_ldp_mysqldb
+-- Host: 10.206.6.43    Database: cluster_85e9fdb8_ldp_mysqldb
 -- ------------------------------------------------------
 -- Server version	8.0.30
 
@@ -34,7 +34,7 @@ CREATE TABLE `ldp_components` (
                                   `user_id` int DEFAULT NULL,
                                   `create_time` datetime DEFAULT NULL,
                                   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1012 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1014 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,7 +56,7 @@ CREATE TABLE `ldp_department` (
                                   KEY `index_pid` (`pid`),
                                   KEY `index_create_time` (`create_time`),
                                   KEY `index_level` (`level`)
-) ENGINE=InnoDB AUTO_INCREMENT=10041 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=10054 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +100,7 @@ CREATE TABLE `ldp_meta_table` (
                                   KEY `index_meta_name` (`meta_name`),
                                   KEY `index_state` (`state`),
                                   KEY `index_type` (`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=10012 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=10014 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +148,7 @@ CREATE TABLE `ldp_privilege` (
                                  KEY `index_privilege_type` (`privilege_type`),
                                  KEY `index_relationa` (`relation_a`,`privilege_type`),
                                  KEY `index_relationb` (`relation_b`,`privilege_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=100260 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=100317 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +169,7 @@ CREATE TABLE `ldp_relations` (
                                  KEY `index_relationa_relationb` (`relation_a`,`relation_b`,`relation_type`),
                                  KEY `index_relationa` (`relation_a`,`relation_type`),
                                  KEY `index_relationb` (`relation_b`,`relation_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=100072 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=100078 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,6 +185,7 @@ CREATE TABLE `ldp_stat_group` (
                                   `project_id` varchar(100) NOT NULL,
                                   `debug_mode` int DEFAULT NULL,
                                   `columns` varchar(3000) DEFAULT NULL,
+                                  `remark` varchar(800) DEFAULT NULL,
                                   `stat_type` int NOT NULL,
                                   `secret_key` varchar(60) NOT NULL,
                                   `create_time` datetime DEFAULT NULL,
@@ -201,7 +202,7 @@ CREATE TABLE `ldp_stat_group` (
                                   KEY `index_create_time` (`create_time`),
                                   KEY `index_create_user` (`create_user`),
                                   KEY `index_refresh_time` (`refresh_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=100135 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=100155 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +234,7 @@ CREATE TABLE `ldp_stat_item` (
                                  KEY `index_state` (`state`),
                                  KEY `index_group_id` (`group_id`),
                                  KEY `index_project_id` (`project_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1100266 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1100463 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -256,7 +257,7 @@ CREATE TABLE `ldp_stat_project` (
                                     KEY `index_user_id` (`user_id`),
                                     KEY `index_department_id` (`department_id`),
                                     KEY `index_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=11024 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=11037 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -356,7 +357,7 @@ CREATE TABLE `ldp_user` (
                             KEY `index_user_name` (`user_name`),
                             KEY `index_department_id` (`department_id`),
                             KEY `index_user_password` (`password`)
-) ENGINE=InnoDB AUTO_INCREMENT=110031 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=110037 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -368,4 +369,4 @@ CREATE TABLE `ldp_user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-02 21:23:30
+-- Dump completed on 2023-08-05 23:03:37
