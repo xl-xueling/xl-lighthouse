@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class LocalUtil {
 
@@ -1802,6 +1803,26 @@ public class LocalUtil {
         }
     }
 
+    public static LocalEntity getById(String id){
+        return localMap.getOrDefault(id,null);
+    }
+
+    public static List<LocalEntity> getProvinceList(){
+        return provinceList;
+    }
+
+    public static List<LocalEntity> getCityList(){
+        return cityList;
+    }
+
+    public static LocalEntity getRandomCity(){
+        return cityList.get(ThreadLocalRandom.current().nextInt(cityList.size()));
+    }
+
+    public static LocalEntity getRandomProvince() {
+        return provinceList.get(ThreadLocalRandom.current().nextInt(provinceList.size()));
+    }
+
     public static void main(String[] args) throws Exception {
         List<SelectedElement> elementList = new ArrayList<>();
         for (LocalEntity localEntity : provinceList) {
@@ -1823,7 +1844,7 @@ public class LocalUtil {
 //        System.out.println(str2);
     }
 
-    private static class LocalEntity {
+    public static class LocalEntity {
 
         private String id;
 

@@ -9,11 +9,9 @@ public class AviatorHandlerTest {
 
     @Test
     public void testFormula() throws Exception {
-        String formula = "'province'";
-        HashMap<String,Object> envMap = new HashMap<>();
-        envMap.put("province","abc");
-        envMap.put("city","eee");
-        Object obj = AviatorHandler.execute(formula,envMap);
-        System.out.println("obj:" + obj);
+        String formula = "split('sasg#asdgag','#','0')";
+        Object object = AviatorHandler.execute(formula);
+        System.out.println("object:" + object);
+
     }
 }
