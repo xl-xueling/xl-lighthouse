@@ -44,6 +44,9 @@ public final class SelectedConverter {
             if(StringUtil.isEmpty(name)){
                 throw new Exception("element attribute[name] cannot be empty!");
             }
+            if(elementMap.containsKey(id)){
+                throw new Exception("duplicate element id:" + id);
+            }
             elementMap.put(id, selectedElement);
         }
 
@@ -57,7 +60,7 @@ public final class SelectedConverter {
         }
         List<SelectedElement> topList = elementLevelMap.get(SysConst.TREE_ROOT_NODE_NAME);
         if(topList == null || topList.size() == 0){
-            throw new Exception("top-level element[pid:0] does not exist!");
+            throw new Exception(String.format("top-level element[pid:%s] does not exist!",SysConst.TREE_ROOT_NODE_NAME));
         }
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayNode arrayNode = objectMapper.createArrayNode();
