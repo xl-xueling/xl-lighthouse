@@ -95,6 +95,7 @@ public class GroupController extends BaseController {
         String token = ParamWrapper.getValue(request, "token");
         int projectId = ParamWrapper.getIntValue(request,"projectId");
         int statType = ParamWrapper.getIntValue(request,"statType");
+        String remark = ParamWrapper.getValue(request,"remark");
         String columns = request.getParameter("columnArray");
         ParamWrapper.valid(GroupExtEntity.class,"token",token);
         ParamWrapper.valid(GroupExtEntity.class,"token",token);
@@ -128,6 +129,7 @@ public class GroupController extends BaseController {
         GroupEntity groupEntity = new GroupEntity();
         groupEntity.setToken(token);
         groupEntity.setStatType(statType);
+        groupEntity.setRemark(remark);
         groupEntity.setProjectId(projectId);
         groupEntity.setColumns(columns);
         List<StatEntity> statList = Lists.newArrayList();
@@ -207,6 +209,7 @@ public class GroupController extends BaseController {
         String token = ParamWrapper.getValue(request, "groupToken");
         int statType = ParamWrapper.getIntValue(request,"statType");
         int projectId = ParamWrapper.getIntValue(request,"projectId");
+        String remark = ParamWrapper.getValue(request,"remark");
         ParamWrapper.valid(GroupExtEntity.class,"token",token);
         String columns = request.getParameter("columnArray");
         ParamWrapper.valid(GroupExtEntity.class,"columns",columns);
@@ -241,6 +244,7 @@ public class GroupController extends BaseController {
         groupExtEntity.setId(groupId);
         groupExtEntity.setToken(token);
         groupExtEntity.setStatType(statType);
+        groupExtEntity.setRemark(remark);
         groupExtEntity.setProjectId(projectId);
         groupExtEntity.setColumns(columns);
         groupExtEntity.setColumnList(columnList);

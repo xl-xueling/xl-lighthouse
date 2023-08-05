@@ -115,7 +115,7 @@ public class LDPSimulationInstance {
         if(sample == null){
             return;
         }
-        int onceSize = 100 + ThreadLocalRandom.current().nextInt(20);
+        int onceSize = 100 + ThreadLocalRandom.current().nextInt(15);
         for(int i=0;i<onceSize;i++){
             HashMap<String,Object> paramMap = sample.generateSample();
             LightHouse.stat(token,task.getGroupEntity().getSecretKey(),paramMap,time);

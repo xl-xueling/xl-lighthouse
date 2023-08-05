@@ -80,8 +80,8 @@ public class GroupDao {
         Date date = new Date();
         groupEntity.setUpdateTime(date);
         groupEntity.setRefreshTime(date);
-        DaoHelper.sql.execute("update ldp_stat_group set columns = ?,update_time = ?,refresh_time = ? where id = ?", groupEntity.getColumns()
-                , groupEntity.getUpdateTime(), groupEntity.getRefreshTime(), groupEntity.getId());
+        DaoHelper.sql.execute("update ldp_stat_group set columns = ?,remark = ?,update_time = ?,refresh_time = ? where id = ?", groupEntity.getColumns()
+                , groupEntity.getRemark(),groupEntity.getUpdateTime(), groupEntity.getRefreshTime(), groupEntity.getId());
     }
 
     @CacheEvict(value = "GROUP",key = "'queryById' + '_' + #groupId",cacheManager = "redisCacheManager")

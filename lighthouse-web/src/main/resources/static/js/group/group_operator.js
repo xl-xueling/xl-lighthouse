@@ -63,6 +63,11 @@ var GROUP_OPERATOR = {
             MsgBox.Alert($.i18n.prop('ldp_i18n_group_create_1033'));
             return;
         }
+        let remark= $("#remark").val();
+        if(remark.blen() > 300){
+            MsgBox.Alert($.i18n.prop('ldp_i18n_group_create_1048'));
+            return;
+        }
         let projectId = $("#projectId").val();
         let statType = $("#statType").val();
         let column_trs = $("#column-content").children("tr");
@@ -138,6 +143,7 @@ var GROUP_OPERATOR = {
         formOBJ.token = token.toLowerCase();
         formOBJ.statType = statType;
         formOBJ.projectId = projectId;
+        formOBJ.remark = remark;
         let encryptParams = Encrypt.encryptParams(formOBJ);
         $.ajax({
             type:"POST",
@@ -212,6 +218,11 @@ var GROUP_OPERATOR = {
             MsgBox.Alert($.i18n.prop('ldp_i18n_group_update_1029'));
             return;
         }
+        let remark= $("#remark").val();
+        if(remark.blen() > 300){
+            MsgBox.Alert($.i18n.prop('ldp_i18n_group_update_1040'));
+            return;
+        }
         let projectId = $("#projectId").val();
         let statType = $("#statType").val();
         let column_trs = $("#column-content").children("tr");
@@ -282,6 +293,7 @@ var GROUP_OPERATOR = {
         formOBJ.groupToken = groupToken;
         formOBJ.projectId = projectId;
         formOBJ.statType = statType;
+        formOBJ.remark= remark;
         let encryptParams = Encrypt.encryptParams(formOBJ);
         $.ajax({
             type:"POST",

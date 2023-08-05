@@ -81,6 +81,10 @@ public class GroupEntity implements Serializable  {
     @DBColumnAnnotation(basic="debug_params")
     private String debugParams;
 
+    @S_Length(max = 300)
+    @DBColumnAnnotation(basic="remark")
+    private String remark;
+
     public int getId() {
         return id;
     }
@@ -191,5 +195,13 @@ public class GroupEntity implements Serializable  {
 
     public void setRefreshTime(Date refreshTime) {
         this.refreshTime = refreshTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
