@@ -9,6 +9,7 @@ import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
 import com.dtstep.lighthouse.test.mode.ModalSample;
 import com.dtstep.lighthouse.test.mode.OmAppStartDauStatSample;
+import com.dtstep.lighthouse.test.mode.SimulationModalSample;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -107,16 +108,18 @@ public class LDPSimulationInstance {
     public static void process(TaskConfig task) throws Exception {
         String token = task.getToken();
         long time = task.getTimestamp();
-        ModalSample<HashMap<String,Object>> sample = null;
+        SimulationModalSample<HashMap<String,Object>> sample = null;
         if("om_appstart_dau_stat".equals(token)){
             sample = new OmAppStartDauStatSample();
         }
         if(sample == null){
             return;
         }
-        HashMap<String,Object> paramMap = sample.generateSample();
-        LightHouse.stat(token,task.getGroupEntity().getSecretKey(),paramMap,time);
-        System.out.println("send message:" + JsonUtil.toJSONString(paramMap));
+        int onceSize = 100 + ThreadLocalRandom.current().nextInt(20);
+        for(int i=0;i<onceSize;i++){
+            HashMap<String,Object> paramMap = sample.generateSample();
+            LightHouse.stat(token,task.getGroupEntity().getSecretKey(),paramMap,time);
+        }
     }
 
     public static List<GroupEntity> loadTokenList() throws Exception {
