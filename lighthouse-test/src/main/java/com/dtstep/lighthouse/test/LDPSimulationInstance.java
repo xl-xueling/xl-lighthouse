@@ -112,7 +112,11 @@ public class LDPSimulationInstance {
         }else if("biz_house_price_change_dt".equals(token)){
             //sample = new BizHousePriceChangeDTSample();
         }else if("biz_order_stat".equals(token)){
-            sample = new BizOrderStatSample();
+            //sample = new BizOrderStatSample();
+        }else if("pm_social_privatechat_msg_dt".equals(token)){
+            sample = new PMSocialPrivateChatMsgStat();
+        }else if("pm_social_prichat_envelope".equals(token)){
+            sample = new PMSocialPrichatEnvelopeSample();
         }
         if(sample == null){
             return;
