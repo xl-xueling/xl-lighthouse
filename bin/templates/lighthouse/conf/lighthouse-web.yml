@@ -2,6 +2,8 @@ server:
   port: 9089
   servlet:
     context-path: /
+    session:
+      timeout: 18000
   tomcat:
     uri-encoding: utf-8
 spring:
@@ -22,16 +24,18 @@ spring:
   redis:
     cluster:
       max-redirects: 3
+    connect-timeout: 60000ms
+    timeout: 60000ms
     lettuce:
       pool:
-        max-active: 100
-        max-wait: -1ms
-        max-idle: 10
-        min-idle: 5
+        max-active: 30
+        max-wait: -1
+        max-idle: 30
+        min-idle: 3
       cluster:
         refresh:
           adaptive: true
-          period: 20
+          period: 60s
   main:
     allow-circular-references: true
   devtools:
