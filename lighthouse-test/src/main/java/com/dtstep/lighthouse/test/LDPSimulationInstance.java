@@ -137,6 +137,8 @@ public class LDPSimulationInstance {
             sample = new RDShortVideoRecallSizeSample();
         }else if("rd_shortvideo_recall_cost".equals(token)){
             sample = new RDShortRecallCostSample();
+        }else if("om_dau_promote_monitor".equals(token)){
+            sample = new OmDauPromoteMonitor();
         }
         if(sample == null){
             return;
