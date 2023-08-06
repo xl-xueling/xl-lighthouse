@@ -32,7 +32,7 @@
       <div class="form-group">
         <label for=""><samp class="i18n" i18n_code="ldp_i18n_group_update_1039"></samp>:</label>
         <label for="remark"></label>
-        <textarea id="remark" style="width: 100%;border-color: #ccd2d8;" spellcheck="false" rows="2">${groupEntity.remark}</textarea>
+        <textarea id="remark" style="width: 100%;border-color: #ccd2d8;" spellcheck="false" rows="3">${groupEntity.remark}</textarea>
       </div>
       <div class="form-group">
         <label for=""><samp class="i18n" i18n_code="ldp_i18n_group_update_1006"></samp>:</label>
