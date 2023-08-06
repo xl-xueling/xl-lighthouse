@@ -7,10 +7,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
-import com.dtstep.lighthouse.test.mode.BizHousePriceChangeDTSample;
-import com.dtstep.lighthouse.test.mode.ModalSample;
-import com.dtstep.lighthouse.test.mode.OmAppStartDauStatSample;
-import com.dtstep.lighthouse.test.mode.SimulationModalSample;
+import com.dtstep.lighthouse.test.mode.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -113,7 +110,9 @@ public class LDPSimulationInstance {
         if("om_appstart_dau_stat".equals(token)){
             //sample = new OmAppStartDauStatSample();
         }else if("biz_house_price_change_dt".equals(token)){
-            sample = new BizHousePriceChangeDTSample();
+            //sample = new BizHousePriceChangeDTSample();
+        }else if("biz_order_stat".equals(token)){
+            sample = new BizOrderStatSample();
         }
         if(sample == null){
             return;
@@ -123,6 +122,7 @@ public class LDPSimulationInstance {
             HashMap<String,Object> paramMap = sample.generateSample();
             LightHouse.stat(token,task.getGroupEntity().getSecretKey(),paramMap,time);
         }
+        System.out.println("send success,size:" + onceSize);
     }
 
     public static List<GroupEntity> loadTokenList() throws Exception {

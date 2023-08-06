@@ -20,9 +20,9 @@ public class BizHousePriceChangeDTSample implements SimulationModalSample<HashMa
         paramMap.put("town",townId);
         String districtId = townId + "_" + ThreadLocalRandom.current().nextInt(10);
         paramMap.put("district",districtId);
-        paramMap.put("change_type",ThreadLocalRandom.current().nextInt(2) + 1);
-        paramMap.put("rate",((double) (ThreadLocalRandom.current().nextInt(5) + 1))/ 10.0d);
-        paramMap.put("quality",ThreadLocalRandom.current().nextInt(4) + 1);
+        paramMap.put("change_type",ThreadLocalRandom.current().nextInt(1,2));
+        paramMap.put("rate",((double) (ThreadLocalRandom.current().nextInt(1,5)))/ 10.0d);
+        paramMap.put("quality",ThreadLocalRandom.current().nextInt(1,4));
         System.out.println("paramMap is:" + JsonUtil.toJSONString(paramMap));
         return paramMap;
     }
