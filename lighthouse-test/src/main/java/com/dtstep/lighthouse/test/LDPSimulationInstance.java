@@ -150,7 +150,7 @@ public class LDPSimulationInstance {
             HashMap<String,Object> paramMap = sample.generateSample();
             LightHouse.stat(token,task.getGroupEntity().getSecretKey(),paramMap,time);
         }
-        System.out.println("send success,size:" + onceSize);
+        System.out.println("send success,batch:"+DateUtil.formatTimeStamp(task.getTimestamp(),"yyyy-MM-dd HH:mm:ss") + ",token: " + token + ",size:" + onceSize);
     }
 
     public static List<GroupEntity> loadTokenList() throws Exception {
