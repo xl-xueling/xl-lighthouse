@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
+import com.dtstep.lighthouse.test.mode.BizHousePriceChangeDTSample;
 import com.dtstep.lighthouse.test.mode.ModalSample;
 import com.dtstep.lighthouse.test.mode.OmAppStartDauStatSample;
 import com.dtstep.lighthouse.test.mode.SimulationModalSample;
@@ -51,7 +52,7 @@ public class LDPSimulationInstance {
                 ex.printStackTrace();
             }
         };
-        service.scheduleAtFixedRate(runnable,0,1, TimeUnit.MINUTES);
+        service.scheduleAtFixedRate(runnable,0,30, TimeUnit.SECONDS);
     }
 
 
@@ -110,12 +111,14 @@ public class LDPSimulationInstance {
         long time = task.getTimestamp();
         SimulationModalSample<HashMap<String,Object>> sample = null;
         if("om_appstart_dau_stat".equals(token)){
-            sample = new OmAppStartDauStatSample();
+            //sample = new OmAppStartDauStatSample();
+        }else if("biz_house_price_change_dt".equals(token)){
+            sample = new BizHousePriceChangeDTSample();
         }
         if(sample == null){
             return;
         }
-        int onceSize = 100 + ThreadLocalRandom.current().nextInt(15);
+        int onceSize = 50 + ThreadLocalRandom.current().nextInt(10);
         for(int i=0;i<onceSize;i++){
             HashMap<String,Object> paramMap = sample.generateSample();
             LightHouse.stat(token,task.getGroupEntity().getSecretKey(),paramMap,time);
