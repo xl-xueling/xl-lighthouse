@@ -133,6 +133,10 @@ public class LDPSimulationInstance {
             sample = new FeAppStartAdvStatSample();
         }else if("rd_shortvideo_request_stat".equals(token)){
             sample = new RDShortVideoRequestStatSample();
+        }else if("rd_shortvideo_recall_size_dt".equals(token)){
+            sample = new RDShortVideoRecallSizeSample();
+        }else if("rd_shortvideo_recall_cost".equals(token)){
+            sample = new RDShortRecallCostSample();
         }
         if(sample == null){
             return;
