@@ -139,6 +139,8 @@ public class LDPSimulationInstance {
             sample = new RDShortRecallCostSample();
         }else if("om_dau_promote_monitor".equals(token)){
             sample = new OmDauPromoteMonitor();
+        }else if("biz_order_conversion_rate".equals(token)){
+            sample = new BizOrderConversionRateSample();
         }
         if(sample == null){
             return;
