@@ -118,7 +118,9 @@ public class LDPSimulationInstance {
         }else if("pm_social_prichat_envelope".equals(token)){
             //sample = new PMSocialPrichatEnvelopeSample();
         }else if("it_kvdb_request_monitor".equals(token)){
-            sample = new ITKVDBRequestMonitorSample();
+            //sample = new ITKVDBRequestMonitorSample();
+        }else if("ops_nodes_run_status_monitor".equals(token)){
+            sample = new OpsNodesRunStatusMonitorSample();
         }
         if(sample == null){
             return;
