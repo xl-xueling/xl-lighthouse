@@ -114,9 +114,11 @@ public class LDPSimulationInstance {
         }else if("biz_order_stat".equals(token)){
             //sample = new BizOrderStatSample();
         }else if("pm_social_privatechat_msg_dt".equals(token)){
-            sample = new PMSocialPrivateChatMsgStat();
+            //sample = new PMSocialPrivateChatMsgStat();
         }else if("pm_social_prichat_envelope".equals(token)){
-            sample = new PMSocialPrichatEnvelopeSample();
+            //sample = new PMSocialPrichatEnvelopeSample();
+        }else if("it_kvdb_request_monitor".equals(token)){
+            sample = new ITKVDBRequestMonitorSample();
         }
         if(sample == null){
             return;

@@ -1,6 +1,5 @@
 package com.dtstep.lighthouse.test.mode;
 
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.test.local.LocalUtil;
 
 import java.util.HashMap;
