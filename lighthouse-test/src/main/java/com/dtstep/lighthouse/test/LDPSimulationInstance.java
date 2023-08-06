@@ -127,6 +127,12 @@ public class LDPSimulationInstance {
             sample = new OpsNodesLoginStateDTSample();
         }else if("pm_feednews_behavior_stat".equals(token)){
             sample = new PMFeedNewsBehaviorStatSample();
+        }else if("ai_shortvideo_train_monitor".equals(token)){
+            sample = new AiShortVideoTrainMonitorSample();
+        }else if("fe_appstart_adv_stat".equals(token)){
+            sample = new FeAppStartAdvStatSample();
+        }else if("rd_shortvideo_request_stat".equals(token)){
+            sample = new RDShortVideoRequestStatSample();
         }
         if(sample == null){
             return;
