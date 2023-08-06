@@ -108,17 +108,17 @@ public class LDPSimulationInstance {
         long time = task.getTimestamp();
         SimulationModalSample<HashMap<String,Object>> sample = null;
         if("om_appstart_dau_stat".equals(token)){
-            //sample = new OmAppStartDauStatSample();
+            sample = new OmAppStartDauStatSample();
         }else if("biz_house_price_change_dt".equals(token)){
-            //sample = new BizHousePriceChangeDTSample();
+            sample = new BizHousePriceChangeDTSample();
         }else if("biz_order_stat".equals(token)){
-            //sample = new BizOrderStatSample();
+            sample = new BizOrderStatSample();
         }else if("pm_social_privatechat_msg_dt".equals(token)){
-            //sample = new PMSocialPrivateChatMsgStat();
+            sample = new PMSocialPrivateChatMsgStat();
         }else if("pm_social_prichat_envelope".equals(token)){
-            //sample = new PMSocialPrichatEnvelopeSample();
+            sample = new PMSocialPrichatEnvelopeSample();
         }else if("it_kvdb_request_monitor".equals(token)){
-            //sample = new ITKVDBRequestMonitorSample();
+            sample = new ITKVDBRequestMonitorSample();
         }else if("ops_nodes_run_status_monitor".equals(token)){
             sample = new OpsNodesRunStatusMonitorSample();
         }else if("ops_nodes_load_state_dt".equals(token)){
