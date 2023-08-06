@@ -37,7 +37,7 @@ public class PMFeedNewsBehaviorStatSample implements SimulationModalSample<HashM
         LocalUtil.LocalEntity province = LocalUtil.getById(city.getPid());
         paramMap.put("province",province.getId());
         paramMap.put("city",city.getId());
-        paramMap.put("os",ThreadLocalRandom.current().nextInt(1,2));
+        paramMap.put("os",ThreadLocalRandom.current().nextInt(1,3));
         paramMap.put("app_version",ThreadLocalRandom.current().nextInt(1,3) + "." + ThreadLocalRandom.current().nextInt(1,5) + "." + ThreadLocalRandom.current().nextInt(1,5));
         return paramMap;
     }

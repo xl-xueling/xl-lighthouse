@@ -12,7 +12,7 @@ public class OpsNodesLoginStateDTSample implements SimulationModalSample<HashMap
         HashMap<String,Object> paramMap = new HashMap<>();
         paramMap.put("idc_id", "idc_" + ThreadLocalRandom.current().nextInt(1,100));
         paramMap.put("login_name", RandomID.id(5));
-        paramMap.put("state",ThreadLocalRandom.current().nextInt(1,2));
+        paramMap.put("state",ThreadLocalRandom.current().nextInt(1,3));
         paramMap.put("user_ip",getRandomIp());
         return paramMap;
     }

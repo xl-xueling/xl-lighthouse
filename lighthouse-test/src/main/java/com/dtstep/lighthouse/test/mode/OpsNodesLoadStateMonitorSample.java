@@ -13,7 +13,7 @@ public class OpsNodesLoadStateMonitorSample implements SimulationModalSample<Has
         paramMap.put("cabinet_id","cabinet_"+ThreadLocalRandom.current().nextInt(1,100));
         paramMap.put("ip",getRandomIp());
         paramMap.put("load_average",ThreadLocalRandom.current().nextDouble(0.5,10));
-        paramMap.put("load_state",ThreadLocalRandom.current().nextInt(1,4));
+        paramMap.put("load_state",ThreadLocalRandom.current().nextInt(1,5));
         return paramMap;
     }
 

@@ -15,7 +15,7 @@ public class AiShortVideoTrainMonitorSample implements SimulationModalSample<Has
         paramMap.put("auc",ThreadLocalRandom.current().nextDouble(0,0.99));
         paramMap.put("training_batch",ThreadLocalRandom.current().nextInt(1,10));
         paramMap.put("model_size",ThreadLocalRandom.current().nextInt(1000,1000000));
-        paramMap.put("state",ThreadLocalRandom.current().nextInt(1,2));
+        paramMap.put("state",ThreadLocalRandom.current().nextInt(1,3));
         return paramMap;
     }
 }

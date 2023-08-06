@@ -11,7 +11,7 @@ public class RDShortVideoRequestStatSample implements SimulationModalSample<Hash
         paramMap.put("interface","interface_"+ ThreadLocalRandom.current().nextInt(1,100));
         paramMap.put("ip",getRandomIp());
         paramMap.put("cost",ThreadLocalRandom.current().nextInt(1,500));
-        paramMap.put("state",ThreadLocalRandom.current().nextInt(1,2));
+        paramMap.put("state",ThreadLocalRandom.current().nextInt(1,3));
         return paramMap;
     }
 

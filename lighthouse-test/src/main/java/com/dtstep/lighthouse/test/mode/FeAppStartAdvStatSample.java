@@ -21,9 +21,9 @@ public class FeAppStartAdvStatSample implements SimulationModalSample<HashMap<St
         long t3 = ThreadLocalRandom.current().nextInt(1,100);
         paramMap.put("step3_cost",t3);
         paramMap.put("cost",(t1 + t2 + t3));
-        paramMap.put("state",ThreadLocalRandom.current().nextInt(1,2));
-        paramMap.put("net",ThreadLocalRandom.current().nextInt(1,5));
-        paramMap.put("os",ThreadLocalRandom.current().nextInt(1,2));
+        paramMap.put("state",ThreadLocalRandom.current().nextInt(1,3));
+        paramMap.put("net",ThreadLocalRandom.current().nextInt(1,6));
+        paramMap.put("os",ThreadLocalRandom.current().nextInt(1,3));
         paramMap.put("app_version",ThreadLocalRandom.current().nextInt(1,3) + "." + ThreadLocalRandom.current().nextInt(1,5) + "." + ThreadLocalRandom.current().nextInt(1,5));
         return paramMap;
     }

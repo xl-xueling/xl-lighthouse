@@ -23,7 +23,6 @@ public class BizHousePriceChangeDTSample implements SimulationModalSample<HashMa
         paramMap.put("change_type",ThreadLocalRandom.current().nextInt(1,2));
         paramMap.put("rate",((double) (ThreadLocalRandom.current().nextInt(1,5)))/ 10.0d);
         paramMap.put("quality",ThreadLocalRandom.current().nextInt(1,4));
-        System.out.println("paramMap is:" + JsonUtil.toJSONString(paramMap));
         return paramMap;
     }
 }
