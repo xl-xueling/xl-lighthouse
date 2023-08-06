@@ -121,6 +121,12 @@ public class LDPSimulationInstance {
             //sample = new ITKVDBRequestMonitorSample();
         }else if("ops_nodes_run_status_monitor".equals(token)){
             sample = new OpsNodesRunStatusMonitorSample();
+        }else if("ops_nodes_load_state_dt".equals(token)){
+            sample = new OpsNodesLoadStateMonitorSample();
+        }else if("ops_nodes_login_state_dt".equals(token)){
+            sample = new OpsNodesLoginStateDTSample();
+        }else if("pm_feednews_behavior_stat".equals(token)){
+            sample = new PMFeedNewsBehaviorStatSample();
         }
         if(sample == null){
             return;
