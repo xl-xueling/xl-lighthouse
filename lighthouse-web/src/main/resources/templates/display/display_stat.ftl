@@ -120,11 +120,13 @@
             <div class="col-md-6">
               <div class="box-body chart-responsive">
                 <div class="ldp-stat-chart" statId="${statEntity.id}" stateIndex="0" style="height: 180px;padding: 10px;"></div>
+                <div class="ldp-stat-chart-title">${statEntity.templateEntity.statStateList[0].stateBody}</div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="box-body chart-responsive">
                 <div class="ldp-stat-chart" statId="${statEntity.id}" stateIndex="1" style="height: 180px;padding: 10px;"></div>
+                <div class="ldp-stat-chart-title">${statEntity.templateEntity.statStateList[1].stateBody}</div>
               </div>
             </div>
           </div>
@@ -136,16 +138,19 @@
             <div class="col-md-4">
               <div class="box-body chart-responsive">
                 <div class="ldp-stat-chart" statId="${statEntity.id}" stateIndex="0" style="height: 180px;padding: 10px;"></div>
+                <div class="ldp-stat-chart-title">${statEntity.templateEntity.statStateList[0].stateBody}</div>
               </div>
             </div>
             <div class="col-md-4">
               <div class="box-body chart-responsive">
                 <div class="ldp-stat-chart" statId="${statEntity.id}" stateIndex="1" style="height: 180px;padding: 10px;"></div>
+                <div class="ldp-stat-chart-title">${statEntity.templateEntity.statStateList[1].stateBody}</div>
               </div>
             </div>
             <div class="col-md-4">
               <div class="box-body chart-responsive">
                 <div class="ldp-stat-chart" statId="${statEntity.id}" stateIndex="2" style="height: 180px;padding: 10px;"></div>
+                <div class="ldp-stat-chart-title">${statEntity.templateEntity.statStateList[2].stateBody}</div>
               </div>
             </div>
           </div>

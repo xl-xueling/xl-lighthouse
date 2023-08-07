@@ -26,6 +26,12 @@ a{
     cursor: pointer !important;
 }
 
+.ldp-stat-chart-title{
+    text-align:center;
+    font-size: 8px;
+    color: #9a9595;
+}
+
 pre.prettyprint {
     background: #524b4b;
     font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Consolas, monospace;
