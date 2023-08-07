@@ -74,7 +74,7 @@ public class PrivilegeManager {
         if(relationB == -1){
             return false;
         }
-        if(userEntity.getUserName().equals(SysConst._ADMIN_USER_NAME)){
+        if(isSysAdmin(userEntity)){
             return true;
         }
         if(privilegeType == PrivilegeTypeEnum.STAT_ITEM_USER.getPrivilegeType()){
