@@ -18,6 +18,7 @@ expect {
 }
 expect "${prompt}"
 send "${hbase_home}/bin/hbase-daemon.sh stop master\r"
+expect "${prompt}"
 send "${hbase_home}/bin/stop-hbase.sh\r"
 expect "${prompt}"
 send "exit\r"
