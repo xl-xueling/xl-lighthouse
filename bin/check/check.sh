@@ -10,7 +10,7 @@ function checkInstall() {
     checkJavaCommand;
     checkScalaCommand;
     checkICECommand;
-    if [[ "${SERVICES[@]}" =~ "kafka" ]];then
+    if [[ "${SERVICES[@]}" =~ "mysql" ]];then
     	checkMysqlCommand;
     fi		    
     if [[ "${SERVICES[@]}" =~ "hadoop" ]];then
