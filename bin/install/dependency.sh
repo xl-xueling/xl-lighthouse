@@ -105,18 +105,20 @@ function dependencyInstall() {
 	
 	local webIPArray=($(getServiceIPS 'lighthouse_web'))
 	for service in "mysql" "hadoop";do
-		local path=$(find ${source_dir}/${service} -maxdepth 1 -mindepth 1 -type d | grep ${service} | head -n 1)
-                if [ ! -n "${path}" ]; then
-                        echo "service (${service}) package not exit!"
-                        exit -1
-                fi
-		local IPArray=($(getServiceIPS ${service}))
-                for ip in ${webIPArray[@]}; do
-                        if [[ ! "${IPArray[@]}" =~ ${ip} ]];then
-				syncComponents ${service} ${ip} ${source_dir} ${dirname} "${LDP_HOME}/proxy"
-                	fi
-		done
-	done
+    if [[ "${SERVICES[@]}" =~ "${service}" ]];then
+            local path=$(find ${source_dir}/${service} -maxdepth 1 -mindepth 1 -type d | grep ${service} | head -n 1)
+            if [ ! -n "${path}" ]; then
+                    echo "service (${service}) package not exit!"
+                    exit -1
+            fi
+            local IPArray=($(getServiceIPS ${service}))
+            for ip in ${webIPArray[@]}; do
+                    if [[ ! "${IPArray[@]}" =~ ${ip} ]];then
+                            syncComponents ${service} ${ip} ${source_dir} ${dirname} "${LDP_HOME}/proxy"
+                    fi
+            done
+    fi
+  done
 }
 
 function pluginsInstall() {
