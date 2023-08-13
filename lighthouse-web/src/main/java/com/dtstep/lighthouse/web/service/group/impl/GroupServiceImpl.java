@@ -74,8 +74,8 @@ public class GroupServiceImpl implements GroupService {
         ConnectionManager.beginTransaction(dbConnection);
         int groupId = groupEntity.getId();
         try{
-            groupDao.update(groupEntity);
             statManager.updateList(userId, groupEntity.getId(), statList);
+            groupDao.update(groupEntity);
             ConnectionManager.commitTransaction(dbConnection);
             logger.info("update group,update group info success,groupId:{}",groupId);
         }catch (Exception ex){

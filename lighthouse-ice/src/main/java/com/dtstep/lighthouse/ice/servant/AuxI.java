@@ -48,7 +48,7 @@ final class AuxI extends _AuxInterfaceDisp {
             if(groupExtEntity != null){
                 GroupVerifyEntity groupVerifyEntity = new GroupVerifyEntity();
                 groupVerifyEntity.setVerifyKey(groupExtEntity.getVerifyKey());
-                groupVerifyEntity.setRelationColumns(groupExtEntity.getRelatedColumns());
+                groupVerifyEntity.setRelationColumns(groupExtEntity.getRunningRelatedColumns());
                 groupVerifyEntity.setState(groupExtEntity.getState());
                 groupVerifyEntity.setGroupId(groupExtEntity.getId());
                 groupVerifyEntity.setToken(groupExtEntity.getToken());

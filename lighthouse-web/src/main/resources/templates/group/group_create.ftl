@@ -57,8 +57,8 @@
                   </select>
                 </td>
                 <td onclick="PAGE.tdclick(this);" class="column_comment">Comment</td>
-                <td class="column_operate" onclick='GROUP_OPERATOR.deleteColumn(this.parentNode)'>
-                  <a href="javascript:void(0);" style="color:#000000;"><span class="col-md-1 col-sm-2" title=""><i class="fa fa-fw fa-minus-circle"></i></span></a>
+                <td class="column_operate">
+                  <a href="javascript:void(0);" onclick='GROUP_OPERATOR.deleteColumn(this.parentNode.parentNode)' style="color:#000000;"><span class="col-md-1 col-sm-2" title=""><i class="fa fa-fw fa-minus-circle"></i></span></a>
                 </td>
               </tr>
               </tbody></table>

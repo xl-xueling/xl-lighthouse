@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.wrapper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 import com.dtstep.lighthouse.common.util.*;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.config.LDPConfig;
@@ -122,30 +123,42 @@ public final class GroupDBWrapper {
             groupExtEntity.setDebugMode(0);
         }
         int groupId = groupExtEntity.getId();
-        List<StatExtEntity> statExtEntityList = StatDBWrapper.queryRunningListByGroupId(groupId);
+        List<StatExtEntity> statExtEntityList = StatDBWrapper.actualQueryListByGroupId(groupId).orElse(null);
         if(CollectionUtils.isNotEmpty(statExtEntityList)){
-            HashMap<String, ColumnTypeEnum> groupRelatedColumns = new HashMap<>();
+            HashMap<String, ColumnTypeEnum> groupRunningRelatedColumns = new HashMap<>();
+            HashMap<String, ColumnTypeEnum> groupAllRelatedColumns = new HashMap<>();
             Map<String,ColumnTypeEnum> groupColumnsMap = columnList.stream().collect(Collectors.toMap(MetaColumn::getColumnName, MetaColumn::getColumnTypeEnum));
             long minDuration = 0L;
             long maxDataExpire = 0L;
             for (StatExtEntity statExtEntity : statExtEntityList) {
-                long currentDuration = TimeParam.calculateDuration(statExtEntity.getTimeParamInterval(), statExtEntity.getTimeUnit());
-                if(minDuration == 0L){
-                    minDuration = currentDuration;
+                if(statExtEntity.getStatStateEnum() == StatStateEnum.RUNNING){
+                    long currentDuration = TimeParam.calculateDuration(statExtEntity.getTimeParamInterval(), statExtEntity.getTimeUnit());
+                    if(minDuration == 0L){
+                        minDuration = currentDuration;
+                    }else{
+                        minDuration = CalculateUtil.getMaxDivisor(minDuration,currentDuration);
+                    }
+                    if(maxDataExpire < statExtEntity.getDataExpire()){
+                        maxDataExpire = statExtEntity.getDataExpire();
+                    }
+                    Set<String> statRelatedColumnSet = statExtEntity.getRelatedColumnSet();
+                    if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
+                        for(String columnName : statRelatedColumnSet){
+                            groupRunningRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
+                            groupAllRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
+                        }
+                    }
                 }else{
-                    minDuration = CalculateUtil.getMaxDivisor(minDuration,currentDuration);
-                }
-                if(maxDataExpire < statExtEntity.getDataExpire()){
-                    maxDataExpire = statExtEntity.getDataExpire();
-                }
-                Set<String> statRelatedColumnSet = statExtEntity.getRelatedColumnSet();
-                if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
-                    for(String columnName : statRelatedColumnSet){
-                        groupRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
+                    Set<String> statRelatedColumnSet = statExtEntity.getRelatedColumnSet();
+                    if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
+                        for(String columnName : statRelatedColumnSet){
+                            groupAllRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
+                        }
                     }
                 }
             }
-            groupExtEntity.setRelatedColumns(groupRelatedColumns);
+            groupExtEntity.setAllRelatedColumns(groupAllRelatedColumns);
+            groupExtEntity.setRunningRelatedColumns(groupRunningRelatedColumns);
             TimeParam minTimeParam = transToTimeParam(minDuration);
             groupExtEntity.setMinTimeParam(minTimeParam);
             groupExtEntity.setDataExpire(maxDataExpire);

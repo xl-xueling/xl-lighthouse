@@ -48,19 +48,35 @@
             </tr>
             <#if groupEntity.columnList??>
               <#list groupEntity.columnList as metaColumn>
-                <tr>
-                  <td style="color:#957373;" class="column_name">${metaColumn.columnName}</td>
-                  <td style="padding: 0;">
-                    <select disabled id="" autocomplete="off" class="column_type" style="width: 100px;color: #b8b0b0;" tabindex="-1" aria-hidden="true">
-                      <option value="1" <#if metaColumn.columnType == 1>selected</#if>>String</option>
-                      <option value="2" <#if metaColumn.columnType == 2>selected</#if>>Numeric</option>
-                    </select>
-                  </td>
-                  <td onclick="PAGE.tdclick(this);" class="column_comment">${metaColumn.columnComment}</td>
-                  <td class="column_operate">
-                    <a href="javascript:void(0);" style="color:#ba7b7b;"><span class="col-md-1 col-sm-2" title=""><i class="fa fa-fw fa-minus-circle"></i></span></a>
-                  </td>
-                </tr>
+                <#if groupEntity.allRelatedColumns[metaColumn.columnName]??>
+                  <tr class="i18n">
+                    <td style="color:#957373;" class="column_name">${metaColumn.columnName}</td>
+                    <td style="padding: 0;">
+                      <select disabled id="" autocomplete="off" class="column_type" style="width: 100px;color: #b8b0b0;" tabindex="-1" aria-hidden="true">
+                        <option value="1" <#if metaColumn.columnType == 1>selected</#if>>String</option>
+                        <option value="2" <#if metaColumn.columnType == 2>selected</#if>>Numeric</option>
+                      </select>
+                    </td>
+                    <td onclick="PAGE.tdclick(this);" class="column_comment">${metaColumn.columnComment}</td>
+                    <td class="column_operate">
+                      <a href="javascript:void(0);" style="color:#ba7b7b;"><span class="col-md-1 col-sm-2" title="i18n(ldp_i18n_group_update_1041)"><i class="fa fa-fw fa-minus-circle"></i></span></a>
+                    </td>
+                  </tr>
+                <#else>
+                  <tr>
+                    <td onclick="PAGE.tdclick(this);" class="column_name">${metaColumn.columnName}</td>
+                    <td style="padding: 0;">
+                      <select id="" autocomplete="off" class="column_type" style="width: 100px;" tabindex="-1" aria-hidden="true">
+                        <option value="1" <#if metaColumn.columnType == 1>selected</#if>>String</option>
+                        <option value="2" <#if metaColumn.columnType == 2>selected</#if>>Numeric</option>
+                      </select>
+                    </td>
+                    <td onclick="PAGE.tdclick(this);" class="column_comment">${metaColumn.columnComment}</td>
+                    <td class="column_operate">
+                      <a href="javascript:void(0);" onclick='GROUP_OPERATOR.deleteColumn(this.parentNode.parentNode)'  style="color:#000000;"><span class="col-md-1 col-sm-2" title=""><i class="fa fa-fw fa-minus-circle"></i></span></a>
+                    </td>
+                  </tr>
+                </#if>
               </#list>
             </#if>
             </tbody></table>

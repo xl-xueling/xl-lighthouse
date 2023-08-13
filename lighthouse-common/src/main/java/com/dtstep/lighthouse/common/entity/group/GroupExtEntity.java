@@ -39,7 +39,9 @@ public class GroupExtEntity extends GroupEntity {
 
     private List<MetaColumn> columnList;
 
-    private Map<String, ColumnTypeEnum> relatedColumns;
+    private Map<String, ColumnTypeEnum> runningRelatedColumns;
+
+    private Map<String, ColumnTypeEnum> allRelatedColumns;
 
     private boolean isBuiltIn = false;
 
@@ -66,12 +68,12 @@ public class GroupExtEntity extends GroupEntity {
         this.columnList = columnList;
     }
 
-    public Map<String, ColumnTypeEnum> getRelatedColumns() {
-        return relatedColumns;
+    public Map<String, ColumnTypeEnum> getRunningRelatedColumns() {
+        return runningRelatedColumns;
     }
 
-    public void setRelatedColumns(Map<String, ColumnTypeEnum> relatedColumns) {
-        this.relatedColumns = relatedColumns;
+    public void setRunningRelatedColumns(Map<String, ColumnTypeEnum> runningRelatedColumns) {
+        this.runningRelatedColumns = runningRelatedColumns;
     }
 
     public HashMap<String, Integer> getLimitedThresholdMap() {
@@ -123,6 +125,14 @@ public class GroupExtEntity extends GroupEntity {
 
     public void setVerifyKey(String verifyKey) {
         this.verifyKey = verifyKey;
+    }
+
+    public Map<String, ColumnTypeEnum> getAllRelatedColumns() {
+        return allRelatedColumns;
+    }
+
+    public void setAllRelatedColumns(Map<String, ColumnTypeEnum> allRelatedColumns) {
+        this.allRelatedColumns = allRelatedColumns;
     }
 
     public static boolean isLimitedExpired(GroupExtEntity groupExtEntity){

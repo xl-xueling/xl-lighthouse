@@ -189,8 +189,8 @@ var GROUP_OPERATOR = {
             "                        </select>\n" +
             "                      </td>\n" +
             "                      <td onclick=\"PAGE.tdclick(this);\" class=\"column_comment\">Comment</td>\n" +
-            "                      <td class=\"column_operate\" onclick='GROUP_OPERATOR.deleteColumn(this.parentNode)'>\n" +
-            "                          <a href=\"javacript:void(0);\" style=\"color:#000000;\"><span class=\"col-md-1 col-sm-2\" title=\"\"><i class=\"fa fa-fw fa-minus-circle\"></i></span></a>\n" +
+            "                      <td class=\"column_operate\">\n" +
+            "                          <a href=\"javacript:void(0);\" onclick='GROUP_OPERATOR.deleteColumn(this.parentNode.parentNode)' style=\"color:#000000;\"><span class=\"col-md-1 col-sm-2\" title=\"\"><i class=\"fa fa-fw fa-minus-circle\"></i></span></a>\n" +
             "                      </td>\n" +
             "                    </tr>";
         $("#column-content").append(html);
