@@ -145,6 +145,7 @@ public final class BuiltinLoader {
                 columnList.add(metaColumn);
             }
             Map<String,ColumnTypeEnum> columnHashMap = columnList.stream().collect(Collectors.toMap(MetaColumn::getColumnName, MetaColumn::getColumnTypeEnum));
+            groupExtEntity.setAllRelatedColumns(columnHashMap);
             groupExtEntity.setRunningRelatedColumns(columnHashMap);
             groupExtEntity.setColumnList(columnList);
             groupExtEntity.setState(GroupStateEnum.RUNNING.getState());
