@@ -23,7 +23,7 @@
   <name>lighthouse-base</name>
   <url>http://maven.apache.org</url>
   <properties>
-    <revision>1.0.5</revision>
+    <revision>1.0.6</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <PermGen>64m</PermGen>
