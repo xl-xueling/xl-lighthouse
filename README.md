@@ -3,8 +3,6 @@
 **XL-LightHouse** A general-purpose streaming big data statistics system.
 
 <br></br>
-
-
 # Abstract
 
 * XL-LightHouse is a set of integrated functions such as data writing, data computing, data storage and data visualization developed for the complex streaming data statistics needs in the Internet field, and supports a large amount of data and ultra-high concurrency[ General streaming big data statistics platform].
