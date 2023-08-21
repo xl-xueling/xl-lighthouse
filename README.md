@@ -1,6 +1,3 @@
-XL-Lighthouse
-==========
-
 <img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/github/xl-lighthouse.jpg" alt="XL-LightHouse logo" height="60px" align="right" />
 
 **XL-LightHouse** A general-purpose streaming big data statistics system.
