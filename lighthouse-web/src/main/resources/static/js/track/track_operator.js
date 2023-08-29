@@ -13,8 +13,8 @@ var TRACK_OPERATOR = {
         }
     },
 
-    trackInit(statId,state,debugParams){
-        if(state === '1'){
+    trackInit(statId,debugMode,debugParams){
+        if(debugMode === '1'){
             let paramsObj = JSON.parse(debugParams);
             let startTime = paramsObj.startTime;
             let endTime = paramsObj.endTime;
@@ -161,6 +161,7 @@ var TRACK_OPERATOR = {
     },
 
     startAutoRefresh(){
+        window.clearInterval(refreshId);
         refreshId = setInterval(function (){
             let debugStartTime = $("#debugStartTime").val();
             let debugEndTime = $("#debugEndTime").val();

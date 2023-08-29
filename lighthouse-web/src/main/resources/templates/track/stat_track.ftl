@@ -48,7 +48,7 @@
               <div style="float: right;">
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" name="refresh_button"/>
+                    <input type="checkbox" name="refresh_button" checked/>
                     <font size="2px;"><samp class="i18n" i18n_code="ldp_i18n_track_1003"></samp></font>
                   </label>
                 </div>
@@ -128,6 +128,10 @@
           window.clearInterval(refreshId);
         }
       });
+
+      if(debugMode === '1'){
+        TRACK_OPERATOR.startAutoRefresh();
+      }
     });
   }
 </script>
