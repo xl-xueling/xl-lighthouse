@@ -172,5 +172,10 @@ start_all(){
 }
 
 
-
+start_lighthouse(){
+	startLightHouseICE;
+  startLightHouseWeb;
+  startLightHouseTasks;
+  track;
+}
 

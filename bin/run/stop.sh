@@ -121,3 +121,9 @@ stop_all(){
   stopLightHouseICE;
   stopLightHouseTasks;
 }
+
+stop_lighthouse(){
+	stopLightHouseWeb;
+  stopLightHouseICE;
+  stopLightHouseTasks;
+}

@@ -579,3 +579,9 @@ function checkProcessExist(){
 	checkLightHouseTasksExist;
 }
 
+function checkLightProcessExist(){
+	checkLightHouseWebExist;
+  checkLightHouseICEExist;
+  checkLightHouseTasksExist;
+}
+
