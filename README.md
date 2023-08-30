@@ -1,6 +1,6 @@
 <img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/github/xl-lighthouse.jpg" alt="XL-LightHouse logo" height="60px" align="right" />
 
-**XL-LightHouse** A general-purpose streaming big data statistics system.
+**XL-LightHouse:** A general-purpose streaming big data statistics system.
 
 <br></br>
 ### 一键部署，一行代码接入，无需大数据相关研发运维经验就可以轻松实现海量数据实时统计，使用XL-LightHouse后：
