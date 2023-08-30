@@ -3,14 +3,6 @@
 **XL-LightHouse** A general-purpose streaming big data statistics system.
 
 <br></br>
-# Abstract
-
-* XL-LightHouse is a set of integrated functions such as data writing, data computing, data storage and data visualization developed for the complex streaming data statistics needs in the Internet field, and supports a large amount of data and ultra-high concurrency[ General streaming big data statistics platform].
-* XL-LightHouse currently basically covers common streaming data statistics scenarios, including count, sum, max, min, avg, distinct, topN/lastN and other operations, supports multi-dimensional calculations, supports minute-level, hour-level, Statistics at multiple time granularities at the day level, and supports the configuration of custom statistical periods.
-* XL-LightHouse has built-in rich conversion functions and supports expression parsing, which can meet various complex condition screening and logical judgment.
-* XL-LightHouse is a full-featured data governance solution in the field of streaming big data statistics. It provides a relatively friendly and complete visual query function, and provides an API query interface to the outside world. In addition, it also includes data index management and authority management. , Statistical current limiting and other functions.
-* XL-LightHouse supports the storage and query of time series data.
-
 ### 一键部署，一行代码接入，无需大数据相关研发运维经验就可以轻松实现海量数据实时统计，使用XL-LightHouse后：
 * 1、再也不需要用Flink、Spark、ClickHouse或者基于Redis这种臃肿笨重的方案跑数了；
 * 2、再也不需要疲于应付对个人价值提升没有多大益处的数据统计需求了，能够帮助您从琐碎反复的数据统计需求中抽身出来，从而专注于对个人提升、对企业发展更有价值的事情；
