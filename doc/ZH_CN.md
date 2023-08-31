@@ -7,12 +7,12 @@
 ### 概述
 
 * XL-LightHouse是针对互联网领域繁杂的流式数据统计需求而开发的一套集成了数据写入、数据运算、数据存储和数据可视化等一系列功能，支持超大数据量，支持超高并发的【通用型流式大数据统计平台】。
-* XL-LightHouse目前已基本涵盖了常见的流式数据统计场景，包括count、sum、max、min、avg、distinct、topN/lastN等多种运算，支持多维度计算，支持分钟级、小时级、天级多个时间粒度的统计，支持自定义统计周期的配置。
+* XL-LightHouse目前已涵盖了常见的流式数据统计场景，包括count、sum、max、min、avg、distinct、topN/lastN等多种运算，支持多维度计算，支持分钟级、小时级、天级多个时间粒度的统计，支持自定义统计周期的配置。
 * XL-LightHouse内置丰富的转化类函数、支持表达式解析，可以满足各种复杂的条件筛选和逻辑判断。
 * XL-LightHouse是一套功能完备的流式大数据统计领域的数据治理解决方案，它提供了比较友好和完善的可视化查询功能，并对外提供API查询接口，此外还包括数据指标管理、权限管理、统计限流等多种功能。
 * XL-LightHouse支持时序性数据的存储和查询。
 
-### 与Flink和ClickHouse对比有什么优势
+### XL-LightHouse与Flink和ClickHouse对比有什么优势
 
 -  https://dtstep.com/archives/4820.html
 
