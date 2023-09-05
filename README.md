@@ -50,7 +50,7 @@ XL-LightHouse可以帮助企业以尽可能低的成本，更快速的搭建起�
 
 
 #####  范例一：首页ICON区域用户行为数据统计
-<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/1.png"  width="300px" height="200px" />
+<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/1.png?t=1"  width="300px" height="200px" />
 
 该区域包含3个Tab，每个Tab有多个业务ICON图标，用户手动滑动可切换Tab，假设针对该ICON区域我们有如下数据指标需求：
 
@@ -86,11 +86,11 @@ XL-LightHouse可以帮助企业以尽可能低的成本，更快速的搭建起�
 
 + 配置统计项
 
-<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/2.png"  width="800px" height="400px" />
+<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/2.png?t=1"  width="800px" height="400px" />
 
 +  查看统计结果
 
-<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/3.png"  width="800px" height="400px" />
+<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/3.png?t=1"  width="800px" height="400px" />
 
 #####  范例二：移动支付订单数据统计
 
@@ -157,7 +157,7 @@ XL-LightHouse可以帮助企业以尽可能低的成本，更快速的搭建起�
 
 + 配置统计消息
 
-<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/5.png"  width="800px" height="450px" />
+<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/5.png?t=1"  width="800px" height="450px" />
 
 
 ##### 2、 订单支付状态数据监控
