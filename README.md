@@ -1,6 +1,5 @@
 <p align="center">
-	<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/github/xl-lighthouse.jpg" width="300">
-<br>
+	<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/github/xl-lighthouse.jpg" width="300px;">
 </p>
 
 **XL-LightHouse:** A general-purpose streaming big data statistics system.
