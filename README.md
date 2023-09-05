@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/github/xl-lighthouse.jpg" width="100">
+	<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/github/xl-lighthouse.jpg" width="300">
 <br>
 </p>
 
