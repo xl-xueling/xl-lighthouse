@@ -133,6 +133,30 @@ function loadIPS() {
 	fi
 }
 
+function loadDeployAttrs() {
+        local file=${LDP_HOME}/bin/config/deploy.json
+        local services=$(cat ${file} | jq '.' | jq -r keys[])
+        for service in ${services[@]};do
+                local keys=$(cat ${file} | jq -r '.'${service} | jq -r keys[])
+                if [ ! -n "${keys}" ]; then
+                        continue
+                fi
+                for key in ${keys[@]}; do
+                        if [ $key != 'attrs' ]; then
+                                local var=$(cat ${file} | jq -r '.'${service}'["'${key}'"]')
+                                ATTRS_MAP["ldp_${service}_${key}"]=${var}
+                        else
+                                local attrs=$(cat ${file} | jq -r '.'${service}["attrs"] | jq -r keys[])
+                                for attr_key in ${attrs[@]}; do
+                                        local attr_var=$(cat ${file} | jq -r '.'${service}'["'attrs'"]["'${attr_key}'"]')
+                                        ATTRS_MAP["ldp_${service}_${attr_key}"]=${attr_var}
+                                done
+                        fi
+                done
+                loadIPS ${service}
+        done
+}
+
 function loadConfigAttrs() {
 	local file=${LDP_HOME}/bin/config/config.json
 	local services=$(cat ${file} | jq '.' | jq -r keys[])
@@ -146,7 +170,6 @@ function loadConfigAttrs() {
                                 local var=$(cat ${file} | jq -r '.'${service}'["'${key}'"]')
                                 ATTRS_MAP["ldp_${service}_${key}"]=${var}
                         else
-				echo "sss"
                                 local attrs=$(cat ${file} | jq -r '.'${service}["attrs"] | jq -r keys[])
                                 for attr_key in ${attrs[@]}; do
                                         local attr_var=$(cat ${file} | jq -r '.'${service}'["'attrs'"]["'${attr_key}'"]')
@@ -157,6 +180,8 @@ function loadConfigAttrs() {
                 loadIPS ${service}
 	done
 }
+
+
 
 function getArrayIndex() {
 	local array=$1
@@ -304,10 +329,11 @@ function loadScriptConfig() {
 	ATTRS_MAP["ldp_lighthouse_cluster_id"]=${clusterId}
 	loadNodesPWD;
 	loadNodes;
-	loadDowns
-	loadBasicAttrs
-	loadConfigAttrs
-	loadExtendAttrs
+	loadDowns;
+	loadBasicAttrs;
+	loadDeployAttrs;
+	loadConfigAttrs;
+	loadExtendAttrs;
 	if [ ! -n "${DEPLOY_USER}" ];then
 		log_error "Deployment username cannot be empty!"
 		exit -1;
