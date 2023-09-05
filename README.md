@@ -8,6 +8,7 @@
 <span style="text-align: center;">A general-purpose streaming big data statistics system.</span>
 </p>
 <br>
+
 ### 一键部署，一行代码接入，无需大数据相关研发运维经验就可以轻松实现海量数据实时统计，使用XL-LightHouse后：
 * 1、再也不需要用Flink、Spark、ClickHouse或者基于Redis这种臃肿笨重的方案跑数了；
 * 2、再也不需要疲于应付对个人价值提升没有多大益处的数据统计需求了，能够帮助您从琐碎反复的数据统计需求中抽身出来，从而专注于对个人提升、对企业发展更有价值的事情；
