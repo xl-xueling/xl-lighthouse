@@ -1,13 +1,25 @@
 <br>
-
-<p align="center">
+<div align="center">
 	<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/github/xl-lighthouse.jpg" width="300px;">
-</p>
+</div>
 
 <p align="center">
 <span style="text-align: center;">A general-purpose streaming big data statistics system.</span>
 </p>
+
+<div align="center">
+
+[![LICENSE](https://img.shields.io/github/license/xl-xueling/xl-lighthouse.svg)](https://github.com/xl-xueling/xl-lighthouse/blob/master/LICENSE)
+[![Language](https://img.shields.io/badge/Language-Java-blue.svg)](https://https://www.java.com)
+[![Language](https://img.shields.io/badge/build-passing-blue.svg)](https://https://www.java.com)
+[![GitHub release](https://img.shields.io/github/tag/xl-xueling/xl-lighthouse.svg?label=release)](https://github.com/xl-xueling/xl-lighthouse/releases)
+[![GitHub release date](https://img.shields.io/github/release-date/xl-xueling/xl-lighthouse.svg)](https://github.com/xl-xueling/xl-lighthouse/releases)
+
+</div>
+
 <br>
+
+
 
 ### 一键部署，一行代码接入，无需大数据相关研发运维经验就可以轻松实现海量数据实时统计，使用XL-LightHouse后：
 * 1、再也不需要用Flink、Spark、ClickHouse或者基于Redis这种臃肿笨重的方案跑数了；
