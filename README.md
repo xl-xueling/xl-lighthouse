@@ -86,11 +86,11 @@ XL-LightHouse可以帮助企业以尽可能低的成本，更快速的搭建起�
 
 + 配置统计项
 
-<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/2.png?t=1"  width="800px" height="400px" />
+<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/2.png?t=2"  width="800px" height="400px" />
 
 +  查看统计结果
 
-<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/3.png?t=1"  width="800px" height="400px" />
+<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/4301-2/3.png?t=2"  width="800px" height="400px" />
 
 #####  范例二：移动支付订单数据统计
 
