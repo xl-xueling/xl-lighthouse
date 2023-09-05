@@ -1,8 +1,5 @@
 {
   "lighthouse": {
-    "deploy_user": "work",
-    "deploy_user_passwd": "test123456",
-    "ice_nodes_size": 3,
     "ice_xmx_memory": "1600M",
     "ice_xms_memory": "1600M",
     "tasks_driver_memory": "512M",
@@ -10,17 +7,14 @@
     "tasks_direct_memory": "256M",
     "tasks_num_executors": 6,
     "tasks_executor_cores": 2,
-    "web_nodes_size": 1,
     "web_xmx_memory": "1024M",
     "web_xms_memory": "1024M"
   },
   "zookeeper": {
-    "nodes_size": 3,
     "xmx_memory": "480M",
     "xms_memory": "480M"
   },
   "hadoop": {
-    "nodes_size": 3,
     "namenode_xmx_memory": "1280M",
     "namenode_xms_memory": "1280M",
     "datanode_xmx_memory": "1280M",
@@ -37,7 +31,6 @@
     "yarn.nodemanager.resource.cpu-vcores": "32"
   },
   "hbase": {
-    "nodes_size": 3,
     "master_xmx_memory": "1280M",
     "master_xms_memory": "1280M",
     "master_direct_memory": "512M",
@@ -45,24 +38,11 @@
     "regionserver_xms_memory": "5600M",
     "regionserver_direct_memory": "800M"
   },
-  "spark": {
-    "nodes_size": 3
-  },
   "kafka": {
-    "nodes_size": 3,
-    "topic_name": "lighthouse-topic-v1",
     "xmx_memory": "800M",
     "xms_memory": "800M"
   },
-  "mysql": {
-    "nodes_size": 1,
-    "root_passwd": "root",
-    "operate_user": "lighthouse",
-    "operate_user_passwd": "cXvsaGWExxG0082sZ"
-  },
   "redis": {
-    "nodes_size": 3,
-    "max_memory": "1600M",
-    "cluster_passwd": "naJKcZEoGGeSSAad"
+    "max_memory": "1600M"
   }
 }
