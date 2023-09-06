@@ -4,8 +4,13 @@
 </div>
 
 <p align="center">
-<span style="text-align: center;">A general-purpose streaming big data statistics system.</span>
+A general-purpose streaming big data statistics system.<br>
+Easier to use, supports a larger amount of data, and can complete more statistical indicators faster.
 </p>
+
+<div align="center">
+
+</div>
 
 <div align="center">
 
