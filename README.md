@@ -243,7 +243,7 @@ XL-LightHouse可以帮助企业以尽可能低的成本，更快速的搭建起�
 
 ##### 2、Git地址
 - https://github.com/xl-xueling/xl-lighthouse.git
-- https://gitee.com/mirrors/XL-LightHouse.git
+- https://gitee.com/xl-xueling/xl-lighthouse.git
 
 ##### 3、交流社区
 
