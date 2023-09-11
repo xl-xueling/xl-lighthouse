@@ -46,7 +46,7 @@ public final class SysConst {
 
     public static final String NULL_NUMERIC_VALUE = "-1";
 
-    public static final String _VERSION = "1.0.7";
+    public static final String _VERSION = "1.0.8";
 
     public static final boolean _PRO_EDITION_FLAG = false;
 
