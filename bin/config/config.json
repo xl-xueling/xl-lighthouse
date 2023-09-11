@@ -1,5 +1,6 @@
 {
   "lighthouse": {
+    "timezone": "Asia/Shanghai",
     "ice_xmx_memory": "1600M",
     "ice_xms_memory": "1600M",
     "tasks_driver_memory": "512M",
