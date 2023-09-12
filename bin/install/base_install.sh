@@ -24,6 +24,7 @@ baseCentOSInstall(){
         sudo yum install -y snappy*
         sudo yum install -y libzstd*
         sudo yum install -y sysstat iotop
+        sudo yum install -y wget
 }
 
 baseRockeyInstall(){
@@ -41,6 +42,7 @@ baseRockeyInstall(){
         sudo yum install -y snappy*
         sudo yum install -y libzstd*
         sudo yum install -y sysstat iotop
+        sudo yum install -y wget
 }
 
 baseAlmaInstall(){
@@ -58,6 +60,7 @@ baseAlmaInstall(){
         sudo yum install -y snappy*
         sudo yum install -y libzstd*
         sudo yum install -y sysstat iotop
+        sudo yum install -y wget
 }
 
 
@@ -76,6 +79,7 @@ baseRHELInstall(){
         sudo yum install -y snappy*
         sudo yum install -y libzstd*
         sudo yum install -y sysstat iotop
+        sudo yum install -y wget
 }
 
 baseUbuntuInstall(){
@@ -100,6 +104,7 @@ baseUbuntuInstall(){
 	sudo apt-get install -y build-essential
 	sudo apt-get install -y *snappy*
   sudo apt-get install -y sysstat iotop
+  sudo apt-get install -y wget
 }
 
 baseDebianInstall(){ 
@@ -124,6 +129,7 @@ baseDebianInstall(){
         sudo apt-get install -y build-essential
         sudo apt-get install -y *snappy*
         sudo apt-get install -y sysstat iotop
+        sudo apt-get install -y wget
 }
 
 baseInstall(){
