@@ -18,7 +18,7 @@ baseCentOSInstall(){
         sudo yum install -y epel-release
         sudo yum install -y expect jq rsync
 	      sudo yum install -y libtool autoconf gcc gcc-c++ make autoconf automake
-        sudo yum install -y cmake gzip  kernel-devel *openssl*
+        sudo yum install -y cmake gzip  kernel-devel openssl*
         sudo yum install -y tcl glibc-devel numactl nc
         sudo yum install -y git maven
         sudo yum install -y libncurses*
@@ -39,7 +39,7 @@ baseRockeyInstall(){
         sudo yum install -y epel-release
 	      sudo yum install -y expect jq rsync
         sudo yum install -y libtool autoconf gcc gcc-c++ make autoconf automake
-        sudo yum install -y cmake gzip  kernel-devel *openssl*
+        sudo yum install -y cmake gzip  kernel-devel openssl*
         sudo yum install -y tcl glibc-devel numactl nc
         sudo yum install -y git maven
         sudo yum install -y libncurses*
@@ -60,7 +60,7 @@ baseAlmaInstall(){
         sudo yum install -y epel-release
 	      sudo yum install -y expect jq rsync
         sudo yum install -y libtool autoconf gcc gcc-c++ make autoconf automake
-        sudo yum install -y cmake gzip  kernel-devel *openssl*
+        sudo yum install -y cmake gzip  kernel-devel openssl*
         sudo yum install -y tcl glibc-devel numactl nc
         sudo yum install -y git maven
         sudo yum install -y libncurses*
@@ -82,7 +82,7 @@ baseRHELInstall(){
         sudo yum install -y epel-release
 	      sudo yum install -y expect jq rsync
         sudo yum install -y libtool autoconf gcc gcc-c++ make autoconf automake
-        sudo yum install -y cmake gzip  kernel-devel *openssl*
+        sudo yum install -y cmake gzip  kernel-devel openssl*
         sudo yum install -y tcl glibc-devel numactl nc
         sudo yum install -y git maven
         sudo yum install -y libncurses*
