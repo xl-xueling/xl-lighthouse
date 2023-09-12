@@ -10,6 +10,12 @@ source "${LDP_HOME}/bin/prepare/basic.sh"
 
 pre(){
 	cat ${CUR_DIR}/config/nodelist | awk -F ';' '{print $1}' > ${CUR_DIR}/config/nodelist.new
+	local lsb=($(getLSBName));
+  if [[ $lsb == "CentOS" ]] || [[ $lsb == "Rocky" ]] || [[ $lsb == "Alma" ]] || [[ $lsb == "RHEL" ]];then
+    sudo yum install -y epel-release
+  elif [[ $lsb == "Debian" ]] || [[ $lsb == "Ubuntu" ]] ;then
+    sudo apt-get install -y software-properties-common
+  fi
   export PS1="[\u@\h \W]\$" && batch_install expect jq rsync*;
 	loadScriptConfig;
 	log_info "Program progress,load script config complete!"
