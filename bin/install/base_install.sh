@@ -14,6 +14,7 @@ baseCentOSInstall(){
         sudo yum clean packages
         sudo yum-config-manager --setopt=timeout=500 --save
         sudo yum-config-manager --setopt=minrate=1 --save
+        sudo yum install -y epel-release
         sudo yum install -y expect jq rsync
 	      sudo yum install -y libtool autoconf gcc gcc-c++ make autoconf automake
         sudo yum install -y cmake gzip *openssl* kernel-devel tcl glibc-devel numactl nc
@@ -32,6 +33,7 @@ baseRockeyInstall(){
 	      sudo yum clean packages
 	      sudo yum-config-manager --setopt=timeout=500 --save
         sudo yum-config-manager --setopt=minrate=1 --save
+        sudo yum install -y epel-release
 	      sudo yum install -y expect jq rsync
         sudo yum install -y libtool autoconf gcc gcc-c++ make autoconf automake
         sudo yum install -y cmake gzip *openssl* kernel-devel tcl glibc-devel numactl nc
@@ -50,6 +52,7 @@ baseAlmaInstall(){
 	      sudo yum clean packages
 	      sudo yum-config-manager --setopt=timeout=500 --save
         sudo yum-config-manager --setopt=minrate=1 --save
+        sudo yum install -y epel-release
 	      sudo yum install -y expect jq rsync
         sudo yum install -y libtool autoconf gcc gcc-c++ make autoconf automake
         sudo yum install -y cmake gzip *openssl* kernel-devel tcl glibc-devel numactl nc
@@ -69,6 +72,7 @@ baseRHELInstall(){
 	      sudo yum clean packages
 	      sudo yum-config-manager --setopt=timeout=500 --save
         sudo yum-config-manager --setopt=minrate=1 --save
+        sudo yum install -y epel-release
 	      sudo yum install -y expect jq rsync
         sudo yum install -y libtool autoconf gcc gcc-c++ make autoconf automake
         sudo yum install -y cmake gzip *openssl* kernel-devel tcl glibc-devel numactl nc
@@ -86,11 +90,11 @@ baseUbuntuInstall(){
 	sudo rm -f /var/lib/dpkg/lock-frontend
 	sudo rm -f /var/cache/apt/archives/lock
 	sudo rm -f /var/lib/dpkg/lock
+	sudo apt-get install -y software-properties-common
 	sudo apt-get install -y expect jq rsync
 	sudo apt-get install -y gcc gcc-multilib 
 	sudo apt-get install -y g++ g++-multilib
 	sudo apt-get install -y cmake
-	sudo apt-get install -y software-properties-common
 	sudo apt-get install -y pkg-config
 	sudo apt-get install -y libncurses*
 	sudo apt-get install -y libtinfo5 libmecab2
@@ -112,11 +116,11 @@ baseDebianInstall(){
 	sudo rm -f /var/cache/apt/archives/lock
 	sudo rm -f /var/lib/dpkg/lock
 	sudo apt-get install -y expect jq rsync
+	sudo apt-get install -y software-properties-common
         sudo apt-get install -y gcc gcc-multilib
         sudo apt-get install -y g++ g++-multilib
         sudo apt-get install -y cmake
         sudo apt-get install -y pkg-config
-	      sudo apt-get install -y software-properties-common
         sudo apt-get install -y libncurses*
         sudo apt-get install -y libtinfo5 libmecab2
         sudo apt-get install -y libaio1
