@@ -115,8 +115,8 @@ baseDebianInstall(){
 	sudo rm -f /var/lib/dpkg/lock-frontend
 	sudo rm -f /var/cache/apt/archives/lock
 	sudo rm -f /var/lib/dpkg/lock
-	sudo apt-get install -y expect jq rsync
 	sudo apt-get install -y software-properties-common
+	sudo apt-get install -y expect jq rsync
         sudo apt-get install -y gcc gcc-multilib
         sudo apt-get install -y g++ g++-multilib
         sudo apt-get install -y cmake
