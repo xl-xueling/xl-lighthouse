@@ -73,6 +73,7 @@ baseAlmaInstall(){
 baseRHELInstall(){
 	      sudo rm -f /var/run/yum.pid
 	      sudo yum clean packages
+	      sudo yum install -y yum-utils
 	      sudo yum-config-manager --setopt=timeout=500 --save
         sudo yum-config-manager --setopt=minrate=1 --save
         sudo yum install -y epel-release
