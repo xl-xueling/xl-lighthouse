@@ -50,7 +50,7 @@ main(){
 	if [ -d "${LDP_HOME}/dependency" ];then
 		echo "=Important=:This operation will delete all data of the cluster,Please execute it carefully !!!"
 		if [[ ! "${args[@]}" =~ "--force" ]];then
-			echo "Program has been deployed, please delete it and execute again, or execute \"deploy.sh --force\" to enforce it!"
+			echo "Program has been deployed, please delete it and execute again, or execute \"easy-deploy.sh --force\" to enforce it!"
       			rm -f ${LOCKFILE}
 			exit -1;
 		fi  
