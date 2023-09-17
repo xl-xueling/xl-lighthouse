@@ -43,7 +43,8 @@ function startSpark(){
 
 function startLightHouseICE(){
 	local IPArray=($(getServiceIPS 'lighthouse_ice'))
-	for i in {0..1}
+	local registerIndex=$([[ ${DEPLOY_MODE} == "standalone" ]] && echo 0 || echo 1);
+	for i in $( seq 0 ${registerIndex} )
 		do
 			local ip=${IPArray[$i]}
 			if [ $i == '0' ];then
