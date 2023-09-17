@@ -55,6 +55,7 @@ if { $service == "all" } {
 	send "jps -l|grep 'lighthouse-web' | grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
 } elseif { $service == "lighthouse-tasks" } {
 	send "jps -l|grep 'org.apache.spark.deploy.SparkSubmit' | grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+	send "jps -l|grep 'org.apache.spark.executor.YarnCoarseGrainedExecutorBackend' | grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
 } else {
 	send "pwd\r"
 }
