@@ -110,13 +110,17 @@ function loadIPS() {
 		ATTRS_MAP['ldp_lighthouse_ice_nodes_ips']=${ice_ips}
 		local iceNodesArray=($(echo $ice_ips | tr ',' ' '))
 		ATTRS_MAP['ldp_lighthouse_ice_nodes_size']=${#iceNodesArray[@]}
-		if [ ${ATTRS_MAP['ldp_lighthouse_ice_nodes_size']} -lt 3 ];then
-			log_error "The lighthouse-ice component at least three nodes!"
-			exit -1;
-		fi
-		ATTRS_MAP["ldp_lighthouse_ice_master"]=${iceNodesArray[0]}
-		ATTRS_MAP["ldp_lighthouse_ice_slaver"]=${iceNodesArray[1]}
-		ATTRS_MAP["ldp_lighthouse_ice_locators"]=${iceNodesArray[0]}:4061,${iceNodesArray[1]}:4061
+		local ldp_lighthouse_ice_default_locator='';
+		if [[ ${#iceNodesArray[@]} -eq 1  ]];then
+			ATTRS_MAP["ldp_lighthouse_ice_master"]=${iceNodesArray[0]}
+                	ATTRS_MAP["ldp_lighthouse_ice_locators"]=${iceNodesArray[0]}:4061
+			ATTRS_MAP["ldp_lighthouse_ice_locators_config"]="LightHouseIceGrid/Locator:tcp -h ${iceNodesArray[0]} -p 4061"
+		else
+			ATTRS_MAP["ldp_lighthouse_ice_master"]=${iceNodesArray[0]}
+                	ATTRS_MAP["ldp_lighthouse_ice_slaver"]=${iceNodesArray[1]}
+                	ATTRS_MAP["ldp_lighthouse_ice_locators"]=${iceNodesArray[0]}:4061,${iceNodesArray[1]}:4061
+			ATTRS_MAP["ldp_lighthouse_ice_locators_config"]="LightHouseIceGrid/Locator:tcp -h ${iceNodesArray[0]} -p 4061:tcp -h ${iceNodesArray[1]} -p 4061"
+		fi	
 		local web_ips=${ATTRS_MAP['ldp_lighthouse_web_nodes_ips']}
 		if [ ! -n "$web_ips" ]; then
                         local nodes_size=${ATTRS_MAP['ldp_lighthouse_web_nodes_size']}
@@ -134,7 +138,12 @@ function loadIPS() {
 }
 
 function loadDeployAttrs() {
-        local file=${LDP_HOME}/bin/config/deploy.json
+	local file='';
+        if [[ ${DEPLOY_MODE} == "standalone" ]];then
+                file=${LDP_HOME}/bin/config/standalone-deploy.json;
+        else
+                file=${LDP_HOME}/bin/config/deploy.json;
+        fi
         local services=$(cat ${file} | jq '.' | jq -r keys[])
         for service in ${services[@]};do
                 local keys=$(cat ${file} | jq -r '.'${service} | jq -r keys[])
@@ -158,7 +167,12 @@ function loadDeployAttrs() {
 }
 
 function loadConfigAttrs() {
-	local file=${LDP_HOME}/bin/config/config.json
+	local file='';
+	if [[ ${DEPLOY_MODE} == "standalone" ]];then
+		file=${LDP_HOME}/bin/config/standalone-config.json;
+	else
+		file=${LDP_HOME}/bin/config/config.json;
+	fi	
 	local services=$(cat ${file} | jq '.' | jq -r keys[])
 	for service in ${services[@]};do
 		local keys=$(cat ${file} | jq -r '.'${service} | jq -r keys[])
@@ -232,6 +246,9 @@ function loadExtendRedisAttrs(){
 		                done
                 done
 	ATTRS_MAP['ldp_redis_cluster']=${redis_cluster}
+	if [[ ${DEPLOY_MODE} == "standalone" ]];then
+		_REDIS_NUM_PIDS_PER_NODE=6
+	fi	
 }
 
 function loadExtendKafkaAttrs(){
@@ -244,6 +261,20 @@ function loadExtendKafkaAttrs(){
                 brokers+=${IPArray[i]}":9092"
         done
 	ATTRS_MAP['ldp_kafka_brokers_port']=${brokers}
+	if [[ ${DEPLOY_MODE} == "standalone" ]];then
+		_KAFKA_NUM_PARTITIONS=1;
+		_KAFKA_REPLICATION_FACTOR=1;
+		ATTRS_MAP['ldp_kafka_replication_factor']="1"
+		ATTRS_MAP['ldp_kafka_topic_replication_factor']="1"
+		ATTRS_MAP['ldp_kafka_state_log_replication_factor']="1"
+		ATTRS_MAP['ldp_kafka_state_log_min_isr']="1"
+	else
+		ATTRS_MAP['ldp_kafka_replication_factor']="3"
+		ATTRS_MAP['ldp_kafka_topic_replication_factor']="3"
+                ATTRS_MAP['ldp_kafka_state_log_replication_factor']="3"
+                ATTRS_MAP['ldp_kafka_state_log_min_isr']="3"
+	fi	
+
 }
 
 function loadExtendLightHouseAttrs() {
@@ -264,9 +295,11 @@ function loadExtendLightHouseAttrs() {
 
 function loadExtendHadoopAttrs() {
 	local IPArray=($(getServiceIPS 'hadoop'))
+	local workerIndex=$([[ ${DEPLOY_MODE} == "standalone" ]] && echo 0 || echo 1);
 	local hadoop_workers=''
-	for ip in ${IPArray[@]:1}; do
-		hadoop_workers+="${ip}\n"
+	for(( i=${workerIndex};i<${#IPArray[@]};i++ ));
+	do
+		hadoop_workers+="${IPArray[$i]}\n"
 	done
 	ATTRS_MAP['ldp_hadoop_namenode_ip']=${IPArray[0]}
 	ATTRS_MAP['ldp_hadoop_workers']=${hadoop_workers}
@@ -274,9 +307,11 @@ function loadExtendHadoopAttrs() {
 
 function loadExtendHBaseAttrs() {
 	local IPArray=($(getServiceIPS 'hbase'))
+	local workerIndex=$([[ ${DEPLOY_MODE} == "standalone" ]] && echo 0 || echo 1);
 	local regionservers=''
-	for ip in ${IPArray[@]:1}; do
-		regionservers+="${ip}\n"
+	for(( i=${workerIndex};i<${#IPArray[@]};i++ ));
+	do
+		regionservers+="${IPArray[$i]}\n"
 	done
 	ATTRS_MAP['ldp_hbase_master']=${IPArray[0]}
 	ATTRS_MAP['ldp_hbase_regionservers']=${regionservers}
@@ -308,44 +343,8 @@ function loadExtendAttrs() {
 	loadExtendLightHouseAttrs
 }
 
-function loadScriptConfig() {
-	local clusterId=''
-	if [[ ${DEPLOY_FLAG} == "true" ]];then
-	  if [[ ! -f "${LDP_HOME}/bin/config/nodelist" ]];then
-		  log_error "File[nodelist] does not exist!"
-      exit -1;
-		fi
-		clusterId=`openssl rand -hex 8 | md5sum | cut -c1-8`
-		echo $clusterId > ${LDP_HOME}/bin/config/cluster.id
-		log_info "Prepare to deploy a new cluster:${clusterId}"
-	else
-		clusterId=`cat ${LDP_HOME}/bin/config/cluster.id`
-		echo "The current operating cluster is:"${clusterId}
-	fi
-	if [ ! -n "${clusterId}" ];then
-                log_error "cluster id not found!"
-                exit -1;
-        fi	
-	ATTRS_MAP["ldp_lighthouse_cluster_id"]=${clusterId}
-	loadNodesPWD;
-	loadNodes;
-	loadDowns;
-	loadBasicAttrs;
-	loadDeployAttrs;
-	loadConfigAttrs;
-	loadExtendAttrs;
-	if [ ! -n "${DEPLOY_USER}" ];then
-		log_error "Deployment username cannot be empty!"
-		exit -1;
-	fi
-	if [ ! -n "${DEPLOY_PASSWD}" ];then
-                log_error "Deployment user password cannot be empty!"
-                exit -1;
-        fi
-	log_info "The program current deployment user is:${DEPLOY_USER}"
-	for var in ${!DOWNS_MAP[@]}; do
-		log_info "component:"$var",value:"${DOWNS_MAP[$var]}
-	done
+
+function validClusterConfig(){
 	for var in ${!ATTRS_MAP[@]}; do
 		case "$var" in
 			*_nodes_size) {
@@ -410,5 +409,58 @@ function loadScriptConfig() {
                 log_error "The nodes configuration of hadoop and spark are inconsistent!"
                 exit -1;
         fi	
+}
+
+function validStandaloneConfig(){
+	for var in ${!ATTRS_MAP[@]}; do
+		log_info "config:"$var",value:"${ATTRS_MAP[$var]}
+	done	
+}
+
+
+function loadScriptConfig() {
+	local clusterId=''
+	if [[ ${DEPLOY_FLAG} == "true" ]];then
+	  if [[ ! -f "${LDP_HOME}/bin/config/nodelist" ]];then
+		  log_error "File[nodelist] does not exist!"
+      exit -1;
+		fi
+		clusterId=`openssl rand -hex 8 | md5sum | cut -c1-8`
+		echo $clusterId > ${LDP_HOME}/bin/config/cluster.id
+		log_info "Prepare to deploy a new cluster:${clusterId}"
+	else
+		clusterId=`cat ${LDP_HOME}/bin/config/cluster.id`
+		echo "The current operating cluster is:"${clusterId}
+	fi
+	if [ ! -n "${clusterId}" ];then
+                log_error "cluster id not found!"
+                exit -1;
+        fi	
+	ATTRS_MAP["ldp_lighthouse_cluster_id"]=${clusterId}
+	loadNodesPWD;
+	loadNodes;
+	loadDowns;
+	loadBasicAttrs;
+	loadDeployAttrs;
+	loadConfigAttrs;
+	loadExtendAttrs;
+	if [ ! -n "${DEPLOY_USER}" ];then
+		log_error "Deployment username cannot be empty!"
+		exit -1;
+	fi
+	if [ ! -n "${DEPLOY_PASSWD}" ];then
+                log_error "Deployment user password cannot be empty!"
+                exit -1;
+        fi
+	log_info "The program current deployment user is:${DEPLOY_USER}"
+	for var in ${!DOWNS_MAP[@]}; do
+		log_info "component:"$var",value:"${DOWNS_MAP[$var]}
+	done
+	
+	if [[ ${DEPLOY_MODE} == "standalone" ]];then
+		validStandaloneConfig;
+	else
+		validClusterConfig;
+	fi	
 }
 
