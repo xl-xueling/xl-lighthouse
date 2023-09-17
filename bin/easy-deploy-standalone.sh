@@ -11,7 +11,7 @@ LDP_DATA_DIR=${LDP_HOME}/data
 ROOT_HOME=$(dirname "$LDP_HOME")
 CUR_USER=${USER}
 DEPLOY_FLAG="true"
-DEPLOY_MODE="cluster"
+DEPLOY_MODE="standalone"
 CHECK_OS_VERSION="true"
 LOCKFILE=/tmp/lighthouse_deploy.lock
 source "${CUR_DIR}/common/lib.sh"
@@ -56,7 +56,7 @@ main(){
 	if [ -d "${LDP_HOME}/dependency" ];then
 		echo "=Important=:This operation will delete all data of the cluster,Please execute it carefully !!!"
 		if [[ ! "${args[@]}" =~ "--force" ]];then
-			echo "Program has been deployed, please delete it and execute again, or execute \"easy-deploy.sh --force\" to enforce it!"
+			echo "Program has been deployed, please delete it and execute again, or execute \"easy-deploy-standalone.sh --force\" to enforce it!"
       			rm -f ${LOCKFILE}
 			exit -1;
 		fi  
