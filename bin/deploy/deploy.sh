@@ -73,7 +73,9 @@ deployKafka(){
 	sleep 10
 	local ip=${IPArray[0]}
 	local zoos=($(getVal 'ldp_zookeeper_ips_port'))
-	remoteExecute ${CUR_DIR}/deploy/create_topic.exp ${DEPLOY_USER} ${ip} ${DEPLOY_PASSWD} ${LDP_HOME} ${topicName} "${zoos}"
+	local partitions=${_KAFKA_NUM_PARTITIONS};
+	local factor=${_KAFKA_REPLICATION_FACTOR};
+	remoteExecute ${CUR_DIR}/deploy/create_topic.exp ${DEPLOY_USER} ${ip} ${DEPLOY_PASSWD} ${LDP_HOME} ${topicName} "${zoos}" ${partitions} ${factor}
 	log_info "Program progress,deploy kafka complete!"
 }
 

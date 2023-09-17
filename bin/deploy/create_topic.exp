@@ -6,6 +6,8 @@ set passwd [lindex $argv 2]
 set ldp_home [lindex $argv 3]
 set topic_name [lindex $argv 4]
 set zoos [lindex $argv 5]
+set partitions [lindex $argv 6]
+set factor [lindex $argv 7]
 
 set kafka_home ${ldp_home}/dependency/kafka
 set prompt "*${user}@*\\\$"
@@ -22,7 +24,7 @@ expect {
 expect "${prompt}"
 send "${kafka_home}/bin/kafka-topics.sh --delete --topic ${topic_name} --zookeeper ${zoos} >/dev/null 2>&1 \r"
 expect "${prompt}"
-send "${kafka_home}/bin/kafka-topics.sh --create --topic ${topic_name} --partitions 64 --replication-factor 2 --zookeeper ${zoos}\r"
+send "${kafka_home}/bin/kafka-topics.sh --create --topic ${topic_name} --partitions ${partitions} --replication-factor ${factor} --zookeeper ${zoos}\r"
 expect "${prompt}"
 send "exit\r"
 expect eof
