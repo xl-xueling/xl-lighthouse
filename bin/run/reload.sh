@@ -27,7 +27,7 @@ function reloadDependConfig(){
                        		find ${reload_dir}/${service}/ -type f | xargs --no-run-if-empty sed -i -e 's]${'${attr}'}]'"${ATTRS_MAP[$attr]}"']g'
                         done
 			local index=$(getArrayIndex "${NODES[*]}" "${ip}")
-			find ${reload_dir}/${service}/ -type f | xargs --no-run-if-empty sed -i -e 's]${ld_cluster_nodeid}]'$(($index + 1))']g'
+			find ${reload_dir}/${service}/ -type f | xargs --no-run-if-empty sed -i -e 's]${ldp_lighthouse_nodeid}]'$(($index + 1))']g'
 			if [ "$service" == "redis" ]; then
 				for ((a=1;a<=${_REDIS_NUM_PIDS_PER_NODE};a++))
 				do
@@ -52,7 +52,7 @@ function reloadLightConfig(){
                 	find ${reload_dir}/${service}/ -type f | xargs --no-run-if-empty sed -i -e 's]${'${attr}'}]'"${ATTRS_MAP[$attr]}"']g'
                 done
 		local index=$(getArrayIndex "${NODES[*]}" "${ip}")
-		find ${reload_dir}/${service}/ -type f | xargs --no-run-if-empty sed -i -e 's]${ld_cluster_nodeid}]'$(($index + 1))']g'
+		find ${reload_dir}/${service}/ -type f | xargs --no-run-if-empty sed -i -e 's]${ldp_lighthouse_nodeid}]'$(($index + 1))']g'
 		expect ${CUR_DIR}/common/sync.exp ${DEPLOY_USER} ${reload_dir}/${service}/conf/ ${ip} ${DEPLOY_PASSWD} ${LDP_HOME}
         done            
 }
