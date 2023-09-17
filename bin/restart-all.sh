@@ -9,6 +9,7 @@ CUR_DIR=$(cd "$(dirname "$0")";pwd)
 LDP_HOME=$(dirname "$CUR_DIR")
 ROOT_HOME=$(dirname "$LDP_HOME")
 CUR_USER=${USER}
+DEPLOY_MODE=`cat ${LDP_HOME}/bin/config/cluster.mode`
 LOCKFILE=/tmp/lighthouse_run.lock
 source "${CUR_DIR}/common/lib.sh"
 source "${CUR_DIR}/prepare/prepare.sh"
