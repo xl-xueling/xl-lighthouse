@@ -86,7 +86,7 @@ checkOSVersion(){
 			exit -1;
 		fi
 	elif [ ${lsb} == "Debian" ];then
-		local supportVersions=("9" "10" "11")
+		local supportVersions=("10" "11")
 		if [[ ! "${supportVersions[@]}" =~ "$major" ]];then
 			log_info "The current deployment environment['os':'${lsb}','version:':'${major}'] does not support,process exit!"
 			exit -1;	
