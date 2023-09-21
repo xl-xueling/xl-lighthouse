@@ -80,7 +80,7 @@ checkOSVersion(){
 		log_info "The current deployment environment does not support,process exit!"
 	        exit -1;	
 	elif [[ ${lsb} == "CentOS" ]] || [[ ${lsb} == "Rocky" ]] || [[ ${lsb} == "Alma" ]] || [[ ${lsb} == "RHEL" ]];then
-	  local supportVersions=("7" "8" "9")
+	  local supportVersions=("8" "9")
 	  if [[ ! "${supportVersions[@]}" =~ "$major" ]];then
 			log_info "The current deployment environment['os':'${lsb}','version:':'${major}'] does not support,process exit!"
 			exit -1;
