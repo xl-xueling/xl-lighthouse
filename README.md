@@ -23,7 +23,7 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 </div>
 <br>
 
-<div align="center" style="font-size: 18px;">一键部署，一行代码接入，无需大数据研发运维经验，轻松驾驭海量数据实时统计。</div>
+<div align="center" style="font-size: 20px;">一键部署，一行代码接入，无需大数据研发运维经验，轻松驾驭海量数据实时统计。</div>
 
 
 ### 使用XL-LightHouse后：
