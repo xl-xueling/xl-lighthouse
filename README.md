@@ -21,12 +21,13 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 [![GitHub release date](https://img.shields.io/github/release-date/xl-xueling/xl-lighthouse.svg)](https://github.com/xl-xueling/xl-lighthouse/releases)
 
 </div>
-
 <br>
 
+<div align="center" style="font-size: 18px;">一键部署，一行代码接入，无需大数据研发运维经验，轻松驾驭海量数据实时统计。</div>
 
 
-### 一键部署，一行代码接入，无需大数据研发运维经验，轻松实现海量数据实时统计，使用XL-LightHouse后：
+### 使用XL-LightHouse后：
+
 * 1、再也不需要用Flink、Spark、ClickHouse或者基于Redis这种臃肿笨重的方案跑数了；
 * 2、再也不需要疲于应付对个人价值提升没有多大益处的数据统计需求了，能够帮助您从琐碎反复的数据统计需求中抽身出来，从而专注于对个人提升、对企业发展更有价值的事情；
 * 3、轻松帮您实现任意细粒度的监控指标，是您监控服务运行状况，排查各类业务数据波动、指标异常类问题的好帮手；
