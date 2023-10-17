@@ -105,7 +105,7 @@
                     </#if>
                 </table>
                 <div class="modal-footer" style="margin-right:50px;">
-                    <a href="javascript:MsgBox.Alert('${groupEntity.secretKey}');" id="confirmDelete2" class="btn bg-purple btn-xs">
+                    <a href="javascript:MsgBox.Alert('${groupEntity.secretKey}');" class="btn bg-purple btn-xs">
                         <samp class="i18n" i18n_code="ldp_i18n_group_manage_1018"></samp>
                     </a>
                     <a href="javascript:DISPLAY_OPERATOR.showGroupLimitedRecord('${groupEntity.id}');" id="confirmDelete" class="btn bg-navy btn-xs">
