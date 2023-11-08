@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.insights.dto.project;
 import java.util.Date;
 import java.util.List;
 
-public class ProjectDTO {
+public class ProjectDto {
 
     private int id;
 
