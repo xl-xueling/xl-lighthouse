@@ -9,15 +9,16 @@ const { list } = Mock.mock({
       id: /[0-9]{8}[-][0-9]{4}/,
       name: () =>
         Mock.Random.pick([
-          '每日推荐视频集',
-          '抖音短视频候选集',
-          '国际新闻集合',
+          '测试工程1',
+          '测试工程2',
+          '测试工程3',
         ]),
       'contentType|0-2': 0,
       'filterType|0-1': 0,
       'count|0-2000': 0,
       'createdTime|1-60': 0,
       'status|0-1': 0,
+      'createUser':0,
     },
   ],
 });
@@ -80,7 +81,7 @@ const filterData = (
 
 setupMock({
   setup: () => {
-    Mock.mock(new RegExp('/api/list'), (params) => {
+    Mock.mock(new RegExp('/api/project/list'), (params) => {
       const {
         page = 1,
         pageSize = 10,

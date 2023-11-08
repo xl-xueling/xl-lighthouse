@@ -50,7 +50,7 @@ function SearchTable() {
     const { current, pageSize } = pagination;
     setLoading(true);
     axios
-      .get('/api/list', {
+      .get('/api/project/list', {
         params: {
           page: current,
           pageSize,
