@@ -50,7 +50,7 @@ function getIconFromKey(key) {
       return <IconExclamationCircle className={styles.icon} />;
     case 'user':
       return <IconUser className={styles.icon} />;
-    case 'project':
+    case 'stat':
       return <IconApps className={styles.icon} />;
     default:
       return <div className={styles['icon-empty']} />;
