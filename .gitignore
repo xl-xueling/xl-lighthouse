@@ -1,5 +1,5 @@
-.class
-.iml
+*.class
+*.iml
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -20,6 +20,8 @@
 # misc
 .DS_Store
 *.pem
+*.iml
+*.class
 
 # debug
 npm-debug.log*
