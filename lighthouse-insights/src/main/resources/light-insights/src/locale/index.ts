@@ -3,6 +3,7 @@ const i18n = {
     'menu.welcome': 'Welcome',
     'menu.dashboard': 'Dashboard',
     'menu.list': 'List',
+    'menu.project': 'Project',
     'menu.result': 'Result',
     'menu.exception': 'Exception',
     'menu.form': 'Form',
@@ -61,6 +62,7 @@ const i18n = {
   'zh-CN': {
     'menu.dashboard': '仪表盘',
     'menu.list': '列表页',
+    'menu.project': '统计工程',
     'menu.result': '结果页',
     'menu.exception': '异常页',
     'menu.form': '表单页',
