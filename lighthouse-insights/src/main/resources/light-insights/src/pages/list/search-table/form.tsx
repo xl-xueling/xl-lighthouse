@@ -98,10 +98,12 @@ function SearchForm(props: {
               label={t['searchTable.columns.createdTime']}
               field="createdTime"
             >
+
+
               <DatePicker.RangePicker
-                allowClear
-                style={{ width: '100%' }}
-                disabledDate={(date) => dayjs(date).isAfter(dayjs())}
+                  allowClear
+                  style={{ width: '100%' }}
+                  disabledDate={(date) => dayjs(date).isAfter(dayjs())}
               />
             </Form.Item>
           </Col>
