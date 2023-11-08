@@ -22,6 +22,7 @@
 *.pem
 *.iml
 *.class
+*.lst
 
 # debug
 npm-debug.log*
