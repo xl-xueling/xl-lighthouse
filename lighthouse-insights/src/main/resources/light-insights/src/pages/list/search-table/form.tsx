@@ -20,7 +20,7 @@ const { useForm } = Form;
 
 function SearchForm(props: {
   onSearch: (values: Record<string, any>) => void;
-}) {
+}):any {
   const { lang } = useContext(GlobalContext);
 
   const t = useLocale(locale);
