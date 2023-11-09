@@ -16,6 +16,8 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import './mock';
 import { getColumns } from './constants';
+import {request} from "@/utils/request";
+import { queryList } from "@/api/project";
 
 const { Title } = Typography;
 export const ContentType = ['图文', '横版短视频', '竖版短视频'];
@@ -46,27 +48,42 @@ function SearchTable() {
     fetchData();
   }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
-  function fetchData() {
-    const { current, pageSize } = pagination;
+
+
+  async function fetchData() {
+    const {current, pageSize} = pagination;
     setLoading(true);
-    axios
-      .get('/api/project/list', {
+    try {
+      const a:any = await queryList({
         params: {
           page: current,
           pageSize,
           ...formParams,
         },
-      })
-      .then((res) => {
-        setData(res.data.list);
-        setPatination({
-          ...pagination,
-          current,
-          pageSize,
-          total: res.data.total,
-        });
-        setLoading(false);
+      }).then((res:any) => {
+        console.log("res is:" + JSON.stringify(res.message));
       });
+    } catch (error) {
+    }
+
+    axios
+        .get('/api/v1/project/list', {
+          params: {
+            page: current,
+            pageSize,
+            ...formParams,
+          },
+        })
+        .then((res) => {
+          setData(res.data.data.list);
+          setPatination({
+            ...pagination,
+            current,
+            pageSize,
+            total: res.data.total,
+          });
+          setLoading(false);
+        });
   }
 
   function onChangeTable({ current, pageSize }) {
