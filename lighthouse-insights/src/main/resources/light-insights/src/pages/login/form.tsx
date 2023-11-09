@@ -14,6 +14,7 @@ import useStorage from '@/utils/useStorage';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
+import { loginRequest } from '@/api/login'
 
 export default function LoginForm() {
   const formRef = useRef<FormInstance>();
@@ -39,22 +40,25 @@ export default function LoginForm() {
     window.location.href = '/';
   }
 
-  function login(params) {
+  async function login(params) {
     setErrorMessage('');
     setLoading(true);
-    axios
-      .post('/api/user/login', params)
-      .then((res) => {
-        const { status, msg } = res.data;
-        if (status === 'ok') {
-          afterLoginSuccess(params);
-        } else {
-          setErrorMessage(msg || t['login.form.login.errMsg']);
-        }
-      })
-      .finally(() => {
-        setLoading(false);
+    try{
+      const data =
+          await loginRequest(params).then((res:any) => {
+            const {code, msg} = res;
+            if (code === '0') {
+              afterLoginSuccess(params);
+            } else {
+              setErrorMessage(msg || t['login.form.login.errMsg']);
+            }
+          }
+      ).finally(() => {
+            setLoading(false);
       });
+    }catch (error){
+      console.log("error:" + error);
+    }
   }
 
   function onSubmitClick() {
