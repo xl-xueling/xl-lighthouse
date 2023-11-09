@@ -9,32 +9,25 @@ import {
 } from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
 import { IconDownload, IconPlus } from '@arco-design/web-react/icon';
-import axios from 'axios';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
 import styles from './style/index.module.less';
 import './mock';
 import { getColumns } from './constants';
-import {request} from "@/utils/request";
 import { queryList } from "@/api/project";
-
 const { Title } = Typography;
-export const ContentType = ['图文', '横版短视频', '竖版短视频'];
-export const FilterType = ['规则筛选', '人工'];
-export const Status = ['已上线', '未上线'];
 
-function SearchTable() {
+function ProjectList() {
   const t = useLocale(locale);
-
   const tableCallback = async (record, type) => {
+    console.log("record is:" + JSON.stringify(record));
     console.log(record, type);
   };
-
   const columns = useMemo(() => getColumns(t, tableCallback), [t]);
-
+  console.log("columns:" + JSON.stringify(columns))
   const [data, setData] = useState([]);
-  const [pagination, setPatination] = useState<PaginationProps>({
+  const [pagination, setPagination] = useState<PaginationProps>({
     sizeCanChange: true,
     showTotal: true,
     pageSize: 10,
@@ -45,10 +38,9 @@ function SearchTable() {
   const [formParams, setFormParams] = useState({});
 
   useEffect(() => {
+    console.log("current:" + pagination.current + ",page size:" + pagination.pageSize)
     fetchData();
   }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
-
-
 
   async function fetchData() {
     const {current, pageSize} = pagination;
@@ -61,33 +53,22 @@ function SearchTable() {
           ...formParams,
         },
       }).then((res:any) => {
-        console.log("res is:" + JSON.stringify(res.message));
+        setData(res.data.list);
+        setPagination({
+          ...pagination,
+          current,
+          pageSize,
+          total: res.data.total,
+        });
+        setLoading(false);
       });
     } catch (error) {
+      console.error("error is:" + error);
     }
-
-    axios
-        .get('/api/v1/project/list', {
-          params: {
-            page: current,
-            pageSize,
-            ...formParams,
-          },
-        })
-        .then((res) => {
-          setData(res.data.data.list);
-          setPatination({
-            ...pagination,
-            current,
-            pageSize,
-            total: res.data.total,
-          });
-          setLoading(false);
-        });
   }
 
   function onChangeTable({ current, pageSize }) {
-    setPatination({
+    setPagination({
       ...pagination,
       current,
       pageSize,
@@ -95,7 +76,7 @@ function SearchTable() {
   }
 
   function handleSearch(params) {
-    setPatination({ ...pagination, current: 1 });
+    setPagination({ ...pagination, current: 1 });
     setFormParams(params);
   }
 
@@ -134,4 +115,4 @@ function SearchTable() {
   );
 }
 
-export default SearchTable;
+export default ProjectList;
