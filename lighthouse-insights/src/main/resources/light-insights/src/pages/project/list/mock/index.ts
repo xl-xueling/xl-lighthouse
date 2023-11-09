@@ -82,9 +82,12 @@ const filterData = (
 setupMock({
   setup: () => {
     Mock.mock(new RegExp('/api/v1/project/list'), (params) => {
+      console.log("params is:" + JSON.stringify(params));
+      const  b = qs.parseUrl(params.url).query;
+      console.log("b is:" + JSON.stringify(b));
       const {
         page = 1,
-        pageSize = 10,
+        pageSize = 20,
         ...rest
       } = qs.parseUrl(params.url).query;
       const p = page as number;
