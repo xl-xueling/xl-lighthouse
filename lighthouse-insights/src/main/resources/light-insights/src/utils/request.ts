@@ -6,6 +6,11 @@ export const request = (config) => {
         timeout:5000,
     })
     http.interceptors.request.use((config) => {
+        const token = window.localStorage.getItem('token') || window.sessionStorage.getItem('token');
+        if (token) {
+            config.headers['token'] = token;
+        }
+        console.log("before:" + JSON.stringify(config));
         return config;
     },(error) => {
         console.log('error',error.response);

@@ -27,16 +27,14 @@ export default function LoginForm() {
 
   const [rememberPassword, setRememberPassword] = useState(!!loginParams);
 
-  function afterLoginSuccess(params) {
-    // 记住密码
+  function afterLoginSuccess(params,data) {
     if (rememberPassword) {
       setLoginParams(JSON.stringify(params));
     } else {
       removeLoginParams();
     }
-    // 记录登录状态
     localStorage.setItem('userStatus', 'login');
-    // 跳转首页
+    localStorage.setItem('token',data.token);
     window.location.href = '/';
   }
 
@@ -46,9 +44,11 @@ export default function LoginForm() {
     try{
       const data =
           await loginRequest(params).then((res:any) => {
-            const {code, msg} = res;
+            console.log("res is:" + JSON.stringify(res));
+            const {code, msg, data} = res;
+            console.log("token:" + data.token);
             if (code === '0') {
-              afterLoginSuccess(params);
+              afterLoginSuccess(params,data);
             } else {
               setErrorMessage(msg || t['login.form.login.errMsg']);
             }
