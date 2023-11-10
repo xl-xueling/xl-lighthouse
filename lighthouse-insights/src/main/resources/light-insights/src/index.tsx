@@ -16,6 +16,7 @@ import checkLogin from './utils/checkLogin';
 import changeTheme from './utils/changeTheme';
 import useStorage from './utils/useStorage';
 import './mock';
+import Register from "@/pages/register";
 
 const store = createStore(rootReducer);
 
@@ -50,7 +51,9 @@ function Index() {
   useEffect(() => {
     if (checkLogin()) {
       fetchUserInfo();
-    } else if (window.location.pathname.replace(/\//g, '') !== 'login') {
+    } else if (window.location.pathname.replace(/\//g, '') !== 'login'
+        && window.location.pathname.replace(/\//g, '') !== 'register'
+    ) {
       window.location.pathname = '/login';
     }
   }, []);
@@ -86,6 +89,7 @@ function Index() {
           <GlobalContext.Provider value={contextValue}>
             <Switch>
               <Route path="/login" component={Login} />
+              <Route path="/register" component={Register} />
               <Route path="/" component={PageLayout} />
             </Switch>
           </GlobalContext.Provider>
