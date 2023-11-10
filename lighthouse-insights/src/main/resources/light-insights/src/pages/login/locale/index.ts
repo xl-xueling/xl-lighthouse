@@ -9,7 +9,7 @@ const i18n = {
     'login.form.rememberPassword': 'Remember password',
     'login.form.forgetPassword': 'Forgot password',
     'login.form.agreeLicence': 'I agree to the terms!',
-    'login.form.login': 'login',
+    'login.form.login': 'Login',
     'login.form.register': 'register account',
     'login.banner.slogan1': 'Out-of-the-box high-quality template',
     'login.banner.subSlogan1':
