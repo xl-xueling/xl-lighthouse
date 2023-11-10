@@ -20,12 +20,15 @@ export default function LoginForm() {
   const formRef = useRef<FormInstance>();
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [loginParams, setLoginParams, removeLoginParams] =
-    useStorage('loginParams');
+  const [loginParams, setLoginParams, removeLoginParams] = useStorage('loginParams');
+
+  console.log("loginParams:" + loginParams);
 
   const t = useLocale(locale);
 
   const [rememberPassword, setRememberPassword] = useState(!!loginParams);
+
+  const [agreeLicence,setAgreeLicence] = useState(true);
 
   function afterLoginSuccess(params,data) {
     if (rememberPassword) {
@@ -67,7 +70,6 @@ export default function LoginForm() {
     });
   }
 
-  // 读取 localStorage，设置初始值
   useEffect(() => {
     const rememberPassword = !!loginParams;
     setRememberPassword(rememberPassword);
@@ -109,11 +111,11 @@ export default function LoginForm() {
         </Form.Item>
         <Space size={16} direction="vertical">
           <div className={styles['login-form-password-actions']}>
-            <Checkbox checked={rememberPassword} onChange={setRememberPassword}>
-              {t['login.form.rememberPassword']}
+            <Checkbox checked={agreeLicence} onChange={setAgreeLicence}>
+              {t['login.form.agreeLicence']}
             </Checkbox>
-            <Link>{t['login.form.forgetPassword']}</Link>
           </div>
+
           <Button type="primary" long onClick={onSubmitClick} loading={loading}>
             {t['login.form.login']}
           </Button>
