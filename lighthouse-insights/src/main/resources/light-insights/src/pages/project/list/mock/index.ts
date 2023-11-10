@@ -82,9 +82,6 @@ const filterData = (
 setupMock({
   setup: () => {
     Mock.mock(new RegExp('/api/v1/project/list'), (params) => {
-      console.log("after is:" + JSON.stringify(params));
-      const  b = qs.parseUrl(params.url).query;
-      console.log("b is:" + JSON.stringify(b));
       const {
         page = 1,
         pageSize = 20,
@@ -96,6 +93,7 @@ setupMock({
       return {
         code:0,
         message:'success',
+        token:"success-"+new Date().getTime(),
         data:{
           list: result.slice((p - 1) * ps, p * ps),
           total: result.length,
