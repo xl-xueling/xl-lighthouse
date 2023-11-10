@@ -67,9 +67,9 @@ export default function RegisterForm() {
     const [form] = Form.useForm();
     const FormItem = Form.Item;
     return (
-        <div className={styles['login-form-wrapper']}>
-            <div className={styles['login-form-title']}>{t['register.form.title']}</div>
-            <div className={styles['login-form-error-msg']}>{errorMessage}</div>
+        <div className={styles['register-form-wrapper']}>
+        <div className={styles['register-form-title']}>{t['register.form.title']}</div>
+        <div className={styles['register-form-error-msg']}>{errorMessage}</div>
         <Form
             form={form}
             style={{ width: 320 }}
@@ -83,11 +83,11 @@ export default function RegisterForm() {
                 Message.success('success');
             }}
         >
-            <FormItem field='userName' rules={[{ required: true, message: 'username is required' }]}>
-                <Input placeholder='please enter your username' />
+            <FormItem field='userName' rules={[{ required: true, message: t['register.form.userName.errMsg'] }]}>
+                <Input prefix={<IconUser />} placeholder='Enter Your UserName' />
             </FormItem>
-            <FormItem field='password' rules={[{ required: true, message: 'password is required' }]}>
-                <Input placeholder='please enter your password' />
+            <FormItem field='password' rules={[{ required: true, message: t['register.form.password.errMsg'] }]}>
+                <Input prefix={<IconLock />} placeholder='Enter Your Password' />
             </FormItem>
             <FormItem
                 field='confirm_password'
@@ -95,20 +95,26 @@ export default function RegisterForm() {
                 rules={[{
                     validator: (v, cb) => {
                         if (!v) {
-                            return cb('confirm_password is required')
+                            return cb(t['register.form.confirm.password.errMsg'])
                         } else if (form.getFieldValue('password') !== v) {
-                            return cb('confirm_password must be equal with password')
+                            return cb(t['register.form.confirm.password.equals.errMsg'])
                         }
                         cb(null)
                     }
                 }]}
             >
-                <Input placeholder='please confirm your password' />
+                <Input prefix={<IconLock />} placeholder='Confirm Your Password' />
             </FormItem>
             <FormItem>
-                <Button type='primary' htmlType='submit' long>
+                <Button style={{marginBottom:16}} type='primary' htmlType='submit' long>
                     Register
                 </Button>
+                <Button href={"/login"}
+                          type="text"
+                          long
+                          className={styles['login-form-register-btn']}>
+                          {t['register.form.login']}
+                        </Button>
             </FormItem>
         </Form>
         </div>

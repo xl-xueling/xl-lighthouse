@@ -120,10 +120,10 @@ export default function LoginForm() {
             {t['login.form.login']}
           </Button>
           <Button
+             href={"/register"}
             type="text"
             long
-            className={styles['login-form-register-btn']}
-          >
+            className={styles['login-form-register-btn']}>
             {t['login.form.register']}
           </Button>
         </Space>
