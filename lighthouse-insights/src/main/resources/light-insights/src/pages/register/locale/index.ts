@@ -1,0 +1,46 @@
+const i18n = {
+  'en-US': {
+    'register.form.title': 'XL-LightHouse',
+    'register.form.userName.errMsg': 'Username cannot be empty',
+    'register.form.password.errMsg': 'Password cannot be empty',
+    'register.form.register.errMsg': 'Login error, please refresh and try again',
+    'register.form.userName.placeholder': 'Username',
+    'register.form.password.placeholder': 'Password',
+    'register.form.repeat.password.placeholder': 'Repeat Password',
+    'register.form.rememberPassword': 'Remember password',
+    'register.form.forgetPassword': 'Forgot password',
+    'register.form.agreeLicence': 'I agree to the terms!',
+    'register.form.register': 'Register Account',
+    'register.form.login': 'login',
+    'register.banner.slogan1': 'Out-of-the-box high-quality template',
+    'register.banner.subSlogan1':
+      'Rich page templates, covering most typical business scenarios',
+    'register.banner.slogan2': 'Built-in solutions to common problems',
+    'register.banner.subSlogan2':
+      'Internationalization, routing configuration, state management everything',
+    'register.banner.slogan3': 'Access visualization enhancement tool AUX',
+    'register.banner.subSlogan3': 'Realize flexible block development',
+  },
+  'zh-CN': {
+    'register.form.title': 'XL-LightHouse',
+    'register.form.userName.errMsg': '用户名不能为空',
+    'register.form.password.errMsg': '密码不能为空',
+    'register.form.register.errMsg': '登录出错，请刷新重试',
+    'register.form.userName.placeholder': '用户名',
+    'register.form.password.placeholder': '密码',
+    'register.form.repeat.password.placeholder': '再次输入密码',
+    'register.form.rememberPassword': '记住密码',
+    'register.form.forgetPassword': '忘记密码',
+    'register.form.agreeLicence': '同意使用协议！',
+    'register.form.register': '注册',
+    'register.form.login': '登录',
+    'register.banner.slogan1': '开箱即用的高质量模板',
+    'register.banner.subSlogan1': '丰富的的页面模板，覆盖大多数典型业务场景',
+    'register.banner.slogan2': '内置了常见问题的解决方案',
+    'register.banner.subSlogan2': '国际化，路由配置，状态管理应有尽有',
+    'register.banner.slogan3': '接入可视化增强工具AUX',
+    'register.banner.subSlogan3': '实现灵活的区块式开发',
+  },
+};
+
+export default i18n;
