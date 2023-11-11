@@ -4,6 +4,7 @@ import { isSSR } from '@/utils/is';
 import './user';
 import './message-box';
 import '../pages/register/mock'
+import '../pages/department/mock'
 
 if (!isSSR) {
   Mock.setup({
