@@ -4,10 +4,10 @@ import {
     Checkbox,
     Link,
     Button,
-    Space, Message,
+    Space, Message, Select, Avatar,
 } from '@arco-design/web-react';
 import { FormInstance } from '@arco-design/web-react/es/Form';
-import { IconLock, IconUser } from '@arco-design/web-react/icon';
+import {IconDesktop, IconDice, IconEmail, IconIdcard, IconLock, IconPhone, IconUser} from '@arco-design/web-react/icon';
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import useStorage from '@/utils/useStorage';
@@ -20,6 +20,25 @@ export default function RegisterForm() {
   const formRef = useRef<FormInstance>();
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
+
+
+  const [departmentOptions, setDepartmentOptions] = useState([]);
+
+    const toptions = ['Beijing', 'Shanghai', 'Guangzhou', 'Shenzhen', 'Wuhan'];
+
+
+    useEffect(() => {
+        fetch('https://randomuser.me/api/?results=3')
+            .then((response) => response.json())
+            .then((body) => {
+                const newOptions = body.results.map((user) => ({
+                    label: user.name.first,
+                    value: user.email,
+                }));
+                console.log("newOptions:" + JSON.stringify(newOptions))
+                setDepartmentOptions(newOptions);
+            });
+    }, []);
 
   const t = useLocale(locale);
 
@@ -38,6 +57,7 @@ export default function RegisterForm() {
     setErrorMessage('');
     setLoading(true);
     try{
+      console.log("send params:" + JSON.stringify(params));
       const data =
           await registerRequest(params).then((res:any) => {
             console.log("res is:" + JSON.stringify(res));
@@ -75,7 +95,6 @@ export default function RegisterForm() {
         <Form
             form={form}
             ref={formRef}
-            style={{ width: 320 }}
             wrapperCol={{ span: 24 }}
             autoComplete='off'
             onSubmit={(v) => {
@@ -114,6 +133,27 @@ export default function RegisterForm() {
                 }]}
             >
                 <Input prefix={<IconLock />} placeholder='Confirm Your Password' />
+            </FormItem>
+            <FormItem
+                field='email' rules={[
+                    { required: true, message: t['register.form.password.errMsg'], validateTrigger : ['onBlur'] },
+                    { required: true, match: new RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"g"),message: '邮箱校验失败' , validateTrigger : ['onBlur']},
+                ]}>
+                <Input prefix={<IconEmail />} placeholder='Enter Your Email'
+            />
+            </FormItem>
+            <FormItem
+                field='phone'>
+                <Input prefix={<IconPhone />} placeholder='Enter Your Phone Number' />
+            </FormItem>
+            <FormItem
+                field='department'>
+                <Select prefix={<IconIdcard/>}
+                        options={departmentOptions}
+                    placeholder='Please Select Department'
+                    showSearch
+                >
+                </Select>
             </FormItem>
             <FormItem>
                 <Button style={{marginBottom:16}} type='primary' htmlType='submit' long>
