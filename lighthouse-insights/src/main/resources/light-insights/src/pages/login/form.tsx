@@ -47,9 +47,7 @@ export default function LoginForm() {
     try{
       const data =
           await loginRequest(params).then((res:any) => {
-            console.log("res is:" + JSON.stringify(res));
             const {code, msg, data} = res;
-            console.log("token:" + data.token);
             if (code === '0') {
               afterLoginSuccess(params,data);
             } else {
@@ -65,9 +63,13 @@ export default function LoginForm() {
   }
 
   function onSubmitClick() {
-    formRef.current.validate().then((values) => {
-      login(values);
-    });
+    try{
+      formRef.current.validate().then((values) => {
+        login(values);
+      });
+    }catch (error){
+      console.log("error:" + error)
+    }
   }
 
   useEffect(() => {
@@ -116,7 +118,7 @@ export default function LoginForm() {
             </Checkbox>
           </div>
 
-          <Button type="primary" long onClick={onSubmitClick} loading={loading}>
+          <Button type="primary" long htmlType='submit' loading={loading}>
             {t['login.form.login']}
           </Button>
           <Button

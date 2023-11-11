@@ -84,33 +84,21 @@ setupMock({
     Mock.mock(new RegExp('/api/v1/user/register'), (params) => {
       console.log("receive params:" + JSON.stringify(params));
       const { userName, password } = JSON.parse(params.body);
-      if (!userName) {
-        return {
-          code:'1',
-          msg:'用户名不能为空',
-          data:{
-          }
-        };
-      }
-      if (!password) {
-        return {
-          code:'2',
-          msg:'密码不能为空',
-          data:{}
-        };
-      }
       if (userName === 'admin' && password === 'admin') {
         return {
           code:'0',
-          msg:'登录成功！',
-          data:{
-            token:"sasucessawwxoks"
-          }
+          msg:'注册成功！',
+          data:{}
         };
       }
+      // return {
+      //   code:'1',
+      //   msg:'用户注册失败，参数格式非法！',
+      //   data:{}
+      // };
       return {
-        code:'3',
-        msg:'账号密码错误！',
+        code:'0',
+        msg:'注册成功！',
         data:{}
       };
     });
