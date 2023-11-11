@@ -22,7 +22,6 @@ export default function RegisterForm() {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [departmentOptions, setDepartmentOptions] = useState([]);
-  const toptions = ['Beijing', 'Shanghai', 'Guangzhou', 'Shenzhen', 'Wuhan'];
 
     useEffect(() => {
         queryAllDepartment(null).then((res:any) => {
@@ -33,14 +32,16 @@ export default function RegisterForm() {
                     departmentMap.set(x.id,x);
                 })
                 const newOptions = data.map(function(department) {
-                    let rootPid = department.pid;
                     let name = '';
-                    while(rootPid !== "0"){
-                        const pDepartment = departmentMap.get(rootPid);
-                        name += pDepartment.name + "_";
-                        rootPid = pDepartment.pid;
+                    const fullpath = department.fullpath;
+                    const pDepartmentArr = fullpath.split(",");
+                    for (let i = 0; i < pDepartmentArr.length; i++) {
+                        const department = departmentMap.get(pDepartmentArr[i]);
+                        name += department.name;
+                        if(i !== pDepartmentArr.length - 1){
+                            name += "_";
+                        }
                     }
-                    name += department.name;
                     return {
                         label:name,
                         value:department.id,
@@ -71,7 +72,6 @@ export default function RegisterForm() {
     setErrorMessage('');
     setLoading(true);
     try{
-      console.log("send params:" + JSON.stringify(params));
       const data =
           await registerRequest(params).then((res:any) => {
             const {code, msg, data} = res;
@@ -139,7 +139,7 @@ export default function RegisterForm() {
                                 return callback(t['register.form.confirm.password.equals.errMsg']);
                             }
                         }catch (error){
-
+                            console.log("error:" + error);
                         }
                     }
                 }]}
