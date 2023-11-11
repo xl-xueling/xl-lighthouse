@@ -15,30 +15,44 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import { registerRequest } from '@/api/register'
+import { queryAll as queryAllDepartment } from "@/api/department";
 
 export default function RegisterForm() {
   const formRef = useRef<FormInstance>();
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-
-
   const [departmentOptions, setDepartmentOptions] = useState([]);
-
-    const toptions = ['Beijing', 'Shanghai', 'Guangzhou', 'Shenzhen', 'Wuhan'];
-
+  const toptions = ['Beijing', 'Shanghai', 'Guangzhou', 'Shenzhen', 'Wuhan'];
 
     useEffect(() => {
-        fetch('https://randomuser.me/api/?results=3')
-            .then((response) => response.json())
-            .then((body) => {
-                const newOptions = body.results.map((user) => ({
-                    label: user.name.first,
-                    value: user.email,
-                }));
-                console.log("newOptions:" + JSON.stringify(newOptions))
+        queryAllDepartment(null).then((res:any) => {
+            const {code, msg, data} = res;
+            if (code === '0') {
+                const departmentMap = new Map();
+                data.forEach(x => {
+                    departmentMap.set(x.id,x);
+                })
+                const newOptions = data.map(function(department) {
+                    let rootPid = department.pid;
+                    let name = '';
+                    while(rootPid !== "0"){
+                        const pDepartment = departmentMap.get(rootPid);
+                        name += pDepartment.name + "_";
+                        rootPid = pDepartment.pid;
+                    }
+                    name += department.name;
+                    return {
+                        label:name,
+                        value:department.id,
+                        key:department.id
+                    }
+                })
                 setDepartmentOptions(newOptions);
-            });
-    }, []);
+            } else {
+                setErrorMessage(msg || t['register.form.login.errMsg']);
+            }
+        })
+    }, [departmentOptions]);
 
   const t = useLocale(locale);
 
@@ -60,9 +74,7 @@ export default function RegisterForm() {
       console.log("send params:" + JSON.stringify(params));
       const data =
           await registerRequest(params).then((res:any) => {
-            console.log("res is:" + JSON.stringify(res));
             const {code, msg, data} = res;
-            console.log("token:" + data.token);
             if (code === '0') {
               afterLoginSuccess(params,data);
             } else {
@@ -149,10 +161,19 @@ export default function RegisterForm() {
             <FormItem
                 field='department'>
                 <Select prefix={<IconIdcard/>}
-                        options={departmentOptions}
                     placeholder='Please Select Department'
-                    showSearch
-                >
+                        showSearch={{
+                            retainInputValue: true,
+                        }}
+                        filterOption={function (inputValue,option) {
+                            return option.props.children.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0
+                        }}
+                    >
+                    {departmentOptions.map((option, index) => (
+                        <Select.Option key={option.value}  value={option.value}>
+                            {option.label}
+                        </Select.Option>
+                    ))}
                 </Select>
             </FormItem>
             <FormItem>
