@@ -2,7 +2,7 @@ import {request} from "@/utils/request";
 
 export async function queryAll(data)  {
     return request({
-        url:'/department/2all',
+        url:'/department/all',
         method:'POST',
         data,
     })
