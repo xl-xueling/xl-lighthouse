@@ -23,6 +23,7 @@ export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [departmentOptions, setDepartmentOptions] = useState([]);
 
+    const t = useLocale(locale);
     useEffect(() => {
         queryAllDepartment(null).then((res:any) => {
             const {code, msg, data} = res;
@@ -50,23 +51,15 @@ export default function RegisterForm() {
                 })
                 setDepartmentOptions(newOptions);
             } else {
-                setErrorMessage(msg || t['register.form.login.errMsg']);
+                setErrorMessage(msg || t['register.form.getDepartmentsInfo.errMsg']);
             }
-        })
+        },
+            (error) => {
+                setErrorMessage(t['system.error']);
+            })
     }, [departmentOptions]);
 
-  const t = useLocale(locale);
 
-  function afterLoginSuccess(params,data) {
-    // if (rememberPassword) {
-    //   setLoginParams(JSON.stringify(params));
-    // } else {
-    //   removeLoginParams();
-    // }
-    localStorage.setItem('userStatus', 'login');
-    localStorage.setItem('token',data.token);
-    window.location.href = '/';
-  }
 
   async function register(params) {
     setErrorMessage('');
@@ -76,9 +69,9 @@ export default function RegisterForm() {
           await registerRequest(params).then((res:any) => {
             const {code, msg, data} = res;
             if (code === '0') {
-              afterLoginSuccess(params,data);
+                window.location.href = '/login';
             } else {
-              setErrorMessage(msg || t['register.form.login.errMsg']);
+              setErrorMessage(msg || t['register.form.register.errMsg']);
             }
           }
       ).finally(() => {
@@ -116,13 +109,13 @@ export default function RegisterForm() {
         >
             <FormItem field='userName' rules={[
                 { required: true, message: t['register.form.userName.errMsg'] , validateTrigger : ['onBlur']},
-                { required: true, match: new RegExp(/^[a-zA-Z0-9_]{5,15}$/,"g"),message: '用户名校验失败' , validateTrigger : ['onBlur']},
+                { required: true, match: new RegExp(/^[a-zA-Z0-9_]{5,15}$/,"g"),message: t['register.form.userName.validate.errMsg'] , validateTrigger : ['onBlur']},
                 ]}>
                 <Input prefix={<IconUser />} placeholder='Enter Your UserName' />
             </FormItem>
             <FormItem field='password' rules={[
                 { required: true, message: t['register.form.password.errMsg'], validateTrigger : ['onBlur'] },
-                { required: true, match: new RegExp(/^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{4,19}$/,"g"),message: '密码校验失败' , validateTrigger : ['onBlur']},
+                { required: true, match: new RegExp(/^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{4,19}$/,"g"),message: t['register.form.password.validate.errMsg'] , validateTrigger : ['onBlur']},
             ]}>
                 <Input prefix={<IconLock />} placeholder='Enter Your Password' />
             </FormItem>
@@ -130,6 +123,7 @@ export default function RegisterForm() {
                 field='confirm_password'
                 dependencies={['password']}
                 rules={[
+                        { required: true, message: t['register.form.confirm.password.errMsg'], validateTrigger : ['onBlur'] },
                     {
                     validator: (v, callback) => {
                         try{
@@ -148,18 +142,24 @@ export default function RegisterForm() {
             </FormItem>
             <FormItem
                 field='email' rules={[
-                    { required: true, message: t['register.form.password.errMsg'], validateTrigger : ['onBlur'] },
-                    { required: true, match: new RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"g"),message: '邮箱校验失败' , validateTrigger : ['onBlur']},
+                    { required: true, message: t['register.form.email.errMsg'], validateTrigger : ['onBlur'] },
+                    { required: true, match: new RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"g"),message: t['register.form.email.validate.errMsg'] , validateTrigger : ['onBlur']},
                 ]}>
                 <Input prefix={<IconEmail />} placeholder='Enter Your Email'
             />
             </FormItem>
             <FormItem
-                field='phone'>
+                field='phone'
+                rules={[
+                    { required: true, message: t['register.form.phone.errMsg'] , validateTrigger : ['onBlur']},
+                ]}>
                 <Input prefix={<IconPhone />} placeholder='Enter Your Phone Number' />
             </FormItem>
             <FormItem
-                field='department'>
+                field='department'
+                rules={[
+                    { required: true, message: t['register.form.department.errMsg'] , validateTrigger : ['onBlur']},
+                ]}>
                 <Select prefix={<IconIdcard/>}
                     placeholder='Please Select Department'
                         showSearch={{
@@ -177,7 +177,7 @@ export default function RegisterForm() {
                 </Select>
             </FormItem>
             <FormItem>
-                <Button style={{marginBottom:16}} type='primary' htmlType='submit' long>
+                <Button style={{marginBottom:16}} type='primary' htmlType='submit' long loading={loading}>
                     Register
                 </Button>
                 <Button href={"/login"}

@@ -12,14 +12,17 @@ export const request = (config) => {
         }
         return config;
     },(error) => {
-        console.log('error',error.response);
+        console.log('error info:',error.response);
+        throw error;
     })
 
     http.interceptors.response.use((res) => {
+        console.log("res is222:" + JSON.stringify(res));
         window.localStorage.setItem("token",res.data.token);
         return res.data;
     },(error) => {
         console.log('error',error.response);
+        throw error;
     })
     return http(config);
 }
