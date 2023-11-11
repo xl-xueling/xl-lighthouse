@@ -14,7 +14,7 @@ import useStorage from '@/utils/useStorage';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import { loginRequest } from '@/api/login'
+import { registerRequest } from '@/api/register'
 
 export default function RegisterForm() {
   const formRef = useRef<FormInstance>();
@@ -22,8 +22,6 @@ export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
 
   const t = useLocale(locale);
-
-  const [agreeLicence,setAgreeLicence] = useState(true);
 
   function afterLoginSuccess(params,data) {
     // if (rememberPassword) {
@@ -36,12 +34,12 @@ export default function RegisterForm() {
     window.location.href = '/';
   }
 
-  async function login(params) {
+  async function register(params) {
     setErrorMessage('');
     setLoading(true);
     try{
       const data =
-          await loginRequest(params).then((res:any) => {
+          await registerRequest(params).then((res:any) => {
             console.log("res is:" + JSON.stringify(res));
             const {code, msg, data} = res;
             console.log("token:" + data.token);
@@ -60,9 +58,13 @@ export default function RegisterForm() {
   }
 
   function onSubmitClick() {
-    formRef.current.validate().then((values) => {
-      login(values);
-    });
+      try{
+          formRef.current.validate().then((values) => {
+              register(values);
+          });
+      }catch (error){
+          console.log("error:"+error)
+      }
   }
     const [form] = Form.useForm();
     const FormItem = Form.Item;
@@ -72,34 +74,42 @@ export default function RegisterForm() {
         <div className={styles['register-form-error-msg']}>{errorMessage}</div>
         <Form
             form={form}
+            ref={formRef}
             style={{ width: 320 }}
             wrapperCol={{ span: 24 }}
             autoComplete='off'
-            onValuesChange={(v, vs) => {
-                console.log(v, vs);
-            }}
             onSubmit={(v) => {
-                console.log(v);
+                onSubmitClick();
                 Message.success('success');
             }}
         >
-            <FormItem field='userName' rules={[{ required: true, message: t['register.form.userName.errMsg'] }]}>
+            <FormItem field='userName' rules={[
+                { required: true, message: t['register.form.userName.errMsg'] , validateTrigger : ['onBlur']},
+                { required: true, match: new RegExp(/^[a-zA-Z0-9_]{5,15}$/,"g"),message: '用户名校验失败' , validateTrigger : ['onBlur']},
+                ]}>
                 <Input prefix={<IconUser />} placeholder='Enter Your UserName' />
             </FormItem>
-            <FormItem field='password' rules={[{ required: true, message: t['register.form.password.errMsg'] }]}>
+            <FormItem field='password' rules={[
+                { required: true, message: t['register.form.password.errMsg'], validateTrigger : ['onBlur'] },
+                { required: true, match: new RegExp(/^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{4,19}$/,"g"),message: '密码校验失败' , validateTrigger : ['onBlur']},
+            ]}>
                 <Input prefix={<IconLock />} placeholder='Enter Your Password' />
             </FormItem>
             <FormItem
                 field='confirm_password'
                 dependencies={['password']}
-                rules={[{
-                    validator: (v, cb) => {
-                        if (!v) {
-                            return cb(t['register.form.confirm.password.errMsg'])
-                        } else if (form.getFieldValue('password') !== v) {
-                            return cb(t['register.form.confirm.password.equals.errMsg'])
+                rules={[
+                    {
+                    validator: (v, callback) => {
+                        try{
+                            if (!v) {
+                                return callback(t['register.form.confirm.password.errMsg'])
+                            } else if (form.getFieldValue('password') !== v) {
+                                return callback(t['register.form.confirm.password.equals.errMsg']);
+                            }
+                        }catch (error){
+
                         }
-                        cb(null)
                     }
                 }]}
             >
@@ -110,7 +120,7 @@ export default function RegisterForm() {
                     Register
                 </Button>
                 <Button href={"/login"}
-                          type="text"
+                        type="text"
                           long
                           className={styles['login-form-register-btn']}>
                           {t['register.form.login']}
