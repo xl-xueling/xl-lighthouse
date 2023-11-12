@@ -112,7 +112,46 @@ export default function ChatPanel() {
       <div className={styles['chat-panel']}>
         <Tree
             autoExpandParent
-            blockNode={true}
+            draggable={true}
+            onDrop={({ dragNode, dropNode, dropPosition }) => {
+                const loop = (data, key, callback) => {
+                    data.some((item, index, arr) => {
+                        if (item.key === key) {
+                            callback(item, index, arr);
+                            return true;
+                        }
+
+                        if (item.children) {
+                            return loop(item.children, key, callback);
+                        }
+                    });
+                };
+
+                const data = [...treeData];
+                let dragItem;
+                loop(data, dragNode.props._key, (item, index, arr) => {
+                    arr.splice(index, 1);
+                    dragItem = item;
+                    dragItem.className = 'tree-node-dropover';
+                });
+
+                if (dropPosition === 0) {
+                    loop(data, dropNode.props._key, (item, index, arr) => {
+                        item.children = item.children || [];
+                        item.children.push(dragItem);
+                    });
+                } else {
+                    loop(data, dropNode.props._key, (item, index, arr) => {
+                        arr.splice(dropPosition < 0 ? index : index + 1, 0, dragItem);
+                    });
+                }
+
+                setTreeData([...data]);
+                setTimeout(() => {
+                    dragItem.className = '';
+                    setTreeData([...data]);
+                }, 1000);
+            }}
             onSelect={(nodeId,extra) => {
                 console.log("select!")
                 // const node = extra.node.props.dataRef;
@@ -137,7 +176,13 @@ export default function ChatPanel() {
                               top: 10,
                               color: 'rgb(132 160 224)',
                           }}
-                          onClick={() => {
+                          onClick={(e) => {
+                              const titleNode = e.currentTarget.parentElement.parentElement.querySelector(".arco-tree-node-title");
+                              const event = new Event('click', {
+                                  bubbles: true,
+                                  cancelable: true
+                              });
+                              titleNode.dispatchEvent(event);
                               const dataChildren = node.dataRef.children || [];
                               dataChildren.push({
                                   title: 'new node',
@@ -156,12 +201,20 @@ export default function ChatPanel() {
                               top: 10,
                               color: 'rgb(132 160 224)',
                           }}
-                          onClick={() => {
+                          onClick={(e) => {
+                              const titleNode = e.currentTarget.parentElement.parentElement.querySelector(".arco-tree-node-title");
+                              const event = new Event('click', {
+                                  bubbles: true,
+                                  cancelable: true
+                              });
+                              titleNode.dispatchEvent(event);
                               node.dataRef.title = <Input type={"text"} ref={editRef} autoFocus={true}
+                                                          maxLength={10}
                                                             style={{
-                                                                width: 110,
-                                                                height: 20,
-                                                                borderColor: "blue",
+                                                                width: 100,
+                                                                height: 19,
+                                                                paddingLeft:3,
+                                                                borderColor: 'rgb(132 160 224)',
                                                                 backgroundColor: "white"
                                                             }}
                                                             defaultValue={node.title.valueOf() + ""}
@@ -181,7 +234,13 @@ export default function ChatPanel() {
                               top: 10,
                               color: 'rgb(132 160 224)',
                           }}
-                          onClick={() => {
+                          onClick={(e) => {
+                              const titleNode = e.currentTarget.parentElement.parentElement.querySelector(".arco-tree-node-title");
+                              const event = new Event('click', {
+                                  bubbles: true,
+                                  cancelable: true
+                              });
+                              titleNode.dispatchEvent(event);
                               const dataChildren = node.dataRef.children || [];
                               dataChildren.push({
                                   title: 'new tree node',

@@ -19,13 +19,8 @@
   .arco-tree-node{
     cursor: pointer !important;
   }
-  //.arco-tree-node .arco-icon{
-  //  display: none;
-  //}
-  //.arco-tree-node-selected > .arco-icon{
-  //  display: block !important;
-  //}
-  .arco-tree-node-selected > .arco-tree-node-title{
+
+  .arco-tree-node-selected {
     background-color:var(--color-fill-2) !important;
     font-weight: bold;
   }
@@ -33,18 +28,33 @@
   .arco-tree-node:hover{
     background-color:var(--color-fill-2) !important;
   }
+
+  .arco-tree-node-drag-icon {
+    margin-left: 40px !important;
+  }
+
+  .arco-tree-node-title:hover .arco-tree-node-drag-icon{
+    opacity: 0 !important;
+  }
+
+  .arco-tree-node-custom-icon{
+    margin-right:5px !important;
+  }
+
+  .arco-tree-node-switcher{
+    margin-right:6px !important;
+  }
 }
 
 
 .chat-panel {
   height: 100%;
   background-color: var(--color-bg-2);
-  padding: 20px;
+  padding: 10px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-
   &-content {
     flex: 1;
     margin: 20px 0;
