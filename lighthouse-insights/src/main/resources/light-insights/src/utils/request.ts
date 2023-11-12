@@ -6,6 +6,7 @@ export const request = (config) => {
         timeout:5000,
     })
     http.interceptors.request.use((config) => {
+        console.log("start to request,config:" + JSON.stringify(config));
         const token = window.localStorage.getItem('token') || window.sessionStorage.getItem('token');
         if (token) {
             config.headers['token'] = token;
@@ -17,7 +18,7 @@ export const request = (config) => {
     })
 
     http.interceptors.response.use((res) => {
-        console.log("res is222:" + JSON.stringify(res));
+        console.log("start to response,res:" + JSON.stringify(res));
         window.localStorage.setItem("token",res.data.token);
         return res.data;
     },(error) => {
