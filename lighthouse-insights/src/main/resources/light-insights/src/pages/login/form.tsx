@@ -4,7 +4,7 @@ import {
   Checkbox,
   Link,
   Button,
-  Space,
+  Space, Message,
 } from '@arco-design/web-react';
 import { FormInstance } from '@arco-design/web-react/es/Form';
 import { IconLock, IconUser } from '@arco-design/web-react/icon';
@@ -21,8 +21,6 @@ export default function LoginForm() {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [loginParams, setLoginParams, removeLoginParams] = useStorage('loginParams');
-
-  console.log("loginParams:" + loginParams);
 
   const t = useLocale(locale);
 
@@ -81,6 +79,7 @@ export default function LoginForm() {
     }
   }, [loginParams]);
 
+  const [form] = Form.useForm();
   return (
     <div className={styles['login-form-wrapper']}>
       <div className={styles['login-form-title']}>{t['login.form.title']}</div>
@@ -88,8 +87,13 @@ export default function LoginForm() {
       <Form
         className={styles['login-form']}
         layout="vertical"
+        form={form}
         ref={formRef}
         initialValues={{ userName: '', password: '' }}
+        onSubmit={(v) => {
+          onSubmitClick();
+          Message.success('success');
+        }}
       >
         <Form.Item
           field="userName"
@@ -117,15 +121,14 @@ export default function LoginForm() {
               {t['login.form.agreeLicence']}
             </Checkbox>
           </div>
-
           <Button type="primary" long htmlType='submit' loading={loading}>
             {t['login.form.login']}
           </Button>
           <Button
-             href={"/register"}
-            type="text"
-            long
-            className={styles['login-form-register-btn']}>
+              href={"/register"}
+              type="text"
+              long
+              className={styles['login-form-register-btn']}>
             {t['login.form.register']}
           </Button>
         </Space>
