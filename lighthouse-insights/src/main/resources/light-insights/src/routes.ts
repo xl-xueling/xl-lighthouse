@@ -72,6 +72,20 @@ export const routes: IRoute[] = [
     ],
   },
   {
+    name: 'department.manage',
+    key: 'department',
+    children: [
+      {
+        name: '部门管理',
+        key: 'department/manage',
+      },
+      {
+        name: '部门列表',
+        key: 'department/list',
+      },
+    ],
+  },
+  {
     name: 'menu.form',
     key: 'form',
     children: [
