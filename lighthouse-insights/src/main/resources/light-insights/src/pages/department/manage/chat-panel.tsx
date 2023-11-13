@@ -144,12 +144,13 @@ export default function ChatPanel() {
         <Tree
             ref={treeRef}
             draggable={true}
+            multiple={false}
             checkedKeys={checkedKeys}
             selectedKeys={selectedKeys}
             expandedKeys={expandedKeys}
             onSelect={(keys, extra) => {
                 setSelectedKeys(keys);
-                if ([...expandedKeys].find(item => item === keys[0])) {
+                if (selectedKeys[0] === keys[0] && [...expandedKeys].find(item => item === keys[0])) {
                     const newArr = [...expandedKeys].filter(item => item !== keys[0]);
                     setExpandedKeys([...newArr]);
                 } else {
