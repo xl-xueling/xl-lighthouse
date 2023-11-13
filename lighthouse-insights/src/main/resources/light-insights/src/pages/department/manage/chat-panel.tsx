@@ -149,7 +149,12 @@ export default function ChatPanel() {
             expandedKeys={expandedKeys}
             onSelect={(keys, extra) => {
                 setSelectedKeys(keys);
-                setExpandedKeys([...expandedKeys, ...keys]);
+                if ([...expandedKeys].find(item => item === keys[0])) {
+                    const newArr = [...expandedKeys].filter(item => item !== keys[0]);
+                    setExpandedKeys([...newArr]);
+                } else {
+                    setExpandedKeys([...expandedKeys, ...keys]);
+                }
             }}
             onCheck={(keys, extra) => {
                 console.log(keys, extra);
