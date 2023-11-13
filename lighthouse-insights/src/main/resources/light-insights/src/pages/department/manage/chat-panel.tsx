@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Input, Tree} from '@arco-design/web-react';
+import {Button, Input, Message, Tree} from '@arco-design/web-react';
 import {IconFile, IconFolder, IconMinus, IconPen, IconPlus} from '@arco-design/web-react/icon';
 import axios from 'axios';
 import useLocale from '@/utils/useLocale';
@@ -52,11 +52,11 @@ export default function ChatPanel() {
                     key: '0-0-1',
                 },
                 {
-                    title: 'Branch',
+                    title: 'Branch-0-0-2',
                     key: '0-0-2',
                     children: [
                         {
-                            title: 'Leaf',
+                            title: 'Leaf-0-0-2-1',
                             key: '0-0-2-1',
                         },
                     ],
@@ -106,13 +106,59 @@ export default function ChatPanel() {
         return str;
     }
 
+
+    function getStringLength(str){
+        let len = 0;
+        for(let i=0;i<str.length;i++){
+            if(str.charAt(i).match(/[\u4e00-\u9fa5]/g) != null) len+=2;
+            else len += 1;
+        }
+        return len;
+    }
+
+    function deleteNodeByKey(dataArray,inputValue) {
+        const params = dataArray;
+        const loop = (data) => {
+            data.map((item,index) => {
+                if(item.key === inputValue) {
+                    data.splice(index,1);
+                }
+                if (item.children) {
+                    loop(item.children);
+                }
+            });
+        }
+        loop(params);
+        return params;
+    }
+
   const [treeData, setTreeData] = useState(TreeData);
   const editRef = useRef(null);
-  return (
+  const treeRef = useRef(null);
+    const [selectedKeys, setSelectedKeys] = useState([]);
+    const [checkedKeys, setCheckedKeys] = useState([]);
+    const [expandedKeys, setExpandedKeys] = useState([]);
+
+    return (
       <div className={styles['chat-panel']}>
         <Tree
-            autoExpandParent
+            ref={treeRef}
             draggable={true}
+            checkedKeys={checkedKeys}
+            selectedKeys={selectedKeys}
+            expandedKeys={expandedKeys}
+            onSelect={(keys, extra) => {
+                console.log(keys, extra);
+                setSelectedKeys(keys);
+            }}
+            onCheck={(keys, extra) => {
+                console.log(keys, extra);
+                setCheckedKeys(keys);
+            }}
+            onExpand={(keys, extra) => {
+                console.log(keys, extra);
+                setExpandedKeys(keys);
+            }}
             onDrop={({ dragNode, dropNode, dropPosition }) => {
                 const loop = (data, key, callback) => {
                     data.some((item, index, arr) => {
@@ -152,19 +198,6 @@ export default function ChatPanel() {
                     setTreeData([...data]);
                 }, 1000);
             }}
-            onSelect={(nodeId,extra) => {
-                console.log("select!")
-                // const node = extra.node.props.dataRef;
-                // extra.node.props.dataRef.title = <Input
-                //     style={{ width:110,height:20 }}
-                //     defaultValue={ node.title.valueOf()+"" }
-                //     onBlur={ (event) => {
-                //         extra.node.props.dataRef.title = event.target.value;
-                //         setTreeData([...treeData]);
-                //     }}
-                // />
-                // setTreeData([...treeData]);
-            }}
             renderExtra={(node) => {
               return (
                   <div>
@@ -184,15 +217,16 @@ export default function ChatPanel() {
                               });
                               titleNode.dispatchEvent(event);
                               const dataChildren = node.dataRef.children || [];
+                              const ss =  node._key + '-' + (dataChildren.length + 1);
                               dataChildren.push({
-                                  title: 'new node',
+                                  title: 'new node_' + ss,
                                   key: node._key + '-' + (dataChildren.length + 1),
                               });
                               node.dataRef.children = dataChildren;
                               setTreeData([...treeData]);
+                              setExpandedKeys([...expandedKeys, node.dataRef.key]);
                           }}
                       />
-
                       <IconPen
                           style={{
                               position: 'absolute',
@@ -203,23 +237,31 @@ export default function ChatPanel() {
                           }}
                           onClick={(e) => {
                               const titleNode = e.currentTarget.parentElement.parentElement.querySelector(".arco-tree-node-title");
-                              const event = new Event('click', {
+                              const clickEvent = new Event('click', {
                                   bubbles: true,
                                   cancelable: true
                               });
-                              titleNode.dispatchEvent(event);
+                              titleNode.dispatchEvent(clickEvent);
+                              const originTitle = node.dataRef.title;
                               node.dataRef.title = <Input type={"text"} ref={editRef} autoFocus={true}
-                                                          maxLength={10}
+                                                          maxLength={20}
                                                             style={{
-                                                                width: 100,
+                                                                width: 120,
                                                                 height: 19,
                                                                 paddingLeft:3,
                                                                 borderColor: 'rgb(132 160 224)',
                                                                 backgroundColor: "white"
                                                             }}
                                                             defaultValue={node.title.valueOf() + ""}
-                                                            onBlur={(event) => {
-                                                                node.dataRef.title = event.target.value;
+                                                            onBlur={(ie) => {
+                                                                const len = getStringLength(ie.target.value);
+                                                                if(len > 20){
+                                                                    Message.error("节点名称长度不能超过20！");
+                                                                    node.dataRef.title = originTitle;
+                                                                }else{
+                                                                    console.log("title:" + ie.target.value + ",len is:" + len)
+                                                                    node.dataRef.title = ie.target.value;
+                                                                }
                                                                 setTreeData([...treeData]);
                                                             }}
                                 />;
@@ -235,65 +277,20 @@ export default function ChatPanel() {
                               color: 'rgb(132 160 224)',
                           }}
                           onClick={(e) => {
-                              const titleNode = e.currentTarget.parentElement.parentElement.querySelector(".arco-tree-node-title");
-                              const event = new Event('click', {
-                                  bubbles: true,
-                                  cancelable: true
-                              });
-                              titleNode.dispatchEvent(event);
                               const dataChildren = node.dataRef.children || [];
-                              dataChildren.push({
-                                  title: 'new tree node',
-                                  key: node._key + '-' + (dataChildren.length + 1),
-                              });
-                              node.dataRef.children = dataChildren;
-                              setTreeData([...treeData]);
+                              if(dataChildren.length > 0){
+                                  Message.error('The node has child,delete child-node first!')
+                              }else{
+                                  const w = deleteNodeByKey([...treeData],node.dataRef.key)
+                                  setTreeData([...w]);
+                              }
                           }}
                       />
                   </div>
-
               );
-            }}
-        >
+            }}>
           {generatorTreeNodes(treeData)}
         </Tree>
       </div>
   );
-
-  // return (
-  //   <div className={styles['chat-panel']}>
-  //     <div className={styles['chat-panel-header']}>
-  //       <Typography.Title
-  //         style={{ marginTop: 0, marginBottom: 16 }}
-  //         heading={6}
-  //       >
-  //         {t['monitor.title.chatPanel']}
-  //       </Typography.Title>
-  //       <Space size={8}>
-  //         <Select style={{ width: 80 }} defaultValue="all">
-  //           <Select.Option value="all">
-  //             {t['monitor.chat.options.all']}
-  //           </Select.Option>
-  //         </Select>
-  //         <Input.Search
-  //           placeholder={t['monitor.chat.placeholder.searchCategory']}
-  //         />
-  //         <Button type="text" iconOnly>
-  //           <IconDownload />
-  //         </Button>
-  //       </Space>
-  //     </div>
-  //     <div className={styles['chat-panel-content']}>
-  //       <Spin loading={loading} style={{ width: '100%' }}>
-  //         <MessageList data={messageList} />
-  //       </Spin>
-  //     </div>
-  //     <div className={styles['chat-panel-footer']}>
-  //       <Space size={8}>
-  //         <Input suffix={<IconFaceSmileFill />} />
-  //         <Button type="primary">{t['monitor.chat.update']}</Button>
-  //       </Space>
-  //     </div>
-  //   </div>
-  // );
 }
