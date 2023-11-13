@@ -148,8 +148,8 @@ export default function ChatPanel() {
             selectedKeys={selectedKeys}
             expandedKeys={expandedKeys}
             onSelect={(keys, extra) => {
-                console.log(keys, extra);
                 setSelectedKeys(keys);
+                setExpandedKeys([...expandedKeys, ...keys]);
             }}
             onCheck={(keys, extra) => {
                 console.log(keys, extra);
@@ -244,7 +244,6 @@ export default function ChatPanel() {
                               titleNode.dispatchEvent(clickEvent);
                               const originTitle = node.dataRef.title;
                               node.dataRef.title = <Input type={"text"} ref={editRef} autoFocus={true}
-                                                          maxLength={20}
                                                             style={{
                                                                 width: 120,
                                                                 height: 19,
