@@ -149,6 +149,7 @@ export default function ChatPanel() {
             selectedKeys={selectedKeys}
             expandedKeys={expandedKeys}
             onSelect={(keys, extra) => {
+                console.log("------select event:" + keys)
                 setSelectedKeys(keys);
                 if (selectedKeys[0] === keys[0] && [...expandedKeys].find(item => item === keys[0])) {
                     const newArr = [...expandedKeys].filter(item => item !== keys[0]);
@@ -271,6 +272,7 @@ export default function ChatPanel() {
                                                             }}
                                 />;
                               setTreeData([...treeData]);
+                              setExpandedKeys([...expandedKeys, node.dataRef.key]);
                           }}
                       />
                       <IconMinus
