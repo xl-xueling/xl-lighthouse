@@ -38,9 +38,15 @@ export default function TreeEditPanel() {
         setLoading(true);
         try {
             const a:any = await queryAll().then((res:any) => {
-                const {code, msg, data} = res;
+                const {code, msg} = res;
+                let data = res.data;
                 if (code === '0' && data) {
-                    const arr = translateData([...data],"0");
+                    data = data.length == 0 ? [{
+                        "id":"0",
+                        "pid":"-1",
+                        "name":"组织架构",
+                    },] : data;
+                    const arr = translateData([...data],"-1");
                     setTreeData([...arr]);
                 }else{
                      Message.error("System Error,fetch department data failed!")
@@ -147,7 +153,7 @@ export default function TreeEditPanel() {
         return treeData.map((item) => {
             const { children, key, ...ret} = item;
             return (
-                <Tree.Node icon={children ? <IconFolder /> : <IconFile/> }
+                <Tree.Node icon={children || item.key == "0" ? <IconFolder /> : <IconFile/> }
                            key={key} {...ret} dataRef={item}>
                     {children ? generatorTreeNodes(item.children) : null}
                 </Tree.Node>
@@ -346,11 +352,15 @@ export default function TreeEditPanel() {
                                                                     node.dataRef.title = originTitle;
                                                                 } else {
                                                                     const newTitle = ie.target.value;
-                                                                    const result = await updateNode(node.dataRef._key, newTitle);
-                                                                    if(result == "-1"){
-                                                                        node.dataRef.title = originTitle;
+                                                                    if(newTitle.length  > 0 && newTitle != originTitle){
+                                                                        const result = await updateNode(node.dataRef._key, newTitle);
+                                                                        if(result == "0"){
+                                                                            node.dataRef.title = newTitle;
+                                                                        }else{
+                                                                            node.dataRef.title = originTitle;
+                                                                        }
                                                                     }else{
-                                                                        node.dataRef.title = newTitle;
+                                                                        node.dataRef.title = originTitle;
                                                                     }
                                                                 }
                                                                 setTreeData([...treeData]);
@@ -363,6 +373,7 @@ export default function TreeEditPanel() {
                       />
                       <IconMinus
                           style={{
+                              display:`${node.dataRef.key != "0" ? 'block' : 'none'}`,
                               position: 'absolute',
                               right: 8,
                               fontSize: 13,
