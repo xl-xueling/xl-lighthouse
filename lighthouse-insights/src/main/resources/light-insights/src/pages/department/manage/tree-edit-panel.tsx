@@ -254,7 +254,7 @@ export default function TreeEditPanel() {
                                                                 height: 19,
                                                                 paddingLeft:3,
                                                                 borderColor: 'rgb(132 160 224)',
-                                                                backgroundColor: "white"
+                                                                backgroundColor: "var(--color-fill-1)"
                                                             }}
                                                             defaultValue={node.title.valueOf() + ""}
                                                             onBlur={(ie) => {
