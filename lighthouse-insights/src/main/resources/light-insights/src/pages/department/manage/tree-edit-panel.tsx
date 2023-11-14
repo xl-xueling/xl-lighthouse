@@ -4,7 +4,8 @@ import {IconFile, IconFolder, IconMinus, IconPen, IconPlus} from '@arco-design/w
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import { queryAll,add } from "@/api/department";
+import {queryAll, add, dragTo, deleteById, updateById} from "@/api/department";
+import {Simulate} from "react-dom/test-utils";
 
 export default function TreeEditPanel() {
   const t = useLocale(locale);
@@ -57,7 +58,6 @@ export default function TreeEditPanel() {
         let id = "-1";
         try {
             await add({'pid': pid, 'title': title}).then((res: any) => {
-                console.log("add node res:" + JSON.stringify(res));
                 const {code, msg, data} = res;
                 if (code === '0' && data) {
                     id = data.id;
@@ -67,11 +67,81 @@ export default function TreeEditPanel() {
             });
         } catch (error) {
             console.error("error is:" + error);
+            Message.error("System Error,add department node failed!")
         } finally {
             setLoading(false);
         }
         return id;
     }
+
+
+    async function dragNodeTo(id, destPid) {
+        setLoading(true);
+        let result = "-1";
+        try {
+            await dragTo({'id': id, 'destPid': destPid}).then((res: any) => {
+                console.log("drag node res:" + JSON.stringify(res));
+                const {code, msg, data} = res;
+                if (code === '0') {
+                    result = code;
+                } else {
+                    Message.error("System Error,drag department node failed!")
+                }
+            });
+        } catch (error) {
+            console.error("error is:" + error);
+            Message.error("System Error,drag department node failed!")
+        } finally {
+            setLoading(false);
+        }
+        return result;
+    }
+
+    async function updateNode(id, title) {
+        setLoading(true);
+        let result = "-1";
+        try {
+            await updateById({'id': id, 'title': title}).then((res: any) => {
+                console.log("update node res:" + JSON.stringify(res));
+                const {code, msg, data} = res;
+                if (code === '0') {
+                    result = code;
+                } else {
+                    Message.error("System Error,update department node failed!")
+                }
+            });
+        } catch (error) {
+            console.error("error is:" + error);
+            Message.error("System Error,update department node failed!")
+        } finally {
+            setLoading(false);
+        }
+        return result;
+    }
+
+
+    async function deleteNode(id) {
+        setLoading(true);
+        let result = "-1";
+        try {
+            await deleteById({'id': id}).then((res: any) => {
+                console.log("delete node res:" + JSON.stringify(res));
+                const {code, msg, data} = res;
+                if (code === '0') {
+                    result = code;
+                } else {
+                    Message.error("System Error,delete department node failed!")
+                }
+            });
+        } catch (error) {
+            console.error("error is:" + error);
+            Message.error("System Error,delete department node failed!")
+        } finally {
+            setLoading(false);
+        }
+        return result;
+    }
+
 
     const generatorTreeNodes = (treeData) => {
         return treeData.map((item) => {
@@ -162,7 +232,17 @@ export default function TreeEditPanel() {
                 console.log(keys, extra);
                 setExpandedKeys(keys);
             }}
-            onDrop={({ dragNode, dropNode, dropPosition }) => {
+            onDrop={async ({dragNode, dropNode, dropPosition}) => {
+                let destPid;
+                if(dropPosition === 0){
+                    destPid = treeRef.current.getCacheNode([dropNode.props._key])[0].props.dataRef.id;
+                }else{
+                    destPid = treeRef.current.getCacheNode([dropNode.props._key])[0].props.dataRef.pid;
+                }
+                const result = await dragNodeTo(dragNode.props._key, destPid);
+                if(result == '-1'){
+                    return;
+                }
                 const loop = (data, key, callback) => {
                     data.some((item, index, arr) => {
                         if (item.key === key) {
@@ -194,7 +274,6 @@ export default function TreeEditPanel() {
                         arr.splice(dropPosition < 0 ? index : index + 1, 0, dragItem);
                     });
                 }
-
                 setTreeData([...data]);
                 setTimeout(() => {
                     dragItem.className = '';
@@ -222,6 +301,9 @@ export default function TreeEditPanel() {
                               const dataChildren = node.dataRef.children || [];
                               const title = node._key + '-' + (dataChildren.length + 1);
                               const currentId = await addNode( node.dataRef.key, title);
+                              if(currentId == "-1"){
+                                  return;
+                              }
                               dataChildren.push({
                                   title: "New Node_" + currentId,
                                   key: currentId,
@@ -257,13 +339,19 @@ export default function TreeEditPanel() {
                                                                 backgroundColor: "var(--color-fill-1)"
                                                             }}
                                                             defaultValue={node.title.valueOf() + ""}
-                                                            onBlur={(ie) => {
+                                                            onBlur={async (ie) => {
                                                                 const len = getStringLength(ie.target.value);
-                                                                if(len > 20){
+                                                                if (len > 20) {
                                                                     Message.error("节点名称长度不能超过20！");
                                                                     node.dataRef.title = originTitle;
-                                                                }else{
-                                                                    node.dataRef.title = ie.target.value;
+                                                                } else {
+                                                                    const newTitle = ie.target.value;
+                                                                    const result = await updateNode(node.dataRef._key, newTitle);
+                                                                    if(result == "-1"){
+                                                                        node.dataRef.title = originTitle;
+                                                                    }else{
+                                                                        node.dataRef.title = newTitle;
+                                                                    }
                                                                 }
                                                                 setTreeData([...treeData]);
                                                             }}
@@ -281,19 +369,24 @@ export default function TreeEditPanel() {
                               top: 10,
                               color: 'rgb(132 160 224)',
                           }}
-                          onClick={(e) => {
+                          onClick={async (e) => {
                               const dataChildren = node.dataRef.children || [];
-                              if(dataChildren.length > 0){
+                              if (dataChildren.length > 0) {
                                   Message.error('The node has child,delete child-node first!')
-                              }else{
-                                  const w = deleteNodeByKey([...treeData],node.dataRef.key)
+                              } else {
+                                  const result = await deleteNode(node.dataRef.key);
+                                  if (result == "-1") {
+                                      return;
+                                  }
+                                  const w = deleteNodeByKey([...treeData], node.dataRef.key)
                                   setTreeData([...w]);
                               }
                           }}
                       />
                   </div>
               );
-            }}>
+            }}
+        >
           {generatorTreeNodes(treeData)}
         </Tree>
       </div>
