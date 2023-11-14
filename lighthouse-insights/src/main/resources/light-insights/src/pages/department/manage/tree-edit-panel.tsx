@@ -41,11 +41,10 @@ export default function TreeEditPanel() {
                 const {code, msg} = res;
                 let data = res.data;
                 if (code === '0' && data) {
-                    data = data.length == 0 ? [{
+                    data = [{
                         "id":"0",
                         "pid":"-1",
-                        "name":"组织架构",
-                    },] : data;
+                        "name":"组织架构"},...data];
                     const arr = translateData([...data],"-1");
                     setTreeData([...arr]);
                 }else{
@@ -322,6 +321,7 @@ export default function TreeEditPanel() {
                       />
                       <IconPen
                           style={{
+                              display:`${node.dataRef.key != "0" ? 'block' : 'none'}`,
                               position: 'absolute',
                               right: 25,
                               fontSize: 13,

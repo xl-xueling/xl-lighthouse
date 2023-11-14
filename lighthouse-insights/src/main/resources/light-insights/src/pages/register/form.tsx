@@ -35,11 +35,11 @@ export default function RegisterForm() {
                 const newOptions = data.map(function(department) {
                     let name = '';
                     const fullpath = department.fullpath;
-                    const pDepartmentArr = fullpath.split(",");
-                    for (let i = 0; i < pDepartmentArr.length; i++) {
-                        const department = departmentMap.get(pDepartmentArr[i]);
+                    const parentArr = fullpath.split(",");
+                    for (let i = 0; i < parentArr.length; i++) {
+                        const department = departmentMap.get(parentArr[i]);
                         name += department.name;
-                        if(i !== pDepartmentArr.length - 1){
+                        if(i !== parentArr.length - 1){
                             name += "_";
                         }
                     }
@@ -48,7 +48,7 @@ export default function RegisterForm() {
                         value:department.id,
                         key:department.id
                     }
-                })
+                }).filter(x => x.key !== "0")
                 setDepartmentOptions(newOptions);
             } else {
                 setErrorMessage(msg || t['register.form.getDepartmentsInfo.errMsg']);
