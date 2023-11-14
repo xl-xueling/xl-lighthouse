@@ -1,12 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Message, Space, Spin, Tree} from '@arco-design/web-react';
 import {IconFile, IconFolder, IconMinus, IconPen, IconPlus} from '@arco-design/web-react/icon';
-import axios from 'axios';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import {queryList} from "@/api/project";
-import {queryAll as queryDepartAll} from "@/api/department";
+import { queryAll,add } from "@/api/department";
 
 export default function TreeEditPanel() {
   const t = useLocale(locale);
@@ -16,30 +14,32 @@ export default function TreeEditPanel() {
   const [visible ,setVisible] = useState<boolean>(true);
 
     useEffect(() => {
-        fetchDepartmentData();
+        fetchAllData();
     }, []);
 
-    function tranListToTreeData(list, rootValue) {
-        const arr = []
+    function translateData(list, rootPid) {
+        const nodeArr = []
         list.forEach(item => {
-            if (item.pid === rootValue) {
-                arr.push(item)
-                const children = tranListToTreeData(list, item.id)
+            if (item.pid === rootPid) {
+                item.key = item.id;
+                item.title = item.name;
+                nodeArr.push(item)
+                const children = translateData(list, item.id)
                 if (children.length) {
                     item.children = children
                 }
             }
         })
-        return arr
+        return nodeArr;
     }
 
-    async function fetchDepartmentData() {
+    async function fetchAllData() {
         setLoading(true);
         try {
-            const a:any = await queryDepartAll().then((res:any) => {
+            const a:any = await queryAll().then((res:any) => {
                 const {code, msg, data} = res;
                 if (code === '0' && data) {
-                    const arr = tranListToTreeData([...data],"0");
+                    const arr = translateData([...data],"0");
                     setTreeData([...arr]);
                 }else{
                      Message.error("System Error,fetch department data failed!")
@@ -52,12 +52,33 @@ export default function TreeEditPanel() {
         }
     }
 
+    async function addNode(pid, title) {
+        setLoading(true);
+        let id = "-1";
+        try {
+            await add({'pid': pid, 'title': title}).then((res: any) => {
+                console.log("add node res:" + JSON.stringify(res));
+                const {code, msg, data} = res;
+                if (code === '0' && data) {
+                    id = data.id;
+                } else {
+                    Message.error("System Error,add department node failed!")
+                }
+            });
+        } catch (error) {
+            console.error("error is:" + error);
+        } finally {
+            setLoading(false);
+        }
+        return id;
+    }
+
     const generatorTreeNodes = (treeData) => {
         return treeData.map((item) => {
-            const { children, id, name} = item;
+            const { children, key, ...ret} = item;
             return (
                 <Tree.Node icon={children ? <IconFolder /> : <IconFile/> }
-                           key={id} title={name} dataRef={item}>
+                           key={key} {...ret} dataRef={item}>
                     {children ? generatorTreeNodes(item.children) : null}
                 </Tree.Node>
             );
@@ -69,15 +90,13 @@ export default function TreeEditPanel() {
         const str = JSON.stringify(obj, function(key, value) {
             if (typeof value === "object" && value !== null) {
                 if (cache.indexOf(value) !== -1) {
-                    // Circular reference found, discard key
                     return;
                 }
-                // Store value in our collection
                 cache.push(value);
             }
             return value;
         });
-        cache = null; // reset the cache
+        cache = null;
         return str;
     }
 
@@ -109,7 +128,7 @@ export default function TreeEditPanel() {
 
   const [treeData, setTreeData] = useState([]);
   const editRef = useRef(null);
-  const treeRef = useRef(null);
+  const treeRef = useRef<Tree>(null);
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [checkedKeys, setCheckedKeys] = useState([]);
     const [expandedKeys, setExpandedKeys] = useState([]);
@@ -126,13 +145,13 @@ export default function TreeEditPanel() {
             selectedKeys={selectedKeys}
             expandedKeys={expandedKeys}
             onSelect={(keys, extra) => {
-                console.log("------select event:" + keys)
                 setSelectedKeys(keys);
-                if (selectedKeys[0] === keys[0] && [...expandedKeys].find(item => item === keys[0])) {
+                if (extra.e.isTrusted && selectedKeys[0] === keys[0] && [...expandedKeys].find(item => item === keys[0])) {
                     const newArr = [...expandedKeys].filter(item => item !== keys[0]);
                     setExpandedKeys([...newArr]);
                 } else {
-                    setExpandedKeys([...expandedKeys, ...keys]);
+                    const newArr = [...expandedKeys].filter(item => item !== keys[0]);
+                    setExpandedKeys([...newArr, ...keys]);
                 }
             }}
             onCheck={(keys, extra) => {
@@ -193,22 +212,24 @@ export default function TreeEditPanel() {
                               top: 10,
                               color: 'rgb(132 160 224)',
                           }}
-                          onClick={(e) => {
+                          onClick={async (e) => {
                               const titleNode = e.currentTarget.parentElement.parentElement.querySelector(".arco-tree-node-title");
                               const event = new Event('click', {
                                   bubbles: true,
-                                  cancelable: true
+                                  cancelable: true,
                               });
                               titleNode.dispatchEvent(event);
                               const dataChildren = node.dataRef.children || [];
-                              const ss =  node._key + '-' + (dataChildren.length + 1);
+                              const title = node._key + '-' + (dataChildren.length + 1);
+                              const currentId = await addNode( node.dataRef.key, title);
                               dataChildren.push({
-                                  title: 'new node_' + ss,
-                                  key: node._key + '-' + (dataChildren.length + 1),
+                                  title: "New Node_" + currentId,
+                                  key: currentId,
                               });
                               node.dataRef.children = dataChildren;
                               setTreeData([...treeData]);
-                              setExpandedKeys([...expandedKeys, node.dataRef.key]);
+                              const newArr = [...expandedKeys].filter(item => item !== node.dataRef.key);
+                              setExpandedKeys([...newArr, node.dataRef.key]);
                           }}
                       />
                       <IconPen
@@ -242,14 +263,14 @@ export default function TreeEditPanel() {
                                                                     Message.error("节点名称长度不能超过20！");
                                                                     node.dataRef.title = originTitle;
                                                                 }else{
-                                                                    console.log("title:" + ie.target.value + ",len is:" + len)
                                                                     node.dataRef.title = ie.target.value;
                                                                 }
                                                                 setTreeData([...treeData]);
                                                             }}
                                 />;
                               setTreeData([...treeData]);
-                              setExpandedKeys([...expandedKeys, node.dataRef.key]);
+                              const newArr = [...expandedKeys].filter(item => item !== node.dataRef.key);
+                              setExpandedKeys([...newArr, node.dataRef.key]);
                           }}
                       />
                       <IconMinus
@@ -275,19 +296,6 @@ export default function TreeEditPanel() {
             }}>
           {generatorTreeNodes(treeData)}
         </Tree>
-
-            <div style={{ textAlign:"right",marginTop:30 }}>
-                <Space size={6} direction="vertical" style={{ width:80 }}>
-                    <Button
-                        size={"small"}
-                        href={"/"}
-                        type='primary'
-                        long
-                        className={styles['login-form-register-btn']}>
-                        {'确认修改'}
-                    </Button>
-                </Space>
-            </div>
       </div>
         </Spin>
   );
