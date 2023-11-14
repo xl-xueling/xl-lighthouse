@@ -7,3 +7,11 @@ export async function queryAll(data?)  {
         data,
     })
 }
+
+export async function add(data)  {
+    return request({
+        url:'/department/add',
+        method:'POST',
+        data,
+    })
+}

@@ -91,9 +91,22 @@ setupMock({
             "pid":"3",
             "fullpath":"3,32",
           },
-        ]
-        ,
+        ],
       };
     });
+
+
+      Mock.mock(new RegExp('/api/v1/department/add'), (params) => {
+          console.log("add department,params:" + JSON.stringify(params));
+          const {pid,title} = params;
+          return {
+              code: '0',
+              message: 'success',
+              data:{
+                  "id": Math.floor(Math.random() * 1000000) + "",
+                  "title":title,
+              }
+          }
+      })
   },
 });
