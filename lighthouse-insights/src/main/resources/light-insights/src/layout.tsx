@@ -50,8 +50,8 @@ function getIconFromKey(key) {
       return <IconExclamationCircle className={styles.icon} />;
     case 'user':
       return <IconUser className={styles.icon} />;
-    case 'department':
-      return <IconIdcard className={styles.icon} />;
+    case 'system':
+      return <IconSettings className={styles.icon} />;
     case 'stat':
       return <IconApps className={styles.icon} />;
     default:

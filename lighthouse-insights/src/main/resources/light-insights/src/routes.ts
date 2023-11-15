@@ -72,16 +72,16 @@ export const routes: IRoute[] = [
     ],
   },
   {
-    name: 'department.manage',
-    key: 'department',
+    name: 'system.manage',
+    key: 'system',
     children: [
       {
         name: '部门管理',
         key: 'department/manage',
       },
       {
-        name: '部门列表',
-        key: 'department/list',
+        name: '用户管理',
+        key: 'user/list',
       },
     ],
   },
