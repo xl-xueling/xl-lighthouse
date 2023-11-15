@@ -32,13 +32,12 @@ function SearchForm(props: {
 
   const handleSubmit = () => {
     const values = form.getFieldsValue();
-    //props.onSearch(values);
+    props.onSearch(values);
   };
 
   const handleReset = () => {
-    //console.log("props is:" + JSON.stringify(props));
     form.resetFields();
-    //props.onSearch({});
+    props.onSearch({});
   };
 
   const colSpan = lang === 'zh-CN' ? 8 : 12;
@@ -58,59 +57,6 @@ function SearchForm(props: {
     })
     return nodeArr;
   }
-
-  // useEffect(() => {
-  //   const arr = ;
-  //   setTreeData(arr);
-  // }, []);
-  const TreeData = [
-    {
-      title: 'Trunk 0-0',
-      key: '0-0',
-      children: [
-        {
-          title: 'Branch 0-0-1',
-          key: '0-0-1',
-          children: [
-            {
-              title: 'Leaf 0-0-1-1',
-              key: '0-0-1-1',
-            },
-            {
-              title: 'Leaf 0-0-1-2',
-              key: '0-0-1-2',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Trunk 0-1',
-      key: '0-1',
-      children: [
-        {
-          title: 'Branch 0-1-1',
-          key: '0-1-1',
-          children: [
-            {
-              title: 'Leaf 0-1-1-0',
-              key: '0-1-1-0',
-            },
-          ],
-        },
-        {
-          title: 'Branch 0-1-2',
-          key: '0-1-2',
-          children: [
-            {
-              title: 'Leaf 0-1-2-0',
-              key: '0-1-2-0',
-            },
-          ],
-        },
-      ],
-    },
-  ];
 
   return (
     <div className={styles['search-form-wrapper']}>
@@ -167,6 +113,7 @@ function SearchForm(props: {
             <Form.Item label={t['userList.columns.department']} field="department">
               <TreeSelect
                   ref={treeRef}
+                  placeholder={"Please select"}
                   multiple={true}
                   allowClear={true}
                   treeData={translateData([...props.departmentMap.values()],"0")}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Typography, Badge } from '@arco-design/web-react';
+import {Button, Typography, Badge, Space} from '@arco-design/web-react';
 import IconText from './icons/text.svg';
 import IconHorizontalVideo from './icons/horizontal.svg';
 import IconVerticalVideo from './icons/vertical.svg';
@@ -14,7 +14,7 @@ export const Status = ['未上线', '已上线'];
 export const StateType = ['未审核', '正常', '冻结', '注销'];
 
 
-export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+export function getColumns(t: any,callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
     {
       title: t['userList.columns.id'],
@@ -28,7 +28,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
     },
     {
       title: t['userList.columns.department'],
-      dataIndex: 'departmentId',
+      dataIndex: 'departmentName',
       render: (value) => <Text>{value}</Text>,
     },
     {
@@ -39,7 +39,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
     {
       title: t['userList.columns.phone'],
       dataIndex: 'phone',
-      render: (value) => <Text>{value}</Text>,
+      render: (value,record) => <Text>{record.userName}</Text>,
     },
     {
       title: t['userList.columns.createdTime'],
@@ -49,8 +49,44 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
     {
       title: t['userList.columns.state'],
       dataIndex: 'state',
-      render: (value) => StateType[value],
-    }
+      render: (value) => {
+        if (value === 1) {
+          return <Badge status="success" text={StateType[value]}/>;
+        }else if(value === 0){
+          return <Badge status="processing" text={StateType[value]}/>;
+        }else{
+          return <Badge status="error" text={StateType[value]}/>;
+        }
+      },
+    },
+    {
+      title: t['userList.columns.operations'],
+      dataIndex: 'operations',
+      headerCellStyle: { paddingLeft: '15px',width:'280px' },
+      render: (_, record) => (
+          <Space size={16} direction="horizontal">
+            <Button
+                type="secondary"
+                size="mini"
+                onClick={() => callback(record, 'view')}
+            >
+              {'密码重置'}
+            </Button>
+            <Button
+                type="secondary"
+                size="mini"
+                onClick={() => callback(record, 'view')}>
+              {'冻结'}
+            </Button>
+            <Button
+                type="secondary"
+                size="mini"
+                onClick={() => callback(record, 'view')}>
+              {'删除'}
+            </Button>
+          </Space>
+      ),
+    },
   ]
   // return [
   //   {
@@ -101,6 +137,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
   //       return <Badge status="success" text={Status[x]}></Badge>;
   //     },
   //   },
+
   //   {
   //     title: t['userList.columns.operations'],
   //     dataIndex: 'operations',
