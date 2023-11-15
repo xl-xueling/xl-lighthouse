@@ -17,7 +17,9 @@ import '../../department/mock';
 import { getColumns } from './constants';
 import { queryList } from "@/api/user";
 import {queryAll as queryDepartmentAll} from "@/api/department";
-import {stringifyMap} from "@/utils/util";
+import {stringifyMap, stringifyObj} from "@/utils/util";
+import {NodeProps, TreeProps} from "@arco-design/web-react/es/Tree/interface";
+import {Department, User} from "@/types/insights";
 const { Title } = Typography;
 
 function ProjectList() {
@@ -26,11 +28,10 @@ function ProjectList() {
     console.log(record, type);
   };
 
-  const [initFlag, setInitFlag] = useState(false);
+  const [departmentData, setDepartmentData] = useState<Map<string,Department>>(new Map());
 
-  const [departmentMap, setDepartmentMap] = useState(new Map());
+  const [userData, setUserData] = useState<Array<User>>([]);
 
-  const [data, setData] = useState([]);
   const [pagination, setPagination] = useState<PaginationProps>({
     sizeCanChange: true,
     showTotal: true,
@@ -38,34 +39,63 @@ function ProjectList() {
     current: 1,
     pageSizeChangeResetCurrent: true,
   });
+
   const [loading, setLoading] = useState(true);
   const [formParams, setFormParams] = useState({});
   const columns = useMemo(() => getColumns(t,tableCallback), [t]);
 
   useEffect(() => {
-    fetchAllDepartmentData();
-  }, []);
+    const promiseOfFetchDepartData:Promise<Map<string,Department>> = new Promise((resolve,reject) => {
+      let result;
+      if(departmentData.size == 0){
+        const proc = async () => {
+          return await fetchDepartData();
+        }
+        result = proc();
+      }else{
+        result = departmentData;
+      }
+      resolve(result);
+    });
 
-  useEffect(() => {
-    if(initFlag){
-      fetchData();
-    }
-  }, [initFlag,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+    const promiseOfFetchUserData:Promise<Array<User>> = new Promise((resolve,reject) => {
+      const proc = async () => {
+        return await fetchUserData();
+      }
+      resolve(proc());
+    })
 
+    const promiseAll:Promise<[Map<string,Department>,Array<User>]> = Promise.all([
+         promiseOfFetchDepartData,
+         promiseOfFetchUserData
+    ]);
 
+    promiseAll.then(([r1,r2]) => {
+      const departmentMap = r1;
+      const userList = r2;
+      if(userList){
+        userList.forEach(z => {
+          const department = departmentMap.get(z.departmentId+ "");
+          if(department){
+            z.departmentName = department.name;
+          }
+        })
+      }
+      setUserData(userList);
+    })
+  }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
-  function fetchAllDepartmentData() {
+  async function fetchDepartData(): Promise<Map<string,Department>> {
+    const departmentMap = new Map<string,Department>();
     try {
-      const a:any = queryDepartmentAll().then((res:any) => {
+      const a:any = await queryDepartmentAll().then((res:any) => {
         const {code, msg} = res;
         const data = res.data;
         if (code === '0' && data) {
-          const departmentMap = new Map();
           data.forEach(x => {
             departmentMap.set(x.id,x);
           })
-          setDepartmentMap(departmentMap);
-          setInitFlag(true);
+          setDepartmentData(departmentMap);
         }else{
           Message.error("System Error,fetch department data failed!")
         }
@@ -73,25 +103,14 @@ function ProjectList() {
     } catch (error) {
       console.error("error is:" + error);
       Message.error("System Error,fetch department data failed!")
-    }finally {
     }
+    return departmentMap;
   }
 
-  function translateTableData(data){
-    if(data){
-      data.forEach(z => {
-        const department = departmentMap.get(z.departmentId+ "");
-        if(department){
-          z.departmentName = department.name;
-        }
-      })
-    }
-    return data;
-  }
-
-  async function fetchData() {
+  async function fetchUserData():Promise<Array<User>> {
     const {current, pageSize} = pagination;
     setLoading(true);
+    let result;
     try {
       const a:any = await queryList({
         params: {
@@ -102,16 +121,17 @@ function ProjectList() {
       }).then((res:any) => {
         const {code, data ,msg} = res;
         if (code === '0') {
-          setData(translateTableData(res.data.list));
-          setPagination({
-            ...pagination,
-            current,
-            pageSize,
-            total: res.data.total,
-          });
+          result = res.data.list;
         }else{
           Message.error("System Error,fetch data failed!")
         }
+        const {current, pageSize} = pagination;
+        setPagination({
+          ...pagination,
+          current,
+          pageSize,
+          total: res.data.total,
+        })
       });
     } catch (error) {
       console.error("error is:" + error);
@@ -119,6 +139,7 @@ function ProjectList() {
     } finally {
       setLoading(false);
     }
+    return result;
   }
 
   function onChangeTable({ current, pageSize }) {
@@ -135,7 +156,7 @@ function ProjectList() {
   }
   return (
     <Card>
-      <SearchForm departmentMap={departmentMap} onSearch={handleSearch} />
+      <SearchForm departmentMap={departmentData} onSearch={handleSearch} />
       <PermissionWrapper
         requiredPermissions={[
           { resource: 'menu.list.searchTable', actions: ['write'] },
@@ -148,7 +169,7 @@ function ProjectList() {
         onChange={onChangeTable}
         pagination={pagination}
         columns={columns}
-        data={data}
+        data={userData}
       />
     </Card>
   );
