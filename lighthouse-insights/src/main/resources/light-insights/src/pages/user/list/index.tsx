@@ -25,7 +25,11 @@ function ProjectList() {
   const tableCallback = async (record, type) => {
     console.log(record, type);
   };
-  const columns = useMemo(() => getColumns(t, tableCallback), [t]);
+
+  const [initFlag, setInitFlag] = useState(false);
+
+  const [departmentMap, setDepartmentMap] = useState(new Map());
+
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState<PaginationProps>({
     sizeCanChange: true,
@@ -36,22 +40,23 @@ function ProjectList() {
   });
   const [loading, setLoading] = useState(true);
   const [formParams, setFormParams] = useState({});
-
-  const [departmentMap, setDepartmentMap] = useState(new Map());
-
-  useEffect(() => {
-    fetchData();
-  }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
-
+  const columns = useMemo(() => getColumns(t,tableCallback), [t]);
 
   useEffect(() => {
     fetchAllDepartmentData();
   }, []);
 
-  async function fetchAllDepartmentData() {
-    setLoading(true);
+  useEffect(() => {
+    if(initFlag){
+      fetchData();
+    }
+  }, [initFlag,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+
+
+
+  function fetchAllDepartmentData() {
     try {
-      const a:any = await queryDepartmentAll().then((res:any) => {
+      const a:any = queryDepartmentAll().then((res:any) => {
         const {code, msg} = res;
         const data = res.data;
         if (code === '0' && data) {
@@ -60,15 +65,28 @@ function ProjectList() {
             departmentMap.set(x.id,x);
           })
           setDepartmentMap(departmentMap);
+          setInitFlag(true);
         }else{
           Message.error("System Error,fetch department data failed!")
         }
       });
     } catch (error) {
       console.error("error is:" + error);
+      Message.error("System Error,fetch department data failed!")
     }finally {
-      setLoading(false);
     }
+  }
+
+  function translateTableData(data){
+    if(data){
+      data.forEach(z => {
+        const department = departmentMap.get(z.departmentId+ "");
+        if(department){
+          z.departmentName = department.name;
+        }
+      })
+    }
+    return data;
   }
 
   async function fetchData() {
@@ -82,17 +100,24 @@ function ProjectList() {
           ...formParams,
         },
       }).then((res:any) => {
-        setData(res.data.list);
-        setPagination({
-          ...pagination,
-          current,
-          pageSize,
-          total: res.data.total,
-        });
-        setLoading(false);
+        const {code, data ,msg} = res;
+        if (code === '0') {
+          setData(translateTableData(res.data.list));
+          setPagination({
+            ...pagination,
+            current,
+            pageSize,
+            total: res.data.total,
+          });
+        }else{
+          Message.error("System Error,fetch data failed!")
+        }
       });
     } catch (error) {
       console.error("error is:" + error);
+      Message.error("System Error,fetch data failed!")
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -105,11 +130,9 @@ function ProjectList() {
   }
 
   function handleSearch(params) {
-    console.log("search params is:" + JSON.stringify(params));
     setPagination({ ...pagination, current: 1 });
     setFormParams(params);
   }
-
   return (
     <Card>
       <SearchForm departmentMap={departmentMap} onSearch={handleSearch} />
