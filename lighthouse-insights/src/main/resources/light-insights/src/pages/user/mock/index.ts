@@ -8,15 +8,10 @@ setupMock({
         const { list } = Mock.mock({
             'list|100': [
                 {
-                    id: /[0-9]{8}/,
-                    'contentType|0-2': 0,
-                    'filterType|0-1': 0,
-                    'count|0-2000': 0,
-                    'createdTime|1-60': 0,
-                    'status|0-1': 0,
-                    'createUser':0,
+                    "id": /[0-9]{8}/,
                     "userName":'@name()',
                     "email":'@EMAIL()',
+                    "phone":'@Phone()',
                     "departmentId":2,
                     "state|0-3":0,
                     "createdTime":'@datetime',
@@ -32,7 +27,7 @@ setupMock({
                 message:'success',
                 data:{
                     'list':list,
-                     'total':100,
+                    'total':100,
                 }
             };
         });
