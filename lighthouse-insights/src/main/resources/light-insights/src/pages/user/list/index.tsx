@@ -5,7 +5,7 @@ import {
   PaginationProps,
   Button,
   Space,
-  Typography,
+  Typography, Message,
 } from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
 import { IconDownload, IconPlus } from '@arco-design/web-react/icon';
@@ -13,19 +13,19 @@ import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
 import styles from './style/index.module.less';
-import '../mock';
+import '../../department/mock';
 import { getColumns } from './constants';
-import { queryList } from "@/api/project";
+import { queryList } from "@/api/user";
+import {queryAll as queryDepartmentAll} from "@/api/department";
+import {stringifyMap} from "@/utils/util";
 const { Title } = Typography;
 
 function ProjectList() {
   const t = useLocale(locale);
   const tableCallback = async (record, type) => {
-    console.log("record is:" + JSON.stringify(record));
     console.log(record, type);
   };
   const columns = useMemo(() => getColumns(t, tableCallback), [t]);
-  console.log("columns:" + JSON.stringify(columns))
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState<PaginationProps>({
     sizeCanChange: true,
@@ -37,10 +37,39 @@ function ProjectList() {
   const [loading, setLoading] = useState(true);
   const [formParams, setFormParams] = useState({});
 
+  const [departmentMap, setDepartmentMap] = useState(new Map());
+
   useEffect(() => {
-    console.log("current:" + pagination.current + ",page size:" + pagination.pageSize)
     fetchData();
   }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+
+
+  useEffect(() => {
+    fetchAllDepartmentData();
+  }, []);
+
+  async function fetchAllDepartmentData() {
+    setLoading(true);
+    try {
+      const a:any = await queryDepartmentAll().then((res:any) => {
+        const {code, msg} = res;
+        const data = res.data;
+        if (code === '0' && data) {
+          const departmentMap = new Map();
+          data.forEach(x => {
+            departmentMap.set(x.id,x);
+          })
+          setDepartmentMap(departmentMap);
+        }else{
+          Message.error("System Error,fetch department data failed!")
+        }
+      });
+    } catch (error) {
+      console.error("error is:" + error);
+    }finally {
+      setLoading(false);
+    }
+  }
 
   async function fetchData() {
     const {current, pageSize} = pagination;
@@ -76,32 +105,19 @@ function ProjectList() {
   }
 
   function handleSearch(params) {
+    console.log("search params is:" + JSON.stringify(params));
     setPagination({ ...pagination, current: 1 });
     setFormParams(params);
   }
 
   return (
     <Card>
-      <Title heading={6}>{t['menu.list.searchTable']}</Title>
-      <SearchForm onSearch={handleSearch} />
+      <SearchForm departmentMap={departmentMap} onSearch={handleSearch} />
       <PermissionWrapper
         requiredPermissions={[
           { resource: 'menu.list.searchTable', actions: ['write'] },
         ]}
       >
-        <div className={styles['button-group']}>
-          <Space>
-            <Button type="primary" icon={<IconPlus />}>
-              {t['searchTable.operations.add']}
-            </Button>
-            <Button>{t['searchTable.operations.upload']}</Button>
-          </Space>
-          <Space>
-            <Button icon={<IconDownload />}>
-              {t['searchTable.operation.download']}
-            </Button>
-          </Space>
-        </div>
       </PermissionWrapper>
       <Table
         rowKey="id"
