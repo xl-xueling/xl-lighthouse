@@ -78,6 +78,32 @@ export default function Info({userInfo, loading}: {
               </span>
             ),
           },
+            {
+                label: 'department',
+                value: loading ? (
+                    loadingNode
+                ) : (
+                    <span>
+                {userInfo.departmentName}
+                        <Link role="button" className={styles['edit-btn']}>
+                  {t['userSetting.btn.edit']}
+                </Link>
+              </span>
+                ),
+            },
+            {
+                label: t['userSetting.label.phoneNumber'],
+                value: loading ? (
+                    loadingNode
+                ) : (
+                    <span>
+                {userInfo.email}
+                        <Link role="button" className={styles['edit-btn']}>
+                  {t['userSetting.btn.edit']}
+                </Link>
+              </span>
+                ),
+            },
           {
             label: t['userSetting.label.registrationTime'],
             value: loading ? loadingNode : userInfo.createdTime,

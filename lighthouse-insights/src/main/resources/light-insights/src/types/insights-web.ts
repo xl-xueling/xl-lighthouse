@@ -6,8 +6,8 @@ export class Department {
 }
 
 export interface User {
-    id: number;
-    userName: string;
+    id?: number;
+    userName?: string;
     email?: string;
     phone?: string;
     departmentId?: string|number;
