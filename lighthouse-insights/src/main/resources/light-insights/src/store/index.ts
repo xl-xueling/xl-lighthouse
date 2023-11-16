@@ -17,7 +17,8 @@ const initialState = ():GlobalState => {
   }
 };
 
-export default function store(state = initialState(), action) {
+
+export default function processReducer(state = initialState(), action) {
   switch (action.type) {
     case 'update-settings': {
       const { settings } = action.payload;

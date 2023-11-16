@@ -8,14 +8,12 @@ import InfoForm from './info';
 import Security from './security';
 import './mock';
 import Verified from './verified';
-import { configureStore } from '@reduxjs/toolkit'
-
-export type RootState = ReturnType<typeof configureStore>
+import {User} from "@/types/insights-web";
 
 function UserInfo() {
   const t = useLocale(locale);
-  const userInfo = useSelector((state: any) => state.userInfo);
-  const loading = useSelector((state: any) => state.userLoading);
+  const userInfo = useSelector((state: {userInfo:User}) => state.userInfo);
+  const loading = useSelector((state: {userLoading:boolean}) => state.userLoading);
   const [activeTab, setActiveTab] = useState('basic');
   return (
     <div>
@@ -29,9 +27,6 @@ function UserInfo() {
           </Tabs.TabPane>
           <Tabs.TabPane key="security" title={t['userSetting.title.security']}>
             <Security />
-          </Tabs.TabPane>
-          <Tabs.TabPane key="verified" title={t['userSetting.label.verified']}>
-            <Verified />
           </Tabs.TabPane>
         </Tabs>
       </Card>
