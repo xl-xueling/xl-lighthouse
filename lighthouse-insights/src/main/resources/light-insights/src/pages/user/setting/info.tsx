@@ -20,15 +20,15 @@ function InfoForm({ loading }: { loading?: boolean }) {
   const [form] = Form.useForm();
   const { lang } = useContext(GlobalContext);
 
-  const userInfo = useSelector((state:any) => {
-    return state.userInfo || {};
-  });
-
-
+  const userInfo = useSelector((state: {userInfo:User}) => state.userInfo);
 
   const initialValues = {
-    "email":"ssss",
     "userName":userInfo.userName,
+    "departmentName":userInfo.departmentName,
+    "phone":userInfo.phone,
+    "email":userInfo.email,
+    "createdTime":userInfo.createdTime,
+    "state":userInfo.state,
   }
 
   const handleSave = async () => {

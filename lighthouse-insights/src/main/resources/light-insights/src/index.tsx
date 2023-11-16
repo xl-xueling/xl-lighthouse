@@ -1,7 +1,7 @@
 import './style/global.less';
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import {combineReducers, createStore} from 'redux';
 import { Provider } from 'react-redux';
 import {ConfigProvider, Message} from '@arco-design/web-react';
 import zhCN from '@arco-design/web-react/es/locale/zh-CN';
@@ -19,18 +19,9 @@ import './mock';
 import Register from "@/pages/register";
 import {requestUserInfo} from "@/api/user";
 import {getDataWithLocalCache} from "@/utils/localCache";
-import {stringifyMap, stringifyObj} from "@/utils/util";
-import {Department} from "@/types/insights-web";
-import {queryAll as queryDepartmentAll} from "@/api/department";
 import {fetchAllData as fetchAllDepartmentData} from "@/pages/department/common";
-import {configureStore} from "@reduxjs/toolkit";
 
 const store = createStore(rootReducer);
-// const store = configureStore({
-//   reducer: {
-//     posts: rootReducer,
-//   }
-// })
 
 function Index() {
   const [lang, setLang] = useStorage('arco-lang', 'en-US');
@@ -47,6 +38,12 @@ function Index() {
     }
   }
 
+  const addTodo = (todo) => ({
+    type: 'ADD_TODO',
+    payload: todo,
+  });
+
+
   async function fetchUserInfo() {
     const departData = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
     store.dispatch({
@@ -60,6 +57,8 @@ function Index() {
       if(departs){
         userInfo.departmentName = departs[0].name;
       }
+
+
       store.dispatch({
         type: 'update-userInfo',
         payload: {userInfo: resultData.data, userLoading: false},
