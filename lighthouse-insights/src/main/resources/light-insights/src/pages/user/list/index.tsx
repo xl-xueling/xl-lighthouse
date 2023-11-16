@@ -5,7 +5,7 @@ import {
   PaginationProps,
   Button,
   Space,
-  Typography, Message,
+  Typography, Message, List,
 } from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
 import { IconDownload, IconPlus } from '@arco-design/web-react/icon';
@@ -15,17 +15,23 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import '../../department/mock';
 import { getColumns } from './constants';
-import { queryList } from "@/api/user";
+import {queryList, requestChangeUState, requestDeleteById, requestResetPasswd} from "@/api/user";
 import {queryAll as queryDepartmentAll} from "@/api/department";
 import {stringifyMap, stringifyObj} from "@/utils/util";
 import {NodeProps, TreeProps} from "@arco-design/web-react/es/Tree/interface";
-import {Department, User} from "@/types/insights";
+import {Department, User} from "@/types/insights-web";
 const { Title } = Typography;
 
 function ProjectList() {
   const t = useLocale(locale);
   const tableCallback = async (record, type) => {
-    console.log(record, type);
+    if(type == 'resetPasswd'){
+      await resetPasswd(record.id);
+    }else if(type == 'delete'){
+      await deleteUser(record.id);
+    }else if(type == 'frozen'){
+      await frozenUser(record.id);
+    }
   };
 
   const [departmentData, setDepartmentData] = useState<Map<string,Department>>(new Map());
@@ -39,6 +45,48 @@ function ProjectList() {
     current: 1,
     pageSizeChangeResetCurrent: true,
   });
+
+  const resetPasswd = async (userId: string) => {
+    try{
+      const result = await requestResetPasswd(userId);
+      if(result.code == '0'){
+          Message.success("重置用户密码成功！");
+      }else{
+          Message.error(result.message || "System Error!");
+      }
+    }catch (error){
+      console.log("error is:" + error);
+      Message.error("System Error!");
+    }
+  };
+
+  const frozenUser = async (userId: string) => {
+    try{
+      const result = await requestChangeUState({"id":userId,"state":3});
+      if(result.code == '0'){
+        Message.success("冻结用户成功！");
+      }else{
+        Message.error(result.message || "System Error!");
+      }
+    }catch (error){
+      console.log("error is:" + error);
+      Message.error("System Error!");
+    }
+  };
+
+  const deleteUser = async (userId: string) => {
+    try{
+      const result = await requestDeleteById(userId);
+      if(result.code == '0'){
+        Message.success("删除用户成功！");
+      }else{
+        Message.error(result.message || "System Error!");
+      }
+    }catch (error){
+      console.log("error is:" + error);
+      Message.error("System Error!");
+    }
+  };
 
   const [loading, setLoading] = useState(true);
   const [formParams, setFormParams] = useState({});
@@ -88,7 +136,7 @@ function ProjectList() {
   async function fetchDepartData(): Promise<Map<string,Department>> {
     const departmentMap = new Map<string,Department>();
     try {
-      const a:any = await queryDepartmentAll().then((res:any) => {
+      await queryDepartmentAll().then((res:any) => {
         const {code, msg} = res;
         const data = res.data;
         if (code === '0' && data) {
