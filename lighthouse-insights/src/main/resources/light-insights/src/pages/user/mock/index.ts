@@ -2,6 +2,7 @@ import Mock from 'mockjs';
 import qs from 'query-string';
 import dayjs from 'dayjs';
 import setupMock from '@/utils/setupMock';
+import {generatePermission, routes} from "@/routes";
 
 setupMock({
     setup: () => {
@@ -70,6 +71,42 @@ setupMock({
             };
         });
 
+
+        Mock.mock(new RegExp('/api/v1/user/userInfo'), () => {
+            const userRole = window.localStorage.getItem('userRole') || 'admin';
+            const data = Mock.mock({
+                "id": /[0-9]{8}/,
+                "userName":'@name()',
+                "email":'@EMAIL()',
+                "phone":'@Phone()',
+                "departmentId":2,
+                "state":0,
+                "createdTime":'@datetime',
+                "avatar":
+                    'https://lf1-xgcdn-tos.pstatp.com/obj/vcloud/vadmin/start.8e0e4855ee346a46ccff8ff3e24db27b.png',
+                "permissions": generatePermission(userRole),
+            });
+            return {
+                code:'0',
+                message:'success',
+                data:data
+            };
+        });
+
+
+
+        const generatePermission = (role: string) => {
+            const actions = role === 'admin' ? ['*'] : ['read'];
+            const result = {};
+            routes.forEach((item) => {
+                if (item.children) {
+                    item.children.forEach((child) => {
+                        result[child.name] = actions;
+                    });
+                }
+            });
+            return result;
+        };
 
     }
 })

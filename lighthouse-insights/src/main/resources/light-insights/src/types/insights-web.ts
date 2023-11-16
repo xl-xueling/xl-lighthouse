@@ -1,4 +1,4 @@
-export interface Department {
+export class Department {
     id: number|string;
     name: string;
     pid: number|string;
@@ -14,4 +14,6 @@ export interface User {
     departmentName?:string;
     state?:number;
     createdTime?:number;
+    avatar?:string;
+    permissions: Record<string, string[]>;
 }
