@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import { GlobalContext } from '@/context';
@@ -10,17 +10,33 @@ import {
   Form,
   Space,
   Message,
-  Skeleton,
+  Skeleton, TreeSelect,
 } from '@arco-design/web-react';
 import {useSelector} from "react-redux";
-import {User} from "@/types/insights-web";
+import {Department, DepartmentArcoTreeNode, User} from "@/types/insights-web";
+import {stringifyObj} from "@/utils/util";
+import {getDataWithLocalCache} from "@/utils/localCache";
+import {fetchAllData as fetchAllDepartmentData, translateToTreeStruct} from "@/pages/department/common";
 
-function InfoForm({ loading }: { loading?: boolean }) {
+function InfoForm() {
+
   const t = useLocale(locale);
   const [form] = Form.useForm();
   const { lang } = useContext(GlobalContext);
 
   const userInfo = useSelector((state: {userInfo:User}) => state.userInfo);
+  const loading = useSelector((state: {userLoading:boolean}) => state.userLoading);
+
+  const [departmentData, setDepartmentData] = useState<Array<DepartmentArcoTreeNode>>(null);
+
+  useEffect(() => {
+    const proc = async ():Promise<Array<Department>> => {
+      return await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
+    }
+    proc().then((result) => {
+      setDepartmentData(translateToTreeStruct(result,"0"));
+    })
+  },[])
 
   const initialValues = {
     "userName":userInfo.userName,
@@ -63,19 +79,19 @@ function InfoForm({ loading }: { loading?: boolean }) {
       wrapperCol={{ span: lang === 'en-US' ? 17 : 18 }}
     >
       <Form.Item
-          label={t['userSetting.info.nickName']}
+          label={t['userSetting.info.userName']}
           field="userName"
           rules={[
             {
               required: true,
-              message: t['userSetting.info.nickName.placeholder'],
+              message: t['userSetting.info.userName.placeholder'],
             },
           ]}
       >
         {loading ? (
             loadingNode()
         ) : (
-            <Input placeholder={t['userSetting.info.nickName.placeholder']}  />
+            <Input disabled={true} placeholder={t['userSetting.info.nickName.placeholder']}  />
         )}
       </Form.Item>
       <Form.Item
@@ -84,7 +100,6 @@ function InfoForm({ loading }: { loading?: boolean }) {
         rules={[
           {
             type: 'email',
-            required: true,
             message: t['userSetting.info.email.placeholder'],
           },
         ]}
@@ -97,83 +112,39 @@ function InfoForm({ loading }: { loading?: boolean }) {
       </Form.Item>
 
       <Form.Item
-        label={t['userSetting.info.area']}
-        field="rangeArea"
-        rules={[
-          { required: true, message: t['userSetting.info.area.placeholder'] },
-        ]}
+          label={t['userSetting.info.phone']}
+          field="phone"
+          rules={[
+            {
+              type: 'phone',
+              message: t['userSetting.info.phone.placeholder'],
+            },
+          ]}
       >
         {loading ? (
-          loadingNode()
+            loadingNode()
         ) : (
-          <Select
-            options={['中国']}
-            placeholder={t['userSetting.info.area.placeholder']}
-          />
+            <Input placeholder={t['userSetting.info.phone.placeholder']} />
         )}
       </Form.Item>
-      <Form.Item
-        label={t['userSetting.info.location']}
-        field="location"
-        initialValue={['BeiJing', 'BeiJing', 'HaiDian']}
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        {loading ? (
-          loadingNode()
-        ) : (
-          <Cascader
-            options={[
-              {
-                label: '北京市',
-                value: 'BeiJing',
-                children: [
-                  {
-                    label: '北京市',
-                    value: 'BeiJing',
-                    children: [
-                      { label: '海淀区', value: 'HaiDian' },
-                      { label: '朝阳区', value: 'ChaoYang' },
-                    ],
-                  },
-                ],
-              },
-              {
-                label: '上海市',
-                value: 'ShangHai',
-                children: [
-                  {
-                    label: '上海市',
-                    value: 'ShangHai',
-                    children: [
-                      { label: '黄浦区', value: 'HuangPu' },
-                      { label: '静安区', value: 'JingAn' },
-                    ],
-                  },
-                ],
-              },
-            ]}
-          />
-        )}
-      </Form.Item>
-      <Form.Item label={t['userSetting.info.address']} field="address">
-        {loading ? (
-          loadingNode()
-        ) : (
-          <Input placeholder={t['userSetting.info.address.placeholder']} />
-        )}
-      </Form.Item>
-      <Form.Item label={t['userSetting.info.profile']} field="profile">
-        {loading ? (
-          loadingNode(3)
-        ) : (
-          <Input.TextArea
-            placeholder={t['userSetting.info.profile.placeholder']}
-          />
-        )}
+
+      <Form.Item label={t['userSetting.info.department']} field="department">
+        <TreeSelect
+            placeholder={"Please select"}
+            multiple={true}
+            treeData={departmentData}
+            allowClear={true}
+            onChange={(e,v) => {
+              if(!e || e.length == '0'){
+                form.resetFields();
+                return;
+              }
+            }}
+            onClear={(z) => {
+              console.log("----z is:" + stringifyObj(z));
+            }}
+            style={{ width: '100%'}}
+        />
       </Form.Item>
 
       <Form.Item label=" ">

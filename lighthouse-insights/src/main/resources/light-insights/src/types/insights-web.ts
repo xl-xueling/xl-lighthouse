@@ -1,8 +1,16 @@
+import {List} from "@arco-design/web-react";
+
 export class Department {
-    id: number|string;
+    id: number;
     name: string;
     pid: number|string;
     fullpath?:string;
+}
+
+export class DepartmentArcoTreeNode {
+    key: string;
+    title: string;
+    children?:Array<DepartmentArcoTreeNode>;
 }
 
 export interface User {

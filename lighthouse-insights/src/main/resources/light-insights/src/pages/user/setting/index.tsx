@@ -12,18 +12,16 @@ import {User} from "@/types/insights-web";
 
 function UserInfo() {
   const t = useLocale(locale);
-  const userInfo = useSelector((state: {userInfo:User}) => state.userInfo);
-  const loading = useSelector((state: {userLoading:boolean}) => state.userLoading);
   const [activeTab, setActiveTab] = useState('basic');
   return (
     <div>
       <Card style={{ padding: '14px 20px' }}>
-        <InfoHeader userInfo={userInfo} loading={loading} />
+        <InfoHeader />
       </Card>
       <Card style={{ marginTop: '16px' }}>
         <Tabs activeTab={activeTab} onChange={setActiveTab} type="rounded">
           <Tabs.TabPane key="basic" title={t['userSetting.title.basicInfo']}>
-            <InfoForm loading={loading} />
+            <InfoForm/>
           </Tabs.TabPane>
           <Tabs.TabPane key="security" title={t['userSetting.title.security']}>
             <Security />

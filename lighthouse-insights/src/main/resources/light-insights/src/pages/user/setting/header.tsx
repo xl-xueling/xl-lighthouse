@@ -13,11 +13,12 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/header.module.less';
 import {User} from "@/types/insights-web";
+import {useSelector} from "react-redux";
 
-export default function Info({userInfo, loading}: {
-  userInfo:User;
-  loading: boolean;
-}) {
+export default function Info() {
+
+  const userInfo = useSelector((state: {userInfo:User}) => state.userInfo);
+  const loading = useSelector((state: {userLoading:boolean}) => state.userLoading);
 
   const t = useLocale(locale);
 
