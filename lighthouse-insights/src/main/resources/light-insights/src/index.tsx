@@ -23,8 +23,14 @@ import {stringifyMap, stringifyObj} from "@/utils/util";
 import {Department} from "@/types/insights-web";
 import {queryAll as queryDepartmentAll} from "@/api/department";
 import {fetchAllData as fetchAllDepartmentData} from "@/pages/department/common";
+import {configureStore} from "@reduxjs/toolkit";
 
 const store = createStore(rootReducer);
+// const store = configureStore({
+//   reducer: {
+//     posts: rootReducer,
+//   }
+// })
 
 function Index() {
   const [lang, setLang] = useStorage('arco-lang', 'en-US');
@@ -50,9 +56,9 @@ function Index() {
 
     requestUserInfo().then((resultData) => {
       const userInfo = resultData.data;
-      const depart = departData.filter(z => z.id.toString === userInfo.id.toString);
-      if(depart){
-        userInfo.departmentName = depart[0].name;
+      const departs = departData.filter(z => z.id.toString === userInfo.id.toString);
+      if(departs){
+        userInfo.departmentName = departs[0].name;
       }
       store.dispatch({
         type: 'update-userInfo',

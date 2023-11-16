@@ -12,11 +12,24 @@ import {
   Message,
   Skeleton,
 } from '@arco-design/web-react';
+import {useSelector} from "react-redux";
+import {User} from "@/types/insights-web";
 
 function InfoForm({ loading }: { loading?: boolean }) {
   const t = useLocale(locale);
   const [form] = Form.useForm();
   const { lang } = useContext(GlobalContext);
+
+  const userInfo = useSelector((state:any) => {
+    return state.userInfo || {};
+  });
+
+
+
+  const initialValues = {
+    "email":"ssss",
+    "userName":userInfo.userName,
+  }
 
   const handleSave = async () => {
     try {
@@ -45,9 +58,26 @@ function InfoForm({ loading }: { loading?: boolean }) {
     <Form
       style={{ width: '500px', marginTop: '6px' }}
       form={form}
+      initialValues = {initialValues}
       labelCol={{ span: lang === 'en-US' ? 7 : 6 }}
       wrapperCol={{ span: lang === 'en-US' ? 17 : 18 }}
     >
+      <Form.Item
+          label={t['userSetting.info.nickName']}
+          field="userName"
+          rules={[
+            {
+              required: true,
+              message: t['userSetting.info.nickName.placeholder'],
+            },
+          ]}
+      >
+        {loading ? (
+            loadingNode()
+        ) : (
+            <Input placeholder={t['userSetting.info.nickName.placeholder']}  />
+        )}
+      </Form.Item>
       <Form.Item
         label={t['userSetting.info.email']}
         field="email"
@@ -65,22 +95,7 @@ function InfoForm({ loading }: { loading?: boolean }) {
           <Input placeholder={t['userSetting.info.email.placeholder']} />
         )}
       </Form.Item>
-      <Form.Item
-        label={t['userSetting.info.nickName']}
-        field="nickName"
-        rules={[
-          {
-            required: true,
-            message: t['userSetting.info.nickName.placeholder'],
-          },
-        ]}
-      >
-        {loading ? (
-          loadingNode()
-        ) : (
-          <Input placeholder={t['userSetting.info.nickName.placeholder']} />
-        )}
-      </Form.Item>
+
       <Form.Item
         label={t['userSetting.info.area']}
         field="rangeArea"
