@@ -83,6 +83,10 @@ export const routes: IRoute[] = [
         name: '用户管理',
         key: 'user/list',
       },
+      {
+        name: '用户设置',
+        key: 'user/setting',
+      },
     ],
   },
   {
@@ -157,10 +161,6 @@ export const routes: IRoute[] = [
       {
         name: 'menu.user.info',
         key: 'user/info',
-      },
-      {
-        name: 'menu.user.setting',
-        key: 'user/setting',
       },
     ],
   },

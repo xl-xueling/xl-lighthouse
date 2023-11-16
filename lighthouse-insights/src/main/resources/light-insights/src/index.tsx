@@ -17,6 +17,7 @@ import changeTheme from './utils/changeTheme';
 import useStorage from './utils/useStorage';
 import './mock';
 import Register from "@/pages/register";
+import {requestUserInfo} from "@/api/user";
 
 const store = createStore(rootReducer);
 
@@ -40,12 +41,15 @@ function Index() {
       type: 'update-userInfo',
       payload: { userLoading: true },
     });
-    axios.get('/api/user/userInfo').then((res) => {
+
+    requestUserInfo().then((res) => {
       store.dispatch({
         type: 'update-userInfo',
         payload: { userInfo: res.data, userLoading: false },
       });
-    });
+    })
+
+
   }
 
   useEffect(() => {

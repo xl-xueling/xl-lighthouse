@@ -1,26 +1,24 @@
 import defaultSettings from '../settings.json';
+import {User} from "@/types/insights-web";
 export interface GlobalState {
   settings?: typeof defaultSettings;
-  userInfo?: {
-    name?: string;
-    avatar?: string;
-    job?: string;
-    organization?: string;
-    location?: string;
-    email?: string;
-    permissions: Record<string, string[]>;
-  };
+  userInfo? : User;
   userLoading?: boolean;
 }
 
-const initialState: GlobalState = {
-  settings: defaultSettings,
-  userInfo: {
-    permissions: {},
-  },
+const initialState = ():GlobalState => {
+  const initUser: User= {
+    id: 0,
+    userName: "",
+    permissions: {}
+  };
+  return {
+    settings: defaultSettings,
+    userInfo: initUser,
+  }
 };
 
-export default function store(state = initialState, action) {
+export default function store(state = initialState(), action) {
   switch (action.type) {
     case 'update-settings': {
       const { settings } = action.payload;
@@ -29,8 +27,8 @@ export default function store(state = initialState, action) {
         settings,
       };
     }
-    case 'update-userInfo': {
-      const { userInfo = initialState.userInfo, userLoading } = action.payload;
+    case 'update-userInfo':{
+      const { userInfo = initialState().userInfo, userLoading } = action.payload;
       return {
         ...state,
         userLoading,

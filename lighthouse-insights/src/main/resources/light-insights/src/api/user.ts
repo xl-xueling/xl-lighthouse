@@ -43,3 +43,12 @@ export async function requestChangeUState(data) :Promise<ResultCode>  {
         data,
     })
 }
+
+
+export async function requestUserInfo():Promise<ResultCode>  {
+    return request({
+        url:'/user/userInfo',
+        method:'POST',
+    })
+}
+
