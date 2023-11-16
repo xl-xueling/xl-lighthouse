@@ -8,8 +8,6 @@ export interface GlobalState {
 
 const initialState = ():GlobalState => {
   const initUser: User= {
-    id: 0,
-    userName: "",
     permissions: {}
   };
   return {

@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { ConfigProvider } from '@arco-design/web-react';
+import {ConfigProvider, Message} from '@arco-design/web-react';
 import zhCN from '@arco-design/web-react/es/locale/zh-CN';
 import enUS from '@arco-design/web-react/es/locale/en-US';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -18,6 +18,11 @@ import useStorage from './utils/useStorage';
 import './mock';
 import Register from "@/pages/register";
 import {requestUserInfo} from "@/api/user";
+import {getDataWithLocalCache} from "@/utils/localCache";
+import {stringifyMap, stringifyObj} from "@/utils/util";
+import {Department} from "@/types/insights-web";
+import {queryAll as queryDepartmentAll} from "@/api/department";
+import {fetchAllData as fetchAllDepartmentData} from "@/pages/department/common";
 
 const store = createStore(rootReducer);
 
@@ -36,16 +41,22 @@ function Index() {
     }
   }
 
-  function fetchUserInfo() {
+  async function fetchUserInfo() {
+    const departData = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
     store.dispatch({
       type: 'update-userInfo',
-      payload: { userLoading: true },
+      payload: {userLoading: true},
     });
 
-    requestUserInfo().then((res) => {
+    requestUserInfo().then((resultData) => {
+      const userInfo = resultData.data;
+      const depart = departData.filter(z => z.id.toString === userInfo.id.toString);
+      if(depart){
+        userInfo.departmentName = depart[0].name;
+      }
       store.dispatch({
         type: 'update-userInfo',
-        payload: { userInfo: res.data, userLoading: false },
+        payload: {userInfo: resultData.data, userLoading: false},
       });
     })
 

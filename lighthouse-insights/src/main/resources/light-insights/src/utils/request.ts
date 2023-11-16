@@ -1,8 +1,8 @@
 import axios, {AxiosRequestConfig, AxiosResponseHeaders} from 'axios'
-import {ResultCode} from "@/types/insights-common";
+import {ResultData} from "@/types/insights-common";
 
 
-export const request = async (config): Promise<ResultCode> => {
+export const request = async (config): Promise<ResultData> => {
     const http = axios.create({
         baseURL: '/api/v1',
         timeout: 5000,

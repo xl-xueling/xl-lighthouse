@@ -1,7 +1,7 @@
 import {request} from "@/utils/request";
-import {ResultCode} from "@/types/insights-common";
+import {ResultData} from "@/types/insights-common";
 
-export async function queryList(data) :Promise<ResultCode>  {
+export async function queryList(data) :Promise<ResultData>  {
     return request({
         url:'/user/list',
         method:'POST',
@@ -10,7 +10,7 @@ export async function queryList(data) :Promise<ResultCode>  {
 }
 
 
-export async function requestUpdateById(data) :Promise<ResultCode>  {
+export async function requestUpdateById(data) :Promise<ResultData>  {
     return request({
         url:'/user/updateById',
         method:'POST',
@@ -19,7 +19,7 @@ export async function requestUpdateById(data) :Promise<ResultCode>  {
 }
 
 
-export async function requestDeleteById(data) :Promise<ResultCode>  {
+export async function requestDeleteById(data) :Promise<ResultData>  {
     return request({
         url:'/user/deleteById',
         method:'POST',
@@ -27,7 +27,7 @@ export async function requestDeleteById(data) :Promise<ResultCode>  {
     })
 }
 
-export async function requestResetPasswd(data):Promise<ResultCode> {
+export async function requestResetPasswd(data):Promise<ResultData> {
     return request({
         url:'/user/resetPasswd',
         method:'POST',
@@ -36,7 +36,7 @@ export async function requestResetPasswd(data):Promise<ResultCode> {
 }
 
 
-export async function requestChangeUState(data) :Promise<ResultCode>  {
+export async function requestChangeUState(data) :Promise<ResultData>  {
     return request({
         url:'/user/changeState',
         method:'POST',
@@ -45,7 +45,7 @@ export async function requestChangeUState(data) :Promise<ResultCode>  {
 }
 
 
-export async function requestUserInfo():Promise<ResultCode>  {
+export async function requestUserInfo():Promise<ResultData>  {
     return request({
         url:'/user/userInfo',
         method:'POST',

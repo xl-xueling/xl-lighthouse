@@ -1,4 +1,4 @@
-export class ResultCode {
+export class ResultData {
     code: string;
     message?: string;
     data?:any;
