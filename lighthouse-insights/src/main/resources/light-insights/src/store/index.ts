@@ -1,5 +1,6 @@
 import defaultSettings from '../settings.json';
 import {User} from "@/types/insights-web";
+
 export interface GlobalState {
   settings?: typeof defaultSettings;
   userInfo? : User;

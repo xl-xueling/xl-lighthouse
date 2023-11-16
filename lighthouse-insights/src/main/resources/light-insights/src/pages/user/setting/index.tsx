@@ -8,6 +8,9 @@ import InfoForm from './info';
 import Security from './security';
 import './mock';
 import Verified from './verified';
+import { configureStore } from '@reduxjs/toolkit'
+
+export type RootState = ReturnType<typeof configureStore>
 
 function UserInfo() {
   const t = useLocale(locale);
