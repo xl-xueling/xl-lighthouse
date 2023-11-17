@@ -8,32 +8,36 @@ import styles from './style/index.module.less';
 
 const { Text } = Typography;
 
-export const ContentType = ['图文', '横版短视频', '竖版短视频'];
-export const FilterType = ['规则筛选', '人工'];
-export const Status = ['未上线', '已上线'];
 
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
     {
-      title: t['searchTable.columns.id'],
+      title: t['projectList.columns.id'],
       dataIndex: 'id',
-      render: (value) => <Text copyable>{value}</Text>,
+      render: (value) => <Text>{value}</Text>,
     },
     {
-      title: t['searchTable.columns.name'],
+      title: t['projectList.columns.name'],
       dataIndex: 'name',
-      render: (value) => <Text copyable>{value}</Text>,
+      render: (value) => <Text>{value}</Text>,
     },
     {
-      title: t['searchTable.columns.contentType'],
-      dataIndex: 'contentType',
-      render: (value) => (
-        <div className={styles['content-type']}>
-          {ContentType[value]}
-        </div>
-      ),
-    }
+      title: t['projectList.columns.createdTime'],
+      dataIndex: 'createdTime',
+      render: (value) => <Text>{value}</Text>,
+    },
+    {
+      title: t['projectList.columns.department'],
+      dataIndex: 'departmentId',
+      render: (value) => <Text>{value}</Text>,
+    },
+    {
+      title: t['projectList.columns.desc'],
+      dataIndex: 'desc',
+      render: (value) => <Text>{value}</Text>,
+    },
+
   ]
   // return [
   //   {
