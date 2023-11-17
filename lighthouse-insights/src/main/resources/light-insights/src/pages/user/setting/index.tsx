@@ -23,7 +23,7 @@ function UserInfo() {
           <Tabs.TabPane key="basic" title={t['userSetting.title.basicInfo']}>
             <InfoForm/>
           </Tabs.TabPane>
-          <Tabs.TabPane key="security" title={t['userSetting.title.security']}>
+          <Tabs.TabPane key="security" title={t['userSetting.title.updatePasswd']}>
             <Security />
           </Tabs.TabPane>
         </Tabs>

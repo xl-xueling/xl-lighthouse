@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import { GlobalContext } from '@/context';
@@ -20,15 +20,22 @@ import {
   fetchAllData as fetchAllDepartmentData,
   translateToFlatStruct,
 } from "@/pages/department/common";
+import styles from "@/pages/login/style/index.module.less";
+import {FormInstance} from "@arco-design/web-react/es/Form";
+import {requestUpdateById} from "@/api/user";
+import {registerRequest} from "@/api/register";
 
 function InfoForm() {
 
   const t = useLocale(locale);
   const [form] = Form.useForm();
+  const formRef = useRef<FormInstance>();
   const { lang } = useContext(GlobalContext);
 
   const userInfo = useSelector((state: {userInfo:User}) => state.userInfo);
   const loading = useSelector((state: {userLoading:boolean}) => state.userLoading);
+
+  const [formLoading, setFormLoading] = useState(false);
 
   const [departmentData, setDepartmentData] = useState<Array<DepartmentArcoTreeNode>>(null);
 
@@ -42,6 +49,7 @@ function InfoForm() {
   },[])
 
   const initialValues = {
+     "id":userInfo.id,
     "userName":userInfo.userName,
     "departmentName":userInfo.departmentName,
     "phone":userInfo.phone,
@@ -50,12 +58,24 @@ function InfoForm() {
     "state":userInfo.state,
   }
 
-  const handleSave = async () => {
-    try {
-      await form.validate();
-      Message.success('userSetting.saveSuccess');
-    } catch (_) {}
-  };
+
+  function onSubmitClick() {
+      setFormLoading(true);
+      formRef.current.validate().then((values) => {
+          const proc = async () =>{
+              const result = await requestUpdateById(values);
+              if (result.code === '0') {
+                  Message.success("修改信息成功");
+              } else {
+                  Message.error(result.message || "System Error!");
+              }
+          }
+          proc().then();
+      }).catch(() => {
+         console.log("system error!")
+          Message.error("System Error!");
+      }).finally(() => {setFormLoading(false);})
+  }
 
   const handleReset = () => {
     form.resetFields();
@@ -74,91 +94,119 @@ function InfoForm() {
   };
 
   return (
-    <Form
-      style={{ width: '500px', marginTop: '6px' }}
-      form={form}
-      initialValues = {initialValues}
-      labelCol={{ span: lang === 'en-US' ? 7 : 6 }}
-      wrapperCol={{ span: lang === 'en-US' ? 17 : 18 }}
-    >
-      <Form.Item
-          label={t['userSetting.info.userName']}
-          field="userName"
-          rules={[
-            {
-              required: true,
-              message: t['userSetting.info.userName.placeholder'],
-            },
-          ]}
+      <Form
+          style={{ width: '60%', marginTop: '30px' }}
+          form={form}
+          ref={formRef}
+          initialValues = {initialValues}
+          labelCol={{ span: lang === 'en-US' ? 5 : 4 }}
+          wrapperCol={{ span: lang === 'en-US' ? 17 : 18 }}
+          onSubmit={(v) => {
+              onSubmitClick();
+          }}
       >
-        {loading ? (
-            loadingNode()
-        ) : (
-            <Input disabled={true} placeholder={t['userSetting.info.nickName.placeholder']}  />
-        )}
-      </Form.Item>
-      <Form.Item
-        label={t['userSetting.info.email']}
-        field="email"
-        rules={[
-          {
-            type: 'email',
-            message: t['userSetting.info.email.placeholder'],
-          },
-        ]}
-      >
-        {loading ? (
-          loadingNode()
-        ) : (
-          <Input placeholder={t['userSetting.info.email.placeholder']} />
-        )}
-      </Form.Item>
+          <Form.Item
+              style={{ display:"none" }}
+              field="id"
+              rules={[
+                  {
+                      required: true,
+                      message: t['userSetting.info.userName.placeholder'],
+                  },
+              ]}
+          >
+              {loading ? (
+                  loadingNode()
+              ) : (
+                  <Input disabled={true} placeholder={t['userSetting.info.nickName.placeholder']}  />
+              )}
+          </Form.Item>
 
-      <Form.Item
-          label={t['userSetting.info.phone']}
-          field="phone"
-          rules={[
-            {
-              type: 'phone',
-              message: t['userSetting.info.phone.placeholder'],
-            },
-          ]}
-      >
-        {loading ? (
-            loadingNode()
-        ) : (
-            <Input placeholder={t['userSetting.info.phone.placeholder']} />
-        )}
-      </Form.Item>
+        <Form.Item
+            label={t['userSetting.info.userName']}
+            field="userName"
+            rules={[
+              {
+                required: true,
+                message: t['userSetting.info.userName.placeholder'],
+              },
+            ]}
+        >
+          {loading ? (
+              loadingNode()
+          ) : (
+              <Input placeholder={t['userSetting.info.nickName.placeholder']}  />
+          )}
+        </Form.Item>
+        <Form.Item
+            label={t['userSetting.info.email']}
+            field="email"
+            rules={[
+              {
+               required: true,
+                message: t['userSetting.info.email.placeholder'],
+              },
+            ]}
+        >
+          {loading ? (
+              loadingNode()
+          ) : (
+              <Input placeholder={t['userSetting.info.email.placeholder']} />
+          )}
+        </Form.Item>
 
-      <Form.Item label={t['userSetting.info.department']} field="department">
-        <TreeSelect
-            placeholder={"Please select"}
-            multiple={true}
-            treeData={departmentData}
-            allowClear={true}
-            onChange={(e,v) => {
-              if(!e || e.length == '0'){
-                form.resetFields();
-                return;
-              }
-            }}
-            onClear={(z) => {
-              console.log("----z is:" + stringifyObj(z));
-            }}
-            style={{ width: '100%'}}
-        />
-      </Form.Item>
+        <Form.Item
+            label={t['userSetting.info.phone']}
+            field="phone"
+            rules={[
+              {
+                  required: true,
+                message: t['userSetting.info.phone.placeholder'],
+              },
+            ]}
+        >
+          {loading ? (
+              loadingNode()
+          ) : (
+              <Input placeholder={t['userSetting.info.phone.placeholder']} />
+          )}
+        </Form.Item>
 
-      <Form.Item label=" ">
-        <Space>
-          <Button type="primary" onClick={handleSave}>
-            {t['userSetting.save']}
-          </Button>
-          <Button onClick={handleReset}>{t['userSetting.reset']}</Button>
-        </Space>
-      </Form.Item>
-    </Form>
+          <Form.Item label={t['userSetting.info.department']} field="department"
+                     rules={[
+                         {
+                             required: true,
+                         },
+                     ]}>
+              <TreeSelect
+                  placeholder={"Please select"}
+                  treeData={departmentData}
+                  allowClear={true}
+                  onChange={(e,v) => {
+                      if(!e || e.length == '0'){
+                          form.resetFields();
+                          return;
+                      }
+                  }}
+                  style={{ width: '100%'}}
+              />
+          </Form.Item>
+
+          <Form.Item label=" ">
+              <Space>
+                  <Button type="primary" long htmlType='submit' loading={formLoading}>
+                      Submit
+                  </Button>
+                  <Button
+                      href={"/register"}
+                      type="text"
+                      long
+                      className={styles['login-form-register-btn']}>
+                      Cancel
+                  </Button>
+              </Space>
+          </Form.Item>
+      </Form>
   );
 }
 

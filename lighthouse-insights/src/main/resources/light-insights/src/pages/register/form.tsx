@@ -65,8 +65,7 @@ export default function RegisterForm() {
     setErrorMessage('');
     setLoading(true);
     try{
-      const data =
-          await registerRequest(params).then((res:any) => {
+      await registerRequest(params).then((res:any) => {
             const {code, msg, data} = res;
             if (code === '0') {
                 window.location.href = '/login';
