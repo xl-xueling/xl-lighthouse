@@ -203,7 +203,7 @@ function Navbar({ show }: { show: boolean }) {
                 {userLoading ? (
                   <IconLoading />
                 ) : (
-                  <img alt="avatar" src={userInfo.avatar} />
+                    <IconUser/>
                 )}
               </Avatar>
             </Dropdown>
