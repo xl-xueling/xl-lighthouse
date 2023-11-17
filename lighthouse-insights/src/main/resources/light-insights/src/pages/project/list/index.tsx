@@ -1,21 +1,18 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import {
-  Table,
-  Card,
-  PaginationProps,
-  Button,
-  Space,
-  Typography,
-} from '@arco-design/web-react';
+import React, {useEffect, useMemo, useState} from 'react';
+import {Button, Card, PaginationProps, Space, Table, Typography,} from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
-import { IconDownload, IconPlus } from '@arco-design/web-react/icon';
+import {IconDownload, IconPlus} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
 import styles from './style/index.module.less';
-import './mock';
-import { getColumns } from './constants';
-import { queryList } from "@/api/project";
+import '../mock';
+import {getColumns} from './constants';
+import {requestQueryList} from "@/api/project";
+import {ResultData} from "@/types/insights-common";
+import {PrivilegeEnum, Project, ProjectPagination} from "@/types/insights-web";
+import {requestPrivilegeCheck} from "@/api/privilege";
+
 const { Title } = Typography;
 
 function ProjectList() {
@@ -38,33 +35,62 @@ function ProjectList() {
   const [formParams, setFormParams] = useState({});
 
   useEffect(() => {
-    console.log("current:" + pagination.current + ",page size:" + pagination.pageSize)
-    fetchData();
+    setLoading(true);
+    fetchData().then().catch(error => {
+      console.log("error:" + error)
+    }).finally(() => {
+      setLoading(false);
+    })
   }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
-  async function fetchData() {
-    const {current, pageSize} = pagination;
-    setLoading(true);
-    try {
-      const a:any = await queryList({
-        params: {
-          page: current,
-          pageSize,
-          ...formParams,
-        },
-      }).then((res:any) => {
-        setData(res.data.list);
-        setPagination({
-          ...pagination,
-          current,
-          pageSize,
-          total: res.data.total,
-        });
-        setLoading(false);
-      });
-    } catch (error) {
-      console.error("error is:" + error);
-    }
+  const fetchProjectsData = async ():Promise<ResultData<{list:Array<Project>,total:number}>> => {
+    return new Promise((resolve) => {
+       const proc = async () => {
+         const {current, pageSize} = pagination;
+         const result =  await requestQueryList({
+           params: {
+             page: current,
+             pageSize,
+             ...formParams,
+           },
+         });
+         setPagination({
+           ...pagination,
+           current,
+           pageSize,
+           total: result.data.total,});
+         resolve(result);
+       }
+       proc();
+    });
+  }
+
+
+  const fetchPrivilegeData = async ({type,items}):Promise<ResultData> => {
+    return new Promise((resolve) => {
+      const proc = async () => {
+        const result = await requestPrivilegeCheck({type:type,items:items});
+        resolve(result);
+      }
+      proc();
+    })
+  }
+
+  const combineListData = (p1:Array<Project>,p2:Record<string, Array<number>>) => {
+    return  p1.reduce((result:ProjectPagination[],item:Project) => {
+      //item.permissions = r2[item.id] ? r2[item.id]:[];
+      const combinedItem = { ...item, ...{"permissions":p2[item.id]} };
+      result.push(combinedItem);
+      return result;
+    },[])
+  }
+
+  const fetchData = async (): Promise<void> => {
+    const projectData = await fetchProjectsData();
+    const projectIds = projectData.data.list!.map(z => z.id);
+    const privilegeData = await fetchPrivilegeData({type:"project",items:projectIds});
+    const listData = combineListData(projectData.data.list,privilegeData.data);
+    setData(listData);
   }
 
   function onChangeTable({ current, pageSize }) {

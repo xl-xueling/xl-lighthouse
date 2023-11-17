@@ -58,7 +58,6 @@ function Index() {
         userInfo.departmentName = departs[0].name;
       }
 
-
       store.dispatch({
         type: 'update-userInfo',
         payload: {userInfo: resultData.data, userLoading: false},

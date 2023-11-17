@@ -12,7 +12,6 @@ import { GlobalContext } from '@/context';
 import locale from './locale';
 import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
-import { ContentType, FilterType, Status } from './constants';
 import styles from './style/index.module.less';
 
 const { Row, Col } = Grid;
@@ -49,57 +48,24 @@ function SearchForm(props: {
       >
         <Row gutter={24}>
           <Col span={colSpan}>
-            <Form.Item label={t['searchTable.columns.id']} field="id">
-              <Input placeholder={t['searchForm.id.placeholder']} allowClear />
+            <Form.Item label={t['projectList.columns.id']} field="id">
+              <Input placeholder={t['projectList.id.placeholder']} allowClear />
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item label={t['searchTable.columns.name']} field="name">
+            <Form.Item label={t['projectList.columns.name']} field="name">
               <Input
                 allowClear
-                placeholder={t['searchForm.name.placeholder']}
+                placeholder={t['projectList.name.placeholder']}
               />
             </Form.Item>
           </Col>
+
           <Col span={colSpan}>
             <Form.Item
-              label={t['searchTable.columns.contentType']}
-              field="contentType"
-            >
-              <Select
-                placeholder={t['searchForm.all.placeholder']}
-                options={ContentType.map((item, index) => ({
-                  label: item,
-                  value: index,
-                }))}
-                mode="multiple"
-                allowClear
-              />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item
-              label={t['searchTable.columns.filterType']}
-              field="filterType"
-            >
-              <Select
-                placeholder={t['searchForm.all.placeholder']}
-                options={FilterType.map((item, index) => ({
-                  label: item,
-                  value: index,
-                }))}
-                mode="multiple"
-                allowClear
-              />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item
-              label={t['searchTable.columns.createdTime']}
+              label={t['projectList.columns.createdTime']}
               field="createdTime"
             >
-
-
               <DatePicker.RangePicker
                   allowClear
                   style={{ width: '100%' }}
@@ -107,27 +73,14 @@ function SearchForm(props: {
               />
             </Form.Item>
           </Col>
-          <Col span={colSpan}>
-            <Form.Item label={t['searchTable.columns.status']} field="status">
-              <Select
-                placeholder={t['searchForm.all.placeholder']}
-                options={Status.map((item, index) => ({
-                  label: item,
-                  value: index,
-                }))}
-                mode="multiple"
-                allowClear
-              />
-            </Form.Item>
-          </Col>
         </Row>
       </Form>
       <div className={styles['right-button']}>
         <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>
-          {t['searchTable.form.search']}
+          {t['projectList.form.search']}
         </Button>
         <Button icon={<IconRefresh />} onClick={handleReset}>
-          {t['searchTable.form.reset']}
+          {t['projectList.form.reset']}
         </Button>
       </div>
     </div>

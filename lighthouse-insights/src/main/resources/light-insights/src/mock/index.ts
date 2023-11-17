@@ -6,6 +6,7 @@ import './message-box';
 import '../pages/register/mock'
 import '../pages/department/mock'
 import '../pages/user/mock'
+import '../pages/privilege/mock'
 
 if (!isSSR) {
   Mock.setup({
