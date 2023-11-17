@@ -16,7 +16,10 @@ import {useSelector} from "react-redux";
 import {Department, DepartmentArcoTreeNode, User} from "@/types/insights-web";
 import {stringifyObj} from "@/utils/util";
 import {getDataWithLocalCache} from "@/utils/localCache";
-import {fetchAllData as fetchAllDepartmentData, translateToTreeStruct} from "@/pages/department/common";
+import {
+  fetchAllData as fetchAllDepartmentData,
+  translateToFlatStruct,
+} from "@/pages/department/common";
 
 function InfoForm() {
 
@@ -34,7 +37,7 @@ function InfoForm() {
       return await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
     }
     proc().then((result) => {
-      setDepartmentData(translateToTreeStruct(result,"0"));
+      setDepartmentData(translateToFlatStruct(result));
     })
   },[])
 
