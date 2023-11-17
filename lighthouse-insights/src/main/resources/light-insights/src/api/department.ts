@@ -1,6 +1,8 @@
 import {request} from "@/utils/request";
+import {ResultData} from "@/types/insights-common";
+import {Department} from "@/types/insights-web";
 
-export async function queryAll(data?)  {
+export async function queryAll(data?) :Promise<ResultData<Array<Department>>>{
     return request({
         url:'/department/all',
         method:'POST',
@@ -8,7 +10,7 @@ export async function queryAll(data?)  {
     })
 }
 
-export async function add(data)  {
+export async function add(data) :Promise<ResultData>{
     return request({
         url:'/department/add',
         method:'POST',
@@ -17,7 +19,7 @@ export async function add(data)  {
 }
 
 
-export async function dragTo(data)  {
+export async function dragTo(data) :Promise<ResultData>{
     return request({
         url:'/department/dragTo',
         method:'POST',
@@ -25,7 +27,7 @@ export async function dragTo(data)  {
     })
 }
 
-export async function updateById(data)  {
+export async function updateById(data):Promise<ResultData> {
     return request({
         url:'/department/updateById',
         method:'POST',
@@ -33,7 +35,7 @@ export async function updateById(data)  {
     })
 }
 
-export async function deleteById(data)  {
+export async function deleteById(data) :Promise<ResultData>{
     return request({
         url:'/department/deleteById',
         method:'POST',

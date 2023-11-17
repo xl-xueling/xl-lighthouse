@@ -3,7 +3,7 @@ import {List} from "@arco-design/web-react";
 export class Department {
     id: number;
     name: string;
-    pid: number|string;
+    pid: number;
     fullpath?:string;
 }
 
@@ -12,6 +12,13 @@ export class DepartmentArcoTreeNode {
     title: string;
     children?:Array<DepartmentArcoTreeNode>;
 }
+
+
+export class DepartmentArcoFlatNode {
+    key: string;
+    title: string;
+}
+
 
 export interface User {
     id?: number;
