@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Card, PaginationProps, Space, Table, Typography,} from '@arco-design/web-react';
+import {Button, Card, PaginationProps, Space, Table, Tabs, Typography,} from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
 import {IconDownload, IconPlus} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
@@ -12,6 +12,11 @@ import {requestQueryList} from "@/api/project";
 import {ResultData} from "@/types/insights-common";
 import {PrivilegeEnum, Project, ProjectPagination} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
+import {getDataWithLocalCache} from "@/utils/localCache";
+import {fetchAllData as fetchAllDepartmentData} from "@/pages/department/common";
+import InfoForm from "@/pages/user/setting/info";
+import Security from "@/pages/user/setting/security";
+import useForm from "@arco-design/web-react/es/Form/useForm";
 
 const { Title } = Typography;
 
@@ -22,26 +27,35 @@ function ProjectList() {
     console.log(record, type);
   };
   const columns = useMemo(() => getColumns(t, tableCallback), [t]);
-  console.log("columns:" + JSON.stringify(columns))
   const [data, setData] = useState([]);
+  const [owner, setOwner] = useState(true);
+  const [form] = useForm();
   const [pagination, setPagination] = useState<PaginationProps>({
     sizeCanChange: true,
     showTotal: true,
-    pageSize: 10,
+    pageSize: 15,
     current: 1,
     pageSizeChangeResetCurrent: true,
   });
   const [loading, setLoading] = useState(true);
   const [formParams, setFormParams] = useState({});
-
   useEffect(() => {
+    console.log("formParams is:" + JSON.stringify(formParams));
     setLoading(true);
+    fetchDepartData().then().catch(error => {
+      console.log("error:" + error)
+    });
     fetchData().then().catch(error => {
       console.log("error:" + error)
     }).finally(() => {
       setLoading(false);
     })
-  }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+  }, [owner,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+
+  const fetchDepartData = async ():Promise<void> => {
+    const departData = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
+
+  }
 
   const fetchProjectsData = async ():Promise<ResultData<{list:Array<Project>,total:number}>> => {
     return new Promise((resolve) => {
@@ -52,6 +66,7 @@ function ProjectList() {
              page: current,
              pageSize,
              ...formParams,
+             owner:owner?1:0,
            },
          });
          setPagination({
@@ -65,7 +80,6 @@ function ProjectList() {
     });
   }
 
-
   const fetchPrivilegeData = async ({type,items}):Promise<ResultData> => {
     return new Promise((resolve) => {
       const proc = async () => {
@@ -78,7 +92,6 @@ function ProjectList() {
 
   const combineListData = (p1:Array<Project>,p2:Record<string, Array<number>>) => {
     return  p1.reduce((result:ProjectPagination[],item:Project) => {
-      //item.permissions = r2[item.id] ? r2[item.id]:[];
       const combinedItem = { ...item, ...{"permissions":p2[item.id]} };
       result.push(combinedItem);
       return result;
@@ -106,37 +119,50 @@ function ProjectList() {
     setFormParams(params);
   }
 
+  function handleReset(){
+    form.resetFields();
+    handleSearch({});
+  }
+
+  function onClickTab(p){
+    // setFormParams(null);
+    // form.resetFields();
+    // console.log("owner is:" + owner + ",p is:" + p)
+    setOwner(p==1);
+    handleReset();
+  }
+
   return (
     <Card>
-      <Title heading={6}>{t['menu.list.searchTable']}</Title>
-      <SearchForm onSearch={handleSearch} />
-      <PermissionWrapper
-        requiredPermissions={[
-          { resource: 'menu.list.searchTable', actions: ['write'] },
-        ]}
-      >
-        <div className={styles['button-group']}>
-          <Space>
-            <Button type="primary" icon={<IconPlus />}>
-              {t['searchTable.operations.add']}
-            </Button>
-            <Button>{t['searchTable.operations.upload']}</Button>
-          </Space>
-          <Space>
-            <Button icon={<IconDownload />}>
-              {t['searchTable.operation.download']}
-            </Button>
-          </Space>
-        </div>
-      </PermissionWrapper>
-      <Table
-        rowKey="id"
-        loading={loading}
-        onChange={onChangeTable}
-        pagination={pagination}
-        columns={columns}
-        data={data}
-      />
+      <SearchForm onSearch={handleSearch} onClear={handleReset} form={form}/>
+      <Tabs type={"rounded"} onClickTab={onClickTab}>
+        <Tabs.TabPane key='0' title={'全部工程'}>
+          <Typography.Paragraph>
+            <Table
+                rowKey="id"
+                size={"default"}
+                loading={loading}
+                onChange={onChangeTable}
+                pagination={pagination}
+                columns={columns}
+                data={data}
+            />
+          </Typography.Paragraph>
+        </Tabs.TabPane>
+        <Tabs.TabPane key='1' title={'我的工程'}>
+          <Typography.Paragraph>
+          <Table
+              rowKey="id"
+              size={"default"}
+              loading={loading}
+              onChange={onChangeTable}
+              pagination={pagination}
+              columns={columns}
+              data={data}
+          />
+          </Typography.Paragraph>
+        </Tabs.TabPane>
+      </Tabs>
     </Card>
   );
 }

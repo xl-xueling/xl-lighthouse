@@ -1,9 +1,10 @@
 import defaultSettings from '../settings.json';
-import {User} from "@/types/insights-web";
+import {Department, User} from "@/types/insights-web";
 
 export interface GlobalState {
   settings?: typeof defaultSettings;
   userInfo? : User;
+  allDepartInfo? : Array<Department>;
   userLoading?: boolean;
 }
 
@@ -14,12 +15,20 @@ const initialState = ():GlobalState => {
   return {
     settings: defaultSettings,
     userInfo: initUser,
+    allDepartInfo:[],
   }
 };
 
 
 export default function processReducer(state = initialState(), action) {
   switch (action.type) {
+    case 'update-allDepartInfo':{
+      const { allDepartInfo = initialState().allDepartInfo } = action.payload;
+      return {
+        ...state,
+        allDepartInfo,
+      }
+    }
     case 'update-settings': {
       const { settings } = action.payload;
       return {

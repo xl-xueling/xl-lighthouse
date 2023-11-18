@@ -45,7 +45,12 @@ function Index() {
 
 
   async function fetchUserInfo() {
-    const departData = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
+    const allDepartInfo = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
+    store.dispatch({
+      type: 'update-allDepartInfo',
+      payload: {allDepartInfo: allDepartInfo},
+    })
+
     store.dispatch({
       type: 'update-userInfo',
       payload: {userLoading: true},
@@ -53,7 +58,7 @@ function Index() {
 
     requestUserInfo().then((resultData) => {
       const userInfo = resultData.data;
-      const departs = departData.filter(z => z.id.toString === userInfo.id.toString);
+      const departs = allDepartInfo.filter(z => z.id.toString === userInfo.id.toString);
       if(departs){
         userInfo.departmentName = departs[0].name;
       }
