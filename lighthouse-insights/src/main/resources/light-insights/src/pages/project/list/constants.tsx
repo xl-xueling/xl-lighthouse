@@ -1,17 +1,39 @@
 import React from 'react';
-import { Button, Typography, Badge } from '@arco-design/web-react';
+import {Button, Typography, Badge, Space, Popconfirm, Message} from '@arco-design/web-react';
 import IconText from './icons/text.svg';
 import IconHorizontalVideo from './icons/horizontal.svg';
 import IconVerticalVideo from './icons/vertical.svg';
 import dayjs from 'dayjs';
 import styles from './style/index.module.less';
+import {IconHeart, IconHeartFill, IconStar, IconStarFill, IconUser} from "@arco-design/web-react/icon";
 
 const { Text } = Typography;
 
 
-
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
+      {
+          title: '',
+          dataIndex: 'id',
+          render: (_, record) => {
+              return <Space size={16} direction="horizontal">
+                  <Popconfirm
+                      focusLock
+                      position={"bl"}
+                      title='Confirm'
+                      content='Are you sure to reset this user password?'
+                      onOk={() => callback(record, 'resetPasswd')}
+                      onCancel={() => {
+                          Message.error({
+                              content: 'cancel',
+                          });
+                      }}
+                  >
+                      <IconStarFill style={{ color:"oranged"}}/>
+                  </Popconfirm>
+              </Space>
+            }
+      },
     {
       title: t['projectList.columns.id'],
       dataIndex: 'id',
@@ -37,6 +59,89 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
       dataIndex: 'desc',
       render: (value) => <Text>{value}</Text>,
     },
+
+    {
+      title: t['userList.columns.operations'],
+      dataIndex: 'operations',
+      headerCellStyle: { paddingLeft: '15px',width:'280px' },
+      render: (_, record) => (
+          <Space size={16} direction="horizontal">
+              <Popconfirm
+                  focusLock
+                  position={"bl"}
+                  title='Confirm'
+                  content='Are you sure to reset this user password?'
+                  onOk={() => callback(record, 'resetPasswd')}
+                  onCancel={() => {
+                      Message.error({
+                          content: 'cancel',
+                      });
+                  }}
+              >
+                  <Button
+                      type="secondary"
+                      size="mini">
+                      {'查看'}
+                  </Button>
+              </Popconfirm>
+            <Popconfirm
+                focusLock
+                position={"bl"}
+                title='Confirm'
+                content='Are you sure to reset this user password?'
+                onOk={() => callback(record, 'resetPasswd')}
+                onCancel={() => {
+                  Message.error({
+                    content: 'cancel',
+                  });
+                }}
+            >
+              <Button
+                  type="secondary"
+                  size="mini">
+                {'修改'}
+              </Button>
+            </Popconfirm>
+
+            <Popconfirm
+                focusLock
+                title='Confirm'
+                content='Are you sure to frozen this user?'
+                onOk={() => callback(record, 'frozen')}
+                onCancel={() => {
+                  Message.error({
+                    content: 'cancel',
+                  });
+                }}
+            >
+              <Button
+                  type="secondary"
+                  size="mini">
+                {'管理'}
+              </Button>
+            </Popconfirm>
+
+            <Popconfirm
+                focusLock
+                title='Confirm'
+                content='Are you sure to delete this user?'
+                onOk={() => callback(record, 'delete')}
+                onCancel={() => {
+                  Message.error({
+                    content: 'cancel',
+                  });
+                }}
+            >
+              <Button
+                  type="secondary"
+                  size="mini">
+                {'删除'}
+              </Button>
+            </Popconfirm>
+          </Space>
+      ),
+    },
+
 
   ]
   // return [
