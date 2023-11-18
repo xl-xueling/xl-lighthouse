@@ -71,7 +71,6 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                   position={"bl"}
                   title='Confirm'
                   content='Are you sure to reset this user password?'
-                  onOk={() => callback(record, 'resetPasswd')}
                   onCancel={() => {
                       Message.error({
                           content: 'cancel',
@@ -89,7 +88,6 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                 position={"bl"}
                 title='Confirm'
                 content='Are you sure to reset this user password?'
-                onOk={() => callback(record, 'resetPasswd')}
                 onCancel={() => {
                   Message.error({
                     content: 'cancel',
@@ -102,25 +100,12 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                 {'修改'}
               </Button>
             </Popconfirm>
-
-            <Popconfirm
-                focusLock
-                title='Confirm'
-                content='Are you sure to frozen this user?'
-                onOk={() => callback(record, 'frozen')}
-                onCancel={() => {
-                  Message.error({
-                    content: 'cancel',
-                  });
-                }}
-            >
               <Button
+                  onClick={() => callback(record, 'update')}
                   type="secondary"
                   size="mini">
                 {'管理'}
               </Button>
-            </Popconfirm>
-
             <Popconfirm
                 focusLock
                 title='Confirm'
