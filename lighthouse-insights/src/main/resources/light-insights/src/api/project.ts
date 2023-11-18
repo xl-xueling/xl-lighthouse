@@ -3,6 +3,7 @@ import {ResultData} from "@/types/insights-common";
 import {Project} from "@/types/insights-web";
 
 export async function requestQueryList(data) :Promise<ResultData<{list:Array<Project>,total:number}>> {
+    console.log("send data param is:" + JSON.stringify(data));
     return request({
         url:'/project/list',
         method:'POST',
