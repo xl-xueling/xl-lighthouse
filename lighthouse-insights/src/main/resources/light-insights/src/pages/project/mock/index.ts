@@ -26,7 +26,7 @@ const { list } = Mock.mock({
 setupMock({
   setup: () => {
     Mock.mock(new RegExp('/api/v1/project/list'), (params) => {
-      console.log("receive params,params:" + JSON.stringify(params));
+      console.log("receive query params,params:" + JSON.stringify(params));
       return {
         code:0,
         message:'success',
@@ -36,5 +36,15 @@ setupMock({
         },
       };
     });
+
+    Mock.mock(new RegExp('/api/v1/project/create'), (params) => {
+      console.log("receive create params,params:" + JSON.stringify(params));
+      return {
+        code:0,
+        message:'success',
+        data:{},
+      };
+    });
+
   },
 });
