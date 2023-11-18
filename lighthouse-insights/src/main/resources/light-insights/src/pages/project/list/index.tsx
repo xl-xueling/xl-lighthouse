@@ -19,7 +19,7 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import '../mock';
 import {getColumns} from './constants';
-import {requestQueryList} from "@/api/project";
+import {requestList} from "@/api/project";
 import {ResultData} from "@/types/insights-common";
 import {Department, PrivilegeEnum, Project, ProjectPagination} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
@@ -30,7 +30,7 @@ import Security from "@/pages/user/setting/security";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {stringifyObj} from "@/utils/util";
 import {useSelector} from "react-redux";
-import UserTermQuery from "@/pages/project/list/userTermQuery";
+import UserTermQuery from "@/pages/user/common/userTermQuery";
 import ProjectCreate from "@/pages/project/list/create";
 import ProjectUpdate from "@/pages/project/list/update";
 
@@ -89,7 +89,7 @@ function ProjectList() {
     return new Promise((resolve) => {
        const proc = async () => {
          const {current, pageSize} = pagination;
-         const result =  await requestQueryList({
+         const result =  await requestList({
            params: {
              page: current,
              pageSize,

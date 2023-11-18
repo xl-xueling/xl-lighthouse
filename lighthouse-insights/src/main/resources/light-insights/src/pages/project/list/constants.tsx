@@ -70,7 +70,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                   focusLock
                   position={"bl"}
                   title='Confirm'
-                  content='Are you sure to reset this user password?'
+                  content='Are you sure to reset this user password2?'
                   onCancel={() => {
                       Message.error({
                           content: 'cancel',
@@ -87,7 +87,8 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                 focusLock
                 position={"bl"}
                 title='Confirm'
-                content='Are you sure to reset this user password?'
+                content='Are you sure to reset this user password1?'
+                onOk={() => callback(record, 'update')}
                 onCancel={() => {
                   Message.error({
                     content: 'cancel',
@@ -101,7 +102,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
               </Button>
             </Popconfirm>
               <Button
-                  onClick={() => callback(record, 'update')}
+                  //onClick={() => callback(record, 'update')}
                   type="secondary"
                   size="mini">
                 {'管理'}

@@ -1,52 +1,10 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
-    Radio,
-    Button,
-    Card,
-    Grid,
-    PaginationProps,
-    Space,
-    Table,
-    Tabs,
-    Typography,
-    Modal,
-    Divider,
-    Steps,
-    AutoComplete,
     Select,
-    Cascader,
-    Form,
-    Input,
-    InputNumber,
-    TreeSelect,
-    Switch,
-    Rate,
-    DatePicker, Message, Checkbox, Upload,
 } from '@arco-design/web-react';
-import PermissionWrapper from '@/components/PermissionWrapper';
-import {IconCheck, IconClose, IconDownload, IconPlus, IconRefresh, IconSearch} from '@arco-design/web-react/icon';
-import useLocale from '@/utils/useLocale';
-import SearchForm from './form';
-import locale from './locale';
-import styles from './style/index.module.less';
-import '../mock';
-import {getColumns} from './constants';
-import {requestQueryList} from "@/api/project";
-import {ResultData} from "@/types/insights-common";
-import {Department, PrivilegeEnum, Project, ProjectPagination} from "@/types/insights-web";
-import {requestPrivilegeCheck} from "@/api/privilege";
-import {getDataWithLocalCache} from "@/utils/localCache";
-import {fetchAllData as fetchAllDepartmentData, translateToTreeStruct} from "@/pages/department/common";
-import InfoForm from "@/pages/user/setting/info";
-import Security from "@/pages/user/setting/security";
-import useForm from "@arco-design/web-react/es/Form/useForm";
-import {stringifyObj} from "@/utils/util";
-import {useSelector} from "react-redux";
-import {Slider} from "bizcharts";
 import { useCallback } from 'react';
 import { Spin, Avatar } from '@arco-design/web-react';
 import debounce from 'lodash/debounce';
-
 
 function UserTermQuery() {
     const [options, setOptions] = useState([]);

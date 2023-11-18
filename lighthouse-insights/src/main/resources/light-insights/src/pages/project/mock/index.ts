@@ -46,5 +46,23 @@ setupMock({
       };
     });
 
+    Mock.mock(new RegExp('/api/v1/project/update'), (params) => {
+      console.log("receive update params,params:" + JSON.stringify(params));
+      return {
+        code:0,
+        message:'success',
+        data:{},
+      };
+    });
+
+    Mock.mock(new RegExp('/api/v1/project/delete'), (params) => {
+      console.log("receive delete params,params:" + JSON.stringify(params));
+      return {
+        code:0,
+        message:'success',
+        data:{},
+      };
+    });
+
   },
 });
