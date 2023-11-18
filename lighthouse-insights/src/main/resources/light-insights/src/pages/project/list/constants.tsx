@@ -14,7 +14,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
   return [
       {
           title: '',
-          dataIndex: 'id',
+          dataIndex: 'fav',
           render: (_, record) => {
               return <Space size={16} direction="horizontal">
                   <Popconfirm
