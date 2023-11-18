@@ -13,23 +13,6 @@ export const FilterType = ['规则筛选', '人工'];
 export const Status = ['未上线', '已上线'];
 export const StateType = ['未审核', '正常', '冻结', '注销'];
 
-
-
-// function delayClose(callback: (record: Record<string, any>, type: string) => Promise<void>) {
-//   console.log("delay close.....record:" + JSON.stringify(record) + ",type:" + type)
-//   callback(record,type);
-//   // return new Promise((resolve, reject) => {
-//   //
-//   //   // setTimeout(() => {
-//   //   //   resolve(null);
-//   //   //   Message.info({
-//   //   //     content: 'ok',
-//   //   //   });
-//   //   // }, 2000);
-//   // });
-//
-// }
-
 function confirm() {
   Modal.confirm({
     title: 'Confirm deletion',
