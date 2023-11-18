@@ -111,10 +111,10 @@ function SearchForm(props: {
         </Row>
       </Form>
       <div className={styles['right-button']}>
-        <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>
+        <Button size={"small"} type="primary" icon={<IconSearch />} onClick={handleSubmit}>
           {t['projectList.form.search']}
         </Button>
-        <Button icon={<IconRefresh />} onClick={props.onClear}>
+        <Button size={"small"} icon={<IconRefresh />} onClick={props.onClear}>
           {t['projectList.form.reset']}
         </Button>
       </div>

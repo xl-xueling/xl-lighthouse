@@ -1,7 +1,8 @@
 import {request} from "@/utils/request";
 import {ResultData} from "@/types/insights-common";
+import {User} from "@/types/insights-web";
 
-export async function queryList(data) :Promise<ResultData>  {
+export async function requestList(data) :Promise<ResultData<{list:Array<User>,total:number}>>  {
     return request({
         url:'/user/list',
         method:'POST',
@@ -9,21 +10,30 @@ export async function queryList(data) :Promise<ResultData>  {
     })
 }
 
-
-export async function requestUpdateById(data) :Promise<ResultData>  {
+export async function requestTermList(data:string) :Promise<ResultData<{list:Array<User>,total:number}>>  {
     return request({
-        url:'/user/updateById',
+        url:'/user/termList',
         method:'POST',
         data,
     })
 }
 
 
-export async function requestDeleteById(data) :Promise<ResultData>  {
+
+export async function requestUpdate(data:User) :Promise<ResultData>  {
     return request({
-        url:'/user/deleteById',
+        url:'/user/update',
         method:'POST',
         data,
+    })
+}
+
+
+export async function requestDelete(id:number) :Promise<ResultData>  {
+    return request({
+        url:'/user/delete',
+        method:'POST',
+        id,
     })
 }
 
@@ -36,7 +46,7 @@ export async function requestResetPasswd(data):Promise<ResultData> {
 }
 
 
-export async function requestChangeUState(data) :Promise<ResultData>  {
+export async function requestChangeState(data) :Promise<ResultData>  {
     return request({
         url:'/user/changeState',
         method:'POST',

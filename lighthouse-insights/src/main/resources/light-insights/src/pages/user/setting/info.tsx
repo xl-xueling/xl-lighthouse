@@ -22,7 +22,7 @@ import {
 } from "@/pages/department/common";
 import styles from "@/pages/login/style/index.module.less";
 import {FormInstance} from "@arco-design/web-react/es/Form";
-import {requestUpdateById} from "@/api/user";
+import {requestUpdate} from "@/api/user";
 import {registerRequest} from "@/api/register";
 
 function InfoForm() {
@@ -63,7 +63,7 @@ function InfoForm() {
       setFormLoading(true);
       formRef.current.validate().then((values) => {
           const proc = async () =>{
-              const result = await requestUpdateById(values);
+              const result = await requestUpdate(values);
               if (result.code === '0') {
                   Message.success("修改信息成功");
               } else {

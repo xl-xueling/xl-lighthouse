@@ -15,7 +15,7 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import '../../department/mock';
 import { getColumns } from './constants';
-import {queryList, requestChangeUState, requestDeleteById, requestResetPasswd} from "@/api/user";
+import {requestList, requestChangeState, requestDelete, requestResetPasswd} from "@/api/user";
 import {queryAll as queryDepartmentAll} from "@/api/department";
 import {stringifyMap, stringifyObj} from "@/utils/util";
 import {NodeProps, TreeProps} from "@arco-design/web-react/es/Tree/interface";
@@ -62,7 +62,7 @@ function ProjectList() {
 
   const frozenUser = async (userId: string) => {
     try{
-      const result = await requestChangeUState({"id":userId,"state":3});
+      const result = await requestChangeState({"id":userId,"state":3});
       if(result.code == '0'){
         Message.success("冻结用户成功！");
       }else{
@@ -74,9 +74,9 @@ function ProjectList() {
     }
   };
 
-  const deleteUser = async (userId: string) => {
+  const deleteUser = async (userId: number) => {
     try{
-      const result = await requestDeleteById(userId);
+      const result = await requestDelete(userId);
       if(result.code == '0'){
         Message.success("删除用户成功！");
       }else{
@@ -160,7 +160,7 @@ function ProjectList() {
     setLoading(true);
     let result;
     try {
-      const a:any = await queryList({
+      const a:any = await requestList({
         params: {
           page: current,
           pageSize,

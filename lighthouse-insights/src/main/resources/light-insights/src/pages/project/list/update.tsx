@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {Form, Input, Modal, Radio, TreeSelect} from "@arco-design/web-react";
-import UserTermQuery from "@/pages/project/list/userTermQuery";
+import UserTermQuery from "@/pages/user/common/userTermQuery";
 import {useSelector} from "react-redux";
 import {Department} from "@/types/insights-web";
 import {translateToTreeStruct} from "@/pages/department/common";
