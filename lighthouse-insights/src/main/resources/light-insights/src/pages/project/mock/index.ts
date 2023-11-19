@@ -6,18 +6,13 @@ import setupMock from '@/utils/setupMock';
 const { list } = Mock.mock({
   'list|100': [
     {
-      id: /[0-9]{8}[-][0-9]{4}/,
-      name: () =>
-        Mock.Random.pick([
-          '测试工程1',
-          '测试工程2',
-          '测试工程3',
-        ]),
-      'departmentId|0-2': 0,
+      id: /[0-9]{8}/,
+      'name': '@word() @word() @word()',
+      'departmentId|1-2': 0,
       'isPrivate|0-1': 0,
-      'desc':'adswwasswwwegase',
+      'desc':'@sentence()',
       'admins':['1','2'],
-      'createdTime|1-60': 0,
+      "createdTime":'@datetime',
     },
   ],
 });
