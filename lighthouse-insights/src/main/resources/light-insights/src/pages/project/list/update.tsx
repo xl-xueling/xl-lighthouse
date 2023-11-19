@@ -24,10 +24,12 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
         await requestQueryById(updateId).then((result) => {
             setProjectInfo(result.data);
             form.setFieldsValue(result.data);
+            setLoading(false);
         });
     }
 
     useEffect(() => {
+        setLoading(true);
         setDepartData(translateToTreeStruct(allDepartInfo,'0'));
         fetchProjectInfo().then();
     },[updateId])
@@ -38,9 +40,20 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
 
     const loadingNode = (rows = 1) => {
         return (
-            <Spin dot loading={true} size={3} style={{ width: '100%',textAlign:"center"}} >
-            </Spin>
+            <Skeleton
+                style={{ marginTop:20 }}
+                text={{
+                    rows,
+                    width: new Array(rows).fill('50%',50,50),
+                }}
+                animation
+            />
         );
+
+        // return (
+        //     <Spin dot loading={true} size={3} style={{ width: '100%',textAlign:"center"}} >
+        //     </Spin>
+        // );
     };
 
     return (
@@ -52,64 +65,62 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
             onOk={handlerSubmit}
             onCancel={onHide}
         >
-            {loading ? (
-                loadingNode()
-            ) : (
-                <Form
-                    form={form}
-                    autoComplete='off'
-                    scrollToFirstError
-                >
-                    <Form.Item label='Name' field='name' rules={[{ required: true }]}>
+            <Form
+                form={form}
+                autoComplete='off'
+                scrollToFirstError
+            >
+                    {loading ? (
+                        loadingNode()
+                    ) : (
+                        <Form.Item label='Name' field='name' rules={[{ required: true }]}>
+                        <Input placeholder='please enter...' value={'sdgasdg'} />
+                        </Form.Item>
+                    )}
 
-                        {loading ? (
-                            loadingNode()
-                        ) : (
-                            <Input placeholder='please enter...' value={'sdgasdg'} />
-                        )}
 
-                    </Form.Item>
-                    <Form.Item label={t['projectList.columns.department']} field="department" rules={[{ required: true }]}>
-                        {loading ? (
-                            loadingNode()
-                        ) : (
-                            <TreeSelect
-                                placeholder={"Please select"}
-                                multiple={true}
-                                allowClear={true}
-                                treeData={departData}
-                                style={{ width: '100%'}}
-                            />
-                        )}
 
-                    </Form.Item>
-                    <Form.Item label={'Description'} field="desc" rules={[{ required: true }]}>
-                        {loading ? (
-                            loadingNode()
-                        ) : (
-                            <Input.TextArea placeholder='Please enter ...' style={{ minHeight: 64}} />
-                        )}
-                    </Form.Item>
-                    <Form.Item label={'IsPrivate'} field="isPrivate" rules={[{ required: true }]}>
-                        {loading ? (
-                            loadingNode()
-                        ) : (
-                            <Radio.Group defaultValue='a' style={{ marginBottom: 20 }}>
-                                <Radio value='0'>Private</Radio>
-                                <Radio value='1'>Public</Radio>
-                            </Radio.Group>
-                        )}
-                    </Form.Item>
-                    <Form.Item label={'Admins'} field="admins" rules={[{ required: true }]}>
-                        {loading ? (
-                            loadingNode()
-                        ) : (
-                            <UserTermQuery/>
-                        )}
+                    {loading ? (
+                        loadingNode()
+                    ) : (
+                        <Form.Item label={t['projectList.columns.department']} field="department" rules={[{ required: true }]}>
+                        <TreeSelect
+                            placeholder={"Please select"}
+                            multiple={true}
+                            allowClear={true}
+                            treeData={departData}
+                            style={{ width: '100%'}}
+                        />
+                        </Form.Item>
+                    )}
 
-                    </Form.Item>
-                </Form>
-            )}
+                    {loading ? (
+                        loadingNode()
+                    ) : (
+                        <Form.Item label={'Description'} field="desc" rules={[{ required: true }]}>
+                        <Input.TextArea placeholder='Please enter ...' style={{ minHeight: 64}} />
+                        </Form.Item>
+                    )}
+
+                    {loading ? (
+                        loadingNode()
+                    ) : (
+                        <Form.Item label={'IsPrivate'} field="isPrivate" rules={[{ required: true }]}>
+                        <Radio.Group defaultValue='a' style={{ marginBottom: 20 }}>
+                            <Radio value='0'>Private</Radio>
+                            <Radio value='1'>Public</Radio>
+                        </Radio.Group>
+                        </Form.Item>
+                    )}
+
+                    {loading ? (
+                        loadingNode()
+                    ) : (
+                        <Form.Item label={'Admins'} field="admins" rules={[{ required: true }]}>
+                        <UserTermQuery/>
+                        </Form.Item>
+                    )}
+            </Form>
 
         </Modal>
     );
