@@ -12,7 +12,15 @@ import {
   Modal, Divider, Steps, AutoComplete, Select, Cascader, Form, Input, InputNumber, TreeSelect, Switch,
 } from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
-import {IconCheck, IconClose, IconDownload, IconPlus, IconRefresh, IconSearch} from '@arco-design/web-react/icon';
+import {
+  IconCheck,
+  IconClose,
+  IconDown,
+  IconDownload,
+  IconPlus,
+  IconRefresh, IconRight,
+  IconSearch
+} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
@@ -161,6 +169,47 @@ function ProjectList() {
     const values = form2.getFieldsValue();
     console.log("form2 values is:" + JSON.stringify(values));
   }
+
+  const components = {
+    header: {
+      operations: ({ selectionNode, expandNode }) => [
+        {
+          node: (
+              <th>
+                <div className='arco-table-th-item'>Index</div>
+              </th>
+          ),
+          width: 40,
+        },
+        {
+          name: 'selectionNode',
+          node: selectionNode,
+        },
+        {
+          name: 'expandNode',
+          node: expandNode,
+        },
+      ],
+    },
+    body: {
+      operations: ({ selectionNode, expandNode }) => [
+        {
+          node: (record) => <td>{record.key}</td>,
+          width: 40,
+        },
+        {
+          name: 'selectionNode',
+          node: selectionNode,
+        },
+        {
+          name: 'expandNode',
+          node: expandNode,
+        },
+      ],
+    },
+  };
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState(['4']);
 
   return (
     <Card>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Typography, Badge, Space, Popconfirm, Message} from '@arco-design/web-react';
+import {Button,Tooltip, Popover,Typography, Badge, Space, Popconfirm, Message} from '@arco-design/web-react';
 import IconText from './icons/text.svg';
 import IconHorizontalVideo from './icons/horizontal.svg';
 import IconVerticalVideo from './icons/vertical.svg';
@@ -15,6 +15,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
       {
           title: '',
           dataIndex: 'fav',
+          headerCellStyle: { width:'5px' },
           render: (_, record) => {
               return <Space size={16} direction="horizontal">
                   <Popconfirm
@@ -37,12 +38,18 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
     {
       title: t['projectList.columns.id'],
       dataIndex: 'id',
-      render: (value) => <Text>{value}</Text>,
+      render: (value,record) =>
+            <Text>{value}</Text>
+              ,
     },
     {
       title: t['projectList.columns.name'],
       dataIndex: 'name',
-      render: (value) => <Text>{value}</Text>,
+      render: (value,record) =>
+          <Tooltip content={record.desc + record.desc+ record.desc+ record.desc}>
+          <Text>{value}</Text>
+          </Tooltip>
+              ,
     },
     {
       title: t['projectList.columns.createdTime'],
@@ -57,13 +64,18 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
     {
       title: t['projectList.columns.desc'],
       dataIndex: 'desc',
-      render: (value) => <Text>{value}</Text>,
+      headerCellStyle: { width:'400px' },
+      render: (value) => {
+          if (value.length <= 100) {
+              return value;
+          }
+          return value.slice(0, 100) + '...';
+      },
     },
-
     {
       title: t['userList.columns.operations'],
       dataIndex: 'operations',
-      headerCellStyle: { paddingLeft: '15px',width:'280px' },
+      headerCellStyle: {width:'250px' },
       render: (_, record) => (
           <Space size={16} direction="horizontal">
               <Popconfirm
@@ -83,24 +95,12 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                       {'查看'}
                   </Button>
               </Popconfirm>
-            <Popconfirm
-                focusLock
-                position={"bl"}
-                title='Confirm'
-                content='Are you sure to reset this user password1?'
-                onOk={() => callback(record, 'update')}
-                onCancel={() => {
-                  Message.error({
-                    content: 'cancel',
-                  });
-                }}
-            >
               <Button
+                  onClick={() => callback(record, 'update')}
                   type="secondary"
                   size="mini">
                 {'修改'}
               </Button>
-            </Popconfirm>
               <Button
                   //onClick={() => callback(record, 'update')}
                   type="secondary"
