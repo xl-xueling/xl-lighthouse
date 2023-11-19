@@ -41,15 +41,11 @@ function UserTermQuery() {
 
     return (
         <Select
-            style={{ width: 345 }}
             showSearch
             mode='multiple'
             options={options}
             placeholder='Search by name'
             filterOption={false}
-            // renderFormat={(option) => {
-            //     return option.children.props.children[1];
-            // }}
             notFoundContent={
                 fetching ? (
                     <div

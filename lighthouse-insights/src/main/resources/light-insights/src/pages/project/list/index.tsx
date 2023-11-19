@@ -74,7 +74,6 @@ function ProjectList() {
   const [formParams, setFormParams] = useState({});
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
   useEffect(() => {
-    console.log("formParams is:" + JSON.stringify(formParams));
     setLoading(true);
     fetchData().then().catch(error => {
       console.log("error:" + error)

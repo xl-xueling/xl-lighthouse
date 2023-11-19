@@ -34,15 +34,16 @@ setupMock({
 
     Mock.mock(new RegExp('/api/v1/project/queryById'), (params) => {
       console.log("receive queryById params,params:" + JSON.stringify(params));
+      const data = JSON.parse(params.body);
       return {
         code:0,
         message:'success',
         data:
             Mock.mock({
-          id: /[0-9]{8}/,
+            id: data.id,
           'name': '@word() @word() @word()',
-          'departmentId|1-2': 0,
-          'isPrivate|0-1': 0,
+          'departmentId|1-2': 1,
+          'isPrivate': 0,
           'desc':'@sentence()',
           'admins':['1','2'],
           "createdTime":'@datetime',

@@ -80,7 +80,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
           <Space size={16} direction="horizontal">
               <Popconfirm
                   focusLock
-                  position={"bl"}
+                  position={"tr"}
                   title='Confirm'
                   content='Are you sure to reset this user password2?'
                   onCancel={() => {
@@ -108,9 +108,10 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                 {'管理'}
               </Button>
             <Popconfirm
+                position={"tr"}
                 focusLock
                 title='Confirm'
-                content='Are you sure to delete this user?'
+                content='Are you sure to delete this project?'
                 onOk={() => callback(record, 'delete')}
                 onCancel={() => {
                   Message.error({
