@@ -16,11 +16,10 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
     const t = useLocale(locale);
     const [departData, setDepartData] = useState([]);
     const [form] = useForm();
-    const [loading] = useState(true);
     const [loadingTermCompleted,setLoadingTermCompleted] = useState(false);
     const [loadingFormCompleted,setLoadingFormCompleted] = useState(false);
+    const [loadingCompleted, setLoadingCompleted] = useState(false);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
-    const [isRed, setIsRed] = useState(false);
 
     const fetchProjectInfo = async () => {
         await requestQueryById({"id":updateId}).then((result) => {
@@ -35,7 +34,7 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
     },[])
 
     useEffect(() => {
-        setIsRed(false);
+        setLoadingCompleted(false);
         setLoadingTermCompleted(false);
         setLoadingFormCompleted(false);
         fetchProjectInfo().then();
@@ -43,26 +42,13 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
 
     useEffect(() => {
         if(loadingFormCompleted && loadingTermCompleted){
-            setIsRed(true);
+            setLoadingCompleted(true);
         }
     },[loadingTermCompleted,loadingFormCompleted])
 
     function handlerSubmit(){
         console.log("create submit!")
     }
-
-    const loadingNode = (rows = 1) => {
-        return (
-            <Skeleton
-                style={{ marginTop:15 }}
-                text={{
-                    rows,
-                    width: ['100%'],
-                }}
-                animation
-            />
-        );
-    };
 
     function loadingTermCompletedCallback(){
         setLoadingTermCompleted(true);
@@ -77,15 +63,15 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
             onOk={handlerSubmit}
             onCancel={onHide}>
             <Skeleton
-                style={{ marginTop:15,display:isRed ? 'none' : 'block' }}
+                style={{ marginTop:15,display:loadingCompleted ? 'none' : 'block' }}
                 text={{
-                    rows:1,
+                    rows:3,
                     width: ['100%'],
                 }}
                 animation
             />
             <Form
-                style={{ display:isRed ? 'block' : 'none' }}
+                style={{ display:loadingCompleted ? 'block' : 'none' }}
                 form={form}
                 autoComplete='off'
                 scrollToFirstError
