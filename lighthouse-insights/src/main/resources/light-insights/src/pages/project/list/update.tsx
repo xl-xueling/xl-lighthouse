@@ -16,22 +16,36 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
     const t = useLocale(locale);
     const [departData, setDepartData] = useState([]);
     const [form] = useForm();
-    const [loading,setLoading] = useState(true);
+    const [loading] = useState(true);
+    const [loadingTermCompleted,setLoadingTermCompleted] = useState(false);
+    const [loadingFormCompleted,setLoadingFormCompleted] = useState(false);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+    const [isRed, setIsRed] = useState(false);
 
     const fetchProjectInfo = async () => {
         await requestQueryById({"id":updateId}).then((result) => {
             form.setFieldsValue(result.data);
             form.setFieldValue("departmentId",result.data.departmentId.toString());
-            setLoading(false);
+            setLoadingFormCompleted(true);
         });
     }
 
     useEffect(() => {
-        setLoading(true);
         setDepartData(translateToTreeStruct(allDepartInfo,'0'));
+    },[])
+
+    useEffect(() => {
+        setIsRed(false);
+        setLoadingTermCompleted(false);
+        setLoadingFormCompleted(false);
         fetchProjectInfo().then();
     },[updateId])
+
+    useEffect(() => {
+        if(loadingFormCompleted && loadingTermCompleted){
+            setIsRed(true);
+        }
+    },[loadingTermCompleted,loadingFormCompleted])
 
     function handlerSubmit(){
         console.log("create submit!")
@@ -39,10 +53,20 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
 
     const loadingNode = (rows = 1) => {
         return (
-            <Spin dot size={4} style={{ width: '100%',textAlign:"center"}} >
-            </Spin>
+            <Skeleton
+                style={{ marginTop:15 }}
+                text={{
+                    rows,
+                    width: ['100%'],
+                }}
+                animation
+            />
         );
     };
+
+    function loadingTermCompletedCallback(){
+        setLoadingTermCompleted(true);
+    }
 
     return (
         <Modal
@@ -52,45 +76,49 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
             className='modal-demo-without-content-spacing'
             onOk={handlerSubmit}
             onCancel={onHide}>
-            {loading ? (
-                loadingNode()
-            ) : (
-                <Form
-                    form={form}
-                    autoComplete='off'
-                    scrollToFirstError
-                >
-                    <Form.Item label='Name' field='id' rules={[{ required: true }]}>
-                        <Input placeholder='Please enter...'/>
-                    </Form.Item>
-                    <Form.Item label={t['projectList.columns.department']}
-                               field="departmentId" rules={[{ required: true }]}>
-                        <TreeSelect
-                            placeholder={"Please select"}
-                            showSearch={true}
-                            filterTreeNode={(inputText,node) => {
-                                return node.props.title.toLowerCase().indexOf(inputText.toLowerCase()) > -1;
-                            }}
-                            allowClear={true}
-                            treeData={departData}
-                            style={{ width: '100%'}}
-                        />
-                    </Form.Item>
-                    <Form.Item label={'Description'} field="desc" rules={[{ required: true }]}>
-                        <Input.TextArea placeholder='Please enter ...' maxLength={200} showWordLimit={true} draggable={"false"} style={{ minHeight: 100}} />
-                    </Form.Item>
-                    <Form.Item label={'Is Private'} field="isPrivate" rules={[{ required: true }]}>
-                        <Radio.Group defaultValue={0}>
-                            <Radio value={0}>Private</Radio>
-                            <Radio value={1}>Public</Radio>
-                        </Radio.Group>
-                    </Form.Item>
-                    <Form.Item label={'Admins'} field="admins" rules={[{ required: true }]}>
-                        <UserTermQuery/>
-                    </Form.Item>
-                </Form>
-            )}
-
+            <Skeleton
+                style={{ marginTop:15,display:isRed ? 'none' : 'block' }}
+                text={{
+                    rows:1,
+                    width: ['100%'],
+                }}
+                animation
+            />
+            <Form
+                style={{ display:isRed ? 'block' : 'none' }}
+                form={form}
+                autoComplete='off'
+                scrollToFirstError
+            >
+                <Form.Item label='Name' field='id' rules={[{ required: true }]}>
+                    <Input placeholder='Please enter...'/>
+                </Form.Item>
+                <Form.Item label={t['projectList.columns.department']}
+                           field="departmentId" rules={[{ required: true }]}>
+                    <TreeSelect
+                        placeholder={"Please select"}
+                        showSearch={true}
+                        filterTreeNode={(inputText,node) => {
+                            return node.props.title.toLowerCase().indexOf(inputText.toLowerCase()) > -1;
+                        }}
+                        allowClear={true}
+                        treeData={departData}
+                        style={{ width: '100%'}}
+                    />
+                </Form.Item>
+                <Form.Item label={'Description'} field="desc" rules={[{ required: true }]}>
+                    <Input.TextArea placeholder='Please enter ...' maxLength={200} showWordLimit={true} draggable={"false"} style={{ minHeight: 100}} />
+                </Form.Item>
+                <Form.Item label={'Is Private'} field="isPrivate" rules={[{ required: true }]}>
+                    <Radio.Group defaultValue={0}>
+                        <Radio value={0}>Private</Radio>
+                        <Radio value={1}>Public</Radio>
+                    </Radio.Group>
+                </Form.Item>
+                <Form.Item label={'Admins'} field="admins" rules={[{ required: true }]}>
+                    <UserTermQuery initValues={[updateId]} completeCallBack={loadingTermCompletedCallback}/>
+                </Form.Item>
+            </Form>
         </Modal>
     );
 }
