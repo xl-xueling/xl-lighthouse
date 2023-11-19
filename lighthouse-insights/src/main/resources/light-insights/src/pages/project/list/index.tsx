@@ -9,7 +9,7 @@ import {
   Table,
   Tabs,
   Typography,
-  Modal, Divider, Steps, AutoComplete, Select, Cascader, Form, Input, InputNumber, TreeSelect, Switch,
+  Modal, Divider, Steps, AutoComplete, Select, Cascader, Form, Input, InputNumber, TreeSelect, Switch, Message,
 } from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
 import {
@@ -41,6 +41,7 @@ import {useSelector} from "react-redux";
 import UserTermQuery from "@/pages/user/common/userTermQuery";
 import ProjectCreate from "@/pages/project/list/create";
 import ProjectUpdate from "@/pages/project/list/update";
+import {requestDeleteById} from "@/api/project";
 
 const { Title } = Typography;
 
@@ -50,6 +51,8 @@ function ProjectList() {
     if(type == 'update'){
       setUpdateVisible(!updateVisible);
       setUpdateId(record.id);
+    }else if(type == 'delete'){
+      await handlerDeleteProject(record.id).then();
     }
     console.log(record, type);
   };
@@ -89,6 +92,20 @@ function ProjectList() {
 
   const hideUpdateModal = () => {
     setUpdateVisible(false);
+  };
+
+  const handlerDeleteProject = async (id: number) => {
+    try{
+      const result = await requestDeleteById(id);
+      if(result.code == '0'){
+        Message.success("删除工程成功！");
+      }else{
+        Message.error(result.message || "System Error!");
+      }
+    }catch (error){
+      console.log("error is:" + error);
+      Message.error("System Error!");
+    }
   };
 
   const fetchProjectsData = async ():Promise<ResultData<{list:Array<Project>,total:number}>> => {

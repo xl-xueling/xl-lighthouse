@@ -6,7 +6,8 @@ import {generatePermission, routes} from "@/routes";
 
 setupMock({
     setup: () => {
-        const { list } = Mock.mock({
+        const { list } = Mock.mock(
+            {
             'list|10': [
                 {
                     "id": /[0-9]{8}/,
@@ -18,7 +19,8 @@ setupMock({
                     "createdTime":'@datetime',
                 },
             ],
-        });
+            }
+            );
 
         Mock.mock(new RegExp('/api/v1/user/list'), (params) => {
             console.log("receive param is:" + JSON.stringify(params));
@@ -30,6 +32,40 @@ setupMock({
                     'list':list,
                     'total':10,
                 }
+            };
+        });
+
+        Mock.mock(new RegExp('/api/v1/user/queryByIds'), (params) => {
+            const list2 = Mock.mock(
+                {
+                    'list': [
+                        {
+                            "id": "1",
+                            "userName":'AB',
+                            "email":'@EMAIL()',
+                            "phone":'@Phone()',
+                            "departmentId":2,
+                            "state|0-3":0,
+                            "createdTime":'@datetime',
+                        },
+
+                        {
+                            "id": "2",
+                            "userName":'CD',
+                            "email":'@EMAIL()',
+                            "phone":'@Phone()',
+                            "departmentId":2,
+                            "state|0-3":0,
+                            "createdTime":'@datetime',
+                        },
+                    ],
+                }
+            );
+            console.log("receive queryByIds param is:" + JSON.stringify(params));
+            return {
+                code:'0',
+                message:'success',
+                data:list2,
             };
         });
 
