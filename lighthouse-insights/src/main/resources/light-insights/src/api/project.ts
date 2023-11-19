@@ -10,6 +10,14 @@ export async function requestList(data) :Promise<ResultData<{list:Array<Project>
     })
 }
 
+export async function requestQueryById(id:number):Promise<ResultData<Project>> {
+    return request({
+        url:'/project/queryById',
+        method:'POST',
+        id,
+    })
+}
+
 export async function requestCreate(data:Project):Promise<ResultData> {
     return request({
         url:'/project/create',
@@ -18,17 +26,17 @@ export async function requestCreate(data:Project):Promise<ResultData> {
     })
 }
 
-export async function requestUpdate(data:Project):Promise<ResultData> {
+export async function requestUpdateById(data:Project):Promise<ResultData> {
     return request({
-        url:'/project/update',
+        url:'/project/updateById',
         method:'POST',
         data,
     })
 }
 
-export async function requestDelete(id:number):Promise<ResultData> {
+export async function requestDeleteById(id:number):Promise<ResultData> {
     return request({
-        url:'/project/delete',
+        url:'/project/deleteById',
         method:'POST',
         id,
     })
