@@ -15,15 +15,14 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
 
     const t = useLocale(locale);
     const [departData, setDepartData] = useState([]);
-    const [itemInfo,setProjectInfo] = useState<Project>(null);
     const [form] = useForm();
     const [loading,setLoading] = useState(true);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
 
     const fetchProjectInfo = async () => {
-        await requestQueryById(updateId).then((result) => {
-            setProjectInfo(result.data);
+        await requestQueryById({"id":updateId}).then((result) => {
             form.setFieldsValue(result.data);
+            form.setFieldValue("departmentId",result.data.departmentId.toString());
             setLoading(false);
         });
     }
@@ -40,20 +39,9 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
 
     const loadingNode = (rows = 1) => {
         return (
-            <Skeleton
-                style={{ marginTop:20 }}
-                text={{
-                    rows,
-                    width: new Array(rows).fill('50%',50,50),
-                }}
-                animation
-            />
+            <Spin dot size={4} style={{ width: '100%',textAlign:"center"}} >
+            </Spin>
         );
-
-        // return (
-        //     <Spin dot loading={true} size={3} style={{ width: '100%',textAlign:"center"}} >
-        //     </Spin>
-        // );
     };
 
     return (
@@ -63,64 +51,45 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
             style={{ width:'650px'}}
             className='modal-demo-without-content-spacing'
             onOk={handlerSubmit}
-            onCancel={onHide}
-        >
-            <Form
-                form={form}
-                autoComplete='off'
-                scrollToFirstError
-            >
-                    {loading ? (
-                        loadingNode()
-                    ) : (
-                        <Form.Item label='Name' field='name' rules={[{ required: true }]}>
-                        <Input placeholder='please enter...' value={'sdgasdg'} />
-                        </Form.Item>
-                    )}
-
-
-
-                    {loading ? (
-                        loadingNode()
-                    ) : (
-                        <Form.Item label={t['projectList.columns.department']} field="department" rules={[{ required: true }]}>
+            onCancel={onHide}>
+            {loading ? (
+                loadingNode()
+            ) : (
+                <Form
+                    form={form}
+                    autoComplete='off'
+                    scrollToFirstError
+                >
+                    <Form.Item label='Name' field='id' rules={[{ required: true }]}>
+                        <Input placeholder='Please enter...'/>
+                    </Form.Item>
+                    <Form.Item label={t['projectList.columns.department']}
+                               field="departmentId" rules={[{ required: true }]}>
                         <TreeSelect
                             placeholder={"Please select"}
-                            multiple={true}
+                            showSearch={true}
+                            filterTreeNode={(inputText,node) => {
+                                return node.props.title.toLowerCase().indexOf(inputText.toLowerCase()) > -1;
+                            }}
                             allowClear={true}
                             treeData={departData}
                             style={{ width: '100%'}}
                         />
-                        </Form.Item>
-                    )}
-
-                    {loading ? (
-                        loadingNode()
-                    ) : (
-                        <Form.Item label={'Description'} field="desc" rules={[{ required: true }]}>
-                        <Input.TextArea placeholder='Please enter ...' style={{ minHeight: 64}} />
-                        </Form.Item>
-                    )}
-
-                    {loading ? (
-                        loadingNode()
-                    ) : (
-                        <Form.Item label={'IsPrivate'} field="isPrivate" rules={[{ required: true }]}>
-                        <Radio.Group defaultValue='a' style={{ marginBottom: 20 }}>
-                            <Radio value='0'>Private</Radio>
-                            <Radio value='1'>Public</Radio>
+                    </Form.Item>
+                    <Form.Item label={'Description'} field="desc" rules={[{ required: true }]}>
+                        <Input.TextArea placeholder='Please enter ...' maxLength={200} showWordLimit={true} draggable={"false"} style={{ minHeight: 100}} />
+                    </Form.Item>
+                    <Form.Item label={'Is Private'} field="isPrivate" rules={[{ required: true }]}>
+                        <Radio.Group defaultValue={0}>
+                            <Radio value={0}>Private</Radio>
+                            <Radio value={1}>Public</Radio>
                         </Radio.Group>
-                        </Form.Item>
-                    )}
-
-                    {loading ? (
-                        loadingNode()
-                    ) : (
-                        <Form.Item label={'Admins'} field="admins" rules={[{ required: true }]}>
+                    </Form.Item>
+                    <Form.Item label={'Admins'} field="admins" rules={[{ required: true }]}>
                         <UserTermQuery/>
-                        </Form.Item>
-                    )}
-            </Form>
+                    </Form.Item>
+                </Form>
+            )}
 
         </Modal>
     );

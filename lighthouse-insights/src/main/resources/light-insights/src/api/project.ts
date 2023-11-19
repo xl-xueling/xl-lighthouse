@@ -10,11 +10,11 @@ export async function requestList(data) :Promise<ResultData<{list:Array<Project>
     })
 }
 
-export async function requestQueryById(id:number):Promise<ResultData<Project>> {
+export async function requestQueryById(data):Promise<ResultData<Project>> {
     return request({
         url:'/project/queryById',
         method:'POST',
-        id,
+        data,
     })
 }
 
