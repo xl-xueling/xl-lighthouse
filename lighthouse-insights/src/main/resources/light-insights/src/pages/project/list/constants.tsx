@@ -46,7 +46,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
       title: t['projectList.columns.name'],
       dataIndex: 'name',
       render: (value,record) =>
-          <Tooltip content={record.desc + record.desc+ record.desc+ record.desc}>
+          <Tooltip color={'#2d3a57'} content={record.desc + record.desc+ record.desc+ record.desc}>
           <Text>{value}</Text>
           </Tooltip>
               ,

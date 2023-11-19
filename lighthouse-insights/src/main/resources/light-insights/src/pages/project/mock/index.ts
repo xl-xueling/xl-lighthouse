@@ -32,6 +32,24 @@ setupMock({
       };
     });
 
+    Mock.mock(new RegExp('/api/v1/project/queryById'), (params) => {
+      console.log("receive queryById params,params:" + JSON.stringify(params));
+      return {
+        code:0,
+        message:'success',
+        data:
+            Mock.mock({
+          id: /[0-9]{8}/,
+          'name': '@word() @word() @word()',
+          'departmentId|1-2': 0,
+          'isPrivate|0-1': 0,
+          'desc':'@sentence()',
+          'admins':['1','2'],
+          "createdTime":'@datetime',
+        }),
+      };
+    });
+
     Mock.mock(new RegExp('/api/v1/project/create'), (params) => {
       console.log("receive create params,params:" + JSON.stringify(params));
       return {
@@ -41,8 +59,8 @@ setupMock({
       };
     });
 
-    Mock.mock(new RegExp('/api/v1/project/update'), (params) => {
-      console.log("receive update params,params:" + JSON.stringify(params));
+    Mock.mock(new RegExp('/api/v1/project/updateById'), (params) => {
+      console.log("receive updateById params,params:" + JSON.stringify(params));
       return {
         code:0,
         message:'success',
@@ -50,8 +68,8 @@ setupMock({
       };
     });
 
-    Mock.mock(new RegExp('/api/v1/project/delete'), (params) => {
-      console.log("receive delete params,params:" + JSON.stringify(params));
+    Mock.mock(new RegExp('/api/v1/project/deleteById'), (params) => {
+      console.log("receive deleteById params,params:" + JSON.stringify(params));
       return {
         code:0,
         message:'success',

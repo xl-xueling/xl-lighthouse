@@ -51,7 +51,6 @@ function ProjectList() {
       setUpdateVisible(!updateVisible);
       setUpdateId(record.id);
     }
-    console.log("record is:" + JSON.stringify(record));
     console.log(record, type);
   };
   const columns = useMemo(() => getColumns(t, tableCallback), [t]);
