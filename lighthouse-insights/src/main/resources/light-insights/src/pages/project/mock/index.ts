@@ -88,34 +88,67 @@ setupMock({
             {
               key:'1-101',
               id:101,
-              title:'首页数据统计',
+              title:'首页数据统计1',
               type:1,
               children:[
                     {
                       key:'2-1011',
                       id:1011,
-                      title:'homepage_stat_1',
+                      title:'homepage_stat_view_1',
                       type:2,
                     },
                   {
                     key:'2-1012',
                     id:1012,
-                    title:'homepage_stat_2',
+                    title:'homepage_stat_view_2',
                     type:2,
                   },
                   {
                     key:'2-1013',
                     id:1013,
-                    title:'homepage_stat_3',
+                    title:'homepage_stat_view_3',
                     type:2,
                   },
                   {
                     key:'2-1014',
                     id:1014,
-                    title:'homepage_stat_4',
+                    title:'homepage_stat_view_4',
                     type:2,
                   },
                 ]
+            },
+
+            {
+              key:'1-102',
+              id:102,
+              title:'首页数据统计2',
+              type:1,
+              children:[
+                {
+                  key:'2-1021',
+                  id:1021,
+                  title:'homepage_stat_view_5',
+                  type:2,
+                },
+                {
+                  key:'2-1022',
+                  id:1022,
+                  title:'homepage_stat_view_6',
+                  type:2,
+                },
+                {
+                  key:'2-1023',
+                  id:1023,
+                  title:'homepage_stat_view_7',
+                  type:2,
+                },
+                {
+                  key:'2-1024',
+                  id:1024,
+                  title:'homepage_stat_view_8',
+                  type:2,
+                },
+              ]
             },
           ],
         },

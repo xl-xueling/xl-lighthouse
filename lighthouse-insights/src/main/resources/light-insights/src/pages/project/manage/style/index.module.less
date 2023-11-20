@@ -2,7 +2,7 @@
   display: flex;
 
   &-left-side {
-    flex-basis: 350px;
+    flex-basis: 310px;
   }
 
   &-content {
@@ -16,25 +16,24 @@
 }
 
 
-:global{
-  .ace_editor {
-    background-color:var(--primary-1) !important;
-    color: var(--primary-1) !important;
-    font-size: 12px !important;
-  }
-}
-
-
 
 :global{
   .arco-tree-node{
     cursor: pointer !important;
   }
   .statistic-wrapper .arco-table-td{
-    padding: 1px 1px !important;
+    padding: 4px 4px !important;
+    text-align: center;
+  }
+  .arco-table-td{
+    border-left: 1px solid var(--color-fill-3) !important;;
   }
 
-
+  .ace_editor {
+    background-color:var(--primary-1) !important;
+    color: var(--primary-1) !important;
+    font-size: 12px !important;
+  }
 
 
   .arco-tree-node-selected {
@@ -106,16 +105,6 @@
   }
 }
 
-.statistic-wrapper {
-  padding: 0 !important;
-  td > .arco-table-td {
-    padding: 0 0 !important;
-  }
-}
-
-td > .arco-table-td {
-  padding: 0 0 !important;
-}
 
 .data-statistic {
   &-content {

@@ -1,4 +1,4 @@
-import { Table, Tag, Typography } from '@arco-design/web-react';
+import {Select, Table, Tag, Typography} from '@arco-design/web-react';
 import React from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -26,14 +26,15 @@ import 'ace-builds/src-noconflict/mode-xml';
 import "ace-builds/webpack-resolver";
 import styles from './style/index.module.less';
 import {useTheme} from "bizcharts";
+import {IconPenFill} from "@arco-design/web-react/icon";
 
 export default function QuickOperation() {
   const t = useLocale(locale);
 
   const columns = [
     {
-      title: 'No',
-      headerCellStyle: { width:'5px' },
+      title: 'ID',
+      headerCellStyle: { width:'7%' },
       render: (_col, _record, index) => <span>{index + 1}</span>,
     },
     {
@@ -46,8 +47,9 @@ export default function QuickOperation() {
         if(theme === "dark"){
           return <div >
             <AceEditor
-                style={{ height:40,width:'100%'}}
+                style={{ height:20,width:'100%'}}
                 mode="xml"
+                showPrintMargin={false}
                 showGutter={false}
                 theme="dracula"
                 highlightActiveLine={false}
@@ -59,8 +61,9 @@ export default function QuickOperation() {
         }else{
           return <div >
             <AceEditor
-                style={{ height:40,width:'100%'}}
+                style={{ height:20,width:'100%'}}
                 mode="xml"
+                showPrintMargin={false}
                 showGutter={false}
                 theme="dawn"
                 highlightActiveLine={false}
@@ -75,18 +78,43 @@ export default function QuickOperation() {
     },
     {
       title: 'Period',
-      headerCellStyle: { width:'20px' },
+      headerCellStyle: { width:'8%' },
       dataIndex: 'Period',
+      render: (_col, record) => {
+        return <Select
+            size={"mini"}
+            placeholder='Please select'
+            style={{ width: '100%' }}
+        >
+          <Select.Option value='1'>1-Minute</Select.Option>
+          <Select.Option value='3'>2-Minute</Select.Option>
+          <Select.Option value='4'>10-Minute</Select.Option>
+        </Select>
+      }
     },
     {
       dataIndex: 'Expire',
-      headerCellStyle: { width:'20px' },
+      headerCellStyle: { width:'8%' },
       title: 'Expire',
+      render: (_col, record) => {
+        return <Select
+            size={"mini"}
+            placeholder='Please select'
+            style={{ width: '100%' }}
+        >
+          <Select.Option value='1'>3 day</Select.Option>
+          <Select.Option value='3'>14 day</Select.Option>
+          <Select.Option value='4'>24 month</Select.Option>
+        </Select>
+      }
     },
     {
-      dataIndex: 'Operation',
-      headerCellStyle: { width:'20px' },
-      title: 'Operation',
+      dataIndex: 'Operate',
+      headerCellStyle: { width:'2%'},
+      title: 'Operate',
+      render: (_col, record) => {
+        return <IconPenFill/>
+      }
     },
   ];
   const data = [
@@ -107,7 +135,7 @@ export default function QuickOperation() {
           className={'statistic-wrapper'}
         columns={columns}
         data={data}
-        border={{"cell":true}}
+        border={true}
         pagination={false}
       />
       <Typography.Text
