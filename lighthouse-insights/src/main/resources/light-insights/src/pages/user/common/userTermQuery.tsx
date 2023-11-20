@@ -10,7 +10,7 @@ import {requestQueryByIds} from "@/api/user";
 import {User} from "@/types/insights-web";
 import {Selector} from "react-redux";
 
-const UserTermQuery = <T extends (...args: any[]) => any>({initValues = null,completeCallBack:T=null}) => {
+const UserTermQuery = ({initValues = null,completeCallBack=null}) => {
 
     const [initData,setInitData] = useState<Array<User>>(null);
 
