@@ -7,7 +7,7 @@ import {
     Table,
     TableColumnProps,
     Popconfirm,
-    Message, Button
+    Message, Button, Form, Input
 } from '@arco-design/web-react';
 import {IconMinus, IconMinusCircleFill, IconMore, IconPlusCircleFill} from '@arco-design/web-react/icon';
 import React from 'react';
@@ -104,22 +104,40 @@ export default function Studio(props: StudioProps) {
   const { userInfo } = props;
   return (
       <Card>
-          <Grid.Row>
-                   <Grid.Col span={16}>
-                     <Typography.Title
-                      style={{ marginTop: 0, marginBottom: 16 }}
-                      heading={6}
-                    >
-                      {'字段信息'}
-                    </Typography.Title>
-                  </Grid.Col>
-              <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                  <IconPlusCircleFill fontSize={15} />
-              </Grid.Col>
+          <Form
+              className={styles['search-form']}
+              labelAlign="left"
+              labelCol={{ span: 0 }}
+              wrapperCol={{ span: 24 }}
+          >
+              <Form.Item label='ToKen' field="name">
+                  <Typography.Title
+                      style={{ marginTop: 0, marginBottom: 8 ,fontSize:14 }}
+                  >
+                      {'Token'}
+                  </Typography.Title>
+                  <Input
+                      allowClear
+                      placeholder={'Please Input Token'}
+                  />
+              </Form.Item>
+              <Form.Item>
+                  <Grid.Row>
+                      <Grid.Col span={16}>
+                          <Typography.Title
+                              style={{ marginTop: 0, marginBottom: 8 ,fontSize:14,}}
+                          >
+                              {'Columns'}
+                          </Typography.Title>
+                      </Grid.Col>
+                      <Grid.Col span={8} style={{ textAlign: 'right' }}>
+                          <IconPlusCircleFill fontSize={15} />
+                      </Grid.Col>
+                  </Grid.Row>
+              </Form.Item>
+          </Form>
 
-          </Grid.Row>
           <div className={styles['studio-wrapper']}>
-
               <Table size={"small"} columns={columns} pagination={false} data={data} />
           </div>
       </Card>

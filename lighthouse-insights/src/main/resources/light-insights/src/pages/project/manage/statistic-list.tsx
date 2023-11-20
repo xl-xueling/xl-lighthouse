@@ -3,6 +3,16 @@ import React from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
+import AceEditor from 'react-ace';
+import 'ace-builds/src-noconflict/ace'
+import 'ace-builds/src-noconflict/mode-xml';// jsx模式的包
+import 'ace-builds/src-noconflict/theme-monokai';// monokai的主题样式
+import 'ace-builds/src-noconflict/ext-language_tools'; // 代码联想
+
+const jsx = `import AceEditor from 'react-ace';
+import 'ace-builds/src-noconflict/mode-golang'; // sql模式的包
+import 'ace-builds/src-noconflict/mode-jsx';// mysql模式的包`;
+
 
 export default function QuickOperation() {
   const t = useLocale(locale);
@@ -15,17 +25,18 @@ export default function QuickOperation() {
       title: t['monitor.list.title.cover'],
       dataIndex: 'cover',
       render: (_col, record) => (
-        <div className={styles['data-statistic-list-cover-wrapper']}>
-          <img src={record.cover} />
-          {record.status === -1 && (
-            <Tag
-              color="red"
-              className={styles['data-statistic-list-cover-tag']}
-            >
-              {t['monitor.list.tag.auditFailed']}
-            </Tag>
-          )}
-        </div>
+          <div>
+
+            <AceEditor
+                mode="XML"
+                theme="monokai"
+                enableBasicAutocompletion={true}
+                wrapEnabled={true}
+                name="UNIQUE_ID_OF_DIV"
+                editorProps={{ $blockScrolling: true }}
+            />
+
+          </div>
       ),
     },
     {
