@@ -87,6 +87,12 @@ export const routes: IRoute[] = [
         name: '用户设置',
         key: 'user/setting',
       },
+      {
+        name: '工程管理',
+        key: 'project/manage',
+        ignore:true,
+        breadcrumb:false,
+      },
     ],
   },
   {

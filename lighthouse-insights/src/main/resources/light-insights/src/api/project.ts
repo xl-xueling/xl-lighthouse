@@ -1,6 +1,6 @@
 import {request} from "@/utils/request";
-import {ResultData} from "@/types/insights-common";
-import {Project} from "@/types/insights-web";
+import {ArcoTreeNode, ResultData} from "@/types/insights-common";
+import {Project, User} from "@/types/insights-web";
 
 export async function requestList(data) :Promise<ResultData<{list:Array<Project>,total:number}>> {
     return request({
@@ -37,6 +37,15 @@ export async function requestUpdateById(data:Project):Promise<ResultData> {
 export async function requestDeleteById(id:number):Promise<ResultData> {
     return request({
         url:'/project/deleteById',
+        method:'POST',
+        id,
+    })
+}
+
+
+export async function requestStructure(id:number):Promise<ResultData<{list:Array<ArcoTreeNode>}>> {
+    return request({
+        url:'/project/structure',
         method:'POST',
         id,
     })

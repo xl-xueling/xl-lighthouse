@@ -20,6 +20,7 @@ import Register from "@/pages/register";
 import {requestUserInfo} from "@/api/user";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import {fetchAllData as fetchAllDepartmentData} from "@/pages/department/common";
+import GroupManage from "@/pages/project/manage";
 
 const store = createStore(rootReducer);
 

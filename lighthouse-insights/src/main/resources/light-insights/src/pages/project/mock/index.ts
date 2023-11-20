@@ -78,5 +78,49 @@ setupMock({
       };
     });
 
+    Mock.mock(new RegExp('/api/v1/project/structure'), (params) => {
+      console.log("receive structure params,params:" + JSON.stringify(params));
+      return {
+        code:0,
+        message:'success',
+        data:{
+          list:[
+            {
+              key:'1-101',
+              id:101,
+              title:'首页数据统计',
+              type:1,
+              children:[
+                    {
+                      key:'2-1011',
+                      id:1011,
+                      title:'homepage_stat_1',
+                      type:2,
+                    },
+                  {
+                    key:'2-1012',
+                    id:1012,
+                    title:'homepage_stat_2',
+                    type:2,
+                  },
+                  {
+                    key:'2-1013',
+                    id:1013,
+                    title:'homepage_stat_3',
+                    type:2,
+                  },
+                  {
+                    key:'2-1014',
+                    id:1014,
+                    title:'homepage_stat_4',
+                    type:2,
+                  },
+                ]
+            },
+          ],
+        },
+      };
+    });
+
   },
 });

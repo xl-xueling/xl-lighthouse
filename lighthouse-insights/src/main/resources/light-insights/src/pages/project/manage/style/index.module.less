@@ -1,0 +1,136 @@
+.layout {
+  display: flex;
+
+  &-left-side {
+    flex-basis: 350px;
+  }
+
+  &-content {
+    flex: 1;
+    padding: 0 16px;
+  }
+
+  &-right-side {
+    flex-basis: 280px;
+  }
+}
+
+:global{
+  .arco-tree-node{
+    cursor: pointer !important;
+  }
+
+  .arco-tree-node-selected {
+    background-color:var(--color-fill-2) !important;
+    font-weight: bold;
+  }
+
+  .arco-tree-node:hover{
+    background-color:var(--color-fill-2) !important;
+  }
+
+  .arco-tree-node-title:hover{
+    background: none !important;
+  }
+
+  .arco-tree-node-drag-icon {
+    //margin-left: 40px !important;
+    display: none;
+  }
+
+  .arco-tree-node-title{
+    width: 100% !important;
+  }
+
+
+  //.arco-tree-node-title:hover .arco-tree-node-drag-icon{
+  //  opacity: 0 !important;
+  //}
+
+  .arco-tree-node-custom-icon{
+    margin-right:5px !important;
+  }
+
+  .arco-tree-node-switcher{
+    margin-right:6px !important;
+  }
+}
+
+
+.chat-panel {
+  height: 100%;
+  min-height: 380px;
+  background-color: var(--color-bg-2);
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  &-content {
+    flex: 1;
+    margin: 20px 0;
+    box-sizing: border-box;
+  }
+}
+
+.data-statistic {
+  &-content {
+    padding: 20px 0;
+  }
+
+  &-list {
+    &-header {
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &-content {
+      margin-top: 16px;
+    }
+
+    &-cover {
+      &-wrapper {
+        height: 68px;
+        position: relative;
+
+        img {
+          height: 100%;
+        }
+      }
+
+      &-tag {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+      }
+    }
+
+    &-tip {
+      display: block;
+      margin-top: 16px;
+      text-align: center;
+    }
+  }
+}
+
+.studio {
+  &-wrapper {
+    :global(.arco-card-body) {
+      padding-top: 0 !important;
+    }
+  }
+
+  &-preview {
+    width: 100%;
+    max-width: 600px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  &-bar {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
