@@ -1,12 +1,67 @@
-<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0)">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M5.37754 16.9795L12.7498 9.43027C14.7163 7.41663 17.9428 7.37837 19.9564 9.34482C19.9852 9.37297 20.0137 9.40145 20.0418 9.43027L20.1221 9.51243C22.1049 11.5429 22.1049 14.7847 20.1221 16.8152L12.7498 24.3644C10.7834 26.378 7.55686 26.4163 5.54322 24.4498C5.5144 24.4217 5.48592 24.3932 5.45777 24.3644L5.37754 24.2822C3.39468 22.2518 3.39468 19.0099 5.37754 16.9795Z" fill="#12D2AC"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M20.0479 9.43034L27.3399 16.8974C29.3674 18.9735 29.3674 22.2883 27.3399 24.3644C25.3735 26.3781 22.147 26.4163 20.1333 24.4499C20.1045 24.4217 20.076 24.3933 20.0479 24.3644L12.7558 16.8974C10.7284 14.8213 10.7284 11.5065 12.7558 9.43034C14.7223 7.4167 17.9488 7.37844 19.9624 9.34489C19.9912 9.37304 20.0197 9.40152 20.0479 9.43034Z" fill="#307AF2"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M20.1321 9.52163L23.6851 13.1599L16.3931 20.627L9.10103 13.1599L12.6541 9.52163C14.6707 7.45664 17.9794 7.4174 20.0444 9.434C20.074 9.46286 20.1032 9.49207 20.1321 9.52163Z" fill="#0057FE"/>
-</g>
-<defs>
-<clipPath id="clip0">
-<rect width="26" height="19" fill="white" transform="translate(3.5 7)"/>
-</clipPath>
-</defs>
+<svg width="35" height="35" viewBox="45 118 1 180" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <defs id="defs2177">
+        <linearGradient x1="0.5" y1="0" x2="0.5" y2="0.99" id="prefix-Pk6-linearGradient-1">
+            <stop stop-color="#5F49F7" offset="0%" id="stop19"/>
+            <stop stop-color="#B948CB" offset="100%" id="stop21"/>
+        </linearGradient>
+        <linearGradient x1="0.5" y1="0" x2="0.5" y2="0.99" id="prefix-Pbe-linearGradient-2">
+            <stop stop-color="#5F49F7" offset="0%" id="stop55"/>
+            <stop stop-color="#B948CB" offset="100%" id="stop57"/>
+        </linearGradient>
+        <linearGradient x1="0.5" y1="0" x2="0.5" y2="0.99" id="prefix-_Xd-linearGradient-3">
+            <stop stop-color="#5F49F7" offset="0%" id="stop91"/>
+            <stop stop-color="#B948CB" offset="100%" id="stop93"/>
+        </linearGradient>
+        <linearGradient x1="0.5" y1="0" x2="0.5" y2="0.99" id="prefix-ogv-linearGradient-4">
+            <stop stop-color="#5F49F7" offset="0%" id="stop127"/>
+            <stop stop-color="#B948CB" offset="100%" id="stop129"/>
+        </linearGradient>
+    </defs>
+    <g>
+        <title>Layer 1</title>
+        <g stroke="null" id="layer1">
+            <g stroke="null" class="content" id="content" transform="matrix(0.0310499 0 0 0.0341888 0.818634 2.6847)">
+                <g stroke="null" class="icon" id="g139" transform="matrix(4.32801 0 0 4.038 -137.116 -678.059)">
+                    <g stroke="null" id="svg_19">
+                        <svg stroke="null" height="100" version="1.1" width="104" x="31.38349" y="159.16891" preserveAspectRatio="none" id="svg_2">
+                            <g stroke="null" id="svg_3">
+                                <svg stroke="null" viewBox="156 178 104 100" version="1.1" id="svg_6" width="100%" height="100%">
+                                    <path stroke="null" d="m164.52,249.44c8.693,15.075 24.758,24.56 42.48,24.56a48.82,48.82 0 0 0 19.88,-4.2a2,2 0 1 1 1.624,3.655a52.819,52.819 0 0 1 -21.504,4.545c-19.166,0 -36.545,-10.26 -45.945,-26.562a2,2 0 0 1 3.465,-1.998zm67.138,-71.366c17.286,9.1 28.342,27.034 28.342,46.926a52.887,52.887 0 0 1 -3.372,18.64a2,2 0 0 1 -3.744,-1.406a48.887,48.887 0 0 0 3.116,-17.234c0,-18.392 -10.22,-34.971 -26.206,-43.387a2.00038,2.00038 0 1 1 1.864,-3.54l0,0.001zm-51.414,3.454a2,2 0 0 1 -0.544,2.775c-9.794,6.584 -16.947,16.506 -20.021,27.932a2.00014,2.00014 0 0 1 -3.863,-1.039c3.326,-12.363 11.062,-23.094 21.653,-30.213a2,2 0 0 1 2.775,0.545z" id="svg_7" fill="url(#prefix-Pk6-linearGradient-1)" fill-rule="nonzero"/>
+                                </svg>
+                            </g>
+                        </svg>
+                    </g>
+                    <g stroke="null" id="svg_54">
+                        <svg stroke="null" height="82" version="1.1" width="77" x="24.38349" y="145.16891" preserveAspectRatio="none" id="svg_8">
+                            <g stroke="null" id="svg_9">
+                                <svg stroke="null" viewBox="149 164 77 82" version="1.1" id="svg_12" width="100%" height="100%">
+                                    <path stroke="null" d="m205,164c11.598,0 21,9.402 21,21c0,10.916 -8.329,19.887 -18.978,20.904c-0.38,0.074 -0.789,0.15 -1.202,0.225l-0.425,0.078c-0.708,0.13 -1.402,0.257 -1.952,0.372c-6.022,1.264 -13.273,4.43 -17.457,9.496c-2.163,2.62 -4.69,9.517 -6.176,16.858c-1.164,7.402 -7.575,13.067 -15.31,13.067c-8.56,0 -15.5,-6.94 -15.5,-15.5c0,-7.023 4.671,-12.956 11.077,-14.86c9.087,-3.477 17.367,-5.672 20.725,-10.306c2.113,-2.916 3.592,-4.395 3.847,-11.604c0.029,-0.832 -0.05,-1.919 -0.234,-3.262c-0.338,-1.748 -0.415,-3.59 -0.415,-5.468c0,-11.598 9.402,-21 21,-21z" id="svg_13" fill="url(#prefix-Pbe-linearGradient-2)"/>
+                                </svg>
+                            </g>
+                        </svg>
+                    </g>
+                    <g stroke="null" id="svg_89">
+                        <svg stroke="null" height="53" version="1.1" width="56" x="79.38349" y="200.16891" preserveAspectRatio="none" id="svg_14">
+                            <g stroke="null" id="svg_15">
+                                <svg stroke="null" viewBox="204 219 56 53" version="1.1" id="svg_18" width="100%" height="100%">
+                                    <path stroke="null" d="m243.14,219.388c7.733,0 14,6.268 14,14c0,7.11 -5.3,12.982 -12.164,13.881c-4.034,0.768 -10.53,2.077 -13.92,6.263c-1.566,1.934 -3.702,4.542 -4.491,10.428l0.046,-0.32c-0.42,5.137 -4.721,9.175 -9.967,9.175c-5.522,0 -10,-4.477 -10,-10c0,-4.648 3.172,-8.555 7.469,-9.676c5.337,-1.59 11.271,-3.556 13.553,-6.768c0.703,-0.989 0.99,-6.726 1.397,-12.317l0.052,-0.712l0.027,-0.355l0.005,-0.063c0.246,-7.517 6.417,-13.536 13.994,-13.536l-0.001,0z" id="svg_20" fill="url(#prefix-_Xd-linearGradient-3)" transform="rotate(93,231.893,246.102)"/>
+                                </svg>
+                            </g>
+                        </svg>
+                    </g>
+                    <g stroke="null" id="svg_124">
+                        <svg stroke="null" height="18" version="1.1" width="18" x="65.38349" y="227.16891" preserveAspectRatio="none" id="svg_21">
+                            <g stroke="null" id="svg_22">
+                                <svg stroke="null" viewBox="190 246 18 18" version="1.1" id="svg_25" width="100%" height="100%">
+                                    <circle stroke="null" id="svg_26" fill="url(#prefix-ogv-linearGradient-4)" cx="199" cy="255" r="9"/>
+                                </svg>
+                            </g>
+                        </svg>
+                    </g>
+                </g>
+                <g stroke="null" id="icon_name_and_slogan_gap"/>
+                <g stroke="null" class="border" id="g151"/>
+            </g>
+        </g>
+    </g>
 </svg>
