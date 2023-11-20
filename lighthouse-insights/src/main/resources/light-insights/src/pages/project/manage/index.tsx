@@ -24,13 +24,6 @@ export default function ProjectManage() {
                   <GroupManage />
               </Space>
           </div>
-          <div className={styles['layout-right-side']}>
-              <Space size={16} direction="vertical" style={{ width: '100%' }}>
-                  <StudioStatus />
-                  <QuickOperation />
-                  <StudioInformation />
-              </Space>
-          </div>
       </div>
     </div>
   );
