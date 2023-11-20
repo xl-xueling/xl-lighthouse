@@ -117,39 +117,6 @@ setupMock({
                   },
                 ]
             },
-
-            {
-              key:'1-102',
-              id:102,
-              title:'首页数据统计2',
-              type:1,
-              children:[
-                {
-                  key:'2-1021',
-                  id:1021,
-                  title:'homepage_stat_view_5',
-                  type:2,
-                },
-                {
-                  key:'2-1022',
-                  id:1022,
-                  title:'homepage_stat_view_6',
-                  type:2,
-                },
-                {
-                  key:'2-1023',
-                  id:1023,
-                  title:'homepage_stat_view_7',
-                  type:2,
-                },
-                {
-                  key:'2-1024',
-                  id:1024,
-                  title:'homepage_stat_view_8',
-                  type:2,
-                },
-              ]
-            },
           ],
         },
       };
