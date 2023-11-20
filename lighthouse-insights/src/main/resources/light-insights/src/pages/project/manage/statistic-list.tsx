@@ -2,54 +2,91 @@ import { Table, Tag, Typography } from '@arco-design/web-react';
 import React from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
-import styles from './style/index.module.less';
+
+
+import "ace-builds";
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/ace'
-import 'ace-builds/src-noconflict/mode-xml';// jsx模式的包
-import 'ace-builds/src-noconflict/theme-monokai';// monokai的主题样式
-import 'ace-builds/src-noconflict/ext-language_tools'; // 代码联想
-
-const jsx = `import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-golang'; // sql模式的包
-import 'ace-builds/src-noconflict/mode-jsx';// mysql模式的包`;
-
+import 'ace-builds/src-noconflict/theme-tomorrow';
+import 'ace-builds/src-noconflict/theme-clouds_midnight';
+import 'ace-builds/src-noconflict/theme-ambiance';
+import 'ace-builds/src-noconflict/theme-chaos';
+import 'ace-builds/src-noconflict/theme-cloud9_night';
+import 'ace-builds/src-noconflict/theme-cobalt';
+import 'ace-builds/src-noconflict/theme-clouds';
+import 'ace-builds/src-noconflict/theme-crimson_editor';
+import 'ace-builds/src-noconflict/theme-dawn';
+import 'ace-builds/src-noconflict/theme-twilight';
+import 'ace-builds/src-noconflict/theme-nord_dark';
+import 'ace-builds/src-noconflict/theme-kuroir';
+import 'ace-builds/src-noconflict/theme-dracula';
+import 'ace-builds/src-noconflict/theme-katzenmilch';
+import 'ace-builds/src-noconflict/ext-language_tools';
+import 'ace-builds/src-noconflict/mode-xml';
+import "ace-builds/webpack-resolver";
+import styles from './style/index.module.less';
+import {useTheme} from "bizcharts";
 
 export default function QuickOperation() {
   const t = useLocale(locale);
+
   const columns = [
     {
-      title: t['monitor.list.title.order'],
+      title: 'No',
+      headerCellStyle: { width:'5px' },
       render: (_col, _record, index) => <span>{index + 1}</span>,
     },
     {
-      title: t['monitor.list.title.cover'],
-      dataIndex: 'cover',
-      render: (_col, record) => (
-          <div>
-
+      title: 'Template',
+      dataIndex: 'template',
+      headerCellStyle: { width:'60%'},
+      render: (_col, record) => {
+        const theme = document.body.getAttribute('arco-theme');
+        console.log("theme is:" + JSON.stringify(theme))
+        if(theme === "dark"){
+          return <div >
             <AceEditor
-                mode="XML"
-                theme="monokai"
+                style={{ height:40,width:'100%'}}
+                mode="xml"
+                showGutter={false}
+                theme="dracula"
+                highlightActiveLine={false}
                 enableBasicAutocompletion={true}
-                wrapEnabled={true}
                 name="UNIQUE_ID_OF_DIV"
                 editorProps={{ $blockScrolling: true }}
             />
-
           </div>
-      ),
+        }else{
+          return <div >
+            <AceEditor
+                style={{ height:40,width:'100%'}}
+                mode="xml"
+                showGutter={false}
+                theme="dawn"
+                highlightActiveLine={false}
+                enableBasicAutocompletion={true}
+                name="UNIQUE_ID_OF_DIV"
+                editorProps={{ $blockScrolling: true }}
+            />
+          </div>
+        }
+
+      },
     },
     {
-      title: t['monitor.list.title.name'],
-      dataIndex: 'name',
+      title: 'Period',
+      headerCellStyle: { width:'20px' },
+      dataIndex: 'Period',
     },
     {
-      dataIndex: 'duration',
-      title: t['monitor.list.title.duration'],
+      dataIndex: 'Expire',
+      headerCellStyle: { width:'20px' },
+      title: 'Expire',
     },
     {
-      dataIndex: 'id',
-      title: t['monitor.list.title.id'],
+      dataIndex: 'Operation',
+      headerCellStyle: { width:'20px' },
+      title: 'Operation',
     },
   ];
   const data = [
@@ -65,13 +102,12 @@ export default function QuickOperation() {
   return (
     <div className={styles['']}>
       <Table
+          style={{ paddingTop:0,paddingBottom:0 }}
+          hover={false}
+          className={'statistic-wrapper'}
         columns={columns}
         data={data}
-        rowKey="id"
-        rowSelection={{
-          type: 'checkbox',
-        }}
-        border={false}
+        border={{"cell":true}}
         pagination={false}
       />
       <Typography.Text

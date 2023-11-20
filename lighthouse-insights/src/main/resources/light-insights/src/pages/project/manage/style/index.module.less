@@ -15,10 +15,27 @@
   }
 }
 
+
+:global{
+  .ace_editor {
+    background-color:var(--primary-1) !important;
+    color: var(--primary-1) !important;
+    font-size: 12px !important;
+  }
+}
+
+
+
 :global{
   .arco-tree-node{
     cursor: pointer !important;
   }
+  .statistic-wrapper .arco-table-td{
+    padding: 1px 1px !important;
+  }
+
+
+
 
   .arco-tree-node-selected {
     background-color:var(--color-fill-2) !important;
@@ -87,6 +104,17 @@
     border-left: 1px solid var(--color-border-2);
     box-sizing: border-box;
   }
+}
+
+.statistic-wrapper {
+  padding: 0 !important;
+  td > .arco-table-td {
+    padding: 0 0 !important;
+  }
+}
+
+td > .arco-table-td {
+  padding: 0 0 !important;
 }
 
 .data-statistic {
