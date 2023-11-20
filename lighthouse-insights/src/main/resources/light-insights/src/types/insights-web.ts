@@ -57,3 +57,6 @@ export interface Project {
 export interface ProjectPagination extends Project{
     permissions:PrivilegeEnum[];
 }
+
+
+

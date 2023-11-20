@@ -1,3 +1,6 @@
+import {ArcoTreeNode} from "@/types/insights-common";
+import {DepartmentArcoTreeNode} from "@/types/insights-web";
+
 export function stringifyObj(obj): string {
     let cache = [];
     const str = JSON.stringify(obj, function(key, value) {
