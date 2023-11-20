@@ -10,7 +10,7 @@ import {requestQueryByIds} from "@/api/user";
 import {User} from "@/types/insights-web";
 import {Selector} from "react-redux";
 
-const UserTermQuery = ({initValues = [1,2],completeCallBack=null}) =>{
+const UserTermQuery = <T extends (...args: any[]) => any>({initValues = null,completeCallBack:T=null}) => {
 
     const [initData,setInitData] = useState<Array<User>>(null);
 
@@ -18,11 +18,6 @@ const UserTermQuery = ({initValues = [1,2],completeCallBack=null}) =>{
         if(initValues){
             const result = await requestQueryByIds({"ids":initValues})
             setInitData(result.data.list);
-            // result.data.map((user) => {
-            //     console.log("user is:" + JSON.stringify(user));
-            // })
-            //
-            console.log("result is:" + JSON.stringify(result));
             const options = result.data.list.map((user) => (
                 {
                 label: (
