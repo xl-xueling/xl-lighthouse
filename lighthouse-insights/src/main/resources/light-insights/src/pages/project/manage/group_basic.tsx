@@ -17,7 +17,7 @@ import {
     IconPlus,
     IconPlusCircleFill
 } from '@arco-design/web-react/icon';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
@@ -25,6 +25,9 @@ import AceEditor from "react-ace";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import GroupStatistics from "@/pages/project/manage/statistic-list";
+import {Department, Group, Stat, User} from "@/types/insights-web";
+import {requestQueryById} from "@/api/group";
+import {requestQueryByGroupId} from "@/api/stat";
 
 
 const data = [
@@ -40,18 +43,56 @@ const data = [
 export default function GroupBasicInfo(props:{groupId?}) {
 
     const t = useLocale(locale);
+    const groupId = props.groupId;
 
-    const fetchGroupIno = () => {
+    const [loading,setLoading] = useState<boolean>(true);
 
-    }
+    const [groupInfo,setGroupInfo] = useState<Group>(null);
 
-    const fetchStatInfo = () => {
+    const [statsInfo,setStatsInfo] = useState<Array<Stat>>([]);
 
-    }
+    const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
+        let result;
+        const proc = async () => {
+            const response = await requestQueryById(groupId);
+            if(response.code != '0'){
+                reject(new Error(response.message));
+            }
+            result = response.data;
+        }
+        result = proc();
+        resolve(result);
+    })
+
+    const promiseFetchStatsInfo:Promise<Array<Stat>> = new Promise<Array<Stat>>((resolve, reject) => {
+        let result;
+        const proc = async () => {
+            const response = await requestQueryByGroupId(groupId);
+            if(response.code != '0'){
+                reject(new Error(response.message));
+            }
+            result = response.data;
+        }
+        result = proc();
+        resolve(result);
+    })
 
     useEffect(() => {
+        setLoading(true);
+        const promiseAll:Promise<[Group,Array<Stat>]> = Promise.all([
+            promiseFetchGroupInfo,
+            promiseFetchStatsInfo,
+        ])
 
-
+        promiseAll.then((results) => {
+            setGroupInfo(results[0])
+            setStatsInfo(results[1])
+        }).catch(error => {
+            console.log(error);
+            Message.error(t['system.error']);
+        }).finally(() => {
+            setLoading(false);
+        });
     },[props.groupId])
 
 
