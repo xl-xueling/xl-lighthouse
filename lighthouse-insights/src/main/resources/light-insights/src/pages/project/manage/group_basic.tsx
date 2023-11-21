@@ -17,22 +17,14 @@ import {
     IconPlus,
     IconPlusCircleFill
 } from '@arco-design/web-react/icon';
-import React from 'react';
+import React, {useEffect} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import AceEditor from "react-ace";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-
-interface StudioProps {
-  userInfo?: {
-    name?: string;
-    avatar?: string;
-  };
-}
-
-
+import GroupStatistics from "@/pages/project/manage/statistic-list";
 
 
 const data = [
@@ -43,39 +35,25 @@ const data = [
         address: '32 Park Road, London',
         email: 'jane.doe@example.com',
     },
-    {
-        key: '2',
-        name: 'Alisa Ross',
-        salary: 25000,
-        address: '35 Park Road, London',
-        email: 'alisa.ross@example.com',
-    },
-    {
-        key: '3',
-        name: 'Kevin Sandra',
-        salary: 22000,
-        address: '31 Park Road, London',
-        email: 'kevin.sandra@example.com',
-    },
-    {
-        key: '4',
-        name: 'Ed Hellen',
-        salary: 17000,
-        address: '42 Park Road, London',
-        email: 'ed.hellen@example.com',
-    },
-    {
-        key: '5',
-        name: 'William Smith',
-        salary: 27000,
-        address: '62 Park Road, London',
-        email: 'william.smith@example.com',
-    },
 ];
 
-export default function GroupBasicInfo(props: StudioProps) {
-  const t = useLocale(locale);
-    const settings = useSelector((state: GlobalState) => state.settings);
+export default function GroupBasicInfo(props:{groupId?}) {
+
+    const t = useLocale(locale);
+
+    const fetchGroupIno = () => {
+
+    }
+
+    const fetchStatInfo = () => {
+
+    }
+
+    useEffect(() => {
+
+
+    },[props.groupId])
+
 
     const columns: TableColumnProps[] = [
         {
@@ -113,7 +91,7 @@ export default function GroupBasicInfo(props: StudioProps) {
             )
         },
         {
-            title: 'Operation',
+            title: 'Operate',
             dataIndex: 'email',
             className:'columnNameClass',
             headerCellStyle: { width:'14%'},
@@ -157,6 +135,28 @@ export default function GroupBasicInfo(props: StudioProps) {
                       </Grid.Col>
                   </Grid.Row>
                   <Table className={"group-basic-panel"} size={"mini"} columns={columns} pagination={false} data={data} />
+              </Form.Item>
+              <Form.Item>
+                  <Grid.Row>
+                      <Grid.Col span={16}>
+                          <Typography.Title
+                              style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                          >
+                              {'Templates'}
+                          </Typography.Title>
+                      </Grid.Col>
+                      <Grid.Col span={8} style={{ textAlign: 'right' }}>
+                          <Button type={"secondary"} size={"mini"}>添加</Button>
+                      </Grid.Col>
+                  </Grid.Row>
+                  <GroupStatistics />
+              </Form.Item>
+              <Form.Item>
+                  <Grid.Row>
+                      <Grid.Col span={24} style={{ textAlign: 'right' }}>
+                          <Button type={"primary"} size={"small"}>提交</Button>
+                      </Grid.Col>
+                  </Grid.Row>
               </Form.Item>
           </Form>
 

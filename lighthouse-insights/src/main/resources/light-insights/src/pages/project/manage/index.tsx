@@ -4,19 +4,25 @@ import ProjectTree from "../common/project-tree";
 import {Space} from "@arco-design/web-react";
 import GroupAddPanel from "@/pages/project/manage/group_add";
 import GroupBasicInfo from "@/pages/project/manage/group_basic";
+import GroupEditPanel from "@/pages/project/manage/group_edit";
 
 export default function ProjectManage() {
 
   const [showGroupAddPanel, setShowGroupAddPanel] = useState(false);
 
-  const handlerProcess = (action:string,params:object):void => {
+  const [showGroupEditPanel, setShowGroupEditPanel] = useState(false);
+
+  const [groupId,setGroupId] = useState<number>(null);
+
+  const handlerProcess = (action:string,params:any):void => {
       switch (action){
           case 'add-group':{
               setShowGroupAddPanel(true);
               break;
           }
           case 'edit-group':{
-              console.log("ssss");
+              setGroupId(params.groupId);
+              setShowGroupEditPanel(true);
               break;
           }
           default:{
@@ -34,6 +40,12 @@ export default function ProjectManage() {
           <div className={styles['layout-content']} style={{ display:showGroupAddPanel ? 'block' : 'none' }}>
               <Space size={16} direction="vertical" style={{ width: '100%' }}>
                   <GroupAddPanel />
+              </Space>
+          </div>
+
+          <div className={styles['layout-content']} style={{ display:showGroupEditPanel ? 'block' : 'none' }}>
+              <Space size={16} direction="vertical" style={{ width: '100%' }}>
+                  <GroupEditPanel groupId={groupId} />
               </Space>
           </div>
       </div>

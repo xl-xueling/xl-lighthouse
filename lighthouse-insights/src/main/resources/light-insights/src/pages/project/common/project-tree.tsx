@@ -15,6 +15,7 @@ import locale from '../manage/locale';
 import styles from '../manage/style/index.module.less';
 import {requestStructure} from "@/api/project";
 import {ArcoTreeNode} from "@/types/insights-common";
+import {stringifyObj} from "@/utils/util";
 
 export default function ProjectTree({projectId,editEnable= true
      ,filterTypes=new Array<number>()
@@ -121,9 +122,13 @@ export default function ProjectTree({projectId,editEnable= true
                                     fontSize: 13,
                                     top: 10,
                                     color: 'rgb(132 160 224)',
-                                }} />
-                                )}
+                                }}
 
+                                onClick={async (e) => {
+                                    await handlerProcess('edit-group', {"groupId":node.dataRef.id});
+                                }}
+                            />
+                                )}
                             {node._level != 0  &&  (
                             <IconMinus
                                 style={{
@@ -134,8 +139,8 @@ export default function ProjectTree({projectId,editEnable= true
                                     top: 10,
                                     color: 'rgb(132 160 224)',
                                 }}
-                            />)}
-
+                            />)
+                            }
                         </div>
                     );
                 }}
