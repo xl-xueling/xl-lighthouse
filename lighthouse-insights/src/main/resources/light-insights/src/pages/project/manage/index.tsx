@@ -1,23 +1,40 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './style/index.module.less';
 import ProjectTree from "../common/project-tree";
 import {Space} from "@arco-design/web-react";
-import Studio from "./studio";
-import GroupManage from "@/pages/project/manage/group_manage";
+import GroupAddPanel from "@/pages/project/manage/group_add";
+import GroupBasicInfo from "@/pages/project/manage/group_basic";
 
 export default function ProjectManage() {
+
+  const [showGroupAddPanel, setShowGroupAddPanel] = useState(false);
+
+  const handlerProcess = (action:string,params:object):void => {
+      switch (action){
+          case 'add-group':{
+              setShowGroupAddPanel(true);
+              break;
+          }
+          case 'edit-group':{
+              console.log("ssss");
+              break;
+          }
+          default:{
+              return;
+          }
+      }
+  }
+
   return (
     <div style={{ minHeight:500 }}>
       <div className={styles.layout}>
         <div className={styles['layout-left-side']}>
-          <ProjectTree projectId={0}/>
+          <ProjectTree projectId={0} filterTypes={[1,2]} handlerProcess={handlerProcess}/>
         </div>
-
-          <div className={styles['layout-content']}>
-              {/*<Space size={16} direction="vertical" style={{ width: '100%' }}>*/}
-              {/*    <Studio userInfo={null} />*/}
-              {/*    <GroupManage />*/}
-              {/*</Space>*/}
+          <div className={styles['layout-content']} style={{ display:showGroupAddPanel ? 'block' : 'none' }}>
+              <Space size={16} direction="vertical" style={{ width: '100%' }}>
+                  <GroupAddPanel />
+              </Space>
           </div>
       </div>
     </div>

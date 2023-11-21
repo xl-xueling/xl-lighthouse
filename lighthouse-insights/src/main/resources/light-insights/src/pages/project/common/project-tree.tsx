@@ -1,13 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Message, Space, Spin, Tree} from '@arco-design/web-react';
 import {
+    IconApps, IconDragDotVertical,
     IconFile,
-    IconFolder,
-    IconMinus,
+    IconFolder, IconFolderAdd, IconMindMapping,
+    IconMinus, IconMinusCircleFill,
     IconPen,
     IconPenFill,
     IconPlus, IconPlusCircle,
-    IconPlusCircleFill
+    IconPlusCircleFill, IconStorage, IconTag, IconTags
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from '../manage/locale';
@@ -15,12 +16,16 @@ import styles from '../manage/style/index.module.less';
 import {requestStructure} from "@/api/project";
 import {ArcoTreeNode} from "@/types/insights-common";
 
-export default function ProjectTree({projectId,editEnable=true}) {
+export default function ProjectTree({projectId,editEnable= true
+     ,filterTypes=new Array<number>()
+     ,handlerProcess
+}) {
 
   const t = useLocale(locale);
   const [treeData, setTreeData] = useState<Array<ArcoTreeNode>>([]);
   const [loading, setLoading] = useState(false);
-  const [expandKeys,setExpandKeys] = useState<Array<string>>([]);
+  const [expandedKeys,setExpandedKeys] = useState<Array<string>>([]);
+  const [selectedKeys,setSelectedKeys] = useState<Array<string>>([]);
   const [visible ,setVisible] = useState<boolean>(true);
   const treeRef = useRef<Tree>(null);
 
@@ -33,8 +38,8 @@ export default function ProjectTree({projectId,editEnable=true}) {
         await requestStructure(projectId).then((result) => {
             if(result.code == '0'){
                 if(result.data.list){
-                    setExpandKeys(result.data.list.map(x => x.key))
-                    setTreeData(result.data.list);
+                   setExpandedKeys( result.data.list.map(x => x.key))
+                   setTreeData( result.data.list);
                 }
             }else{
                 Message.error(result.message || t['system.error']);
@@ -47,13 +52,24 @@ export default function ProjectTree({projectId,editEnable=true}) {
         })
     }
 
-    const generatorTreeNodes = (treeData,level = 1) => {
+    const generatorTreeNodes = (treeData,level = 0) => {
         return treeData.map((item) => {
             const { children, key, ...ret} = item;
+            let icon;
+            const curLevel = level;
+            if(level == 0){
+                icon = <IconFolder/>;
+            }else if(level == 1){
+                icon = <IconTag/>
+            }else{
+                icon = <IconFile/>;
+            }
+            if(filterTypes.length && item.type && !filterTypes.includes(item.type)){
+                return ;
+            }
             return (
-                <Tree.Node icon={children || item.key == "0" ? <IconFolder /> : <IconFile/> }
-                           key={key} {...ret} dataRef={item}>
-                    {children ? generatorTreeNodes(item.children,level++) : null}
+                <Tree.Node icon={icon} key={key} {...ret} dataRef={item}>
+                    {children ? generatorTreeNodes(item.children,curLevel + 1) : null}
                 </Tree.Node>
             );
         });
@@ -64,24 +80,38 @@ export default function ProjectTree({projectId,editEnable=true}) {
           <div className={styles['chat-panel']} style={{ display:`${visible ? 'block' : 'none'}` }}>
             <Tree
                 ref={treeRef}
-                expandedKeys={expandKeys}
+                expandedKeys={expandedKeys}
+                selectedKeys={selectedKeys}
                 draggable={false}
                 multiple={false}
+                onSelect={(keys, extra) => {
+                    setSelectedKeys(keys);
+                }}
+                onExpand={(keys, extra) => {
+                    setExpandedKeys(keys);
+                }}
                 renderExtra={(node) => {
                     if(!editEnable){
                         return ;
                     }
                     return (
                         <div>
+                            {node._level == 0  &&  (
                             <IconPlus
                                 style={{
                                     position: 'absolute',
-                                    right: 50,
+                                    right: 29,
                                     fontSize: 13,
                                     top: 10,
                                     color: 'rgb(132 160 224)',
                                 }}
+
+                                onClick={async (e) => {
+                                    await handlerProcess('add-group', null);
+                                    console.log("---click")
+                                }}
                             />
+                            )}
                             {node._level != 0  &&  (
                             <IconPen
                                 style={{
