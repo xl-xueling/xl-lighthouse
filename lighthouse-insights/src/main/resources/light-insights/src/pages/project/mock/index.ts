@@ -96,6 +96,14 @@ setupMock({
                       id:1011,
                       title:'homepage_stat_view_1',
                       type:2,
+                      children:[
+                        {
+                          key: '3-10111',
+                          id: 10111,
+                          title: 'homepage_stat_view_12',
+                          type: 3,
+                        }
+                      ]
                     },
                   {
                     key:'2-1012',
