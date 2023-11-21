@@ -58,5 +58,34 @@ export interface ProjectPagination extends Project{
     permissions:PrivilegeEnum[];
 }
 
+export interface Column {
+    name:string;
+    type:number;
+    desc?:string;
+}
+
+export interface Group {
+    id?:number;
+    token?:string;
+    projectId:number;
+    desc?:string;
+    createdTime?:number;
+    columns?:Array<Column>;
+}
+
+export interface Stat {
+    id?:number;
+    title?:string;
+    template?:string;
+    timeparam?:string;
+    expire?:number;
+    createdTime?:number;
+}
+
+export interface StatPagination extends Stat{
+    permissions:PrivilegeEnum[];
+}
+
+
 
 

@@ -28,8 +28,9 @@ import styles from './style/index.module.less';
 import {useTheme} from "bizcharts";
 import {IconPenFill} from "@arco-design/web-react/icon";
 
-export default function QuickOperation() {
+export default function GroupStatistics(groupId?) {
   const t = useLocale(locale);
+
 
   const columns = [
     {
@@ -43,10 +44,10 @@ export default function QuickOperation() {
       headerCellStyle: { width:'60%'},
       render: (_col, record) => {
         const theme = document.body.getAttribute('arco-theme');
-        console.log("theme is:" + JSON.stringify(theme))
         if(theme === "dark"){
           return <div >
             <AceEditor
+                enableSnippets={false}
                 style={{ height:20,width:'100%'}}
                 mode="xml"
                 showPrintMargin={false}
@@ -54,7 +55,6 @@ export default function QuickOperation() {
                 theme="dracula"
                 highlightActiveLine={false}
                 enableBasicAutocompletion={true}
-                name="UNIQUE_ID_OF_DIV"
                 editorProps={{ $blockScrolling: true }}
             />
           </div>
@@ -132,20 +132,14 @@ export default function QuickOperation() {
       <Table
           style={{ paddingTop:0,paddingBottom:0 }}
           hover={false}
+          size={"small"}
           className={'statistic-wrapper'}
         columns={columns}
         data={data}
         border={true}
         pagination={false}
       />
-      <Typography.Text
-        type="secondary"
-        className={styles['data-statistic-list-tip']}
-      >
-        {t['monitor.list.tip.rotations']}
-        {data.length}
-        {t['monitor.list.tip.rest']}
-      </Typography.Text>
+
     </div>
   );
 }
