@@ -196,7 +196,7 @@ export default function GroupBasicInfo(props:{groupId?}) {
                           </Typography.Title>
                       </Grid.Col>
                       <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                            <Button type={"secondary"} size={"mini"}>添加</Button>
+                            <Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>
                       </Grid.Col>
                   </Grid.Row>
 
@@ -217,7 +217,7 @@ export default function GroupBasicInfo(props:{groupId?}) {
                       </Grid.Col>
                   </Grid.Row>
 
-                  {/*<GroupStatistics />*/}
+                  <GroupStatistics />
               </Form.Item>
               <Form.Item>
                   <Grid.Row>

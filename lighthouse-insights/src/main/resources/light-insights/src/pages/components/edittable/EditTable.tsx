@@ -35,15 +35,7 @@ const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
         setData(data.filter((item) => item.key !== key));
     }
 
-    React.useImperativeHandle(ref,() => ({
-        removeRow
-    }));
-
-    useEffect(() => {
-        setData(initData);
-    },[initData])
-
-    function addRow() {
+    const addRow = () => {
         setCount(count + 1);
         setData(
             data.concat({
@@ -55,18 +47,22 @@ const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
         );
     }
 
+    React.useImperativeHandle(ref,() => ({
+        removeRow,
+        addRow
+    }));
+
+    useEffect(() => {
+        setData(initData);
+    },[initData])
+
+
     return (
         <div className={styles.edit_panel}>
-            <Button
-                type='dashed'
-                size={"mini"}
-                onClick={addRow}
-            >
-                添加
-            </Button>
             <Table
                 size={"mini"}
                 data={data}
+                border={true}
                 components={{
                     body: {
                         row: EditableRow,
