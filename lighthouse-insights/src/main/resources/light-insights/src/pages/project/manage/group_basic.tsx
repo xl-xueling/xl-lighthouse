@@ -131,14 +131,27 @@ export default function GroupBasicInfo(props:{groupId?}) {
             dataIndex: 'name',
             editable: true,
             isSelect:false,
-            headerCellStyle: { width:'12%'},
+            headerCellStyle: { width:'15%'},
         },
         {
             title: 'Type',
             dataIndex: 'type',
             editable: true,
             isSelect:true,
-            headerCellStyle: { width:'10%'},
+            headerCellStyle: { width:'12%'},
+            render:(k,v) => (
+                <Select size={"mini"} placeholder='Please select'
+                        onChange={editTableRef.current.cellValueChangeHandler}
+                        defaultValue={k}
+                >
+                    <Select.Option key={1}  value={1}>
+                        String
+                    </Select.Option>
+                    <Select.Option key={2}  value={2}>
+                        Number
+                    </Select.Option>
+                </Select>
+            )
         },
         {
             title: 'Description',
@@ -167,7 +180,6 @@ export default function GroupBasicInfo(props:{groupId?}) {
               className={styles['search-form']}
               layout={"vertical"}
           >
-
               <Form.Item field="token" label={"Token"}>
                   <Input
                       allowClear

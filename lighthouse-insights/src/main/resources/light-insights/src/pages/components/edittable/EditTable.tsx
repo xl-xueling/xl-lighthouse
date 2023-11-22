@@ -14,6 +14,7 @@ export interface EditTableColumn extends Column{
 
 export interface EditTableColumnProps extends TableColumnProps {
     isSelect:boolean;
+    options?:number[]|string[];
 }
 
 const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
@@ -47,9 +48,9 @@ const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
         setData(
             data.concat({
                 key: `${count + 1}`,
-                name: 'Tom',
-                type: 10000,
-                desc: '33 Park Road, London',
+                name: "--",
+                type: 1,
+                desc: "--",
             })
         );
     }
@@ -123,8 +124,6 @@ function EditableCell(props) {
             if (
                 editing &&
                 column.editable &&
-                ref.current &&
-                !ref.current.contains(e.target) &&
                 !e.target.classList.contains('js-demo-select-option')
             ) {
                 cellValueChangeHandler(rowData[column.dataIndex]);
@@ -133,7 +132,7 @@ function EditableCell(props) {
         [editing, rowData, column]
     );
     useEffect(() => {
-        editing && refInput.current && refInput.current.focus();
+        editing && refInput.current.focus();
     }, [editing]);
     useEffect(() => {
         document.addEventListener('click', handleClick, true);
@@ -161,38 +160,25 @@ function EditableCell(props) {
         }
     };
 
-    if (editing) {
+    if (!column.isSelect && editing) {
         return (
             <div ref={ref}>
-                {column.isSelect ? (
-
-                    <Select
-                        size={"mini"}
-                        onChange={cellValueChangeHandler}
-                        defaultValue={rowData[column.dataIndex]}
-                        options={[2000, 5000, 10000, 20000]}
-                    >
-                    </Select>
-                ) : (
-                    <FormItem
-                        style={{ marginBottom: 0 }}
-                        labelCol={{ span: 0 }}
-                        wrapperCol={{ span: 24 }}
-                        initialValue={rowData[column.dataIndex]}
-                        field={column.dataIndex}
-                        rules={[{ required: true }]}
-                    >
-                        <Input size={"mini"} ref={refInput} onPressEnter={cellValueChangeHandler} />
-                    </FormItem>
-                )}
+                <FormItem
+                    style={{ marginBottom: 0 }}
+                    labelCol={{ span: 0 }}
+                    wrapperCol={{ span: 24 }}
+                    initialValue={rowData[column.dataIndex]}
+                    field={column.dataIndex}
+                >
+                    <Input size={"mini"} ref={refInput} onPressEnter={cellValueChangeHandler} />
+                </FormItem>
             </div>
         );
     }
-
     return (
         <div
             className={column.editable ? `editable-cell ${className}` : className}
-            onClick={() => column.editable && setEditing(!editing)}
+            onDoubleClick={() => column.editable && setEditing(!editing)}
         >
             {children}
         </div>
