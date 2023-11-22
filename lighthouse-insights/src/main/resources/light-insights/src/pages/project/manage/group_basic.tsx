@@ -68,6 +68,7 @@ export default function GroupBasicInfo(props:{groupId?}) {
                 let result;
                 const proc = async () => {
                     const response = await requestQueryByGroupId(groupId);
+                    console.log("response is:" + JSON.stringify(response));
                     if(response.code != '0'){
                         reject(new Error(response.message));
                     }
@@ -83,10 +84,8 @@ export default function GroupBasicInfo(props:{groupId?}) {
             ])
 
             promiseAll.then((results) => {
-                const group:Group = results[0];
-                setGroupInfo(group);
+                setGroupInfo(results[0]);
                 setStatsInfo(results[1]);
-                formInstance.setFieldValue("token",group.token);
             }).catch(error => {
                 console.log(error);
                 Message.error(t['system.error']);
@@ -105,7 +104,6 @@ export default function GroupBasicInfo(props:{groupId?}) {
                 const columnInfo = groupInfo.columns[i];
                 columnArr.push({...columnInfo,"key":i})
             }
-            console.log("columnArr is:" + JSON.stringify(columnArr));
             setInitData(columnArr);
         }
     },[groupInfo])
@@ -122,6 +120,21 @@ export default function GroupBasicInfo(props:{groupId?}) {
             />
         );
     };
+
+    const data = [
+        {
+            key:2,
+            cover:
+                'http://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/c788fc704d32cf3b1136c7d45afc2669.png~tplv-uwbnlip3yd-webp.webp',
+            name: '视频直播',
+            duration: '00:05:19',
+            id: '123',
+            timeparam:2,
+            tsss:3,
+            template:'<stat-item title="每分钟_各省份_uv统计" stat="bitcount(userId)" dimens="province"/>',
+            status: -1,
+        },
+    ];
 
 
 
@@ -180,7 +193,12 @@ export default function GroupBasicInfo(props:{groupId?}) {
               className={styles['search-form']}
               layout={"vertical"}
           >
-              <Form.Item field="token" label={"Token"}>
+              <Typography.Title
+                  style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+              >
+                  {'Token'}
+              </Typography.Title>
+              <Form.Item field="token">
                   <Input
                       allowClear
                       placeholder={'Please Input Token'}
@@ -217,7 +235,9 @@ export default function GroupBasicInfo(props:{groupId?}) {
                       </Grid.Col>
                   </Grid.Row>
 
-                  <GroupStatistics />
+
+
+                  <GroupStatistics statsInfo={data}/>
               </Form.Item>
               <Form.Item>
                   <Grid.Row>
