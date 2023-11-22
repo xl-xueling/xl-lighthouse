@@ -74,11 +74,12 @@ export interface Group {
 }
 
 export interface Stat {
+    key?:number;
     id?:number;
     title?:string;
     template?:string;
-    timeparam?:string;
-    expire?:number;
+    timeparam?:number;
+    expired?:number;
     createdTime?:number;
 }
 

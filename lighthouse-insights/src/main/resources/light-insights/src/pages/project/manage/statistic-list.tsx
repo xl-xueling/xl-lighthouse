@@ -1,5 +1,5 @@
 import {Select, Table, Tag, Typography} from '@arco-design/web-react';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 
@@ -21,22 +21,63 @@ import 'ace-builds/src-noconflict/theme-nord_dark';
 import 'ace-builds/src-noconflict/theme-kuroir';
 import 'ace-builds/src-noconflict/theme-dracula';
 import 'ace-builds/src-noconflict/theme-katzenmilch';
+import 'ace-builds/src-noconflict/theme-dreamweaver';
+import 'ace-builds/src-noconflict/theme-textmate';
+import 'ace-builds/src-noconflict/theme-sqlserver';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/mode-xml';
 import "ace-builds/webpack-resolver";
 import styles from './style/index.module.less';
 import {useTheme} from "bizcharts";
 import {IconPenFill} from "@arco-design/web-react/icon";
+import {Stat} from "@/types/insights-web";
 
-export default function GroupStatistics(groupId?) {
+export default function GroupStatistics(statsInfo) {
   const t = useLocale(locale);
 
+  const [statsData,setStatsData] = useState<Array<Stat>>([]);
+
+  const data = [
+    {
+      key:2,
+      cover:
+          'http://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/c788fc704d32cf3b1136c7d45afc2669.png~tplv-uwbnlip3yd-webp.webp',
+      name: '视频直播',
+      duration: '00:05:19',
+      id: '123',
+      timeparam:2,
+      tsss:3,
+      template:'<stat-item title="每分钟_各省份_uv统计" stat="bitcount(userId)" dimens="province"/>',
+      status: -1,
+    },
+  ];
+
+  const data2 = [
+    {
+      key:2,
+      id: 123,
+      timeparam:2,
+      tsss:3,
+      template:'<stat-item title="每分钟_各省份_uv统计" stat="bitcount(userId)" dimens="province"/>',
+      status: -1,
+    },
+  ];
+
+  useEffect(() => {
+    setTimeout(() => {
+      setStatsData(data2);
+    },50)
+
+  },[statsInfo])
 
   const columns = [
     {
       title: 'ID',
+      dataIndex: 'id',
       headerCellStyle: { width:'7%' },
-      render: (_col, _record, index) => <span>{index + 1}</span>,
+      render: (_col, _record, index) => {
+       return <Typography>{_col}</Typography>
+      },
     },
     {
       title: 'Template',
@@ -50,6 +91,7 @@ export default function GroupStatistics(groupId?) {
                 enableSnippets={false}
                 style={{ height:20,width:'100%'}}
                 mode="xml"
+                value={_col}
                 showPrintMargin={false}
                 showGutter={false}
                 theme="dracula"
@@ -63,48 +105,51 @@ export default function GroupStatistics(groupId?) {
             <AceEditor
                 style={{ height:20,width:'100%'}}
                 mode="xml"
+                value={_col}
                 showPrintMargin={false}
                 showGutter={false}
-                theme="dawn"
+                theme={"textmate"}
                 highlightActiveLine={false}
                 enableBasicAutocompletion={true}
-                name="UNIQUE_ID_OF_DIV"
                 editorProps={{ $blockScrolling: true }}
             />
           </div>
         }
-
       },
     },
+
     {
-      title: 'Period',
-      headerCellStyle: { width:'8%' },
-      dataIndex: 'Period',
+      title: 'Expired',
+      headerCellStyle: { width:'100px' },
+      dataIndex: 'tsss',
       render: (_col, record) => {
         return <Select
             size={"mini"}
+            defaultValue={_col}
             placeholder='Please select'
             style={{ width: '100%' }}
         >
-          <Select.Option value='1'>1-Minute</Select.Option>
-          <Select.Option value='3'>2-Minute</Select.Option>
-          <Select.Option value='4'>10-Minute</Select.Option>
+          <Select.Option key={1} value={1}>1 Minute</Select.Option>
+          <Select.Option key={2} value={2}>2 Minute</Select.Option>
+          <Select.Option key={3} value={3}>10 Minute</Select.Option>
         </Select>
       }
     },
+
     {
-      dataIndex: 'Expire',
-      headerCellStyle: { width:'8%' },
-      title: 'Expire',
+      title: 'TimeParam',
+      headerCellStyle: { width:'100px' },
+      dataIndex: 'timeparam',
       render: (_col, record) => {
         return <Select
             size={"mini"}
+            defaultValue={_col}
             placeholder='Please select'
             style={{ width: '100%' }}
         >
-          <Select.Option value='1'>3 day</Select.Option>
-          <Select.Option value='3'>14 day</Select.Option>
-          <Select.Option value='4'>24 month</Select.Option>
+          <Select.Option key={1} value={1}>1-Minute</Select.Option>
+          <Select.Option key={2} value={2}>2-Minute</Select.Option>
+          <Select.Option key={3} value={3}>10-Minute</Select.Option>
         </Select>
       }
     },
@@ -117,25 +162,19 @@ export default function GroupStatistics(groupId?) {
       }
     },
   ];
-  const data = [
-    {
-      cover:
-        'http://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/c788fc704d32cf3b1136c7d45afc2669.png~tplv-uwbnlip3yd-webp.webp',
-      name: '视频直播',
-      duration: '00:05:19',
-      id: '54e23ade',
-      status: -1,
-    },
-  ];
+
+
+
+
   return (
     <div className={styles['']}>
       <Table
-          style={{ paddingTop:0,paddingBottom:0 }}
-          hover={false}
-          size={"small"}
-          className={'statistic-wrapper'}
+        style={{ paddingTop:0,paddingBottom:0 }}
+        hover={false}
+        size={"small"}
+        className={'statistic-wrapper'}
         columns={columns}
-        data={data}
+        data={statsData}
         border={true}
         pagination={false}
       />

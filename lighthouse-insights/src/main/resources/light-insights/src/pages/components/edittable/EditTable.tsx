@@ -60,8 +60,9 @@ const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
     return (
         <div className={styles.edit_panel}>
             <Table
-                size={"mini"}
+                size={"small"}
                 data={data}
+                pagination={false}
                 border={true}
                 components={{
                     body: {
@@ -120,7 +121,8 @@ function EditableCell(props) {
             if (
                 editing &&
                 column.editable &&
-                !e.target.classList.contains('js-demo-select-option')
+                ref.current &&
+                !ref.current.contains(e.target)
             ) {
                 cellValueChangeHandler(rowData[column.dataIndex]);
             }
