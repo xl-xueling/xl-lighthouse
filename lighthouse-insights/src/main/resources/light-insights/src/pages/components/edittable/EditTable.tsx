@@ -4,7 +4,17 @@ import {IconMinusCircleFill} from "@arco-design/web-react/icon";
 const FormItem = Form.Item;
 const EditableContext = React.createContext<{ getForm?: () => FormInstance }>({});
 import styles from './style/index.module.less';
+import {Column} from "@/types/insights-web";
+import {stringifyObj} from "@/utils/util";
 
+
+export interface EditTableColumn extends Column{
+    key:number;
+}
+
+export interface EditTableColumnProps extends TableColumnProps {
+    isSelect:boolean;
+}
 
 const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
 
@@ -28,6 +38,9 @@ const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
         removeRow
     }));
 
+    useEffect(() => {
+        setData(initData);
+    },[initData])
 
     function addRow() {
         setCount(count + 1);
@@ -43,13 +56,13 @@ const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
 
     return (
         <div className={styles.edit_panel}>
-            {/*<Button*/}
-            {/*    type='dashed'*/}
-            {/*    size={"mini"}*/}
-            {/*    onClick={addRow}*/}
-            {/*>*/}
-            {/*    添加*/}
-            {/*</Button>*/}
+            <Button
+                type='dashed'
+                size={"mini"}
+                onClick={addRow}
+            >
+                添加
+            </Button>
             <Table
                 size={"mini"}
                 data={data}
@@ -130,10 +143,11 @@ function EditableCell(props) {
     }, [handleClick]);
 
     const cellValueChangeHandler = (value) => {
-        if (column.dataIndex === 'type') {
+        if (column.isSelect) {
             const values = {
                 [column.dataIndex]: value,
             };
+
             onHandleSave && onHandleSave({ ...rowData, ...values });
             setTimeout(() => setEditing(!editing), 300);
         } else {
@@ -150,11 +164,15 @@ function EditableCell(props) {
     if (editing) {
         return (
             <div ref={ref}>
-                {column.dataIndex === 'type' ? (
+                {column.isSelect ? (
+
                     <Select
                         size={"mini"}
                         onChange={cellValueChangeHandler}
-                    />
+                        defaultValue={rowData[column.dataIndex]}
+                        options={[2000, 5000, 10000, 20000]}
+                    >
+                    </Select>
                 ) : (
                     <FormItem
                         style={{ marginBottom: 0 }}

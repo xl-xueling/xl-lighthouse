@@ -25,10 +25,10 @@ import AceEditor from "react-ace";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import GroupStatistics from "@/pages/project/manage/statistic-list";
-import {Department, Group, Stat, User} from "@/types/insights-web";
+import {Column, Department, Group, Stat, User} from "@/types/insights-web";
 import {requestQueryById} from "@/api/group";
 import {requestQueryByGroupId} from "@/api/stat";
-import EditTable from "@/pages/components/edittable/EditTable";
+import EditTable, {EditTableColumn, EditTableColumnProps} from "@/pages/components/edittable/EditTable";
 
 
 export default function GroupBasicInfo(props:{groupId?}) {
@@ -96,6 +96,20 @@ export default function GroupBasicInfo(props:{groupId?}) {
         }
     },[groupId])
 
+    const [initData,setInitData] = useState(null);
+
+    useEffect(() => {
+        if(groupInfo && groupInfo.columns){
+            const columnArr:Array<EditTableColumn> = [];
+            for(let i=0;i<groupInfo.columns.length;i++){
+                const columnInfo = groupInfo.columns[i];
+                columnArr.push({...columnInfo,"key":i})
+            }
+            console.log("columnArr is:" + JSON.stringify(columnArr));
+            setInitData(columnArr);
+        }
+    },[groupInfo])
+
 
     const loadingNode = (rows = 1) => {
         return (
@@ -109,52 +123,38 @@ export default function GroupBasicInfo(props:{groupId?}) {
         );
     };
 
-    const initData = [
-        {
-            key: '1',
-            name: 'Test',
-            type: 1,
-            desc: 'sssad',
-        },
-    ];
 
-    const columnsProps: TableColumnProps[]  = [
+
+    const columnsProps: EditTableColumnProps[]  = [
         {
             title: 'Name',
             dataIndex: 'name',
             editable: true,
-            headerCellStyle: { width:'15%'},
+            isSelect:false,
+            headerCellStyle: { width:'12%'},
         },
         {
             title: 'Type',
             dataIndex: 'type',
             editable: true,
-            headerCellStyle: { width:'15%'},
-            render:(_,record) => (
-                <Select size={"mini"} placeholder='Please select' defaultValue={1} >
-                    <Select.Option key={1}  value={1}>
-                        String
-                    </Select.Option>
-                    <Select.Option key={2}  value={2}>
-                        Numberic
-                    </Select.Option>
-                </Select>
-            )
+            isSelect:true,
+            headerCellStyle: { width:'10%'},
         },
         {
             title: 'Description',
             dataIndex: 'desc',
+            isSelect:false,
             editable: true,
         },
         {
             title: 'Operate',
             dataIndex: 'operate',
+            isSelect:false,
             headerCellStyle: { width:'15%'},
             render: (_, record) => (
                 <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%',paddingTop:'5px' }}>
                     <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
                 </Space>
-
             ),
         },
     ];
