@@ -67,7 +67,7 @@ export interface Column {
 export interface Group {
     id?:number;
     token?:string;
-    projectId:number;
+    projectId?:number;
     desc?:string;
     createdTime?:number;
     columns?:Array<Column>;

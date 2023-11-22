@@ -122,7 +122,6 @@ setupMock({
                     'https://lf1-xgcdn-tos.pstatp.com/obj/vcloud/vadmin/start.8e0e4855ee346a46ccff8ff3e24db27b.png',
                 "permissions": generatePermission(userRole),
             });
-            console.log("request user data is:" + JSON.stringify(data));
             return {
                 code:'0',
                 message:'success',
