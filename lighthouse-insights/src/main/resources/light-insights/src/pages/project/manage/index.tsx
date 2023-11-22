@@ -17,11 +17,13 @@ export default function ProjectManage() {
   const handlerProcess = (action:string,params:any):void => {
       switch (action){
           case 'add-group':{
+              setShowGroupEditPanel(false);
               setShowGroupAddPanel(true);
               break;
           }
           case 'edit-group':{
               setGroupId(params.groupId);
+              setShowGroupAddPanel(false);
               setShowGroupEditPanel(true);
               break;
           }
@@ -37,17 +39,17 @@ export default function ProjectManage() {
         <div className={styles['layout-left-side']}>
           <ProjectTree projectId={0} filterTypes={[1,2]} handlerProcess={handlerProcess}/>
         </div>
-          <div className={styles['layout-content']} style={{ display:showGroupAddPanel ? 'block' : 'none' }}>
-              <Space size={16} direction="vertical" style={{ width: '100%' }}>
-                  <GroupAddPanel />
-              </Space>
-          </div>
 
-          <div className={styles['layout-content']} style={{ display:showGroupEditPanel ? 'block' : 'none' }}>
-              <Space size={16} direction="vertical" style={{ width: '100%' }}>
+          {showGroupAddPanel &&
+          <div className={styles['layout-content']} style={{ display:showGroupAddPanel ? 'block' : 'none' }}>
+              <GroupAddPanel />
+          </div>}
+          {
+              showGroupEditPanel &&
+              <div className={styles['layout-content']} style={{ display:showGroupEditPanel ? 'block' : 'none' }}>
                   <GroupEditPanel groupId={groupId} />
-              </Space>
-          </div>
+              </div>
+          }
       </div>
     </div>
   );

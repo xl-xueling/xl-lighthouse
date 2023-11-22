@@ -7,7 +7,6 @@ import QuickOperation from "./statistic-list";
 import GroupBasicInfo from "@/pages/project/manage/group_basic";
 
 export default function GroupEditPanel({groupId}) {
-  const t = useLocale(locale);
   return (
     <Card>
         <GroupBasicInfo groupId={groupId}/>

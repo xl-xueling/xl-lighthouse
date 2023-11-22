@@ -21,7 +21,7 @@ export async function requestQueryById(id:number) :Promise<ResultData<Stat>> {
 
 export async function requestQueryByGroupId(id:number) :Promise<ResultData<{list:Array<Stat>}>> {
     return request({
-        url:'/stat/queryById',
+        url:'/stat/queryByGroupId',
         method:'POST',
         id,
     })

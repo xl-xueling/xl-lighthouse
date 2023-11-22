@@ -7,7 +7,7 @@ import {
     Table,
     TableColumnProps,
     Popconfirm,
-    Message, Button, Form, Input, InputTag, Select
+    Message, Button, Form, Input, InputTag, Select, Skeleton
 } from '@arco-design/web-react';
 import {
     IconMinus,
@@ -43,6 +43,7 @@ const data = [
 export default function GroupBasicInfo(props:{groupId?}) {
 
     const t = useLocale(locale);
+
     const groupId = props.groupId;
 
     const [loading,setLoading] = useState<boolean>(true);
@@ -51,50 +52,69 @@ export default function GroupBasicInfo(props:{groupId?}) {
 
     const [statsInfo,setStatsInfo] = useState<Array<Stat>>([]);
 
-    const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
-        let result;
-        const proc = async () => {
-            const response = await requestQueryById(groupId);
-            if(response.code != '0'){
-                reject(new Error(response.message));
-            }
-            result = response.data;
-        }
-        result = proc();
-        resolve(result);
-    })
-
-    const promiseFetchStatsInfo:Promise<Array<Stat>> = new Promise<Array<Stat>>((resolve, reject) => {
-        let result;
-        const proc = async () => {
-            const response = await requestQueryByGroupId(groupId);
-            if(response.code != '0'){
-                reject(new Error(response.message));
-            }
-            result = response.data;
-        }
-        result = proc();
-        resolve(result);
-    })
+    const [formInstance] = Form.useForm();
 
     useEffect(() => {
-        setLoading(true);
-        const promiseAll:Promise<[Group,Array<Stat>]> = Promise.all([
-            promiseFetchGroupInfo,
-            promiseFetchStatsInfo,
-        ])
+        if(groupId){
+            setLoading(true);
+            const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
+                console.log("start to Fetch Group Info with id:" + groupId);
+                let result;
+                const proc = async () => {
+                    const response = await requestQueryById(groupId);
+                    if(response.code != '0'){
+                        reject(new Error(response.message));
+                    }
+                    result = response.data;
+                    resolve(result);
+                }
+                proc().then();
+            })
 
-        promiseAll.then((results) => {
-            setGroupInfo(results[0])
-            setStatsInfo(results[1])
-        }).catch(error => {
-            console.log(error);
-            Message.error(t['system.error']);
-        }).finally(() => {
-            setLoading(false);
-        });
-    },[props.groupId])
+            const promiseFetchStatsInfo:Promise<Array<Stat>> = new Promise<Array<Stat>>((resolve, reject) => {
+                let result;
+                const proc = async () => {
+                    const response = await requestQueryByGroupId(groupId);
+                    if(response.code != '0'){
+                        reject(new Error(response.message));
+                    }
+                    result = response.data;
+                    resolve(result);
+                }
+                proc().then();
+            })
 
+            const promiseAll:Promise<[Group,Array<Stat>]> = Promise.all([
+                promiseFetchGroupInfo,
+                promiseFetchStatsInfo,
+            ])
+
+            promiseAll.then((results) => {
+                const group:Group = results[0];
+                setGroupInfo(group);
+                setStatsInfo(results[1]);
+                formInstance.setFieldValue("token",group.token);
+            }).catch(error => {
+                console.log(error);
+                Message.error(t['system.error']);
+            }).finally(() => {
+                setLoading(false);
+            });
+        }
+    },[groupId])
+
+
+    const loadingNode = (rows = 1) => {
+        return (
+            <Skeleton
+                text={{
+                    rows,
+                    width: new Array(rows).fill('100%'),
+                }}
+                animation
+            />
+        );
+    };
 
     const columns: TableColumnProps[] = [
         {
@@ -147,15 +167,12 @@ export default function GroupBasicInfo(props:{groupId?}) {
   return (
       <Card>
           <Form
+              form={formInstance}
               className={styles['search-form']}
               layout={"vertical"}
           >
-              <Form.Item  field="name">
-                  <Typography.Title
-                      style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                  >
-                      {'Group Token'}
-                  </Typography.Title>
+
+              <Form.Item field="token" label={"Token"}>
                   <Input
                       allowClear
                       placeholder={'Please Input Token'}
@@ -171,7 +188,6 @@ export default function GroupBasicInfo(props:{groupId?}) {
                           </Typography.Title>
                       </Grid.Col>
                       <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                          {/*<IconPlusCircleFill fontSize={15} />*/}
                             <Button type={"secondary"} size={"mini"}>添加</Button>
                       </Grid.Col>
                   </Grid.Row>
@@ -190,7 +206,8 @@ export default function GroupBasicInfo(props:{groupId?}) {
                           <Button type={"secondary"} size={"mini"}>添加</Button>
                       </Grid.Col>
                   </Grid.Row>
-                  <GroupStatistics />
+
+                  {/*<GroupStatistics />*/}
               </Form.Item>
               <Form.Item>
                   <Grid.Row>
@@ -200,7 +217,7 @@ export default function GroupBasicInfo(props:{groupId?}) {
                   </Grid.Row>
               </Form.Item>
           </Form>
-
       </Card>
+
   );
 }
