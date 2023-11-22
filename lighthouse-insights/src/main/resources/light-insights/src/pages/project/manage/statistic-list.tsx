@@ -32,42 +32,19 @@ import {useTheme} from "bizcharts";
 import {IconPenFill} from "@arco-design/web-react/icon";
 import {Stat} from "@/types/insights-web";
 
-export default function GroupStatistics(statsInfo) {
+export default function GroupStatistics({statsInfo}:{statsInfo:Array<Stat>}) {
   const t = useLocale(locale);
 
   const [statsData,setStatsData] = useState<Array<Stat>>([]);
 
-  const data = [
-    {
-      key:2,
-      cover:
-          'http://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/c788fc704d32cf3b1136c7d45afc2669.png~tplv-uwbnlip3yd-webp.webp',
-      name: '视频直播',
-      duration: '00:05:19',
-      id: '123',
-      timeparam:2,
-      tsss:3,
-      template:'<stat-item title="每分钟_各省份_uv统计" stat="bitcount(userId)" dimens="province"/>',
-      status: -1,
-    },
-  ];
-
-  const data2 = [
-    {
-      key:2,
-      id: 123,
-      timeparam:2,
-      tsss:3,
-      template:'<stat-item title="每分钟_各省份_uv统计" stat="bitcount(userId)" dimens="province"/>',
-      status: -1,
-    },
-  ];
-
   useEffect(() => {
-    setTimeout(() => {
-      setStatsData(data2);
-    },50)
-
+    if(statsInfo != null){
+      statsInfo.forEach(z => {
+        z.key = z.id;
+      })
+      console.log("statsInfo:" + JSON.stringify(statsInfo));
+      setStatsData(statsInfo);
+    }
   },[statsInfo])
 
   const columns = [

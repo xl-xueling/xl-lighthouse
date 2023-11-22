@@ -11,13 +11,33 @@ setupMock({
       const list = Mock.mock([
         {
           id:10231,
-          title:"每分钟uv统计",
+          title:"每分钟uv统计1",
           groupId:1001,
           projectId:101,
           timeparam:'1-minute',
-          template:"\<stat-item title=\"bitcount(userId)\"\/\>",
-          expire:102323,
-          createdTime:'@datetime',
+          template:"<stat-item title=\"每分钟_uv数据统计\" stat=\"bitcount(userId)\" dimens=\"province\" limit=\"top100\" />",
+          expired:102323,
+          createdTime: '@datetime',
+        },
+        {
+          id:10232,
+          title:"每分钟uv统计2",
+          groupId:1001,
+          projectId:101,
+          timeparam:'1-minute',
+          template:"<stat-item title=\"每分钟_uv数据统计\" stat=\"bitcount(userId)\" dimens=\"province\" limit=\"top100\" />",
+          expired:102323,
+          createdTime: '@datetime',
+        },
+        {
+          id:10233,
+          title:"每分钟uv统计3",
+          groupId:1001,
+          projectId:101,
+          timeparam:'1-minute',
+          template:"<stat-item title=\"每分钟_uv数据统计\" stat=\"bitcount(userId)\" dimens=\"province\" limit=\"top100\" />",
+          expired:102323,
+          createdTime: '@datetime',
         },
       ]);
 

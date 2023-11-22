@@ -7,7 +7,7 @@ import {
     Table,
     TableColumnProps,
     Popconfirm,
-    Message, Button, Form, Input, InputTag, Select, Skeleton
+    Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag
 } from '@arco-design/web-react';
 import {
     IconMinus,
@@ -52,7 +52,7 @@ export default function GroupBasicInfo(props:{groupId?}) {
             setLoading(true);
             const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
                 console.log("start to Fetch Group Info with id:" + groupId);
-                let result;
+                let result:Group;
                 const proc = async () => {
                     const response = await requestQueryById(groupId);
                     if(response.code != '0'){
@@ -65,14 +65,13 @@ export default function GroupBasicInfo(props:{groupId?}) {
             })
 
             const promiseFetchStatsInfo:Promise<Array<Stat>> = new Promise<Array<Stat>>((resolve, reject) => {
-                let result;
+                let result:Array<Stat>;
                 const proc = async () => {
                     const response = await requestQueryByGroupId(groupId);
-                    console.log("response is:" + JSON.stringify(response));
                     if(response.code != '0'){
                         reject(new Error(response.message));
                     }
-                    result = response.data;
+                    result = response.data.list;
                     resolve(result);
                 }
                 proc().then();
@@ -107,36 +106,6 @@ export default function GroupBasicInfo(props:{groupId?}) {
             setInitData(columnArr);
         }
     },[groupInfo])
-
-
-    const loadingNode = (rows = 1) => {
-        return (
-            <Skeleton
-                text={{
-                    rows,
-                    width: new Array(rows).fill('100%'),
-                }}
-                animation
-            />
-        );
-    };
-
-    const data = [
-        {
-            key:2,
-            cover:
-                'http://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/c788fc704d32cf3b1136c7d45afc2669.png~tplv-uwbnlip3yd-webp.webp',
-            name: '视频直播',
-            duration: '00:05:19',
-            id: '123',
-            timeparam:2,
-            tsss:3,
-            template:'<stat-item title="每分钟_各省份_uv统计" stat="bitcount(userId)" dimens="province"/>',
-            status: -1,
-        },
-    ];
-
-
 
     const columnsProps: EditTableColumnProps[]  = [
         {
@@ -185,9 +154,18 @@ export default function GroupBasicInfo(props:{groupId?}) {
         },
     ];
 
+    useEffect(() => {
+        if(groupInfo != null){
+            const formData = {
+                "token":groupInfo.token,
+            }
+            formInstance.setFieldsValue(formData);
+        }
+    },[groupInfo])
 
     return (
       <Card>
+          <Spin loading={loading} size={20} style={{ display: 'block' }}>
           <Form
               form={formInstance}
               className={styles['search-form']}
@@ -224,20 +202,13 @@ export default function GroupBasicInfo(props:{groupId?}) {
               <Form.Item>
                   <Grid.Row>
                       <Grid.Col span={16}>
-                          <Typography.Title
-                              style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                          >
-                              {'Templates'}
-                          </Typography.Title>
                       </Grid.Col>
                       <Grid.Col span={8} style={{ textAlign: 'right' }}>
                           <Button type={"secondary"} size={"mini"}>添加</Button>
                       </Grid.Col>
                   </Grid.Row>
 
-
-
-                  <GroupStatistics statsInfo={data}/>
+                  <GroupStatistics statsInfo={statsInfo}/>
               </Form.Item>
               <Form.Item>
                   <Grid.Row>
@@ -247,6 +218,7 @@ export default function GroupBasicInfo(props:{groupId?}) {
                   </Grid.Row>
               </Form.Item>
           </Form>
+          </Spin>
       </Card>
 
   );
