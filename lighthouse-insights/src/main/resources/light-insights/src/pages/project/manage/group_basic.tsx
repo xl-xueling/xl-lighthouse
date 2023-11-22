@@ -17,7 +17,7 @@ import {
     IconPlus,
     IconPlusCircleFill
 } from '@arco-design/web-react/icon';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
@@ -28,23 +28,16 @@ import GroupStatistics from "@/pages/project/manage/statistic-list";
 import {Department, Group, Stat, User} from "@/types/insights-web";
 import {requestQueryById} from "@/api/group";
 import {requestQueryByGroupId} from "@/api/stat";
+import EditTable from "@/pages/components/edittable/EditTable";
 
-
-const data = [
-    {
-        key: '1',
-        name: 'Jane Doe',
-        salary: 23000,
-        address: '32 Park Road, London',
-        email: 'jane.doe@example.com',
-    },
-];
 
 export default function GroupBasicInfo(props:{groupId?}) {
 
     const t = useLocale(locale);
 
     const groupId = props.groupId;
+
+    const editTableRef= useRef(null);
 
     const [loading,setLoading] = useState<boolean>(true);
 
@@ -116,26 +109,32 @@ export default function GroupBasicInfo(props:{groupId?}) {
         );
     };
 
-    const columns: TableColumnProps[] = [
+    const initData = [
         {
-            title: 'Column',
+            key: '1',
+            name: 'Test',
+            type: 1,
+            desc: 'sssad',
+        },
+    ];
+
+    const columnsProps: TableColumnProps[]  = [
+        {
+            title: 'Name',
             dataIndex: 'name',
-            headerCellStyle: { width:'18%'},
-            className:'columnNameClass',
-            render:(_,record) => (
-                <Input />
-            )
+            editable: true,
+            headerCellStyle: { width:'15%'},
         },
         {
             title: 'Type',
-            dataIndex: 'salary',
-            className:'columnNameClass',
-            headerCellStyle: { width:'18%' },
+            dataIndex: 'type',
+            editable: true,
+            headerCellStyle: { width:'15%'},
             render:(_,record) => (
-                <Select size={"mini"} placeholder='Please select' style={{ }} defaultValue={1} >
-                        <Select.Option key={1}  value={1}>
-                            String
-                        </Select.Option>
+                <Select size={"mini"} placeholder='Please select' defaultValue={1} >
+                    <Select.Option key={1}  value={1}>
+                        String
+                    </Select.Option>
                     <Select.Option key={2}  value={2}>
                         Numberic
                     </Select.Option>
@@ -144,27 +143,24 @@ export default function GroupBasicInfo(props:{groupId?}) {
         },
         {
             title: 'Description',
-            dataIndex: 'address',
-            className:'columnNameClass',
-            headerCellStyle: {},
-            render:(_,record) => (
-                <Input />
-            )
+            dataIndex: 'desc',
+            editable: true,
         },
         {
             title: 'Operate',
-            dataIndex: 'email',
-            className:'columnNameClass',
-            headerCellStyle: { width:'14%'},
+            dataIndex: 'operate',
+            headerCellStyle: { width:'15%'},
             render: (_, record) => (
                 <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%',paddingTop:'5px' }}>
-                    <IconMinusCircleFill />
+                    <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
                 </Space>
+
             ),
         },
     ];
 
-  return (
+
+    return (
       <Card>
           <Form
               form={formInstance}
@@ -191,7 +187,9 @@ export default function GroupBasicInfo(props:{groupId?}) {
                             <Button type={"secondary"} size={"mini"}>添加</Button>
                       </Grid.Col>
                   </Grid.Row>
-                  <Table className={"group-basic-panel"} size={"mini"} columns={columns} pagination={false} data={data} />
+
+
+                  <EditTable ref={editTableRef} columns={columnsProps} initData={initData}/>
               </Form.Item>
               <Form.Item>
                   <Grid.Row>
