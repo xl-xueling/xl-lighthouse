@@ -77,8 +77,10 @@ export interface Stat {
     key?:number;
     id?:number;
     title?:string;
+    groupId?:number;
+    projectId?:number;
+    timeparam?:string;
     template?:string;
-    timeparam?:number;
     expired?:number;
     createdTime?:number;
 }
