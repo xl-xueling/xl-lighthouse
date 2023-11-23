@@ -28,7 +28,11 @@ import GroupStatistics from "@/pages/project/manage/statistic-list";
 import {Column, Department, Group, Stat, User} from "@/types/insights-web";
 import {requestQueryById} from "@/api/group";
 import {requestQueryByGroupId} from "@/api/stat";
-import EditTable, {EditTableColumn, EditTableColumnProps} from "@/pages/components/edittable/EditTable";
+import EditTable, {
+    EditTableColumn,
+    EditTableColumnProps,
+    EditTableComponentEnum
+} from "@/pages/components/edittable/EditTable";
 
 
 export default function GroupBasicInfo(props:{groupId?}) {
@@ -38,6 +42,8 @@ export default function GroupBasicInfo(props:{groupId?}) {
     const groupId = props.groupId;
 
     const editTableRef= useRef(null);
+
+    const tempalteEditTableRef= useRef(null);
 
     const [loading,setLoading] = useState<boolean>(true);
 
@@ -112,14 +118,14 @@ export default function GroupBasicInfo(props:{groupId?}) {
             title: 'Name',
             dataIndex: 'name',
             editable: true,
-            isSelect:false,
+            componentType:EditTableComponentEnum.INPUT,
             headerCellStyle: { width:'15%'},
         },
         {
             title: 'Type',
             dataIndex: 'type',
             editable: true,
-            isSelect:true,
+            componentType:EditTableComponentEnum.SELECT,
             headerCellStyle: { width:'12%'},
             render:(k,v) => (
                 <Select size={"mini"} placeholder='Please select'
@@ -138,13 +144,13 @@ export default function GroupBasicInfo(props:{groupId?}) {
         {
             title: 'Description',
             dataIndex: 'desc',
-            isSelect:false,
+            componentType:EditTableComponentEnum.INPUT,
             editable: true,
         },
         {
             title: 'Operate',
             dataIndex: 'operate',
-            isSelect:false,
+            componentType:EditTableComponentEnum.BUTTON,
             headerCellStyle: { width:'15%'},
             render: (_, record) => (
                 <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%',paddingTop:'5px' }}>
@@ -182,6 +188,7 @@ export default function GroupBasicInfo(props:{groupId?}) {
                       placeholder={'Please Input Token'}
                   />
               </Form.Item>
+
               <Form.Item>
                   <Grid.Row>
                       <Grid.Col span={16}>
@@ -196,18 +203,10 @@ export default function GroupBasicInfo(props:{groupId?}) {
                       </Grid.Col>
                   </Grid.Row>
 
-
                   <EditTable ref={editTableRef} columns={columnsProps} initData={initData}/>
               </Form.Item>
-              <Form.Item>
-                  <Grid.Row>
-                      <Grid.Col span={16}>
-                      </Grid.Col>
-                      <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                          <Button type={"secondary"} size={"mini"}>添加</Button>
-                      </Grid.Col>
-                  </Grid.Row>
 
+              <Form.Item>
                   <GroupStatistics statsInfo={statsInfo}/>
               </Form.Item>
               <Form.Item>
