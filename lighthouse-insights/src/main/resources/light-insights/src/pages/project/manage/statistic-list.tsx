@@ -1,5 +1,5 @@
-import {Select, Table, Tag, Typography} from '@arco-design/web-react';
-import React, {useEffect, useState} from 'react';
+import {Button, Form, Grid, Select, Table, Tag, Tooltip, Typography} from '@arco-design/web-react';
+import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 
@@ -28,48 +28,46 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/mode-xml';
 import "ace-builds/webpack-resolver";
 import styles from './style/index.module.less';
-import {useTheme} from "bizcharts";
-import {IconPenFill} from "@arco-design/web-react/icon";
+import {IconPenFill, IconPlus} from "@arco-design/web-react/icon";
 import {Stat} from "@/types/insights-web";
+import EditTable, {EditTableColumnProps, EditTableComponentEnum} from "@/pages/components/edittable/EditTable";
 
-export default function GroupStatistics({statsInfo}:{statsInfo:Array<Stat>}) {
+export default function GroupStatistics({statsInfo}) {
+
   const t = useLocale(locale);
 
   const [statsData,setStatsData] = useState<Array<Stat>>([]);
+
+  const editTableRef = useRef(null);
 
   useEffect(() => {
     if(statsInfo != null){
       statsInfo.forEach(z => {
         z.key = z.id;
       })
-      console.log("statsInfo:" + JSON.stringify(statsInfo));
       setStatsData(statsInfo);
     }
   },[statsInfo])
 
-  const columns = [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      headerCellStyle: { width:'7%' },
-      render: (_col, _record, index) => {
-       return <Typography>{_col}</Typography>
-      },
-    },
+  const columns : EditTableColumnProps[] = [
     {
       title: 'Template',
       dataIndex: 'template',
+      editable: true,
+      componentType:EditTableComponentEnum.ACE_EDITOR,
       headerCellStyle: { width:'60%'},
       render: (_col, record) => {
         const theme = document.body.getAttribute('arco-theme');
         if(theme === "dark"){
-          return <div >
+          return <div>
             <AceEditor
+
                 enableSnippets={false}
-                style={{ height:20,width:'100%'}}
+                style={{ height:30,width:'100%'}}
                 mode="xml"
                 value={_col}
                 showPrintMargin={false}
+                name="UNIQUE_ID_OF_DIV"
                 showGutter={false}
                 theme="dracula"
                 highlightActiveLine={false}
@@ -80,11 +78,13 @@ export default function GroupStatistics({statsInfo}:{statsInfo:Array<Stat>}) {
         }else{
           return <div >
             <AceEditor
-                style={{ height:20,width:'100%'}}
+                focus={true}
+                style={{ height:30,width:'100%',marginTop:'8px'}}
                 mode="xml"
                 value={_col}
                 showPrintMargin={false}
                 showGutter={false}
+                name="UNIQUE_ID_OF_DIV"
                 theme={"textmate"}
                 highlightActiveLine={false}
                 enableBasicAutocompletion={true}
@@ -94,34 +94,17 @@ export default function GroupStatistics({statsInfo}:{statsInfo:Array<Stat>}) {
         }
       },
     },
-
-    {
-      title: 'Expired',
-      headerCellStyle: { width:'100px' },
-      dataIndex: 'tsss',
-      render: (_col, record) => {
-        return <Select
-            size={"mini"}
-            defaultValue={_col}
-            placeholder='Please select'
-            style={{ width: '100%' }}
-        >
-          <Select.Option key={1} value={1}>1 Minute</Select.Option>
-          <Select.Option key={2} value={2}>2 Minute</Select.Option>
-          <Select.Option key={3} value={3}>10 Minute</Select.Option>
-        </Select>
-      }
-    },
-
     {
       title: 'TimeParam',
-      headerCellStyle: { width:'100px' },
+      headerCellStyle: { width:'5%' },
       dataIndex: 'timeparam',
+      editable: true,
+      componentType:EditTableComponentEnum.SELECT,
       render: (_col, record) => {
         return <Select
             size={"mini"}
             defaultValue={_col}
-            placeholder='Please select'
+            placeholder='1-hour'
             style={{ width: '100%' }}
         >
           <Select.Option key={1} value={1}>1-Minute</Select.Option>
@@ -131,9 +114,29 @@ export default function GroupStatistics({statsInfo}:{statsInfo:Array<Stat>}) {
       }
     },
     {
+      title: 'Expired',
+      headerCellStyle: { width:'5%' },
+      dataIndex: 'expired',
+      editable: true,
+      componentType:EditTableComponentEnum.SELECT,
+      render: (_col, record) => {
+        return <Select
+            size={"mini"}
+            defaultValue={_col}
+            placeholder='2 周'
+            style={{ width: '100%' }}
+        >
+          <Select.Option key={1} value={1}>1 Minute</Select.Option>
+          <Select.Option key={2} value={2}>2 Minute</Select.Option>
+          <Select.Option key={3} value={3}>10 Minute</Select.Option>
+        </Select>
+      }
+    },
+    {
       dataIndex: 'Operate',
-      headerCellStyle: { width:'2%'},
+      headerCellStyle: { width:'5%'},
       title: 'Operate',
+      componentType:EditTableComponentEnum.BUTTON,
       render: (_col, record) => {
         return <IconPenFill/>
       }
@@ -141,21 +144,21 @@ export default function GroupStatistics({statsInfo}:{statsInfo:Array<Stat>}) {
   ];
 
 
-
-
   return (
-    <div className={styles['']}>
-      <Table
-        style={{ paddingTop:0,paddingBottom:0 }}
-        hover={false}
-        size={"small"}
-        className={'statistic-wrapper'}
-        columns={columns}
-        data={statsData}
-        border={true}
-        pagination={false}
-      />
-
+        <div>
+        <Grid.Row>
+          <Grid.Col span={16}>
+            <Typography.Title
+                style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+            >
+              {'Templates'}
+            </Typography.Title>
+          </Grid.Col>
+          <Grid.Col span={8} style={{ textAlign: 'right' }}>
+            <Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>
+          </Grid.Col>
+        </Grid.Row>
+      <EditTable ref={editTableRef} columns={columns} initData={statsData}/>
     </div>
   );
 }

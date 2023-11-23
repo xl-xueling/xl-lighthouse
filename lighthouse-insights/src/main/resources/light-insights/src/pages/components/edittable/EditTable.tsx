@@ -8,12 +8,19 @@ import {Column} from "@/types/insights-web";
 import {stringifyObj} from "@/utils/util";
 
 
+export enum EditTableComponentEnum {
+    INPUT,
+    SELECT,
+    ACE_EDITOR,
+    BUTTON
+}
+
 export interface EditTableColumn extends Column{
     key:number;
 }
 
 export interface EditTableColumnProps extends TableColumnProps {
-    isSelect:boolean;
+    componentType:EditTableComponentEnum;
     options?:number[]|string[];
 }
 
@@ -40,6 +47,7 @@ const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
         setData(
             data.concat({
                 key: `${count + 1}`,
+                id:"--",
                 name: "--",
                 type: 1,
                 desc: "--",
@@ -130,8 +138,11 @@ function EditableCell(props) {
         [editing, rowData, column]
     );
     useEffect(() => {
-        editing && refInput.current.focus();
+        if(column.componentType == EditTableComponentEnum.INPUT){
+            editing && refInput.current.focus();
+        }
     }, [editing]);
+
     useEffect(() => {
         document.addEventListener('click', handleClick, true);
         return () => {
@@ -140,7 +151,7 @@ function EditableCell(props) {
     }, [handleClick]);
 
     const cellValueChangeHandler = (value) => {
-        if (column.isSelect) {
+        if (column.componentType == EditTableComponentEnum.SELECT) {
             const values = {
                 [column.dataIndex]: value,
             };
@@ -158,7 +169,7 @@ function EditableCell(props) {
         }
     };
 
-    if (!column.isSelect && editing) {
+    if (column.componentType == EditTableComponentEnum.INPUT && editing) {
         return (
             <div ref={ref}>
                 <FormItem
