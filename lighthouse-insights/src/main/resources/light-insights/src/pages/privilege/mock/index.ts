@@ -44,11 +44,20 @@ setupMock({
 
         Mock.mock(new RegExp('/api/v1/privilege/check'), (data) => {
             const {type,items} = JSON.parse(data.body);
-            const personData: Record<string, Array<number>> = {};
+            const personData: Record<number, Array<number>> = {};
             if(type == "project"){
                items.forEach(x => {
-                   personData[x] = [1,2,3,4,5,6,7,8,9,10];
+                   personData[parseInt(x)] = [1,2,3,4,5,6,7,8,9,10];
                })
+                return {
+                    code:0,
+                    message:'success',
+                    data:personData,
+                };
+            }else if(type == "stat"){
+                items.forEach(x => {
+                    personData[parseInt(x)] = [1,2,3,4,5,6,7,8,9,10];
+                })
                 return {
                     code:0,
                     message:'success',

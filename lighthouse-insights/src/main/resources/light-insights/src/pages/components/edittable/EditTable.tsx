@@ -5,7 +5,7 @@ const FormItem = Form.Item;
 const EditableContext = React.createContext<{ getForm?: () => FormInstance }>({});
 import styles from './style/index.module.less';
 import {Column} from "@/types/insights-web";
-import {stringifyObj} from "@/utils/util";
+import {stringifyMap, stringifyObj} from "@/utils/util";
 
 
 export enum EditTableComponentEnum {
@@ -26,6 +26,7 @@ export interface EditTableColumnProps extends TableColumnProps {
 
 const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
 
+    const tableRef = useRef(null);
     const columns = props.columns
     const initData = props.initData;
     const [count, setCount] = useState(5);
@@ -42,33 +43,36 @@ const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
         setData(data.filter((item) => item.key !== key));
     }
 
+    const getData = () => {
+        return data;
+    }
+
     const addRow = () => {
         setCount(count + 1);
         setData(
             data.concat({
                 key: `${count + 1}`,
-                id:"--",
-                name: "--",
-                type: 1,
-                desc: "--",
             })
         );
     }
 
     React.useImperativeHandle(ref,() => ({
         removeRow,
-        addRow
+        addRow,
+        getData
     }));
 
     useEffect(() => {
         setData(initData);
-    },[initData])
+    },[])
 
 
     return (
         <div className={styles.edit_panel}>
             <Table
-                size={"small"}
+                ref={tableRef}
+                style={{ minHeight:'200px' }}
+                size={"mini"}
                 data={data}
                 pagination={false}
                 border={true}
@@ -78,15 +82,17 @@ const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
                         cell: EditableCell,
                     },
                 }}
-                columns={columns.map((column) =>
-                    column.editable
-                        ? {
-                            ...column,
-                            onCell: () => ({
-                                onHandleSave: handleSave,
-                            }),
-                        }
-                        : column
+                columns={columns.map((column) => {
+                    return column.editable
+                            ? {
+                                ...column,
+                                onCell: () => ({
+                                    onHandleSave: handleSave,
+                                }),
+                            }
+                            : column
+                }
+
                 )}
             />
         </div>
@@ -155,7 +161,6 @@ function EditableCell(props) {
             const values = {
                 [column.dataIndex]: value,
             };
-
             onHandleSave && onHandleSave({ ...rowData, ...values });
             setTimeout(() => setEditing(!editing), 300);
         } else {
@@ -187,7 +192,9 @@ function EditableCell(props) {
     return (
         <div
             className={column.editable ? `editable-cell ${className}` : className}
-            onDoubleClick={() => column.editable && setEditing(!editing)}
+            onClick={() => {
+                column.editable && setEditing(!editing)
+            }}
         >
             {children}
         </div>
