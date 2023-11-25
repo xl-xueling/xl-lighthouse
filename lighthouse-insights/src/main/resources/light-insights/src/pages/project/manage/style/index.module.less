@@ -2,7 +2,7 @@
   display: flex;
 
   &-left-side {
-    flex-basis: 295px;
+    flex-basis: 300px;
   }
 
   &-content {
@@ -11,53 +11,25 @@
   }
 
   &-right-side {
-    flex-basis: 280px;
+    flex-basis: 380px;
   }
+}
+
+
+.wrapper {
+  display: flex;
+  width: 100%;
+}
+
+
+.left {
+  width: 100%;
+  margin-right: 16px;
 }
 
 
 
 :global{
-  .group-basic-panel .columnNameClass {
-    padding: 0 0 !important;
-  }
-  .group-basic-panel  .columnNameClass td{
-    height: 10px !important;
-  }
-
-  .group-basic-panel  .columnNameClass input {
-    background: none !important;
-    border:none !important;
-  }
-
-  .group-basic-panel .columnNameClass .arco-select .arco-select-view {
-    background: none !important;
-    border:none !important;
-  }
-
-  .group-basic-panel .columnNameClass input:hover{
-    background: none !important;
-    border:none !important;
-  }
-
-  .group-basic-panel .columnNameClass input:focus{
-    background: none !important;
-    border:1px solid !important;
-    border-color:rgb(var(--arcoblue-6)) !important;
-  }
-
-  .group-basic-panel .columnNameClass tr {
-    height: 25px !important;
-  }
-  .group-basic-panel .columnNameClass input {
-    height: 25px !important;
-  }
-  .group-basic-panel .columnNameClass {
-    height: 25px !important;
-  }
-  .group-basic-panel .arco-table-cell{
-    height: 25px !important;
-  }
 
 
   .arco-tree-node{
@@ -66,16 +38,6 @@
 
   .statistic-wrapper .arco-table-td{
     padding: 2px 2px !important;
-  }
-
-  .arco-table-td{
-    border-left: 1px solid var(--color-fill-3) !important;;
-  }
-
-  .ace_editor {
-    background-color:var(--primary-1) !important;
-    color: var(--primary-1) !important;
-    font-size: 12px !important;
   }
 
   .ace_editor  .ace_cursor{
@@ -100,18 +62,12 @@
   }
 
   .arco-tree-node-drag-icon {
-    //margin-left: 40px !important;
     display: none;
   }
 
   .arco-tree-node-title{
     width: 100% !important;
   }
-
-
-  //.arco-tree-node-title:hover .arco-tree-node-drag-icon{
-  //  opacity: 0 !important;
-  //}
 
   .arco-tree-node-custom-icon{
     margin-right:5px !important;

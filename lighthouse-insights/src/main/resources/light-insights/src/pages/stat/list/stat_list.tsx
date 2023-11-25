@@ -45,6 +45,8 @@ export default function StatisticalListPanel({statsInfo}:{statsInfo:Array<Stat>}
 
     const [listData,setListData] = useState<Array<StatPagination>>([]);
 
+    const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+
     useEffect(() => {
         if(!statsInfo || !statsInfo.length){
             return;
@@ -80,7 +82,9 @@ export default function StatisticalListPanel({statsInfo}:{statsInfo:Array<Stat>}
         const data = Promise.all([fetchPrivilegeInfo,fetchProjectInfo,fetchGroupInfo])
             .then(([r1,r2,r3]) => {
                 const combinePaginationData = statsInfo.reduce((result:StatPagination[],item:Stat) => {
-                        const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id],"project":r2[item.projectId],"group":r3[item.groupId]}};
+                        const project:Project = r2[item.projectId];
+                        const department = allDepartInfo.find(x => x.id == project.departmentId);
+                        const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id],"project":project,"group":r3[item.groupId],"department":department}};
                         result.push(combinedItem);
                         return result;
                     },[]);
@@ -108,7 +112,7 @@ export default function StatisticalListPanel({statsInfo}:{statsInfo:Array<Stat>}
         },
         {
             title: 'Department',
-            dataIndex: 'department2',
+            dataIndex: 'department.name',
         },
         {
             title: 'TimeParam',

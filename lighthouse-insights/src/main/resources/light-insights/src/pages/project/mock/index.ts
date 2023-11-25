@@ -1,7 +1,6 @@
 import Mock from 'mockjs';
-import qs from 'query-string';
-import dayjs from 'dayjs';
 import setupMock from '@/utils/setupMock';
+import {Project} from "@/types/insights-web";
 
 const { list } = Mock.mock({
   'list|100': [
@@ -48,6 +47,37 @@ setupMock({
           'admins':['1','2'],
           "createdTime":'@datetime',
         }),
+      };
+    });
+
+    Mock.mock(new RegExp('/api/v1/project/queryById'), (params) => {
+      console.log("receive queryById params,params:" + JSON.stringify(params));
+      const data = JSON.parse(params.body);
+      const projectData: Record<number, Project> = {};
+      projectData[101] = Mock.mock({
+        id: 101,
+        'name': '@word() @word() @word()',
+        'departmentId|1-2': 1,
+        'isPrivate': 0,
+        'desc': '@sentence()',
+        'admins': ['1', '2'],
+        "createdTime": '@datetime',
+      });
+      projectData[102] = Mock.mock({
+        id: 102,
+        'name': '@word() @word() @word()',
+        'departmentId|1-2': 1,
+        'isPrivate': 0,
+        'desc': '@sentence()',
+        'admins': ['1', '2'],
+        "createdTime": '@datetime',
+      });
+
+      return {
+        code:0,
+        message:'success',
+        data:projectData
+
       };
     });
 

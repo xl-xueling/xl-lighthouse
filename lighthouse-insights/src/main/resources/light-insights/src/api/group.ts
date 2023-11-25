@@ -10,6 +10,17 @@ export async function requestQueryById(id:number) :Promise<ResultData<Group>> {
     })
 }
 
+
+export async function requestQueryByIds(ids:number[]) :Promise<ResultData<Record<number,Group>>> {
+    return request({
+        url:'/group/queryByIds',
+        method:'POST',
+        ids,
+    })
+}
+
+
+
 export async function requestDeleteByID(id:number) :Promise<ResultData> {
     return request({
         url:'/group/deleteById',
@@ -18,6 +29,14 @@ export async function requestDeleteByID(id:number) :Promise<ResultData> {
     })
 }
 
+
+export async function requestCreate(data) :Promise<ResultData> {
+    return request({
+        url:'/group/create',
+        method:'POST',
+        data,
+    })
+}
 
 
 

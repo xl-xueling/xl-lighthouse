@@ -1,6 +1,6 @@
 import {request} from "@/utils/request";
 import {ArcoTreeNode, ResultData} from "@/types/insights-common";
-import {Project, User} from "@/types/insights-web";
+import {Group, Project, User} from "@/types/insights-web";
 
 export async function requestList(data) :Promise<ResultData<{list:Array<Project>,total:number}>> {
     return request({
@@ -17,6 +17,15 @@ export async function requestQueryById(data):Promise<ResultData<Project>> {
         data,
     })
 }
+
+export async function requestQueryByIds(ids:number[]) :Promise<ResultData<Record<number,Project>>> {
+    return request({
+        url:'/project/queryByIds',
+        method:'POST',
+        ids,
+    })
+}
+
 
 export async function requestCreate(data:Project):Promise<ResultData> {
     return request({
