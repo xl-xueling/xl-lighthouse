@@ -1,51 +1,26 @@
 .edit_panel{
 
-  td{
-    cursor: pointer !important;
-    padding: 0 2px !important;
-    height: 30px;
+  td {
+    cursor: pointer;
+    padding: 0 5px !important;
+    min-height: 0 !important;
+  }
+
+  td:has(.arco-select-view){
+    padding: 0 0 !important;
     min-height: 0 !important;
   }
 
   input{
-    height: 30px;
     padding: 0 7px !important;
   }
-
-  .arco-form-item-control-children{
-    min-height: 0 !important;
-  }
-
-  .arco-select .arco-select-view {
-    background: none !important;
-    border:none !important;
-  }
-
-
-
-
 
 }
 
 :global{
 
-  .arco-form-item-control {
+  .arco-form-item-control{
     min-height: 0 !important;
-  }
-
-  .arco-select-view {
-    background: none !important;
-    border:none !important;
-  }
-
-  .arco-select-popup .arco-select-option {
-    line-height: 28px;
-    font-size: 12px;
-  }
-
-  .group-basic-panel  .columnNameClass input {
-    background: none !important;
-    border:none !important;
   }
 
   .arco-select .arco-select-view {
@@ -53,4 +28,18 @@
     border:none !important;
   }
 
+  .arco-select-popup .arco-select-option {
+    line-height: 25px !important;
+    font-size: 12px !important;
+  }
+
+  td:has(.arco-select-view){
+    padding: 0 0 !important;
+    min-height: 0 !important;
+  }
+
+  .editable-cell{
+    height: 18px !important;
+  }
 }
+

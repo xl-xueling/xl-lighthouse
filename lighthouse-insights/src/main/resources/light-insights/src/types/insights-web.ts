@@ -9,8 +9,6 @@ export enum PrivilegeEnum {
     STAT_PROJECT_USER = 6,
     STAT_ITEM_USER = 7,
     STAT_ITEM_ADMIN = 8,
-    SITE_MAP_USER = 9,
-    SITE_MAP_ADMIN = 10,
 }
 
 export interface Department {
@@ -59,12 +57,13 @@ export interface ProjectPagination extends Project{
 }
 
 export interface Column {
-    name:string;
-    type:number;
+    key?:number|string;
+    name?:string;
+    type?:number;
     desc?:string;
 }
 
-export interface Group {
+export class Group {
     id?:number;
     token?:string;
     projectId?:number;
@@ -74,7 +73,6 @@ export interface Group {
 }
 
 export interface Stat {
-    key?:number;
     id?:number;
     title?:string;
     groupId?:number;
@@ -85,7 +83,11 @@ export interface Stat {
     createdTime?:number;
 }
 
-export interface StatPagination extends Stat{
+export interface StatPagination extends Stat {
+    key?:number;
+    group?:Group;
+    project?:Project;
+    department?:Department;
     permissions:PrivilegeEnum[];
 }
 
