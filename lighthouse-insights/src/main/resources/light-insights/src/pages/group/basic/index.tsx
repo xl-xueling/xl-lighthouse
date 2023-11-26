@@ -10,12 +10,13 @@ import {
     Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag, Icon, Link
 } from '@arco-design/web-react';
 import {
+    IconCopy,
     IconMinus,
     IconMinusCircleFill,
     IconMore,
     IconPen, IconPenFill,
     IconPlus,
-    IconPlusCircleFill
+    IconPlusCircleFill, IconSearch
 } from '@arco-design/web-react/icon';
 import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -34,6 +35,8 @@ import EditTable, {
     EditTableComponentEnum
 } from "@/pages/components/edittable/EditTable";
 const { Row, Col } = Grid;
+
+const { Text } = Typography;
 
 export default function GroupBasicPanel(props:{groupId?}) {
 
@@ -187,10 +190,7 @@ export default function GroupBasicPanel(props:{groupId?}) {
                                     {'Token'}
                                 </Typography.Title>
                                 <Form.Item field="token">
-                                    <Input
-                                        allowClear
-                                        placeholder={'Please Input Token'}
-                                    />
+                                    <InputTag readOnly={true}/>
                                 </Form.Item>
                                 <Form.Item>
                                     <Grid.Row>
@@ -202,8 +202,7 @@ export default function GroupBasicPanel(props:{groupId?}) {
                                             </Typography.Title>
                                         </Grid.Col>
                                         <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                                            {/*<Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>*/}
-                                            <IconPenFill/>
+                                            <Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>
                                         </Grid.Col>
                                     </Grid.Row>
 

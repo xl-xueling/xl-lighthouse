@@ -36,7 +36,7 @@ import EditTable, {
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {ResultData} from "@/types/insights-common";
 
-export default function StatisticalListPanel({formParams}:{formParams:object}) {
+export default function StatisticalListPanel({formParams,columns}:{formParams:object,columns:TableColumnProps[]}) {
 
     const [loading,setLoading] = useState<boolean>(false);
 
@@ -135,102 +135,7 @@ export default function StatisticalListPanel({formParams}:{formParams:object}) {
     },[pagination.current, pagination.pageSize, JSON.stringify(formParams)])
 
 
-    const columns: TableColumnProps[] = [
-        {
-            title: 'Title',
-            dataIndex: 'title',
-        },
-        {
-            title: 'Project',
-            dataIndex: 'project.name',
-        },
-        {
-            title: 'Group',
-            dataIndex: 'group.token',
-        },
-        {
-            title: 'Department',
-            dataIndex: 'department.name',
-        },
-        {
-            title: 'TimeParam',
-            dataIndex: 'timeparam',
-        },
-        {
-            title: 'Expired',
-            dataIndex: 'expired',
-        },
-        {
-            title: 'Operate',
-            dataIndex: 'operate',
-            headerCellStyle: {width:'200px' },
-            render: (_, record) => (
-                <Space size={16} direction="horizontal">
-                    <Popconfirm
-                        focusLock
-                        position={"tr"}
-                        title='Confirm'
-                        content='Are you sure to reset this user password2?'
-                        onCancel={() => {
-                            Message.error({
-                                content: 'cancel',
-                            });
-                        }}
-                    >
-                        <Button
-                            type="secondary"
-                            size="mini">
-                            {'查看'}
-                        </Button>
-                    </Popconfirm>
-                    <Button
-                        type="secondary"
-                        size="mini">
-                        {'修改'}
-                    </Button>
-                    <Button
-                        type="secondary"
-                        size="mini">
-                        {'停用'}
-                    </Button>
-                    <Popconfirm
-                        position={"tr"}
-                        focusLock
-                        title='Confirm'
-                        content='Are you sure to delete this project?'
-                        onCancel={() => {
-                            Message.error({
-                                content: 'cancel',
-                            });
-                        }}
-                    >
-                        <Button
-                            type="secondary"
-                            size="mini">
-                            {'冻结'}
-                        </Button>
-                    </Popconfirm>
-                    <Popconfirm
-                        position={"tr"}
-                        focusLock
-                        title='Confirm'
-                        content='Are you sure to delete this project?'
-                        onCancel={() => {
-                            Message.error({
-                                content: 'cancel',
-                            });
-                        }}
-                    >
-                        <Button
-                            type="secondary"
-                            size="mini">
-                            {'删除'}
-                        </Button>
-                    </Popconfirm>
-                </Space>
-            ),
-        },
-    ];
+
 
     return (
         <Table border={false}
