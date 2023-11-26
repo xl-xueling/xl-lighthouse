@@ -25,7 +25,6 @@ import styles from './style/index.module.less';
 import AceEditor from "react-ace";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import GroupStatistics from "@/pages/project/manage/statistic-list";
 import {Column, Department, Group, Stat, User} from "@/types/insights-web";
 import {requestQueryById} from "@/api/group";
 import {requestQueryByGroupId} from "@/api/stat";
@@ -34,9 +33,6 @@ import EditTable, {
     EditTableColumnProps,
     EditTableComponentEnum
 } from "@/pages/components/edittable/EditTable";
-import MyProject from "@/pages/user/info/my-projects";
-import MyTeam from "@/pages/user/info/my-team";
-import QuickOperation from "@/pages/dashboard/monitor/quick-operation";
 const { Row, Col } = Grid;
 
 export default function GroupBasicPanel(props:{groupId?}) {
