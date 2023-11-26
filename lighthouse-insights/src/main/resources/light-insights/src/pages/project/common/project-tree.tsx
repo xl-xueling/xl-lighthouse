@@ -87,6 +87,13 @@ export default function ProjectTree({projectId,editEnable= true
                 multiple={false}
                 onSelect={(keys, extra) => {
                     setSelectedKeys(keys);
+                    if (extra.e.isTrusted && selectedKeys[0] === keys[0] && [...expandedKeys].find(item => item === keys[0])) {
+                        const newArr = [...expandedKeys].filter(item => item !== keys[0]);
+                        setExpandedKeys([...newArr]);
+                    } else {
+                        const newArr = [...expandedKeys].filter(item => item !== keys[0]);
+                        setExpandedKeys([...newArr, ...keys]);
+                    }
                     const id = treeRef.current.getCacheNode([keys[0]])[0].props.dataRef.id
                     handlerProcess('group-manage', {"groupId":id});
                 }}
@@ -103,7 +110,7 @@ export default function ProjectTree({projectId,editEnable= true
                             <IconPlus
                                 style={{
                                     position: 'absolute',
-                                    right: 12,
+                                    right: 8,
                                     fontSize: 14,
                                     strokeWidth: 6,
                                     top: 8,
