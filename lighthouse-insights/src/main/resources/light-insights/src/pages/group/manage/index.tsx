@@ -116,23 +116,23 @@ export default function GroupManagePanel({groupId,onClose}) {
             <Tabs
                 type="line"
                 extra={
-
                     <Dropdown
                         position={"br"}
                         trigger={"click"}
                         droplist={
-                            <Menu onClickMenuItem={handlerProcess}>
+                            <Menu onClickMenuItem={handlerProcess} style={{ maxHeight:'230px' }}>
                                 <Menu.Item key='1'>创建统计项</Menu.Item>
                                 <Menu.Item key='2'>修改统计组</Menu.Item>
                                 <Menu.Item key='3'>修改限流阈值</Menu.Item>
                                 <Menu.Item key='4'>查看限流记录</Menu.Item>
                                 <Menu.Item key='5'>查看秘钥</Menu.Item>
+                                <Menu.Item key='6'>删除统计组</Menu.Item>
                             </Menu>
                         }
                     >
+
                         <Button size={"small"} type={"secondary"}><IconDownCircle />操作</Button>
                     </Dropdown>
-
                 }
             >
                                 <TabPane

@@ -1,14 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Message, Space, Spin, Tree} from '@arco-design/web-react';
 import {
-    IconApps, IconDragDotVertical,
+    IconApps, IconDragDotVertical, IconEdit,
     IconFile,
     IconFolder, IconFolderAdd, IconMindMapping,
     IconMinus, IconMinusCircleFill,
     IconPen,
     IconPenFill,
     IconPlus, IconPlusCircle,
-    IconPlusCircleFill, IconStorage, IconTag, IconTags
+    IconPlusCircleFill, IconStorage, IconTag, IconTags, IconTool
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from '../manage/locale';
@@ -46,7 +46,7 @@ export default function ProjectTree({projectId,editEnable= true
                 Message.error(result.message || t['system.error']);
             }
         }).catch((error) => {
-            console.log("error is:" + error);
+            console.log(error);
             Message.error(t['system.error']);
         }).finally(() => {
             setLoading(false);
@@ -87,6 +87,8 @@ export default function ProjectTree({projectId,editEnable= true
                 multiple={false}
                 onSelect={(keys, extra) => {
                     setSelectedKeys(keys);
+                    const id = treeRef.current.getCacheNode([keys[0]])[0].props.dataRef.id
+                    handlerProcess('group-manage', {"groupId":id});
                 }}
                 onExpand={(keys, extra) => {
                     setExpandedKeys(keys);
@@ -101,46 +103,18 @@ export default function ProjectTree({projectId,editEnable= true
                             <IconPlus
                                 style={{
                                     position: 'absolute',
-                                    right: 29,
-                                    fontSize: 13,
-                                    top: 10,
+                                    right: 12,
+                                    fontSize: 14,
+                                    strokeWidth: 6,
+                                    top: 8,
                                     color: 'rgb(132 160 224)',
                                 }}
 
                                 onClick={async (e) => {
-                                    await handlerProcess('add-group', null);
-                                    console.log("---click")
+                                    await handlerProcess('group-add', null);
                                 }}
                             />
                             )}
-                            {node._level != 0  &&  (
-                            <IconPen
-                                style={{
-                                    display:`${node.dataRef.key != "0" ? 'block' : 'none'}`,
-                                    position: 'absolute',
-                                    right: 29,
-                                    fontSize: 13,
-                                    top: 10,
-                                    color: 'rgb(132 160 224)',
-                                }}
-
-                                onClick={async (e) => {
-                                    await handlerProcess('edit-group', {"groupId":node.dataRef.id});
-                                }}
-                            />
-                                )}
-                            {node._level != 0  &&  (
-                            <IconMinus
-                                style={{
-                                    display:`${node.dataRef.key != "0" ? 'block' : 'none'}`,
-                                    position: 'absolute',
-                                    right: 8,
-                                    fontSize: 13,
-                                    top: 10,
-                                    color: 'rgb(132 160 224)',
-                                }}
-                            />)
-                            }
                         </div>
                     );
                 }}
