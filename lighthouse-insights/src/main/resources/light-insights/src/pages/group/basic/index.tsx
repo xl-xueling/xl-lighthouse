@@ -7,7 +7,7 @@ import {
     Table,
     TableColumnProps,
     Popconfirm,
-    Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag, Icon
+    Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag, Icon, Link
 } from '@arco-design/web-react';
 import {
     IconMinus,
@@ -19,6 +19,7 @@ import {
 } from '@arco-design/web-react/icon';
 import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
+const { Title } = Typography;
 import locale from './locale';
 import styles from './style/index.module.less';
 import AceEditor from "react-ace";
@@ -33,7 +34,10 @@ import EditTable, {
     EditTableColumnProps,
     EditTableComponentEnum
 } from "@/pages/components/edittable/EditTable";
-
+import MyProject from "@/pages/user/info/my-projects";
+import MyTeam from "@/pages/user/info/my-team";
+import QuickOperation from "@/pages/dashboard/monitor/quick-operation";
+const { Row, Col } = Grid;
 
 export default function GroupBasicPanel(props:{groupId?}) {
 
@@ -172,60 +176,66 @@ export default function GroupBasicPanel(props:{groupId?}) {
 
     return (
         <div>
-            <Card >
-                <Spin loading={loading} size={20} style={{ display: 'block' }}>
+            <Row gutter={24}>
+                <Col span={24}>
+                    <Card >
+                        <Spin loading={loading} size={20} style={{ display: 'block' }}>
+                            <Form
+                                form={formInstance}
+                                className={styles['search-form']}
+                                layout={"vertical"}
+                            >
+                                <Typography.Title
+                                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                                >
+                                    {'Token'}
+                                </Typography.Title>
+                                <Form.Item field="token">
+                                    <Input
+                                        allowClear
+                                        placeholder={'Please Input Token'}
+                                    />
+                                </Form.Item>
+                                <Form.Item>
+                                    <Grid.Row>
+                                        <Grid.Col span={16}>
+                                            <Typography.Title
+                                                style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                                            >
+                                                {'Columns'}
+                                            </Typography.Title>
+                                        </Grid.Col>
+                                        <Grid.Col span={8} style={{ textAlign: 'right' }}>
+                                            {/*<Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>*/}
+                                            <IconPenFill/>
+                                        </Grid.Col>
+                                    </Grid.Row>
 
-                    <Form
-                        form={formInstance}
-                        className={styles['search-form']}
-                        layout={"vertical"}
-                    >
-                        <Typography.Title
-                            style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                        >
-                            {'Token'}
-                        </Typography.Title>
-                        <Form.Item field="token">
-                            <Input
-                                allowClear
-                                placeholder={'Please Input Token'}
-                            />
-                        </Form.Item>
-                        <Form.Item>
-                            <Grid.Row>
-                                <Grid.Col span={16}>
-                                    <Typography.Title
-                                        style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                                    >
-                                        {'Columns'}
-                                    </Typography.Title>
-                                </Grid.Col>
-                                <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                                    {/*<Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>*/}
-                                    <IconPenFill/>
-                                </Grid.Col>
-                            </Grid.Row>
-
-                            <EditTable ref={editTableRef} columns={columnsProps} initData={initData}/>
-                        </Form.Item>
-
-
-                        <Typography.Title
-                            style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                        >
-                            {'Description'}
-                        </Typography.Title>
-                        <Form.Item field="desc">
-                            <Input.TextArea
-                                style={{ minHeight: 18, width: '100%' }}
-                            />
-                        </Form.Item>
+                                    <EditTable ref={editTableRef} columns={columnsProps} initData={initData}/>
+                                </Form.Item>
+                                <Typography.Title
+                                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                                >
+                                    {'Description'}
+                                </Typography.Title>
+                                <Form.Item field="desc">
+                                    <Input.TextArea
+                                        style={{ minHeight: 18, width: '100%' }}
+                                    />
+                                </Form.Item>
+                            </Form>
+                        </Spin>
+                    </Card>
+                </Col>
+                {/*<Col span={4}>*/}
+                {/*    <Card className={styles.wrapper}>*/}
+                {/*        <QuickOperation />*/}
+                {/*    </Card>*/}
+                {/*</Col>*/}
+            </Row>
 
 
 
-                    </Form>
-                </Spin>
-            </Card>
 
         </div>
     );
