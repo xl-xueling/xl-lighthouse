@@ -70,7 +70,7 @@ import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/edit";
 const { Row, Col } = Grid;
 
-export default function GroupManagePanel({groupId = 1,onClose}) {
+export default function GroupManagePanel({groupId,onClose}) {
 
     const TabPane = Tabs.TabPane;
 
@@ -103,24 +103,7 @@ export default function GroupManagePanel({groupId = 1,onClose}) {
     }
 
     useEffect(() => {
-        if(groupId){
-            setLoading(true);
-            // const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
-            //     console.log("start to Fetch Group Info with id:" + groupId);
-            //     let result:Group;
-            //     const proc = async () => {
-            //         const response = await requestQueryById(groupId);
-            //         if(response.code != '0'){
-            //             reject(new Error(response.message));
-            //         }
-            //         result = response.data;
-            //         resolve(result);
-            //     }
-            //     proc().then();
-            // })
-
-
-        }
+        setFormParams({"groupId":groupId});
     },[groupId])
 
     const handlerSubmit = (v) => {

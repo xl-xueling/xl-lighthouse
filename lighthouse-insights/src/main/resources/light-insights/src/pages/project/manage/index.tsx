@@ -16,6 +16,7 @@ export default function ProjectManage() {
   const TabPane = Tabs.TabPane;
 
     const handlerProcess = (action:string,params:any):void => {
+      console.log("action:" + action + ",params:" + JSON.stringify(params));
       switch (action){
           case 'add-group':{
               setShowAddPanel(true);
@@ -42,7 +43,7 @@ export default function ProjectManage() {
             </Space>
         </div>
 
-          {showManagePanel && <GroupManagePanel onClose={() => setShowManagePanel(false)}/>}
+          {showManagePanel && <GroupManagePanel groupId={groupId} onClose={() => setShowManagePanel(false)}/>}
 
           {showAddPanel && <GroupAddPanel onClose={() => setShowAddPanel(false)}/>}
       </div>

@@ -115,7 +115,6 @@ setupMock({
                 }
             );
 
-            console.log("----groupData is:" + JSON.stringify(groupData))
             return {
                 code:'0',
                 message:'success',
