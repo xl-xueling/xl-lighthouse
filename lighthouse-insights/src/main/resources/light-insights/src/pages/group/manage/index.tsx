@@ -21,7 +21,7 @@ import {
     Radio,
     TreeSelect,
     DatePicker,
-    Dropdown, Menu
+    Dropdown, Menu, Tooltip
 } from '@arco-design/web-react';
 import {
     IconCopy,
@@ -70,9 +70,11 @@ import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/edit";
 const { Row, Col } = Grid;
 
+
 export default function GroupManagePanel({groupId,onClose}) {
 
     const TabPane = Tabs.TabPane;
+    const { Text } = Typography;
 
     const [showStatAddPanel, setShowsStatAddPanel] = useState(false);
 
@@ -109,6 +111,108 @@ export default function GroupManagePanel({groupId,onClose}) {
     const handlerSubmit = (v) => {
         setFormParams({"title":v});
     }
+
+    const columns: TableColumnProps[] = [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+        },
+        {
+            title: 'Title',
+            dataIndex: 'title',
+            render:(_,record) => {
+                return <Tooltip content={record.template} style={{ width:'500px' }}>
+                    <Text>{_}</Text>
+                </Tooltip>
+            }
+        },
+        {
+            title: 'Group',
+            dataIndex: 'group.token',
+        },
+        {
+            title: 'TimeParam',
+            dataIndex: 'timeparam',
+        },
+        {
+            title: 'Expired',
+            dataIndex: 'expired',
+        },
+        {
+            title: 'State',
+            dataIndex: 'state',
+        },
+        {
+            title: 'Operate',
+            dataIndex: 'operate',
+            headerCellStyle: {width:'200px' },
+            render: (_, record) => (
+                <Space size={16} direction="horizontal">
+                    <Popconfirm
+                        focusLock
+                        position={"tr"}
+                        title='Confirm'
+                        content='Are you sure to reset this user password2?'
+                        onCancel={() => {
+                            Message.error({
+                                content: 'cancel',
+                            });
+                        }}
+                    >
+                        <Button
+                            type="secondary"
+                            size="mini">
+                            {'查看'}
+                        </Button>
+                    </Popconfirm>
+                    <Button
+                        type="secondary"
+                        size="mini">
+                        {'修改'}
+                    </Button>
+                    <Button
+                        type="secondary"
+                        size="mini">
+                        {'停用'}
+                    </Button>
+                    <Popconfirm
+                        position={"tr"}
+                        focusLock
+                        title='Confirm'
+                        content='Are you sure to delete this project?'
+                        onCancel={() => {
+                            Message.error({
+                                content: 'cancel',
+                            });
+                        }}
+                    >
+                        <Button
+                            type="secondary"
+                            size="mini">
+                            {'冻结'}
+                        </Button>
+                    </Popconfirm>
+                    <Popconfirm
+                        position={"tr"}
+                        focusLock
+                        title='Confirm'
+                        content='Are you sure to delete this project?'
+                        onCancel={() => {
+                            Message.error({
+                                content: 'cancel',
+                            });
+                        }}
+                    >
+                        <Button
+                            type="secondary"
+                            size="mini">
+                            {'删除'}
+                        </Button>
+                    </Popconfirm>
+                </Space>
+            ),
+        },
+    ];
 
     return (
     <div className={styles['layout-content']}>
@@ -161,7 +265,7 @@ export default function GroupManagePanel({groupId,onClose}) {
                                             </Row>
                                         </Form>
                                     </div>
-                                    <StatisticalListPanel formParams={formParams}  />
+                                    <StatisticalListPanel formParams={formParams} columns={columns}  />
                                 </TabPane>
                                 <TabPane
                                     key='3'
