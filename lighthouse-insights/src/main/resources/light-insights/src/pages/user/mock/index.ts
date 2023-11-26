@@ -20,7 +20,7 @@ setupMock({
                 },
             ],
             }
-            );
+        );
 
         Mock.mock(new RegExp('/api/v1/user/list'), (params) => {
             console.log("receive param is:" + JSON.stringify(params));

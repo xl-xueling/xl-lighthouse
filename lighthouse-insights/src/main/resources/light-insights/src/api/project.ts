@@ -10,6 +10,14 @@ export async function requestList(data) :Promise<ResultData<{list:Array<Project>
     })
 }
 
+export async function requestTermList(data:string) :Promise<ResultData<{list:Array<Project>,total:number}>>  {
+    return request({
+        url:'/project/termList',
+        method:'POST',
+        data,
+    })
+}
+
 export async function requestQueryById(data):Promise<ResultData<Project>> {
     return request({
         url:'/project/queryById',

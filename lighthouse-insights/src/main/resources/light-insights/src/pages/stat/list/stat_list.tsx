@@ -7,7 +7,7 @@ import {
     Table,
     TableColumnProps,
     Popconfirm,
-    Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag, Icon, Tabs
+    Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag, Icon, Tabs, PaginationProps
 } from '@arco-design/web-react';
 import {
     IconDashboard, IconFile,
@@ -28,7 +28,7 @@ import GroupStatistics from "@/pages/project/manage/statistic-list";
 import {Column, Department, Group, PrivilegeEnum, Project, Stat, StatPagination, User} from "@/types/insights-web";
 import {requestQueryByIds as requestQueryGroupByIds} from "@/api/group";
 import {requestQueryByIds as requestQueryProjectByIds} from "@/api/project";
-import {requestQueryByGroupId} from "@/api/stat";
+import {requestList, requestQueryByGroupId} from "@/api/stat";
 import EditTable, {
     EditTableColumn,
     EditTableColumnProps,
@@ -39,62 +39,103 @@ import GroupEditPanel from "@/pages/project/manage/group_edit";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {ResultData} from "@/types/insights-common";
 
-export default function StatisticalListPanel({statsInfo}:{statsInfo:Array<Stat>}) {
+export default function StatisticalListPanelV2({formParams}:{formParams:object}) {
 
-    const [loading,setLoading] = useState<boolean>(true);
+    const [loading,setLoading] = useState<boolean>(false);
 
     const [listData,setListData] = useState<Array<StatPagination>>([]);
 
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
 
+    const [pagination, setPagination] = useState<PaginationProps>({
+        sizeCanChange: true,
+        showTotal: true,
+        pageSize: 15,
+        current: 1,
+        pageSizeChangeResetCurrent: true,
+    });
+
+    const t = useLocale();
+
+    function onChangeTable({ current, pageSize }) {
+        setPagination({
+            ...pagination,
+            current,
+            pageSize,
+        });
+    }
+
     useEffect(() => {
-        if(!statsInfo || !statsInfo.length){
-            return;
-        }
         setLoading(true);
-        const fetchPrivilegeInfo:Promise<Record<number,PrivilegeEnum[]>> = new Promise<Record<number,PrivilegeEnum[]>>((resolve, reject) => {
-            const statIds = statsInfo!.map(z => z.id);
-            const proc = async () => {
-                const result:ResultData<Record<number,PrivilegeEnum[]>> = await requestPrivilegeCheck({type:"stat",items:statIds});
-                resolve(result.data);
-            }
-            proc().then();
-        })
+        const {current, pageSize} = pagination;
+        const fetchData = async () => {
+            const fetchStatsInfo:Promise<{list:Array<Stat>,total:number}> = new Promise<{list:Array<Stat>,total:number}>((resolve, reject) => {
+                const proc = async () => {
+                    const result = await requestList({
+                        params: {
+                            page: current,
+                            pageSize,
+                            ...formParams,
+                        },
+                    });
+                    resolve(result.data);
+                }
+                proc().then();
+            })
 
-        const fetchProjectInfo:Promise<Record<number,Project>> = new Promise<Record<number,Project>> ((resolve => {
-            const projectIds = statsInfo.map(z => z.projectId);
-            const proc = async () => {
-                const result:ResultData<Record<number,Project>> = await requestQueryProjectByIds(projectIds);
-                resolve(result.data);
-            }
-            proc().then();
-        }))
+            const {list,total}:{list:Array<Stat>,total:number} = (await Promise.all([fetchStatsInfo]))[0];
+            const statsInfo = list;
+            const fetchPrivilegeInfo:Promise<Record<number,PrivilegeEnum[]>> = new Promise<Record<number,PrivilegeEnum[]>>((resolve, reject) => {
+                const statIds = statsInfo!.map(z => z.id);
+                const proc = async () => {
+                    const result:ResultData<Record<number,PrivilegeEnum[]>> = await requestPrivilegeCheck({type:"stat",items:statIds});
+                    resolve(result.data);
+                }
+                proc().then();
+            })
 
-        const fetchGroupInfo:Promise<Record<number,Group>> = new Promise<Record<number,Group>> ((resolve => {
-            const groupIds = statsInfo.map(z => z.groupId);
-            const proc = async () => {
-                const result:ResultData<Record<number,Group>> = await requestQueryGroupByIds(groupIds);
-                resolve(result.data);
-            }
-            proc().then();
-        }))
+            const fetchProjectInfo:Promise<Record<number,Project>> = new Promise<Record<number,Project>> ((resolve => {
+                const projectIds = statsInfo.map(z => z.projectId);
+                const proc = async () => {
+                    const result:ResultData<Record<number,Project>> = await requestQueryProjectByIds(projectIds);
+                    resolve(result.data);
+                }
+                proc().then();
+            }))
 
-        const data = Promise.all([fetchPrivilegeInfo,fetchProjectInfo,fetchGroupInfo])
-            .then(([r1,r2,r3]) => {
-                const combinePaginationData = statsInfo.reduce((result:StatPagination[],item:Stat) => {
+            const fetchGroupInfo:Promise<Record<number,Group>> = new Promise<Record<number,Group>> ((resolve => {
+                const groupIds = statsInfo.map(z => z.groupId);
+                const proc = async () => {
+                    const result:ResultData<Record<number,Group>> = await requestQueryGroupByIds(groupIds);
+                    resolve(result.data);
+                }
+                proc().then();
+            }))
+
+            Promise.all([fetchPrivilegeInfo,fetchProjectInfo,fetchGroupInfo])
+                .then(([r1,r2,r3]) => {
+                    const combinePaginationData = statsInfo.reduce((result:StatPagination[],item:Stat) => {
                         const project:Project = r2[item.projectId];
                         const department = allDepartInfo.find(x => x.id == project.departmentId);
                         const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id],"project":project,"group":r3[item.groupId],"department":department}};
                         result.push(combinedItem);
                         return result;
                     },[]);
-                setListData(combinePaginationData);
-            }).catch((error) => {
-                console.log(error)
-            }).finally(() => {
-                setLoading(false);
-            })
-    },[statsInfo])
+                    setListData(combinePaginationData);
+                    setPagination({
+                        ...pagination,
+                        current,
+                        pageSize,
+                        total: total});
+                }).catch((error) => {
+                    console.log(error);
+                    Message.error(t['system.error']);
+                }).finally(() => {
+                    setLoading(false);
+                })
+        }
+        fetchData().then();
+    },[pagination.current, pagination.pageSize, JSON.stringify(formParams)])
 
 
     const columns: TableColumnProps[] = [
@@ -125,10 +166,81 @@ export default function StatisticalListPanel({statsInfo}:{statsInfo:Array<Stat>}
         {
             title: 'Operate',
             dataIndex: 'operate',
+            headerCellStyle: {width:'200px' },
+            render: (_, record) => (
+                <Space size={16} direction="horizontal">
+                    <Popconfirm
+                        focusLock
+                        position={"tr"}
+                        title='Confirm'
+                        content='Are you sure to reset this user password2?'
+                        onCancel={() => {
+                            Message.error({
+                                content: 'cancel',
+                            });
+                        }}
+                    >
+                        <Button
+                            type="secondary"
+                            size="mini">
+                            {'查看'}
+                        </Button>
+                    </Popconfirm>
+                    <Button
+                        type="secondary"
+                        size="mini">
+                        {'修改'}
+                    </Button>
+                    <Button
+                        type="secondary"
+                        size="mini">
+                        {'停用'}
+                    </Button>
+                    <Popconfirm
+                        position={"tr"}
+                        focusLock
+                        title='Confirm'
+                        content='Are you sure to delete this project?'
+                        onCancel={() => {
+                            Message.error({
+                                content: 'cancel',
+                            });
+                        }}
+                    >
+                        <Button
+                            type="secondary"
+                            size="mini">
+                            {'冻结'}
+                        </Button>
+                    </Popconfirm>
+                    <Popconfirm
+                        position={"tr"}
+                        focusLock
+                        title='Confirm'
+                        content='Are you sure to delete this project?'
+                        onCancel={() => {
+                            Message.error({
+                                content: 'cancel',
+                            });
+                        }}
+                    >
+                        <Button
+                            type="secondary"
+                            size="mini">
+                            {'删除'}
+                        </Button>
+                    </Popconfirm>
+                </Space>
+            ),
         },
     ];
 
     return (
-        <Table border={false} size={"small"} columns={columns} data={listData} loading={loading}/>
+        <Table border={false}
+               size={"small"} columns={columns}
+               data={listData}
+               onChange={onChangeTable}
+               pagination={pagination}
+               loading={loading}/>
     );
 }
