@@ -24,7 +24,6 @@ import styles from './style/index.module.less';
 import AceEditor from "react-ace";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import GroupStatistics from "@/pages/project/manage/statistic-list";
 import {Column, Department, Group, PrivilegeEnum, Project, Stat, StatPagination, User} from "@/types/insights-web";
 import {requestQueryByIds as requestQueryGroupByIds} from "@/api/group";
 import {requestQueryByIds as requestQueryProjectByIds} from "@/api/project";
@@ -34,12 +33,10 @@ import EditTable, {
     EditTableColumnProps,
     EditTableComponentEnum
 } from "@/pages/components/edittable/EditTable";
-import StatEditPanel from "@/pages/project/manage/stat_edit";
-import GroupEditPanel from "@/pages/project/manage/group_edit";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {ResultData} from "@/types/insights-common";
 
-export default function StatisticalListPanelV2({formParams}:{formParams:object}) {
+export default function StatisticalListPanel({formParams}:{formParams:object}) {
 
     const [loading,setLoading] = useState<boolean>(false);
 

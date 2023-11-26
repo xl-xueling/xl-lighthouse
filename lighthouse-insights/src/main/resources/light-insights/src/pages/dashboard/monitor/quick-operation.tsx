@@ -13,21 +13,21 @@ export default function QuickOperation() {
   const t = useLocale(locale);
   return (
     <Card>
-      <Typography.Title style={{ marginTop: 0, marginBottom: 16 }} heading={6}>
-        {t['monitor.title.quickOperation']}
-      </Typography.Title>
       <Space direction="vertical" style={{ width: '100%' }} size={10}>
         <Button long icon={<IconTags />}>
-          {t['monitor.quickOperation.changeClarity']}
+          创建统计项
         </Button>
         <Button long icon={<IconSwap />}>
-          {t['monitor.quickOperation.switchStream']}
+          修改统计组
         </Button>
         <Button long icon={<IconStop />}>
-          {t['monitor.quickOperation.removeClarity']}
+          查看限流记录
         </Button>
         <Button long icon={<IconArrowRight />}>
-          {t['monitor.quickOperation.pushFlowGasket']}
+          查看秘钥
+        </Button>
+        <Button long icon={<IconArrowRight />}>
+          限流阈值调整
         </Button>
       </Space>
     </Card>

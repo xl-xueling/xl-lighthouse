@@ -40,7 +40,6 @@ import styles from './style/index.module.less';
 import AceEditor from "react-ace";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import GroupStatistics from "@/pages/project/manage/statistic-list";
 import {
     Column,
     Department,
@@ -59,21 +58,25 @@ import EditTable, {
     EditTableColumnProps,
     EditTableComponentEnum
 } from "@/pages/components/edittable/EditTable";
-import StatEditPanel from "@/pages/project/manage/stat_edit";
-import GroupEditPanel from "@/pages/project/manage/group_edit";
-import StatisticalListPanel from "@/pages/stat/list/stat_list_bak";
 import GroupBasicPanel from "@/pages/group/basic";
 import {ResultData} from "@/types/insights-common";
 import {requestPrivilegeCheck} from "@/api/privilege";
-import StatisticalListPanelV2 from "@/pages/stat/list/stat_list";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {stringifyObj} from "@/utils/util";
 import dayjs from "dayjs";
+import StatAddPanel from "@/pages/stat/add/stat_add";
+import GroupAddPanel from "@/pages/group/add/group_add";
+import StatisticalListPanel from "@/pages/stat/list/stat_list";
+import GroupEditPanel from "@/pages/group/edit";
 const { Row, Col } = Grid;
 
 export default function GroupManagePanel({groupId = 1,onClose}) {
 
     const TabPane = Tabs.TabPane;
+
+    const [showStatAddPanel, setShowsStatAddPanel] = useState(false);
+
+    const [showGroupEditPanel, setShowGroupEditPanel] = useState(false);
 
     const [formParams,setFormParams] = useState(null);
 
@@ -82,6 +85,22 @@ export default function GroupManagePanel({groupId = 1,onClose}) {
     const [form] = useForm();
 
     const t = useLocale(locale);
+
+    const handlerProcess = (action):void => {
+        switch (action){
+            case '1':{
+                setShowsStatAddPanel(true);
+                break;
+            }
+            case '2':{
+                setShowGroupEditPanel(true);
+                break;
+            }
+            default:{
+                return;
+            }
+        }
+    }
 
     useEffect(() => {
         if(groupId){
@@ -119,12 +138,12 @@ export default function GroupManagePanel({groupId = 1,onClose}) {
                         position={"br"}
                         trigger={"click"}
                         droplist={
-                            <Menu>
+                            <Menu onClickMenuItem={handlerProcess}>
                                 <Menu.Item key='1'>创建统计项</Menu.Item>
                                 <Menu.Item key='2'>修改统计组</Menu.Item>
                                 <Menu.Item key='3'>修改限流阈值</Menu.Item>
-                                <Menu.Item key='3'>查看限流记录</Menu.Item>
-                                <Menu.Item key='3'>查看秘钥</Menu.Item>
+                                <Menu.Item key='4'>查看限流记录</Menu.Item>
+                                <Menu.Item key='5'>查看秘钥</Menu.Item>
                             </Menu>
                         }
                     >
@@ -159,7 +178,7 @@ export default function GroupManagePanel({groupId = 1,onClose}) {
                                             </Row>
                                         </Form>
                                     </div>
-                                    <StatisticalListPanelV2 formParams={formParams}  />
+                                    <StatisticalListPanel formParams={formParams}  />
                                 </TabPane>
                                 <TabPane
                                     key='3'
@@ -174,43 +193,10 @@ export default function GroupManagePanel({groupId = 1,onClose}) {
                                 </TabPane>
             </Tabs>
 
-            {/*<Grid.Row justify="space-between" align="center">*/}
-            {/*    <Grid.Col span={16} style={{ textAlign: 'left' }}>*/}
-            {/*        <Space>*/}
-            {/*            <Tabs type="line">*/}
-            {/*                <TabPane*/}
-            {/*                    key='1'*/}
-            {/*                    title={*/}
-            {/*                        <span>*/}
-            {/*    <IconThunderbolt style={{ marginRight: 6 }} />*/}
-            {/*        Statistic Items*/}
-            {/*  </span>*/}
-            {/*                    }*/}
-            {/*                >*/}
 
-            {/*                    <StatisticalListPanelV2 formParams={formParams}  />*/}
-            {/*                </TabPane>*/}
-            {/*                <TabPane*/}
-            {/*                    key='3'*/}
-            {/*                    title={*/}
-            {/*                        <span>*/}
-            {/*    <IconTag style={{ marginRight: 6 }} />*/}
-            {/*    Group Info*/}
-            {/*  </span>*/}
-            {/*                    }*/}
-            {/*                >*/}
-            {/*                    <GroupBasicPanel groupId={123}/>*/}
-            {/*                </TabPane>*/}
-            {/*            </Tabs>*/}
-            {/*        </Space>*/}
-            {/*    </Grid.Col>*/}
-            {/*    <Grid.Col span={8} style={{ textAlign: 'right' }}>*/}
-            {/*        <Space>*/}
-            {/*        <Button size={"small"} type={"secondary"}><IconDownCircle />操作</Button>*/}
-            {/*        </Space>*/}
-            {/*    </Grid.Col>*/}
-            {/*</Grid.Row>*/}
+            {showStatAddPanel && <StatAddPanel onClose={() => setShowsStatAddPanel(false)}/>}
 
+            {showGroupEditPanel && <GroupEditPanel groupId={'1'} onClose={() => setShowGroupEditPanel(false)}/>}
 
         </div>
     </div>);

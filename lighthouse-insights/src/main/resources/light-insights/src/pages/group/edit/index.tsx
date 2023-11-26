@@ -7,24 +7,24 @@ import {
     Table,
     TableColumnProps,
     Popconfirm,
-    Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag
+    Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag, Icon, Link, Modal
 } from '@arco-design/web-react';
 import {
     IconMinus,
     IconMinusCircleFill,
     IconMore,
-    IconPen,
+    IconPen, IconPenFill,
     IconPlus,
     IconPlusCircleFill
 } from '@arco-design/web-react/icon';
 import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
+const { Title } = Typography;
 import locale from './locale';
 import styles from './style/index.module.less';
 import AceEditor from "react-ace";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import GroupStatistics from "@/pages/project/manage/statistic-list";
 import {Column, Department, Group, Stat, User} from "@/types/insights-web";
 import {requestQueryById} from "@/api/group";
 import {requestQueryByGroupId} from "@/api/stat";
@@ -33,13 +33,14 @@ import EditTable, {
     EditTableColumnProps,
     EditTableComponentEnum
 } from "@/pages/components/edittable/EditTable";
+import MyProject from "@/pages/user/info/my-projects";
+import MyTeam from "@/pages/user/info/my-team";
+import QuickOperation from "@/pages/dashboard/monitor/quick-operation";
+const { Row, Col } = Grid;
 
-
-export default function GroupBasicInfo(props:{groupId?}) {
+export default function GroupEditPanel({groupId,onClose}) {
 
     const t = useLocale(locale);
-
-    const groupId = props.groupId;
 
     const editTableRef= useRef(null);
 
@@ -119,16 +120,17 @@ export default function GroupBasicInfo(props:{groupId?}) {
             dataIndex: 'name',
             editable: true,
             componentType:EditTableComponentEnum.INPUT,
-            headerCellStyle: { width:'15%'},
+            headerCellStyle: { width:'26%'},
         },
         {
             title: 'Type',
             dataIndex: 'type',
             editable: true,
             componentType:EditTableComponentEnum.SELECT,
-            headerCellStyle: { width:'12%'},
+            headerCellStyle: { width:'4%'},
             render:(k,v) => (
                 <Select size={"mini"} placeholder='Please select'
+                        disabled={true}
                         onChange={editTableRef.current.cellValueChangeHandler}
                         defaultValue={k}
                 >
@@ -147,17 +149,17 @@ export default function GroupBasicInfo(props:{groupId?}) {
             componentType:EditTableComponentEnum.INPUT,
             editable: true,
         },
-        {
-            title: 'Operate',
-            dataIndex: 'operate',
-            componentType:EditTableComponentEnum.BUTTON,
-            headerCellStyle: { width:'15%'},
-            render: (_, record) => (
-                <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%',paddingTop:'5px' }}>
-                    <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
-                </Space>
-            ),
-        },
+        // {
+        //     title: 'Operate',
+        //     dataIndex: 'operate',
+        //     componentType:EditTableComponentEnum.BUTTON,
+        //     headerCellStyle: { width:'15%'},
+        //     render: (_, record) => (
+        //         <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%',paddingTop:'5px' }}>
+        //             <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
+        //         </Space>
+        //     ),
+        // },
     ];
 
     useEffect(() => {
@@ -170,55 +172,60 @@ export default function GroupBasicInfo(props:{groupId?}) {
     },[groupInfo])
 
     return (
-      <Card>
-          <Spin loading={loading} size={20} style={{ display: 'block' }}>
-          <Form
-              form={formInstance}
-              className={styles['search-form']}
-              layout={"vertical"}
-          >
-              <Typography.Title
-                  style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-              >
-                  {'Token'}
-              </Typography.Title>
-              <Form.Item field="token">
-                  <Input
-                      allowClear
-                      placeholder={'Please Input Token'}
-                  />
-              </Form.Item>
 
-              <Form.Item>
-                  <Grid.Row>
-                      <Grid.Col span={16}>
-                          <Typography.Title
-                              style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                          >
-                              {'Columns'}
-                          </Typography.Title>
-                      </Grid.Col>
-                      <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                            <Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>
-                      </Grid.Col>
-                  </Grid.Row>
+        <Modal
+            title='Create Statistic'
+            visible={true}
+            onCancel={onClose}
+            style={{ width:'50%',top:'20px' }}
+        >
+            <Spin loading={loading} size={20} style={{ display: 'block' }}>
+                <Form
+                    form={formInstance}
+                    className={styles['search-form']}
+                    layout={"vertical"}
+                >
+                    <Typography.Title
+                        style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                    >
+                        {'Token'}
+                    </Typography.Title>
+                    <Form.Item field="token">
+                        <Input
+                            allowClear
+                            placeholder={'Please Input Token'}
+                        />
+                    </Form.Item>
+                    <Form.Item>
+                        <Grid.Row>
+                            <Grid.Col span={16}>
+                                <Typography.Title
+                                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                                >
+                                    {'Columns'}
+                                </Typography.Title>
+                            </Grid.Col>
+                            <Grid.Col span={8} style={{ textAlign: 'right' }}>
+                                {/*<Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>*/}
+                                <IconPenFill/>
+                            </Grid.Col>
+                        </Grid.Row>
 
-                  <EditTable ref={editTableRef} columns={columnsProps} initData={initData}/>
-              </Form.Item>
+                        <EditTable ref={editTableRef} columns={columnsProps} initData={initData}/>
+                    </Form.Item>
+                    <Typography.Title
+                        style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                    >
+                        {'Description'}
+                    </Typography.Title>
+                    <Form.Item field="desc">
+                        <Input.TextArea
+                            style={{ minHeight: 18, width: '100%' }}
+                        />
+                    </Form.Item>
+                </Form>
+            </Spin>
+        </Modal>
 
-              <Form.Item>
-                  <GroupStatistics statsInfo={statsInfo}/>
-              </Form.Item>
-              <Form.Item>
-                  <Grid.Row>
-                      <Grid.Col span={24} style={{ textAlign: 'right' }}>
-                          <Button type={"primary"} size={"small"}>提交</Button>
-                      </Grid.Col>
-                  </Grid.Row>
-              </Form.Item>
-          </Form>
-          </Spin>
-      </Card>
-
-  );
+    );
 }

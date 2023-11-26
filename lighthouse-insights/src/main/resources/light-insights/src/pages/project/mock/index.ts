@@ -31,7 +31,7 @@ setupMock({
       };
     });
 
-    Mock.mock(new RegExp('/api/v1/project/queryById'), (params) => {
+    Mock.mock('/api/v1/project/queryById', (params) => {
       console.log("receive queryById params,params:" + JSON.stringify(params));
       const data = JSON.parse(params.body);
       return {
@@ -50,7 +50,7 @@ setupMock({
       };
     });
 
-    Mock.mock(new RegExp('/api/v1/project/queryById'), (params) => {
+    Mock.mock('/api/v1/project/queryByIds', (params) => {
       console.log("receive queryById params,params:" + JSON.stringify(params));
       const data = JSON.parse(params.body);
       const projectData: Record<number, Project> = {};
@@ -80,6 +80,37 @@ setupMock({
 
       };
     });
+
+
+    const { list } = Mock.mock(
+        {
+          'list|10': [
+            {
+              "id": /[0-9]{8}/,
+              'name': '@word() @word() @word()',
+              'departmentId|1-2': 1,
+              'isPrivate': 0,
+              'desc': '@sentence()',
+              'admins': ['1', '2'],
+              "createdTime": '@datetime',
+            },
+          ],
+        }
+    );
+
+    Mock.mock(new RegExp('/api/v1/project/termList'), (params) => {
+      console.log("receive param is:" + JSON.stringify(params));
+      console.log("list size:" + list.length)
+      return {
+        code:'0',
+        message:'success',
+        data:{
+          'list':list,
+          'total':10,
+        }
+      };
+    });
+
 
     Mock.mock(new RegExp('/api/v1/project/create'), (params) => {
       console.log("receive create params,params:" + JSON.stringify(params));
