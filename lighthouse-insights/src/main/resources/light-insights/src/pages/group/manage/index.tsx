@@ -120,7 +120,7 @@ export default function GroupManagePanel({groupId,onClose}) {
                         position={"br"}
                         trigger={"click"}
                         droplist={
-                            <Menu onClickMenuItem={handlerProcess} style={{ maxHeight:'230px' }}>
+                            <Menu onClickMenuItem={handlerProcess} style={{ maxHeight:'280px' }}>
                                 <Menu.Item key='1'>创建统计项</Menu.Item>
                                 <Menu.Item key='2'>修改统计组</Menu.Item>
                                 <Menu.Item key='3'>修改限流阈值</Menu.Item>
