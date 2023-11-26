@@ -18,11 +18,11 @@ export default function ProjectManage() {
     const handlerProcess = (action:string,params:any):void => {
       console.log("action:" + action + ",params:" + JSON.stringify(params));
       switch (action){
-          case 'add-group':{
+          case 'group-add':{
               setShowAddPanel(true);
               break;
           }
-          case 'edit-group':{
+          case 'group-manage':{
               setGroupId(params.groupId);
               setShowManagePanel(true);
               break;
@@ -32,7 +32,6 @@ export default function ProjectManage() {
           }
       }
   }
-
 
   return (
     <div style={{ minHeight:500 }}>
