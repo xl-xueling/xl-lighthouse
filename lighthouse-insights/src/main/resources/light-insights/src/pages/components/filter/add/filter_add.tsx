@@ -37,7 +37,7 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import {requestList} from "@/api/project";
-import {ResultData} from "@/types/insights-common";
+import {NodeOption, ResultData} from "@/types/insights-common";
 import {Department, PrivilegeEnum, Project, ProjectPagination} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {getDataWithLocalCache} from "@/utils/localCache";
@@ -52,6 +52,7 @@ import ProjectCreate from "@/pages/project/list/create";
 import ProjectUpdate from "@/pages/project/list/update";
 import {requestDeleteById} from "@/api/project";
 import {FormInstance} from "@arco-design/web-react/lib";
+import {validateNode} from "@/pages/components/common";
 const FormItem = Form.Item;
 const Option = Select.Option;
 export default function FilterAddPanel({onClose}) {
@@ -76,6 +77,10 @@ export default function FilterAddPanel({onClose}) {
             return;
         }
         const obj = JSON.parse(configuration);
+        if(!validateNode(obj,new Set())){
+            Message.error("格式校验错误!");
+            return;
+        }
         if(Array.isArray(obj)){
             setFormElements([{"type":values.type,"options":obj}]);
         }else{
@@ -107,7 +112,7 @@ export default function FilterAddPanel({onClose}) {
                 </Typography.Text>
                 <FormItem field='type' rules={[{ required: true }]}>
                     <Select
-                        placeholder='please select'
+                        placeholder='please select' defaultValue={1}
                         options={[
                             {
                                 label: '多选下拉框',
@@ -138,7 +143,7 @@ export default function FilterAddPanel({onClose}) {
                     </Grid.Col>
                 </Grid.Row>
                 <FormItem field={'configuration'} rules={[{ required: true }]}>
-                    <Input.TextArea rows={5} />
+                    <Input.TextArea rows={12} />
                 </FormItem>
             </Form>
 
@@ -146,27 +151,40 @@ export default function FilterAddPanel({onClose}) {
                 const {type,options} = element;
                 switch (type){
                     case 1:
-                        return <Select mode='multiple' key={index}  allowClear showSearch>
+                        return(
+                            <div key={index}>
+                            <Typography.Text
+                                style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                            >
+                                {'Display'}
+                            </Typography.Text>
+                            <Select mode='multiple' key={index}  allowClear showSearch>
                             {options.map((option:any, index) => {
                                 return <Option key={option.value} value={option.value}>
                                     {option.label}
                                 </Option>
                             })}
-                        </Select>
+                        </Select></div>);
                     case 2:
-                        return <Select key={index} allowClear showSearch>
+                        return (
+                            <div key={index}>
+                                <Typography.Text
+                                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                                >
+                                    {'Display'}
+                                </Typography.Text>
+                            <Select key={index} allowClear showSearch>
                             {options.map((option:any, index) => {
                                 return <Option key={option.value} value={option.value}>
                                     {option.label}
                                 </Option>
                             })}
-                        </Select>
+                        </Select></div>);
                     default:
-                        return <Input />
                         break;
                 }
-            })
             }
+            )}
         </Modal>
 
     );
