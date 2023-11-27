@@ -8,21 +8,17 @@ export function validateNode(node,values) {
         }
     }else{
         if (typeof node !== 'object') {
-            console.log("--------1")
             return false;
         }
         if (!('label' in node) || !('value' in node) || !isValidValue(node.value,values) || (node.children && !Array.isArray(node.children))) {
-            console.log("--------2")
             return false;
         }
         if (node.label === '' || node.value === '') {
-            console.log("--------3")
             return false;
         }
         if(node.children){
             for (const child of node.children) {
                 if (!validateNode(child,values)) {
-                    console.log("--------4")
                     return false;
                 }
             }
@@ -36,7 +32,6 @@ function isValidValue(value, values) {
     if (values.has(value)) {
         return false;
     }
-
     values.add(value);
     return true;
 }
