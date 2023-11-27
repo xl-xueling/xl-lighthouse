@@ -11,3 +11,9 @@ export interface ArcoTreeNode {
     type?:number;
     children?:Array<ArcoTreeNode>;
 }
+
+export interface NodeOption {
+    label:string;
+    value:string;
+    children?:Array<NodeOption>;
+}
