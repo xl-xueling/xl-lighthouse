@@ -33,7 +33,7 @@ import EditTable, {
     EditTableColumn,
     EditTableColumnProps,
     EditTableComponentEnum
-} from "@/pages/components/edittable/EditTable";
+} from "@/pages/common/edittable/EditTable";
 const { Row, Col } = Grid;
 
 const { Text } = Typography;
