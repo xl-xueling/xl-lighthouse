@@ -57,7 +57,7 @@ import EditTable, {
     EditTableColumn,
     EditTableColumnProps,
     EditTableComponentEnum
-} from "@/pages/components/edittable/EditTable";
+} from "@/pages/common/edittable/EditTable";
 import GroupBasicPanel from "@/pages/group/basic";
 import {ResultData} from "@/types/insights-common";
 import {requestPrivilegeCheck} from "@/api/privilege";

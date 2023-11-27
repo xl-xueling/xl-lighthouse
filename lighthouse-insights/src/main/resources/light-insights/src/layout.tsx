@@ -54,6 +54,10 @@ function getIconFromKey(key) {
       return <IconSettings className={styles.icon} />;
     case 'stat':
       return <IconApps className={styles.icon} />;
+    case 'filter':
+      return <IconList className={styles.icon} />;
+    case 'display':
+      return <IconDashboard className={styles.icon} />;
     default:
       return <div className={styles['icon-empty']} />;
   }

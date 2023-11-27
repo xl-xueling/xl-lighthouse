@@ -15,7 +15,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from '../../project/manage/locale';
 import styles from '../../project/manage/style/index.module.less';
-import EditTable, {EditTableColumnProps, EditTableComponentEnum} from "@/pages/components/edittable/EditTable";
+import EditTable, {EditTableColumnProps, EditTableComponentEnum} from "@/pages/common/edittable/EditTable";
 import {IconMinusCircleFill, IconPenFill, IconPlus, IconPlusCircleFill} from "@arco-design/web-react/icon";
 import {getTextBlenLength, stringifyObj} from "@/utils/util";
 import {requestCreate} from "@/api/group";

@@ -93,8 +93,27 @@ export const routes: IRoute[] = [
         ignore:true,
         breadcrumb:false,
       },
+      {
+        name: '筛选组件',
+        key: 'components/filter/list',
+      },
     ],
   },
+  {
+    name: '统计视图',
+    key: 'display',
+    children: [
+      {
+        name: '统计项视图',
+        key: 'display/stat',
+      },
+      {
+        name: '工程视图',
+        key: 'display/project',
+      },
+    ],
+  },
+
   {
     name: 'menu.form',
     key: 'form',

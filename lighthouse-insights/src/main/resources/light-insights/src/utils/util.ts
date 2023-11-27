@@ -20,6 +20,17 @@ export function stringifyMap(map): string {
     return JSON.stringify(Array.from(map.entries()));
 }
 
+export function isJSON(str):boolean {
+    if (typeof str == 'string') {
+        try {
+            const obj = JSON.parse(str);
+            return !!(typeof obj == 'object' && obj);
+        } catch(e) {
+            return false;
+        }
+    }
+}
+
 
 export function getTextBlenLength(str){
     let len = 0;

@@ -51,6 +51,27 @@ setupMock({
     });
 
 
+    Mock.mock(new RegExp('/api/v1/stat/queryById'), (params) => {
+      console.log("receive param is:" + JSON.stringify(params));
+      const stat = Mock.mock(
+        {
+          id:10231,
+          title:"每分钟uv统计1",
+          groupId:1001,
+          projectId:101,
+          timeparam:'1-minute',
+          template:"<stat-item title=\"每分钟_uv数据统计\" stat=\"bitcount(userId)\" dimens=\"province\" limit=\"top100\" />",
+          expired:102323,
+          createdTime: '@datetime',
+        });
+
+      return {
+        code:'0',
+        message:'success',
+        data:stat,
+      };
+    });
+
     Mock.mock(new RegExp('/api/v1/stat/list'), (params) => {
       console.log("receive param is:" + JSON.stringify(params));
       // const list = Mock.mock([

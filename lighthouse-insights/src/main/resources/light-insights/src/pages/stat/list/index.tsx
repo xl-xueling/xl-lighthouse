@@ -32,7 +32,7 @@ import EditTable, {
     EditTableColumn,
     EditTableColumnProps,
     EditTableComponentEnum
-} from "@/pages/components/edittable/EditTable";
+} from "@/pages/common/edittable/EditTable";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {ResultData} from "@/types/insights-common";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";

@@ -1,6 +1,7 @@
 import {request} from "@/utils/request";
 import {ArcoTreeNode, ResultData} from "@/types/insights-common";
 import {Group, Project, User} from "@/types/insights-web";
+import {Result} from "@arco-design/web-react";
 
 export async function requestQueryById(id:number) :Promise<ResultData<Group>> {
     return request({
@@ -19,6 +20,14 @@ export async function requestQueryByIds(ids:number[]) :Promise<ResultData<Record
     })
 }
 
+
+export async function requestQueryDimens(columns:string[]):Promise<ResultData<Record<string,Array<string>>>> {
+    return request({
+        url:'/group/queryDimens',
+        method:'POST',
+        columns,
+    })
+}
 
 
 export async function requestDeleteByID(id:number) :Promise<ResultData> {
