@@ -19,9 +19,9 @@ export default function DepartmentManagePanel() {
     async function fetchData() {
         setLoading(true);
         try {
-            await requestQueryAll().then((res:ResultData) => {
-                const {code, message} = res;
-                let data = res.data;
+            await requestQueryAll().then((response:ResultData) => {
+                const {code, message} = response;
+                let data = response.data;
                 if (code === '0') {
                     data = [{
                         "id":"0",
@@ -49,12 +49,12 @@ export default function DepartmentManagePanel() {
         setLoading(true);
         let id = "-1";
         try {
-            await requestCreate({'pid': pid, 'title': title}).then((res: any) => {
-                const {code, msg, data} = res;
+            await requestCreate({'pid': pid, 'title': title}).then((response: ResultData) => {
+                const {code, message, data} = response;
                 if (code === '0') {
                     id = data.id;
                 } else {
-                    Message.error(res.message || t['system.error'])
+                    Message.error(message || t['system.error'])
                 }
             });
         } catch (error) {
@@ -71,13 +71,12 @@ export default function DepartmentManagePanel() {
         setLoading(true);
         let result = "-1";
         try {
-            await requestDragTo({'id': id, 'destPid': destPid}).then((res: any) => {
-                console.log("drag node res:" + JSON.stringify(res));
-                const {code, msg, data} = res;
+            await requestDragTo({'id': id, 'destPid': destPid}).then((response: ResultData) => {
+                const {code, message, data} = response;
                 if (code === '0') {
                     result = code;
                 } else {
-                    Message.error(res.message || t['system.error'])
+                    Message.error(message || t['system.error'])
                 }
             });
         } catch (error) {
@@ -93,8 +92,8 @@ export default function DepartmentManagePanel() {
         setLoading(true);
         let result = "-1";
         try {
-            await requestUpdateById({'id': id, 'title': title}).then((res: any) => {
-                const {code, message, data} = res;
+            await requestUpdateById({'id': id, 'title': title}).then((response: ResultData) => {
+                const {code, message, data} = response;
                 if (code === '0') {
                     result = code;
                 } else {
@@ -115,8 +114,8 @@ export default function DepartmentManagePanel() {
         setLoading(true);
         let result = "-1";
         try {
-            await requestDeleteById({'id': id}).then((res: any) => {
-                const {code, message, data} = res;
+            await requestDeleteById({'id': id}).then((response: ResultData) => {
+                const {code, message, data} = response;
                 if (code === '0') {
                     result = code;
                 } else {
