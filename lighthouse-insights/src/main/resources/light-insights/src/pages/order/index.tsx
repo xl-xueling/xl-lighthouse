@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import {ResultData} from "@/types/insights-common";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import useForm from "@arco-design/web-react/es/Form/useForm";
@@ -11,5 +12,6 @@ import GroupEditPanel from "@/pages/group/edit";
 
 export default function OrderIndex() {
 
+    return (<div>sss</div>);
 }
 

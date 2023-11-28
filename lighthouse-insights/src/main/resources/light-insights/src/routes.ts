@@ -12,197 +12,220 @@ export type IRoute = AuthParams & {
 };
 
 export const routes: IRoute[] = [
+  // {
+  //   name: 'menu.dashboard',
+  //   key: 'dashboard',
+  //   children: [
+  //     {
+  //       name: 'menu.dashboard.workplace',
+  //       key: 'dashboard/workplace',
+  //     },
+  //     {
+  //       name: 'menu.dashboard.monitor',
+  //       key: 'dashboard/monitor',
+  //       requiredPermissions: [
+  //         { resource: 'menu.dashboard.monitor', actions: ['write'] },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'menu.visualization',
+  //   key: 'visualization',
+  //   children: [
+  //     {
+  //       name: 'menu.visualization.dataAnalysis',
+  //       key: 'visualization/data-analysis',
+  //       requiredPermissions: [
+  //         { resource: 'menu.visualization.dataAnalysis', actions: ['read'] },
+  //       ],
+  //     },
+  //     {
+  //       name: 'menu.visualization.multiDimensionDataAnalysis',
+  //       key: 'visualization/multi-dimension-data-analysis',
+  //       requiredPermissions: [
+  //         {
+  //           resource: 'menu.visualization.dataAnalysis',
+  //           actions: ['read', 'write'],
+  //         },
+  //         {
+  //           resource: 'menu.visualization.multiDimensionDataAnalysis',
+  //           actions: ['write'],
+  //         },
+  //       ],
+  //       oneOfPerm: true,
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'menu.list',
+  //   key: 'list',
+  //   children: [
+  //     {
+  //       name: 'menu.list.searchTable',
+  //       key: 'list/search-table',
+  //     },
+  //     {
+  //       name: 'menu.list.cardList',
+  //       key: 'list/card',
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: '我的关注',
+  //   key: 'favorite',
+  //   children: [
+  //     {
+  //       name: '统计项',
+  //       key: 'list/search-table',
+  //     },
+  //     {
+  //       name: '统计工程',
+  //       key: 'list/card',
+  //     },
+  //   ],
+  // },
   {
-    name: 'menu.dashboard',
-    key: 'dashboard',
-    children: [
-      {
-        name: 'menu.dashboard.workplace',
-        key: 'dashboard/workplace',
-      },
-      {
-        name: 'menu.dashboard.monitor',
-        key: 'dashboard/monitor',
-        requiredPermissions: [
-          { resource: 'menu.dashboard.monitor', actions: ['write'] },
-        ],
-      },
-    ],
-  },
-  {
-    name: 'menu.visualization',
-    key: 'visualization',
-    children: [
-      {
-        name: 'menu.visualization.dataAnalysis',
-        key: 'visualization/data-analysis',
-        requiredPermissions: [
-          { resource: 'menu.visualization.dataAnalysis', actions: ['read'] },
-        ],
-      },
-      {
-        name: 'menu.visualization.multiDimensionDataAnalysis',
-        key: 'visualization/multi-dimension-data-analysis',
-        requiredPermissions: [
-          {
-            resource: 'menu.visualization.dataAnalysis',
-            actions: ['read', 'write'],
-          },
-          {
-            resource: 'menu.visualization.multiDimensionDataAnalysis',
-            actions: ['write'],
-          },
-        ],
-        oneOfPerm: true,
-      },
-    ],
-  },
-  {
-    name: 'menu.list',
-    key: 'list',
-    children: [
-      {
-        name: 'menu.list.searchTable',
-        key: 'list/search-table',
-      },
-      {
-        name: 'menu.list.cardList',
-        key: 'list/card',
-      },
-    ],
-  },
-  {
-    name: 'system.manage',
-    key: 'system',
-    children: [
-      {
-        name: '部门管理',
-        key: 'department/manage',
-      },
-      {
-        name: '用户管理',
-        key: 'user/list',
-      },
-      {
-        name: '用户设置',
-        key: 'user/setting',
-      },
-      {
-        name: '工程管理',
-        key: 'project/manage',
-        ignore:true,
-        breadcrumb:false,
-      },
-      {
-        name: '筛选组件',
-        key: 'components/filter/list',
-      },
-    ],
-  },
-  {
-    name: '统计视图',
+    name: 'menu.display',
     key: 'display',
     children: [
       {
-        name: '统计项视图',
-        key: 'display/stat',
-      },
-      {
-        name: '工程视图',
-        key: 'display/project',
-      },
-    ],
-  },
-
-  {
-    name: 'menu.form',
-    key: 'form',
-    children: [
-      {
-        name: 'menu.form.group',
-        key: 'form/group',
-        requiredPermissions: [
-          { resource: 'menu.form.group', actions: ['read', 'write'] },
-        ],
-      },
-      {
-        name: 'menu.form.step',
-        key: 'form/step',
-        requiredPermissions: [
-          { resource: 'menu.form.step', actions: ['read'] },
-        ],
-      },
-    ],
-  },
-  {
-    name: 'menu.profile',
-    key: 'profile',
-    children: [
-      {
-        name: 'menu.profile.basic',
-        key: 'profile/basic',
-      },
-    ],
-  },
-
-  {
-    name: 'menu.result',
-    key: 'result',
-    children: [
-      {
-        name: 'menu.result.success',
-        key: 'result/success',
-        breadcrumb: false,
-      },
-      {
-        name: 'menu.result.error',
-        key: 'result/error',
-        breadcrumb: false,
-      },
-    ],
-  },
-  {
-    name: 'menu.exception',
-    key: 'exception',
-    children: [
-      {
-        name: 'menu.exception.403',
-        key: 'exception/403',
-      },
-      {
-        name: 'menu.exception.404',
-        key: 'exception/404',
-      },
-      {
-        name: 'menu.exception.500',
-        key: 'exception/500',
-      },
-    ],
-  },
-  {
-    name: 'menu.user',
-    key: 'user',
-    children: [
-      {
-        name: 'menu.user.info',
-        key: 'user/info',
-      },
-    ],
-  },
-  {
-    name: 'menu.stat',
-    key: 'stat',
-    children: [
-      {
-        name: 'menu.stat.projectList',
+        name: 'menu.display.project',
         key: 'project/list',
       },
       {
-        name: 'menu.stat.statList',
+        name: 'menu.display.stat',
         key: 'stat/list',
       },
     ],
   },
+  {
+    name: 'menu.order',
+    key: 'order',
+    children: [
+      {
+        name: 'menu.order.application',
+        key: 'application/list',
+      },
+      {
+        name: 'menu.order.approve',
+        key: 'approve/list',
+      },
+    ],
+  },
+  {
+    name: 'menu.system',
+    key: 'system',
+    children: [
+      {
+        name: 'menu.system.department',
+        key: 'department/manage',
+      },
+      {
+        name: 'menu.system.users',
+        key: 'user/list',
+      },
+      {
+        name: 'menu.system.filterComponents',
+        key: 'components/filter/list',
+      },
+      {
+        name: 'menu.system.document',
+        key: 'document/list',
+      },
+    ],
+  },
+
+  //
+  // {
+  //   name: 'menu.form',
+  //   key: 'form',
+  //   children: [
+  //     {
+  //       name: 'menu.form.group',
+  //       key: 'form/group',
+  //       requiredPermissions: [
+  //         { resource: 'menu.form.group', actions: ['read', 'write'] },
+  //       ],
+  //     },
+  //     {
+  //       name: 'menu.form.step',
+  //       key: 'form/step',
+  //       requiredPermissions: [
+  //         { resource: 'menu.form.step', actions: ['read'] },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'menu.profile',
+  //   key: 'profile',
+  //   children: [
+  //     {
+  //       name: 'menu.profile.basic',
+  //       key: 'profile/basic',
+  //     },
+  //   ],
+  // },
+  //
+  // {
+  //   name: 'menu.result',
+  //   key: 'result',
+  //   children: [
+  //     {
+  //       name: 'menu.result.success',
+  //       key: 'result/success',
+  //       breadcrumb: false,
+  //     },
+  //     {
+  //       name: 'menu.result.error',
+  //       key: 'result/error',
+  //       breadcrumb: false,
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'menu.exception',
+  //   key: 'exception',
+  //   children: [
+  //     {
+  //       name: 'menu.exception.403',
+  //       key: 'exception/403',
+  //     },
+  //     {
+  //       name: 'menu.exception.404',
+  //       key: 'exception/404',
+  //     },
+  //     {
+  //       name: 'menu.exception.500',
+  //       key: 'exception/500',
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'menu.user',
+  //   key: 'user',
+  //   children: [
+  //     {
+  //       name: 'menu.user.info',
+  //       key: 'user/info',
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'menu.stat',
+  //   key: 'stat',
+  //   children: [
+  //     {
+  //       name: 'menu.stat.projectList',
+  //       key: 'project/list',
+  //     },
+  //     {
+  //       name: 'menu.stat.statList',
+  //       key: 'stat/list',
+  //     },
+  //   ],
+  // },
 
 ];
 
