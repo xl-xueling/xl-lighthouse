@@ -6,7 +6,7 @@ import setupMock from '@/utils/setupMock';
 
 setupMock({
   setup: () => {
-      Mock.mock(new RegExp('/api/v1/department/all'), (params) => {
+      Mock.mock(new RegExp('/api/v1/department/all'), () => {
           return {
               code:'0',
               message:'success',
