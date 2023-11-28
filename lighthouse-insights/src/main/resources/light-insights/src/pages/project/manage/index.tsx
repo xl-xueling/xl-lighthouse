@@ -16,7 +16,6 @@ export default function ProjectManage() {
   const TabPane = Tabs.TabPane;
 
     const handlerProcess = (action:string,params:any):void => {
-      console.log("action:" + action + ",params:" + JSON.stringify(params));
       switch (action){
           case 'group-add':{
               setShowAddPanel(true);
