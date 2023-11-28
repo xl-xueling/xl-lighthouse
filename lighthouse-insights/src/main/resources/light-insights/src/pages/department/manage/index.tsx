@@ -1,14 +1,13 @@
 import React from 'react';
-import TreeEditPanel from './tree-edit-panel';
+import DepartmentManagePanel from './department_manage';
 import styles from './style/index.module.less';
-import './mock';
 
 export default function Monitor() {
   return (
-    <div style={{ minHeight:500 }}>
+    <div>
       <div className={styles.layout}>
         <div className={styles['layout-left-side']}>
-          <TreeEditPanel />
+          <DepartmentManagePanel />
         </div>
       </div>
     </div>

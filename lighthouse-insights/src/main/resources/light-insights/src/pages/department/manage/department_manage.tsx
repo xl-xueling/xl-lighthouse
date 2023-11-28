@@ -7,7 +7,7 @@ import styles from './style/index.module.less';
 import {queryAll, add, dragTo, deleteById, updateById} from "@/api/department";
 import {Simulate} from "react-dom/test-utils";
 
-export default function TreeEditPanel() {
+export default function DepartmentManagePanel() {
   const t = useLocale(locale);
   const [messageList, setMessageList] = useState([]);
   const [departmentList, setDepartmentList] = useState([]);

@@ -2,7 +2,7 @@
   display: flex;
 
   &-left-side {
-    flex-basis: 450px;
+    flex-basis: 420px;
   }
 
   &-content {
@@ -34,18 +34,12 @@
   }
 
   .arco-tree-node-drag-icon {
-    //margin-left: 40px !important;
     display: none;
   }
 
   .arco-tree-node-title{
     width: 100% !important;
   }
-
-
-  //.arco-tree-node-title:hover .arco-tree-node-drag-icon{
-  //  opacity: 0 !important;
-  //}
 
   .arco-tree-node-custom-icon{
     margin-right:5px !important;
@@ -70,67 +64,5 @@
     flex: 1;
     margin: 20px 0;
     box-sizing: border-box;
-  }
-}
-
-.data-statistic {
-  &-content {
-    padding: 20px 0;
-  }
-
-  &-list {
-    &-header {
-      margin-top: 16px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    &-content {
-      margin-top: 16px;
-    }
-
-    &-cover {
-      &-wrapper {
-        height: 68px;
-        position: relative;
-
-        img {
-          height: 100%;
-        }
-      }
-
-      &-tag {
-        position: absolute;
-        top: 6px;
-        left: 6px;
-      }
-    }
-
-    &-tip {
-      display: block;
-      margin-top: 16px;
-      text-align: center;
-    }
-  }
-}
-
-.studio {
-  &-wrapper {
-    :global(.arco-card-body) {
-      padding-top: 0 !important;
-    }
-  }
-
-  &-preview {
-    width: 100%;
-    max-width: 600px;
-    display: block;
-    margin: 0 auto;
-  }
-
-  &-bar {
-    margin-top: 16px;
-    display: flex;
-    justify-content: space-between;
   }
 }
