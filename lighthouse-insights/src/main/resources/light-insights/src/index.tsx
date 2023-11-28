@@ -52,18 +52,12 @@ function Index() {
       payload: {allDepartInfo: allDepartInfo},
     })
 
-    store.dispatch({
-      type: 'update-userInfo',
-      payload: {userLoading: true},
-    });
-
     requestUserInfo().then((resultData) => {
       const userInfo = resultData.data;
       const departs = allDepartInfo.filter(z => z.id.toString === userInfo.id.toString);
       if(departs){
         userInfo.departmentName = departs[0].name;
       }
-
       store.dispatch({
         type: 'update-userInfo',
         payload: {userInfo: resultData.data, userLoading: false},
@@ -75,7 +69,7 @@ function Index() {
 
   useEffect(() => {
     if (checkLogin()) {
-      fetchUserInfo();
+      fetchUserInfo().then()
     } else if (window.location.pathname.replace(/\//g, '') !== 'login'
         && window.location.pathname.replace(/\//g, '') !== 'register'
     ) {
