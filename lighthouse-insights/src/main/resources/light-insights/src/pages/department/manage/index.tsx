@@ -2,7 +2,7 @@ import React from 'react';
 import DepartmentManagePanel from './department_manage';
 import styles from './style/index.module.less';
 
-export default function Monitor() {
+export default function DepartmentManageIndex() {
   return (
     <div>
       <div className={styles.layout}>
