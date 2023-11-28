@@ -52,7 +52,7 @@ import ProjectCreate from "@/pages/project/list/create";
 import ProjectUpdate from "@/pages/project/list/update";
 import {requestDeleteById} from "@/api/project";
 import {FormInstance} from "@arco-design/web-react/lib";
-import {validateNode} from "@/pages/components/common";
+import {calculateMaxLevel, validateNode} from "@/pages/components/common";
 const FormItem = Form.Item;
 const Option = Select.Option;
 export default function FilterAddPanel({onClose}) {
@@ -81,6 +81,8 @@ export default function FilterAddPanel({onClose}) {
             Message.error("格式校验错误!");
             return;
         }
+        const level = calculateMaxLevel(obj,0);
+        console.log("level is:" + level);
         if(Array.isArray(obj)){
             setFormElements([{"type":values.type,"options":obj}]);
         }else{
@@ -94,7 +96,7 @@ export default function FilterAddPanel({onClose}) {
             visible={true}
             onCancel={onClose}
             onOk={handlerSubmit}
-            style={{ width:'800px',marginTop:"-30px" }}
+            style={{ width:'800px' }}
         >
             <Form ref={form} layout={"vertical"} autoComplete='off'>
                 <Typography.Text
@@ -143,7 +145,7 @@ export default function FilterAddPanel({onClose}) {
                     </Grid.Col>
                 </Grid.Row>
                 <FormItem field={'configuration'} rules={[{ required: true }]}>
-                    <Input.TextArea rows={12} />
+                    <Input.TextArea rows={18} />
                 </FormItem>
             </Form>
 
@@ -180,6 +182,17 @@ export default function FilterAddPanel({onClose}) {
                                 </Option>
                             })}
                         </Select></div>);
+                    case 3:
+                        return (
+                            <div key={index}>
+                                <Typography.Text
+                                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                                >
+                                    {'Display'}
+                                </Typography.Text>
+                                <Cascader key={index} allowClear showSearch options={options} mode='multiple'
+                                          checkedStrategy='parent'>
+                                </Cascader></div>);
                     default:
                         break;
                 }

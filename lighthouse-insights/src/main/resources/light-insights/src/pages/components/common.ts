@@ -35,3 +35,22 @@ function isValidValue(value, values) {
     values.add(value);
     return true;
 }
+
+export function calculateMaxLevel(node, level) {
+    if (typeof node !== 'object' || node === null) {
+        return level;
+    }
+    let maxLevel = level;
+    if (Array.isArray(node)) {
+        for (const item of node) {
+            const itemLevel = calculateMaxLevel(item, level);
+            maxLevel = Math.max(maxLevel, itemLevel);
+        }
+    } else {
+        if ('children' in node) {
+            const childLevel = calculateMaxLevel(node.children, level + 1);
+            maxLevel = Math.max(maxLevel, childLevel);
+        }
+    }
+    return maxLevel;
+}
