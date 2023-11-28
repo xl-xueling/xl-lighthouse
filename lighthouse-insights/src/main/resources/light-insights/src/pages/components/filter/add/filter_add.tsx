@@ -41,7 +41,6 @@ import {NodeOption, ResultData} from "@/types/insights-common";
 import {Department, PrivilegeEnum, Project, ProjectPagination} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {getDataWithLocalCache} from "@/utils/localCache";
-import {fetchAllData as fetchAllDepartmentData, translateToTreeStruct} from "@/pages/department/common";
 import InfoForm from "@/pages/user/setting/info";
 import Security from "@/pages/user/setting/security";
 import useForm from "@arco-design/web-react/es/Form/useForm";

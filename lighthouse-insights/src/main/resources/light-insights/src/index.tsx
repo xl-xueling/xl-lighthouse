@@ -19,8 +19,8 @@ import './mock';
 import Register from "@/pages/register";
 import {requestUserInfo} from "@/api/user";
 import {getDataWithLocalCache} from "@/utils/localCache";
-import {fetchAllData as fetchAllDepartmentData} from "@/pages/department/common";
-import GroupManage from "@/pages/project/manage";
+import {Department} from "@/types/insights-web";
+import {requestQueryAll as queryDepartmentAll} from "@/api/department";
 
 const store = createStore(rootReducer);
 
@@ -43,6 +43,25 @@ function Index() {
     type: 'ADD_TODO',
     payload: todo,
   });
+
+
+  async function fetchAllDepartmentData(): Promise<Array<Department>> {
+    let result = null;
+    try {
+      await queryDepartmentAll().then((response) => {
+        const {code,message,data} = response;
+        if (code === '0') {
+          result = data;
+        }else{
+          Message.error(message)
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      Message.error("System Error,fetch department data failed!")
+    }
+    return result;
+  }
 
 
   async function fetchUserInfo() {

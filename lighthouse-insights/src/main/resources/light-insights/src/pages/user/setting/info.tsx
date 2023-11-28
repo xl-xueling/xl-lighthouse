@@ -17,7 +17,6 @@ import {Department, DepartmentArcoTreeNode, User} from "@/types/insights-web";
 import {stringifyObj} from "@/utils/util";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import {
-  fetchAllData as fetchAllDepartmentData,
   translateToFlatStruct,
 } from "@/pages/department/common";
 import styles from "@/pages/login/style/index.module.less";
@@ -40,12 +39,12 @@ function InfoForm() {
   const [departmentData, setDepartmentData] = useState<Array<DepartmentArcoTreeNode>>(null);
 
   useEffect(() => {
-    const proc = async ():Promise<Array<Department>> => {
-      return await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
-    }
-    proc().then((result) => {
-      setDepartmentData(translateToFlatStruct(result));
-    })
+    // const proc = async ():Promise<Array<Department>> => {
+    //   return await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
+    // }
+    // proc().then((result) => {
+    //   setDepartmentData(translateToFlatStruct(result));
+    // })
   },[])
 
   const initialValues = {
