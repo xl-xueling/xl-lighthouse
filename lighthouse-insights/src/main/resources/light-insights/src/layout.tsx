@@ -12,7 +12,7 @@ import {
   IconExclamationCircle,
   IconUser,
   IconMenuFold,
-  IconMenuUnfold, IconAlignCenter, IconIdcard,
+  IconMenuUnfold, IconAlignCenter, IconIdcard, IconNav, IconCalendarClock,
 } from '@arco-design/web-react/icon';
 import { useSelector } from 'react-redux';
 import qs from 'query-string';
@@ -52,6 +52,8 @@ function getIconFromKey(key) {
       return <IconUser className={styles.icon} />;
     case 'system':
       return <IconSettings className={styles.icon} />;
+    case 'order':
+      return <IconCalendarClock className={styles.icon} />;
     case 'stat':
       return <IconApps className={styles.icon} />;
     case 'filter':
