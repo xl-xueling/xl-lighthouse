@@ -12,8 +12,9 @@
     "pre-commit": "pretty-quick --staged && npm run eslint && npm run stylelint"
   },
   "dependencies": {
-    "@ant-design/charts": "^1.4.3",
+    "@ant-design/plots": "^1.2.6",
     "@antv/data-set": "^0.11.8",
+    "@antv/path-util": "^3.0.1",
     "@arco-design/color": "^0.4.0",
     "@arco-design/web-react": "^2.32.2",
     "@arco-themes/react-arco-pro": "^0.0.7",
@@ -21,6 +22,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@turf/turf": "^6.5.0",
     "ace-builds": "^1.31.2",
+    "antd": "^5.11.5",
     "arco-design-pro": "^2.8.0",
     "axios": "^0.24.0",
     "bizcharts": "^4.1.11",

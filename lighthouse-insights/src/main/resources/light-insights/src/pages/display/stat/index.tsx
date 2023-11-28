@@ -69,7 +69,7 @@ import GroupAddPanel from "@/pages/group/add/group_add";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/edit";
 const { Row, Col } = Grid;
-import { Line } from '@ant-design/charts';
+
 import StatDisplayPanel from "@/pages/display/stat/stat_display";
 
 

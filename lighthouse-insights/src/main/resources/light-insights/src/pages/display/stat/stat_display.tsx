@@ -34,7 +34,7 @@ import EditTable, {
     EditTableColumnProps,
     EditTableComponentEnum
 } from "@/pages/common/edittable/EditTable";
-import {Line} from "@ant-design/charts";
+import { Line } from '@ant-design/plots';
 const { Row, Col } = Grid;
 
 const { Text } = Typography;
