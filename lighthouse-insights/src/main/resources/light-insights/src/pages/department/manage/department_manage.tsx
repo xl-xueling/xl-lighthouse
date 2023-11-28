@@ -27,6 +27,7 @@ export default function DepartmentManagePanel() {
                         "id":"0",
                         "name":t['department.enterprise.structure'],"children":data}] ;
                     setTreeData([...data]);
+                    setExpandedKeys(["0"]);
                 }else{
                     Message.error(message || t['system.error'])
                 }
