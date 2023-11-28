@@ -6,7 +6,70 @@ import setupMock from '@/utils/setupMock';
 
 setupMock({
   setup: () => {
-    Mock.mock(new RegExp('/api/v1/department/all'), (params) => {
+      Mock.mock(new RegExp('/api/v1/department/all'), (params) => {
+          return {
+              code:'0',
+              message:'success',
+              data:
+                  [
+                      {
+                          "id":"1",
+                          "name":"研发部",
+                          "children":[
+                              {
+                                  "id":"11",
+                                  "name":"研发部一组",
+                              },
+                              {
+                                  "id":"12",
+                                  "name":"研发部二组",
+                              },
+                              {
+                                  "id":"13",
+                                  "name":"研发部三组",
+                              },
+                          ]
+                      },
+                      {
+                          "id":"2",
+                          "name":"产品部",
+                          "children":[
+                              {
+                                  "id":"21",
+                                  "name":"产品部一组",
+                              },
+                              {
+                                  "id":"22",
+                                  "name":"产品部二组",
+                              },
+                              {
+                                  "id":"23",
+                                  "name":"产品部三组",
+                              },
+                          ]
+                      },
+                      {
+                          "id":"3",
+                          "name":"市场部",
+                          "children":[
+                              {
+                                  "id":"31",
+                                  "name":"市场部一组",
+                              },
+                              {
+                                  "id":"32",
+                                  "name":"市场部二组",
+                              },
+                              {
+                                  "id":"33",
+                                  "name":"市场部三组",
+                              },
+                          ]
+                      },
+                  ],
+          };
+      });
+    Mock.mock(new RegExp('/api/v1/department/all_bak'), (params) => {
       return {
         code:'0',
         message:'success',

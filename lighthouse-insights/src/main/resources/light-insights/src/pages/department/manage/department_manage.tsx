@@ -5,58 +5,45 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import {queryAll, add, dragTo, deleteById, updateById} from "@/api/department";
-import {Simulate} from "react-dom/test-utils";
 
 export default function DepartmentManagePanel() {
-  const t = useLocale(locale);
-  const [messageList, setMessageList] = useState([]);
-  const [departmentList, setDepartmentList] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [visible ,setVisible] = useState<boolean>(true);
+    const t = useLocale(locale);
+    const [loading, setLoading] = useState(false);
+    const [treeData, setTreeData] = useState([]);
+    const treeRef = useRef<Tree>(null);
+    const [selectedKeys, setSelectedKeys] = useState([]);
+    const [checkedKeys, setCheckedKeys] = useState([]);
+    const [expandedKeys, setExpandedKeys] = useState([]);
 
     useEffect(() => {
-        fetchAllData();
+        console.log("-------11");
+        async function fetchData() {
+            //setLoading(true);
+            try {
+                await queryAll().then((res:any) => {
+                    console.log("res is:" + JSON.stringify(res))
+                    const {code, msg} = res;
+                    let data = res.data;
+                    if (code === '0') {
+                        data = [{
+                            "id":"0",
+                            "name":t['department.enterprise.structure'],"children":data}] ;
+                        setTreeData([...data]);
+                    }else{
+                        Message.error(res.message || t['system.error'])
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+                Message.error(t['system.error']);
+            }finally {
+                //setLoading(false);
+            }
+        }
+        fetchData().then();
     }, []);
 
-    function translateData(list, rootPid) {
-        const nodeArr = []
-        list.forEach(item => {
-            if (item.pid === rootPid) {
-                item.key = item.id;
-                item.title = item.name;
-                nodeArr.push(item)
-                const children = translateData(list, item.id)
-                if (children.length) {
-                    item.children = children
-                }
-            }
-        })
-        return nodeArr;
-    }
 
-    async function fetchAllData() {
-        setLoading(true);
-        try {
-            const a:any = await queryAll().then((res:any) => {
-                const {code, msg} = res;
-                let data = res.data;
-                if (code === '0' && data) {
-                    data = [{
-                        "id":"0",
-                        "pid":"-1",
-                        "name":"组织架构"},...data];
-                    const arr = translateData([...data],"-1");
-                    setTreeData([...arr]);
-                }else{
-                     Message.error("System Error,fetch department data failed!")
-                }
-            });
-        } catch (error) {
-            console.error("error is:" + error);
-        }finally {
-            setLoading(false);
-        }
-    }
 
     async function addNode(pid, title) {
         setLoading(true);
@@ -64,15 +51,15 @@ export default function DepartmentManagePanel() {
         try {
             await add({'pid': pid, 'title': title}).then((res: any) => {
                 const {code, msg, data} = res;
-                if (code === '0' && data) {
+                if (code === '0') {
                     id = data.id;
                 } else {
-                    Message.error("System Error,add department node failed!")
+                    Message.error(res.message || t['system.error'])
                 }
             });
         } catch (error) {
-            console.error("error is:" + error);
-            Message.error("System Error,add department node failed!")
+            console.log(error);
+            Message.error(t['system.error']);
         } finally {
             setLoading(false);
         }
@@ -90,12 +77,12 @@ export default function DepartmentManagePanel() {
                 if (code === '0') {
                     result = code;
                 } else {
-                    Message.error("System Error,drag department node failed!")
+                    Message.error(res.message || t['system.error'])
                 }
             });
         } catch (error) {
-            console.error("error is:" + error);
-            Message.error("System Error,drag department node failed!")
+            console.log(error);
+            Message.error(t['system.error']);
         } finally {
             setLoading(false);
         }
@@ -112,12 +99,12 @@ export default function DepartmentManagePanel() {
                 if (code === '0') {
                     result = code;
                 } else {
-                    Message.error("System Error,update department node failed!")
+                    Message.error(res.message || t['system.error'])
                 }
             });
         } catch (error) {
-            console.error("error is:" + error);
-            Message.error("System Error,update department node failed!")
+            console.log(error);
+            Message.error(t['system.error']);
         } finally {
             setLoading(false);
         }
@@ -139,8 +126,8 @@ export default function DepartmentManagePanel() {
                 }
             });
         } catch (error) {
-            console.error("error is:" + error);
-            Message.error("System Error,delete department node failed!")
+            console.log(error);
+            Message.error(t['system.error']);
         } finally {
             setLoading(false);
         }
@@ -152,8 +139,8 @@ export default function DepartmentManagePanel() {
         return treeData.map((item) => {
             const { children, key, ...ret} = item;
             return (
-                <Tree.Node icon={children || item.key == "0" ? <IconFolder /> : <IconFile/> }
-                           key={key} {...ret} dataRef={item}>
+                <Tree.Node icon={children || item.id == "0" ? <IconFolder /> : <IconFile/> }
+                           key={item.id} title={item.name}  {...ret} dataRef={item}>
                     {children ? generatorTreeNodes(item.children) : null}
                 </Tree.Node>
             );
@@ -201,17 +188,11 @@ export default function DepartmentManagePanel() {
         return params;
     }
 
-  const [treeData, setTreeData] = useState([]);
-  const editRef = useRef(null);
-  const treeRef = useRef<Tree>(null);
-    const [selectedKeys, setSelectedKeys] = useState([]);
-    const [checkedKeys, setCheckedKeys] = useState([]);
-    const [expandedKeys, setExpandedKeys] = useState([]);
+
 
     return (
-        <Spin loading={loading} size={20} delay={500}  style={{ display: 'block' }}>
-      <div className={styles['chat-panel']} style={{ display:`${visible ? 'block' : 'none'}` }}>
-
+        <Spin loading={loading} size={20} style={{ display: 'block' }}>
+      <div className={styles['chat-panel']}>
         <Tree
             ref={treeRef}
             draggable={true}
@@ -336,7 +317,7 @@ export default function DepartmentManagePanel() {
                               });
                               titleNode.dispatchEvent(clickEvent);
                               const originTitle = node.dataRef.title;
-                              node.dataRef.title = <Input type={"text"} ref={editRef} autoFocus={true}
+                              node.dataRef.title = <Input type={"text"} autoFocus={true}
                                                             style={{
                                                                 width: 120,
                                                                 height: 19,
