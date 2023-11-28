@@ -4,8 +4,8 @@ import {IconFile, IconFolder, IconMinus, IconPen, IconPlus} from '@arco-design/w
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import {queryAll, add, dragTo, deleteById, updateById} from "@/api/department";
 import {ResultData} from "@/types/insights-common";
+import {requestCreate, requestDeleteById, requestDragTo, requestQueryAll, requestUpdateById} from "@/api/department";
 
 export default function DepartmentManagePanel() {
     const t = useLocale(locale);
@@ -19,7 +19,7 @@ export default function DepartmentManagePanel() {
     async function fetchData() {
         setLoading(true);
         try {
-            await queryAll().then((res:ResultData) => {
+            await requestQueryAll().then((res:ResultData) => {
                 const {code, message} = res;
                 let data = res.data;
                 if (code === '0') {
@@ -49,7 +49,7 @@ export default function DepartmentManagePanel() {
         setLoading(true);
         let id = "-1";
         try {
-            await add({'pid': pid, 'title': title}).then((res: any) => {
+            await requestCreate({'pid': pid, 'title': title}).then((res: any) => {
                 const {code, msg, data} = res;
                 if (code === '0') {
                     id = data.id;
@@ -71,7 +71,7 @@ export default function DepartmentManagePanel() {
         setLoading(true);
         let result = "-1";
         try {
-            await dragTo({'id': id, 'destPid': destPid}).then((res: any) => {
+            await requestDragTo({'id': id, 'destPid': destPid}).then((res: any) => {
                 console.log("drag node res:" + JSON.stringify(res));
                 const {code, msg, data} = res;
                 if (code === '0') {
@@ -93,7 +93,7 @@ export default function DepartmentManagePanel() {
         setLoading(true);
         let result = "-1";
         try {
-            await updateById({'id': id, 'title': title}).then((res: any) => {
+            await requestUpdateById({'id': id, 'title': title}).then((res: any) => {
                 const {code, message, data} = res;
                 if (code === '0') {
                     result = code;
@@ -115,7 +115,7 @@ export default function DepartmentManagePanel() {
         setLoading(true);
         let result = "-1";
         try {
-            await deleteById({'id': id}).then((res: any) => {
+            await requestDeleteById({'id': id}).then((res: any) => {
                 const {code, message, data} = res;
                 if (code === '0') {
                     result = code;

@@ -16,7 +16,7 @@ import styles from './style/index.module.less';
 import '../../department/mock';
 import { getColumns } from './constants';
 import {requestList, requestChangeState, requestDelete, requestResetPasswd} from "@/api/user";
-import {queryAll as queryDepartmentAll} from "@/api/department";
+import {requestQueryAll as queryDepartmentAll} from "@/api/department";
 import {stringifyMap, stringifyObj} from "@/utils/util";
 import {NodeProps, TreeProps} from "@arco-design/web-react/es/Tree/interface";
 import {Department, User} from "@/types/insights-web";

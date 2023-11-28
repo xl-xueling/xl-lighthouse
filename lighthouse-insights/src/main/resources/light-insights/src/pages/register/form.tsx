@@ -15,7 +15,7 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import { registerRequest } from '@/api/register'
-import { queryAll as queryAllDepartment } from "@/api/department";
+import { requestQueryAll as queryAllDepartment } from "@/api/department";
 
 export default function RegisterForm() {
   const formRef = useRef<FormInstance>();
@@ -25,7 +25,7 @@ export default function RegisterForm() {
 
     const t = useLocale(locale);
     useEffect(() => {
-        queryAllDepartment(null).then((res:any) => {
+        queryAllDepartment().then((res:any) => {
             const {code, msg, data} = res;
             if (code === '0') {
                 const departmentMap = new Map();
