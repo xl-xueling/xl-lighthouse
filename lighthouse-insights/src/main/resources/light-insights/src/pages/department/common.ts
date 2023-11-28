@@ -1,5 +1,5 @@
 import {Department, DepartmentArcoFlatNode, DepartmentArcoTreeNode} from "@/types/insights-web";
-import {queryAll as queryDepartmentAll} from "@/api/department";
+import {requestQueryAll as queryDepartmentAll} from "@/api/department";
 import {Message} from "@arco-design/web-react";
 
 export async function fetchAllData(): Promise<Array<Department>> {
