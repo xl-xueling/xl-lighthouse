@@ -37,7 +37,6 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import {requestList} from "@/api/project";
-import {NodeOption, ResultData} from "@/types/insights-common";
 import {Department, PrivilegeEnum, Project, ProjectPagination} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {getDataWithLocalCache} from "@/utils/localCache";

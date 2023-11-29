@@ -13,7 +13,7 @@ import {
   Skeleton, TreeSelect,
 } from '@arco-design/web-react';
 import {useSelector} from "react-redux";
-import {Department, DepartmentArcoTreeNode, User} from "@/types/insights-web";
+import {Department, ArcoTreeNode, User} from "@/types/insights-web";
 import {stringifyObj} from "@/utils/util";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import {
@@ -36,7 +36,7 @@ function InfoForm() {
 
   const [formLoading, setFormLoading] = useState(false);
 
-  const [departmentData, setDepartmentData] = useState<Array<DepartmentArcoTreeNode>>(null);
+  const [departmentData, setDepartmentData] = useState<Array<ArcoTreeNode>>(null);
 
   useEffect(() => {
     // const proc = async ():Promise<Array<Department>> => {

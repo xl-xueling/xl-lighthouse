@@ -14,8 +14,8 @@ import useLocale from '@/utils/useLocale';
 import locale from '../manage/locale';
 import styles from '../manage/style/index.module.less';
 import {requestStructure} from "@/api/project";
-import {ArcoTreeNode} from "@/types/insights-common";
 import {stringifyObj} from "@/utils/util";
+import {ArcoTreeNode} from "@/types/insights-web";
 
 export default function ProjectTree({projectId,editEnable= true
      ,filterTypes=new Array<number>()

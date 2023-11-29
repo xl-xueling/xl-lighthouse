@@ -16,6 +16,7 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import { registerRequest } from '@/api/register'
 import { requestQueryAll as queryAllDepartment } from "@/api/department";
+import DepartmentTreeSelect from "@/pages/department/common/select";
 
 export default function RegisterForm() {
   const formRef = useRef<FormInstance>();
@@ -24,42 +25,6 @@ export default function RegisterForm() {
   const [departmentOptions, setDepartmentOptions] = useState([]);
 
     const t = useLocale(locale);
-    useEffect(() => {
-        queryAllDepartment().then((res:any) => {
-            const {code, msg, data} = res;
-            if (code === '0') {
-                const departmentMap = new Map();
-                data.forEach(x => {
-                    departmentMap.set(x.id,x);
-                })
-                const newOptions = data.map(function(department) {
-                    let name = '';
-                    const fullpath = department.fullpath;
-                    const parentArr = fullpath.split(",");
-                    for (let i = 0; i < parentArr.length; i++) {
-                        const department = departmentMap.get(parentArr[i]);
-                        name += department.name;
-                        if(i !== parentArr.length - 1){
-                            name += "_";
-                        }
-                    }
-                    return {
-                        label:name,
-                        value:department.id,
-                        key:department.id
-                    }
-                }).filter(x => x.key !== "0")
-                setDepartmentOptions(newOptions);
-            } else {
-                setErrorMessage(msg || t['register.form.getDepartmentsInfo.errMsg']);
-            }
-        },
-            (error) => {
-                setErrorMessage(t['system.error']);
-            })
-    }, [departmentOptions]);
-
-
 
   async function register(params) {
     setErrorMessage('');
@@ -148,32 +113,11 @@ export default function RegisterForm() {
             />
             </FormItem>
             <FormItem
-                field='phone'
-                rules={[
-                    { required: true, message: t['register.form.phone.errMsg'] , validateTrigger : ['onBlur']},
-                ]}>
-                <Input prefix={<IconPhone />} placeholder='Enter Your Phone Number' />
-            </FormItem>
-            <FormItem
                 field='department'
                 rules={[
                     { required: true, message: t['register.form.department.errMsg'] , validateTrigger : ['onBlur']},
                 ]}>
-                <Select prefix={<IconIdcard/>}
-                    placeholder='Please Select Department'
-                        showSearch={{
-                            retainInputValue: true,
-                        }}
-                        filterOption={function (inputValue,option) {
-                            return option.props.children.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0
-                        }}
-                    >
-                    {departmentOptions.map((option, index) => (
-                        <Select.Option key={option.value}  value={option.value}>
-                            {option.label}
-                        </Select.Option>
-                    ))}
-                </Select>
+                <DepartmentTreeSelect />
             </FormItem>
             <FormItem>
                 <Button style={{marginBottom:16}} type='primary' htmlType='submit' long loading={loading}>
