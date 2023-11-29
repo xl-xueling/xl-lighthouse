@@ -7,7 +7,7 @@ import {
 } from '@arco-design/web-react';
 import { FormInstance } from '@arco-design/web-react/es/Form';
 import { IconLock, IconUser } from '@arco-design/web-react/icon';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useRef, useState } from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
@@ -15,11 +15,10 @@ import {requestLogin} from "@/api/user";
 import {ResultData} from "@/types/insights-common";
 
 export default function LoginForm() {
+  const t = useLocale(locale);
   const formRef = useRef<FormInstance>();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const t = useLocale(locale);
-
   const [agreeLicence,setAgreeLicence] = useState(true);
 
   async function login(params) {

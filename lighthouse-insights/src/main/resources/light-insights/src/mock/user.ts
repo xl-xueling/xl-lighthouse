@@ -17,7 +17,7 @@ if (!isSSR) {
         if (!userName) {
           return {
             code:'1',
-            msg:'用户名不能为空',
+            message:'用户名不能为空',
             data:{
             }
           };
@@ -25,14 +25,14 @@ if (!isSSR) {
         if (!password) {
           return {
             code:'2',
-            msg:'密码不能为空',
+            message:'密码不能为空',
             data:{}
           };
         }
         if (userName === 'admin' && password === 'admin') {
           return {
             code:'0',
-            msg:'登录成功！',
+            message:'登录成功！',
             data:{
               token:"sasucessawwxoks"
             }
@@ -40,7 +40,7 @@ if (!isSSR) {
         }
         return {
           code:'3',
-          msg:'账号密码错误！',
+          message:'账号密码错误！',
           data:{}
         };
       });
