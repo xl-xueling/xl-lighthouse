@@ -55,8 +55,10 @@ function Navbar({ show }: { show: boolean }) {
   function onMenuItemClick(key) {
     if (key === 'logout') {
       logout();
+    }else if(key === 'settings'){
+      window.location.href = '/user/settings';
     } else {
-      Message.info(`You clicked ${key}`);
+      //Message.info(`You clicked ${key}`);
     }
   }
 
@@ -91,7 +93,7 @@ function Navbar({ show }: { show: boolean }) {
 
   const droplist = (
     <Menu onClickMenuItem={onMenuItemClick}>
-      <Menu.Item key="setting">
+      <Menu.Item key="settings">
         <IconSettings className={styles['dropdown-icon']} />
         {t['menu.user.setting']}
       </Menu.Item>

@@ -33,9 +33,6 @@ import EditTable, {
     EditTableColumnProps,
     EditTableComponentEnum
 } from "@/pages/common/edittable/EditTable";
-import MyProject from "@/pages/user/info/my-projects";
-import MyTeam from "@/pages/user/info/my-team";
-import QuickOperation from "@/pages/dashboard/monitor/quick-operation";
 const { Row, Col } = Grid;
 
 export default function GroupEditPanel({groupId,onClose}) {
