@@ -1,17 +1,22 @@
 import {
     Form,
     Input,
-    Button, Message,
+    Button, Message, TreeSelect, Modal,
 } from '@arco-design/web-react';
 import { FormInstance } from '@arco-design/web-react/es/Form';
-import {IconEmail, IconLock, IconUser} from '@arco-design/web-react/icon';
-import React, {useRef, useState } from 'react';
+import {IconEmail, IconIdcard, IconLock, IconUser} from '@arco-design/web-react/icon';
+import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import DepartmentTreeSelect from "@/pages/department/common/select";
 import {requestRegister} from "@/api/register";
 import {ResultData} from "@/types/insights-common";
+import {getDataWithLocalCache} from "@/utils/localCache";
+import {fetchAllDepartmentData, translate} from "@/pages/department/common";
+import {ArcoTreeNode} from "@/types/insights-web";
+
+import { Notification } from '@arco-design/web-react';
 
 export default function RegisterForm() {
 
@@ -20,24 +25,39 @@ export default function RegisterForm() {
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
     const FormItem = Form.Item;
+    const [treeData,setTreeData] = useState([]);
+
+    useEffect(() => {
+        const proc = async () => {
+            const allDepartInfo = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
+            if(allDepartInfo){
+                const data: ArcoTreeNode[] = translate(allDepartInfo);
+                setTreeData(data);
+            }
+        }
+        proc().then();
+    },[])
 
       async function register(params) {
-        setLoading(true);
-        try{
+          setLoading(true);
           await requestRegister(params).then((response:ResultData) => {
-                const {code, message, data} = response;
-                if (code === '0') {
-                    window.location.href = '/login';
-                } else {
-                  Message.error(message || t['register.form.register.errMsg']);
-                }
+                  const {code, message, data} = response;
+                  if (code === '0') {
+                      Message.success({
+                          content: t['register.form.success'],
+                          closable: true,
+                          duration: 10000,
+                          onClose:() => {
+                              window.location.href = '/login'
+                            }
+                      });
+                  } else {
+                      Message.error(message || t['register.form.register.errMsg']);
+                  }
               }
           ).finally(() => {
-                setLoading(false);
-          });
-        }catch (error){
-          console.log(error);
-        }
+              setLoading(false);
+          })
       }
 
   function onSubmitClick() {
@@ -46,7 +66,8 @@ export default function RegisterForm() {
               register(values).then();
           });
       }catch (error){
-          console.log(error)
+          console.log(error);
+          Message.error(t['system.error']);
       }
   }
 
@@ -108,7 +129,12 @@ export default function RegisterForm() {
                 rules={[
                     { required: true, message: t['register.form.department.errMsg'] , validateTrigger : ['onBlur']},
                 ]}>
-                <DepartmentTreeSelect />
+                <TreeSelect prefix={<IconIdcard/>} showSearch={true}
+                            filterTreeNode={(inputText,node) => {
+                                return node.props.title.toLowerCase().indexOf(inputText.toLowerCase()) > -1;
+                            }}
+                            placeholder='Select Department'
+                            allowClear={true}  treeData={treeData} />
             </FormItem>
             <FormItem>
                 <Button style={{marginBottom:16}} type='primary' htmlType='submit' long loading={loading}>
