@@ -8,27 +8,6 @@ import styles from './style/index.module.less';
 
 const { Text } = Typography;
 
-function confirm() {
-  Modal.confirm({
-    title: 'Confirm deletion',
-    content:
-        'Are you sure you want to delete the 3 selected items? ',
-    okButtonProps: {
-      status: 'default',
-    },
-    onOk: () => {
-      return new Promise((resolve, reject) => {
-        setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-      }).catch((e) => {
-        Message.error({
-          content: 'Error occurs!',
-        });
-        throw e;
-      });
-    },
-  });
-}
-
 export function getColumns(t: any,callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
     {

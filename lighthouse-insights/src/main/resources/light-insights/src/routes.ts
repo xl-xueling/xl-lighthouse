@@ -126,6 +126,11 @@ export const routes: IRoute[] = [
         key: 'user/list',
       },
       {
+        name: 'menu.system.user.settings',
+        key: 'user/settings',
+        ignore:true,
+      },
+      {
         name: 'menu.system.filterComponents',
         key: 'components/filter/list',
       },
