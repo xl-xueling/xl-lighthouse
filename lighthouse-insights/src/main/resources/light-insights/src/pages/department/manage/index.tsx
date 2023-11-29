@@ -1,6 +1,8 @@
 import React from 'react';
-import DepartmentManagePanel from './department_manage';
+
 import styles from './style/index.module.less';
+import DepartmentManagePanel from "./department_manage";
+
 
 export default function DepartmentManageIndex() {
   return (

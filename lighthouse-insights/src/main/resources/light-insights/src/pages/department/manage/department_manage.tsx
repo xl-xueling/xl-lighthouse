@@ -6,6 +6,7 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import {ResultData} from "@/types/insights-common";
 import {requestCreate, requestDeleteById, requestDragTo, requestQueryAll, requestUpdateById} from "@/api/department";
+import {stringifyObj} from "@/utils/util";
 
 export default function DepartmentManagePanel() {
     const t = useLocale(locale);
@@ -131,13 +132,14 @@ export default function DepartmentManagePanel() {
         return result;
     }
 
-    const generatorTreeNodes = (treeData) => {
+    const generatorTreeNodes = (treeData,pid = "0") => {
         return treeData.map((item) => {
             const { children, key, ...ret} = item;
+            item.pid = pid;
             return (
                 <Tree.Node icon={children || item.id == "0" ? <IconFolder /> : <IconFile/> }
                            key={item.id} title={item.name}  {...ret} dataRef={item}>
-                    {children ? generatorTreeNodes(item.children) : null}
+                    {children ? generatorTreeNodes(item.children,item.id) : null}
                 </Tree.Node>
             );
         });
@@ -156,7 +158,7 @@ export default function DepartmentManagePanel() {
         const params = dataArray;
         const loop = (data) => {
             data.map((item,index) => {
-                if(item.key === inputValue) {
+                if(item.id === inputValue) {
                     data.splice(index,1);
                 }
                 if (item.children) {
@@ -207,7 +209,7 @@ export default function DepartmentManagePanel() {
                     }
                     const loop = (data, key, callback) => {
                         data.some((item, index, arr) => {
-                            if (item.key === key) {
+                            if (item.id === key) {
                                 callback(item, index, arr);
                                 return true;
                             }
@@ -261,24 +263,24 @@ export default function DepartmentManagePanel() {
                                   titleNode.dispatchEvent(event);
                                   const dataChildren = node.dataRef.children || [];
                                   const title = node._key + '-' + (dataChildren.length + 1);
-                                  const currentId = await addNode( node.dataRef.key, title);
+                                  const currentId = await addNode( node.dataRef.id, title);
                                   if(currentId == "-1"){
                                       return;
                                   }
                                   dataChildren.push({
-                                      title: "New Node_" + currentId,
-                                      key: currentId,
+                                      name: "New Node_" + currentId,
+                                      id: currentId,
                                   });
                                   node.dataRef.children = dataChildren;
                                   setTreeData([...treeData]);
-                                  const newArr = [...expandedKeys].filter(item => item !== node.dataRef.key);
-                                  setExpandedKeys([...newArr, node.dataRef.key]);
+                                  const newArr = [...expandedKeys].filter(item => item !== node.dataRef.id);
+                                  setExpandedKeys([...newArr, node.dataRef.id]);
                               }}
                           />
                           {node._level != 0  &&  (
                               <IconPen
                                   style={{
-                                      display:`${node.dataRef.key != "0" ? 'block' : 'none'}`,
+                                      display:`${node.dataRef.id != "0" ? 'block' : 'none'}`,
                                       position: 'absolute',
                                       right: 25,
                                       fontSize: 13,
@@ -324,15 +326,15 @@ export default function DepartmentManagePanel() {
                                                                   }}
                                       />;
                                       setTreeData([...treeData]);
-                                      const newArr = [...expandedKeys].filter(item => item !== node.dataRef.key);
-                                      setExpandedKeys([...newArr, node.dataRef.key]);
+                                      const newArr = [...expandedKeys].filter(item => item !== node.dataRef.id);
+                                      setExpandedKeys([...newArr, node.dataRef.id]);
                                   }}
                               />
                           )}
                           {node._level != 0 && (
                               <IconMinus
                                   style={{
-                                      display:`${node.dataRef.key != "0" ? 'block' : 'none'}`,
+                                      display:`${node.dataRef.id != "0" ? 'block' : 'none'}`,
                                       position: 'absolute',
                                       right: 8,
                                       fontSize: 13,
@@ -344,11 +346,11 @@ export default function DepartmentManagePanel() {
                                       if (dataChildren.length > 0) {
                                           Message.error('The node has child,delete child-node first!')
                                       } else {
-                                          const result = await deleteNode(node.dataRef.key);
+                                          const result = await deleteNode(node.dataRef.id);
                                           if (result == "-1") {
                                               return;
                                           }
-                                          const w = deleteNodeByKey([...treeData], node.dataRef.key)
+                                          const w = deleteNodeByKey([...treeData], node.dataRef.id)
                                           setTreeData([...w]);
                                       }
                                   }}
