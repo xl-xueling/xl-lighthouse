@@ -35,9 +35,10 @@ export default function UserList() {
   };
 
   const [pagination, setPagination] = useState<PaginationProps>({
+    sizeOptions: [15,20,30,50],
     sizeCanChange: true,
     showTotal: true,
-    pageSize: 20,
+    pageSize: 15,
     current: 1,
     pageSizeChangeResetCurrent: true,
   });
