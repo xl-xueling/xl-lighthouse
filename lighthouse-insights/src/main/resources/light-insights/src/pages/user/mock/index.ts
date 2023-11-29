@@ -108,7 +108,7 @@ setupMock({
         });
 
 
-        Mock.mock(new RegExp('/api/v1/user/userInfo'), () => {
+        Mock.mock(new RegExp('/api/v1/user/fetchUserInfo'), () => {
             const userRole = window.localStorage.getItem('userRole') || 'admin';
             const data = Mock.mock({
                 "id": /[0-9]{8}/,
@@ -126,6 +126,24 @@ setupMock({
                 code:'0',
                 message:'success',
                 data:data
+            };
+        });
+
+
+        Mock.mock(new RegExp('/api/v1/user/register'), (params) => {
+            console.log("receive params:" + JSON.stringify(params));
+            const { userName, password } = JSON.parse(params.body);
+            if (userName === 'admin' && password === 'admin') {
+                return {
+                    code:'0',
+                    msg:'注册成功！',
+                    data:{}
+                };
+            }
+            return {
+                code:'0',
+                msg:'注册成功！',
+                data:{}
             };
         });
 

@@ -2,14 +2,12 @@ import {
   Form,
   Input,
   Checkbox,
-  Link,
   Button,
   Space, Message,
 } from '@arco-design/web-react';
 import { FormInstance } from '@arco-design/web-react/es/Form';
 import { IconLock, IconUser } from '@arco-design/web-react/icon';
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 import useStorage from '@/utils/useStorage';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -56,7 +54,7 @@ export default function LoginForm() {
             setLoading(false);
       });
     }catch (error){
-      console.log("error:" + error);
+      console.log(error);
     }
   }
 
@@ -66,7 +64,7 @@ export default function LoginForm() {
         login(values);
       });
     }catch (error){
-      console.log("error:" + error)
+      console.log(error)
     }
   }
 
@@ -89,10 +87,10 @@ export default function LoginForm() {
         layout="vertical"
         form={form}
         ref={formRef}
+        autoComplete='off'
         initialValues={{ userName: '', password: '' }}
         onSubmit={(v) => {
           onSubmitClick();
-          Message.success('success');
         }}
       >
         <Form.Item
@@ -101,6 +99,7 @@ export default function LoginForm() {
         >
           <Input
             prefix={<IconUser />}
+            autoComplete='off'
             placeholder={t['login.form.userName.placeholder']}
             onPressEnter={onSubmitClick}
           />
@@ -111,6 +110,7 @@ export default function LoginForm() {
         >
           <Input.Password
             prefix={<IconLock />}
+            autoComplete='off'
             placeholder={t['login.form.password.placeholder']}
             onPressEnter={onSubmitClick}
           />
