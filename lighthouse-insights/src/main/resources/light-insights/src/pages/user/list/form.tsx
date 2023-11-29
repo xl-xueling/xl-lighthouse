@@ -1,34 +1,29 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import dayjs from 'dayjs';
 import {
   Form,
   Input,
   Select,
-  DatePicker,
   Button,
-  Grid, TreeSelect, Spin,
+  Grid, TreeSelect,
 } from '@arco-design/web-react';
 import { GlobalContext } from '@/context';
 import locale from './locale';
 import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import styles from './style/index.module.less';
-import {stringifyMap, stringifyObj} from "@/utils/util";
+import {getDataWithLocalCache} from "@/utils/localCache";
+import {fetchAllDepartmentData, translate} from "@/pages/department/common";
+import {ArcoTreeNode} from "@/types/insights-web";
 
 const { Row, Col } = Grid;
-const { useForm } = Form;
 
-function SearchForm(props: {
-  departmentMap:Map<any,any>;
-  onSearch: (values: Record<string, any>) => void;
-}):any {
+function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
   const { lang } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [treeData, setTreeData] = useState([]);
   const treeRef = useRef(null);
   const t = useLocale(locale);
-  const [form] = useForm();
-
+  const [form] = Form.useForm();
   const handleSubmit = () => {
     const values = form.getFieldsValue();
     props.onSearch(values);
@@ -41,21 +36,17 @@ function SearchForm(props: {
 
   const colSpan = lang === 'zh-CN' ? 8 : 12;
 
-  function translateData(list, rootPid) {
-    const nodeArr = []
-    list.forEach(item => {
-      if (item.pid === rootPid) {
-        item.key = item.id;
-        item.title = item.name;
-        nodeArr.push(item)
-        const children = translateData(list, item.id)
-        if (children.length) {
-          item.children = children
-        }
+  useEffect(() => {
+    const proc = async () => {
+      const allDepartInfo = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
+      if(allDepartInfo){
+        const data: ArcoTreeNode[] = translate(allDepartInfo);
+        setTreeData(data);
       }
-    })
-    return nodeArr;
-  }
+    }
+    proc().then();
+  },[])
+
 
   return (
     <div className={styles['search-form-wrapper']}>
@@ -80,54 +71,30 @@ function SearchForm(props: {
               />
             </Form.Item>
           </Col>
-          {/*<Col span={colSpan}>*/}
-          {/*  <Form.Item*/}
-          {/*    label={t['userList.columns.state']}*/}
-          {/*    field="state"*/}
-          {/*  >*/}
-          {/*    <Select*/}
-          {/*      placeholder={t['userList.state.placeholder']}*/}
-          {/*      options={ContentType.map((item, index) => ({*/}
-          {/*        label: item,*/}
-          {/*        value: index,*/}
-          {/*      }))}*/}
-          {/*      mode="multiple"*/}
-          {/*      allowClear*/}
-          {/*    />*/}
-          {/*  </Form.Item>*/}
-          {/*</Col>*/}
           <Col span={colSpan}>
             <Form.Item
-              label={t['userList.columns.createdTime']}
-              field="createdTime"
+              label={t['userList.columns.state']}
+              field="state"
             >
-              <DatePicker.RangePicker
-                  allowClear
-                  style={{ width: '100%' }}
-                  disabledDate={(date) => dayjs(date).isAfter(dayjs())}
-              />
+              <Select
+                placeholder={t['userList.state.placeholder']}
+                mode="multiple"
+                allowClear
+              >
+                <Select.Option value={0}>{t['userList.columns.state.pending']}</Select.Option>
+                <Select.Option value={1}>{t['userList.columns.state.normal']}</Select.Option>
+                <Select.Option value={2}>{t['userList.columns.state.frozen']}</Select.Option>
+              </Select>
             </Form.Item>
           </Col>
           <Col span={colSpan}>
             <Form.Item label={t['userList.columns.department']} field="department">
               <TreeSelect
                   ref={treeRef}
-                  placeholder={"Please select"}
+                  placeholder={"Please Select"}
                   multiple={true}
                   allowClear={true}
-                  treeData={translateData([...props.departmentMap.values()],"0")}
-                  onChange={(e,v) => {
-                    if(!e || e.length == '0'){
-                      console.log("---reset fields...." + stringifyObj(v))
-                      console.log("ref:" + treeRef.current)
-                      form.resetFields();
-                      return;
-                    }
-                  }}
-                  onClear={(z) => {
-                    console.log("----z is:" + stringifyObj(z));
-                  }}
-                  style={{ width: '100%'}}
+                  treeData={treeData}
               />
             </Form.Item>
           </Col>

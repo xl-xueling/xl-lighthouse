@@ -80,54 +80,39 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
             <Popconfirm
                 focusLock
                 title='Confirm'
-                content='Are you sure to reset this user password?'
+                content= {t['userList.form.resetpasswd.confirm']}
                 onOk={() => callback(record, 'resetPasswd')}
-                onCancel={() => {
-                  Message.error({
-                    content: 'cancel',
-                  });
-                }}
             >
               <Button
                   type="secondary"
                   size="mini">
-                {'密码重置'}
+                {t['userList.columns.operations.resetpasswd']}
               </Button>
             </Popconfirm>
 
             <Popconfirm
                 focusLock
                 title='Confirm'
-                content='Are you sure to frozen this user?'
+                content={t['userList.form.frozen.confirm']}
                 onOk={() => callback(record, 'frozen')}
-                onCancel={() => {
-                  Message.error({
-                    content: 'cancel',
-                  });
-                }}
             >
               <Button
                   type="secondary"
                   size="mini">
-                  {'冻结'}
+                  {t['userList.columns.operations.frozen']}
               </Button>
             </Popconfirm>
 
             <Popconfirm
                 focusLock
                 title='Confirm'
-                content='Are you sure to delete this user?'
+                content={t['userList.form.delete.confirm']}
                 onOk={() => callback(record, 'delete')}
-                onCancel={() => {
-                  Message.error({
-                    content: 'cancel',
-                  });
-                }}
             >
               <Button
                   type="secondary"
                   size="mini">
-                {'删除'}
+                  {t['userList.columns.operations.delete']}
               </Button>
             </Popconfirm>
           </Space>

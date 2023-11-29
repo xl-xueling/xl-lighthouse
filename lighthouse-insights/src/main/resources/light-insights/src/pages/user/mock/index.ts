@@ -8,7 +8,7 @@ setupMock({
     setup: () => {
         const { list } = Mock.mock(
             {
-            'list|10': [
+            'list|100': [
                 {
                     "id": /[0-9]{8}/,
                     "userName":'@name()',
@@ -30,7 +30,7 @@ setupMock({
                 message:'success',
                 data:{
                     'list':list,
-                    'total':10,
+                    'total':80,
                 }
             };
         });

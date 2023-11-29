@@ -14,6 +14,7 @@ import {Department, User} from "@/types/insights-web";
 import {useSelector} from "react-redux";
 import {translateToMapStruct} from "@/pages/department/common";
 import {ResultData} from "@/types/insights-common";
+import SearchForm from "@/pages/user/list/form";
 const { Title } = Typography;
 
 export default function UserList() {
@@ -36,7 +37,7 @@ export default function UserList() {
   const [pagination, setPagination] = useState<PaginationProps>({
     sizeCanChange: true,
     showTotal: true,
-    pageSize: 10,
+    pageSize: 20,
     current: 1,
     pageSizeChangeResetCurrent: true,
   });
@@ -163,7 +164,7 @@ export default function UserList() {
   }
   return (
     <Card>
-      {/*<SearchForm departmentMap={[]} onSearch={handleSearch} />*/}
+      <SearchForm onSearch={handleSearch} />
       <PermissionWrapper
         requiredPermissions={[
           { resource: 'menu.list.searchTable', actions: ['write'] },
@@ -172,6 +173,7 @@ export default function UserList() {
       </PermissionWrapper>
       <Table
         rowKey="id"
+        size={"small"}
         loading={loading}
         onChange={onChangeTable}
         pagination={pagination}
