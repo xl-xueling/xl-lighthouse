@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './style/index.module.less';
-import DepartmentManagePanel from "./department_manage";
+import ManagePanel from "./manage";
 
 
 export default function DepartmentManageIndex() {
@@ -9,7 +9,7 @@ export default function DepartmentManageIndex() {
     <div>
       <div className={styles.layout}>
         <div className={styles['layout-left-side']}>
-          <DepartmentManagePanel />
+          <ManagePanel />
         </div>
       </div>
     </div>
