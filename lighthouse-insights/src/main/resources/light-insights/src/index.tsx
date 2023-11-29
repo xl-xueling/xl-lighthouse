@@ -17,7 +17,7 @@ import changeTheme from './utils/changeTheme';
 import useStorage from './utils/useStorage';
 import './mock';
 import Register from "@/pages/register";
-import {requestUserInfo} from "@/api/user";
+import {requestFetchUserInfo} from "@/api/user";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import {Department} from "@/types/insights-web";
 import {requestQueryAll as queryDepartmentAll} from "@/api/department";
@@ -70,7 +70,7 @@ function Index() {
       payload: {allDepartInfo: allDepartInfo},
     })
 
-    requestUserInfo().then((resultData) => {
+    requestFetchUserInfo().then((resultData) => {
       const userInfo = resultData.data;
       const departs = allDepartInfo.filter(z => z.id.toString === userInfo.id.toString);
       if(departs){

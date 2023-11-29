@@ -10,7 +10,15 @@ export async function requestList(data) :Promise<ResultData<{list:Array<User>,to
     })
 }
 
-export async function requestQueryByIds(data:{"ids":Array<number>}) :Promise<ResultData<{list:Array<User>}>>  {
+export async function requestFetchUserInfo():Promise<ResultData>  {
+    return request({
+        url:'/user/fetchUserInfo',
+        method:'POST',
+    })
+}
+
+
+export async function requestQueryByIds(data:{ids:Array<number>}) :Promise<ResultData<{list:Array<User>}>>  {
     return request({
         url:'/user/queryByIds',
         method:'POST',
@@ -18,15 +26,13 @@ export async function requestQueryByIds(data:{"ids":Array<number>}) :Promise<Res
     })
 }
 
-export async function requestTermList(data:string) :Promise<ResultData<{list:Array<User>,total:number}>>  {
+export async function requestTermList(input:string) :Promise<ResultData<{list:Array<User>,total:number}>>  {
     return request({
         url:'/user/termList',
         method:'POST',
-        data,
+        input,
     })
 }
-
-
 
 export async function requestUpdate(data:User) :Promise<ResultData>  {
     return request({
@@ -37,9 +43,9 @@ export async function requestUpdate(data:User) :Promise<ResultData>  {
 }
 
 
-export async function requestDelete(id:number) :Promise<ResultData>  {
+export async function requestDeleteById(id:number) :Promise<ResultData>  {
     return request({
-        url:'/user/delete',
+        url:'/user/deleteById',
         method:'POST',
         id,
     })
@@ -63,10 +69,4 @@ export async function requestChangeState(data) :Promise<ResultData>  {
 }
 
 
-export async function requestUserInfo():Promise<ResultData>  {
-    return request({
-        url:'/user/userInfo',
-        method:'POST',
-    })
-}
 

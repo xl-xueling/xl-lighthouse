@@ -1,7 +1,7 @@
 import {
     Form,
     Input,
-    Button, Message, TreeSelect, Modal,
+    Button, Message, TreeSelect,
 } from '@arco-design/web-react';
 import { FormInstance } from '@arco-design/web-react/es/Form';
 import {IconEmail, IconIdcard, IconLock, IconUser} from '@arco-design/web-react/icon';
@@ -9,14 +9,11 @@ import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import DepartmentTreeSelect from "@/pages/department/common/select";
 import {requestRegister} from "@/api/register";
 import {ResultData} from "@/types/insights-common";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import {fetchAllDepartmentData, translate} from "@/pages/department/common";
 import {ArcoTreeNode} from "@/types/insights-web";
-
-import { Notification } from '@arco-design/web-react';
 
 export default function RegisterForm() {
 
