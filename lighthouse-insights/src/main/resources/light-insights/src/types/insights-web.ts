@@ -33,7 +33,7 @@ export interface User {
     userName?: string;
     email?: string;
     phone?: string;
-    departmentId?: string|number;
+    departmentId?: number;
     departmentName?:string;
     state?:number;
     createdTime?:number;
