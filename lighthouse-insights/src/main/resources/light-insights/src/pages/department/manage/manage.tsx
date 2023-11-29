@@ -1,12 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Message, Popconfirm, Space, Spin, Tree} from '@arco-design/web-react';
+import {Input, Message, Popconfirm, Spin, Tree} from '@arco-design/web-react';
 import {IconFile, IconFolder, IconMinus, IconPen, IconPlus} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import {ResultData} from "@/types/insights-common";
 import {requestCreate, requestDeleteById, requestDragTo, requestQueryAll, requestUpdateById} from "@/api/department";
-import {stringifyObj} from "@/utils/util";
 
 export default function ManagePanel() {
     const t = useLocale(locale);
@@ -371,4 +370,5 @@ export default function ManagePanel() {
           </div>
         </Spin>
   );
+
 }
