@@ -30,6 +30,7 @@ const i18n = {
       'Internationalization, routing configuration, state management everything',
     'register.banner.slogan3': 'Access visualization enhancement tool AUX',
     'register.banner.subSlogan3': 'Realize flexible block development',
+    'register.form.success':'Registration Success!',
   },
   'zh-CN': {
     'register.form.title': 'XL-LightHouse',
@@ -60,6 +61,7 @@ const i18n = {
     'register.banner.subSlogan2': '国际化，路由配置，状态管理应有尽有',
     'register.banner.slogan3': '接入可视化增强工具AUX',
     'register.banner.subSlogan3': '实现灵活的区块式开发',
+    'register.form.success':'用户注册成功!',
   },
 };
 
