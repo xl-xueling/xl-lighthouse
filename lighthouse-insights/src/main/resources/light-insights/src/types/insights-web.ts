@@ -24,6 +24,7 @@ export interface DepartmentArcoTreeNode {
     children?:Array<DepartmentArcoTreeNode>;
 }
 
+
 export interface DepartmentArcoFlatNode {
     key: string;
     title: string;

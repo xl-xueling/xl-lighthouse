@@ -8,7 +8,7 @@ import {ResultData} from "@/types/insights-common";
 import {requestCreate, requestDeleteById, requestDragTo, requestQueryAll, requestUpdateById} from "@/api/department";
 import {stringifyObj} from "@/utils/util";
 
-export default function DepartmentManagePanel() {
+export default function ManagePanel() {
     const t = useLocale(locale);
     const [loading, setLoading] = useState(false);
     const [treeData, setTreeData] = useState([]);
