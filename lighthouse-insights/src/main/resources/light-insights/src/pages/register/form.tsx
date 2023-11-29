@@ -1,66 +1,58 @@
 import {
     Form,
     Input,
-    Checkbox,
-    Link,
-    Button,
-    Space, Message, Select, Avatar,
+    Button, Message,
 } from '@arco-design/web-react';
 import { FormInstance } from '@arco-design/web-react/es/Form';
-import {IconDesktop, IconDice, IconEmail, IconIdcard, IconLock, IconPhone, IconUser} from '@arco-design/web-react/icon';
-import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
-import useStorage from '@/utils/useStorage';
+import {IconEmail, IconLock, IconUser} from '@arco-design/web-react/icon';
+import React, {useRef, useState } from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import { registerRequest } from '@/api/register'
-import { requestQueryAll as queryAllDepartment } from "@/api/department";
 import DepartmentTreeSelect from "@/pages/department/common/select";
+import {requestRegister} from "@/api/register";
+import {ResultData} from "@/types/insights-common";
 
 export default function RegisterForm() {
-  const formRef = useRef<FormInstance>();
-  const [errorMessage, setErrorMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [departmentOptions, setDepartmentOptions] = useState([]);
 
     const t = useLocale(locale);
+    const formRef = useRef<FormInstance>();
+    const [loading, setLoading] = useState(false);
+    const [form] = Form.useForm();
+    const FormItem = Form.Item;
 
-  async function register(params) {
-    setErrorMessage('');
-    setLoading(true);
-    try{
-      await registerRequest(params).then((res:any) => {
-            const {code, msg, data} = res;
-            if (code === '0') {
-                window.location.href = '/login';
-            } else {
-              setErrorMessage(msg || t['register.form.register.errMsg']);
-            }
-          }
-      ).finally(() => {
-            setLoading(false);
-      });
-    }catch (error){
-      console.log("error:" + error);
-    }
-  }
+      async function register(params) {
+        setLoading(true);
+        try{
+          await requestRegister(params).then((response:ResultData) => {
+                const {code, message, data} = response;
+                if (code === '0') {
+                    window.location.href = '/login';
+                } else {
+                  Message.error(message || t['register.form.register.errMsg']);
+                }
+              }
+          ).finally(() => {
+                setLoading(false);
+          });
+        }catch (error){
+          console.log(error);
+        }
+      }
 
   function onSubmitClick() {
       try{
           formRef.current.validate().then((values) => {
-              register(values);
+              register(values).then();
           });
       }catch (error){
-          console.log("error:"+error)
+          console.log(error)
       }
   }
-    const [form] = Form.useForm();
-    const FormItem = Form.Item;
+
     return (
         <div className={styles['register-form-wrapper']}>
         <div className={styles['register-form-title']}>{t['register.form.title']}</div>
-        <div className={styles['register-form-error-msg']}>{errorMessage}</div>
         <Form
             form={form}
             ref={formRef}
@@ -68,7 +60,6 @@ export default function RegisterForm() {
             autoComplete='off'
             onSubmit={(v) => {
                 onSubmitClick();
-                Message.success('success');
             }}
         >
             <FormItem field='userName' rules={[
@@ -97,7 +88,7 @@ export default function RegisterForm() {
                                 return callback(t['register.form.confirm.password.equals.errMsg']);
                             }
                         }catch (error){
-                            console.log("error:" + error);
+                            console.log(error);
                         }
                     }
                 }]}

@@ -22,7 +22,6 @@ import {
 import styles from "@/pages/login/style/index.module.less";
 import {FormInstance} from "@arco-design/web-react/es/Form";
 import {requestUpdate} from "@/api/user";
-import {registerRequest} from "@/api/register";
 
 function InfoForm() {
 
