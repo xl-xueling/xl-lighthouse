@@ -13,6 +13,7 @@ import {requestList, requestChangeState, requestDeleteById, requestResetPasswd} 
 import {Department, User} from "@/types/insights-web";
 import {useSelector} from "react-redux";
 import {translateToMapStruct} from "@/pages/department/common";
+import {ResultData} from "@/types/insights-common";
 const { Title } = Typography;
 
 export default function UserList() {
@@ -98,10 +99,38 @@ export default function UserList() {
     }
     const departmentMap = translateToMapStruct(allDepartInfo);
     const promiseOfFetchUserData:Promise<Array<User>> = new Promise((resolve,reject) => {
+      setLoading(true);
       const proc = async () => {
-        return await fetchUserData();
+          let result = [];
+          const {current, pageSize} = pagination;
+          await requestList({
+            params: {
+              page: current,
+              pageSize,
+              ...formParams,
+            },
+          }).then((response:ResultData) => {
+            const {code, data ,message} = response;
+            if (code === '0') {
+              result = data.list;
+            }else{
+              Message.error(message || t['system.error']);
+            }
+            const {current, pageSize} = pagination;
+            setPagination({
+              ...pagination,
+              current,
+              pageSize,
+              total: data.total,
+            })
+            resolve(result);
+          }).catch(error => {
+            console.log(error);
+          }).finally(() => {
+            setLoading(false);
+          })
       }
-      resolve(proc());
+      proc().then();
     })
 
     const promiseAll:Promise<[Array<User>]> = Promise.all([
@@ -109,54 +138,16 @@ export default function UserList() {
     ]);
 
     promiseAll.then(([result]) => {
-      const userList = result;
-      if(userList){
-        userList.forEach(z => {
-          const department = departmentMap.get(String(z.departmentId));
-          if(department){
-            z.departmentName = department.name;
-          }
-        })
-      }
-      setUserData(userList);
+      result?.forEach(z => {
+        const department = departmentMap.get(String(z.departmentId));
+        if(department){
+          z.departmentName = department.name;
+        }
+      })
+      setUserData(result);
     })
   }, [initReady,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
-
-  async function fetchUserData():Promise<Array<User>> {
-    const {current, pageSize} = pagination;
-    setLoading(true);
-    let result;
-    try {
-      const a:any = await requestList({
-        params: {
-          page: current,
-          pageSize,
-          ...formParams,
-        },
-      }).then((res:any) => {
-        const {code, data ,msg} = res;
-        if (code === '0') {
-          result = res.data.list;
-        }else{
-          Message.error("System Error,fetch data failed!")
-        }
-        const {current, pageSize} = pagination;
-        setPagination({
-          ...pagination,
-          current,
-          pageSize,
-          total: res.data.total,
-        })
-      });
-    } catch (error) {
-      console.error(error);
-      Message.error("System Error,fetch data failed!")
-    } finally {
-      setLoading(false);
-    }
-    return result;
-  }
 
   function onChangeTable({ current, pageSize }) {
     setPagination({
