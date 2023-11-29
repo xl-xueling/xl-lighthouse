@@ -39,11 +39,11 @@ export const translateToTreeStruct = (list, rootPid):Array<ArcoTreeNode> => {
     return nodeArr;
 }
 
-export const translate = (list):Array<ArcoTreeNode> => {
+export const translate = (list:Array<Department>):Array<ArcoTreeNode> => {
     const nodeArr = new Array<ArcoTreeNode>();
     if(list){
         list.forEach(item => {
-            const nodeItem:ArcoTreeNode = {"key":item.id,"title":item.name};
+            const nodeItem:ArcoTreeNode = {"key":String(item.id),"title":item.name};
             if(item.children){
                 nodeItem.children = translate(item.children);
             }
@@ -53,6 +53,20 @@ export const translate = (list):Array<ArcoTreeNode> => {
     return nodeArr;
 }
 
+export const translateToMapStruct = (list:Array<Department>):Map<string,Department> => {
+    const result = new Map();
+    function traverse(nodes) {
+        nodes.forEach(node => {
+            const { id, name, children } = node;
+            result.set(id, {id,name});
+            if (children && children.length > 0) {
+                traverse(children);
+            }
+        });
+    }
+    traverse(list);
+    return result;
+}
 
 export const translateToFlatStruct = (list):Array<ArcoFlatNode> => {
     const nodeArr = new Array<ArcoFlatNode>();

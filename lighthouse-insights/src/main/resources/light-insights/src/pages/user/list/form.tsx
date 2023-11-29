@@ -12,7 +12,6 @@ import { GlobalContext } from '@/context';
 import locale from './locale';
 import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
-import { ContentType, FilterType, Status } from './constants';
 import styles from './style/index.module.less';
 import {stringifyMap, stringifyObj} from "@/utils/util";
 
@@ -81,22 +80,22 @@ function SearchForm(props: {
               />
             </Form.Item>
           </Col>
-          <Col span={colSpan}>
-            <Form.Item
-              label={t['userList.columns.state']}
-              field="state"
-            >
-              <Select
-                placeholder={t['userList.state.placeholder']}
-                options={ContentType.map((item, index) => ({
-                  label: item,
-                  value: index,
-                }))}
-                mode="multiple"
-                allowClear
-              />
-            </Form.Item>
-          </Col>
+          {/*<Col span={colSpan}>*/}
+          {/*  <Form.Item*/}
+          {/*    label={t['userList.columns.state']}*/}
+          {/*    field="state"*/}
+          {/*  >*/}
+          {/*    <Select*/}
+          {/*      placeholder={t['userList.state.placeholder']}*/}
+          {/*      options={ContentType.map((item, index) => ({*/}
+          {/*        label: item,*/}
+          {/*        value: index,*/}
+          {/*      }))}*/}
+          {/*      mode="multiple"*/}
+          {/*      allowClear*/}
+          {/*    />*/}
+          {/*  </Form.Item>*/}
+          {/*</Col>*/}
           <Col span={colSpan}>
             <Form.Item
               label={t['userList.columns.createdTime']}

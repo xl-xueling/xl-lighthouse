@@ -3,27 +3,25 @@ import {
   Table,
   Card,
   PaginationProps,
-  Button,
-  Space,
   Typography, Message, List,
 } from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
-import { IconDownload, IconPlus } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
-import SearchForm from './form';
 import locale from './locale';
-import styles from './style/index.module.less';
-import '../../department/mock';
 import { getColumns } from './constants';
 import {requestList, requestChangeState, requestDeleteById, requestResetPasswd} from "@/api/user";
-import {requestQueryAll as queryDepartmentAll} from "@/api/department";
-import {stringifyMap, stringifyObj} from "@/utils/util";
-import {NodeProps, TreeProps} from "@arco-design/web-react/es/Tree/interface";
 import {Department, User} from "@/types/insights-web";
+import {useSelector} from "react-redux";
+import {translateToMapStruct} from "@/pages/department/common";
 const { Title } = Typography;
 
-function ProjectList() {
+export default function UserList() {
+
   const t = useLocale(locale);
+  const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+  const [initReady,setInitReady] = useState<boolean>(false);
+  const [userData, setUserData] = useState<Array<User>>([]);
+
   const tableCallback = async (record, type) => {
     if(type == 'resetPasswd'){
       await resetPasswd(record.id);
@@ -34,10 +32,6 @@ function ProjectList() {
     }
   };
 
-  const [departmentData, setDepartmentData] = useState<Map<string,Department>>(new Map());
-
-  const [userData, setUserData] = useState<Array<User>>([]);
-
   const [pagination, setPagination] = useState<PaginationProps>({
     sizeCanChange: true,
     showTotal: true,
@@ -46,17 +40,21 @@ function ProjectList() {
     pageSizeChangeResetCurrent: true,
   });
 
+  const [loading, setLoading] = useState(true);
+  const [formParams, setFormParams] = useState({});
+  const columns = useMemo(() => getColumns(t,tableCallback), [t]);
+
   const resetPasswd = async (userId: string) => {
     try{
       const result = await requestResetPasswd(userId);
       if(result.code == '0'){
-          Message.success("重置用户密码成功！");
+          Message.success(t['userList.columns.resetPasswd.success']);
       }else{
-          Message.error(result.message || "System Error!");
+          Message.error(result.message || t['system.error']);
       }
     }catch (error){
-      console.log("error is:" + error);
-      Message.error("System Error!");
+      console.log(error);
+      Message.error(t['system.error']);
     }
   };
 
@@ -64,13 +62,13 @@ function ProjectList() {
     try{
       const result = await requestChangeState({"id":userId,"state":3});
       if(result.code == '0'){
-        Message.success("冻结用户成功！");
+        Message.success(t['userList.columns.frozen.success']);
       }else{
-        Message.error(result.message || "System Error!");
+        Message.error(result.message || t['system.error']);
       }
     }catch (error){
-      console.log("error is:" + error);
-      Message.error("System Error!");
+      console.log(error);
+      Message.error(t['system.error']);
     }
   };
 
@@ -78,34 +76,27 @@ function ProjectList() {
     try{
       const result = await requestDeleteById(userId);
       if(result.code == '0'){
-        Message.success("删除用户成功！");
+        Message.success(t['userList.columns.delete.success']);
       }else{
-        Message.error(result.message || "System Error!");
+        Message.error(result.message || t['system.error']);
       }
     }catch (error){
-      console.log("error is:" + error);
-      Message.error("System Error!");
+      console.log(error);
+      Message.error(t['system.error']);
     }
   };
 
-  const [loading, setLoading] = useState(true);
-  const [formParams, setFormParams] = useState({});
-  const columns = useMemo(() => getColumns(t,tableCallback), [t]);
+  useEffect(() => {
+    if(allDepartInfo && allDepartInfo.length > 0){
+      setInitReady(true);
+    }
+  },[allDepartInfo])
 
   useEffect(() => {
-    const promiseOfFetchDepartData:Promise<Map<string,Department>> = new Promise((resolve,reject) => {
-      let result;
-      if(departmentData.size == 0){
-        const proc = async () => {
-          return await fetchDepartData();
-        }
-        result = proc();
-      }else{
-        result = departmentData;
-      }
-      resolve(result);
-    });
-
+    if(!initReady){
+      return;
+    }
+    const departmentMap = translateToMapStruct(allDepartInfo);
     const promiseOfFetchUserData:Promise<Array<User>> = new Promise((resolve,reject) => {
       const proc = async () => {
         return await fetchUserData();
@@ -113,17 +104,15 @@ function ProjectList() {
       resolve(proc());
     })
 
-    const promiseAll:Promise<[Map<string,Department>,Array<User>]> = Promise.all([
-         promiseOfFetchDepartData,
+    const promiseAll:Promise<[Array<User>]> = Promise.all([
          promiseOfFetchUserData
     ]);
 
-    promiseAll.then(([r1,r2]) => {
-      const departmentMap = r1;
-      const userList = r2;
+    promiseAll.then(([result]) => {
+      const userList = result;
       if(userList){
         userList.forEach(z => {
-          const department = departmentMap.get(z.departmentId+ "");
+          const department = departmentMap.get(String(z.departmentId));
           if(department){
             z.departmentName = department.name;
           }
@@ -131,29 +120,8 @@ function ProjectList() {
       }
       setUserData(userList);
     })
-  }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+  }, [initReady,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
-  async function fetchDepartData(): Promise<Map<string,Department>> {
-    const departmentMap = new Map<string,Department>();
-    try {
-      await queryDepartmentAll().then((res:any) => {
-        const {code, msg} = res;
-        const data = res.data;
-        if (code === '0' && data) {
-          data.forEach(x => {
-            departmentMap.set(x.id,x);
-          })
-          setDepartmentData(departmentMap);
-        }else{
-          Message.error("System Error,fetch department data failed!")
-        }
-      });
-    } catch (error) {
-      console.error("error is:" + error);
-      Message.error("System Error,fetch department data failed!")
-    }
-    return departmentMap;
-  }
 
   async function fetchUserData():Promise<Array<User>> {
     const {current, pageSize} = pagination;
@@ -182,7 +150,7 @@ function ProjectList() {
         })
       });
     } catch (error) {
-      console.error("error is:" + error);
+      console.error(error);
       Message.error("System Error,fetch data failed!")
     } finally {
       setLoading(false);
@@ -204,7 +172,7 @@ function ProjectList() {
   }
   return (
     <Card>
-      <SearchForm departmentMap={departmentData} onSearch={handleSearch} />
+      {/*<SearchForm departmentMap={[]} onSearch={handleSearch} />*/}
       <PermissionWrapper
         requiredPermissions={[
           { resource: 'menu.list.searchTable', actions: ['write'] },
@@ -223,4 +191,3 @@ function ProjectList() {
   );
 }
 
-export default ProjectList;

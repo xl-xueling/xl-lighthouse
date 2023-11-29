@@ -8,11 +8,6 @@ import styles from './style/index.module.less';
 
 const { Text } = Typography;
 
-export const ContentType = ['图文', '横版短视频', '竖版短视频'];
-export const FilterType = ['规则筛选', '人工'];
-export const Status = ['未上线', '已上线'];
-export const StateType = ['未审核', '正常', '冻结', '注销'];
-
 function confirm() {
   Modal.confirm({
     title: 'Confirm deletion',
@@ -57,11 +52,6 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
       render: (value) => <Text>{value}</Text>,
     },
     {
-      title: t['userList.columns.phone'],
-      dataIndex: 'phone',
-      render: (value,record) => <Text>{record.userName}</Text>,
-    },
-    {
       title: t['userList.columns.createdTime'],
       dataIndex: 'createdTime',
       render: (value) => <Text>{value}</Text>,
@@ -70,12 +60,14 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
       title: t['userList.columns.state'],
       dataIndex: 'state',
       render: (value) => {
-        if (value === 1) {
-          return <Badge status="success" text={StateType[value]}/>;
-        }else if(value === 0){
-          return <Badge status="processing" text={StateType[value]}/>;
-        }else{
-          return <Badge status="error" text={StateType[value]}/>;
+        if(value === 0){
+          return <Badge status="processing" text={t['userList.columns.state.pending']}/>;
+        }else if (value === 1) {
+          return <Badge status="success" text={t['userList.columns.state.normal']}/>;
+        }else if(value === 2){
+          return <Badge status="error" text={t['userList.columns.state.frozen']}/>;
+        }else if(value === 3){
+          return <Badge status="error" text={t['userList.columns.state.deleted']}/>;
         }
       },
     },

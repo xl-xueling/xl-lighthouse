@@ -81,8 +81,6 @@ function Index() {
         payload: {userInfo: resultData.data, userLoading: false},
       });
     })
-
-
   }
 
   useEffect(() => {
