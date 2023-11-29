@@ -52,15 +52,6 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 
 -  https://dtstep.com/archives/4820.html
 
-### 收益
-XL-LightHouse可以帮助企业以尽可能低的成本，更快速的搭建起一套较为完善的、稳定可靠的数据化运营体系，节省企业在数据化运营方面的投入，主要体现在以下几个方面：
-* 减少企业在流式大数据统计方面的研发成本和数据维护成本。
-* 帮助企业节省时间成本，辅助互联网产品的快速迭代。
-* 为企业节省较为可观的服务器运算资源。
-* 便于数据在企业内部的共享和互通。
-
-此外，XL-LightHouse对中小企业友好，它大大降低了中小企业使用流式大数据统计的技术门槛，通过简单的页面配置和数据接入即可应对繁杂的流式数据统计需求。
-
 ###  一键部署
 
 -  https://dtstep.com/archives/4257.html
