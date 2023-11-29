@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Message, Space, Spin, Tree} from '@arco-design/web-react';
+import {Button, Input, Message, Popconfirm, Space, Spin, Tree} from '@arco-design/web-react';
 import {IconFile, IconFolder, IconMinus, IconPen, IconPlus} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -332,19 +332,14 @@ export default function ManagePanel() {
                               />
                           )}
                           {node._level != 0 && (
-                              <IconMinus
-                                  style={{
-                                      display:`${node.dataRef.id != "0" ? 'block' : 'none'}`,
-                                      position: 'absolute',
-                                      right: 8,
-                                      fontSize: 13,
-                                      top: 10,
-                                      color: 'rgb(132 160 224)',
-                                  }}
-                                  onClick={async (e) => {
+                              <Popconfirm
+                                  focusLock
+                                  title='Confirm'
+                                  content= {t['department.manage.deletePrompt']}
+                                  onOk={async () => {
                                       const dataChildren = node.dataRef.children || [];
                                       if (dataChildren.length > 0) {
-                                          Message.error('The node has child,delete child-node first!')
+                                          Message.error(t['department.manage.deleteHasChild'])
                                       } else {
                                           const result = await deleteNode(node.dataRef.id);
                                           if (result == "-1") {
@@ -354,7 +349,18 @@ export default function ManagePanel() {
                                           setTreeData([...w]);
                                       }
                                   }}
-                              />
+                              >
+                                  <IconMinus
+                                      style={{
+                                          display:`${node.dataRef.id != "0" ? 'block' : 'none'}`,
+                                          position: 'absolute',
+                                          right: 8,
+                                          fontSize: 13,
+                                          top: 10,
+                                          color: 'rgb(132 160 224)',
+                                      }}
+                                  />
+                              </Popconfirm>
                           )}
                       </div>
                   );
