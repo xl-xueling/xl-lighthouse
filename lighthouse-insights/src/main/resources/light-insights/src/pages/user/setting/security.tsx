@@ -5,7 +5,7 @@ import {Button, Form, Input, Message, Space, TreeSelect} from '@arco-design/web-
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import {DepartmentArcoTreeNode, User} from "@/types/insights-web";
+import {ArcoTreeNode, User} from "@/types/insights-web";
 import {FormInstance} from "@arco-design/web-react/es/Form";
 import {GlobalContext} from "@/context";
 import {requestUpdate} from "@/api/user";

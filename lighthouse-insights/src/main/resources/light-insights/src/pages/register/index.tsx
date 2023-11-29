@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import RegisterForm from './form';
 import styles from './style/index.module.less';
 
-function Register() {
+export default function Index() {
 
   return (
     <div className={styles.container}>
@@ -18,6 +18,3 @@ function Register() {
     </div>
   );
 }
-Register.displayName = 'RegisterPage';
-
-export default Register;

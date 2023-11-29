@@ -1,6 +1,6 @@
 import {request} from "@/utils/request";
-import {ArcoTreeNode, ResultData} from "@/types/insights-common";
-import {Group, Project, User} from "@/types/insights-web";
+import {ResultData} from "@/types/insights-common";
+import {ArcoTreeNode, Project} from "@/types/insights-web";
 
 export async function requestList(data) :Promise<ResultData<{list:Array<Project>,total:number}>> {
     return request({

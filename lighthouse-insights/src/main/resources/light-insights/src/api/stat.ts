@@ -1,5 +1,5 @@
 import {request} from "@/utils/request";
-import {ArcoTreeNode, ResultData} from "@/types/insights-common";
+import {ResultData} from "@/types/insights-common";
 import {Group, Project, Stat, User} from "@/types/insights-web";
 
 

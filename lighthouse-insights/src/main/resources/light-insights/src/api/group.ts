@@ -1,7 +1,6 @@
 import {request} from "@/utils/request";
-import {ArcoTreeNode, ResultData} from "@/types/insights-common";
+import {ResultData} from "@/types/insights-common";
 import {Group, Project, User} from "@/types/insights-web";
-import {Result} from "@arco-design/web-react";
 
 export async function requestQueryById(id:number) :Promise<ResultData<Group>> {
     return request({

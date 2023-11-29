@@ -63,7 +63,6 @@ function Index() {
     return result;
   }
 
-
   async function fetchUserInfo() {
     const allDepartInfo = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
     store.dispatch({

@@ -1,17 +1,33 @@
-import {Department, DepartmentArcoFlatNode, DepartmentArcoTreeNode} from "@/types/insights-web";
+import {Department, ArcoTreeNode, ArcoFlatNode} from "@/types/insights-web";
 import {requestQueryAll as queryDepartmentAll} from "@/api/department";
 import {Message} from "@arco-design/web-react";
 
+export async function fetchAllDepartmentData(): Promise<Array<Department>> {
+    let result = null;
+    try {
+        await queryDepartmentAll().then((response) => {
+            const {code,message,data} = response;
+            if (code === '0') {
+                result = data;
+            }else{
+                Message.error(message)
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        Message.error("System Error,fetch department data failed!")
+    }
+    return result;
+}
 
 
-
-export const translateToTreeStruct = (list, rootPid):Array<DepartmentArcoTreeNode> => {
-    const nodeArr = new Array<DepartmentArcoTreeNode>();
+export const translateToTreeStruct = (list, rootPid):Array<ArcoTreeNode> => {
+    const nodeArr = new Array<ArcoTreeNode>();
     if(list){
         list.forEach(item => {
             if (item.pid === rootPid) {
                 const children = translateToTreeStruct(list, item.id)
-                const d:DepartmentArcoTreeNode = {
+                const d:ArcoTreeNode = {
                     "key":item.id,
                     "title":item.name,
                     "children":children,
@@ -23,8 +39,23 @@ export const translateToTreeStruct = (list, rootPid):Array<DepartmentArcoTreeNod
     return nodeArr;
 }
 
-export const translateToFlatStruct = (list):Array<DepartmentArcoFlatNode> => {
-    const nodeArr = new Array<DepartmentArcoFlatNode>();
+export const translate = (list):Array<ArcoTreeNode> => {
+    const nodeArr = new Array<ArcoTreeNode>();
+    if(list){
+        list.forEach(item => {
+            const nodeItem:ArcoTreeNode = {"key":item.id,"title":item.name};
+            if(item.children){
+                nodeItem.children = translate(item.children);
+            }
+            nodeArr.push(nodeItem)
+        })
+    }
+    return nodeArr;
+}
+
+
+export const translateToFlatStruct = (list):Array<ArcoFlatNode> => {
+    const nodeArr = new Array<ArcoFlatNode>();
     if(list){
         const departMap = new Map<string,Department>();
         list.forEach(z => {
@@ -42,7 +73,7 @@ export const translateToFlatStruct = (list):Array<DepartmentArcoFlatNode> => {
                     }
                 }
             }
-            const d:DepartmentArcoFlatNode = {
+            const d:ArcoFlatNode = {
                 "key":item.id,
                 "title":title,
             }

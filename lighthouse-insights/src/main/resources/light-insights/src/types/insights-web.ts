@@ -14,18 +14,16 @@ export enum PrivilegeEnum {
 export interface Department {
     id: number;
     name: string;
-    pid: number;
-    fullpath?:string;
+    children?:Array<Department>;
 }
 
-export interface DepartmentArcoTreeNode {
+export interface ArcoTreeNode {
     key: string;
     title: string;
-    children?:Array<DepartmentArcoTreeNode>;
+    children?:Array<ArcoTreeNode>;
 }
 
-
-export interface DepartmentArcoFlatNode {
+export interface ArcoFlatNode {
     key: string;
     title: string;
 }
