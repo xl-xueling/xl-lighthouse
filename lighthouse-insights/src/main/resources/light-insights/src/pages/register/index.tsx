@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Footer from '@/components/Footer';
 import RegisterForm from './form';
 import styles from './style/index.module.less';
