@@ -8,87 +8,57 @@ import {
 import { FormInstance } from '@arco-design/web-react/es/Form';
 import { IconLock, IconUser } from '@arco-design/web-react/icon';
 import React, { useEffect, useRef, useState } from 'react';
-import useStorage from '@/utils/useStorage';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import { loginRequest } from '@/api/login'
+import {requestLogin} from "@/api/user";
+import {ResultData} from "@/types/insights-common";
 
 export default function LoginForm() {
   const formRef = useRef<FormInstance>();
-  const [errorMessage, setErrorMessage] = useState('');
+  const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [loginParams, setLoginParams, removeLoginParams] = useStorage('loginParams');
-
   const t = useLocale(locale);
-
-  const [rememberPassword, setRememberPassword] = useState(!!loginParams);
 
   const [agreeLicence,setAgreeLicence] = useState(true);
 
-  function afterLoginSuccess(params,data) {
-    if (rememberPassword) {
-      setLoginParams(JSON.stringify(params));
-    } else {
-      removeLoginParams();
-    }
-    localStorage.setItem('userStatus', 'login');
-    localStorage.setItem('token',data.token);
-    window.location.href = '/';
-  }
-
   async function login(params) {
-    setErrorMessage('');
     setLoading(true);
-    try{
-      const data =
-          await loginRequest(params).then((res:any) => {
-            const {code, msg, data} = res;
-            if (code === '0') {
-              afterLoginSuccess(params,data);
-            } else {
-              setErrorMessage(msg || t['login.form.login.errMsg']);
-            }
-          }
-      ).finally(() => {
-            setLoading(false);
-      });
-    }catch (error){
-      console.log(error);
-    }
+    await requestLogin(params).then((response:ResultData) => {
+      const {code, message, data} = response;
+      if (code === '0') {
+        localStorage.setItem('userStatus', 'login');
+        localStorage.setItem('token',data.token);
+        window.location.href = '/';
+      } else {
+        Message.error(message || t['login.form.login.errMsg']);
+      }
+    }).finally(() => {setLoading(false)})
   }
 
   function onSubmitClick() {
     try{
+      if(!agreeLicence){
+        Message.error(t['login.form.agreeLicence.errMsg']);
+        return;
+      }
       formRef.current.validate().then((values) => {
-        login(values);
+        login(values).then();
       });
     }catch (error){
       console.log(error)
     }
   }
 
-  useEffect(() => {
-    const rememberPassword = !!loginParams;
-    setRememberPassword(rememberPassword);
-    if (formRef.current && rememberPassword) {
-      const parseParams = JSON.parse(loginParams);
-      formRef.current.setFieldsValue(parseParams);
-    }
-  }, [loginParams]);
-
-  const [form] = Form.useForm();
   return (
     <div className={styles['login-form-wrapper']}>
       <div className={styles['login-form-title']}>{t['login.form.title']}</div>
-      <div className={styles['login-form-error-msg']}>{errorMessage}</div>
       <Form
         className={styles['login-form']}
         layout="vertical"
         form={form}
         ref={formRef}
         autoComplete='off'
-        initialValues={{ userName: '', password: '' }}
         onSubmit={(v) => {
           onSubmitClick();
         }}

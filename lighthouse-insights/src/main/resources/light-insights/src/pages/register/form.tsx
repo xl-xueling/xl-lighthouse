@@ -9,11 +9,11 @@ import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import {requestRegister} from "@/api/register";
 import {ResultData} from "@/types/insights-common";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import {fetchAllDepartmentData, translate} from "@/pages/department/common";
 import {ArcoTreeNode} from "@/types/insights-web";
+import {requestRegister} from "@/api/user";
 
 export default function RegisterForm() {
 
