@@ -86,15 +86,29 @@ export const routes: IRoute[] = [
   //   ],
   // },
   {
-    name: 'menu.display',
-    key: 'display',
+    name: 'menu.favorites',
+    key: 'favorites',
     children: [
       {
-        name: 'menu.display.project',
+        name: 'menu.favorites.project',
+        key: 'favorites/project/list',
+      },
+      {
+        name: 'menu.favorites.stat',
+        key: 'favorites/stat/list',
+      },
+    ],
+  },
+  {
+    name: 'menu.statistics',
+    key: 'statistics',
+    children: [
+      {
+        name: 'menu.statistics.project',
         key: 'project/list',
       },
       {
-        name: 'menu.display.stat',
+        name: 'menu.statistics.stat',
         key: 'stat/list',
       },
     ],

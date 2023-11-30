@@ -12,7 +12,15 @@ import {
   IconExclamationCircle,
   IconUser,
   IconMenuFold,
-  IconMenuUnfold, IconAlignCenter, IconIdcard, IconNav, IconCalendarClock,
+  IconMenuUnfold,
+  IconAlignCenter,
+  IconIdcard,
+  IconNav,
+  IconCalendarClock,
+  IconStar,
+  IconCodepen,
+  IconInteraction,
+  IconThunderbolt,
 } from '@arco-design/web-react/icon';
 import { useSelector } from 'react-redux';
 import qs from 'query-string';
@@ -58,8 +66,10 @@ function getIconFromKey(key) {
       return <IconApps className={styles.icon} />;
     case 'filter':
       return <IconList className={styles.icon} />;
-    case 'display':
-      return <IconDashboard className={styles.icon} />;
+    case 'statistics':
+      return <IconThunderbolt className={styles.icon}/>
+    case 'favorites':
+      return <IconCodepen className={styles.icon}/>
     default:
       return <div className={styles['icon-empty']} />;
   }

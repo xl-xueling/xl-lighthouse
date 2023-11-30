@@ -164,11 +164,7 @@ function Navbar({ show }: { show: boolean }) {
           <li>
             <Dropdown droplist={droplist} position="br" disabled={userLoading}>
               <Avatar size={32} style={{ cursor: 'pointer',backgroundColor: 'rgb(123 187 221)'}}>
-                {userLoading ? (
-                  <IconLoading />
-                ) : (
-                    <IconUser/>
-                )}
+                <IconUser/>
               </Avatar>
             </Dropdown>
           </li>
