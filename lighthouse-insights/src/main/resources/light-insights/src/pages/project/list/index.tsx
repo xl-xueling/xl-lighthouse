@@ -9,35 +9,19 @@ import {
   Table,
   Tabs,
   Typography,
-  Modal, Divider, Steps, AutoComplete, Select, Cascader, Form, Input, InputNumber, TreeSelect, Switch, Message,
+  Steps, Message,
 } from '@arco-design/web-react';
-import PermissionWrapper from '@/components/PermissionWrapper';
-import {
-  IconCheck,
-  IconClose,
-  IconDown,
-  IconDownload,
-  IconPlus,
-  IconRefresh, IconRight,
-  IconSearch
-} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
-import styles from './style/index.module.less';
 import '../mock';
 import {getColumns} from './constants';
 import {requestList} from "@/api/project";
 import {ResultData} from "@/types/insights-common";
-import {Department, PrivilegeEnum, Project, ProjectPagination} from "@/types/insights-web";
+import {Department, Project, ProjectPagination} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
-import {getDataWithLocalCache} from "@/utils/localCache";
-import InfoForm from "@/pages/user/settings/info";
-import Security from "@/pages/user/settings/security";
 import useForm from "@arco-design/web-react/es/Form/useForm";
-import {stringifyObj} from "@/utils/util";
 import {useSelector} from "react-redux";
-import UserTermQuery from "@/pages/user/common/userTermQuery";
 import ProjectCreate from "@/pages/project/list/create";
 import ProjectUpdate from "@/pages/project/list/update";
 import {requestDeleteById} from "@/api/project";

@@ -8,7 +8,7 @@ import styles from './style/index.module.less';
 import {ArcoTreeNode, User} from "@/types/insights-web";
 import {FormInstance} from "@arco-design/web-react/es/Form";
 import {GlobalContext} from "@/context";
-import {requestUpdate} from "@/api/user";
+import {requestUpdateById} from "@/api/user";
 
 function Security() {
   const t = useLocale(locale);
@@ -24,7 +24,7 @@ function Security() {
     setFormLoading(true);
     formRef.current.validate().then((values) => {
       const proc = async () =>{
-        const result = await requestUpdate(values);
+        const result = await requestUpdateById(values);
         if (result.code === '0') {
           Message.success("修改信息成功");
         } else {

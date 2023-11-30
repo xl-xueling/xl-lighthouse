@@ -46,24 +46,6 @@ const i18n = {
     'userSetting.security.question': 'Secure question',
     'userSetting.security.question.placeholder':
       'You have not set a secret security question, which can effectively protect the security of your account.',
-    'userSetting.security.phone': 'Secure phone',
-    'userSetting.security.phone.tips': 'Bound:',
-    'userSetting.security.email': 'Secure email',
-    'userSetting.security.email.placeholder':
-      'You have not set up an email address yet. The bound email address can be used to retrieve your password, receive notifications, etc.',
-    'userSetting.verified.enterprise': 'Enterprise real-name certification',
-    'userSetting.verified.records': 'Certification records',
-    'userSetting.verified.label.accountType': 'Account Type',
-
-    'userSetting.verified.label.isVerified': 'Authentication status',
-    'userSetting.verified.label.verifiedTime': 'Authentication time',
-    'userSetting.verified.label.legalPersonName': 'Legal Person name',
-    'userSetting.verified.label.certificateType':
-      'Type of legal person certificate',
-    'userSetting.verified.label.certificationNumber':
-      'Legal person certification number',
-    'userSetting.verified.label.enterpriseName': 'Enterprise Name',
-
     'userSetting.verified.label.enterpriseCertificateType':
       'Enterprise certificate type',
     'userSetting.verified.label.organizationCode': 'Organization Code',
@@ -77,6 +59,7 @@ const i18n = {
     'userSetting.verified.operation.revoke': 'Revoke',
     'userSetting.verified.status.success': 'passed',
     'userSetting.verified.status.waiting': 'under review',
+    'userSetting.form.basicinfo.success':'Update user information successfully!',
   },
 
   'zh-CN': {
@@ -132,17 +115,6 @@ const i18n = {
     'userSetting.security.email.placeholder':
       '您暂未设置邮箱，绑定邮箱可以用来找回密码、接收通知等。',
 
-    'userSetting.verified.enterprise': '企业实名认证',
-    'userSetting.verified.label.accountType': '账号类型',
-    'userSetting.verified.label.isVerified': '认证状态',
-    'userSetting.verified.label.verifiedTime': '认证时间',
-    'userSetting.verified.label.legalPersonName': '法人姓名',
-    'userSetting.verified.label.certificateType': '法人证件类型',
-    'userSetting.verified.label.certificationNumber': '法人认证号码',
-    'userSetting.verified.label.enterpriseName': '企业名称',
-    'userSetting.verified.label.enterpriseCertificateType': '企业证件类型',
-    'userSetting.verified.label.organizationCode': '组织机构代码',
-    'userSetting.verified.records': '认证记录',
 
     'userSetting.verified.authType': '认证类型',
     'userSetting.verified.authContent': '认证内容',
@@ -153,6 +125,7 @@ const i18n = {
     'userSetting.verified.operation.revoke': '撤回',
     'userSetting.verified.status.success': '已通过',
     'userSetting.verified.status.waiting': '审核中',
+    'userSetting.form.basicinfo.success':'修改用户信息成功!',
   },
 };
 
