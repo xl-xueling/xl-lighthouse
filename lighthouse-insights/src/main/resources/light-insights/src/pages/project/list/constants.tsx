@@ -7,7 +7,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
   return [
       {
           title: '',
-          dataIndex: 'fav',
+          dataIndex: 'favorite',
           headerCellStyle: { width:'5px' },
           render: (_, record) => {
               return <Space size={16} direction="horizontal">
@@ -15,15 +15,10 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                       focusLock
                       position={"bl"}
                       title='Confirm'
-                      content='Are you sure to reset this user password?'
-                      onOk={() => callback(record, 'resetPasswd')}
-                      onCancel={() => {
-                          Message.error({
-                              content: 'cancel',
-                          });
-                      }}
+                      content= {t['projectList.columns.operations.favorite.confirm']}
+                      onOk={() => callback(record, 'favorite')}
                   >
-                      <IconStarFill style={{ color:"oranged"}}/>
+                      <IconStarFill style={{ cursor:"pointer",color:"oranged"}}/>
                   </Popconfirm>
               </Space>
             }
@@ -44,20 +39,20 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
           </Tooltip>
               ,
     },
+      {
+          title: t['projectList.columns.department'],
+          dataIndex: 'department.name',
+          render: (value) => <Text>{value}</Text>,
+      },
     {
       title: t['projectList.columns.createdTime'],
       dataIndex: 'createdTime',
       render: (value) => <Text>{value}</Text>,
     },
     {
-      title: t['projectList.columns.department'],
-      dataIndex: 'departmentId',
-      render: (value) => <Text>{value}</Text>,
-    },
-    {
       title: t['projectList.columns.desc'],
       dataIndex: 'desc',
-      headerCellStyle: { width:'400px' },
+      headerCellStyle: { width:'40%' },
       render: (value) => {
           if (value.length <= 100) {
               return value;
@@ -66,7 +61,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
       },
     },
     {
-      title: t['userList.columns.operations'],
+      title: t['projectList.columns.operations'],
       dataIndex: 'operations',
       headerCellStyle: {width:'250px' },
       render: (_, record) => (

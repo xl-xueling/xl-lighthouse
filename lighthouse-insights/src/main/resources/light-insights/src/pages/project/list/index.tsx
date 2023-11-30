@@ -24,7 +24,6 @@ import ProjectCreate from "@/pages/project/list/create";
 import ProjectUpdate from "@/pages/project/list/update";
 import {requestDeleteById} from "@/api/project";
 import {requestQueryProjectIds} from "@/api/favorites";
-import useModal from "@arco-design/web-react/lib/Modal/useModal";
 
 const { Title } = Typography;
 
@@ -104,10 +103,10 @@ export default function Index() {
 
 
   useEffect(() => {
+    setLoading(true);
     if(!initReady){
       return;
     }
-    setLoading(true);
     fetchData().then().catch(error => {
       console.log(error);
       Message.error(t['system.error']);
@@ -185,46 +184,6 @@ export default function Index() {
     handleReset();
   }
 
-  const components = {
-    header: {
-      operations: ({ selectionNode, expandNode }) => [
-        {
-          node: (
-              <th>
-                <div className='arco-table-th-item'>Index</div>
-              </th>
-          ),
-          width: 40,
-        },
-        {
-          name: 'selectionNode',
-          node: selectionNode,
-        },
-        {
-          name: 'expandNode',
-          node: expandNode,
-        },
-      ],
-    },
-    body: {
-      operations: ({ selectionNode, expandNode }) => [
-        {
-          node: (record) => <td>{record.key}</td>,
-          width: 40,
-        },
-        {
-          name: 'selectionNode',
-          node: selectionNode,
-        },
-        {
-          name: 'expandNode',
-          node: expandNode,
-        },
-      ],
-    },
-  };
-
-  const [selectedRowKeys, setSelectedRowKeys] = useState(['4']);
 
   return (
     <Card>
