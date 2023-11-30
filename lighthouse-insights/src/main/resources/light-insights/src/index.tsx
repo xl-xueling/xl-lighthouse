@@ -67,7 +67,7 @@ function Index() {
     const allDepartInfo = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
     store.dispatch({
       type: 'update-allDepartInfo',
-      payload: {allDepartInfo: allDepartInfo},
+      payload: {allDepartInfo: allDepartInfo,departLoading:false},
     })
 
     requestFetchUserInfo().then((resultData) => {

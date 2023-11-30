@@ -26,7 +26,7 @@ const i18n = {
     'menu.form.step': 'Step Form',
     'menu.result.success': 'Success',
     'menu.user.info': 'User Info',
-    'menu.user.setting': 'User Setting',
+    'menu.user.setting': 'User Settings',
     'menu.user.switchRoles': 'Switch Roles',
     'menu.user.role.admin': 'Admin',
     'menu.user.role.user': 'General User',
