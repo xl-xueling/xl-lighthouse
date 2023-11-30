@@ -4,8 +4,8 @@ import {Department, User} from "@/types/insights-web";
 export interface GlobalState {
   settings?: typeof defaultSettings;
   userInfo? : User;
-  allDepartInfo? : Array<Department>;
   userLoading?: boolean;
+  allDepartInfo? : Array<Department>;
 }
 
 const initialState = ():GlobalState => {
@@ -23,9 +23,10 @@ const initialState = ():GlobalState => {
 export default function processReducer(state = initialState(), action) {
   switch (action.type) {
     case 'update-allDepartInfo':{
-      const { allDepartInfo = initialState().allDepartInfo } = action.payload;
+      const { allDepartInfo = initialState().allDepartInfo,departLoading = true } = action.payload;
       return {
         ...state,
+        departLoading,
         allDepartInfo,
       }
     }
@@ -37,7 +38,7 @@ export default function processReducer(state = initialState(), action) {
       };
     }
     case 'update-userInfo':{
-      const { userInfo = initialState().userInfo, userLoading } = action.payload;
+      const { userInfo = initialState().userInfo, userLoading = true } = action.payload;
       return {
         ...state,
         userLoading,

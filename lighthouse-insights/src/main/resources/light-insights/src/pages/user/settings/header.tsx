@@ -1,56 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  Button,
   Avatar,
   Upload,
   Descriptions,
-  Tag,
   Skeleton,
   Link,
 } from '@arco-design/web-react';
-import {IconCamera, IconPlus, IconUser} from '@arco-design/web-react/icon';
+import {IconUser} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/header.module.less';
-import {User} from "@/types/insights-web";
-import {useSelector} from "react-redux";
 
-export default function Info() {
-
-  const userInfo = useSelector((state: {userInfo:User}) => state.userInfo);
-  const loading = useSelector((state: {userLoading:boolean}) => state.userLoading);
+export default function Header({userInfo}) {
 
   const t = useLocale(locale);
 
-  const [avatar, setAvatar] = useState('');
-
-  function onAvatarChange(_, file) {
-    setAvatar(file.originFile ? URL.createObjectURL(file.originFile) : '');
-  }
-
-  const loadingImg = (
-    <Skeleton
-      text={{ rows: 0 }}
-      style={{ width: '100px', height: '100px' }}
-      animation
-    />
-  );
-
-  const loadingNode = <Skeleton text={{ rows: 1 }} animation />;
   return (
     <div className={styles['info-wrapper']}>
-      <Upload showUploadList={false} onChange={onAvatarChange}>
-        {loading ? (
-          loadingImg
-        ) : (
-          <Avatar
+        <Avatar
             size={100}
             style={{ backgroundColor: 'rgb(123 187 221)' }}
-          >
-              <IconUser/>
-          </Avatar>
-        )}
-      </Upload>
+        >
+            <IconUser/>
+        </Avatar>
       <Descriptions
     className={styles['info-content']}
     column={2}
@@ -59,55 +31,33 @@ export default function Info() {
     data={[
         {
             label: t['userSetting.label.name'],
-            value: loading ? loadingNode : userInfo.userName,
+            value:  userInfo.userName,
         },
-
         {
             label: t['userSetting.label.accountId'],
-            value: loading ? loadingNode : userInfo.id,
+            value: userInfo.id,
         },
         {
             label: t['userSetting.label.phoneNumber'],
-            value: loading ? (
-                loadingNode
-            ) : (
-                <span>
+            value: (<span>
                 {userInfo.phone}
-                    <Link role="button" className={styles['edit-btn']}>
-                  {t['userSetting.btn.edit']}
-                </Link>
-              </span>
-            ),
+              </span>),
         },
         {
             label: 'department',
-            value: loading ? (
-                loadingNode
-            ) : (
-                <span>
+            value: (<span>
                 {userInfo.departmentName}
-                    <Link role="button" className={styles['edit-btn']}>
-                  {t['userSetting.btn.edit']}
-                </Link>
-              </span>
-            ),
+              </span>),
         },
         {
-            label: t['userSetting.label.phoneNumber'],
-            value: loading ? (
-                loadingNode
-            ) : (
-                <span>
+            label: t['userSetting.label.email'],
+            value: (<span>
                 {userInfo.email}
-                    <Link role="button" className={styles['edit-btn']}>
-                  {t['userSetting.btn.edit']}
-                </Link>
-              </span>
-            ),
+              </span>),
         },
         {
             label: t['userSetting.label.registrationTime'],
-            value: loading ? loadingNode : userInfo.createdTime,
+            value: userInfo.createdTime,
         },
     ]}
     />
