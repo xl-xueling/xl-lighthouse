@@ -1,14 +1,7 @@
 import React from 'react';
-import {Button,Tooltip, Popover,Typography, Badge, Space, Popconfirm, Message} from '@arco-design/web-react';
-import IconText from './icons/text.svg';
-import IconHorizontalVideo from './icons/horizontal.svg';
-import IconVerticalVideo from './icons/vertical.svg';
-import dayjs from 'dayjs';
-import styles from './style/index.module.less';
-import {IconHeart, IconHeartFill, IconStar, IconStarFill, IconUser} from "@arco-design/web-react/icon";
-
+import {Button,Tooltip,Typography, Space, Popconfirm, Message} from '@arco-design/web-react';
+import {IconStarFill} from "@arco-design/web-react/icon";
 const { Text } = Typography;
-
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [

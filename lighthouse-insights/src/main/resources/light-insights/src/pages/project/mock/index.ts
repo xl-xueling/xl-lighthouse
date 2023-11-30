@@ -20,7 +20,7 @@ const { list } = Mock.mock({
 setupMock({
   setup: () => {
     Mock.mock(new RegExp('/api/v1/project/list'), (params) => {
-      console.log("receive query params,params:" + JSON.stringify(params));
+      console.log("receive query params 2,params:" + JSON.stringify(params));
       return {
         code:0,
         message:'success',
@@ -81,22 +81,6 @@ setupMock({
       };
     });
 
-
-    const { list } = Mock.mock(
-        {
-          'list|10': [
-            {
-              "id": /[0-9]{8}/,
-              'name': '@word() @word() @word()',
-              'departmentId|1-2': 1,
-              'isPrivate': 0,
-              'desc': '@sentence()',
-              'admins': ['1', '2'],
-              "createdTime": '@datetime',
-            },
-          ],
-        }
-    );
 
     Mock.mock(new RegExp('/api/v1/project/termList'), (params) => {
       console.log("receive param is:" + JSON.stringify(params));
