@@ -19,6 +19,7 @@ const i18n = {
     'userSetting.value.notVerified': 'not verified',
     'userSetting.label.phoneNumber': 'Phone Number',
     'userSetting.label.email': 'Email',
+    'userSetting.label.department': 'Department',
     'userSetting.label.registrationTime': 'Registration time',
     'userSetting.btn.edit': 'Edit',
     'userSetting.save': 'Save',
@@ -60,6 +61,21 @@ const i18n = {
     'userSetting.verified.status.success': 'passed',
     'userSetting.verified.status.waiting': 'under review',
     'userSetting.form.basicinfo.success':'Update user information successfully!',
+
+
+    'userSetting.form.userName.errMsg': 'Username cannot be empty',
+    'userSetting.form.userName.validate.errMsg': 'Username verification failed',
+    'userSetting.form.password.errMsg': 'Password cannot be empty',
+    'userSetting.form.password.validate.errMsg': 'Password verification failed',
+    'userSetting.form.confirm.password.errMsg': 'Confirm password cannot be empty',
+    'userSetting.form.email.errMsg': 'Email cannot be empty',
+    'userSetting.form.email.validate.errMsg': 'Email verification failed',
+    'userSetting.form.phone.errMsg': 'Phone cannot be empty',
+    'userSetting.form.phone.validate.errMsg': 'Phone verification failed',
+    'userSetting.form.confirm.password.equals.errMsg': 'Confirm_password must be equal with password',
+    'userSetting.form.department.errMsg': 'Department cannot be empty',
+    'userSetting.form.register.errMsg': 'Register error, please refresh and try again',
+
   },
 
   'zh-CN': {
@@ -82,6 +98,7 @@ const i18n = {
     'userSetting.value.notVerified': '未认证',
     'userSetting.label.phoneNumber': '手机号码',
     'userSetting.label.email': '邮箱',
+    'userSetting.label.department': '部门',
     'userSetting.label.registrationTime': '注册时间',
     'userSetting.btn.edit': '修改',
     'userSetting.btn.set': '设置',
@@ -126,6 +143,18 @@ const i18n = {
     'userSetting.verified.status.success': '已通过',
     'userSetting.verified.status.waiting': '审核中',
     'userSetting.form.basicinfo.success':'修改用户信息成功!',
+
+    'userSetting.form.userName.errMsg': '用户名不能为空',
+    'userSetting.form.userName.validate.errMsg': '用户名校验失败',
+    'userSetting.form.password.errMsg': '密码不能为空',
+    'userSetting.form.password.validate.errMsg': '密码校验失败',
+    'userSetting.form.confirm.password.errMsg': '确认密码不能为空',
+    'userSetting.form.confirm.password.equals.errMsg': '两次输入密码不相同',
+    'userSetting.form.email.errMsg': '邮箱不能为空',
+    'userSetting.form.email.validate.errMsg': '邮箱校验失败',
+    'userSetting.form.phone.errMsg': '手机号不能为空',
+    'userSetting.form.phone.validate.errMsg': '手机号校验失败',
+    'userSetting.form.department.errMsg': '请选择部门',
   },
 };
 

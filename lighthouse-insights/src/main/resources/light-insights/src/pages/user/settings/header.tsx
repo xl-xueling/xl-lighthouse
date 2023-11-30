@@ -41,7 +41,7 @@ export default function Header({userInfo}) {
               </span>),
         },
         {
-            label: 'department',
+            label: t['userSetting.label.department'],
             value: (<span>
                 {userInfo.departmentName}
               </span>),

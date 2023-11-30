@@ -14,7 +14,6 @@ import {
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
-import '../mock';
 import {getColumns} from './constants';
 import {requestList} from "@/api/project";
 import {ResultData} from "@/types/insights-common";
