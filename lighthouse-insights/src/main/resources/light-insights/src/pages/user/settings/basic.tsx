@@ -13,82 +13,53 @@ import {
   Skeleton, TreeSelect,
 } from '@arco-design/web-react';
 import {useSelector} from "react-redux";
-import {Department, ArcoTreeNode, User} from "@/types/insights-web";
-import {stringifyObj} from "@/utils/util";
-import {getDataWithLocalCache} from "@/utils/localCache";
-import {
-  translateToFlatStruct,
-} from "@/pages/department/common";
-import styles from "@/pages/login/style/index.module.less";
 import {FormInstance} from "@arco-design/web-react/es/Form";
-import {requestUpdate} from "@/api/user";
+import {requestUpdateById} from "@/api/user";
+import {translate} from "@/pages/department/common";
+import {ResultData} from "@/types/insights-common";
 
-function InfoForm() {
+export default function BasicInfoForm({userInfo,allDepartInfo}) {
 
   const t = useLocale(locale);
   const [form] = Form.useForm();
   const formRef = useRef<FormInstance>();
   const { lang } = useContext(GlobalContext);
-
-  const userInfo = useSelector((state: {userInfo:User}) => state.userInfo);
-  const loading = useSelector((state: {userLoading:boolean}) => state.userLoading);
-
   const [formLoading, setFormLoading] = useState(false);
-
-  const [departmentData, setDepartmentData] = useState<Array<ArcoTreeNode>>(null);
-
-  useEffect(() => {
-    // const proc = async ():Promise<Array<Department>> => {
-    //   return await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
-    // }
-    // proc().then((result) => {
-    //   setDepartmentData(translateToFlatStruct(result));
-    // })
-  },[])
 
   const initialValues = {
      "id":userInfo.id,
     "userName":userInfo.userName,
-    "departmentName":userInfo.departmentName,
+    "department":String(userInfo.departmentId),
     "phone":userInfo.phone,
     "email":userInfo.email,
     "createdTime":userInfo.createdTime,
     "state":userInfo.state,
   }
 
-
-  function onSubmitClick() {
+  const onSubmitClick = () => {
       setFormLoading(true);
       formRef.current.validate().then((values) => {
+          console.log("values is:" + JSON.stringify(values));
           const proc = async () =>{
-              const result = await requestUpdate(values);
+              const result:ResultData = await requestUpdateById(values);
               if (result.code === '0') {
-                  Message.success("修改信息成功");
+                  Message.success(t['userSetting.form.basicinfo.success']);
               } else {
-                  Message.error(result.message || "System Error!");
+                  Message.error(result.message || t['system.error']);
               }
           }
           proc().then();
-      }).catch(() => {
-         console.log("system error!")
-          Message.error("System Error!");
-      }).finally(() => {setFormLoading(false);})
+      }).catch((error) => {
+         console.log(error)
+          Message.error(t['system.error']);
+      }).finally(() =>
+      {
+          setFormLoading(false);
+      })
   }
 
   const handleReset = () => {
     form.resetFields();
-  };
-
-  const loadingNode = (rows = 1) => {
-    return (
-      <Skeleton
-        text={{
-          rows,
-          width: new Array(rows).fill('100%'),
-        }}
-        animation
-      />
-    );
   };
 
   return (
@@ -113,11 +84,7 @@ function InfoForm() {
                   },
               ]}
           >
-              {loading ? (
-                  loadingNode()
-              ) : (
-                  <Input disabled={true} placeholder={t['userSetting.info.nickName.placeholder']}  />
-              )}
+              <Input disabled={true} placeholder={t['userSetting.info.nickName.placeholder']}  />
           </Form.Item>
 
         <Form.Item
@@ -130,11 +97,7 @@ function InfoForm() {
               },
             ]}
         >
-          {loading ? (
-              loadingNode()
-          ) : (
-              <Input placeholder={t['userSetting.info.nickName.placeholder']}  />
-          )}
+            <Input placeholder={t['userSetting.info.nickName.placeholder']}  />
         </Form.Item>
         <Form.Item
             label={t['userSetting.info.email']}
@@ -146,11 +109,7 @@ function InfoForm() {
               },
             ]}
         >
-          {loading ? (
-              loadingNode()
-          ) : (
-              <Input placeholder={t['userSetting.info.email.placeholder']} />
-          )}
+            <Input placeholder={t['userSetting.info.email.placeholder']} />
         </Form.Item>
 
         <Form.Item
@@ -163,11 +122,7 @@ function InfoForm() {
               },
             ]}
         >
-          {loading ? (
-              loadingNode()
-          ) : (
-              <Input placeholder={t['userSetting.info.phone.placeholder']} />
-          )}
+            <Input placeholder={t['userSetting.info.phone.placeholder']} />
         </Form.Item>
 
           <Form.Item label={t['userSetting.info.department']} field="department"
@@ -177,16 +132,10 @@ function InfoForm() {
                          },
                      ]}>
               <TreeSelect
-                  placeholder={"Please select"}
-                  treeData={departmentData}
+                  placeholder={"Please Select"}
+                  treeData={translate(allDepartInfo)}
                   allowClear={true}
-                  onChange={(e,v) => {
-                      if(!e || e.length == '0'){
-                          form.resetFields();
-                          return;
-                      }
-                  }}
-                  style={{ width: '100%'}}
+                  showSearch={true}
               />
           </Form.Item>
 
@@ -195,17 +144,8 @@ function InfoForm() {
                   <Button type="primary" long htmlType='submit' loading={formLoading}>
                       Submit
                   </Button>
-                  <Button
-                      href={"/register"}
-                      type="text"
-                      long
-                      className={styles['login-form-register-btn']}>
-                      Cancel
-                  </Button>
               </Space>
           </Form.Item>
       </Form>
   );
 }
-
-export default InfoForm;

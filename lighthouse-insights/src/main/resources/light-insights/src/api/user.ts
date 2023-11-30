@@ -50,9 +50,9 @@ export async function requestTermList(input:string) :Promise<ResultData<{list:Ar
     })
 }
 
-export async function requestUpdate(data:User) :Promise<ResultData>  {
+export async function requestUpdateById(data:User) :Promise<ResultData>  {
     return request({
-        url:'/user/update',
+        url:'/user/updateById',
         method:'POST',
         data,
     })

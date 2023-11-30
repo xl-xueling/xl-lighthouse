@@ -3,7 +3,7 @@ import {Card, Spin, Tabs} from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import InfoHeader from './header';
-import InfoForm from './info';
+import InfoForm from './basic';
 import Security from './security';
 import {useSelector} from "react-redux";
 import {Department, User} from "@/types/insights-web";
@@ -31,7 +31,7 @@ export default function Index() {
           <Card style={{ marginTop: '16px' }}>
             <Tabs activeTab={activeTab} onChange={setActiveTab} type="rounded">
               <Tabs.TabPane key="basic" title={t['userSetting.title.basicInfo']}>
-                <InfoForm/>
+                <InfoForm userInfo={userInfo} allDepartInfo={allDepartInfo}/>
               </Tabs.TabPane>
               <Tabs.TabPane key="security" title={t['userSetting.title.updatePasswd']}>
                 <Security />

@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import {
   Form,
   Input,
-  Select,
   DatePicker,
   Button,
   Grid, TreeSelect, Tabs,
@@ -17,8 +16,6 @@ import {stringifyObj} from "@/utils/util";
 import {useSelector} from "react-redux";
 import {Department, User} from "@/types/insights-web";
 import {translateToTreeStruct} from "@/pages/department/common";
-import InfoForm from "@/pages/user/settings/info";
-import Security from "@/pages/user/settings/security";
 
 const { Row, Col } = Grid;
 const { useForm } = Form;

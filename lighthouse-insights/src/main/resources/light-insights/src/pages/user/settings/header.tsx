@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Avatar,
-  Upload,
   Descriptions,
-  Skeleton,
-  Link,
 } from '@arco-design/web-react';
 import {IconUser} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
