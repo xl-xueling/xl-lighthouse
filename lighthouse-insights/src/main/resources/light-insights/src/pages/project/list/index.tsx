@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   Radio,
   Button,
@@ -8,7 +8,7 @@ import {
   Space,
   Table,
   Typography,
-  Steps, Message,
+  Message,
 } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
@@ -16,18 +16,49 @@ import locale from './locale';
 import {getColumns} from './constants';
 import {requestList} from "@/api/project";
 import {ResultData} from "@/types/insights-common";
-import {Department, PrivilegeEnum, Project, ProjectPagination, Stat, StatPagination} from "@/types/insights-web";
+import {Department, PrivilegeEnum, Project, ProjectPagination} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useSelector} from "react-redux";
 import ProjectCreate from "@/pages/project/list/create";
 import ProjectUpdate from "@/pages/project/list/update";
 import {requestDeleteById} from "@/api/project";
+import {requestQueryProjectIds} from "@/api/favorites";
+import useModal from "@arco-design/web-react/lib/Modal/useModal";
 
 const { Title } = Typography;
 
 export default function Index() {
   const t = useLocale(locale);
+
+  const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+  const [listData, setListData] = useState([]);
+  const [initReady,setInitReady] = useState<boolean>(false);
+  const [favoriteIds,setFavoriteIds] = useState([]);
+
+  const fetchFavoritesData = useCallback(async () => {
+    try {
+      const response = await requestQueryProjectIds();
+      const data = response.data;
+      setFavoriteIds(data);
+      setTimeout(() => {
+        setInitReady(true);
+      },0)
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchFavoritesData().then();
+  },[fetchFavoritesData])
+
+  const [owner, setOwner] = useState(true);
+  const [updateId, setUpdateId] = useState(0);
+  const [form] = useForm();
+  const [createVisible, setCreateVisible] = React.useState(false);
+  const [updateVisible, setUpdateVisible] = React.useState(false);
+
   const tableCallback = async (record, type) => {
     if(type == 'update'){
       setUpdateVisible(!updateVisible);
@@ -37,14 +68,7 @@ export default function Index() {
     }
   };
 
-  const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
   const columns = useMemo(() => getColumns(t, tableCallback), [t]);
-  const [listData, setListData] = useState([]);
-  const [owner, setOwner] = useState(true);
-  const [updateId, setUpdateId] = useState(0);
-  const [form] = useForm();
-  const [createVisible, setCreateVisible] = React.useState(false);
-  const [updateVisible, setUpdateVisible] = React.useState(false);
   const [pagination, setPagination] = useState<PaginationProps>({
     sizeOptions: [15,20,30,50],
     sizeCanChange: true,
@@ -55,7 +79,6 @@ export default function Index() {
   });
   const [loading, setLoading] = useState(true);
   const [formParams, setFormParams] = useState({});
-
 
   const hideCreateModal = () => {
     setCreateVisible(false);
@@ -74,12 +97,16 @@ export default function Index() {
         Message.error(result.message || "System Error!");
       }
     }catch (error){
-      console.log("error is:" + error);
+      console.log(error);
       Message.error("System Error!");
     }
   };
 
+
   useEffect(() => {
+    if(!initReady){
+      return;
+    }
     setLoading(true);
     fetchData().then().catch(error => {
       console.log(error);
@@ -87,7 +114,7 @@ export default function Index() {
     }).finally(() => {
       setLoading(false);
     })
-  }, [owner,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+  }, [initReady,owner,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
 
   const fetchData = async (): Promise<void> => {
@@ -105,7 +132,9 @@ export default function Index() {
       }
       proc().then();
     })
-    const {list,total}:{list:Array<Project>,total:number} = (await Promise.all([fetchProjectsInfo]))[0];
+
+    const result = await Promise.all([fetchProjectsInfo]);
+    const {list,total}:{list:Array<Project>,total:number} = result[0];
     const projectsInfo = list;
     const fetchPrivilegeInfo:Promise<Record<number,PrivilegeEnum[]>> = new Promise<Record<number,PrivilegeEnum[]>>((resolve) => {
       const projectIds = projectsInfo!.map(z => z.id);
@@ -118,7 +147,7 @@ export default function Index() {
     Promise.all([fetchPrivilegeInfo])
         .then(([r1]) => {
           const paginationData = projectsInfo.reduce((result:ProjectPagination[],item:Project) => {
-            const department = allDepartInfo.find(x => x.id == item.departmentId);
+            const department = allDepartInfo.find(x => String(x.id) == String(item.departmentId));
             const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id],"department":department}};
             result.push(combinedItem);
             return result;
