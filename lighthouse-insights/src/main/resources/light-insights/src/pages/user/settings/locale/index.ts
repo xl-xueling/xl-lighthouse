@@ -41,15 +41,6 @@ const i18n = {
     'userSetting.info.profile': 'Personal profile',
     'userSetting.info.profile.placeholder':
       'Please enter your profile, no more than 200 words.',
-    'userSetting.security.password': 'Login Password',
-    'userSetting.security.password.tips':
-      'Has been set. The password has at least 6 characters, supports numbers, letters and special characters except spaces, and must contain both numbers and uppercase and lowercase letters. ',
-    'userSetting.security.question': 'Secure question',
-    'userSetting.security.question.placeholder':
-      'You have not set a secret security question, which can effectively protect the security of your account.',
-    'userSetting.verified.label.enterpriseCertificateType':
-      'Enterprise certificate type',
-    'userSetting.verified.label.organizationCode': 'Organization Code',
 
     'userSetting.verified.authType': 'Authentication type',
     'userSetting.verified.authContent': 'Authentication content',
@@ -76,6 +67,14 @@ const i18n = {
     'userSetting.form.department.errMsg': 'Department cannot be empty',
     'userSetting.form.register.errMsg': 'Register error, please refresh and try again',
 
+    'security.form.label.original.password':'Original Password',
+    'security.form.label.password':'Password',
+    'security.form.label.confirm.password':'Confirm Password',
+    'security.form.submit.success':'Password has been updated!',
+    'security.form.original.password.errMsg': 'Original Password cannot be empty',
+    'security.form.password.errMsg': 'Password cannot be empty',
+    'security.form.confirm.password.errMsg': 'Confirm Password cannot be empty',
+    'security.form.confirm.password.equals.errMsg':'Confirm_password must be equal with password',
   },
 
   'zh-CN': {
@@ -112,25 +111,6 @@ const i18n = {
     'userSetting.info.phone.placeholder': '请输入手机号',
     'userSetting.info.userName': '账号',
     'userSetting.info.userName.placeholder': '请输入您的账号',
-    'userSetting.info.area': '国家/地区',
-    'userSetting.info.area.placeholder': '请选择国家/地区',
-    'userSetting.info.location': '所在区域',
-    'userSetting.info.address': '具体地址',
-    'userSetting.info.address.placeholder': '请输入您的地址',
-    'userSetting.info.profile': '个人简介',
-    'userSetting.info.profile.placeholder':
-      '请输入您的个人简介，最多不超过200字。',
-    'userSetting.security.password': '登陆密码',
-    'userSetting.security.password.tips':
-      '已设置。密码至少6位字符，支持数字、字母和除空格外的特殊字符，且必须同时包含数字和大小写字母。',
-    'userSetting.security.question': '密保问题',
-    'userSetting.security.question.placeholder':
-      '您暂未设置密保问题，密保问题可以有效的保护账号的安全。',
-    'userSetting.security.phone': '安全手机',
-    'userSetting.security.phone.tips': '已绑定：',
-    'userSetting.security.email': '安全邮箱',
-    'userSetting.security.email.placeholder':
-      '您暂未设置邮箱，绑定邮箱可以用来找回密码、接收通知等。',
 
 
     'userSetting.verified.authType': '认证类型',
@@ -155,6 +135,13 @@ const i18n = {
     'userSetting.form.phone.errMsg': '手机号不能为空',
     'userSetting.form.phone.validate.errMsg': '手机号校验失败',
     'userSetting.form.department.errMsg': '请选择部门',
+
+    'security.form.label.original.password':'原密码',
+    'security.form.label.password':'新密码',
+    'security.form.label.confirm.password':'再次输入密码',
+    'security.form.submit.success':'修改密码成功',
+    'security.form.confirm.password.equals.errMsg':'两次输入密码不相同',
+
   },
 };
 
