@@ -1,40 +1,37 @@
 import React, {useContext, useRef, useState} from 'react';
 import { useSelector } from 'react-redux';
-import cs from 'classnames';
 import {Button, Form, Input, Message, Space, TreeSelect} from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import {ArcoTreeNode, User} from "@/types/insights-web";
+import {User} from "@/types/insights-web";
 import {FormInstance} from "@arco-design/web-react/es/Form";
 import {GlobalContext} from "@/context";
 import {requestUpdateById} from "@/api/user";
+import {ResultData} from "@/types/insights-common";
 
-function Security() {
+export default function Security() {
   const t = useLocale(locale);
-
-  const userInfo = useSelector((state: {userInfo:User}) => state.userInfo);
   const formRef = useRef<FormInstance>();
   const [form] = Form.useForm();
   const [formLoading, setFormLoading] = useState(false);
   const { lang } = useContext(GlobalContext);
 
-
   function onSubmitClick() {
     setFormLoading(true);
     formRef.current.validate().then((values) => {
       const proc = async () =>{
-        const result = await requestUpdateById(values);
-        if (result.code === '0') {
-          Message.success("修改信息成功");
+        const response:ResultData = await requestUpdateById(values);
+        if (response.code === '0') {
+          Message.success(t['security.form.submit.success']);
         } else {
-          Message.error(result.message || "System Error!");
+          Message.error(response.message || t['system.error']);
         }
       }
       proc().then();
-    }).catch(() => {
-      console.log("system error!")
-      Message.error("System Error!");
+    }).catch((error) => {
+      console.log(error)
+      Message.error(t['system.error']);
     }).finally(() => {setFormLoading(false);})
   }
 
@@ -50,82 +47,68 @@ function Security() {
             onSubmitClick();
           }}
       >
+
         <Form.Item
-            style={{ display:"none" }}
-            field="id"
+            label={t['security.form.label.original.password']}
+            field="original_password"
             rules={[
               {
                 required: true,
-                message: t['userSetting.info.userName.placeholder'],
+                message: t['security.form.original.password.errMsg'],
               },
             ]}
         >
           {(
-              <Input disabled={true} placeholder={t['userSetting.info.nickName.placeholder']}  />
+              <Input />
           )}
         </Form.Item>
 
         <Form.Item
-            label={'原密码'}
+            label={t['security.form.label.password']}
             field="password"
             rules={[
               {
                 required: true,
-                message: t['userSetting.info.userName.placeholder'],
+                message: t['security.form.password.errMsg'],
               },
             ]}
         >
           {(
-              <Input placeholder={t['userSetting.info.nickName.placeholder']}  />
-          )}
-        </Form.Item>
-
-        <Form.Item
-            label={'新密码'}
-            field="userName"
-            rules={[
-              {
-                required: true,
-                message: t['userSetting.info.userName.placeholder'],
-              },
-            ]}
-        >
-          {(
-              <Input placeholder={t['userSetting.info.nickName.placeholder']}  />
+              <Input />
           )}
         </Form.Item>
 
           <Form.Item
-              label={'再次输入密码'}
-              field="userName"
+              label={t['security.form.label.confirm.password']}
+              field="confirm_password"
+              dependencies={['password']}
               rules={[
+                  { required: true, message: t['security.form.confirm.password.errMsg'], validateTrigger : ['onBlur'] },
                   {
-                      required: true,
-                      message: t['userSetting.info.userName.placeholder'],
-                  },
-              ]}
+                      validator: (v, callback) => {
+                          try{
+                              if (!v) {
+                                  return callback(t['security.form.confirm.password.errMsg'])
+                              } else if (form.getFieldValue('password') !== v) {
+                                  return callback(t['security.form.confirm.password.equals.errMsg']);
+                              }
+                          }catch (error){
+                              console.log(error);
+                          }
+                      }
+                  }]}
           >
               {(
-                  <Input placeholder={t['userSetting.info.nickName.placeholder']}  />
+                  <Input />
               )}
           </Form.Item>
-
         <Form.Item label=" ">
           <Space>
             <Button type="primary" long htmlType='submit' loading={formLoading}>
               Submit
-            </Button>
-            <Button
-                href={"/register"}
-                type="text"
-                long
-                className={styles['login-form-register-btn']}>
-              Cancel
             </Button>
           </Space>
         </Form.Item>
       </Form>
   );
 }
-
-export default Security;
