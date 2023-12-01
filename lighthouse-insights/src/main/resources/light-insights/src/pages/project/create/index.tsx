@@ -12,9 +12,7 @@ import {Project} from "@/types/insights-web";
 function ProjectCreatePanel({onClose,allDepartInfo}){
 
     const t = useLocale(locale);
-
     const formRef = useRef(null);
-
     const [loading,setLoading] = useState<boolean>(false);
 
     async function handlerSubmit(){

@@ -17,6 +17,8 @@ const i18n = {
     'projectList.columns.operations.favorite.confirm':'Are you sure to favorite this project?',
     'projectList.columns.operations.unfavorite.confirm':'Are you sure to unfavorite this project?',
     'projectList.operations.add': 'New',
+    'projectList.operations.my.projects':'My Projects',
+    'projectList.operations.all.projects':'All Projects',
 
 
   },
@@ -38,6 +40,8 @@ const i18n = {
     'projectList.operations.add': '新建',
     'projectList.columns.operations.favorite.confirm':'是否确认收藏该统计工程？',
     'projectList.columns.operations.unfavorite.confirm':'是否确认取消收藏该统计工程？',
+    'projectList.operations.my.projects':'我的工程',
+    'projectList.operations.all.projects':'全部工程',
   },
 };
 
