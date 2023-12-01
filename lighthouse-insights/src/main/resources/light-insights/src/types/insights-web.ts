@@ -44,10 +44,10 @@ export interface User {
 export interface Project {
     id?:number;
     name?:string;
-    departmentId:number;
-    admins?:Array<number>;
-    isPrivate?:boolean;
+    departmentId?:number;
     desc?:string;
+    isPrivate?:number;
+    admins?:Array<number>;
     createdTime?:number;
 }
 
