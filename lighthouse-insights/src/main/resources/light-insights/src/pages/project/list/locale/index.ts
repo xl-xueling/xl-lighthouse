@@ -36,8 +36,8 @@ const i18n = {
     'projectList.columns.operations.online': '上线',
     'projectList.columns.operations.offline': '下线',
     'projectList.operations.add': '新建',
-    'projectList.columns.operations.favorite.confirm':'是否确认搜藏该统计工程？',
-    'projectList.columns.operations.unfavorite.confirm':'是否确认取消搜藏该统计工程？',
+    'projectList.columns.operations.favorite.confirm':'是否确认收藏该统计工程？',
+    'projectList.columns.operations.unfavorite.confirm':'是否确认取消收藏该统计工程？',
   },
 };
 

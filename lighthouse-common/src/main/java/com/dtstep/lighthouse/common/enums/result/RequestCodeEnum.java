@@ -91,7 +91,7 @@ public enum RequestCodeEnum {
 
     APPLY_NOT_SUPPORT_RETRACT("ldp_i18n_privilege_apply_1025","该申请不支持撤回"),
 
-    RELATIONS_EXCEED_LIMIT("ldp_i18n_favorite_stat_1004","搜藏数量超出限制"),
+    RELATIONS_EXCEED_LIMIT("ldp_i18n_favorite_stat_1004","收藏数量超出限制"),
 
     APPROVE_NOT_AUTHORITY("ldp_i18n_privilege_approve_1011","不具有审批权限"),
 

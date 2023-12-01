@@ -140,7 +140,7 @@ const i18n = {
     'message.lang.tips': '语言切换至 ',
     'navbar.search.placeholder': '输入内容查询',
 
-    'menu.favorites':'我的搜藏',
+    'menu.favorites':'我的收藏',
     'menu.favorites.project':'统计工程',
     'menu.favorites.stat':'统计项',
     'menu.statistics':'统计管理',
