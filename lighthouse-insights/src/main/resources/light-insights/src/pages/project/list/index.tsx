@@ -113,7 +113,7 @@ export default function Index() {
     try{
       const result = await requestFavoriteProject(id);
       if(result.code == '0'){
-        Message.success("搜藏工程成功！");
+        Message.success("收藏工程成功！");
         setFavoriteIds([...favoriteIds,id]);
       }else{
         Message.error(result.message || "System Error!");
@@ -128,7 +128,7 @@ export default function Index() {
     try{
       const result = await requestUnFavoriteProject(id);
       if(result.code == '0'){
-        Message.success("已取消搜藏该工程！");
+        Message.success("已取消收藏该工程！");
         const newArr = favoriteIds.filter((item) => item !== id);
         setFavoriteIds(newArr);
       }else{
