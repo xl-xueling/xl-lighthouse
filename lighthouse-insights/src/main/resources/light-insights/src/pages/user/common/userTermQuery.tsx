@@ -16,14 +16,16 @@ import locale from "./locale";
 
 const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null}) => {
 
-    const [initData,setInitData] = useState<Array<User>>(null);
-
     const t = useLocale(locale);
+    const [selectedValues, setSelectedValues] = useState([]);
+    const [options, setOptions] = useState([]);
+    const [values, setValues] = useState([]);
+    const [fetching, setFetching] = useState(false);
+    const refFetchId = useRef(null);
 
     const fetchInitData = async () => {
         if(initValues){
             const result = await requestQueryByIds({"ids":initValues})
-            setInitData(result.data.list);
             const options = result.data.list.map((user) => (
                 {
                 label: (
@@ -38,22 +40,15 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null})
             }));
             setFetching(false);
             setOptions(options);
-            setValues(["1","2"]);
-            setTimeout(()=>{
-                completeCallBack();
-            },1000);
+            setSelectedValues(initValues)
         }
     }
 
     useEffect(() => {
-        setValues([]);
         fetchInitData().then();
     },[initValues])
 
-    const [options, setOptions] = useState([]);
-    const [values, setValues] = useState([]);
-    const [fetching, setFetching] = useState(false);
-    const refFetchId = useRef(null);
+
     const debouncedFetchUser = useCallback(
         debounce((inputValue) => {
             refFetchId.current = Date.now();
@@ -82,7 +77,6 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null})
         []
     );
 
-    const [selectedValues, setSelectedValues] = useState([]);
 
     const handleSelectChange = (values) => {
         if (values.length <= 2) {
@@ -92,10 +86,6 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null})
         }
     };
 
-    useEffect(() => {
-        formRef.current.setFieldValue("admins",selectedValues);
-    },[selectedValues])
-
     return (
     <Select
         showSearch
@@ -104,7 +94,6 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null})
         maxTagCount={3}
         allowClear
         value={selectedValues}
-        defaultValue={selectedValues}
         placeholder='Search User'
         filterOption={false}
         onChange={handleSelectChange}
