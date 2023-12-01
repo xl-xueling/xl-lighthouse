@@ -52,12 +52,11 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
     {
       title: t['projectList.columns.desc'],
       dataIndex: 'desc',
-      headerCellStyle: { width:'40%' },
       render: (value) => {
-          if (value.length <= 100) {
+          if (value.length <= 70) {
               return value;
           }
-          return value.slice(0, 100) + '...';
+          return value.slice(0, 70) + '...';
       },
     },
     {

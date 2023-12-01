@@ -187,7 +187,7 @@ export default function Index() {
 
   return (
     <Card>
-      <SearchForm onSearch={handleSearch} onClear={handleReset} form={form}/>
+      <SearchForm onSearch={handleSearch} onClear={handleReset} allDepartInfo={allDepartInfo} form={form}/>
       <Grid.Row justify="space-between" align="center">
         <Grid.Col span={16} style={{ textAlign: 'left' }}>
           <Space>
