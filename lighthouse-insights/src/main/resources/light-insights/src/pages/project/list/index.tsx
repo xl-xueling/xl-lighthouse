@@ -217,7 +217,7 @@ export default function Index() {
         <Grid.Col span={16} style={{ textAlign: 'left' }}>
           <Space>
             <Radio.Group defaultValue={"1"} name='button-radio-group' onChange={onClickRadio}>
-              {[{value:"1",label:"我的工程"},{value:"0",label:"全部工程"}].map((item) => {
+              {[{value:"1",label:t['projectList.operations.my.projects']},{value:"0",label:t['projectList.operations.all.projects']}].map((item) => {
                 return (
                     <Radio key={item.value} value={item.value}>
                       {({ checked }) => {

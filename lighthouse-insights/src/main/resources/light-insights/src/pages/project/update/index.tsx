@@ -4,7 +4,7 @@ import UserTermQuery from "@/pages/user/common/userTermQuery";
 import {translate} from "@/pages/department/common";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import {requestQueryById, requestUpdateById} from "@/api/project";
+import {requestQueryById} from "@/api/project";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {getTextBlenLength} from "@/utils/util";
 import {Project, User} from "@/types/insights-web";
@@ -98,7 +98,7 @@ export default function ProjectUpdatePanel({updateId,allDepartInfo,onClose}){
                     <Form.Item label={'Description'} field="desc" rules={[
                         {required: true ,message:t['projectUpdate.form.description.errMsg'],validateTrigger : ['onBlur']}
                     ]}>
-                        <Input.TextArea placeholder='Please enter ...' style={{ minHeight: 64}} maxLength={150} showWordLimit={true}/>
+                        <Input.TextArea placeholder='Please enter description' style={{ minHeight: 64}} maxLength={150} showWordLimit={true}/>
                     </Form.Item>
                     <Form.Item label={'Private'} field="private">
                         <Radio.Group defaultValue={0}>

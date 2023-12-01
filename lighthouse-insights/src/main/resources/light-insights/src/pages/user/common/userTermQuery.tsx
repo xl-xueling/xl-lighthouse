@@ -79,7 +79,7 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null})
 
 
     const handleSelectChange = (values) => {
-        if (values.length <= 2) {
+        if (values.length <= 4) {
             setSelectedValues(values);
         }else{
             Message.error(t['userTerm.exceed.limit']);
@@ -87,31 +87,31 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null})
     };
 
     return (
-    <Select
-        showSearch
-        mode='multiple'
-        options={options}
-        maxTagCount={3}
-        allowClear
-        value={selectedValues}
-        placeholder='Search User'
-        filterOption={false}
-        onChange={handleSelectChange}
-        notFoundContent={
-            fetching ? (
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <Spin style={{ margin: 12 }} />
-                </div>
-            ) : null
-        }
-        onSearch={debouncedFetchUser}
-    />
+        <Select
+            showSearch
+            mode='multiple'
+            options={options}
+            maxTagCount={3}
+            allowClear
+            value={selectedValues}
+            placeholder='Search User'
+            filterOption={false}
+            onChange={handleSelectChange}
+            notFoundContent={
+                fetching ? (
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Spin style={{ margin: 12 }} />
+                    </div>
+                ) : null
+            }
+            onSearch={debouncedFetchUser}
+        />
     );
 }
 
