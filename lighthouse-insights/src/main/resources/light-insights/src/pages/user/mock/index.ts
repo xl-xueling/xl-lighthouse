@@ -35,6 +35,61 @@ setupMock({
             };
         });
 
+        Mock.mock(new RegExp('/api/v1/user/termList'), (params) => {
+            console.log("termList receive param is:" + JSON.stringify(params));
+            console.log("list size:" + list.length)
+            const list2 = Mock.mock(
+                {
+                    'list': [
+                        {
+                            "id": "1",
+                            "userName":'AB1',
+                            "email":'@EMAIL()',
+                            "phone":'@Phone()',
+                            "departmentId":2,
+                            "state|0-3":0,
+                            "createdTime":'@datetime',
+                        },
+
+                        {
+                            "id": "2",
+                            "userName":'CD2',
+                            "email":'@EMAIL()',
+                            "phone":'@Phone()',
+                            "departmentId":2,
+                            "state|0-3":0,
+                            "createdTime":'@datetime',
+                        },
+                        {
+                            "id": "3",
+                            "userName":'CD3',
+                            "email":'@EMAIL()',
+                            "phone":'@Phone()',
+                            "departmentId":2,
+                            "state|0-3":0,
+                            "createdTime":'@datetime',
+                        },
+                        {
+                            "id": "4",
+                            "userName":'CD4',
+                            "email":'@EMAIL()',
+                            "phone":'@Phone()',
+                            "departmentId":2,
+                            "state|0-3":0,
+                            "createdTime":'@datetime',
+                        },
+                    ],
+                }
+            );
+            return {
+                code:'0',
+                message:'success',
+                data:list2,
+            };
+        });
+
+
+
         Mock.mock(new RegExp('/api/v1/user/queryByIds'), (params) => {
             const list2 = Mock.mock(
                 {

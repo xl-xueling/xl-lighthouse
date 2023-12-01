@@ -6,6 +6,7 @@ const i18n = {
     'projectCreate.form.name.exceeds.limit':'Project name length exceeds limit',
     'projectCreate.form.department.errMsg':'Department cannot be empty',
     'projectCreate.form.description.errMsg':'Description cannot be empty',
+    'projectCreate.form.submit.success':'Create Project Successfully!',
   },
   'zh-CN': {
     'projectCreate.form.title':'创建工程',
@@ -14,6 +15,7 @@ const i18n = {
     'projectCreate.form.name.exceeds.limit':'工程名称长度超出限制',
     'projectCreate.form.department.errMsg':'请选择部门',
     'projectCreate.form.description.errMsg':'描述信息不能为空',
+    'projectCreate.form.submit.success':'工程创建成功!',
   },
 };
 
