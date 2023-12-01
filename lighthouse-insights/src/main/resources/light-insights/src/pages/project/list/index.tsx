@@ -21,10 +21,9 @@ import {requestPrivilegeCheck} from "@/api/privilege";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useSelector} from "react-redux";
 import ProjectCreatePanel from "@/pages/project/create";
-import ProjectUpdate from "@/pages/project/list/update";
+import ProjectUpdatePanel from "@/pages/project/update";
 import {requestDeleteById} from "@/api/project";
 import {requestFavoriteProject, requestQueryProjectIds, requestUnFavoriteProject} from "@/api/favorites";
-import StatAddPanel from "@/pages/stat/add/stat_add";
 
 const { Title } = Typography;
 
@@ -253,7 +252,7 @@ export default function Index() {
           data={listData}
       />
       {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} />}
-      {updateVisible && <ProjectUpdate updateId={updateId} onClose={() => setUpdateVisible(false)}/>}
+      {updateVisible && <ProjectUpdatePanel updateId={updateId} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)}/>}
     </Card>
   );
 

@@ -7,6 +7,7 @@ import locale from "./locale";
 import {getTextBlenLength} from "@/utils/util";
 import {requestCreate} from "@/api/project";
 import {Simulate} from "react-dom/test-utils";
+import {Project} from "@/types/insights-web";
 
 function ProjectCreatePanel({onClose,allDepartInfo}){
 
@@ -20,7 +21,14 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
         setLoading(true);
-        requestCreate(values).then((result) => {
+        const project:Project = {
+            name:values.name,
+            departmentId:Number(values.departmentId),
+            admins:values.admins,
+            desc:values.desc,
+            isPrivate:values.isPrivate,
+        }
+        requestCreate(project).then((result) => {
             if(result.code === '0'){
                 Message.success(t['projectCreate.form.submit.success']);
                 setTimeout(() => {
@@ -56,7 +64,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                         {
                         required:true,
                         validator: (v, cb) => {
-                            if (getTextBlenLength(v) < 4) {
+                            if (getTextBlenLength(v) < 5) {
                                 return cb(t['projectCreate.form.name.less.limit'])
                             }else if (getTextBlenLength(v) > 26) {
                                 return cb(t['projectCreate.form.name.exceeds.limit'])
@@ -67,7 +75,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                     }]}>
                         <Input placeholder='Please enter project name' autoFocus={false} />
                     </Form.Item>
-                    <Form.Item label='Department' field="department" rules={[{ required: true ,message: t['projectCreate.form.department.errMsg'], validateTrigger : ['onBlur']}]}>
+                    <Form.Item label='Department' field="departmentId" rules={[{ required: true ,message: t['projectCreate.form.department.errMsg'], validateTrigger : ['onBlur']}]}>
                         <TreeSelect
                             placeholder={"Please Select"}
                             allowClear={true}
@@ -77,9 +85,9 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                     <Form.Item label={'Description'} field="desc" rules={[
                         {required: true ,message:t['projectCreate.form.description.errMsg'],validateTrigger : ['onBlur']}
                         ]}>
-                        <Input.TextArea placeholder='Please enter ...' style={{ minHeight: 64}} maxLength={100} showWordLimit={true}/>
+                        <Input.TextArea placeholder='Please enter ...' style={{ minHeight: 64}} maxLength={150} showWordLimit={true}/>
                     </Form.Item>
-                    <Form.Item label={'Private'} field="private">
+                    <Form.Item label={'IsPrivate'} field="isPrivate">
                         <Radio.Group defaultValue={0}>
                             <Radio value={0}>Private</Radio>
                             <Radio value={1}>Public</Radio>
