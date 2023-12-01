@@ -7,43 +7,46 @@ import locale from "./locale";
 import {requestQueryById, requestUpdateById} from "@/api/project";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {getTextBlenLength} from "@/utils/util";
+import {Project, User} from "@/types/insights-web";
 
 export default function ProjectUpdatePanel({updateId,allDepartInfo,onClose}){
 
     const t = useLocale(locale);
     const [form] = useForm();
     const formRef = useRef(null);
-    const [loadingTermCompleted,setLoadingTermCompleted] = useState(false);
-    const [loadingFormCompleted,setLoadingFormCompleted] = useState(false);
-    const [loadingCompleted, setLoadingCompleted] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [admins,setAdmins] = useState<Array<number>>([]);
 
-    const fetchProjectInfo = async () => {
-        await requestQueryById({"id":updateId}).then((result) => {
-            form.setFieldsValue(result.data);
-            form.setFieldValue("departmentId",result.data.departmentId.toString());
-            setLoadingFormCompleted(true);
-        });
-    }
+    const promiseOfFetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
+        const proc = async () => {
+            requestQueryById({"id":updateId}).then((result) => {
+                resolve(result.data);
+            }).catch(error => {
+                reject(error);
+            });
+        }
+        proc().then();
+    })
 
     useEffect(() => {
-        setLoadingCompleted(false);
-        setLoadingTermCompleted(false);
-        setLoadingFormCompleted(false);
-        fetchProjectInfo().then();
+        setLoading(true);
+        const promiseAll:Promise<[Project]> = Promise.all([
+            promiseOfFetchProjectInfo,
+        ]);
+        promiseAll.then((result) => {
+            const project = result[0];
+            form.setFieldsValue(project);
+            form.setFieldValue("departmentId",project.departmentId.toString());
+            setAdmins(project.admins);
+            setLoading(false);
+        }).catch(error => {
+            console.log(error);
+        })
     },[updateId])
 
-    useEffect(() => {
-        if(loadingFormCompleted && loadingTermCompleted){
-            setLoadingCompleted(true);
-        }
-    },[loadingTermCompleted,loadingFormCompleted])
 
     function handlerSubmit(){
         console.log("create submit!")
-    }
-
-    function loadingTermCompletedCallback(){
-        setLoadingTermCompleted(true);
     }
 
     return (
@@ -55,7 +58,7 @@ export default function ProjectUpdatePanel({updateId,allDepartInfo,onClose}){
             onCancel={onClose}>
 
             <Skeleton
-                style={{ marginTop:15,display:loadingCompleted ? 'none' : 'block' }}
+                style={{ marginTop:15,display:loading ? 'block' : 'none' }}
                 text={{
                     rows:3,
                     width: ['100%'],
@@ -63,7 +66,7 @@ export default function ProjectUpdatePanel({updateId,allDepartInfo,onClose}){
                 animation
             />
             <Form
-                style={{ display:loadingCompleted ? 'block' : 'none' }}
+                style={{ display:loading ? 'none' : 'block' }}
                 form={form}
                 ref={formRef}
                 autoComplete='off'
@@ -85,7 +88,7 @@ export default function ProjectUpdatePanel({updateId,allDepartInfo,onClose}){
                         }]}>
                         <Input placeholder='Please enter project name' autoFocus={false} />
                     </Form.Item>
-                    <Form.Item label='Department' field="department" rules={[{ required: true ,message: t['projectUpdate.form.department.errMsg'], validateTrigger : ['onBlur']}]}>
+                    <Form.Item label='Department' field="departmentId" rules={[{ required: true ,message: t['projectUpdate.form.department.errMsg'], validateTrigger : ['onBlur']}]}>
                         <TreeSelect
                             placeholder={"Please Select"}
                             allowClear={true}
@@ -104,7 +107,7 @@ export default function ProjectUpdatePanel({updateId,allDepartInfo,onClose}){
                         </Radio.Group>
                     </Form.Item>
                     <Form.Item label={'Admins'} field="admins" rules={[{ required: true,validateTrigger : ['onBlur']}]}>
-                        <UserTermQuery formRef={formRef}/>
+                        <UserTermQuery initValues={admins} formRef={formRef}/>
                     </Form.Item>
                 </Form>
         </Modal>
