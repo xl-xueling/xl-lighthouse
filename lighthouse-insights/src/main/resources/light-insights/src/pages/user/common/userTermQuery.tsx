@@ -1,14 +1,13 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
     Select,
 } from '@arco-design/web-react';
 import { useCallback } from 'react';
-import { Spin, Avatar } from '@arco-design/web-react';
+import { Spin } from '@arco-design/web-react';
 import debounce from 'lodash/debounce';
 import {IconUser} from "@arco-design/web-react/icon";
 import {requestQueryByIds} from "@/api/user";
 import {User} from "@/types/insights-web";
-import {Selector} from "react-redux";
 
 const UserTermQuery = ({initValues = null,completeCallBack=null}) => {
 
