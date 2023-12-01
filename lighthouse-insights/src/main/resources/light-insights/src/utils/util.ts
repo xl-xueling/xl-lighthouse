@@ -17,6 +17,12 @@ export function stringifyMap(map): string {
     return JSON.stringify(Array.from(map.entries()));
 }
 
+export function blockMainThread(seconds) {
+    const delay = seconds * 1000;
+    const start = Date.now();
+    while (Date.now() - start < delay) {}
+}
+
 export function isJSON(str):boolean {
     if (typeof str == 'string') {
         try {

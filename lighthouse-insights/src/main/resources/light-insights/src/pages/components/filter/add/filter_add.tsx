@@ -34,21 +34,7 @@ import {
     IconSearch
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
-import locale from './locale';
-import styles from './style/index.module.less';
-import {requestList} from "@/api/project";
-import {Department, PrivilegeEnum, Project, ProjectPagination} from "@/types/insights-web";
-import {requestPrivilegeCheck} from "@/api/privilege";
-import {getDataWithLocalCache} from "@/utils/localCache";
-import Security from "@/pages/user/settings/security";
-import useForm from "@arco-design/web-react/es/Form/useForm";
 import {isJSON, stringifyObj} from "@/utils/util";
-import {useSelector} from "react-redux";
-import UserTermQuery from "@/pages/user/common/userTermQuery";
-import ProjectCreate from "@/pages/project/list/create";
-import ProjectUpdate from "@/pages/project/list/update";
-import {requestDeleteById} from "@/api/project";
-import {FormInstance} from "@arco-design/web-react/lib";
 import {calculateMaxLevel, validateNode} from "@/pages/components/common";
 const FormItem = Form.Item;
 const Option = Select.Option;
