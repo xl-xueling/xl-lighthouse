@@ -1,29 +1,22 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useRef} from 'react';
 import dayjs from 'dayjs';
 import {
   Form,
   Input,
   DatePicker,
   Button,
-  Grid, TreeSelect, Tabs,
+  Grid, TreeSelect,
 } from '@arco-design/web-react';
 import { GlobalContext } from '@/context';
 import locale from './locale';
 import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import styles from './style/index.module.less';
-import {stringifyObj} from "@/utils/util";
-import {translate, translateToTreeStruct} from "@/pages/department/common";
-
+import {translate} from "@/pages/department/common";
 const { Row, Col } = Grid;
 const { useForm } = Form;
 
-function SearchForm({
-  onSearch,
-  form,
-  onClear,
-  allDepartInfo,
-}) {
+function SearchForm({onSearch, form,onClear, allDepartInfo}) {
   const { lang } = useContext(GlobalContext);
   const treeRef = useRef(null);
   const t = useLocale(locale);
@@ -71,16 +64,6 @@ function SearchForm({
                   multiple={true}
                   allowClear={true}
                   treeData={translate(allDepartInfo)}
-                  onChange={(e,v) => {
-                    if(!e || e.length == '0'){
-                      form.resetFields();
-                      return;
-                    }
-                  }}
-                  onClear={(z) => {
-                    console.log("----z is:" + stringifyObj(z));
-                  }}
-                  style={{ width: '100%'}}
               />
             </Form.Item>
           </Col>

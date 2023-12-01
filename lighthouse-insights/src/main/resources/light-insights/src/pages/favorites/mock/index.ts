@@ -2,6 +2,7 @@ import Mock from 'mockjs';
 import qs from 'query-string';
 import dayjs from 'dayjs';
 import setupMock from '@/utils/setupMock';
+import {blockMainThread} from "@/utils/util";
 
 setupMock({
     setup: () => {
@@ -14,6 +15,10 @@ setupMock({
             };
         });
 
+        function sleep (time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
+        }
+
 
         Mock.mock('/api/v1/favorites/queryStatIds', (params) => {
             console.log("receive param is:" + JSON.stringify(params));
@@ -24,6 +29,7 @@ setupMock({
                     10111,10211,10311
                 ]
             };
+
         });
 
         Mock.mock('/api/v1/favorites/favoriteProject', (params) => {

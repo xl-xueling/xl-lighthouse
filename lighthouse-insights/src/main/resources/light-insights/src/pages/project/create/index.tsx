@@ -1,22 +1,13 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React from 'react';
 import {Form, Input, Modal, Radio, TreeSelect} from "@arco-design/web-react";
 import UserTermQuery from "@/pages/user/common/userTermQuery";
-import {useSelector} from "react-redux";
-import {Department} from "@/types/insights-web";
-import {translateToTreeStruct} from "@/pages/department/common";
+import {translate, translateToTreeStruct} from "@/pages/department/common";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/list/locale";
 
-function ProjectCreate({createVisible,onHide }){
+function ProjectCreatePanel({onHide,allDepartInfo}){
 
     const t = useLocale(locale);
-
-    const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
-
-    const [departData, setDepartData] = useState([]);
-    useEffect(() => {
-        setDepartData(translateToTreeStruct(allDepartInfo,'0'));
-    },[])
 
     function handlerSubmit(){
         console.log("create submit!")
@@ -25,8 +16,8 @@ function ProjectCreate({createVisible,onHide }){
     return (
         <Modal
             title='创建工程'
-            visible={createVisible}
             style={{ width:'650px' }}
+            visible={true}
             className='modal-demo-without-content-spacing'
             onOk={handlerSubmit}
             onCancel={() => onHide()}
@@ -34,10 +25,6 @@ function ProjectCreate({createVisible,onHide }){
             <div>
                 <Form
                     autoComplete='off'
-                    initialValues={{
-                        slider: 20,
-                        'a.b[0].c': ['b'],
-                    }}
                     scrollToFirstError
                 >
                     <Form.Item label='Name' field='name' rules={[{ required: true }]}>
@@ -48,8 +35,7 @@ function ProjectCreate({createVisible,onHide }){
                             placeholder={"Please select"}
                             multiple={true}
                             allowClear={true}
-                            treeData={departData}
-                            style={{ width: '100%'}}
+                            treeData={translate(allDepartInfo)}
                         />
                     </Form.Item>
                     <Form.Item label={'Description'} field="desc" rules={[{ required: true }]}>
@@ -70,4 +56,4 @@ function ProjectCreate({createVisible,onHide }){
     );
 }
 
-export default ProjectCreate;
+export default ProjectCreatePanel;

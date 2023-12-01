@@ -20,7 +20,7 @@ import {Department, PrivilegeEnum, Project, ProjectPagination} from "@/types/ins
 import {requestPrivilegeCheck} from "@/api/privilege";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useSelector} from "react-redux";
-import ProjectCreate from "@/pages/project/list/create";
+import ProjectCreatePanel from "@/pages/project/create";
 import ProjectUpdate from "@/pages/project/list/update";
 import {requestDeleteById} from "@/api/project";
 import {requestFavoriteProject, requestQueryProjectIds, requestUnFavoriteProject} from "@/api/favorites";
@@ -31,17 +31,12 @@ export default function Index() {
   const t = useLocale(locale);
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
   const [listData, setListData] = useState([]);
-  const [initReady,setInitReady] = useState<boolean>(false);
   const [favoriteIds,setFavoriteIds] = useState<Array<number>>([]);
-
   const fetchFavoritesData = useCallback(async () => {
     try {
       const response = await requestQueryProjectIds();
       const data = response.data;
       setFavoriteIds(data);
-      setTimeout(() => {
-        setInitReady(true);
-      },0)
     } catch (error) {
       console.error(error);
     }
@@ -70,6 +65,14 @@ export default function Index() {
     }
   };
 
+  const hideCreateModal = () => {
+    setCreateVisible(false);
+  };
+
+  const hideUpdateModal = () => {
+    setUpdateVisible(false);
+  };
+
   const columns = useMemo(() => getColumns(t,favoriteIds, tableCallback), [t,favoriteIds]);
   const [pagination, setPagination] = useState<PaginationProps>({
     sizeOptions: [15,20,30,50],
@@ -82,13 +85,28 @@ export default function Index() {
   const [loading, setLoading] = useState(true);
   const [formParams, setFormParams] = useState({});
 
-  const hideCreateModal = () => {
-    setCreateVisible(false);
-  };
+  function onChangeTable({ current, pageSize }) {
+    setPagination({
+      ...pagination,
+      current,
+      pageSize,
+    });
+  }
 
-  const hideUpdateModal = () => {
-    setUpdateVisible(false);
-  };
+  function handleSearch(params) {
+    setPagination({ ...pagination, current: 1 });
+    setFormParams(params);
+  }
+
+  function handleReset(){
+    form.resetFields();
+    handleSearch({});
+  }
+
+  function onClickRadio(p){
+    setOwner(p==1);
+    handleReset();
+  }
 
   const handlerFavoriteProject = async (id: number) => {
     try{
@@ -137,20 +155,15 @@ export default function Index() {
 
 
   useEffect(() => {
-    setLoading(true);
-    if(!initReady){
-      return;
-    }
     fetchData().then().catch(error => {
       console.log(error);
       Message.error(t['system.error']);
-    }).finally(() => {
-      setLoading(false);
     })
-  }, [initReady,owner,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+  }, [owner,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
 
   const fetchData = async (): Promise<void> => {
+    setLoading(true);
     const {current, pageSize} = pagination;
     const fetchProjectsInfo:Promise<{list:Array<Project>,total:number}> = new Promise<{list:Array<Project>,total:number}>((resolve) => {
       const proc = async () => {
@@ -158,6 +171,7 @@ export default function Index() {
           params: {
             page: current,
             pageSize,
+            owner:owner?1:0,
             ...formParams,
           },
         });
@@ -191,31 +205,8 @@ export default function Index() {
             current,
             pageSize,
             total: total});
+          setLoading(false);
         })
-  }
-
-
-  function onChangeTable({ current, pageSize }) {
-    setPagination({
-      ...pagination,
-      current,
-      pageSize,
-    });
-  }
-
-  function handleSearch(params) {
-    setPagination({ ...pagination, current: 1 });
-    setFormParams(params);
-  }
-
-  function handleReset(){
-    form.resetFields();
-    handleSearch({});
-  }
-
-  function onClickRadio(p){
-    setOwner(p==1);
-    handleReset();
   }
 
 
@@ -225,14 +216,13 @@ export default function Index() {
       <Grid.Row justify="space-between" align="center">
         <Grid.Col span={16} style={{ textAlign: 'left' }}>
           <Space>
-            <Radio.Group defaultValue={'0'} name='button-radio-group' onChange={onClickRadio}>
-              {[{value:"0",label:"全部工程"}, {value:"1",label:"我的工程"}].map((item) => {
+            <Radio.Group defaultValue={"1"} name='button-radio-group' onChange={onClickRadio}>
+              {[{value:"1",label:"我的工程"},{value:"0",label:"全部工程"}].map((item) => {
                 return (
                     <Radio key={item.value} value={item.value}>
                       {({ checked }) => {
                         return (
-                            <Button size={"small"} tabIndex={-1} key={item.value} shape='round'
-                              style={checked ? {color:'rgb(var(--primary-6)',fontWeight:500}:{fontWeight:500}}>
+                            <Button size={"small"} tabIndex={-1} key={item.value} shape='round' style={checked ? {color:'rgb(var(--primary-6)',fontWeight:500}:{fontWeight:500}}>
                               {item.label}
                             </Button>
                         );
@@ -261,7 +251,7 @@ export default function Index() {
           columns={columns}
           data={listData}
       />
-      <ProjectCreate createVisible={createVisible} onHide={hideCreateModal} />
+      {createVisible && <ProjectCreatePanel onHide={hideCreateModal} allDepartInfo={allDepartInfo} />}
       <ProjectUpdate updateId={updateId} updateVisible={updateVisible} onHide={hideUpdateModal}/>
     </Card>
   );
