@@ -13,46 +13,37 @@ import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import styles from './style/index.module.less';
 import {stringifyObj} from "@/utils/util";
-import {useSelector} from "react-redux";
-import {Department, User} from "@/types/insights-web";
-import {translateToTreeStruct} from "@/pages/department/common";
+import {translate, translateToTreeStruct} from "@/pages/department/common";
 
 const { Row, Col } = Grid;
 const { useForm } = Form;
 
-function SearchForm(props: {
-  onSearch: (values: Record<string, any>) => void;
-  form;
-  onClear;
-}):any {
+function SearchForm({
+  onSearch,
+  form,
+  onClear,
+  allDepartInfo,
+}) {
   const { lang } = useContext(GlobalContext);
   const treeRef = useRef(null);
   const t = useLocale(locale);
 
-
   const handleSubmit = () => {
-    const values = props.form.getFieldsValue();
-    props.onSearch(values);
+    const values = form.getFieldsValue();
+    onSearch(values);
   };
 
-  const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+  const handleReset = () => {
+    form.resetFields();
+    onSearch({});
+  };
 
-  const [departData, setDepartData] = useState([]);
-  useEffect(() => {
-    setDepartData(translateToTreeStruct(allDepartInfo,'0'));
-  },[])
-
-  // const handleReset = () => {
-  //   props.form.resetFields();
-  //   props.onSearch({});
-  // };
-
-  const colSpan = lang === 'zh-CN' ? 8 : 12;
+  const colSpan = 12;
 
   return (
-    <div className={styles['search-form-wrapper']}>
+      <div className={styles['search-form-wrapper']}>
       <Form
-        form={props.form}
+        form={form}
         className={styles['search-form']}
         labelAlign="left"
         labelCol={{ span: 5 }}
@@ -79,10 +70,10 @@ function SearchForm(props: {
                   placeholder={"Please select"}
                   multiple={true}
                   allowClear={true}
-                  treeData={departData}
+                  treeData={translate(allDepartInfo)}
                   onChange={(e,v) => {
                     if(!e || e.length == '0'){
-                      props.form.resetFields();
+                      form.resetFields();
                       return;
                     }
                   }}
@@ -111,7 +102,7 @@ function SearchForm(props: {
         <Button size={"small"} type="primary" icon={<IconSearch />} onClick={handleSubmit}>
           {t['projectList.form.search']}
         </Button>
-        <Button size={"small"} icon={<IconRefresh />} onClick={props.onClear}>
+        <Button size={"small"} icon={<IconRefresh />} onClick={onClear}>
           {t['projectList.form.reset']}
         </Button>
       </div>
