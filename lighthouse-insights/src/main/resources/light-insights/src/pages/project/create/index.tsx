@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Form, Input, Message, Modal, Radio, TreeSelect} from "@arco-design/web-react";
 import UserTermQuery from "@/pages/user/common/userTermQuery";
 import {translate} from "@/pages/department/common";
@@ -6,6 +6,7 @@ import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {getTextBlenLength} from "@/utils/util";
 import {requestCreate} from "@/api/project";
+import {Simulate} from "react-dom/test-utils";
 
 function ProjectCreatePanel({onClose,allDepartInfo}){
 
@@ -13,16 +14,26 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
 
     const formRef = useRef(null);
 
-    function handlerSubmit(){
-        formRef.current.validate().then((values) => {
-            console.log("values is:" + JSON.stringify(values));
-            requestCreate(values).then(result => {
-                if(result.code === '0'){
-                    Message.success(t['projectCreate.form.submit.success']);
-                }else{
-                    Message.error(result.message || t['system.error']);
-                }
-            })
+    const [loading,setLoading] = useState<boolean>(false);
+
+    async function handlerSubmit(){
+        await formRef.current.validate();
+        const values = formRef.current.getFieldsValue();
+        setLoading(true);
+        requestCreate(values).then((result) => {
+            if(result.code === '0'){
+                Message.success(t['projectCreate.form.submit.success']);
+                setTimeout(() => {
+                    window.location.href = "/project/list";
+                },3000)
+            }else{
+                Message.error(result.message || t['system.error']);
+            }
+        }).catch((error) => {
+            console.log(error);
+            Message.error(t['system.error'])
+        }).finally(() => {
+            setLoading(false);
         })
     }
 
@@ -31,6 +42,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
             title= {t['projectCreate.form.title']}
             style={{ width:'750px',top:'20px' }}
             visible={true}
+            confirmLoading={loading}
             onOk={handlerSubmit}
             onCancel={() => onClose()}
         >
