@@ -23,17 +23,16 @@ import {useSelector} from "react-redux";
 import ProjectCreate from "@/pages/project/list/create";
 import ProjectUpdate from "@/pages/project/list/update";
 import {requestDeleteById} from "@/api/project";
-import {requestQueryProjectIds} from "@/api/favorites";
+import {requestFavoriteProject, requestQueryProjectIds, requestUnFavoriteProject} from "@/api/favorites";
 
 const { Title } = Typography;
 
 export default function Index() {
   const t = useLocale(locale);
-
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
   const [listData, setListData] = useState([]);
   const [initReady,setInitReady] = useState<boolean>(false);
-  const [favoriteIds,setFavoriteIds] = useState([]);
+  const [favoriteIds,setFavoriteIds] = useState<Array<number>>([]);
 
   const fetchFavoritesData = useCallback(async () => {
     try {
@@ -64,10 +63,14 @@ export default function Index() {
       setUpdateId(record.id);
     }else if(type == 'delete'){
       await handlerDeleteProject(record.id).then();
+    }else if(type == 'favorite'){
+      await handlerFavoriteProject(record.id).then();
+    }else if(type == 'unFavorite'){
+      await handlerUnFavoriteProject(record.id).then();
     }
   };
 
-  const columns = useMemo(() => getColumns(t, tableCallback), [t]);
+  const columns = useMemo(() => getColumns(t,favoriteIds, tableCallback), [t,favoriteIds]);
   const [pagination, setPagination] = useState<PaginationProps>({
     sizeOptions: [15,20,30,50],
     sizeCanChange: true,
@@ -85,6 +88,37 @@ export default function Index() {
 
   const hideUpdateModal = () => {
     setUpdateVisible(false);
+  };
+
+  const handlerFavoriteProject = async (id: number) => {
+    try{
+      const result = await requestFavoriteProject(id);
+      if(result.code == '0'){
+        Message.success("搜藏工程成功！");
+        setFavoriteIds([...favoriteIds,id]);
+      }else{
+        Message.error(result.message || "System Error!");
+      }
+    }catch (error){
+      console.log(error);
+      Message.error("System Error!");
+    }
+  };
+
+  const handlerUnFavoriteProject = async (id: number) => {
+    try{
+      const result = await requestUnFavoriteProject(id);
+      if(result.code == '0'){
+        Message.success("已取消搜藏该工程！");
+        const newArr = favoriteIds.filter((item) => item !== id);
+        setFavoriteIds(newArr);
+      }else{
+        Message.error(result.message || "System Error!");
+      }
+    }catch (error){
+      console.log(error);
+      Message.error("System Error!");
+    }
   };
 
   const handlerDeleteProject = async (id: number) => {

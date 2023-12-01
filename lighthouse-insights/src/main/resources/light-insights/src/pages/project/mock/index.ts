@@ -3,9 +3,47 @@ import setupMock from '@/utils/setupMock';
 import {Project} from "@/types/insights-web";
 
 const { list } = Mock.mock({
-  'list|100': [
+  // 'list|100': [
+  //   {
+  //     id: /[0-9]{3}/,
+  //     'name': '@word() @word() @word()',
+  //     'departmentId|1-2': 0,
+  //     'isPrivate|0-1': 0,
+  //     'desc':'@sentence()',
+  //     'admins':['1','2'],
+  //     "createdTime":'@datetime',
+  //   },
+
+  'list': [
     {
-      id: /[0-9]{8}/,
+      id: 101,
+      'name': '@word() @word() @word()',
+      'departmentId|1-2': 0,
+      'isPrivate|0-1': 0,
+      'desc':'@sentence()',
+      'admins':['1','2'],
+      "createdTime":'@datetime',
+    },
+    {
+      id: 102,
+      'name': '@word() @word() @word()',
+      'departmentId|1-2': 0,
+      'isPrivate|0-1': 0,
+      'desc':'@sentence()',
+      'admins':['1','2'],
+      "createdTime":'@datetime',
+    },
+    {
+      id: 103,
+      'name': '@word() @word() @word()',
+      'departmentId|1-2': 0,
+      'isPrivate|0-1': 0,
+      'desc':'@sentence()',
+      'admins':['1','2'],
+      "createdTime":'@datetime',
+    },
+    {
+      id: 104,
       'name': '@word() @word() @word()',
       'departmentId|1-2': 0,
       'isPrivate|0-1': 0,

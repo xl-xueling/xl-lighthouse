@@ -1,26 +1,41 @@
 import React from 'react';
 import {Button,Tooltip,Typography, Space, Popconfirm, Message} from '@arco-design/web-react';
-import {IconStarFill} from "@arco-design/web-react/icon";
+import {IconStar, IconStarFill} from "@arco-design/web-react/icon";
 const { Text } = Typography;
 
-export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
       {
           title: '',
           dataIndex: 'favorite',
           headerCellStyle: { width:'5px' },
           render: (_, record) => {
-              return <Space size={16} direction="horizontal">
-                  <Popconfirm
-                      focusLock
-                      position={"bl"}
-                      title='Confirm'
-                      content= {t['projectList.columns.operations.favorite.confirm']}
-                      onOk={() => callback(record, 'favorite')}
-                  >
-                      <IconStarFill style={{ cursor:"pointer",color:"oranged"}}/>
-                  </Popconfirm>
-              </Space>
+              if(favoriteIds.includes(record.id)){
+                  console.log("---favorite Ids:" + JSON.stringify(favoriteIds) + ",record id:" + record.id + ',is contains');
+                  return <Space size={16} direction="horizontal">
+                      <Popconfirm
+                          focusLock
+                          position={"bl"}
+                          title='Confirm'
+                          content= {t['projectList.columns.operations.unfavorite.confirm']}
+                          onOk={() => callback(record, 'unFavorite')}
+                      >
+                          <IconStarFill style={{ cursor:"pointer"}}/>
+                      </Popconfirm>
+                  </Space>
+              }else{
+                  return <Space size={16} direction="horizontal">
+                      <Popconfirm
+                          focusLock
+                          position={"bl"}
+                          title='Confirm'
+                          content= {t['projectList.columns.operations.favorite.confirm']}
+                          onOk={() => callback(record, 'favorite')}
+                      >
+                          <IconStar style={{ cursor:"pointer" }}/>
+                      </Popconfirm>
+                  </Space>
+              }
             }
       },
     {

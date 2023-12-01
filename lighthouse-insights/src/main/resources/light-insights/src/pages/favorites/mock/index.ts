@@ -10,7 +10,7 @@ setupMock({
             return {
                 code:'0',
                 message:'success',
-                data:[12,13,14]
+                data:[101,102,14]
             };
         });
 
@@ -23,6 +23,42 @@ setupMock({
                 data:[
                     10111,10211,10311
                 ]
+            };
+        });
+
+        Mock.mock('/api/v1/favorites/favoriteProject', (params) => {
+            console.log("receive favoriteProject params,params:" + JSON.stringify(params));
+            return {
+                code:0,
+                message:'success',
+                data:{},
+            };
+        });
+
+        Mock.mock('/api/v1/favorites/unFavoriteProject', (params) => {
+            console.log("receive unFavoriteProject params,params:" + JSON.stringify(params));
+            return {
+                code:0,
+                message:'success',
+                data:{},
+            };
+        });
+
+        Mock.mock('/api/v1/favorites/favoriteStat', (params) => {
+            console.log("receive favoriteStat params,params:" + JSON.stringify(params));
+            return {
+                code:0,
+                message:'success',
+                data:{},
+            };
+        });
+
+        Mock.mock('/api/v1/favorites/unFavoriteStat', (params) => {
+            console.log("receive unFavoriteStat params,params:" + JSON.stringify(params));
+            return {
+                code:0,
+                message:'success',
+                data:{},
             };
         });
     }
