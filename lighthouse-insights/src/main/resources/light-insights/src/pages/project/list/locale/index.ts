@@ -15,6 +15,7 @@ const i18n = {
     'projectList.columns.operations.offline': 'Offline',
     'projectList.columns.operations.online': 'Online',
     'projectList.columns.operations.favorite.confirm':'Are you sure to favorite this project?',
+    'projectList.columns.operations.unfavorite.confirm':'Are you sure to unfavorite this project?',
     'projectList.operations.add': 'New',
 
 
@@ -36,6 +37,7 @@ const i18n = {
     'projectList.columns.operations.offline': '下线',
     'projectList.operations.add': '新建',
     'projectList.columns.operations.favorite.confirm':'是否确认搜藏该统计工程？',
+    'projectList.columns.operations.unfavorite.confirm':'是否确认取消搜藏该统计工程？',
   },
 };
 
