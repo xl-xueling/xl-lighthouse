@@ -24,6 +24,7 @@ import ProjectCreatePanel from "@/pages/project/create";
 import ProjectUpdate from "@/pages/project/list/update";
 import {requestDeleteById} from "@/api/project";
 import {requestFavoriteProject, requestQueryProjectIds, requestUnFavoriteProject} from "@/api/favorites";
+import StatAddPanel from "@/pages/stat/add/stat_add";
 
 const { Title } = Typography;
 
@@ -251,8 +252,8 @@ export default function Index() {
           columns={columns}
           data={listData}
       />
-      {createVisible && <ProjectCreatePanel onHide={hideCreateModal} allDepartInfo={allDepartInfo} />}
-      <ProjectUpdate updateId={updateId} updateVisible={updateVisible} onHide={hideUpdateModal}/>
+      {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} />}
+      {updateVisible && <ProjectUpdate updateId={updateId} onClose={() => setUpdateVisible(false)}/>}
     </Card>
   );
 

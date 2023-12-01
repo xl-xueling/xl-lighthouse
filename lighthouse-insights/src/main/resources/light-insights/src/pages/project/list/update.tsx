@@ -11,7 +11,7 @@ import useForm from "@arco-design/web-react/es/Form/useForm";
 import {FormInstance} from "@arco-design/web-react/lib";
 import {IconLoading} from "@arco-design/web-react/icon";
 
-function ProjectUpdate({updateId,updateVisible,onHide}){
+function ProjectUpdate({updateId,onClose}){
 
     const t = useLocale(locale);
     const [departData, setDepartData] = useState([]);
@@ -57,11 +57,11 @@ function ProjectUpdate({updateId,updateVisible,onHide}){
     return (
         <Modal
             title='修改工程'
-            visible={updateVisible}
+            visible={true}
             style={{ width:'650px'}}
             className='modal-demo-without-content-spacing'
             onOk={handlerSubmit}
-            onCancel={onHide}>
+            onCancel={onClose}>
             <Skeleton
                 style={{ marginTop:15,display:loadingCompleted ? 'none' : 'block' }}
                 text={{
