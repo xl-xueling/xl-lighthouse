@@ -16,7 +16,7 @@ import locale from './locale';
 import {getColumns} from './constants';
 import {requestList} from "@/api/project";
 import {ResultData} from "@/types/insights-common";
-import {Department, PrivilegeEnum, Project, ProjectPagination} from "@/types/insights-web";
+import {Department, PrivilegeEnum, Project, ProjectPagination, User} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useSelector} from "react-redux";
@@ -24,6 +24,8 @@ import ProjectCreatePanel from "@/pages/project/create";
 import ProjectUpdatePanel from "@/pages/project/update";
 import {requestDeleteById} from "@/api/project";
 import {requestFavoriteProject, requestQueryProjectIds, requestUnFavoriteProject} from "@/api/favorites";
+import Detail from "@/pages/project/list/detail";
+import {requestQueryByIds} from "@/api/user";
 
 const { Title } = Typography;
 
@@ -51,6 +53,7 @@ export default function Index() {
   const [form] = useForm();
   const [createVisible, setCreateVisible] = React.useState(false);
   const [updateVisible, setUpdateVisible] = React.useState(false);
+  const [detailVisible, setDetailVisible] = React.useState(false);
 
   const tableCallback = async (record, type) => {
     if(type == 'update'){
@@ -62,6 +65,9 @@ export default function Index() {
       await handlerFavoriteProject(record.id).then();
     }else if(type == 'unFavorite'){
       await handlerUnFavoriteProject(record.id).then();
+    }else if(type == 'detail'){
+      setDetailVisible(!detailVisible);
+      setUpdateId(record.id);
     }
   };
 
@@ -184,18 +190,29 @@ export default function Index() {
     const {list,total}:{list:Array<Project>,total:number} = result[0];
     const projectsInfo = list;
     const fetchPrivilegeInfo:Promise<Record<number,PrivilegeEnum[]>> = new Promise<Record<number,PrivilegeEnum[]>>((resolve) => {
-      const projectIds = projectsInfo!.map(z => z.id);
+      const projectIds = projectsInfo?.map(z => z.id);
       const proc = async () => {
         const result:ResultData<Record<number,PrivilegeEnum[]>> = await requestPrivilegeCheck({type:"project",items:projectIds});
         resolve(result.data);
       }
       proc().then();
     })
-    Promise.all([fetchPrivilegeInfo])
-        .then(([r1]) => {
+    const fetchUsersInfo:Promise<Record<number,User>> = new Promise<Record<number,User>>((resolve) => {
+      const userIds = Array.from(new Set(projectsInfo?.map(z => z.adminIds).flatMap(z => z)));
+      const proc = async () => {
+        const result:ResultData<Record<number,User>> = await requestQueryByIds(userIds);
+        resolve(result.data)
+      }
+      proc().then();
+    })
+    Promise.all([fetchPrivilegeInfo,fetchUsersInfo])
+        .then(([r1,r2]) => {
           const paginationData = projectsInfo.reduce((result:ProjectPagination[],item:Project) => {
+            console.log("item:" + JSON.stringify(item));
             const department = allDepartInfo.find(x => String(x.id) == String(item.departmentId));
-            const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id],"department":department}};
+            const users = r2 as Record<number,User>;
+            const admins = Object.entries(users).map(([k,v]) => v).filter((user) => item.adminIds?.includes(Number(user.id)));
+            const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id],"department":department,"admins":admins}};
             result.push(combinedItem);
             return result;
           },[]);
@@ -253,6 +270,8 @@ export default function Index() {
       />
       {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} />}
       {updateVisible && <ProjectUpdatePanel updateId={updateId} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)}/>}
+      {detailVisible && <Detail projectId={updateId} onClose={() => setDetailVisible(false)}/>}
+
     </Card>
   );
 

@@ -82,7 +82,7 @@ setupMock({
           'departmentId|1-2': 1,
           'isPrivate': 0,
           'desc':'@sentence()',
-          'admins':['1','2'],
+          'adminIds':['1','2'],
           "createdTime":'@datetime',
         }),
       };
@@ -98,7 +98,7 @@ setupMock({
         'departmentId|1-2': 1,
         'isPrivate': 0,
         'desc': '@sentence()',
-        'admins': ['1', '2'],
+        'adminIds': ['1', '2'],
         "createdTime": '@datetime',
       });
       projectData[102] = Mock.mock({
@@ -107,7 +107,7 @@ setupMock({
         'departmentId|1-2': 1,
         'isPrivate': 0,
         'desc': '@sentence()',
-        'admins': ['1', '2'],
+        'adminIds': ['1', '2'],
         "createdTime": '@datetime',
       });
 

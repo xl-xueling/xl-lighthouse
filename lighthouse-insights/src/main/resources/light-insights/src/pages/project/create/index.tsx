@@ -22,7 +22,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
         const project:Project = {
             name:values.name,
             departmentId:Number(values.departmentId),
-            admins:values.admins,
+            adminIds:values.admins,
             desc:values.desc,
             isPrivate:values.isPrivate,
         }

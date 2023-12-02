@@ -3,6 +3,7 @@ import qs from 'query-string';
 import dayjs from 'dayjs';
 import setupMock from '@/utils/setupMock';
 import {generatePermission, routes} from "@/routes";
+import {Project, User} from "@/types/insights-web";
 
 setupMock({
     setup: () => {
@@ -89,40 +90,37 @@ setupMock({
         });
 
 
+        Mock.mock('/api/v1/user/queryByIds', (params) => {
+            console.log("receive queryByIds params,params:" + JSON.stringify(params));
+            const data = JSON.parse(params.body);
+            const userData: Record<number, User> = {};
+            userData[1] = Mock.mock({
+                id: 1,
+                "userName":'CD',
+                "email":'@EMAIL()',
+                "phone":'@Phone()',
+                "departmentId":2,
+                "state|0-3":0,
+                "createdTime":'@datetime',
+            });
+            userData[2] = Mock.mock({
+                id: 2,
+                "userName":'CD',
+                "email":'@EMAIL()',
+                "phone":'@Phone()',
+                "departmentId":2,
+                "state|0-3":0,
+                "createdTime":'@datetime',
+            });
 
-        Mock.mock(new RegExp('/api/v1/user/queryByIds'), (params) => {
-            const list2 = Mock.mock(
-                {
-                    'list': [
-                        {
-                            "id": "1",
-                            "userName":'AB',
-                            "email":'@EMAIL()',
-                            "phone":'@Phone()',
-                            "departmentId":2,
-                            "state|0-3":0,
-                            "createdTime":'@datetime',
-                        },
-
-                        {
-                            "id": "2",
-                            "userName":'CD',
-                            "email":'@EMAIL()',
-                            "phone":'@Phone()',
-                            "departmentId":2,
-                            "state|0-3":0,
-                            "createdTime":'@datetime',
-                        },
-                    ],
-                }
-            );
-            console.log("receive queryByIds param is:" + JSON.stringify(params));
             return {
-                code:'0',
+                code:0,
                 message:'success',
-                data:list2,
+                data:userData
             };
         });
+
+
 
         Mock.mock(new RegExp('/api/v1/user/updateById'), (params) => {
             console.log("changeState,receive param is:" + JSON.stringify(params));

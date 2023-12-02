@@ -1,6 +1,16 @@
 import React from 'react';
 import {Button,Tooltip,Typography, Space, Popconfirm, Message} from '@arco-design/web-react';
-import {IconStar, IconStarFill} from "@arco-design/web-react/icon";
+import {
+    IconFullscreen,
+    IconInfoCircle,
+    IconInfoCircleFill,
+    IconRotateRight,
+    IconStar,
+    IconStarFill
+} from "@arco-design/web-react/icon";
+import IconHorizontalVideo from "@/pages/list/search-table/icons/horizontal.svg";
+import {doc} from "prettier";
+import cursor = doc.builders.cursor;
 const { Text } = Typography;
 
 export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: Record<string, any>, type: string) => Promise<void>) {
@@ -11,7 +21,6 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
           headerCellStyle: { width:'5px' },
           render: (_, record) => {
               if(favoriteIds.includes(record.id)){
-                  console.log("---favorite Ids:" + JSON.stringify(favoriteIds) + ",record id:" + record.id + ',is contains');
                   return <Space size={16} direction="horizontal">
                       <Popconfirm
                           focusLock
@@ -49,9 +58,13 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
       title: t['projectList.columns.name'],
       dataIndex: 'name',
       render: (value,record) =>
-          <Tooltip color={'#2d3a57'} content={record.desc + record.desc+ record.desc+ record.desc}>
-          <Text>{value}</Text>
-          </Tooltip>
+          // <Tooltip color={'#2d3a57'} content={record.desc + record.desc+ record.desc+ record.desc}>
+          //     <IconInfoCircle /><Text>{value}</Text>
+          // </Tooltip>
+      {
+          //return (<div><Text>{value}</Text><IconInfoCircle fontSize={14} style={{ cursor: "pointer" }}/></div>)
+          return (<div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
+      }
               ,
     },
       {
