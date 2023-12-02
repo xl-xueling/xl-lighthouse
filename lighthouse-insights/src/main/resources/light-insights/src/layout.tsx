@@ -33,6 +33,7 @@ import getUrlParams from './utils/getUrlParams';
 import lazyload from './utils/lazyload';
 import { GlobalState } from './store';
 import styles from './style/layout.module.less';
+import ProjectManage from "@/pages/project/manage";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -280,6 +281,7 @@ function PageLayout() {
               )}
               <Content>
                 <Switch>
+                  <Route path="/project/manage/:id" component={ProjectManage} />
                   {flattenRoutes.map((route, index) => {
                     return (
                       <Route

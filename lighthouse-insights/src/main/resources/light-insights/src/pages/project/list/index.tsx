@@ -219,7 +219,6 @@ export default function Index() {
             return result;
           },[]);
           setListData(paginationData);
-          console.log("------set list data success,pagdata size:" + paginationData.length)
           setPagination({
             ...pagination,
             current,
