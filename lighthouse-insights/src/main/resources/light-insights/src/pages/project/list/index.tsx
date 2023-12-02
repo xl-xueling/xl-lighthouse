@@ -26,6 +26,7 @@ import {requestDeleteById} from "@/api/project";
 import {requestFavoriteProject, requestQueryProjectIds, requestUnFavoriteProject} from "@/api/favorites";
 import Detail from "@/pages/project/list/detail";
 import {requestQueryByIds} from "@/api/user";
+import {stringifyMap, stringifyObj} from "@/utils/util";
 
 const { Title } = Typography;
 
@@ -50,6 +51,7 @@ export default function Index() {
 
   const [owner, setOwner] = useState(true);
   const [updateId, setUpdateId] = useState(0);
+  const [selectedProject,setSelectedProject] = useState<ProjectPagination>(null);
   const [form] = useForm();
   const [createVisible, setCreateVisible] = React.useState(false);
   const [updateVisible, setUpdateVisible] = React.useState(false);
@@ -66,8 +68,8 @@ export default function Index() {
     }else if(type == 'unFavorite'){
       await handlerUnFavoriteProject(record.id).then();
     }else if(type == 'detail'){
+      setSelectedProject(record);
       setDetailVisible(!detailVisible);
-      setUpdateId(record.id);
     }
   };
 
@@ -217,6 +219,7 @@ export default function Index() {
             return result;
           },[]);
           setListData(paginationData);
+          console.log("------set list data success,pagdata size:" + paginationData.length)
           setPagination({
             ...pagination,
             current,
@@ -270,8 +273,7 @@ export default function Index() {
       />
       {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} />}
       {updateVisible && <ProjectUpdatePanel updateId={updateId} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)}/>}
-      {detailVisible && <Detail projectId={updateId} onClose={() => setDetailVisible(false)}/>}
-
+      {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
     </Card>
   );
 
