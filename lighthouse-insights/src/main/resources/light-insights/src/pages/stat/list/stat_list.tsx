@@ -1,13 +1,6 @@
 import {
-    Card,
-    Typography,
-    Avatar,
-    Space,
-    Grid,
     Table,
-    TableColumnProps,
-    Popconfirm,
-    Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag, Icon, Tabs, PaginationProps
+    Message, PaginationProps
 } from '@arco-design/web-react';
 import React, {useEffect, useMemo, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -36,7 +29,6 @@ export default function StatisticalListPanel({formParams,from = null}) {
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
-
 
     const t = useLocale(locale);
 
@@ -74,7 +66,7 @@ export default function StatisticalListPanel({formParams,from = null}) {
             const {list,total}:{list:Array<Stat>,total:number} = (await Promise.all([fetchStatsInfo]))[0];
             const statsInfo = list;
             const fetchPrivilegeInfo:Promise<Record<number,PrivilegeEnum[]>> = new Promise<Record<number,PrivilegeEnum[]>>((resolve, reject) => {
-                const statIds = statsInfo!.map(z => z.id);
+                const statIds = statsInfo?.map(z => z.id);
                 const proc = async () => {
                     const result:ResultData<Record<number,PrivilegeEnum[]>> = await requestPrivilegeCheck({type:"stat",items:statIds});
                     resolve(result.data);
@@ -83,7 +75,7 @@ export default function StatisticalListPanel({formParams,from = null}) {
             })
 
             const fetchProjectInfo:Promise<Record<number,Project>> = new Promise<Record<number,Project>> ((resolve => {
-                const projectIds = statsInfo.map(z => z.projectId);
+                const projectIds = statsInfo?.map(z => z.projectId);
                 const proc = async () => {
                     const result:ResultData<Record<number,Project>> = await requestQueryProjectByIds(projectIds);
                     resolve(result.data);
@@ -92,7 +84,7 @@ export default function StatisticalListPanel({formParams,from = null}) {
             }))
 
             const fetchGroupInfo:Promise<Record<number,Group>> = new Promise<Record<number,Group>> ((resolve => {
-                const groupIds = statsInfo.map(z => z.groupId);
+                const groupIds = statsInfo?.map(z => z.groupId);
                 const proc = async () => {
                     const result:ResultData<Record<number,Group>> = await requestQueryGroupByIds(groupIds);
                     resolve(result.data);

@@ -1,5 +1,10 @@
 const i18n = {
   'en-US': {
+    'statList.table.columns.name':'Name',
+    'statList.table.columns.department':'Department',
+    'statList.table.columns.project':'Project',
+    'statList.table.form.button.search':'Search',
+    'statList.table.form.button.reset':'Reset',
     'statList.table.operations':'Operation',
     'statList.table.operations.view':'View',
     'statList.table.operations.update':'Update',
@@ -11,6 +16,11 @@ const i18n = {
     'statList.table.operations.delete.confirm':'Are you sure to delete this statistic?',
   },
   'zh-CN': {
+    'statList.table.columns.name':'名称',
+    'statList.table.columns.department':'部门',
+    'statList.table.columns.project':'统计工程',
+    'statList.table.form.button.search':'搜索',
+    'statList.table.form.button.reset':'重置',
     'statList.table.operations':'操作',
     'statList.table.operations.view':'查看',
     'statList.table.operations.update':'修改',
