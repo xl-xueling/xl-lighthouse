@@ -3,22 +3,17 @@ import dayjs from 'dayjs';
 import {
     Form,
     Input,
-    Select,
-    DatePicker,
     Button,
-    Grid, TreeSelect,Spin,
+    Grid, TreeSelect,
 } from '@arco-design/web-react';
 import { GlobalContext } from '@/context';
 import locale from './locale';
 import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import styles from './style/index.module.less';
-import {stringifyObj} from "@/utils/util";
 import {useSelector} from "react-redux";
-import {Department, User} from "@/types/insights-web";
-import {translate, translateToTreeStruct} from "@/pages/department/common";
-import {requestTermList} from "@/api/project";
-import {debounce} from "react-ace/lib/editorOptions";
+import {Department} from "@/types/insights-web";
+import {translate} from "@/pages/department/common";
 import ProjectTermQuery from "@/pages/project/common/projectTermQuery";
 
 const { Row, Col } = Grid;
@@ -27,12 +22,7 @@ const { useForm } = Form;
 function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):any {
     const t = useLocale(locale);
     const { lang } = useContext(GlobalContext);
-    const departmentTreeRef = useRef(null);
-    const refFetchId = useRef(null);
-    const [fetching, setFetching] = useState(false);
     const [form] = useForm();
-    const [options, setOptions] = useState([]);
-
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
 
     const handleSubmit = () => {
@@ -46,8 +36,6 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
     };
 
     const colSpan = 12;
-
-
 
     return (
         <div className={styles['search-form-wrapper']}>
@@ -65,7 +53,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
                         </Form.Item>
                     </Col>
                     <Col span={colSpan}>
-                        <Form.Item label={"Name"} field="name">
+                        <Form.Item label={t['statList.table.columns.name']} field="name">
                             <Input
                                 allowClear
                                 placeholder={"Name"}
@@ -73,24 +61,17 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
                         </Form.Item>
                     </Col>
                     <Col span={colSpan}>
-                        <Form.Item label={"Department"} field="department">
+                        <Form.Item label={t['statList.table.columns.department']} field="department">
                             <TreeSelect
-                                ref={departmentTreeRef}
-                                placeholder={"Please select"}
+                                placeholder={"Please Select"}
                                 multiple={true}
                                 allowClear={true}
                                 treeData={translate(allDepartInfo)}
-                                onChange={(e,v) => {
-                                    if(!e || e.length == '0'){
-                                        form.resetFields();
-                                        return;
-                                    }
-                                }}
                             />
                         </Form.Item>
                     </Col>
                     <Col span={colSpan}>
-                        <Form.Item label={"Project"} field="project">
+                        <Form.Item label={t['statList.table.columns.project']} field="project">
                             <ProjectTermQuery />
                         </Form.Item>
                     </Col>
@@ -98,10 +79,10 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
             </Form>
             <div className={styles['right-button']}>
                 <Button size={"small"} type="primary" icon={<IconSearch />} onClick={handleSubmit}>
-                    {"搜索"}
+                    {t['statList.table.form.button.search']}
                 </Button>
                 <Button size={"small"} icon={<IconRefresh />} onClick={handleReset}>
-                    {"重置"}
+                    {t['statList.table.form.button.reset']}
                 </Button>
             </div>
         </div>
