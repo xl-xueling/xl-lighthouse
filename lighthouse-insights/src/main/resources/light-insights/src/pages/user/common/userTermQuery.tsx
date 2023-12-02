@@ -25,8 +25,8 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null})
 
     const fetchInitData = async () => {
         if(initValues){
-            const result = await requestQueryByIds({"ids":initValues})
-            const options = result.data.list.map((user) => (
+            const result = await requestQueryByIds(initValues)
+            const options = Object.entries(result.data).map(([id,user]) => (
                 {
                 label: (
                     <div style={{ display: 'flex', alignItems: 'center' }}>

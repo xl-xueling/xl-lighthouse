@@ -37,7 +37,7 @@ export default function ProjectUpdatePanel({updateId,allDepartInfo,onClose}){
             const project = result[0];
             form.setFieldsValue(project);
             form.setFieldValue("departmentId",project.departmentId.toString());
-            setAdmins(project.admins);
+            setAdmins(project.adminIds);
             setLoading(false);
         }).catch(error => {
             console.log(error);

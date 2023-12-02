@@ -47,12 +47,14 @@ export interface Project {
     departmentId?:number;
     desc?:string;
     isPrivate?:number;
-    admins?:Array<number>;
+    adminIds?:Array<number>;
     createdTime?:number;
 }
 
 export interface ProjectPagination extends Project{
     permissions:PrivilegeEnum[];
+    department:Department;
+    admins:Array<User>;
 }
 
 export interface Column {
