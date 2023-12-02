@@ -18,12 +18,13 @@ import {
     IconPlus,
     IconPlusCircleFill, IconTag, IconThunderbolt
 } from '@arco-design/web-react/icon';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import styles from './style/index.module.less';
 import AceEditor from "react-ace";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
+import locale from './locale';
 import {Column, Department, Group, PrivilegeEnum, Project, Stat, StatPagination, User} from "@/types/insights-web";
 import {requestQueryByIds as requestQueryGroupByIds} from "@/api/group";
 import {requestQueryByIds as requestQueryProjectByIds} from "@/api/project";
@@ -35,8 +36,10 @@ import EditTable, {
 } from "@/pages/common/edittable/EditTable";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {ResultData} from "@/types/insights-common";
+import {getColumnsOfManage} from "@/pages/stat/list/constants";
+import {getColumns} from "@/pages/project/list/constants";
 
-export default function StatisticalListPanel({formParams,columns}:{formParams:object,columns:TableColumnProps[]}) {
+export default function StatisticalListPanel({formParams,from = null}) {
 
     const [loading,setLoading] = useState<boolean>(false);
 
@@ -52,7 +55,13 @@ export default function StatisticalListPanel({formParams,columns}:{formParams:ob
         pageSizeChangeResetCurrent: true,
     });
 
-    const t = useLocale();
+
+    const t = useLocale(locale);
+
+    const tableCallback = async (record, type) => {
+        console.log("record is:" + record + ",type:" + type)
+    };
+    const columns = useMemo(() => getColumnsOfManage(t, tableCallback), [t]);
 
     function onChangeTable({ current, pageSize }) {
         setPagination({

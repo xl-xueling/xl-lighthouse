@@ -34,7 +34,7 @@ export default function ProjectTree({projectId,editEnable= true
             if(result.code == '0'){
                 if(result.data.list){
                    setExpandedKeys( result.data.list.map(x => x.key))
-                   setTreeData( result.data.list);
+                   setTreeData(result.data.list);
                 }
             }else{
                 Message.error(result.message || t['system.error']);
@@ -89,7 +89,12 @@ export default function ProjectTree({projectId,editEnable= true
                         setExpandedKeys([...newArr, ...keys]);
                     }
                     const id = treeRef.current.getCacheNode([keys[0]])[0].props.dataRef.id
-                    handlerProcess('group-manage', {"groupId":id});
+                    const level = treeRef.current.getCacheNode([keys[0]])[0].props._level;
+                    if(level == 0){
+                        handlerProcess('selected-project', {"projectId":id});
+                    }else if(level == 1){
+                        handlerProcess('selected-group', {"groupId":id});
+                    }
                 }}
                 onExpand={(keys, extra) => {
                     setExpandedKeys(keys);
