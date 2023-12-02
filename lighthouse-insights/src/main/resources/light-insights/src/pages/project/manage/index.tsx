@@ -14,8 +14,6 @@ export default function ProjectManage() {
 
   const [showManagePanel, setShowManagePanel] = useState(false);
 
-  const TabPane = Tabs.TabPane;
-
   const { id } = useParams();
 
   const handlerProcess = (action:string,params:any):void => {
@@ -24,7 +22,7 @@ export default function ProjectManage() {
               setShowAddPanel(true);
               break;
           }
-          case 'group-manage':{
+          case 'selected-group':{
               setGroupId(params.groupId);
               setShowManagePanel(true);
               break;
