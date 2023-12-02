@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button,Tooltip,Typography, Space, Popconfirm, Message} from '@arco-design/web-react';
+import {Button, Tooltip, Typography, Space, Popconfirm, Message, Link} from '@arco-design/web-react';
 import {
     IconFullscreen,
     IconInfoCircle,
@@ -106,12 +106,13 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
                   size="mini">
                 {'修改'}
               </Button>
+              <Link target={"_blank"} href={'/project/manage/' + record.id}>
               <Button
-                  //onClick={() => callback(record, 'update')}
                   type="secondary"
                   size="mini">
                 {'管理'}
               </Button>
+              </Link>
             <Popconfirm
                 position={"tr"}
                 focusLock

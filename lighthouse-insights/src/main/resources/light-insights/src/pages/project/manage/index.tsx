@@ -4,6 +4,7 @@ import ProjectTree from "../common/project-tree";
 import {Space, Tabs,Typography} from "@arco-design/web-react";
 import GroupAddPanel from "@/pages/group/add/group_add";
 import GroupManagePanel from "@/pages/group/manage";
+import {useParams} from "react-router-dom";
 
 export default function ProjectManage() {
 
@@ -15,7 +16,9 @@ export default function ProjectManage() {
 
   const TabPane = Tabs.TabPane;
 
-    const handlerProcess = (action:string,params:any):void => {
+  const { id } = useParams();
+
+  const handlerProcess = (action:string,params:any):void => {
       switch (action){
           case 'group-add':{
               setShowAddPanel(true);
@@ -37,7 +40,7 @@ export default function ProjectManage() {
       <div className={styles.layout}>
         <div className={styles['layout-left-side']}>
             <Space size={24} direction="vertical" className={styles.left}>
-                <ProjectTree projectId={0} filterTypes={[1,2]} handlerProcess={handlerProcess} />
+                <ProjectTree projectId={id} filterTypes={[1,2]} handlerProcess={handlerProcess} />
             </Space>
         </div>
 
@@ -45,7 +48,6 @@ export default function ProjectManage() {
 
           {showAddPanel && <GroupAddPanel onClose={() => setShowAddPanel(false)}/>}
       </div>
-
     </div>
   );
 }

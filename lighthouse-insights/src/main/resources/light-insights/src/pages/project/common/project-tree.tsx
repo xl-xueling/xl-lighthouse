@@ -1,20 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Message, Space, Spin, Tree} from '@arco-design/web-react';
 import {
-    IconApps, IconDragDotVertical, IconEdit,
     IconFile,
-    IconFolder, IconFolderAdd, IconMindMapping,
-    IconMinus, IconMinusCircleFill,
-    IconPen,
-    IconPenFill,
-    IconPlus, IconPlusCircle,
-    IconPlusCircleFill, IconStorage, IconTag, IconTags, IconTool
+    IconFolder,
+    IconPlus, IconTag,
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from '../manage/locale';
 import styles from '../manage/style/index.module.less';
 import {requestStructure} from "@/api/project";
-import {stringifyObj} from "@/utils/util";
 import {ArcoTreeNode} from "@/types/insights-web";
 
 export default function ProjectTree({projectId,editEnable= true
