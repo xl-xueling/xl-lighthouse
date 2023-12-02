@@ -78,16 +78,6 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
       render: (value) => <Text>{value}</Text>,
     },
     {
-      title: t['projectList.columns.desc'],
-      dataIndex: 'desc',
-      render: (value) => {
-          if (value.length <= 70) {
-              return value;
-          }
-          return value.slice(0, 70) + '...';
-      },
-    },
-    {
       title: t['projectList.columns.operations'],
       dataIndex: 'operations',
       headerCellStyle: {width:'250px' },

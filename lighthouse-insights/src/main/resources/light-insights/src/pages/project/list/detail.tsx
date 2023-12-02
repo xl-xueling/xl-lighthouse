@@ -18,35 +18,13 @@ import {requestQueryById} from "@/api/project";
 const { Row, Col } = Grid;
 const { useForm } = Form;
 
-export default function Detail({projectId,onClose}) {
+export default function Detail({projectInfo,onClose}) {
 
-    const [projectInfo,setProjectInfo] = useState<Project>(null);
     const [loading,setLoading] = useState(true);
 
-    const promiseOfFetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
-        const proc = async () => {
-            requestQueryById({"id":projectId}).then((result) => {
-                resolve(result.data);
-            }).catch(error => {
-                reject(error);
-            });
-        }
-        proc().then();
-    })
-
     useEffect(() => {
-        setLoading(true);
-        const promiseAll:Promise<[Project]> = Promise.all([
-            promiseOfFetchProjectInfo,
-        ]);
-        promiseAll.then((result) => {
-            const project = result[0];
-            console.log("project is:" + JSON.stringify(project));
-            setLoading(false);
-        }).catch(error => {
-            console.log(error);
-        })
-    },[projectId])
+        console.log("projectInfo is:" + JSON.stringify(projectInfo))
+    },[projectInfo])
 
     return <div>
         <Drawer
@@ -66,44 +44,22 @@ export default function Detail({projectId,onClose}) {
                 data={[
                     {
                         label: 'Name',
-                        value: '',
+                        value: projectInfo.name,
                     },
                     {
-                        label: 'Date of birth',
-                        value: '1995.01.01',
+                        label: 'Department',
+                        value: projectInfo.department.name,
                     },
                     {
-                        label: 'City',
-                        value: 'Beijing',
+                        label: 'Description',
+                        value: projectInfo.desc,
                     },
                     {
-                        label: 'To work',
-                        value: '2017.07',
+                        label: 'Admins',
+                        value: projectInfo.adminIds,
                     },
                 ]}
             />
-            <Divider />
-            {/*<Descriptions*/}
-            {/*    colon=''*/}
-            {/*    title='Contact Information'*/}
-            {/*    column={1}*/}
-            {/*    labelStyle={{ width: 100 }}*/}
-            {/*    data={[*/}
-            {/*        {*/}
-            {/*            label: 'Telephone',*/}
-            {/*            value: '+86 136-6333-2888',*/}
-            {/*        },*/}
-            {/*        {*/}
-            {/*            label: 'Email',*/}
-            {/*            value: '123456789@163.com',*/}
-            {/*        },*/}
-            {/*        {*/}
-            {/*            label: 'Website',*/}
-            {/*            value: <Link>https://123456789/design.com/</Link>,*/}
-            {/*        },*/}
-            {/*    ]}*/}
-            {/*/>*/}
         </Drawer>
-
     </div>
 }
