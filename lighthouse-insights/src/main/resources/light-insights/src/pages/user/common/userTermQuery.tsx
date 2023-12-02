@@ -10,7 +10,6 @@ import debounce from 'lodash/debounce';
 import {IconUser} from "@arco-design/web-react/icon";
 import {requestQueryByIds, requestTermList} from "@/api/user";
 import {User} from "@/types/insights-web";
-import {stringifyObj} from "@/utils/util";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 
