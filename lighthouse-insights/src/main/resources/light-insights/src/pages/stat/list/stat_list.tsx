@@ -9,35 +9,17 @@ import {
     Popconfirm,
     Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag, Icon, Tabs, PaginationProps
 } from '@arco-design/web-react';
-import {
-    IconDashboard, IconFile,
-    IconMinus,
-    IconMinusCircleFill,
-    IconMore,
-    IconPen, IconPenFill,
-    IconPlus,
-    IconPlusCircleFill, IconTag, IconThunderbolt
-} from '@arco-design/web-react/icon';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import useLocale from '@/utils/useLocale';
-import styles from './style/index.module.less';
-import AceEditor from "react-ace";
 import {useSelector} from "react-redux";
-import {GlobalState} from "@/store";
 import locale from './locale';
-import {Column, Department, Group, PrivilegeEnum, Project, Stat, StatPagination, User} from "@/types/insights-web";
+import { Department, Group, PrivilegeEnum, Project, Stat, StatPagination, User} from "@/types/insights-web";
 import {requestQueryByIds as requestQueryGroupByIds} from "@/api/group";
 import {requestQueryByIds as requestQueryProjectByIds} from "@/api/project";
-import {requestList, requestQueryByGroupId} from "@/api/stat";
-import EditTable, {
-    EditTableColumn,
-    EditTableColumnProps,
-    EditTableComponentEnum
-} from "@/pages/common/edittable/EditTable";
+import {requestList} from "@/api/stat";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {ResultData} from "@/types/insights-common";
 import {getColumnsOfManage} from "@/pages/stat/list/constants";
-import {getColumns} from "@/pages/project/list/constants";
 
 export default function StatisticalListPanel({formParams,from = null}) {
 

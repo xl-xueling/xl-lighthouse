@@ -6,7 +6,7 @@ import {
     Select,
     DatePicker,
     Button,
-    Grid, TreeSelect, Tabs, Avatar, Spin,
+    Grid, TreeSelect,Spin,
 } from '@arco-design/web-react';
 import { GlobalContext } from '@/context';
 import locale from './locale';
@@ -16,67 +16,43 @@ import styles from './style/index.module.less';
 import {stringifyObj} from "@/utils/util";
 import {useSelector} from "react-redux";
 import {Department, User} from "@/types/insights-web";
-import {translateToTreeStruct} from "@/pages/department/common";
-import {debounce} from "react-ace/lib/editorOptions";
+import {translate, translateToTreeStruct} from "@/pages/department/common";
 import {requestTermList} from "@/api/project";
+import {debounce} from "react-ace/lib/editorOptions";
+import ProjectTermQuery from "@/pages/project/common/projectTermQuery";
 
 const { Row, Col } = Grid;
 const { useForm } = Form;
 
-function SearchForm(props: {
-    onSearch: (values: Record<string, any>) => void;
-    form;
-    onClear;
-}):any {
+function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):any {
+    const t = useLocale(locale);
     const { lang } = useContext(GlobalContext);
     const departmentTreeRef = useRef(null);
     const refFetchId = useRef(null);
-    const t = useLocale(locale);
-
     const [fetching, setFetching] = useState(false);
-
-    const handleSubmit = () => {
-        const values = props.form.getFieldsValue();
-        props.onSearch(values);
-    };
+    const [form] = useForm();
+    const [options, setOptions] = useState([]);
 
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
 
-    const [departData, setDepartData] = useState([]);
-    useEffect(() => {
-        setDepartData(translateToTreeStruct(allDepartInfo,'0'));
-    },[])
+    const handleSubmit = () => {
+        const values = form.getFieldsValue();
+        props.onSearch(values);
+    };
 
-    const colSpan = lang === 'zh-CN' ? 8 : 12;
+    const handleReset = () => {
+        form.resetFields();
+        props.onSearch({});
+    };
 
-    const [options, setOptions] = useState([]);
+    const colSpan = 12;
 
-    const debouncedFetchUser = useCallback(
-        debounce((inputValue) => {
-            refFetchId.current = Date.now();
-            const fetchId = refFetchId.current;
-            setFetching(true);
-            setOptions([]);
-            requestTermList(inputValue).then((v) => {
-                const data = v.data.list;
-                if(refFetchId.current === fetchId){
-                    const options = data.map((project) => ({
-                        label: <div> {`${project.name}`}</div>,
-                        value: project.id,
-                    }))
-                    setFetching(false);
-                    setOptions(options);
-                }
-            })
 
-        }, 500),
-        []
-    );
 
     return (
         <div className={styles['search-form-wrapper']}>
             <Form
-                form={props.form}
+                form={form}
                 className={styles['search-form']}
                 labelAlign="left"
                 labelCol={{ span: 5 }}
@@ -103,55 +79,19 @@ function SearchForm(props: {
                                 placeholder={"Please select"}
                                 multiple={true}
                                 allowClear={true}
-                                treeData={departData}
+                                treeData={translate(allDepartInfo)}
                                 onChange={(e,v) => {
                                     if(!e || e.length == '0'){
-                                        props.form.resetFields();
+                                        form.resetFields();
                                         return;
                                     }
                                 }}
-                                onClear={(z) => {
-                                    console.log("----z is:" + stringifyObj(z));
-                                }}
-                                style={{ width: '100%'}}
                             />
                         </Form.Item>
                     </Col>
                     <Col span={colSpan}>
                         <Form.Item label={"Project"} field="project">
-                            <Select
-                                showSearch
-                                mode='multiple'
-                                options={options}
-                                placeholder='Search by name'
-                                filterOption={false}
-                                notFoundContent={
-                                    fetching ? (
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                            }}
-                                        >
-                                            <Spin style={{ margin: 12 }} />
-                                        </div>
-                                    ) : null
-                                }
-                                onSearch={debouncedFetchUser}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={colSpan}>
-                        <Form.Item
-                            label={"CreatedTime"}
-                            field="createdTime"
-                        >
-                            <DatePicker.RangePicker
-                                allowClear
-                                style={{ width: '100%' }}
-                                disabledDate={(date) => dayjs(date).isAfter(dayjs())}
-                            />
+                            <ProjectTermQuery />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -160,7 +100,7 @@ function SearchForm(props: {
                 <Button size={"small"} type="primary" icon={<IconSearch />} onClick={handleSubmit}>
                     {"搜索"}
                 </Button>
-                <Button size={"small"} icon={<IconRefresh />} onClick={props.onClear}>
+                <Button size={"small"} icon={<IconRefresh />} onClick={handleReset}>
                     {"重置"}
                 </Button>
             </div>
