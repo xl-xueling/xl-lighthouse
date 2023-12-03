@@ -23,10 +23,8 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
         {
             title: 'Title',
             dataIndex: 'title',
-            render:(_,record) => {
-                return <Tooltip content={record.template} style={{ width:'500px' }}>
-                    <Text>{_}</Text>
-                </Tooltip>
+            render:(value,record) => {
+                return (<div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
             }
         },
         {
@@ -44,6 +42,17 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
         {
             title: 'State',
             dataIndex: 'state',
+            render: (value) => {
+                if(value === 0){
+                    return <Badge status="processing" text={t['statList.columns.state.pending']}/>;
+                }else if (value === 1) {
+                    return <Badge status="success" text={t['statList.columns.state.running']}/>;
+                }else if(value === 2){
+                    return <Badge status="error" text={t['statList.columns.state.limiting']}/>;
+                }else if(value === 3){
+                    return <Badge status="error" text={t['statList.columns.state.frozen']}/>;
+                }
+            },
         },
         {
             title: 'Operate',
@@ -142,15 +151,12 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
         {
             title: 'ID',
             dataIndex: 'id',
-            render:(value,record) => {
-                return (<div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
-            }
         },
         {
             title: 'Title',
             dataIndex: 'title',
             render:(value,record) => {
-                return (<Text>{value}</Text>)
+                return (<div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
             }
         },
         {

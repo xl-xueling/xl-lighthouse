@@ -28,7 +28,7 @@ export default function Detail({statInfo,onClose}) {
 
     return <div>
         <Drawer
-            width= {'55%'}
+            width= {'50%'}
             title={<span>Statistic Information</span>}
             visible={true}
             placement={"right"}
@@ -38,18 +38,12 @@ export default function Detail({statInfo,onClose}) {
             footer={null}
         >
             <Descriptions
-                colon=''
-                title=''
-                column={1}
+                colon='：'
                 labelStyle={{ width: 100 }}
                 data={[
                     {
                         label: 'Title',
                         value: statInfo?.title,
-                    },
-                    {
-                        label: 'Template',
-                        value: statInfo?.template,
                     },
                     {
                         label: 'Expired',
@@ -58,6 +52,10 @@ export default function Detail({statInfo,onClose}) {
                     {
                         label: 'TimeParam',
                         value: statInfo?.timeparam,
+                    },
+                    {
+                        label: 'Template',
+                        value: statInfo?.template,
                     },
                 ]}
             />
