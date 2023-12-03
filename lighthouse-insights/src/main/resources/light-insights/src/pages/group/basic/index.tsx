@@ -34,33 +34,23 @@ import EditTable, {
     EditTableColumnProps,
     EditTableComponentEnum
 } from "@/pages/common/edittable/EditTable";
+import {FormInstance} from "@arco-design/web-react/lib";
 const { Row, Col } = Grid;
-
 const { Text } = Typography;
 
-export default function GroupBasicPanel(props:{groupId?}) {
+export default function GroupBasicPanel({groupId}) {
 
     const t = useLocale(locale);
-
-    const groupId = props.groupId;
-
     const editTableRef= useRef(null);
-
-    const tempalteEditTableRef= useRef(null);
-
     const [loading,setLoading] = useState<boolean>(true);
-
-    const [groupInfo,setGroupInfo] = useState<Group>(null);
-
-    const [statsInfo,setStatsInfo] = useState<Array<Stat>>([]);
-
+    const [columnsData,setColumnsData] = useState(null);
     const [formInstance] = Form.useForm();
+    const [formKey, setFormKey] = useState(0);
 
     useEffect(() => {
         if(groupId){
-            setLoading(true);
+           setLoading(true);
             const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
-                console.log("start to Fetch Group Info with id:" + groupId);
                 let result:Group;
                 const proc = async () => {
                     const response = await requestQueryById(groupId);
@@ -73,27 +63,21 @@ export default function GroupBasicPanel(props:{groupId?}) {
                 proc().then();
             })
 
-            const promiseFetchStatsInfo:Promise<Array<Stat>> = new Promise<Array<Stat>>((resolve, reject) => {
-                let result:Array<Stat>;
-                const proc = async () => {
-                    const response = await requestQueryByGroupId(groupId);
-                    if(response.code != '0'){
-                        reject(new Error(response.message));
-                    }
-                    result = response.data.list;
-                    resolve(result);
-                }
-                proc().then();
-            })
-
-            const promiseAll:Promise<[Group,Array<Stat>]> = Promise.all([
+            const promiseAll:Promise<[Group]> = Promise.all([
                 promiseFetchGroupInfo,
-                promiseFetchStatsInfo,
             ])
 
             promiseAll.then((results) => {
-                setGroupInfo(results[0]);
-                setStatsInfo(results[1]);
+                const groupInfo = results[0];
+                const columnArr:Array<EditTableColumn> = [];
+                for(let i=0;i<groupInfo.columns.length;i++){
+                    const columnInfo = groupInfo.columns[i];
+                    columnArr.push({...columnInfo,"key":i})
+                }
+                setColumnsData(columnArr);
+                formInstance.setFieldValue("token",groupInfo.token);
+                formInstance.setFieldValue("createdTime",groupInfo.createdTime);
+                formInstance.setFieldValue("desc",groupInfo.desc);
             }).catch(error => {
                 console.log(error);
                 Message.error(t['system.error']);
@@ -102,19 +86,6 @@ export default function GroupBasicPanel(props:{groupId?}) {
             });
         }
     },[groupId])
-
-    const [initData,setInitData] = useState(null);
-
-    useEffect(() => {
-        if(groupInfo && groupInfo.columns){
-            const columnArr:Array<EditTableColumn> = [];
-            for(let i=0;i<groupInfo.columns.length;i++){
-                const columnInfo = groupInfo.columns[i];
-                columnArr.push({...columnInfo,"key":i})
-            }
-            setInitData(columnArr);
-        }
-    },[groupInfo])
 
     const columnsProps: EditTableColumnProps[]  = [
         {
@@ -131,10 +102,10 @@ export default function GroupBasicPanel(props:{groupId?}) {
             componentType:EditTableComponentEnum.SELECT,
             headerCellStyle: { width:'4%'},
             render:(k,v) => (
-                <Select size={"mini"} placeholder='Please select'
-                        disabled={true}
+                <Select size={"mini"} placeholder='Please select' disabled={true} bordered={false}
                         onChange={editTableRef.current.cellValueChangeHandler}
                         defaultValue={k}
+                        style={{ border:'1px solid var(--color-neutral-3)' }}
                 >
                     <Select.Option key={1}  value={1}>
                         String
@@ -151,27 +122,7 @@ export default function GroupBasicPanel(props:{groupId?}) {
             componentType:EditTableComponentEnum.INPUT,
             editable: true,
         },
-        // {
-        //     title: 'Operate',
-        //     dataIndex: 'operate',
-        //     componentType:EditTableComponentEnum.BUTTON,
-        //     headerCellStyle: { width:'15%'},
-        //     render: (_, record) => (
-        //         <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%',paddingTop:'5px' }}>
-        //             <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
-        //         </Space>
-        //     ),
-        // },
     ];
-
-    useEffect(() => {
-        if(groupInfo != null){
-            const formData = {
-                "token":groupInfo.token,
-            }
-            formInstance.setFieldsValue(formData);
-        }
-    },[groupInfo])
 
     return (
         <div>
@@ -180,6 +131,7 @@ export default function GroupBasicPanel(props:{groupId?}) {
                     <Card >
                         <Spin loading={loading} size={20} style={{ display: 'block' }}>
                             <Form
+                                key={formKey}
                                 form={formInstance}
                                 className={styles['search-form']}
                                 layout={"vertical"}
@@ -190,7 +142,7 @@ export default function GroupBasicPanel(props:{groupId?}) {
                                     {'Token'}
                                 </Typography.Title>
                                 <Form.Item field="token">
-                                    <InputTag readOnly={true}/>
+                                    <Input disabled={true}/>
                                 </Form.Item>
                                 <Form.Item>
                                     <Grid.Row>
@@ -201,12 +153,8 @@ export default function GroupBasicPanel(props:{groupId?}) {
                                                 {'Columns'}
                                             </Typography.Title>
                                         </Grid.Col>
-                                        <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                                            <Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>
-                                        </Grid.Col>
                                     </Grid.Row>
-
-                                    <EditTable ref={editTableRef} columns={columnsProps} initData={initData}/>
+                                    <EditTable ref={editTableRef} columnProps={columnsProps} editmode={false} columnsData={columnsData}/>
                                 </Form.Item>
                                 <Typography.Title
                                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
@@ -214,24 +162,23 @@ export default function GroupBasicPanel(props:{groupId?}) {
                                     {'Description'}
                                 </Typography.Title>
                                 <Form.Item field="desc">
-                                    <Input.TextArea
+                                    <Input.TextArea disabled={true}
                                         style={{ minHeight: 18, width: '100%' }}
                                     />
+                                </Form.Item>
+                                <Typography.Title
+                                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                                >
+                                    {'CreatedTime'}
+                                </Typography.Title>
+                                <Form.Item field="createdTime">
+                                    <Input disabled={true}/>
                                 </Form.Item>
                             </Form>
                         </Spin>
                     </Card>
                 </Col>
-                {/*<Col span={4}>*/}
-                {/*    <Card className={styles.wrapper}>*/}
-                {/*        <QuickOperation />*/}
-                {/*    </Card>*/}
-                {/*</Col>*/}
             </Row>
-
-
-
-
         </div>
     );
 }

@@ -163,7 +163,7 @@ export default function GroupAddPanel({onClose}) {
               </Grid.Col>
             </Grid.Row>
 
-            <EditTable ref={editTableRef} columns={columnsProps} initData={[]} />
+            {/*<EditTable ref={editTableRef} columns={columnsProps} initData={[]} />*/}
           </Form.Item>
 
           <Typography.Title

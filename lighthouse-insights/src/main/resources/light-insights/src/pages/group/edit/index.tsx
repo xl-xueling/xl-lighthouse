@@ -208,7 +208,7 @@ export default function GroupEditPanel({groupId,onClose}) {
                             </Grid.Col>
                         </Grid.Row>
 
-                        <EditTable ref={editTableRef} columns={columnsProps} initData={initData}/>
+                        {/*<EditTable ref={editTableRef} columns={columnsProps} initData={initData}/>*/}
                     </Form.Item>
                     <Typography.Title
                         style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
