@@ -1,19 +1,15 @@
 import {
     Typography,
-    Space,
     Grid,
-    TableColumnProps,
-    Popconfirm,
-    Message,
     Button,
     Form,
     Input,
     Tabs,
-    Dropdown, Menu, Tooltip
+    Dropdown, Menu
 } from '@arco-design/web-react';
 import {IconDownCircle, IconTag, IconThunderbolt
 } from '@arco-design/web-react/icon';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
@@ -25,7 +21,7 @@ import GroupEditPanel from "@/pages/group/edit";
 const { Row, Col } = Grid;
 
 
-export default function GroupManagePanel({groupId,onClose}) {
+export default function GroupManagePanel({groupId}) {
 
     const TabPane = Tabs.TabPane;
     const { Text } = Typography;
@@ -66,7 +62,6 @@ export default function GroupManagePanel({groupId,onClose}) {
         setFormParams({"title":v});
     }
 
-
     return (
     <div className={styles['layout-content']}>
         <div className={styles['manage-panel']}>
@@ -78,17 +73,16 @@ export default function GroupManagePanel({groupId,onClose}) {
                         trigger={"click"}
                         droplist={
                             <Menu onClickMenuItem={handlerProcess} style={{ maxHeight:'280px' }}>
-                                <Menu.Item key='1'>创建统计项</Menu.Item>
-                                <Menu.Item key='2'>修改统计组</Menu.Item>
-                                <Menu.Item key='3'>修改限流阈值</Menu.Item>
-                                <Menu.Item key='4'>查看限流记录</Menu.Item>
-                                <Menu.Item key='5'>查看秘钥</Menu.Item>
-                                <Menu.Item key='6'>删除统计组</Menu.Item>
+                                <Menu.Item key='1'>{t['groupManage.operations.button.create.stat']}</Menu.Item>
+                                <Menu.Item key='2'>{t['groupManage.operations.button.update.group']}</Menu.Item>
+                                <Menu.Item key='3'>{t['groupManage.operations.button.update.limited.threshold']}</Menu.Item>
+                                <Menu.Item key='4'>{t['groupManage.operations.button.limited.records']}</Menu.Item>
+                                <Menu.Item key='5'>{t['groupManage.operations.button.secret.key']}</Menu.Item>
+                                <Menu.Item key='6'>{t['groupManage.operations.button.delete.group']}</Menu.Item>
                             </Menu>
                         }
                     >
-
-                        <Button size={"small"} type={"secondary"}><IconDownCircle />操作</Button>
+                        <Button size={"small"} type={"secondary"}><IconDownCircle />{t['groupManage.operations.button.title']}</Button>
                     </Dropdown>
                 }
             >

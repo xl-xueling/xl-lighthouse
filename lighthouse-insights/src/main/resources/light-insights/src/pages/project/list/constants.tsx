@@ -97,20 +97,20 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
                   <Button
                       type="secondary"
                       size="mini">
-                      {'查看'}
+                      {t['projectList.columns.operations.view']}
                   </Button>
               </Popconfirm>
               <Button
                   onClick={() => callback(record, 'update')}
                   type="secondary"
                   size="mini">
-                {'修改'}
+                {t['projectList.columns.operations.update']}
               </Button>
               <Link target={"_blank"} href={'/project/manage/' + record.id}>
               <Button
                   type="secondary"
                   size="mini">
-                {'管理'}
+                {t['projectList.columns.operations.manage']}
               </Button>
               </Link>
             <Popconfirm
@@ -128,7 +128,7 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
               <Button
                   type="secondary"
                   size="mini">
-                {'删除'}
+                {t['projectList.columns.operations.delete']}
               </Button>
             </Popconfirm>
           </Space>

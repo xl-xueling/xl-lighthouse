@@ -42,7 +42,7 @@ export default function ProjectManage() {
             </Space>
         </div>
 
-          {showManagePanel && <GroupManagePanel groupId={groupId} onClose={() => setShowManagePanel(false)}/>}
+          {showManagePanel && <GroupManagePanel groupId={groupId}/>}
 
           {showAddPanel && <GroupAddPanel onClose={() => setShowAddPanel(false)}/>}
       </div>
