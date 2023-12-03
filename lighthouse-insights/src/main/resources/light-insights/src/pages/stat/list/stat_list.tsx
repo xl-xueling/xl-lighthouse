@@ -136,7 +136,6 @@ export default function StatisticalListPanel({formParams,from = null}) {
                 proc().then();
             })
 
-
             const fetchGroupsInfo:Promise<Record<number,Group>> = new Promise<Record<number,Group>> ((resolve => {
                 const groupIds = statsInfo?.map(z => z.groupId);
                 const proc = async () => {
@@ -152,7 +151,7 @@ export default function StatisticalListPanel({formParams,from = null}) {
                         const project:Project = r2[item.projectId];
                         const department = allDepartInfo.find(x => x.id == project.departmentId);
                         const users = r4 as Record<number,User>;
-                        const admins = Object.entries(users).map(([k,v]) => v).filter((user) => item.adminIds?.includes(Number(user.id)));
+                        const admins = Object.entries(users)?.map(([k,v]) => v).filter((user) => item.adminIds?.includes(Number(user.id)));
                         const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id],"project":project,"group":r3[item.groupId],"department":department,"admins":admins}};
                         result.push(combinedItem);
                         return result;

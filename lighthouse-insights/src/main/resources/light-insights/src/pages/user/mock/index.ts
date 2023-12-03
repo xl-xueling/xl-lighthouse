@@ -7,6 +7,7 @@ import {Project, User} from "@/types/insights-web";
 
 setupMock({
     setup: () => {
+
         const { list } = Mock.mock(
             {
             'list|100': [

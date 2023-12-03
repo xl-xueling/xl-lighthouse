@@ -18,6 +18,11 @@ const i18n = {
     'statList.table.operations.unfavorite.confirm':'Are you sure to unfavorite this item?',
     'statList.table.operations.favorite.success':'Favorite statistic item successfully!',
     'statList.table.operations.unfavorite.success':'Favorite has been canceled!',
+    'statList.columns.state.pending':'Pending',
+    'statList.columns.state.running':'Running',
+    'statList.columns.state.limiting':'Limiting',
+    'statList.columns.state.frozen':'Frozen',
+    'statList.columns.state.deleted':'Deleted',
   },
   'zh-CN': {
     'statList.table.columns.name':'名称',
@@ -38,6 +43,11 @@ const i18n = {
     'statList.table.operations.unfavorite.confirm':'是否确认取消收藏该统计项?',
     'statList.table.operations.favorite.success':'收藏统计项成功!',
     'statList.table.operations.unfavorite.success':'已取消收藏该统计项!',
+    'statList.columns.state.pending':'待审核',
+    'statList.columns.state.running':'运行中',
+    'statList.columns.state.limiting':'限流',
+    'statList.columns.state.frozen':'已冻结',
+    'statList.columns.state.deleted':'已删除',
   },
 };
 
