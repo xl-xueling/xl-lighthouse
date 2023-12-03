@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext, useCallback } from 'react';
-import {Button, Table, Input, Select, Form, FormInstance, Space, TableColumnProps} from '@arco-design/web-react';
+import {Button, Table, Input, Select, Form, FormInstance, Space, TableColumnProps, Card} from '@arco-design/web-react';
 import {IconMinusCircleFill} from "@arco-design/web-react/icon";
 const FormItem = Form.Item;
 const EditableContext = React.createContext<{ getForm?: () => FormInstance }>({});
@@ -24,13 +24,15 @@ export interface EditTableColumnProps extends TableColumnProps {
     options?:number[]|string[];
 }
 
-const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
 
+const EditTable = React.forwardRef( (props:{columnProps,columnsData,editmode},ref) => {
+
+    const columnProps = props.columnProps;
+    const columnsData = props.columnsData;
+    const editmode = props.editmode || false;
     const tableRef = useRef(null);
-    const columns = props.columns
-    const initData = props.initData;
     const [count, setCount] = useState(5);
-    const [data,setData] = useState(initData);
+    const [data,setData] = useState(columnsData);
 
     function handleSave(row) {
         const newData = [...data];
@@ -63,15 +65,14 @@ const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
     }));
 
     useEffect(() => {
-        setData(initData);
-    },[])
+        setData(columnsData);
+    },[columnsData])
 
 
     return (
-        <div className={styles.edit_panel}>
             <Table
                 ref={tableRef}
-                style={{ minHeight:'200px' }}
+                style={{minHeight: editmode ? '200px' : 'auto' }}
                 size={"mini"}
                 data={data}
                 pagination={false}
@@ -82,7 +83,7 @@ const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
                         cell: EditableCell,
                     },
                 }}
-                columns={columns.map((column) => {
+                columns={columnProps.map((column) => {
                     return column.editable
                             ? {
                                 ...column,
@@ -95,7 +96,6 @@ const EditTable = React.forwardRef((props:{columns,initData}, ref) => {
 
                 )}
             />
-        </div>
     );
 })
 

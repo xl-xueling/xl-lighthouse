@@ -54,29 +54,29 @@ setupMock({
             groupData[1001] = Mock.mock(
                 {
                     id:1001,
-                    token:"homepage_behavior_stat",
+                    token:"homepage_behavior_stat1",
                     projectId:101,
                     desc:"homepage user behavior stat",
                     columns:[
                         {
                             name:"userId",
                             type:1,
-                            desc:"用户ID_" + '@datetime'
+                            desc:"1用户ID_" + '@datetime'
                         },
                         {
                             name:"province",
                             type:1,
-                            desc:"用户省份" + '@datetime'
+                            desc:"1用户省份" + '@datetime'
                         },
                         {
                             name:"city",
                             type:1,
-                            desc:"用户城市" + '@datetime'
+                            desc:"1用户城市" + '@datetime'
                         },
                         {
                             name:"score",
                             type:2,
-                            desc:"得分" + '@datetime'
+                            desc:"1得分" + '@datetime'
                         }
                     ],
                     createdTime:'@datetime',
@@ -86,29 +86,29 @@ setupMock({
             groupData[1002] = Mock.mock(
                 {
                     id:1002,
-                    token:"homepage_behavior_stat",
+                    token:"homepage_behavior_stat2",
                     projectId:101,
                     desc:"homepage user behavior stat",
                     columns:[
                         {
                             name:"userId",
                             type:1,
-                            desc:"用户ID_" + '@datetime'
+                            desc:"2用户ID_" + '@datetime'
                         },
                         {
                             name:"province",
                             type:1,
-                            desc:"用户省份" + '@datetime'
+                            desc:"2用户省份" + '@datetime'
                         },
                         {
                             name:"city",
                             type:1,
-                            desc:"用户城市" + '@datetime'
+                            desc:"2用户城市" + '@datetime'
                         },
                         {
                             name:"score",
                             type:2,
-                            desc:"得分" + '@datetime'
+                            desc:"2得分" + '@datetime'
                         }
                     ],
                     createdTime:'@datetime',
