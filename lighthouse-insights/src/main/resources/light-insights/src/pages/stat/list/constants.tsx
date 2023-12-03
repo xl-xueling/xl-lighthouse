@@ -1,4 +1,4 @@
-import {Button, Popconfirm, Space, TableColumnProps, Tabs, Tooltip, Typography} from "@arco-design/web-react";
+import {Badge, Button, Popconfirm, Space, TableColumnProps, Tabs, Tooltip, Typography} from "@arco-design/web-react";
 import React from "react";
 import {IconStar, IconStarFill} from "@arco-design/web-react/icon";
 const TabPane = Tabs.TabPane;
@@ -134,31 +134,43 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
         {
             title: 'ID',
             dataIndex: 'id',
+            render:(value,record) => {
+                return (<div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
+            }
         },
         {
             title: 'Title',
             dataIndex: 'title',
-            render:(_,record) => {
-                return <Tooltip content={record.template} style={{ width:'500px' }}>
-                    <Text>{_}</Text>
-                </Tooltip>
+            render:(value,record) => {
+                return (<Text>{value}</Text>)
             }
         },
         {
-            title: 'Group',
-            dataIndex: 'group.token',
+            title: 'Project',
+            dataIndex: 'project.name',
         },
         {
-            title: 'TimeParam',
-            dataIndex: 'timeparam',
+            title: 'Department',
+            dataIndex: 'department.name',
         },
         {
-            title: 'Expired',
-            dataIndex: 'expired',
+            title: 'Admins',
+            dataIndex: 'project.adminIds',
         },
         {
             title: 'State',
             dataIndex: 'state',
+            render: (value) => {
+                if(value === 0){
+                    return <Badge status="processing" text={t['userList.columns.state.pending']}/>;
+                }else if (value === 1) {
+                    return <Badge status="success" text={t['userList.columns.state.normal']}/>;
+                }else if(value === 2){
+                    return <Badge status="error" text={t['userList.columns.state.frozen']}/>;
+                }else if(value === 3){
+                    return <Badge status="error" text={t['userList.columns.state.deleted']}/>;
+                }
+            },
         },
         {
             title: 'Operate',
