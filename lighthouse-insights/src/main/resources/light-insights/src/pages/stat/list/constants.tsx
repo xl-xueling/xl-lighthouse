@@ -1,5 +1,6 @@
 import {Button, Popconfirm, Space, TableColumnProps, Tabs, Tooltip, Typography} from "@arco-design/web-react";
 import React from "react";
+import {IconStar, IconStarFill} from "@arco-design/web-react/icon";
 const TabPane = Tabs.TabPane;
 const { Text } = Typography;
 export function getColumnsOfManage(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
@@ -93,10 +94,43 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
 }
 
 
+export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: Record<string, any>, type: string) => Promise<void>) {
 
-export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+    console.log("favorites Ids is:" + JSON.stringify(favoriteIds));
 
     return [
+        {
+            title: '',
+            dataIndex: 'favorite',
+            headerCellStyle: { width:'5px' },
+            render: (_, record) => {
+                if(favoriteIds?.includes(record.id)){
+                    return <Space size={16} direction="horizontal">
+                        <Popconfirm
+                            focusLock
+                            position={"bl"}
+                            title='Confirm'
+                            content= {t['statList.table.operations.unfavorite.confirm']}
+                            onOk={() => callback(record, 'unFavorite')}
+                        >
+                            <IconStarFill style={{ cursor:"pointer"}}/>
+                        </Popconfirm>
+                    </Space>
+                }else{
+                    return <Space size={16} direction="horizontal">
+                        <Popconfirm
+                            focusLock
+                            position={"bl"}
+                            title='Confirm'
+                            content= {t['statList.table.operations.favorite.confirm']}
+                            onOk={() => callback(record, 'favorite')}
+                        >
+                            <IconStar style={{ cursor:"pointer" }}/>
+                        </Popconfirm>
+                    </Space>
+                }
+            }
+        },
         {
             title: 'ID',
             dataIndex: 'id',
