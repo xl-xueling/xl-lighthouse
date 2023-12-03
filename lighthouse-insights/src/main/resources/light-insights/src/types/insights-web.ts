@@ -81,6 +81,7 @@ export interface Stat {
     timeparam?:string;
     template?:string;
     expired?:number;
+    adminIds?:Array<number>;
     createdTime?:number;
 }
 
@@ -90,6 +91,7 @@ export interface StatPagination extends Stat {
     project?:Project;
     department?:Department;
     permissions:PrivilegeEnum[];
+    admins:Array<User>;
 }
 
 

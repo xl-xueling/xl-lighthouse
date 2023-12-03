@@ -1,6 +1,6 @@
 import {
     Table,
-    Message, PaginationProps
+    Message, PaginationProps, Card
 } from '@arco-design/web-react';
 import React, {useEffect, useMemo, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -14,19 +14,25 @@ import {requestPrivilegeCheck} from "@/api/privilege";
 import {ResultData} from "@/types/insights-common";
 import {getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
 import {requestFavoriteProject, requestUnFavoriteProject} from "@/api/favorites";
+import Detail from "@/pages/stat/list/detail";
+import {requestQueryByIds} from "@/api/user";
 
 export default function StatisticalListPanel({formParams,from = null}) {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
 
     const [listData,setListData] = useState<Array<StatPagination>>([]);
+    const [detailVisible, setDetailVisible] = React.useState(false);
+    const [selectedItem,setSelectedItem] = useState<StatPagination>(null);
 
     const tableCallback = async (record, type) => {
-        console.log("record is:" + record + ",type:" + type)
         if(type == 'favorite'){
             await handlerFavoriteProject(record.id).then();
         }else if(type == 'unFavorite'){
             await handlerUnFavoriteProject(record.id).then();
+        }else if(type == 'detail'){
+            setSelectedItem(record);
+            setDetailVisible(!detailVisible);
         }
     };
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
@@ -75,7 +81,6 @@ export default function StatisticalListPanel({formParams,from = null}) {
     };
 
 
-
     function onChangeTable({ current, pageSize }) {
         setPagination({
             ...pagination,
@@ -113,7 +118,7 @@ export default function StatisticalListPanel({formParams,from = null}) {
                 proc().then();
             })
 
-            const fetchProjectInfo:Promise<Record<number,Project>> = new Promise<Record<number,Project>> ((resolve => {
+            const fetchProjectsInfo:Promise<Record<number,Project>> = new Promise<Record<number,Project>> ((resolve => {
                 const projectIds = statsInfo?.map(z => z.projectId);
                 const proc = async () => {
                     const result:ResultData<Record<number,Project>> = await requestQueryProjectByIds(projectIds);
@@ -122,7 +127,17 @@ export default function StatisticalListPanel({formParams,from = null}) {
                 proc().then();
             }))
 
-            const fetchGroupInfo:Promise<Record<number,Group>> = new Promise<Record<number,Group>> ((resolve => {
+            const fetchUsersInfo:Promise<Record<number,User>> = new Promise<Record<number,User>>((resolve) => {
+                const userIds = Array.from(new Set(statsInfo?.map(z => z.adminIds).flatMap(z => z)));
+                const proc = async () => {
+                    const result:ResultData<Record<number,User>> = await requestQueryByIds(userIds);
+                    resolve(result.data)
+                }
+                proc().then();
+            })
+
+
+            const fetchGroupsInfo:Promise<Record<number,Group>> = new Promise<Record<number,Group>> ((resolve => {
                 const groupIds = statsInfo?.map(z => z.groupId);
                 const proc = async () => {
                     const result:ResultData<Record<number,Group>> = await requestQueryGroupByIds(groupIds);
@@ -131,12 +146,14 @@ export default function StatisticalListPanel({formParams,from = null}) {
                 proc().then();
             }))
 
-            Promise.all([fetchPrivilegeInfo,fetchProjectInfo,fetchGroupInfo])
-                .then(([r1,r2,r3]) => {
-                    const combinePaginationData = statsInfo.reduce((result:StatPagination[],item:Stat) => {
+            Promise.all([fetchPrivilegeInfo,fetchProjectsInfo,fetchGroupsInfo,fetchUsersInfo])
+                .then(([r1,r2,r3,r4]) => {
+                    const combinePaginationData = statsInfo?.reduce((result:StatPagination[],item:Stat) => {
                         const project:Project = r2[item.projectId];
                         const department = allDepartInfo.find(x => x.id == project.departmentId);
-                        const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id],"project":project,"group":r3[item.groupId],"department":department}};
+                        const users = r4 as Record<number,User>;
+                        const admins = Object.entries(users).map(([k,v]) => v).filter((user) => item.adminIds?.includes(Number(user.id)));
+                        const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id],"project":project,"group":r3[item.groupId],"department":department,"admins":admins}};
                         result.push(combinedItem);
                         return result;
                     },[]);
@@ -160,11 +177,15 @@ export default function StatisticalListPanel({formParams,from = null}) {
 
 
     return (
+        <Card>
         <Table border={false}
                size={"small"} columns={columns}
                data={listData}
                onChange={onChangeTable}
                pagination={pagination}
                loading={loading}/>
+
+            {detailVisible && <Detail statInfo={selectedItem} onClose={() => setDetailVisible(false)}/>}
+        </Card>
     );
 }
