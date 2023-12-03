@@ -54,7 +54,7 @@ setupMock({
             groupData[1001] = Mock.mock(
                 {
                     id:1001,
-                    token:"homepage_stat_1" + '@datetime',
+                    token:"homepage_behavior_stat",
                     projectId:101,
                     desc:"homepage user behavior stat",
                     columns:[
@@ -86,7 +86,7 @@ setupMock({
             groupData[1002] = Mock.mock(
                 {
                     id:1002,
-                    token:"homepage_stat_1" + '@datetime',
+                    token:"homepage_behavior_stat",
                     projectId:101,
                     desc:"homepage user behavior stat",
                     columns:[

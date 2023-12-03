@@ -1,6 +1,6 @@
 import {
     Table,
-    Message, PaginationProps, Card
+    Message, PaginationProps, Card, Typography
 } from '@arco-design/web-react';
 import React, {useEffect, useMemo, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -184,7 +184,9 @@ export default function StatisticalListPanel({formParams,from = null}) {
                pagination={pagination}
                loading={loading}/>
 
+
             {detailVisible && <Detail statInfo={selectedItem} onClose={() => setDetailVisible(false)}/>}
+
         </Card>
     );
 }

@@ -63,25 +63,8 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
                     <Button
                         type="secondary"
                         size="mini">
-                        {t['statList.table.operations.view']}
-                    </Button>
-                    <Button
-                        type="secondary"
-                        size="mini">
                         {t['statList.table.operations.update']}
                     </Button>
-                    <Popconfirm
-                        position={"tr"}
-                        focusLock
-                        title='Confirm'
-                        content={t['statList.table.operations.stop.confirm']}
-                    >
-                        <Button
-                            type="secondary"
-                            size="mini">
-                            {t['statList.table.operations.stop']}
-                        </Button>
-                    </Popconfirm>
                     <Popconfirm
                         position={"tr"}
                         focusLock
@@ -221,18 +204,6 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
                         size="mini">
                         {t['statList.table.operations.update']}
                     </Button>
-                    <Popconfirm
-                        position={"tr"}
-                        focusLock
-                        title='Confirm'
-                        content={t['statList.table.operations.stop.confirm']}
-                    >
-                        <Button
-                            type="secondary"
-                            size="mini">
-                            {t['statList.table.operations.stop']}
-                        </Button>
-                    </Popconfirm>
                     <Popconfirm
                         position={"tr"}
                         focusLock

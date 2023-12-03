@@ -106,7 +106,7 @@ export default function GroupManagePanel({groupId}) {
                                             <Row gutter={24}>
                                                 <Col span={9}>
                                                     <Form.Item field="Title">
-                                                        <Input.Search placeholder={'Title'} allowClear />
+                                                        <Input.Search placeholder={'Search Title'} allowClear />
                                                     </Form.Item>
                                                 </Col>
                                             </Row>
@@ -119,7 +119,7 @@ export default function GroupManagePanel({groupId}) {
                                     title={
                                         <span>
                     <IconTag style={{ marginRight: 6 }} />
-                    Group Info
+                    Group Information
                   </span>
                                     }
                                 >

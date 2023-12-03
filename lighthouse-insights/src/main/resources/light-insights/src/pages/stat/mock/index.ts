@@ -77,7 +77,7 @@ setupMock({
       const { list } = Mock.mock({
         'list|10': [
           {
-            id: /[0-9]{5}/,
+            id: /[1-9]{7}/,
             title:"每分钟uv统计3",
             projectId:101,
             groupId:1001,
