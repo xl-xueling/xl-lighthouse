@@ -108,7 +108,7 @@ setupMock({
       // ]);
 
       const { list } = Mock.mock({
-        'list|10': [
+        'list|100': [
           {
             id: /[0-9]{7}/,
             title:"每分钟uv统计3",

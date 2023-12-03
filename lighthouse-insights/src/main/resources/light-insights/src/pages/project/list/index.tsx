@@ -123,11 +123,11 @@ export default function Index() {
         Message.success("收藏工程成功！");
         setFavoriteIds([...favoriteIds,id]);
       }else{
-        Message.error(result.message || "System Error!");
+        Message.error(result.message || t['system.error']);
       }
     }catch (error){
       console.log(error);
-      Message.error("System Error!");
+      Message.error(t['system.error']);
     }
   };
 
@@ -139,11 +139,11 @@ export default function Index() {
         const newArr = favoriteIds.filter((item) => item !== id);
         setFavoriteIds(newArr);
       }else{
-        Message.error(result.message || "System Error!");
+        Message.error(result.message || t['system.error']);
       }
     }catch (error){
       console.log(error);
-      Message.error("System Error!");
+      Message.error(t['system.error']);
     }
   };
 

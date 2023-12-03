@@ -12,17 +12,28 @@ import {requestQueryByIds as requestQueryProjectByIds} from "@/api/project";
 import {requestList} from "@/api/stat";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {ResultData} from "@/types/insights-common";
-import {getColumnsOfManage} from "@/pages/stat/list/constants";
+import {getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
+import {requestFavoriteProject, requestUnFavoriteProject} from "@/api/favorites";
 
 export default function StatisticalListPanel({formParams,from = null}) {
-
+    const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
 
     const [listData,setListData] = useState<Array<StatPagination>>([]);
 
+    const tableCallback = async (record, type) => {
+        console.log("record is:" + record + ",type:" + type)
+        if(type == 'favorite'){
+            await handlerFavoriteProject(record.id).then();
+        }else if(type == 'unFavorite'){
+            await handlerUnFavoriteProject(record.id).then();
+        }
+    };
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
-
+    const [favoriteIds,setFavoriteIds] = useState<Array<number>>([]);
+    const columns = useMemo(() => (from && from == 'group-manage') ? getColumnsOfManage(t, tableCallback) : getColumns(t, favoriteIds,tableCallback), [t,favoriteIds]);
     const [pagination, setPagination] = useState<PaginationProps>({
+        sizeOptions: [15,20,30,50],
         sizeCanChange: true,
         showTotal: true,
         pageSize: 15,
@@ -30,12 +41,40 @@ export default function StatisticalListPanel({formParams,from = null}) {
         pageSizeChangeResetCurrent: true,
     });
 
-    const t = useLocale(locale);
 
-    const tableCallback = async (record, type) => {
-        console.log("record is:" + record + ",type:" + type)
+
+    const handlerFavoriteProject = async (id: number) => {
+        try{
+            const result = await requestFavoriteProject(id);
+            if(result.code == '0'){
+                Message.success(t['statList.table.operations.favorite.success']);
+                setFavoriteIds([...favoriteIds,id]);
+            }else{
+                Message.error(result.message ||t['system.error']);
+            }
+        }catch (error){
+            console.log(error);
+            Message.error(t['system.error']);
+        }
     };
-    const columns = useMemo(() => getColumnsOfManage(t, tableCallback), [t]);
+
+    const handlerUnFavoriteProject = async (id: number) => {
+        try{
+            const result = await requestUnFavoriteProject(id);
+            if(result.code == '0'){
+                Message.success(t['statList.table.operations.unfavorite.success']);
+                const newArr = favoriteIds.filter((item) => item !== id);
+                setFavoriteIds(newArr);
+            }else{
+                Message.error(result.message || t['system.error']);
+            }
+        }catch (error){
+            console.log(error);
+            Message.error(t['system.error']);
+        }
+    };
+
+
 
     function onChangeTable({ current, pageSize }) {
         setPagination({

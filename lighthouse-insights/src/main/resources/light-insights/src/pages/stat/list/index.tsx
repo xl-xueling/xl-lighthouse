@@ -4,7 +4,7 @@ import {
 import React, {useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
-import locale from "@/pages/project/list/locale";
+import locale from "./locale";
 import SearchForm from "@/pages/stat/list/form";
 
 export default function Index() {
