@@ -85,6 +85,17 @@ export const routes: IRoute[] = [
   //     },
   //   ],
   // },
+
+  {
+    name: 'menu.dashboard',
+    key: 'dashboard',
+    children: [
+      {
+        name: 'menu.dashboard.workplace',
+        key: 'metricset/list',
+      },
+    ],
+  },
   {
     name: 'menu.favorites',
     key: 'favorites',
