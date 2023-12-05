@@ -9,6 +9,7 @@ import AddCard from './card-add';
 import { QualityInspection, BasicCard } from './interface';
 import './mock';
 import {IconMore, IconShareInternal, IconThumbUp} from "@arco-design/web-react/icon";
+import MetricSetAddPanel from "@/pages/metricset/create";
 
 const { Title } = Typography;
 const { Row, Col } = Grid;
@@ -129,6 +130,8 @@ export default function ListCard() {
           </div>
         )}
       </div>
+
+      <MetricSetAddPanel onClose={null}/>
     </Card>
   );
 }
