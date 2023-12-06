@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useRef} from 'react';
 import { useState } from 'react';
-import {Affix, Button, Input, Transfer, Tree} from '@arco-design/web-react';
+import {Affix, Button, Input, Spin, Transfer, Tree} from '@arco-design/web-react';
 import {IconDelete, IconDriveFile, IconPushpin, IconStar, IconUser} from "@arco-design/web-react/icon";
 import styles from './style/index.module.less'
 import debounce from "lodash/debounce";
@@ -133,22 +133,36 @@ const TreeTransfer = ({ dataSource, targetKeys, changeCurrentDataSource,...restP
                                     onChange={setInputValue}
                                 />
                             </Affix>
-                        <Tree
-                            style={{
-                                padding: '0 1px',
-                            }}
-                            checkable
-                            selectable={true}
-                            checkedKeys={checkedKeys}
-                            onCheck={(_, { node: { key } }) => {
-                                onItemSelect(key, checkedKeys.indexOf(key) === -1);
-                            }}
-                            onSelect={(_, { node: { key } }) => {
-                                onItemSelect(key, checkedKeys.indexOf(key) === -1);
-                            }}
-                        >
-                            {generatorTreeNodes(initTreeData)}
-                        </Tree>
+                            {
+                                fetching ? (
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
+                                        <Spin style={{ margin: 100,verticalAlign:"middle"}} />
+                                    </div>
+                                ) :
+                                    <Tree
+                                        style={{
+                                            padding: '0 1px',
+                                        }}
+                                        checkable
+                                        selectable={true}
+                                        checkedKeys={checkedKeys}
+                                        onCheck={(_, { node: { key } }) => {
+                                            onItemSelect(key, checkedKeys.indexOf(key) === -1);
+                                        }}
+                                        onSelect={(_, { node: { key } }) => {
+                                            onItemSelect(key, checkedKeys.indexOf(key) === -1);
+                                        }}
+                                    >
+                                        {generatorTreeNodes(initTreeData)}
+                                    </Tree>
+                            }
+
                         </div>
                     );
                 }
