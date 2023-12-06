@@ -20,7 +20,6 @@ export default function DepartmentsTransfer() {
     const onChange = (keys) => {
         setTargetKeys(keys);
         const updateDataSource = traverseTree(dataSource,keys);
-        console.log("updateDataSource is:" + JSON.stringify(updateDataSource))
         setDataSource(updateDataSource);
     };
 

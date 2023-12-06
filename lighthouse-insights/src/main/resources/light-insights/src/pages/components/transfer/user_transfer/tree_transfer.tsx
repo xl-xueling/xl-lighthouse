@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useRef} from 'react';
 import { useState } from 'react';
-import {Button, Input, Transfer, Tree} from '@arco-design/web-react';
+import {Affix, Button, Input, Transfer, Tree} from '@arco-design/web-react';
 import {IconDelete, IconDriveFile, IconPushpin, IconStar, IconUser} from "@arco-design/web-react/icon";
 import styles from './style/index.module.less'
 import debounce from "lodash/debounce";
@@ -123,14 +123,16 @@ const TreeTransfer = ({ dataSource, targetKeys, changeCurrentDataSource,...restP
                     const checkedKeys = [...selectedKeys, ...targetKeys];
                     return (
                         <div>
-                            <Input.Search
-                                style={{
-                                    marginTop: 0,
-                                    marginBottom:5,
-                                }}
-                                placeholder={"Search Users"}
-                                onChange={setInputValue}
-                            />
+                            <Affix style={{position: 'sticky', top: 0, zIndex: 10 }}>
+                                <Input.Search
+                                    style={{
+                                        marginTop: 0,
+                                        marginBottom:5,
+                                    }}
+                                    placeholder={"Search Users"}
+                                    onChange={setInputValue}
+                                />
+                            </Affix>
                         <Tree
                             style={{
                                 padding: '0 1px',
