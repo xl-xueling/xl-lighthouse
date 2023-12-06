@@ -10,7 +10,7 @@ import debounce from "lodash/debounce";
 import {requestTermList} from "@/api/user";
 import {IconUser} from "@arco-design/web-react/icon";
 
-export default function UsersTransfer() {
+const UsersTransfer = React.forwardRef((none,ref)  => {
 
     const [targetKeys, setTargetKeys] = useState([]);
 
@@ -31,6 +31,14 @@ export default function UsersTransfer() {
         setDataSource(updateDataSource);
     };
 
+    function getData(){
+        return targetKeys;
+    }
+
+    React.useImperativeHandle(ref,() => ({
+        getData
+    }));
+
     function traverseTree(tree,keys) {
         return tree.map(node => {
             const newNode = { ...node, selected: !!keys.includes(node.key)};
@@ -49,4 +57,6 @@ export default function UsersTransfer() {
             changeCurrentDataSource = {changeCurrentDataSource}
         />
         );
-}
+})
+
+export default UsersTransfer;

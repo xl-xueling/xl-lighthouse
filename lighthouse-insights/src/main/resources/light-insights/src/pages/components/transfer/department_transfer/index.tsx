@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import { useState } from 'react';
 import TreeTransfer from "@/pages/components/transfer/department_transfer/tree_transfer";
 import {useSelector} from "react-redux";
 import {Department} from "@/types/insights-web";
 import {translate} from "@/pages/department/common";
 
-export default function DepartmentsTransfer() {
+const DepartmentsTransfer = React.forwardRef((none,ref)  => {
 
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
 
@@ -33,6 +33,14 @@ export default function DepartmentsTransfer() {
         });
     }
 
+    function getData(){
+        return targetKeys;
+    }
+
+    React.useImperativeHandle(ref,() => ({
+        getData
+    }));
+
     return (
         <TreeTransfer
             dataSource={dataSource}
@@ -40,4 +48,6 @@ export default function DepartmentsTransfer() {
             onChange={onChange}
         />
     );
-}
+})
+
+export default DepartmentsTransfer;
