@@ -18,6 +18,7 @@ const defaultList = new Array(10).fill({});
 export default function ListCard() {
   const t = useLocale(locale);
   const [loading, setLoading] = useState(true);
+  const [showCreatePanel,setShowCreatePanel] = useState<boolean>(false);
   const [data, setData] = useState({
     quality: defaultList,
     service: defaultList,
@@ -36,6 +37,15 @@ export default function ListCard() {
       .finally(() => setLoading(false));
   };
 
+  const handleShowCreatePanel = () => {
+      setShowCreatePanel(true);
+  }
+
+  const handleHideCreatePanel = () => {
+      setShowCreatePanel(false);
+  }
+
+
   useEffect(() => {
     getData();
   }, []);
@@ -48,7 +58,7 @@ export default function ListCard() {
       <Row gutter={24} className={styles['card-content']}>
         {type === 'quality' && (
           <Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={6}>
-            <AddCard description={t['cardList.add.quality']} />
+            <AddCard description={t['cardList.add.quality']} onShow={handleShowCreatePanel}/>
           </Col>
         )}
         {list.map((item, index) => (
@@ -57,43 +67,6 @@ export default function ListCard() {
           </Col>
         ))}
       </Row>
-      //   <Row key={new Date().getTime()}>
-      //       <Card
-      //           className='card-with-icon-hover'
-      //           style={{ width: 360 }}
-      //           cover={
-      //               <div style={{ height: 204, overflow: 'hidden' }}>
-      //                   <img
-      //                       style={{ width: '100%', transform: 'translateY(-20px)' }}
-      //                       alt='dessert'
-      //                       src='//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a20012a2d4d5b9db43dfc6a01fe508c0.png~tplv-uwbnlip3yd-webp.webp'
-      //                   />
-      //               </div>
-      //           }
-      //           actions={[
-      //               <span className='icon-hover'>
-      //     <IconThumbUp />
-      //   </span>,
-      //               <span className='icon-hover'>
-      //     <IconShareInternal />
-      //   </span>,
-      //               <span className='icon-hover'>
-      //     <IconMore />
-      //   </span>,
-      //           ]}
-      //       >
-      //           <Meta
-      //               avatar={
-      //                   <Space>
-      //                       <Avatar size={24}>A</Avatar>
-      //                       <Typography.Text>Username</Typography.Text>
-      //                   </Space>
-      //               }
-      //               title='Card Title'
-      //               description='This is the description'
-      //           />
-      //       </Card>
-      //   </Row>
     );
   };
 
@@ -131,7 +104,8 @@ export default function ListCard() {
         )}
       </div>
 
-      <MetricSetAddPanel onClose={null}/>
+        {showCreatePanel && <MetricSetAddPanel onClose={handleHideCreatePanel}/>}
+
     </Card>
   );
 }
