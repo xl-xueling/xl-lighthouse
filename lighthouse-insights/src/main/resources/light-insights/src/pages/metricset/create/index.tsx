@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {Checkbox, Form, Grid, Input, Modal, Radio, Typography} from "@arco-design/web-react";
+import React, {useState} from 'react';
+import {Form, Grid, Input, Modal, Radio, Tabs, Typography} from "@arco-design/web-react";
 import styles from "@/pages/project/manage/style/index.module.less";
-import {IconPlus} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/manage/locale";
 import {Col} from "antd";
-import PickUpTransfer from "@/pages/components/transfer/pickup_transfer";
+import UsersTransfer from "@/pages/components/transfer/user_transfer";
+import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
 
 
 export default function MetricSetAddPanel({onClose}) {
@@ -126,7 +126,14 @@ export default function MetricSetAddPanel({onClose}) {
                             span={24}
                             style={{ marginBottom: 12 }}
                         >
-                            <PickUpTransfer />
+                            <Tabs key='card' tabPosition={"right"}>
+                                <Tabs.TabPane key='1' title='Tab1'>
+                                    <DepartmentsTransfer />
+                                </Tabs.TabPane>
+                                <Tabs.TabPane key='2' title='Tab2'>
+                                    <UsersTransfer />
+                                </Tabs.TabPane>
+                            </Tabs>
                         </Col>
                     </Row>
                 </Form.Item>

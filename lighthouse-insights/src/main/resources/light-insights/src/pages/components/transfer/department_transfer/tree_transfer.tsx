@@ -70,7 +70,7 @@ const TreeTransfer = ({ dataSource, targetKeys, ...restProps }) => {
                     return (
                         <Tree
                             style={{
-                                padding: '0 14px',
+                                padding: '0 1px',
                             }}
                             blockNode
                             checkable

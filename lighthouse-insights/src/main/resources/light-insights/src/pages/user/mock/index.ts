@@ -40,12 +40,13 @@ setupMock({
         Mock.mock(new RegExp('/api/v1/user/termList'), (params) => {
             console.log("termList receive param is:" + JSON.stringify(params));
             console.log("list size:" + list.length)
+            const id = Math.round(Math.random()*100);
             const list2 = Mock.mock(
                 {
                     'list': [
                         {
-                            "id": "1",
-                            "userName":'AB1',
+                            "id": "111_" + id,
+                            "userName":"111_" + id,
                             "email":'@EMAIL()',
                             "phone":'@Phone()',
                             "departmentId":2,
@@ -54,8 +55,8 @@ setupMock({
                         },
 
                         {
-                            "id": "2",
-                            "userName":'CD2',
+                            "id": "112_" + id,
+                            "userName":"112_" + id,
                             "email":'@EMAIL()',
                             "phone":'@Phone()',
                             "departmentId":2,
@@ -63,8 +64,8 @@ setupMock({
                             "createdTime":'@datetime',
                         },
                         {
-                            "id": "3",
-                            "userName":'CD3',
+                            "id": "113_" + id,
+                            "userName":"113_" + id,
                             "email":'@EMAIL()',
                             "phone":'@Phone()',
                             "departmentId":2,
@@ -72,8 +73,8 @@ setupMock({
                             "createdTime":'@datetime',
                         },
                         {
-                            "id": "4",
-                            "userName":'CD4',
+                            "id": "114_" + id,
+                            "userName":"114_" + id,
                             "email":'@EMAIL()',
                             "phone":'@Phone()',
                             "departmentId":2,
