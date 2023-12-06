@@ -17,6 +17,13 @@ export interface Department {
     children?:Array<Department>;
 }
 
+export interface MetricSet {
+    id?:number;
+    title?:string;
+    createdTime:number;
+
+}
+
 export interface ArcoTreeNode {
     key: string;
     title: string;
