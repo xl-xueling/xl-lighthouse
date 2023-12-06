@@ -9,11 +9,6 @@ import {translate} from "@/pages/department/common";
 import debounce from "lodash/debounce";
 import {requestTermList} from "@/api/user";
 import {IconUser} from "@arco-design/web-react/icon";
-const TabPane = Tabs.TabPane;
-const style = {
-    textAlign: 'center',
-    marginTop: 20,
-};
 
 export default function UsersTransfer() {
 

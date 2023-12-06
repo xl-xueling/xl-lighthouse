@@ -24,12 +24,6 @@ const TreeTransfer = ({ dataSource, targetKeys, changeCurrentDataSource,...restP
         return transferDataSource;
     };
 
-    const transferDataSource = generateTransferData(dataSource);
-    const treeData = generateTreeData(dataSource, targetKeys);
-
-    // const [newDataSource,setNewDataSource] = useState([]);
-    // const [newTargetKeys,setNewTargetKeys] = useState([]);
-
     const styleHeader = {
         fontSize:'12px',
         height:'20px',
@@ -37,13 +31,11 @@ const TreeTransfer = ({ dataSource, targetKeys, changeCurrentDataSource,...restP
         alignItems: 'center',
         justifyContent: 'space-between',
     };
+
     const [initTreeData,setInitTreeData] = useState([]);
-    const [targetInitTreeData,setTargetInitTreeData] = useState([]);
     const [initTransferDataSource,setInitTransferDataSource] = useState([]);
-    const [values, setValues] = useState([]);
     const [fetching, setFetching] = useState(false);
     const refFetchId = useRef(null);
-
 
     useEffect(() => {
         const transferDataSource = generateTransferData(dataSource);
@@ -52,39 +44,37 @@ const TreeTransfer = ({ dataSource, targetKeys, changeCurrentDataSource,...restP
         setInitTreeData(treeData);
     },[dataSource])
 
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState(null);
+
     useEffect(() => {
-        debouncedFetchUser();
+        if(inputValue){
+            debouncedFetchUser(inputValue);
+        }
     }, [inputValue]);
 
-    // const debouncedFetchUser = useCallback(
-    //     debounce((inputValue) => {
-    //         refFetchId.current = Date.now();
-    //         const fetchId = refFetchId.current;
-    //         setFetching(true);
-    //         requestTermList(null).then((result) => {
-    //             if(result.code === '0'){
-    //                 const arr:{key:string,title:string}[] = [];
-    //                 if (refFetchId.current === fetchId) {
-    //                     const users:Array<User> = result.data.list;
-    //                     users.forEach(z => {
-    //                         arr.push({"key":z.id+"","title":z.userName})
-    //                     })
-    //                     changeLastDataSource(arr);
-    //                     const transferDataSource = generateTransferData([...dataSource,...arr]);
-    //                     const treeData = generateTreeData([...dataSource,...arr],targetKeys);
-    //                     setInitTransferDataSource(transferDataSource);
-    //                     setInitTreeData(treeData);
-    //                 }
-    //             }
-    //         })
-    //     }, 500),[dataSource]);
-
+    const debouncedFetchUser = useCallback(
+        debounce((inputValue) => {
+            refFetchId.current = Date.now();
+            const fetchId = refFetchId.current;
+            setFetching(true);
+            requestTermList(null).then((result) => {
+                if(result.code === '0'){
+                    const dataArray:{key:string,title:string}[] = [];
+                    if (refFetchId.current === fetchId) {
+                        const users:Array<User> = result.data.list;
+                        users.forEach(z => {
+                            dataArray.push({"key":z.id+"","title":z.userName})
+                        })
+                        changeCurrentDataSource(dataArray);
+                    }
+                }
+                setFetching(false);
+            })
+        }, 500)
+    ,[dataSource,targetKeys]);
 
     const generatorTreeNodes = (treeData) => {
-        console.log("treeData is:" + JSON.stringify(treeData));
         return treeData.map((item) => {
-            console.log("item：" + JSON.stringify(item));
             const { children, key,origin, ...rest } = item;
             const button = <Button shape={"circle"} type={"secondary"} size={"mini"} icon={<IconPushpin />}/>
             return (
@@ -94,24 +84,6 @@ const TreeTransfer = ({ dataSource, targetKeys, changeCurrentDataSource,...restP
             );
         });
     };
-
-    const debouncedFetchUser = debounce((inputValue) => {
-        refFetchId.current = Date.now();
-        const fetchId = refFetchId.current;
-        setFetching(true);
-        requestTermList(null).then((result) => {
-            if(result.code === '0'){
-                const arr:{key:string,title:string}[] = [];
-                if (refFetchId.current === fetchId) {
-                    const users:Array<User> = result.data.list;
-                    users.forEach(z => {
-                        arr.push({"key":z.id+"","title":z.userName})
-                    })
-                    changeCurrentDataSource(arr);
-                }
-            }
-        })
-    }, 500)
 
     return (
         <Transfer
@@ -142,7 +114,6 @@ const TreeTransfer = ({ dataSource, targetKeys, changeCurrentDataSource,...restP
                     );
                 },
             ]}
-
             render={(item:any) => {
                 return item.title;}}
             {...restProps}
