@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useState } from 'react';
 import TreeTransfer from "@/pages/components/transfer/department_transfer/tree_transfer";
 import {useSelector} from "react-redux";
@@ -11,14 +11,32 @@ export default function DepartmentsTransfer() {
 
     const [targetKeys, setTargetKeys] = useState([]);
 
+    const [dataSource,setDataSource] = useState([]);
+
+    useEffect(() => {
+        setDataSource(translate(allDepartInfo));
+    },[])
+
     const onChange = (keys) => {
         setTargetKeys(keys);
+        const updateDataSource = traverseTree(dataSource,keys);
+        console.log("updateDataSource is:" + JSON.stringify(updateDataSource))
+        setDataSource(updateDataSource);
     };
+
+    function traverseTree(tree,keys) {
+        return tree.map(node => {
+            const newNode = { ...node, selected: !!keys.includes(node.key)};
+            if (newNode.children && Array.isArray(newNode.children)) {
+                newNode.children = traverseTree(newNode.children,keys);
+            }
+            return newNode;
+        });
+    }
 
     return (
         <TreeTransfer
-            dataSource={translate(allDepartInfo)}
-            defaultSelectedKeys={['1-1-1']}
+            dataSource={dataSource}
             targetKeys={targetKeys}
             onChange={onChange}
         />

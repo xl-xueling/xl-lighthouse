@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { useState } from 'react';
-import { Transfer, Tree } from '@arco-design/web-react';
-import {IconDelete} from "@arco-design/web-react/icon";
+import {Button, Transfer, Tree} from '@arco-design/web-react';
+import {IconDelete, IconPushpin} from "@arco-design/web-react/icon";
 import styles from './style/index.module.less'
 
 const TreeTransfer = ({ dataSource, targetKeys, ...restProps }) => {
@@ -21,8 +21,15 @@ const TreeTransfer = ({ dataSource, targetKeys, ...restProps }) => {
         return transferDataSource;
     };
 
-    const transferDataSource = generateTransferData(dataSource);
-    const treeData = generateTreeData(dataSource, targetKeys);
+    const [initTreeData,setInitTreeData] = useState([]);
+    const [initTransferDataSource,setInitTransferDataSource] = useState([]);
+
+    useEffect(() => {
+        const transferDataSource = generateTransferData(dataSource);
+        const treeData = generateTreeData(dataSource, targetKeys);
+        setInitTransferDataSource(transferDataSource);
+        setInitTreeData(treeData);
+    },[dataSource])
 
     const styleHeader = {
         fontSize:'12px',
@@ -32,13 +39,25 @@ const TreeTransfer = ({ dataSource, targetKeys, ...restProps }) => {
         justifyContent: 'space-between',
     };
 
+    const generatorTreeNodes = (treeData) => {
+        return treeData.map((item) => {
+            const { children, key,selected, ...rest } = item;
+            const button = <Button shape={"circle"} type={"secondary"} size={"mini"} icon={<IconPushpin />}/>
+            return (
+                <Tree.Node key={key} {...rest} icon={(selected)? button : ''} dataRef={item}>
+                    {children ? generatorTreeNodes(item.children) : null}
+                </Tree.Node>
+            );
+        });
+    };
+
     return (
         <Transfer
             className={styles.transfer_panel}
             oneWay
             simple={false}
             targetKeys={targetKeys}
-            dataSource={transferDataSource}
+            dataSource={initTransferDataSource}
             titleTexts={[
                 ({ countTotal, countSelected, checkbox }) => {
                     return (
@@ -74,8 +93,8 @@ const TreeTransfer = ({ dataSource, targetKeys, ...restProps }) => {
                             }}
                             blockNode
                             checkable
+                            checkStrictly
                             selectable={true}
-                            treeData={treeData}
                             checkedKeys={checkedKeys}
                             onCheck={(_, { node: { key } }) => {
                                 onItemSelect(key, checkedKeys.indexOf(key) === -1);
@@ -83,78 +102,13 @@ const TreeTransfer = ({ dataSource, targetKeys, ...restProps }) => {
                             onSelect={(_, { node: { key } }) => {
                                 onItemSelect(key, checkedKeys.indexOf(key) === -1);
                             }}
-                        />
+                        >
+                            {generatorTreeNodes(initTreeData)}
+                        </Tree>
                     );
                 }
             }}
         </Transfer>
     );
 };
-
-const treeData = [
-    {
-        key: '1',
-        title: 'Trunk 1',
-        children: [
-            {
-                key: '1-1',
-                title: 'Branch',
-                children: [
-                    {
-                        key: '1-1-1',
-                        title: 'Leaf',
-                    },
-                    {
-                        key: '1-1-2',
-                        title: 'Leaf',
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        key: '2',
-        title: 'Trunk 2',
-        children: [
-            {
-                key: '2-1',
-                title: 'Trunk 2-1',
-            },
-            {
-                key: '2-2',
-                title: 'Trunk 2-2',
-            },
-            {
-                key: '2-3',
-                title: 'Trunk 2-3',
-            },
-        ],
-    },
-    {
-        key: '3',
-        title: 'Trunk 3',
-    },
-    {
-        key: '4',
-        title: 'Trunk 4',
-    },
-];
-
-// const App = () => {
-//     const [targetKeys, setTargetKeys] = useState(['2-1', '2-2', '2-3', '4']);
-//
-//     const onChange = (keys) => {
-//         setTargetKeys(keys);
-//     };
-//
-//     return (
-//         <TreeTransfer
-//             dataSource={treeData}
-//             defaultSelectedKeys={['1-1-1']}
-//             targetKeys={targetKeys}
-//             onChange={onChange}
-//         />
-//     );
-// };
-
 export default TreeTransfer;
