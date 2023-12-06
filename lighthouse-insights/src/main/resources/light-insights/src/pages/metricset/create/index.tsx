@@ -120,7 +120,7 @@ export default function MetricSetAddPanel({onClose}) {
                 </Form.Item>
 
                 {showPickUpPanel &&
-                <Form.Item field="crowd" label={'人员圈选'}>
+                <Form.Item label={'人员圈选'}>
                     <Row>
                         <Col
                             span={24}

@@ -4,6 +4,7 @@ import { Transfer, Tree } from '@arco-design/web-react';
 import { Tabs, Radio, Typography } from '@arco-design/web-react';
 import TreeTransfer from "@/pages/components/transfer/tree_transfer";
 import DepartmentTransfer from "@/pages/components/transfer/department_transfer";
+import UsersTransfer from "@/pages/components/transfer/user/users_transfer";
 const TabPane = Tabs.TabPane;
 const style = {
     textAlign: 'center',
@@ -73,12 +74,7 @@ export default function PickUpTransfer() {
                     <DepartmentTransfer />
                 </TabPane>
                 <TabPane key='2' title='Tab2'>
-                    <TreeTransfer
-                        dataSource={treeData}
-                        defaultSelectedKeys={['1-1-1']}
-                        targetKeys={targetKeys}
-                        onChange={onChange}
-                    />
+                    <UsersTransfer />
                 </TabPane>
                 <TabPane key='3' title='Tab3'>
                     <TreeTransfer
