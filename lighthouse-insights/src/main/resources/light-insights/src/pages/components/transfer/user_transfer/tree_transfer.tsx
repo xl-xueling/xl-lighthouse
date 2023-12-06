@@ -75,10 +75,10 @@ const TreeTransfer = ({ dataSource, targetKeys, changeCurrentDataSource,...restP
 
     const generatorTreeNodes = (treeData) => {
         return treeData.map((item) => {
-            const { children, key,origin, ...rest } = item;
+            const { children, key,selected, ...rest } = item;
             const button = <Button shape={"circle"} type={"secondary"} size={"mini"} icon={<IconPushpin />}/>
             return (
-                <Tree.Node key={key} {...rest} icon={(origin)? button : ''} dataRef={item}>
+                <Tree.Node key={key} {...rest} icon={(selected)? button : ''} dataRef={item}>
                     {children ? generatorTreeNodes(item.children) : null}
                 </Tree.Node>
             );

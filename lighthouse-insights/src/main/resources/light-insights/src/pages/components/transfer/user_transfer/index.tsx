@@ -16,17 +16,30 @@ export default function UsersTransfer() {
 
     const [dataSource,setDataSource] = useState([]);
 
-    const changeCurrentDataSource = (newDataSource) => {
-        const arr:{key:string,title:string,disabled:boolean,origin:boolean}[] = [];
+    const changeCurrentDataSource = (searchDataSource) => {
+        const targetDataSource:{key:string,title:string,disabled:boolean,selected:boolean}[] = [];
         targetKeys.forEach(z => {
-            arr.push({"key":z+"",title:z+"",disabled:false,origin:true})
+            targetDataSource.push({"key":z+"",title:z+"",disabled:false,selected:true})
         })
-        setDataSource([...newDataSource,...arr]);
+        const filterDataSource = searchDataSource.filter(x => !targetKeys.includes(x.key));
+        setDataSource([...filterDataSource.filter(x => !targetKeys.includes(x.key)),...targetDataSource]);
     }
 
     const onChange = (keys) => {
         setTargetKeys(keys);
+        const updateDataSource = traverseTree(dataSource,keys);
+        setDataSource(updateDataSource);
     };
+
+    function traverseTree(tree,keys) {
+        return tree.map(node => {
+            const newNode = { ...node, selected: !!keys.includes(node.key)};
+            if (newNode.children && Array.isArray(newNode.children)) {
+                newNode.children = traverseTree(newNode.children,keys);
+            }
+            return newNode;
+        });
+    }
 
     return (
         <TreeTransfer
