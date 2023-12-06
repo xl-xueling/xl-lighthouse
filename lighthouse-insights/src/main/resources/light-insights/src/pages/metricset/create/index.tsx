@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Form, Grid, Input, Modal, Radio, Tabs, Typography} from "@arco-design/web-react";
 import styles from "@/pages/project/manage/style/index.module.less";
 import useLocale from "@/utils/useLocale";
@@ -18,13 +18,21 @@ export default function MetricSetAddPanel({onClose}) {
 
     const [showPickUpPanel,setShowPickUpPanel] = useState<boolean>(false);
 
+    const departmentTransferRef = useRef(null);
+
+    const userTransferRef = useRef(null);
+
     function changeVisibleType(value){
-        console.log("value is:" + value);
         if(value == '1'){
             setShowPickUpPanel(true);
         }else{
             setShowPickUpPanel(false);
         }
+    }
+
+    const handlerSubmit =() => {
+        const departments = departmentTransferRef.current.getData();
+        const users = userTransferRef.current.getData();
     }
 
     return (
@@ -34,6 +42,7 @@ export default function MetricSetAddPanel({onClose}) {
             style={{ width:'960px',verticalAlign:'top', marginTop: '130px' }}
             confirmLoading={confirmLoading}
             onCancel={onClose}
+            onOk={handlerSubmit}
         >
             <Form
                 form={form}
@@ -74,10 +83,10 @@ export default function MetricSetAddPanel({onClose}) {
                         >
                             <Tabs key='card' tabPosition={"right"}>
                                 <Tabs.TabPane key='1' title='Tab1'>
-                                    <DepartmentsTransfer />
+                                    <DepartmentsTransfer ref={departmentTransferRef}/>
                                 </Tabs.TabPane>
                                 <Tabs.TabPane key='2' title='Tab2'>
-                                    <UsersTransfer />
+                                    <UsersTransfer ref={userTransferRef}/>
                                 </Tabs.TabPane>
                             </Tabs>
                         </Col>
