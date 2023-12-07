@@ -1,21 +1,11 @@
 import React, {useRef, useState} from 'react';
-import {Form, Grid, Input, Message, Modal, Radio, Tabs, Typography} from "@arco-design/web-react";
-import styles from "@/pages/project/manage/style/index.module.less";
+import {Form, Grid, Input, Modal, Radio, Tabs, Typography} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
-import locale from "@/pages/project/manage/locale";
+import locale from "./locale";
 import {Col} from "antd";
 import UsersTransfer from "@/pages/components/transfer/user_transfer";
 import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
-import {Project} from "@/types/insights-web";
-import {requestCreate} from "@/api/project";
-import {
-    IconCaretDown,
-    IconDoubleDown,
-    IconDown,
-    IconDownCircle,
-    IconSafe,
-    IconStamp
-} from "@arco-design/web-react/icon";
+import {IconCaretDown, IconCaretRight} from "@arco-design/web-react/icon";
 
 
 export default function MetricSetAddPanel({onClose}) {
@@ -24,9 +14,10 @@ export default function MetricSetAddPanel({onClose}) {
     const [form] = Form.useForm();
     const t = useLocale(locale);
     const FormItem = Form.Item;
+    const formRef = useRef(null);
     const { Col, Row } = Grid;
     const [showPickUpPanel,setShowPickUpPanel] = useState<boolean>(false);
-    const [showGrantPrivileges,setShowGrantPrivileges] = useState<boolean>(false);
+    const [showGrantPrivileges,setShowGrantPrivileges] = useState<boolean>(true);
     const departmentTransferRef = useRef(null);
     const [loading,setLoading] = useState<boolean>(false);
     const userTransferRef = useRef(null);
@@ -44,14 +35,24 @@ export default function MetricSetAddPanel({onClose}) {
         setShowPickUpPanel(!showPickUpPanel);
     }
 
-    const formRef = useRef(null);
 
     async function handlerSubmit(){
-        await formRef.current.validate();
-        const departments = departmentTransferRef.current.getData();
-        const users = userTransferRef.current.getData();
+
+        await formRef.current.validate().catch()
+
         const values = formRef.current.getFieldsValue();
+        console.log("values is:" + JSON.stringify(values));
+        if(departmentTransferRef.current){
+            const departments = departmentTransferRef.current.getData();
+            console.log("departments:" + JSON.stringify(departments));
+        }
+        if(userTransferRef.current){
+            const users = userTransferRef.current.getData();
+            console.log("users:" + JSON.stringify(users));
+        }
+
         setLoading(true);
+
         // const project: = {
         //     name:values.name,
         //     departmentId:Number(values.departmentId),
@@ -78,7 +79,7 @@ export default function MetricSetAddPanel({onClose}) {
 
     return (
         <Modal
-            title='创建指标集'
+            title={t['createMetricSet.modal.title']}
             visible={true}
             style={{ width:'960px',verticalAlign:'top', marginTop: '130px' }}
             confirmLoading={confirmLoading}
@@ -89,41 +90,48 @@ export default function MetricSetAddPanel({onClose}) {
                 form={form}
                 colon={true}
                 ref={formRef}
+                initialValues={{private_type: 0}}
                 style={{ minHeight:'300px' }}
                 labelCol={{span: 4, offset: 0}}
-                className={styles['search-form']}
                 layout={"horizontal"}>
-                <Form.Item field="name" label={"Name"}
+                <Form.Item field="title" label={t['createMetricSet.form.label.title']}
                            rules={[
-                               { required: true, message: t['register.form.password.errMsg'], validateTrigger : ['onSubmit'] },
-                               { required: true, match: new RegExp(/^[a-z0-9_]{5,20}$/,"g"),message: t['register.form.userName.validate.errMsg'] , validateTrigger : ['onSubmit']},
+                               { required: true, message: t['createMetricSet.form.title.errMsg'], validateTrigger : ['onSubmit'] },
                            ]}>
                     <Input
                         allowClear
-                        placeholder={'Please Input Token'} />
+                        placeholder={'Please Input Title'} />
                 </Form.Item>
-                <Form.Item field="desc" label={"Description"} rules={[
-                    { required: true, message: t['register.form.password.errMsg'], validateTrigger : ['onSubmit'] },
-                    { required: true, match: new RegExp(/^[^￥{}【】#@=^&|《》]{0,200}$/,"g"),message: t['register.form.userName.validate.errMsg'] , validateTrigger : ['onSubmit']},
+
+                <Form.Item field="desc" label={t['createMetricSet.form.label.description']} rules={[
+                    { required: true, message: t['createMetricSet.form.description.errMsg'], validateTrigger : ['onSubmit'] },
                 ]}>
-                    <Input.TextArea maxLength={200} rows={3}  showWordLimit={true}/>
+                    <Input.TextArea maxLength={200} rows={3}  showWordLimit={true}  placeholder={'Please Input Description'}/>
                 </Form.Item>
-                <Form.Item field="isPrivate" label={'IsPrivate'}>
-                    <Row>
-                        <Col span={20}>
-                            <Radio.Group defaultValue={"0"} onChange={changeVisibleType}>
-                                <Radio value={"0"}>私有</Radio>
-                                <Radio value={"1"}>公有</Radio>
-                            </Radio.Group>
-                        </Col>
-                        {showGrantPrivileges && <Col span={4} style={{ textAlign:"right"}}>
-                            <div style={{cursor:"pointer"}} onClick={toggleShowPickupPanel}><Typography.Text>初始权限</Typography.Text><IconCaretDown /></div>
-                        </Col>}
-                    </Row>
+
+                <Form.Item style={{ marginBottom: 0 }} label={t['createMetricSet.form.label.private.type']} rules={[{ required: true }]} >
+                    <Grid.Row gutter={8}>
+                        <Grid.Col span={20}>
+                            <Form.Item field={"private_type"}>
+                                <Radio.Group defaultValue={0} onChange={changeVisibleType}>
+                                    <Radio value={0}>{t['createMetricSet.form.private.type.private']}</Radio>
+                                    <Radio value={1}>{t['createMetricSet.form.private.type.public']}</Radio>
+                                </Radio.Group>
+                            </Form.Item>
+                        </Grid.Col>
+                        <Grid.Col span={4} style={{ textAlign:"right" }}>
+                                {showGrantPrivileges &&
+                                <div style={{cursor:"pointer",userSelect:"none"}} onClick={toggleShowPickupPanel}>
+                                    {showPickUpPanel?<IconCaretDown />:<IconCaretRight />}
+                                    <Typography.Text>{t['createMetricSet.form.label.grant.privilege']}</Typography.Text>
+                                </div>
+                                }
+                        </Grid.Col>
+                    </Grid.Row>
                 </Form.Item>
 
                 {showPickUpPanel &&
-                <Form.Item label={'人员圈选'}>
+                <Form.Item label={t['createMetricSet.form.label.crowd.pickup']}>
                     <Row>
                         <Col
                             span={24}
