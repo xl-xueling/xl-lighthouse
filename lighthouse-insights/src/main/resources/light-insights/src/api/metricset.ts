@@ -9,3 +9,13 @@ export async function requestCreate(data:MetricSet) :Promise<ResultData>{
         data,
     })
 }
+
+export async function requestList(data) :Promise<ResultData<{list:Array<MetricSet>,total:number}>> {
+    return request({
+        url:'/metricset/list',
+        method:'POST',
+        data,
+    })
+}
+
+

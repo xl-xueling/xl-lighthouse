@@ -1,9 +1,11 @@
 const i18n = {
   'en-US': {
-    'cardList.add.quality':'Create MetricSet',
+    'metricSetList.tab.title.all':'All',
+    'metricSetList.tab.title.owner':'Owner',
   },
   'zh-CN': {
-    'cardList.add.quality':'创建指标集',
+    'metricSetList.tab.title.all':'全部指标集',
+    'metricSetList.tab.title.owner':'我的指标集',
   },
 };
 
