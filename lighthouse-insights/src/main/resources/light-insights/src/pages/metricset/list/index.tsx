@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Tabs, Card, Input, Typography, Grid, Space, Avatar, PaginationProps} from '@arco-design/web-react';
+import {Tabs, Card, Input, Typography, Grid, Space, Avatar, PaginationProps, Pagination} from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
@@ -19,15 +19,9 @@ export default function ListCard() {
   const t = useLocale(locale);
   const [loading, setLoading] = useState(true);
   const [showCreatePanel,setShowCreatePanel] = useState<boolean>(false);
-  // const [data, setData] = useState({
-  //   quality: defaultList,
-  //   service: defaultList,
-  //   rules: defaultList,
-  // });
   const [listData,setListData] = useState<{quality:MetricSet[]}>({quality:[]});
-
   const [activeKey, setActiveKey] = useState('all');
-    const { Meta } = Card;
+  const { Meta } = Card;
 
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
@@ -39,14 +33,18 @@ export default function ListCard() {
     });
     const [formParams, setFormParams] = useState({});
 
-  // const getData = () => {
-  //   axios
-  //     .get('/api/cardList')
-  //     .then((res) => {
-  //       setData(res.data);
-  //     })
-  //     .finally(() => setLoading(false));
-  // };
+    const tableCallback = async (record, type) => {
+        console.log("record:" + record + ",type:" + type);
+        // if(type == 'update'){
+        //     console.log("record:" + record + ",type:" + type);
+        // }else if(type == 'delete'){
+        //     console.log("record:" + record + ",type:" + type);
+        // }else if(type == 'fixed'){
+        //     console.log("record:" + record + ",type:" + type);
+        // }else if(type == 'share'){
+        //     console.log("record:" + record + ",type:" + type);
+        // }
+    };
 
   const fetchData = async () => {
       setLoading(true);
@@ -84,8 +82,6 @@ export default function ListCard() {
       setShowCreatePanel(false);
   }
 
-
-
   const getCardList = (
     list: Array<BasicCard & QualityInspection>,
     type: keyof typeof listData
@@ -99,7 +95,7 @@ export default function ListCard() {
         )}
         {list.map((item, index) => (
           <Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={6} key={index}>
-            <CardBlock card={item} type={type} loading={loading} />
+            <CardBlock item={item} loading={loading} callback={tableCallback} />
           </Col>
         ))}
       </Row>
@@ -116,7 +112,7 @@ export default function ListCard() {
         onChange={setActiveKey}
         extra={
           <Input.Search
-            style={{ width: '240px' }}
+            style={{ width: '260px',paddingRight:'24px'}}
             placeholder={t[`cardList.tab.${activeKey}.placeholder`]}
           />
         }
@@ -133,6 +129,9 @@ export default function ListCard() {
                   </div>
               ))
           }
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Pagination defaultCurrent={5} total={200} sizeCanChange />
+          </div>
       </div>
 
         {showCreatePanel && <MetricSetAddPanel onClose={handleHideCreatePanel}/>}
