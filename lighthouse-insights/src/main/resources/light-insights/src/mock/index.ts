@@ -9,6 +9,7 @@ import '../pages/project/mock'
 import '../pages/favorites/mock'
 import '../pages/group/mock'
 import '../pages/stat/mock'
+import '../pages/metricset/mock'
 
 if (!isSSR) {
   Mock.setup({

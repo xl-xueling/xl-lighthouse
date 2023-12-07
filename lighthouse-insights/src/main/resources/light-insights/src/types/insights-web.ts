@@ -20,8 +20,16 @@ export interface Department {
 export interface MetricSet {
     id?:number;
     title?:string;
-    createdTime:number;
+    createdTime?:number;
+    description?:string;
+    adminIds?:Array<number>;
+}
 
+export interface GrantPrivileges {
+    id:number;
+    departments?:Array<number>;
+    users?:Array<number>;
+    teams?:Array<number>;
 }
 
 export interface ArcoTreeNode {
