@@ -84,6 +84,7 @@ function Index() {
   }
 
   useEffect(() => {
+    Message.config({ duration: 6000 });
     if (checkLogin()) {
       fetchUserInfo().then()
     } else if (window.location.pathname.replace(/\//g, '') !== 'login'

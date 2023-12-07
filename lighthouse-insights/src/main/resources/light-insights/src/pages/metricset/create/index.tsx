@@ -79,6 +79,8 @@ export default function MetricSetAddPanel({onClose}) {
                 }else{
                     Message.error(result.message || t['system.error']);
                 }
+            }else{
+                Message.success("创建数据集成功！");
             }
         }catch (error){
             console.log(error);
@@ -102,6 +104,7 @@ export default function MetricSetAddPanel({onClose}) {
                 form={form}
                 colon={true}
                 ref={formRef}
+                autoComplete={"off"}
                 initialValues={{private_type: 0}}
                 style={{ minHeight:'300px' }}
                 labelCol={{span: 4, offset: 0}}
