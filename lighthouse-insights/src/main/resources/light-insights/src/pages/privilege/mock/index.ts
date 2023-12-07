@@ -72,5 +72,14 @@ setupMock({
                 ],
             };
         });
+
+        Mock.mock(new RegExp('/api/v1/privilege/grant'), (params) => {
+            console.log("receive grant params,params:" + JSON.stringify(params));
+            return {
+                code:'0',
+                message:'success',
+                data:{},
+            };
+        });
     },
 });

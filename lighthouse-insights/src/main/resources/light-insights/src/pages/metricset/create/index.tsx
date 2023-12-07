@@ -1,16 +1,19 @@
 import React, {useRef, useState} from 'react';
-import {Form, Grid, Input, Modal, Radio, Tabs, Typography} from "@arco-design/web-react";
+import {Form, Grid, Input, Message, Modal, Radio, Tabs, Typography} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {Col} from "antd";
 import UsersTransfer from "@/pages/components/transfer/user_transfer";
 import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
 import {IconCaretDown, IconCaretRight} from "@arco-design/web-react/icon";
+import {GrantPrivileges, MetricSet} from "@/types/insights-web";
+import {ResultData} from "@/types/insights-common";
+import {requestGrantPrivilege} from "@/api/privilege";
+import {requestCreate} from "@/api/metricset";
 
 
 export default function MetricSetAddPanel({onClose}) {
 
-    const [confirmLoading, setConfirmLoading] = useState(false);
     const [form] = Form.useForm();
     const t = useLocale(locale);
     const FormItem = Form.Item;
@@ -37,44 +40,53 @@ export default function MetricSetAddPanel({onClose}) {
 
 
     async function handlerSubmit(){
-
         await formRef.current.validate().catch()
-
+        setLoading(true);
         const values = formRef.current.getFieldsValue();
         console.log("values is:" + JSON.stringify(values));
-        if(departmentTransferRef.current){
-            const departments = departmentTransferRef.current.getData();
-            console.log("departments:" + JSON.stringify(departments));
-        }
-        if(userTransferRef.current){
-            const users = userTransferRef.current.getData();
-            console.log("users:" + JSON.stringify(users));
+        const metricSet:MetricSet = {
+            title:values.title,
+            description:values.description,
         }
 
-        setLoading(true);
-
-        // const project: = {
-        //     name:values.name,
-        //     departmentId:Number(values.departmentId),
-        //     adminIds:values.admins,
-        //     desc:values.desc,
-        //     isPrivate:values.isPrivate,
-        // }
-        // requestCreate(project).then((result) => {
-        //     if(result.code === '0'){
-        //         Message.success(t['projectCreate.form.submit.success']);
-        //         setTimeout(() => {
-        //             window.location.href = "/project/list";
-        //         },3000)
-        //     }else{
-        //         Message.error(result.message || t['system.error']);
-        //     }
-        // }).catch((error) => {
-        //     console.log(error);
-        //     Message.error(t['system.error'])
-        // }).finally(() => {
-        //     setLoading(false);
-        // })
+        let metricId;
+        try{
+            const result:ResultData = await requestCreate(metricSet);
+            if(result.code != '0'){
+                Message.error(result.message || t['system.error']);
+                return;
+            }
+            metricId = result.data.id;
+        }catch (error){
+            console.log(error);
+            Message.error(t['system.error']);
+            return;
+        }
+        console.log("create metric success,metricId:" + metricId);
+        try{
+            const grantPrivilege:GrantPrivileges = {id:metricId};
+            if(departmentTransferRef.current){
+                grantPrivilege.departments = departmentTransferRef.current.getData();
+            }
+            if(userTransferRef.current){
+                grantPrivilege.users = userTransferRef.current.getData();
+            }
+            if(grantPrivilege.departments || grantPrivilege.users){
+                const result:ResultData = await requestGrantPrivilege(grantPrivilege);
+                console.log("grant result is:" + JSON.stringify(result));
+                if(result.code == '0'){
+                    Message.success("创建数据集成功！");
+                }else{
+                    Message.error(result.message || t['system.error']);
+                }
+            }
+        }catch (error){
+            console.log(error);
+            Message.error(t['system.error']);
+            return;
+        }finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -82,7 +94,7 @@ export default function MetricSetAddPanel({onClose}) {
             title={t['createMetricSet.modal.title']}
             visible={true}
             style={{ width:'960px',verticalAlign:'top', marginTop: '130px' }}
-            confirmLoading={confirmLoading}
+            confirmLoading={loading}
             onCancel={onClose}
             onOk={handlerSubmit}
         >
