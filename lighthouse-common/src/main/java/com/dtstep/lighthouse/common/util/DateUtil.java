@@ -117,14 +117,8 @@ public final class DateUtil {
     }
 
     public static int getYear(long t) {
-        if(t < year_2024_timestamp && t >= year_2023_timestamp){
-            return year_2023;
-        }else if(t < year_2025_timestamp && t >= year_2024_timestamp){
-            return year_2024;
-        }else{
-            LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(t), ZoneId.systemDefault());
-            return localDateTime.getYear();
-        }
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(t), ZoneId.systemDefault());
+        return localDateTime.getYear();
     }
 
     public static long getDayTime(int year,int dayOfYear){
@@ -132,24 +126,9 @@ public final class DateUtil {
         return localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
-    private static final int year_2023 = 2023;
-    private static final long year_2023_timestamp = 1672502400000L;
-    private static final int year_2024 = 2024;
-    private static final long year_2024_timestamp = 1704038400000L;
-    private static final int year_2025 = 2025;
-    private static final long year_2025_timestamp = 1735660800000L;
-
     public static long getYearStartTime(int year){
-        if(year == year_2023){
-            return year_2023_timestamp;
-        }else if(year == year_2024){
-            return year_2024_timestamp;
-        }else if(year == year_2025){
-            return year_2025_timestamp;
-        }else{
-            LocalDate date = LocalDate.of(year, 1, 1);
-            return date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-        }
+        LocalDate date = LocalDate.of(year, 1, 1);
+        return date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
     public static long getYearStartTime(long t){
