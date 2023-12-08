@@ -94,6 +94,10 @@ export const routes: IRoute[] = [
         name: 'menu.dashboard.workplace',
         key: 'metricset/list',
       },
+      {
+        name: '指标集管理',
+        key: 'metricset/manage',
+      },
     ],
   },
   {
