@@ -18,6 +18,7 @@ import useForm from "@arco-design/web-react/es/Form/useForm";
 import StatAddPanel from "@/pages/stat/add/stat_add";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/edit";
+import BindedList from "@/pages/metricset/manage/binded/list/binded";
 const { Row, Col } = Grid;
 
 export default function MetricManagePanel({groupId}) {
@@ -56,26 +57,8 @@ export default function MetricManagePanel({groupId}) {
     }
 
     return (
-
             <Tabs
-                type="line"
-                extra={
-                    <Dropdown
-                        position={"br"}
-                        trigger={"click"}
-                        droplist={
-                            <Menu onClickMenuItem={handlerProcess} style={{ maxHeight:'280px' }}>
-                                <Menu.Item key='1'>{t['groupManage.operations.button.create.stat']}</Menu.Item>
-                                <Menu.Item key='2'>{t['groupManage.operations.button.update.group']}</Menu.Item>
-                                <Menu.Item key='3'>{t['groupManage.operations.button.update.limited.threshold']}</Menu.Item>
-                                <Menu.Item key='4'>{t['groupManage.operations.button.limited.records']}</Menu.Item>
-                                <Menu.Item key='5'>{t['groupManage.operations.button.secret.key']}</Menu.Item>
-                                <Menu.Item key='6'>{t['groupManage.operations.button.delete.group']}</Menu.Item>
-                            </Menu>
-                        }>
-                        <Button size={"small"} type={"secondary"}><IconDownCircle />{t['groupManage.operations.button.title']}</Button>
-                    </Dropdown>
-                }>
+                type="line">
                 <TabPane
                     key='1'
                     title={
@@ -84,25 +67,7 @@ export default function MetricManagePanel({groupId}) {
                             Binded Items
                         </span>
                     }>
-                    <div className={styles['search-form-wrapper']} style={{ marginTop:'10px',marginLeft:'20px'}}>
-                        <Form
-                            className={styles['search-form']}
-                            labelAlign="left"
-                            labelCol={{ span: 5 }}
-                            wrapperCol={{ span: 19 }}
-                        >
-                            <Row gutter={24}>
-                                <Col span={10}>
-                                    <Form.Item field="Title">
-                                        <Input.Search  placeholder={'Search Title'} allowClear onSearch={(v) => {
-                                            handlerSubmit(v);
-                                        }} />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        </Form>
-                    </div>
-                    <StatisticalListPanel formParams={formParams} from={"group-manage"} />
+                   <BindedList metricId={0}/>
                 </TabPane>
                 <TabPane key='3' title={
                     <span>
