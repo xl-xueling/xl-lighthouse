@@ -19,8 +19,8 @@ import {
     IconClockCircle,
     IconDesktop,
     IconFile, IconFire,
-    IconFolder, IconLock, IconMobile,
-    IconPlus, IconSettings, IconStar, IconStarFill, IconStorage, IconTag, IconUser, IconUserGroup,
+    IconFolder, IconLink, IconLock, IconMobile,
+    IconPlus, IconPushpin, IconSettings, IconStar, IconStarFill, IconStorage, IconTag, IconUser, IconUserGroup,
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from '../manage/locale';
@@ -107,7 +107,7 @@ export default function MetricNewDetail() {
             label: <IconBook/>,
             span : 2,
             value: <div style={{ wordBreak: 'break-word' }}>
-                <span>This is a very long text that needs to be wrapped to multiple lines ithat needs to be wrapped to multiple lines if necessary.f necessary.</span>
+                <span>This is a very long text that needs to be wrapped to multiple lines ithat needs to be wrapped to multiple lines if necessary.f necessary.This is a very long text that needs to be wrapped to multiple lines ithat needs to be wrapped to multiple lines if necessary.f necessary.</span>
             </div>
         },
     ];
@@ -116,10 +116,10 @@ export default function MetricNewDetail() {
         <div>
             <Space align="start">
                 <div className={styles.icon}>
-                    <IconStar/>
+                    <IconPushpin/>
                 </div>
                 <Typography.Title
-                    style={{ marginTop: 4,marginLeft: 5,marginBottom:20 }}
+                    style={{ marginTop: 4,marginLeft: 5,marginBottom:15 }}
                     heading={6}
                 >
                     指标集：{'首页用户行为数据集'}
