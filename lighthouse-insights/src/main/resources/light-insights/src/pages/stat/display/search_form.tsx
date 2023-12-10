@@ -187,7 +187,7 @@ export default function SearchForm({groupId = 0}) {
                             <Col span={12} key={index}>
                                 <Form.Item label={t['projectList.columns.department']}>
                                     <TreeSelect
-                                        placeholder={"Please select"}
+                                        placeholder={"Search Department"}
                                         multiple={true}
                                         allowClear={true}
                                         treeData={translate(allDepartInfo)}
