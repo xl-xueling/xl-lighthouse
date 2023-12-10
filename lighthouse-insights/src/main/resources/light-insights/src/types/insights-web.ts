@@ -35,7 +35,14 @@ export interface GrantPrivileges {
 export interface ArcoTreeNode {
     key: string;
     title: string;
+    disabled?:boolean;
     children?:Array<ArcoTreeNode>;
+}
+
+export interface ArcoSelectNode {
+    label: string;
+    value: string;
+    children?:Array<ArcoSelectNode>;
 }
 
 export interface ArcoFlatNode {

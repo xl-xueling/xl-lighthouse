@@ -1,6 +1,6 @@
 import {request} from "@/utils/request";
 import {ResultData} from "@/types/insights-common";
-import {Group, Project, User} from "@/types/insights-web";
+import {ArcoSelectNode, ArcoTreeNode, Group, Project, User} from "@/types/insights-web";
 
 export async function requestQueryById(id:number) :Promise<ResultData<Group>> {
     return request({
@@ -20,11 +20,11 @@ export async function requestQueryByIds(ids:number[]) :Promise<ResultData<Record
 }
 
 
-export async function requestQueryDimens(columns:string[]):Promise<ResultData<Record<string,Array<string>>>> {
+export async function requestQueryDimensValue(data:{groupId:number,dimensArray:string[]}):Promise<ResultData<Record<string,Array<ArcoTreeNode>>>> {
     return request({
-        url:'/group/queryDimens',
+        url:'/group/queryDimensValue',
         method:'POST',
-        columns,
+        data,
     })
 }
 

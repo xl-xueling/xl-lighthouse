@@ -34,6 +34,8 @@ import lazyload from './utils/lazyload';
 import { GlobalState } from './store';
 import styles from './style/layout.module.less';
 import ProjectManage from "@/pages/project/manage";
+import ProjectDisplay from "@/pages/project/display";
+import StatDisplay from "@/pages/stat/display";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -282,6 +284,8 @@ function PageLayout() {
               <Content>
                 <Switch>
                   <Route path="/project/manage/:id" component={ProjectManage} />
+                  <Route path="/project/display/:id" component={ProjectDisplay} />
+                  <Route path="/stat/display/:id" component={StatDisplay} />
                   {flattenRoutes.map((route, index) => {
                     return (
                       <Route
