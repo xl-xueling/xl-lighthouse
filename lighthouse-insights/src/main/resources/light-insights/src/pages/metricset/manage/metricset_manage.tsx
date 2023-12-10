@@ -7,7 +7,8 @@ import {
     Tabs,
     Dropdown, Menu, TreeSelect, Card
 } from '@arco-design/web-react';
-import {IconDownCircle, IconTag, IconThunderbolt
+import {
+    IconDashboard, IconDownCircle, IconTag, IconThunderbolt
 } from '@arco-design/web-react/icon';
 import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -19,6 +20,7 @@ import StatAddPanel from "@/pages/stat/add/stat_add";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/edit";
 import BindedList from "@/pages/metricset/manage/binded/list/binded";
+import MetricDisplay from "@/pages/metricset/display";
 const { Row, Col } = Grid;
 
 export default function MetricManagePanel({groupId}) {
@@ -58,9 +60,20 @@ export default function MetricManagePanel({groupId}) {
 
     return (
             <Tabs
+
                 type="line">
                 <TabPane
                     key='1'
+                    title={
+                        <span>
+                            <IconDashboard style={{ marginRight: 6 }} />
+                            Data View
+                        </span>
+                    }>
+                    <MetricDisplay />
+                </TabPane>
+                <TabPane
+                    key='2'
                     title={
                         <span>
                             <IconThunderbolt style={{ marginRight: 6 }} />
