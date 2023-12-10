@@ -116,11 +116,21 @@ export default function MetricNewDetail() {
     return (
         <>
             <Space align="start">
+                {/*<div className={styles.icon}>*/}
+                {/*    <IconPushpin/>*/}
+                {/*</div>*/}
+                {/*<Typography.Title*/}
+                {/*    heading={6}*/}
+                {/*>*/}
+                {/*    指标集：{'首页用户行为数据集'}*/}
+                {/*    /!*<IconLock style={{ marginLeft:'10px',fontSize:13,marginBottom:1}}/>*!/*/}
+                {/*</Typography.Title>*/}
+
+
                 <div className={styles.icon}>
-                    <IconPushpin/>
+                    <IconStar/>
                 </div>
                 <Typography.Title
-                    style={{ marginTop: 4,marginLeft: 5,marginBottom:15 }}
                     heading={6}
                 >
                     指标集：{'首页用户行为数据集'}
@@ -128,10 +138,10 @@ export default function MetricNewDetail() {
                 </Typography.Title>
 
             </Space>
-                <div style={{width:'80%'}}>
+                <div style={{width:'80%',marginTop:'10px'}}>
                     <Descriptions
+                        size={"mini"}
                         layout="horizontal"
-                        colon="&nbsp;&nbsp;"
                         data={dataPicture}
                         column={2}
                     />

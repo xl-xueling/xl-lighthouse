@@ -9,7 +9,7 @@ import Shortcuts from "@/pages/dashboard/workplace/shortcuts";
 import Carousel from "@/pages/dashboard/workplace/carousel";
 import Announcement from "@/pages/dashboard/workplace/announcement";
 import Docs from "@/pages/dashboard/workplace/docs";
-import ProjectTree from "@/pages/project/display/tree";
+import ProjectMenu from "@/pages/project/display/menu";
 import SearchForm from "@/pages/stat/display/search_form";
 import ChartPanel from "@/pages/stat/display/chart_panel";
 import BasicInfo from "@/pages/stat/display/basic";
@@ -26,8 +26,8 @@ export default function ProjectDisplay() {
     return (
         <div className={styles.wrapper}>
             <Space size={16} direction="vertical" className={styles.left}>
-                <Row gutter={16}>
-                    <ProjectTree />
+                <Row>
+                    <ProjectMenu />
                 </Row>
             </Space>
             <Space className={styles.right} size={16} direction="vertical">

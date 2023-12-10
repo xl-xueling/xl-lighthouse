@@ -175,6 +175,7 @@ export default function SearchForm({groupId = 0}) {
     return (
         <div className={styles['search-form-wrapper']}>
         <Form
+            size={"small"}
             className={styles['search-form']}
             labelAlign="left"
             labelCol={{ span: 5 }}

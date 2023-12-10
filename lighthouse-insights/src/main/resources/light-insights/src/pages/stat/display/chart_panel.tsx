@@ -97,6 +97,6 @@ export default function ChartPanel({searchForm={}}) {
     },[])
 
     return (<>
-        <Line style={{ height:'350px'}} {...config} />
+        <Line style={{ height:'300px'}} {...config} />
     </>);
 }

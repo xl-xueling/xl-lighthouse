@@ -31,6 +31,7 @@ export const routes: IRoute[] = [
       {
         name: '指标集管理',
         key: 'metricset/manage',
+        breadcrumb:false,
       },
     ],
   },
