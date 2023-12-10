@@ -20,7 +20,6 @@ import StatAddPanel from "@/pages/stat/add/stat_add";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/edit";
 import BindedList from "@/pages/metricset/manage/binded/list/binded";
-import MetricDisplay from "@/pages/metricset/display";
 const { Row, Col } = Grid;
 
 export default function MetricManagePanel({groupId}) {
@@ -60,7 +59,7 @@ export default function MetricManagePanel({groupId}) {
 
     return (
             <Tabs
-
+                tabPosition={"left"}
                 type="line">
                 <TabPane
                     key='1'
@@ -70,7 +69,6 @@ export default function MetricManagePanel({groupId}) {
                             Data View
                         </span>
                     }>
-                    <MetricDisplay />
                 </TabPane>
                 <TabPane
                     key='2'

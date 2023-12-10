@@ -15,12 +15,11 @@ import { IconApps, IconBug, IconBulb } from '@arco-design/web-react/icon';
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
 
-export default function ProjectTree() {
+export default function ProjectMenu() {
     return (
         <Menu
             style={{height: 'calc(100% - 28px)' }}
             defaultOpenKeys={['0']}
-            defaultSelectedKeys={['0_1']}
         >
             <MenuItem key='0_0'>Menu 1</MenuItem>
             <MenuItem key='0_1'>Menu 2</MenuItem>
