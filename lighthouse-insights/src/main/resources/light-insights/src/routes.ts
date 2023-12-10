@@ -12,51 +12,57 @@ export type IRoute = AuthParams & {
 };
 
 export const routes: IRoute[] = [
-  // {
-  //   name: 'menu.dashboard',
-  //   key: 'dashboard',
-  //   children: [
-  //     {
-  //       name: 'menu.dashboard.workplace',
-  //       key: 'dashboard/workplace',
-  //     },
-  //     {
-  //       name: 'menu.dashboard.monitor',
-  //       key: 'dashboard/monitor',
-  //       requiredPermissions: [
-  //         { resource: 'menu.dashboard.monitor', actions: ['write'] },
-  //       ],
-  //     },
-  //   ],
-  // },
-  // {
-  //   name: 'menu.visualization',
-  //   key: 'visualization',
-  //   children: [
-  //     {
-  //       name: 'menu.visualization.dataAnalysis',
-  //       key: 'visualization/data-analysis',
-  //       requiredPermissions: [
-  //         { resource: 'menu.visualization.dataAnalysis', actions: ['read'] },
-  //       ],
-  //     },
-  //     {
-  //       name: 'menu.visualization.multiDimensionDataAnalysis',
-  //       key: 'visualization/multi-dimension-data-analysis',
-  //       requiredPermissions: [
-  //         {
-  //           resource: 'menu.visualization.dataAnalysis',
-  //           actions: ['read', 'write'],
-  //         },
-  //         {
-  //           resource: 'menu.visualization.multiDimensionDataAnalysis',
-  //           actions: ['write'],
-  //         },
-  //       ],
-  //       oneOfPerm: true,
-  //     },
-  //   ],
-  // },
+  {
+    name: 'menu.dashboard',
+    key: 'dashboard',
+    children: [
+      {
+        name: 'menu.dashboard.workplace',
+        key: 'dashboard/workplace',
+      },
+      {
+        name: 'monitor',
+        key: 'dashboard/monitor',
+      },
+      {
+        name: 'menu.dashboard.workplace',
+        key: 'metricset/list',
+      },
+      {
+        name: '指标集管理',
+        key: 'metricset/manage',
+      },
+    ],
+  },
+
+  {
+    name: 'menu.visualization',
+    key: 'visualization',
+    children: [
+      {
+        name: 'menu.visualization.dataAnalysis',
+        key: 'visualization/data-analysis',
+        requiredPermissions: [
+          { resource: 'menu.visualization.dataAnalysis', actions: ['read'] },
+        ],
+      },
+      {
+        name: 'menu.visualization.multiDimensionDataAnalysis',
+        key: 'visualization/multi-dimension-data-analysis',
+        requiredPermissions: [
+          {
+            resource: 'menu.visualization.dataAnalysis',
+            actions: ['read', 'write'],
+          },
+          {
+            resource: 'menu.visualization.multiDimensionDataAnalysis',
+            actions: ['write'],
+          },
+        ],
+        oneOfPerm: true,
+      },
+    ],
+  },
   // {
   //   name: 'menu.list',
   //   key: 'list',
@@ -86,20 +92,6 @@ export const routes: IRoute[] = [
   //   ],
   // },
 
-  {
-    name: 'menu.dashboard',
-    key: 'dashboard',
-    children: [
-      {
-        name: 'menu.dashboard.workplace',
-        key: 'metricset/list',
-      },
-      {
-        name: '指标集管理',
-        key: 'metricset/manage',
-      },
-    ],
-  },
   {
     name: 'menu.favorites',
     key: 'favorites',

@@ -13,7 +13,7 @@ import styles from "@/pages/stat/display/style/index.module.less";
 import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
 
 
-export default function FiltersForm({groupId = 0}) {
+export default function SearchForm({groupId = 0}) {
 
     const t = useLocale(locale);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
@@ -173,7 +173,7 @@ export default function FiltersForm({groupId = 0}) {
 
 
     return (
-        <>
+        <div className={styles['search-form-wrapper']}>
         <Form
             className={styles['search-form']}
             labelAlign="left"
@@ -207,6 +207,6 @@ export default function FiltersForm({groupId = 0}) {
                     {'重置'}
                 </Button>
             </div>
-        </>
+        </div>
     );
 }

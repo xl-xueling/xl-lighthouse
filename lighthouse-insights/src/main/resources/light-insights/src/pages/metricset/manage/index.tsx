@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Typography, Grid} from '@arco-design/web-react';
+import {Card, Typography, Grid, Space} from '@arco-design/web-react';
 import MetricManagePanel from "./metricset_manage";
 import MetricNewDetail from "@/pages/metricset/manage/new_detail";
 
@@ -12,17 +12,13 @@ const defaultList = new Array(10).fill({});
 export default function Index() {
 
     return (
-        <div style={{ minHeight:500}}>
-            {/*<Card>*/}
-            {/*    <MetricNewDetail/>*/}
-            {/*    <div style={{marginBottom:'15px'}}></div>*/}
-            {/*    <MetricManagePanel groupId={0}/>*/}
-            {/*</Card>*/}
-
+        <Space size={16} direction="vertical" style={{ width: '100%' }}>
             <Card>
                 <MetricNewDetail/>
+            </Card>
+            <Card>
                 <MetricManagePanel groupId={0}/>
             </Card>
-        </div>
+        </Space>
     );
 }
