@@ -110,10 +110,11 @@ export default function MetricNewDetail() {
                 <span>This is a very long text that needs to be wrapped to multiple lines ithat needs to be wrapped to multiple lines if necessary.f necessary.This is a very long text that needs to be wrapped to multiple lines ithat needs to be wrapped to multiple lines if necessary.f necessary.</span>
             </div>
         },
+
     ];
 
     return (
-        <div>
+        <>
             <Space align="start">
                 <div className={styles.icon}>
                     <IconPushpin/>
@@ -127,19 +128,6 @@ export default function MetricNewDetail() {
                 </Typography.Title>
 
             </Space>
-                {/*<div className={styles.recent}>{t['workplace.recent']}</div>*/}
-                {/*<div className={styles.shortcuts}>*/}
-                {/*    /!*{recentShortcuts.map((shortcut) => (*!/*/}
-                {/*    /!*    <div*!/*/}
-                {/*    /!*        className={styles.item}*!/*/}
-                {/*    /!*        key={shortcut.key}*!/*/}
-                {/*    /!*        onClick={() => onClickShortcut(shortcut.key)}*!/*/}
-                {/*    /!*    >*!/*/}
-                {/*    /!*        <div className={styles.icon}>{shortcut.icon}</div>*!/*/}
-                {/*    /!*        <div className={styles.title}>{shortcut.title}</div>*!/*/}
-                {/*    /!*    </div>*!/*/}
-                {/*    /!*))}*!/*/}
-                {/*</div>*/}
                 <div style={{width:'80%'}}>
                     <Descriptions
                         layout="horizontal"
@@ -148,6 +136,6 @@ export default function MetricNewDetail() {
                         column={2}
                     />
                 </div>
-        </div>
+        </>
     );
 }

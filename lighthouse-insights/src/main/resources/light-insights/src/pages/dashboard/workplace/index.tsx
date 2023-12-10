@@ -11,7 +11,6 @@ import styles from './style/index.module.less';
 import './mock';
 
 const { Row, Col } = Grid;
-
 const gutter = 16;
 
 function Workplace() {

@@ -92,58 +92,11 @@ export default function ChartPanel({searchForm={}}) {
         },
     ];
 
-
-    const descriptionData = [
-        {
-            label: 'Title',
-            value: '每分钟_uv数据统计',
-        },
-        {
-            label: 'CreatedTime',
-            value: '2023-12-01 10:00:19',
-        },
-        {
-            label: 'Group',
-            value: '[首页广告模块数据统计]homepage_behavior_stat',
-        },
-        {
-            label: 'Admins',
-            value: 'zhangsan;lisi;wangwu',
-        },
-
-        {
-            label: 'TimeParam',
-            value: '1-minute',
-        },
-        {
-            label: 'Operation',
-            value: <div><IconList style={{marginRight:'10px'}} /> <IconEdit style={{marginRight:'10px'}} />
-            <IconPushpin style={{marginRight:'10px'}} /></div>,
-        },
-        {
-            label: 'Template',
-            value: '<stat-item title="每分钟uv数据统计" stat="bitcount(userId)" dimens="province" />',
-            span:2,
-        },
-
-    ];
     useEffect(() => {
         console.log("chart panel..")
     },[])
 
-    return (<div>
-        <Line {...config} />
-        <Divider style={{ marginTop:'30px',marginBottom:'25px'}}/>
-        <Typography.Title
-            heading={6}
-            style={{ marginTop: 0, marginBottom: 15,fontSize:14 }}
-        >
-            {'Metric Information'}
-        </Typography.Title>
-        <Descriptions
-            // title='Basic Information'
-            labelStyle={{ width:'10%' }}
-            valueStyle={{ width:'40%' }}
-            size={"small"} border data={descriptionData} column={2}/>
-    </div>);
+    return (<>
+        <Line style={{ height:'350px'}} {...config} />
+    </>);
 }

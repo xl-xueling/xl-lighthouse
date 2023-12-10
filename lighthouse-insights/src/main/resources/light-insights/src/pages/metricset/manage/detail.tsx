@@ -155,20 +155,8 @@ export default function MetricDetail() {
 
 
     return (
-        <div>
-
             <Card>
-                {/*<div style={{ display: 'flex', justifyContent: 'space-between' }}>*/}
-                {/*    <Typography.Title heading={6}>*/}
-                {/*        {'管理指标集'}*/}
-                {/*    </Typography.Title>*/}
-                {/*    <Link>{t['workplace.seeMore']}</Link>*/}
-                {/*</div>*/}
-
                 <Space align="start">
-                    {/*<div className={styles.icon}>*/}
-                    {/*    <IconStar/>*/}
-                    {/*</div>*/}
                     <Typography.Title
                         //style={{ marginTop: 3,marginLeft: 5,marginBottom:25 }}
                         style={{ textAlign:"center" }}
@@ -193,21 +181,6 @@ export default function MetricDetail() {
                 </div>
                 <Divider />
                 <div className={styles.recent}>{t['workplace.recent']}</div>
-                <div className={styles.shortcuts}>
-                    {/*{recentShortcuts.map((shortcut) => (*/}
-                    {/*    <div*/}
-                    {/*        className={styles.item}*/}
-                    {/*        key={shortcut.key}*/}
-                    {/*        onClick={() => onClickShortcut(shortcut.key)}*/}
-                    {/*    >*/}
-                    {/*        <div className={styles.icon}>{shortcut.icon}</div>*/}
-                    {/*        <div className={styles.title}>{shortcut.title}</div>*/}
-                    {/*    </div>*/}
-                    {/*))}*/}
-
-
-                </div>
-
                 <Descriptions
                     layout="horizontal"
                     colon="&nbsp;&nbsp;"
@@ -215,17 +188,5 @@ export default function MetricDetail() {
                     column={1}
                 />
             </Card>
-            <Card>
-                {/*<div style={{ display: 'flex', justifyContent: 'space-between' }}>*/}
-                {/*    <Typography.Title heading={6}>*/}
-                {/*        {'详细信息'}*/}
-                {/*    </Typography.Title>*/}
-                {/*    <Link>{t['workplace.seeMore']}</Link>*/}
-                {/*</div>*/}
-
-
-
-            </Card>
-        </div>
     );
 }
