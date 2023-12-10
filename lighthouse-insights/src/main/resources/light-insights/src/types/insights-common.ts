@@ -3,3 +3,23 @@ export interface ResultData<S = any> {
     message?: string;
     data?:S ;
 }
+
+export enum RenderTypeEnum {
+    DATEPICKER_DATE_SELECT = 1,
+    DATEPICKER_DATE_RANGE_SELECT=2,
+    DATEPICKER_DATE_TIME_RANGE_SELECT=3,
+    FILTER_INPUT=4,
+    FILTER_SELECT=5,
+    FILTER_REMOTE_SEARCH_SELECT=6,
+}
+
+export interface FilterConfigParams {
+    label:string,
+    dimens:string,
+    componentId?:number,
+}
+
+export interface RenderConfig {
+    renderType:number,
+    config?:FilterConfigParams,
+}

@@ -3,7 +3,7 @@ import qs from 'query-string';
 import dayjs from 'dayjs';
 import setupMock from '@/utils/setupMock';
 import {generatePermission, routes} from "@/routes";
-import {Group, Project} from "@/types/insights-web";
+import {ArcoSelectNode, ArcoTreeNode, Group, Project} from "@/types/insights-web";
 
 
 setupMock({
@@ -129,6 +129,31 @@ setupMock({
                 code:'0',
                 message:'success',
                 data:{},
+            };
+        });
+
+        Mock.mock(new RegExp('/api/v1/group/queryDimensValue'), (params) => {
+            console.log("group queryDimensValue,receive params:" + JSON.stringify(params));
+            const dimensData:Record<string,Array<ArcoTreeNode>> = {};
+            const bodyObject = JSON.parse(params.body);
+            const array = bodyObject.dimensArray;
+            for(let i=0;i<array.length;i++){
+                const dimens = array[i];
+                dimensData[dimens] = [
+                    {
+                        "key":"101",
+                        "title":"101",
+                    },
+                    {
+                        "key":"102",
+                        "title":"102",
+                    },
+                ]
+            }
+            return {
+                code:'0',
+                message:'success',
+                data:dimensData
             };
         });
     }
