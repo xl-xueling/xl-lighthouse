@@ -1,41 +1,17 @@
-import {
-    Typography,
-    Grid,
-    Button,
-    Form,
-    Input,
-    Tabs,
-    Dropdown, Menu, TreeSelect, Card, Table, TableColumnProps, Space, Modal, Message, Link, Spin
-} from '@arco-design/web-react';
-import {
-    IconCalendar, IconClockCircle,
-    IconDownCircle, IconPlus, IconStar, IconTag, IconThunderbolt, IconUser
-} from '@arco-design/web-react/icon';
+import {Form, Grid, Message, Modal, Spin, Tabs, TreeSelect} from '@arco-design/web-react';
+import {IconStar} from '@arco-design/web-react/icon';
 import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
-import styles from './style/index.module.less';
-import GroupBasicPanel from "@/pages/group/basic";
-import useForm from "@arco-design/web-react/es/Form/useForm";
-import StatAddPanel from "@/pages/stat/add/stat_add";
-import StatisticalListPanel from "@/pages/stat/list/stat_list";
-import GroupEditPanel from "@/pages/group/edit";
-import BindedProject from "@/pages/metricset/binded/binded/binded_project";
-import ProjectTree from "@/pages/project/common/project-tree";
-import GroupManagePanel from "@/pages/group/manage";
-import GroupAddPanel from "@/pages/group/add/group_add";
-import MetricTree from "@/pages/metricset/common/tree";
-import ProjectDisplay from "@/pages/project/display";
-import {translate} from "@/pages/department/common";
-const { Row, Col } = Grid;
-const TabPane = Tabs.TabPane;
-import { GoGitMerge } from "react-icons/go";
-import { GoStack } from "react-icons/go";
+import {GoGitMerge, GoStack} from "react-icons/go";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import {requestBinded, requestExtendInfoByIds, requestPinList} from "@/api/metricset";
-import {ArcoTreeNode, ExtendMetricSet, MetricSet} from "@/types/insights-web";
+import {requestBinded, requestPinList} from "@/api/metricset";
+import {ArcoTreeNode, MetricSet, MetricSetPagination, PrivilegeEnum} from "@/types/insights-web";
 import locale from "./locale";
-import {requestCreate} from "@/api/project";
+import {requestPrivilegeCheck} from "@/api/privilege";
+
+const { Row, Col } = Grid;
+const TabPane = Tabs.TabPane;
 
 export default function ReverseBindedPanel({projectId = 0,statId = 0,onClose}) {
 
@@ -45,27 +21,6 @@ export default function ReverseBindedPanel({projectId = 0,statId = 0,onClose}) {
     const [loading,setLoading] = useState(true);
     const [confirmLoading,setConfirmLoading] = useState(false);
     const formRef = useRef(null);
-
-    const fetchMetricPinList = async () => {
-        return new Promise<Array<MetricSet>>((resolve,reject) => {
-            requestPinList().then((response) => {
-                resolve(response.data);
-            }).catch((error) => {
-                reject(error);
-            })
-        })
-    }
-
-    const fetchMetricExtendInfo = async (ids) => {
-        return new Promise<Record<number, ExtendMetricSet>>(((resolve, reject) => {
-            requestExtendInfoByIds(ids).then((response) => {
-                resolve(response.data);
-            }).catch((error) => {
-                reject(error);
-            })
-        }))
-    }
-
 
     function translate(item, level = 1) {
         if (!item) {
@@ -113,20 +68,49 @@ export default function ReverseBindedPanel({projectId = 0,statId = 0,onClose}) {
         })
     }
 
-    useEffect(() => {
-        setLoading(true);
-        fetchMetricPinList()
-            .then((ids) => fetchMetricExtendInfo(ids))
-            .then((response) => {
-                const treeData = Object.entries(response).map(([key, value]) => {
-                    return translate(value.structure);
-                })
-                setTreeData(treeData);
+    const fetchPrivilegeInfo = async(ids) => {
+        return new Promise<Record<number,PrivilegeEnum[]>>((resolve,reject) => {
+            requestPrivilegeCheck({type:"metric",ids:ids}).then((response) => {
+                console.log("data is:" + JSON.stringify(response.data));
+                resolve(response.data);
             }).catch((error) => {
-                console.error(error);
-            }).finally(() => {
-                setLoading(false);
+                reject(error);
+            })
         })
+    }
+
+    const fetchData = async (): Promise<void> => {
+        setLoading(true);
+        const fetchPinMerticsData:Promise<Array<MetricSet>> = new Promise<Array<MetricSet>>((resolve,reject) => {
+            const proc = async () => {
+                const result = await requestPinList();
+                resolve(result.data);
+            }
+            proc().then();
+        })
+
+        const result = await Promise.all([fetchPinMerticsData]);
+        const metricsInfo = result[0];
+        const ids = metricsInfo.map(z => z.id);
+        console.log("ids is:" + JSON.stringify(ids));
+        Promise.all([fetchPrivilegeInfo(ids)])
+            .then(([r1]) => {
+                const treeData = metricsInfo.reduce((result:ArcoTreeNode[],item:MetricSet) => {
+                    const metricInfo = metricsInfo.find(x => String(x.id) == String(item.id));
+                    const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id]}};
+                    const v = translate(item.structure)
+                    result.push(v);
+                    return result;
+                },[]);
+                setTreeData(treeData);
+                setLoading(false);
+            }).catch((error) => {
+                console.log(error);
+            })
+    };
+
+    useEffect(() => {
+        fetchData().then();
     },[])
 
     return (

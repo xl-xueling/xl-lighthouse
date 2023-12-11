@@ -116,12 +116,12 @@ export interface MetricSet {
     createdTime?:number;
     description?:string;
     adminIds?:Array<number>;
+    structure?:Array<ArcoTreeNode>;
 }
 
-export interface ExtendMetricSet extends MetricSet{
-    structure:Array<ArcoTreeNode>;
+export interface MetricSetPagination extends MetricSet{
+    permissions:PrivilegeEnum[];
+    admins?:Array<User>;
 }
-
-
 
 

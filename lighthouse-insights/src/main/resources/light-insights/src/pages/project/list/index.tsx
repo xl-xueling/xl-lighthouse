@@ -166,7 +166,7 @@ export default function Index() {
     const fetchPrivilegeInfo:Promise<Record<number,PrivilegeEnum[]>> = new Promise<Record<number,PrivilegeEnum[]>>((resolve) => {
       const projectIds = projectsInfo?.map(z => z.id);
       const proc = async () => {
-        const result:ResultData<Record<number,PrivilegeEnum[]>> = await requestPrivilegeCheck({type:"project",items:projectIds});
+        const result:ResultData<Record<number,PrivilegeEnum[]>> = await requestPrivilegeCheck({type:"project",ids:projectIds});
         resolve(result.data);
       }
       proc().then();
