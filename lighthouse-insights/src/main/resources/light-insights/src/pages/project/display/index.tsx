@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from "./style/index.module.less";
-import {Card, Grid, Space, Typography} from "@arco-design/web-react";
+import {Card, DatePicker, Divider, Grid, Space, Typography} from "@arco-design/web-react";
 import Overview from "@/pages/dashboard/workplace/overview";
 import PopularContents from "@/pages/dashboard/workplace/popular-contents";
 import ContentPercentage from "@/pages/dashboard/workplace/content-percentage";
@@ -32,11 +32,15 @@ export default function ProjectDisplay() {
             </Space>
             <Space className={styles.right} size={16} direction="vertical">
                 <Card>
-                    <Typography.Title
-                        heading={6}
-                    >
-                        {'每分钟uv数据统计'}
-                    </Typography.Title>
+                    <Row>
+                        <Col span={12}>
+                            <Typography.Title
+                                heading={6}
+                            >
+                                {'每分钟uv数据统计'}
+                            </Typography.Title>
+                        </Col>
+                    </Row>
                     <SearchForm />
                     <ChartPanel />
                 </Card>
