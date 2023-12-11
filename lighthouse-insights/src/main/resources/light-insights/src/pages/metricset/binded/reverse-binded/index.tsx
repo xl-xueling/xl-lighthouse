@@ -133,7 +133,7 @@ export default function ReverseBindedPanel({projectId = 0,statId = 0,onClose}) {
         <Modal
             title={t['reverseBinded.modal.title']}
             visible={true}
-            style={{ width:'600px',minHeight:'350px'}}
+            style={{ width:'600px',minHeight:'250px'}}
             onOk={handlerSubmit}
             onCancel={onClose}
         >
