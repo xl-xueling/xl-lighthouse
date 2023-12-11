@@ -20,7 +20,7 @@ export default function ProjectMenu() {
         <>
 
     <Menu
-            style={{height: 'calc(100% - 28px)' ,minHeight:'500px'}}
+            style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}
             defaultOpenKeys={['0']}
         >
         <Input.Search allowClear placeholder='Search Items'/>

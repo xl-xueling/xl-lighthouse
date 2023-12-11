@@ -15,6 +15,8 @@ import {doc} from "prettier";
 import cursor = doc.builders.cursor;
 const { Text } = Typography;
 import { PiLinkSimple } from "react-icons/pi";
+import { CiCircleMore } from "react-icons/ci";
+import { IoInformationCircleOutline } from "react-icons/io5";
 
 
 
@@ -25,35 +27,11 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
   return [
       {
           title: '',
-          dataIndex: 'favorite',
-          headerCellStyle: { width:'5px' },
+          dataIndex: 'binded',
+          headerCellStyle: { width:'20px' },
           render: (_, record) => {
-              if(favoriteIds.includes(record.id)){
-                  return <Space size={16} direction="horizontal">
-                      <Popconfirm
-                          focusLock
-                          position={"bl"}
-                          title='Confirm'
-                          content= {t['projectList.columns.operations.unfavorite.confirm']}
-                          onOk={() => callback(record, 'unFavorite')}
-                      >
-                          <PiLinkSimple  style={{ cursor:"pointer"}}/>
-                      </Popconfirm>
-                  </Space>
-              }else{
-                  return <Space size={16} direction="horizontal">
-                      <Popconfirm
-                          focusLock
-                          position={"bl"}
-                          title='Confirm'
-                          content= {t['projectList.columns.operations.favorite.confirm']}
-                          onOk={() => callback(record, 'favorite')}
-                      >
-                          <PiLinkSimple style={{ cursor:"pointer"}}/>
-                      </Popconfirm>
-                  </Space>
-              }
-            }
+              return <Button icon={<PiLinkSimple/>} size={"mini"} shape={"round"} onClick={() => {callback(record, 'binded')}}/>
+          }
       },
     {
       title: t['projectList.columns.id'],
@@ -63,15 +41,12 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
               ,
     },
     {
-      title: t['projectList.columns.name'],
+      title: <>{t['projectList.columns.name']}<IoInformationCircleOutline style={{fontSize:12}}/></>,
       dataIndex: 'name',
       render: (value,record) =>
-          // <Tooltip color={'#2d3a57'} content={record.desc + record.desc+ record.desc+ record.desc}>
-          //     <IconInfoCircle /><Text>{value}</Text>
-          // </Tooltip>
       {
-          //return (<div><Text>{value}</Text><IconInfoCircle fontSize={14} style={{ cursor: "pointer" }}/></div>)
-          return (<div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
+          return (<div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} >
+              <Text>{value}</Text></div>)
       }
               ,
     },

@@ -17,13 +17,6 @@ export interface Department {
     children?:Array<Department>;
 }
 
-export interface MetricSet {
-    id?:number;
-    title?:string;
-    createdTime?:number;
-    description?:string;
-    adminIds?:Array<number>;
-}
 
 export interface GrantPrivileges {
     id:number;
@@ -36,6 +29,7 @@ export interface ArcoTreeNode {
     key: string;
     title: string;
     disabled?:boolean;
+    icon?:any;
     children?:Array<ArcoTreeNode>;
 }
 
@@ -114,6 +108,18 @@ export interface StatPagination extends Stat {
     department?:Department;
     permissions:PrivilegeEnum[];
     admins:Array<User>;
+}
+
+export interface MetricSet {
+    id?:number;
+    title?:string;
+    createdTime?:number;
+    description?:string;
+    adminIds?:Array<number>;
+}
+
+export interface ExtendMetricSet extends MetricSet{
+    structure:Array<ArcoTreeNode>;
 }
 
 
