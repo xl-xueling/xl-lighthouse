@@ -1,6 +1,6 @@
 import Mock from 'mockjs';
 import setupMock from '@/utils/setupMock';
-import {ExtendMetricSet, Project} from "@/types/insights-web";
+import {MetricSet, Project} from "@/types/insights-web";
 
 const list  = Mock.mock([
         {
@@ -8,25 +8,22 @@ const list  = Mock.mock([
             'title': '@word() @word() @word()',
             'description': '@sentence()',
             "createdTime":'@datetime',
+            "structure":{
+                "key":101,
+                'title': '@word() @word() @word()',
+            }
         },
         {
             id: 102,
             'title': '@word() @word() @word()',
             'description': '@sentence()',
             "createdTime":'@datetime',
+            "structure":{
+                "key":101,
+                'title': '@word() @word() @word()',
+            }
         },
-        {
-            id: 103,
-            'title': '@word() @word() @word()',
-            'description': '@sentence()',
-            "createdTime":'@datetime',
-        },
-        {
-            id: 104,
-            'title': '@word() @word() @word()',
-            'description': '@sentence()',
-            "createdTime":'@datetime',
-        },
+
     ]);
 
 
@@ -65,9 +62,9 @@ setupMock({
             };
         });
 
-        Mock.mock(new RegExp('/api/v1/metricset/queryExtendInfoByIds'), (params) => {
+        Mock.mock(new RegExp('/api/v1/metricset/requestByIds'), (params) => {
             console.log("request pinList,params:" + JSON.stringify(params));
-            const record: Record<number, ExtendMetricSet> = {};
+            const record: Record<number, MetricSet> = {};
             record[101] = Mock.mock({
                 id: 101,
                 'title': '@word() @word() @word()',
