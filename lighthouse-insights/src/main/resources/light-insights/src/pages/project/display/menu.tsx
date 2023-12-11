@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from "./style/index.module.less";
-import {Grid, Space} from "@arco-design/web-react";
+import {Grid, Input, Space} from "@arco-design/web-react";
 import Overview from "@/pages/dashboard/workplace/overview";
 import PopularContents from "@/pages/dashboard/workplace/popular-contents";
 import ContentPercentage from "@/pages/dashboard/workplace/content-percentage";
@@ -17,10 +17,13 @@ const SubMenu = Menu.SubMenu;
 
 export default function ProjectMenu() {
     return (
-        <Menu
-            style={{height: 'calc(100% - 28px)' }}
+        <>
+
+    <Menu
+            style={{height: 'calc(100% - 28px)' ,minHeight:'500px'}}
             defaultOpenKeys={['0']}
         >
+        <Input.Search allowClear placeholder='Search Items'/>
             <MenuItem key='0_0'>Menu 1</MenuItem>
             <MenuItem key='0_1'>Menu 2</MenuItem>
             <MenuItem key='0_2' disabled>
@@ -51,5 +54,6 @@ export default function ProjectMenu() {
                 <MenuItem key='2_2'>Menu 3</MenuItem>
             </SubMenu>
         </Menu>
+        </>
     );
 }

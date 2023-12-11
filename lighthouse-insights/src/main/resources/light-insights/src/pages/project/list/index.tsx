@@ -26,9 +26,6 @@ import {requestDeleteById} from "@/api/project";
 import {requestFavoriteProject, requestQueryProjectIds, requestUnFavoriteProject} from "@/api/favorites";
 import Detail from "@/pages/project/list/detail";
 import {requestQueryByIds} from "@/api/user";
-import {stringifyMap, stringifyObj} from "@/utils/util";
-
-const { Title } = Typography;
 
 export default function Index() {
   const t = useLocale(locale);
@@ -255,9 +252,7 @@ export default function Index() {
           </Space>
         </Grid.Col>
         <Grid.Col span={8} style={{ textAlign: 'right' }}>
-          <Space>
-            <Button size={"small"} type="primary" onClick={() => setCreateVisible(true)}>创建</Button>
-          </Space>
+          <Button size={"small"} type="primary" onClick={() => setCreateVisible(true)}>创建</Button>
         </Grid.Col>
       </Grid.Row>
 

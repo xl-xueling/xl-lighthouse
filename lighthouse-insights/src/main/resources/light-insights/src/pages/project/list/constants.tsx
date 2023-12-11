@@ -1,9 +1,11 @@
 import React from 'react';
 import {Button, Tooltip, Typography, Space, Popconfirm, Message, Link} from '@arco-design/web-react';
 import {
+    IconAlignCenter,
+    IconAttachment,
     IconFullscreen,
     IconInfoCircle,
-    IconInfoCircleFill,
+    IconInfoCircleFill, IconLink, IconPushpin,
     IconRotateRight,
     IconStar,
     IconStarFill
@@ -12,6 +14,12 @@ import IconHorizontalVideo from "@/pages/list/search-table/icons/horizontal.svg"
 import {doc} from "prettier";
 import cursor = doc.builders.cursor;
 const { Text } = Typography;
+import { PiLinkSimple } from "react-icons/pi";
+
+
+
+
+
 
 export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
@@ -29,7 +37,7 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
                           content= {t['projectList.columns.operations.unfavorite.confirm']}
                           onOk={() => callback(record, 'unFavorite')}
                       >
-                          <IconStarFill style={{ cursor:"pointer"}}/>
+                          <PiLinkSimple  style={{ cursor:"pointer"}}/>
                       </Popconfirm>
                   </Space>
               }else{
@@ -41,7 +49,7 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
                           content= {t['projectList.columns.operations.favorite.confirm']}
                           onOk={() => callback(record, 'favorite')}
                       >
-                          <IconStar style={{ cursor:"pointer" }}/>
+                          <PiLinkSimple style={{ cursor:"pointer"}}/>
                       </Popconfirm>
                   </Space>
               }

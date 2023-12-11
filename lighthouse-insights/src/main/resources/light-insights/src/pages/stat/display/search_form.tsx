@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import {ArcoTreeNode, Department} from "@/types/insights-web";
 import {RenderConfig, RenderTypeEnum, ResultData} from "@/types/insights-common";
 import {requestQueryDimensValue} from "@/api/group";
-import {Button, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
+import {Button, DatePicker, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
 import {Col} from "antd";
 import {translate} from "@/pages/department/common";
 import {useSelector} from "react-redux";
@@ -182,13 +182,18 @@ export default function SearchForm({groupId = 0}) {
             wrapperCol={{ span: 19 }}
         >
             <Row gutter={24}>
+                <Col span={12}>
+                    <Form.Item label={'Date'}>
+                    <DatePicker.RangePicker />
+                    </Form.Item>
+                </Col>
                 {
                     params.map((option,index) => {
                         return (
                             <Col span={12} key={index}>
                                 <Form.Item label={t['projectList.columns.department']}>
                                     <TreeSelect
-                                        placeholder={"Search Department"}
+                                        placeholder={"Department"}
                                         multiple={true}
                                         allowClear={true}
                                         treeData={translate(allDepartInfo)}
