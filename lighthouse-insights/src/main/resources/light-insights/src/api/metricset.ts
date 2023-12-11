@@ -1,6 +1,6 @@
 import {request} from "@/utils/request";
 import {ResultData} from "@/types/insights-common";
-import {MetricSet} from "@/types/insights-web";
+import {ArcoTreeNode, ExtendMetricSet, MetricSet} from "@/types/insights-web";
 
 export async function requestCreate(data:MetricSet) :Promise<ResultData>{
     return request({
@@ -17,5 +17,23 @@ export async function requestList(data) :Promise<ResultData<{list:Array<MetricSe
         data,
     })
 }
+
+export async function requestPinList() :Promise<ResultData<Array<MetricSet>>> {
+    return request({
+        url:'/metricset/pinList',
+        method:'POST',
+    })
+}
+
+export async function requestExtendInfoByIds(data:{ids:Array<number>}) :Promise<ResultData<Record<number, ExtendMetricSet>>> {
+    return request({
+        url:'/metricset/queryExtendInfoByIds',
+        method:'POST',
+    })
+}
+
+
+
+
 
 

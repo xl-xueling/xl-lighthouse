@@ -26,6 +26,7 @@ import {requestDeleteById} from "@/api/project";
 import {requestFavoriteProject, requestQueryProjectIds, requestUnFavoriteProject} from "@/api/favorites";
 import Detail from "@/pages/project/list/detail";
 import {requestQueryByIds} from "@/api/user";
+import BindedReversePanel from "@/pages/metricset/manage/binded/reverse-binded";
 
 export default function Index() {
   const t = useLocale(locale);
@@ -53,6 +54,7 @@ export default function Index() {
   const [createVisible, setCreateVisible] = React.useState(false);
   const [updateVisible, setUpdateVisible] = React.useState(false);
   const [detailVisible, setDetailVisible] = React.useState(false);
+  const [bindedVisible,setBindedVisible] = React.useState(false);
 
   const tableCallback = async (record, type) => {
     if(type == 'update'){
@@ -60,10 +62,8 @@ export default function Index() {
       setUpdateId(record.id);
     }else if(type == 'delete'){
       await handlerDeleteProject(record.id).then();
-    }else if(type == 'favorite'){
-      await handlerFavoriteProject(record.id).then();
-    }else if(type == 'unFavorite'){
-      await handlerUnFavoriteProject(record.id).then();
+    }else if(type == 'binded'){
+      await handlerBindedProject(record.id).then();
     }else if(type == 'detail'){
       setSelectedProject(record);
       setDetailVisible(!detailVisible);
@@ -114,36 +114,23 @@ export default function Index() {
     handleReset();
   }
 
-  const handlerFavoriteProject = async (id: number) => {
-    try{
-      const result = await requestFavoriteProject(id);
-      if(result.code == '0'){
-        Message.success("收藏工程成功！");
-        setFavoriteIds([...favoriteIds,id]);
-      }else{
-        Message.error(result.message || t['system.error']);
-      }
-    }catch (error){
-      console.log(error);
-      Message.error(t['system.error']);
-    }
+  const handlerBindedProject = async (id: number) => {
+    console.log("----favorite..")
+    // try{
+    //   const result = await requestFavoriteProject(id);
+    //   if(result.code == '0'){
+    //     Message.success("收藏工程成功！");
+    //     setFavoriteIds([...favoriteIds,id]);
+    //   }else{
+    //     Message.error(result.message || t['system.error']);
+    //   }
+    // }catch (error){
+    //   console.log(error);
+    //   Message.error(t['system.error']);
+    // }
+    setBindedVisible(true);
   };
 
-  const handlerUnFavoriteProject = async (id: number) => {
-    try{
-      const result = await requestUnFavoriteProject(id);
-      if(result.code == '0'){
-        Message.success("已取消收藏该工程！");
-        const newArr = favoriteIds.filter((item) => item !== id);
-        setFavoriteIds(newArr);
-      }else{
-        Message.error(result.message || t['system.error']);
-      }
-    }catch (error){
-      console.log(error);
-      Message.error(t['system.error']);
-    }
-  };
 
   const handlerDeleteProject = async (id: number) => {
     try{
@@ -259,7 +246,7 @@ export default function Index() {
       <Table
           rowKey="id"
           style={{ marginTop:12}}
-          size={"default"}
+          size={"small"}
           loading={loading}
           onChange={onChangeTable}
           pagination={pagination}
@@ -269,6 +256,7 @@ export default function Index() {
       {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} />}
       {updateVisible && <ProjectUpdatePanel updateId={updateId} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)}/>}
       {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
+      {bindedVisible && <BindedReversePanel onClose={() => setBindedVisible(false)}/>}
     </Card>
   );
 
