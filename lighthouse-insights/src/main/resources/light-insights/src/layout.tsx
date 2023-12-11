@@ -74,7 +74,8 @@ function getIconFromKey(key) {
     case 'filter':
       return <IconList className={styles.icon} />;
     case 'statistics':
-      return <GoTasklist className={styles.icon}/>
+      //return <GoTasklist style={{marginRight:'16px'}} className={styles.icon}/>
+      return <IconApps className={styles.icon} />;
     case 'favorites':
       return <IconCodepen className={styles.icon}/>
     default:

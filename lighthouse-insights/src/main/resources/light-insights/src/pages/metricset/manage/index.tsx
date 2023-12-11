@@ -3,7 +3,7 @@ import {Card, Typography, Grid, Space, Tabs, Divider} from '@arco-design/web-rea
 import MetricNewDetail from "@/pages/metricset/manage/new_detail";
 import {IconDashboard, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
 import MetricDisplay from "../display/display";
-import BindedList from "@/pages/metricset/manage/binded/list/binded";
+import BindedList from "@/pages/metricset/binded/list/binded";
 import GroupBasicPanel from "@/pages/group/basic";
 import ProjectDisplay from "@/pages/project/display";
 

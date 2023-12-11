@@ -20,7 +20,7 @@ import useForm from "@arco-design/web-react/es/Form/useForm";
 import StatAddPanel from "@/pages/stat/add/stat_add";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/edit";
-import BindedProject from "@/pages/metricset/manage/binded/add/binded_project";
+import BindedProject from "@/pages/metricset/binded/binded/binded_project";
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 

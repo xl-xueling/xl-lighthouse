@@ -33,6 +33,15 @@ export async function requestExtendInfoByIds(data:{ids:Array<number>}) :Promise<
 }
 
 
+export async function requestBinded(data) :Promise<ResultData> {
+    return request({
+        url:'/metricset/binded',
+        method:'POST',
+        data,
+    })
+}
+
+
 
 
 
