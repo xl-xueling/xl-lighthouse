@@ -21,49 +21,32 @@ export const routes: IRoute[] = [
         key: 'dashboard/workplace',
       },
       {
-        name: 'monitor',
-        key: 'dashboard/monitor',
-      },
-      {
-        name: 'menu.dashboard.workplace',
+        name: 'menu.metricset.list',
         key: 'metricset/list',
       },
-      {
-        name: '指标集管理',
-        key: 'metricset/manage',
-        breadcrumb:false,
-      },
+      // {
+      //   name: '指标集管理',
+      //   key: 'metricset/manage',
+      //   breadcrumb:false,
+      // },
     ],
   },
 
   {
-    name: 'menu.visualization',
-    key: 'visualization',
+    name: 'menu.statistics',
+    key: 'statistics',
     children: [
       {
-        name: 'menu.visualization.dataAnalysis',
-        key: 'visualization/data-analysis',
-        requiredPermissions: [
-          { resource: 'menu.visualization.dataAnalysis', actions: ['read'] },
-        ],
+        name: 'menu.statistics.project',
+        key: 'project/list',
       },
       {
-        name: 'menu.visualization.multiDimensionDataAnalysis',
-        key: 'visualization/multi-dimension-data-analysis',
-        requiredPermissions: [
-          {
-            resource: 'menu.visualization.dataAnalysis',
-            actions: ['read', 'write'],
-          },
-          {
-            resource: 'menu.visualization.multiDimensionDataAnalysis',
-            actions: ['write'],
-          },
-        ],
-        oneOfPerm: true,
+        name: 'menu.statistics.stat',
+        key: 'stat/list',
       },
     ],
   },
+
   // {
   //   name: 'menu.list',
   //   key: 'list',
@@ -93,34 +76,6 @@ export const routes: IRoute[] = [
   //   ],
   // },
 
-  {
-    name: 'menu.favorites',
-    key: 'favorites',
-    children: [
-      {
-        name: 'menu.favorites.project',
-        key: 'favorites/project/list',
-      },
-      {
-        name: 'menu.favorites.stat',
-        key: 'favorites/stat/list',
-      },
-    ],
-  },
-  {
-    name: 'menu.statistics',
-    key: 'statistics',
-    children: [
-      {
-        name: 'menu.statistics.project',
-        key: 'project/list',
-      },
-      {
-        name: 'menu.statistics.stat',
-        key: 'stat/list',
-      },
-    ],
-  },
   {
     name: 'menu.order',
     key: 'order',
@@ -254,6 +209,38 @@ export const routes: IRoute[] = [
   //   ],
   // },
 
+  {
+    name: 'menu.visualization',
+    key: 'visualization',
+    children: [
+      {
+        name: 'menu.visualization.dataAnalysis',
+        key: 'visualization/data-analysis',
+        requiredPermissions: [
+          { resource: 'menu.visualization.dataAnalysis', actions: ['read'] },
+        ],
+      },
+      {
+        name: 'menu.visualization.multiDimensionDataAnalysis',
+        key: 'visualization/multi-dimension-data-analysis',
+        requiredPermissions: [
+          {
+            resource: 'menu.visualization.dataAnalysis',
+            actions: ['read', 'write'],
+          },
+          {
+            resource: 'menu.visualization.multiDimensionDataAnalysis',
+            actions: ['write'],
+          },
+        ],
+        oneOfPerm: true,
+      },
+      {
+        name: 'monitor',
+        key: 'dashboard/monitor',
+      },
+    ],
+  },
 ];
 
 export const getName = (path: string, routes) => {
