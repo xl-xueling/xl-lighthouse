@@ -78,6 +78,8 @@ const i18n = {
     'menu.system.user.settings':'User Settings',
     'menu.system.filterComponents':'Filter Components',
     'menu.system.document':'Documents',
+    'menu.homepage':'Workbench',
+    'menu.metricset.list':'Metrics List',
   },
   'zh-CN': {
     'menu.dashboard': '仪表盘',
@@ -157,6 +159,8 @@ const i18n = {
     'menu.system.user.settings':'用户设置',
     'menu.system.filterComponents':'筛选组件',
     'menu.system.document':'系统文档',
+    'menu.homepage':'Workbench',
+    'menu.metricset.list':'指标集',
   },
 };
 

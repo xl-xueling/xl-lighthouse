@@ -36,6 +36,9 @@ import styles from './style/layout.module.less';
 import ProjectManage from "@/pages/project/manage";
 import ProjectDisplay from "@/pages/project/display";
 import StatDisplay from "@/pages/stat/display";
+import { MdOutlineInsights } from "react-icons/md";
+import { PiShareNetwork } from "react-icons/pi";
+
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -70,7 +73,7 @@ function getIconFromKey(key) {
     case 'filter':
       return <IconList className={styles.icon} />;
     case 'statistics':
-      return <IconThunderbolt className={styles.icon}/>
+      return <PiShareNetwork className={styles.icon}/>
     case 'favorites':
       return <IconCodepen className={styles.icon}/>
     default:
