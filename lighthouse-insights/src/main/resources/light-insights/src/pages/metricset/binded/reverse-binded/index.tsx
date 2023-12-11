@@ -5,13 +5,13 @@ import {
     Form,
     Input,
     Tabs,
-    Dropdown, Menu, TreeSelect, Card, Table, TableColumnProps, Space, Modal, Message, Link
+    Dropdown, Menu, TreeSelect, Card, Table, TableColumnProps, Space, Modal, Message, Link, Spin
 } from '@arco-design/web-react';
 import {
     IconCalendar, IconClockCircle,
     IconDownCircle, IconPlus, IconStar, IconTag, IconThunderbolt, IconUser
 } from '@arco-design/web-react/icon';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import styles from './style/index.module.less';
 import GroupBasicPanel from "@/pages/group/basic";
@@ -19,7 +19,7 @@ import useForm from "@arco-design/web-react/es/Form/useForm";
 import StatAddPanel from "@/pages/stat/add/stat_add";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/edit";
-import BindedProject from "@/pages/metricset/manage/binded/add/binded_project";
+import BindedProject from "@/pages/metricset/binded/binded/binded_project";
 import ProjectTree from "@/pages/project/common/project-tree";
 import GroupManagePanel from "@/pages/group/manage";
 import GroupAddPanel from "@/pages/group/add/group_add";
@@ -28,24 +28,23 @@ import ProjectDisplay from "@/pages/project/display";
 import {translate} from "@/pages/department/common";
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
-import { MdOutlineInsights } from "react-icons/md";
-import { BiSolidNetworkChart } from "react-icons/bi";
-import { RiGitBranchFill } from "react-icons/ri";
-import { CiGrid42 } from "react-icons/ci";
 import { GoGitMerge } from "react-icons/go";
-
 import { GoStack } from "react-icons/go";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import {requestDeleteById} from "@/api/project";
-import {requestExtendInfoByIds, requestPinList} from "@/api/metricset";
-import {ArcoTreeNode, Department, ExtendMetricSet, MetricSet} from "@/types/insights-web";
+import {requestBinded, requestExtendInfoByIds, requestPinList} from "@/api/metricset";
+import {ArcoTreeNode, ExtendMetricSet, MetricSet} from "@/types/insights-web";
+import locale from "./locale";
+import {requestCreate} from "@/api/project";
 
-export default function BindedReversePanel({onClose}) {
+export default function ReverseBindedPanel({projectId = 0,statId = 0,onClose}) {
 
+    const t = useLocale(locale);
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
-
     const [treeData, setTreeData] = useState([]);
+    const [loading,setLoading] = useState(true);
+    const [confirmLoading,setConfirmLoading] = useState(false);
+    const formRef = useRef(null);
 
     const fetchMetricPinList = async () => {
         return new Promise<Array<MetricSet>>((resolve,reject) => {
@@ -85,7 +84,37 @@ export default function BindedReversePanel({onClose}) {
         return newNode;
     }
 
+    async function handlerSubmit(){
+        const relationId = formRef.current.getFieldValue("relationId");
+        let metricId;
+        let nodeId;
+        if (relationId.includes('-')) {
+            const arr = relationId.split('-');
+            metricId = Number(arr[0]);
+            nodeId = Number(arr[1]);
+        } else {
+            metricId = Number(relationId);
+            nodeId = 0;
+        }
+        requestBinded({"projectIds":[projectId],"metricId":metricId,"nodeId":nodeId}).then((result) => {
+            if(result.code === '0'){
+                Message.success(t['projectCreate.form.submit.success']);
+                setTimeout(() => {
+                    window.location.href = "/project/list";
+                },3000)
+            }else{
+                Message.error(result.message || t['system.error']);
+            }
+        }).catch((error) => {
+            console.log(error);
+            Message.error(t['system.error'])
+        }).finally(() => {
+            setLoading(false);
+        })
+    }
+
     useEffect(() => {
+        setLoading(true);
         fetchMetricPinList()
             .then((ids) => fetchMetricExtendInfo(ids))
             .then((response) => {
@@ -95,26 +124,35 @@ export default function BindedReversePanel({onClose}) {
                 setTreeData(treeData);
             }).catch((error) => {
                 console.error(error);
-            });
+            }).finally(() => {
+                setLoading(false);
+        })
     },[])
 
     return (
         <Modal
-            title={'绑定到指标集'}
+            title={t['reverseBinded.modal.title']}
             visible={true}
-            style={{ width:'500px',height:'400x'}}
+            style={{ width:'600px',minHeight:'350px'}}
+            onOk={handlerSubmit}
             onCancel={onClose}
         >
-            <TreeSelect
-                renderFormat={(nodeProps, value) => {
-                    return <div><IconStar />value</div>;
-                }}
-                placeholder={"Select MetricSet"}
-                multiple={false}
-                showSearch={true}
-                allowClear={true}
-                treeData={treeData}
-            />
+            <Spin loading={loading} size={20} style={{ display: 'block' }}>
+                <Form ref={formRef} wrapperCol={{ span: 24 }}>
+                    <Form.Item field="relationId" >
+                        <TreeSelect
+                            renderFormat={(nodeProps, value) => {
+                                return <div><IconStar />value</div>;
+                            }}
+                            placeholder={"Select MetricSet"}
+                            multiple={false}
+                            showSearch={true}
+                            allowClear={true}
+                            treeData={treeData}
+                        />
+                    </Form.Item>
+                </Form>
+            </Spin>
         </Modal>
     );
 }

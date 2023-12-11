@@ -19,7 +19,7 @@ import useForm from "@arco-design/web-react/es/Form/useForm";
 import StatAddPanel from "@/pages/stat/add/stat_add";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/edit";
-import BindedList from "@/pages/metricset/manage/binded/list/binded";
+import BindedList from "@/pages/metricset/binded/list/binded";
 const { Row, Col } = Grid;
 
 export default function MetricManagePanel({groupId}) {

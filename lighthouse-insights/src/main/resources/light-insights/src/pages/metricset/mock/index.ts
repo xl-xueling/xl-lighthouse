@@ -84,5 +84,14 @@ setupMock({
                 data:record,
             };
         });
+
+        Mock.mock(new RegExp('/api/v1/metricset/binded'), (params) => {
+            console.log("receive binded params,params:" + JSON.stringify(params));
+            return {
+                code:'0',
+                message:'success',
+                data:{},
+            };
+        });
     }
 });

@@ -26,7 +26,7 @@ import {requestDeleteById} from "@/api/project";
 import {requestFavoriteProject, requestQueryProjectIds, requestUnFavoriteProject} from "@/api/favorites";
 import Detail from "@/pages/project/list/detail";
 import {requestQueryByIds} from "@/api/user";
-import BindedReversePanel from "@/pages/metricset/manage/binded/reverse-binded";
+import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
 
 export default function Index() {
   const t = useLocale(locale);
@@ -48,7 +48,6 @@ export default function Index() {
   },[fetchFavoritesData])
 
   const [owner, setOwner] = useState(true);
-  const [updateId, setUpdateId] = useState(0);
   const [selectedProject,setSelectedProject] = useState<ProjectPagination>(null);
   const [form] = useForm();
   const [createVisible, setCreateVisible] = React.useState(false);
@@ -58,12 +57,13 @@ export default function Index() {
 
   const tableCallback = async (record, type) => {
     if(type == 'update'){
+      setSelectedProject(record);
       setUpdateVisible(!updateVisible);
-      setUpdateId(record.id);
     }else if(type == 'delete'){
       await handlerDeleteProject(record.id).then();
     }else if(type == 'binded'){
-      await handlerBindedProject(record.id).then();
+      setSelectedProject(record);
+      await handlerBindedProject().then();
     }else if(type == 'detail'){
       setSelectedProject(record);
       setDetailVisible(!detailVisible);
@@ -114,20 +114,7 @@ export default function Index() {
     handleReset();
   }
 
-  const handlerBindedProject = async (id: number) => {
-    console.log("----favorite..")
-    // try{
-    //   const result = await requestFavoriteProject(id);
-    //   if(result.code == '0'){
-    //     Message.success("收藏工程成功！");
-    //     setFavoriteIds([...favoriteIds,id]);
-    //   }else{
-    //     Message.error(result.message || t['system.error']);
-    //   }
-    // }catch (error){
-    //   console.log(error);
-    //   Message.error(t['system.error']);
-    // }
+  const handlerBindedProject = async () => {
     setBindedVisible(true);
   };
 
@@ -254,9 +241,9 @@ export default function Index() {
           data={listData}
       />
       {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} />}
-      {updateVisible && <ProjectUpdatePanel updateId={updateId} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)}/>}
+      {updateVisible && <ProjectUpdatePanel updateId={selectedProject.id} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)}/>}
       {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
-      {bindedVisible && <BindedReversePanel onClose={() => setBindedVisible(false)}/>}
+      {bindedVisible && <ReverseBindedPanel projectId={selectedProject.id} onClose={() => setBindedVisible(false)}/>}
     </Card>
   );
 
