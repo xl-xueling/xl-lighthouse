@@ -17,13 +17,54 @@ const { Row, Col } = Grid;
 import { RiAppsLine } from "react-icons/ri";
 import MetricNewDetail from "@/pages/metricset/manage/new_detail";
 import DisplayHeader from "@/pages/project/display/head";
+import {ArcoTreeNode, MetricSet, PrivilegeEnum, Project} from "@/types/insights-web";
+import {requestList, requestQueryByIds} from "@/api/project";
+import {requestPrivilegeCheck} from "@/api/privilege";
+import {useSelector} from "react-redux";
+import {GlobalState} from "@/store";
 
 export default function ProjectDisplay() {
 
     const { id } = useParams();
+    const [loading,setLoading] = useState<boolean>(true);
+    const [projectInfo,setProjectInfo] = useState<Project>(null);
+
+    const fetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
+        const proc = async () => {
+            const result = await requestQueryByIds([id]);
+            resolve(result.data[id]);
+        }
+        proc().then();
+    })
+
+    const fetchPrivilegeInfo = async(ids) => {
+        return new Promise<Record<number,PrivilegeEnum[]>>((resolve,reject) => {
+            requestPrivilegeCheck({type:"project",ids:ids}).then((response) => {
+                resolve(response.data);
+            }).catch((error) => {
+                reject(error);
+            })
+        })
+    }
+
+    const fetchData = async (): Promise<void> => {
+        setLoading(true);
+        const result = await Promise.all([fetchProjectInfo]);
+        const projectInfo = result[0];
+        const adminIds = projectInfo.adminIds;
+        Promise.all([fetchPrivilegeInfo([id])])
+            .then(([r1]) => {
+                const combinedItem = { ...projectInfo, ...{"permissions":r1[projectInfo.id]}};
+                setProjectInfo(combinedItem);
+                setLoading(false);
+            }).catch((error) => {
+                console.log(error);
+            })
+    }
+
 
     useEffect(() => {
-        console.log("project display..")
+        fetchData().then();
     },[])
 
     return (
@@ -34,7 +75,7 @@ export default function ProjectDisplay() {
         <div className={styles.wrapper}>
             <Space size={16} direction="vertical" className={styles.left}>
                 <Row>
-                    <ProjectMenu />
+                    <ProjectMenu structure={projectInfo.structure} />
                 </Row>
             </Space>
             <Space className={styles.right} size={16} direction="vertical">
