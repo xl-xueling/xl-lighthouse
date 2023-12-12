@@ -13,7 +13,7 @@ import styles from "@/pages/stat/display/style/index.module.less";
 import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
 
 
-export default function SearchForm({groupId = 0}) {
+export default function SearchForm({statId = 0}) {
 
     const t = useLocale(locale);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
@@ -148,6 +148,7 @@ export default function SearchForm({groupId = 0}) {
             ?.filter(x => !x.config.componentId && x.config).map(x => x.config.dimens);
         console.log("dimensArray is:" + JSON.stringify(dimensArray));
         const proc = async () => {
+            const groupId = 0;
             const result:ResultData<Record<string,Array<ArcoTreeNode>>> = await requestQueryDimensValue({groupId,dimensArray});
             console.log("result is:" + JSON.stringify(result));
             resolve(result.data);

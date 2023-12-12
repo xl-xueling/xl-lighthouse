@@ -17,7 +17,7 @@ const SubMenu = Menu.SubMenu;
 import { CiViewTable } from "react-icons/ci";
 import {ArcoTreeNode} from "@/types/insights-web";
 
-export default function ProjectMenu({structure}:{structure:Array<ArcoTreeNode>}) {
+export default function ProjectMenu({structure,callback}:{structure:Array<ArcoTreeNode>,callback:(id: string) => Promise<void>}) {
 
     const renderMenuItems = (items) =>
         items?.map((item) => {
@@ -35,6 +35,7 @@ export default function ProjectMenu({structure}:{structure:Array<ArcoTreeNode>})
         <>
     <Menu
             style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}
+            onClickMenuItem={callback}
         >
         {renderMenuItems(structure)}
         </Menu>
