@@ -100,6 +100,8 @@ export interface Stat {
     expired?:number;
     adminIds?:Array<number>;
     createdTime?:number;
+    group?:Group;
+    project?:Project;
 }
 
 export interface StatPagination extends Stat {

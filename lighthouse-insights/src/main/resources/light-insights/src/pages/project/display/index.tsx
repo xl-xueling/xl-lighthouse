@@ -23,6 +23,7 @@ import {requestPrivilegeCheck} from "@/api/privilege";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {IconTag} from "@arco-design/web-react/icon";
+import StatDisplayMode1 from "@/pages/stat/display/display_mode1";
 
 export default function ProjectDisplay() {
 
@@ -86,29 +87,7 @@ export default function ProjectDisplay() {
                     </Row>
                 </Space>
                 <Space className={styles.right} size={16} direction="vertical">
-                    <Card>
-                        <Row style={{marginBottom:'15px'}}>
-                            <Col span={12}>
-                                <Button icon={<IconTag/>} shape={"circle"} size={"mini"} style={{marginRight:'10px'}}/>
-                                <Typography.Text style={{fontSize:'14px'}}>
-                                    {'每分钟uv数据统计'}
-                                </Typography.Text>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <SearchForm statId={selectedStatId}/>
-                        </Row>
-
-                        <ChartPanel statId={selectedStatId}/>
-                    </Card>
-                    <Card>
-                        <Row style={{marginBottom:'15px'}}>
-                            <Typography.Text style={{fontSize:'14px'}}>
-                                {'Metric Information'}
-                            </Typography.Text>
-                        </Row>
-                        <BasicInfo />
-                    </Card>
+                    <StatDisplayMode1 statId={selectedStatId}/>
                 </Space>
             </div>
             </Space>
