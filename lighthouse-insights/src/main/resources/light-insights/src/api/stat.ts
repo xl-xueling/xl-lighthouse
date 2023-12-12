@@ -35,6 +35,14 @@ export async function requestDeleteByID(id:number) :Promise<ResultData> {
     })
 }
 
+export async function requestQueryByIds(data:{ids:number[]}) :Promise<ResultData<Record<number,Project>>> {
+    return request({
+        url:'/stat/queryByIds',
+        method:'POST',
+        data,
+    })
+}
+
 
 
 
