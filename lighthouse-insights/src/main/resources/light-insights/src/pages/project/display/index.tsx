@@ -55,6 +55,7 @@ export default function ProjectDisplay() {
         Promise.all([fetchPrivilegeInfo([id])])
             .then(([r1]) => {
                 const combinedItem = { ...projectInfo, ...{"permissions":r1[projectInfo.id]}};
+                console.log("combinedItem is:" + JSON.stringify(combinedItem))
                 setProjectInfo(combinedItem);
                 setLoading(false);
             }).catch((error) => {
@@ -75,7 +76,7 @@ export default function ProjectDisplay() {
         <div className={styles.wrapper}>
             <Space size={16} direction="vertical" className={styles.left}>
                 <Row>
-                    <ProjectMenu structure={projectInfo.structure} />
+                    <ProjectMenu structure={projectInfo?.structure} />
                 </Row>
             </Space>
             <Space className={styles.right} size={16} direction="vertical">

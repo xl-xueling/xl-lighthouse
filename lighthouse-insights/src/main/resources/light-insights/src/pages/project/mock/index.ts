@@ -3,6 +3,44 @@ import setupMock from '@/utils/setupMock';
 import {Project} from "@/types/insights-web";
 import {_Mock_user1, _Mock_user2,_Mock_user3} from "@/pages/user/mock";
 
+const structure = [
+  {
+    "key":"11",
+    "title":"homepage_behavior_stat1",
+    "children":[
+      {
+        "key":"111",
+        "title":"每分钟_各省份_uv统计",
+      },
+      {
+        "key":"112",
+        "title":"每分钟_各省份_uv统计",
+      },
+      {
+        "key":"113",
+        "title":"每分钟_各省份_uv统计",
+      },
+    ]
+  },
+  {
+    "key":"12",
+    "title":"homepage_behavior_stat2",
+    "children":[
+      {
+        "key":"121",
+        "title":"每分钟_各省份_uv统计",
+      },
+      {
+        "key":"122",
+        "title":"每分钟_各省份_uv统计",
+      },
+      {
+        "key":"123",
+        "title":"每分钟_各省份_uv统计",
+      },
+    ]
+  }
+];
 
 export const _Mock_project1  = {
   id: 101,
@@ -15,44 +53,7 @@ export const _Mock_project1  = {
   "admins":[
     _Mock_user1,_Mock_user2,_Mock_user3
   ],
-  structure:[
-    {
-      "key":"11",
-      "title":"homepage_behavior_stat1",
-      "children":[
-        {
-          "key":"111",
-          "title":"每分钟_各省份_uv统计",
-        },
-        {
-          "key":"112",
-          "title":"每分钟_各省份_uv统计",
-        },
-        {
-          "key":"113",
-          "title":"每分钟_各省份_uv统计",
-        },
-      ]
-    },
-    {
-      "key":"12",
-      "name":"homepage_behavior_stat2",
-      "children":[
-        {
-          "key":"121",
-          "title":"每分钟_各省份_uv统计",
-        },
-        {
-          "key":"122",
-          "title":"每分钟_各省份_uv统计",
-        },
-        {
-          "key":"123",
-          "title":"每分钟_各省份_uv统计",
-        },
-      ]
-    }
-  ]
+  structure:structure,
 };
 
 
@@ -103,6 +104,10 @@ setupMock({
           'desc':'@sentence()',
           'adminIds':['1','2'],
           "createdTime":'@datetime',
+              "admins":[
+                _Mock_user1,_Mock_user2,_Mock_user3
+              ],
+              structure:structure,
         }),
       };
     });
@@ -121,7 +126,8 @@ setupMock({
         "createdTime": '@datetime',
         "admins":[
           _Mock_user1,_Mock_user2,_Mock_user3
-        ]
+        ],
+        structure:structure,
       });
       projectData[102] = Mock.mock({
         id: 102,
@@ -133,14 +139,14 @@ setupMock({
         "createdTime": '@datetime',
         "admins":[
           _Mock_user1,_Mock_user2,_Mock_user3
-        ]
+        ],
+        structure:structure,
       });
 
       return {
         code:0,
         message:'success',
         data:projectData
-
       };
     });
 
