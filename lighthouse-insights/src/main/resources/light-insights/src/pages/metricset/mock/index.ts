@@ -4,22 +4,22 @@ import {MetricSet, Project} from "@/types/insights-web";
 
 const list  = Mock.mock([
         {
-            id: 101,
+            id: 1,
             'title': '@word() @word() @word()',
             'description': '@sentence()',
             "createdTime":'@datetime',
             "structure":{
-                "key":101,
+                "key":1,
                 'title': '@word() @word() @word()',
             }
         },
         {
-            id: 102,
+            id: 2,
             'title': '@word() @word() @word()',
             'description': '@sentence()',
             "createdTime":'@datetime',
             "structure":{
-                "key":101,
+                "key":2,
                 'title': '@word() @word() @word()',
             }
         },
