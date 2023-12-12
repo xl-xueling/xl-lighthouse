@@ -8,22 +8,24 @@ import {
 } from "@arco-design/web-react/icon";
 import {Button, Descriptions, Message, Space, Typography} from "@arco-design/web-react";
 import { RiAppsLine } from "react-icons/ri";
+import {Project} from "@/types/insights-web";
+import UserGroup from "@/pages/user/common/groups";
 
-export default function DisplayHeader() {
+export default function DisplayHeader({projectInfo}:{projectInfo:Project}) {
     const t = useLocale(locale);
-    const dataPicture = [
+    const detail = [
         {
             label: <IconUserGroup/>,
-            value: 'zhangsan;lisi;wangwu;',
+            value: <UserGroup users={projectInfo?.admins}/>,
         },
         {
             label: <IconClockCircle />,
-            value: '2023-12-08 11:00:08',
+            value: projectInfo?.createdTime,
         },
         {
             label: <div style={{ marginTop: 0 }}><IconBook/></div>,
             value: <div style={{ wordBreak: 'break-word' }}>
-                <span>This is a very long text that needs to be wrapped to multiple lines ithat needs to be wrapped to multiple lines if necessary.f necessary.</span>
+                <span>{projectInfo?.desc}</span>
             </div>,
             span : 2,
         },
@@ -37,7 +39,7 @@ export default function DisplayHeader() {
                 <Typography.Title
                     style={{marginTop:'2px'}}
                     heading={6}>
-                    统计工程：{'首页用户行为数据统计'}
+                    统计工程：{projectInfo?.name}
                 </Typography.Title>
                 <IconLock
                     style={{fontSize:13,marginTop:'7px'}}
@@ -47,7 +49,7 @@ export default function DisplayHeader() {
                 <Descriptions
                     size={"mini"}
                     layout="horizontal"
-                    data={dataPicture}
+                    data={detail}
                     column={2}
                 />
             </div>

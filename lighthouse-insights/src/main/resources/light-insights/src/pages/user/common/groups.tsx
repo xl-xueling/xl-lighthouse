@@ -23,15 +23,19 @@ export default function UserGroup(props:Props) {
                                 column={1}
                                 data={[
                                     {
-                                        label: 'Phone',
+                                        label: 'user',
+                                        value: option.userName,
+                                    },
+                                    {
+                                        label: 'phone',
                                         value: option.phone,
                                     },
                                     {
-                                        label: 'Email',
+                                        label: 'email',
                                         value: option.email,
                                     }
                                 ]}
-                                labelStyle={{ textAlign: 'right', paddingRight: 36 }}
+                                labelStyle={{ textAlign: 'right', paddingRight: 15 }}
                             />
                         }
                     >
