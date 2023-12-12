@@ -14,7 +14,7 @@ const { Row, Col } = Grid;
 const defaultList = new Array(10).fill({});
 const TabPane = Tabs.TabPane;
 
-export default function Index() {
+export default function MaticManage() {
 
     return (
         <Space size={16} direction="vertical" style={{ width: '100%' }}>
