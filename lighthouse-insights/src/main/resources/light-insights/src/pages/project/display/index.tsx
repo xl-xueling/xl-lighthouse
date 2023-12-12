@@ -58,7 +58,6 @@ export default function ProjectDisplay() {
         setLoading(true);
         const result = await Promise.all([fetchProjectInfo]);
         const projectInfo = result[0];
-        const adminIds = projectInfo.adminIds;
         Promise.all([fetchPrivilegeInfo([id])])
             .then(([r1]) => {
                 const combinedItem = { ...projectInfo, ...{"permissions":r1[projectInfo.id]}};

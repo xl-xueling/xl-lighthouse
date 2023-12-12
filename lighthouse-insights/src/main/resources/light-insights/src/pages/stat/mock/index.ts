@@ -6,6 +6,29 @@ import {Project, Stat} from "@/types/insights-web";
 import {_Mock_user1, _Mock_user2, _Mock_user3} from "@/pages/user/mock";
 import {_Mock_project1} from "@/pages/project/mock";
 
+const custom_config = {
+  datepicker_config:{
+    render_type:1,
+  },
+  filter_config:[
+    {
+      render_type:5,
+      custom_config:{
+        label:'省份',
+        dimens:'province',
+        component_id:209,
+      },
+    },
+    {
+      render_type:6,
+      custom_config: {
+        label:'省份',
+        dimens:'province',
+        remote_url: 'http://xxxxx.shtml'
+      }
+    },
+  ]
+}
 
 const _Mock_stat1:Stat = Mock.mock({
       id:111,
@@ -17,6 +40,11 @@ const _Mock_stat1:Stat = Mock.mock({
       expired:102323,
       createdTime: '@datetime',
       project:_Mock_project1,
+      adminIds:[1,2],
+      admins:[
+        _Mock_user1,_Mock_user2,_Mock_user3
+      ],
+      custom_config:custom_config,
 });
 
 const _Mock_stat2:Stat = Mock.mock({
@@ -29,6 +57,11 @@ const _Mock_stat2:Stat = Mock.mock({
   expired:102323,
   createdTime: '@datetime',
   project:_Mock_project1,
+  adminIds:[1,2],
+  admins:[
+    _Mock_user1,_Mock_user2,_Mock_user3
+  ],
+  custom_config:custom_config,
 });
 
 

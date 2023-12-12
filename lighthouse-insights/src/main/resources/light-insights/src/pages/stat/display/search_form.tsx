@@ -13,76 +13,37 @@ import styles from "@/pages/stat/display/style/index.module.less";
 import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
 
 
-export default function SearchForm({statId = 0}) {
+export default function SearchForm({statInfo}) {
 
     const t = useLocale(locale);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
     const { Row, Col } = Grid;
 
-    // const b = {
-    //     datepicker_config:{
-    //         render_type:1,
-    //     },
-    //     filter_config:[
-    //         {
-    //             render_type:5,
-    //             custom_config:{
-    //                 label:'省份',
-    //                 dimens:'province',
-    //                 component_id:209,
-    //             },
-    //         },
-    //         {
-    //             render_type:6,
-    //             custom_config: {
-    //                 label:'省份',
-    //                 dimens:'province',
-    //                 remote_url: 'http://xxxxx.shtml'
-    //             }
-    //         },
-    //     ]
-    // }
-    //
-    // const a = [
-    //     {
-    //         render_type:5,
-    //         custom_config:{
-    //             label:'省份',
-    //             dimens:'province',
-    //             component_id:209,
-    //         },
-    //     },
-    //     {
-    //         render_type:6,
-    //         custom_config: {
-    //             label:'省份',
-    //             dimens:'province',
-    //             remote_url: 'http://xxxxx.shtml'
-    //         }
-    //     },
-    // ]
-    //
-    // const filterParams = [
-    //     {
-    //         type:4, // 1,日期选择框，type:2，日期区间选择框，type:3,日期时间选择框,type:4 输入框，type:5,下拉框，type:6：远程搜索下拉框
-    //         data:[
-    //             {
-    //                 "label":"山东",
-    //                 "value":"1001",
-    //                 "children":[
-    //                     {
-    //                         "label":"济南",
-    //                         "value":"10011",
-    //                     },
-    //                     {
-    //                         "label":"青岛",
-    //                         "value":"10012",
-    //                     }
-    //                 ]
-    //             },
-    //         ]
-    //     },
-    // ]
+    const b = {
+        datepicker_config:{
+            render_type:1,
+        },
+        filter_config:[
+            {
+                render_type:5,
+                custom_config:{
+                    label:'省份',
+                    dimens:'province',
+                    component_id:209,
+                },
+            },
+            {
+                render_type:6,
+                custom_config: {
+                    label:'省份',
+                    dimens:'province',
+                    remote_url: 'http://xxxxx.shtml'
+                }
+            },
+        ]
+    }
+
+
 
     const [dimensData,setDimensData] = useState<Record<string,Array<ArcoTreeNode>>>({});
 
@@ -104,15 +65,6 @@ export default function SearchForm({statId = 0}) {
                 }
             }
         ]
-
-    // const fetchPrivilegeInfo:Promise<Record<number,PrivilegeEnum[]>> = new Promise<Record<number,PrivilegeEnum[]>>((resolve) => {
-    //     const projectIds = projectsInfo?.map(z => z.id);
-    //     const proc = async () => {
-    //         const result:ResultData<Record<number,PrivilegeEnum[]>> = await requestPrivilegeCheck({type:"project",items:projectIds});
-    //         resolve(result.data);
-    //     }
-    //     proc().then();
-    // })
 
     const Option = Select.Option;
 

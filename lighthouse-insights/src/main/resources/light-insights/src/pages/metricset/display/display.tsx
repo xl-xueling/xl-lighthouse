@@ -50,8 +50,8 @@ export default function MetricDisplay() {
                     >
                         {'每分钟uv数据统计'}
                     </Typography.Title>
-                    <SearchForm />
-                    <ChartPanel />
+                    {/*<SearchForm  />*/}
+                    {/*<ChartPanel />*/}
                 </Card>
                 <Card>
                     <Typography.Title
