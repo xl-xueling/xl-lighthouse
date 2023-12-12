@@ -39,7 +39,8 @@ import StatDisplay from "@/pages/stat/display";
 import { MdOutlineInsights } from "react-icons/md";
 import { PiShareNetwork } from "react-icons/pi";
 import { GoTasklist } from "react-icons/go";
-
+import { RiAppsLine } from "react-icons/ri";
+import MaticManage from "@/pages/metricset/manage";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -75,7 +76,7 @@ function getIconFromKey(key) {
       return <IconList className={styles.icon} />;
     case 'statistics':
       //return <GoTasklist style={{marginRight:'16px'}} className={styles.icon}/>
-      return <IconApps className={styles.icon} />;
+      return <RiAppsLine style={{marginRight:'16px'}} className={styles.icon} />;
     case 'favorites':
       return <IconCodepen className={styles.icon}/>
     default:
@@ -289,6 +290,7 @@ function PageLayout() {
               <Content>
                 <Switch>
                   <Route path="/project/manage/:id" component={ProjectManage} />
+                  <Route path="/metric/manage/:id" component={MaticManage} />
                   <Route path="/project/display/:id" component={ProjectDisplay} />
                   <Route path="/stat/display/:id" component={StatDisplay} />
                   {flattenRoutes.map((route, index) => {
