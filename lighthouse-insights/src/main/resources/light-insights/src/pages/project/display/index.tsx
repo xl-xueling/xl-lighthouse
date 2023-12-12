@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from "./style/index.module.less";
-import {Button, Card, DatePicker, Divider, Grid, Space, Typography} from "@arco-design/web-react";
+import {Button, Card, DatePicker, Divider, Grid, Space, Spin, Typography} from "@arco-design/web-react";
 import Overview from "@/pages/dashboard/workplace/overview";
 import PopularContents from "@/pages/dashboard/workplace/popular-contents";
 import ContentPercentage from "@/pages/dashboard/workplace/content-percentage";
@@ -55,7 +55,6 @@ export default function ProjectDisplay() {
         Promise.all([fetchPrivilegeInfo([id])])
             .then(([r1]) => {
                 const combinedItem = { ...projectInfo, ...{"permissions":r1[projectInfo.id]}};
-                console.log("combinedItem is:" + JSON.stringify(combinedItem))
                 setProjectInfo(combinedItem);
                 setLoading(false);
             }).catch((error) => {
@@ -69,40 +68,42 @@ export default function ProjectDisplay() {
     },[])
 
     return (
-        <Space size={16} direction="vertical" style={{ width: '100%' }}>
-        <Card>
-            <DisplayHeader/>
-        </Card>
-        <div className={styles.wrapper}>
-            <Space size={16} direction="vertical" className={styles.left}>
-                <Row>
-                    <ProjectMenu structure={projectInfo?.structure} />
-                </Row>
-            </Space>
-            <Space className={styles.right} size={16} direction="vertical">
+        <Spin loading={loading}>
+            <Space size={16} direction="vertical" style={{ width: '100%' }}>
                 <Card>
+                    <DisplayHeader projectInfo={projectInfo}/>
+                </Card>
+                <div className={styles.wrapper}>
+                <Space size={16} direction="vertical" className={styles.left}>
                     <Row>
-                        <Col span={12}>
-                            <Typography.Title
-                                heading={6}
-                            >
-                                {'每分钟uv数据统计'}
-                            </Typography.Title>
-                        </Col>
+                        <ProjectMenu structure={projectInfo?.structure} />
                     </Row>
-                    <SearchForm />
-                    <ChartPanel />
-                </Card>
-                <Card>
-                    <Typography.Title
-                        heading={6}
-                    >
-                        {'Metric Information'}
-                    </Typography.Title>
-                    <BasicInfo />
-                </Card>
+                </Space>
+                <Space className={styles.right} size={16} direction="vertical">
+                    <Card>
+                        <Row>
+                            <Col span={12}>
+                                <Typography.Title
+                                    heading={6}
+                                >
+                                    {'每分钟uv数据统计'}
+                                </Typography.Title>
+                            </Col>
+                        </Row>
+                        <SearchForm />
+                        <ChartPanel />
+                    </Card>
+                    <Card>
+                        <Typography.Title
+                            heading={6}
+                        >
+                            {'Metric Information'}
+                        </Typography.Title>
+                        <BasicInfo />
+                    </Card>
+                </Space>
+            </div>
             </Space>
-        </div>
-        </Space>
+        </Spin>
     );
 }
