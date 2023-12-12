@@ -27,6 +27,7 @@ import locale from '../manage/locale';
 import styles from './style/shortcuts.module.less';
 import {requestStructure} from "@/api/project";
 import {ArcoTreeNode} from "@/types/insights-web";
+import { LuLayers } from "react-icons/lu";
 
 export default function MetricNewDetail() {
 
@@ -128,7 +129,7 @@ export default function MetricNewDetail() {
 
 
                 <div className={styles.icon}>
-                    <IconStar/>
+                    <LuLayers/>
                 </div>
                 <Typography.Title
                     heading={6}

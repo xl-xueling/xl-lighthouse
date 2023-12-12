@@ -3,19 +3,14 @@ import useLocale from "@/utils/useLocale";
 import locale from "@/pages/metricset/manage/locale";
 import {
     IconBook,
-    IconClockCircle, IconEdit,
-    IconFile, IconList, IconLock, IconPushpin,
-    IconSettings, IconStar,
-    IconStorage,
+    IconClockCircle, IconLock,
     IconUserGroup
 } from "@arco-design/web-react/icon";
 import {Button, Descriptions, Message, Space, Typography} from "@arco-design/web-react";
-import styles from "@/pages/metricset/manage/style/shortcuts.module.less";
 import { RiAppsLine } from "react-icons/ri";
 
 export default function DisplayHeader() {
     const t = useLocale(locale);
-
     const dataPicture = [
         {
             label: <IconUserGroup/>,
@@ -38,27 +33,17 @@ export default function DisplayHeader() {
     return (
         <>
             <Space align="start">
-                {/*<div className={styles.icon}>*/}
-                {/*    <IconPushpin/>*/}
-                {/*</div>*/}
-                {/*<Typography.Title*/}
-                {/*    heading={6}*/}
-                {/*>*/}
-                {/*    指标集：{'首页用户行为数据集'}*/}
-                {/*    /!*<IconLock style={{ marginLeft:'10px',fontSize:13,marginBottom:1}}/>*!/*/}
-                {/*</Typography.Title>*/}
-
                 <Button icon={<RiAppsLine/>} shape={"circle"} size={"small"}/>
-
                 <Typography.Title
-                    heading={6}
-                >
+                    style={{marginTop:'2px'}}
+                    heading={6}>
                     统计工程：{'首页用户行为数据统计'}
-                    <IconLock style={{ marginLeft:'10px',fontSize:13,marginBottom:1}}/>
                 </Typography.Title>
-
+                <IconLock
+                    style={{fontSize:13,marginTop:'7px'}}
+                />
             </Space>
-            <div style={{width:'80%',marginTop:'10px'}}>
+            <div style={{width:'80%'}}>
                 <Descriptions
                     size={"mini"}
                     layout="horizontal"
