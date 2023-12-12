@@ -3,14 +3,14 @@ import {useParams} from "react-router-dom";
 import {ArcoTreeNode, Department} from "@/types/insights-web";
 import {RenderConfig, RenderTypeEnum, ResultData} from "@/types/insights-common";
 import {requestQueryDimensValue} from "@/api/group";
-import {Button, DatePicker, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
-import {Col} from "antd";
+import {Button, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
 import {translate} from "@/pages/department/common";
 import {useSelector} from "react-redux";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/list/locale";
 import styles from "@/pages/stat/display/style/index.module.less";
 import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
+import {DatePicker} from "@arco-design/web-react";
 
 
 export default function SearchForm({statInfo}) {
@@ -19,52 +19,33 @@ export default function SearchForm({statInfo}) {
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
     const { Row, Col } = Grid;
 
-    const b = {
-        datepicker_config:{
-            render_type:1,
-        },
-        filter_config:[
-            {
-                render_type:5,
-                custom_config:{
-                    label:'省份',
-                    dimens:'province',
-                    component_id:209,
-                },
-            },
-            {
-                render_type:6,
-                custom_config: {
-                    label:'省份',
-                    dimens:'province',
-                    remote_url: 'http://xxxxx.shtml'
-                }
-            },
-        ]
-    }
+    const [filterConfig,setFilterConfig] = useState(null);
+    const [datePicker,setDatePicker] = useState<RenderTypeEnum>(null);
 
+    useEffect(() => {
+        if(!statInfo){
+            return;
+        }
+        console.log("----");
+        const customConfig = statInfo.custom_config;
+        const timeparam = statInfo.timeparam;
+        let datePicker;
+        if(customConfig?.datepicker_config){
+            console.log("-----A")
+            datePicker = customConfig.datepicker_config.render_type;
+        } else if(timeparam.endsWith("day")){
+            console.log("-----B")
+            datePicker = RenderTypeEnum.DATEPICKER_DATE_RANGE_SELECT;
+        }else{
+            console.log("-----C")
+            datePicker = RenderTypeEnum.DATEPICKER_DATE_SELECT;
+        }
+        setDatePicker(datePicker);
+        console.log("datePicker is:" + JSON.stringify(datePicker) + ",timeparam is:" + timeparam)
+    },[statInfo])
 
 
     const [dimensData,setDimensData] = useState<Record<string,Array<ArcoTreeNode>>>({});
-
-    const param =
-        [
-            {
-                render_type:5,
-                custom_config:{
-                    label:'省份',
-                    dimens:'province',
-                    component_id:209,
-                }
-            },
-            {
-                render_type:6,
-                custom_config:{
-                    label:'类型',
-                    dimens:'type',
-                }
-            }
-        ]
 
     const Option = Select.Option;
 
@@ -108,6 +89,19 @@ export default function SearchForm({statInfo}) {
         proc().then();
     })
 
+    const getDatePicker = () => {
+        switch (datePicker){
+            case RenderTypeEnum.DATEPICKER_DATE_SELECT:
+                return <DatePicker />
+            case RenderTypeEnum.DATEPICKER_DATE_RANGE_SELECT:
+                return <DatePicker.RangePicker showTime={true}/>
+            case RenderTypeEnum.DATEPICKER_DATE_TIME_RANGE_SELECT:
+                return <DatePicker.RangePicker showTime={true} />
+            default:
+                return null;
+        }
+    }
+
     useEffect(() => {
         let dimensData:Record<string,Array<ArcoTreeNode>> = {};
         Promise.all([fetchDimensInfo])
@@ -137,7 +131,7 @@ export default function SearchForm({statInfo}) {
             <Row gutter={24}>
                 <Col span={12}>
                     <Form.Item label={'Date'}>
-                    <DatePicker.RangePicker />
+                        {getDatePicker()}
                     </Form.Item>
                 </Col>
                 {
