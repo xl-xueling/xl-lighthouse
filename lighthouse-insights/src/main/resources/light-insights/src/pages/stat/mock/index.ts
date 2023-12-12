@@ -13,7 +13,7 @@ const custom_config = {
   filter_config:[
     {
       render_type:5,
-      custom_config:{
+      config:{
         label:'省份',
         dimens:'province',
         component_id:209,
@@ -21,7 +21,7 @@ const custom_config = {
     },
     {
       render_type:6,
-      custom_config: {
+      config: {
         label:'省份',
         dimens:'province',
         remote_url: 'http://xxxxx.shtml'

@@ -74,8 +74,8 @@ export default function ProjectDisplay() {
     },[])
 
     return (
-        <Spin loading={loading}>
-            <Space size={16} direction="vertical" style={{ width: '100%' }}>
+        <Spin loading={loading} style={{display:'block'}}>
+            <Space size={16} direction="vertical" style={{ width: '100%'}}>
                 <Card>
                     <DisplayHeader projectInfo={projectInfo}/>
                 </Card>
