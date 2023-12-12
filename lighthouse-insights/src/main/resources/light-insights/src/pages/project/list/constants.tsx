@@ -55,11 +55,13 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
       headerCellStyle: {width:'250px' },
       render: (_, record) => (
           <Space size={0} direction="horizontal">
-              <Button
-                  type="text"
-                  size="mini">
-                  {t['projectList.columns.operations.view']}
-              </Button>
+              <Link target={"_blank"} href={'/project/display/' + record.id}>
+                  <Button
+                      type="text"
+                      size="mini">
+                      {t['projectList.columns.operations.view']}
+                  </Button>
+              </Link>
               <Button
                   onClick={() => callback(record, 'update')}
                   type="text"
@@ -67,11 +69,11 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                 {t['projectList.columns.operations.update']}
               </Button>
               <Link target={"_blank"} href={'/project/manage/' + record.id}>
-              <Button
-                  type="text"
-                  size="mini">
-                {t['projectList.columns.operations.manage']}
-              </Button>
+                  <Button
+                      type="text"
+                      size="mini">
+                    {t['projectList.columns.operations.manage']}
+                  </Button>
               </Link>
             <Popconfirm
                 position={"tr"}
@@ -92,6 +94,8 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
               </Button>
             </Popconfirm>
           </Space>
+
+
       ),
     },
 

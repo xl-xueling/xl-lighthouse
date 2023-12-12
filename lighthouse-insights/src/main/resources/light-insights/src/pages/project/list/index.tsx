@@ -213,7 +213,7 @@ export default function Index() {
           </Space>
         </Grid.Col>
         <Grid.Col span={8} style={{ textAlign: 'right' }}>
-          <Button size={"small"} type="primary" onClick={() => setCreateVisible(true)}>创建</Button>
+          <Button size={"small"} type="primary" onClick={() => setCreateVisible(true)}>{t['projectList.operations.create.project']}</Button>
         </Grid.Col>
       </Grid.Row>
 

@@ -20,8 +20,7 @@ const i18n = {
     'projectList.operations.add': 'New',
     'projectList.operations.my.projects':'My Projects',
     'projectList.operations.all.projects':'All Projects',
-
-
+    'projectList.operations.create.project':'New Project',
   },
   'zh-CN': {
     'menu.list': '列表页',
@@ -44,6 +43,7 @@ const i18n = {
     'projectList.columns.operations.unfavorite.confirm':'是否确认取消收藏该统计工程？',
     'projectList.operations.my.projects':'我的工程',
     'projectList.operations.all.projects':'全部工程',
+    'projectList.operations.create.project':'创建',
   },
 };
 
