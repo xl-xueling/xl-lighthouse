@@ -21,7 +21,7 @@ const { list } = Mock.mock({
       'departmentId|1-2': 0,
       'isPrivate|0-1': 0,
       'desc':'@sentence()',
-      'adminIds':['1','2'],
+      'adminIds':[1,2],
       "createdTime":'@datetime',
     },
     {
@@ -30,7 +30,7 @@ const { list } = Mock.mock({
       'departmentId|1-2': 0,
       'isPrivate|0-1': 0,
       'desc':'@sentence()',
-      'adminIds':['1','2'],
+      'adminIds':[1,2],
       "createdTime":'@datetime',
     },
     {
@@ -39,7 +39,7 @@ const { list } = Mock.mock({
       'departmentId|1-2': 0,
       'isPrivate|0-1': 0,
       'desc':'@sentence()',
-      'adminIds':['1','2'],
+      'adminIds':[1,2],
       "createdTime":'@datetime',
     },
     {
@@ -48,7 +48,7 @@ const { list } = Mock.mock({
       'departmentId|1-2': 0,
       'isPrivate|0-1': 0,
       'desc':'@sentence()',
-      'adminIds':['1','2'],
+      'adminIds':[1,2],
       "createdTime":'@datetime',
     },
   ],

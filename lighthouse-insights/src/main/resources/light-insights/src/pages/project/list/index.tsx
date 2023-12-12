@@ -27,26 +27,12 @@ import {requestFavoriteProject, requestQueryProjectIds, requestUnFavoriteProject
 import Detail from "@/pages/project/list/detail";
 import {requestQueryByIds} from "@/api/user";
 import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
+import UserGroup from "@/pages/user/common/groups";
 
 export default function Index() {
   const t = useLocale(locale);
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
   const [listData, setListData] = useState([]);
-  const [favoriteIds,setFavoriteIds] = useState<Array<number>>([]);
-  const fetchFavoritesData = useCallback(async () => {
-    try {
-      const response = await requestQueryProjectIds();
-      const data = response.data;
-      setFavoriteIds(data);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchFavoritesData().then();
-  },[fetchFavoritesData])
-
   const [owner, setOwner] = useState(true);
   const [selectedProject,setSelectedProject] = useState<ProjectPagination>(null);
   const [form] = useForm();
@@ -78,7 +64,7 @@ export default function Index() {
     setUpdateVisible(false);
   };
 
-  const columns = useMemo(() => getColumns(t,favoriteIds, tableCallback), [t,favoriteIds]);
+  const columns = useMemo(() => getColumns(t, tableCallback), [t]);
   const [pagination, setPagination] = useState<PaginationProps>({
     sizeOptions: [15,20,30,50],
     sizeCanChange: true,
@@ -185,7 +171,8 @@ export default function Index() {
             console.log("item:" + JSON.stringify(item));
             const department = allDepartInfo.find(x => String(x.id) == String(item.departmentId));
             const users = r2 as Record<number,User>;
-            const admins = Object.entries(users).map(([k,v]) => v).filter((user) => item.adminIds?.includes(Number(user.id)));
+            const admins = Object.entries(users).map(([k,v]) => v).filter((user) => item.adminIds?.includes(user.id));
+            console.log("adminsV:" + JSON.stringify(admins))
             const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id],"department":department,"admins":admins}};
             result.push(combinedItem);
             return result;

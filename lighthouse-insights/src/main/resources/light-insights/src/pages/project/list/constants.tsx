@@ -1,29 +1,11 @@
 import React from 'react';
-import {Button, Tooltip, Typography, Space, Popconfirm, Message, Link} from '@arco-design/web-react';
-import {
-    IconAlignCenter,
-    IconAttachment,
-    IconFullscreen,
-    IconInfoCircle,
-    IconInfoCircleFill, IconLink, IconPushpin,
-    IconRotateRight,
-    IconStar,
-    IconStarFill
-} from "@arco-design/web-react/icon";
-import IconHorizontalVideo from "@/pages/list/search-table/icons/horizontal.svg";
-import {doc} from "prettier";
-import cursor = doc.builders.cursor;
+import {Button, Typography, Space, Popconfirm, Message, Link} from '@arco-design/web-react';
 const { Text } = Typography;
 import { PiLinkSimple } from "react-icons/pi";
-import { CiCircleMore } from "react-icons/ci";
 import { IoInformationCircleOutline } from "react-icons/io5";
+import UserGroup from "@/pages/user/common/groups";
 
-
-
-
-
-
-export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
       {
           title: '',
@@ -56,6 +38,13 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
           render: (value) => <Text>{value}</Text>,
       },
     {
+          title: t['projectList.columns.admins'],
+          dataIndex: 'admins',
+          render: (value) => {
+              return (<UserGroup users={value}/>);
+          },
+    },
+    {
       title: t['projectList.columns.createdTime'],
       dataIndex: 'createdTime',
       render: (value) => <Text>{value}</Text>,
@@ -65,33 +54,21 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
       dataIndex: 'operations',
       headerCellStyle: {width:'250px' },
       render: (_, record) => (
-          <Space size={16} direction="horizontal">
-              <Popconfirm
-                  focusLock
-                  position={"tr"}
-                  title='Confirm'
-                  content='Are you sure to reset this user password2?'
-                  onCancel={() => {
-                      Message.error({
-                          content: 'cancel',
-                      });
-                  }}
-              >
-                  <Button
-                      type="secondary"
-                      size="mini">
-                      {t['projectList.columns.operations.view']}
-                  </Button>
-              </Popconfirm>
+          <Space size={0} direction="horizontal">
+              <Button
+                  type="text"
+                  size="mini">
+                  {t['projectList.columns.operations.view']}
+              </Button>
               <Button
                   onClick={() => callback(record, 'update')}
-                  type="secondary"
+                  type="text"
                   size="mini">
                 {t['projectList.columns.operations.update']}
               </Button>
               <Link target={"_blank"} href={'/project/manage/' + record.id}>
               <Button
-                  type="secondary"
+                  type="text"
                   size="mini">
                 {t['projectList.columns.operations.manage']}
               </Button>
@@ -109,7 +86,7 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
                 }}
             >
               <Button
-                  type="secondary"
+                  type="text"
                   size="mini">
                 {t['projectList.columns.operations.delete']}
               </Button>
