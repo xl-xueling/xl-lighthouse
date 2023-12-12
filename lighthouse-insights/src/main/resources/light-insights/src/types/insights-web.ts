@@ -54,7 +54,7 @@ export interface User {
     state?:number;
     createdTime?:number;
     avatar?:string;
-    permissions: Record<string, string[]>;
+    permissions?: Record<string, string[]>;
 }
 
 export interface Project {
