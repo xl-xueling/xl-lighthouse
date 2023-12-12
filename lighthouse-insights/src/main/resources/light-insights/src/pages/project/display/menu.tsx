@@ -11,9 +11,12 @@ import Announcement from "@/pages/dashboard/workplace/announcement";
 import Docs from "@/pages/dashboard/workplace/docs";
 const { Row, Col } = Grid;
 import { Menu, Slider } from '@arco-design/web-react';
-import { IconApps, IconBug, IconBulb } from '@arco-design/web-react/icon';
+import {IconApps, IconBug, IconBulb, IconTag, IconTags} from '@arco-design/web-react/icon';
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
+import {LuTable2} from "react-icons/lu";
+import { CiBoxList } from "react-icons/ci";
+import { CiViewTable } from "react-icons/ci";
 
 export default function ProjectMenu() {
     return (
@@ -23,17 +26,13 @@ export default function ProjectMenu() {
             style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}
             defaultOpenKeys={['0']}
         >
-        <Input.Search allowClear placeholder='Search Items'/>
-            <MenuItem key='0_0'>Menu 1</MenuItem>
-            <MenuItem key='0_1'>Menu 2</MenuItem>
-            <MenuItem key='0_2' disabled>
-                Menu 3
-            </MenuItem>
+            <MenuItem key='0_0'><CiViewTable style={{marginRight:'16px'}}/>Menu 1</MenuItem>
+            <MenuItem key='0_1'><CiViewTable style={{marginRight:'16px'}}/>Menu 2</MenuItem>
             <SubMenu
                 key='1'
                 title={
                     <>
-                        <IconBug /> Navigation 2
+                        <CiViewTable style={{marginRight:'16px'}}/> Navigation 2
                     </>
                 }
             >
@@ -45,13 +44,13 @@ export default function ProjectMenu() {
                 key='2'
                 title={
                     <>
-                        <IconBulb /> Navigation 3
+                        <CiViewTable style={{marginRight:'16px'}}/> Navigation 3
                     </>
                 }
             >
-                <MenuItem key='2_0'>Menu 1</MenuItem>
-                <MenuItem key='2_1'>Menu 2</MenuItem>
-                <MenuItem key='2_2'>Menu 3</MenuItem>
+                <MenuItem key='2_0'><IconTag/>Menu 1</MenuItem>
+                <MenuItem key='2_1'><IconTag/>Menu 2</MenuItem>
+                <MenuItem key='2_2'><IconTag/>Menu 3</MenuItem>
             </SubMenu>
         </Menu>
         </>
