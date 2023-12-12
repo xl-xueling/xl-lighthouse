@@ -16,7 +16,7 @@ import { LineAdvance} from 'bizcharts';
 import {IconEdit, IconList, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
 
 
-export default function ChartPanel({searchForm={}}) {
+export default function ChartPanel({searchForm={},statId=0}) {
 
     const data = [
         { year: '1991', value: 3 },

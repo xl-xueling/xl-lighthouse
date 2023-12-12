@@ -22,12 +22,14 @@ import {requestList, requestQueryByIds} from "@/api/project";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
+import {IconTag} from "@arco-design/web-react/icon";
 
 export default function ProjectDisplay() {
 
     const { id } = useParams();
     const [loading,setLoading] = useState<boolean>(true);
     const [projectInfo,setProjectInfo] = useState<Project>(null);
+    const [selectedStatId,setSelectedStatId] = useState<number>(null);
 
     const fetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
         const proc = async () => {
@@ -45,6 +47,10 @@ export default function ProjectDisplay() {
                 reject(error);
             })
         })
+    }
+
+    const menuCallback = async (id) => {
+        setSelectedStatId(Number(id));
     }
 
     const fetchData = async (): Promise<void> => {
@@ -76,29 +82,31 @@ export default function ProjectDisplay() {
                 <div className={styles.wrapper}>
                 <Space size={16} direction="vertical" className={styles.left}>
                     <Row>
-                        <ProjectMenu structure={projectInfo?.structure} />
+                        <ProjectMenu structure={projectInfo?.structure} callback={menuCallback} />
                     </Row>
                 </Space>
                 <Space className={styles.right} size={16} direction="vertical">
                     <Card>
-                        <Row>
+                        <Row style={{marginBottom:'15px'}}>
                             <Col span={12}>
-                                <Typography.Title
-                                    heading={6}
-                                >
+                                <Button icon={<IconTag/>} shape={"circle"} size={"mini"} style={{marginRight:'10px'}}/>
+                                <Typography.Text style={{fontSize:'14px'}}>
                                     {'每分钟uv数据统计'}
-                                </Typography.Title>
+                                </Typography.Text>
                             </Col>
                         </Row>
-                        <SearchForm />
-                        <ChartPanel />
+                        <Row>
+                            <SearchForm statId={selectedStatId}/>
+                        </Row>
+
+                        <ChartPanel statId={selectedStatId}/>
                     </Card>
                     <Card>
-                        <Typography.Title
-                            heading={6}
-                        >
-                            {'Metric Information'}
-                        </Typography.Title>
+                        <Row style={{marginBottom:'15px'}}>
+                            <Typography.Text style={{fontSize:'14px'}}>
+                                {'Metric Information'}
+                            </Typography.Text>
+                        </Row>
                         <BasicInfo />
                     </Card>
                 </Space>
