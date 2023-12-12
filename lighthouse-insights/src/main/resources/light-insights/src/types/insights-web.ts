@@ -3,12 +3,12 @@ import {List} from "@arco-design/web-react";
 export enum PrivilegeEnum {
     ADMIN = 1,
     USER = 2,
-    META_TABLE_ADMIN = 3,
-    META_TABLE_USER = 4,
-    STAT_PROJECT_ADMIN = 5,
-    STAT_PROJECT_USER = 6,
-    STAT_ITEM_USER = 7,
-    STAT_ITEM_ADMIN = 8,
+    PROJECT_ADMIN = 3,
+    PROJECT_USER = 4,
+    STAT_ADMIN = 5,
+    STAT_USER = 6,
+    METRIC_ADMIN = 7,
+    METRIC_USER = 8,
 }
 
 export interface Department {
@@ -60,17 +60,18 @@ export interface User {
 export interface Project {
     id?:number;
     name?:string;
-    departmentId?:number;
     desc?:string;
     isPrivate?:number;
     adminIds?:Array<number>;
+    admins?:Array<User>;
+    departmentId?:number;
+    structure?:Array<ArcoTreeNode>;
     createdTime?:number;
+    permissions?:PrivilegeEnum[];
 }
 
 export interface ProjectPagination extends Project{
     permissions:PrivilegeEnum[];
-    department:Department;
-    admins:Array<User>;
 }
 
 export interface Column {

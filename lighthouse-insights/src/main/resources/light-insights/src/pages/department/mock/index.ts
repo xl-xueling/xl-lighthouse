@@ -2,6 +2,21 @@ import Mock from 'mockjs';
 import qs from 'query-string';
 import dayjs from 'dayjs';
 import setupMock from '@/utils/setupMock';
+import {_Mock_user1, _Mock_user2, _Mock_user3} from "@/pages/user/mock";
+
+export const _Mock_department1  = {
+    id: 1,
+    'name': '@word() @word() @word()',
+    'departmentId|1-2': 0,
+    'isPrivate|0-1': 0,
+    'desc':'@sentence()',
+    'adminIds':[1,2],
+    "createdTime":'@datetime',
+    "admins":[
+        _Mock_user1,_Mock_user2,_Mock_user3
+    ],
+    "department":null,
+};
 
 
 setupMock({

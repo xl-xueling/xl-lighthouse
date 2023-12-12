@@ -17,8 +17,9 @@ const SubMenu = Menu.SubMenu;
 import {LuTable2} from "react-icons/lu";
 import { CiBoxList } from "react-icons/ci";
 import { CiViewTable } from "react-icons/ci";
+import {ArcoTreeNode} from "@/types/insights-web";
 
-export default function ProjectMenu() {
+export default function ProjectMenu({structure}:{structure:Array<ArcoTreeNode>}) {
     return (
         <>
 

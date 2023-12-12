@@ -5,8 +5,39 @@ import setupMock from '@/utils/setupMock';
 import {generatePermission, routes} from "@/routes";
 import {Project, User} from "@/types/insights-web";
 
+export const _Mock_user1  = {
+    "id": 1,
+    "userName":'@name()',
+    "email":'@EMAIL()',
+    "phone":/[0-9]{11}/,
+    "departmentId":2,
+    "state|0-3":0,
+    "createdTime":'@datetime',
+};
+
+export const  _Mock_user2  = {
+    "id": 2,
+    "userName":'@name()',
+    "email":'@EMAIL()',
+    "phone":/[0-9]{11}/,
+    "departmentId":2,
+    "state|0-3":0,
+    "createdTime":'@datetime',
+};
+
+export const  _Mock_user3  = {
+    "id": 2,
+    "userName":'@name()',
+    "email":'@EMAIL()',
+    "phone":/[0-9]{11}/,
+    "departmentId":2,
+    "state|0-3":0,
+    "createdTime":'@datetime',
+};
+
 setupMock({
     setup: () => {
+
 
         const { list } = Mock.mock(
             {

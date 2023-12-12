@@ -1,6 +1,60 @@
 import Mock from 'mockjs';
 import setupMock from '@/utils/setupMock';
 import {Project} from "@/types/insights-web";
+import {_Mock_user1, _Mock_user2,_Mock_user3} from "@/pages/user/mock";
+
+
+export const _Mock_project1  = {
+  id: 101,
+  'name': '@word() @word() @word()',
+  'departmentId|1-2': 0,
+  'isPrivate|0-1': 0,
+  'desc':'@sentence()',
+  'adminIds':[1,2],
+  "createdTime":'@datetime',
+  "admins":[
+    _Mock_user1,_Mock_user2,_Mock_user3
+  ],
+  structure:[
+    {
+      "key":"11",
+      "title":"homepage_behavior_stat1",
+      "children":[
+        {
+          "key":"111",
+          "title":"每分钟_各省份_uv统计",
+        },
+        {
+          "key":"112",
+          "title":"每分钟_各省份_uv统计",
+        },
+        {
+          "key":"113",
+          "title":"每分钟_各省份_uv统计",
+        },
+      ]
+    },
+    {
+      "key":"12",
+      "name":"homepage_behavior_stat2",
+      "children":[
+        {
+          "key":"121",
+          "title":"每分钟_各省份_uv统计",
+        },
+        {
+          "key":"122",
+          "title":"每分钟_各省份_uv统计",
+        },
+        {
+          "key":"123",
+          "title":"每分钟_各省份_uv统计",
+        },
+      ]
+    }
+  ]
+};
+
 
 const { list } = Mock.mock({
   // 'list|100': [
@@ -15,42 +69,7 @@ const { list } = Mock.mock({
   //   },
 
   'list': [
-    {
-      id: 101,
-      'name': '@word() @word() @word()',
-      'departmentId|1-2': 0,
-      'isPrivate|0-1': 0,
-      'desc':'@sentence()',
-      'adminIds':[1,2],
-      "createdTime":'@datetime',
-    },
-    {
-      id: 102,
-      'name': '@word() @word() @word()',
-      'departmentId|1-2': 0,
-      'isPrivate|0-1': 0,
-      'desc':'@sentence()',
-      'adminIds':[1,2],
-      "createdTime":'@datetime',
-    },
-    {
-      id: 103,
-      'name': '@word() @word() @word()',
-      'departmentId|1-2': 0,
-      'isPrivate|0-1': 0,
-      'desc':'@sentence()',
-      'adminIds':[1,2],
-      "createdTime":'@datetime',
-    },
-    {
-      id: 104,
-      'name': '@word() @word() @word()',
-      'departmentId|1-2': 0,
-      'isPrivate|0-1': 0,
-      'desc':'@sentence()',
-      'adminIds':[1,2],
-      "createdTime":'@datetime',
-    },
+    _Mock_project1,
   ],
 });
 
@@ -100,6 +119,9 @@ setupMock({
         'desc': '@sentence()',
         'adminIds': ['1', '2'],
         "createdTime": '@datetime',
+        "admins":[
+          _Mock_user1,_Mock_user2,_Mock_user3
+        ]
       });
       projectData[102] = Mock.mock({
         id: 102,
@@ -109,6 +131,9 @@ setupMock({
         'desc': '@sentence()',
         'adminIds': ['1', '2'],
         "createdTime": '@datetime',
+        "admins":[
+          _Mock_user1,_Mock_user2,_Mock_user3
+        ]
       });
 
       return {
