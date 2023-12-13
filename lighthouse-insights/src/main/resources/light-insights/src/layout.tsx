@@ -114,9 +114,7 @@ function PageLayout() {
   const pathname = history.location.pathname;
   const currentComponent = qs.parseUrl(pathname).url.slice(1);
   const locale = useLocale();
-  const { settings, userLoading, userInfo } = useSelector(
-    (state: GlobalState) => state
-  );
+  const { settings, userLoading, userInfo } = useSelector((state: GlobalState) => state);
 
   const [routes, defaultRoute] = useRoute(userInfo?.permissions);
   const defaultSelectedKeys = [currentComponent || defaultRoute];
@@ -142,6 +140,12 @@ function PageLayout() {
   const showFooter = settings.footer && urlParams.footer !== false;
 
   const flattenRoutes = useMemo(() => getFlattenRoutes(routes) || [], [routes]);
+
+
+  useEffect(() => {
+    console.log("userloading is:" + userLoading)
+
+  },[userLoading])
 
   function renderRoutes(locale) {
     routeMap.current.clear();
@@ -243,7 +247,7 @@ function PageLayout() {
       >
         <Navbar show={showNavbar} />
       </div>
-      {userLoading ? (
+      {userLoading == undefined || userLoading == true ? (
         <Spin className={styles['spin']} />
       ) : (
         <Layout>
