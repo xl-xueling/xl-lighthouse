@@ -6,7 +6,7 @@ import {Button, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/list/locale";
-import styles from "@/pages/stat/display/style/index.module.less";
+import styles from "./style/index.module.less";
 import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
 import {DatePicker} from "@arco-design/web-react";
 import {translateToTreeNodes} from "@/pages/department/common";
@@ -36,11 +36,11 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
     const getDatePicker = (datePickerConfig:DatePickerConfigParam) => {
         switch (datePickerConfig?.renderType){
             case RenderTypeEnum.DATEPICKER_DATE_SELECT:
-                return <DatePicker />
+                return <DatePicker style={{width:'100%'}}/>
             case RenderTypeEnum.DATEPICKER_DATE_RANGE_SELECT:
-                return <DatePicker.RangePicker />
+                return <DatePicker.RangePicker style={{width:'100%'}}/>
             case RenderTypeEnum.DATEPICKER_DATE_TIME_RANGE_SELECT:
-                return <DatePicker.RangePicker showTime={true} />
+                return <DatePicker.RangePicker showTime={true} style={{width:'100%'}}/>
             default:
                 return null;
         }
