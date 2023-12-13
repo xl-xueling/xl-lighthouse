@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from "./style/index.module.less";
-import {Button, Card, DatePicker, Divider, Grid, Space, Spin, Typography} from "@arco-design/web-react";
+import {Button, Card, DatePicker, Divider, Grid, Space, Typography} from "@arco-design/web-react";
 import Overview from "@/pages/dashboard/workplace/overview";
 import PopularContents from "@/pages/dashboard/workplace/popular-contents";
 import ContentPercentage from "@/pages/dashboard/workplace/content-percentage";
@@ -24,6 +24,7 @@ import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {IconTag} from "@arco-design/web-react/icon";
 import StatDisplayMode1 from "@/pages/stat/display/display_mode1";
+import {Spin} from "antd";
 
 export default function ProjectDisplay() {
 
@@ -74,41 +75,22 @@ export default function ProjectDisplay() {
     },[])
 
     return (
-        // <Spin loading={loading} style={{display:'block'}}>
-        //     <Space size={16} direction="vertical" style={{ width: '100%'}}>
-        //         <Card>
-        //             <DisplayHeader projectInfo={projectInfo}/>
-        //         </Card>
-        //         <div className={styles.wrapper}>
-        //         <Space size={16} direction="vertical" className={styles.left}>
-        //             <Row>
-        //                 <ProjectMenu structure={projectInfo?.structure} callback={menuCallback} />
-        //             </Row>
-        //         </Space>
-        //         <Space className={styles.right} size={16} direction="vertical">
-        //             <StatDisplayMode1 statId={selectedStatId}/>
-        //         </Space>
-        //     </div>
-        //     </Space>
-        // </Spin>
-
-
-    <Spin loading={loading} style={{display:'block'}}>
-        <Space size={16} direction="vertical" style={{ width: '100%'}}>
-            <Card>
-                <DisplayHeader projectInfo={projectInfo}/>
-            </Card>
-            <div>
-                <Row gutter={20}>
-                    <Col span={5}>
+        <Spin spinning={loading} style={{display:'block',backgroundColor: 'rgba(255, 255, 255, 0.8)'}} className={styles['spin']}>
+            <Space size={16} direction="vertical" style={{ width: '100%'}}>
+                <Card>
+                    <DisplayHeader projectInfo={projectInfo}/>
+                </Card>
+                <div className={styles.wrapper}>
+                <Space size={16} direction="vertical" className={styles.left}>
+                    <Row>
                         <ProjectMenu structure={projectInfo?.structure} callback={menuCallback} />
-                    </Col>
-                    <Col span={19}>
-                        <StatDisplayMode1 statId={selectedStatId}/>
-                    </Col>
-                </Row>
+                    </Row>
+                </Space>
+                <Space className={styles.right} size={16} direction="vertical">
+                    <StatDisplayMode1 statId={selectedStatId}/>
+                </Space>
             </div>
-        </Space>
-    </Spin>
+            </Space>
+        </Spin>
     );
 }
