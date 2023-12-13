@@ -45,5 +45,15 @@ export function getTextBlenLength(str){
 }
 
 
+export function getRandomString(len = 32) {
+    const $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
+    const maxPos = $chars.length;
+    let text = '';
+    for (let index = 0; index < len; index++) {
+        text += $chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return text;
+}
+
 
 

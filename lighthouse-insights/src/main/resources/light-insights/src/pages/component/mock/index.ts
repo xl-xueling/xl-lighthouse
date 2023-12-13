@@ -8,8 +8,9 @@ import {_Mock_user1, _Mock_user2, _Mock_user3} from "@/pages/user/mock";
 import {FilterComponent} from "@/types/insights-common";
 
 const _Mock_component1:FilterComponent = Mock.mock({
-    id:1,
+    id:101,
     renderType:5,
+    title:'省份选择组件1',
     config: [
         {
             label:'山东',
@@ -23,8 +24,9 @@ const _Mock_component1:FilterComponent = Mock.mock({
 });
 
 const _Mock_component2:FilterComponent = Mock.mock({
-    id:2,
+    id:102,
     renderType:5,
+    title:'省份选择组件2',
     config: [
         {
             label:'山东',
