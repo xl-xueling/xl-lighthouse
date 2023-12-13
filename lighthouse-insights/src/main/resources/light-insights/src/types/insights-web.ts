@@ -103,6 +103,7 @@ export interface Stat {
     createdTime?:number;
     group?:Group;
     project?:Project;
+    dimensArray?:Array<string>;
     customConfig?:{datepickerConfig:DatePickerConfigParam,filterConfig:Array<FilterConfigParam>}
 }
 

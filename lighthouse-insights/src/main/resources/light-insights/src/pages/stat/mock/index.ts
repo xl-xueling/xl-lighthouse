@@ -16,7 +16,7 @@ const customConfig = {
       renderType:5,
       label:'省份',
       dimens:'province',
-      componentId:209,
+      componentId:1,
     },
     {
       renderType:5,
@@ -45,7 +45,8 @@ const _Mock_stat1:Stat = Mock.mock({
       admins:[
         _Mock_user1,_Mock_user2,_Mock_user3
       ],
-  customConfig:customConfig,
+      dimensArray:["province","city","behaviorType"],
+      customConfig:customConfig,
 });
 
 const _Mock_stat2:Stat = Mock.mock({

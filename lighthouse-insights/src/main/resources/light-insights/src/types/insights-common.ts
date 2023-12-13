@@ -1,3 +1,5 @@
+import {ArcoTreeNode} from "@/types/insights-web";
+
 export interface ResultData<S = any> {
     code: string;
     message?: string;
@@ -18,6 +20,7 @@ export interface FilterConfigParam {
     label:string,
     dimens:string,
     componentId?:number,
+    configData?:Array<ArcoTreeNode>,
 }
 
 export interface DatePickerConfigParam {
