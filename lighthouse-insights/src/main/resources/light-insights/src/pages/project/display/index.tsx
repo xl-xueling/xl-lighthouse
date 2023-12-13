@@ -25,6 +25,8 @@ import {GlobalState} from "@/store";
 import {IconTag} from "@arco-design/web-react/icon";
 import StatDisplayMode1 from "@/pages/stat/display/display_mode1";
 import {Spin} from "antd";
+import { LoadingOutlined } from '@ant-design/icons';
+
 
 export default function ProjectDisplay() {
 
@@ -75,7 +77,7 @@ export default function ProjectDisplay() {
     },[])
 
     return (
-        <Spin spinning={loading} style={{display:'block',backgroundColor: 'rgba(255, 255, 255, 0.8)'}} className={styles['spin']}>
+        <Spin spinning={loading} indicator={<LoadingOutlined/>}  style={{fontSize: 24,display:'block',backgroundColor: 'rgba(255, 255, 255, 1)'}} className={styles['spin']}>
             <Space size={16} direction="vertical" style={{ width: '100%'}}>
                 <Card>
                     <DisplayHeader projectInfo={projectInfo}/>
