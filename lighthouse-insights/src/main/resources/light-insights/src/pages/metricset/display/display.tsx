@@ -59,7 +59,7 @@ export default function MetricDisplay() {
                     >
                         {'Metric Information'}
                     </Typography.Title>
-                    <BasicInfo />
+                    {/*<BasicInfo />*/}
                 </Card>
             </Space>
         </div>

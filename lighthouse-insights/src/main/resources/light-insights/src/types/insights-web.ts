@@ -109,8 +109,6 @@ export interface Stat {
 
 export interface StatPagination extends Stat {
     key?:number;
-    group?:Group;
-    project?:Project;
     department?:Department;
     permissions:PrivilegeEnum[];
     admins:Array<User>;

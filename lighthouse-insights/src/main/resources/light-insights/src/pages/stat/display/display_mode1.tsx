@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Grid, Space, Typography} from "@arco-design/web-react";
+import {Button, Card, Grid, Space, Spin, Typography} from "@arco-design/web-react";
 import {IconTag} from "@arco-design/web-react/icon";
 import SearchForm from "@/pages/stat/display/search_form";
 import ChartPanel from "@/pages/stat/display/chart_panel";
@@ -39,6 +39,7 @@ export default function StatDisplayMode1({statId = 0}) {
         Promise.all([fetchPrivilegeInfo([statId])])
             .then(([r1]) => {
                 const combinedItem = { ...statInfo, ...{"permissions":r1[statInfo.id]}};
+                console.log("combinedItem:" + JSON.stringify(combinedItem))
                 setStatInfo(combinedItem);
                 setLoading(false);
             }).catch((error) => {
@@ -52,7 +53,7 @@ export default function StatDisplayMode1({statId = 0}) {
     ,[statId])
 
     return (
-        <>
+        <Spin loading={loading}>
             <Card>
                 <Row style={{marginBottom:'15px'}}>
                     <Col span={12}>
@@ -73,8 +74,8 @@ export default function StatDisplayMode1({statId = 0}) {
                         {'Metric Information'}
                     </Typography.Text>
                 </Row>
-                <BasicInfo />
+                <BasicInfo statInfo={statInfo}/>
             </Card>
-        </>
+        </Spin>
     );
 }

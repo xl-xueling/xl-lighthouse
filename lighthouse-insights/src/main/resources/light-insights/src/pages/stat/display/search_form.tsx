@@ -37,7 +37,7 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
             case RenderTypeEnum.DATEPICKER_DATE_SELECT:
                 return <DatePicker />
             case RenderTypeEnum.DATEPICKER_DATE_RANGE_SELECT:
-                return <DatePicker.RangePicker showTime={true}/>
+                return <DatePicker.RangePicker />
             case RenderTypeEnum.DATEPICKER_DATE_TIME_RANGE_SELECT:
                 return <DatePicker.RangePicker showTime={true} />
             default:
