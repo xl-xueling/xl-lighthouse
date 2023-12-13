@@ -14,31 +14,40 @@ import { Line } from '@ant-design/plots';
 import { Chart, Line as Line2, Point, Tooltip,getTheme } from "bizcharts";
 import { LineAdvance} from 'bizcharts';
 import {IconEdit, IconList, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
+import UserGroup from "@/pages/user/common/groups";
 
 
-export default function BasicInfo({searchForm={}}) {
+export default function BasicInfo({statInfo}) {
 
     const descriptionData = [
         {
             label: 'Title',
-            value: '每分钟_uv数据统计',
+            value: statInfo?.title,
         },
         {
             label: 'CreatedTime',
-            value: '2023-12-01 10:00:19',
+            value: statInfo?.createdTime,
         },
         {
             label: 'Group',
-            value: '[首页广告模块数据统计]homepage_behavior_stat',
+            value: <span>{statInfo?.group.token}</span>,
+        },
+        {
+            label: 'Project',
+            value: <span>{statInfo?.project.name}</span>,
+        },
+        {
+            label: 'Expired',
+            value: <span>{statInfo?.expired}</span>,
         },
         {
             label: 'Admins',
-            value: 'zhangsan;lisi;wangwu',
+            value: <UserGroup users={statInfo?.admins}/>,
         },
 
         {
             label: 'TimeParam',
-            value: '1-minute',
+            value: statInfo?.timeparam,
         },
         {
             label: 'Operation',
@@ -47,7 +56,7 @@ export default function BasicInfo({searchForm={}}) {
         },
         {
             label: 'Template',
-            value: '<stat-item title="每分钟uv数据统计" stat="bitcount(userId)" dimens="province" />',
+            value: statInfo?.template,
             span:2,
         },
 

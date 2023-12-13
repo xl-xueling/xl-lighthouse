@@ -39,7 +39,7 @@ export default function StatDisplay({statId = 0}) {
                 >
                     {'Metric Information'}
                 </Typography.Title>
-                <BasicInfo />
+                {/*<BasicInfo />*/}
             </Card>
         </Space>
     );

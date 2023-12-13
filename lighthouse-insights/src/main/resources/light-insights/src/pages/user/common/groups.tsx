@@ -35,15 +35,16 @@ export default function UserGroup(props:Props) {
                                         value: option.email,
                                     }
                                 ]}
-                                labelStyle={{ textAlign: 'right', paddingRight: 15 }}
+                                labelStyle={{ textAlign: 'right', paddingRight: 15}}
                             />
                         }
                     >
-                        <span key={index}>{option.userName};</span>
+                        <span key={index} style={{marginRight:'2px'}}>{option.userName};</span>
                     </Popover>
                 );
             })
         }
         </>
     );
+
 }
