@@ -13,13 +13,20 @@ export enum RenderTypeEnum {
     FILTER_REMOTE_SEARCH_SELECT=6,
 }
 
-export interface FilterConfigParams {
+export interface FilterConfigParam {
+    renderType:number,
     label:string,
     dimens:string,
     componentId?:number,
 }
 
-export interface RenderConfig {
+export interface DatePickerConfigParam {
     renderType:number,
-    config?:FilterConfigParams,
+    label:string,
+}
+
+export interface CustomComponent {
+    id:number,
+    renderType:number,
+    config?:any,
 }

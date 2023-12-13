@@ -1,15 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {ArcoTreeNode, Department} from "@/types/insights-web";
-import {RenderConfig, RenderTypeEnum, ResultData} from "@/types/insights-common";
-import {requestQueryDimensValue} from "@/api/group";
-import {Descriptions, Divider, Form, Grid, Select, TreeSelect, Typography} from "@arco-design/web-react";
-import {Col} from "antd";
-import {translate} from "@/pages/department/common";
-import {useSelector} from "react-redux";
-import useLocale from "@/utils/useLocale";
-import locale from "@/pages/project/list/locale";
-import styles from "@/pages/stat/display/style/index.module.less";
 import { Line } from '@ant-design/plots';
 import { Chart, Line as Line2, Point, Tooltip,getTheme } from "bizcharts";
 import { LineAdvance} from 'bizcharts';
