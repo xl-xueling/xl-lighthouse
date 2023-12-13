@@ -30,6 +30,7 @@ export interface DatePickerConfigParam {
 
 export interface FilterComponent {
     id?:number,
+    key?:string,
     title?:string,
     renderType?:number,
     config?:any,

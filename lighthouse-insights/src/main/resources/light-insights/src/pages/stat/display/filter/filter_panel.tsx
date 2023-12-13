@@ -4,7 +4,7 @@ import {ArcoTreeNode, Department, Project} from "@/types/insights-web";
 import { Line } from '@ant-design/plots';
 import { Chart, Line as Line2, Point, Tooltip,getTheme } from "bizcharts";
 import { LineAdvance} from 'bizcharts';
-import {IconEdit, IconList, IconPlus, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
+import {IconEdit, IconList, IconMinus, IconPlus, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
 import {
     Button,
     Divider,
@@ -23,12 +23,14 @@ import GroupManagePanel from "@/pages/group/manage";
 import GroupAddPanel from "@/pages/group/add/group_add";
 import {FilterComponent, RenderTypeEnum} from "@/types/insights-common";
 import {requestList} from "@/api/component";
+import {translateToTreeNodes} from "@/pages/department/common";
+import {getRandomString} from "@/utils/util";
 const RadioGroup = Radio.Group;
 
 
 export default function FilterPanel({onClose = null}) {
 
-    const columns: TableColumnProps[] = [
+    const sourceColumns: TableColumnProps[] = [
         {
             title: 'Title',
             dataIndex: 'title',
@@ -43,7 +45,7 @@ export default function FilterPanel({onClose = null}) {
                     )
                 }else{
                     return (
-                        <TreeSelect size={"small"} />
+                        <TreeSelect size={"small"} treeData={translateToTreeNodes(record.config)} />
                     )
                 }
             },
@@ -54,14 +56,61 @@ export default function FilterPanel({onClose = null}) {
             cellStyle:{textAlign:"center"},
             render: (value, record) => {
                 return (
-                    <IconPlus/>
+                    <IconPlus onClick={() => selectComponent(record)}/>
                 )
             }
         },
     ];
 
+
+    const targetColumns : TableColumnProps[] = [
+        {
+            title: 'Title',
+            dataIndex: 'title',
+        },
+        {
+            title: 'Dimens',
+            dataIndex: 'dimens',
+        },
+        {
+            title: 'Display',
+            dataIndex: 'renderType',
+            render: (value, record) => {
+                if(value == RenderTypeEnum.FILTER_INPUT){
+                    return (
+                        <Input size={"small"}/>
+                    )
+                }else{
+                    return (
+                        <TreeSelect size={"small"} treeData={translateToTreeNodes(record.config)} />
+                    )
+                }
+            },
+        },
+        {
+            title: 'Operation',
+            dataIndex: 'operation',
+            cellStyle:{textAlign:"center"},
+            render: (value, record) => {
+                return (
+                    <IconMinus onClick={() => removeComponent(record.key)}/>
+                )
+            }
+        },
+    ];
+
+    const selectComponent = (component:FilterComponent) => {
+        const copyComponent = {...component,"key":getRandomString()}
+        setTargetData([...targetData,copyComponent])
+    }
+
+    const removeComponent = (key) => {
+        setTargetData(targetData.filter(x => x.key != key))
+    }
+
     const [sourceData,setSourceData] = useState<Array<FilterComponent>>([]);
 
+    const [targetData,setTargetData] = useState<Array<FilterComponent>>([]);
 
     const fetchComponentsInfo:Promise<{list:Array<FilterComponent>,total:number}> = new Promise<{list:Array<FilterComponent>,total:number}>((resolve) => {
         const proc = async () => {
@@ -80,12 +129,16 @@ export default function FilterPanel({onClose = null}) {
 
     const defaultComponents = [
         {
-            key: '1',
+            key: getRandomString(),
+            id:1,
+            isBuiltIn:true,
             title:"内置输入框",
             renderType:RenderTypeEnum.FILTER_INPUT,
         },
         {
-            key: '2',
+            key: getRandomString(),
+            id:2,
+            isBuiltIn:true,
             title:"内置选择框",
             renderType:RenderTypeEnum.FILTER_SELECT,
         },
@@ -99,9 +152,13 @@ export default function FilterPanel({onClose = null}) {
         if(componentType == 0){
             setSourceData(defaultComponents);
         }else{
-            console.log("componentType is:" + JSON.stringify(componentType))
             Promise.all([fetchComponentsInfo]).then((result) => {
-                console.log("result is:" + JSON.stringify(result));
+                const data = result[0];
+                const newlist = data.list.map(z =>  {
+                    return {"key":getRandomString(),...z}
+                })
+                console.log("result is:" + JSON.stringify(newlist));
+                setSourceData(newlist);
             });
         }
     }
@@ -124,16 +181,16 @@ export default function FilterPanel({onClose = null}) {
                             </Form.Item>
                         </Form>
                         <Input.Search  placeholder={'Search'} allowClear />
-                        <Table size={"small"} columns={columns} data={sourceData} />
+                        <Table size={"small"} columns={sourceColumns} data={sourceData} />
                     </Space>
 
                 </div>
                 <Divider type='vertical' style={{height:'400px'}} />
-                <Space size={10} direction="vertical">
+                <Space size={10} direction="vertical" style={{width:'700px'}}>
                     <Typography.Title style={{fontSize:'14px'}}>
                         {'已选择：'}
                     </Typography.Title>
-                    <Table size={"small"} columns={columns} data={sourceData} />
+                    <Table size={"small"} columns={targetColumns} data={targetData} />
                 </Space>
             </div>
         </Modal>
