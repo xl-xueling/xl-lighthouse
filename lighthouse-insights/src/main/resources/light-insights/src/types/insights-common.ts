@@ -28,8 +28,9 @@ export interface DatePickerConfigParam {
     label:string,
 }
 
-export interface CustomComponent {
-    id:number,
-    renderType:number,
+export interface FilterComponent {
+    id?:number,
+    title?:string,
+    renderType?:number,
     config?:any,
 }

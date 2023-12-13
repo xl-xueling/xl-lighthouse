@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import {ArcoTreeNode, Department} from "@/types/insights-web";
 import {RenderTypeEnum, ResultData} from "@/types/insights-common";
 import {requestQueryDimensValue} from "@/api/group";
-import {Descriptions, Divider, Form, Grid, Select, TreeSelect, Typography} from "@arco-design/web-react";
+import {Button, Descriptions, Divider, Form, Grid, Select, TreeSelect, Typography} from "@arco-design/web-react";
 import {Col} from "antd";
 import {translate} from "@/pages/department/common";
 import {useSelector} from "react-redux";
@@ -15,6 +15,7 @@ import { Chart, Line as Line2, Point, Tooltip,getTheme } from "bizcharts";
 import { LineAdvance} from 'bizcharts';
 import {IconEdit, IconList, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
 import UserGroup from "@/pages/user/common/groups";
+import { TbFilterEdit } from "react-icons/tb";
 
 
 export default function BasicInfo({statInfo}) {
@@ -51,8 +52,14 @@ export default function BasicInfo({statInfo}) {
         },
         {
             label: 'Operation',
-            value: <div><IconList style={{marginRight:'10px'}} /> <IconEdit style={{marginRight:'10px'}} />
-                <IconPushpin style={{marginRight:'10px'}} /></div>,
+            value:
+                <div>
+                    <IconList style={{marginRight:'10px'}} />
+                    <IconEdit style={{marginRight:'10px'}} />
+                    <IconPushpin style={{marginRight:'10px'}} />
+                    <TbFilterEdit style={{marginRight:'10px'}} />
+                    <Button shape={"square"} icon={<TbFilterEdit/>} size={"mini"}/>
+                </div>,
         },
         {
             label: 'Template',
