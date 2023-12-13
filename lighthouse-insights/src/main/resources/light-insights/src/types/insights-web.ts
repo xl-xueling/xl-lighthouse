@@ -1,4 +1,5 @@
 import {List} from "@arco-design/web-react";
+import {DatePickerConfigParam, FilterConfigParam, RenderTypeEnum} from "@/types/insights-common";
 
 export enum PrivilegeEnum {
     ADMIN = 1,
@@ -102,6 +103,7 @@ export interface Stat {
     createdTime?:number;
     group?:Group;
     project?:Project;
+    customConfig?:{datepickerConfig:DatePickerConfigParam,filterConfig:Array<FilterConfigParam>}
 }
 
 export interface StatPagination extends Stat {

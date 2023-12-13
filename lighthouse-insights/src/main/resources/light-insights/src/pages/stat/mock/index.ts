@@ -6,26 +6,27 @@ import {Project, Stat} from "@/types/insights-web";
 import {_Mock_user1, _Mock_user2, _Mock_user3} from "@/pages/user/mock";
 import {_Mock_project1} from "@/pages/project/mock";
 
-const custom_config = {
-  datepicker_config:{
-    render_type:1,
+const customConfig = {
+  datepickerConfig:{
+    renderType:1,
+    label:'日期',
   },
-  filter_config:[
+  filterConfig:[
     {
-      render_type:5,
-      config:{
-        label:'省份',
-        dimens:'province',
-        component_id:209,
-      },
+      renderType:5,
+      label:'省份',
+      dimens:'province',
+      componentId:209,
     },
     {
-      render_type:6,
-      config: {
-        label:'省份',
-        dimens:'province',
-        remote_url: 'http://xxxxx.shtml'
-      }
+      renderType:5,
+      label:'省份',
+      dimens:'city',
+    },
+    {
+      renderType:5,
+      label:'召回',
+      dimens:'recallno',
     },
   ]
 }
@@ -44,7 +45,7 @@ const _Mock_stat1:Stat = Mock.mock({
       admins:[
         _Mock_user1,_Mock_user2,_Mock_user3
       ],
-      custom_config:custom_config,
+  customConfig:customConfig,
 });
 
 const _Mock_stat2:Stat = Mock.mock({
@@ -61,7 +62,7 @@ const _Mock_stat2:Stat = Mock.mock({
   admins:[
     _Mock_user1,_Mock_user2,_Mock_user3
   ],
-  custom_config:custom_config,
+  customConfig:customConfig,
 });
 
 

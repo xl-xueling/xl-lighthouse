@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {ArcoTreeNode, Department} from "@/types/insights-web";
-import {RenderConfig, RenderTypeEnum, ResultData} from "@/types/insights-common";
+import {ArcoTreeNode, Department, PrivilegeEnum, Project, Stat} from "@/types/insights-web";
+import {CustomComponent, RenderTypeEnum} from "@/types/insights-common";
 import {requestQueryDimensValue} from "@/api/group";
 import {Button, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
 import {translate} from "@/pages/department/common";
@@ -11,9 +11,12 @@ import locale from "@/pages/project/list/locale";
 import styles from "@/pages/stat/display/style/index.module.less";
 import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
 import {DatePicker} from "@arco-design/web-react";
+import {requestQueryByIds} from "@/api/project";
+import {requestQueryByIds as requestQueryComponentsByIds} from "@/api/component";
+import {requestPrivilegeCheck} from "@/api/privilege";
 
 
-export default function SearchForm({statInfo}) {
+export default function SearchForm({statInfo}:{statInfo:Stat}) {
 
     const t = useLocale(locale);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
@@ -27,12 +30,12 @@ export default function SearchForm({statInfo}) {
             return;
         }
         console.log("----");
-        const customConfig = statInfo.custom_config;
+        const customConfig = statInfo.customConfig;
         const timeparam = statInfo.timeparam;
         let datePicker;
-        if(customConfig?.datepicker_config){
+        if(customConfig?.datepickerConfig){
             console.log("-----A")
-            datePicker = customConfig.datepicker_config.render_type;
+            datePicker = customConfig.datepickerConfig.renderType;
         } else if(timeparam.endsWith("day")){
             console.log("-----B")
             datePicker = RenderTypeEnum.DATEPICKER_DATE_RANGE_SELECT;
@@ -42,52 +45,75 @@ export default function SearchForm({statInfo}) {
         }
         setDatePicker(datePicker);
         console.log("datePicker is:" + JSON.stringify(datePicker) + ",timeparam is:" + timeparam)
+
+        fetchDimens().then();
     },[statInfo])
+
+
+    const fetchDimens = async () => {
+        console.log("customConfig:=== is:" + JSON.stringify(statInfo.customConfig));
+        const filterConfig = statInfo.customConfig?.filterConfig;
+        if(filterConfig){
+            //选择自定义组件的维度
+            const componentIds = filterConfig.filter(x => x.componentId).map(x => x.componentId);
+            console.log("componentIds is:" + JSON.stringify(componentIds));
+            //const componentsData = await fetchComponentsInfo();
+        }
+        const dimensData:Record<string,Array<ArcoTreeNode>> = {};
+        const componentsData = await fetchComponentsInfo([]);
+        console.log("componentsData is:" + JSON.stringify(componentsData));
+        // Promise.all([fetchComponentsInfo()])
+        //     .then(([r1]) => {
+        //         console.log("r1 is:" + JSON.stringify(r1))
+        //         // Object.entries(r1).map(([key, value]) => ({
+        //         //     dimensDataMap.
+        //         // }));
+        //         dimensData = {...dimensData, ...r1};
+        //         console.log("dimensData is:" + JSON.stringify(dimensData))
+        //         setDimensData(dimensData);
+        //     }).catch((error) => {
+        //     console.log(error)
+        // })
+    }
 
 
     const [dimensData,setDimensData] = useState<Record<string,Array<ArcoTreeNode>>>({});
 
     const Option = Select.Option;
 
-    const [options,setOptions] = useState([]);
+    const [options,setOptions] = useState<Record<string,Array<ArcoTreeNode>>>(null);
 
-    const params:Array<RenderConfig> = [
-                {
-                    renderType:5,
-                    config:{
-                        label:'城市',
-                        dimens:'province;city',
-                        componentId:209,
-                    },
-                },
-                {
-                    renderType:5,
-                    config:{
-                        label:'行为类型',
-                        dimens:'behaviorType',
-                    },
-                },
-                {
-                    renderType:5,
-                    config:{
-                        label:'召回号',
-                        dimens:'recallno',
-                    },
-                }
-            ];
 
-    const fetchDimensInfo:Promise<Record<string,Array<ArcoTreeNode>>> = new Promise<Record<string,Array<ArcoTreeNode>>>((resolve) => {
-        const dimensArray = params.filter(x => x.renderType == RenderTypeEnum.FILTER_SELECT)
-            ?.filter(x => !x.config.componentId && x.config).map(x => x.config.dimens);
-        console.log("dimensArray is:" + JSON.stringify(dimensArray));
-        const proc = async () => {
-            const groupId = 0;
-            const result:ResultData<Record<string,Array<ArcoTreeNode>>> = await requestQueryDimensValue({groupId,dimensArray});
-            console.log("result is:" + JSON.stringify(result));
-            resolve(result.data);
-        }
-        proc().then();
-    })
+    const fetchComponentsInfo = async(ids) => {
+        return new Promise<Record<number,CustomComponent>>((resolve,reject) => {
+            requestQueryComponentsByIds(ids).then((response) => {
+                resolve(response.data);
+            }).catch((error) => {
+                reject(error);
+            })
+        })
+    }
+
+
+    // const fetchDimensInfo:Promise<Record<string,Array<ArcoTreeNode>>> = new Promise<Record<string,Array<ArcoTreeNode>>>((resolve) => {
+    //     if(!statInfo){
+    //         return;
+    //
+    //
+    //     // const params = statInfo.customConfig.filterConfig;
+    //     // console.log("params is====:" + JSON.stringify(params));
+    //     //
+    //     // const dimensArray = params.filter(x => x. == RenderTypeEnum.FILTER_SELECT)
+    //     //     ?.filter(x => !x.config.componentId && x.config).map(x => x.config.dimens);
+    //     // console.log("dimensArray==== is:" + JSON.stringify(dimensArray));
+    //     // const proc = async () => {
+    //     //     const groupId = 0;
+    //     //     const result:ResultData<Record<string,Array<ArcoTreeNode>>> = await requestQueryDimensValue({groupId,dimensArray});
+    //     //     console.log("result is:" + JSON.stringify(result));
+    //     //     resolve(result.data);
+    //     // }
+    //     // proc().then();
+    // })
 
     const getDatePicker = () => {
         switch (datePicker){
@@ -101,22 +127,6 @@ export default function SearchForm({statInfo}) {
                 return null;
         }
     }
-
-    useEffect(() => {
-        let dimensData:Record<string,Array<ArcoTreeNode>> = {};
-        Promise.all([fetchDimensInfo])
-            .then(([r1]) => {
-                console.log("r1 is:" + JSON.stringify(r1))
-                // Object.entries(r1).map(([key, value]) => ({
-                //     dimensDataMap.
-                // }));
-                dimensData = {...dimensData, ...r1};
-                console.log("dimensData is:" + JSON.stringify(dimensData))
-                setDimensData(dimensData);
-            }).catch((error) => {
-                console.log(error)
-            })
-    },[])
 
 
     return (
@@ -134,22 +144,24 @@ export default function SearchForm({statInfo}) {
                         {getDatePicker()}
                     </Form.Item>
                 </Col>
-                {
-                    params.map((option,index) => {
-                        return (
-                            <Col span={12} key={index}>
-                                <Form.Item label={t['projectList.columns.department']}>
-                                    <TreeSelect
-                                        placeholder={"Department"}
-                                        multiple={true}
-                                        allowClear={true}
-                                        treeData={translate(allDepartInfo)}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        );
-                    })
-                }
+                {/*{*/}
+                {/*    params.map((option,index) => {*/}
+                {/*        const config = option.config;*/}
+
+                {/*        return (*/}
+                {/*            <Col span={12} key={index}>*/}
+                {/*                <Form.Item label={t['projectList.columns.department']}>*/}
+                {/*                    <TreeSelect*/}
+                {/*                        placeholder={"Department"}*/}
+                {/*                        multiple={true}*/}
+                {/*                        allowClear={true}*/}
+                {/*                        treeData={translate(allDepartInfo)}*/}
+                {/*                    />*/}
+                {/*                </Form.Item>*/}
+                {/*            </Col>*/}
+                {/*        );*/}
+                {/*    })*/}
+                {/*}*/}
             </Row>
         </Form>
             <div className={styles['right-button']}>

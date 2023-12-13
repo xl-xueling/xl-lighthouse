@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {ArcoTreeNode, Department} from "@/types/insights-web";
-import {RenderConfig, RenderTypeEnum, ResultData} from "@/types/insights-common";
+import {RenderTypeEnum, ResultData} from "@/types/insights-common";
 import {requestQueryDimensValue} from "@/api/group";
 import {Descriptions, Divider, Form, Grid, Select, TreeSelect, Typography} from "@arco-design/web-react";
 import {Col} from "antd";
