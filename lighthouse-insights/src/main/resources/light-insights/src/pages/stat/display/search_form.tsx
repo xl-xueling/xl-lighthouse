@@ -4,7 +4,7 @@ import {ArcoTreeNode, Department, PrivilegeEnum, Project, Stat} from "@/types/in
 import {CustomComponent, RenderTypeEnum} from "@/types/insights-common";
 import {requestQueryDimensValue} from "@/api/group";
 import {Button, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
-import {translate} from "@/pages/department/common";
+import {translate, translateToTreeNodes} from "@/pages/department/common";
 import {useSelector} from "react-redux";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/list/locale";
@@ -29,18 +29,14 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
         if(!statInfo){
             return;
         }
-        console.log("----");
         const customConfig = statInfo.customConfig;
         const timeparam = statInfo.timeparam;
         let datePicker;
         if(customConfig?.datepickerConfig){
-            console.log("-----A")
             datePicker = customConfig.datepickerConfig.renderType;
         } else if(timeparam.endsWith("day")){
-            console.log("-----B")
             datePicker = RenderTypeEnum.DATEPICKER_DATE_RANGE_SELECT;
         }else{
-            console.log("-----C")
             datePicker = RenderTypeEnum.DATEPICKER_DATE_SELECT;
         }
         setDatePicker(datePicker);
@@ -50,18 +46,27 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
     },[statInfo])
 
 
+
     const fetchDimens = async () => {
-        console.log("customConfig:=== is:" + JSON.stringify(statInfo.customConfig));
         const filterConfig = statInfo.customConfig?.filterConfig;
+        const filterConfData:Record<string, Array<ArcoTreeNode>> = {};
         if(filterConfig){
-            //选择自定义组件的维度
             const componentIds = filterConfig.filter(x => x.componentId).map(x => x.componentId);
-            console.log("componentIds is:" + JSON.stringify(componentIds));
-            //const componentsData = await fetchComponentsInfo();
+            const componentsData = await fetchComponentsInfo(componentIds);
+            filterConfig.filter(x => x.componentId).forEach(z => {
+                const componentId = z.componentId;
+                const dimens = z.dimens;
+                const component = componentsData[componentId];
+                if(component){
+                    filterConfData[dimens] = translateToTreeNodes(component.config);
+                }
+            })
         }
-        const dimensData:Record<string,Array<ArcoTreeNode>> = {};
-        const componentsData = await fetchComponentsInfo([]);
-        console.log("componentsData is:" + JSON.stringify(componentsData));
+        const customDimensArray = Object.entries(filterConfData).map(([k,v]) => k)
+            .flatMap(x => x.split(";"));
+        const defaultDimensArray = statInfo.dimensArray.filter(x => !customDimensArray.includes(x));
+
+
         // Promise.all([fetchComponentsInfo()])
         //     .then(([r1]) => {
         //         console.log("r1 is:" + JSON.stringify(r1))
@@ -87,6 +92,16 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
     const fetchComponentsInfo = async(ids) => {
         return new Promise<Record<number,CustomComponent>>((resolve,reject) => {
             requestQueryComponentsByIds(ids).then((response) => {
+                resolve(response.data);
+            }).catch((error) => {
+                reject(error);
+            })
+        })
+    }
+
+    const fetchDimensValue = async (arr) => {
+        return new Promise<Record<number,CustomComponent>>((resolve,reject) => {
+            requestQueryDimensValue({"groupId":0,"dimensArray":arr}).then((response) => {
                 resolve(response.data);
             }).catch((error) => {
                 reject(error);

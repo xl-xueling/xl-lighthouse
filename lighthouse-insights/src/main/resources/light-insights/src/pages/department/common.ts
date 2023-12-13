@@ -51,6 +51,18 @@ export const translate = (list:Array<Department>):Array<ArcoTreeNode> => {
     return nodeArr;
 }
 
+export const translateToTreeNodes = (list):Array<ArcoTreeNode> => {
+    const nodeArr = new Array<ArcoTreeNode>();
+    list?.forEach(item => {
+        const nodeItem:ArcoTreeNode = {"key":String(item.value),"title":item.label};
+        if(item.children){
+            nodeItem.children = translate(item.children);
+        }
+        nodeArr.push(nodeItem)
+    })
+    return nodeArr;
+}
+
 export const translateToMapStruct = (list:Array<Department>):Map<string,Department> => {
     const result = new Map();
     function traverse(nodes) {
