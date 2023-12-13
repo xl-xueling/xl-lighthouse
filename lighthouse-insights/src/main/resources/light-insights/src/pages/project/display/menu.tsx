@@ -23,7 +23,9 @@ export default function ProjectMenu({structure,callback}:{structure:Array<ArcoTr
         items?.map((item) => {
             if (Array.isArray(item.children) && item.children.length > 0) {
                 return (
-                    <Menu.SubMenu key={item.key} title={<><CiViewTable style={{marginRight:'16px'}}/>{item.title}</>}>
+                    <Menu.SubMenu key={item.key} title={
+                        <span style={{display:"inline-flex",alignItems:"center"}}><CiViewTable style={{marginRight:'10px'}}/>{item.title}</span>
+                    }>
                         {renderMenuItems(item.children)}
                     </Menu.SubMenu>
                 );
