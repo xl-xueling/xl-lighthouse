@@ -104,7 +104,7 @@ export interface Stat {
     group?:Group;
     project?:Project;
     dimensArray?:Array<string>;
-    customConfig?:{datepickerConfig:DatePickerConfigParam,filterConfig:Array<FilterConfigParam>}
+    renderConfig?:{datepicker:DatePickerConfigParam,filters:Array<FilterConfigParam>}
 }
 
 export interface StatPagination extends Stat {
