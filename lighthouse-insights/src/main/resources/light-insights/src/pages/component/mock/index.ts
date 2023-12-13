@@ -5,10 +5,25 @@ import setupMock from '@/utils/setupMock';
 import {Project, Stat} from "@/types/insights-web";
 import {_Mock_project1} from "@/pages/project/mock";
 import {_Mock_user1, _Mock_user2, _Mock_user3} from "@/pages/user/mock";
-import {CustomComponent} from "@/types/insights-common";
+import {FilterComponent} from "@/types/insights-common";
 
-const _Mock_component1:CustomComponent = Mock.mock({
+const _Mock_component1:FilterComponent = Mock.mock({
     id:1,
+    renderType:5,
+    config: [
+        {
+            label:'山东',
+            value:'101',
+        },
+        {
+            label:'北京',
+            value:'102',
+        }
+    ]
+});
+
+const _Mock_component2:FilterComponent = Mock.mock({
+    id:2,
     renderType:5,
     config: [
         {
@@ -27,12 +42,24 @@ setupMock({
     setup: () => {
         Mock.mock(new RegExp('/api/v1/component/queryByIds'), (params) => {
             console.log("receive param is:" + JSON.stringify(params));
-            const componentData: Record<number, CustomComponent> = {};
+            const componentData: Record<number, FilterComponent> = {};
             componentData[1] = _Mock_component1;
             return {
                 code: '0',
                 message: 'success',
                 data: componentData
+            };
+        });
+
+        Mock.mock(new RegExp('/api/v1/component/list'), (params) => {
+            console.log("receive query params 2,params:" + JSON.stringify(params));
+            return {
+                code:0,
+                message:'success',
+                data:{
+                    list: [_Mock_component1,_Mock_component2],
+                    total: 100,
+                },
             };
         });
     }

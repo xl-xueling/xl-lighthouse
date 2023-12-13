@@ -10,6 +10,7 @@ import styles from "@/pages/stat/display/style/index.module.less";
 import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
 import {DatePicker} from "@arco-design/web-react";
 import {translateToTreeNodes} from "@/pages/department/common";
+const { useForm } = Form;
 
 
 export default function SearchForm({statInfo}:{statInfo:Stat}) {
@@ -45,10 +46,21 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
         }
     }
 
+    const [form] = useForm();
+
+    const handleSubmit = () => {
+        const values = form.getFieldsValue();
+        console.log("values is:" + JSON.stringify(values));
+    };
+
+    const handleReset = () => {
+        form.resetFields();
+    };
 
     return (
         <div className={styles['search-form-wrapper']}>
         <Form
+            form={form}
             size={"small"}
             className={styles['search-form']}
             labelAlign="left"
@@ -57,7 +69,7 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
         >
             <Row gutter={24}>
                 <Col span={12}>
-                    <Form.Item label={'Date'}>
+                    <Form.Item label={'Date'} field={"date"}>
                         {getDatePicker(datePickerConfig)}
                     </Form.Item>
                 </Col>
@@ -65,7 +77,7 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
                     filtersConfig.map((option,index) => {
                         return (
                             <Col span={12} key={index}>
-                                <Form.Item label={option.label}>
+                                <Form.Item label={option.label} field={option.dimens}>
                                     <TreeSelect
                                         placeholder={"Search " + option.dimens}
                                         multiple={true}
@@ -80,10 +92,10 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
             </Row>
         </Form>
             <div className={styles['right-button']}>
-                <Button type="primary" icon={<IconSearch />} >
+                <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>
                     {'搜索'}
                 </Button>
-                <Button icon={<IconRefresh />} >
+                <Button icon={<IconRefresh />}  onClick={handleReset}>
                     {'重置'}
                 </Button>
             </div>

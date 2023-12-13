@@ -7,6 +7,7 @@ import BasicInfo from "@/pages/stat/display/basic";
 import {PrivilegeEnum, Project, Stat} from "@/types/insights-web";
 import {requestQueryByIds} from "@/api/stat";
 import {requestPrivilegeCheck} from "@/api/privilege";
+import FilterPanel from "@/pages/stat/display/filter/filter_panel";
 const { Row, Col } = Grid;
 
 export default function StatDisplayMode1({statId = 0}) {
@@ -76,6 +77,8 @@ export default function StatDisplayMode1({statId = 0}) {
                 </Row>
                 <BasicInfo statInfo={statInfo}/>
             </Card>
+
+            <FilterPanel />
         </Spin>
     );
 }
