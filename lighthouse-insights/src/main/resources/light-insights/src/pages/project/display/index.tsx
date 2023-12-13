@@ -74,22 +74,41 @@ export default function ProjectDisplay() {
     },[])
 
     return (
-        <Spin loading={loading} style={{display:'block'}}>
-            <Space size={16} direction="vertical" style={{ width: '100%'}}>
-                <Card>
-                    <DisplayHeader projectInfo={projectInfo}/>
-                </Card>
-                <div className={styles.wrapper}>
-                <Space size={16} direction="vertical" className={styles.left}>
-                    <Row>
+        // <Spin loading={loading} style={{display:'block'}}>
+        //     <Space size={16} direction="vertical" style={{ width: '100%'}}>
+        //         <Card>
+        //             <DisplayHeader projectInfo={projectInfo}/>
+        //         </Card>
+        //         <div className={styles.wrapper}>
+        //         <Space size={16} direction="vertical" className={styles.left}>
+        //             <Row>
+        //                 <ProjectMenu structure={projectInfo?.structure} callback={menuCallback} />
+        //             </Row>
+        //         </Space>
+        //         <Space className={styles.right} size={16} direction="vertical">
+        //             <StatDisplayMode1 statId={selectedStatId}/>
+        //         </Space>
+        //     </div>
+        //     </Space>
+        // </Spin>
+
+
+    <Spin loading={loading} style={{display:'block'}}>
+        <Space size={16} direction="vertical" style={{ width: '100%'}}>
+            <Card>
+                <DisplayHeader projectInfo={projectInfo}/>
+            </Card>
+            <div>
+                <Row gutter={20}>
+                    <Col span={5}>
                         <ProjectMenu structure={projectInfo?.structure} callback={menuCallback} />
-                    </Row>
-                </Space>
-                <Space className={styles.right} size={16} direction="vertical">
-                    <StatDisplayMode1 statId={selectedStatId}/>
-                </Space>
+                    </Col>
+                    <Col span={19}>
+                        <StatDisplayMode1 statId={selectedStatId}/>
+                    </Col>
+                </Row>
             </div>
-            </Space>
-        </Spin>
+        </Space>
+    </Spin>
     );
 }

@@ -54,7 +54,7 @@ export default function StatDisplayMode1({statId = 0}) {
     ,[statId])
 
     return (
-        <Spin loading={loading}>
+        <>
             <Card>
                 <Row style={{marginBottom:'15px'}}>
                     <Col span={12}>
@@ -77,8 +77,7 @@ export default function StatDisplayMode1({statId = 0}) {
                 </Row>
                 <BasicInfo statInfo={statInfo}/>
             </Card>
-
-            <FilterPanel />
-        </Spin>
+            {/*<FilterPanel />*/}
+        </>
     );
 }
