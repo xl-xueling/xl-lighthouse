@@ -123,24 +123,9 @@ export default function ProjectManage() {
             icon: <IconFile />,
         },
         {
-            title: '内容管理',
+            title: '权限管理',
             key: 'Content Statistic',
             icon: <IconStorage />,
-        },
-        {
-            title: '内容管理',
-            key: 'Advanced Management',
-            icon: <IconSettings />,
-        },
-        {
-            title: '内容管理',
-            key: 'Online Promotion',
-            icon: <IconMobile />,
-        },
-        {
-            title: '内容管理',
-            key: 'Marketing',
-            icon: <IconFire />,
         },
     ];
 
@@ -157,25 +142,25 @@ export default function ProjectManage() {
           <div className={styles['layout-left-side']}>
               <Space size={15} direction="vertical" style={{width:'100%'}}>
                   <ProjectManageMenu structure={projectInfo?.structure} callback={menuCallback} />
-                  {/*<Card>*/}
-                  {/*    <div style={{ display: 'flex', justifyContent: 'space-between' }}>*/}
-                  {/*        <Typography.Title heading={6}>*/}
-                  {/*            {"工程管理"}*/}
-                  {/*        </Typography.Title>*/}
-                  {/*        <Link>{t['workplace.seeMore']}</Link>*/}
-                  {/*    </div>*/}
-                  {/*    <div className={styles.shortcuts}>*/}
-                  {/*        {shortcuts.map((shortcut) => (*/}
-                  {/*            <div*/}
-                  {/*                className={styles.item}*/}
-                  {/*                key={shortcut.key}*/}
-                  {/*            >*/}
-                  {/*                <div className={styles.icon}>{shortcut.icon}</div>*/}
-                  {/*                <div className={styles.title}>{shortcut.title}</div>*/}
-                  {/*            </div>*/}
-                  {/*        ))}*/}
-                  {/*    </div>*/}
-                  {/*</Card>*/}
+                  <Card>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <Typography.Title heading={6}>
+                              {"工程管理"}
+                          </Typography.Title>
+                          <Link>{t['workplace.seeMore']}</Link>
+                      </div>
+                      <div className={styles.shortcuts}>
+                          {shortcuts.map((shortcut) => (
+                              <div
+                                  className={styles.item}
+                                  key={shortcut.key}
+                              >
+                                  <div className={styles.icon}>{shortcut.icon}</div>
+                                  <div className={styles.title}>{shortcut.title}</div>
+                              </div>
+                          ))}
+                      </div>
+                  </Card>
                   {/*<Card>*/}
                   {/*    <div style={{ display: 'flex', justifyContent: 'space-between' }}>*/}
                   {/*        <Typography.Title heading={6}>*/}
