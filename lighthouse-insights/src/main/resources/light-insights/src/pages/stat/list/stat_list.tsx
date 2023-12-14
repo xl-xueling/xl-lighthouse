@@ -13,9 +13,9 @@ import {requestList} from "@/api/stat";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {ResultData} from "@/types/insights-common";
 import {getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
-import {requestFavoriteProject, requestUnFavoriteProject} from "@/api/favorites";
 import Detail from "@/pages/stat/list/detail";
 import {requestQueryByIds} from "@/api/user";
+import StatUpdateModal from "@/pages/stat/update";
 
 export default function StatisticalListPanel({formParams,from = null}) {
     const t = useLocale(locale);
@@ -23,18 +23,21 @@ export default function StatisticalListPanel({formParams,from = null}) {
 
     const [listData,setListData] = useState<Array<StatPagination>>([]);
     const [detailVisible, setDetailVisible] = React.useState(false);
-    const [selectedItem,setSelectedItem] = useState<StatPagination>(null);
+    const [updateModalVisible,setUpdateModalVisible] = React.useState(false);
+    const [currentItem,setCurrentItem] = useState<Stat>(null);
 
     const tableCallback = async (record, type) => {
-        if(type == 'detail'){
-            setSelectedItem(record);
+        if(type == 'update'){
+            setCurrentItem(record);
+            setUpdateModalVisible(true);
+        }else if(type == 'detail'){
+            setCurrentItem(record);
             setDetailVisible(!detailVisible);
         }
     };
 
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
-    const [favoriteIds,setFavoriteIds] = useState<Array<number>>([]);
-    const columns = useMemo(() => (from && from == 'group-manage') ? getColumnsOfManage(t, tableCallback) : getColumns(t, favoriteIds,tableCallback), [t,favoriteIds]);
+    const columns = useMemo(() => (from && from == 'group-manage') ? getColumnsOfManage(t, tableCallback) : getColumns(t,tableCallback), [t]);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: true,
@@ -115,7 +118,8 @@ export default function StatisticalListPanel({formParams,from = null}) {
                onChange={onChangeTable}
                pagination={pagination}
                loading={loading}/>
-            {detailVisible && <Detail statInfo={selectedItem} onClose={() => setDetailVisible(false)}/>}
+            {detailVisible && <Detail statInfo={currentItem} onClose={() => setDetailVisible(false)}/>}
+            {updateModalVisible && <StatUpdateModal statInfo={currentItem} onClose={() => setDetailVisible(false)} />}
         </Card>
     );
 }

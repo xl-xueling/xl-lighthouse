@@ -70,6 +70,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
             render: (_, record) => (
                 <Space size={16} direction="horizontal">
                     <Button
+                        onClick={() => {callback(record,"update")}}
                         type="secondary"
                         size="mini">
                         {t['statList.table.operations.update']}
@@ -105,7 +106,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
 }
 
 
-export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
 
     return [
         {
