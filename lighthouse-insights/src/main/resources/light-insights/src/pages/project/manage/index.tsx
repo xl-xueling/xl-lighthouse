@@ -5,7 +5,7 @@ import {
     Breadcrumb,
     Button,
     Card,
-    Descriptions,
+    Descriptions, Divider,
     Link,
     Skeleton,
     Space,
@@ -21,13 +21,16 @@ import {PrivilegeEnum, Project} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {requestQueryByIds} from "@/api/project";
 import ProjectManageMenu from "@/pages/project/manage/menu";
-import {IconHome} from "@arco-design/web-react/icon";
+import {IconFile, IconFire, IconHome, IconMobile, IconSettings, IconStorage} from "@arco-design/web-react/icon";
 import Announcement from "@/pages/dashboard/workplace/announcement";
+import useLocale from "@/utils/useLocale";
+import locale from "@/pages/metricset/manage/locale";
 const BreadcrumbItem = Breadcrumb.Item;
 
 
 export default function ProjectManage() {
 
+    const t = useLocale(locale);
   const [groupId,setGroupId] = useState<number>(null);
 
   const [showAddPanel, setShowAddPanel] = useState(false);
@@ -93,6 +96,7 @@ export default function ProjectManage() {
 
     useEffect(() => {
         fetchData().then();
+        setGroupId(1);
     },[])
 
     const data = [
@@ -111,14 +115,61 @@ export default function ProjectManage() {
 
     ];
 
+    const shortcuts = [
+        {
+            title: '创建统计组',
+            key: 'Content Management',
+            icon: <IconFile />,
+        },
+        {
+            title: '内容管理',
+            key: 'Content Statistic',
+            icon: <IconStorage />,
+        },
+        {
+            title: '内容管理',
+            key: 'Advanced Management',
+            icon: <IconSettings />,
+        },
+        {
+            title: '内容管理',
+            key: 'Online Promotion',
+            icon: <IconMobile />,
+        },
+        {
+            title: '内容管理',
+            key: 'Marketing',
+            icon: <IconFire />,
+        },
+    ];
+
+    const recentShortcuts = [
+        {
+            title: '内容管理',
+            key: 'Content Statistic',
+            icon: <IconStorage />,
+        },
+        {
+            title: '内容管理',
+            key: 'Content Management',
+            icon: <IconFile />,
+        },
+        {
+            title: '内容管理',
+            key: 'Advanced Management',
+            icon: <IconSettings />,
+        },
+    ];
+
   return (
       <>
-      {/*<Breadcrumb style={{ fontSize: 12,marginBottom:'15px' }}>*/}
-      {/*    <BreadcrumbItem>*/}
-      {/*        <IconHome />*/}
-      {/*    </BreadcrumbItem>*/}
-      {/*    <BreadcrumbItem>工程管理</BreadcrumbItem>*/}
-      {/*</Breadcrumb>*/}
+          {/*<Breadcrumb style={{ fontSize: 11,marginBottom:'8px' }}>*/}
+          {/*    <BreadcrumbItem>*/}
+          {/*        <IconHome />*/}
+          {/*    </BreadcrumbItem>*/}
+          {/*    <BreadcrumbItem>工程管理</BreadcrumbItem>*/}
+          {/*</Breadcrumb>*/}
+
       <div className={styles.layout}>
           <div className={styles['layout-left-side']}>
               <Space size={15} direction="vertical" style={{width:'100%'}}>
@@ -126,7 +177,26 @@ export default function ProjectManage() {
                   <Card>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Typography.Title heading={6}>
-                              详情
+                              {"工程管理"}
+                          </Typography.Title>
+                          <Link>{t['workplace.seeMore']}</Link>
+                      </div>
+                      <div className={styles.shortcuts}>
+                          {shortcuts.map((shortcut) => (
+                              <div
+                                  className={styles.item}
+                                  key={shortcut.key}
+                              >
+                                  <div className={styles.icon}>{shortcut.icon}</div>
+                                  <div className={styles.title}>{shortcut.title}</div>
+                              </div>
+                          ))}
+                      </div>
+                  </Card>
+                  <Card>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <Typography.Title heading={6}>
+                              {"描述信息"}
                           </Typography.Title>
                       </div>
                       <div>
@@ -137,8 +207,11 @@ export default function ProjectManage() {
                   </Card>
               </Space>
           </div>
-
-          {showManagePanel && <GroupManagePanel groupId={groupId}/>}
+          <div className={styles['layout-content']}>
+              <Card>
+                  <GroupManagePanel groupId={groupId}/>
+              </Card>
+          </div>
 
           {/*{showAddPanel && <GroupAddPanel onClose={() => setShowAddPanel(false)}/>}*/}
       </div>

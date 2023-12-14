@@ -55,8 +55,7 @@ export default function GroupManagePanel({groupId}) {
     }
 
     return (
-    <div className={styles['layout-content']}>
-        <div className={styles['manage-panel']}>
+        <>
             <Tabs
                 type="line"
                 extra={
@@ -114,7 +113,6 @@ export default function GroupManagePanel({groupId}) {
             </Tabs>
             {showStatAddPanel && <StatAddPanel onClose={() => setShowsStatAddPanel(false)}/>}
             {showGroupEditPanel && <GroupEditPanel groupId={'1'} onClose={() => setShowGroupEditPanel(false)}/>}
-        </div>
-    </div>);
+        </>);
 
 }
