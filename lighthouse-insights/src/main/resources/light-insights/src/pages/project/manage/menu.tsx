@@ -20,6 +20,8 @@ import {RiAppsLine} from "react-icons/ri";
 
 export default function ProjectManageMenu({structure,callback}:{structure:Array<ArcoTreeNode>,callback:(id: string) => Promise<void>}) {
 
+    const [defaultOpenKeys,setDefaultOpenKeys] = useState<Array<number>>([]);
+
     const renderMenuItems = (items) => {
         const levels = [1,2];
         return items?.filter(x => levels.includes(x.level)).map((item) => {
@@ -32,15 +34,19 @@ export default function ProjectManageMenu({structure,callback}:{structure:Array<
                     </Menu.SubMenu>
                 );
             }
-            return <Menu.Item key={item.key}><CiViewTable style={{marginRight:'10px'}}/>{item.title}</Menu.Item>;
+            return <Menu.Item key={item.key}><span style={{display:"inline-flex",alignItems:"center"}}><CiViewTable style={{marginRight:'10px'}}/>{item.title}</span></Menu.Item>;
         });
     }
+
+    useEffect(() => {
+        console.log("open keys.")
+    },[])
 
 
     return (
         <>
             <Menu
-                style={{height: 'calc(100% - 50px)' ,minHeight:'400px',userSelect:"none"}}
+                autoOpen={true} style={{height:'400px',userSelect:"none",overflow: "auto"}}
             >
 
                 {
