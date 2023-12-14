@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from "./style/index.module.less";
-import {Grid, Input, Space, Tree} from "@arco-design/web-react";
+import {Grid, Input, Skeleton, Space, Tree} from "@arco-design/web-react";
 import Overview from "@/pages/dashboard/workplace/overview";
 import PopularContents from "@/pages/dashboard/workplace/popular-contents";
 import ContentPercentage from "@/pages/dashboard/workplace/content-percentage";
@@ -37,9 +37,20 @@ export default function ProjectMenu({structure,callback}:{structure:Array<ArcoTr
         <>
     <Menu
             style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}
-            onClickMenuItem={callback}
         >
-        {renderMenuItems(structure)}
+        {
+            structure ?
+                renderMenuItems(structure)
+                :
+                <Skeleton
+                    text={{
+                        rows:5,
+                        width: ['100%','100%','100%','100%','60%'],
+                    }}
+                    animation
+                />
+        }
+
         </Menu>
         </>
     );
