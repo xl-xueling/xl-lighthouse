@@ -80,12 +80,12 @@ export default function GroupManagePanel({groupId}) {
                 <TabPane
                     key='1'
                     title={
-                        <span>
+                        <span style={{display:"inline-flex",alignItems:"center"}}>
                             <IconTags style={{ marginRight: 6 }} />
                             Statistic Items
                         </span>
                     }>
-                    <div className={styles['search-form-wrapper']} style={{ marginTop:'10px',marginLeft:'20px'}}>
+                    <div className={styles['search-form-wrapper']} style={{marginLeft:'20px'}}>
                         <Form
                             className={styles['search-form']}
                             labelAlign="left"
@@ -105,13 +105,13 @@ export default function GroupManagePanel({groupId}) {
                     </div>
                     <StatisticalListPanel formParams={formParams} from={"group-manage"} />
                 </TabPane>
-                {/*<TabPane key='3' title={*/}
-                {/*    <span style={{display:"inline-flex",alignItems:"center"}}>*/}
-                {/*        <CiViewTable style={{ marginRight: 6 }} />*/}
-                {/*        Group Information*/}
-                {/*  </span>}>*/}
-                {/*    <GroupBasicPanel groupId={groupId}/>*/}
-                {/*</TabPane>*/}
+                <TabPane key='3' title={
+                    <span style={{display:"inline-flex",alignItems:"center"}}>
+                        <CiViewTable style={{ marginRight: 6 }} />
+                        Group Information
+                  </span>}>
+                    <GroupBasicPanel groupId={groupId}/>
+                </TabPane>
             </Tabs>
             {showStatAddPanel && <StatAddPanel onClose={() => setShowsStatAddPanel(false)}/>}
             {showGroupEditPanel && <GroupEditPanel groupId={'1'} onClose={() => setShowGroupEditPanel(false)}/>}

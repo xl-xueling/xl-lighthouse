@@ -119,7 +119,7 @@ export default function StatisticalListPanel({formParams,from = null}) {
                pagination={pagination}
                loading={loading}/>
             {detailVisible && <Detail statInfo={currentItem} onClose={() => setDetailVisible(false)}/>}
-            {updateModalVisible && <StatUpdateModal statInfo={currentItem} onClose={() => setDetailVisible(false)} />}
+            {updateModalVisible && <StatUpdateModal statInfo={currentItem} onClose={() => setUpdateModalVisible(false)} />}
         </Card>
     );
 }
