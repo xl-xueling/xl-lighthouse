@@ -1,42 +1,32 @@
 import React, {useEffect, useState} from 'react';
+import {useParams} from "react-router-dom";
 import styles from './style/index.module.less';
-import ProjectTree from "../common/project-tree";
 import {
     Breadcrumb,
-    Button,
     Card,
-    Descriptions, Divider,
     Link,
-    Skeleton,
     Space,
-    Tabs,
-    Tag,
     Typography
 } from "@arco-design/web-react";
 import GroupManagePanel from "@/pages/group/manage";
-import {useParams} from "react-router-dom";
-import ProjectMenu from "@/pages/project/display/menu";
 import {PrivilegeEnum, Project} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {requestQueryByIds} from "@/api/project";
 import ProjectManageMenu from "@/pages/project/manage/menu";
-import {IconFile, IconFire, IconHome, IconMobile, IconSettings, IconStorage} from "@arco-design/web-react/icon";
-import Announcement from "@/pages/dashboard/workplace/announcement";
+import {IconHome} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 const BreadcrumbItem = Breadcrumb.Item;
 import { VscGistSecret } from "react-icons/vsc";
-import { LiaUserLockSolid } from "react-icons/lia";
 import {CiViewTable} from "react-icons/ci";
 import GroupCreateModal from "@/pages/group/create/group_create";
 
-
 export default function ProjectManage() {
 
-    const t = useLocale(locale);
+  const t = useLocale(locale);
   const [groupId,setGroupId] = useState<number>(null);
 
-  const [showGroupAddPanel, setShowGroupAddPanel] = useState(false);
+  const [showGroupCreatePanel, setShowGroupCreatePanel] = useState(false);
 
   const [showManagePanel, setShowManagePanel] = useState(false);
 
@@ -47,7 +37,6 @@ export default function ProjectManage() {
     const fetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
         const proc = async () => {
             const result = await requestQueryByIds({ids:[id]});
-            console.log("result is:" + JSON.stringify(result));
             resolve(result.data[id]);
         }
         proc().then();
@@ -66,6 +55,10 @@ export default function ProjectManage() {
     const menuCallback = async (id) => {
         setGroupId(Number(id));
         setShowManagePanel(true);
+    }
+
+    const handlerCreateGroup = () => {
+        setShowGroupCreatePanel(true);
     }
 
     const fetchData = async (): Promise<void> => {
@@ -154,15 +147,14 @@ export default function ProjectManage() {
                           <Link>{t['workplace.seeMore']}</Link>
                       </div>
                       <div className={styles.shortcuts}>
-                          {shortcuts.map((shortcut) => (
-                              <div
-                                  className={styles.item}
-                                  key={shortcut.key}
-                              >
-                                  <div className={styles.icon}>{shortcut.icon}</div>
-                                  <div className={styles.title}>{shortcut.title}</div>
-                              </div>
-                          ))}
+                          <div className={styles.item} onClick={handlerCreateGroup}>
+                              <div className={styles.icon}><CiViewTable /></div>
+                              <div className={styles.title}>创建统计组</div>
+                          </div>
+                          <div className={styles.item}>
+                              <div className={styles.icon}><VscGistSecret /></div>
+                              <div className={styles.title}>权限管理</div>
+                          </div>
                       </div>
                   </Card>
                   {/*<Card>*/}
@@ -185,7 +177,7 @@ export default function ProjectManage() {
               </Card>
           </div>
 
-          {showGroupAddPanel && <GroupCreateModal onClose={() => setShowGroupAddPanel(false)}/>}
+          {showGroupCreatePanel && <GroupCreateModal onClose={() => setShowGroupCreatePanel(false)}/>}
       </div>
       </>
   );
