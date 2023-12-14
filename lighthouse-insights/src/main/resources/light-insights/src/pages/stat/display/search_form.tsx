@@ -64,6 +64,7 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
             size={"small"}
             className={styles['search-form']}
             labelAlign="left"
+            colon={": "}
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 19 }}
         >
@@ -79,7 +80,7 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
                             <Col span={12} key={index}>
                                 <Form.Item label={option.label} field={option.dimens}>
                                     <TreeSelect
-                                        placeholder={"Search " + option.dimens}
+                                        placeholder={"Please Select"}
                                         multiple={true}
                                         allowClear={true}
                                         treeData={translateToTreeNodes(option.configData)}
