@@ -13,7 +13,6 @@ import {
     Tag,
     Typography
 } from "@arco-design/web-react";
-import GroupAddPanel from "@/pages/group/add/group_add";
 import GroupManagePanel from "@/pages/group/manage";
 import {useParams} from "react-router-dom";
 import ProjectMenu from "@/pages/project/display/menu";

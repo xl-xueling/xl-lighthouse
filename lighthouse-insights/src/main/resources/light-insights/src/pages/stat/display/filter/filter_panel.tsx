@@ -20,9 +20,6 @@ import {
 } from "@arco-design/web-react";
 const FormItem = Form.Item;
 import styles from "./style/index.module.less";
-import ProjectTree from "@/pages/project/common/project-tree";
-import GroupManagePanel from "@/pages/group/manage";
-import GroupAddPanel from "@/pages/group/add/group_add";
 import {FilterComponent, RenderTypeEnum} from "@/types/insights-common";
 import {requestList} from "@/api/component";
 import {translateToTreeNodes} from "@/pages/department/common";
