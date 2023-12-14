@@ -111,7 +111,7 @@ export default function StatisticalListPanel({formParams,from = null}) {
 
 
     return (
-        <Card>
+        <>
         <Table border={false}
                size={"small"} columns={columns}
                data={listData}
@@ -120,6 +120,6 @@ export default function StatisticalListPanel({formParams,from = null}) {
                loading={loading}/>
             {detailVisible && <Detail statInfo={currentItem} onClose={() => setDetailVisible(false)}/>}
             {updateModalVisible && <StatUpdateModal statInfo={currentItem} onClose={() => setUpdateModalVisible(false)} />}
-        </Card>
-    );
+        </>
+        );
 }
