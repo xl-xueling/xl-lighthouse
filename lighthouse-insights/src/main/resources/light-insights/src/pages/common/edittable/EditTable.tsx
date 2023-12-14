@@ -25,11 +25,9 @@ export interface EditTableColumnProps extends TableColumnProps {
 }
 
 
-const EditTable = React.forwardRef( (props:{columnProps,columnsData,editmode},ref) => {
-
+const EditTable = React.forwardRef( (props:{columnProps,columnsData},ref) => {
     const columnProps = props.columnProps;
     const columnsData = props.columnsData;
-    const editmode = props.editmode || false;
     const tableRef = useRef(null);
     const [count, setCount] = useState(5);
     const [data,setData] = useState(columnsData);
@@ -72,7 +70,7 @@ const EditTable = React.forwardRef( (props:{columnProps,columnsData,editmode},re
     return (
             <Table
                 ref={tableRef}
-                style={{minHeight: editmode ? '200px' : 'auto' }}
+                style={{minHeight: '200px'}}
                 size={"mini"}
                 data={data}
                 pagination={false}

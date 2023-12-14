@@ -133,6 +133,7 @@ export default function GroupBasicPanel({groupId}) {
                             <Form
                                 key={formKey}
                                 form={formInstance}
+                                autoComplete={"off"}
                                 className={styles['search-form']}
                                 layout={"vertical"}
                             >
@@ -154,7 +155,7 @@ export default function GroupBasicPanel({groupId}) {
                                             </Typography.Title>
                                         </Grid.Col>
                                     </Grid.Row>
-                                    <EditTable ref={editTableRef} columnProps={columnsProps} editmode={false} columnsData={columnsData}/>
+                                    {/*<EditTable ref={editTableRef} columnProps={columnsProps} columnsData={columnsData}/>*/}
                                 </Form.Item>
                                 <Typography.Title
                                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}

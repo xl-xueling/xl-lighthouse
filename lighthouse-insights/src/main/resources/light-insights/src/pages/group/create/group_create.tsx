@@ -133,6 +133,7 @@ export default function GroupCreateModal({onClose}) {
       >
         <Form
             form={form}
+            autoComplete={"off"}
             className={styles['search-form']}
             layout={"vertical"}>
 
@@ -163,7 +164,7 @@ export default function GroupCreateModal({onClose}) {
               </Grid.Col>
             </Grid.Row>
 
-            {/*<EditTable ref={editTableRef} columns={columnsProps} initData={[]} />*/}
+            <EditTable ref={editTableRef} columnProps={columnsProps} columnsData={[]}/>
           </Form.Item>
 
           <Typography.Title
