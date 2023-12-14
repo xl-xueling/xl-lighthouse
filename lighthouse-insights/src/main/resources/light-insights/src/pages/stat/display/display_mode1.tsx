@@ -76,7 +76,7 @@ export default function StatDisplayMode1({statId = 0}) {
                         <Skeleton
                             text={{
                                 rows:3,
-                                width: ['100%'],
+                                width: ['100%','100%','60%'],
                             }}
                             animation
                         />
