@@ -28,6 +28,7 @@ const BreadcrumbItem = Breadcrumb.Item;
 import { VscGistSecret } from "react-icons/vsc";
 import { LiaUserLockSolid } from "react-icons/lia";
 import {CiViewTable} from "react-icons/ci";
+import GroupCreateModal from "@/pages/group/create/group_create";
 
 
 export default function ProjectManage() {
@@ -35,7 +36,7 @@ export default function ProjectManage() {
     const t = useLocale(locale);
   const [groupId,setGroupId] = useState<number>(null);
 
-  const [showAddPanel, setShowAddPanel] = useState(false);
+  const [showGroupAddPanel, setShowGroupAddPanel] = useState(false);
 
   const [showManagePanel, setShowManagePanel] = useState(false);
 
@@ -45,7 +46,8 @@ export default function ProjectManage() {
 
     const fetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
         const proc = async () => {
-            const result = await requestQueryByIds([id]);
+            const result = await requestQueryByIds({ids:[id]});
+            console.log("result is:" + JSON.stringify(result));
             resolve(result.data[id]);
         }
         proc().then();
@@ -183,7 +185,7 @@ export default function ProjectManage() {
               </Card>
           </div>
 
-          {/*{showAddPanel && <GroupAddPanel onClose={() => setShowAddPanel(false)}/>}*/}
+          {showGroupAddPanel && <GroupCreateModal onClose={() => setShowGroupAddPanel(false)}/>}
       </div>
       </>
   );
