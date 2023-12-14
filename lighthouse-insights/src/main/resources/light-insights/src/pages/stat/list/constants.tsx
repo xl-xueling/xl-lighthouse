@@ -11,11 +11,20 @@ import {
 } from "@arco-design/web-react";
 import React from "react";
 import {IconStar, IconStarFill} from "@arco-design/web-react/icon";
+import {PiLinkSimple} from "react-icons/pi";
 const TabPane = Tabs.TabPane;
 const { Text } = Typography;
 export function getColumnsOfManage(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
 
     return [
+        {
+            title: '',
+            dataIndex: 'binded',
+            headerCellStyle: { width:'20px' },
+            render: (_, record) => {
+                return <Button icon={<PiLinkSimple/>} size={"mini"} shape={"round"} onClick={() => {callback(record, 'binded')}}/>
+            }
+        },
         {
             title: 'ID',
             dataIndex: 'id',
@@ -101,34 +110,10 @@ export function getColumns(t: any,favoriteIds:Array<number>, callback: (record: 
     return [
         {
             title: '',
-            dataIndex: 'favorite',
-            headerCellStyle: { width:'5px' },
+            dataIndex: 'binded',
+            headerCellStyle: { width:'20px' },
             render: (_, record) => {
-                if(favoriteIds?.includes(record.id)){
-                    return <Space size={16} direction="horizontal">
-                        <Popconfirm
-                            focusLock
-                            position={"bl"}
-                            title='Confirm'
-                            content= {t['statList.table.operations.unfavorite.confirm']}
-                            onOk={() => callback(record, 'unFavorite')}
-                        >
-                            <IconStarFill style={{ cursor:"pointer"}}/>
-                        </Popconfirm>
-                    </Space>
-                }else{
-                    return <Space size={16} direction="horizontal">
-                        <Popconfirm
-                            focusLock
-                            position={"bl"}
-                            title='Confirm'
-                            content= {t['statList.table.operations.favorite.confirm']}
-                            onOk={() => callback(record, 'favorite')}
-                        >
-                            <IconStar style={{ cursor:"pointer" }}/>
-                        </Popconfirm>
-                    </Space>
-                }
+                return <Button icon={<PiLinkSimple/>} size={"mini"} shape={"round"} onClick={() => {callback(record, 'binded')}}/>
             }
         },
         {
