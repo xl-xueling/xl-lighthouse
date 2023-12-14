@@ -5,13 +5,11 @@ const FormItem = Form.Item;
 const EditableContext = React.createContext<{ getForm?: () => FormInstance }>({});
 import styles from './style/index.module.less';
 import {Column} from "@/types/insights-web";
-import {stringifyMap, stringifyObj} from "@/utils/util";
 
 
 export enum EditTableComponentEnum {
     INPUT,
     SELECT,
-    ACE_EDITOR,
     BUTTON
 }
 
@@ -25,8 +23,8 @@ export interface EditTableColumnProps extends TableColumnProps {
 }
 
 
-const EditTable = React.forwardRef( (props:{columnProps,columnsData},ref) => {
-    const columnProps = props.columnProps;
+const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
+    const columnsProps = props.columnsProps;
     const columnsData = props.columnsData;
     const tableRef = useRef(null);
     const [count, setCount] = useState(5);
@@ -52,6 +50,7 @@ const EditTable = React.forwardRef( (props:{columnProps,columnsData},ref) => {
         setData(
             data.concat({
                 key: `${count + 1}`,
+                // name: "----",
             })
         );
     }
@@ -68,6 +67,7 @@ const EditTable = React.forwardRef( (props:{columnProps,columnsData},ref) => {
 
 
     return (
+        <div className={styles.edit_table_panel}>
             <Table
                 ref={tableRef}
                 style={{minHeight: '200px'}}
@@ -81,7 +81,7 @@ const EditTable = React.forwardRef( (props:{columnProps,columnsData},ref) => {
                         cell: EditableCell,
                     },
                 }}
-                columns={columnProps.map((column) => {
+                columns={columnsProps.map((column) => {
                     return column.editable
                             ? {
                                 ...column,
@@ -94,6 +94,7 @@ const EditTable = React.forwardRef( (props:{columnProps,columnsData},ref) => {
 
                 )}
             />
+        </div>
     );
 })
 
