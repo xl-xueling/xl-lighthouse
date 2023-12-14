@@ -21,7 +21,7 @@ import {getTextBlenLength, stringifyObj} from "@/utils/util";
 import {requestCreate} from "@/api/group";
 import {Group} from "@/types/insights-web";
 
-export default function GroupAddPanel({onClose}) {
+export default function GroupCreateModal({onClose}) {
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 

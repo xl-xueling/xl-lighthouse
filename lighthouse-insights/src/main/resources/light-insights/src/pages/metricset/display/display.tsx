@@ -1,15 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styles from './style/index.module.less';
 import {Card, Grid, Space, Tabs, Typography} from "@arco-design/web-react";
-import GroupAddPanel from "@/pages/group/add/group_add";
-import GroupManagePanel from "@/pages/group/manage";
 import {useParams} from "react-router-dom";
-import StatDisplayPanel from "@/pages/display/stat/stat_display";
-import StatDisplay from "@/pages/stat/display";
-import SearchForm from "@/pages/stat/display/search_form";
-import ChartPanel from "@/pages/stat/display/chart_panel";
-import BasicInfo from "@/pages/stat/display/basic";
-import ProjectMenu from "@/pages/project/display/menu";
 const { Row, Col } = Grid;
 
 export default function MetricDisplay() {

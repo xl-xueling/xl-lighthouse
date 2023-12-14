@@ -1,18 +1,6 @@
 import {Form, Grid, Input, Message, Modal, Radio, Space, Tabs, Tree, Typography} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
-import locale from "./locale";
-import {Col} from "antd";
-import UsersTransfer from "@/pages/components/transfer/user_transfer";
-import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
-import {IconCaretDown, IconCaretRight} from "@arco-design/web-react/icon";
-import {GrantPrivileges, MetricSet} from "@/types/insights-web";
-import {ResultData} from "@/types/insights-common";
-import {requestGrantPrivilege} from "@/api/privilege";
-import {requestCreate} from "@/api/metricset";
 import styles from "@/pages/project/manage/style/index.module.less";
-import ProjectTree from "@/pages/project/common/project-tree";
-import GroupManagePanel from "@/pages/group/manage";
-import GroupAddPanel from "@/pages/group/add/group_add";
 import React, {useState} from "react";
 
 export default function BindedProject({onClose = null}) {
