@@ -71,7 +71,7 @@ export default function ProjectTree({projectId,editEnable= true
 
     return (
             <Tree
-                style={{width:'100%'}}
+                style={{width:'100%',userSelect:"none"}}
                 ref={treeRef}
                 expandedKeys={expandedKeys}
                 selectedKeys={selectedKeys}
