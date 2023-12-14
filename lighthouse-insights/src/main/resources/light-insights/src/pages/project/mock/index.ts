@@ -56,7 +56,7 @@ const structure = {
 };
 
 export const _Mock_project1  = {
-  id: 101,
+  id: 1,
   'name': '@word() @word() @word()',
   'departmentId|1-2': 0,
   'isPrivate|0-1': 0,

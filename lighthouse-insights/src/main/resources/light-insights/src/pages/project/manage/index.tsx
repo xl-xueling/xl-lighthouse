@@ -60,7 +60,8 @@ export default function ProjectManage() {
     }
 
     const menuCallback = async (id) => {
-        console.log("click id:" + id);
+        setGroupId(Number(id));
+        setShowManagePanel(true);
     }
 
     const fetchData = async (): Promise<void> => {
@@ -77,22 +78,22 @@ export default function ProjectManage() {
         })
     }
 
-  const handlerProcess = (action:string,params:any):void => {
-      switch (action){
-          case 'group-add':{
-              setShowAddPanel(true);
-              break;
-          }
-          case 'selected-group':{
-              setGroupId(params.groupId);
-              setShowManagePanel(true);
-              break;
-          }
-          default:{
-              return;
-          }
-      }
-  }
+  // const handlerProcess = (action:string,params:any):void => {
+  //     switch (action){
+  //         case 'group-add':{
+  //             setShowAddPanel(true);
+  //             break;
+  //         }
+  //         case 'selected-group':{
+  //             setGroupId(params.groupId);
+  //             setShowManagePanel(true);
+  //             break;
+  //         }
+  //         default:{
+  //             return;
+  //         }
+  //     }
+  // }
 
     useEffect(() => {
         fetchData().then();
@@ -191,7 +192,7 @@ export default function ProjectManage() {
           </div>
           <div className={styles['layout-content']}>
               <Card>
-                  {/*<GroupManagePanel groupId={groupId}/>*/}
+                  {showManagePanel && <GroupManagePanel groupId={groupId}/>}
               </Card>
           </div>
 
