@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from "./style/index.module.less";
-import {Grid, Input, Skeleton, Space, Tree} from "@arco-design/web-react";
+import {Button, Grid, Input, Skeleton, Space, Tree} from "@arco-design/web-react";
 import Overview from "@/pages/dashboard/workplace/overview";
 import PopularContents from "@/pages/dashboard/workplace/popular-contents";
 import ContentPercentage from "@/pages/dashboard/workplace/content-percentage";
@@ -40,7 +40,7 @@ export default function ProjectManageMenu({structure,callback}:{structure:Array<
     return (
         <>
             <Menu
-                style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}
+                style={{height: 'calc(100% - 50px)' ,minHeight:'400px',userSelect:"none"}}
             >
                 {
                     structure ?
@@ -54,7 +54,6 @@ export default function ProjectManageMenu({structure,callback}:{structure:Array<
                             animation
                         />
                 }
-
             </Menu>
         </>
     );
