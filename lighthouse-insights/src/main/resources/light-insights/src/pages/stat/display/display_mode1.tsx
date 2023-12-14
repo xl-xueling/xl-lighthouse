@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Grid, Space, Spin, Typography} from "@arco-design/web-react";
+import {Button, Card, Grid, Skeleton, Space, Spin, Typography} from "@arco-design/web-react";
 import {IconTag} from "@arco-design/web-react/icon";
 import SearchForm from "@/pages/stat/display/search_form";
 import ChartPanel from "@/pages/stat/display/chart_panel";
@@ -54,28 +54,54 @@ export default function StatDisplayMode1({statId = 0}) {
     ,[statId])
 
     return (
+
         <>
             <Card>
-                <Row style={{marginBottom:'15px'}}>
-                    <Col span={12}>
-                        <Button icon={<IconTag/>} shape={"circle"} size={"mini"} style={{marginRight:'10px'}}/>
-                        <Typography.Text style={{fontSize:'14px'}}>
-                            {'每分钟uv数据统计'}
-                        </Typography.Text>
-                    </Col>
-                </Row>
-                <Row>
-                    <SearchForm statInfo={statInfo}/>
-                </Row>
+                {
+                    statInfo?
+                        <>
+                            <Row style={{marginBottom:'15px'}}>
+                                <Col span={12}>
+                                    <Button icon={<IconTag/>} shape={"circle"} size={"mini"} style={{marginRight:'10px'}}/>
+                                    <Typography.Text style={{fontSize:'14px'}}>
+                                        {'每分钟uv数据统计'}
+                                    </Typography.Text>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <SearchForm statInfo={statInfo}/>
+                            </Row>
+                        </>
+                        :
+                        <Skeleton
+                            text={{
+                                rows:3,
+                                width: ['100%'],
+                            }}
+                            animation
+                        />
+                }
                 <ChartPanel statInfo={statInfo}/>
             </Card>
             <Card>
-                <Row style={{marginBottom:'15px'}}>
-                    <Typography.Text style={{fontSize:'14px'}}>
-                        {'Metric Information'}
-                    </Typography.Text>
-                </Row>
-                <BasicInfo statInfo={statInfo}/>
+                {
+                    statInfo?
+                <>
+                    <Row style={{marginBottom:'15px'}}>
+                        <Typography.Text style={{fontSize:'14px'}}>
+                            {'Metric Information'}
+                        </Typography.Text>
+                    </Row>
+                    <BasicInfo statInfo={statInfo}/>
+                </>
+                :
+                <Skeleton
+                    text={{
+                        rows:5,
+                        width: ['100%'],
+                    }}
+                    animation
+                />}
             </Card>
             {/*<FilterPanel />*/}
         </>
