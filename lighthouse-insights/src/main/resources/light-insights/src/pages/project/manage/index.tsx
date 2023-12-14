@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styles from './style/index.module.less';
 import ProjectTree from "../common/project-tree";
-import {Space, Tabs,Typography} from "@arco-design/web-react";
+import {Card, Space, Tabs, Typography} from "@arco-design/web-react";
 import GroupAddPanel from "@/pages/group/add/group_add";
 import GroupManagePanel from "@/pages/group/manage";
 import {useParams} from "react-router-dom";
@@ -34,19 +34,17 @@ export default function ProjectManage() {
   }
 
   return (
-    <div style={{ minHeight:500 }}>
       <div className={styles.layout}>
-        <div className={styles['layout-left-side']}>
-            <Space size={24} direction="vertical" className={styles.left}>
-                <ProjectTree projectId={id} filterTypes={[1,2]} handlerProcess={handlerProcess} />
-            </Space>
-        </div>
+          <div className={styles['layout-left-side']}>
+              <Card>
+                  <ProjectTree projectId={id} filterTypes={[1,2]} handlerProcess={handlerProcess} />
+              </Card>
+          </div>
 
           {showManagePanel && <GroupManagePanel groupId={groupId}/>}
 
           {showAddPanel && <GroupAddPanel onClose={() => setShowAddPanel(false)}/>}
       </div>
-    </div>
   );
 }
 
