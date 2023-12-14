@@ -3,44 +3,57 @@ import setupMock from '@/utils/setupMock';
 import {Project} from "@/types/insights-web";
 import {_Mock_user1, _Mock_user2,_Mock_user3} from "@/pages/user/mock";
 
-const structure = [
+const structure = {
+"key":"1",
+"title":"首页uv数据统计",
+"level":1,
+"children":[
   {
     "key":"11",
     "title":"homepage_behavior_stat1",
+    "level":2,
     "children":[
-      {
-        "key":"111",
-        "title":"每分钟_各省份_uv统计",
-      },
-      {
-        "key":"112",
-        "title":"每分钟_各省份_uv统计",
-      },
-      {
-        "key":"113",
-        "title":"每分钟_各省份_uv统计",
-      },
+        {
+          "key":"111",
+          "title":"每分钟_各省份_uv统计",
+          "level":3,
+        },
+        {
+          "key":"112",
+          "title":"每分钟_各省份_uv统计",
+          "level":3,
+        },
+        {
+          "key":"113",
+          "title":"每分钟_各省份_uv统计",
+          "level":3,
+        },
     ]
   },
   {
     "key":"12",
     "title":"homepage_behavior_stat2",
+    "level":2,
     "children":[
-      {
-        "key":"121",
-        "title":"每分钟_各省份_uv统计",
-      },
-      {
-        "key":"122",
-        "title":"每分钟_各省份_uv统计",
-      },
-      {
-        "key":"123",
-        "title":"每分钟_各省份_uv统计",
-      },
-    ]
-  }
-];
+        {
+          "key":"121",
+          "title":"每分钟_各省份_uv统计",
+          "level":3,
+        },
+        {
+          "key":"122",
+          "title":"每分钟_各省份_uv统计",
+          "level":3,
+        },
+        {
+          "key":"123",
+          "title":"每分钟_各省份_uv统计",
+          "level":3,
+        },
+      ]
+   }
+ ]
+};
 
 export const _Mock_project1  = {
   id: 101,

@@ -16,42 +16,46 @@ const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
 import { CiViewTable } from "react-icons/ci";
 import {ArcoTreeNode} from "@/types/insights-web";
+import {RiAppsLine} from "react-icons/ri";
 
-export default function ProjectMenu({structure,callback}:{structure:Array<ArcoTreeNode>,callback:(id: string) => Promise<void>}) {
+export default function ProjectManageMenu({structure,callback}:{structure:Array<ArcoTreeNode>,callback:(id: string) => Promise<void>}) {
 
-    const renderMenuItems = (items) =>
-        items?.map((item) => {
-            if (Array.isArray(item.children) && item.children.length > 0) {
+    const renderMenuItems = (items) => {
+        const levels = [1,2];
+        return items?.filter(x => levels.includes(x.level)).map((item) => {
+            if (Array.isArray(item.children) && item.children.length > 0 && item.children.filter(x => levels.includes(x.level))?.length > 0) {
                 return (
                     <Menu.SubMenu key={item.key} title={
-                        <span style={{display:"inline-flex",alignItems:"center"}}><CiViewTable style={{marginRight:'10px'}}/>{item.title}</span>
+                        <span style={{display:"inline-flex",alignItems:"center"}}><RiAppsLine style={{marginRight:'10px'}}/>{item.title}</span>
                     }>
                         {renderMenuItems(item.children)}
                     </Menu.SubMenu>
                 );
             }
-            return <Menu.Item key={item.key}><IconTag/>{item.title}</Menu.Item>;
+            return <Menu.Item key={item.key}><CiViewTable style={{marginRight:'10px'}}/>{item.title}</Menu.Item>;
         });
+    }
+
 
     return (
         <>
-    <Menu
-            style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}
-        >
-        {
-            structure ?
-                renderMenuItems(structure["children"])
-                :
-                <Skeleton
-                    text={{
-                        rows:5,
-                        width: ['100%','100%','100%','100%','60%'],
-                    }}
-                    animation
-                />
-        }
+            <Menu
+                style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}
+            >
+                {
+                    structure ?
+                        renderMenuItems([structure])
+                        :
+                        <Skeleton
+                            text={{
+                                rows:5,
+                                width: ['100%','100%','100%','100%','60%'],
+                            }}
+                            animation
+                        />
+                }
 
-        </Menu>
+            </Menu>
         </>
     );
 }
