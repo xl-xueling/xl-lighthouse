@@ -26,6 +26,9 @@ import Announcement from "@/pages/dashboard/workplace/announcement";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 const BreadcrumbItem = Breadcrumb.Item;
+import { VscGistSecret } from "react-icons/vsc";
+import { LiaUserLockSolid } from "react-icons/lia";
+import {CiViewTable} from "react-icons/ci";
 
 
 export default function ProjectManage() {
@@ -120,12 +123,12 @@ export default function ProjectManage() {
         {
             title: '创建统计组',
             key: 'Content Management',
-            icon: <IconFile />,
+            icon: <CiViewTable />,
         },
         {
             title: '权限管理',
             key: 'Content Statistic',
-            icon: <IconStorage />,
+            icon: <VscGistSecret />,
         },
     ];
 
