@@ -24,7 +24,7 @@ import ProjectManageMenu from "@/pages/project/manage/menu";
 import {IconFile, IconFire, IconHome, IconMobile, IconSettings, IconStorage} from "@arco-design/web-react/icon";
 import Announcement from "@/pages/dashboard/workplace/announcement";
 import useLocale from "@/utils/useLocale";
-import locale from "@/pages/metricset/manage/locale";
+import locale from "./locale";
 const BreadcrumbItem = Breadcrumb.Item;
 
 
@@ -143,73 +143,55 @@ export default function ProjectManage() {
         },
     ];
 
-    const recentShortcuts = [
-        {
-            title: '内容管理',
-            key: 'Content Statistic',
-            icon: <IconStorage />,
-        },
-        {
-            title: '内容管理',
-            key: 'Content Management',
-            icon: <IconFile />,
-        },
-        {
-            title: '内容管理',
-            key: 'Advanced Management',
-            icon: <IconSettings />,
-        },
-    ];
-
   return (
       <>
-          {/*<Breadcrumb style={{ fontSize: 11,marginBottom:'8px' }}>*/}
-          {/*    <BreadcrumbItem>*/}
-          {/*        <IconHome />*/}
-          {/*    </BreadcrumbItem>*/}
-          {/*    <BreadcrumbItem>工程管理</BreadcrumbItem>*/}
-          {/*</Breadcrumb>*/}
+      <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+          <BreadcrumbItem>
+              <IconHome />
+          </BreadcrumbItem>
+          <BreadcrumbItem style={{fontWeight:20}}>{t['projectManage.breadcrumbItem']}</BreadcrumbItem>
+      </Breadcrumb>
 
       <div className={styles.layout}>
           <div className={styles['layout-left-side']}>
               <Space size={15} direction="vertical" style={{width:'100%'}}>
                   <ProjectManageMenu structure={projectInfo?.structure} callback={menuCallback} />
-                  <Card>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Typography.Title heading={6}>
-                              {"工程管理"}
-                          </Typography.Title>
-                          <Link>{t['workplace.seeMore']}</Link>
-                      </div>
-                      <div className={styles.shortcuts}>
-                          {shortcuts.map((shortcut) => (
-                              <div
-                                  className={styles.item}
-                                  key={shortcut.key}
-                              >
-                                  <div className={styles.icon}>{shortcut.icon}</div>
-                                  <div className={styles.title}>{shortcut.title}</div>
-                              </div>
-                          ))}
-                      </div>
-                  </Card>
-                  <Card>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Typography.Title heading={6}>
-                              {"描述信息"}
-                          </Typography.Title>
-                      </div>
-                      <div>
-                          <Descriptions colon=' :' layout='horizontal'
-                                        style={{whiteSpace:"normal"}}
-                                        data={data} column={1}/>
-                      </div>
-                  </Card>
+                  {/*<Card>*/}
+                  {/*    <div style={{ display: 'flex', justifyContent: 'space-between' }}>*/}
+                  {/*        <Typography.Title heading={6}>*/}
+                  {/*            {"工程管理"}*/}
+                  {/*        </Typography.Title>*/}
+                  {/*        <Link>{t['workplace.seeMore']}</Link>*/}
+                  {/*    </div>*/}
+                  {/*    <div className={styles.shortcuts}>*/}
+                  {/*        {shortcuts.map((shortcut) => (*/}
+                  {/*            <div*/}
+                  {/*                className={styles.item}*/}
+                  {/*                key={shortcut.key}*/}
+                  {/*            >*/}
+                  {/*                <div className={styles.icon}>{shortcut.icon}</div>*/}
+                  {/*                <div className={styles.title}>{shortcut.title}</div>*/}
+                  {/*            </div>*/}
+                  {/*        ))}*/}
+                  {/*    </div>*/}
+                  {/*</Card>*/}
+                  {/*<Card>*/}
+                  {/*    <div style={{ display: 'flex', justifyContent: 'space-between' }}>*/}
+                  {/*        <Typography.Title heading={6}>*/}
+                  {/*            {"描述信息"}*/}
+                  {/*        </Typography.Title>*/}
+                  {/*    </div>*/}
+                  {/*    <div>*/}
+                  {/*        <Descriptions colon=' :' layout='horizontal'*/}
+                  {/*                      style={{whiteSpace:"normal"}}*/}
+                  {/*                      data={data} column={1}/>*/}
+                  {/*    </div>*/}
+                  {/*</Card>*/}
               </Space>
           </div>
           <div className={styles['layout-content']}>
               <Card>
-                  <GroupManagePanel groupId={groupId}/>
+                  {/*<GroupManagePanel groupId={groupId}/>*/}
               </Card>
           </div>
 
