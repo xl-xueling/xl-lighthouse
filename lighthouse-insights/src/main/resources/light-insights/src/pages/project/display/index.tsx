@@ -36,8 +36,8 @@ export default function ProjectDisplay() {
 
     const fetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
         const proc = async () => {
-            const result = await requestQueryByIds([id]);
-            resolve(result.data[id]);
+            const result = await requestQueryByIds({ids:[id]});
+            resolve(result?.data?.[id]);
         }
         proc().then();
     })

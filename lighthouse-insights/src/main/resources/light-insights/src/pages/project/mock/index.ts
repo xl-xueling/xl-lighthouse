@@ -102,60 +102,27 @@ setupMock({
       };
     });
 
-    Mock.mock('/api/v1/project/queryById', (params) => {
-      console.log("receive queryById params,params:" + JSON.stringify(params));
+
+    Mock.mock('/api/v1/project/queryByIds', (params) => {
+      console.log("receive queryByIds params,params:" + JSON.stringify(params));
       const data = JSON.parse(params.body);
-      return {
-        code:0,
-        message:'success',
-        data:
-            Mock.mock({
-            id: data.id,
+      const projectData: Record<number, Project> = {};
+      for(let i=0;i<data.ids.length;i++){
+        const id = data.ids[i];
+        projectData[id] = Mock.mock({
+           id: id,
           'name': '@word() @word() @word()',
           'departmentId|1-2': 1,
           'isPrivate': 0,
-          'desc':'@sentence()',
-          'adminIds':['1','2'],
-          "createdTime":'@datetime',
-              "admins":[
-                _Mock_user1,_Mock_user2,_Mock_user3
-              ],
-              structure:structure,
-        }),
-      };
-    });
-
-    Mock.mock('/api/v1/project/queryByIds', (params) => {
-      console.log("receive queryById params,params:" + JSON.stringify(params));
-      const data = JSON.parse(params.body);
-      const projectData: Record<number, Project> = {};
-      projectData[101] = Mock.mock({
-        id: 101,
-        'name': '@word() @word() @word()',
-        'departmentId|1-2': 1,
-        'isPrivate': 0,
-        'desc': '@sentence()',
-        'adminIds': ['1', '2'],
-        "createdTime": '@datetime',
-        "admins":[
-          _Mock_user1,_Mock_user2,_Mock_user3
-        ],
-        structure:structure,
-      });
-      projectData[102] = Mock.mock({
-        id: 102,
-        'name': '@word() @word() @word()',
-        'departmentId|1-2': 1,
-        'isPrivate': 0,
-        'desc': '@sentence()',
-        'adminIds': ['1', '2'],
-        "createdTime": '@datetime',
-        "admins":[
-          _Mock_user1,_Mock_user2,_Mock_user3
-        ],
-        structure:structure,
-      });
-
+          'desc': '@sentence()',
+          'adminIds': ['1', '2'],
+          "createdTime": '@datetime',
+          "admins":[
+            _Mock_user1,_Mock_user2,_Mock_user3
+          ],
+          structure:structure,
+        });
+      }
       return {
         code:0,
         message:'success',

@@ -142,11 +142,6 @@ function PageLayout() {
   const flattenRoutes = useMemo(() => getFlattenRoutes(routes) || [], [routes]);
 
 
-  useEffect(() => {
-    console.log("userloading is:" + userLoading)
-
-  },[userLoading])
-
   function renderRoutes(locale) {
     routeMap.current.clear();
     return function travel(_routes: IRoute[], level, parentNode = []) {
