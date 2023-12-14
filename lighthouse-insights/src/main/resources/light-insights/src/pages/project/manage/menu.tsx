@@ -47,6 +47,7 @@ export default function ProjectManageMenu({structure,callback}:{structure:Array<
         <>
             <Menu
                 autoOpen={true} style={{height:'400px',userSelect:"none",overflow: "auto"}}
+                onClickMenuItem={callback}
             >
 
                 {

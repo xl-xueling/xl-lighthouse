@@ -7,7 +7,8 @@ import {
     Tabs,
     Dropdown, Menu
 } from '@arco-design/web-react';
-import {IconDownCircle, IconTag, IconThunderbolt
+import {
+    IconDownCircle, IconTag, IconTags, IconThunderbolt
 } from '@arco-design/web-react/icon';
 import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -18,6 +19,7 @@ import useForm from "@arco-design/web-react/es/Form/useForm";
 import StatAddPanel from "@/pages/stat/add/stat_add";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/edit";
+import {CiViewTable} from "react-icons/ci";
 const { Row, Col } = Grid;
 
 export default function GroupManagePanel({groupId}) {
@@ -50,8 +52,8 @@ export default function GroupManagePanel({groupId}) {
         setFormParams({"groupId":groupId});
     },[groupId])
 
-    const handlerSubmit = (v) => {
-        setFormParams({"title":v,"groupId":groupId});
+    const handlerSubmit = (input) => {
+        setFormParams({"title":input,"groupId":groupId});
     }
 
     return (
@@ -79,7 +81,7 @@ export default function GroupManagePanel({groupId}) {
                     key='1'
                     title={
                         <span>
-                            <IconThunderbolt style={{ marginRight: 6 }} />
+                            <IconTags style={{ marginRight: 6 }} />
                             Statistic Items
                         </span>
                     }>
@@ -103,13 +105,13 @@ export default function GroupManagePanel({groupId}) {
                     </div>
                     <StatisticalListPanel formParams={formParams} from={"group-manage"} />
                 </TabPane>
-                <TabPane key='3' title={
-                    <span>
-                        <IconTag style={{ marginRight: 6 }} />
-                        Group Information
-                  </span>}>
-                    <GroupBasicPanel groupId={groupId}/>
-                </TabPane>
+                {/*<TabPane key='3' title={*/}
+                {/*    <span style={{display:"inline-flex",alignItems:"center"}}>*/}
+                {/*        <CiViewTable style={{ marginRight: 6 }} />*/}
+                {/*        Group Information*/}
+                {/*  </span>}>*/}
+                {/*    <GroupBasicPanel groupId={groupId}/>*/}
+                {/*</TabPane>*/}
             </Tabs>
             {showStatAddPanel && <StatAddPanel onClose={() => setShowsStatAddPanel(false)}/>}
             {showGroupEditPanel && <GroupEditPanel groupId={'1'} onClose={() => setShowGroupEditPanel(false)}/>}

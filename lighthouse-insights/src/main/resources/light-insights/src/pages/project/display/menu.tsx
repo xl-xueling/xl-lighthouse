@@ -37,6 +37,7 @@ export default function ProjectMenu({structure,callback}:{structure:Array<ArcoTr
         <>
     <Menu
             style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}
+            onClickMenuItem={callback}
         >
         {
             structure ?
