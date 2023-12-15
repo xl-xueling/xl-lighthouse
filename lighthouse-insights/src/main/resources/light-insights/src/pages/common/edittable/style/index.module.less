@@ -1,4 +1,4 @@
-.edit_panel{
+.edit_table_panel{
 
 }
 
@@ -18,12 +18,22 @@
     border:none;
   }
 
+  td {
+    border-right:1px solid var(--color-border-1);
+    padding:0 0;
+  }
+
   .arco-select-popup .arco-select-option {
     line-height: 25px ;
     font-size: 12px ;
   }
 
   td:has(.arco-select-view){
+    padding: 0 0 ;
+    min-height: 0 ;
+  }
+
+  .arco-table-td{
     padding: 0 0 ;
     min-height: 0 ;
   }

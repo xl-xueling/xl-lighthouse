@@ -67,7 +67,7 @@ const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
 
 
     return (
-        <div className={styles.edit_table_panel}>
+        <div className={styles["edit_table_panel"]}>
             <Table
                 ref={tableRef}
                 style={{minHeight: '200px'}}
