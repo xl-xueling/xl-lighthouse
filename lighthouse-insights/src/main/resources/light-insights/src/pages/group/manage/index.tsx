@@ -5,7 +5,7 @@ import {
     Form,
     Input,
     Tabs,
-    Dropdown, Menu, Message, Space,
+    Dropdown, Menu, Message, Space, Divider,
 } from '@arco-design/web-react';
 import {
     IconDelete,
@@ -104,7 +104,7 @@ export default function GroupManagePanel({groupId}) {
             <Row style={{marginBottom:'15px'}}>
                 <Typography.Text style={{fontSize:'14px',fontWeight:500}}>
                     <Button icon={<CiViewTable/>} shape={"circle"} size={"small"} style={{marginRight:'10px'}}/>
-                    统计组：{'homepage_behavior_stat1'}
+                    统计组：<Text copyable>{'homepage_behavior_stat1'}</Text>
                 </Typography.Text>
             </Row>
             <Tabs
