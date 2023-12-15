@@ -27,7 +27,7 @@ const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
     const columnsProps = props.columnsProps;
     const columnsData = props.columnsData;
     const tableRef = useRef(null);
-    const [count, setCount] = useState(5);
+    const [count, setCount] = useState(1);
     const [data,setData] = useState(columnsData);
 
     function handleSave(row) {

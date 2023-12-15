@@ -18,8 +18,8 @@ import EditTable, {EditTableColumnProps, EditTableComponentEnum} from "@/pages/c
 import {IconMinusCircleFill, IconPenFill, IconPlus, IconPlusCircleFill} from "@arco-design/web-react/icon";
 import {getTextBlenLength, stringifyObj} from "@/utils/util";
 import {requestCreate} from "@/api/group";
-import {Group} from "@/types/insights-web";
-export default function GroupCreateModal({onClose}) {
+import {Group, Project} from "@/types/insights-web";
+export default function GroupCreateModal({projectId,onClose}) {
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -28,14 +28,13 @@ export default function GroupCreateModal({onClose}) {
   const [form] = Form.useForm();
 
   const columnNameRegex = /^[a-zA-Z]\w{3,14}$/;
+  const formRef = useRef(null);
 
   const onOk = async() => {
     setConfirmLoading(true);
+    await formRef.current.validate();
+    const values = formRef.current.getFieldsValue();
     try{
-      const v = await form.validate();
-      const params:Group = new Group();
-      params.token = v.token;
-      params.desc = v.desc;
       const columns = editTableRef.current.getData();
       console.log("columns is:" + JSON.stringify(columns));
       if(!columns || columns.length == 0){
@@ -54,8 +53,15 @@ export default function GroupCreateModal({onClose}) {
           return;
         }
       }
-      params.columns = columns;
-      const result = await requestCreate(params);
+      const group:Group = {
+        projectId:projectId,
+        token:values.token,
+        desc:values.desc,
+        columns:columns,
+      }
+      console.log("group is:" + JSON.stringify(group));
+      const result = await requestCreate(group);
+
     }catch (e) {
       console.info(e);
     }finally {
@@ -90,19 +96,20 @@ export default function GroupCreateModal({onClose}) {
       editable: true,
       componentType:EditTableComponentEnum.SELECT,
       headerCellStyle: { width:'130px'},
-      render:(text, record) => (
-          <Select size={"mini"}
-                  onChange={(value) => {record['type'] = value}}
-                  defaultValue={1}
-          >
-            <Select.Option key={1}  value={1}>
-              String
-            </Select.Option>
-            <Select.Option key={2}  value={2}>
-              Number
-            </Select.Option>
-          </Select>
-      )
+      render:(text, record) => {
+        record['type'] = 1
+        return (
+            <Select size={"mini"}
+                         onChange={(value) => {record['type'] = value}}
+                         defaultValue={1}>
+              <Select.Option key={1}  value={1}>
+                String
+              </Select.Option>
+              <Select.Option key={2}  value={2}>
+                Number
+              </Select.Option>
+        </Select>)
+      }
     },
     {
       title: 'Description',
@@ -133,6 +140,7 @@ export default function GroupCreateModal({onClose}) {
           onCancel={onClose}
       >
         <Form
+            ref={formRef}
             form={form}
             autoComplete={"off"}
             layout={"vertical"}>
