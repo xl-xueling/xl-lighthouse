@@ -1,7 +1,7 @@
 import {
-    AutoComplete,
-    Form,
-    Modal, Typography,
+    AutoComplete, Button,
+    Form, Grid, Input,
+    Modal, Select, Typography,
 } from '@arco-design/web-react';
 import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -17,10 +17,11 @@ import "ace-builds/webpack-resolver";
 import 'ace-builds/src-noconflict/ext-language_tools';
 import "brace/mode/xml";
 import "brace/theme/textmate";
-
+const { Row, Col } = Grid;
 
 export default function StatAddPanel({onClose}) {
 
+    const t = useLocale(locale);
     const formRef = useRef();
     const [size, setSize] = useState('default');
 
@@ -157,11 +158,11 @@ export default function StatAddPanel({onClose}) {
                 <Typography.Title
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                 >
-                    {'Template'}
+                    {'Template: '}
                 </Typography.Title>
                 <FormItem rules={[{ required: true }]}>
                     <AceEditor
-                        style={{ height:'40px',backgroundColor:"var(--color-fill-2)",width:'100%'}}
+                        style={{ height:'60px',backgroundColor:"var(--color-fill-2)",width:'100%'}}
                         ref={editorRef}
                         mode="xml"
                         theme="textmate"
@@ -185,27 +186,73 @@ export default function StatAddPanel({onClose}) {
                 <Typography.Title
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                 >
-                    {'TimeParam'}
+                    {'TimeParam: '}
                 </Typography.Title>
                 <FormItem rules={[{ required: true }]}>
-                    <AutoComplete placeholder='please enter' data={['1-minute', '2-minute', '3-minute', '3-hour']} />
+                    <Select placeholder='Please Select' allowClear defaultValue={1}>
+                        <Select.Option key={1} value={1}>
+                            1-minute
+                        </Select.Option>
+                        <Select.Option key={2} value={2}>
+                            2-minute
+                        </Select.Option>
+                        <Select.Option key={3} value={3}>
+                            5-minute
+                        </Select.Option>
+                        <Select.Option key={4} value={4}>
+                            2-hour
+                        </Select.Option>
+                    </Select>
                 </FormItem>
+
                 <Typography.Title
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                 >
-                    {'Expired'}
+                    {'Expired: '}
                 </Typography.Title>
                 <FormItem field='expired' rules={[{ required: true }]}>
-                    <AutoComplete placeholder='please enter' data={['1 minute', '2 minute', '3 minute', '3 hour']} />
+                    <Select placeholder='Please Select' allowClear defaultValue={1}>
+                        <Select.Option key={1} value={1}>
+                            7 Day
+                        </Select.Option>
+                        <Select.Option key={2} value={2}>
+                            14 Day
+                        </Select.Option>
+                        <Select.Option key={3} value={3}>
+                            1 Month
+                        </Select.Option>
+                        <Select.Option key={4} value={4}>
+                            2 Month
+                        </Select.Option>
+                    </Select>
                 </FormItem>
                 <Typography.Title
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                 >
-                    {'Project'}
+                    {'Project: '}
                 </Typography.Title>
-                <FormItem disabled={true} field='timeparam' rules={[{ required: true }]} defaultValue={'首页用户行为数据统计'}>
-                    <AutoComplete placeholder='首页用户行为数据统计' data={['首页用户行为数据统计', '首页用户行为数据统计', '首页用户行为数据统计', '首页用户行为数据统计']} />
+                <FormItem disabled={true} field='project' rules={[{ required: true }]} defaultValue={'首页用户行为数据统计'}>
+                    <Input type={"text"} />
                 </FormItem>
+                <Typography.Title
+                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                >
+                    {'Group: '}
+                </Typography.Title>
+                <FormItem disabled={true} field='group' rules={[{ required: true }]} defaultValue={'homepage_behavior_stat'}>
+                    <Input type={"text"} />
+                </FormItem>
+                <Typography.Title
+                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                >
+                    {'Description: '}
+                </Typography.Title>
+                <Form.Item field="desc" rules={[
+                    { required: true, message: t['register.form.password.errMsg'], validateTrigger : ['onSubmit'] },
+                    { required: true, match: new RegExp(/^[^￥{}【】#@=^&|《》]{0,200}$/,"g"),message: t['register.form.userName.validate.errMsg'] , validateTrigger : ['onSubmit']},
+                ]}>
+                    <Input.TextArea maxLength={200} rows={3}  showWordLimit={true}/>
+                </Form.Item>
             </Form>
         </Modal>
     );
