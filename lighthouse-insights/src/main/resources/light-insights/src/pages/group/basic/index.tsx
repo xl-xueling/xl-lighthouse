@@ -103,7 +103,6 @@ export default function GroupBasicPanel({groupId}) {
             headerCellStyle: { width:'4%'},
             render:(k,v) => (
                 <Select size={"mini"} placeholder='Please select' disabled={true} bordered={false}
-                        onChange={editTableRef.current.cellValueChangeHandler}
                         defaultValue={k}
                         style={{ border:'1px solid var(--color-neutral-3)' }}
                 >
@@ -155,7 +154,7 @@ export default function GroupBasicPanel({groupId}) {
                                             </Typography.Title>
                                         </Grid.Col>
                                     </Grid.Row>
-                                    {/*<EditTable ref={editTableRef} columnProps={columnsProps} columnsData={columnsData}/>*/}
+                                    <Table pagination={false} size={"mini"} columns={columnsProps} data={columnsData}  />
                                 </Form.Item>
                                 <Typography.Title
                                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}

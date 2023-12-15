@@ -18,7 +18,7 @@ import GroupBasicPanel from "@/pages/group/basic";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import StatAddPanel from "@/pages/stat/add/stat_add";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
-import GroupEditPanel from "@/pages/group/edit";
+import GroupEditPanel from "@/pages/group/update";
 import AddBindedPanel from "@/pages/metricset/binded/binded";
 const { Row, Col } = Grid;
 const { Text } = Typography;

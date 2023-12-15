@@ -5,6 +5,7 @@ const FormItem = Form.Item;
 const EditableContext = React.createContext<{ getForm?: () => FormInstance }>({});
 import styles from './style/index.module.less';
 import {Column} from "@/types/insights-web";
+import {getRandomString} from "@/utils/util";
 
 
 export enum EditTableComponentEnum {
@@ -51,7 +52,7 @@ const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
             result[entity.dataIndex] = entity.initValue;
             return result;
         },{})
-        const newRow = {key: `${count + 1}`,...initValues}
+        const newRow = {key: getRandomString() ,...initValues}
         setCount(count + 1);
         setData(data.concat(newRow));
     }
@@ -64,7 +65,7 @@ const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
 
     useEffect(() => {
         setData(columnsData);
-    },[])
+    },[columnsData])
 
 
     return (
