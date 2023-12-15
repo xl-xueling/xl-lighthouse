@@ -5,7 +5,7 @@ import {
     Form,
     Input,
     Tabs,
-    Dropdown, Menu,
+    Dropdown, Menu, Message,
 } from '@arco-design/web-react';
 import {
     IconDownCircle, IconTags,
@@ -21,6 +21,10 @@ import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/update";
 import {CiViewTable} from "react-icons/ci";
 import {RiAppsLine} from "react-icons/ri";
+import {Group} from "@/types/insights-web";
+import {requestQueryById} from "@/api/group";
+import {EditTableColumn} from "@/pages/common/edittable/EditTable";
+import {getRandomString} from "@/utils/util";
 const { Row, Col } = Grid;
 
 export default function GroupManagePanel({groupId}) {
@@ -30,6 +34,7 @@ export default function GroupManagePanel({groupId}) {
     const [showGroupEditPanel, setShowGroupEditPanel] = useState(false);
     const [formParams,setFormParams] = useState(null);
     const [loading,setLoading] = useState<boolean>(true);
+    const [groupInfo,setGroupInfo] = useState<Group>(null);
     const [form] = useForm();
     const t = useLocale(locale);
 
@@ -49,8 +54,41 @@ export default function GroupManagePanel({groupId}) {
         }
     }
 
+    const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
+        let result:Group;
+        const proc = async () => {
+            const response = await requestQueryById(groupId);
+            if(response.code != '0'){
+                reject(new Error(response.message));
+            }
+            result = response.data;
+            resolve(result);
+        }
+        proc().then();
+    })
+
+
     useEffect(() => {
         setFormParams({"groupId":groupId});
+        const promiseAll:Promise<[Group]> = Promise.all([
+            promiseFetchGroupInfo,
+        ])
+
+        promiseAll.then((results) => {
+            const groupInfo = results[0];
+            setGroupInfo(groupInfo);
+            // const columnArr:Array<EditTableColumn> = [];
+            // for(let i=0;i<groupInfo.columns.length;i++){
+            //     const columnInfo = groupInfo.columns[i];
+            //     columnArr.push({...columnInfo,"key":getRandomString(),"editable":false})
+            // }
+            // setInitData(columnArr);
+        }).catch(error => {
+            console.log(error);
+            Message.error(t['system.error']);
+        }).finally(() => {
+            setLoading(false);
+        });
     },[groupId])
 
     const handlerSubmit = (input) => {
@@ -120,8 +158,8 @@ export default function GroupManagePanel({groupId}) {
                     <GroupBasicPanel groupId={groupId}/>
                 </TabPane>
             </Tabs>
-            {showStatAddPanel && <StatCreatePanel onClose={() => setShowsStatAddPanel(false)}/>}
-            {showGroupEditPanel && <GroupEditPanel groupId={'1'} onClose={() => setShowGroupEditPanel(false)}/>}
+            {showStatAddPanel && <StatCreatePanel groupInfo={groupInfo} onClose={() => setShowsStatAddPanel(false)}/>}
+            {showGroupEditPanel && <GroupEditPanel groupId={groupInfo.id} onClose={() => setShowGroupEditPanel(false)}/>}
         </>);
 
 }
