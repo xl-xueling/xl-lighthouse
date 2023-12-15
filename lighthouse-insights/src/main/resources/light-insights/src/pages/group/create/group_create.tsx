@@ -37,6 +37,7 @@ export default function GroupCreateModal({onClose}) {
       params.token = v.token;
       params.desc = v.desc;
       const columns = editTableRef.current.getData();
+      console.log("columns is:" + JSON.stringify(columns));
       if(!columns || columns.length == 0){
         Message.error("列信息不能为空！")
         return;
