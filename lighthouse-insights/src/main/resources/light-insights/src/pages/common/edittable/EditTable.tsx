@@ -50,7 +50,6 @@ const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
         setData(
             data.concat({
                 key: `${count + 1}`,
-                // name: "----",
             })
         );
     }
@@ -63,7 +62,7 @@ const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
 
     useEffect(() => {
         setData(columnsData);
-    },[columnsData])
+    },[])
 
 
     return (
