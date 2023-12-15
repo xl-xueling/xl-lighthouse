@@ -56,7 +56,7 @@ export default function GroupUpdatePanel({groupId,onClose}) {
             const columnArr:Array<EditTableColumn> = [];
             for(let i=0;i<groupInfo.columns.length;i++){
                 const columnInfo = groupInfo.columns[i];
-                columnArr.push({...columnInfo,"key":i})
+                columnArr.push({...columnInfo,"key":i,"editable":false})
             }
             setInitData(columnArr);
         }).catch(error => {
@@ -73,19 +73,17 @@ export default function GroupUpdatePanel({groupId,onClose}) {
         {
             title: 'Name',
             dataIndex: 'name',
-            editable: true,
             componentType:EditTableComponentEnum.INPUT,
             headerCellStyle: { width:'26%'},
         },
         {
             title: 'Type',
             dataIndex: 'type',
-            editable: true,
             initValue:1,
             componentType:EditTableComponentEnum.SELECT,
             headerCellStyle: { width:'120px'},
-            render:(k,v) => (
-                <Select size={"mini"} placeholder='Please select'
+            render:(k,record) => (
+                <Select size={"mini"} placeholder='Please select' disabled={record.editable != undefined && !record.editable}
                         defaultValue={k}
                 >
                     <Select.Option key={1}  value={1}>
@@ -101,7 +99,6 @@ export default function GroupUpdatePanel({groupId,onClose}) {
             title: 'Description',
             dataIndex: 'desc',
             componentType:EditTableComponentEnum.INPUT,
-            editable: true,
         },
         {
             title: 'Operate',
