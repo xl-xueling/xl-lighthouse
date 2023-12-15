@@ -1,22 +1,9 @@
 import {
-    Card,
     Typography,
-    Avatar,
-    Space,
     Grid,
-    Table,
-    TableColumnProps,
-    Popconfirm,
-    Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag, Icon, Link, Modal
+    Message, Form, Input, Select, Spin, Modal, Space, Button
 } from '@arco-design/web-react';
-import {
-    IconMinus,
-    IconMinusCircleFill,
-    IconMore,
-    IconPen, IconPenFill,
-    IconPlus,
-    IconPlusCircleFill
-} from '@arco-design/web-react/icon';
+import {IconMinusCircleFill, IconPenFill} from '@arco-design/web-react/icon';
 import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 const { Title } = Typography;
@@ -35,81 +22,52 @@ import EditTable, {
 } from "@/pages/common/edittable/EditTable";
 const { Row, Col } = Grid;
 
-export default function GroupEditPanel({groupId,onClose}) {
+export default function GroupUpdatePanel({groupId,onClose}) {
 
     const t = useLocale(locale);
-
     const editTableRef= useRef(null);
-
     const tempalteEditTableRef= useRef(null);
-
     const [loading,setLoading] = useState<boolean>(true);
-
     const [groupInfo,setGroupInfo] = useState<Group>(null);
-
-    const [statsInfo,setStatsInfo] = useState<Array<Stat>>([]);
-
     const [formInstance] = Form.useForm();
 
     useEffect(() => {
-        if(groupId){
-            setLoading(true);
-            const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
-                console.log("start to Fetch Group Info with id:" + groupId);
-                let result:Group;
-                const proc = async () => {
-                    const response = await requestQueryById(groupId);
-                    if(response.code != '0'){
-                        reject(new Error(response.message));
-                    }
-                    result = response.data;
-                    resolve(result);
+        setLoading(true);
+        const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
+            console.log("start to Fetch Group Info with id:" + groupId);
+            let result:Group;
+            const proc = async () => {
+                const response = await requestQueryById(groupId);
+                if(response.code != '0'){
+                    reject(new Error(response.message));
                 }
-                proc().then();
-            })
+                result = response.data;
+                resolve(result);
+            }
+            proc().then();
+        })
+        const promiseAll:Promise<[Group]> = Promise.all([
+            promiseFetchGroupInfo,
+        ])
 
-            const promiseFetchStatsInfo:Promise<Array<Stat>> = new Promise<Array<Stat>>((resolve, reject) => {
-                let result:Array<Stat>;
-                const proc = async () => {
-                    const response = await requestQueryByGroupId(groupId);
-                    if(response.code != '0'){
-                        reject(new Error(response.message));
-                    }
-                    result = response.data.list;
-                    resolve(result);
-                }
-                proc().then();
-            })
-
-            const promiseAll:Promise<[Group,Array<Stat>]> = Promise.all([
-                promiseFetchGroupInfo,
-                promiseFetchStatsInfo,
-            ])
-
-            promiseAll.then((results) => {
-                setGroupInfo(results[0]);
-                setStatsInfo(results[1]);
-            }).catch(error => {
-                console.log(error);
-                Message.error(t['system.error']);
-            }).finally(() => {
-                setLoading(false);
-            });
-        }
-    },[groupId])
-
-    const [initData,setInitData] = useState(null);
-
-    useEffect(() => {
-        if(groupInfo && groupInfo.columns){
+        promiseAll.then((results) => {
+            const groupInfo = results[0];
+            setGroupInfo(groupInfo);
             const columnArr:Array<EditTableColumn> = [];
             for(let i=0;i<groupInfo.columns.length;i++){
                 const columnInfo = groupInfo.columns[i];
                 columnArr.push({...columnInfo,"key":i})
             }
             setInitData(columnArr);
-        }
-    },[groupInfo])
+        }).catch(error => {
+            console.log(error);
+            Message.error(t['system.error']);
+        }).finally(() => {
+            setLoading(false);
+        });
+    },[groupId])
+
+    const [initData,setInitData] = useState(null);
 
     const columnsProps: EditTableColumnProps[]  = [
         {
@@ -123,12 +81,11 @@ export default function GroupEditPanel({groupId,onClose}) {
             title: 'Type',
             dataIndex: 'type',
             editable: true,
+            initValue:1,
             componentType:EditTableComponentEnum.SELECT,
-            headerCellStyle: { width:'4%'},
+            headerCellStyle: { width:'120px'},
             render:(k,v) => (
                 <Select size={"mini"} placeholder='Please select'
-                        disabled={true}
-                        onChange={editTableRef.current.cellValueChangeHandler}
                         defaultValue={k}
                 >
                     <Select.Option key={1}  value={1}>
@@ -146,17 +103,17 @@ export default function GroupEditPanel({groupId,onClose}) {
             componentType:EditTableComponentEnum.INPUT,
             editable: true,
         },
-        // {
-        //     title: 'Operate',
-        //     dataIndex: 'operate',
-        //     componentType:EditTableComponentEnum.BUTTON,
-        //     headerCellStyle: { width:'15%'},
-        //     render: (_, record) => (
-        //         <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%',paddingTop:'5px' }}>
-        //             <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
-        //         </Space>
-        //     ),
-        // },
+        {
+            title: 'Operate',
+            dataIndex: 'operate',
+            componentType:EditTableComponentEnum.BUTTON,
+            headerCellStyle: { width:'12%'},
+            render: (_, record) => (
+                <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%',paddingTop:'5px' }}>
+                    <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
+                </Space>
+            ),
+        },
     ];
 
     useEffect(() => {
@@ -171,7 +128,7 @@ export default function GroupEditPanel({groupId,onClose}) {
     return (
 
         <Modal
-            title='Create Statistic'
+            title='Group Update'
             visible={true}
             onCancel={onClose}
             style={{ width:'50%',top:'20px' }}
@@ -203,12 +160,11 @@ export default function GroupEditPanel({groupId,onClose}) {
                                 </Typography.Title>
                             </Grid.Col>
                             <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                                {/*<Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>*/}
-                                <IconPenFill/>
+                                <Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>
                             </Grid.Col>
                         </Grid.Row>
 
-                        {/*<EditTable ref={editTableRef} columns={columnsProps} initData={initData}/>*/}
+                        <EditTable ref={editTableRef} columnsProps={columnsProps} columnsData={initData}/>
                     </Form.Item>
                     <Typography.Title
                         style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
