@@ -94,14 +94,14 @@ export default function GroupCreateModal({projectId,onClose}) {
       title: 'Type',
       dataIndex: 'type',
       editable: true,
+      initValue:1,
       componentType:EditTableComponentEnum.SELECT,
       headerCellStyle: { width:'130px'},
       render:(text, record) => {
-        record['type'] = 1
         return (
             <Select size={"mini"}
                          onChange={(value) => {record['type'] = value}}
-                         defaultValue={1}>
+                          defaultValue={1}>
               <Select.Option key={1}  value={1}>
                 String
               </Select.Option>
