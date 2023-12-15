@@ -25,13 +25,10 @@ export default function ProjectManage() {
 
   const t = useLocale(locale);
   const [groupId,setGroupId] = useState<number>(null);
-
   const [showGroupCreatePanel, setShowGroupCreatePanel] = useState(false);
-
   const [showManagePanel, setShowManagePanel] = useState(false);
-
   const [projectInfo,setProjectInfo] = useState<Project>(null);
-    const [loading,setLoading] = useState<boolean>(true);
+  const [loading,setLoading] = useState<boolean>(true);
   const { id } = useParams();
 
     const fetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
@@ -59,6 +56,17 @@ export default function ProjectManage() {
 
     const handlerCreateGroup = () => {
         setShowGroupCreatePanel(true);
+    }
+
+    const callback = async (record,type) => {
+        console.log("--callback,record:" + JSON.stringify(record) + ",type:" + type);
+        switch (type){
+            case "create-group":
+
+                break;
+            default:
+                break;
+        }
     }
 
     const fetchData = async (): Promise<void> => {
@@ -177,7 +185,7 @@ export default function ProjectManage() {
               </Card>
           </div>
 
-          {showGroupCreatePanel && <GroupCreateModal projectId={id} onClose={() => setShowGroupCreatePanel(false)}/>}
+          {showGroupCreatePanel && <GroupCreateModal projectId={id} callback={callback} onClose={() => setShowGroupCreatePanel(false)}/>}
       </div>
       </>
   );
