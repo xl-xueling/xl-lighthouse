@@ -1,6 +1,6 @@
 import {
     AutoComplete, Button,
-    Form, Grid, Input,
+    Form, Grid, Icon, Input,
     Modal, Select, Typography,
 } from '@arco-design/web-react';
 import React, {useEffect, useRef, useState} from 'react';
@@ -18,6 +18,8 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import "brace/mode/xml";
 import "brace/theme/textmate";
 const { Row, Col } = Grid;
+import Draggable from 'react-draggable';
+import { MdOutlineDragIndicator } from "react-icons/md";
 
 export default function StatAddPanel({onClose}) {
 
@@ -84,74 +86,34 @@ export default function StatAddPanel({onClose}) {
     },[editorRef])
 
     const FormItem = Form.Item;
-    const cascaderOptions = [
-        {
-            value: 'beijing',
-            label: 'Beijing',
-            children: [
-                {
-                    value: 'beijingshi',
-                    label: 'Beijing',
-                    children: [
-                        {
-                            value: 'chaoyang',
-                            label: 'Chaoyang',
-                            children: [
-                                {
-                                    value: 'datunli',
-                                    label: 'Datunli',
-                                },
-                            ],
-                        },
-                    ],
-                },
-            ],
-        },
-        {
-            value: 'shanghai',
-            label: 'Shanghai',
-            children: [
-                {
-                    value: 'shanghaishi',
-                    label: 'Shanghai',
-                    children: [
-                        {
-                            value: 'huangpu',
-                            label: 'Huangpu',
-                        },
-                    ],
-                },
-            ],
-        },
-    ];
-    const formItemLayout = {
-        labelCol: {
-            span: 4,
-        },
-        wrapperCol: {
-            span: 20,
-        },
-    };
-    const noLabelLayout = {
-        wrapperCol: {
-            span: 17,
-            offset: 7,
-        },
-    };
-
-
 
     return (
+        <>
+            <Draggable>
         <Modal
-            title='Create Statistic'
+            title= {<>
+                <Row>
+                    <Grid.Col span={2} style={{textAlign:"left"}}>
+                        <Button className={"modal-draggable-handle"} size={"mini"} shape={"circle"} icon={<MdOutlineDragIndicator/>} />
+                    </Grid.Col>
+                    <Grid.Col span={20}>
+                        <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+                            <p style={{ margin: '0 auto' }}>Create Statistics</p>
+                        </div>
+                    </Grid.Col>
+                </Row>
+            </>}
             visible={true}
+            maskClosable={false}
             onCancel={onClose}
+            modalRender={(modal) => <Draggable bounds="parent" handle=".modal-draggable-handle" disabled={false}>{modal}</Draggable>}
             style={{ width:'50%',top:'20px' }}
         >
             <Form
                 ref={formRef}
                 autoComplete='off'
-                {...formItemLayout}
+                labelCol={{ span: 4 }}
+                wrapperCol={{ span: 20 }}
                 layout={"vertical"}
                 onValuesChange={onValuesChange}
             >
@@ -255,6 +217,8 @@ export default function StatAddPanel({onClose}) {
                 </Form.Item>
             </Form>
         </Modal>
+            </Draggable>
+        </>
     );
 
 }
