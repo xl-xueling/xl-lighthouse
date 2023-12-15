@@ -1,4 +1,5 @@
 import {
+  Button,
   Form,
   Grid,
   Input, Message,
@@ -156,7 +157,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
                 </Typography.Title>
               </Grid.Col>
               <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                <IconPlus style={{ cursor:"pointer" }} onClick={() => editTableRef.current.addRow()}/>
+                <Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>
               </Grid.Col>
             </Grid.Row>
 
