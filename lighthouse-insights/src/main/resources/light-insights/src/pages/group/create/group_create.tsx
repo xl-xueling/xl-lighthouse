@@ -75,6 +75,7 @@ export default function GroupCreateModal({onClose}) {
   const t = useLocale(locale);
   const FormItem = Form.Item;
 
+
   const columnsProps: EditTableColumnProps[]  = [
     {
       title: 'Name',
@@ -89,9 +90,9 @@ export default function GroupCreateModal({onClose}) {
       editable: true,
       componentType:EditTableComponentEnum.SELECT,
       headerCellStyle: { width:'130px'},
-      render:(k,v) => (
+      render:(text, record) => (
           <Select size={"mini"}
-                  onChange={editTableRef.current.cellValueChangeHandler}
+                  onChange={(value) => {record['type'] = value}}
                   defaultValue={1}
           >
             <Select.Option key={1}  value={1}>
