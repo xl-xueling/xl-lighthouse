@@ -5,10 +5,11 @@ import {
     Form,
     Input,
     Tabs,
-    Dropdown, Menu, Message,
+    Dropdown, Menu, Message, Space,
 } from '@arco-design/web-react';
 import {
-    IconDownCircle, IconTags,
+    IconDelete,
+    IconDownCircle, IconTag, IconTags,
 } from '@arco-design/web-react/icon';
 import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -25,7 +26,10 @@ import {Group} from "@/types/insights-web";
 import {requestQueryById} from "@/api/group";
 import {EditTableColumn} from "@/pages/common/edittable/EditTable";
 import {getRandomString} from "@/utils/util";
+import {HiMiniBoltSlash} from "react-icons/hi2";
 const { Row, Col } = Grid;
+import { RiShieldKeyholeLine } from "react-icons/ri";
+
 
 export default function GroupManagePanel({groupId}) {
     const TabPane = Tabs.TabPane;
@@ -40,11 +44,11 @@ export default function GroupManagePanel({groupId}) {
 
     const handlerProcess = (action):void => {
         switch (action){
-            case '1':{
+            case 'createStatistic':{
                 setShowsStatAddPanel(true);
                 break;
             }
-            case '2':{
+            case 'updateGroup':{
                 setShowGroupEditPanel(true);
                 break;
             }
@@ -107,21 +111,28 @@ export default function GroupManagePanel({groupId}) {
                 type="line"
                 tabPosition={"top"}
                 extra={
+                    <Space size={5}>
+                    <Button type={"primary"} onClick={() => handlerProcess('createStatistic')} size={"mini"} icon={<IconTag/>}>{t['groupManage.operations.button.create.stat']}</Button>
+                    <Button type={"primary"} onClick={() => handlerProcess('updateGroup')} size={"mini"} icon={<CiViewTable/>} >{t['groupManage.operations.button.update.group']}</Button>
                     <Dropdown
                         position={"br"}
                         trigger={"click"}
                         droplist={
                             <Menu onClickMenuItem={handlerProcess} style={{ maxHeight:'280px' }}>
-                                <Menu.Item key='1'>{t['groupManage.operations.button.create.stat']}</Menu.Item>
-                                <Menu.Item key='2'>{t['groupManage.operations.button.update.group']}</Menu.Item>
-                                <Menu.Item key='3'>{t['groupManage.operations.button.update.limited.threshold']}</Menu.Item>
-                                <Menu.Item key='4'>{t['groupManage.operations.button.limited.records']}</Menu.Item>
-                                <Menu.Item key='5'>{t['groupManage.operations.button.secret.key']}</Menu.Item>
-                                <Menu.Item key='6'>{t['groupManage.operations.button.delete.group']}</Menu.Item>
+                                <Menu.Item key={'limitedRecord'}>
+                                    <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<HiMiniBoltSlash/>} />&nbsp;&nbsp;
+                                    {t['groupManage.operations.button.limited.records']}</Menu.Item>
+                                <Menu.Item key={'secretKey'}>
+                                    <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<RiShieldKeyholeLine/>} />&nbsp;&nbsp;
+                                    {t['groupManage.operations.button.secret.key']}</Menu.Item>
+                                <Menu.Item key={'deleteGroup'}>
+                                    <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<IconDelete/>} />&nbsp;&nbsp;
+                                    {t['groupManage.operations.button.delete.group']}</Menu.Item>
                             </Menu>
                         }>
-                        <Button size={"small"} type={"secondary"}><IconDownCircle />{t['groupManage.operations.button.title']}</Button>
+                        <Button size={"mini"} type={"primary"}><IconDownCircle />More</Button>
                     </Dropdown>
+                    </Space>
                 }>
                 <TabPane
                     key='1'
