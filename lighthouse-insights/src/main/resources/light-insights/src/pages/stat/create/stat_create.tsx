@@ -1,7 +1,7 @@
 import {
     AutoComplete,
     Form,
-    Modal,
+    Modal, Typography,
 } from '@arco-design/web-react';
 import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -10,22 +10,6 @@ import styles from './style/index.module.less';
 import AceEditor from "react-ace";
 import "ace-builds";
 import 'ace-builds/src-noconflict/ace'
-import 'ace-builds/src-noconflict/theme-tomorrow';
-import 'ace-builds/src-noconflict/theme-clouds_midnight';
-import 'ace-builds/src-noconflict/theme-ambiance';
-import 'ace-builds/src-noconflict/theme-chaos';
-import 'ace-builds/src-noconflict/theme-cloud9_night';
-import 'ace-builds/src-noconflict/theme-cobalt';
-import 'ace-builds/src-noconflict/theme-clouds';
-import 'ace-builds/src-noconflict/theme-crimson_editor';
-import 'ace-builds/src-noconflict/theme-dawn';
-import 'ace-builds/src-noconflict/theme-twilight';
-import 'ace-builds/src-noconflict/theme-nord_dark';
-import 'ace-builds/src-noconflict/theme-kuroir';
-import 'ace-builds/src-noconflict/theme-dracula';
-import 'ace-builds/src-noconflict/theme-katzenmilch';
-import 'ace-builds/src-noconflict/theme-dreamweaver';
-import 'ace-builds/src-noconflict/theme-solarized_light';
 import 'ace-builds/src-noconflict/theme-textmate';
 import 'ace-builds/src-noconflict/theme-sqlserver';
 import 'ace-builds/src-noconflict/mode-xml';
@@ -64,9 +48,7 @@ export default function StatAddPanel({onClose}) {
             { caption: 'last',name: 'last',value: "last", meta: "Keyword" ,score:10},
         ];
 
-        console.log("editorRef.current1:" + editorRef.current);
         setTimeout(() => {
-            console.log("editorRef.current2:" + editorRef.current);
             editorRef.current.editor.completers = [{
                 getCompletions: function(editor, session, pos, prefix, callback) {
                     callback(null, customCompletions);
@@ -98,7 +80,6 @@ export default function StatAddPanel({onClose}) {
 
     useEffect(() => {
         addCustomCompletion();
-        console.log("---ss")
     },[editorRef])
 
     const FormItem = Form.Item;
@@ -170,10 +151,15 @@ export default function StatAddPanel({onClose}) {
                 ref={formRef}
                 autoComplete='off'
                 {...formItemLayout}
-                layout={"horizontal"}
+                layout={"vertical"}
                 onValuesChange={onValuesChange}
             >
-                <FormItem label={'Template'} field='template' rules={[{ required: true }]}>
+                <Typography.Title
+                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                >
+                    {'Template'}
+                </Typography.Title>
+                <FormItem rules={[{ required: true }]}>
                     <AceEditor
                         style={{ height:'40px',backgroundColor:"var(--color-fill-2)",width:'100%'}}
                         ref={editorRef}
@@ -196,14 +182,28 @@ export default function StatAddPanel({onClose}) {
                     />
                 </FormItem>
 
-                <FormItem label={'TimeParam'} field='timeparam' rules={[{ required: true }]}>
+                <Typography.Title
+                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                >
+                    {'TimeParam'}
+                </Typography.Title>
+                <FormItem rules={[{ required: true }]}>
                     <AutoComplete placeholder='please enter' data={['1-minute', '2-minute', '3-minute', '3-hour']} />
                 </FormItem>
-                <FormItem label={'Expired'} field='expired' rules={[{ required: true }]}>
+                <Typography.Title
+                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                >
+                    {'Expired'}
+                </Typography.Title>
+                <FormItem field='expired' rules={[{ required: true }]}>
                     <AutoComplete placeholder='please enter' data={['1 minute', '2 minute', '3 minute', '3 hour']} />
                 </FormItem>
-
-                <FormItem disabled={true} label={'Project'} field='timeparam' rules={[{ required: true }]} defaultValue={'首页用户行为数据统计'}>
+                <Typography.Title
+                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                >
+                    {'Project'}
+                </Typography.Title>
+                <FormItem disabled={true} field='timeparam' rules={[{ required: true }]} defaultValue={'首页用户行为数据统计'}>
                     <AutoComplete placeholder='首页用户行为数据统计' data={['首页用户行为数据统计', '首页用户行为数据统计', '首页用户行为数据统计', '首页用户行为数据统计']} />
                 </FormItem>
             </Form>
