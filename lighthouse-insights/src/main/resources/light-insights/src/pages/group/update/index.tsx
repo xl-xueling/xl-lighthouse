@@ -35,37 +35,7 @@ export default function GroupUpdatePanel({groupId,onClose}) {
 
     useEffect(() => {
         setLoading(true);
-        const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
-            let result:Group;
-            const proc = async () => {
-                const response = await requestQueryById(groupId);
-                if(response.code != '0'){
-                    reject(new Error(response.message));
-                }
-                result = response.data;
-                resolve(result);
-            }
-            proc().then();
-        })
-        const promiseAll:Promise<[Group]> = Promise.all([
-            promiseFetchGroupInfo,
-        ])
 
-        promiseAll.then((results) => {
-            const groupInfo = results[0];
-            setGroupInfo(groupInfo);
-            const columnArr:Array<EditTableColumn> = [];
-            for(let i=0;i<groupInfo.columns.length;i++){
-                const columnInfo = groupInfo.columns[i];
-                columnArr.push({...columnInfo,"key":getRandomString(),"editable":false})
-            }
-            setInitData(columnArr);
-        }).catch(error => {
-            console.log(error);
-            Message.error(t['system.error']);
-        }).finally(() => {
-            setLoading(false);
-        });
     },[groupId])
 
     const [initData,setInitData] = useState(null);

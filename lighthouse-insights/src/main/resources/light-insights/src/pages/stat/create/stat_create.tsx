@@ -21,7 +21,7 @@ const { Row, Col } = Grid;
 import Draggable from 'react-draggable';
 import { MdOutlineDragIndicator } from "react-icons/md";
 
-export default function StatAddPanel({onClose}) {
+export default function StatAddPanel({groupInfo,onClose}) {
 
     const t = useLocale(locale);
     const formRef = useRef();
@@ -33,24 +33,28 @@ export default function StatAddPanel({onClose}) {
 
     const editorRef = useRef<any>();
 
-    const addCustomCompletion = () => {
-        const customCompletions = [
-            { caption: 'stat-item',name: '<stat-item',value: "stat-item    />" ,meta: "Structure" ,score:10000},
-            { caption: 'title',name: 'title',value: "title=\"\"", meta: "Attribute" ,score:1000},
-            { caption: 'stat',name: 'stat',value: "stat=\"\"", meta: "Attribute" ,score:1000 },
-            { caption: 'dimens',name: 'dimens',value: "dimens=\"\"", meta: "Attribute" ,score:1000 },
-            { caption: 'limit',name: 'limit',value: "limit=\"\"", meta: "Attribute" ,score:1000},
-            { caption: 'count()',name: 'count()',value: "count()", meta: "Function" ,score:100},
-            { caption: 'sum()',name: 'sum()',value: "sum()", meta: "Function" ,score:100},
-            { caption: 'avg()',name: 'avg()',value: "avg()", meta: "Function" ,score:100},
-            { caption: 'bitcount()',name: 'bitcount()',value: "bitcount()", meta: "Function" ,score:100},
-            { caption: 'max()',name: 'max()',value: "max()", meta: "Function" ,score:100},
-            { caption: 'min()',name: 'min()',value: "min()", meta: "Function" ,score:100},
-            { caption: 'seq()',name: 'seq()',value: "seq()", meta: "Function" ,score:100},
-            { caption: 'top',name: 'top',value: "top", meta: "Keyword" ,score:10},
-            { caption: 'last',name: 'last',value: "last", meta: "Keyword" ,score:10},
-        ];
+    const customCompletions = [
+        { caption: 'stat-item',name: '<stat-item',value: "stat-item    />" ,meta: "Structure" ,score:10000},
+        { caption: 'title',name: 'title',value: "title=\"\"", meta: "Attribute" ,score:1000},
+        { caption: 'stat',name: 'stat',value: "stat=\"\"", meta: "Attribute" ,score:1000 },
+        { caption: 'dimens',name: 'dimens',value: "dimens=\"\"", meta: "Attribute" ,score:1000 },
+        { caption: 'limit',name: 'limit',value: "limit=\"\"", meta: "Attribute" ,score:1000},
+        { caption: 'count()',name: 'count()',value: "count()", meta: "Function" ,score:100},
+        { caption: 'sum()',name: 'sum()',value: "sum()", meta: "Function" ,score:100},
+        { caption: 'avg()',name: 'avg()',value: "avg()", meta: "Function" ,score:100},
+        { caption: 'bitcount()',name: 'bitcount()',value: "bitcount()", meta: "Function" ,score:100},
+        { caption: 'max()',name: 'max()',value: "max()", meta: "Function" ,score:100},
+        { caption: 'min()',name: 'min()',value: "min()", meta: "Function" ,score:100},
+        { caption: 'seq()',name: 'seq()',value: "seq()", meta: "Function" ,score:100},
+        { caption: 'top',name: 'top',value: "top", meta: "Keyword" ,score:10},
+        { caption: 'last',name: 'last',value: "last", meta: "Keyword" ,score:10},
+    ];
 
+    const addCustomCompletion = () => {
+        groupInfo.columns?.forEach(z => {
+            const columnCompletion = { caption: z.name,name: z.name,value: z.name, meta: "GroupColumn" ,score:10};
+            customCompletions.push(columnCompletion);
+        })
         setTimeout(() => {
             editorRef.current.editor.completers = [{
                 getCompletions: function(editor, session, pos, prefix, callback) {
