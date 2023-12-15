@@ -16,6 +16,7 @@ export enum EditTableComponentEnum {
 
 export interface EditTableColumn extends Column{
     key:number;
+    editable?:boolean;
 }
 
 export interface EditTableColumnProps extends TableColumnProps {
@@ -85,16 +86,13 @@ const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
                     },
                 }}
                 columns={columnsProps.map((column) => {
-                    return column.editable
-                            ? {
-                                ...column,
-                                onCell: () => ({
-                                    onHandleSave: handleSave,
-                                }),
-                            }
-                            : column
+                    return {
+                        ...column,
+                        onCell: () => ({
+                            onHandleSave: handleSave,
+                        }),
+                    }
                 }
-
                 )}
             />
         </div>
@@ -136,7 +134,6 @@ function EditableCell(props) {
         (e) => {
             if (
                 editing &&
-                column.editable &&
                 ref.current &&
                 !ref.current.contains(e.target)
             ) {
@@ -193,9 +190,9 @@ function EditableCell(props) {
     }
     return (
         <div
-            className={column.editable ? `editable-cell ${className}` : className}
+            className={`editable-cell ${className}`}
             onClick={() => {
-                column.editable && setEditing(!editing)
+                (rowData.editable != undefined && rowData.editable == false) ? setEditing(false):setEditing(!editing)
             }}
         >
             {children}
