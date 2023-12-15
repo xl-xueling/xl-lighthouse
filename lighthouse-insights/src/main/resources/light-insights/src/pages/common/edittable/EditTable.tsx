@@ -20,6 +20,7 @@ export interface EditTableColumn extends Column{
 export interface EditTableColumnProps extends TableColumnProps {
     componentType:EditTableComponentEnum;
     options?:number[]|string[];
+    initValue?:string|number;
 }
 
 
@@ -46,12 +47,13 @@ const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
     }
 
     const addRow = () => {
+        const initValues = columnsProps.filter(x => x.initValue).reduce((result,entity) => {
+            result[entity.dataIndex] = entity.initValue;
+            return result;
+        },{})
+        const newRow = {key: `${count + 1}`,...initValues}
         setCount(count + 1);
-        setData(
-            data.concat({
-                key: `${count + 1}`,
-            })
-        );
+        setData(data.concat(newRow));
     }
 
     React.useImperativeHandle(ref,() => ({
