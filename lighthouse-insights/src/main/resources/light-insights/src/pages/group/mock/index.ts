@@ -157,7 +157,9 @@ setupMock({
             return {
                 code:'0',
                 message:'success',
-                data:{},
+                data:{
+                    id:2,
+                },
             };
         });
 

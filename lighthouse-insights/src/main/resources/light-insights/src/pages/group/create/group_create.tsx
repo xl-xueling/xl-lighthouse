@@ -1,32 +1,27 @@
 import {
-  Button,
-  Card,
-  Checkbox,
   Form,
   Grid,
   Input, Message,
   Modal,
-  Radio,
   Select, Space,
-  Tabs,
   Typography
 } from '@arco-design/web-react';
 import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
-import locale from '../../project/manage/locale';
+import locale from './locale';
 import EditTable, {EditTableColumnProps, EditTableComponentEnum} from "@/pages/common/edittable/EditTable";
-import {IconMinusCircleFill, IconPenFill, IconPlus, IconPlusCircleFill} from "@arco-design/web-react/icon";
+import {IconMinusCircleFill, IconPlus} from "@arco-design/web-react/icon";
 import {getTextBlenLength, stringifyObj} from "@/utils/util";
 import {requestCreate} from "@/api/group";
 import {Group, Project} from "@/types/insights-web";
-export default function GroupCreateModal({projectId,onClose}) {
+
+export default function GroupCreateModal({projectId,callback,onClose}) {
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const editTableRef= useRef(null);
-
-  const [form] = Form.useForm();
-
+  const t = useLocale(locale);
+  const FormItem = Form.Item;
   const columnNameRegex = /^[a-zA-Z]\w{3,14}$/;
   const formRef = useRef(null);
 
@@ -34,52 +29,46 @@ export default function GroupCreateModal({projectId,onClose}) {
     setConfirmLoading(true);
     await formRef.current.validate();
     const values = formRef.current.getFieldsValue();
-    try{
-      const columns = editTableRef.current.getData();
-      console.log("columns is:" + JSON.stringify(columns));
-      if(!columns || columns.length == 0){
-        Message.error("列信息不能为空！")
+    const columns = editTableRef.current.getData();
+    console.log("columns is:" + JSON.stringify(columns));
+    if(!columns || columns.length == 0){
+      Message.error("列信息不能为空！")
+      return;
+    }
+    for(let i=0;i<columns.length;i++){
+      const name = columns[i].name;
+      const desc = columns[i].desc;
+      if(!columnNameRegex.test(name)){
+        Message.error("列名称校验失败！")
         return;
       }
-      for(let i=0;i<columns.length;i++){
-        const name = columns[i].name;
-        const desc = columns[i].desc;
-        if(!columnNameRegex.test(name)){
-          Message.error("列名称校验失败！")
-          return;
-        }
-        if(desc && getTextBlenLength(desc) > 50){
-          Message.error("列名称描述校验失败！")
-          return;
-        }
+      if(desc && getTextBlenLength(desc) > 50){
+        Message.error("列名称描述校验失败！")
+        return;
       }
-      const group:Group = {
-        projectId:projectId,
-        token:values.token,
-        desc:values.desc,
-        columns:columns,
-      }
-      console.log("group is:" + JSON.stringify(group));
-      const result = await requestCreate(group);
-
-    }catch (e) {
-      console.info(e);
-    }finally {
-      setConfirmLoading(false);
     }
+    const group:Group = {
+      projectId:projectId,
+      token:values.token,
+      desc:values.desc,
+      columns:columns,
+    }
+    requestCreate(group).then((result) => {
+      if(result.code === '0'){
+        Message.success(t['groupCreate.form.submit.success']);
+        setTimeout(() => {
+          setConfirmLoading(false);
+          window.location.href = "/project/manage/"+projectId;
+        },3000)
+      }else{
+        Message.error(result.message || t['system.error']);
+      }
+    }).catch((error) => {
+      console.log(error);
+      Message.error(t['system.error'])
+    })
   }
 
-  const formItemLayout = {
-    labelCol: {
-      span: 4,
-    },
-    wrapperCol: {
-      span: 20,
-    },
-  };
-
-  const t = useLocale(locale);
-  const FormItem = Form.Item;
 
 
   const columnsProps: EditTableColumnProps[]  = [
@@ -141,7 +130,6 @@ export default function GroupCreateModal({projectId,onClose}) {
       >
         <Form
             ref={formRef}
-            form={form}
             autoComplete={"off"}
             layout={"vertical"}>
 
