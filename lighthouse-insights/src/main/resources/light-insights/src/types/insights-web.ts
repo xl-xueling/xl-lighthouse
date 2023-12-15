@@ -82,7 +82,7 @@ export interface Column {
     desc?:string;
 }
 
-export class Group {
+export interface Group {
     id?:number;
     token?:string;
     projectId?:number;

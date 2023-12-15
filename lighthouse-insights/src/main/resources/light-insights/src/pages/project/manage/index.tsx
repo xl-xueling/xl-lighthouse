@@ -177,7 +177,7 @@ export default function ProjectManage() {
               </Card>
           </div>
 
-          {showGroupCreatePanel && <GroupCreateModal onClose={() => setShowGroupCreatePanel(false)}/>}
+          {showGroupCreatePanel && <GroupCreateModal projectId={id} onClose={() => setShowGroupCreatePanel(false)}/>}
       </div>
       </>
   );
