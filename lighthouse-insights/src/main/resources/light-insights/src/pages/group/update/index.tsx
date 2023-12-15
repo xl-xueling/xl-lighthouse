@@ -20,6 +20,7 @@ import EditTable, {
     EditTableColumnProps,
     EditTableComponentEnum
 } from "@/pages/common/edittable/EditTable";
+import {getRandomString} from "@/utils/util";
 const { Row, Col } = Grid;
 
 export default function GroupUpdatePanel({groupId,onClose}) {
@@ -27,6 +28,7 @@ export default function GroupUpdatePanel({groupId,onClose}) {
     const t = useLocale(locale);
     const editTableRef= useRef(null);
     const tempalteEditTableRef= useRef(null);
+    const [confirmLoading, setConfirmLoading] = useState(false);
     const [loading,setLoading] = useState<boolean>(true);
     const [groupInfo,setGroupInfo] = useState<Group>(null);
     const [formInstance] = Form.useForm();
@@ -34,7 +36,6 @@ export default function GroupUpdatePanel({groupId,onClose}) {
     useEffect(() => {
         setLoading(true);
         const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
-            console.log("start to Fetch Group Info with id:" + groupId);
             let result:Group;
             const proc = async () => {
                 const response = await requestQueryById(groupId);
@@ -56,7 +57,7 @@ export default function GroupUpdatePanel({groupId,onClose}) {
             const columnArr:Array<EditTableColumn> = [];
             for(let i=0;i<groupInfo.columns.length;i++){
                 const columnInfo = groupInfo.columns[i];
-                columnArr.push({...columnInfo,"key":i,"editable":false})
+                columnArr.push({...columnInfo,"key":getRandomString(),"editable":false})
             }
             setInitData(columnArr);
         }).catch(error => {
@@ -132,6 +133,8 @@ export default function GroupUpdatePanel({groupId,onClose}) {
         <Modal
             title='Group Update'
             visible={true}
+            maskClosable={false}
+            confirmLoading={confirmLoading}
             onCancel={onClose}
             style={{ width:'50%',top:'20px' }}
         >

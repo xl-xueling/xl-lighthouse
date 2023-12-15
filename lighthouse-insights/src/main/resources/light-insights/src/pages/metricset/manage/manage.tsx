@@ -15,9 +15,7 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import GroupBasicPanel from "@/pages/group/basic";
 import useForm from "@arco-design/web-react/es/Form/useForm";
-import StatAddPanel from "@/pages/stat/add/stat_add";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
-import GroupEditPanel from "@/pages/group/update";
 const { Row, Col } = Grid;
 
 export default function MetricManagePanel2({groupId}) {

@@ -5,10 +5,10 @@ import {
     Form,
     Input,
     Tabs,
-    Dropdown, Menu, Divider, Card
+    Dropdown, Menu,
 } from '@arco-design/web-react';
 import {
-    IconDownCircle, IconLock, IconTag, IconTags, IconThunderbolt
+    IconDownCircle, IconTags,
 } from '@arco-design/web-react/icon';
 import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -16,7 +16,7 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import GroupBasicPanel from "@/pages/group/basic";
 import useForm from "@arco-design/web-react/es/Form/useForm";
-import StatAddPanel from "@/pages/stat/add/stat_add";
+import StatCreatePanel from "@/pages/stat/create/stat_create";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/update";
 import {CiViewTable} from "react-icons/ci";
@@ -120,7 +120,7 @@ export default function GroupManagePanel({groupId}) {
                     <GroupBasicPanel groupId={groupId}/>
                 </TabPane>
             </Tabs>
-            {showStatAddPanel && <StatAddPanel onClose={() => setShowsStatAddPanel(false)}/>}
+            {showStatAddPanel && <StatCreatePanel onClose={() => setShowsStatAddPanel(false)}/>}
             {showGroupEditPanel && <GroupEditPanel groupId={'1'} onClose={() => setShowGroupEditPanel(false)}/>}
         </>);
 

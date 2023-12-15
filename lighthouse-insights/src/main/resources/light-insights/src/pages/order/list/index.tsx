@@ -7,24 +7,9 @@ import {
     PaginationProps,
     Space,
     Table,
-    Tabs,
-    Typography,
-    Modal,
-    Divider,
-    Steps,
-    AutoComplete,
-    Select,
-    Cascader,
-    Form,
-    Input,
-    InputNumber,
-    TreeSelect,
-    Switch,
-    Message,
     TableColumnProps,
 } from '@arco-design/web-react';
 import SearchForm from "@/pages/components/filter/list/form";
-import StatAddPanel from "@/pages/stat/add/stat_add";
 import FilterAddPanel from "@/pages/components/filter/add/filter_add";
 
 export default function FilterList() {

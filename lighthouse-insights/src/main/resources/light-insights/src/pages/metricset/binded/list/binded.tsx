@@ -11,15 +11,8 @@ import {
     IconDownCircle, IconPlus, IconTag, IconThunderbolt
 } from '@arco-design/web-react/icon';
 import React, {useEffect, useState} from 'react';
-import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import GroupBasicPanel from "@/pages/group/basic";
-import useForm from "@arco-design/web-react/es/Form/useForm";
-import StatAddPanel from "@/pages/stat/add/stat_add";
-import StatisticalListPanel from "@/pages/stat/list/stat_list";
-import GroupEditPanel from "@/pages/group/update";
-import AddBindedPanel from "@/pages/metricset/binded/binded";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 

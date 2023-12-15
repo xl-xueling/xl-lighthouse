@@ -1,11 +1,7 @@
 import {
     Typography,
     Grid,
-    Button,
-    Form,
-    Input,
-    Tabs,
-    Dropdown, Menu, TreeSelect, Card
+    Tabs, TreeSelect
 } from '@arco-design/web-react';
 import {
     IconDashboard, IconDownCircle, IconTag, IconThunderbolt
@@ -16,9 +12,6 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import GroupBasicPanel from "@/pages/group/basic";
 import useForm from "@arco-design/web-react/es/Form/useForm";
-import StatAddPanel from "@/pages/stat/add/stat_add";
-import StatisticalListPanel from "@/pages/stat/list/stat_list";
-import GroupEditPanel from "@/pages/group/update";
 import BindedList from "@/pages/metricset/binded/list/binded";
 const { Row, Col } = Grid;
 
