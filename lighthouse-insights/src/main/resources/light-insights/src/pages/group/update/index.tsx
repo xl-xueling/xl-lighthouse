@@ -105,11 +105,16 @@ export default function GroupUpdatePanel({groupId,onClose}) {
             dataIndex: 'operate',
             componentType:EditTableComponentEnum.BUTTON,
             headerCellStyle: { width:'12%'},
-            render: (_, record) => (
-                <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%',paddingTop:'5px' }}>
-                    <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
-                </Space>
-            ),
+            render: (_, record) =>
+                {
+                return (record.editable == undefined || record.editable)?
+                    (<Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%'}}>
+                        <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
+                    </Space>) :
+                    (<Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%'}}>
+                        <IconMinusCircleFill style={{ cursor:"pointer"}}/>
+                    </Space>);
+                },
         },
     ];
 
