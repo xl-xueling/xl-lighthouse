@@ -87,7 +87,7 @@ export default function GroupCreateModal({onClose}) {
       dataIndex: 'type',
       editable: true,
       componentType:EditTableComponentEnum.SELECT,
-      headerCellStyle: { width:'90px'},
+      headerCellStyle: { width:'130px'},
       render:(k,v) => (
           <Select size={"mini"}
                   onChange={editTableRef.current.cellValueChangeHandler}
@@ -124,6 +124,7 @@ export default function GroupCreateModal({onClose}) {
       <Modal
           title='Create Group'
           onOk={onOk}
+          maskClosable={false}
           visible={true}
           style={{ width:'750px' }}
           confirmLoading={confirmLoading}
