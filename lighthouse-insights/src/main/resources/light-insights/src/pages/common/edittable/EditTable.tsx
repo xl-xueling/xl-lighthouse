@@ -15,7 +15,7 @@ export enum EditTableComponentEnum {
 }
 
 export interface EditTableColumn extends Column{
-    key:number;
+    key:number|string;
     editable?:boolean;
 }
 
