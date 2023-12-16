@@ -7,24 +7,20 @@ import {ContentType, FilterType, Status} from "@/pages/list/search-table/constan
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
         {
-            title: 'Name',
-            dataIndex: 'name',
+            title: 'ID',
+            dataIndex: 'id',
         },
         {
-            title: 'Salary',
-            dataIndex: 'salary',
+            title: 'Title',
+            dataIndex: 'title',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
+            title: 'CreatedTime',
+            dataIndex: 'createdTime',
         },
         {
-            title: 'Email',
-            dataIndex: 'email',
-        },
-        {
-            title: 'Oeration',
-            dataIndex: 'operations',
+            title: 'Operation',
+            dataIndex: 'operation',
             headerCellStyle: { paddingLeft: '15px' },
             render: (_, record) => (
                 <Space size={0} direction="horizontal">

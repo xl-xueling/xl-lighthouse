@@ -12,8 +12,9 @@ import FilterAddPanel from "@/pages/components/filter/add/filter_add";
 import {getColumns} from "./constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/list/locale";
-import {Order, Project} from "@/types/insights-web";
+import {Order, Project, ProjectPagination} from "@/types/insights-web";
 import {requestList} from "@/api/application";
+import {getRandomString} from "@/utils/util";
 
 export default function Index() {
 
@@ -45,14 +46,19 @@ export default function Index() {
                     //     ...formParams,
                     // },
                 });
-                console.log("result is:" + JSON.stringify(result));
                 resolve(result.data);
             }
             proc().then();
         })
 
         Promise.all([fetchOrdersInfo]).then((result) => {
-            console.log("result is:" + JSON.stringify(result));
+            const orders = result[0].list;
+            const paginationData = orders.reduce((result:Order[],item:Order) => {
+                const combineItem = {...item ,"key":getRandomString()};
+                result.push(combineItem);
+                return result;
+            },[])
+            setListData(paginationData)
         })
     }
 
@@ -75,44 +81,6 @@ export default function Index() {
         setFormParams(params);
     }
 
-    const data = [
-        {
-            key: '1',
-            name: 'Jane Doe',
-            salary: 23000,
-            address: '32 Park Road, London',
-            email: 'jane.doe@example.com',
-        },
-        {
-            key: '2',
-            name: 'Alisa Ross',
-            salary: 25000,
-            address: '35 Park Road, London',
-            email: 'alisa.ross@example.com',
-        },
-        {
-            key: '3',
-            name: 'Kevin Sandra',
-            salary: 22000,
-            address: '31 Park Road, London',
-            email: 'kevin.sandra@example.com',
-        },
-        {
-            key: '4',
-            name: 'Ed Hellen',
-            salary: 17000,
-            address: '42 Park Road, London',
-            email: 'ed.hellen@example.com',
-        },
-        {
-            key: '5',
-            name: 'William Smith',
-            salary: 27000,
-            address: '62 Park Road, London',
-            email: 'william.smith@example.com',
-        },
-    ];
-
     return (
         <Card>
             <SearchForm onSearch={handleSearch} />
@@ -127,7 +95,7 @@ export default function Index() {
             </Grid.Row>
             <Table
                 style={{ marginTop:12}}
-                columns={columns} data={data} />
+                columns={columns} data={listData} />
 
             {showAddPanel && <FilterAddPanel onClose={() => setShowsAddPanel(false)}/>}
         </Card>
