@@ -3,7 +3,7 @@ import {Descriptions, Form, Input, Modal, Typography} from "@arco-design/web-rea
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/create/locale";
 
-export default function ProjectApplyModal() {
+export default function ProjectApplyModal({onClose}) {
 
     const t = useLocale(locale);
 
@@ -34,7 +34,8 @@ export default function ProjectApplyModal() {
         <Modal
             title= '申请工程权限'
             style={{ width:'750px',top:'20px' }}
-            visible={true}>
+            visible={true}
+            onCancel={onClose}>
             <Typography.Title
                 style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
             >

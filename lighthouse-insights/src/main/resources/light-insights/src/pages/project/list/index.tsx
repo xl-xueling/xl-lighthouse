@@ -236,8 +236,7 @@ export default function Index() {
       {updateVisible && <ProjectUpdatePanel updateId={selectedProject.id} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)}/>}
       {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
       {bindedVisible && <ReverseBindedPanel projectId={selectedProject.id} onClose={() => setBindedVisible(false)}/>}
-
-      <ProjectApplyModal />
+      {applyVisible && <ProjectApplyModal onClose={() => setApplyVisible(false)}/>}
     </Card>
   );
 
