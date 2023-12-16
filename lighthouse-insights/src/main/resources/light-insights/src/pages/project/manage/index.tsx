@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import styles from './style/index.module.less';
 import {
     Breadcrumb,
-    Card,
+    Card, Descriptions,
     Link,
     Space,
     Typography
@@ -13,13 +13,14 @@ import {PrivilegeEnum, Project} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {requestQueryByIds} from "@/api/project";
 import ProjectManageMenu from "@/pages/project/manage/menu";
-import {IconHome} from "@arco-design/web-react/icon";
+import {IconBook, IconClockCircle, IconHome, IconUserGroup} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 const BreadcrumbItem = Breadcrumb.Item;
 import { VscGistSecret } from "react-icons/vsc";
 import {CiViewTable} from "react-icons/ci";
 import GroupCreateModal from "@/pages/group/create/group_create";
+import UserGroup from "@/pages/user/common/groups";
 
 export default function ProjectManage() {
 
@@ -107,16 +108,16 @@ export default function ProjectManage() {
 
     const data = [
         {
-            label: 'Description',
-            value: 'Yingdu Building, Zhichun Road, BeijingYingdu Building, Zhichun Road, BeijingYingdu Building, Zhichun Road, BeijingYingdu Building, Zhichun Road, Beijing',
+            label: <IconBook/>,
+            value: <span style={{ wordBreak: 'break-word' }}>{projectInfo?.desc}</span>
         },
         {
-            label: 'CreatedTime',
-            value: 'Socrates',
+            label: <IconClockCircle />,
+            value: projectInfo?.createdTime,
         },
         {
-            label: 'Admins',
-            value: 'Beijing',
+            label: <IconUserGroup/>,
+            value: <UserGroup users={projectInfo?.admins}/>,
         },
 
     ];
@@ -165,18 +166,19 @@ export default function ProjectManage() {
                           </div>
                       </div>
                   </Card>
-                  {/*<Card>*/}
-                  {/*    <div style={{ display: 'flex', justifyContent: 'space-between' }}>*/}
-                  {/*        <Typography.Title heading={6}>*/}
-                  {/*            {"描述信息"}*/}
-                  {/*        </Typography.Title>*/}
-                  {/*    </div>*/}
-                  {/*    <div>*/}
-                  {/*        <Descriptions colon=' :' layout='horizontal'*/}
-                  {/*                      style={{whiteSpace:"normal"}}*/}
-                  {/*                      data={data} column={1}/>*/}
-                  {/*    </div>*/}
-                  {/*</Card>*/}
+                  <Card>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <Typography.Title heading={6}>
+                              {"描述信息"}
+                          </Typography.Title>
+                      </div>
+                      <div>
+                          <Descriptions colon=':' layout='horizontal'
+                                        labelStyle={{ textAlign: 'left', width:'24px',}}
+                                        style={{whiteSpace:"normal"}}
+                                        data={data} column={1}/>
+                      </div>
+                  </Card>
               </Space>
           </div>
           <div className={styles['layout-content']}>
