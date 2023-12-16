@@ -34,9 +34,14 @@ setupMock({
 
     setup: () => {
         Mock.mock(new RegExp('/order/application/list'), (params) => {
+            const list = [_Mock_application_order1,_Mock_application_order2];
             return {
-                list: [_Mock_application_order1,_Mock_application_order2],
-                total: 100,
+                code:'0',
+                message:'success',
+                data:{
+                    list:list,
+                    total:100,
+                }
             };
         });
     },
