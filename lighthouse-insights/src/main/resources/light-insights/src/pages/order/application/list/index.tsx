@@ -12,10 +12,14 @@ import FilterAddPanel from "@/pages/components/filter/add/filter_add";
 import {getColumns} from "./constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/list/locale";
+import {Order, Project} from "@/types/insights-web";
+import {requestList} from "@/api/application";
 
 export default function Index() {
 
     const t = useLocale(locale);
+    const [listData, setListData] = useState([]);
+
     const [formParams, setFormParams] = useState({});
     const tableCallback = async (record, type) => {
         console.log("record:" + record + ",type:" + type)
@@ -28,6 +32,33 @@ export default function Index() {
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
+
+    const fetchData = async (): Promise<void> => {
+        console.log("fetch data...")
+        const fetchOrdersInfo:Promise<{list:Array<Order>,total:number}> = new Promise<{list:Array<Order>,total:number}>((resolve) => {
+            const proc = async () => {
+                const result = await requestList({
+                    // params: {
+                    //     page: current,
+                    //     pageSize,
+                    //     owner:owner?1:0,
+                    //     ...formParams,
+                    // },
+                });
+                console.log("result is:" + JSON.stringify(result));
+                resolve(result.data);
+            }
+            proc().then();
+        })
+
+        Promise.all([fetchOrdersInfo]).then((result) => {
+            console.log("result is:" + JSON.stringify(result));
+        })
+    }
+
+    useEffect(() => {
+        fetchData().then();
+    },[])
 
     const [showAddPanel, setShowsAddPanel] = useState(false);
 
