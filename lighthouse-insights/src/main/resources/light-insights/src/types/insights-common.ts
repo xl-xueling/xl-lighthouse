@@ -15,6 +15,18 @@ export enum RenderTypeEnum {
     FILTER_REMOTE_SEARCH_SELECT=6,
 }
 
+export enum OrderTypeEnum {
+    PROJECT_ACCESS=1,
+    STAT_ACCESS=2,
+    GROUP_THRESHOLD_ADJUST=3,
+    STAT_ITEM_APPROVE=4,
+}
+
+export enum RoleTypeEnum {
+    SYSTEM_ADMIN=1,
+    PROJECT_ADMIN=2,
+}
+
 export interface FilterConfigParam {
     renderType:number,
     label:string,

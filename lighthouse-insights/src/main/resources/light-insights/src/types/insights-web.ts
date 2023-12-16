@@ -1,5 +1,5 @@
 import {List} from "@arco-design/web-react";
-import {DatePickerConfigParam, FilterConfigParam, RenderTypeEnum} from "@/types/insights-common";
+import {DatePickerConfigParam, FilterConfigParam, OrderTypeEnum, RenderTypeEnum} from "@/types/insights-common";
 
 export enum PrivilegeEnum {
     ADMIN = 1,
@@ -122,6 +122,16 @@ export interface MetricSet {
 export interface MetricSetPagination extends MetricSet{
     permissions:PrivilegeEnum[];
     admins?:Array<User>;
+}
+
+export interface Order {
+    id?:number;
+    title?:string;
+    createdTime?:number;
+    description?:string;
+    orderType?:OrderTypeEnum;
+    config?:any;
+    extend?:any;
 }
 
 

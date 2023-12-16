@@ -1,35 +1,26 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {
-    Radio,
     Button,
     Card,
     Grid,
     PaginationProps,
     Space,
     Table,
-    Tabs,
-    Typography,
-    Modal,
-    Divider,
-    Steps,
-    AutoComplete,
-    Select,
-    Cascader,
-    Form,
-    Input,
-    InputNumber,
-    TreeSelect,
-    Switch,
-    Message,
-    TableColumnProps,
 } from '@arco-design/web-react';
 import SearchForm from "@/pages/components/filter/list/form";
 import FilterAddPanel from "@/pages/components/filter/add/filter_add";
+import {getColumns} from "./constants";
+import useLocale from "@/utils/useLocale";
+import locale from "@/pages/project/list/locale";
 
-export default function FilterList() {
+export default function Index() {
 
+    const t = useLocale(locale);
     const [formParams, setFormParams] = useState({});
-
+    const tableCallback = async (record, type) => {
+        console.log("record:" + record + ",type:" + type)
+    }
+    const columns = useMemo(() => getColumns(t, tableCallback), [t]);
     const [pagination, setPatination] = useState<PaginationProps>({
         sizeCanChange: true,
         showTotal: true,
@@ -53,24 +44,6 @@ export default function FilterList() {
         setFormParams(params);
     }
 
-    const columns: TableColumnProps[] = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-        },
-        {
-            title: 'Salary',
-            dataIndex: 'salary',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-        },
-    ];
     const data = [
         {
             key: '1',
