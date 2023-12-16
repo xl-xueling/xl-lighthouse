@@ -126,9 +126,14 @@ export interface MetricSetPagination extends MetricSet{
 
 export interface Order {
     id?:number;
+    userId?:number;
+    user?:User;
     title?:string;
     createdTime?:number;
-    description?:string;
+    desc?:string;
+    state?:number;
+    approveIds?:Array<number>;
+    approveUsers?:Array<User>;
     orderType?:OrderTypeEnum;
     config?:any;
     extend?:any;
