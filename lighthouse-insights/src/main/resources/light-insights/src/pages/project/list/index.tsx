@@ -28,6 +28,7 @@ import Detail from "@/pages/project/list/detail";
 import {requestQueryByIds} from "@/api/user";
 import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
 import UserGroup from "@/pages/user/common/groups";
+import ProjectApplyModal from "@/pages/project/apply";
 
 export default function Index() {
   const t = useLocale(locale);
@@ -40,6 +41,7 @@ export default function Index() {
   const [updateVisible, setUpdateVisible] = React.useState(false);
   const [detailVisible, setDetailVisible] = React.useState(false);
   const [bindedVisible,setBindedVisible] = React.useState(false);
+  const [applyVisible,setApplyVisible] = React.useState(false);
 
   const tableCallback = async (record, type) => {
     if(type == 'update'){
@@ -53,6 +55,9 @@ export default function Index() {
     }else if(type == 'detail'){
       setSelectedProject(record);
       setDetailVisible(!detailVisible);
+    }else if(type == 'apply'){
+      setSelectedProject(record);
+      setApplyVisible(!applyVisible);
     }
   };
 
@@ -231,6 +236,8 @@ export default function Index() {
       {updateVisible && <ProjectUpdatePanel updateId={selectedProject.id} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)}/>}
       {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
       {bindedVisible && <ReverseBindedPanel projectId={selectedProject.id} onClose={() => setBindedVisible(false)}/>}
+
+      <ProjectApplyModal />
     </Card>
   );
 

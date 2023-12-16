@@ -75,24 +75,30 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                     {t['projectList.columns.operations.manage']}
                   </Button>
               </Link>
-            <Popconfirm
-                position={"tr"}
-                focusLock
-                title='Confirm'
-                content='Are you sure to delete this project?'
-                onOk={() => callback(record, 'delete')}
-                onCancel={() => {
-                  Message.error({
-                    content: 'cancel',
-                  });
-                }}
-            >
               <Button
+                  onClick={() => callback(record, 'apply')}
                   type="text"
                   size="mini">
-                {t['projectList.columns.operations.delete']}
+                  {t['projectList.columns.operations.apply']}
               </Button>
-            </Popconfirm>
+            {/*<Popconfirm*/}
+            {/*    position={"tr"}*/}
+            {/*    focusLock*/}
+            {/*    title='Confirm'*/}
+            {/*    content='Are you sure to delete this project?'*/}
+            {/*    onOk={() => callback(record, 'delete')}*/}
+            {/*    onCancel={() => {*/}
+            {/*      Message.error({*/}
+            {/*        content: 'cancel',*/}
+            {/*      });*/}
+            {/*    }}*/}
+            {/*>*/}
+            {/*  <Button*/}
+            {/*      type="text"*/}
+            {/*      size="mini">*/}
+            {/*    {t['projectList.columns.operations.delete']}*/}
+            {/*  </Button>*/}
+            {/*</Popconfirm>*/}
           </Space>
 
 
