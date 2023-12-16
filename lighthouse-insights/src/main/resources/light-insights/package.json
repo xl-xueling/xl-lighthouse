@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "description": "Arco Design Pro",
   "scripts": {
-    "start": "react-app-rewired start",
-    "dev": "react-app-rewired start",
+    "start": "cross-env REACT_APP_ENV=production react-app-rewired start",
+    "dev": "cross-env REACT_APP_ENV=development react-app-rewired start",
     "build": "react-app-rewired build",
     "eject": "react-scripts eject",
     "eslint": "eslint src/ --ext .ts,.tsx,.js,.jsx --fix --cache",
     "stylelint": "stylelint 'src/**/*.less' 'src/**/*.css' --fix --cache",
-    "pre-commit": "pretty-quick --staged && npm run eslint && npm run stylelint"
+    "pre-commit": "pretty-quick --staged && npm run eslint && npm run stylelint",
+    "build:prod": "cross-env REACT_APP_ENV=production react-app-rewired build",
+    "build:dev": "cross-env REACT_APP_ENV=development react-app-rewired build"
   },
   "dependencies": {
     "@ant-design/plots": "^1.2.6",
@@ -29,6 +31,7 @@
     "brace": "^0.11.1",
     "classnames": "^2.3.1",
     "copy-to-clipboard": "^3.3.1",
+    "cross-env": "^7.0.3",
     "lodash": "^4.17.21",
     "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",

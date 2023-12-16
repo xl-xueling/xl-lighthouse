@@ -41,6 +41,7 @@ import { PiShareNetwork } from "react-icons/pi";
 import { GoTasklist } from "react-icons/go";
 import { RiAppsLine } from "react-icons/ri";
 import MaticManage from "@/pages/metricset/manage";
+import { PiDiamondsFour } from "react-icons/pi";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -76,7 +77,7 @@ function getIconFromKey(key) {
       return <IconList className={styles.icon} />;
     case 'statistics':
       //return <GoTasklist style={{marginRight:'16px'}} className={styles.icon}/>
-      return <RiAppsLine style={{marginRight:'16px'}} className={styles.icon} />;
+      return <PiDiamondsFour style={{marginRight:'16px'}} className={styles.icon} />;
     case 'favorites':
       return <IconCodepen className={styles.icon}/>
     default:
