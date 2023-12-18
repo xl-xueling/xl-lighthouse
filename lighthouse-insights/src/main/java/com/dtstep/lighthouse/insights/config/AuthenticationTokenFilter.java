@@ -1,7 +1,12 @@
 package com.dtstep.lighthouse.insights.config;
 
-import cn.hutool.jwt.JWTUtil;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.Jwts;
+import org.eclipse.jetty.util.ajax.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +20,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
@@ -32,13 +36,12 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
             return;
         }
-
-        if (!JWTUtil.verify(authToken, SystemConstant.SIGN_KEY.getBytes(StandardCharsets.UTF_8))) {
+        Jws<Claims> jws = Jwts.parser().setSigningKey(SystemConstant.SIGN_KEY).parseClaimsJws(authToken);
+        if(jws == null){
             filterChain.doFilter(request,response);
             return;
         }
-
-        final String userName = (String) JWTUtil.parseToken(authToken).getPayload("username");
+        String userName = String.valueOf(jws.getBody().get("username"));
         UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());

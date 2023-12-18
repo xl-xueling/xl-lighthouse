@@ -1,8 +1,10 @@
-package com.dtstep.lighthouse.insights.security;
+package com.dtstep.lighthouse.commonv2.entity.user;
 
 import java.util.List;
 
 public class User {
+
+    private int id;
 
     private String userName;
 
@@ -10,10 +12,19 @@ public class User {
 
     private List<Role> roles;
 
-    public User(String userName,String password,List<Role> roles){
+    public User(int id,String userName,String password,List<Role> roles){
+        this.id = id;
         this.userName = userName;
         this.password = password;
         this.roles = roles;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUserName() {
