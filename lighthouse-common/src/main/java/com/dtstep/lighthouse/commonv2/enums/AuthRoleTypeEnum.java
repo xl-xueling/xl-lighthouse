@@ -1,6 +1,6 @@
-package com.dtstep.lighthouse.insights.security;
+package com.dtstep.lighthouse.commonv2.enums;
 
-public enum RoleTypeEnum {
+public enum AuthRoleTypeEnum {
 
     ADMIN("admin"),
 
@@ -8,7 +8,7 @@ public enum RoleTypeEnum {
 
     private final String roleName;
 
-    RoleTypeEnum(String roleName) {
+    AuthRoleTypeEnum(String roleName) {
         this.roleName = roleName;
     }
 

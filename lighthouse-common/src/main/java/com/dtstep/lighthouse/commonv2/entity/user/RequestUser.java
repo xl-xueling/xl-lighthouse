@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.security;
+package com.dtstep.lighthouse.commonv2.entity.user;
 
 public class RequestUser {
 

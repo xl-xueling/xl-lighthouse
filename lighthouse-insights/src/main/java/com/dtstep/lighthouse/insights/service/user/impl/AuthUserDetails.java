@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.service.user.impl;
 
-import com.dtstep.lighthouse.insights.security.User;
+import com.dtstep.lighthouse.commonv2.entity.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
