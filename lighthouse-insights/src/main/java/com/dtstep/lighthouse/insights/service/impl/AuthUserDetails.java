@@ -1,6 +1,6 @@
-package com.dtstep.lighthouse.insights.service.user.impl;
+package com.dtstep.lighthouse.insights.service.impl;
 
-import com.dtstep.lighthouse.commonv2.entity.user.User;
+import com.dtstep.lighthouse.insights.modal.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +31,7 @@ public class AuthUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUserName();
+        return user.getUsername();
     }
 
     @Override

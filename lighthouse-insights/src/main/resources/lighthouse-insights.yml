@@ -1,0 +1,30 @@
+server:
+  port: 9089
+  servlet:
+    context-path: /
+    session:
+      timeout: 18000
+  tomcat:
+    uri-encoding: utf-8
+spring:
+  datasource:
+    url: jdbc:mysql://10.206.6.17:3906/ldp_mysqldb?autoReconnect=true&useUnicode=true&characterEncoding=utf8
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: lighthouse
+    password: 123456
+  mvc:
+    static-path-pattern: /static/**
+    hiddenmethod:
+      filter:
+        enabled: true
+  main:
+    allow-circular-references: true
+  devtools:
+    restart:
+      enabled: true
+  cache:
+    redis:
+      time-to-live: 86400000
+mybatis:
+  mapper-locations:
+    - classpath*:mybatis/mapper/*.xml
