@@ -28,7 +28,6 @@ import java.util.Map;
 public class LightHouseInsightsApplication {
 
     public static void main(String[] args) throws Exception {
-
         SpringApplication springApplication = new SpringApplication(LightHouseInsightsApplication.class);
         Map<String,Object> defaultProperties = new HashMap<>();
         defaultProperties.put("spring.config.name","lighthouse-insights");
