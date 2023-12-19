@@ -4,5 +4,7 @@ import com.dtstep.lighthouse.commonv2.entity.user.User;
 
 public interface UserService {
 
-    User getUserByName(String userName);
+    User queryById(int id);
+
+    User queryByUserName(String userName);
 }

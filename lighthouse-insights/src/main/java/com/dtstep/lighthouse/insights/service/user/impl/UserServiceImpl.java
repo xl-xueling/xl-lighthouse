@@ -18,7 +18,12 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public User getUserByName(String userName) {
+    public User queryById(int id) {
+        return null;
+    }
+
+    @Override
+    public User queryByUserName(String userName) {
         if (!"admin".equals(userName)) {
             throw new RuntimeException();
         }

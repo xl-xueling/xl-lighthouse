@@ -22,12 +22,6 @@ public class LoginController {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    @PostMapping("/register")
-    public String register() {
-        System.out.println("execute register");
-        return "register";
-    }
-
     @RequestMapping("/login")
     public String login(@RequestBody RequestUser user) {
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -39,7 +33,7 @@ public class LoginController {
         return token;
     }
 
-    @PostMapping("/index")
+    @RequestMapping("/index")
     public String index(){
         return "index";
     }
