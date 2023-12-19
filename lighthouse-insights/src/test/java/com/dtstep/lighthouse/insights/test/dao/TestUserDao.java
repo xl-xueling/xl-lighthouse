@@ -1,8 +1,10 @@
 package com.dtstep.lighthouse.insights.test.dao;
 
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
-import com.dtstep.lighthouse.insights.dao.UserMapper;
+import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.modal.User;
+import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ import java.util.Date;
 public class TestUserDao {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserDao userDao;
 
     @Test
     public void testCreateUser() throws Exception {
@@ -29,6 +31,18 @@ public class TestUserDao {
         user.setUsername("123");
         user.setDepartmentId(1);
         user.setEmail("ccssd");
-        userMapper.insert(user);
+        userDao.insert(user);
+    }
+
+    @Test
+    public void testQueryById() throws Exception {
+        User user = userDao.queryById(110137);
+        System.out.println("user:" + JsonUtil.toJSONString(user));
+    }
+
+    @Test
+    public void testQueryByUserName() throws Exception {
+        User user = userDao.queryByUserName("123");
+        System.out.println("user:" + JsonUtil.toJSONString(user));
     }
 }
