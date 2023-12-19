@@ -4,17 +4,15 @@
 
     <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.User" >
         INSERT INTO ldp_user (`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`created_time`) VALUES
-        <foreach collection="list" item="item" index="index" separator=",">
-            (
-             #{item.username,jdbcType=VARCHAR},
-             #{item.password,jdbcType=VARCHAR},
-             #{item.phone,jdbcType=VARCHAR},
-             #{item.email,jdbcType=VARCHAR},
-            #{item.departmentId,jdbcType=INTEGER}
-            #{item.state,jdbcType=INTEGER}
-            #{item.lastTime,jdbcType=TIMESTAMP}
-            #{item.createdTime,jdbcType=TIMESTAMP}
-            )
-        </foreach>
+        (
+            #{username,jdbcType=VARCHAR},
+            #{password,jdbcType=VARCHAR},
+            #{phone,jdbcType=VARCHAR},
+            #{email,jdbcType=VARCHAR},
+            #{departmentId,jdbcType=INTEGER},
+            #{state,jdbcType=INTEGER},
+            #{lastTime,jdbcType=TIMESTAMP},
+            #{createdTime,jdbcType=TIMESTAMP}
+        )
     </insert>
 </mapper>
