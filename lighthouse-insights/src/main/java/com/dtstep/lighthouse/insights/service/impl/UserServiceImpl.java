@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int create(User user) {
-        return userMapper.createUser(user);
+        return userMapper.insert(user);
     }
 
     @Override
