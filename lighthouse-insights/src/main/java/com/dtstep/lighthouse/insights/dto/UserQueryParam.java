@@ -4,13 +4,15 @@ import java.util.Date;
 
 public class UserQueryParam {
 
+    private Integer id;
+
     private String username;
 
     private Date createdStartTime;
 
     private Date createdEndTime;
 
-    private int state;
+    private Integer state;
 
     public String getUsername() {
         return username;
@@ -36,11 +38,19 @@ public class UserQueryParam {
         this.createdEndTime = createdEndTime;
     }
 
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(Integer state) {
         this.state = state;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

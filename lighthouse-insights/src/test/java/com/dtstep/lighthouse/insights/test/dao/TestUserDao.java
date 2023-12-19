@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.test.dao;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.UserDao;
+import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.insights.modal.User;
 import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
+import java.util.List;
 
 
 @RunWith(SpringRunner.class)
@@ -44,5 +46,13 @@ public class TestUserDao {
     public void testQueryByUserName() throws Exception {
         User user = userDao.queryByUserName("123");
         System.out.println("user:" + JsonUtil.toJSONString(user));
+    }
+
+    @Test
+    public void testQueryList() throws Exception {
+        UserQueryParam userQueryParam = new UserQueryParam();
+        userQueryParam.setId(110137);
+        List<User> users = userDao.queryList(userQueryParam,1,10);
+        System.out.println("data:" + JsonUtil.toJSONString(users));
     }
 }
