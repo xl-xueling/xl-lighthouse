@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.commonv2.entity.user.Role;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class User implements Serializable {
@@ -24,7 +25,9 @@ public class User implements Serializable {
 
     private int state;
 
-    private Long lastTime;
+    private Date lastTime;
+
+    private Date createdTime;
 
     private List<Role> roles;
 
@@ -76,14 +79,6 @@ public class User implements Serializable {
         this.state = state;
     }
 
-    public Long getLastTime() {
-        return lastTime;
-    }
-
-    public void setLastTime(Long lastTime) {
-        this.lastTime = lastTime;
-    }
-
     public List<Role> getRoles() {
         return roles;
     }
@@ -98,5 +93,21 @@ public class User implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Date getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(Date lastTime) {
+        this.lastTime = lastTime;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 }
