@@ -36,4 +36,29 @@
         SELECT * FROM ldp_user WHERE username = #{username}
     </select>
 
+
+    <select id="queryList" resultMap="userResultMap">
+        SELECT * FROM ldp_user WHERE 1 = 1
+        <if test="queryParam.id!=null">
+            AND id = #{queryParam.id}
+        </if>
+        <if test="queryParam.state!=null">
+            AND state = #{queryParam.state}
+        </if>
+        <bind name="offset" value="(pageNum-1)*pageSize"></bind>
+        limit ${offset},#{pageSize}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT count(1) FROM ldp_user WHERE 1 = 1
+        <if test="queryParam.id!=null">
+            AND id = #{queryParam.id}
+        </if>
+        <if test="queryParam.state!=null">
+            AND state = #{queryParam.state}
+        </if>
+        limit
+    </select>
+
+
 </mapper>
