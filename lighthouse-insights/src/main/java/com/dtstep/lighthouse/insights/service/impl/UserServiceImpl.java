@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.commonv2.entity.user.Role;
 import com.dtstep.lighthouse.commonv2.enums.AuthRoleTypeEnum;
-import com.dtstep.lighthouse.insights.dao.UserMapper;
+import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,11 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserDao userDao;
 
     @Override
     public int create(User user) {
-        return userMapper.insert(user);
+        return userDao.insert(user);
     }
 
     @Override
