@@ -1,12 +1,15 @@
 package com.dtstep.lighthouse.commonv2.insights;
 
-public enum ResultCodeEnum {
+public enum ResultCode {
 
     SUCCESS("0","success"),
-
+    ERROR("1","System Error!"),
+    VALIDATE_FAILED("2","Param Validate failed!"),
+    FORBIDDEN("3","Access Denied!"),
+    UNAUTHORIZED("4","Unauthorized!"),
     ;
 
-    ResultCodeEnum(String code ,String message){
+    ResultCode(String code , String message){
         this.code = code;
         this.message = message;
     }

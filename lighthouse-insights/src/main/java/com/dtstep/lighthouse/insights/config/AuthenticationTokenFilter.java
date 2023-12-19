@@ -32,6 +32,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authToken = request.getHeader(AUTH_PARAM);
+        String uri = request.getRequestURI();
         if (Objects.isNull(authToken)){
             filterChain.doFilter(request,response);
             return;
