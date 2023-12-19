@@ -4,5 +4,5 @@ import com.dtstep.lighthouse.insights.modal.User;
 
 public interface UserMapper {
 
-    int createUser(User user);
+    int insert(User user);
 }
