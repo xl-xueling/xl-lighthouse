@@ -8,7 +8,7 @@ server:
     uri-encoding: utf-8
 spring:
   datasource:
-    url: jdbc:mysql://10.206.6.17:3906/ldp_mysqldb?autoReconnect=true&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://10.206.6.17:3906/ldp_mysqldb?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useCursorFetch=true&defaultFetchSize=100&serverTimezone=Asia/Shanghai
     driverClassName: com.mysql.cj.jdbc.Driver
     username: lighthouse
     password: 123456

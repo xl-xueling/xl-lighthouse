@@ -3,7 +3,7 @@
 <mapper namespace="com.dtstep.lighthouse.insights.dao.UserDao">
 
     <resultMap id="userResultMap" type="com.dtstep.lighthouse.insights.modal.User">
-        <id column="id" property="id"/>
+        <result column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
         <result column="phone" property="phone"/>
@@ -14,7 +14,7 @@
     </resultMap>
 
     <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.User" >
-        INSERT INTO ldp_user (`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`) VALUES
+        INSERT INTO ldp_user (`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time`) VALUES
         (
             #{username,jdbcType=VARCHAR},
             #{password,jdbcType=VARCHAR},
@@ -23,25 +23,35 @@
             #{departmentId,jdbcType=INTEGER},
             #{state,jdbcType=INTEGER},
             #{lastTime,jdbcType=TIMESTAMP},
-            #{createTime,jdbcType=TIMESTAMP}
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
     <select id="queryById" resultMap="userResultMap">
-        SELECT * FROM ldp_user WHERE id = #{id}
+        SELECT `id`,`username`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user WHERE id = #{id}
     </select>
 
     <select id="queryByUserName" resultMap="userResultMap">
-        SELECT * FROM ldp_user WHERE username = #{username}
+        SELECT `id`,`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user WHERE username = #{username}
     </select>
 
     <select id="queryList" resultMap="userResultMap">
-        SELECT * FROM ldp_user WHERE 1 = 1
+        SELECT `id`,`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user WHERE 1 = 1
         <if test="queryParam.id!=null">
             AND id = #{queryParam.id}
         </if>
+        <if test="queryParam.search != null">
+            AND username LIKE CONCAT('%', #{queryParam.search}, '%')
+        </if>
         <if test="queryParam.state!=null">
             AND state = #{queryParam.state}
+        </if>
+        <if test="queryParam.createStartTime!=null">
+            AND create_time &gt;= #{queryParam.createStartTime}
+        </if>
+        <if test="queryParam.createEndTime!=null">
+            AND create_time &lt;= #{queryParam.createEndTime}
         </if>
         <bind name="offset" value="(pageNum-1)*pageSize"></bind>
         limit ${offset},#{pageSize}
