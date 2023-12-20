@@ -26,5 +26,6 @@ spring:
     redis:
       time-to-live: 86400000
 mybatis:
+  config-location: classpath:mybatis-config.xml
   mapper-locations:
     - classpath*:mybatis/mapper/*.xml
