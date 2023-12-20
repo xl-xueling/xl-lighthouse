@@ -15,9 +15,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
     private UserDao userDao;
 
     @Override
@@ -27,21 +24,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User queryById(int id) {
-        return null;
+        return userDao.queryById(id);
     }
 
     @Override
     public User queryByUserName(String userName) {
-        if (!"admin".equals(userName)) {
-            throw new RuntimeException();
-        }
-        List<Role> roles = List.of( new Role(AuthRoleTypeEnum.USER));
-        User user = new User();
-        user.setId(1);
-        user.setUsername(userName);
-        user.setPassword(passwordEncoder.encode("123456"));
-        user.setRoles(roles);
-        return user;
+        return userDao.queryByUserName(userName);
     }
 
 }

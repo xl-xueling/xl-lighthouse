@@ -32,18 +32,26 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authToken = request.getHeader(AUTH_PARAM);
-        String uri = request.getRequestURI();
         if (Objects.isNull(authToken)){
             filterChain.doFilter(request,response);
             return;
         }
-        Jws<Claims> jws = Jwts.parser().setSigningKey(SystemConstant.SIGN_KEY).parseClaimsJws(authToken);
+        Jws<Claims> jws = Jwts.parser().setSigningKey(SystemConstant.PARAM_SIGN_KEY).parseClaimsJws(authToken);
         if(jws == null){
             filterChain.doFilter(request,response);
             return;
         }
         String userName = String.valueOf(jws.getBody().get("username"));
         UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+        if(userDetails == null){
+            filterChain.doFilter(request,response);
+            return;
+        }
+        long expired = (long)jws.getBody().get("expired");
+        if(System.currentTimeMillis() > expired){
+            filterChain.doFilter(request,response);
+            return;
+        }
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
