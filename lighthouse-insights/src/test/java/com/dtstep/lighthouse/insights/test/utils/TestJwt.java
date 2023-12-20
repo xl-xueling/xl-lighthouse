@@ -13,24 +13,28 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class TestJwt {
 
     @Test
     public void testJwt() throws Exception {
-        String key = RandomID.id(64);
+        String key = "0F73nraAcmN1cAIm7gnWbPH3h4nVAH7IgKKcM4SNmqloY1Xyf1BdwfK8kchNBetF";
         System.out.println("key:" + key);
         User user = new User();
         user.setUsername("xl-xueling");
         user.setPassword("xl-xueling");
         long now = System.currentTimeMillis();
         Map<String,Object> accessMap = new HashMap<>();
-        accessMap.put("id",user.getUsername());
+        accessMap.put("seed", UUID.randomUUID().toString());
+        accessMap.put("expired", DateUtil.getMinuteAfter(now,10));
         String accessKey = Jwts.builder().setClaims(accessMap).signWith(SignatureAlgorithm.HS512, key).compact();
         Map<String,Object> refreshMap = new HashMap<>();
-        refreshMap.put("user",user.getUsername());
-        refreshMap.put("_p",user.getPassword());
-        refreshMap.put("_e", DateUtil.getHourAfter(now,24));
+        refreshMap.put("seed", UUID.randomUUID().toString());
+        refreshMap.put("id",user.getId());
+        refreshMap.put("username",user.getUsername());
+        refreshMap.put("password",user.getPassword());
+        refreshMap.put("expired", DateUtil.getHourAfter(now,24));
         String refreshKey = Jwts.builder().setClaims(refreshMap).signWith(SignatureAlgorithm.HS512,key).compact();
         Map<String,String> tokenMap = new HashMap<>();
         tokenMap.put("accessKey",accessKey);
