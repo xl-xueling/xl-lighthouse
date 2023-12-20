@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class DefaultAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private  PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -23,7 +23,7 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
         String username = String.valueOf(authentication.getPrincipal());
         String password = String.valueOf(authentication.getCredentials());
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        if(passwordEncoder.matches(password,userDetails.getPassword())){
+        if(userDetails != null && passwordEncoder.matches(password,userDetails.getPassword())){
            return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
         }
         throw new BadCredentialsException("Authentication Error!");

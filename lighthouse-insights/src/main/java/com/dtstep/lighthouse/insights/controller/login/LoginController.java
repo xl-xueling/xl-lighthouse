@@ -13,6 +13,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,9 @@ public class LoginController {
     @Autowired
     private SystemEnvService systemEnvService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @RequestMapping("/login")
     public ResultData<Map<String,String>> login(@RequestBody RequestUser user) {
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -45,10 +49,12 @@ public class LoginController {
         Map<String,Object> refreshMap = new HashMap<>();
         refreshMap.put("seed", UUID.randomUUID().toString());
         refreshMap.put("username",user.getUsername());
-        refreshMap.put("password",user.getPassword());
+        refreshMap.put("password",passwordEncoder.encode(user.getPassword()));
         refreshMap.put("expired", DateUtil.getHourAfter(now,24));
         String refreshKey = Jwts.builder().setClaims(refreshMap).signWith(SignatureAlgorithm.HS512,secretKey).compact();
         Map<String,String> tokenMap = new HashMap<>();
+        System.out.println("accessKey:" + accessKey);
+        System.out.println("refreshKey:" + refreshKey);
         tokenMap.put("accessKey",accessKey);
         tokenMap.put("refreshKey",refreshKey);
         return ResultData.success(tokenMap);

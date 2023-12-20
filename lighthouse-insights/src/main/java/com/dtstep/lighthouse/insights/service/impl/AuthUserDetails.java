@@ -18,10 +18,11 @@ public class AuthUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleType().getRoleName()))
-                .collect(Collectors.toList());
+//        return user.getRoles()
+//                .stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getRoleType().getRoleName()))
+//                .collect(Collectors.toList());
+        return null;
     }
 
     @Override
