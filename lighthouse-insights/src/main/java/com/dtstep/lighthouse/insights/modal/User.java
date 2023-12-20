@@ -27,7 +27,9 @@ public class User implements Serializable {
 
     private Date lastTime;
 
-    private Date createdTime;
+    private Date createTime;
+
+    private Date updateTime;
 
     private List<Role> roles;
 
@@ -103,11 +105,19 @@ public class User implements Serializable {
         this.lastTime = lastTime;
     }
 
-    public Date getCreatedTime() {
-        return createdTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

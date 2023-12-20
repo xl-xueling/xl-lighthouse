@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dtstep.lighthouse.insights.dao.DepartmentDao">
+    <resultMap id="departmentResultMap" type="com.dtstep.lighthouse.insights.modal.Department">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="pid" property="pid"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.Department">
+        INSERT INTO ldp_department (`name`,`pid`,`create_time`,`update_time`) VALUES
+        (
+            #{name,jdbcType=VARCHAR},
+            #{pid,jdbcType=INTEGER},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="queryAll" resultMap="departmentResultMap">
+        SELECT * FROM ldp_department limit 100000
+    </select>
+
+    <select id="queryById" resultMap="departmentResultMap">
+        SELECT * FROM ldp_department WHERE id = #{id}
+    </select>
+</mapper>
