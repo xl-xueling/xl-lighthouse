@@ -10,9 +10,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 
 @Configuration
 @ComponentScan("com.dtstep.lighthouse")
-public class InitialListener implements ApplicationListener<ContextRefreshedEvent> {
+public class LdpInitialListener implements ApplicationListener<ContextRefreshedEvent> {
 
-    private static final Logger logger = LoggerFactory.getLogger(InitialListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(LdpInitialListener.class);
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
