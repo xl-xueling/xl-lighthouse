@@ -9,8 +9,10 @@ public class Column implements Serializable {
 
     private String name;
 
-    @JsonDeserialize(using = EnumTypeDeserializer.class)
-    private ColumnTypeEnum type;
+//    @JsonDeserialize(using = EnumTypeDeserializer.class)
+//    private ColumnTypeEnum type;
+
+    private String type;
 
     private String comment;
 
@@ -22,11 +24,11 @@ public class Column implements Serializable {
         this.name = name;
     }
 
-    public ColumnTypeEnum getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(ColumnTypeEnum type) {
+    public void setType(String type) {
         this.type = type;
     }
 

@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
         <typeAlias alias="Integer" type="java.lang.Integer" />
@@ -6,5 +8,10 @@
         <typeAlias alias="LinkedHashMap" type="java.util.LinkedHashMap" />
         <typeAlias alias="ArrayList" type="java.util.ArrayList" />
         <typeAlias alias="LinkedList" type="java.util.LinkedList" />
+        <typeAlias type="com.dtstep.lighthouse.insights.modal.Group" alias="GroupEntity"/>
+        <typeAlias type="com.dtstep.lighthouse.insights.modal.Column" alias="GroupColumn"/>
     </typeAliases>
+    <typeHandlers>
+        <typeHandler handler="com.dtstep.lighthouse.insights.JsonArrayTypeHandler"/>
+    </typeHandlers>
 </configuration>
