@@ -10,6 +10,6 @@
         <typeAlias alias="LinkedList" type="java.util.LinkedList" />
     </typeAliases>
     <typeHandlers>
-        <typeHandler handler="com.dtstep.lighthouse.insights.JsonArrayTypeHandler"/>
+        <typeHandler handler="com.dtstep.lighthouse.insights.types.JsonArrayTypeHandler"/>
     </typeHandlers>
 </configuration>

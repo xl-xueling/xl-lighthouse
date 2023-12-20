@@ -11,6 +11,14 @@ public class Project implements Serializable {
     @NotEmpty
     private String title;
 
+    @NotEmpty
+    private Integer departmentId;
+
+    @NotEmpty
+    private Integer privateType;
+
+    private String desc;
+
     private Date createTime;
 
     private Date updateTime;
@@ -45,5 +53,29 @@ public class Project implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public Integer getPrivateType() {
+        return privateType;
+    }
+
+    public void setPrivateType(Integer privateType) {
+        this.privateType = privateType;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights;
+package com.dtstep.lighthouse.insights.types;
 import com.dtstep.lighthouse.insights.modal.Column;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
