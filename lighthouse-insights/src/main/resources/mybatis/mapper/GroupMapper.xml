@@ -7,14 +7,14 @@
         <result property="name" column="name"/>
         <result property="columns" column="columns"
                 jdbcType="VARCHAR"
-                typeHandler="com.dtstep.lighthouse.insights.ColumnArrayTypeHandler"/>
+                typeHandler="com.dtstep.lighthouse.insights.GroupColumnArrayTypeHandler"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.Group" >
         INSERT INTO ldp_stat_group (`token`,`columns`) VALUES
         (
             #{token,jdbcType=VARCHAR},
-            #{columns, typeHandler=com.dtstep.lighthouse.insights.JsonArrayTypeHandler}
+            #{columns, typeHandler=com.dtstep.lighthouse.insights.GroupColumnArrayTypeHandler}
         )
     </insert>
 
