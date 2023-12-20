@@ -32,7 +32,7 @@ public class TestGroupDao {
         List<Column> columnList = new ArrayList<>();
         Column column = new Column();
         column.setName("province");
-        column.setType("string");
+        column.setType(ColumnTypeEnum.STRING);
         column.setComment("省份");
         columnList.add(column);
         group.setColumns(columnList);
