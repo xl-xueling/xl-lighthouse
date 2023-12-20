@@ -10,11 +10,11 @@
         <result column="email" property="email"/>
         <result column="department_id" property="departmentId"/>
         <result column="last_time" property="lastTime"/>
-        <result column="created_time" property="createdTime"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.User" >
-        INSERT INTO ldp_user (`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`created_time`) VALUES
+        INSERT INTO ldp_user (`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`) VALUES
         (
             #{username,jdbcType=VARCHAR},
             #{password,jdbcType=VARCHAR},
@@ -23,7 +23,7 @@
             #{departmentId,jdbcType=INTEGER},
             #{state,jdbcType=INTEGER},
             #{lastTime,jdbcType=TIMESTAMP},
-            #{createdTime,jdbcType=TIMESTAMP}
+            #{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
