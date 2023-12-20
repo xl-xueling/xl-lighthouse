@@ -28,7 +28,7 @@ public class TestUserDao {
     public void testCreateUser() throws Exception {
         User user = new User();
         user.setState(1);
-        user.setCreatedTime(new Date());
+        user.setCreateTime(new Date());
         user.setLastTime(new Date());
         user.setPassword("123");
         user.setUsername("123");
