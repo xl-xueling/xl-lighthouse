@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.test.dao;
+package com.dtstep.lighthouse.insights.test.utils;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.enums.ColumnTypeEnum;

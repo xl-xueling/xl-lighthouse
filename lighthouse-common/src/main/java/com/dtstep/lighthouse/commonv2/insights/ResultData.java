@@ -1,8 +1,5 @@
 package com.dtstep.lighthouse.commonv2.insights;
 
-import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 public class ResultData<T> {
 
     private String code;
