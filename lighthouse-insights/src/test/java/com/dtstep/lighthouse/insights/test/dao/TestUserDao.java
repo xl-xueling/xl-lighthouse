@@ -26,14 +26,16 @@ public class TestUserDao {
 
     @Test
     public void testCreateUser() throws Exception {
+        System.out.println(System.getProperty("user.timezone"));
         User user = new User();
-        user.setState(1);
+        user.setState(3);
         user.setCreateTime(new Date());
+        user.setUpdateTime(new Date());
         user.setLastTime(new Date());
-        user.setPassword("123");
-        user.setUsername("123");
-        user.setDepartmentId(1);
-        user.setEmail("ccssd");
+        user.setPassword("1235");
+        user.setUsername("1235");
+        user.setDepartmentId(2);
+        user.setEmail("sssss");
         userDao.insert(user);
     }
 
@@ -52,7 +54,7 @@ public class TestUserDao {
     @Test
     public void testQueryList() throws Exception {
         UserQueryParam userQueryParam = new UserQueryParam();
-        userQueryParam.setId(110137);
+        userQueryParam.setSearch("12");
         List<User> users = userDao.queryList(userQueryParam,1,10);
         System.out.println("data:" + JsonUtil.toJSONString(users));
     }

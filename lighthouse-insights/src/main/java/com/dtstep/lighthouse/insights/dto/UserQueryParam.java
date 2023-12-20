@@ -6,36 +6,36 @@ public class UserQueryParam {
 
     private Integer id;
 
-    private String username;
+    private String search;
 
-    private Date createdStartTime;
+    private Date createStartTime;
 
-    private Date createdEndTime;
+    private Date createEndTime;
 
     private Integer state;
 
-    public String getUsername() {
-        return username;
+    public String getSearch() {
+        return search;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setSearch(String search) {
+        this.search = search;
     }
 
-    public Date getCreatedStartTime() {
-        return createdStartTime;
+    public Date getCreateStartTime() {
+        return createStartTime;
     }
 
-    public void setCreatedStartTime(Date createdStartTime) {
-        this.createdStartTime = createdStartTime;
+    public void setCreateStartTime(Date createStartTime) {
+        this.createStartTime = createStartTime;
     }
 
-    public Date getCreatedEndTime() {
-        return createdEndTime;
+    public Date getCreateEndTime() {
+        return createEndTime;
     }
 
-    public void setCreatedEndTime(Date createdEndTime) {
-        this.createdEndTime = createdEndTime;
+    public void setCreateEndTime(Date createEndTime) {
+        this.createEndTime = createEndTime;
     }
 
     public Integer getState() {
