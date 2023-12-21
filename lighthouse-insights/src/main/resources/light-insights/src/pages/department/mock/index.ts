@@ -21,7 +21,7 @@ export const _Mock_department1  = {
 
 setupMock({
   setup: () => {
-      Mock.mock(new RegExp('/api/v1/department/all'), () => {
+      Mock.mock('/api/v1/department/all', () => {
           return {
               code:'0',
               message:'success',

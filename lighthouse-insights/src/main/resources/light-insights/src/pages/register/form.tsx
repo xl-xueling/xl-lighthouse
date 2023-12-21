@@ -38,6 +38,7 @@ export default function RegisterForm() {
       async function register(params) {
           setLoading(true);
           await requestRegister(params).then((response:ResultData) => {
+                console.log("response is：" + JSON.stringify(response));
                   const {code, message, data} = response;
                   if (code === '0') {
                       Message.success({
@@ -45,7 +46,7 @@ export default function RegisterForm() {
                           closable: true,
                           duration: 10000,
                           onClose:() => {
-                              window.location.href = '/login'
+                              // window.location.href = '/login'
                             }
                       });
                   } else {
