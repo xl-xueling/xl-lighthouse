@@ -13,7 +13,6 @@ import java.io.IOException;
 public class DefaultUnauthorizedHandler implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        System.out.println("Unauthorized error" + authException);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         response.getWriter().println("Unauthorized");

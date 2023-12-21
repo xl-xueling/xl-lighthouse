@@ -44,7 +44,7 @@ public class LoginController {
         long now = System.currentTimeMillis();
         Map<String,Object> accessMap = new HashMap<>();
         accessMap.put("seed", UUID.randomUUID().toString());
-        accessMap.put("expired", DateUtil.getMinuteAfter(now,10));
+        accessMap.put("expired", DateUtil.getMinuteAfter(now,100000));
         String accessKey = Jwts.builder().setClaims(accessMap).signWith(SignatureAlgorithm.HS512, secretKey).compact();
         Map<String,Object> refreshMap = new HashMap<>();
         refreshMap.put("seed", UUID.randomUUID().toString());

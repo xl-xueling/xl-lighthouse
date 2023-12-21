@@ -20,17 +20,21 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String username = String.valueOf(authentication.getPrincipal());
-        String password = String.valueOf(authentication.getCredentials());
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        if(userDetails != null && passwordEncoder.matches(password,userDetails.getPassword())){
-           return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
+        if(authentication.getClass() == SeedAuthenticationToken.class){
+            return new SeedAuthenticationToken(authentication.getName());
+        }else{
+            String username = String.valueOf(authentication.getPrincipal());
+            String password = String.valueOf(authentication.getCredentials());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if(userDetails != null && passwordEncoder.matches(password,userDetails.getPassword())){
+                return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
+            }
+            throw new BadCredentialsException("Authentication Error!");
         }
-        throw new BadCredentialsException("Authentication Error!");
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class.equals(authentication);
+        return UsernamePasswordAuthenticationToken.class.equals(authentication) || SeedAuthenticationToken.class.equals(authentication);
     }
 }
