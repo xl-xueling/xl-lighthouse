@@ -28,7 +28,6 @@ public class TestUserDao {
     public void testCreateUser() throws Exception {
         System.out.println(System.getProperty("user.timezone"));
         User user = new User();
-        user.setState(3);
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
         user.setLastTime(new Date());

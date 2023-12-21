@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.UnexpectedTypeException;
 
 @ControllerAdvice
 public class DefaultExceptionHandler {
@@ -16,6 +17,14 @@ public class DefaultExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
     public Object globalErrorHandler(HttpServletRequest request, MethodArgumentNotValidException e)
+    {
+        return ResultData.failed(ResultCode.VALIDATE_FAILED);
+    }
+
+
+    @ExceptionHandler(value = UnexpectedTypeException.class)
+    @ResponseBody
+    public Object globalErrorHandler(HttpServletRequest request, UnexpectedTypeException e)
     {
         return ResultData.failed(ResultCode.VALIDATE_FAILED);
     }

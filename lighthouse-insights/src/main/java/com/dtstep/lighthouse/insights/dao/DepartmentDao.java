@@ -11,4 +11,6 @@ public interface DepartmentDao {
     List<Department> queryAll();
 
     Department queryById(Integer id);
+
+    boolean isExist(Integer id);
 }

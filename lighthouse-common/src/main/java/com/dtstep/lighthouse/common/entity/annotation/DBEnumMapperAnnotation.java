@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.common.enums.user;
+package com.dtstep.lighthouse.common.entity.annotation;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,44 +17,16 @@ package com.dtstep.lighthouse.common.enums.user;
  * limitations under the License.
  */
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import com.dtstep.lighthouse.common.entity.annotation.DBEnumMapperAnnotation;
 
+@Target({ElementType.METHOD, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DBEnumMapperAnnotation {
 
-public enum UserStateEnum {
+    String name() default "";
 
-    /**
-     * 待审核用户
-     */
-    USER_PEND(0),
-
-    /**
-     * 正常用户
-     */
-    USR_NORMAL(1),
-
-    /**
-     * 冻结用户
-     */
-    USER_FREEZE(3),
-
-    /**
-     * 已删除用户
-     */
-    USER_DELETED(4);
-
-    @DBEnumMapperAnnotation
-    private int state;
-
-    UserStateEnum(int state){
-        this.state = state;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
 }
