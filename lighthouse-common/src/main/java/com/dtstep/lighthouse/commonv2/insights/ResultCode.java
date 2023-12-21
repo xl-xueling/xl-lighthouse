@@ -7,6 +7,7 @@ public enum ResultCode {
     VALIDATE_FAILED("2","Param Validate failed!"),
     FORBIDDEN("3","Access Denied!"),
     UNAUTHORIZED("4","Unauthorized!"),
+    AUTH_RENEWAL_FAILED("5","Authorization Renewal Failed"),
     ;
 
     ResultCode(String code , String message){

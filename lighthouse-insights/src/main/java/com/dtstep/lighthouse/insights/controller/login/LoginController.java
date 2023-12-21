@@ -3,11 +3,14 @@ package com.dtstep.lighthouse.insights.controller.login;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.entity.user.RequestUser;
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
 import com.dtstep.lighthouse.insights.service.UserService;
 import com.nimbusds.jwt.JWT;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotEmpty;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,18 +44,18 @@ public class LoginController {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
         authenticationManager.authenticate(authenticationToken);
-        String secretKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
+        String signKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
         long now = System.currentTimeMillis();
         Map<String,Object> accessMap = new HashMap<>();
         accessMap.put("seed", UUID.randomUUID().toString());
         accessMap.put("expired", DateUtil.getMinuteAfter(now,100000));
-        String accessKey = Jwts.builder().setClaims(accessMap).signWith(SignatureAlgorithm.HS512, secretKey).compact();
+        String accessKey = Jwts.builder().setClaims(accessMap).signWith(SignatureAlgorithm.HS512, signKey).compact();
         Map<String,Object> refreshMap = new HashMap<>();
         refreshMap.put("seed", UUID.randomUUID().toString());
         refreshMap.put("username",user.getUsername());
-        refreshMap.put("password",passwordEncoder.encode(user.getPassword()));
+        refreshMap.put("password",user.getPassword());
         refreshMap.put("expired", DateUtil.getHourAfter(now,24));
-        String refreshKey = Jwts.builder().setClaims(refreshMap).signWith(SignatureAlgorithm.HS512,secretKey).compact();
+        String refreshKey = Jwts.builder().setClaims(refreshMap).signWith(SignatureAlgorithm.HS512,signKey).compact();
         Map<String,String> tokenMap = new HashMap<>();
         System.out.println("accessKey:" + accessKey);
         System.out.println("refreshKey:" + refreshKey);
@@ -59,6 +63,32 @@ public class LoginController {
         tokenMap.put("refreshKey",refreshKey);
         return ResultData.success(tokenMap);
     }
+
+
+    @RequestMapping("/refreshKey")
+    public ResultData<Map<String,String>> refreshKey(HttpServletRequest request) {
+        String refreshKey = request.getHeader(SystemConstant.AUTH_REFRESH_PARAM);
+        String signKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
+        Jws<Claims> jws = Jwts.parser().setSigningKey(signKey).parseClaimsJws(refreshKey);
+        Long expired = (Long)jws.getBody().get("expired");
+        if(expired == null || expired <= System.currentTimeMillis()){
+            return ResultData.failed(ResultCode.AUTH_RENEWAL_FAILED);
+        }
+        String username = (String)jws.getBody().get("username");
+        String password = (String)jws.getBody().get("password");
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(username, password);
+        authenticationManager.authenticate(authenticationToken);
+        long now = System.currentTimeMillis();
+        Map<String,Object> accessMap = new HashMap<>();
+        accessMap.put("seed", UUID.randomUUID().toString());
+        accessMap.put("expired", DateUtil.getMinuteAfter(now,100000));
+        String accessKey = Jwts.builder().setClaims(accessMap).signWith(SignatureAlgorithm.HS512, signKey).compact();
+        Map<String,String> tokenMap = new HashMap<>();
+        tokenMap.put("accessKey",accessKey);
+        return ResultData.success(tokenMap);
+    }
+
 
     @RequestMapping("/index")
     public String index(){

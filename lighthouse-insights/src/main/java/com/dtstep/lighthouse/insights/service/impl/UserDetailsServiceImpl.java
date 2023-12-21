@@ -30,7 +30,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }else{
 //            List<Role> roles = List.of(new Role(AuthRoleTypeEnum.USER));
 //            user.setRoles(roles);
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
             return new AuthUserDetails(user);
         }
     }
