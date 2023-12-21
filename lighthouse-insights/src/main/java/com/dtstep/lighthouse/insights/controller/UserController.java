@@ -17,7 +17,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/register")
+    @RequestMapping("/user/register")
     public ResultData<Integer> register(@Validated @RequestBody User userParam) {
         int id = userService.create(userParam);
         if(id > 0){
