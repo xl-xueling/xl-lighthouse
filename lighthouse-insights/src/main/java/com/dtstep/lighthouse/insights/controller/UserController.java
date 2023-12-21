@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.controller.user;
+package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
@@ -26,5 +26,7 @@ public class UserController {
             return ResultData.failed(ResultCode.ERROR);
         }
     }
+
+
 
 }
