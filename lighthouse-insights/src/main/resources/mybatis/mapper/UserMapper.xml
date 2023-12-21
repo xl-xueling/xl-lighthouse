@@ -13,6 +13,12 @@
         <result column="create_time" property="createTime"/>
     </resultMap>
 
+    <select id="isUserNameExist" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM ldp_user
+        WHERE username = #{username}
+    </select>
+
     <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.User" >
         INSERT INTO ldp_user (`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time`) VALUES
         (
@@ -21,7 +27,7 @@
             #{phone,jdbcType=VARCHAR},
             #{email,jdbcType=VARCHAR},
             #{departmentId,jdbcType=INTEGER},
-            #{state,jdbcType=INTEGER},
+            #{state,javaType=com.dtstep.lighthouse.common.enums.user.UserStateEnum,typeHandler=com.dtstep.lighthouse.insights.types.GenericEnumTypeHandler},
             #{lastTime,jdbcType=TIMESTAMP},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}

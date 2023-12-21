@@ -1,8 +1,11 @@
 package com.dtstep.lighthouse.insights.modal;
 
+import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 import com.dtstep.lighthouse.commonv2.entity.user.Role;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -12,18 +15,21 @@ public class User implements Serializable {
     private Integer id;
 
     @NotEmpty
+    @Size(min = 5,max = 25)
     private String username;
 
     @NotEmpty
+    @Size(min = 6,max = 50)
     private String password;
 
+    @NotNull
     private Integer departmentId;
 
     private String phone;
 
     private String email;
 
-    private int state;
+    private UserStateEnum state;
 
     private Date lastTime;
 
@@ -73,11 +79,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public int getState() {
+    public UserStateEnum getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(UserStateEnum state) {
         this.state = state;
     }
 

@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface UserDao {
 
+    boolean isUserNameExist(String username);
+
     int insert(User user);
 
     User queryById(int id);
