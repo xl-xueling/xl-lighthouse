@@ -20,15 +20,13 @@ public class DefaultAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type,Access-Token");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Expose-Headers", "*");
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
         String message = "Authentication failed";
         int status = HttpServletResponse.SC_UNAUTHORIZED;
         Map<String, Object> responseData = new HashMap<>();
