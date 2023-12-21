@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.config;
+package com.dtstep.lighthouse.insights.init;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,11 +16,7 @@ package com.dtstep.lighthouse.insights.config;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.common.constant.StatConst;
-import com.dtstep.lighthouse.common.constant.SysConst;
-import com.dtstep.lighthouse.core.hbase.HBaseTableOperator;
-import com.dtstep.lighthouse.core.lock.RedLock;
-import org.apache.commons.lang3.Validate;
+import com.dtstep.lighthouse.insights.service.SystemEnvService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +25,21 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import java.util.concurrent.TimeUnit;
-
 @Configuration
 @ComponentScan("com.dtstep.lighthouse")
 public class InitialListener implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(InitialListener.class);
 
+    @Autowired
+    private SystemEnvService systemEnvService;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-
+        try{
+            systemEnvService.createSignKeyIfNotExist();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 }

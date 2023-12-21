@@ -53,9 +53,15 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login", "/register","**").permitAll()
+                .antMatchers("/login", "/register","/refreshKey").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated();
+        httpSecurity.headers().cacheControl();
+        httpSecurity.authenticationProvider(authenticationProvider());
+        httpSecurity.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.exceptionHandling()
+                .accessDeniedHandler(defaultAccessDeniedHandler)
+                .authenticationEntryPoint(defaultUnauthorizedHandler);
         return httpSecurity.build();
     }
 

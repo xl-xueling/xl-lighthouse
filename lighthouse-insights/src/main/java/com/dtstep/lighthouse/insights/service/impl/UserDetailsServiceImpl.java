@@ -28,8 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(user == null){
             return null;
         }else{
-            List<Role> roles = List.of(new Role(AuthRoleTypeEnum.USER));
-            user.setRoles(roles);
+//            List<Role> roles = List.of(new Role(AuthRoleTypeEnum.USER));
+//            user.setRoles(roles);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return new AuthUserDetails(user);
         }
