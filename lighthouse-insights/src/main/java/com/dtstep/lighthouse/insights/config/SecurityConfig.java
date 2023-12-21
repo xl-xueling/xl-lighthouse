@@ -57,7 +57,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/login",
                         "/register",
-                        "/department/all",
+                        "/index",
+//                        "/department/all",
                         "/refreshKey").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated();
