@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.controller.base;
+package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.enums.result.RequestCodeEnum;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;

@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.controller.project;
+package com.dtstep.lighthouse.insights.controller;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RestController;

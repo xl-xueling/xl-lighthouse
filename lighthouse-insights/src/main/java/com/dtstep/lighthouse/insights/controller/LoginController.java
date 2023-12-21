@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.controller.login;
+package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
