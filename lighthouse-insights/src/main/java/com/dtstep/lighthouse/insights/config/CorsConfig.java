@@ -10,11 +10,12 @@ import java.util.Collections;
 
 @Configuration
 public class CorsConfig {
+
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("*"));
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
+        corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
         corsConfiguration.setAllowCredentials(true);
         return corsConfiguration;
     }
