@@ -216,7 +216,7 @@ setupMock({
         });
 
 
-        Mock.mock(new RegExp('/api/v1/user/register'), (params) => {
+        Mock.mock('/api/v1/user/register', (params) => {
             console.log("receive params:" + JSON.stringify(params));
             const { userName, password } = JSON.parse(params.body);
             if (userName === 'admin' && password === 'admin') {
@@ -234,7 +234,7 @@ setupMock({
         });
 
 
-        Mock.mock(new RegExp('/api/v1/user/login'), (params) => {
+        Mock.mock('/api/v1/user/login', (params) => {
             const { userName, password } = JSON.parse(params.body);
             if (!userName) {
                 return {

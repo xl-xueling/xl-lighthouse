@@ -47,6 +47,10 @@ public class JsonUtil {
         return objectMapper.createObjectNode();
     }
 
+    public static ArrayNode createArrayNode(){
+        return objectMapper.createArrayNode();
+    }
+
     public static <T> String toJSONString(T t){
         if(t == null){
             return null;
