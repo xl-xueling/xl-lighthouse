@@ -80,7 +80,7 @@ export default function Security() {
 
           <Form.Item
               label={t['security.form.label.confirm.password']}
-              field="confirm_password"
+              field="confirmPassword"
               dependencies={['password']}
               rules={[
                   { required: true, message: t['security.form.confirm.password.errMsg'], validateTrigger : ['onBlur'] },

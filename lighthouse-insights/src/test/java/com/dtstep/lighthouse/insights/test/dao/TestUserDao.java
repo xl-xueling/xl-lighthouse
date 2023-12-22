@@ -26,13 +26,14 @@ public class TestUserDao {
 
     @Test
     public void testCreateUser() throws Exception {
-        System.out.println(System.getProperty("user.timezone"));
         User user = new User();
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
         user.setLastTime(new Date());
+        user.setUsername("sss");
         user.setPassword("1235");
         user.setUsername("1235");
+        user.setState(UserStateEnum.USER_FREEZE);
         user.setDepartmentId(2);
         user.setEmail("sssss");
         userDao.insert(user);

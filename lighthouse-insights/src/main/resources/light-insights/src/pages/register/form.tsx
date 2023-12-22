@@ -81,7 +81,7 @@ export default function RegisterForm() {
                 onSubmitClick();
             }}
         >
-            <FormItem field='userName' rules={[
+            <FormItem field='username' rules={[
                 { required: true, message: t['register.form.userName.errMsg'] , validateTrigger : ['onBlur']},
                 { required: true, match: new RegExp(/^[a-zA-Z0-9_]{5,15}$/,"g"),message: t['register.form.userName.validate.errMsg'] , validateTrigger : ['onBlur']},
                 ]}>
@@ -89,12 +89,12 @@ export default function RegisterForm() {
             </FormItem>
             <FormItem field='password' rules={[
                 { required: true, message: t['register.form.password.errMsg'], validateTrigger : ['onBlur'] },
-                { required: true, match: new RegExp(/^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{4,19}$/,"g"),message: t['register.form.password.validate.errMsg'] , validateTrigger : ['onBlur']},
+                { required: true, match: new RegExp(/^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{4,24}$/,"g"),message: t['register.form.password.validate.errMsg'] , validateTrigger : ['onBlur']},
             ]}>
                 <Input prefix={<IconLock />} placeholder='Enter Your Password' />
             </FormItem>
             <FormItem
-                field='confirm_password'
+                field='confirmPassword'
                 dependencies={['password']}
                 rules={[
                         { required: true, message: t['register.form.confirm.password.errMsg'], validateTrigger : ['onBlur'] },
@@ -123,7 +123,7 @@ export default function RegisterForm() {
             />
             </FormItem>
             <FormItem
-                field='department'
+                field='departmentId'
                 rules={[
                     { required: true, message: t['register.form.department.errMsg'] , validateTrigger : ['onBlur']},
                 ]}>

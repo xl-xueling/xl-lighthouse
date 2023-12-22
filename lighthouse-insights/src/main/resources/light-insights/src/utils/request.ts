@@ -29,8 +29,10 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
     let result;
     try{
         const response: AxiosResponse = await http.request(config);
+        console.log("---response1 is:" + response);
         result = response.data;
     }catch (error) {
+        console.log("---error is:" + error);
         if(error.response.status == 401){
             const refreshKey = localStorage.getItem('refreshKey')
             if(!refreshKey){
