@@ -24,13 +24,12 @@ export default function LoginForm() {
   async function login(params) {
     setLoading(true);
     await requestLogin(params).then((response:ResultData) => {
-      console.log("user login reponse is:" + JSON.stringify(response));
       const {code, message, data} = response;
       if (code === '0') {
         localStorage.setItem('userStatus', 'login');
         localStorage.setItem('accessKey',data.accessKey);
         localStorage.setItem('refreshKey',data.refreshKey);
-        //window.location.href = '/';
+        window.location.href = '/';
       } else {
         Message.error(message || t['login.form.login.errMsg']);
       }

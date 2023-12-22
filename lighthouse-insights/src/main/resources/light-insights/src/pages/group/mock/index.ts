@@ -152,7 +152,7 @@ setupMock({
         });
 
 
-        Mock.mock(new RegExp('/api/v1/group/create'), (params) => {
+        Mock.mock('/api/v1/group/create', (params) => {
             console.log("group create submit,receive params:" + JSON.stringify(params));
             return {
                 code:'0',
@@ -163,7 +163,7 @@ setupMock({
             };
         });
 
-        Mock.mock(new RegExp('/api/v1/group/queryDimensValue'), (params) => {
+        Mock.mock('/api/v1/group/queryDimensValue', (params) => {
             console.log("group queryDimensValue,receive params:" + JSON.stringify(params));
             const dimensData:Record<string,Array<ArcoTreeNode>> = {};
             const bodyObject = JSON.parse(params.body);

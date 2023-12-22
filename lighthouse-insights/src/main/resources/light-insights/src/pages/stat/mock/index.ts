@@ -96,7 +96,7 @@ const _Mock_stat2:Stat = Mock.mock({
 setupMock({
   setup: () => {
 
-    Mock.mock(new RegExp('/api/v1/stat/list'), (params) => {
+    Mock.mock('/api/v1/stat/list', (params) => {
       console.log("receive param is:" + JSON.stringify(params));
       const list = [_Mock_stat1,_Mock_stat2];
       return {

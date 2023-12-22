@@ -42,7 +42,7 @@ const _Mock_component2:FilterComponent = Mock.mock({
 
 setupMock({
     setup: () => {
-        Mock.mock(new RegExp('/api/v1/component/queryByIds'), (params) => {
+        Mock.mock('/api/v1/component/queryByIds', (params) => {
             console.log("receive param is:" + JSON.stringify(params));
             const componentData: Record<number, FilterComponent> = {};
             componentData[1] = _Mock_component1;
@@ -53,7 +53,7 @@ setupMock({
             };
         });
 
-        Mock.mock(new RegExp('/api/v1/component/list'), (params) => {
+        Mock.mock('/api/v1/component/list', (params) => {
             console.log("receive query params 2,params:" + JSON.stringify(params));
             return {
                 code:0,

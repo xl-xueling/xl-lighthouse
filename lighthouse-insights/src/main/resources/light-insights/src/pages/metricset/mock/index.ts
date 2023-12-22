@@ -30,7 +30,7 @@ const list  = Mock.mock([
 setupMock({
 
     setup: () => {
-        Mock.mock(new RegExp('/api/v1/metricset/create'), (params) => {
+        Mock.mock('/api/v1/metricset/create', (params) => {
             console.log("receive create params,params:" + JSON.stringify(params));
             return {
                 code:'0',
@@ -41,7 +41,7 @@ setupMock({
             };
         });
 
-        Mock.mock(new RegExp('/api/v1/metricset/list'), (params) => {
+        Mock.mock('/api/v1/metricset/list', (params) => {
             console.log("request list,params:" + JSON.stringify(params));
             return {
                 code:'0',
@@ -53,7 +53,7 @@ setupMock({
             };
         });
 
-        Mock.mock(new RegExp('/api/v1/metricset/pinList'), (params) => {
+        Mock.mock('/api/v1/metricset/pinList', (params) => {
             console.log("request pinList,params:" + JSON.stringify(params));
             return {
                 code:'0',
@@ -62,7 +62,7 @@ setupMock({
             };
         });
 
-        Mock.mock(new RegExp('/api/v1/metricset/requestByIds'), (params) => {
+        Mock.mock('/api/v1/metricset/requestByIds', (params) => {
             console.log("request pinList,params:" + JSON.stringify(params));
             const record: Record<number, MetricSet> = {};
             record[101] = Mock.mock({
@@ -82,7 +82,7 @@ setupMock({
             };
         });
 
-        Mock.mock(new RegExp('/api/v1/metricset/binded'), (params) => {
+        Mock.mock('/api/v1/metricset/binded', (params) => {
             console.log("receive binded params,params:" + JSON.stringify(params));
             return {
                 code:'0',

@@ -90,7 +90,7 @@ const { list } = Mock.mock({
 
 setupMock({
   setup: () => {
-    Mock.mock(new RegExp('/api/v1/project/list'), (params) => {
+    Mock.mock('/api/v1/project/list', (params) => {
       console.log("receive query params 2,params:" + JSON.stringify(params));
       return {
         code:0,
@@ -131,7 +131,7 @@ setupMock({
     });
 
 
-    Mock.mock(new RegExp('/api/v1/project/termList'), (params) => {
+    Mock.mock('/api/v1/project/termList', (params) => {
       console.log("receive param is:" + JSON.stringify(params));
       console.log("list size:" + list.length)
       return {
@@ -145,7 +145,7 @@ setupMock({
     });
 
 
-    Mock.mock(new RegExp('/api/v1/project/create'), (params) => {
+    Mock.mock('/api/v1/project/create', (params) => {
       console.log("receive create params,params:" + JSON.stringify(params));
       return {
         code:'0',
@@ -154,7 +154,7 @@ setupMock({
       };
     });
 
-    Mock.mock(new RegExp('/api/v1/project/updateById'), (params) => {
+    Mock.mock('/api/v1/project/updateById', (params) => {
       console.log("receive updateById params,params:" + JSON.stringify(params));
       return {
         code:'0',
@@ -163,7 +163,7 @@ setupMock({
       };
     });
 
-    Mock.mock(new RegExp('/api/v1/project/deleteById'), (params) => {
+    Mock.mock('/api/v1/project/deleteById', (params) => {
       console.log("receive deleteById params,params:" + JSON.stringify(params));
       return {
         code:'0',
@@ -172,7 +172,7 @@ setupMock({
       };
     });
 
-    Mock.mock(new RegExp('/api/v1/project/structure'), (params) => {
+    Mock.mock('/api/v1/project/structure', (params) => {
       console.log("receive structure params,params:" + JSON.stringify(params));
       return {
         code:'0',

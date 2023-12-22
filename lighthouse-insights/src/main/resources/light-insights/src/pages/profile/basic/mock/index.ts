@@ -3,7 +3,7 @@ import setupMock from '@/utils/setupMock';
 
 setupMock({
   setup: () => {
-    Mock.mock(new RegExp('/api/basicProfile'), () => {
+    Mock.mock('/api/basicProfile', () => {
       return {
         status: 2,
         video: {
@@ -37,7 +37,7 @@ setupMock({
       };
     });
 
-    Mock.mock(new RegExp('/api/adjustment'), () => {
+    Mock.mock('/api/adjustment', () => {
       return new Array(2).fill('0').map(() => ({
         contentId: `${Mock.Random.pick([
           '视频类',

@@ -55,10 +55,10 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/login",
+                .antMatchers(
+                        "/user/login",
                         "/user/register",
-                        "/index",
-//                        "/department/all",
+                        "/department/all",
                         "/refreshKey").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated();

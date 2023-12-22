@@ -42,7 +42,7 @@ setupMock({
             },
         };
 
-        Mock.mock(new RegExp('/api/v1/privilege/check'), (data) => {
+        Mock.mock('/api/v1/privilege/check', (data) => {
             const {type,ids} = JSON.parse(data.body);
             const personData: Record<number, Array<number>> = {};
             if(type == "project"){
@@ -82,7 +82,7 @@ setupMock({
             };
         });
 
-        Mock.mock(new RegExp('/api/v1/privilege/grant'), (params) => {
+        Mock.mock('/api/v1/privilege/grant', (params) => {
             console.log("receive grant params,params:" + JSON.stringify(params));
             return {
                 code:'0',

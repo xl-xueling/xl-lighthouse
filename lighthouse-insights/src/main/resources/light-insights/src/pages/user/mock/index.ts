@@ -55,7 +55,7 @@ setupMock({
             }
         );
 
-        Mock.mock(new RegExp('/api/v1/user/list'), (params) => {
+        Mock.mock('/api/v1/user/list', (params) => {
             console.log("receive param is:" + JSON.stringify(params));
             console.log("list size:" + list.length)
             return {
@@ -68,7 +68,7 @@ setupMock({
             };
         });
 
-        Mock.mock(new RegExp('/api/v1/user/termList'), (params) => {
+        Mock.mock('/api/v1/user/termList', (params) => {
             console.log("termList receive param is:" + JSON.stringify(params));
             console.log("list size:" + list.length)
             const id = Math.round(Math.random()*100);
@@ -155,7 +155,7 @@ setupMock({
 
 
 
-        Mock.mock(new RegExp('/api/v1/user/updateById'), (params) => {
+        Mock.mock('/api/v1/user/updateById', (params) => {
             console.log("changeState,receive param is:" + JSON.stringify(params));
             return {
                 code:'0',
@@ -164,7 +164,7 @@ setupMock({
             };
         });
 
-        Mock.mock(new RegExp('/api/v1/user/resetPasswd'), (params) => {
+        Mock.mock('/api/v1/user/resetPasswd', (params) => {
             console.log("resetPasswd,receive param is:" + JSON.stringify(params));
             return {
                 code:'0',
@@ -174,7 +174,7 @@ setupMock({
         });
 
 
-        Mock.mock(new RegExp('/api/v1/user/deleteById'), (params) => {
+        Mock.mock('/api/v1/user/deleteById', (params) => {
             console.log("deleteById,receive param is:" + JSON.stringify(params));
             return {
                 code:'0',
@@ -184,7 +184,7 @@ setupMock({
         });
 
 
-        Mock.mock(new RegExp('/api/v1/user/changeState'), (params) => {
+        Mock.mock('/api/v1/user/changeState', (params) => {
             console.log("changeState,receive param is:" + JSON.stringify(params));
             return {
                 code:'0',
@@ -194,7 +194,7 @@ setupMock({
         });
 
 
-        Mock.mock(new RegExp('/api/v1/user/fetchUserInfo'), () => {
+        Mock.mock('/api/v1/user/fetchUserInfo', () => {
             const userRole = window.localStorage.getItem('userRole') || 'admin';
             const data = Mock.mock({
                 "id": /[0-9]{8}/,
