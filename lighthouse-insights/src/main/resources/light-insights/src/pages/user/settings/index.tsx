@@ -34,7 +34,7 @@ export default function Index() {
                 <InfoForm userInfo={userInfo} allDepartInfo={allDepartInfo}/>
               </Tabs.TabPane>
               <Tabs.TabPane key="security" title={t['userSetting.title.updatePasswd']}>
-                <Security />
+                <Security userInfo={userInfo} />
               </Tabs.TabPane>
             </Tabs>
           </Card>
