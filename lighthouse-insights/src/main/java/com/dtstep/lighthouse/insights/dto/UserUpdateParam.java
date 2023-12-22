@@ -1,13 +1,23 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserUpdateParam implements Serializable {
 
-    @NotEmpty
+    @NotNull
     private Integer id;
 
+    @NotEmpty
+    @Size(min = 5,max = 15)
+    private String username;
+
+    @NotNull
     private Integer departmentId;
 
     private String phone;
@@ -44,5 +54,13 @@ public class UserUpdateParam implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
