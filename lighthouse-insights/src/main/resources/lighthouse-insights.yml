@@ -21,7 +21,9 @@ spring:
     allow-circular-references: true
   devtools:
     restart:
-      enabled: true
+      enabled: false
+  thymeleaf:
+    cache: false
   cache:
     redis:
       time-to-live: 86400000

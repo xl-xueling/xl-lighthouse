@@ -46,7 +46,7 @@ public class TestUserDao {
 
     @Test
     public void testQueryByUserName() throws Exception {
-        User user = userDao.queryByUserName("123");
+        User user = userDao.queryByUserName("asmfeng");
         System.out.println("user:" + JsonUtil.toJSONString(user));
     }
 
