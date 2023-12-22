@@ -37,12 +37,6 @@ export default function Header({userInfo}) {
             value: userInfo.id,
         },
         {
-            label: t['userSetting.label.phoneNumber'],
-            value: (<span>
-                {userInfo.phone}
-              </span>),
-        },
-        {
             label: t['userSetting.label.department'],
             value: (<DepartmentLabel department={userInfo.department}/>),
         },
@@ -50,6 +44,12 @@ export default function Header({userInfo}) {
             label: t['userSetting.label.email'],
             value: (<span>
                 {userInfo.email}
+              </span>),
+        },
+        {
+            label: t['userSetting.label.phoneNumber'],
+            value: (<span>
+                {userInfo.phone}
               </span>),
         },
         {

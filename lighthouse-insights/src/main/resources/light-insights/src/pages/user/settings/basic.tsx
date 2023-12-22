@@ -4,15 +4,11 @@ import locale from './locale';
 import { GlobalContext } from '@/context';
 import {
   Input,
-  Select,
-  Cascader,
   Button,
   Form,
   Space,
-  Message,
-  Skeleton, TreeSelect,
+  Message, TreeSelect,
 } from '@arco-design/web-react';
-import {useSelector} from "react-redux";
 import {FormInstance} from "@arco-design/web-react/es/Form";
 import {requestUpdateById} from "@/api/user";
 import {translate} from "@/pages/department/common";
@@ -51,8 +47,7 @@ export default function BasicInfoForm({userInfo,allDepartInfo}) {
       }).catch((error) => {
          console.log(error)
           Message.error(t['system.error']);
-      }).finally(() =>
-      {
+      }).finally(() => {
           setFormLoading(false);
       })
   }
