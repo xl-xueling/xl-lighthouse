@@ -101,3 +101,19 @@ export const translateToFlatStruct = (list):Array<ArcoFlatNode> => {
     }
     return nodeArr;
 }
+
+export const getDepartment = (id:number,allDepartsInfo) : Department => {
+    for (let i = 0; i < allDepartsInfo.length; i++) {
+        const node = allDepartsInfo[i];
+        if (String(node.id) === String(id)) {
+            return node;
+        }
+        if (node.children && node.children.length > 0) {
+            const result = getDepartment(node.children, id);
+            if (result) {
+                return result;
+            }
+        }
+    }
+    return null;
+}
