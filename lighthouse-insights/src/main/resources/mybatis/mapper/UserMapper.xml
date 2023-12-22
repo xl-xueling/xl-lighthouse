@@ -74,7 +74,7 @@
         </if>
     </select>
 
-    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.User">
+    <update id="update" parameterType="com.dtstep.lighthouse.insights.dto.UserUpdateParam">
         UPDATE ldp_user
         <set>
             <if test="username != null">
