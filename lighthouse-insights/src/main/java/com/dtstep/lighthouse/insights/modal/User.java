@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 import com.dtstep.lighthouse.commonv2.entity.user.Role;
 import com.dtstep.lighthouse.insights.types.EnumTypeSerializer;
 import com.dtstep.lighthouse.insights.types.EnumTypeDeserializer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -14,17 +15,19 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable {
 
     private Integer id;
 
     @NotEmpty
-    @Size(min = 5,max = 25)
+    @Size(min = 5,max = 15)
     private String username;
 
     @NotEmpty
-    @Size(min = 6,max = 50)
     private String password;
+
+    private String confirmPassword;
 
     @NotNull
     private Integer departmentId;
@@ -130,5 +133,13 @@ public class User implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }
