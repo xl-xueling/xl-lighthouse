@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.types;
 
 
-import com.dtstep.lighthouse.common.entity.annotation.DBEnumMapperAnnotation;
+import com.dtstep.lighthouse.common.entity.annotation.EnumSerializerAnnotation;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -43,7 +43,7 @@ public class EnumTypeDeserializer extends JsonDeserializer<Object> implements Co
                 field = f;
                 field.setAccessible(true);
             }
-            Annotation dbEnumMapperAnnotation = f.getAnnotation(DBEnumMapperAnnotation.class);
+            Annotation dbEnumMapperAnnotation = f.getAnnotation(EnumSerializerAnnotation.class);
             if(dbEnumMapperAnnotation != null){
                 field = f;
                 field.setAccessible(true);

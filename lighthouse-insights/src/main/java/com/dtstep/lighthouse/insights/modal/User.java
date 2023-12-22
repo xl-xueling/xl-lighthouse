@@ -2,8 +2,10 @@ package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 import com.dtstep.lighthouse.commonv2.entity.user.Role;
+import com.dtstep.lighthouse.insights.types.EnumTypeSerializer;
 import com.dtstep.lighthouse.insights.types.EnumTypeDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -31,7 +33,7 @@ public class User implements Serializable {
 
     private String email;
 
-    @JsonDeserialize(using = EnumTypeDeserializer.class)
+    @JsonSerialize(using = EnumTypeSerializer.class)
     private UserStateEnum state;
 
     private Date lastTime;

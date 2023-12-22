@@ -17,8 +17,7 @@ package com.dtstep.lighthouse.common.enums.user;
  * limitations under the License.
  */
 
-
-import com.dtstep.lighthouse.common.entity.annotation.DBEnumMapperAnnotation;
+import com.dtstep.lighthouse.common.entity.annotation.EnumSerializerAnnotation;
 
 
 public enum UserStateEnum {
@@ -43,7 +42,7 @@ public enum UserStateEnum {
      */
     USER_DELETED(4);
 
-    @DBEnumMapperAnnotation
+    @EnumSerializerAnnotation
     private int state;
 
     UserStateEnum(int state){
