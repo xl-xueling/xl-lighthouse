@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
+import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.User;
 import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.Test;
@@ -61,9 +62,9 @@ public class TestUserDao {
 
     @Test
     public void testUpdate() throws Exception {
-        User user = new User();
+        UserUpdateParam user = new UserUpdateParam();
+        user.setId(110152);
         user.setPhone("150111");
-        user.setId(110137);
         int result = userDao.update(user);
         System.out.println("result:" + result);
     }

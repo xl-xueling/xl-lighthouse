@@ -24,11 +24,10 @@ export default function BasicInfoForm({userInfo,allDepartInfo}) {
 
   const initialValues = {
      "id":userInfo.id,
-    "userName":userInfo.userName,
-    "department":String(userInfo.departmentId),
+    "username":userInfo.username,
+    "departmentId":String(userInfo.departmentId),
     "phone":userInfo.phone,
     "email":userInfo.email,
-    "createdTime":userInfo.createdTime,
     "state":userInfo.state,
   }
 
@@ -61,6 +60,7 @@ export default function BasicInfoForm({userInfo,allDepartInfo}) {
           style={{ width: '60%', marginTop: '30px' }}
           form={form}
           ref={formRef}
+          autoComplete='off'
           initialValues = {initialValues}
           labelCol={{ span: lang === 'en-US' ? 5 : 4 }}
           wrapperCol={{ span: lang === 'en-US' ? 17 : 18 }}
@@ -83,12 +83,12 @@ export default function BasicInfoForm({userInfo,allDepartInfo}) {
 
         <Form.Item
             label={t['userSetting.info.userName']}
-            field="userName"
+            field="username"
             rules={[
                 { required: true, message: t['userSetting.form.userName.errMsg'] , validateTrigger : ['onBlur']},
                 { required: true, match: new RegExp(/^[a-zA-Z0-9_]{5,15}$/,"g"),message: t['userSetting.form.userName.validate.errMsg'] , validateTrigger : ['onBlur']},
             ]}>
-            <Input placeholder={t['userSetting.info.nickName.placeholder']}  />
+            <Input placeholder={t['userSetting.info.nickName.placeholder']}  disabled={true}/>
         </Form.Item>
         <Form.Item
             label={t['userSetting.info.email']}
@@ -104,13 +104,13 @@ export default function BasicInfoForm({userInfo,allDepartInfo}) {
             label={t['userSetting.info.phone']}
             field="phone"
             rules={[
-                { required: false, match: new RegExp(/^[\d()\\-]{5,20}$/,"g"),message: t['userSetting.form.phone.validate.errMsg'] , validateTrigger : ['onBlur']},
+                { required: true, match: new RegExp(/^[\d()\\-]{5,20}$/,"g"),message: t['userSetting.form.phone.validate.errMsg'] , validateTrigger : ['onBlur']},
             ]}
         >
             <Input placeholder={t['userSetting.info.phone.placeholder']} />
         </Form.Item>
 
-          <Form.Item label={t['userSetting.info.department']} field="department"
+          <Form.Item label={t['userSetting.info.department']} field="departmentId"
                      rules={[
                          {
                              required: true,
