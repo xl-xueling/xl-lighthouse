@@ -7,10 +7,10 @@ import styles from './style/index.module.less';
 import {User} from "@/types/insights-web";
 import {FormInstance} from "@arco-design/web-react/es/Form";
 import {GlobalContext} from "@/context";
-import {requestUpdateById} from "@/api/user";
+import {requestChangePassword, requestUpdateById} from "@/api/user";
 import {ResultData} from "@/types/insights-common";
 
-export default function Security() {
+export default function Security({userInfo}) {
   const t = useLocale(locale);
   const formRef = useRef<FormInstance>();
   const [form] = Form.useForm();
@@ -18,10 +18,12 @@ export default function Security() {
   const { lang } = useContext(GlobalContext);
 
   function onSubmitClick() {
+      console.log("-------1");
     setFormLoading(true);
     formRef.current.validate().then((values) => {
       const proc = async () =>{
-        const response:ResultData = await requestUpdateById(values);
+        const response:ResultData = await requestChangePassword(values);
+        console.log("response:" + JSON.stringify(response));
         if (response.code === '0') {
           Message.success(t['security.form.submit.success']);
         } else {
@@ -35,22 +37,41 @@ export default function Security() {
     }).finally(() => {setFormLoading(false);})
   }
 
+    const initialValues = {
+        "id":userInfo.id,
+    }
 
   return (
       <Form
           style={{ width: '60%', marginTop: '30px' }}
           form={form}
           ref={formRef}
+          autoComplete='off'
+          initialValues = {initialValues}
           labelCol={{ span: lang === 'en-US' ? 5 : 4 }}
           wrapperCol={{ span: lang === 'en-US' ? 17 : 18 }}
           onSubmit={(v) => {
-            onSubmitClick();
+              console.log("------222")
+              onSubmitClick();
           }}
       >
 
+          <Form.Item
+              // style={{ display:"none" }}
+              field="id"
+              rules={[
+                  {
+                      required: true,
+                      message: t['userSetting.info.userName.placeholder'],
+                  },
+              ]}
+          >
+              <Input disabled={true} placeholder={t['userSetting.info.nickName.placeholder']}  />
+          </Form.Item>
+
         <Form.Item
             label={t['security.form.label.original.password']}
-            field="original_password"
+            field="originPassword"
             rules={[
               {
                 required: true,
@@ -102,13 +123,13 @@ export default function Security() {
                   <Input />
               )}
           </Form.Item>
-        <Form.Item label=" ">
-          <Space>
-            <Button type="primary" long htmlType='submit' loading={formLoading}>
-              Submit
-            </Button>
-          </Space>
-        </Form.Item>
+          <Form.Item label=" ">
+              <Space>
+                  <Button type="primary" long htmlType='submit' loading={formLoading}>
+                      Submit
+                  </Button>
+              </Space>
+          </Form.Item>
       </Form>
   );
 }
