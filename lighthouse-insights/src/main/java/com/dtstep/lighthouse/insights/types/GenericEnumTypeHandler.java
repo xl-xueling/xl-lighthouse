@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.types;
 
-import com.dtstep.lighthouse.common.entity.annotation.DBEnumMapperAnnotation;
+import com.dtstep.lighthouse.common.entity.annotation.EnumSerializerAnnotation;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -28,7 +28,7 @@ public class GenericEnumTypeHandler<E extends Enum<E>> extends BaseTypeHandler<E
         try {
             Field[] fields = type.getDeclaredFields();
             for(Field field : fields){
-                Annotation annotation = field.getAnnotation(DBEnumMapperAnnotation.class);
+                Annotation annotation = field.getAnnotation(EnumSerializerAnnotation.class);
                 if(annotation != null){
                     getCodeMethod = type.getMethod("get"+upperFirst(field.getName()));
                 }
