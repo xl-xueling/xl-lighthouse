@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.insights.enums.ColumnTypeEnum;
+import com.dtstep.lighthouse.insights.types.EnumTypeDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.Serializable;

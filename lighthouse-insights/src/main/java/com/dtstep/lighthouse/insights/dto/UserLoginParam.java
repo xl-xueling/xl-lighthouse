@@ -1,9 +1,13 @@
-package com.dtstep.lighthouse.commonv2.entity.user;
+package com.dtstep.lighthouse.insights.dto;
 
-public class RequestUser {
+import javax.validation.constraints.NotEmpty;
 
+public class UserLoginParam {
+
+    @NotEmpty
     private String username;
 
+    @NotEmpty
     private String password;
 
     public String getUsername() {

@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.config;
 
+import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
 import io.jsonwebtoken.Claims;
@@ -31,7 +32,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("request url is:" + request.getRequestURI());
         String authToken = request.getHeader(SystemConstant.AUTH_ACCESS_PARAM);
-        if (Objects.isNull(authToken)){
+        if (StringUtil.isEmptyOrNullStr(authToken)){
             filterChain.doFilter(request,response);
             return;
         }

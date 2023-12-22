@@ -24,11 +24,13 @@ export default function LoginForm() {
   async function login(params) {
     setLoading(true);
     await requestLogin(params).then((response:ResultData) => {
+      console.log("user login reponse is:" + JSON.stringify(response));
       const {code, message, data} = response;
       if (code === '0') {
         localStorage.setItem('userStatus', 'login');
-        localStorage.setItem('token',data.token);
-        window.location.href = '/';
+        localStorage.setItem('accessKey',data.accessKey);
+        localStorage.setItem('refreshKey',data.refreshKey);
+        //window.location.href = '/';
       } else {
         Message.error(message || t['login.form.login.errMsg']);
       }
@@ -63,7 +65,7 @@ export default function LoginForm() {
         }}
       >
         <Form.Item
-          field="userName"
+          field="username"
           rules={[{ required: true, message: t['login.form.userName.errMsg'] }]}
         >
           <Input

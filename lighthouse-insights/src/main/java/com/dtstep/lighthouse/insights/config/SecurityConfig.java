@@ -55,8 +55,8 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login",
-                        "/register",
+                .antMatchers("/user/login",
+                        "/user/register",
                         "/index",
 //                        "/department/all",
                         "/refreshKey").permitAll()

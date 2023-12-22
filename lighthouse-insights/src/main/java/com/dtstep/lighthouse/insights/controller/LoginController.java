@@ -1,14 +1,12 @@
 package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.util.DateUtil;
+import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
-import com.dtstep.lighthouse.commonv2.entity.user.RequestUser;
+import com.dtstep.lighthouse.insights.dto.UserLoginParam;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
-import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
-import com.dtstep.lighthouse.insights.service.UserService;
-import com.nimbusds.jwt.JWT;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -17,11 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotEmpty;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -39,11 +36,15 @@ public class LoginController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @RequestMapping("/login")
-    public ResultData<Map<String,String>> login(@RequestBody RequestUser user) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-        authenticationManager.authenticate(authenticationToken);
+    @RequestMapping("/user/login")
+    public ResultData<Map<String,String>> login(@Validated @RequestBody UserLoginParam user) {
+        try{
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+            authenticationManager.authenticate(authenticationToken);
+        }catch (Exception ex){
+            return ResultData.failed(ResultCode.VALIDATE_FAILED);
+        }
         String signKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
         long now = System.currentTimeMillis();
         Map<String,Object> accessMap = new HashMap<>();
@@ -68,17 +69,27 @@ public class LoginController {
     @RequestMapping("/refreshKey")
     public ResultData<Map<String,String>> refreshKey(HttpServletRequest request) {
         String refreshKey = request.getHeader(SystemConstant.AUTH_REFRESH_PARAM);
+        if(StringUtil.isEmpty(refreshKey)){
+            return ResultData.failed(ResultCode.AUTH_RENEWAL_FAILED);
+        }
         String signKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
         Jws<Claims> jws = Jwts.parser().setSigningKey(signKey).parseClaimsJws(refreshKey);
+        if(jws == null){
+            return ResultData.failed(ResultCode.AUTH_RENEWAL_FAILED);
+        }
         Long expired = (Long)jws.getBody().get("expired");
         if(expired == null || expired <= System.currentTimeMillis()){
             return ResultData.failed(ResultCode.AUTH_RENEWAL_FAILED);
         }
         String username = (String)jws.getBody().get("username");
         String password = (String)jws.getBody().get("password");
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(username, password);
-        authenticationManager.authenticate(authenticationToken);
+        try{
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(username, password);
+            authenticationManager.authenticate(authenticationToken);
+        }catch (Exception ex){
+            return ResultData.failed(ResultCode.AUTH_RENEWAL_FAILED);
+        }
         long now = System.currentTimeMillis();
         Map<String,Object> accessMap = new HashMap<>();
         accessMap.put("seed", UUID.randomUUID().toString());
