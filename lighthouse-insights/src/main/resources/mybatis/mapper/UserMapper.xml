@@ -8,6 +8,7 @@
         <result column="password" property="password"/>
         <result column="phone" property="phone"/>
         <result column="email" property="email"/>
+        <result column="state" property="state" javaType="com.dtstep.lighthouse.common.enums.user.UserStateEnum" typeHandler="com.dtstep.lighthouse.insights.types.GenericEnumTypeHandler"/>
         <result column="department_id" property="departmentId"/>
         <result column="last_time" property="lastTime"/>
         <result column="create_time" property="createTime"/>

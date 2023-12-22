@@ -4,19 +4,14 @@ import {Message} from "@arco-design/web-react";
 
 export async function fetchAllDepartmentData(): Promise<Array<Department>> {
     let result = null;
-    try {
-        await queryDepartmentAll().then((response) => {
-            const {code,message,data} = response;
-            if (code === '0') {
-                result = data;
-            }else{
-                Message.error(message)
-            }
-        });
-    } catch (error) {
-        console.error(error);
-        Message.error("System Error,fetch department data failed!")
-    }
+    await queryDepartmentAll().then((response) => {
+        const {code,message,data} = response;
+        if (code === '0') {
+            result = data;
+        }else{
+            Message.error(message)
+        }
+    });
     return result;
 }
 

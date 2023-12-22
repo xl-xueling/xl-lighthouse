@@ -16,6 +16,7 @@ public class CorsConfig {
         corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("*"));
         corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
         corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
+        corsConfiguration.setMaxAge(3600L);
         corsConfiguration.setAllowCredentials(true);
         return corsConfiguration;
     }
