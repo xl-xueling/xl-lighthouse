@@ -19,6 +19,7 @@ const i18n = {
     'userSetting.value.notVerified': 'not verified',
     'userSetting.label.phoneNumber': 'Phone',
     'userSetting.label.email': 'Email',
+    'userSetting.label.state': 'State',
     'userSetting.label.department': 'Department',
     'userSetting.label.registrationTime': 'Registration time',
     'userSetting.btn.edit': 'Edit',
