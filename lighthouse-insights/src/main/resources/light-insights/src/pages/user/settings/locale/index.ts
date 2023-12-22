@@ -17,7 +17,7 @@ const i18n = {
     'userSetting.label.verified': 'Whether Verified',
     'userSetting.value.verified': 'verified',
     'userSetting.value.notVerified': 'not verified',
-    'userSetting.label.phoneNumber': 'Phone Number',
+    'userSetting.label.phoneNumber': 'Phone',
     'userSetting.label.email': 'Email',
     'userSetting.label.department': 'Department',
     'userSetting.label.registrationTime': 'Registration time',

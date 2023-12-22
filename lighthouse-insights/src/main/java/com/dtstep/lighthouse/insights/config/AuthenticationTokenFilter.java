@@ -2,7 +2,9 @@ package com.dtstep.lighthouse.insights.config;
 
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
+import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
+import com.dtstep.lighthouse.insights.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -24,6 +26,9 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     private SystemEnvService systemEnvService;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("request url is:" + request.getRequestURI());
@@ -44,6 +49,11 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
         Integer id = (Integer) jws.getBody().get("id");
+        User dbUser = userService.queryById(id);
+        if(dbUser == null){
+            filterChain.doFilter(request,response);
+            return;
+        }
         String seed = (String) jws.getBody().get("seed");
         SeedAuthenticationToken authentication = new SeedAuthenticationToken(id,seed);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
