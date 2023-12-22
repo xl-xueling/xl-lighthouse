@@ -143,7 +143,7 @@ export default function UserList() {
       result?.forEach(z => {
         const department = departmentMap.get(String(z.departmentId));
         if(department){
-          z.departmentName = department.name;
+          // z.departmentName = department.name;
         }
       })
       setUserData(result);
