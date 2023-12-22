@@ -22,6 +22,7 @@ import {getDataWithLocalCache} from "@/utils/localCache";
 import {Department, MetricSet} from "@/types/insights-web";
 import {requestQueryAll as queryDepartmentAll} from "@/api/department";
 import {requestPinList} from "@/api/metricset";
+import {getDepartment} from "@/pages/department/common";
 
 const store = createStore(rootReducer);
 
@@ -87,13 +88,11 @@ function Index() {
     //   payload: {pinMetricsInfo: pinMetricsInfo,pinMetricsLoading:false},
     // })
 
-    console.log("fetch userInfo:")
     requestFetchUserInfo().then((resultData) => {
-      console.log("resultData is:" + JSON.stringify(resultData));
       const userInfo = resultData.data;
-      const departs = allDepartInfo.filter(z => z.id.toString === userInfo.id.toString);
-      if(departs){
-        userInfo.departmentName = departs[0].name;
+      const department = getDepartment(userInfo.departmentId,allDepartInfo);
+      if(department){
+        userInfo.departmentName = department.name;
       }
       store.dispatch({
         type: 'update-userInfo',
