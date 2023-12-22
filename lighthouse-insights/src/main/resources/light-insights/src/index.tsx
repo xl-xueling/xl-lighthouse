@@ -1,16 +1,15 @@
 import './style/global.less';
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
-import {combineReducers, createStore} from 'redux';
-import { Provider } from 'react-redux';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
 import {ConfigProvider, Message} from '@arco-design/web-react';
 import zhCN from '@arco-design/web-react/es/locale/zh-CN';
 import enUS from '@arco-design/web-react/es/locale/en-US';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import axios from 'axios';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import rootReducer from './store';
 import PageLayout from './layout';
-import { GlobalContext } from './context';
+import {GlobalContext} from './context';
 import Login from './pages/login';
 import checkLogin from './utils/checkLogin';
 import changeTheme from './utils/changeTheme';
@@ -90,10 +89,8 @@ function Index() {
 
     requestFetchUserInfo().then((resultData) => {
       const userInfo = resultData.data;
-      const department = getDepartment(userInfo.departmentId,allDepartInfo);
-      if(department){
-        userInfo.departmentName = department.name;
-      }
+      userInfo.department = getDepartment(userInfo.departmentId, allDepartInfo);
+      userInfo.permissions = {};
       store.dispatch({
         type: 'update-userInfo',
         payload: {userInfo: resultData.data, userLoading: false},

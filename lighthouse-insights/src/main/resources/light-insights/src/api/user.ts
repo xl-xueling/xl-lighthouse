@@ -26,8 +26,7 @@ export async function requestList(data) :Promise<ResultData<{list:Array<User>,to
     })
 }
 
-export async function requestFetchUserInfo():Promise<ResultData>  {
-    console.log("---start to fetch user info1")
+export async function requestFetchUserInfo():Promise<ResultData<User>>  {
     return request({
         url:'/user/fetchUserInfo',
         method:'POST',

@@ -51,7 +51,7 @@ export interface User {
     email?: string;
     phone?: string;
     departmentId?: number;
-    departmentName?:string;
+    department?:Department;
     state?:number;
     createdTime?:number;
     avatar?:string;
