@@ -7,11 +7,14 @@ public class SeedAuthenticationToken extends AbstractAuthenticationToken {
 
     private Integer userId;
 
+    private String username;
+
     private String seed;
 
-    public SeedAuthenticationToken(Integer userId,String seed){
+    public SeedAuthenticationToken(Integer userId,String username,String seed){
         super(Lists.newArrayList());
         this.userId = userId;
+        this.username = username;
         this.seed = seed;
     }
 
@@ -39,5 +42,13 @@ public class SeedAuthenticationToken extends AbstractAuthenticationToken {
     @Override
     public Object getCredentials() {
         return seed;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -93,7 +93,7 @@
         WHERE id = #{id}
     </update>
 
-    <update id="changePasswd">
+    <update id="changePassword" parameterType="com.dtstep.lighthouse.insights.dto.ChangePasswordParam">
         UPDATE ldp_user
         <set>
             <if test="password != null">

@@ -58,6 +58,14 @@ export async function requestUpdateById(data:User) :Promise<ResultData>  {
     })
 }
 
+export async function requestChangePassword(data:User) :Promise<ResultData>  {
+    return request({
+        url:'/user/changePassword',
+        method:'POST',
+        data,
+    })
+}
+
 
 export async function requestDeleteById(id:number) :Promise<ResultData>  {
     return request({

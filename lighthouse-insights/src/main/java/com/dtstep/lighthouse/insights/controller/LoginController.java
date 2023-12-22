@@ -53,6 +53,7 @@ public class LoginController {
         Map<String,Object> accessMap = new HashMap<>();
         accessMap.put("id",dbUser.getId());
         accessMap.put("seed", UUID.randomUUID().toString());
+        accessMap.put("username",dbUser.getUsername());
         accessMap.put("expired", DateUtil.getMinuteAfter(now,10));
         String accessKey = Jwts.builder().setClaims(accessMap).signWith(SignatureAlgorithm.HS512, signKey).compact();
         Map<String,Object> refreshMap = new HashMap<>();
@@ -101,6 +102,7 @@ public class LoginController {
         Map<String,Object> accessMap = new HashMap<>();
         accessMap.put("id",dbUser.getId());
         accessMap.put("seed", UUID.randomUUID().toString());
+        accessMap.put("username",dbUser.getUsername());
         accessMap.put("expired", DateUtil.getMinuteAfter(now,10));
         String accessKey = Jwts.builder().setClaims(accessMap).signWith(SignatureAlgorithm.HS512, signKey).compact();
         Map<String,String> tokenMap = new HashMap<>();
