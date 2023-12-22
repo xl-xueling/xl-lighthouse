@@ -21,10 +21,6 @@ import java.util.Objects;
 
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
     @Autowired
     private SystemEnvService systemEnvService;
 
@@ -47,8 +43,9 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
             return;
         }
+        Integer id = (Integer) jws.getBody().get("id");
         String seed = (String) jws.getBody().get("seed");
-        SeedAuthenticationToken authentication = new SeedAuthenticationToken(seed);
+        SeedAuthenticationToken authentication = new SeedAuthenticationToken(id,seed);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);

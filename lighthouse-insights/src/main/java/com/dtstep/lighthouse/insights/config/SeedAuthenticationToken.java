@@ -5,10 +5,13 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 public class SeedAuthenticationToken extends AbstractAuthenticationToken {
 
+    private Integer userId;
+
     private String seed;
 
-    public SeedAuthenticationToken(String seed){
+    public SeedAuthenticationToken(Integer userId,String seed){
         super(Lists.newArrayList());
+        this.userId = userId;
         this.seed = seed;
     }
 
@@ -16,9 +19,21 @@ public class SeedAuthenticationToken extends AbstractAuthenticationToken {
         this.seed = seed;
     }
 
-    @Override
-    public String getPrincipal() {
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getSeed() {
         return seed;
+    }
+
+    @Override
+    public Integer getPrincipal() {
+        return userId;
     }
 
     @Override

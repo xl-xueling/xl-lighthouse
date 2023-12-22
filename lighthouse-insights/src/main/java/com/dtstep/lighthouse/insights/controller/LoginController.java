@@ -6,7 +6,9 @@ import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.dto.UserLoginParam;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
+import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
+import com.dtstep.lighthouse.insights.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -14,6 +16,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,22 +39,24 @@ public class LoginController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping("/user/login")
     public ResultData<Map<String,String>> login(@Validated @RequestBody UserLoginParam user) {
-        try{
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-            authenticationManager.authenticate(authenticationToken);
-        }catch (Exception ex){
+        User dbUser = userService.queryByUserName(user.getUsername());
+        if(dbUser == null || !passwordEncoder.matches(user.getPassword(),dbUser.getPassword())){
             return ResultData.failed(ResultCode.VALIDATE_FAILED);
         }
         String signKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
         long now = System.currentTimeMillis();
         Map<String,Object> accessMap = new HashMap<>();
+        accessMap.put("id",dbUser.getId());
         accessMap.put("seed", UUID.randomUUID().toString());
         accessMap.put("expired", DateUtil.getMinuteAfter(now,100000));
         String accessKey = Jwts.builder().setClaims(accessMap).signWith(SignatureAlgorithm.HS512, signKey).compact();
         Map<String,Object> refreshMap = new HashMap<>();
+        refreshMap.put("id",dbUser.getId());
         refreshMap.put("seed", UUID.randomUUID().toString());
         refreshMap.put("username",user.getUsername());
         refreshMap.put("password",user.getPassword());
@@ -88,15 +93,13 @@ public class LoginController {
         }
         String username = (String)jws.getBody().get("username");
         String password = (String)jws.getBody().get("password");
-        try{
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(username, password);
-            authenticationManager.authenticate(authenticationToken);
-        }catch (Exception ex){
-            return ResultData.failed(ResultCode.AUTH_RENEWAL_FAILED);
+        User dbUser = userService.queryByUserName(username);
+        if(dbUser == null || !passwordEncoder.matches(password,dbUser.getPassword())){
+            return ResultData.failed(ResultCode.VALIDATE_FAILED);
         }
         long now = System.currentTimeMillis();
         Map<String,Object> accessMap = new HashMap<>();
+        accessMap.put("id",dbUser.getId());
         accessMap.put("seed", UUID.randomUUID().toString());
         accessMap.put("expired", DateUtil.getMinuteAfter(now,100000));
         String accessKey = Jwts.builder().setClaims(accessMap).signWith(SignatureAlgorithm.HS512, signKey).compact();

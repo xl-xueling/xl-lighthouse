@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
+import com.dtstep.lighthouse.insights.config.SeedAuthenticationToken;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,9 @@ public class UserController {
 
     @RequestMapping("/user/fetchUserInfo")
     public ResultData<User> fetchUserInfo(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String name = authentication.getName();
-        System.out.println("name is:" + name);
-        ResultData<User> resultData = new ResultData<>();
-        User user = userService.queryByUserName(name);
+        SeedAuthenticationToken authentication = (SeedAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        Integer userId = authentication.getUserId();
+        User user = userService.queryById(userId);
         return ResultData.success(user);
     }
 
