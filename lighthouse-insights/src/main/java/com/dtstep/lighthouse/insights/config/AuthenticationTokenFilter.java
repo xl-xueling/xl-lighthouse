@@ -55,7 +55,8 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
         String seed = (String) jws.getBody().get("seed");
-        SeedAuthenticationToken authentication = new SeedAuthenticationToken(id,seed);
+        String username = (String) jws.getBody().get("username");
+        SeedAuthenticationToken authentication = new SeedAuthenticationToken(id,username,seed);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);

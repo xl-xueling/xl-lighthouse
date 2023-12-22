@@ -3,11 +3,13 @@ package com.dtstep.lighthouse.insights.controller;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
 import com.dtstep.lighthouse.insights.config.SeedAuthenticationToken;
+import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
 import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @RequestMapping("/user/register")
     public ResultData<Integer> register(@Validated @RequestBody User userParam) {
@@ -37,14 +42,37 @@ public class UserController {
     }
 
     @RequestMapping("/user/updateById")
-    public ResultData<Integer> updateById(@Validated @RequestBody UserUpdateParam userParam) {
-        Integer userId = userParam.getId();
+    public ResultData<Integer> updateById(@Validated @RequestBody UserUpdateParam updateParam) {
+        Integer userId = updateParam.getId();
         SeedAuthenticationToken authentication = (SeedAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Integer currentUserId = authentication.getUserId();
         if(currentUserId.intValue() != userId.intValue()){
             return ResultData.failed(ResultCode.ERROR);
         }
-        int id = userService.update(userParam);
+        int id = userService.update(updateParam);
+        if(id > 0){
+            return ResultData.success(id);
+        }else{
+            return ResultData.failed(ResultCode.ERROR);
+        }
+    }
+
+
+    @RequestMapping("/user/changePassword")
+    public ResultData<Integer> changePassword(@Validated @RequestBody ChangePasswordParam updateParam) {
+        Integer userId = updateParam.getId();
+        SeedAuthenticationToken authentication = (SeedAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        Integer currentUserId = authentication.getUserId();
+        if(currentUserId.intValue() != userId.intValue()){
+            return ResultData.failed(ResultCode.ERROR);
+        }
+        String originPassword = updateParam.getOriginPassword();
+        String username = authentication.getUsername();
+        User dbUser = userService.queryByUserName(username);
+        if(dbUser == null || !passwordEncoder.matches(originPassword,dbUser.getPassword())){
+            return ResultData.failed(ResultCode.VALIDATE_FAILED);
+        }
+        int id = userService.changePassword(updateParam);
         if(id > 0){
             return ResultData.success(id);
         }else{

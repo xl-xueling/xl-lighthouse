@@ -21,7 +21,9 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         if(authentication.getClass() == SeedAuthenticationToken.class){
-            return new SeedAuthenticationToken(((SeedAuthenticationToken) authentication).getUserId(),((SeedAuthenticationToken) authentication).getSeed());
+            return new SeedAuthenticationToken(((SeedAuthenticationToken) authentication).getUserId(),
+                    ((SeedAuthenticationToken) authentication).getUsername(),
+                    ((SeedAuthenticationToken) authentication).getSeed());
         }else{
             String username = String.valueOf(authentication.getPrincipal());
             String password = String.valueOf(authentication.getCredentials());

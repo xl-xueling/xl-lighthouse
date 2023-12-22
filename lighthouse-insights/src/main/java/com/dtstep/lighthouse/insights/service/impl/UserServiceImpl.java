@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.commonv2.entity.user.Role;
 import com.dtstep.lighthouse.commonv2.enums.AuthRoleTypeEnum;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.UserDao;
+import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
 import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.UserService;
@@ -46,6 +47,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public int update(UserUpdateParam user) {
         return userDao.update(user);
+    }
+
+    @Override
+    public int changePassword(ChangePasswordParam updateParam) {
+        return userDao.changePassword(updateParam);
     }
 
     @Override
