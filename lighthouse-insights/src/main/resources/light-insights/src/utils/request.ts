@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from 'axios'
 import {ResultData} from "@/types/insights-common";
+import {removeLoginStatus} from "@/utils/checkLogin";
 
 export const request = async <T>(config): Promise<ResultData<T>> => {
     let baseURL;
@@ -33,7 +34,8 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
         if(error.response.status == 401){
             const refreshKey = localStorage.getItem('refreshKey')
             if(!refreshKey){
-                 window.location.href = "/login";
+                removeLoginStatus();
+                window.location.href = "/login";
             }
             const refreshResponse = await axios.get(baseURL+'/api/v1/refreshKey',{
                 headers: {
@@ -42,6 +44,7 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
             })
             const refreshResult = refreshResponse.data;
             if(refreshResult.code != '0'){
+                removeLoginStatus();
                 window.location.href = "/login";
             }else{
                 localStorage.setItem('accessKey',refreshResult.data.accessKey);
