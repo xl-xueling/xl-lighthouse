@@ -86,7 +86,7 @@ setupMock({
       });
 
 
-      Mock.mock(new RegExp('/api/v1/department/create'), (params) => {
+      Mock.mock('/api/v1/department/create', (params) => {
           console.log("add department,params:" + JSON.stringify(params));
           const {pid,title} = params;
           return {
@@ -99,7 +99,7 @@ setupMock({
           }
       })
 
-      Mock.mock(new RegExp('/api/v1/department/updateById'), (params) => {
+      Mock.mock('/api/v1/department/updateById', (params) => {
           console.log("updateById department,params:" + JSON.stringify(params));
           const {pid,title} = params;
           return {
@@ -109,7 +109,7 @@ setupMock({
           }
       })
 
-      Mock.mock(new RegExp('/api/v1/department/dragTo'), (params) => {
+      Mock.mock('/api/v1/department/dragTo', (params) => {
           console.log("drag department,receive params:" + JSON.stringify(params));
           const {pid,title} = params;
           return {
@@ -119,7 +119,7 @@ setupMock({
           }
       })
 
-      Mock.mock(new RegExp('/api/v1/department/deleteById'), (params) => {
+      Mock.mock('/api/v1/department/deleteById', (params) => {
           console.log("deleteById department,receive params:" + JSON.stringify(params));
           const {pid,title} = params;
           return {
