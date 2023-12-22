@@ -81,14 +81,15 @@ function Index() {
       payload: {allDepartInfo: allDepartInfo,departLoading:false},
     })
 
-    const pinMetricsInfo = await getDataWithLocalCache('cache_pin_metrics',300,fetchPinMetricsData);
-    store.dispatch({
-      type: 'update-pinMetricsInfo',
-      payload: {pinMetricsInfo: pinMetricsInfo,pinMetricsLoading:false},
-    })
+    // const pinMetricsInfo = await getDataWithLocalCache('cache_pin_metrics',300,fetchPinMetricsData);
+    // store.dispatch({
+    //   type: 'update-pinMetricsInfo',
+    //   payload: {pinMetricsInfo: pinMetricsInfo,pinMetricsLoading:false},
+    // })
 
-    console.log("---start to fetch user info")
+    console.log("fetch userInfo:")
     requestFetchUserInfo().then((resultData) => {
+      console.log("resultData is:" + JSON.stringify(resultData));
       const userInfo = resultData.data;
       const departs = allDepartInfo.filter(z => z.id.toString === userInfo.id.toString);
       if(departs){
