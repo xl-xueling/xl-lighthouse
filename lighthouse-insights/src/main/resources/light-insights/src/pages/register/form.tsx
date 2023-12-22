@@ -89,7 +89,7 @@ export default function RegisterForm() {
             </FormItem>
             <FormItem field='password' rules={[
                 { required: true, message: t['register.form.password.errMsg'], validateTrigger : ['onBlur'] },
-                { required: true, match: new RegExp(/^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{4,24}$/,"g"),message: t['register.form.password.validate.errMsg'] , validateTrigger : ['onBlur']},
+                { required: true, match: new RegExp(/^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{5,24}$/,"g"),message: t['register.form.password.validate.errMsg'] , validateTrigger : ['onBlur']},
             ]}>
                 <Input prefix={<IconLock />} placeholder='Enter Your Password' />
             </FormItem>
