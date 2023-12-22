@@ -11,7 +11,6 @@ import rootReducer from './store';
 import PageLayout from './layout';
 import {GlobalContext} from './context';
 import Login from './pages/login';
-import checkLogin from './utils/checkLogin';
 import changeTheme from './utils/changeTheme';
 import useStorage from './utils/useStorage';
 import './mock';
@@ -22,6 +21,7 @@ import {Department, MetricSet} from "@/types/insights-web";
 import {requestQueryAll as queryDepartmentAll} from "@/api/department";
 import {requestPinList} from "@/api/metricset";
 import {getDepartment} from "@/pages/department/common";
+import {checkLogin} from "@/utils/checkLogin";
 
 const store = createStore(rootReducer);
 

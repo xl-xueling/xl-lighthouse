@@ -7,6 +7,8 @@ import {IconUser} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/header.module.less';
+import DepartmentLabel from "@/pages/department/common/depart";
+import {formatTimeStamp} from "@/utils/util";
 
 export default function Header({userInfo}) {
 
@@ -28,10 +30,10 @@ export default function Header({userInfo}) {
     data={[
         {
             label: t['userSetting.label.name'],
-            value:  userInfo.userName,
+            value:  userInfo.username,
         },
         {
-            label: t['userSetting.label.accountId'],
+            label: t['userSetting.label.userId'],
             value: userInfo.id,
         },
         {
@@ -42,9 +44,7 @@ export default function Header({userInfo}) {
         },
         {
             label: t['userSetting.label.department'],
-            value: (<span>
-                {userInfo.departmentName}
-              </span>),
+            value: (<DepartmentLabel department={userInfo.department}/>),
         },
         {
             label: t['userSetting.label.email'],
@@ -54,7 +54,7 @@ export default function Header({userInfo}) {
         },
         {
             label: t['userSetting.label.registrationTime'],
-            value: userInfo.createdTime,
+            value: formatTimeStamp(userInfo.createTime),
         },
     ]}
     />

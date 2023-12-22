@@ -53,7 +53,7 @@ export interface User {
     departmentId?: number;
     department?:Department;
     state?:number;
-    createdTime?:number;
+    createTime?:number;
     avatar?:string;
     permissions?: Record<string, string[]>;
 }
