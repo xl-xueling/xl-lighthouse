@@ -73,8 +73,13 @@ public class LoginController {
             return ResultData.failed(ResultCode.AUTH_RENEWAL_FAILED);
         }
         String signKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
-        Jws<Claims> jws = Jwts.parser().setSigningKey(signKey).parseClaimsJws(refreshKey);
-        if(jws == null){
+        Jws<Claims> jws;
+        try{
+            jws = Jwts.parser().setSigningKey(signKey).parseClaimsJws(refreshKey);
+            if(jws == null){
+                return ResultData.failed(ResultCode.AUTH_RENEWAL_FAILED);
+            }
+        }catch (Exception ex){
             return ResultData.failed(ResultCode.AUTH_RENEWAL_FAILED);
         }
         Long expired = (Long)jws.getBody().get("expired");

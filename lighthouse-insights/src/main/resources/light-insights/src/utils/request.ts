@@ -32,6 +32,9 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
     }catch (error) {
         if(error.response.status == 401){
             const refreshKey = localStorage.getItem('refreshKey')
+            if(!refreshKey){
+                 window.location.href = "/login";
+            }
             const refreshResponse = await axios.get(baseURL+'/api/v1/refreshKey',{
                 headers: {
                     'refreshKey': refreshKey,
