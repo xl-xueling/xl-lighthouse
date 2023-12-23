@@ -35,12 +35,12 @@ public enum UserStateEnum {
     /**
      * 冻结用户
      */
-    USER_FREEZE(3),
+    USER_FREEZE(2),
 
     /**
      * 已删除用户
      */
-    USER_DELETED(4);
+    USER_DELETED(3);
 
     @EnumSerializerAnnotation
     private int state;
