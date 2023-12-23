@@ -110,8 +110,8 @@ export default function UserList() {
               departmentId:1
             },
             pagination:{
-              pageSize:3,
-              pageNum:5,
+              pageSize:pageSize,
+              pageNum:current,
             }
           }).then((response:ResultData) => {
             const {code, data ,message} = response;

@@ -69,14 +69,28 @@
         limit ${offset},#{pageSize}
     </select>
 
-    <select id="countList" resultType="int">
-        SELECT count(1) FROM ldp_user WHERE 1 = 1
-        <if test="queryParam.id!=null">
-            AND id = #{queryParam.id}
-        </if>
-        <if test="queryParam.state!=null">
-            AND state = #{queryParam.state}
-        </if>
+    <select id="count" resultType="int" parameterType="com.dtstep.lighthouse.insights.dto.UserQueryParam">
+        SELECT count(1) FROM ldp_user
+        <where>
+            <if test="queryParam.id!=null">
+                AND id = #{queryParam.id}
+            </if>
+            <if test="queryParam.search != null">
+                AND username LIKE CONCAT('%', #{queryParam.search}, '%')
+            </if>
+            <if test="queryParam.departmentId != null">
+                AND department_id = #{queryParam.departmentId}
+            </if>
+            <if test="queryParam.state!=null">
+                AND state = #{queryParam.state}
+            </if>
+            <if test="queryParam.createStartTime!=null">
+                AND create_time &gt;= #{queryParam.createStartTime}
+            </if>
+            <if test="queryParam.createEndTime!=null">
+                AND create_time &lt;= #{queryParam.createEndTime}
+            </if>
+        </where>
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.insights.dto.UserUpdateParam">
