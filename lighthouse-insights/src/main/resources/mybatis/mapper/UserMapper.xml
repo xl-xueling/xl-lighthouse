@@ -44,22 +44,27 @@
     </select>
 
     <select id="queryList" resultMap="userResultMap">
-        SELECT `id`,`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user WHERE 1 = 1
-        <if test="queryParam.id!=null">
-            AND id = #{queryParam.id}
-        </if>
-        <if test="queryParam.search != null">
-            AND username LIKE CONCAT('%', #{queryParam.search}, '%')
-        </if>
-        <if test="queryParam.state!=null">
-            AND state = #{queryParam.state}
-        </if>
-        <if test="queryParam.createStartTime!=null">
-            AND create_time &gt;= #{queryParam.createStartTime}
-        </if>
-        <if test="queryParam.createEndTime!=null">
-            AND create_time &lt;= #{queryParam.createEndTime}
-        </if>
+        SELECT `id`,`username`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user
+        <where>
+            <if test="queryParam.id!=null">
+                AND id = #{queryParam.id}
+            </if>
+            <if test="queryParam.search != null">
+                AND username LIKE CONCAT('%', #{queryParam.search}, '%')
+            </if>
+            <if test="queryParam.departmentId != null">
+                AND department_id = #{queryParam.departmentId}
+            </if>
+            <if test="queryParam.state!=null">
+                AND state = #{queryParam.state}
+            </if>
+            <if test="queryParam.createStartTime!=null">
+                AND create_time &gt;= #{queryParam.createStartTime}
+            </if>
+            <if test="queryParam.createEndTime!=null">
+                AND create_time &lt;= #{queryParam.createEndTime}
+            </if>
+        </where>
         <bind name="offset" value="(pageNum-1)*pageSize"></bind>
         limit ${offset},#{pageSize}
     </select>

@@ -3,9 +3,11 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 import com.dtstep.lighthouse.commonv2.entity.user.Role;
 import com.dtstep.lighthouse.commonv2.enums.AuthRoleTypeEnum;
+import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
+import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.UserService;
@@ -65,4 +67,15 @@ public class UserServiceImpl implements UserService {
         return userDao.queryByUserName(userName);
     }
 
+    @Override
+    public ListData<User> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize) {
+        List<User> userList = userDao.queryList(queryParam,pageNum,pageSize);
+        ListData<User> listData = new ListData<>();
+        listData.setList(userList);
+        int total = userDao.count(queryParam);
+        listData.setTotal(total);
+        listData.setPageNum(pageNum);
+        listData.setPageSize(pageSize);
+        return listData;
+    }
 }

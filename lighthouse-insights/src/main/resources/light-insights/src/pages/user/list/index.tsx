@@ -106,11 +106,13 @@ export default function UserList() {
           let result = [];
           const {current, pageSize} = pagination;
           await requestList({
-            params: {
-              page: current,
-              pageSize,
-              ...formParams,
+            queryParams:{
+              departmentId:1
             },
+            pagination:{
+              pageSize:3,
+              pageNum:5,
+            }
           }).then((response:ResultData) => {
             const {code, data ,message} = response;
             if (code === '0') {

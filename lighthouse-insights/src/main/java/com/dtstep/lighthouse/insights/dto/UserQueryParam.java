@@ -1,12 +1,18 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserQueryParam {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class UserQueryParam implements Serializable {
 
     private Integer id;
 
     private String search;
+
+    private Integer departmentId;
 
     private Date createStartTime;
 
@@ -52,5 +58,13 @@ public class UserQueryParam {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 }
