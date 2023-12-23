@@ -44,7 +44,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         List<Department> departmentList = departmentDao.queryAll();
         HashMap<Integer,CommonTreeNode> departmentMap = new HashMap<>();
         for (Department department : departmentList) {
-            departmentMap.put(department.getId(),new CommonTreeNode(String.valueOf(department.getId()), department.getName()));
+            CommonTreeNode commonTreeNode = new CommonTreeNode();
+            commonTreeNode.setId(String.valueOf(department.getId()));
+            commonTreeNode.setPid(String.valueOf(department.getPid()));
+            commonTreeNode.setName(department.getName());
+            departmentMap.put(department.getId(),commonTreeNode);
         }
         List<CommonTreeNode> nodeList = new ArrayList<>();
         for(Department department:departmentList){
