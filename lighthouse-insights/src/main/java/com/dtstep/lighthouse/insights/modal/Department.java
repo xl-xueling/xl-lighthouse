@@ -9,10 +9,9 @@ public class Department implements Serializable {
     private Integer id;
 
     @NotEmpty
-    private String title;
+    private String name;
 
-    @NotEmpty
-    private Integer pid;
+    private Integer pid = 0;
 
     private Date createTime;
 
@@ -26,12 +25,12 @@ public class Department implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getPid() {

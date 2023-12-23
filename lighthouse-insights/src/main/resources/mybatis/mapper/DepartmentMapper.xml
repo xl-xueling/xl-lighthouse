@@ -19,6 +19,22 @@
         )
     </insert>
 
+    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Department">
+        UPDATE ldp_department
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="pid != null">
+                pid = #{pid},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
     <select id="queryAll" resultMap="departmentResultMap">
         SELECT * FROM ldp_department limit 100000
     </select>
@@ -26,4 +42,8 @@
     <select id="queryById" resultMap="departmentResultMap">
         SELECT * FROM ldp_department WHERE id = #{id}
     </select>
+
+    <delete id="deleteById">
+        delete from ldp_department where id = #{id}
+    </delete>
 </mapper>
