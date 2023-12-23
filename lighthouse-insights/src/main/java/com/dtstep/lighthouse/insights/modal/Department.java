@@ -13,7 +13,7 @@ public class Department implements Serializable {
     @Size(min = 3,max = 20)
     private String name;
 
-    private Integer pid = 0;
+    private Integer pid;
 
     private Date createTime;
 
