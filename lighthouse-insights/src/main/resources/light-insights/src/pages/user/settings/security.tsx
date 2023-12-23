@@ -18,12 +18,10 @@ export default function Security({userInfo}) {
   const { lang } = useContext(GlobalContext);
 
   function onSubmitClick() {
-      console.log("-------1");
     setFormLoading(true);
     formRef.current.validate().then((values) => {
       const proc = async () =>{
         const response:ResultData = await requestChangePassword(values);
-        console.log("response:" + JSON.stringify(response));
         if (response.code === '0') {
           Message.success(t['security.form.submit.success']);
         } else {
@@ -51,13 +49,11 @@ export default function Security({userInfo}) {
           labelCol={{ span: lang === 'en-US' ? 5 : 4 }}
           wrapperCol={{ span: lang === 'en-US' ? 17 : 18 }}
           onSubmit={(v) => {
-              console.log("------222")
               onSubmitClick();
           }}
       >
-
           <Form.Item
-              // style={{ display:"none" }}
+              style={{ display:"none" }}
               field="id"
               rules={[
                   {
