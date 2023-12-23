@@ -77,7 +77,7 @@ export default function ManagePanel() {
         setLoading(true);
         let result = "-1";
         try {
-            await requestDragTo({'id': id, 'destPid': destPid}).then((response: ResultData) => {
+            await requestUpdateById({'id': id, 'pid': destPid}).then((response: ResultData) => {
                 const {code, message, data} = response;
                 if (code === '0') {
                     result = code;
