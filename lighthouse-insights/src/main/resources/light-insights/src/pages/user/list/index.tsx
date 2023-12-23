@@ -1,20 +1,16 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import {
-  Table,
-  Card,
-  PaginationProps,
-  Typography, Message, List,
-} from '@arco-design/web-react';
+import React, {useEffect, useMemo, useState} from 'react';
+import {Card, Message, PaginationProps, Table, Typography,} from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
-import { getColumns } from './constants';
-import {requestList, requestChangeState, requestDeleteById, requestResetPasswd} from "@/api/user";
+import {getColumns} from './constants';
+import {requestChangeState, requestDeleteById, requestList, requestResetPasswd} from "@/api/user";
 import {Department, User} from "@/types/insights-web";
 import {useSelector} from "react-redux";
-import {translateToMapStruct} from "@/pages/department/common";
+import {getDepartment} from "@/pages/department/common";
 import {ResultData} from "@/types/insights-common";
 import SearchForm from "@/pages/user/list/form";
+
 const { Title } = Typography;
 
 export default function UserList() {
@@ -99,7 +95,6 @@ export default function UserList() {
     if(!initReady){
       return;
     }
-    const departmentMap = translateToMapStruct(allDepartInfo);
     const promiseOfFetchUserData:Promise<Array<User>> = new Promise((resolve,reject) => {
       setLoading(true);
       const proc = async () => {
@@ -143,10 +138,7 @@ export default function UserList() {
 
     promiseAll.then(([result]) => {
       result?.forEach(z => {
-        const department = departmentMap.get(String(z.departmentId));
-        if(department){
-          // z.departmentName = department.name;
-        }
+        z.department = getDepartment(z.departmentId, allDepartInfo);
       })
       setUserData(result);
     })
