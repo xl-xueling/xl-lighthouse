@@ -9,6 +9,6 @@ export interface Props {
 export default function DepartmentLabel(props:Props) {
     const { department } = props;
     return (
-        <span>{department.name}</span>
+        <span>{department?.name}</span>
     );
 }

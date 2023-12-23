@@ -109,7 +109,7 @@ export const getDepartment = (id:number,allDepartsInfo) : Department => {
             return node;
         }
         if (node.children && node.children.length > 0) {
-            const result = getDepartment(node.children, id);
+            const result = getDepartment(id,node.children);
             if (result) {
                 return result;
             }
