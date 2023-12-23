@@ -176,4 +176,7 @@
         WHERE id = #{id}
     </update>
 
+    <delete id="deleteById">
+        delete from ldp_user where id = #{id}
+    </delete>
 </mapper>
