@@ -24,8 +24,9 @@ export default function ManagePanel() {
                 let data = response.data;
                 if (code === '0') {
                     data = [{
-                        "id":"0",
-                        "name":t['department.enterprise.structure'],"children":data}] ;
+                        "key":"0",
+                        "title":t['department.enterprise.structure'],"children":data}] ;
+                    console.log("data is:" + JSON.stringify(data));
                     setTreeData([...data]);
                     setExpandedKeys(["0"]);
                 }else{
@@ -136,9 +137,9 @@ export default function ManagePanel() {
             const { children, key, ...ret} = item;
             item.pid = pid;
             return (
-                <Tree.Node icon={children || item.id == "0" ? <IconFolder /> : <IconFile/> }
-                           key={item.id} title={item.name}  {...ret} dataRef={item}>
-                    {children ? generatorTreeNodes(item.children,item.id) : null}
+                <Tree.Node icon={children || item.key == "0" ? <IconFolder /> : <IconFile/> }
+                         key={item.key} title={item.title} id={item.key} pid={pid}  {...ret} dataRef={item}>
+                    {children ? generatorTreeNodes(item.children,item.key) : null}
                 </Tree.Node>
             );
         });
