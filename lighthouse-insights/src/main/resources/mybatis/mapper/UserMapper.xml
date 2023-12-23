@@ -44,19 +44,39 @@
     </select>
 
     <select id="queryList" resultMap="userResultMap">
+        WITH RECURSIVE cte AS (
+        SELECT d.id
+        FROM ldp_department d
+        WHERE d.id IN (
+            <if test="queryParam.departmentIds != null">
+                <foreach item="item" index="index" collection="queryParam.departmentIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        )
+        UNION ALL
+        SELECT d.id
+        FROM ldp_department d
+        JOIN cte ON cte.id = d.pid
+        )
         SELECT `id`,`username`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user
         <where>
             <if test="queryParam.id!=null">
                 AND id = #{queryParam.id}
             </if>
-            <if test="queryParam.search != null">
-                AND username LIKE CONCAT('%', #{queryParam.search}, '%')
+            <if test="queryParam.username != null">
+                AND username LIKE CONCAT('%', #{queryParam.username}, '%')
             </if>
-            <if test="queryParam.departmentId != null">
-                AND department_id = #{queryParam.departmentId}
+            <if test="queryParam.departmentIds != null">
+                AND department_id IN(
+                    select id from cte
+                )
             </if>
-            <if test="queryParam.state!=null">
-                AND state = #{queryParam.state}
+            <if test="queryParam.states!=null">
+                AND state IN
+                <foreach item="item" index="index" collection="queryParam.states" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
             </if>
             <if test="queryParam.createStartTime!=null">
                 AND create_time &gt;= #{queryParam.createStartTime}
@@ -75,8 +95,8 @@
             <if test="queryParam.id!=null">
                 AND id = #{queryParam.id}
             </if>
-            <if test="queryParam.search != null">
-                AND username LIKE CONCAT('%', #{queryParam.search}, '%')
+            <if test="queryParam.username != null">
+                AND username LIKE CONCAT('%', #{queryParam.username}, '%')
             </if>
             <if test="queryParam.departmentId != null">
                 AND department_id = #{queryParam.departmentId}

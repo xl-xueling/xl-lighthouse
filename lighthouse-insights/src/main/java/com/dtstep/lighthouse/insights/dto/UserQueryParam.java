@@ -4,28 +4,29 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserQueryParam implements Serializable {
 
     private Integer id;
 
-    private String search;
+    private String username;
 
-    private Integer departmentId;
+    private List<Integer> departmentIds;
 
     private Date createStartTime;
 
     private Date createEndTime;
 
-    private Integer state;
+    private List<Integer> states;
 
-    public String getSearch() {
-        return search;
+    public String getUsername() {
+        return username;
     }
 
-    public void setSearch(String search) {
-        this.search = search;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Date getCreateStartTime() {
@@ -44,12 +45,12 @@ public class UserQueryParam implements Serializable {
         this.createEndTime = createEndTime;
     }
 
-    public Integer getState() {
-        return state;
+    public List<Integer> getStates() {
+        return states;
     }
 
-    public void setState(Integer state) {
-        this.state = state;
+    public void setStates(List<Integer> states) {
+        this.states = states;
     }
 
     public Integer getId() {
@@ -60,11 +61,11 @@ public class UserQueryParam implements Serializable {
         this.id = id;
     }
 
-    public Integer getDepartmentId() {
-        return departmentId;
+    public List<Integer> getDepartmentIds() {
+        return departmentIds;
     }
 
-    public void setDepartmentId(Integer departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartmentIds(List<Integer> departmentIds) {
+        this.departmentIds = departmentIds;
     }
 }

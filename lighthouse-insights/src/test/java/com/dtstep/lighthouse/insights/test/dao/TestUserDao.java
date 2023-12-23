@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,7 +56,14 @@ public class TestUserDao {
     @Test
     public void testQueryList() throws Exception {
         UserQueryParam userQueryParam = new UserQueryParam();
-        userQueryParam.setSearch("12");
+//        List<Integer> statesList = new ArrayList<>();
+//        statesList.add(0);
+//        statesList.add(1);
+//        statesList.add(2);
+//        userQueryParam.setStates(statesList);
+        List<Integer> departmentIdList = new ArrayList<>();
+        departmentIdList.add(1);
+        userQueryParam.setDepartmentIds(departmentIdList);
         List<User> users = userDao.queryList(userQueryParam,1,10);
         System.out.println("data:" + JsonUtil.toJSONString(users));
     }
@@ -84,7 +92,6 @@ public class TestUserDao {
     @Test
     public void testCount() throws Exception {
         UserQueryParam userQueryParam = new UserQueryParam();
-        userQueryParam.setDepartmentId(1);
         int count = userDao.count(userQueryParam);
         System.out.println("count:" + count);
     }

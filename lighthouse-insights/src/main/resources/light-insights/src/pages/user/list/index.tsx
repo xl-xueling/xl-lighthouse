@@ -85,6 +85,12 @@ export default function UserList() {
     }
   };
 
+  function handleSearch(params) {
+    setFormParams(params);
+    setPagination({ ...pagination, current: 1 });
+  }
+
+
   useEffect(() => {
     if(allDepartInfo && allDepartInfo.length > 0){
       setInitReady(true);
@@ -95,15 +101,15 @@ export default function UserList() {
     if(!initReady){
       return;
     }
+    console.log("---start to fetch users,formParams is:" + JSON.stringify(formParams));
     const promiseOfFetchUserData:Promise<Array<User>> = new Promise((resolve,reject) => {
       setLoading(true);
+      console.log("formParams is vvv:" + JSON.stringify(formParams));
       const proc = async () => {
           let result = [];
           const {current, pageSize} = pagination;
           await requestList({
-            queryParams:{
-              departmentId:1
-            },
+            queryParams:formParams,
             pagination:{
               pageSize:pageSize,
               pageNum:current,
@@ -153,10 +159,6 @@ export default function UserList() {
     });
   }
 
-  function handleSearch(params) {
-    setPagination({ ...pagination, current: 1 });
-    setFormParams(params);
-  }
   return (
     <Card>
       <SearchForm onSearch={handleSearch} />

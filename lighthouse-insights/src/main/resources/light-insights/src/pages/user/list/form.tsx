@@ -64,7 +64,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item label={t['userList.columns.userName']} field="userName">
+            <Form.Item label={t['userList.columns.userName']} field="username">
               <Input
                 allowClear
                 placeholder={t['userList.userName.placeholder']}
@@ -88,7 +88,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item label={t['userList.columns.department']} field="department">
+            <Form.Item label={t['userList.columns.department']} field="departmentId">
               <TreeSelect
                   ref={treeRef}
                   placeholder={"Please Select"}
