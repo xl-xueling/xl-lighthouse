@@ -80,4 +80,12 @@ public class TestUserDao {
         int result = userDao.changeState(110137, UserStateEnum.USER_FREEZE);
         System.out.println("result:" + result);
     }
+
+    @Test
+    public void testCount() throws Exception {
+        UserQueryParam userQueryParam = new UserQueryParam();
+        userQueryParam.setDepartmentId(1);
+        int count = userDao.count(userQueryParam);
+        System.out.println("count:" + count);
+    }
 }

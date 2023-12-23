@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface UserDao {
 
     List<User> queryList(UserQueryParam queryParam, Integer pageNum,Integer pageSize);
 
-    Integer count(UserQueryParam queryParam);
+    Integer count(@Param("queryParam")UserQueryParam queryParam);
 
     int update(UserUpdateParam user);
 
