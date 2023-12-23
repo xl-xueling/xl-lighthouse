@@ -62,7 +62,6 @@ public class TestUserDao {
 //        statesList.add(2);
 //        userQueryParam.setStates(statesList);
         List<Integer> departmentIdList = new ArrayList<>();
-        departmentIdList.add(1);
         userQueryParam.setDepartmentIds(departmentIdList);
         List<User> users = userDao.queryList(userQueryParam,1,10);
         System.out.println("data:" + JsonUtil.toJSONString(users));
