@@ -5,31 +5,46 @@ import java.util.List;
 
 public class CommonTreeNode implements Serializable {
 
-    public String key;
+    public String id;
 
-    private String title;
+    private String name;
+
+    private String pid;
+
+    private String type;
 
     private List<CommonTreeNode> children;
 
-    public CommonTreeNode(String key,String title){
-        this.key = key;
-        this.title = title;
+    public String getId() {
+        return id;
     }
 
-    public String getKey() {
-        return key;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public String getName() {
+        return name;
     }
 
-    public String getTitle() {
-        return title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public List<CommonTreeNode> getChildren() {
