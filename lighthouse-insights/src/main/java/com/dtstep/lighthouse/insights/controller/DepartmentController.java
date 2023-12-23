@@ -5,16 +5,16 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
 import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
 import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
+import com.dtstep.lighthouse.insights.dto.DeleteParam;
+import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.service.DepartmentService;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,11 +31,28 @@ public class DepartmentController {
         return ResultData.success(list);
     }
 
+    @RequestMapping("/department/create")
+    public ResultData<Integer> create(@Validated @RequestBody Department createParam) {
+        int result = departmentService.create(createParam);
+        return ResultData.success(result);
+    }
+
     @RequestMapping("/department/updateById")
     public ResultData<Integer> updateById(@RequestBody Department updateParam) {
         int id = departmentService.update(updateParam);
         if(id > 0){
             return ResultData.success(id);
+        }else{
+            return ResultData.failed(ResultCode.ERROR);
+        }
+    }
+
+    @RequestMapping("/department/delete")
+    public ResultData<Integer> delete(@RequestBody DeleteParam deleteParam) {
+        Validate.notNull(deleteParam.getId());
+        int result = departmentService.deleteById(List.of(deleteParam.getId()));
+        if(result == 1){
+            return ResultData.success(result);
         }else{
             return ResultData.failed(ResultCode.ERROR);
         }

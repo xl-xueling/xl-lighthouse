@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.modal.Department;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ public class TestDepartmentDao {
         department.setCreateTime(new Date());
         department.setUpdateTime(new Date());
         department.setName("sssvvv");
-        departmentDao.insert(department);
+        int result = departmentDao.insert(department);
+        System.out.println(result);
     }
 
     @Test
@@ -53,8 +55,8 @@ public class TestDepartmentDao {
 
     @Test
     public void deleteById(){
-        int id = 10054;
-        int res = departmentDao.deleteById(id);
+        int id = 10055;
+        int res = departmentDao.deleteById(Lists.list(id));
         System.out.println("res:" + res);
     }
 }

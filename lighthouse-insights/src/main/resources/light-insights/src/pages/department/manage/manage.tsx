@@ -5,7 +5,13 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import {ResultData} from "@/types/insights-common";
-import {requestCreate, requestDeleteById, requestDragTo, requestQueryAll, requestUpdateById} from "@/api/department";
+import {
+    requestCreate,
+    requestDelete,
+    requestDragTo,
+    requestQueryAll,
+    requestUpdateById
+} from "@/api/department";
 
 export default function ManagePanel() {
     const t = useLocale(locale);
@@ -24,9 +30,8 @@ export default function ManagePanel() {
                 let data = response.data;
                 if (code === '0') {
                     data = [{
-                        "key":"0",
-                        "title":t['department.enterprise.structure'],"children":data}] ;
-                    console.log("data is:" + JSON.stringify(data));
+                        "id":"0",
+                        "name":t['department.enterprise.structure'],"children":data}] ;
                     setTreeData([...data]);
                     setExpandedKeys(["0"]);
                 }else{
@@ -50,10 +55,10 @@ export default function ManagePanel() {
         setLoading(true);
         let id = "-1";
         try {
-            await requestCreate({'pid': pid, 'title': title}).then((response: ResultData) => {
+            await requestCreate({'pid': pid, 'name': title}).then((response: ResultData) => {
                 const {code, message, data} = response;
                 if (code === '0') {
-                    id = data.id;
+                    id = data;
                 } else {
                     Message.error(message || t['system.error'])
                 }
@@ -93,7 +98,7 @@ export default function ManagePanel() {
         setLoading(true);
         let result = "-1";
         try {
-            await requestUpdateById({'id': id, 'title': title}).then((response: ResultData) => {
+            await requestUpdateById({'id': id, 'name': title}).then((response: ResultData) => {
                 const {code, message, data} = response;
                 if (code === '0') {
                     result = code;
@@ -115,7 +120,7 @@ export default function ManagePanel() {
         setLoading(true);
         let result = "-1";
         try {
-            await requestDeleteById({'id': id}).then((response: ResultData) => {
+            await requestDelete({id}).then((response: ResultData) => {
                 const {code, message, data} = response;
                 if (code === '0') {
                     result = code;
@@ -135,10 +140,9 @@ export default function ManagePanel() {
     const generatorTreeNodes = (treeData,pid = "0") => {
         return treeData.map((item) => {
             const { children, key, ...ret} = item;
-            item.pid = pid;
             return (
-                <Tree.Node icon={children || item.key == "0" ? <IconFolder /> : <IconFile/> }
-                         key={item.key} title={item.title} id={item.key} pid={pid}  {...ret} dataRef={item}>
+                <Tree.Node icon={children || item.id == "0" ? <IconFolder /> : <IconFile/> }
+                         key={item.id} title={item.name} {...ret} dataRef={item}>
                     {children ? generatorTreeNodes(item.children,item.key) : null}
                 </Tree.Node>
             );
@@ -312,7 +316,7 @@ export default function ManagePanel() {
                                                                       } else {
                                                                           const newTitle = ie.target.value;
                                                                           if(newTitle.length  > 0 && newTitle != originTitle){
-                                                                              const result = await updateNode(node.dataRef._key, newTitle);
+                                                                              const result = await updateNode(node.dataRef.id, newTitle);
                                                                               if(result == "0"){
                                                                                   node.dataRef.title = newTitle;
                                                                               }else{
