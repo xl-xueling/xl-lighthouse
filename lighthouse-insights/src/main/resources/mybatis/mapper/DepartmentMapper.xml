@@ -9,7 +9,7 @@
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.Department">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Department">
         INSERT INTO ldp_department (`name`,`pid`,`create_time`,`update_time`) VALUES
         (
             #{name,jdbcType=VARCHAR},
@@ -44,6 +44,9 @@
     </select>
 
     <delete id="deleteById">
-        delete from ldp_department where id = #{id}
+        delete from ldp_department where id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </delete>
 </mapper>

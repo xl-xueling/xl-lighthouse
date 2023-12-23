@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,6 +10,7 @@ public class Department implements Serializable {
     private Integer id;
 
     @NotEmpty
+    @Size(min = 3,max = 20)
     private String name;
 
     private Integer pid = 0;

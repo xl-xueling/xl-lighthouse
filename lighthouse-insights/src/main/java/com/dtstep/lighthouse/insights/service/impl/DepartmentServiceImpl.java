@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,7 +22,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public int create(Department department) {
-        return departmentDao.insert(department);
+        Date date = new Date();
+        department.setUpdateTime(date);
+        department.setCreateTime(date);
+        departmentDao.insert(department);
+        return department.getId();
     }
 
     @Override
@@ -30,8 +35,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public int deleteById(Integer id) {
-        return departmentDao.deleteById(id);
+    public int deleteById(List<Integer> ids) {
+        return departmentDao.deleteById(ids);
     }
 
     @Override
@@ -58,10 +63,13 @@ public class DepartmentServiceImpl implements DepartmentService {
                 nodeList.add(currentNode);
             }else{
                 CommonTreeNode parentNode = departmentMap.get(pid);
-                Validate.notNull(parentNode);
-                List<CommonTreeNode> children = (parentNode.getChildren() == null ? new ArrayList<>() : parentNode.getChildren());
-                children.add(currentNode);
-                parentNode.setChildren(children);
+                if(parentNode != null){
+                    List<CommonTreeNode> children = (parentNode.getChildren() == null ? new ArrayList<>() : parentNode.getChildren());
+                    children.add(currentNode);
+                    parentNode.setChildren(children);
+                }else{
+                    nodeList.add(currentNode);
+                }
             }
         }
         return nodeList;
