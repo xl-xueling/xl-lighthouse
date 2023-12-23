@@ -101,10 +101,8 @@ export default function UserList() {
     if(!initReady){
       return;
     }
-    console.log("---start to fetch users,formParams is:" + JSON.stringify(formParams));
     const promiseOfFetchUserData:Promise<Array<User>> = new Promise((resolve,reject) => {
       setLoading(true);
-      console.log("formParams is vvv:" + JSON.stringify(formParams));
       const proc = async () => {
           let result = [];
           const {current, pageSize} = pagination;
