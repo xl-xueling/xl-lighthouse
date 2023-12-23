@@ -1,10 +1,10 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
 import com.dtstep.lighthouse.insights.config.SeedAuthenticationToken;
-import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
-import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +78,14 @@ public class UserController {
         }else{
             return ResultData.failed(ResultCode.ERROR);
         }
+    }
+
+    @PostMapping("/user/list")
+    public ResultData<ListData<User>> list(
+            @Validated @RequestBody ListSearchObject<UserQueryParam> searchObject) {
+        Pagination pagination = searchObject.getPagination();
+        ListData<User> listData = userService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
+        return ResultData.success(listData);
     }
 
 }
