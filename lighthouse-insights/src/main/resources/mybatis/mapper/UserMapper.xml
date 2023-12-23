@@ -47,13 +47,15 @@
         WITH RECURSIVE cte AS (
         SELECT d.id
         FROM ldp_department d
-        WHERE d.id IN (
-            <if test="queryParam.departmentIds != null">
+        <where>
+            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
+                AND d.id IN (
                 <foreach item="item" index="index" collection="queryParam.departmentIds" open="(" separator="," close=")">
                     #{item}
                 </foreach>
+                )
             </if>
-        )
+        </where>
         UNION ALL
         SELECT d.id
         FROM ldp_department d
@@ -67,12 +69,12 @@
             <if test="queryParam.username != null">
                 AND username LIKE CONCAT('%', #{queryParam.username}, '%')
             </if>
-            <if test="queryParam.departmentIds != null">
+            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
                 AND department_id IN(
                     select id from cte
                 )
             </if>
-            <if test="queryParam.states!=null">
+            <if test="queryParam.states!=null and queryParam.states.size > 0">
                 AND state IN
                 <foreach item="item" index="index" collection="queryParam.states" open="(" separator="," close=")">
                     #{item}
@@ -93,13 +95,15 @@
         WITH RECURSIVE cte AS (
         SELECT d.id
         FROM ldp_department d
-        WHERE d.id IN (
-        <if test="queryParam.departmentIds != null">
-            <foreach item="item" index="index" collection="queryParam.departmentIds" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
-        )
+        <where>
+            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
+                AND d.id IN (
+                <foreach item="item" index="index" collection="queryParam.departmentIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+                )
+            </if>
+        </where>
         UNION ALL
         SELECT d.id
         FROM ldp_department d
@@ -113,12 +117,12 @@
             <if test="queryParam.username != null">
                 AND username LIKE CONCAT('%', #{queryParam.username}, '%')
             </if>
-            <if test="queryParam.departmentIds != null">
+            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
                 AND department_id IN(
                 select id from cte
                 )
             </if>
-            <if test="queryParam.states!=null">
+            <if test="queryParam.states!=null and queryParam.states.size > 0">
                 AND state IN
                 <foreach item="item" index="index" collection="queryParam.states" open="(" separator="," close=")">
                     #{item}
