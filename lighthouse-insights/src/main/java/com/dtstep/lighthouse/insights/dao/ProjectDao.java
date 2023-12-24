@@ -11,5 +11,7 @@ public interface ProjectDao {
 
     int update(Project project);
 
+    Project queryById(Integer id);
+
     List<Project> queryList(ProjectQueryParam queryParam,Integer pageNum,Integer pageSize);
 }

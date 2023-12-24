@@ -13,7 +13,7 @@ public interface ProjectService {
 
     int update(Project project);
 
-    List<Project> queryById(Integer id);
+    ProjectDto queryById(Integer id);
 
     ListData<ProjectDto> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize);
 
