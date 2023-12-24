@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -28,8 +29,8 @@ public class TestProjectDao {
         project.setDepartmentId(1);
         project.setPrivateType(1);
         project.setDesc("desc");
-        project.setCreateTime(new Date());
-        project.setUpdateTime(new Date());
+        project.setCreateTime(LocalDateTime.now());
+        project.setUpdateTime(LocalDateTime.now());
         projectDao.insert(project);
     }
 
