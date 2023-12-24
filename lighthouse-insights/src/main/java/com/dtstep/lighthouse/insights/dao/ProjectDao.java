@@ -9,5 +9,7 @@ public interface ProjectDao {
 
     int insert(Project project);
 
+    int update(Project project);
+
     List<Project> queryList(ProjectQueryParam queryParam,Integer pageNum,Integer pageSize);
 }

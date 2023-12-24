@@ -1,15 +1,15 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Form, Input, Modal, Radio, Skeleton, Spin, TreeSelect} from "@arco-design/web-react";
+import {Form, Input, Message, Modal, Radio, Skeleton, Spin, TreeSelect} from "@arco-design/web-react";
 import UserTermQuery from "@/pages/user/common/userTermQuery";
 import {translate} from "@/pages/department/common";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import {requestQueryById} from "@/api/project";
+import {requestCreate, requestQueryById, requestUpdateById} from "@/api/project";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {getTextBlenLength} from "@/utils/util";
 import {Project, User} from "@/types/insights-web";
 
-export default function ProjectUpdatePanel({updateId,allDepartInfo,onClose}){
+export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose}){
 
     const t = useLocale(locale);
     const [form] = useForm();
@@ -17,36 +17,43 @@ export default function ProjectUpdatePanel({updateId,allDepartInfo,onClose}){
     const [loading, setLoading] = useState(true);
     const [admins,setAdmins] = useState<Array<number>>([]);
 
-    const promiseOfFetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
-        const proc = async () => {
-            requestQueryById({"id":updateId}).then((result) => {
-                resolve(result.data);
-            }).catch(error => {
-                reject(error);
-            });
-        }
-        proc().then();
-    })
-
     useEffect(() => {
         setLoading(true);
-        const promiseAll:Promise<[Project]> = Promise.all([
-            promiseOfFetchProjectInfo,
-        ]);
-        promiseAll.then((result) => {
-            const project = result[0];
-            form.setFieldsValue(project);
-            form.setFieldValue("departmentId",project.departmentId.toString());
-            setAdmins(project.adminIds);
-            setLoading(false);
-        }).catch(error => {
+        form.setFieldsValue(projectInfo);
+        form.setFieldValue("departmentId",projectInfo.departmentId.toString());
+        setAdmins(projectInfo.adminIds);
+        setLoading(false);
+    },[projectInfo])
+
+
+    async function handlerSubmit(){
+        console.log("update submit!")
+        await formRef.current.validate();
+        const values = formRef.current.getFieldsValue();
+        setLoading(true);
+        const project:Project = {
+            id:projectInfo.id,
+            title:values.title,
+            departmentId:Number(values.departmentId),
+            desc:values.desc,
+            privateType:values.privateType,
+        }
+        console.log("project is:" + JSON.stringify(project));
+        requestUpdateById(project).then((result) => {
+            if(result.code === '0'){
+                Message.success(t['projectCreate.form.submit.success']);
+                setTimeout(() => {
+                    window.location.href = "/project/list";
+                },3000)
+            }else{
+                Message.error(result.message || t['system.error']);
+            }
+        }).catch((error) => {
             console.log(error);
+            Message.error(t['system.error'])
+        }).finally(() => {
+            setLoading(false);
         })
-    },[updateId])
-
-
-    function handlerSubmit(){
-        console.log("create submit!")
     }
 
     return (
@@ -70,9 +77,8 @@ export default function ProjectUpdatePanel({updateId,allDepartInfo,onClose}){
                 form={form}
                 ref={formRef}
                 autoComplete='off'
-                scrollToFirstError
-            >
-                    <Form.Item label='Name' field='name' rules={[
+                scrollToFirstError>
+                    <Form.Item label='Title' field='title' rules={[
                         { required: true, message: t['projectUpdate.form.name.errMsg'] , validateTrigger : ['onBlur']},
                         {
                             required:true,
@@ -100,15 +106,13 @@ export default function ProjectUpdatePanel({updateId,allDepartInfo,onClose}){
                     ]}>
                         <Input.TextArea placeholder='Please enter description' style={{ minHeight: 64}} maxLength={150} showWordLimit={true}/>
                     </Form.Item>
-                    <Form.Item label={'Private'} field="private">
+                    <Form.Item label={'PrivateType'} field="privateType">
                         <Radio.Group defaultValue={0}>
                             <Radio value={0}>Private</Radio>
                             <Radio value={1}>Public</Radio>
                         </Radio.Group>
                     </Form.Item>
-                    <Form.Item label={'Admins'} field="admins" rules={[{ required: true,validateTrigger : ['onBlur']}]}>
-                        <UserTermQuery initValues={admins} formRef={formRef}/>
-                    </Form.Item>
+
                 </Form>
         </Modal>
     );

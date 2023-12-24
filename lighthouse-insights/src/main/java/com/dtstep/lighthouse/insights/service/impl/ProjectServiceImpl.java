@@ -38,6 +38,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public int update(Project project) {
+        return projectDao.update(project);
+    }
+
+    @Override
     public List<Project> queryById(Integer id) {
         return null;
     }

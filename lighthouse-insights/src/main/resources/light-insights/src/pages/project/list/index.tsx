@@ -137,7 +137,6 @@ export default function Index() {
       combineParam.createStartTime = createTime[0];
       combineParam.createEndTime = createTime[1];
     }
-    console.log("combineParam:" + JSON.stringify(combineParam));
     const fetchProjectsInfo:Promise<{list:Array<Project>,total:number}> = new Promise<{list:Array<Project>,total:number}>((resolve) => {
       const proc = async () => {
         const result = await requestList({
@@ -148,7 +147,6 @@ export default function Index() {
               }
             }
         );
-        console.log("result is:" + JSON.stringify(result.data))
         resolve(result.data);
       }
       proc().then();
@@ -204,7 +202,7 @@ export default function Index() {
           data={listData}
       />
       {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} />}
-      {updateVisible && <ProjectUpdatePanel updateId={selectedProject.id} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)}/>}
+      {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)}/>}
       {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
       {bindedVisible && <ReverseBindedPanel projectId={selectedProject.id} onClose={() => setBindedVisible(false)}/>}
       {applyVisible && <ProjectApplyModal onClose={() => setApplyVisible(false)}/>}
