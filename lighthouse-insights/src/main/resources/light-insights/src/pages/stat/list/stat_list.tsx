@@ -6,7 +6,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import {useSelector} from "react-redux";
 import locale from './locale';
-import { Department, Group, PrivilegeEnum, Project, Stat, StatPagination, User} from "@/types/insights-web";
+import { Department, Group, PermissionsEnum, Project, Stat, StatPagination, User} from "@/types/insights-web";
 import {requestQueryByIds as requestQueryGroupByIds} from "@/api/group";
 import {requestQueryByIds as requestQueryProjectByIds} from "@/api/project";
 import {requestList} from "@/api/stat";
@@ -77,10 +77,10 @@ export default function StatisticalListPanel({formParams,from = null}) {
             const {list,total}:{list:Array<Stat>,total:number} = (await Promise.all([fetchStatsInfo]))[0];
             const statsInfo = list;
             
-            const fetchPrivilegeInfo:Promise<Record<number,PrivilegeEnum[]>> = new Promise<Record<number,PrivilegeEnum[]>>((resolve, reject) => {
+            const fetchPrivilegeInfo:Promise<Record<number,PermissionsEnum[]>> = new Promise<Record<number,PermissionsEnum[]>>((resolve, reject) => {
                 const statIds = statsInfo?.map(z => z.id);
                 const proc = async () => {
-                    const result:ResultData<Record<number,PrivilegeEnum[]>> = await requestPrivilegeCheck({type:"stat",ids:statIds});
+                    const result:ResultData<Record<number,PermissionsEnum[]>> = await requestPrivilegeCheck({type:"stat",ids:statIds});
                     resolve(result.data);
                 }
                 proc().then();

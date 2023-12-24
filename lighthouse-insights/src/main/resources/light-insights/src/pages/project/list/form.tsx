@@ -49,7 +49,7 @@ function SearchForm({onSearch, form,onClear, allDepartInfo}) {
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item label={t['projectList.columns.name']} field="name">
+            <Form.Item label={t['projectList.columns.name']} field="title">
               <Input
                 allowClear
                 placeholder={t['projectList.name.placeholder']}
@@ -57,7 +57,7 @@ function SearchForm({onSearch, form,onClear, allDepartInfo}) {
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item label={t['projectList.columns.department']} field="department">
+            <Form.Item label={t['projectList.columns.department']} field="departmentIds">
               <TreeSelect
                   ref={treeRef}
                   placeholder={"Please select"}
@@ -70,7 +70,7 @@ function SearchForm({onSearch, form,onClear, allDepartInfo}) {
           <Col span={colSpan}>
             <Form.Item
               label={t['projectList.columns.createdTime']}
-              field="createdTime"
+              field="createTime"
             >
               <DatePicker.RangePicker
                   allowClear

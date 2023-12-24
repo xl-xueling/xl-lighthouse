@@ -4,6 +4,7 @@ const { Text } = Typography;
 import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
+import {formatTimeStamp} from "@/utils/util";
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
@@ -24,7 +25,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
     },
     {
       title: <>{t['projectList.columns.name']}<IoInformationCircleOutline style={{fontSize:12}}/></>,
-      dataIndex: 'name',
+      dataIndex: 'title',
       render: (value,record) =>
       {
           return (<div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} >
@@ -46,8 +47,8 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
     },
     {
       title: t['projectList.columns.createdTime'],
-      dataIndex: 'createdTime',
-      render: (value) => <Text>{value}</Text>,
+      dataIndex: 'createTime',
+      render: (value) => {return formatTimeStamp(value)},
     },
     {
       title: t['projectList.columns.operations'],

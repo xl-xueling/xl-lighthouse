@@ -36,8 +36,10 @@ public class TestProjectDao {
     @Test
     public void testQueryList() throws Exception {
         ProjectQueryParam queryParam = new ProjectQueryParam();
-        queryParam.setDepartmentId(10068);
+        queryParam.setDepartmentIds(List.of(10068));
         List<Project> list = projectDao.queryList(queryParam,1,100);
         System.out.println("list:" + JsonUtil.toJSONString(list));
     }
+
+
 }

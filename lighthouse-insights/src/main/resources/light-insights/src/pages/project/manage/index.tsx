@@ -9,7 +9,7 @@ import {
     Typography
 } from "@arco-design/web-react";
 import GroupManagePanel from "@/pages/group/manage";
-import {PrivilegeEnum, Project} from "@/types/insights-web";
+import {PermissionsEnum, Project} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {requestQueryByIds} from "@/api/project";
 import ProjectManageMenu from "@/pages/project/manage/menu";
@@ -41,7 +41,7 @@ export default function ProjectManage() {
     })
 
     const fetchPrivilegeInfo = async(ids) => {
-        return new Promise<Record<number,PrivilegeEnum[]>>((resolve,reject) => {
+        return new Promise<Record<number,PermissionsEnum[]>>((resolve,reject) => {
             requestPrivilegeCheck({type:"project",ids:ids}).then((response) => {
                 resolve(response.data);
             }).catch((error) => {

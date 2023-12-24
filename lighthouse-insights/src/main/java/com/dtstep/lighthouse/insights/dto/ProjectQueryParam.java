@@ -1,14 +1,16 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ProjectQueryParam {
 
     private Integer id;
 
-    private String search;
+    private String title;
 
-    private Integer departmentId;
+    private List<Integer> departmentIds;
 
     private Date createStartTime;
 
@@ -26,20 +28,12 @@ public class ProjectQueryParam {
         this.id = id;
     }
 
-    public String getSearch() {
-        return search;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSearch(String search) {
-        this.search = search;
-    }
-
-    public Integer getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Integer departmentId) {
-        this.departmentId = departmentId;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Date getCreateStartTime() {
@@ -55,7 +49,15 @@ public class ProjectQueryParam {
     }
 
     public void setCreateEndTime(Date createEndTime) {
-        this.createEndTime = createEndTime;
+        if(createEndTime != null){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(createEndTime);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            calendar.set(Calendar.MILLISECOND, 999);
+            this.createEndTime = calendar.getTime();
+        }
     }
 
     public Integer getOwner() {
@@ -72,5 +74,13 @@ public class ProjectQueryParam {
 
     public void setPrivateType(Integer privateType) {
         this.privateType = privateType;
+    }
+
+    public List<Integer> getDepartmentIds() {
+        return departmentIds;
+    }
+
+    public void setDepartmentIds(List<Integer> departmentIds) {
+        this.departmentIds = departmentIds;
     }
 }
