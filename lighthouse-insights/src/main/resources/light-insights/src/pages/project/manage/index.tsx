@@ -11,7 +11,7 @@ import {
 import GroupManagePanel from "@/pages/group/manage";
 import {PermissionsEnum, Project} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
-import {requestQueryByIds} from "@/api/project";
+import {requestQueryById, requestQueryByIds} from "@/api/project";
 import ProjectManageMenu from "@/pages/project/manage/menu";
 import {IconBook, IconClockCircle, IconHome, IconUserGroup} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
@@ -34,21 +34,12 @@ export default function ProjectManage() {
 
     const fetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
         const proc = async () => {
-            const result = await requestQueryByIds({ids:[id]});
-            resolve(result.data[id]);
+            const result = await requestQueryById({id});
+            console.log("result:" + JSON.stringify(result));
+            resolve(result.data);
         }
         proc().then();
     })
-
-    const fetchPrivilegeInfo = async(ids) => {
-        return new Promise<Record<number,PermissionsEnum[]>>((resolve,reject) => {
-            requestPrivilegeCheck({type:"project",ids:ids}).then((response) => {
-                resolve(response.data);
-            }).catch((error) => {
-                reject(error);
-            })
-        })
-    }
 
     const menuCallback = async (id) => {
         setGroupId(Number(id));
@@ -73,15 +64,8 @@ export default function ProjectManage() {
     const fetchData = async (): Promise<void> => {
         setLoading(true);
         const result = await Promise.all([fetchProjectInfo]);
-        const projectInfo = result[0];
-        Promise.all([fetchPrivilegeInfo([id])])
-            .then(([r1]) => {
-                const combinedItem = { ...projectInfo, ...{"permissions":r1[projectInfo.id]}};
-                setProjectInfo(combinedItem);
-                setLoading(false);
-            }).catch((error) => {
-            console.log(error);
-        })
+        console.log("result[0] is:" + JSON.stringify(result));
+        setProjectInfo(result[0]);
     }
 
   // const handlerProcess = (action:string,params:any):void => {
