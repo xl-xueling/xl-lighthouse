@@ -3,23 +3,47 @@
 
 <mapper namespace="com.dtstep.lighthouse.insights.dao.GroupDao">
 
-    <resultMap id="groupEntityMap" type="com.dtstep.lighthouse.insights.modal.Group">
+    <resultMap id="groupResultMap" type="com.dtstep.lighthouse.insights.modal.Group">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="columns" column="columns"
                 jdbcType="VARCHAR"
                 typeHandler="com.dtstep.lighthouse.insights.types.GroupColumnArrayTypeHandler"/>
+        <result property="refreshTime" column="refresh_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="secretKey" column="secret_key"/>
+        <result property="debugMode" column="debug_mode"/>
+        <result property="projectId" column="project_id"/>
+        <result property="state" column="state" javaType="com.dtstep.lighthouse.common.enums.stat.GroupStateEnum" typeHandler="com.dtstep.lighthouse.insights.types.GenericEnumTypeHandler"/>
+        <result property="limitedParams" column="limited_params" typeHandler="com.dtstep.lighthouse.insights.types.JsonMapTypeHandler"/>
+        <result property="debugParams" column="debug_params" typeHandler="com.dtstep.lighthouse.insights.types.JsonMapTypeHandler"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.Group" >
-        INSERT INTO ldp_stat_group (`token`,`columns`) VALUES
+        INSERT INTO ldp_stat_group (`token`,`project_id`,`columns`,`secret_key`,
+                                    `state`,`desc`,
+                                    `limited_params`,`debug_params`,`debug_mode`,`refresh_time`,`create_time`,`update_time`) VALUES
         (
             #{token,jdbcType=VARCHAR},
-            #{columns, typeHandler=com.dtstep.lighthouse.insights.types.GroupColumnArrayTypeHandler}
+            #{projectId,jdbcType=INTEGER},
+            #{columns,typeHandler=com.dtstep.lighthouse.insights.types.GroupColumnArrayTypeHandler},
+            #{secretKey,jdbcType=VARCHAR},
+            #{state,jdbcType=INTEGER,javaType=com.dtstep.lighthouse.common.enums.stat.GroupStateEnum,typeHandler=com.dtstep.lighthouse.insights.types.GenericEnumTypeHandler},
+            #{desc,jdbcType=VARCHAR},
+            #{limitedParams,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.JsonMapTypeHandler},
+            #{debugParams,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.JsonMapTypeHandler},
+            #{debugMode,jdbcType=INTEGER},
+            #{refreshTime,jdbcType=TIMESTAMP},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
-    <select id="queryById" resultMap="groupEntityMap">
-        SELECT * FROM ldp_stat_group WHERE id = #{id}
+    <select id="queryById" resultMap="groupResultMap">
+        SELECT `id`,`token`,`project_id`,`columns`,`secret_key`,
+               `state`,`desc`,
+               `limited_params`,`debug_params`,`debug_mode`,`refresh_time`,`create_time`,`update_time`
+        FROM ldp_stat_group WHERE id = #{id}
     </select>
 </mapper>

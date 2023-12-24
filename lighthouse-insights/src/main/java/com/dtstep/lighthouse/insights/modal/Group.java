@@ -1,8 +1,14 @@
 package com.dtstep.lighthouse.insights.modal;
 
+import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
+import com.dtstep.lighthouse.insights.types.EnumTypeDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public class Group implements Serializable {
 
@@ -11,9 +17,27 @@ public class Group implements Serializable {
     @NotEmpty
     private String token;
 
+    private Integer projectId;
+
     private List<Column> columns;
 
+    private String secretKey;
+
+    private GroupStateEnum state;
+
     private String desc;
+
+    private LocalDateTime createTime;
+
+    private LocalDateTime updateTime;
+
+    private LocalDateTime refreshTime;
+
+    private Map<String,String> limitedParams;
+
+    private Map<String,String> debugParams;
+
+    private Integer debugMode;
 
     public Integer getId() {
         return id;
@@ -45,5 +69,77 @@ public class Group implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    public GroupStateEnum getState() {
+        return state;
+    }
+
+    public void setState(GroupStateEnum state) {
+        this.state = state;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Map<String, String> getLimitedParams() {
+        return limitedParams;
+    }
+
+    public void setLimitedParams(Map<String, String> limitedParams) {
+        this.limitedParams = limitedParams;
+    }
+
+    public Map<String, String> getDebugParams() {
+        return debugParams;
+    }
+
+    public void setDebugParams(Map<String, String> debugParams) {
+        this.debugParams = debugParams;
+    }
+
+    public Integer getDebugMode() {
+        return debugMode;
+    }
+
+    public void setDebugMode(Integer debugMode) {
+        this.debugMode = debugMode;
+    }
+
+    public LocalDateTime getRefreshTime() {
+        return refreshTime;
+    }
+
+    public void setRefreshTime(LocalDateTime refreshTime) {
+        this.refreshTime = refreshTime;
     }
 }

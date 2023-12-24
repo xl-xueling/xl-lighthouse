@@ -35,6 +35,7 @@ public class EnumTypeDeserializer extends JsonDeserializer<Object> implements Co
         } catch (JsonParseException e) {
             return null;
         }
+        System.out.println("value:" + value);
         Field field = null;
         Field[] fields = propertyClass.getDeclaredFields();
         for (Field f : fields){
