@@ -17,7 +17,7 @@ const { Row, Col } = Grid;
 import { RiAppsLine } from "react-icons/ri";
 import MetricNewDetail from "@/pages/metricset/manage/new_detail";
 import DisplayHeader from "@/pages/project/display/head";
-import {ArcoTreeNode, MetricSet, PrivilegeEnum, Project} from "@/types/insights-web";
+import {ArcoTreeNode, MetricSet, PermissionsEnum, Project} from "@/types/insights-web";
 import {requestList, requestQueryByIds} from "@/api/project";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {useSelector} from "react-redux";
@@ -43,7 +43,7 @@ export default function ProjectDisplay() {
     })
 
     const fetchPrivilegeInfo = async(ids) => {
-        return new Promise<Record<number,PrivilegeEnum[]>>((resolve,reject) => {
+        return new Promise<Record<number,PermissionsEnum[]>>((resolve,reject) => {
             requestPrivilegeCheck({type:"project",ids:ids}).then((response) => {
                 resolve(response.data);
             }).catch((error) => {

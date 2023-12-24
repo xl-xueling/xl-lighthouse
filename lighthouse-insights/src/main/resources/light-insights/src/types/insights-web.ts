@@ -1,15 +1,10 @@
 import {List} from "@arco-design/web-react";
 import {DatePickerConfigParam, FilterConfigParam, OrderTypeEnum, RenderTypeEnum} from "@/types/insights-common";
 
-export enum PrivilegeEnum {
-    ADMIN = 1,
-    USER = 2,
-    PROJECT_ADMIN = 3,
-    PROJECT_USER = 4,
-    STAT_ADMIN = 5,
-    STAT_USER = 6,
-    METRIC_ADMIN = 7,
-    METRIC_USER = 8,
+export enum PermissionsEnum {
+    NONE = 0,
+    USER = 1,
+    ADMIN = 2,
 }
 
 export interface Department {
@@ -62,17 +57,14 @@ export interface Project {
     id?:number;
     title?:string;
     desc?:string;
-    departmentId?:number;
     privateType?:number;
     adminIds?:Array<number>;
     admins?:Array<User>;
+    departmentId?:number;
+    department?:Department;
     structure?:Array<ArcoTreeNode>;
     createdTime?:number;
-    permissions?:PrivilegeEnum[];
-}
-
-export interface ProjectPagination extends Project{
-    permissions:PrivilegeEnum[];
+    permissions?:PermissionsEnum[];
 }
 
 export interface Column {
@@ -107,7 +99,7 @@ export interface Stat {
 }
 
 export interface StatPagination extends Stat {
-    permissions:PrivilegeEnum[];
+    permissions:PermissionsEnum[];
 }
 
 export interface MetricSet {
@@ -120,7 +112,7 @@ export interface MetricSet {
 }
 
 export interface MetricSetPagination extends MetricSet{
-    permissions:PrivilegeEnum[];
+    permissions:PermissionsEnum[];
     admins?:Array<User>;
 }
 

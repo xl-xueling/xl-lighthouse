@@ -6,7 +6,7 @@ import {GoGitMerge, GoStack} from "react-icons/go";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {requestBinded, requestPinList} from "@/api/metricset";
-import {ArcoTreeNode, Department, MetricSet, MetricSetPagination, PrivilegeEnum} from "@/types/insights-web";
+import {ArcoTreeNode, Department, MetricSet, MetricSetPagination, PermissionsEnum} from "@/types/insights-web";
 import locale from "./locale";
 import {requestPrivilegeCheck} from "@/api/privilege";
 
@@ -72,7 +72,7 @@ export default function ReverseBindedPanel({projectId = 0,statId = 0,onClose}) {
     }
 
     const fetchPrivilegeInfo = async(ids) => {
-        return new Promise<Record<number,PrivilegeEnum[]>>((resolve,reject) => {
+        return new Promise<Record<number,PermissionsEnum[]>>((resolve,reject) => {
             requestPrivilegeCheck({type:"metric",ids:ids}).then((response) => {
                 console.log("data is:" + JSON.stringify(response.data));
                 resolve(response.data);

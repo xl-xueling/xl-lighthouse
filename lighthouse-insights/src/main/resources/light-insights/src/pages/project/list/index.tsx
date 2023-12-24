@@ -7,7 +7,6 @@ import {
   PaginationProps,
   Space,
   Table,
-  Typography,
   Message,
 } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
@@ -15,19 +14,14 @@ import SearchForm from './form';
 import locale from './locale';
 import {getColumns} from './constants';
 import {requestList} from "@/api/project";
-import {ResultData} from "@/types/insights-common";
-import {Department, PrivilegeEnum, Project, ProjectPagination, User} from "@/types/insights-web";
-import {requestPrivilegeCheck} from "@/api/privilege";
+import {Department, Project} from "@/types/insights-web";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useSelector} from "react-redux";
 import ProjectCreatePanel from "@/pages/project/create";
 import ProjectUpdatePanel from "@/pages/project/update";
 import {requestDeleteById} from "@/api/project";
-import {requestFavoriteProject, requestQueryProjectIds, requestUnFavoriteProject} from "@/api/favorites";
 import Detail from "@/pages/project/list/detail";
-import {requestQueryByIds} from "@/api/user";
 import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
-import UserGroup from "@/pages/user/common/groups";
 import ProjectApplyModal from "@/pages/project/apply";
 
 export default function Index() {
@@ -35,7 +29,7 @@ export default function Index() {
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
   const [listData, setListData] = useState([]);
   const [owner, setOwner] = useState(true);
-  const [selectedProject,setSelectedProject] = useState<ProjectPagination>(null);
+  const [selectedProject,setSelectedProject] = useState<Project>(null);
   const [form] = useForm();
   const [createVisible, setCreateVisible] = React.useState(false);
   const [updateVisible, setUpdateVisible] = React.useState(false);
@@ -80,7 +74,7 @@ export default function Index() {
   });
 
   const [loading, setLoading] = useState(true);
-  const [formParams, setFormParams] = useState({});
+  const [formParams, setFormParams] = useState<any>({});
 
   function onChangeTable({ current, pageSize }) {
     setPagination({
@@ -124,7 +118,6 @@ export default function Index() {
     }
   };
 
-
   useEffect(() => {
     fetchData().then().catch(error => {
       console.log(error);
@@ -132,66 +125,43 @@ export default function Index() {
     })
   }, [owner,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
-
   const fetchData = async (): Promise<void> => {
     setLoading(true);
     const {current, pageSize} = pagination;
+    const createTime = formParams.createTime;
+    const combineParam:any = {}
+    combineParam.title = formParams.title;
+    combineParam.id = formParams.id;
+    combineParam.departmentIds = formParams.departmentIds;
+    if(createTime && Array.isArray(createTime)){
+      combineParam.createStartTime = createTime[0];
+      combineParam.createEndTime = createTime[1];
+    }
+    console.log("combineParam:" + JSON.stringify(combineParam));
     const fetchProjectsInfo:Promise<{list:Array<Project>,total:number}> = new Promise<{list:Array<Project>,total:number}>((resolve) => {
       const proc = async () => {
         const result = await requestList({
-          params: {
-            page: current,
-            pageSize,
-            owner:owner?1:0,
-            ...formParams,
-          },
-        });
+              queryParams:combineParam,
+              pagination:{
+                pageSize:pageSize,
+                pageNum:current,
+              }
+            }
+        );
         resolve(result.data);
       }
       proc().then();
     })
-
     const result = await Promise.all([fetchProjectsInfo]);
     const {list,total}:{list:Array<Project>,total:number} = result[0];
-    const projectsInfo = list;
-    const fetchPrivilegeInfo:Promise<Record<number,PrivilegeEnum[]>> = new Promise<Record<number,PrivilegeEnum[]>>((resolve) => {
-      const projectIds = projectsInfo?.map(z => z.id);
-      const proc = async () => {
-        const result:ResultData<Record<number,PrivilegeEnum[]>> = await requestPrivilegeCheck({type:"project",ids:projectIds});
-        resolve(result.data);
-      }
-      proc().then();
-    })
-    const fetchUsersInfo:Promise<Record<number,User>> = new Promise<Record<number,User>>((resolve) => {
-      const userIds = Array.from(new Set(projectsInfo?.map(z => z.adminIds).flatMap(z => z)));
-      const proc = async () => {
-        const result:ResultData<Record<number,User>> = await requestQueryByIds(userIds);
-        resolve(result.data)
-      }
-      proc().then();
-    })
-    Promise.all([fetchPrivilegeInfo,fetchUsersInfo])
-        .then(([r1,r2]) => {
-          const paginationData = projectsInfo.reduce((result:ProjectPagination[],item:Project) => {
-            console.log("item:" + JSON.stringify(item));
-            const department = allDepartInfo.find(x => String(x.id) == String(item.departmentId));
-            const users = r2 as Record<number,User>;
-            const admins = Object.entries(users).map(([k,v]) => v).filter((user) => item.adminIds?.includes(user.id));
-            console.log("adminsV:" + JSON.stringify(admins))
-            const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id],"department":department,"admins":admins}};
-            result.push(combinedItem);
-            return result;
-          },[]);
-          setListData(paginationData);
-          setPagination({
-            ...pagination,
-            current,
-            pageSize,
-            total: total});
-          setLoading(false);
-        })
+    setListData(list);
+    setPagination({
+      ...pagination,
+      current,
+      pageSize,
+      total: total});
+    setLoading(false);
   }
-
 
   return (
     <Card>

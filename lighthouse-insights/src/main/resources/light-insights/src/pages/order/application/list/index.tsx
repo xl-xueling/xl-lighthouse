@@ -12,7 +12,7 @@ import FilterAddPanel from "@/pages/components/filter/add/filter_add";
 import {getColumns} from "./constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/list/locale";
-import {Order, Project, ProjectPagination} from "@/types/insights-web";
+import {Order, Project} from "@/types/insights-web";
 import {requestList} from "@/api/application";
 import {getRandomString} from "@/utils/util";
 

@@ -26,13 +26,35 @@
     </insert>
 
     <select id="queryList" resultMap="projectResultMap">
+        WITH RECURSIVE cte AS (
+        SELECT d.id
+        FROM ldp_department d
+        <where>
+            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
+                AND d.id IN (
+                <foreach item="item" index="index" collection="queryParam.departmentIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+                )
+            </if>
+        </where>
+        UNION ALL
+        SELECT d.id
+        FROM ldp_department d
+        JOIN cte ON cte.id = d.pid
+        )
         SELECT * FROM ldp_stat_project
         <where>
             <if test="queryParam.id!=null">
                 AND id = #{queryParam.id}
             </if>
-            <if test="queryParam.departmentId!=null">
-                AND department_id = #{queryParam.departmentId}
+            <if test="queryParam.title != null">
+                AND title LIKE CONCAT('%', #{queryParam.title}, '%')
+            </if>
+            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
+                AND department_id IN(
+                select id from cte
+                )
             </if>
             <if test="queryParam.privateType!=null">
                 AND private_type = #{queryParam.privateType}
