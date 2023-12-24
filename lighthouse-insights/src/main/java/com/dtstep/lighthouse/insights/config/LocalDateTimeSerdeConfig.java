@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.insights.config;
 
+import com.dtstep.lighthouse.common.util.DateUtil;
+import com.dtstep.lighthouse.common.util.StringUtil;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -16,6 +18,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.regex.Pattern;
 
 @Configuration
 public class LocalDateTimeSerdeConfig {
@@ -44,21 +48,39 @@ public class LocalDateTimeSerdeConfig {
         }
     }
 
+    private static final Pattern DATE_TIME_PATTERN = Pattern.compile("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}");
+    private static final Pattern DATE_PATTERN = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+
+
     public static class LocalDateTimeFromEpochDeserializer extends JsonDeserializer<LocalDateTime> {
         @Override
         public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-            NumberDeserializers.LongDeserializer longDeserializer = new NumberDeserializers.LongDeserializer(Long.TYPE, 0L);
-            Long epoch = longDeserializer.deserialize(p, ctxt);
-            return LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
+            String text = p.getText();
+            if(DATE_TIME_PATTERN.matcher(text).matches()){
+                LocalDate localDate = LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                return localDate.atStartOfDay();
+            }else if(DATE_PATTERN.matcher(text).matches()){
+                LocalDate localDate = LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                return localDate.atStartOfDay();
+            }else{
+                long epoch = Long.parseLong(text);
+                return LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
+            }
         }
     }
 
     public static class LocalDateFromEpochDeserializer extends JsonDeserializer<LocalDate> {
         @Override
         public LocalDate deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-            NumberDeserializers.LongDeserializer longDeserializer = new NumberDeserializers.LongDeserializer(Long.TYPE, 0L);
-            Long epoch = longDeserializer.deserialize(p, ctxt);
-            return LocalDate.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
+            String text = p.getText();
+            if(DATE_TIME_PATTERN.matcher(text).matches()){
+                return LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            }else if(DATE_PATTERN.matcher(text).matches()){
+                return LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }else{
+                long epoch = Long.parseLong(text);
+                return LocalDate.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
+            }
         }
     }
 }
