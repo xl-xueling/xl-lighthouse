@@ -148,6 +148,7 @@ export default function Index() {
               }
             }
         );
+        console.log("result is:" + JSON.stringify(result.data))
         resolve(result.data);
       }
       proc().then();

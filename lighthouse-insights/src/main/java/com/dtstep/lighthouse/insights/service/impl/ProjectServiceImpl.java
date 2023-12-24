@@ -14,6 +14,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,9 +30,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public int create(Project project){
-        Date date = new Date();
-        project.setUpdateTime(date);
-        project.setCreateTime(date);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        project.setUpdateTime(localDateTime);
+        project.setCreateTime(localDateTime);
         projectDao.insert(project);
         return project.getId();
     }

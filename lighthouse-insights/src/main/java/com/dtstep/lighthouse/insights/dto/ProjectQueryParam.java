@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -12,9 +13,9 @@ public class ProjectQueryParam {
 
     private List<Integer> departmentIds;
 
-    private Date createStartTime;
+    private LocalDateTime createStartTime;
 
-    private Date createEndTime;
+    private LocalDateTime createEndTime;
 
     private Integer privateType;
 
@@ -36,28 +37,20 @@ public class ProjectQueryParam {
         this.title = title;
     }
 
-    public Date getCreateStartTime() {
+    public LocalDateTime getCreateStartTime() {
         return createStartTime;
     }
 
-    public void setCreateStartTime(Date createStartTime) {
+    public void setCreateStartTime(LocalDateTime createStartTime) {
         this.createStartTime = createStartTime;
     }
 
-    public Date getCreateEndTime() {
+    public LocalDateTime getCreateEndTime() {
         return createEndTime;
     }
 
-    public void setCreateEndTime(Date createEndTime) {
-        if(createEndTime != null){
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(createEndTime);
-            calendar.set(Calendar.HOUR_OF_DAY, 23);
-            calendar.set(Calendar.MINUTE, 59);
-            calendar.set(Calendar.SECOND, 59);
-            calendar.set(Calendar.MILLISECOND, 999);
-            this.createEndTime = calendar.getTime();
-        }
+    public void setCreateEndTime(LocalDateTime createEndTime) {
+        this.createEndTime = createEndTime;
     }
 
     public Integer getOwner() {
