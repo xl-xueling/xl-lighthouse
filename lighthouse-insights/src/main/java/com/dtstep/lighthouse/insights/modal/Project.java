@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,12 +12,13 @@ public class Project implements Serializable {
     @NotEmpty
     private String title;
 
-    @NotEmpty
+    @NotNull
     private Integer departmentId;
 
     @NotEmpty
     private Integer privateType;
 
+    @NotEmpty
     private String desc;
 
     private Date createTime;

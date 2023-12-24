@@ -13,7 +13,7 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.Project" >
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Project" >
         INSERT INTO ldp_stat_project (`title`,`department_id`,`private_type`,`desc`,`create_time`,`update_time`) VALUES
         (
             #{title,jdbcType=VARCHAR},
