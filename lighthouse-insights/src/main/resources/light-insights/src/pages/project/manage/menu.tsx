@@ -51,16 +51,7 @@ export default function ProjectManageMenu({structure,callback}:{structure:Array<
             >
 
                 {
-                    structure ?
-                        renderMenuItems([structure])
-                        :
-                        <Skeleton
-                            text={{
-                                rows:5,
-                                width: ['100%','100%','100%','100%','60%'],
-                            }}
-                            animation
-                        />
+                    renderMenuItems(structure == null?[]:structure)
                 }
             </Menu>
         </>

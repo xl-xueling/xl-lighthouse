@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.enums.role.PermissionsEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
+import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
 import com.dtstep.lighthouse.insights.dto.ProjectDto;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.insights.modal.Department;
