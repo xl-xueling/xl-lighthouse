@@ -130,7 +130,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
         },
         {
             title: 'Project',
-            dataIndex: 'project.name',
+            dataIndex: 'project.title',
         },
         {
             title: 'Department',

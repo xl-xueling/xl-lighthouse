@@ -35,7 +35,7 @@ export default function BasicInfo({statInfo}) {
         },
         {
             label: 'Project',
-            value: <span>{statInfo?.project.name}</span>,
+            value: <span>{statInfo?.project.title}</span>,
         },
         {
             label: 'Expired',

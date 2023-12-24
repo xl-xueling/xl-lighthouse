@@ -20,11 +20,10 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
         const values = formRef.current.getFieldsValue();
         setLoading(true);
         const project:Project = {
-            name:values.name,
+            title:values.title,
             departmentId:Number(values.departmentId),
-            adminIds:values.admins,
             desc:values.desc,
-            isPrivate:values.isPrivate,
+            privateType:values.privateType,
         }
         requestCreate(project).then((result) => {
             if(result.code === '0'){
@@ -57,7 +56,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                     autoComplete='off'
                     ref={formRef}
                 >
-                    <Form.Item label='Name' field='name' rules={[
+                    <Form.Item label='Title' field='title' rules={[
                         { required: true, message: t['projectCreate.form.name.errMsg'] , validateTrigger : ['onBlur']},
                         {
                         required:true,
@@ -85,15 +84,15 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                         ]}>
                         <Input.TextArea placeholder='Please enter ...' style={{ minHeight: 64}} maxLength={150} showWordLimit={true}/>
                     </Form.Item>
-                    <Form.Item label={'IsPrivate'} field="isPrivate">
+                    <Form.Item label={'PrivateType'} field="privateType">
                         <Radio.Group defaultValue={0}>
                             <Radio value={0}>Private</Radio>
                             <Radio value={1}>Public</Radio>
                         </Radio.Group>
                     </Form.Item>
-                    <Form.Item label={'Admins'} field="admins" rules={[{ required: true,validateTrigger : ['onBlur']}]}>
-                        <UserTermQuery formRef={formRef}/>
-                    </Form.Item>
+                    {/*<Form.Item label={'Admins'} field="admins" rules={[{ required: true,validateTrigger : ['onBlur']}]}>*/}
+                    {/*    <UserTermQuery formRef={formRef}/>*/}
+                    {/*</Form.Item>*/}
                 </Form>
             </div>
         </Modal>

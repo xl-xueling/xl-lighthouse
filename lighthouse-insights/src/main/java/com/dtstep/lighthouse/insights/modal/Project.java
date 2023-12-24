@@ -15,7 +15,7 @@ public class Project implements Serializable {
     @NotNull
     private Integer departmentId;
 
-    @NotEmpty
+    @NotNull
     private Integer privateType;
 
     @NotEmpty
