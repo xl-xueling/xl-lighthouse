@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.insights.modal.Project;
@@ -26,12 +27,15 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> queryById(int id){
+    public List<Project> queryById(Integer id) {
         return null;
     }
 
     @Override
-    public List<Project> queryListByPage(int page, int limit, ProjectQueryParam searchParams){
-        return null;
+    public ListData<Project> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize) {
+        List<Project> projectList = projectDao.queryList(queryParam,pageNum,pageSize);
+        ListData<Project> listData = new ListData<>();
+        listData.setList(projectList);
+        return listData;
     }
 }

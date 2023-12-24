@@ -14,6 +14,8 @@ public class ProjectQueryParam {
 
     private Date createEndTime;
 
+    private Integer privateType;
+
     private Integer owner;
 
     public Integer getId() {
@@ -62,5 +64,13 @@ public class ProjectQueryParam {
 
     public void setOwner(Integer owner) {
         this.owner = owner;
+    }
+
+    public Integer getPrivateType() {
+        return privateType;
+    }
+
+    public void setPrivateType(Integer privateType) {
+        this.privateType = privateType;
     }
 }
