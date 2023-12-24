@@ -28,7 +28,7 @@ const ProjectTermQuery = ({formRef = null,initValues = null,completeCallBack=nul
                 const data = v.data.list;
                 if(refFetchId.current === fetchId){
                     const options = data.map((project) => ({
-                        label: <div> {`${project.name}`}</div>,
+                        label: <div> {`${project.title}`}</div>,
                         value: project.id,
                     }))
                     setFetching(false);

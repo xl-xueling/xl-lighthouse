@@ -47,7 +47,7 @@ export default function DisplayHeader({projectInfo}:{projectInfo:Project}) {
                 <Typography.Title
                     style={{marginRight:'5px'}}
                     heading={6}>
-                    统计工程：{projectInfo?.name}
+                    统计工程：{projectInfo?.title}
                 </Typography.Title>
                 <IconLock
                     style={{fontSize:13,marginTop:'6px'}}

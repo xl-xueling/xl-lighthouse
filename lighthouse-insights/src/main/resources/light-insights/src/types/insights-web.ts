@@ -60,12 +60,12 @@ export interface User {
 
 export interface Project {
     id?:number;
-    name?:string;
+    title?:string;
     desc?:string;
-    isPrivate?:number;
+    departmentId?:number;
+    privateType?:number;
     adminIds?:Array<number>;
     admins?:Array<User>;
-    departmentId?:number;
     structure?:Array<ArcoTreeNode>;
     createdTime?:number;
     permissions?:PrivilegeEnum[];
