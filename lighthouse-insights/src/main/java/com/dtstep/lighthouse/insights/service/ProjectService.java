@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service;
 
+import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.insights.modal.Project;
 
@@ -9,8 +10,8 @@ public interface ProjectService {
 
     int create(Project project);
 
-    List<Project> queryById(int id);
+    List<Project> queryById(Integer id);
 
-    List<Project> queryListByPage(int page, int limit, ProjectQueryParam searchParams);
+    ListData<Project> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize);
 
 }

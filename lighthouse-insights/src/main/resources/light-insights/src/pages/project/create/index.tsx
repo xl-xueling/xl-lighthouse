@@ -25,6 +25,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
             desc:values.desc,
             privateType:values.privateType,
         }
+        console.log("project is:" + JSON.stringify(project));
         requestCreate(project).then((result) => {
             if(result.code === '0'){
                 Message.success(t['projectCreate.form.submit.success']);
@@ -55,6 +56,9 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                 <Form
                     autoComplete='off'
                     ref={formRef}
+                    initialValues={{
+                        privateType:0,
+                    }}
                 >
                     <Form.Item label='Title' field='title' rules={[
                         { required: true, message: t['projectCreate.form.name.errMsg'] , validateTrigger : ['onBlur']},

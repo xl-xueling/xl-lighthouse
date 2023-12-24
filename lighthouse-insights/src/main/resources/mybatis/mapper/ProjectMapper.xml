@@ -26,22 +26,24 @@
     </insert>
 
     <select id="queryList" resultMap="projectResultMap">
-        SELECT * FROM ldp_stat_project WHERE 1 = 1
-        <if test="queryParam.id!=null">
-            AND id = #{queryParam.id}
-        </if>
-        <if test="queryParam.departmentId!=null">
-            AND deartment_id = #{queryParam.departmentId}
-        </if>
-        <if test="queryParam.privateType!=null">
-            AND private_type = #{queryParam.privateType}
-        </if>
-        <if test="queryParam.createStartTime!=null">
-            AND create_time &gt;= #{queryParam.createStartTime}
-        </if>
-        <if test="queryParam.createEndTime!=null">
-            AND create_time &lt;= #{queryParam.createEndTime}
-        </if>
+        SELECT * FROM ldp_stat_project
+        <where>
+            <if test="queryParam.id!=null">
+                AND id = #{queryParam.id}
+            </if>
+            <if test="queryParam.departmentId!=null">
+                AND department_id = #{queryParam.departmentId}
+            </if>
+            <if test="queryParam.privateType!=null">
+                AND private_type = #{queryParam.privateType}
+            </if>
+            <if test="queryParam.createStartTime!=null">
+                AND create_time &gt;= #{queryParam.createStartTime}
+            </if>
+            <if test="queryParam.createEndTime!=null">
+                AND create_time &lt;= #{queryParam.createEndTime}
+            </if>
+        </where>
         <bind name="offset" value="(pageNum-1)*pageSize"></bind>
         limit ${offset},#{pageSize}
     </select>
