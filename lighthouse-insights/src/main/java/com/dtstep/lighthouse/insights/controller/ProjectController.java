@@ -27,6 +27,12 @@ public class ProjectController {
         return ResultData.success(result);
     }
 
+    @RequestMapping("/project/queryById")
+    public ResultData<ProjectDto> queryById(@RequestBody QueryParam queryParam) {
+        ProjectDto projectDto = projectService.queryById(queryParam.getId());
+        return ResultData.success(projectDto);
+    }
+
     @PostMapping("/project/list")
     public ResultData<ListData<ProjectDto>> queryList(@Validated @RequestBody ListSearchObject<ProjectQueryParam> searchObject){
         Pagination pagination = searchObject.getPagination();

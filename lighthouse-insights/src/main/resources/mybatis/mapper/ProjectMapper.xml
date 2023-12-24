@@ -66,7 +66,7 @@
         FROM ldp_department d
         JOIN cte ON cte.id = d.pid
         )
-        SELECT * FROM ldp_stat_project
+        SELECT `id`,`title`,`department_id`,`private_type`,`desc`,`create_time`,`update_time` FROM ldp_stat_project
         <where>
             <if test="queryParam.id!=null">
                 AND id = #{queryParam.id}
@@ -91,5 +91,9 @@
         </where>
         <bind name="offset" value="(pageNum-1)*pageSize"></bind>
         limit ${offset},#{pageSize}
+    </select>
+
+    <select id="queryById" resultMap="projectResultMap">
+        SELECT `id`,`title`,`department_id`,`private_type`,`desc`,`create_time`,`update_time` FROM ldp_stat_project WHERE id = #{id}
     </select>
 </mapper>
