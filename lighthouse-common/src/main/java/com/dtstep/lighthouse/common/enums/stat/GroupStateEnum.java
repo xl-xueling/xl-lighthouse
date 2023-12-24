@@ -18,6 +18,8 @@ package com.dtstep.lighthouse.common.enums.stat;
  */
 
 
+import com.dtstep.lighthouse.common.entity.annotation.EnumSerializerAnnotation;
+
 public enum  GroupStateEnum {
 
     PEND(0,"已创建"),
@@ -34,6 +36,7 @@ public enum  GroupStateEnum {
 
     ;
 
+    @EnumSerializerAnnotation
     private int state;
 
     private String desc;
