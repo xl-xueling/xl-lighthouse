@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.modal.Department;
@@ -31,5 +32,15 @@ public class ProjectController {
         Pagination pagination = searchObject.getPagination();
         ListData<ProjectDto> listData = projectService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
+    }
+
+    @RequestMapping("/project/updateById")
+    public ResultData<Integer> updateById(@RequestBody Project updateParam) {
+        int id = projectService.update(updateParam);
+        if(id > 0){
+            return ResultData.success(id);
+        }else{
+            return ResultData.failed(ResultCode.ERROR);
+        }
     }
 }

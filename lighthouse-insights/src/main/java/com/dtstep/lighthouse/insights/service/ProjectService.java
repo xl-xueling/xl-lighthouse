@@ -11,6 +11,8 @@ public interface ProjectService {
 
     int create(Project project);
 
+    int update(Project project);
+
     List<Project> queryById(Integer id);
 
     ListData<ProjectDto> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize);

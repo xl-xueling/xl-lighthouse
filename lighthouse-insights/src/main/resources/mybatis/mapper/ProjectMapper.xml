@@ -25,6 +25,29 @@
         )
     </insert>
 
+    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Project">
+        UPDATE ldp_stat_project
+        <set>
+            <if test="title != null">
+                `title` = #{title},
+            </if>
+            <if test="departmentId != null">
+                `department_id` = #{departmentId},
+            </if>
+            <if test="desc != null">
+                `desc` = #{desc},
+            </if>
+            <if test="privateType != null">
+                `private_type` = #{privateType},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
     <select id="queryList" resultMap="projectResultMap">
         WITH RECURSIVE cte AS (
         SELECT d.id
