@@ -20,7 +20,7 @@ package com.dtstep.lighthouse.common.enums.stat;
 import com.dtstep.lighthouse.common.entity.annotation.EnumSerializerAnnotation;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum  GroupStateEnum {
+public enum GroupStateEnum {
 
     PEND(0,"已创建"),
 
