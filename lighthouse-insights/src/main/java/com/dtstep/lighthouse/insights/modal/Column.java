@@ -1,7 +1,6 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.insights.enums.ColumnTypeEnum;
-import com.dtstep.lighthouse.insights.types.EnumTypeDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.Serializable;
@@ -10,7 +9,6 @@ public class Column implements Serializable {
 
     private String name;
 
-    @JsonDeserialize(using = EnumTypeDeserializer.class)
     private ColumnTypeEnum type;
 
     private String comment;

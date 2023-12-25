@@ -46,7 +46,7 @@ public class TestGroupDao {
         limitedConfig2.setStrategy(LimitedStrategyEnum.STAT_RESULT_LIMITED_STRATEGY);
         limitedConfig2.setThreshold(500);
         configList.add(limitedConfig2);
-//        groupExtendConfig.setLimitedConfig(configList);
+        groupExtendConfig.setLimitedConfig(configList);
         groupExtendConfig.setDebugConfig(debugConfig);
         group.setExtendConfig(groupExtendConfig);
         group.setColumns(columnList);

@@ -1,7 +1,5 @@
 package com.dtstep.lighthouse.common.enums.role;
 
-import com.dtstep.lighthouse.common.entity.annotation.EnumSerializerAnnotation;
-
 public enum PermissionsEnum {
 
     NONE(0),
@@ -14,7 +12,6 @@ public enum PermissionsEnum {
         this.type = type;
     }
 
-    @EnumSerializerAnnotation
     private int type;
 
     public int getType() {

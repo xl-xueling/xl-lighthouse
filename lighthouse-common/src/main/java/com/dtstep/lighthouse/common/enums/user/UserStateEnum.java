@@ -17,7 +17,6 @@ package com.dtstep.lighthouse.common.enums.user;
  * limitations under the License.
  */
 
-import com.dtstep.lighthouse.common.entity.annotation.EnumSerializerAnnotation;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 
