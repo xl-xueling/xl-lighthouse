@@ -55,7 +55,7 @@ public class TestGroupDao {
 
     @Test
     public void testQueryById() throws Exception {
-        int id = 100169;
+        int id = 100171;
         Group group = groupDao.queryById(id);
         System.out.println("group columns:" + group.getColumns());
         System.out.println("column:" + group.getColumns().get(0).getComment());
