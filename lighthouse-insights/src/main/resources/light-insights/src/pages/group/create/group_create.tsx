@@ -29,7 +29,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
   const formRef = useRef(null);
 
   const onOk = async() => {
-    setConfirmLoading(true);
+    // setConfirmLoading(true);
     await formRef.current.validate();
     const values = formRef.current.getFieldsValue();
     const columns = editTableRef.current.getData();
@@ -87,7 +87,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       title: 'Type',
       dataIndex: 'type',
       editable: true,
-      initValue:1,
+      initValue:"number",
       componentType:EditTableComponentEnum.SELECT,
       headerCellStyle: { width:'130px'},
       render:(text, record) => {
@@ -106,13 +106,13 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
                     onBlur={() => {
                       setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
                     }}
-                          defaultValue={1}>
-              <Select.Option key={1}  value={1} onClick={() => {
+                          defaultValue={"number"}>
+              <Select.Option key={"string"}  value={"string"} onClick={() => {
                 setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
               }}>
                 String
               </Select.Option>
-              <Select.Option key={2}  value={2} onClick={() => {
+              <Select.Option key={"number"}  value={"number"} onClick={() => {
                 setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
               }}>
                 Number

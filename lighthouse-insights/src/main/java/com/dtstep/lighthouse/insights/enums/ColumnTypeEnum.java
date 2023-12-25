@@ -4,35 +4,25 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ColumnTypeEnum {
 
-    STRING(1,"string"),
+    STRING("string"),
 
-    NUMBERIC(2,"numberic"),
+    NUMBER("number"),
 
     ;
 
-    private int typeId;
 
     @JsonValue
-    private String typeName;
+    private String type;
 
-    ColumnTypeEnum(int typeId,String typeName){
-        this.typeId = typeId;
-        this.typeName = typeName;
+    ColumnTypeEnum(String type){
+        this.type = type;
     }
 
-    public int getTypeId() {
-        return typeId;
+    public String getType() {
+        return type;
     }
 
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
+    public void setType(String type) {
+        this.type = type;
     }
 }
