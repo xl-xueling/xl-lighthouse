@@ -44,4 +44,12 @@
                `extend_config`,`debug_mode`,`refresh_time`,`create_time`,`update_time`
         FROM ldp_stat_group WHERE id = #{id}
     </select>
+
+    <select id="queryByProjectId" resultMap="groupResultMap">
+        SELECT `id`,`token`,`project_id`,`columns`,`secret_key`,
+               `state`,`desc`,
+               `extend_config`,`debug_mode`,`refresh_time`,`create_time`,`update_time`
+        FROM ldp_stat_group WHERE project_id = #{projectId}
+    </select>
+
 </mapper>

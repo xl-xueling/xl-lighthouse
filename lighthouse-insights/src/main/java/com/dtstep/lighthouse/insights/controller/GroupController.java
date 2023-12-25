@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
+import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @ControllerAdvice
@@ -26,5 +29,11 @@ public class GroupController {
         }else{
             return ResultData.failed(ResultCode.ERROR);
         }
+    }
+
+    @RequestMapping("/group/queryByProjectId")
+    public ResultData<List<Group>> queryByProjectId(@Validated @RequestBody GroupQueryParam queryParam) {
+        List<Group> groupList = groupService.queryByProjectId(queryParam.getProjectId());
+        return ResultData.success(groupList);
     }
 }

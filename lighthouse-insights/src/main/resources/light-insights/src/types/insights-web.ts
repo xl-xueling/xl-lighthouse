@@ -63,7 +63,7 @@ export interface Project {
     departmentId?:number;
     department?:Department;
     structure?:Array<ArcoTreeNode>;
-    createdTime?:number;
+    createTime?:number;
     permissions?:PermissionsEnum[];
 }
 
@@ -79,7 +79,7 @@ export interface Group {
     token?:string;
     projectId?:number;
     desc?:string;
-    createdTime?:number;
+    createTime?:number;
     columns?:Array<Column>;
 }
 

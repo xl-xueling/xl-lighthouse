@@ -21,6 +21,7 @@ import { VscGistSecret } from "react-icons/vsc";
 import {CiViewTable} from "react-icons/ci";
 import GroupCreateModal from "@/pages/group/create/group_create";
 import UserGroup from "@/pages/user/common/groups";
+import {formatTimeStamp} from "@/utils/util";
 
 export default function ProjectManage() {
 
@@ -97,7 +98,7 @@ export default function ProjectManage() {
         },
         {
             label: <IconClockCircle />,
-            value: projectInfo?.createdTime,
+            value: formatTimeStamp(projectInfo?.createTime),
         },
         {
             label: <IconUserGroup/>,
