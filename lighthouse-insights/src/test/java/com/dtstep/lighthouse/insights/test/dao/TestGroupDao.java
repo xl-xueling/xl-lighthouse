@@ -4,11 +4,9 @@ import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
-import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.enums.ColumnTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Column;
-import com.dtstep.lighthouse.insights.modal.Group;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.insights.enums.LimitedStrategyEnum;
+import com.dtstep.lighthouse.insights.modal.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +33,29 @@ public class TestGroupDao {
         column.setType(ColumnTypeEnum.STRING);
         column.setComment("省份");
         columnList.add(column);
-        Map<String,String> debugParams = new HashMap<>();
-        debugParams.put("abc","123");
-        debugParams.put("ABWE","456");
-        group.setDebugParams(debugParams);
+        GroupExtendConfig groupExtendConfig = new GroupExtendConfig();
+        DebugConfig debugConfig = new DebugConfig();
+        debugConfig.setStartTime(System.currentTimeMillis());
+        debugConfig.setEndTime(System.currentTimeMillis());
+        List<LimitedConfig> configList = new ArrayList<>();
+        LimitedConfig limitedConfig1 = new LimitedConfig();
+        limitedConfig1.setStrategy(LimitedStrategyEnum.GROUP_MESSAGE_LIMITED_STRATEGY);
+        limitedConfig1.setThreshold(100);
+        configList.add(limitedConfig1);
+        LimitedConfig limitedConfig2 = new LimitedConfig();
+        limitedConfig2.setStrategy(LimitedStrategyEnum.STAT_RESULT_LIMITED_STRATEGY);
+        limitedConfig2.setThreshold(500);
+        configList.add(limitedConfig2);
+//        groupExtendConfig.setLimitedConfig(configList);
+        groupExtendConfig.setDebugConfig(debugConfig);
+        group.setExtendConfig(groupExtendConfig);
         group.setColumns(columnList);
         groupDao.insert(group);
     }
 
     @Test
     public void testQueryById() throws Exception {
-        int id = 100161;
+        int id = 100169;
         Group group = groupDao.queryById(id);
         System.out.println("group columns:" + group.getColumns());
         System.out.println("column:" + group.getColumns().get(0).getComment());

@@ -1,8 +1,6 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
-import com.dtstep.lighthouse.insights.types.EnumTypeDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
@@ -33,9 +31,7 @@ public class Group implements Serializable {
 
     private LocalDateTime refreshTime;
 
-    private Map<String,String> limitedParams;
-
-    private Map<String,String> debugParams;
+    private GroupExtendConfig extendConfig;
 
     private Integer debugMode;
 
@@ -111,20 +107,12 @@ public class Group implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Map<String, String> getLimitedParams() {
-        return limitedParams;
+    public GroupExtendConfig getExtendConfig() {
+        return extendConfig;
     }
 
-    public void setLimitedParams(Map<String, String> limitedParams) {
-        this.limitedParams = limitedParams;
-    }
-
-    public Map<String, String> getDebugParams() {
-        return debugParams;
-    }
-
-    public void setDebugParams(Map<String, String> debugParams) {
-        this.debugParams = debugParams;
+    public void setExtendConfig(GroupExtendConfig extendConfig) {
+        this.extendConfig = extendConfig;
     }
 
     public Integer getDebugMode() {
