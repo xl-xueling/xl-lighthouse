@@ -8,7 +8,7 @@
         <result column="password" property="password"/>
         <result column="phone" property="phone"/>
         <result column="email" property="email"/>
-        <result column="state" property="state" javaType="com.dtstep.lighthouse.common.enums.user.UserStateEnum" typeHandler="com.dtstep.lighthouse.insights.types.GenericEnumTypeHandler"/>
+        <result column="state" property="state" typeHandler="com.dtstep.lighthouse.insights.types.UserStateEnumTypeHandler"/>
         <result column="department_id" property="departmentId"/>
         <result column="last_time" property="lastTime"/>
         <result column="create_time" property="createTime"/>
@@ -28,7 +28,7 @@
             #{phone,jdbcType=VARCHAR},
             #{email,jdbcType=VARCHAR},
             #{departmentId,jdbcType=INTEGER},
-            #{state,javaType=com.dtstep.lighthouse.common.enums.user.UserStateEnum,typeHandler=com.dtstep.lighthouse.insights.types.GenericEnumTypeHandler},
+            #{state,typeHandler=com.dtstep.lighthouse.insights.types.UserStateEnumTypeHandler},
             #{lastTime,jdbcType=TIMESTAMP},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}

@@ -7,6 +7,7 @@ public class GroupConfigTypeHandler extends BaseObjectTypeHandler<GroupExtendCon
 
     public GroupConfigTypeHandler()
     {
-        super(new TypeReference<GroupExtendConfig>() {});
+        super(new TypeReference<>() {});
     }
+
 }
