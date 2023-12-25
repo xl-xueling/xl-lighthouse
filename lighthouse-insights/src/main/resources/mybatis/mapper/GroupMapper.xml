@@ -16,7 +16,7 @@
         <result property="debugMode" column="debug_mode"/>
         <result property="projectId" column="project_id"/>
         <result property="state" column="state" javaType="com.dtstep.lighthouse.common.enums.stat.GroupStateEnum" typeHandler="com.dtstep.lighthouse.insights.types.GenericEnumTypeHandler"/>
-        <result property="extendConfig" column="extend_config" typeHandler="com.dtstep.lighthouse.insights.types.GroupConfigTypeHandler"/>
+        <result property="extendConfig" column="extend_config" javaType="com.dtstep.lighthouse.insights.modal.GroupExtendConfig" typeHandler="com.dtstep.lighthouse.insights.types.GroupConfigTypeHandler"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.Group" >
@@ -30,7 +30,7 @@
             #{secretKey,jdbcType=VARCHAR},
             #{state,jdbcType=INTEGER,javaType=com.dtstep.lighthouse.common.enums.stat.GroupStateEnum,typeHandler=com.dtstep.lighthouse.insights.types.GenericEnumTypeHandler},
             #{desc,jdbcType=VARCHAR},
-            #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.GroupConfigTypeHandler},
+            #{extendConfig,jdbcType=VARCHAR,javaType=com.dtstep.lighthouse.insights.modal.GroupExtendConfig,typeHandler=com.dtstep.lighthouse.insights.types.GroupConfigTypeHandler},
             #{debugMode,jdbcType=INTEGER},
             #{refreshTime,jdbcType=TIMESTAMP},
             #{createTime,jdbcType=TIMESTAMP},

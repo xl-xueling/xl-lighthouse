@@ -13,12 +13,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class JsonObjectTypeHandler<T> extends BaseTypeHandler<T> {
+public class BaseObjectTypeHandler<T> extends BaseTypeHandler<T> {
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private TypeReference<T> typeReference = null;
+    private final TypeReference<T> typeReference;
 
-    public JsonObjectTypeHandler(TypeReference<T> typeReference) {
+    public BaseObjectTypeHandler(TypeReference<T> typeReference) {
         this.typeReference = typeReference;
     }
 
