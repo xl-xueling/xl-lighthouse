@@ -44,9 +44,13 @@ export default function ProjectManageMenu({structure,callback}:{structure:Array<
                 autoOpen={true} style={{height:'400px',userSelect:"none",overflow: "auto"}}
                 onClickMenuItem={callback}
             >
+                <Menu.SubMenu key={"1"} title={
+                    <span style={{display:"inline-flex",alignItems:"center"}}><RiAppsLine style={{marginRight:'10px'}}/>行为数据统计</span>
+                }>
                 {
                     renderMenuItems(structure == null?[]:structure)
                 }
+                </Menu.SubMenu>
             </Menu>
         </>
     );
