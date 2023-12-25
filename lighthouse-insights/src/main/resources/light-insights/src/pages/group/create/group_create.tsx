@@ -20,14 +20,16 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
+  const [columnsData,setColumnsData] = useState([]);
+
   const editTableRef= useRef(null);
   const t = useLocale(locale);
   const FormItem = Form.Item;
-  const columnNameRegex = /^[a-zA-Z]\w{3,14}$/;
+  const columnNameRegex = /^[a-zA-Z]\w{2,14}$/;
   const formRef = useRef(null);
 
   const onOk = async() => {
-    // setConfirmLoading(true);
+    setConfirmLoading(true);
     await formRef.current.validate();
     const values = formRef.current.getFieldsValue();
     const columns = editTableRef.current.getData();
@@ -59,10 +61,9 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
     requestCreate(group).then((result) => {
       if(result.code === '0'){
         Message.success(t['groupCreate.form.submit.success']);
-        // setTimeout(() => {
-        //   setConfirmLoading(false);
-        //   window.location.href = "/project/manage/"+projectId;
-        // },3000)
+        setTimeout(() => {
+          window.location.href = "/project/manage/"+projectId;
+        },3000)
       }else{
         Message.error(result.message || t['system.error']);
       }
@@ -72,6 +73,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
     })
   }
 
+  const [expandedKeys, setExpandedKeys] = useState([]);
 
   const columnsProps: EditTableColumnProps[]  = [
     {
@@ -91,12 +93,28 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       render:(text, record) => {
         return (
             <Select size={"mini"}
+                    popupVisible={expandedKeys.includes(record.key)}
                          onChange={(value) => {record['type'] = value}}
+                    onFocus={(e) => {
+                      setExpandedKeys((keys) => [...keys, record.key]);
+                    }}
+                    onKeyDown={(event) => {
+                      if(event.key == 'Enter'){
+                        setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
+                      }
+                    }}
+                    onBlur={() => {
+                      setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
+                    }}
                           defaultValue={1}>
-              <Select.Option key={1}  value={1}>
+              <Select.Option key={1}  value={1} onClick={() => {
+                setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
+              }}>
                 String
               </Select.Option>
-              <Select.Option key={2}  value={2}>
+              <Select.Option key={2}  value={2} onClick={() => {
+                setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
+              }}>
                 Number
               </Select.Option>
         </Select>)
@@ -162,7 +180,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
               </Grid.Col>
             </Grid.Row>
 
-            <EditTable ref={editTableRef} columnsProps={columnsProps} columnsData={[]}/>
+            <EditTable ref={editTableRef} columnsProps={columnsProps} columnsData={columnsData}/>
           </Form.Item>
 
           <Typography.Title

@@ -156,6 +156,7 @@ function EditableCell(props) {
     }, [handleClick]);
 
     const cellValueChangeHandler = (value) => {
+        console.log("---cellValueHandler:" + value);
         if (column.componentType == EditTableComponentEnum.SELECT) {
             const values = {
                 [column.dataIndex]: value,
@@ -173,7 +174,7 @@ function EditableCell(props) {
         }
     };
 
-    if (column.componentType == EditTableComponentEnum.INPUT && editing) {
+    if (column.componentType == EditTableComponentEnum.INPUT) {
         return (
             <div ref={ref}>
                 <FormItem
@@ -183,7 +184,7 @@ function EditableCell(props) {
                     initialValue={rowData[column.dataIndex]}
                     field={column.dataIndex}
                 >
-                    <Input size={"mini"} ref={refInput} onPressEnter={cellValueChangeHandler} />
+                    <Input size={"mini"} ref={refInput} onChange={cellValueChangeHandler} />
                 </FormItem>
             </div>
         );
