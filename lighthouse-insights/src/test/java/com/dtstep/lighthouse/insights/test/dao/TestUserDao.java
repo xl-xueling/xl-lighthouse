@@ -43,7 +43,7 @@ public class TestUserDao {
 
     @Test
     public void testQueryById() throws Exception {
-        User user = userDao.queryById(110137);
+        User user = userDao.queryById(110154);
         System.out.println("user:" + JsonUtil.toJSONString(user));
     }
 

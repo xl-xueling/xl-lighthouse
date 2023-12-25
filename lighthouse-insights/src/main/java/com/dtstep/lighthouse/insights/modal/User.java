@@ -37,7 +37,6 @@ public class User implements Serializable {
 
     private String email;
 
-    @JsonSerialize(using = EnumTypeSerializer.class)
     private UserStateEnum state;
 
     private Date lastTime;

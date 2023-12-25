@@ -18,6 +18,7 @@ package com.dtstep.lighthouse.common.enums.user;
  */
 
 import com.dtstep.lighthouse.common.entity.annotation.EnumSerializerAnnotation;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 
 public enum UserStateEnum {
@@ -42,7 +43,7 @@ public enum UserStateEnum {
      */
     USER_DELETED(3);
 
-    @EnumSerializerAnnotation
+    @JsonValue
     private int state;
 
     UserStateEnum(int state){
