@@ -26,7 +26,7 @@ export default function DisplayHeader({projectInfo}:{projectInfo:Project}) {
             },
             {
                 label: <IconClockCircle />,
-                value: projectInfo?.createdTime,
+                value: projectInfo?.createTime,
             },
             {
                 label: <div style={{ marginTop: 0 }}><IconBook/></div>,

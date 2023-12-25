@@ -23,24 +23,25 @@ export default function ProjectManageMenu({structure,callback}:{structure:Array<
     const [defaultOpenKeys,setDefaultOpenKeys] = useState<Array<number>>([]);
 
     const renderMenuItems = (items) => {
-        const levels = [1,2];
-        return items?.filter(x => levels.includes(x.level)).map((item) => {
-            if (Array.isArray(item.children) && item.children.length > 0 && item.children.filter(x => levels.includes(x.level))?.length > 0) {
+        console.log("items is:" + JSON.stringify(items))
+        const types = [1,2];
+        return items?.filter(x => types.includes(x.type)).map((item) => {
+            if (Array.isArray(item.children) && item.children.length > 0 && item.children.filter(x => types.includes(x.type))?.length > 0) {
                 return (
-                    <Menu.SubMenu key={item.key} title={
-                        <span style={{display:"inline-flex",alignItems:"center"}}><RiAppsLine style={{marginRight:'10px'}}/>{item.title}</span>
+                    <Menu.SubMenu key={item.id} title={
+                        <span style={{display:"inline-flex",alignItems:"center"}}><RiAppsLine style={{marginRight:'10px'}}/>{item.name}</span>
                     }>
                         {renderMenuItems(item.children)}
                     </Menu.SubMenu>
                 );
             }
-            return <Menu.Item key={item.key}><span style={{display:"inline-flex",alignItems:"center"}}><CiViewTable style={{marginRight:'10px'}}/>{item.title}</span></Menu.Item>;
+            return <Menu.Item key={item.id}><span style={{display:"inline-flex",alignItems:"center"}}><CiViewTable style={{marginRight:'10px'}}/>{item.name}</span></Menu.Item>;
         });
     }
 
     useEffect(() => {
-        console.log("open keys.")
-    },[])
+        console.log("open keys:" + JSON.stringify(structure))
+    },[structure])
 
 
     return (

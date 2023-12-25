@@ -62,8 +62,8 @@ function SearchForm(props: {
           </Col>
           <Col span={colSpan}>
             <Form.Item
-              label={'createdTime'}
-              field="createdTime"
+              label={'createTime'}
+              field="createTime"
             >
               <DatePicker.RangePicker
                   allowClear

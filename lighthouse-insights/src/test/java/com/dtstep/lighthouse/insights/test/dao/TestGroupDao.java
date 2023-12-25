@@ -61,4 +61,11 @@ public class TestGroupDao {
         System.out.println("column:" + group.getColumns().get(0).getComment());
         System.out.println("group is:" + JsonUtil.toJSONString(group));
     }
+
+    @Test
+    public void testQueryByProjectId() throws Exception {
+        Integer projectId = 11040;
+        List<Group> groupList = groupDao.queryByProjectId(projectId);
+        System.out.println("groupList:" + JsonUtil.toJSONString(groupList));
+    }
 }

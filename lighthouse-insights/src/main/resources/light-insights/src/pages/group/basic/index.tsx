@@ -76,7 +76,7 @@ export default function GroupBasicPanel({groupId}) {
                 }
                 setColumnsData(columnArr);
                 formInstance.setFieldValue("token",groupInfo.token);
-                formInstance.setFieldValue("createdTime",groupInfo.createdTime);
+                formInstance.setFieldValue("createTime",groupInfo.createTime);
                 formInstance.setFieldValue("desc",groupInfo.desc);
             }).catch(error => {
                 console.log(error);

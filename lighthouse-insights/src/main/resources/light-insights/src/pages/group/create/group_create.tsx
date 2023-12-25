@@ -132,7 +132,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
         componentType:EditTableComponentEnum.BUTTON,
         headerCellStyle: { width:'12%'},
         render: (_, record) => (
-            <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%',paddingTop:'5px' }}>
+            <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%'}}>
                 <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
             </Space>
         ),

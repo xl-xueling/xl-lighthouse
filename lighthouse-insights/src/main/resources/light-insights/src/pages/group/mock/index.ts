@@ -32,7 +32,7 @@ export const _Mock_group1:Group = Mock.mock({
             desc:"得分" + '@datetime'
         }
     ],
-    createdTime:'@datetime',
+    createTime:'@datetime',
 });
 
 setupMock({
