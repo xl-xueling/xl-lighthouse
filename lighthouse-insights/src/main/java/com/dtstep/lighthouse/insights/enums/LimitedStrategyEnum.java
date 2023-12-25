@@ -1,6 +1,5 @@
 package com.dtstep.lighthouse.insights.enums;
 
-import com.dtstep.lighthouse.common.entity.annotation.EnumSerializerAnnotation;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum LimitedStrategyEnum {
@@ -15,7 +14,6 @@ public enum LimitedStrategyEnum {
         this.name = name;
     }
 
-    @EnumSerializerAnnotation
     @JsonValue
     private String name;
 
