@@ -51,9 +51,12 @@ const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
     const addRow = () => {
         const initValues = columnsProps.filter(x => x.initValue).reduce((result,entity) => {
             result[entity.dataIndex] = entity.initValue;
+            console.log("---initValue is:" + entity.initValue);
             return result;
         },{})
+
         const newRow = {key: getRandomString() ,...initValues}
+        console.log("newRow is:" + JSON.stringify(newRow));
         setCount(count + 1);
         setData(data.concat(newRow));
     }
