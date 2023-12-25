@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.modal;
 import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,14 +16,17 @@ public class Group implements Serializable {
     @NotEmpty
     private String token;
 
+    @NotNull
     private Integer projectId;
 
+    @NotEmpty
     private List<Column> columns;
 
     private String secretKey;
 
     private GroupStateEnum state;
 
+    @NotEmpty
     private String desc;
 
     private LocalDateTime createTime;
