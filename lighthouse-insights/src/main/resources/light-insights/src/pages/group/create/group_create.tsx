@@ -27,7 +27,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
   const formRef = useRef(null);
 
   const onOk = async() => {
-    setConfirmLoading(true);
+    // setConfirmLoading(true);
     await formRef.current.validate();
     const values = formRef.current.getFieldsValue();
     const columns = editTableRef.current.getData();
@@ -47,6 +47,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
         Message.error("列名称描述校验失败！")
         return;
       }
+      delete columns[i].key;
     }
     const group:Group = {
       projectId:projectId,
@@ -54,13 +55,14 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       desc:values.desc,
       columns:columns,
     }
+    console.log("group is:" + JSON.stringify(group));
     requestCreate(group).then((result) => {
       if(result.code === '0'){
         Message.success(t['groupCreate.form.submit.success']);
-        setTimeout(() => {
-          setConfirmLoading(false);
-          window.location.href = "/project/manage/"+projectId;
-        },3000)
+        // setTimeout(() => {
+        //   setConfirmLoading(false);
+        //   window.location.href = "/project/manage/"+projectId;
+        // },3000)
       }else{
         Message.error(result.message || t['system.error']);
       }
@@ -69,7 +71,6 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       Message.error(t['system.error'])
     })
   }
-
 
 
   const columnsProps: EditTableColumnProps[]  = [
@@ -102,14 +103,14 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       }
     },
     {
-      title: 'Description',
-      dataIndex: 'desc',
+      title: 'Comment',
+      dataIndex: 'comment',
       componentType:EditTableComponentEnum.INPUT,
       editable: true,
     },
     {
-        title: 'Operate',
-        dataIndex: 'operate',
+        title: 'Operation',
+        dataIndex: 'operation',
         componentType:EditTableComponentEnum.BUTTON,
         headerCellStyle: { width:'12%'},
         render: (_, record) => (
