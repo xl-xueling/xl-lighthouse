@@ -17,8 +17,8 @@ package com.dtstep.lighthouse.common.enums.stat;
  * limitations under the License.
  */
 
-
 import com.dtstep.lighthouse.common.entity.annotation.EnumSerializerAnnotation;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum  GroupStateEnum {
 
@@ -35,8 +35,7 @@ public enum  GroupStateEnum {
     FROZEN(5,"已冻结"),
 
     ;
-
-    @EnumSerializerAnnotation
+    @JsonValue
     private int state;
 
     private String desc;
