@@ -23,8 +23,7 @@ export default function ProjectManageMenu({structure,callback}:{structure:Array<
     const [defaultOpenKeys,setDefaultOpenKeys] = useState<Array<number>>([]);
 
     const renderMenuItems = (items) => {
-        console.log("items is:" + JSON.stringify(items))
-        const types = [1,2];
+        const types = ['1','2'];
         return items?.filter(x => types.includes(x.type)).map((item) => {
             if (Array.isArray(item.children) && item.children.length > 0 && item.children.filter(x => types.includes(x.type))?.length > 0) {
                 return (
@@ -39,18 +38,12 @@ export default function ProjectManageMenu({structure,callback}:{structure:Array<
         });
     }
 
-    useEffect(() => {
-        console.log("open keys:" + JSON.stringify(structure))
-    },[structure])
-
-
     return (
         <>
             <Menu
                 autoOpen={true} style={{height:'400px',userSelect:"none",overflow: "auto"}}
                 onClickMenuItem={callback}
             >
-
                 {
                     renderMenuItems(structure == null?[]:structure)
                 }
