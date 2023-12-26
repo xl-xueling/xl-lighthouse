@@ -166,7 +166,7 @@ export default function GroupManagePanel({groupId}) {
                         <CiViewTable style={{ marginRight: 6 }} />
                         Group Information
                   </span>}>
-                    <GroupBasicPanel groupId={groupId}/>
+                    <GroupBasicPanel groupInfo={groupInfo}/>
                 </TabPane>
             </Tabs>
             {showStatAddPanel && <StatCreatePanel groupInfo={groupInfo} onClose={() => setShowsStatAddPanel(false)}/>}

@@ -78,7 +78,7 @@ export default function MetricManagePanel({groupId}) {
                         <IconTag style={{ marginRight: 6 }} />
                         Authority Info
                   </span>}>
-                    <GroupBasicPanel groupId={groupId}/>
+                    {/*<GroupBasicPanel groupId={groupId}/>*/}
                 </TabPane>
             </Tabs>
     );
