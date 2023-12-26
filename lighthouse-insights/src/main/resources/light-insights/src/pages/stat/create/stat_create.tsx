@@ -29,9 +29,9 @@ export default function StatAddPanel({groupInfo,onClose}) {
     const t = useLocale(locale);
     const formRef = useRef(null);
     const [size, setSize] = useState('default');
-    const onValuesChange = (changeValue, values) => {
-        console.log('onValuesChange: ', changeValue, values);
-    };
+    // const onValuesChange = (changeValue, values) => {
+    //     console.log('onValuesChange: ', changeValue, values);
+    // };
 
     const editorRef = useRef<any>();
 
@@ -90,7 +90,6 @@ export default function StatAddPanel({groupInfo,onClose}) {
     async function handlerSubmit(){
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
-        console.log("values is:" + JSON.stringify(values));
         const template = editorRef.current.editor.getValue();
         const stat:Stat = {
             template:template,
@@ -100,14 +99,12 @@ export default function StatAddPanel({groupInfo,onClose}) {
             timeparam:values.timeparam,
             desc:values.desc,
         }
-        console.log("stat is:" + JSON.stringify(stat));
         requestCreate(stat).then((result) => {
-            console.log("crate stat result:" + JSON.stringify(result));
             if(result.code === '0'){
                 Message.success(t['projectCreate.form.submit.success']);
-                setTimeout(() => {
-                    window.location.href = "/project/list";
-                },3000)
+                // setTimeout(() => {
+                //     window.location.href = "/project/list";
+                // },3000)
             }else{
                 Message.error(result.message || t['system.error']);
             }
@@ -158,7 +155,7 @@ export default function StatAddPanel({groupInfo,onClose}) {
                 initialValues={{
                     group:'['+groupInfo.project?.title +']' + groupInfo.token,
                 }}
-                onValuesChange={onValuesChange}
+                // onValuesChange={onValuesChange}
             >
                 <Typography.Title
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
