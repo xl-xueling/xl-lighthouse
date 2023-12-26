@@ -64,7 +64,6 @@ export default function StatisticalListPanel({formParams,from = null}) {
                             pageNum:current,
                         }
                     });
-                    console.log("Stats Result is:" + JSON.stringify(result));
                     resolve(result.data);
                 }
                 proc().then();
