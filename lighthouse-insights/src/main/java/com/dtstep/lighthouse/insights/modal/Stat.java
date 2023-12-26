@@ -27,6 +27,8 @@ public class Stat implements Serializable {
 
     private LocalDateTime updateTime;
 
+    private String desc;
+
     private String randomId;
 
     public Integer getId() {
@@ -115,5 +117,13 @@ public class Stat implements Serializable {
 
     public void setRandomId(String randomId) {
         this.randomId = randomId;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

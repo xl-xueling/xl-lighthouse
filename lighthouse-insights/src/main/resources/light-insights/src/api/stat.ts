@@ -11,6 +11,14 @@ export async function requestList(data) :Promise<ResultData<{list:Array<Stat>,to
     })
 }
 
+export async function requestCreate(data:Project):Promise<ResultData> {
+    return request({
+        url:'/stat/create',
+        method:'POST',
+        data,
+    })
+}
+
 export async function requestQueryById(id:number) :Promise<ResultData<Stat>> {
     return request({
         url:'/stat/queryById',

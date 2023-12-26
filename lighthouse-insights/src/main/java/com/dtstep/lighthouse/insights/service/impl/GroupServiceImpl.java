@@ -1,8 +1,10 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.GroupDao;
+import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dto.GroupDto;
 import com.dtstep.lighthouse.insights.modal.Group;
+import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private GroupDao groupDao;
 
+    @Autowired
+    private ProjectDao projectDao;
+
     @Override
     public int create(Group group) {
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -28,8 +33,12 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Group queryById(Integer id) {
-        return groupDao.queryById(id);
+    public GroupDto queryById(Integer id) {
+        Group group = groupDao.queryById(id);
+        GroupDto groupDto = new GroupDto(group);
+        Project project = projectDao.queryById(group.getProjectId());
+        groupDto.setProject(project);
+        return groupDto;
     }
 
     @Override

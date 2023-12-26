@@ -8,6 +8,7 @@ import com.dtstep.lighthouse.insights.dto.ListSearchObject;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import java.util.List;
 @ControllerAdvice
 public class StatController {
 
+    @Autowired
     private StatService statService;
 
     @RequestMapping("/stat/list")
@@ -29,7 +31,7 @@ public class StatController {
     }
 
     @RequestMapping("/stat/create")
-    public ResultData<Integer> register(@Validated @RequestBody Stat createParam) {
+    public ResultData<Integer> create(@Validated @RequestBody Stat createParam) {
         int id = statService.create(createParam);
         if(id > 0){
             return ResultData.success(id);
