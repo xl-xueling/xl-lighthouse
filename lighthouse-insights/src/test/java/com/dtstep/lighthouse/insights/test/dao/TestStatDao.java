@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.test.dao;
 
+import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.StatDao;
@@ -43,5 +44,14 @@ public class TestStatDao {
         int id = 1100465;
         Stat stat = statDao.queryById(id);
         System.out.println("stat:" + JsonUtil.toJSONString(stat));
+    }
+
+    @Test
+    public void testUpdateById(){
+        Stat stat = new Stat();
+        stat.setId(1100465);
+        stat.setState(StatStateEnum.FROZEN);
+        int result = statDao.update(stat);
+        System.out.println("result:" + result);
     }
 }
