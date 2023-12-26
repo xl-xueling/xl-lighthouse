@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.insights.dto.ListSearchObject;
@@ -22,7 +23,8 @@ public class StatController {
     private StatService statService;
 
     @RequestMapping("/stat/list")
-    public ResultData<List<Stat>> list(@Validated @RequestBody ListSearchObject<StatQueryParam> queryParam) {
-        return ResultData.success(null);
+    public ResultData<ListData<Stat>> list(@Validated @RequestBody ListSearchObject<StatQueryParam> queryParam) {
+        ListData<Stat> listData = new ListData<>();
+        return ResultData.success(listData);
     }
 }

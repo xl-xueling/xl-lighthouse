@@ -96,11 +96,9 @@ export interface Stat {
     project?:Project;
     dimensArray?:Array<string>;
     renderConfig?:{datepicker:DatePickerConfigParam,filters:Array<FilterConfigParam>}
-}
-
-export interface StatPagination extends Stat {
     permissions:PermissionsEnum[];
 }
+
 
 export interface MetricSet {
     id?:number;
