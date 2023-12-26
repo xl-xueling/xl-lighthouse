@@ -156,7 +156,6 @@ function EditableCell(props) {
     }, [handleClick]);
 
     const cellValueChangeHandler = (value) => {
-        console.log("---cellValueHandler:" + value);
         if (column.componentType == EditTableComponentEnum.SELECT) {
             const values = {
                 [column.dataIndex]: value,

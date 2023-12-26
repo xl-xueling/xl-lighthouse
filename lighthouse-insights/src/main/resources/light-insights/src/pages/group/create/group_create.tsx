@@ -33,7 +33,6 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
     await formRef.current.validate();
     const values = formRef.current.getFieldsValue();
     const columns = editTableRef.current.getData();
-    console.log("columns is:" + JSON.stringify(columns));
     if(!columns || columns.length == 0){
       Message.error("列信息不能为空！")
       return;
@@ -57,7 +56,6 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       desc:values.desc,
       columns:columns,
     }
-    console.log("group is:" + JSON.stringify(group));
     requestCreate(group).then((result) => {
       if(result.code === '0'){
         Message.success(t['groupCreate.form.submit.success']);
