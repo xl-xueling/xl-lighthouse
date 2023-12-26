@@ -23,78 +23,96 @@ import EditTable, {
 import {getRandomString} from "@/utils/util";
 const { Row, Col } = Grid;
 
-export default function GroupUpdatePanel({groupId,onClose}) {
+export default function GroupUpdatePanel({groupInfo,onClose}) {
 
     const t = useLocale(locale);
     const editTableRef= useRef(null);
     const tempalteEditTableRef= useRef(null);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [loading,setLoading] = useState<boolean>(true);
-    const [groupInfo,setGroupInfo] = useState<Group>(null);
     const [formInstance] = Form.useForm();
-
-    useEffect(() => {
-        setLoading(true);
-
-    },[groupId])
-
     const [initData,setInitData] = useState(null);
+
+    const [expandedKeys, setExpandedKeys] = useState([]);
 
     const columnsProps: EditTableColumnProps[]  = [
         {
             title: 'Name',
             dataIndex: 'name',
+            editable: true,
             componentType:EditTableComponentEnum.INPUT,
-            headerCellStyle: { width:'26%'},
+            headerCellStyle: { width:'20%'},
         },
         {
             title: 'Type',
             dataIndex: 'type',
-            initValue:1,
+            editable: true,
+            initValue:"number",
             componentType:EditTableComponentEnum.SELECT,
-            headerCellStyle: { width:'120px'},
-            render:(k,record) => (
-                <Select size={"mini"} placeholder='Please select' disabled={record.editable != undefined && !record.editable}
-                        defaultValue={k}
-                >
-                    <Select.Option key={1}  value={1}>
-                        String
-                    </Select.Option>
-                    <Select.Option key={2}  value={2}>
-                        Number
-                    </Select.Option>
-                </Select>
-            )
+            headerCellStyle: { width:'130px'},
+            render:(text, record) => {
+                return (
+                    <Select size={"mini"}
+                            popupVisible={expandedKeys.includes(record.key)}
+                            onChange={(value) => {record['type'] = value}}
+                            onFocus={(e) => {
+                                setExpandedKeys((keys) => [...keys, record.key]);
+                            }}
+                            onKeyDown={(event) => {
+                                if(event.key == 'Enter'){
+                                    setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
+                                }
+                            }}
+                            onBlur={() => {
+                                setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
+                            }}
+                            defaultValue={"number"}>
+                        <Select.Option key={"string"}  value={"string"} onClick={() => {
+                            setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
+                        }}>
+                            String
+                        </Select.Option>
+                        <Select.Option key={"number"}  value={"number"} onClick={() => {
+                            setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
+                        }}>
+                            Number
+                        </Select.Option>
+                    </Select>)
+            }
         },
         {
-            title: 'Description',
-            dataIndex: 'desc',
+            title: 'Comment',
+            dataIndex: 'comment',
             componentType:EditTableComponentEnum.INPUT,
+            editable: true,
         },
         {
-            title: 'Operate',
-            dataIndex: 'operate',
+            title: 'Operation',
+            dataIndex: 'operation',
             componentType:EditTableComponentEnum.BUTTON,
             headerCellStyle: { width:'12%'},
-            render: (_, record) =>
-                {
-                return (record.editable == undefined || record.editable)?
-                    (<Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%'}}>
-                        <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
-                    </Space>) :
-                    (<Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%'}}>
-                        <IconMinusCircleFill style={{ cursor:"pointer"}}/>
-                    </Space>);
-                },
+            render: (_, record) => (
+                <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%'}}>
+                    <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
+                </Space>
+            ),
         },
     ];
 
     useEffect(() => {
+        console.log("groupInfo is:" + JSON.stringify(groupInfo));
         if(groupInfo != null){
             const formData = {
                 "token":groupInfo.token,
             }
+            const columnArr: Array<EditTableColumn> = [];
+            for (let i = 0; i < groupInfo.columns.length; i++) {
+                const columnInfo = groupInfo.columns[i];
+                columnArr.push({...columnInfo, "key": i})
+            }
+            setInitData(columnArr);
             formInstance.setFieldsValue(formData);
+            setLoading(false);
         }
     },[groupInfo])
 
