@@ -170,7 +170,7 @@ export default function GroupManagePanel({groupId}) {
                 </TabPane>
             </Tabs>
             {showStatAddPanel && <StatCreatePanel groupInfo={groupInfo} onClose={() => setShowsStatAddPanel(false)}/>}
-            {showGroupEditPanel && <GroupEditPanel groupId={groupInfo.id} onClose={() => setShowGroupEditPanel(false)}/>}
+            {showGroupEditPanel && <GroupEditPanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)}/>}
         </>);
 
 }
