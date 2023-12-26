@@ -36,7 +36,6 @@ export default function ProjectManage() {
     const fetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
         const proc = async () => {
             const result = await requestQueryById({id});
-            console.log("result:" + JSON.stringify(result));
             resolve(result.data);
         }
         proc().then();
@@ -52,7 +51,6 @@ export default function ProjectManage() {
     }
 
     const callback = async (record,type) => {
-        console.log("--callback,record:" + JSON.stringify(record) + ",type:" + type);
         switch (type){
             case "create-group":
 
@@ -65,7 +63,6 @@ export default function ProjectManage() {
     const fetchData = async (): Promise<void> => {
         setLoading(true);
         const result = await Promise.all([fetchProjectInfo]);
-        console.log("result[0] is:" + JSON.stringify(result));
         setProjectInfo(result[0]);
     }
 
