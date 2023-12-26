@@ -24,7 +24,7 @@
             #{projectId,jdbcType=INTEGER},
             #{template,jdbcType=VARCHAR},
             #{timeparam,jdbcType=VARCHAR},
-            #{state,jdbcType=INTEGER},
+            #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.StatStateEnumTypeHandler},
             #{randomId,jdbcType=BIGINT},
             #{expired,jdbcType=BIGINT},
             #{createTime,jdbcType=TIMESTAMP},

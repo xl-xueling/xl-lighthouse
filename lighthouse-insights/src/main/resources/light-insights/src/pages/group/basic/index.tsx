@@ -49,7 +49,6 @@ export default function GroupBasicPanel({groupInfo}) {
     const [formKey, setFormKey] = useState(0);
 
     useEffect(() => {
-        console.log("groupInfo:" + JSON.stringify(groupInfo));
         if(groupInfo) {
             const columnArr: Array<EditTableColumn> = [];
             for (let i = 0; i < groupInfo.columns.length; i++) {

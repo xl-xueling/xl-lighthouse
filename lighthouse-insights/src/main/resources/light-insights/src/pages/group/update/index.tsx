@@ -100,7 +100,6 @@ export default function GroupUpdatePanel({groupInfo,onClose}) {
     ];
 
     useEffect(() => {
-        console.log("groupInfo is:" + JSON.stringify(groupInfo));
         if(groupInfo != null){
             const formData = {
                 "token":groupInfo.token,

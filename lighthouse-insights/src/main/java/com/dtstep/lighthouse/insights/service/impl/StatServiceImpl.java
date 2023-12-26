@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
+import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.modal.Group;
@@ -11,6 +12,7 @@ import com.dtstep.lighthouse.insights.template.TemplateParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -35,6 +37,10 @@ public class StatServiceImpl implements StatService {
         }catch (Exception ex){
             ex.printStackTrace();
         }
+        LocalDateTime localDateTime = LocalDateTime.now();
+        stat.setUpdateTime(localDateTime);
+        stat.setCreateTime(localDateTime);
+        stat.setState(StatStateEnum.FROZEN);
         stat.setRandomId(UUID.randomUUID().toString());
         return statDao.insert(stat);
     }
