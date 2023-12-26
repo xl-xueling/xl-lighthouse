@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
+import com.dtstep.lighthouse.insights.dto.GroupDto;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.service.GroupService;
@@ -29,6 +30,12 @@ public class GroupController {
         }else{
             return ResultData.failed(ResultCode.ERROR);
         }
+    }
+
+    @RequestMapping("/group/queryById")
+    public ResultData<Group> queryById(@Validated @RequestBody GroupQueryParam queryParam) {
+        Group group = groupService.queryById(queryParam.getId());
+        return ResultData.success(group);
     }
 
     @RequestMapping("/group/queryByProjectId")

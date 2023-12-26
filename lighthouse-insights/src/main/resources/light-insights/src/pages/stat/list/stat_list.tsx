@@ -1,20 +1,17 @@
 import {
     Table,
-    Message, PaginationProps, Card, Typography
+    Message, PaginationProps,
 } from '@arco-design/web-react';
 import React, {useEffect, useMemo, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import {useSelector} from "react-redux";
 import locale from './locale';
-import { Department, Group, PermissionsEnum, Project, Stat, StatPagination, User} from "@/types/insights-web";
-import {requestQueryByIds as requestQueryGroupByIds} from "@/api/group";
-import {requestQueryByIds as requestQueryProjectByIds} from "@/api/project";
+import { Department, PermissionsEnum, Stat, StatPagination} from "@/types/insights-web";
 import {requestList} from "@/api/stat";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {ResultData} from "@/types/insights-common";
 import {getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
 import Detail from "@/pages/stat/list/detail";
-import {requestQueryByIds} from "@/api/user";
 import StatUpdateModal from "@/pages/stat/update";
 
 export default function StatisticalListPanel({formParams,from = null}) {
