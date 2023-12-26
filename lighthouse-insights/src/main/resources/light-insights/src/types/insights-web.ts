@@ -78,6 +78,7 @@ export interface Group {
     id?:number;
     token?:string;
     projectId?:number;
+    project?:Project;
     desc?:string;
     createTime?:number;
     columns?:Array<Column>;
@@ -95,8 +96,9 @@ export interface Stat {
     group?:Group;
     project?:Project;
     dimensArray?:Array<string>;
+    desc?:string;
     renderConfig?:{datepicker:DatePickerConfigParam,filters:Array<FilterConfigParam>}
-    permissions:PermissionsEnum[];
+    permissions?:PermissionsEnum[];
 }
 
 

@@ -4,7 +4,9 @@ import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class StatServiceImpl implements StatService {
 
     @Autowired

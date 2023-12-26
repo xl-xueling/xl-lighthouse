@@ -1,6 +1,6 @@
 import {
     AutoComplete, Button,
-    Form, Grid, Icon, Input,
+    Form, Grid, Icon, Input, Message,
     Modal, Select, Typography,
 } from '@arco-design/web-react';
 import React, {useEffect, useRef, useState} from 'react';
@@ -20,13 +20,15 @@ import "brace/theme/textmate";
 const { Row, Col } = Grid;
 import Draggable from 'react-draggable';
 import { MdOutlineDragIndicator } from "react-icons/md";
+import {Project, Stat} from "@/types/insights-web";
+import {requestCreate} from "@/api/stat";
 
 export default function StatAddPanel({groupInfo,onClose}) {
 
+    const [loading,setLoading] = useState<boolean>(false);
     const t = useLocale(locale);
-    const formRef = useRef();
+    const formRef = useRef(null);
     const [size, setSize] = useState('default');
-
     const onValuesChange = (changeValue, values) => {
         console.log('onValuesChange: ', changeValue, values);
     };
@@ -85,6 +87,38 @@ export default function StatAddPanel({groupInfo,onClose}) {
         }
     };
 
+    async function handlerSubmit(){
+        await formRef.current.validate();
+        const values = formRef.current.getFieldsValue();
+        console.log("values is:" + JSON.stringify(values));
+        const template = editorRef.current.editor.getValue();
+        const stat:Stat = {
+            template:template,
+            groupId:groupInfo.id,
+            projectId:groupInfo.projectId,
+            expired:values.expired,
+            timeparam:values.timeparam,
+            desc:values.desc,
+        }
+        console.log("stat is:" + JSON.stringify(stat));
+        requestCreate(stat).then((result) => {
+            console.log("crate stat result:" + JSON.stringify(result));
+            if(result.code === '0'){
+                Message.success(t['projectCreate.form.submit.success']);
+                setTimeout(() => {
+                    window.location.href = "/project/list";
+                },3000)
+            }else{
+                Message.error(result.message || t['system.error']);
+            }
+        }).catch((error) => {
+            console.log(error);
+            Message.error(t['system.error'])
+        }).finally(() => {
+            setLoading(false);
+        })
+    }
+
     useEffect(() => {
         addCustomCompletion();
     },[editorRef])
@@ -108,8 +142,10 @@ export default function StatAddPanel({groupInfo,onClose}) {
                 </Row>
             </>}
             visible={true}
+            confirmLoading={loading}
             maskClosable={false}
             onCancel={onClose}
+            onOk={handlerSubmit}
             modalRender={(modal) => <Draggable bounds="parent" handle=".modal-draggable-handle" disabled={false}>{modal}</Draggable>}
             style={{ width:'50%',top:'20px' }}
         >
@@ -119,6 +155,9 @@ export default function StatAddPanel({groupInfo,onClose}) {
                 labelCol={{ span: 4 }}
                 wrapperCol={{ span: 20 }}
                 layout={"vertical"}
+                initialValues={{
+                    group:'['+groupInfo.project?.title +']' + groupInfo.token,
+                }}
                 onValuesChange={onValuesChange}
             >
                 <Typography.Title
@@ -154,18 +193,18 @@ export default function StatAddPanel({groupInfo,onClose}) {
                 >
                     {'TimeParam: '}
                 </Typography.Title>
-                <FormItem rules={[{ required: true }]}>
+                <FormItem field='timeparam' rules={[{ required: true }]}>
                     <Select placeholder='Please Select' allowClear defaultValue={1}>
-                        <Select.Option key={1} value={1}>
+                        <Select.Option value={"1-minute"}>
                             1-minute
                         </Select.Option>
-                        <Select.Option key={2} value={2}>
+                        <Select.Option value={"2-minute"}>
                             2-minute
                         </Select.Option>
-                        <Select.Option key={3} value={3}>
+                        <Select.Option value={"3-minute"}>
                             5-minute
                         </Select.Option>
-                        <Select.Option key={4} value={4}>
+                        <Select.Option value={"4-minute"}>
                             2-hour
                         </Select.Option>
                     </Select>
@@ -195,18 +234,10 @@ export default function StatAddPanel({groupInfo,onClose}) {
                 <Typography.Title
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                 >
-                    {'Project: '}
-                </Typography.Title>
-                <FormItem disabled={true} field='project' rules={[{ required: true }]} defaultValue={'首页用户行为数据统计'}>
-                    <Input type={"text"} />
-                </FormItem>
-                <Typography.Title
-                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                >
                     {'Group: '}
                 </Typography.Title>
-                <FormItem disabled={true} field='group' rules={[{ required: true }]} defaultValue={'homepage_behavior_stat'}>
-                    <Input type={"text"} />
+                <FormItem disabled={true} field='group' rules={[{ required: true }]}>
+                    <Input type={"text"}/>
                 </FormItem>
                 <Typography.Title
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}

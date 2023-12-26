@@ -9,7 +9,7 @@ public interface GroupService {
 
     int create(Group group);
 
-    Group queryById(Integer id);
+    GroupDto queryById(Integer id);
 
     List<Group> queryByProjectId(Integer projectId);
 }
