@@ -61,7 +61,7 @@ export default function GroupManagePanel({groupId}) {
     const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
         let result:Group;
         const proc = async () => {
-            const response = await requestQueryById(groupId);
+            const response = await requestQueryById({id:groupId});
             if(response.code != '0'){
                 reject(new Error(response.message));
             }

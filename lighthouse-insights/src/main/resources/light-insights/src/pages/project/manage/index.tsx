@@ -122,17 +122,16 @@ export default function ProjectManage() {
 
   return (
       <>
-      <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
-          <BreadcrumbItem>
-              <IconHome />
-          </BreadcrumbItem>
-          <BreadcrumbItem style={{fontWeight:20}}>{t['projectManage.breadcrumbItem']}</BreadcrumbItem>
-      </Breadcrumb>
+      {/*<Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>*/}
+      {/*    <BreadcrumbItem>*/}
+      {/*        <IconHome />*/}
+      {/*    </BreadcrumbItem>*/}
+      {/*    <BreadcrumbItem style={{fontWeight:20}}>{t['projectManage.breadcrumbItem']}</BreadcrumbItem>*/}
+      {/*</Breadcrumb>*/}
 
       <div className={styles.layout}>
           <div className={styles['layout-left-side']}>
               <Space size={15} direction="vertical" style={{width:'100%'}}>
-                  {projectInfo?.structure.length > 0 && <ProjectManageMenu structure={projectInfo.structure[0]?.children} callback={menuCallback} />}
                   <Card>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Typography.Title heading={6}>
@@ -151,6 +150,7 @@ export default function ProjectManage() {
                           </div>
                       </div>
                   </Card>
+                  {projectInfo?.structure.length > 0 && <ProjectManageMenu structure={projectInfo.structure[0]?.children} callback={menuCallback} />}
                   <Card>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Typography.Title heading={6}>
