@@ -36,4 +36,29 @@
         SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`create_time`,`update_time`
         FROM ldp_stat_item WHERE id = #{id}
     </select>
+
+    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Stat">
+        UPDATE ldp_stat_item
+        <set>
+            <if test="title != null">
+                `title` = #{title},
+            </if>
+            <if test="template != null">
+                `template` = #{template},
+            </if>
+            <if test="timeparam != null">
+                `timeparam` = #{timeparam},
+            </if>
+            <if test="state != null">
+                `state` = #{state.state},
+            </if>
+            <if test="expired != null">
+                `expired` = #{expired},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
 </mapper>

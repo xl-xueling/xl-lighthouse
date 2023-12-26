@@ -7,4 +7,6 @@ public interface StatDao {
     int insert(Stat stat);
 
     Stat queryById(Integer id);
+
+    int update(Stat stat);
 }
