@@ -187,7 +187,7 @@ function EditableCell(props) {
                     initialValue={rowData[column.dataIndex]}
                     field={column.dataIndex}
                 >
-                    <Input size={"mini"} ref={refInput} onChange={cellValueChangeHandler} />
+                    <Input size={"mini"} ref={refInput} onChange={cellValueChangeHandler}/>
                 </FormItem>
             </div>
         );

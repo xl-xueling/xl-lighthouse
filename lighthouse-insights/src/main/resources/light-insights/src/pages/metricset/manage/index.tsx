@@ -49,7 +49,7 @@ export default function MaticManage() {
                         <IconTag style={{ marginRight: 6 }} />
                         Authority Info
                   </span>}>
-                    <GroupBasicPanel groupId={0}/>
+                    {/*<GroupBasicPanel groupId={0}/>*/}
                 </TabPane>
             </Tabs>
 

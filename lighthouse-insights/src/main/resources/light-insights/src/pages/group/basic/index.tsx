@@ -35,10 +35,11 @@ import EditTable, {
     EditTableComponentEnum
 } from "@/pages/common/edittable/EditTable";
 import {FormInstance} from "@arco-design/web-react/lib";
+import {formatTimeStamp} from "@/utils/util";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
-export default function GroupBasicPanel({groupId}) {
+export default function GroupBasicPanel({groupInfo}) {
 
     const t = useLocale(locale);
     const editTableRef= useRef(null);
@@ -48,44 +49,22 @@ export default function GroupBasicPanel({groupId}) {
     const [formKey, setFormKey] = useState(0);
 
     useEffect(() => {
-        if(groupId){
-           setLoading(true);
-            const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
-                let result:Group;
-                const proc = async () => {
-                    const response = await requestQueryById(groupId);
-                    if(response.code != '0'){
-                        reject(new Error(response.message));
-                    }
-                    result = response.data;
-                    resolve(result);
-                }
-                proc().then();
-            })
-
-            const promiseAll:Promise<[Group]> = Promise.all([
-                promiseFetchGroupInfo,
-            ])
-
-            promiseAll.then((results) => {
-                const groupInfo = results[0];
-                const columnArr:Array<EditTableColumn> = [];
-                for(let i=0;i<groupInfo.columns.length;i++){
-                    const columnInfo = groupInfo.columns[i];
-                    columnArr.push({...columnInfo,"key":i})
-                }
-                setColumnsData(columnArr);
-                formInstance.setFieldValue("token",groupInfo.token);
-                formInstance.setFieldValue("createTime",groupInfo.createTime);
-                formInstance.setFieldValue("desc",groupInfo.desc);
-            }).catch(error => {
-                console.log(error);
-                Message.error(t['system.error']);
-            }).finally(() => {
-                setLoading(false);
-            });
+        console.log("groupInfo:" + JSON.stringify(groupInfo));
+        if(groupInfo) {
+            const columnArr: Array<EditTableColumn> = [];
+            for (let i = 0; i < groupInfo.columns.length; i++) {
+                const columnInfo = groupInfo.columns[i];
+                columnArr.push({...columnInfo, "key": i})
+            }
+            setColumnsData(columnArr);
+            formInstance.setFieldValue("token", groupInfo.token);
+            formInstance.setFieldValue("createTime", formatTimeStamp(groupInfo.createTime));
+            formInstance.setFieldValue("desc", groupInfo.desc);
+            setLoading(false);
         }
-    },[groupId])
+    },[groupInfo])
+
+    const [expandedKeys, setExpandedKeys] = useState([]);
 
     const columnsProps: EditTableColumnProps[]  = [
         {
@@ -93,34 +72,52 @@ export default function GroupBasicPanel({groupId}) {
             dataIndex: 'name',
             editable: true,
             componentType:EditTableComponentEnum.INPUT,
-            headerCellStyle: { width:'26%'},
+            headerCellStyle: { width:'20%'},
         },
         {
             title: 'Type',
             dataIndex: 'type',
             editable: true,
+            initValue:"number",
             componentType:EditTableComponentEnum.SELECT,
-            headerCellStyle: { width:'4%'},
-            render:(k,v) => (
-                <Select size={"mini"} placeholder='Please select' disabled={true} bordered={false}
-                        defaultValue={k}
-                        style={{ border:'1px solid var(--color-neutral-3)' }}
-                >
-                    <Select.Option key={1}  value={1}>
-                        String
-                    </Select.Option>
-                    <Select.Option key={2}  value={2}>
-                        Number
-                    </Select.Option>
-                </Select>
-            )
+            headerCellStyle: { width:'130px'},
+            render:(text, record) => {
+                return (
+                    <Select size={"mini"}
+                            disabled={true}
+                            popupVisible={expandedKeys.includes(record.key)}
+                            onChange={(value) => {record['type'] = value}}
+                            onFocus={(e) => {
+                                setExpandedKeys((keys) => [...keys, record.key]);
+                            }}
+                            onKeyDown={(event) => {
+                                if(event.key == 'Enter'){
+                                    setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
+                                }
+                            }}
+                            onBlur={() => {
+                                setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
+                            }}
+                            defaultValue={"number"}>
+                        <Select.Option key={"string"}  value={"string"} onClick={() => {
+                            setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
+                        }}>
+                            String
+                        </Select.Option>
+                        <Select.Option key={"number"}  value={"number"} onClick={() => {
+                            setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
+                        }}>
+                            Number
+                        </Select.Option>
+                    </Select>)
+            }
         },
         {
-            title: 'Description',
-            dataIndex: 'desc',
+            title: 'Comment',
+            dataIndex: 'comment',
             componentType:EditTableComponentEnum.INPUT,
             editable: true,
-        },
+        }
     ];
 
     return (
@@ -154,7 +151,8 @@ export default function GroupBasicPanel({groupId}) {
                                             </Typography.Title>
                                         </Grid.Col>
                                     </Grid.Row>
-                                    <Table pagination={false} size={"mini"} columns={columnsProps} data={columnsData}  />
+                                    <Table pagination={false} size={"mini"} columns={columnsProps} data={columnsData}  border={true} />
+                                    {/*<EditTable ref={editTableRef} columnsProps={columnsProps} columnsData={columnsData}/>*/}
                                 </Form.Item>
                                 <Typography.Title
                                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
@@ -169,9 +167,9 @@ export default function GroupBasicPanel({groupId}) {
                                 <Typography.Title
                                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                                 >
-                                    {'CreatedTime'}
+                                    {'CreateTime'}
                                 </Typography.Title>
-                                <Form.Item field="createdTime">
+                                <Form.Item field="createTime">
                                     <Input disabled={true}/>
                                 </Form.Item>
                             </Form>
