@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dtstep.lighthouse.insights.dao.StatDao">
+    <resultMap id="statResultMap" type="com.dtstep.lighthouse.insights.modal.Stat">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="groupId" column="group_id"/>
+        <result property="projectId" column="project_id"/>
+        <result property="template" column="template"/>
+        <result property="timeparam" column="timeparam"/>
+        <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.StatStateEnumTypeHandler"/>
+        <result property="randomId" column="random_id"/>
+        <result property="expired" column="expired"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Stat" >
+        INSERT INTO ldp_stat_item (`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`create_time`,`update_time`) VALUES
+        (
+            #{title,jdbcType=VARCHAR},
+            #{groupId,jdbcType=INTEGER},
+            #{projectId,jdbcType=INTEGER},
+            #{template,jdbcType=VARCHAR},
+            #{timeparam,jdbcType=VARCHAR},
+            #{state,jdbcType=INTEGER},
+            #{randomId,jdbcType=BIGINT},
+            #{expired,jdbcType=BIGINT},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="queryById" resultMap="statResultMap">
+        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`create_time`,`update_time`
+        FROM ldp_stat_item WHERE id = #{id}
+    </select>
+</mapper>

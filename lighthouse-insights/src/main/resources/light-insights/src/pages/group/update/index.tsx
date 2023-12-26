@@ -131,6 +131,7 @@ export default function GroupUpdatePanel({groupInfo,onClose}) {
                     form={formInstance}
                     className={styles['search-form']}
                     layout={"vertical"}
+                    autoComplete={'off'}
                 >
                     <Typography.Title
                         style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
