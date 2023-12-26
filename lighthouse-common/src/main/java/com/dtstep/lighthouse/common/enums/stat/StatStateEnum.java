@@ -18,6 +18,8 @@ package com.dtstep.lighthouse.common.enums.stat;
  */
 
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum  StatStateEnum {
 
     PENDING_APPROVE(0,"i18n(ldp_i18n_display_1066)"),
@@ -38,6 +40,8 @@ public enum  StatStateEnum {
     INVALID(7,"i18n(ldp_i18n_display_1077)")
 
     ;
+
+    @JsonValue
     private int state;
 
     private String desc;

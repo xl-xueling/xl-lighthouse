@@ -1,20 +1,33 @@
 package com.dtstep.lighthouse.insights.modal;
 
+import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 public class Stat implements Serializable {
 
     private Integer id;
 
+    private String title;
+
     private String template;
 
-    private String timeParam;
+    private String timeparam;
 
     private Long expired;
+
+    private StatStateEnum state;
 
     private Integer projectId;
 
     private Integer groupId;
+
+    private LocalDateTime createTime;
+
+    private LocalDateTime updateTime;
+
+    private String randomId;
 
     public Integer getId() {
         return id;
@@ -32,12 +45,12 @@ public class Stat implements Serializable {
         this.template = template;
     }
 
-    public String getTimeParam() {
-        return timeParam;
+    public String getTimeparam() {
+        return timeparam;
     }
 
-    public void setTimeParam(String timeParam) {
-        this.timeParam = timeParam;
+    public void setTimeparam(String timeparam) {
+        this.timeparam = timeparam;
     }
 
     public Long getExpired() {
@@ -62,5 +75,45 @@ public class Stat implements Serializable {
 
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public StatStateEnum getState() {
+        return state;
+    }
+
+    public void setState(StatStateEnum state) {
+        this.state = state;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getRandomId() {
+        return randomId;
+    }
+
+    public void setRandomId(String randomId) {
+        this.randomId = randomId;
     }
 }
