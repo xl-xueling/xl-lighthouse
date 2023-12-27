@@ -11,6 +11,7 @@ import {requestList} from "@/api/stat";
 import {getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
 import Detail from "@/pages/stat/list/detail";
 import StatUpdateModal from "@/pages/stat/update";
+import {getRandomString} from "@/utils/util";
 
 export default function StatisticalListPanel({formParams,from = null}) {
     const t = useLocale(locale);
@@ -70,7 +71,12 @@ export default function StatisticalListPanel({formParams,from = null}) {
             })
 
             const {list,total}:{list:Array<Stat>,total:number} = (await Promise.all([fetchStatsInfo]))[0];
-            setListData(list);
+            const combineList = [];
+            list?.forEach(z => {
+                const combineItem = {...z ,"key":getRandomString()};
+                combineList.push(combineItem);
+            })
+            setListData(combineList);
             setPagination({
                 ...pagination,
                 current,
