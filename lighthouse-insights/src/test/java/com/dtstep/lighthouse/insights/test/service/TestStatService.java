@@ -1,6 +1,9 @@
 package com.dtstep.lighthouse.insights.test.service;
 
+import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
+import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
 import org.junit.Test;
@@ -24,5 +27,13 @@ public class TestStatService {
         stat.setGroupId(100182);
         int result = statService.create(stat);
         System.out.println("result:" + result);
+    }
+
+    @Test
+    public void testQueryList(){
+        StatQueryParam queryParam = new StatQueryParam();
+        queryParam.setGroupId(100186);
+        ListData<Stat> listData = statService.queryList(queryParam,1,100);
+        System.out.println("listData:" + JsonUtil.toJSONString(listData));
     }
 }
