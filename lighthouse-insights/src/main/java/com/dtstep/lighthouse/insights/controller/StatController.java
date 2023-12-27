@@ -1,10 +1,12 @@
 package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.client.LightHouse;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
 import com.dtstep.lighthouse.insights.dto.ListSearchObject;
+import com.dtstep.lighthouse.insights.dto.StatDto;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
@@ -25,8 +27,9 @@ public class StatController {
     private StatService statService;
 
     @RequestMapping("/stat/list")
-    public ResultData<ListData<Stat>> list(@Validated @RequestBody ListSearchObject<StatQueryParam> searchObject) {
-        ListData<Stat> listData = statService.queryList(searchObject.getQueryParams(),searchObject.getPagination().getPageNum(),searchObject.getPagination().getPageSize());
+    public ResultData<ListData<StatDto>> list(@Validated @RequestBody ListSearchObject<StatQueryParam> searchObject) {
+        ListData<StatDto> listData = statService.queryList(searchObject.getQueryParams(),searchObject.getPagination().getPageNum(),searchObject.getPagination().getPageSize());
+        System.out.println("listData:" + JsonUtil.toJSONString(listData));
         return ResultData.success(listData);
     }
 

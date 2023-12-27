@@ -4,17 +4,22 @@ import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
+import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
+import com.dtstep.lighthouse.insights.dto.StatDto;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.modal.Group;
+import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
 import com.dtstep.lighthouse.insights.template.TemplateContext;
 import com.dtstep.lighthouse.insights.template.TemplateParser;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +31,9 @@ public class StatServiceImpl implements StatService {
 
     @Autowired
     private GroupDao groupDao;
+
+    @Autowired
+    private ProjectDao projectDao;
 
     @Override
     public int create(Stat stat) {
@@ -49,10 +57,21 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public ListData<Stat> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize) {
+    public ListData<StatDto> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize) {
         List<Stat> list = statDao.queryList(queryParam,pageNum,pageSize);
-        ListData<Stat> listData = new ListData<>();
-        listData.setList(list);
+        List<StatDto> dtoList = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(list)){
+            for(Stat stat : list){
+                StatDto statDto = new StatDto(stat);
+                Group group = groupDao.queryById(stat.getGroupId());
+                Project project = projectDao.queryById(stat.getProjectId());
+                statDto.setGroup(group);
+                statDto.setProject(project);
+                dtoList.add(statDto);
+            }
+        }
+        ListData<StatDto> listData = new ListData<>();
+        listData.setList(dtoList);
         return listData;
     }
 }

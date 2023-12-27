@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.insights.dto.StatDto;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.modal.Stat;
 
@@ -10,5 +11,5 @@ public interface StatService {
 
     int create(Stat stat);
 
-    ListData<Stat> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize);
+    ListData<StatDto> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize);
 }
