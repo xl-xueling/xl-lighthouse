@@ -37,6 +37,24 @@
         FROM ldp_stat_item WHERE id = #{id}
     </select>
 
+    <select id="queryList" resultMap="statResultMap">
+        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`create_time`,`update_time`
+        from ldp_stat_item
+        <where>
+            <if test="queryParam.id!=null">
+                AND id = #{queryParam.id}
+            </if>
+            <if test="queryParam.projectId!=null">
+                AND project_id = #{queryParam.projectId}
+            </if>
+            <if test="queryParam.groupId!=null">
+                AND group_id = #{queryParam.groupId}
+            </if>
+        </where>
+        <bind name="offset" value="(pageNum-1)*pageSize"></bind>
+        limit ${offset},#{pageSize}
+    </select>
+
     <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Stat">
         UPDATE ldp_stat_item
         <set>

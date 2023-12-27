@@ -25,8 +25,8 @@ public class StatController {
     private StatService statService;
 
     @RequestMapping("/stat/list")
-    public ResultData<ListData<Stat>> list(@Validated @RequestBody ListSearchObject<StatQueryParam> queryParam) {
-        ListData<Stat> listData = new ListData<>();
+    public ResultData<ListData<Stat>> list(@Validated @RequestBody ListSearchObject<StatQueryParam> searchObject) {
+        ListData<Stat> listData = statService.queryList(searchObject.getQueryParams(),searchObject.getPagination().getPageNum(),searchObject.getPagination().getPageSize());
         return ResultData.success(listData);
     }
 
