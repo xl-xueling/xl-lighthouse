@@ -1,8 +1,10 @@
 package com.dtstep.lighthouse.insights.enums;
 
-public enum FlowStateEnum {
+import com.fasterxml.jackson.annotation.JsonValue;
 
-    PROCESSING(1),
+public enum OrderStateEnum {
+
+    PENDING(1),
 
     APPROVED(2),
 
@@ -12,10 +14,11 @@ public enum FlowStateEnum {
 
     ;
 
-    FlowStateEnum(int state){
+    OrderStateEnum(int state){
         this.state = state;
     }
 
+    @JsonValue
     private int state;
 
     public int getState() {

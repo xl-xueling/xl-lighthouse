@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.modal;
 
-import com.dtstep.lighthouse.insights.enums.FlowStateEnum;
+import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 
 import java.io.Serializable;
@@ -14,9 +14,9 @@ public class Order implements Serializable {
 
     private OrderTypeEnum orderType;
 
-    private FlowStateEnum state;
+    private OrderStateEnum state;
 
-    private OrderConfig config;
+    private OrderExtendConfig extendConfig;
 
     private String hash;
 
@@ -36,20 +36,20 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public FlowStateEnum getState() {
+    public OrderStateEnum getState() {
         return state;
     }
 
-    public void setState(FlowStateEnum state) {
+    public void setState(OrderStateEnum state) {
         this.state = state;
     }
 
-    public OrderConfig getConfig() {
-        return config;
+    public OrderExtendConfig getExtendConfig() {
+        return extendConfig;
     }
 
-    public void setConfig(OrderConfig config) {
-        this.config = config;
+    public void setExtendConfig(OrderExtendConfig extendConfig) {
+        this.extendConfig = extendConfig;
     }
 
     public String getHash() {

@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.insights.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum OrderTypeEnum {
 
     PROJECT_ACCESS(1),
@@ -17,6 +19,7 @@ public enum OrderTypeEnum {
         this.type = type;
     }
 
+    @JsonValue
     private int type;
 
     public int getType() {
