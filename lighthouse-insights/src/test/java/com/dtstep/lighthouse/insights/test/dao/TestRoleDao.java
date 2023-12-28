@@ -1,0 +1,32 @@
+package com.dtstep.lighthouse.insights.test.dao;
+
+import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
+import com.dtstep.lighthouse.insights.dao.RoleDao;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.modal.Role;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.time.LocalDateTime;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = LightHouseInsightsApplication.class,properties = {"spring.config.location=classpath:lighthouse-insights.yml"})
+public class TestRoleDao {
+
+    @Autowired
+    private RoleDao roleDao;
+
+    @Test
+    public void testCreate() throws Exception {
+        Role role = new Role();
+        LocalDateTime localDateTime = LocalDateTime.now();
+        role.setCreateTime(localDateTime);
+        role.setUpdateTime(localDateTime);
+        role.setRoleType(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION);
+        int result = roleDao.insert(role);
+        System.out.println("result:" + result);
+    }
+}
