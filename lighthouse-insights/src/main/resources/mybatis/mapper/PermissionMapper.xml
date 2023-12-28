@@ -12,7 +12,7 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Permission" >
-        INSERT INTO ldp_permissions (`owner_id`, `owner_type`,`role_id`, `create_time`, `update_time`) VALUES
+        INSERT INTO ldp_permission (`owner_id`, `owner_type`,`role_id`, `create_time`, `update_time`) VALUES
         (
             #{ownerId,jdbcType=INTEGER},
             #{ownerType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.OwnerTypeEnumTypeHandler},
