@@ -2,23 +2,25 @@ package com.dtstep.lighthouse.insights.enums;
 
 public enum RoleTypeEnum {
 
-    CHAIRMAN(1,PermissionTypeEnum.FULL_MANAGE_PERMISSION),
+    FULL_MANAGE_PERMISSION(1),
 
-    CEO(2,PermissionTypeEnum.FULL_MANAGE_PERMISSION),
+    FULL_ACCESS_PERMISSION(2),
 
-    VP(3,PermissionTypeEnum.FULL_MANAGE_PERMISSION),
+    DEPARTMENT_MANAGE_PERMISSION(3),
 
-    SENIOR_DIRECTOR(4,PermissionTypeEnum.DEPARTMENT_MANAGE_PERMISSION),
+    DEPARTMENT_ACCESS_PERMISSION(4),
 
-    DIRECTOR(5,PermissionTypeEnum.DEPARTMENT_MANAGE_PERMISSION),
+    PROJECT_MANAGE_PERMISSION(5),
 
-    SENIOR_MANAGER(6,PermissionTypeEnum.DEPARTMENT_MANAGE_PERMISSION),
+    PROJECT_ACCESS_PERMISSION(6),
 
-    MANAGER(7,PermissionTypeEnum.DEPARTMENT_MANAGE_PERMISSION),
+    METRIC_MANAGE_PERMISSION(7),
 
-    SUPERVISOR(8,PermissionTypeEnum.DEPARTMENT_MANAGE_PERMISSION),
+    METRIC_ACCESS_PERMISSION(8),
 
-    STAFF(9),
+    STAT_ACCESS_PERMISSION(9),
+
+    OPT_MANAGE_PERMISSION(10),
 
     ;
 
@@ -26,18 +28,7 @@ public enum RoleTypeEnum {
         this.roleType = roleType;
     }
 
-    RoleTypeEnum(int roleType,PermissionTypeEnum permissionTypeEnum){
-
-    }
-
-    RoleTypeEnum(int roleType, String desc){
-        this.roleType = roleType;
-
-    }
-
     private int roleType;
-
-    private PermissionTypeEnum permissionTypeEnum;
 
     public int getRoleType() {
         return roleType;
@@ -45,13 +36,5 @@ public enum RoleTypeEnum {
 
     public void setRoleType(int roleType) {
         this.roleType = roleType;
-    }
-
-    public PermissionTypeEnum getPermissionTypeEnum() {
-        return permissionTypeEnum;
-    }
-
-    public void setPermissionTypeEnum(PermissionTypeEnum permissionTypeEnum) {
-        this.permissionTypeEnum = permissionTypeEnum;
     }
 }
