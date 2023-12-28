@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.enums;
 
-public enum FlowTypeEnum {
+public enum OrderTypeEnum {
 
     PROJECT_ACCESS(1),
 
@@ -13,7 +13,7 @@ public enum FlowTypeEnum {
 
     ;
 
-    FlowTypeEnum(int type){
+    OrderTypeEnum(int type){
         this.type = type;
     }
 
