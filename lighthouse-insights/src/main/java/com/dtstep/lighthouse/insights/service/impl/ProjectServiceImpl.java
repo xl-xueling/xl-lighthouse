@@ -13,15 +13,10 @@ import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
 import com.dtstep.lighthouse.insights.dto.GroupDto;
 import com.dtstep.lighthouse.insights.dto.ProjectDto;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
+import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Department;
-import com.dtstep.lighthouse.insights.modal.Group;
-import com.dtstep.lighthouse.insights.modal.Project;
-import com.dtstep.lighthouse.insights.modal.Role;
-import com.dtstep.lighthouse.insights.service.BaseService;
-import com.dtstep.lighthouse.insights.service.GroupService;
-import com.dtstep.lighthouse.insights.service.ProjectService;
-import com.dtstep.lighthouse.insights.service.RoleService;
+import com.dtstep.lighthouse.insights.modal.*;
+import com.dtstep.lighthouse.insights.service.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +45,12 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private PermissionService permissionService;
+
+    @Autowired
+    private BaseService baseService;
+
     @Transactional
     @Override
     public int create(Project project){
@@ -66,6 +67,13 @@ public class ProjectServiceImpl implements ProjectService {
         accessRole.setRoleType(RoleTypeEnum.PROJECT_ACCESS_PERMISSION);
         accessRole.setResourceId(projectId);
         roleService.create(accessRole);
+        int manageRoleId = manageRole.getId();;
+        Permission permission = new Permission();
+        permission.setRoleId(manageRoleId);
+        permission.setOwnerType(OwnerTypeEnum.USER);
+        Integer currentUserId = baseService.getCurrentUserId();
+        permission.setOwnerId(currentUserId);
+        permissionService.create(permission);
         return projectId;
     }
 
