@@ -14,7 +14,4 @@ public interface ProjectDao {
     Project queryById(Integer id);
 
     List<Project> queryList(ProjectQueryParam queryParam,Integer pageNum,Integer pageSize);
-
-    List<Project> queryOwnerList(ProjectQueryParam queryParam,Integer pageNum,Integer pageSize);
-
 }
