@@ -8,20 +8,25 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
+import com.dtstep.lighthouse.insights.dao.RoleDao;
 import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
 import com.dtstep.lighthouse.insights.dto.GroupDto;
 import com.dtstep.lighthouse.insights.dto.ProjectDto;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.modal.Project;
+import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
+import com.dtstep.lighthouse.insights.service.RoleService;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,13 +47,26 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private GroupDao groupDao;
 
+    @Autowired
+    private RoleService roleService;
+
+    @Transactional
     @Override
     public int create(Project project){
         LocalDateTime localDateTime = LocalDateTime.now();
         project.setUpdateTime(localDateTime);
         project.setCreateTime(localDateTime);
         projectDao.insert(project);
-        return project.getId();
+        int projectId = project.getId();
+        Role manageRole = new Role();
+        manageRole.setRoleType(RoleTypeEnum.PROJECT_MANAGE_PERMISSION);
+        manageRole.setResourceId(projectId);
+        roleService.create(manageRole);
+        Role accessRole = new Role();
+        accessRole.setRoleType(RoleTypeEnum.PROJECT_ACCESS_PERMISSION);
+        accessRole.setResourceId(projectId);
+        roleService.create(accessRole);
+        return projectId;
     }
 
     @Override
