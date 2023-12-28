@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.test.dao;
 
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
 import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
@@ -33,5 +34,12 @@ public class TestOrderDao {
         order.setState(OrderStateEnum.APPROVED);
         int result = orderDao.insert(order);
         System.out.println("result:" + result);
+    }
+
+    @Test
+    public void testQueryById(){
+        int id = 100150;
+        Order order = orderDao.queryById(id);
+        System.out.println("order:" + JsonUtil.toJSONString(order));
     }
 }

@@ -12,21 +12,20 @@ public enum OrderTypeEnum {
 
     STAT_ITEM_APPROVE(4),
 
-
     ;
 
-    OrderTypeEnum(int type){
-        this.type = type;
+    OrderTypeEnum(int orderType){
+        this.orderType = orderType;
     }
 
     @JsonValue
-    private int type;
+    private int orderType;
 
-    public int getType() {
-        return type;
+    public int getOrderType() {
+        return orderType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
     }
 }

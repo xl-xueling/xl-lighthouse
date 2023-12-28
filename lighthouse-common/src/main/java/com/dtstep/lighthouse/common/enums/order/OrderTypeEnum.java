@@ -1,4 +1,7 @@
 package com.dtstep.lighthouse.common.enums.order;
+
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -32,6 +35,7 @@ public enum OrderTypeEnum {
 
     ;
 
+    @JsonValue
     private int type;
 
     private String desc;
