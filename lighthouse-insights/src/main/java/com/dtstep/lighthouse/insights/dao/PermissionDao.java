@@ -1,4 +1,8 @@
 package com.dtstep.lighthouse.insights.dao;
 
-public class PermissionDao {
+import com.dtstep.lighthouse.insights.modal.Permission;
+
+public interface PermissionDao {
+
+    int insert(Permission permission);
 }
