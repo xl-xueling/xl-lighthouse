@@ -78,4 +78,6 @@ public class ProjectQueryParam {
     public void setDepartmentIds(List<Integer> departmentIds) {
         this.departmentIds = departmentIds;
     }
+
+
 }

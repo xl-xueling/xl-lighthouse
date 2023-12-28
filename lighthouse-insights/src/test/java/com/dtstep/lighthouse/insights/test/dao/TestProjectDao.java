@@ -42,5 +42,16 @@ public class TestProjectDao {
         System.out.println("list:" + JsonUtil.toJSONString(list));
     }
 
+    @Test
+    public void testQueryOwnerList() throws Exception {
+        ProjectQueryParam queryParam = new ProjectQueryParam();
+//        queryParam.setOwner(110154);
+//        queryParam.setDepartmentIds(List.of(10079));
+        List<Project> list = projectDao.queryOwnerList(queryParam,1,100);
+        for(int i=0;i<list.size();i++){
+            System.out.println("project:" + list.get(i).getTitle());
+        }
+    }
+
 
 }
