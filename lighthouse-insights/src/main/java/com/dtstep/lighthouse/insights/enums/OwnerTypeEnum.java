@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.insights.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum OwnerTypeEnum {
 
     USER(1),
@@ -12,6 +14,7 @@ public enum OwnerTypeEnum {
         this.ownerType = ownerType;
     }
 
+    @JsonValue
     private int ownerType;
 
     public int getOwnerType() {
