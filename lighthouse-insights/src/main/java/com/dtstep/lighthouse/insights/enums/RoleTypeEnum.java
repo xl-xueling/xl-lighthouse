@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.insights.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum RoleTypeEnum {
 
     FULL_MANAGE_PERMISSION(1),
@@ -28,6 +30,7 @@ public enum RoleTypeEnum {
         this.roleType = roleType;
     }
 
+    @JsonValue
     private int roleType;
 
     public int getRoleType() {
