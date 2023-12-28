@@ -48,8 +48,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private PermissionService permissionService;
 
-    @Autowired
-    private BaseService baseService;
 
     @Transactional
     @Override
