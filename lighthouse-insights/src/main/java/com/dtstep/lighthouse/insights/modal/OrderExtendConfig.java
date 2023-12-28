@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.modal;
 
 import java.util.List;
 
-public class OrderConfig {
+public class OrderExtendConfig {
 
     private List<String> steps;
 

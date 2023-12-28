@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dtstep.lighthouse.insights.dao.OrderDao">
+    <resultMap id="orderResultMap" type="com.dtstep.lighthouse.insights.modal.Order">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="orderType" column="order_type" typeHandler="com.dtstep.lighthouse.insights.types.OrderTypeEnumTypeHandler"/>
+        <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.OrderStateEnumTypeHandler"/>
+        <result property="extendConfig" column="extend_config" typeHandler="com.dtstep.lighthouse.insights.types.OrderExtendConfigTypeHandler"/>
+        <result property="hash" column="hash"/>
+        <result property="currentNode" column="current_node"/>
+        <result property="desc" column="desc"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.Order" >
+        INSERT INTO ldp_order (`user_id`,`order_type`,`state`,`extend_config`,
+                                    `hash`,`current_node`,
+                                    `desc`,`create_time`,`update_time`) VALUES
+        (
+            #{userId,jdbcType=INTEGER},
+            #{orderType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.OrderTypeEnumTypeHandler},
+            #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.OrderStateEnumTypeHandler},
+            #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.OrderExtendConfigTypeHandler},
+            #{hash,jdbcType=VARCHAR},
+            #{currentNode,jdbcType=INTEGER},
+            #{desc,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="queryById" resultMap="orderResultMap">
+        SELECT `id`,`user_id`,`order_type`,`state`,`extend_config`,
+               `hash`,`current_node`,
+               `desc`,`create_time`,`update_time`
+        FROM ldp_order WHERE id = #{id}
+    </select>
+</mapper>
