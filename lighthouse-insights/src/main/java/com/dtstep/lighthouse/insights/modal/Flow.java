@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.insights.enums.FlowStateEnum;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.enums.PositionTypeEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -26,7 +26,7 @@ public class Flow implements Serializable {
 
     private LocalDateTime updateTime;
 
-    private RoleTypeEnum current;
+    private PositionTypeEnum current;
 
     public Integer getId() {
         return id;
@@ -100,11 +100,11 @@ public class Flow implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public RoleTypeEnum getCurrent() {
+    public PositionTypeEnum getCurrent() {
         return current;
     }
 
-    public void setCurrent(RoleTypeEnum current) {
+    public void setCurrent(PositionTypeEnum current) {
         this.current = current;
     }
 }
