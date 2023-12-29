@@ -13,6 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LightHouseInsightsApplication.class,properties = {"spring.config.location=classpath:lighthouse-insights.yml"})
@@ -28,6 +32,12 @@ public class TestOrderDao {
         order.setDesc("sss");
         order.setUserId(123);
         order.setOrderType(OrderTypeEnum.PROJECT_ACCESS);
+        List<Integer> ids = new ArrayList<>();
+        ids.add(23);
+        order.setSteps(ids);
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("projectId",23);
+        order.setExtendConfig(paramMap);
         order.setUpdateTime(localDateTime);
         order.setCreateTime(localDateTime);
         order.setHash("hash");
@@ -38,7 +48,7 @@ public class TestOrderDao {
 
     @Test
     public void testQueryById(){
-        int id = 100150;
+        int id = 100153;
         Order order = orderDao.queryById(id);
         System.out.println("order:" + JsonUtil.toJSONString(order));
     }

@@ -17,8 +17,8 @@ export default function ProjectApplyModal({onClose}) {
         const values = formRef.current.getFieldsValue();
         console.log("handler submit,values:" + JSON.stringify(values));
         const order:Order = {
-            orderType:3,
-            desc:"ss",
+            orderType:1,
+            desc:values.desc,
         }
         console.log("order is:" + JSON.stringify(order));
         requestCreateApply(order).then((result) => {
