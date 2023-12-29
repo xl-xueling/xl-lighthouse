@@ -6,7 +6,7 @@ import {requestUpdateById} from "@/api/project";
 import {Order, Project} from "@/types/insights-web";
 import {requestCreateApply} from "@/api/apply";
 
-export default function ProjectApplyModal({onClose}) {
+export default function ProjectApplyModal({projectInfo,onClose}) {
 
     const t = useLocale(locale);
     const [loading, setLoading] = useState(false);
@@ -16,9 +16,13 @@ export default function ProjectApplyModal({onClose}) {
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
         console.log("handler submit,values:" + JSON.stringify(values));
+        console.log("projectInfo:" + JSON.stringify(projectInfo));
         const order:Order = {
             orderType:1,
             desc:values.desc,
+            extendConfig:{
+                projectId:projectInfo.id,
+            }
         }
         console.log("order is:" + JSON.stringify(order));
         requestCreateApply(order).then((result) => {

@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
 import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,10 +42,15 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderStateEnum.PENDING);
         Map<String,Object> configMap = order.getExtendConfig();
         List<Integer> steps = new ArrayList<>();
+        String hash;
         if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
             int projectId = (Integer) configMap.get("projectId");
-            Role role = roleService.queryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,projectId);
+            Role role = roleService.queryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,projectId);
             System.out.println("role is:" + JsonUtil.toJSONString(role));
+            String message = userId + "_" + OrderTypeEnum.PROJECT_ACCESS.getOrderType() + "_" + projectId;
+            hash = Md5Util.getMD5(message);
+            order.setHash(hash);
+            order.setCurrentNode(role.getId());
             steps.add(role.getId());
         }
         order.setSteps(steps);
