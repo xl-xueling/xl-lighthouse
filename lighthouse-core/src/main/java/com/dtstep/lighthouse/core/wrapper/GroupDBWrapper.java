@@ -201,7 +201,7 @@ public final class GroupDBWrapper {
     }
 
     public static int changeState(GroupExtEntity groupExtEntity, int state) throws Exception {
-         GroupStateEnum groupStateEnum = GroupStateEnum.getStateEnum(state);
+         GroupStateEnum groupStateEnum = GroupStateEnum.forValue(state);
          groupExtEntity.setGroupStateEnum(groupStateEnum);
          int result;
          if(groupStateEnum == GroupStateEnum.LIMITING){
@@ -236,7 +236,7 @@ public final class GroupDBWrapper {
         if(isLimited){
             return GroupStateEnum.LIMITING;
         }else{
-            return GroupStateEnum.getStateEnum(groupEntity.getState());
+            return GroupStateEnum.forValue(groupEntity.getState());
         }
     }
 

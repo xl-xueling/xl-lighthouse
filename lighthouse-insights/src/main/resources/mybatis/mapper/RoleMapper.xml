@@ -20,6 +20,9 @@
                 #{createTime,jdbcType=TIMESTAMP},
                 #{updateTime,jdbcType=TIMESTAMP}
         )
-
     </insert>
+
+    <select id="queryById" resultMap="roleResultMap">
+        SELECT `id`,`role_type`, `resource_id`,`pid`, `create_time`, `update_time` FROM ldp_role WHERE id = #{id}
+    </select>
 </mapper>

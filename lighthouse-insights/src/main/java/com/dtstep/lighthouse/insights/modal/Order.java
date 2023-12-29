@@ -5,6 +5,8 @@ import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 public class Order implements Serializable {
 
@@ -16,7 +18,9 @@ public class Order implements Serializable {
 
     private OrderStateEnum state;
 
-    private OrderExtendConfig extendConfig;
+    private List<Integer> steps;
+
+    private Map<String,Object> extendConfig;
 
     private String hash;
 
@@ -42,14 +46,6 @@ public class Order implements Serializable {
 
     public void setState(OrderStateEnum state) {
         this.state = state;
-    }
-
-    public OrderExtendConfig getExtendConfig() {
-        return extendConfig;
-    }
-
-    public void setExtendConfig(OrderExtendConfig extendConfig) {
-        this.extendConfig = extendConfig;
     }
 
     public String getHash() {
@@ -106,5 +102,21 @@ public class Order implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public List<Integer> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<Integer> steps) {
+        this.steps = steps;
+    }
+
+    public Map<String, Object> getExtendConfig() {
+        return extendConfig;
+    }
+
+    public void setExtendConfig(Map<String, Object> extendConfig) {
+        this.extendConfig = extendConfig;
     }
 }

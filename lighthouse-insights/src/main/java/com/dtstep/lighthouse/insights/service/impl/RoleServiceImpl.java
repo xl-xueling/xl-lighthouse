@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.RoleDao;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,10 @@ public class RoleServiceImpl implements RoleService {
         role.setCreateTime(localDateTime);
         role.setUpdateTime(localDateTime);
         return roleDao.insert(role);
+    }
+
+    @Override
+    public Role queryRole(RoleTypeEnum roleTypeEnum, Integer projectId) {
+        return roleDao.queryRole(roleTypeEnum,projectId);
     }
 }
