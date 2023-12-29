@@ -46,9 +46,6 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         try{
@@ -59,18 +56,12 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
         }
 
         try{
-            if(userService.isUserNameExist(SystemConstant.DEFAULT_ADMIN_USER)){
+            if(!userService.isUserNameExist(SystemConstant.DEFAULT_ADMIN_USER)){
                 User user = new User();
                 user.setUsername(SystemConstant.DEFAULT_ADMIN_USER);
-                user.setPassword(passwordEncoder.encode(Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD)));
-                LocalDateTime localDateTime = LocalDateTime.now();
-                user.setCreateTime(localDateTime);
-                user.setUpdateTime(localDateTime);
-                user.setLastTime(localDateTime);
+                user.setPassword(Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD));
                 user.setState(UserStateEnum.USR_NORMAL);
                 userService.create(user);
-                int userId = user.getId();
-                Validate.isTrue(userId != 0);
             }
         }catch (Exception ex){
             logger.error("Admin account initialization failed!",ex);

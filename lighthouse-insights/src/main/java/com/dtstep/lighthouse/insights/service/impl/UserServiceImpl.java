@@ -38,11 +38,10 @@ public class UserServiceImpl implements UserService {
             return -1;
         }else{
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setState(UserStateEnum.USER_PEND);
             LocalDateTime localDateTime = LocalDateTime.now();
+            user.setCreateTime(localDateTime);
             user.setUpdateTime(localDateTime);
             user.setLastTime(localDateTime);
-            user.setCreateTime(localDateTime);
             return userDao.insert(user);
         }
     }
