@@ -37,8 +37,8 @@ public class TestUserDao {
         user.setLastTime(localDateTime);
         user.setUsername("sss");
         user.setPassword("1235");
-        user.setUsername("1235");
-        user.setState(UserStateEnum.USER_FREEZE);
+        user.setUsername("123522");
+        user.setState(UserStateEnum.USER_DELETED);
         user.setDepartmentId(2);
         user.setEmail("sssss");
         userDao.insert(user);
