@@ -1,31 +1,40 @@
 package com.dtstep.lighthouse.insights.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
 
 public enum OrderStateEnum {
 
-    PENDING(1),
+    PENDING(0),
 
-    APPROVED(2),
+    APPROVED(1),
 
-    REJECTED(3),
+    REJECTED(2),
 
-    RETRACTED(4),
+    RETRACTED(3),
 
     ;
+
+    @JsonValue
+    private Integer state;
 
     OrderStateEnum(int state){
         this.state = state;
     }
 
-    @JsonValue
-    private int state;
-
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(Integer state) {
         this.state = state;
+    }
+
+    @JsonCreator
+    public static OrderStateEnum forValue(int state){
+        OrderStateEnum[] values = OrderStateEnum.values();
+        return Stream.of(values).filter(it -> it.getState() == state).findAny().orElse(null);
     }
 }

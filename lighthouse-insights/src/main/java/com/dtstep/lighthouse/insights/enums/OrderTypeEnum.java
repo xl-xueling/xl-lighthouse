@@ -1,6 +1,9 @@
 package com.dtstep.lighthouse.insights.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
 
 public enum OrderTypeEnum {
 
@@ -27,5 +30,12 @@ public enum OrderTypeEnum {
 
     public void setOrderType(int orderType) {
         this.orderType = orderType;
+    }
+
+
+    @JsonCreator
+    public static OrderTypeEnum forValue(int value){
+        OrderTypeEnum[] values = OrderTypeEnum.values();
+        return Stream.of(values).filter(it -> it.getOrderType() == value).findAny().orElse(null);
     }
 }

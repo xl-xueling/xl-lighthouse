@@ -13,7 +13,6 @@ import {getColumns} from "./constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/list/locale";
 import {Order, Project} from "@/types/insights-web";
-import {requestList} from "@/api/application";
 import {getRandomString} from "@/utils/util";
 
 export default function Index() {
@@ -38,15 +37,16 @@ export default function Index() {
         console.log("fetch data...")
         const fetchOrdersInfo:Promise<{list:Array<Order>,total:number}> = new Promise<{list:Array<Order>,total:number}>((resolve) => {
             const proc = async () => {
-                const result = await requestList({
-                    // params: {
-                    //     page: current,
-                    //     pageSize,
-                    //     owner:owner?1:0,
-                    //     ...formParams,
-                    // },
-                });
-                resolve(result.data);
+                // const result = await requestList({
+                //     // params: {
+                //     //     page: current,
+                //     //     pageSize,
+                //     //     owner:owner?1:0,
+                //     //     ...formParams,
+                //     // },
+                // });
+                // resolve(result.data);
+                console.log("");
             }
             proc().then();
         })

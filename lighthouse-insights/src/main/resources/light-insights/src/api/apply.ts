@@ -9,3 +9,11 @@ export async function requestList(data) :Promise<ResultData<{list:Array<Order>,t
         data,
     })
 }
+
+export async function requestCreateApply(data) :Promise<ResultData<number>> {
+    return request({
+        url:'/apply/create',
+        method:'POST',
+        data,
+    })
+}
