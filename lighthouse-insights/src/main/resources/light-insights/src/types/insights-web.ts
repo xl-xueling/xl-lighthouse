@@ -121,14 +121,14 @@ export interface Order {
     userId?:number;
     user?:User;
     title?:string;
-    createdTime?:number;
+    createTime?:number;
+    updateTime?:number;
     desc?:string;
     state?:number;
     approveIds?:Array<number>;
     approveUsers?:Array<User>;
     orderType?:OrderTypeEnum;
-    config?:any;
-    extend?:any;
+    extendConfig?:any;
 }
 
 

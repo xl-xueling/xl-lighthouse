@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.test.dao;
 
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.RoleDao;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
@@ -28,5 +29,11 @@ public class TestRoleDao {
         role.setRoleType(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION);
         int result = roleDao.insert(role);
         System.out.println("result:" + result);
+    }
+
+    @Test
+    public void testQueryRole() throws Exception{
+        Role role = roleDao.queryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,11050);
+        System.out.println("role:" + JsonUtil.toJSONString(role));
     }
 }
