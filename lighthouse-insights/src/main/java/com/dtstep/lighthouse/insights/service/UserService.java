@@ -14,6 +14,8 @@ public interface UserService {
 
     int changePassword(ChangePasswordParam updateParam);
 
+    boolean isUserNameExist(String username);
+
     User queryById(int id);
 
     User queryAllInfoById(int id);

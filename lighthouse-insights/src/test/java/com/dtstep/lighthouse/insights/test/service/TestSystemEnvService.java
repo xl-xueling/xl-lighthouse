@@ -17,7 +17,7 @@ public class TestSystemEnvService {
 
     @Test
     public void testCreateSignKey(){
-        systemEnvService.createSignKeyIfNotExist();
+        systemEnvService.generateSignKeyIfNotExist();
     }
 
     @Test

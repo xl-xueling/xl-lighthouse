@@ -1,17 +1,13 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
-import com.dtstep.lighthouse.commonv2.entity.user.Role;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable {
 
     private Integer id;
@@ -35,13 +31,11 @@ public class User implements Serializable {
 
     private UserStateEnum state;
 
-    private Date lastTime;
+    private LocalDateTime lastTime;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
-    private Date updateTime;
-
-    private List<Role> roles;
+    private LocalDateTime updateTime;
 
     public String getUsername() {
         return username;
@@ -91,14 +85,6 @@ public class User implements Serializable {
         this.state = state;
     }
 
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -107,35 +93,35 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public Date getLastTime() {
-        return lastTime;
-    }
-
-    public void setLastTime(Date lastTime) {
-        this.lastTime = lastTime;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
     public String getConfirmPassword() {
         return confirmPassword;
     }
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public LocalDateTime getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(LocalDateTime lastTime) {
+        this.lastTime = lastTime;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 }
