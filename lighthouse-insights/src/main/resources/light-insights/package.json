@@ -33,6 +33,7 @@
     "copy-to-clipboard": "^3.3.1",
     "cross-env": "^7.0.3",
     "lodash": "^4.17.21",
+    "md5": "^2.3.0",
     "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
     "query-string": "^6.13.8",
