@@ -13,6 +13,8 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import {requestLogin} from "@/api/user";
 import {ResultData} from "@/types/insights-common";
+import md5 from 'md5';
+
 
 export default function LoginForm() {
   const t = useLocale(locale);
@@ -22,8 +24,12 @@ export default function LoginForm() {
   const [agreeLicence,setAgreeLicence] = useState(true);
 
   async function login(params) {
+    const loginParam = {
+      username:params.username,
+      password:md5(params.password),
+    }
     setLoading(true);
-    await requestLogin(params).then((response:ResultData) => {
+    await requestLogin(loginParam).then((response:ResultData) => {
       const {code, message, data} = response;
       if (code === '0') {
         localStorage.setItem('userStatus', 'login');
