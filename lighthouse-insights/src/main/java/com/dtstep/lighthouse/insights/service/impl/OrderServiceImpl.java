@@ -2,7 +2,9 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
+import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
+import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
 import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
@@ -55,5 +57,21 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setSteps(steps);
         return orderDao.insert(order);
+    }
+
+    @Override
+    public ListData<Order> queryApplyList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
+        List<Order> orders = orderDao.queryApplyList(queryParam,pageNum,pageSize);
+        ListData<Order> listData = new ListData<>();
+        listData.setList(orders);
+        return listData;
+    }
+
+    @Override
+    public ListData<Order> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
+        List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
+        ListData<Order> listData = new ListData<>();
+        listData.setList(orders);
+        return listData;
     }
 }

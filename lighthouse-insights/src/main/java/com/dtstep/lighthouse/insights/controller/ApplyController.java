@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultData;
 import com.dtstep.lighthouse.insights.modal.Order;
 import com.dtstep.lighthouse.insights.service.OrderService;
@@ -19,6 +20,13 @@ public class ApplyController {
 
     @RequestMapping("/apply/create")
     public ResultData<Integer> create(@Validated @RequestBody Order createParam) {
+        System.out.println("order create...");
+        orderService.create(createParam);
+        return ResultData.success(null);
+    }
+
+    @RequestMapping("/apply/list")
+    public ResultData<ListData<Order>> list(@Validated @RequestBody Order createParam) {
         System.out.println("order create...");
         orderService.create(createParam);
         return ResultData.success(null);

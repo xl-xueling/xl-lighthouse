@@ -39,4 +39,18 @@
                `desc`,`create_time`,`update_time`
         FROM ldp_order WHERE id = #{id}
     </select>
+
+    <select id="queryApplyList" resultMap="orderResultMap">
+        SELECT `id`,`user_id`,`order_type`,`state`,`steps`,`extend_config`,
+               `hash`,`current_node`,
+               `desc`,`create_time`,`update_time`
+        FROM ldp_order WHERE user_id = #{queryParam.applyUserId}
+    </select>
+
+    <select id="queryApproveList" resultMap="orderResultMap">
+        select a.* from ldp_order a inner join (
+            select id from ldp_role r where r.id in (select role_id from ldp_permission where owner_id = #{queryParam.approveUserId} and owner_type = '1')
+        )b on a.current_node = b.id
+    </select>
+
 </mapper>
