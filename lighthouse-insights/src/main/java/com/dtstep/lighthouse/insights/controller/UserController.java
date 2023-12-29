@@ -67,8 +67,7 @@ public class UserController {
             return ResultData.failed(ResultCode.ERROR);
         }
         String originPassword = updateParam.getOriginPassword();
-        String username = authentication.getUsername();
-        User dbUser = userService.queryByUserName(username);
+        User dbUser = userService.queryById(userId);
         if(dbUser == null || !passwordEncoder.matches(originPassword,dbUser.getPassword())){
             return ResultData.failed(ResultCode.VALIDATE_FAILED);
         }

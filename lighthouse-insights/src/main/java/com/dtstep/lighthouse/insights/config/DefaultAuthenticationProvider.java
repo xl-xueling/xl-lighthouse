@@ -22,7 +22,6 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         if(authentication.getClass() == SeedAuthenticationToken.class){
             return new SeedAuthenticationToken(((SeedAuthenticationToken) authentication).getUserId(),
-                    ((SeedAuthenticationToken) authentication).getUsername(),
                     ((SeedAuthenticationToken) authentication).getSeed());
         }else{
             String username = String.valueOf(authentication.getPrincipal());
