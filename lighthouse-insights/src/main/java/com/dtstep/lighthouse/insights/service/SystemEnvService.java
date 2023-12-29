@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.service;
 
 public interface SystemEnvService {
 
-    void createSignKeyIfNotExist();
+    void generateSignKeyIfNotExist();
 
     String getParam(String param);
 }

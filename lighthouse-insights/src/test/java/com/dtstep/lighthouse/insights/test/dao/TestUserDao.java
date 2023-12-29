@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.test.dao;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,9 +31,10 @@ public class TestUserDao {
     @Test
     public void testCreateUser() throws Exception {
         User user = new User();
-        user.setCreateTime(new Date());
-        user.setUpdateTime(new Date());
-        user.setLastTime(new Date());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        user.setCreateTime(localDateTime);
+        user.setUpdateTime(localDateTime);
+        user.setLastTime(localDateTime);
         user.setUsername("sss");
         user.setPassword("1235");
         user.setUsername("1235");
@@ -39,6 +42,12 @@ public class TestUserDao {
         user.setDepartmentId(2);
         user.setEmail("sssss");
         userDao.insert(user);
+    }
+
+    @Test
+    public void testIsUserNameExist() throws Exception {
+        boolean isExist = userDao.isUserNameExist(SystemConstant.DEFAULT_ADMIN_USER);
+        System.out.println("isExist:" + isExist);
     }
 
     @Test

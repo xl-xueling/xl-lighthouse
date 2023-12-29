@@ -7,4 +7,8 @@ public class SystemConstant {
     public final static String AUTH_ACCESS_PARAM = "accessKey";
 
     public final static String AUTH_REFRESH_PARAM = "refreshKey";
+
+    public final static String DEFAULT_ADMIN_USER = "admin";
+
+    public final static String DEFAULT_PASSWORD = "123456";
 }

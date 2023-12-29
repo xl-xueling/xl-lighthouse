@@ -20,7 +20,7 @@
         WHERE username = #{username}
     </select>
 
-    <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.User" >
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.User" >
         INSERT INTO ldp_user (`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time`) VALUES
         (
             #{username,jdbcType=VARCHAR},

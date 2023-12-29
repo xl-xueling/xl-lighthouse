@@ -17,7 +17,11 @@ package com.dtstep.lighthouse.common.enums.user;
  * limitations under the License.
  */
 
+import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
 
 
 public enum UserStateEnum {
@@ -55,5 +59,11 @@ public enum UserStateEnum {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    @JsonCreator
+    public static UserStateEnum forValue(int state){
+        UserStateEnum[] values = UserStateEnum.values();
+        return Stream.of(values).filter(it -> it.getState() == state).findAny().orElse(null);
     }
 }

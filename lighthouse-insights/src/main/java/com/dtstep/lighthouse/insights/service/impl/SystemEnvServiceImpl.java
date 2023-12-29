@@ -15,7 +15,7 @@ public class SystemEnvServiceImpl implements SystemEnvService {
     private SystemEnvDao systemEnvDao;
 
     @Override
-    public void createSignKeyIfNotExist() {
+    public void generateSignKeyIfNotExist() {
         boolean isExist = systemEnvDao.isParamExist(SystemConstant.PARAM_SIGN_KEY);
         if(!isExist){
             SystemEnv systemEnv = new SystemEnv();

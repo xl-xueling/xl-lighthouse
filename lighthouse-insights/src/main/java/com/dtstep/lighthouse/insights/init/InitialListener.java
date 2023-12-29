@@ -16,7 +16,13 @@ package com.dtstep.lighthouse.insights.init;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
+import com.dtstep.lighthouse.common.util.Md5Util;
+import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
+import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
+import com.dtstep.lighthouse.insights.service.UserService;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +30,9 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDateTime;
 
 @Configuration
 @ComponentScan("com.dtstep.lighthouse")
@@ -34,12 +43,38 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private SystemEnvService systemEnvService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         try{
-            systemEnvService.createSignKeyIfNotExist();
+            systemEnvService.generateSignKeyIfNotExist();
         }catch (Exception ex){
-            ex.printStackTrace();
+            logger.error("failed to generate sign key!",ex);
+            System.exit(-1);
+        }
+
+        try{
+            if(userService.isUserNameExist(SystemConstant.DEFAULT_ADMIN_USER)){
+                User user = new User();
+                user.setUsername(SystemConstant.DEFAULT_ADMIN_USER);
+                user.setPassword(passwordEncoder.encode(Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD)));
+                LocalDateTime localDateTime = LocalDateTime.now();
+                user.setCreateTime(localDateTime);
+                user.setUpdateTime(localDateTime);
+                user.setLastTime(localDateTime);
+                user.setState(UserStateEnum.USR_NORMAL);
+                userService.create(user);
+                int userId = user.getId();
+                Validate.isTrue(userId != 0);
+            }
+        }catch (Exception ex){
+            logger.error("Admin account initialization failed!",ex);
+            System.exit(-1);
         }
     }
 }

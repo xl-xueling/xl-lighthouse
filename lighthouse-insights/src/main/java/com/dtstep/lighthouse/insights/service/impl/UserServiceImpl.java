@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -36,12 +37,12 @@ public class UserServiceImpl implements UserService {
         if(isExist){
             return -1;
         }else{
-            Date date = new Date();
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setState(UserStateEnum.USER_PEND);
-            user.setUpdateTime(date);
-            user.setLastTime(date);
-            user.setCreateTime(date);
+            LocalDateTime localDateTime = LocalDateTime.now();
+            user.setUpdateTime(localDateTime);
+            user.setLastTime(localDateTime);
+            user.setCreateTime(localDateTime);
             return userDao.insert(user);
         }
     }
@@ -60,6 +61,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User queryById(int id) {
         return userDao.queryById(id);
+    }
+
+    @Override
+    public boolean isUserNameExist(String username) {
+        return userDao.isUserNameExist(username);
     }
 
     @Override
