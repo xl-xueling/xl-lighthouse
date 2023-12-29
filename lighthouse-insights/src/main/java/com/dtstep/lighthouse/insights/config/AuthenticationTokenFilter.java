@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.config;
 
+import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.modal.User;
@@ -31,7 +32,6 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("request url is:" + request.getRequestURI());
         String authToken = request.getHeader(SystemConstant.AUTH_ACCESS_PARAM);
         if (StringUtil.isEmptyOrNullStr(authToken)){
             filterChain.doFilter(request,response);
@@ -50,13 +50,12 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
         }
         Integer id = (Integer) jws.getBody().get("id");
         User dbUser = userService.queryById(id);
-        if(dbUser == null){
+        if(dbUser == null || dbUser.getState() != UserStateEnum.USR_NORMAL){
             filterChain.doFilter(request,response);
             return;
         }
         String seed = (String) jws.getBody().get("seed");
-        String username = (String) jws.getBody().get("username");
-        SeedAuthenticationToken authentication = new SeedAuthenticationToken(id,username,seed);
+        SeedAuthenticationToken authentication = new SeedAuthenticationToken(id,seed);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);

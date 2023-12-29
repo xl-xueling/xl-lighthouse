@@ -16,6 +16,8 @@ public interface UserService {
 
     User queryById(int id);
 
+    User queryAllInfoById(int id);
+
     User queryByUserName(String userName);
 
     ListData<User> queryList(UserQueryParam queryParam,Integer pageNum,Integer pageSize);

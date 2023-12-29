@@ -53,19 +53,16 @@ public class LoginController {
         Map<String,Object> accessMap = new HashMap<>();
         accessMap.put("id",dbUser.getId());
         accessMap.put("seed", UUID.randomUUID().toString());
-        accessMap.put("username",dbUser.getUsername());
         accessMap.put("expired", DateUtil.getMinuteAfter(now,10));
         String accessKey = Jwts.builder().setClaims(accessMap).signWith(SignatureAlgorithm.HS512, signKey).compact();
         Map<String,Object> refreshMap = new HashMap<>();
         refreshMap.put("id",dbUser.getId());
         refreshMap.put("seed", UUID.randomUUID().toString());
         refreshMap.put("username",user.getUsername());
-        refreshMap.put("password",user.getPassword());
+        refreshMap.put("password",passwordEncoder.encode(user.getPassword()));
         refreshMap.put("expired", DateUtil.getHourAfter(now,24));
         String refreshKey = Jwts.builder().setClaims(refreshMap).signWith(SignatureAlgorithm.HS512,signKey).compact();
         Map<String,String> tokenMap = new HashMap<>();
-        System.out.println("accessKey:" + accessKey);
-        System.out.println("refreshKey:" + refreshKey);
         tokenMap.put("accessKey",accessKey);
         tokenMap.put("refreshKey",refreshKey);
         return ResultData.success(tokenMap);
@@ -95,7 +92,7 @@ public class LoginController {
         String username = (String)jws.getBody().get("username");
         String password = (String)jws.getBody().get("password");
         User dbUser = userService.queryByUserName(username);
-        if(dbUser == null || !passwordEncoder.matches(password,dbUser.getPassword())){
+        if(dbUser == null || !password.equals(dbUser.getPassword())){
             return ResultData.failed(ResultCode.VALIDATE_FAILED);
         }
         long now = System.currentTimeMillis();
