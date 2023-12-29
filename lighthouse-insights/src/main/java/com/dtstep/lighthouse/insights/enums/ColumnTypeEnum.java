@@ -1,6 +1,9 @@
 package com.dtstep.lighthouse.insights.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
 
 public enum ColumnTypeEnum {
 
@@ -24,5 +27,11 @@ public enum ColumnTypeEnum {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @JsonCreator
+    public static ColumnTypeEnum forValue(String value){
+        ColumnTypeEnum[] values = ColumnTypeEnum.values();
+        return Stream.of(values).filter(it -> it.getType().equals(value)).findAny().orElse(null);
     }
 }

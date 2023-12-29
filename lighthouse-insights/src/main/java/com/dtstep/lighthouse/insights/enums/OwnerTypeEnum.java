@@ -1,6 +1,9 @@
 package com.dtstep.lighthouse.insights.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
 
 public enum OwnerTypeEnum {
 
@@ -23,5 +26,12 @@ public enum OwnerTypeEnum {
 
     public void setOwnerType(int ownerType) {
         this.ownerType = ownerType;
+    }
+
+
+    @JsonCreator
+    public static OwnerTypeEnum forValue(int value){
+        OwnerTypeEnum[] values = OwnerTypeEnum.values();
+        return Stream.of(values).filter(it -> it.getOwnerType() == value).findAny().orElse(null);
     }
 }

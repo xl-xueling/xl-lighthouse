@@ -17,7 +17,10 @@ package com.dtstep.lighthouse.common.enums.stat;
  * limitations under the License.
  */
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
 
 public enum GroupStateEnum {
 
@@ -60,12 +63,9 @@ public enum GroupStateEnum {
         this.desc = desc;
     }
 
-    public static GroupStateEnum getStateEnum(int state){
-        for(GroupStateEnum groupStateEnum : GroupStateEnum.values()){
-            if(groupStateEnum.getState() == state){
-                return groupStateEnum;
-            }
-        }
-        return null;
+    @JsonCreator
+    public static GroupStateEnum forValue(int state){
+        GroupStateEnum[] values = GroupStateEnum.values();
+        return Stream.of(values).filter(it -> it.getState() == state).findAny().orElse(null);
     }
 }

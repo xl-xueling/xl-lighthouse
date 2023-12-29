@@ -1,6 +1,9 @@
 package com.dtstep.lighthouse.insights.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
 
 public enum RoleTypeEnum {
 
@@ -39,5 +42,12 @@ public enum RoleTypeEnum {
 
     public void setRoleType(int roleType) {
         this.roleType = roleType;
+    }
+
+
+    @JsonCreator
+    public static RoleTypeEnum forValue(int value){
+        RoleTypeEnum[] values = RoleTypeEnum.values();
+        return Stream.of(values).filter(it -> it.getRoleType() == value).findAny().orElse(null);
     }
 }
