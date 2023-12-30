@@ -17,7 +17,7 @@ public class ResultData<T> {
     private MessageSource messageSource;
 
     public ResultData(){}
-    
+
     public ResultData(ResultCode resultCode,T data){
         messageSource = SpringUtil.getBean(MessageSource.class);
         String message = messageSource.getMessage(resultCode.getI18nLabel(), null, LocaleContextHolder.getLocale());

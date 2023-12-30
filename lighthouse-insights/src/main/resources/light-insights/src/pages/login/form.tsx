@@ -3,8 +3,10 @@ import {
   Input,
   Checkbox,
   Button,
+  Notification,
   Space, Message,
 } from '@arco-design/web-react';
+
 import { FormInstance } from '@arco-design/web-react/es/Form';
 import { IconLock, IconUser } from '@arco-design/web-react/icon';
 import React, {useRef, useState } from 'react';
@@ -38,7 +40,11 @@ export default function LoginForm() {
         localStorage.setItem('refreshKey',data.refreshKey);
         window.location.href = '/';
       } else {
-        Message.error(message || t['login.form.login.errMsg']);
+        Notification.info({
+          style: { width: 450 },
+          title: 'Notification',
+          content: message || t['login.form.login.errMsg'],
+        })
       }
     }).finally(() => {setLoading(false)})
   }
