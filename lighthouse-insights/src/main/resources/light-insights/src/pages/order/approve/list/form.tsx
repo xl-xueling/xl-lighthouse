@@ -27,6 +27,8 @@ function SearchForm(props: {
 
   const handleSubmit = () => {
     const values = form.getFieldsValue();
+    console.log("formValues is:" + JSON.stringify(values));
+    return;
     props.onSearch(values);
   };
 
@@ -35,54 +37,79 @@ function SearchForm(props: {
     props.onSearch({});
   };
 
-  const colSpan = lang === 'zh-CN' ? 8 : 12;
+  const colSpan = 12;
 
   return (
-    <div className={styles['search-form-wrapper']}>
-      <Form
-        form={form}
-        className={styles['search-form']}
-        labelAlign="left"
-        labelCol={{ span: 5 }}
-        wrapperCol={{ span: 19 }}
-      >
-        <Row gutter={24}>
-          <Col span={colSpan}>
-            <Form.Item label={'ID'} field="id">
-              <Input placeholder={t['searchForm.id.placeholder']} allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item label={'Name'} field="name">
-              <Input
-                allowClear
-                placeholder={t['searchForm.name.placeholder']}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item
-              label={'createTime'}
-              field="createTime"
-            >
-              <DatePicker.RangePicker
-                  allowClear
-                  style={{ width: '100%' }}
-                  disabledDate={(date) => dayjs(date).isAfter(dayjs())}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
-      <div className={styles['right-button']}>
-        <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>
-          {'搜索'}
-        </Button>
-        <Button icon={<IconRefresh />} onClick={handleReset}>
-          {'重置'}
-        </Button>
+      <div className={styles['search-form-wrapper']}>
+        <Form
+            form={form}
+            className={styles['search-form']}
+            labelAlign="left"
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 19 }}
+        >
+          <Row gutter={24}>
+            <Col span={colSpan}>
+              <Form.Item label={t['searchForm.username.label']} field="username">
+                <Input allowClear />
+              </Form.Item>
+            </Col>
+            <Col span={colSpan}>
+              <Form.Item
+                  label={t['searchForm.orderType.label']}
+                  field="orderType"
+              >
+                <Select
+                    mode="multiple"
+                    allowClear
+                >
+                  <Select.Option value={1}>{t['approveList.columns.type.project.access']}</Select.Option>
+                  <Select.Option value={2}>{t['approveList.columns.type.stat.access']}</Select.Option>
+                  <Select.Option value={3}>{t['approveList.columns.type.metrics.access']}</Select.Option>
+                  <Select.Option value={4}>{t['approveList.columns.type.adjust.limited.threshold']}</Select.Option>
+                  <Select.Option value={5}>{t['approveList.columns.type.stat.pend.approve']}</Select.Option>
+                  <Select.Option value={6}>{t['approveList.columns.type.user.pend.approve']}</Select.Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={colSpan}>
+              <Form.Item
+                  label={t['searchForm.state.label']}
+                  field="states"
+              >
+                <Select
+                    mode="multiple"
+                    allowClear
+                >
+                  <Select.Option value={0}>{t['approveList.columns.state.pending']}</Select.Option>
+                  <Select.Option value={1}>{t['approveList.columns.state.approved']}</Select.Option>
+                  <Select.Option value={2}>{t['approveList.columns.state.rejected']}</Select.Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={colSpan}>
+              <Form.Item
+                  label={'CreateTime'}
+                  field="createTime"
+              >
+                <DatePicker.RangePicker
+                    allowClear
+                    style={{ width: '100%' }}
+                    disabledDate={(date) => dayjs(date).isAfter(dayjs())}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+        <div className={styles['right-button']}>
+          <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>
+            {'搜索'}
+          </Button>
+          <Button icon={<IconRefresh />} onClick={handleReset}>
+            {'重置'}
+          </Button>
+        </div>
       </div>
-    </div>
   );
 }
 

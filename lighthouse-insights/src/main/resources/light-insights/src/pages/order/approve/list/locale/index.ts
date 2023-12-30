@@ -19,6 +19,9 @@ const i18n = {
     'approveList.columns.createTime':'CreateTime',
     'approveList.columns.operations':'Operations',
     'approveList.columns.operations.process':'Process',
+    'searchForm.username.label':'UserName',
+    'searchForm.orderType.label':'OrderType',
+    'searchForm.state.label':'State',
 
   },
   'zh-CN': {
@@ -41,6 +44,9 @@ const i18n = {
     'approveList.columns.createTime':'创建时间',
     'approveList.columns.operations':'操作',
     'approveList.columns.operations.process':'处理',
+    'searchForm.username.label':'申请人',
+    'searchForm.orderType.label':'工单类型',
+    'searchForm.state.label':'状态',
   },
 };
 
