@@ -11,4 +11,6 @@ public class SystemConstant {
     public final static String DEFAULT_ADMIN_USER = "admin";
 
     public final static String DEFAULT_PASSWORD = "123456";
+
+    public final static boolean REGISTER_NEED_APPROVE = true;
 }

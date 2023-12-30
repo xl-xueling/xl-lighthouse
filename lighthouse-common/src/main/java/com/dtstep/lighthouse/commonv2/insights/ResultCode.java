@@ -16,6 +16,8 @@ public enum ResultCode {
 
     authRenewalFailed("1002","authRenewalFailed"),
 
+    registerUserNameExist("1003","registerUserNameExist"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

@@ -40,7 +40,7 @@ export default function LoginForm() {
         window.location.href = '/';
       } else {
         Notification.info({
-          style: { width: 450 },
+          style: { width: 420 },
           title: 'Notification',
           content: message || t['login.form.login.errMsg'],
         })
