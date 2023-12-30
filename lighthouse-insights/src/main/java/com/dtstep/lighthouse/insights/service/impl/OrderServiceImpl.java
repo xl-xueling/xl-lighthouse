@@ -4,12 +4,15 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
+import com.dtstep.lighthouse.insights.dao.PermissionDao;
 import com.dtstep.lighthouse.insights.dto.OrderDto;
 import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
+import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Order;
+import com.dtstep.lighthouse.insights.modal.Permission;
 import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.BaseService;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -40,6 +44,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PermissionDao permissionDao;
 
     @Override
     public int create(Order order) {
@@ -85,6 +92,20 @@ public class OrderServiceImpl implements OrderService {
             for(Order order : orders){
                 OrderDto orderDto = new OrderDto(order);
                 int userId = orderDto.getUserId();
+                int roleId = order.getCurrentNode();
+                PermissionQueryParam permissionQueryParam = new PermissionQueryParam();
+                permissionQueryParam.setRoleId(roleId);
+                permissionQueryParam.setOwnerType(1);
+                List<Permission> permissions = permissionDao.queryList(permissionQueryParam,1,5);
+                if(CollectionUtils.isNotEmpty(permissions)){
+                    List<Integer> userIdList = permissions.stream().map(z -> z.getOwnerId()).collect(Collectors.toList());
+                    List<User> admins = new ArrayList<>();
+                    for(Integer approveUserId : userIdList){
+                        User user = userService.queryById(approveUserId);
+                        admins.add(user);
+                    }
+                    orderDto.setAdmins(admins);
+                }
                 User user = userService.queryById(userId);
                 orderDto.setUser(user);
                 orderDtoList.add(orderDto);
