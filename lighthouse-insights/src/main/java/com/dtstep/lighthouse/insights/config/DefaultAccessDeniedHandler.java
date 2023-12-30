@@ -1,8 +1,5 @@
 package com.dtstep.lighthouse.insights.config;
 
-import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.commonv2.insights.ResultData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

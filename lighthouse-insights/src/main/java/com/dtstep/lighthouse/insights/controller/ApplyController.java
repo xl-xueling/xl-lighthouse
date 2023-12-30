@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.commonv2.insights.ResultData;
+import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.modal.Order;
 import com.dtstep.lighthouse.insights.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
