@@ -30,4 +30,10 @@
         SELECT `id`,`role_type`, `resource_id`,`pid`, `create_time`, `update_time` FROM ldp_role
         WHERE role_type = #{roleTypeEnum.roleType} and resource_id = #{resourceId}
     </select>
+
+    <select id="isRoleExist" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM ldp_role
+        WHERE role_type = #{roleTypeEnum.roleType} and resource_id = #{resourceId}
+    </select>
 </mapper>

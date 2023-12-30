@@ -27,12 +27,7 @@ public class UserController {
 
     @RequestMapping("/user/register")
     public ResultData<Integer> register(@Validated @RequestBody User userParam) {
-        if(SystemConstant.REGISTER_NEED_APPROVE){
-            userParam.setState(UserStateEnum.USER_PEND);
-        }else{
-            userParam.setState(UserStateEnum.USR_NORMAL);
-        }
-        int result = userService.create(userParam);
+        int result = userService.create(userParam,SystemConstant.REGISTER_NEED_APPROVE);
         if(result > 0){
             return ResultData.success(result);
         }else if(result == -1){

@@ -16,6 +16,27 @@ public class RoleServiceImpl implements RoleService {
     private RoleDao roleDao;
 
     @Override
+    public void initRole() {
+        if(!isRoleExist(RoleTypeEnum.FULL_MANAGE_PERMISSION,0)){
+            Role fullManageRole = new Role(RoleTypeEnum.FULL_MANAGE_PERMISSION,0);
+            create(fullManageRole);
+        }
+        if(!isRoleExist(RoleTypeEnum.FULL_ACCESS_PERMISSION,0)){
+            Role fullAccessRole = new Role(RoleTypeEnum.FULL_ACCESS_PERMISSION,0);
+            create(fullAccessRole);
+        }
+        if(!isRoleExist(RoleTypeEnum.OPT_MANAGE_PERMISSION,0)){
+            Role optManageRole = new Role(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
+            create(optManageRole);
+        }
+    }
+
+    @Override
+    public boolean isRoleExist(RoleTypeEnum roleTypeEnum, Integer resourceId) {
+        return roleDao.isRoleExist(roleTypeEnum,resourceId);
+    }
+
+    @Override
     public int create(Role role) {
         LocalDateTime localDateTime = LocalDateTime.now();
         role.setCreateTime(localDateTime);
