@@ -1,16 +1,11 @@
 package com.dtstep.lighthouse.insights.controller;
 
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.commonv2.insights.ResultData;
-import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
+import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
 import com.dtstep.lighthouse.insights.dto.DeleteParam;
-import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.service.DepartmentService;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

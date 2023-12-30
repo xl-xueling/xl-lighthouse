@@ -2,19 +2,15 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.commonv2.insights.ResultData;
+import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.dto.*;
-import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.modal.Project;
-import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 @RestController
 @ControllerAdvice

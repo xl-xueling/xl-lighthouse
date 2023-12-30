@@ -1,8 +1,7 @@
 package com.dtstep.lighthouse.insights.controller;
 
-import com.dtstep.lighthouse.common.enums.result.RequestCodeEnum;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.commonv2.insights.ResultData;
+import com.dtstep.lighthouse.insights.dto.ResultData;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

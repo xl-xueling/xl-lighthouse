@@ -1,4 +1,10 @@
-package com.dtstep.lighthouse.commonv2.insights;
+package com.dtstep.lighthouse.insights.dto;
+
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.util.SpringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 public class ResultData<T> {
 
@@ -8,23 +14,15 @@ public class ResultData<T> {
 
     private T data;
 
+    private MessageSource messageSource;
+
     public ResultData(){}
-
-    public ResultData(String code ,String message,T data){
-        this.code = code;
-        this.message = message;
-        this.data = data;
-    }
-
-    public ResultData(ResultCode resultCode ,String message,T data){
-        this.code = resultCode.getCode();
-        this.message = message;
-        this.data = data;
-    }
-
+    
     public ResultData(ResultCode resultCode,T data){
+        messageSource = SpringUtil.getBean(MessageSource.class);
+        String message = messageSource.getMessage(resultCode.getI18nLabel(), null, LocaleContextHolder.getLocale());
         this.code = resultCode.getCode();
-        this.message = resultCode.getMessage();
+        this.message = message;
         this.data = data;
     }
 
