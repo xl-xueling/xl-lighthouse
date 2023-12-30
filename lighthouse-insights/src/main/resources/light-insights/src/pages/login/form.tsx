@@ -24,7 +24,6 @@ export default function LoginForm() {
   const formRef = useRef<FormInstance>();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [agreeLicence,setAgreeLicence] = useState(true);
 
   async function login(params) {
     const loginParam:LoginParam = {
@@ -51,10 +50,6 @@ export default function LoginForm() {
 
   function onSubmitClick() {
     try{
-      if(!agreeLicence){
-        Message.error(t['login.form.agreeLicence.errMsg']);
-        return;
-      }
       formRef.current.validate().then((values) => {
         login(values).then();
       });
@@ -62,7 +57,6 @@ export default function LoginForm() {
       console.log(error)
     }
   }
-
   return (
     <div className={styles['login-form-wrapper']}>
       <div className={styles['login-form-title']}>{t['login.form.title']}</div>
@@ -98,12 +92,23 @@ export default function LoginForm() {
             onPressEnter={onSubmitClick}
           />
         </Form.Item>
-        <Space size={16} direction="vertical">
-          <div className={styles['login-form-password-actions']}>
-            <Checkbox checked={agreeLicence} onChange={setAgreeLicence}>
+        <Form.Item field="agreeLicence"
+                   rules={[
+                     {
+                       validator: (value, callback) => {
+                         if (!value || value != 'true' ) {
+                           callback(t['login.form.agreeLicence.errMsg']);
+                         }
+                       },
+                     },
+                   ]}>
+          <Checkbox.Group>
+            <Checkbox value={true}>
               {t['login.form.agreeLicence']}
             </Checkbox>
-          </div>
+          </Checkbox.Group>
+        </Form.Item>
+        <Space size={16} direction="vertical">
           <Button type="primary" long htmlType='submit' loading={loading}>
             {t['login.form.login']}
           </Button>

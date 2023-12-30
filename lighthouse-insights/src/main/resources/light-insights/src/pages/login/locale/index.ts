@@ -1,9 +1,9 @@
 const i18n = {
   'en-US': {
     'login.form.title': 'XL-LightHouse',
-    'login.form.userName.errMsg': 'Username cannot be empty',
-    'login.form.password.errMsg': 'Password cannot be empty',
-    'login.form.login.errMsg': 'Login error, please refresh and try again',
+    'login.form.userName.errMsg': 'Username cannot be empty!',
+    'login.form.password.errMsg': 'Password cannot be empty!',
+    'login.form.login.errMsg': 'Login error, please refresh and try again!',
     'login.form.userName.placeholder': 'Username',
     'login.form.password.placeholder': 'Password',
     'login.form.rememberPassword': 'Remember password',
@@ -11,14 +11,6 @@ const i18n = {
     'login.form.agreeLicence': 'I agree to the terms!',
     'login.form.login': 'Login',
     'login.form.register': 'register account',
-    'login.banner.slogan1': 'Out-of-the-box high-quality template',
-    'login.banner.subSlogan1':
-      'Rich page templates, covering most typical business scenarios',
-    'login.banner.slogan2': 'Built-in solutions to common problems',
-    'login.banner.subSlogan2':
-      'Internationalization, routing configuration, state management everything',
-    'login.banner.slogan3': 'Access visualization enhancement tool AUX',
-    'login.banner.subSlogan3': 'Realize flexible block development',
     'login.form.agreeLicence.errMsg':'You need to agree to the terms first!',
   },
   'zh-CN': {
@@ -33,12 +25,6 @@ const i18n = {
     'login.form.agreeLicence': '同意使用协议！',
     'login.form.login': '登录',
     'login.form.register': '注册账号',
-    'login.banner.slogan1': '开箱即用的高质量模板',
-    'login.banner.subSlogan1': '丰富的的页面模板，覆盖大多数典型业务场景',
-    'login.banner.slogan2': '内置了常见问题的解决方案',
-    'login.banner.subSlogan2': '国际化，路由配置，状态管理应有尽有',
-    'login.banner.slogan3': '接入可视化增强工具AUX',
-    'login.banner.subSlogan3': '实现灵活的区块式开发',
     'login.form.agreeLicence.errMsg':'使用本系统需同意使用协议!',
   },
 };
