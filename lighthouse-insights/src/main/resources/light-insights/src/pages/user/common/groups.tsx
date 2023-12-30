@@ -24,22 +24,22 @@ export default function UserGroup(props:Props) {
                                 data={[
                                     {
                                         label: 'user',
-                                        value: option.username,
+                                        value: option?.username,
                                     },
                                     {
                                         label: 'email',
-                                        value: option.email,
+                                        value: option?.email,
                                     },
                                     {
                                         label: 'phone',
-                                        value: option.phone,
+                                        value: option?.phone,
                                     }
                                 ]}
                                 labelStyle={{ textAlign: 'right', paddingRight: 15}}
                             />
                         }
                     >
-                        <span key={index} style={{marginRight:'2px'}}>{option.username};</span>
+                        <span key={index} style={{marginRight:'2px'}}>{option?.username};</span>
                     </Popover>
                 );
             })

@@ -1,35 +1,83 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Form, Input, Steps, Table, TableColumnProps, Typography} from "@arco-design/web-react";
+import {Badge, Form, Input, Steps, Table, TableColumnProps, Typography} from "@arco-design/web-react";
+import UserGroup from "@/pages/user/common/groups";
+import {formatTimeStamp} from "@/utils/util";
+import useLocale from "@/utils/useLocale";
+const { Text } = Typography;
+import locale from "@/pages/order/approve/list/locale";
 
-export default function OrderDetail() {
+export default function OrderDetail({orderInfo}) {
 
+    const t = useLocale(locale);
+    const [listData, setListData] = useState([]);
     const columns: TableColumnProps[] = [
-        {
-            title: 'ID',
-            dataIndex: 'id',
-        },
-        {
-            title: 'Salary',
-            dataIndex: 'salary',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-        },
+            {
+                title: t['approveList.columns.id'],
+                dataIndex: 'id',
+                render: (value,record) =>
+                    <Text>{value}</Text>
+                ,
+            },
+            {
+                title: t['approveList.columns.user'],
+                dataIndex: 'user',
+                render: (value,record) =>
+                    <UserGroup users={[value]}/>
+                ,
+            },
+            {
+                title: t['approveList.columns.type'],
+                dataIndex: 'orderType',
+                render: (value) => {
+                    if(value == '1'){
+                        return <Text>{t['approveList.columns.type.project.access']}</Text>;
+                    }else if(value == '2'){
+                        return <Text>{t['approveList.columns.type.stat.access']}</Text>;
+                    }else if(value == '3'){
+                        return <Text>{t['approveList.columns.type.metrics.access']}</Text>;
+                    }else if(value == '4'){
+                        return <Text>{t['approveList.columns.type.adjust.limited.threshold']}</Text>;
+                    }else if(value == '5'){
+                        return <Text>{t['approveList.columns.type.stat.pend.approve']}</Text>;
+                    }else if(value == '6'){
+                        return <Text>{t['approveList.columns.type.user.pend.approve']}</Text>;
+                    }
+                },
+            },
+            {
+                title: t['approveList.columns.desc'],
+                dataIndex: 'detail',
+                render: (value,record) =>
+                {
+                    return "--";
+                }
+            },
+            {
+                title: t['approveList.columns.createTime'],
+                dataIndex: 'createTime',
+                render: (value) => {return formatTimeStamp(value)},
+            },
+            {
+                title: t['approveList.columns.state'],
+                dataIndex: 'state',
+                render: (value) => {
+                    if(value === 0){
+                        return <Badge status="processing" text={t['approveList.columns.state.pending']}/>;
+                    }else if (value === 1) {
+                        return <Badge status="success" text={t['approveList.columns.state.approved']}/>;
+                    }else if(value === 2){
+                        return <Badge status="error" text={t['approveList.columns.state.rejected']}/>;
+                    }else if(value === 3){
+                        return <Badge status="error" text={t['approveList.columns.state.retracted']}/>;
+                    }
+                },
+            }
     ];
-    const data = [
-        {
-            key: '1',
-            id: 'Jane Doe',
-            salary: 23000,
-            address: '32 Park Road, London',
-            email: 'jane.doe@example.com',
-        },
-    ];
+
+    useEffect(() => {
+        console.log("orderInfo is:" + JSON.stringify(orderInfo));
+        setListData([orderInfo]);
+    },[])
 
     return (
       <div>
@@ -39,7 +87,7 @@ export default function OrderDetail() {
           >
               工单信息
           </Typography.Title>
-          <Table pagination={false} columns={columns} data={data} />
+          <Table rowKey="id" pagination={false} columns={columns} data={listData} />
 
           <Typography.Title
               style={{ marginTop: 30 }}
@@ -47,7 +95,7 @@ export default function OrderDetail() {
           >
               用户信息
           </Typography.Title>
-          <Table pagination={false} columns={columns} data={data} />
+          <Table rowKey="id" pagination={false} columns={columns} data={listData} />
 
           <Typography.Title
               style={{ marginTop: 30 }}
