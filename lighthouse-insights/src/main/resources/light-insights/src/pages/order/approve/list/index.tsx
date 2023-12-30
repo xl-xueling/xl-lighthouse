@@ -10,17 +10,19 @@ import {
 } from '@arco-design/web-react';
 import SearchForm from "@/pages/components/filter/list/form";
 import FilterAddPanel from "@/pages/components/filter/add/filter_add";
-import {Project} from "@/types/insights-web";
+import {Order, Project} from "@/types/insights-web";
 import {requestApproveList} from "@/api/order";
 import {getColumns} from "@/pages/order/approve/list/constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/order/approve/list/locale";
+import OrderProcessPanel from "@/pages/order/approve/list/process";
 
-export default function FilterList() {
+export default function ApproveList() {
     const t = useLocale(locale);
     const [formParams, setFormParams] = useState({});
     const [listData, setListData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentOrder,setCurrentOrder] = useState<Order>();
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: true,
@@ -30,10 +32,15 @@ export default function FilterList() {
         pageSizeChangeResetCurrent: true,
     });
 
-    const [showAddPanel, setShowsAddPanel] = useState(false);
+    const [showProcessPanel, setShowProcessPanel] = useState(false);
 
     const tableCallback = async (record, type) => {
-        console.log("table callback!");
+        console.log("table callback,record:" + record + ",type:" + type);
+        if(type == 'process'){
+            console.log("process is ...")
+            setShowProcessPanel(true);
+            setCurrentOrder(record);
+        }
     };
 
     const columns = useMemo(() => getColumns(t, tableCallback), [t]);
@@ -91,20 +98,11 @@ export default function FilterList() {
     return (
         <Card>
             <SearchForm onSearch={handleSearch} />
-            <Grid.Row justify="space-between" align="center">
-                <Grid.Col span={16} style={{ textAlign: 'left' }}>
-                </Grid.Col>
-                <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                    <Space>
-                        <Button size={"small"} type="primary" onClick={() => setShowsAddPanel(true)}>创建</Button>
-                    </Space>
-                </Grid.Col>
-            </Grid.Row>
             <Table
                 rowKey="id"
                 style={{ marginTop:12}}
                 columns={columns} data={listData} />
-            {showAddPanel && <FilterAddPanel onClose={() => setShowsAddPanel(false)}/>}
+            {showProcessPanel && <OrderProcessPanel onClose={() => setShowProcessPanel(false)}/>}
         </Card>
     );
 }
