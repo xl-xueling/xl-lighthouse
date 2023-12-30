@@ -18,6 +18,10 @@ public enum ResultCode {
 
     registerUserNameExist("1003","registerUserNameExist"),
 
+    userPendApprove("1004","userPendApprove"),
+
+    userStateUnAvailable("1005","userStateUnAvailable")
+
     ;
 
     ResultCode(String code , String i18nLabel){

@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
@@ -49,6 +50,11 @@ public class LoginController {
         User dbUser = userService.queryByUserName(user.getUsername());
         if(dbUser == null || !passwordEncoder.matches(user.getPassword(),dbUser.getPassword())){
             return ResultData.failed(ResultCode.loginCheckFailed);
+        }
+        if(dbUser.getState() == UserStateEnum.USER_PEND){
+            return ResultData.failed(ResultCode.userPendApprove);
+        }else if(dbUser.getState() != UserStateEnum.USR_NORMAL){
+            return ResultData.failed(ResultCode.userStateUnAvailable);
         }
         String signKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
         long now = System.currentTimeMillis();

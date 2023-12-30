@@ -39,9 +39,9 @@ export default function LoginForm() {
         localStorage.setItem('refreshKey',data.refreshKey);
         window.location.href = '/';
       } else {
-        Notification.info({
+        Notification.warning({
           style: { width: 420 },
-          title: 'Notification',
+          title: 'Warning',
           content: message || t['login.form.login.errMsg'],
         })
       }
