@@ -83,7 +83,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             render: (_, record) => (
                 <Space size={0} direction="horizontal">
                     <Button
-                        onClick={() => callback(record, 'update')}
+                        onClick={() => callback(record, 'process')}
                         type="text"
                         size="mini">
                         {t['approveList.columns.operations.process']}
