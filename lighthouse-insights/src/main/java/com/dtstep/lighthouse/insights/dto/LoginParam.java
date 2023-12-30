@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.dto;
 
 import javax.validation.constraints.NotEmpty;
 
-public class UserLoginParam {
+public class LoginParam {
 
     @NotEmpty
     private String username;

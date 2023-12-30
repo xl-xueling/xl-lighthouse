@@ -39,7 +39,7 @@ public class StatController {
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.ERROR);
+            return ResultData.failed(ResultCode.systemError);
         }
     }
 }

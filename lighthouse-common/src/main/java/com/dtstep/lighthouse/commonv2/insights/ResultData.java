@@ -29,11 +29,11 @@ public class ResultData<T> {
     }
 
     public static<T> ResultData<T> success(T data){
-        return new ResultData<T>(ResultCode.SUCCESS,data);
+        return new ResultData<T>(ResultCode.success,data);
     }
 
     public static<T> ResultData<T> success(){
-        return new ResultData<T>(ResultCode.SUCCESS,null);
+        return new ResultData<T>(ResultCode.success,null);
     }
 
     public static<T> ResultData<T> failed(ResultCode resultCode){
