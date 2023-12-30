@@ -34,7 +34,8 @@ public class TestOrderDao {
         order.setOrderType(OrderTypeEnum.PROJECT_ACCESS);
         List<Integer> ids = new ArrayList<>();
         ids.add(23);
-        order.setSteps(ids);
+        order.setSteps(List.of(23));
+        order.setCurrentNode(23);
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("projectId",23);
         order.setExtendConfig(paramMap);

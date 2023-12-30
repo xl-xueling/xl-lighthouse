@@ -8,7 +8,7 @@ import com.dtstep.lighthouse.insights.modal.User;
 
 public interface UserService {
 
-    int initAdmin();
+    void initAdmin();
 
     int create(User user,boolean needApprove);
 

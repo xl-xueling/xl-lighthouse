@@ -21,6 +21,7 @@ import com.dtstep.lighthouse.insights.service.OrderService;
 import com.dtstep.lighthouse.insights.service.PermissionService;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import com.dtstep.lighthouse.insights.service.UserService;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,14 +54,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public int initAdmin() {
-        int adminId;
+    public void initAdmin() {
         if(!isUserNameExist(SystemConstant.DEFAULT_ADMIN_USER)){
+            int adminId;
             User user = new User();
             user.setUsername(SystemConstant.DEFAULT_ADMIN_USER);
             user.setPassword(Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD));
             create(user,false);
             adminId = user.getId();
+            Validate.isTrue(adminId != 0);
             Role role = roleService.queryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
             Permission permission = new Permission();
             permission.setOwnerId(adminId);
@@ -68,7 +70,6 @@ public class UserServiceImpl implements UserService {
             permission.setRoleId(role.getId());
             permissionService.create(permission);
         }
-        return 0;
     }
 
     @Transactional
@@ -89,17 +90,10 @@ public class UserServiceImpl implements UserService {
         user.setUpdateTime(localDateTime);
         user.setLastTime(localDateTime);
         userDao.insert(user);
-        int userId = user.getId();
+        Integer userId = user.getId();
         if(needApprove){
             Order order = new Order();
             order.setUserId(userId);
-            Role role = roleService.queryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,1);
-            order.setSteps(List.of(role.getId()));
-            order.setCurrentNode(role.getId());
-            order.setCreateTime(localDateTime);
-            order.setUpdateTime(localDateTime);
-            String origin = userId + "_" + "register";
-            order.setHash(Md5Util.getMD5(origin));
             order.setOrderType(OrderTypeEnum.USER_PEND_APPROVE);
             orderService.create(order);
         }
