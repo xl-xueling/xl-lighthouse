@@ -27,12 +27,12 @@ export default function UserGroup(props:Props) {
                                         value: option.username,
                                     },
                                     {
-                                        label: 'phone',
-                                        value: option.phone,
-                                    },
-                                    {
                                         label: 'email',
                                         value: option.email,
+                                    },
+                                    {
+                                        label: 'phone',
+                                        value: option.phone,
                                     }
                                 ]}
                                 labelStyle={{ textAlign: 'right', paddingRight: 15}}

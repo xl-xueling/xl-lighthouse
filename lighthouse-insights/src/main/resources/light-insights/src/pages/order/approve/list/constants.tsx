@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Typography, Space, Popconfirm, Message, Link} from '@arco-design/web-react';
+import {Button, Typography, Space, Popconfirm, Message, Link, Badge} from '@arco-design/web-react';
 const { Text } = Typography;
 import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
@@ -19,7 +19,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             title: t['approveList.columns.user'],
             dataIndex: 'user',
             render: (value,record) =>
-                <UserGroup users={value}/>
+                <UserGroup users={[value]}/>
             ,
         },
         {
@@ -42,16 +42,13 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             },
         },
         {
-            title: <>{t['approveList.columns.name']}<IoInformationCircleOutline style={{fontSize:12}}/></>,
-            dataIndex: 'title',
+            title: t['approveList.columns.desc'],
+            dataIndex: 'detail',
             render: (value,record) =>
             {
-                return (<div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} >
-                    <Text>{value}</Text></div>)
+                return "--";
             }
-            ,
         },
-
         {
             title: t['approveList.columns.admins'],
             dataIndex: 'admins',
@@ -65,55 +62,32 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             render: (value) => {return formatTimeStamp(value)},
         },
         {
+            title: t['approveList.columns.state'],
+            dataIndex: 'state',
+            render: (value) => {
+                if(value === 0){
+                    return <Badge status="processing" text={t['approveList.columns.state.pending']}/>;
+                }else if (value === 1) {
+                    return <Badge status="success" text={t['approveList.columns.state.approved']}/>;
+                }else if(value === 2){
+                    return <Badge status="error" text={t['approveList.columns.state.rejected']}/>;
+                }else if(value === 3){
+                    return <Badge status="error" text={t['approveList.columns.state.retracted']}/>;
+                }
+            },
+        },
+        {
             title: t['approveList.columns.operations'],
             dataIndex: 'operations',
             headerCellStyle: {width:'250px' },
             render: (_, record) => (
                 <Space size={0} direction="horizontal">
-                    <Link target={"_blank"} href={'/project/display/' + record.id}>
-                        <Button
-                            type="text"
-                            size="mini">
-                            {t['approveList.columns.operations.view']}
-                        </Button>
-                    </Link>
                     <Button
                         onClick={() => callback(record, 'update')}
                         type="text"
                         size="mini">
-                        {t['approveList.columns.operations.update']}
+                        {t['approveList.columns.operations.process']}
                     </Button>
-                    <Link target={"_blank"} href={'/project/manage/' + record.id}>
-                        <Button
-                            type="text"
-                            size="mini">
-                            {t['approveList.columns.operations.manage']}
-                        </Button>
-                    </Link>
-                    <Button
-                        onClick={() => callback(record, 'apply')}
-                        type="text"
-                        size="mini">
-                        {t['approveList.columns.operations.apply']}
-                    </Button>
-                    {/*<Popconfirm*/}
-                    {/*    position={"tr"}*/}
-                    {/*    focusLock*/}
-                    {/*    title='Confirm'*/}
-                    {/*    content='Are you sure to delete this project?'*/}
-                    {/*    onOk={() => callback(record, 'delete')}*/}
-                    {/*    onCancel={() => {*/}
-                    {/*      Message.error({*/}
-                    {/*        content: 'cancel',*/}
-                    {/*      });*/}
-                    {/*    }}*/}
-                    {/*>*/}
-                    {/*  <Button*/}
-                    {/*      type="text"*/}
-                    {/*      size="mini">*/}
-                    {/*    {t['approveList.columns.operations.delete']}*/}
-                    {/*  </Button>*/}
-                    {/*</Popconfirm>*/}
                 </Space>
             ),
         },
