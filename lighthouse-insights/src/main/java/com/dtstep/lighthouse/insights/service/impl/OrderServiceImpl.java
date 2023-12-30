@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
+import com.dtstep.lighthouse.insights.dto.OrderDto;
 import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
 import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
@@ -13,6 +14,7 @@ import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.OrderService;
 import com.dtstep.lighthouse.insights.service.RoleService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,10 +73,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ListData<Order> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
+    public ListData<OrderDto> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
         List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
-        ListData<Order> listData = new ListData<>();
-        listData.setList(orders);
+        ListData<OrderDto> listData = new ListData<>();
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(orders)){
+            for(Order order : orders){
+                OrderDto orderDto = new OrderDto(order);
+                orderDtoList.add(orderDto);
+            }
+        }
+        listData.setList(orderDtoList);
         return listData;
     }
 }
