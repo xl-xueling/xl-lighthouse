@@ -2,12 +2,16 @@ package com.dtstep.lighthouse.commonv2.insights;
 
 public enum ResultCode {
 
-    SUCCESS("0","success"),
-    ERROR("1","System Error!"),
-    VALIDATE_FAILED("2","Param Validate failed!"),
-    FORBIDDEN("3","Access Denied!"),
-    UNAUTHORIZED("4","Unauthorized!"),
-    AUTH_RENEWAL_FAILED("5","Authorization Renewal Failed"),
+    success("0","success"),
+    systemError("1","systemError"),
+    paramValidateFailed("2","paramValidateFailed"),
+
+    accessDenied("3","accessDenied"),
+    unauthorized("4","unauthorized"),
+
+    loginCheckFailed("1001","loginCheckFailed"),
+
+    authRenewalFailed("1002","authRenewalFailed"),
     ;
 
     ResultCode(String code , String message){

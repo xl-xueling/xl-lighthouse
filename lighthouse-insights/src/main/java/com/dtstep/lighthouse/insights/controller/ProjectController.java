@@ -9,6 +9,8 @@ import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,9 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @RequestMapping("/project/create")
     public ResultData<Integer> create(@Validated @RequestBody Project createParam) {
@@ -35,6 +40,9 @@ public class ProjectController {
 
     @PostMapping("/project/list")
     public ResultData<ListData<ProjectDto>> queryList(@Validated @RequestBody ListSearchObject<ProjectQueryParam> searchObject){
+        String message = messageSource.getMessage("greeting", null, LocaleContextHolder.getLocale());
+        System.out.println("locale:" + LocaleContextHolder.getLocale());
+        System.out.println("message is:" + message);
         Pagination pagination = searchObject.getPagination();
         ListData<ProjectDto> listData = projectService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
@@ -46,7 +54,7 @@ public class ProjectController {
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.ERROR);
+            return ResultData.failed(ResultCode.systemError);
         }
     }
 }

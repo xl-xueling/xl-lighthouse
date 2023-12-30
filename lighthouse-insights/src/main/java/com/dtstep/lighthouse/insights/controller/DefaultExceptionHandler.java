@@ -18,7 +18,7 @@ public class DefaultExceptionHandler {
     @ResponseBody
     public Object globalErrorHandler(HttpServletRequest request, MethodArgumentNotValidException e)
     {
-        return ResultData.failed(ResultCode.VALIDATE_FAILED);
+        return ResultData.failed(ResultCode.paramValidateFailed);
     }
 
 
@@ -26,6 +26,6 @@ public class DefaultExceptionHandler {
     @ResponseBody
     public Object globalErrorHandler(HttpServletRequest request, UnexpectedTypeException e)
     {
-        return ResultData.failed(ResultCode.VALIDATE_FAILED);
+        return ResultData.failed(ResultCode.paramValidateFailed);
     }
 }

@@ -43,7 +43,7 @@ public class DepartmentController {
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.ERROR);
+            return ResultData.failed(ResultCode.systemError);
         }
     }
 
@@ -54,7 +54,7 @@ public class DepartmentController {
         if(result == 1){
             return ResultData.success(result);
         }else{
-            return ResultData.failed(ResultCode.ERROR);
+            return ResultData.failed(ResultCode.systemError);
         }
     }
 

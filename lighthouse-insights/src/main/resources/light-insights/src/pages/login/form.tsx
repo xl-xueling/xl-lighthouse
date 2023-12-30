@@ -14,6 +14,7 @@ import styles from './style/index.module.less';
 import {requestLogin} from "@/api/user";
 import {ResultData} from "@/types/insights-common";
 import md5 from 'md5';
+import {LoginParam} from "@/types/insights-web";
 
 
 export default function LoginForm() {
@@ -24,7 +25,7 @@ export default function LoginForm() {
   const [agreeLicence,setAgreeLicence] = useState(true);
 
   async function login(params) {
-    const loginParam = {
+    const loginParam:LoginParam = {
       username:params.username,
       password:md5(params.password),
     }

@@ -29,7 +29,7 @@ public class UserController {
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.ERROR);
+            return ResultData.failed(ResultCode.systemError);
         }
     }
 
@@ -47,13 +47,13 @@ public class UserController {
         SeedAuthenticationToken authentication = (SeedAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Integer currentUserId = authentication.getUserId();
         if(currentUserId.intValue() != userId.intValue()){
-            return ResultData.failed(ResultCode.ERROR);
+            return ResultData.failed(ResultCode.systemError);
         }
         int id = userService.update(updateParam);
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.ERROR);
+            return ResultData.failed(ResultCode.systemError);
         }
     }
 
@@ -64,18 +64,18 @@ public class UserController {
         SeedAuthenticationToken authentication = (SeedAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Integer currentUserId = authentication.getUserId();
         if(currentUserId.intValue() != userId.intValue()){
-            return ResultData.failed(ResultCode.ERROR);
+            return ResultData.failed(ResultCode.systemError);
         }
         String originPassword = updateParam.getOriginPassword();
         User dbUser = userService.queryById(userId);
         if(dbUser == null || !passwordEncoder.matches(originPassword,dbUser.getPassword())){
-            return ResultData.failed(ResultCode.VALIDATE_FAILED);
+            return ResultData.failed(ResultCode.systemError);
         }
         int id = userService.changePassword(updateParam);
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.ERROR);
+            return ResultData.failed(ResultCode.systemError);
         }
     }
 

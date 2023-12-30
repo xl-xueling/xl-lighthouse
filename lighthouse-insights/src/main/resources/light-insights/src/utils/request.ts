@@ -1,6 +1,9 @@
 import axios, {AxiosResponse} from 'axios'
 import {ResultData} from "@/types/insights-common";
 import {removeLoginStatus} from "@/utils/checkLogin";
+import useStorage from "@/utils/useStorage";
+
+
 
 export const request = async <T>(config): Promise<ResultData<T>> => {
     let baseURL;
@@ -20,6 +23,12 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
     })
 
     http.interceptors.request.use((config) => {
+        const language = localStorage.getItem('arco-lang');
+        if (language) {
+            config.headers['Accept-Language'] = language;
+        }else{
+            config.headers['Accept-Language'] = 'en-US';
+        }
         config.headers['accessKey'] = window.localStorage.getItem('accessKey');
         return config;
     }, (error) => {

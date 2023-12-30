@@ -131,4 +131,9 @@ export interface Order {
     extendConfig?:any;
 }
 
+export interface LoginParam {
+    username?:string;
+    password?:string;
+}
+
 
