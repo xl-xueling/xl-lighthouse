@@ -5,7 +5,7 @@
     <resultMap id="permissionResultMap" type="com.dtstep.lighthouse.insights.modal.Permission">
         <result property="id" column="id"/>
         <result property="ownerId" column="owner_id"/>
-        <result property="ownType" column="owner_type" typeHandler="com.dtstep.lighthouse.insights.types.OwnerTypeEnumTypeHandler"/>
+        <result property="ownerType" column="owner_type" typeHandler="com.dtstep.lighthouse.insights.types.OwnerTypeEnumTypeHandler"/>
         <result property="roleId" column="role_id"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
@@ -21,4 +21,19 @@
             #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
+
+    <select id="queryList" resultMap="permissionResultMap">
+        SELECT `id`,`owner_id`,`owner_type`,`role_id`,`create_time`,`update_time`
+        FROM ldp_permission
+        <where>
+            <if test="queryParam.roleId != null">
+                AND role_id = #{queryParam.roleId}
+            </if>
+            <if test="queryParam.ownerType != null">
+                AND owner_type = #{queryParam.ownerType}
+            </if>
+        </where>
+        <bind name="offset" value="(pageNum-1)*pageSize"></bind>
+        limit ${offset},#{pageSize}
+    </select>
 </mapper>
