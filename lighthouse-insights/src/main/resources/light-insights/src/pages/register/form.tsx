@@ -1,7 +1,7 @@
 import {
     Form,
     Input,
-    Button, Message, TreeSelect,
+    Button, Message, TreeSelect, Notification,
 } from '@arco-design/web-react';
 import { FormInstance } from '@arco-design/web-react/es/Form';
 import {IconEmail, IconIdcard, IconLock, IconUser} from '@arco-design/web-react/icon';
@@ -38,7 +38,6 @@ export default function RegisterForm() {
 
       async function register(params) {
           setLoading(true);
-          console.log("params is:" + JSON.stringify(params));
           const registerParams:User = {
             username:params.username,
             password:md5(params.password),
@@ -48,16 +47,17 @@ export default function RegisterForm() {
           await requestRegister(registerParams).then((response:ResultData) => {
                   const {code, message, data} = response;
                   if (code === '0') {
-                      Message.success({
+                      Notification.info({
+                          style: { width: 420 },
+                          title: 'Notification',
                           content: t['register.form.success'],
-                          closable: true,
-                          duration: 10000,
-                          onClose:() => {
-                              // window.location.href = '/login'
-                            }
-                      });
+                      })
                   } else {
-                      Message.error(message || t['register.form.register.errMsg']);
+                      Notification.info({
+                          style: { width: 420 },
+                          title: 'Notification',
+                          content:message || t['register.form.register.errMsg'],
+                      })
                   }
               }
           ).finally(() => {

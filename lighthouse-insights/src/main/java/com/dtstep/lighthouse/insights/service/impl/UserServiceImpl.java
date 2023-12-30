@@ -42,7 +42,8 @@ public class UserServiceImpl implements UserService {
             user.setCreateTime(localDateTime);
             user.setUpdateTime(localDateTime);
             user.setLastTime(localDateTime);
-            return userDao.insert(user);
+            userDao.insert(user);
+            return user.getId();
         }
     }
 
