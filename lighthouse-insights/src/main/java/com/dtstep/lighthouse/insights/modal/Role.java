@@ -19,6 +19,13 @@ public class Role implements Serializable {
 
     private LocalDateTime updateTime;
 
+    public Role(RoleTypeEnum roleTypeEnum,Integer resourceId){
+        this.roleType = roleTypeEnum;
+        this.resourceId = resourceId;
+    }
+
+    public Role(){}
+
     public Integer getId() {
         return id;
     }

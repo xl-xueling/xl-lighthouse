@@ -8,4 +8,6 @@ public interface RoleDao {
     int insert(Role role);
 
     Role queryRole(RoleTypeEnum roleTypeEnum, Integer resourceId);
+
+    boolean isRoleExist(RoleTypeEnum roleTypeEnum,Integer resourceId);
 }

@@ -5,7 +5,11 @@ import com.dtstep.lighthouse.insights.modal.Role;
 
 public interface RoleService {
 
+    void initRole();
+
     int create(Role role);
 
-    Role queryRole(RoleTypeEnum roleTypeEnum,Integer projectId);
+    Role queryRole(RoleTypeEnum roleTypeEnum,Integer resourceId);
+
+    boolean isRoleExist(RoleTypeEnum roleTypeEnum,Integer resourceId);
 }

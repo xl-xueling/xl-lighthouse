@@ -11,9 +11,13 @@ public enum OrderTypeEnum {
 
     STAT_ACCESS(2),
 
-    GROUP_THRESHOLD_ADJUST(3),
+    METRIC_ACCESS(3),
 
-    STAT_ITEM_APPROVE(4),
+    GROUP_THRESHOLD_ADJUST(4),
+
+    STAT_PEND_APPROVE(5),
+
+    USER_PEND_APPROVE(6),
 
     ;
 

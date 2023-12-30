@@ -19,7 +19,10 @@ package com.dtstep.lighthouse.insights.init;
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.insights.service.RoleService;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
 import com.dtstep.lighthouse.insights.service.UserService;
 import org.apache.commons.lang3.Validate;
@@ -46,6 +49,9 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RoleService roleService;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         try{
@@ -56,16 +62,18 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
         }
 
         try{
-            if(!userService.isUserNameExist(SystemConstant.DEFAULT_ADMIN_USER)){
-                User user = new User();
-                user.setUsername(SystemConstant.DEFAULT_ADMIN_USER);
-                user.setPassword(Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD));
-                user.setState(UserStateEnum.USR_NORMAL);
-                userService.create(user);
-            }
+            roleService.initRole();
+        }catch (Exception ex){
+            logger.error("Exception in initializing system roles!",ex);
+            System.exit(-1);
+        }
+
+        try{
+            userService.initAdmin();
         }catch (Exception ex){
             logger.error("Admin account initialization failed!",ex);
             System.exit(-1);
         }
+
     }
 }
