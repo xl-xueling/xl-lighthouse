@@ -49,8 +49,8 @@
 
     <select id="queryApproveList" resultMap="orderResultMap">
         select a.* from ldp_order a inner join (
-            select id from ldp_role r where r.id in (select role_id from ldp_permission where owner_id = #{queryParam.approveUserId} and owner_type = '1')
-        )b on a.current_node = b.id
+            select role_id from ldp_permission where owner_id = #{queryParam.approveUserId} and owner_type = '1'
+        )b on a.current_node = b.role_id
     </select>
 
 </mapper>
