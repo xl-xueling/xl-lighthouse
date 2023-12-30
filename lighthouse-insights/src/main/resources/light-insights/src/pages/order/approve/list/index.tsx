@@ -1,47 +1,45 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {
-    Radio,
     Button,
     Card,
     Grid,
     PaginationProps,
     Space,
     Table,
-    Tabs,
-    Typography,
-    Modal,
-    Divider,
-    Steps,
-    AutoComplete,
-    Select,
-    Cascader,
-    Form,
-    Input,
-    InputNumber,
-    TreeSelect,
-    Switch,
     Message,
-    TableColumnProps,
 } from '@arco-design/web-react';
 import SearchForm from "@/pages/components/filter/list/form";
 import FilterAddPanel from "@/pages/components/filter/add/filter_add";
+import {Project} from "@/types/insights-web";
+import {requestApproveList} from "@/api/order";
+import {getColumns} from "@/pages/order/approve/list/constants";
+import useLocale from "@/utils/useLocale";
+import locale from "@/pages/order/approve/list/locale";
 
 export default function FilterList() {
-
+    const t = useLocale(locale);
     const [formParams, setFormParams] = useState({});
-
-    const [pagination, setPatination] = useState<PaginationProps>({
+    const [listData, setListData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [pagination, setPagination] = useState<PaginationProps>({
+        sizeOptions: [15,20,30,50],
         sizeCanChange: true,
         showTotal: true,
-        pageSize: 10,
+        pageSize: 15,
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
 
     const [showAddPanel, setShowsAddPanel] = useState(false);
 
+    const tableCallback = async (record, type) => {
+        console.log("table callback!");
+    };
+
+    const columns = useMemo(() => getColumns(t, tableCallback), [t]);
+
     function onChangeTable({ current, pageSize }) {
-        setPatination({
+        setPagination({
             ...pagination,
             current,
             pageSize,
@@ -49,65 +47,46 @@ export default function FilterList() {
     }
 
     function handleSearch(params) {
-        setPatination({ ...pagination, current: 1 });
+        setPagination({ ...pagination, current: 1 });
         setFormParams(params);
     }
 
-    const columns: TableColumnProps[] = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-        },
-        {
-            title: 'Salary',
-            dataIndex: 'salary',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-        },
-    ];
-    const data = [
-        {
-            key: '1',
-            name: 'Jane Doe',
-            salary: 23000,
-            address: '32 Park Road, London',
-            email: 'jane.doe@example.com',
-        },
-        {
-            key: '2',
-            name: 'Alisa Ross',
-            salary: 25000,
-            address: '35 Park Road, London',
-            email: 'alisa.ross@example.com',
-        },
-        {
-            key: '3',
-            name: 'Kevin Sandra',
-            salary: 22000,
-            address: '31 Park Road, London',
-            email: 'kevin.sandra@example.com',
-        },
-        {
-            key: '4',
-            name: 'Ed Hellen',
-            salary: 17000,
-            address: '42 Park Road, London',
-            email: 'ed.hellen@example.com',
-        },
-        {
-            key: '5',
-            name: 'William Smith',
-            salary: 27000,
-            address: '62 Park Road, London',
-            email: 'william.smith@example.com',
-        },
-    ];
+    const fetchData = async (): Promise<void> => {
+        setLoading(true);
+        const {current, pageSize} = pagination;
+        const combineParam:any = {}
+        const fetchApproveList:Promise<{list:Array<Project>,total:number}> = new Promise<{list:Array<Project>,total:number}>((resolve) => {
+            const proc = async () => {
+                const result = await requestApproveList({
+                    // queryParams:combineParam,
+                        pagination:{
+                            pageSize:pageSize,
+                            pageNum:current,
+                        }
+                    }
+                );
+                resolve(result.data);
+            }
+            proc().then();
+        })
+        const result = await Promise.all([fetchApproveList]);
+        const {list,total}:{list:Array<Project>,total:number} = result[0];
+        setListData(list);
+        setPagination({
+            ...pagination,
+            current,
+            pageSize,
+            total: total});
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        fetchData().then().catch(error => {
+            console.log(error);
+            Message.error(t['system.error']);
+        })
+    }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+
 
     return (
         <Card>
@@ -122,9 +101,9 @@ export default function FilterList() {
                 </Grid.Col>
             </Grid.Row>
             <Table
+                rowKey="id"
                 style={{ marginTop:12}}
-                columns={columns} data={data} />
-
+                columns={columns} data={listData} />
             {showAddPanel && <FilterAddPanel onClose={() => setShowsAddPanel(false)}/>}
         </Card>
     );

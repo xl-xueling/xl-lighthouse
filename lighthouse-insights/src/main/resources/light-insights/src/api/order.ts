@@ -2,17 +2,17 @@ import {request} from "@/utils/request";
 import {FilterComponent, ResultData} from "@/types/insights-common";
 import {Department, Order, Project} from "@/types/insights-web";
 
-export async function requestList(data) :Promise<ResultData<{list:Array<Order>,total:number}>> {
+export async function requestApproveList(data) :Promise<ResultData<{list:Array<Order>,total:number}>> {
     return request({
-        url:'/order/application/list',
+        url:'/approve/list',
         method:'POST',
         data,
     })
 }
 
-export async function requestCreateApply(data) :Promise<ResultData<number>> {
+export async function requestApplyList(data) :Promise<ResultData<{list:Array<Order>,total:number}>> {
     return request({
-        url:'/apply/create',
+        url:'/apply/list',
         method:'POST',
         data,
     })

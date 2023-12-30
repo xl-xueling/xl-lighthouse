@@ -11,9 +11,11 @@ import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Order;
 import com.dtstep.lighthouse.insights.modal.Role;
+import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.OrderService;
 import com.dtstep.lighthouse.insights.service.RoleService;
+import com.dtstep.lighthouse.insights.service.UserService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public int create(Order order) {
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -48,7 +53,6 @@ public class OrderServiceImpl implements OrderService {
         if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
             int projectId = (Integer) configMap.get("projectId");
             Role role = roleService.queryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,projectId);
-            System.out.println("role is:" + JsonUtil.toJSONString(role));
             String message = order.getUserId() + "_" + OrderTypeEnum.PROJECT_ACCESS.getOrderType() + "_" + projectId;
             order.setHash(Md5Util.getMD5(message));
             order.setCurrentNode(role.getId());
@@ -80,6 +84,9 @@ public class OrderServiceImpl implements OrderService {
         if(CollectionUtils.isNotEmpty(orders)){
             for(Order order : orders){
                 OrderDto orderDto = new OrderDto(order);
+                int userId = orderDto.getUserId();
+                User user = userService.queryById(userId);
+                orderDto.setUser(user);
                 orderDtoList.add(orderDto);
             }
         }
