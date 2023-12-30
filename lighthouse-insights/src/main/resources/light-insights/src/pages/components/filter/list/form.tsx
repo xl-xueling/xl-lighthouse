@@ -35,7 +35,7 @@ function SearchForm(props: {
     props.onSearch({});
   };
 
-  const colSpan = lang === 'zh-CN' ? 8 : 12;
+  const colSpan = 12;
 
   return (
     <div className={styles['search-form-wrapper']}>
@@ -48,12 +48,7 @@ function SearchForm(props: {
       >
         <Row gutter={24}>
           <Col span={colSpan}>
-            <Form.Item label={'ID'} field="id">
-              <Input placeholder={t['searchForm.id.placeholder']} allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item label={'Name'} field="name">
+            <Form.Item label={'UserName'} field="username">
               <Input
                 allowClear
                 placeholder={t['searchForm.name.placeholder']}
@@ -62,8 +57,40 @@ function SearchForm(props: {
           </Col>
           <Col span={colSpan}>
             <Form.Item
-              label={'createdTime'}
-              field="createdTime"
+                label={'OrderType'}
+                field="orderType"
+            >
+              <Select
+                  placeholder={t['userList.state.placeholder']}
+                  mode="multiple"
+                  allowClear
+              >
+                <Select.Option value={0}>PENDING</Select.Option>
+                <Select.Option value={1}>NORMAL</Select.Option>
+                <Select.Option value={2}>APPROVED</Select.Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={colSpan}>
+            <Form.Item
+                label={'State'}
+                field="states"
+            >
+              <Select
+                  placeholder={t['userList.state.placeholder']}
+                  mode="multiple"
+                  allowClear
+              >
+                <Select.Option value={0}>PENDING</Select.Option>
+                <Select.Option value={1}>NORMAL</Select.Option>
+                <Select.Option value={2}>APPROVED</Select.Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={colSpan}>
+            <Form.Item
+              label={'CreateTime'}
+              field="createTime"
             >
               <DatePicker.RangePicker
                   allowClear

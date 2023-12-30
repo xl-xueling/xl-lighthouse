@@ -1,21 +1,17 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {
-    Button,
     Card,
-    Grid,
     PaginationProps,
-    Space,
     Table,
     Message,
 } from '@arco-design/web-react';
-import SearchForm from "@/pages/components/filter/list/form";
-import FilterAddPanel from "@/pages/components/filter/add/filter_add";
 import {Order, Project} from "@/types/insights-web";
 import {requestApproveList} from "@/api/order";
 import {getColumns} from "@/pages/order/approve/list/constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/order/approve/list/locale";
 import OrderProcessPanel from "@/pages/order/approve/list/process";
+import SearchForm from "@/pages/order/approve/list/form";
 
 export default function ApproveList() {
     const t = useLocale(locale);
@@ -35,7 +31,6 @@ export default function ApproveList() {
     const [showProcessPanel, setShowProcessPanel] = useState(false);
 
     const tableCallback = async (record, type) => {
-        console.log("table callback,record:" + record + ",type:" + type);
         if(type == 'process'){
             console.log("process is ...")
             setShowProcessPanel(true);
