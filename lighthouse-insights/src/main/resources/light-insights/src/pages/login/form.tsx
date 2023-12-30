@@ -72,7 +72,10 @@ export default function LoginForm() {
       >
         <Form.Item
           field="username"
-          rules={[{ required: true, message: t['login.form.userName.errMsg'] }]}
+          rules={[
+            { required: true, message: t['login.form.userName.errMsg'] , validateTrigger : ['onBlur']},
+            { required: true, match: new RegExp(/^[a-zA-Z0-9_]{5,15}$/,"g"),message: t['login.form.userName.validate.errMsg'] , validateTrigger : ['onBlur']},
+          ]}
         >
           <Input
             prefix={<IconUser />}
@@ -83,7 +86,10 @@ export default function LoginForm() {
         </Form.Item>
         <Form.Item
           field="password"
-          rules={[{ required: true, message: t['login.form.password.errMsg'] }]}
+          rules={[
+            { required: true, message: t['login.form.password.errMsg'], validateTrigger : ['onBlur'] },
+            { required: true, match: new RegExp(/^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{5,24}$/,"g"),message: t['login.form.password.validate.errMsg'] , validateTrigger : ['onBlur']},
+          ]}
         >
           <Input.Password
             prefix={<IconLock />}
