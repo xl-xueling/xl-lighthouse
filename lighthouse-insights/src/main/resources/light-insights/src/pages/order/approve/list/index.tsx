@@ -102,7 +102,7 @@ export default function ApproveList() {
                 rowKey="id"
                 style={{ marginTop:12}}
                 columns={columns} data={listData} />
-            {showProcessPanel && <OrderProcessPanel onClose={() => setShowProcessPanel(false)}/>}
+            {showProcessPanel && <OrderProcessPanel orderInfo={currentOrder} onClose={() => setShowProcessPanel(false)}/>}
         </Card>
     );
 }
