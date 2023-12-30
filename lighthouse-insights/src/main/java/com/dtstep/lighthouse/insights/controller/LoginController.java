@@ -67,7 +67,7 @@ public class LoginController {
         refreshMap.put("id",dbUser.getId());
         refreshMap.put("seed", UUID.randomUUID().toString());
         refreshMap.put("username",user.getUsername());
-        refreshMap.put("password",passwordEncoder.encode(user.getPassword()));
+        refreshMap.put("password",dbUser.getPassword());
         refreshMap.put("expired", DateUtil.getHourAfter(now,24));
         String refreshKey = Jwts.builder().setClaims(refreshMap).signWith(SignatureAlgorithm.HS512,signKey).compact();
         Map<String,String> tokenMap = new HashMap<>();
@@ -102,6 +102,9 @@ public class LoginController {
         User dbUser = userService.queryByUserName(username);
         if(dbUser == null || !password.equals(dbUser.getPassword())){
             return ResultData.failed(ResultCode.paramValidateFailed);
+        }
+        if(dbUser.getState() != UserStateEnum.USR_NORMAL){
+            return ResultData.failed(ResultCode.userStateUnAvailable);
         }
         long now = System.currentTimeMillis();
         Map<String,Object> accessMap = new HashMap<>();

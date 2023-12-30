@@ -4,7 +4,6 @@ import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/create/locale";
 import {requestUpdateById} from "@/api/project";
 import {Order, Project} from "@/types/insights-web";
-import {requestCreateApply} from "@/api/apply";
 
 export default function ProjectApplyModal({projectInfo,onClose}) {
 
@@ -25,22 +24,22 @@ export default function ProjectApplyModal({projectInfo,onClose}) {
             }
         }
         console.log("order is:" + JSON.stringify(order));
-        requestCreateApply(order).then((result) => {
-            console.log("result:" + JSON.stringify(result));
-            if(result.code === '0'){
-                Message.success(t['projectCreate.form.submit.success']);
-                // setTimeout(() => {
-                //     window.location.href = "/project/list";
-                // },3000)
-            }else{
-                Message.error(result.message || t['system.error']);
-            }
-        }).catch((error) => {
-            console.log(error);
-            Message.error(t['system.error'])
-        }).finally(() => {
-            setLoading(false);
-        })
+        // requestCreateApply(order).then((result) => {
+        //     console.log("result:" + JSON.stringify(result));
+        //     if(result.code === '0'){
+        //         Message.success(t['projectCreate.form.submit.success']);
+        //         // setTimeout(() => {
+        //         //     window.location.href = "/project/list";
+        //         // },3000)
+        //     }else{
+        //         Message.error(result.message || t['system.error']);
+        //     }
+        // }).catch((error) => {
+        //     console.log(error);
+        //     Message.error(t['system.error'])
+        // }).finally(() => {
+        //     setLoading(false);
+        // })
     }
 
     const data = [
