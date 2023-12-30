@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
+import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.ResultData;
@@ -25,9 +27,16 @@ public class UserController {
 
     @RequestMapping("/user/register")
     public ResultData<Integer> register(@Validated @RequestBody User userParam) {
-        int id = userService.create(userParam);
-        if(id > 0){
-            return ResultData.success(id);
+        if(SystemConstant.REGISTER_NEED_APPROVE){
+            userParam.setState(UserStateEnum.USER_PEND);
+        }else{
+            userParam.setState(UserStateEnum.USR_NORMAL);
+        }
+        int result = userService.create(userParam);
+        if(result > 0){
+            return ResultData.success(result);
+        }else if(result == -1){
+            return ResultData.failed(ResultCode.registerUserNameExist);
         }else{
             return ResultData.failed(ResultCode.systemError);
         }
