@@ -30,7 +30,7 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null})
                 label: (
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <IconUser style={{ marginRight:5 }}/>
-                        {user.userName}
+                        {user.username}
                     </div>
                 ),
                 value: user.id,
@@ -62,7 +62,7 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null})
                             label: (
                                 <div style={{display: 'flex', alignItems: 'center'}}>
                                     <IconUser style={{marginRight: 5}}/>
-                                    {user.userName}
+                                    {user.username}
                                 </div>
                             ),
                             value: user.id,

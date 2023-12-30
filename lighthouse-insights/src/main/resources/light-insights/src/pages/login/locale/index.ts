@@ -2,7 +2,7 @@ const i18n = {
   'en-US': {
     'login.form.title': 'XL-LightHouse',
     'login.form.userName.errMsg': 'Username cannot be empty',
-    'login.form.userName.validate.errMsg': 'Username verification failed',
+    'login.form.userName.validate.errMsg': 'Username verification failed!',
     'login.form.password.errMsg': 'Password cannot be empty',
     'register.form.password.validate.errMsg': 'Password verification failed',
     'login.form.login.errMsg': 'Login error, please refresh and try again!',

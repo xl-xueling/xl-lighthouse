@@ -63,7 +63,7 @@ const TreeTransfer = ({ dataSource, targetKeys, changeCurrentDataSource,...restP
                     if (refFetchId.current === fetchId) {
                         const users:Array<User> = result.data.list;
                         users.forEach(z => {
-                            dataArray.push({"key":z.id+"","title":z.userName})
+                            dataArray.push({"key":z.id+"","title":z.username})
                         })
                         changeCurrentDataSource(dataArray);
                     }

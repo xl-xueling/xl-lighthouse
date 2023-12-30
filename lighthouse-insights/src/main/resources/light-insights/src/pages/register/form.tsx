@@ -12,8 +12,9 @@ import styles from './style/index.module.less';
 import {ResultData} from "@/types/insights-common";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import {fetchAllDepartmentData, translate} from "@/pages/department/common";
-import {ArcoTreeNode} from "@/types/insights-web";
+import {ArcoTreeNode, User} from "@/types/insights-web";
 import {requestRegister} from "@/api/user";
+import md5 from 'md5';
 
 export default function RegisterForm() {
 
@@ -37,8 +38,14 @@ export default function RegisterForm() {
 
       async function register(params) {
           setLoading(true);
-          await requestRegister(params).then((response:ResultData) => {
-                console.log("response is：" + JSON.stringify(response));
+          console.log("params is:" + JSON.stringify(params));
+          const registerParams:User = {
+            username:params.username,
+            password:md5(params.password),
+            email:params.email,
+            departmentId:Number(params.departmentId),
+          }
+          await requestRegister(registerParams).then((response:ResultData) => {
                   const {code, message, data} = response;
                   if (code === '0') {
                       Message.success({
