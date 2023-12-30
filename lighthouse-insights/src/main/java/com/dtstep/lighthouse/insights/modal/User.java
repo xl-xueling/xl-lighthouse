@@ -2,9 +2,7 @@ package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -13,20 +11,20 @@ public class User implements Serializable {
     private Integer id;
 
     @NotEmpty
-    @Size(min = 5,max = 15)
+    @Pattern(regexp = "^[a-zA-Z0-9_]{5,15}$")
     private String username;
 
     @NotEmpty
-    @Size(min = 6,max = 50)
+    @Pattern(regexp = "^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{5,32}$")
     private String password;
-
-    private String confirmPassword;
 
     @NotNull
     private Integer departmentId;
 
     private String phone;
 
+    @NotEmpty
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     private String email;
 
     private UserStateEnum state;
@@ -91,14 +89,6 @@ public class User implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 
     public LocalDateTime getLastTime() {

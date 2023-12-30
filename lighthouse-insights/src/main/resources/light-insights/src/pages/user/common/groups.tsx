@@ -24,7 +24,7 @@ export default function UserGroup(props:Props) {
                                 data={[
                                     {
                                         label: 'user',
-                                        value: option.userName,
+                                        value: option.username,
                                     },
                                     {
                                         label: 'phone',
@@ -39,7 +39,7 @@ export default function UserGroup(props:Props) {
                             />
                         }
                     >
-                        <span key={index} style={{marginRight:'2px'}}>{option.userName};</span>
+                        <span key={index} style={{marginRight:'2px'}}>{option.username};</span>
                     </Popover>
                 );
             })
