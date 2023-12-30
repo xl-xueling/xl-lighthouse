@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.controller;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.modal.Order;
+import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -18,9 +19,14 @@ public class ApplyController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private BaseService baseService;
+
     @RequestMapping("/apply/create")
     public ResultData<Integer> create(@Validated @RequestBody Order createParam) {
         System.out.println("order create...");
+        int userId = baseService.getCurrentUserId();
+        createParam.setUserId(userId);
         orderService.create(createParam);
         return ResultData.success(null);
     }

@@ -36,8 +36,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public int create(Order order) {
-        int userId = baseService.getCurrentUserId();
-        order.setUserId(userId);
         LocalDateTime localDateTime = LocalDateTime.now();
         order.setCreateTime(localDateTime);
         order.setUpdateTime(localDateTime);
@@ -49,9 +47,14 @@ public class OrderServiceImpl implements OrderService {
             int projectId = (Integer) configMap.get("projectId");
             Role role = roleService.queryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,projectId);
             System.out.println("role is:" + JsonUtil.toJSONString(role));
-            String message = userId + "_" + OrderTypeEnum.PROJECT_ACCESS.getOrderType() + "_" + projectId;
-            hash = Md5Util.getMD5(message);
-            order.setHash(hash);
+            String message = order.getUserId() + "_" + OrderTypeEnum.PROJECT_ACCESS.getOrderType() + "_" + projectId;
+            order.setHash(Md5Util.getMD5(message));
+            order.setCurrentNode(role.getId());
+            steps.add(role.getId());
+        }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
+            Role role = roleService.queryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
+            String message = order.getUserId() + "_" + "register";
+            order.setHash(Md5Util.getMD5(message));
             order.setCurrentNode(role.getId());
             steps.add(role.getId());
         }

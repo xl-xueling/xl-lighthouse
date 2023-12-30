@@ -21,7 +21,7 @@ const i18n = {
     'register.form.forgetPassword': 'Forgot password',
     'register.form.register': 'Register Account',
     'register.form.login': 'login',
-    'register.form.success':'Registration Success!',
+    'register.form.success':'Register successfully, waiting for admins approve!',
   },
   'zh-CN': {
     'register.form.title': 'XL-LightHouse',
@@ -45,7 +45,7 @@ const i18n = {
     'register.form.forgetPassword': '忘记密码',
     'register.form.register': '注册',
     'register.form.login': '登录',
-    'register.form.success':'用户注册成功!',
+    'register.form.success':'注册成功，请等待管理员审核!',
   },
 };
 

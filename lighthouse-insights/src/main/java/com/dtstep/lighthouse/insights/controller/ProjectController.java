@@ -36,9 +36,6 @@ public class ProjectController {
 
     @PostMapping("/project/list")
     public ResultData<ListData<ProjectDto>> queryList(@Validated @RequestBody ListSearchObject<ProjectQueryParam> searchObject){
-        String message = messageSource.getMessage("greeting", null, LocaleContextHolder.getLocale());
-        System.out.println("locale:" + LocaleContextHolder.getLocale());
-        System.out.println("message is:" + message);
         Pagination pagination = searchObject.getPagination();
         ListData<ProjectDto> listData = projectService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
