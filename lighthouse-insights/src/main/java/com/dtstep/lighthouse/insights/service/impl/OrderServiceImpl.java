@@ -1,14 +1,12 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
-import com.dtstep.lighthouse.insights.dto.OrderDto;
-import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
-import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
-import com.dtstep.lighthouse.insights.dto.UserDto;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
@@ -21,8 +19,10 @@ import com.dtstep.lighthouse.insights.service.OrderService;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import com.dtstep.lighthouse.insights.service.UserService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -114,5 +114,29 @@ public class OrderServiceImpl implements OrderService {
         }
         listData.setList(orderDtoList);
         return listData;
+    }
+
+    @Transactional
+    @Override
+    public int approve(OrderApproveParam approveParam) {
+        int result = approveParam.getResult();
+        Order dbOrder = orderDao.queryById(approveParam.getId());
+        Validate.notNull(dbOrder);
+        if(result == 1){
+            dbOrder.setState(OrderStateEnum.APPROVED);
+        }else if(result == 2){
+            dbOrder.setState(OrderStateEnum.REJECTED);
+        }
+        dbOrder.setUpdateTime(LocalDateTime.now());
+        dbOrder.setCurrentNode(0);
+        orderDao.update(dbOrder);
+        if(dbOrder.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
+            UserUpdateParam userUpdateParam = new UserUpdateParam();
+            userUpdateParam.setState(UserStateEnum.USR_NORMAL);
+            userUpdateParam.setUpdateTime(LocalDateTime.now());
+            userService.update(userUpdateParam);
+        }
+
+        return 0;
     }
 }

@@ -145,16 +145,19 @@
         UPDATE ldp_user
         <set>
             <if test="username != null">
-                username = #{username},
+                `username` = #{username},
             </if>
             <if test="email != null">
-                email = #{email},
+                `email` = #{email},
             </if>
             <if test="phone != null">
-                phone = #{phone},
+                `phone` = #{phone},
             </if>
             <if test="departmentId != null">
-                department_id = #{departmentId},
+                `department_id` = #{departmentId},
+            </if>
+            <if test="state != null">
+                `state` = #{state.state},
             </if>
         </set>
         WHERE id = #{id}
@@ -164,7 +167,7 @@
         UPDATE ldp_user
         <set>
             <if test="password != null">
-                password = #{password},
+                `password` = #{password},
             </if>
         </set>
         WHERE id = #{id}
@@ -174,7 +177,7 @@
         UPDATE ldp_user
         <set>
             <if test="userStateEnum != null">
-                state = #{userStateEnum.state},
+                `state` = #{userStateEnum.state},
             </if>
         </set>
         WHERE id = #{id}

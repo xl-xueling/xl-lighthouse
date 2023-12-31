@@ -34,4 +34,10 @@ public class ApproveController {
         ListData<OrderDto> listData = orderService.queryApproveList(queryParam,pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
     }
+
+    @PostMapping("/approve/process")
+    public ResultData<Integer> approve(@RequestBody OrderApproveParam approveParam){
+        orderService.approve(approveParam);
+        return ResultData.success(0);
+    }
 }
