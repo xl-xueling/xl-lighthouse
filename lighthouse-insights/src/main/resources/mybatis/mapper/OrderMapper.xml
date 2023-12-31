@@ -15,7 +15,7 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.Order" >
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Order" >
         INSERT INTO ldp_order (`user_id`,`order_type`,`state`,`steps`,`extend_config`,
                                     `hash`,`current_node`,
                                     `desc`,`create_time`,`update_time`) VALUES

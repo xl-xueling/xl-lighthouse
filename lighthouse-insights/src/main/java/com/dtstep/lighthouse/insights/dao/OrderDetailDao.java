@@ -10,5 +10,5 @@ public interface OrderDetailDao {
 
     int insert(OrderDetail orderDetail);
 
-    List<OrderDetail> queryList();
+    List<OrderDetail> queryList(Integer orderId);
 }

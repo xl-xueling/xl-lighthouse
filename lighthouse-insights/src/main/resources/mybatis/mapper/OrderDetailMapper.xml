@@ -4,6 +4,7 @@
     <resultMap id="orderDetailMap" type="com.dtstep.lighthouse.insights.modal.OrderDetail">
         <id property="id" column="id"/>
         <result property="orderId" column="order_id"/>
+        <result property="userId" column="user_id"/>
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.ApproveStateEnumTypeHandler"/>
         <result property="roleId" column="role_id"/>
         <result property="reply" column="reply"/>
@@ -11,8 +12,8 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.dtstep.lighthouse.insights.modal.OrderDetail" >
-        INSERT INTO ldp_order_detail (`order_id`,`state`,`role_id`,`reply`,`create_time`,`update_time`) VALUES
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.OrderDetail" >
+        INSERT INTO ldp_order_detail (`order_id`,`user_id`,`state`,`role_id`,`reply`,`create_time`,`update_time`) VALUES
         (
             #{orderId,jdbcType=INTEGER},
             #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ApproveStateEnumTypeHandler},
@@ -22,4 +23,10 @@
             #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
+
+
+    <select id="queryList" resultMap="orderDetailMap">
+        select `id`,`order_id`,`user_id`,`state`,`role_id`,`reply`,`create_time`,`update_time`
+        from ldp_order_detail where order_id = #{orderId}
+    </select>
 </mapper>

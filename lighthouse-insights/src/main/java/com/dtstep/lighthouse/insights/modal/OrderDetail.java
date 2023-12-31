@@ -15,6 +15,8 @@ public class OrderDetail implements Serializable {
 
     private Integer roleId;
 
+    private Integer userId;
+
     private String reply;
 
     private LocalDateTime createTime;
@@ -75,5 +77,13 @@ public class OrderDetail implements Serializable {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

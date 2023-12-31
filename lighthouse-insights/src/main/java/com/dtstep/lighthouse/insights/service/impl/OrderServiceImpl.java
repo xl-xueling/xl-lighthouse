@@ -13,10 +13,7 @@ import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
-import com.dtstep.lighthouse.insights.service.BaseService;
-import com.dtstep.lighthouse.insights.service.OrderService;
-import com.dtstep.lighthouse.insights.service.RoleService;
-import com.dtstep.lighthouse.insights.service.UserService;
+import com.dtstep.lighthouse.insights.service.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +48,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private PermissionDao permissionDao;
 
+    @Autowired
+    private OrderDetailService orderDetailService;
+
     @Override
     public int create(Order order) {
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -75,7 +75,18 @@ public class OrderServiceImpl implements OrderService {
             steps.add(role.getId());
         }
         order.setSteps(steps);
-        return orderDao.insert(order);
+        orderDao.insert(order);
+        int orderId = order.getId();
+        for(Integer roleId : steps){
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setCreateTime(localDateTime);
+            orderDetail.setUpdateTime(localDateTime);
+            orderDetail.setOrderId(orderId);
+            orderDetail.setState(ApproveStateEnum.PENDING);
+            orderDetail.setRoleId(roleId);
+            orderDetailDao.insert(orderDetail);
+        }
+        return orderId;
     }
 
     @Override
@@ -86,6 +97,34 @@ public class OrderServiceImpl implements OrderService {
         return listData;
     }
 
+    private OrderDto translate(Order order){
+        OrderDto orderDto = new OrderDto(order);
+        int userId = orderDto.getUserId();
+        List<Integer> roleIds = order.getSteps();
+        HashMap<Integer,List<UserDto>> adminsMap = new HashMap<>();
+        for(Integer roleId : roleIds){
+            PermissionQueryParam permissionQueryParam = new PermissionQueryParam();
+            permissionQueryParam.setRoleId(roleId);
+            permissionQueryParam.setOwnerType(1);
+            List<UserDto> admins = new ArrayList<>();
+            List<Permission> permissions = permissionDao.queryList(permissionQueryParam,1,4);
+            if(CollectionUtils.isNotEmpty(permissions)){
+                List<Integer> userIdList = permissions.stream().map(z -> z.getOwnerId()).collect(Collectors.toList());
+                for(Integer approveUserId : userIdList){
+                    UserDto user = userService.queryById(approveUserId);
+                    admins.add(user);
+                }
+            }
+            adminsMap.put(roleId,admins);
+        }
+        orderDto.setAdminsMap(adminsMap);
+        UserDto user = userService.queryById(userId);
+        List<OrderDetailDto> orderDetails = orderDetailService.queryList(order.getId());
+        orderDto.setOrderDetails(orderDetails);
+        orderDto.setUser(user);
+        return orderDto;
+    }
+
     @Override
     public ListData<OrderDto> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
         List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
@@ -93,24 +132,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderDto> orderDtoList = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(orders)){
             for(Order order : orders){
-                OrderDto orderDto = new OrderDto(order);
-                int userId = orderDto.getUserId();
-                int roleId = order.getCurrentNode();
-                PermissionQueryParam permissionQueryParam = new PermissionQueryParam();
-                permissionQueryParam.setRoleId(roleId);
-                permissionQueryParam.setOwnerType(1);
-                List<Permission> permissions = permissionDao.queryList(permissionQueryParam,1,5);
-                if(CollectionUtils.isNotEmpty(permissions)){
-                    List<Integer> userIdList = permissions.stream().map(z -> z.getOwnerId()).collect(Collectors.toList());
-                    List<UserDto> admins = new ArrayList<>();
-                    for(Integer approveUserId : userIdList){
-                        UserDto user = userService.queryById(approveUserId);
-                        admins.add(user);
-                    }
-                    orderDto.setAdmins(admins);
-                }
-                UserDto user = userService.queryById(userId);
-                orderDto.setUser(user);
+                OrderDto orderDto = translate(order);
                 orderDtoList.add(orderDto);
             }
         }

@@ -1,18 +1,18 @@
 package com.dtstep.lighthouse.insights.dto;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
-import com.dtstep.lighthouse.insights.modal.Group;
-import com.dtstep.lighthouse.insights.modal.Order;
-import com.dtstep.lighthouse.insights.modal.Project;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.insights.modal.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class OrderDto extends Order {
 
     private UserDto user;
 
-    private List<UserDto> admins;
+    private HashMap<Integer,List<UserDto>> adminsMap;
+
+    private List<OrderDetailDto> orderDetails;
 
     public OrderDto(Order order){
         assert order != null;
@@ -27,11 +27,19 @@ public class OrderDto extends Order {
         this.user = user;
     }
 
-    public List<UserDto> getAdmins() {
-        return admins;
+    public HashMap<Integer, List<UserDto>> getAdminsMap() {
+        return adminsMap;
     }
 
-    public void setAdmins(List<UserDto> admins) {
-        this.admins = admins;
+    public void setAdminsMap(HashMap<Integer, List<UserDto>> adminsMap) {
+        this.adminsMap = adminsMap;
+    }
+
+    public List<OrderDetailDto> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetailDto> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }
