@@ -8,15 +8,13 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
+import com.dtstep.lighthouse.insights.dto.UserDto;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Order;
-import com.dtstep.lighthouse.insights.modal.Permission;
-import com.dtstep.lighthouse.insights.modal.Role;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.OrderService;
 import com.dtstep.lighthouse.insights.service.PermissionService;
 import com.dtstep.lighthouse.insights.service.RoleService;
@@ -111,9 +109,20 @@ public class UserServiceImpl implements UserService {
         return userDao.changePassword(updateParam);
     }
 
+    private UserDto translate(User user){
+        UserDto userDto = new UserDto(user);
+        Integer departmentId = user.getDepartmentId();
+        if(departmentId != null){
+            Department department = departmentDao.queryById(departmentId);
+            userDto.setDepartment(department);
+        }
+        return userDto;
+    }
+
     @Override
-    public User queryById(int id) {
-        return userDao.queryById(id);
+    public UserDto queryById(int id) {
+        User user = userDao.queryById(id);
+        return translate(user);
     }
 
     @Override
@@ -122,13 +131,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User queryAllInfoById(int id) {
-        return userDao.queryAllInfoById(id);
+    public UserDto queryAllInfoById(int id) {
+        User user = userDao.queryAllInfoById(id);
+        return translate(user);
     }
 
     @Override
-    public User queryByUserName(String userName) {
-        return userDao.queryByUserName(userName);
+    public UserDto queryByUserName(String userName) {
+        User user = userDao.queryByUserName(userName);
+        return translate(user);
     }
 
     @Override

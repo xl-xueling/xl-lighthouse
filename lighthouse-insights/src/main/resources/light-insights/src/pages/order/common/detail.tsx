@@ -4,74 +4,136 @@ import UserGroup from "@/pages/user/common/groups";
 import {formatTimeStamp} from "@/utils/util";
 import useLocale from "@/utils/useLocale";
 const { Text } = Typography;
-import locale from "@/pages/order/approve/list/locale";
+import locale from "./locale/index";
 
 export default function OrderDetail({orderInfo}) {
 
     const t = useLocale(locale);
     const [listData, setListData] = useState([]);
-    const columns: TableColumnProps[] = [
+    const orderColumns: TableColumnProps[] = [
             {
-                title: t['approveList.columns.id'],
+                title: t['order.columns.id'],
                 dataIndex: 'id',
                 render: (value,record) =>
                     <Text>{value}</Text>
                 ,
             },
             {
-                title: t['approveList.columns.user'],
+                title: t['order.columns.user'],
                 dataIndex: 'user',
                 render: (value,record) =>
                     <UserGroup users={[value]}/>
                 ,
             },
             {
-                title: t['approveList.columns.type'],
+                title: t['order.columns.type'],
                 dataIndex: 'orderType',
                 render: (value) => {
                     if(value == '1'){
-                        return <Text>{t['approveList.columns.type.project.access']}</Text>;
+                        return <Text>{t['order.columns.type.project.access']}</Text>;
                     }else if(value == '2'){
-                        return <Text>{t['approveList.columns.type.stat.access']}</Text>;
+                        return <Text>{t['order.columns.type.stat.access']}</Text>;
                     }else if(value == '3'){
-                        return <Text>{t['approveList.columns.type.metrics.access']}</Text>;
+                        return <Text>{t['order.columns.type.metrics.access']}</Text>;
                     }else if(value == '4'){
-                        return <Text>{t['approveList.columns.type.adjust.limited.threshold']}</Text>;
+                        return <Text>{t['order.columns.type.adjust.limited.threshold']}</Text>;
                     }else if(value == '5'){
-                        return <Text>{t['approveList.columns.type.stat.pend.approve']}</Text>;
+                        return <Text>{t['order.columns.type.stat.pend.approve']}</Text>;
                     }else if(value == '6'){
-                        return <Text>{t['approveList.columns.type.user.pend.approve']}</Text>;
+                        return <Text>{t['order.columns.type.user.pend.approve']}</Text>;
                     }
                 },
             },
             {
-                title: t['approveList.columns.desc'],
-                dataIndex: 'detail',
-                render: (value,record) =>
-                {
-                    return "--";
-                }
-            },
-            {
-                title: t['approveList.columns.createTime'],
+                title: t['order.columns.createTime'],
                 dataIndex: 'createTime',
                 render: (value) => {return formatTimeStamp(value)},
             },
             {
-                title: t['approveList.columns.state'],
+                title: t['order.columns.state'],
                 dataIndex: 'state',
                 render: (value) => {
                     if(value === 0){
-                        return <Badge status="processing" text={t['approveList.columns.state.pending']}/>;
+                        return <Badge status="processing" text={t['order.columns.state.pending']}/>;
                     }else if (value === 1) {
-                        return <Badge status="success" text={t['approveList.columns.state.approved']}/>;
+                        return <Badge status="success" text={t['order.columns.state.approved']}/>;
                     }else if(value === 2){
-                        return <Badge status="error" text={t['approveList.columns.state.rejected']}/>;
+                        return <Badge status="error" text={t['order.columns.state.rejected']}/>;
                     }else if(value === 3){
-                        return <Badge status="error" text={t['approveList.columns.state.retracted']}/>;
+                        return <Badge status="error" text={t['order.columns.state.retracted']}/>;
                     }
                 },
             }
+    ];
+
+    const userApproveColumns: TableColumnProps[] = [
+        {
+            title: t['order.user.approve.columns.id'],
+            dataIndex: 'id',
+            render: (value,record) =>
+                <Text>{value}</Text>
+            ,
+        },
+        {
+            title: t['order.user.approve.columns.username'],
+            dataIndex: 'user',
+            render: (value,record) =>
+                <UserGroup users={[value]}/>
+            ,
+        },
+        {
+            title: t['order.user.approve.columns.email'],
+            dataIndex: 'user',
+            render: (value,record) =>
+                <UserGroup users={[value]}/>
+            ,
+        },
+        {
+            title: t['order.user.approve.columns.department'],
+            dataIndex: 'user',
+            render: (value,record) =>
+                <UserGroup users={[value]}/>
+            ,
+        },
+        {
+            title: t['order.user.approve.columns.state'],
+            dataIndex: 'orderType',
+            render: (value) => {
+                if(value == '1'){
+                    return <Text>{t['order.columns.type.project.access']}</Text>;
+                }else if(value == '2'){
+                    return <Text>{t['order.columns.type.stat.access']}</Text>;
+                }else if(value == '3'){
+                    return <Text>{t['order.columns.type.metrics.access']}</Text>;
+                }else if(value == '4'){
+                    return <Text>{t['order.columns.type.adjust.limited.threshold']}</Text>;
+                }else if(value == '5'){
+                    return <Text>{t['order.columns.type.stat.pend.approve']}</Text>;
+                }else if(value == '6'){
+                    return <Text>{t['order.columns.type.user.pend.approve']}</Text>;
+                }
+            },
+        },
+        {
+            title: t['order.columns.createTime'],
+            dataIndex: 'createTime',
+            render: (value) => {return formatTimeStamp(value)},
+        },
+        {
+            title: t['order.columns.state'],
+            dataIndex: 'state',
+            render: (value) => {
+                if(value === 0){
+                    return <Badge status="processing" text={t['order.columns.state.pending']}/>;
+                }else if (value === 1) {
+                    return <Badge status="success" text={t['order.columns.state.approved']}/>;
+                }else if(value === 2){
+                    return <Badge status="error" text={t['order.columns.state.rejected']}/>;
+                }else if(value === 3){
+                    return <Badge status="error" text={t['order.columns.state.retracted']}/>;
+                }
+            },
+        }
     ];
 
     useEffect(() => {
@@ -87,7 +149,7 @@ export default function OrderDetail({orderInfo}) {
           >
               工单信息
           </Typography.Title>
-          <Table rowKey="id" pagination={false} columns={columns} data={listData} />
+          <Table rowKey="id" pagination={false} columns={orderColumns} data={listData} />
 
           <Typography.Title
               style={{ marginTop: 30 }}
@@ -95,7 +157,7 @@ export default function OrderDetail({orderInfo}) {
           >
               用户信息
           </Typography.Title>
-          <Table rowKey="id" pagination={false} columns={columns} data={listData} />
+          <Table rowKey="id" pagination={false} columns={userApproveColumns} data={listData} />
 
           <Typography.Title
               style={{ marginTop: 30 }}

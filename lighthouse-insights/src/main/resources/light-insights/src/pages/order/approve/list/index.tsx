@@ -106,6 +106,8 @@ export default function ApproveList() {
             <Table
                 rowKey="id"
                 style={{ marginTop:12}}
+                size={"small"}
+                loading={loading}
                 columns={columns} data={listData} />
             {showProcessPanel && <OrderProcessPanel orderInfo={currentOrder} onClose={() => setShowProcessPanel(false)}/>}
         </Card>

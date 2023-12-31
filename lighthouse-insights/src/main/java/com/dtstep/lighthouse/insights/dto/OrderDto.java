@@ -10,28 +10,28 @@ import java.util.List;
 
 public class OrderDto extends Order {
 
-    private User user;
+    private UserDto user;
 
-    private List<User> admins;
+    private List<UserDto> admins;
 
     public OrderDto(Order order){
         assert order != null;
         BeanCopyUtil.copy(order,this);
     }
 
-    public User getUser() {
+    public UserDto getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDto user) {
         this.user = user;
     }
 
-    public List<User> getAdmins() {
+    public List<UserDto> getAdmins() {
         return admins;
     }
 
-    public void setAdmins(List<User> admins) {
+    public void setAdmins(List<UserDto> admins) {
         this.admins = admins;
     }
 }
