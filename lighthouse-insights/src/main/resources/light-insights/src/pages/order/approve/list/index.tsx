@@ -15,7 +15,7 @@ import SearchForm from "@/pages/order/approve/list/form";
 
 export default function ApproveList() {
     const t = useLocale(locale);
-    const [formParams, setFormParams] = useState({});
+    const [formParams, setFormParams] = useState<any>({});
     const [listData, setListData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentOrder,setCurrentOrder] = useState<Order>();
@@ -55,12 +55,22 @@ export default function ApproveList() {
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
+        console.log("formParams is:" + JSON.stringify(formParams));
         const {current, pageSize} = pagination;
         const combineParam:any = {}
+        combineParam.username = formParams.username;
+        combineParam.types = formParams.types;
+        combineParam.states = formParams.states;
+        const createTime = formParams.createTime;
+        if(createTime && Array.isArray(createTime)){
+            combineParam.createStartTime = createTime[0];
+            combineParam.createEndTime = createTime[1];
+        }
+        console.log("combineParam:" + JSON.stringify(combineParam));
         const fetchApproveList:Promise<{list:Array<Project>,total:number}> = new Promise<{list:Array<Project>,total:number}>((resolve) => {
             const proc = async () => {
                 const result = await requestApproveList({
-                    // queryParams:combineParam,
+                        queryParams:combineParam,
                         pagination:{
                             pageSize:pageSize,
                             pageNum:current,

@@ -22,6 +22,7 @@ const i18n = {
     'searchForm.username.label':'UserName',
     'searchForm.orderType.label':'OrderType',
     'searchForm.state.label':'State',
+    'searchForm.createTime.label':'CreateTime',
 
   },
   'zh-CN': {
@@ -47,6 +48,7 @@ const i18n = {
     'searchForm.username.label':'申请人',
     'searchForm.orderType.label':'工单类型',
     'searchForm.state.label':'状态',
+    'searchForm.createTime.label':'创建时间',
   },
 };
 

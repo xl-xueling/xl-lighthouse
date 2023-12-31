@@ -27,8 +27,6 @@ function SearchForm(props: {
 
   const handleSubmit = () => {
     const values = form.getFieldsValue();
-    console.log("formValues is:" + JSON.stringify(values));
-    return;
     props.onSearch(values);
   };
 
@@ -57,7 +55,7 @@ function SearchForm(props: {
             <Col span={colSpan}>
               <Form.Item
                   label={t['searchForm.orderType.label']}
-                  field="orderType"
+                  field="types"
               >
                 <Select
                     mode="multiple"
@@ -89,7 +87,7 @@ function SearchForm(props: {
             </Col>
             <Col span={colSpan}>
               <Form.Item
-                  label={'CreateTime'}
+                  label={t['searchForm.createTime.label']}
                   field="createTime"
               >
                 <DatePicker.RangePicker
