@@ -1,7 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
@@ -56,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
         LocalDateTime localDateTime = LocalDateTime.now();
         order.setCreateTime(localDateTime);
         order.setUpdateTime(localDateTime);
-        order.setState(OrderStateEnum.PENDING);
+        order.setState(OrderStateEnum.PROCESSING);
         Map<String,Object> configMap = order.getExtendConfig();
         List<Integer> steps = new ArrayList<>();
         Map<Integer,RoleTypeEnum> roleTypeMap = new HashMap<>();

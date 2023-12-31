@@ -30,15 +30,15 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
             orderInfo.orderDetails?.map(z => {
                 const roleId = z.roleId;
                 const admins = orderInfo.adminsMap[roleId];
-                if(z.state == ApproveStateEnum.PENDING){
+                if(z.state == ApproveStateEnum.Pending){
                     return <Steps.Step status={'process'} key={z.id} title='Pending' description={
                         <div>
                             <UserGroup users={admins}/>
                         </div>
                     }/>;
-                }else if(z.state == ApproveStateEnum.APPROVED){
+                }else if(z.state == ApproveStateEnum.Approved){
                     return <Steps.Step status={'finish'} key={z.id} title='Pending' />;
-                }else if(z.state == ApproveStateEnum.REJECTED){
+                }else if(z.state == ApproveStateEnum.Rejected){
                     return <Steps.Step status={"error"} key={z.id} title='Pending' />;
                 }
             })
@@ -46,11 +46,11 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
     }
 
     const getOrderStatus = ():string => {
-        if(orderInfo.state == OrderStateEnum.PENDING){
+        if(orderInfo.state == OrderStateEnum.Processing){
             return "process";
-        }else if(orderInfo.state == OrderStateEnum.APPROVED){
+        }else if(orderInfo.state == OrderStateEnum.Approved){
             return "finish";
-        }else if(orderInfo.state == OrderStateEnum.REJECTED){
+        }else if(orderInfo.state == OrderStateEnum.Rejected){
             return "error";
         }else{
             return "finish";

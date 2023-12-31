@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 public enum OrderStateEnum {
 
-    PENDING(0),
+    PROCESSING(0),
 
     APPROVED(1),
 

@@ -21,20 +21,19 @@ export enum OrderTypeEnum {
     GROUP_THRESHOLD_ADJUST=3,
     STAT_ITEM_APPROVE=4,
 }
+
 export enum OrderStateEnum {
-    PENDING=0,
-    APPROVED=1,
-    REJECTED=2,
-    RETRACTED=3,
+    Processing=0,
+    Approved=1,
+    Rejected=2,
+    Retracted=3,
 }
 
 export enum ApproveStateEnum {
-    PENDING=0,
-    APPROVED=1,
-    REJECTED=2,
+    Pending=0,
+    Approved=1,
+    Rejected=2,
 }
-
-
 
 export enum RoleTypeEnum {
     FULL_MANAGE_PERMISSION=1,
@@ -47,7 +46,6 @@ export enum RoleTypeEnum {
     METRIC_ACCESS_PERMISSION=8,
     STAT_ACCESS_PERMISSION=9,
     OPT_MANAGE_PERMISSION=10,
-
 }
 
 export interface FilterConfigParam {
