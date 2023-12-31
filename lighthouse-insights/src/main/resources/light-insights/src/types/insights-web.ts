@@ -4,7 +4,7 @@ import {
     DatePickerConfigParam,
     FilterConfigParam, OrderStateEnum,
     OrderTypeEnum,
-    RenderTypeEnum
+    RenderTypeEnum, RoleTypeEnum
 } from "@/types/insights-common";
 
 export enum PermissionsEnum {
@@ -142,8 +142,11 @@ export interface OrderDetail {
     id?:number;
     orderId?:number;
     state?:ApproveStateEnum;
+    roleType?:RoleTypeEnum;
     roleId?:number;
     user:User;
+    createTime?:number;
+    approveTime?:number;
 }
 
 export interface LoginParam {

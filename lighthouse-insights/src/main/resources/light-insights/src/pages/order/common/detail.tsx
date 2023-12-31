@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Badge, Button, Grid, Input, Steps, Table, TableColumnProps, Typography} from "@arco-design/web-react";
 import UserGroup from "@/pages/user/common/groups";
-import {formatTimeStamp} from "@/utils/util";
+import {formatTimeStamp, getRandomString} from "@/utils/util";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale/index";
 import DepartmentLabel from "@/pages/department/common/depart";
 import {Order} from "@/types/insights-web";
-import {ApproveStateEnum, OrderStateEnum} from "@/types/insights-common";
+import {ApproveStateEnum, OrderStateEnum, RoleTypeEnum} from "@/types/insights-common";
 import {IconDesktop} from "@arco-design/web-react/icon";
 import { BiListUl } from "react-icons/bi";
 import { CiViewList } from "react-icons/ci";
@@ -19,6 +19,13 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
     const [listData, setListData] = useState([]);
     const [userListData, setUserListData] = useState([]);
     const [orderDetailData, setOrderDetailData] = useState([]);
+    const [showOrderDetail,setShowOrderDetail] = useState(false);
+
+    const toggleShowOrderDetail = () => {
+        console.log("change order detail,showOrderDetail:" + showOrderDetail);
+        setShowOrderDetail(!showOrderDetail);
+    }
+
     const orderColumns: TableColumnProps[] = [
             {
                 title: t['order.columns.id'],
@@ -128,36 +135,65 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
 
     const orderDetailColumns: TableColumnProps[] = [
         {
-            title: '系统角色',
-            dataIndex: 'username',
+            title: t['order.user.approve.columns.id'],
+            dataIndex: 'id',
+            cellStyle:{
+                display:"none",
+            },
             render: (value,record) =>
                 <Text>{value}</Text>
             ,
+        },
+        {
+            title: '系统角色',
+            dataIndex: 'roleType',
+            render: (value,record) => {
+                if(value === RoleTypeEnum.FULL_MANAGE_PERMISSION){
+                    return "系统管理员";
+                }else if(value == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION){
+                    return "部门管理员";
+                }else if(value == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
+                    return "工程管理员";
+                }else if(value == RoleTypeEnum.OPT_MANAGE_PERMISSION){
+                    return "运维管理员";
+                }
+            },
         },
         {
             title: '审批人',
-            dataIndex: 'username',
+            dataIndex: 'user',
             render: (value,record) =>
-                <Text>{value}</Text>
-            ,
-        },
-        {
-            title: '审核时间',
-            dataIndex: 'username',
-            render: (value,record) =>
-                <Text>{value}</Text>
+                <UserGroup users={orderInfo.adminsMap[record.roleId]}/>
             ,
         },
         {
             title: '审核状态',
-            dataIndex: 'username',
-            render: (value,record) =>
-                <Text>{value}</Text>
+            dataIndex: 'state',
+            render: (value) => {
+                if(value === 0){
+                    return <Badge status="processing" text={t['order.columns.state.pending']}/>;
+                }else if (value === 1) {
+                    return <Badge status="success" text={t['order.columns.state.approved']}/>;
+                }else if(value === 2){
+                    return <Badge status="error" text={t['order.columns.state.rejected']}/>;
+                }else if(value === 3){
+                    return <Badge status="error" text={t['order.columns.state.retracted']}/>;
+                }
+            },
+        },
+        {
+            title: '审核时间',
+            dataIndex: 'approveTime',
+            render: (value,record) => {
+                if(value){
+                    return <Text>{formatTimeStamp(value)}</Text>
+                }
+            }
             ,
         },
         {
             title: '审核批复',
-            dataIndex: 'username',
+            dataIndex: 'apply',
             render: (value,record) =>
                 <Text>{value}</Text>
             ,
@@ -196,14 +232,10 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
         }
     }
 
-    const getOrderStatus2 = ():string => {
-        return "finish";
-    }
-
     useEffect(() => {
-        console.log("orderInfo is:" + JSON.stringify(orderInfo));
         setListData([orderInfo]);
         setUserListData([orderInfo.user])
+        setOrderDetailData(orderInfo.orderDetails)
     },[])
 
     return (
@@ -240,7 +272,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
                   </Typography.Title>
               </Grid.Col>
               <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                  <Button type={"secondary"} title={"明细"} size={"mini"} icon={<BiListUl/>}/>
+                  <Button type={"secondary"} size={"mini"} icon={<BiListUl/>} onClick={toggleShowOrderDetail}/>
               </Grid.Col>
           </Grid.Row>
           <Steps  size={"small"}
@@ -249,7 +281,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
               {generateOrderSteps()}
               <Steps.Step status={"wait"} title='End' />
           </Steps>
-          <Table size={"small"} rowKey="id" pagination={false} columns={orderDetailColumns} data={userListData} />
+          {showOrderDetail && <Table size={"small"} rowKey="id" pagination={false} columns={orderDetailColumns} data={orderDetailData} />}
       </div>
     );
 }

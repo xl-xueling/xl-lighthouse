@@ -24,7 +24,7 @@ public class OrderDetail implements Serializable {
 
     private LocalDateTime createTime;
 
-    private LocalDateTime updateTime;
+    private LocalDateTime approveTime;
 
     public Integer getId() {
         return id;
@@ -74,12 +74,12 @@ public class OrderDetail implements Serializable {
         this.createTime = createTime;
     }
 
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
+    public LocalDateTime getApproveTime() {
+        return approveTime;
     }
 
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
+    public void setApproveTime(LocalDateTime approveTime) {
+        this.approveTime = approveTime;
     }
 
     public Integer getUserId() {
