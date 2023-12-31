@@ -5,15 +5,14 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
+import com.dtstep.lighthouse.insights.dao.OrderDetailDao;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
 import com.dtstep.lighthouse.insights.dto.*;
+import com.dtstep.lighthouse.insights.enums.ApproveStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Order;
-import com.dtstep.lighthouse.insights.modal.Permission;
-import com.dtstep.lighthouse.insights.modal.Role;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.OrderService;
 import com.dtstep.lighthouse.insights.service.RoleService;
@@ -36,6 +35,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderDao orderDao;
+
+    @Autowired
+    private OrderDetailDao orderDetailDao;
 
     @Autowired
     private BaseService baseService;
@@ -121,11 +123,21 @@ public class OrderServiceImpl implements OrderService {
     public int approve(OrderApproveParam approveParam) {
         int result = approveParam.getResult();
         Order dbOrder = orderDao.queryById(approveParam.getId());
+        Validate.isTrue(approveParam.getRoleId().intValue() == dbOrder.getCurrentNode().intValue());
         Validate.notNull(dbOrder);
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setRoleId(approveParam.getRoleId());
+        orderDetail.setReply(approveParam.getReply());
+        orderDetail.setOrderId(approveParam.getId());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        orderDetail.setUpdateTime(localDateTime);
+        orderDetail.setCreateTime(localDateTime);
         if(result == 1){
             dbOrder.setState(OrderStateEnum.APPROVED);
+            orderDetail.setState(ApproveStateEnum.APPROVED);
         }else if(result == 2){
             dbOrder.setState(OrderStateEnum.REJECTED);
+            orderDetail.setState(ApproveStateEnum.REJECTED);
         }
         dbOrder.setUpdateTime(LocalDateTime.now());
         dbOrder.setCurrentNode(0);
@@ -136,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
             userUpdateParam.setUpdateTime(LocalDateTime.now());
             userService.update(userUpdateParam);
         }
-
+        orderDetailDao.insert(orderDetail);
         return 0;
     }
 }
