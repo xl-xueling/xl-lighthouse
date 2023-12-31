@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.test.dao;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
+import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
 import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Order;
@@ -52,5 +53,15 @@ public class TestOrderDao {
         int id = 100153;
         Order order = orderDao.queryById(id);
         System.out.println("order:" + JsonUtil.toJSONString(order));
+    }
+
+    @Test
+    public void testApproveList(){
+        OrderQueryParam queryParam = new OrderQueryParam();
+        queryParam.setApproveUserId(110163);
+        queryParam.setStates(List.of(0,1,2,3));
+        queryParam.setTypes(List.of(1,2,3,6));
+        List<Order> orders = orderDao.queryApproveList(queryParam,1,100);
+        System.out.println("orders:" + JsonUtil.toJSONString(orders));
     }
 }

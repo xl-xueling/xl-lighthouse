@@ -4,14 +4,15 @@ import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class OrderQueryParam {
 
-    private Integer applyUserId;
+    private String username;
 
-    private OrderTypeEnum orderType;
+    private List<Integer> types;
 
-    private OrderStateEnum orderState;
+    private List<Integer> states;
 
     private LocalDateTime createStartTime;
 
@@ -19,12 +20,12 @@ public class OrderQueryParam {
 
     private Integer approveUserId;
 
-    public Integer getApplyUserId() {
-        return applyUserId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setApplyUserId(Integer applyUserId) {
-        this.applyUserId = applyUserId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Integer getApproveUserId() {
@@ -35,20 +36,20 @@ public class OrderQueryParam {
         this.approveUserId = approveUserId;
     }
 
-    public OrderTypeEnum getOrderType() {
-        return orderType;
+    public List<Integer> getTypes() {
+        return types;
     }
 
-    public void setOrderType(OrderTypeEnum orderType) {
-        this.orderType = orderType;
+    public void setTypes(List<Integer> types) {
+        this.types = types;
     }
 
-    public OrderStateEnum getOrderState() {
-        return orderState;
+    public List<Integer> getStates() {
+        return states;
     }
 
-    public void setOrderState(OrderStateEnum orderState) {
-        this.orderState = orderState;
+    public void setStates(List<Integer> states) {
+        this.states = states;
     }
 
     public LocalDateTime getCreateStartTime() {
