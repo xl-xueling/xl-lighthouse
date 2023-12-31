@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.insights.enums.ApproveStateEnum;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ public class OrderDetail implements Serializable {
 
     private Integer roleId;
 
-    private Integer roleType;
+    private RoleTypeEnum roleType;
 
     private Integer userId;
 
@@ -89,11 +90,11 @@ public class OrderDetail implements Serializable {
         this.userId = userId;
     }
 
-    public Integer getRoleType() {
+    public RoleTypeEnum getRoleType() {
         return roleType;
     }
 
-    public void setRoleType(Integer roleType) {
+    public void setRoleType(RoleTypeEnum roleType) {
         this.roleType = roleType;
     }
 }
