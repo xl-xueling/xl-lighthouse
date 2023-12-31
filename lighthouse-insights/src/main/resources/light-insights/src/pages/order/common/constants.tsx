@@ -121,7 +121,7 @@ export function getUserApproveColumns(t: any) {
 export function getOrderDetailColumns(t: any,orderInfo:Order) {
     return [
         {
-            title: t['order.user.approve.columns.id'],
+            title: t['order.detail.columns.id'],
             dataIndex: 'id',
             cellStyle:{
                 display:"none",
@@ -131,44 +131,44 @@ export function getOrderDetailColumns(t: any,orderInfo:Order) {
             ,
         },
         {
-            title: '系统角色',
+            title: t['order.detail.columns.roleType'],
             dataIndex: 'roleType',
             render: (value,record) => {
                 if(value === RoleTypeEnum.FULL_MANAGE_PERMISSION){
-                    return "系统管理员";
+                    return t['order.detail.columns.roleType.systemManager'];
                 }else if(value == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION){
-                    return "部门管理员";
+                    return t['order.detail.columns.roleType.departmentManager'];
                 }else if(value == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
-                    return "工程管理员";
+                    return t['order.detail.columns.roleType.projectManager'];
                 }else if(value == RoleTypeEnum.OPT_MANAGE_PERMISSION){
-                    return "运维管理员";
+                    return t['order.detail.columns.roleType.operateManager'];
                 }
             },
         },
         {
-            title: '审批人',
+            title: t['order.detail.columns.approver'],
             dataIndex: 'user',
             render: (value,record) =>
                 <UserGroup users={orderInfo.adminsMap[record.roleId]}/>
             ,
         },
         {
-            title: '审核状态',
+            title: t['order.detail.columns.approve.state'],
             dataIndex: 'state',
             render: (value) => {
                 if(value === 0){
-                    return <Badge status="processing" text={t['order.columns.state.pending']}/>;
+                    return <Badge status="processing" text={t['order.detail.columns.approve.state.pending']}/>;
                 }else if (value === 1) {
-                    return <Badge status="success" text={t['order.columns.state.approved']}/>;
+                    return <Badge status="success" text={t['order.detail.columns.approve.state.approved']}/>;
                 }else if(value === 2){
-                    return <Badge status="error" text={t['order.columns.state.rejected']}/>;
+                    return <Badge status="error" text={t['order.detail.columns.approve.state.rejected']}/>;
                 }else if(value === 3){
-                    return <Badge status="error" text={t['order.columns.state.retracted']}/>;
+                    return <Badge status="error" text={t['order.detail.columns.approve.state.retracted']}/>;
                 }
             },
         },
         {
-            title: '审核时间',
+            title: t['order.detail.columns.approve.approveTime'],
             dataIndex: 'approveTime',
             render: (value,record) => {
                 if(value){
@@ -178,7 +178,7 @@ export function getOrderDetailColumns(t: any,orderInfo:Order) {
             ,
         },
         {
-            title: '审核批复',
+            title: t['order.detail.columns.approve.apply'],
             dataIndex: 'apply',
             render: (value,record) =>
                 <Text>{value}</Text>
