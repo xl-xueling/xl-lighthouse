@@ -52,7 +52,7 @@ export function getOrderColumns(t: any) {
             dataIndex: 'state',
             render: (value) => {
                 if(value === 0){
-                    return <Badge status="processing" text={t['order.columns.state.pending']}/>;
+                    return <Badge status="processing" text={t['order.columns.state.process']}/>;
                 }else if (value === 1) {
                     return <Badge status="success" text={t['order.columns.state.approved']}/>;
                 }else if(value === 2){
