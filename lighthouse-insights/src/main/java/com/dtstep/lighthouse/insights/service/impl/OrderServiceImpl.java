@@ -8,6 +8,7 @@ import com.dtstep.lighthouse.insights.dao.PermissionDao;
 import com.dtstep.lighthouse.insights.dto.OrderDto;
 import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
+import com.dtstep.lighthouse.insights.dto.UserDto;
 import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
@@ -99,14 +100,14 @@ public class OrderServiceImpl implements OrderService {
                 List<Permission> permissions = permissionDao.queryList(permissionQueryParam,1,5);
                 if(CollectionUtils.isNotEmpty(permissions)){
                     List<Integer> userIdList = permissions.stream().map(z -> z.getOwnerId()).collect(Collectors.toList());
-                    List<User> admins = new ArrayList<>();
+                    List<UserDto> admins = new ArrayList<>();
                     for(Integer approveUserId : userIdList){
-                        User user = userService.queryById(approveUserId);
+                        UserDto user = userService.queryById(approveUserId);
                         admins.add(user);
                     }
                     orderDto.setAdmins(admins);
                 }
-                User user = userService.queryById(userId);
+                UserDto user = userService.queryById(userId);
                 orderDto.setUser(user);
                 orderDtoList.add(orderDto);
             }

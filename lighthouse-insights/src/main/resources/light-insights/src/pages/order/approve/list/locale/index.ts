@@ -11,7 +11,7 @@ const i18n = {
     'approveList.columns.type.user.pend.approve':'User Pend Approve',
     'approveList.columns.desc':'Description',
     'approveList.columns.admins':'Approve Users',
-    'approveList.columns.state':'State',
+    'approveList.columns.state':'OrderState',
     'approveList.columns.state.pending':'Pending',
     'approveList.columns.state.approved':'Approved',
     'approveList.columns.state.rejected':'Rejected',
@@ -23,7 +23,11 @@ const i18n = {
     'searchForm.orderType.label':'OrderType',
     'searchForm.state.label':'State',
     'searchForm.createTime.label':'CreateTime',
-
+    'approveList.user.approve.columns.id':'ID',
+    'approveList.user.approve.columns.username':'username',
+    'approveList.user.approve.columns.email':'Email',
+    'approveList.user.approve.columns.department':'Department',
+    'approveList.user.approve.columns.state':'UserState',
   },
   'zh-CN': {
     'approveList.columns.id':'ID',
@@ -37,7 +41,7 @@ const i18n = {
     'approveList.columns.type.user.pend.approve':'审核新用户',
     'approveList.columns.desc':'描述',
     'approveList.columns.admins':'审核人',
-    'approveList.columns.state':'状态',
+    'approveList.columns.state':'工单状态',
     'approveList.columns.state.pending':'待审核',
     'approveList.columns.state.approved':'已通过',
     'approveList.columns.state.rejected':'已拒绝',
@@ -49,6 +53,11 @@ const i18n = {
     'searchForm.orderType.label':'工单类型',
     'searchForm.state.label':'状态',
     'searchForm.createTime.label':'创建时间',
+    'approveList.user.approve.columns.id':'ID',
+    'approveList.user.approve.columns.username':'用户名',
+    'approveList.user.approve.columns.email':'邮箱',
+    'approveList.user.approve.columns.department':'部门',
+    'approveList.user.approve.columns.state':'用户状态',
   },
 };
 
