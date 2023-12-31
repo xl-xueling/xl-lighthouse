@@ -1,13 +1,18 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Button, Form, Input, Modal, Space, Typography} from "@arco-design/web-react";
+import {Button, Form, Input, Message, Modal, Space, Typography} from "@arco-design/web-react";
 import OrderDetail from "@/pages/order/common/detail";
 import styles from "@/pages/metricset/display/style/index.module.less";
 import {Order} from "@/types/insights-web";
+import {requestApprove} from "@/api/order";
+import useLocale from "@/utils/useLocale";
+import locale from "@/pages/login/locale";
 
 export default function OrderProcessPanel({orderInfo,onClose}) {
 
     const [visible, setVisible] = React.useState(false);
     const formRef = useRef(null);
+    const t = useLocale(locale);
+    const [loading, setLoading] = useState(false);
 
     async function approvedSubmit() {
         await formRef.current.validate();
@@ -20,6 +25,23 @@ export default function OrderProcessPanel({orderInfo,onClose}) {
             result:1,
         }
         console.log("approvedSubmit is:" + JSON.stringify(approveParam))
+        requestApprove(approveParam).then((result) => {
+            console.log("result:" + JSON.stringify(result));
+            if(result.code === '0'){
+                Message.success(t['projectCreate.form.submit.success']);
+                // setTimeout(() => {
+                //     window.location.href = "/project/list";
+                // },3000)
+            }else{
+                Message.error(result.message || t['system.error']);
+            }
+        }).catch((error) => {
+            console.log(error);
+            Message.error(t['system.error'])
+        }).finally(() => {
+            setLoading(false);
+        })
+
     }
 
     async function rejectedSubmit() {
