@@ -1,5 +1,11 @@
 import {List} from "@arco-design/web-react";
-import {DatePickerConfigParam, FilterConfigParam, OrderTypeEnum, RenderTypeEnum} from "@/types/insights-common";
+import {
+    ApproveStateEnum,
+    DatePickerConfigParam,
+    FilterConfigParam, OrderStateEnum,
+    OrderTypeEnum,
+    RenderTypeEnum
+} from "@/types/insights-common";
 
 export enum PermissionsEnum {
     NONE = 0,
@@ -125,11 +131,19 @@ export interface Order {
     createTime?:number;
     updateTime?:number;
     desc?:string;
-    state?:number;
-    approveIds?:Array<number>;
-    approveUsers?:Array<User>;
+    adminsMap?:any;
+    state?:OrderStateEnum;
     orderType?:OrderTypeEnum;
+    orderDetails?:OrderDetail[];
     extendConfig?:any;
+}
+
+export interface OrderDetail {
+    id?:number;
+    orderId?:number;
+    state?:ApproveStateEnum;
+    roleId?:number;
+    user:User;
 }
 
 export interface LoginParam {
