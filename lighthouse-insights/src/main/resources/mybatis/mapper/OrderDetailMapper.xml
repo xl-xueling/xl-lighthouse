@@ -7,17 +7,20 @@
         <result property="userId" column="user_id"/>
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.ApproveStateEnumTypeHandler"/>
         <result property="roleId" column="role_id"/>
+        <result property="roleType" column="role_type"/>
         <result property="reply" column="reply"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.OrderDetail" >
-        INSERT INTO ldp_order_detail (`order_id`,`user_id`,`state`,`role_id`,`reply`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_order_detail (`order_id`,`user_id`,`state`,`role_id`,`role_type`,`reply`,`create_time`,`update_time`) VALUES
         (
             #{orderId,jdbcType=INTEGER},
+            #{userId,jdbcType=INTEGER},
             #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ApproveStateEnumTypeHandler},
             #{roleId,jdbcType=INTEGER},
+            #{roleType,jdbcType=INTEGER},
             #{reply,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}

@@ -29,9 +29,11 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         if(CollectionUtils.isNotEmpty(orderDetails)){
             for(OrderDetail orderDetail : orderDetails){
                 OrderDetailDto orderDetailDto = new OrderDetailDto(orderDetail);
-                int userId = orderDetail.getUserId();
-                UserDto user = userService.queryById(userId);
-                orderDetailDto.setUser(user);
+                Integer userId = orderDetail.getUserId();
+                if(userId != null){
+                    UserDto user = userService.queryById(userId);
+                    orderDetailDto.setUser(user);
+                }
                 dtoList.add(orderDetailDto);
             }
         }

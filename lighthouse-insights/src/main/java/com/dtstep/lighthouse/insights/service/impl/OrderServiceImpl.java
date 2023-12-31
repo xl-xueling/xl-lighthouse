@@ -59,6 +59,7 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderStateEnum.PENDING);
         Map<String,Object> configMap = order.getExtendConfig();
         List<Integer> steps = new ArrayList<>();
+        Map<Integer,Integer> roleTypeMap = new HashMap<>();
         String hash;
         if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
             int projectId = (Integer) configMap.get("projectId");
@@ -66,12 +67,14 @@ public class OrderServiceImpl implements OrderService {
             String message = order.getUserId() + "_" + OrderTypeEnum.PROJECT_ACCESS.getOrderType() + "_" + projectId;
             order.setHash(Md5Util.getMD5(message));
             order.setCurrentNode(role.getId());
+            roleTypeMap.put(role.getId(),RoleTypeEnum.PROJECT_MANAGE_PERMISSION.getRoleType());
             steps.add(role.getId());
         }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
             Role role = roleService.queryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
             String message = order.getUserId() + "_" + "register";
             order.setHash(Md5Util.getMD5(message));
             order.setCurrentNode(role.getId());
+            roleTypeMap.put(role.getId(),RoleTypeEnum.OPT_MANAGE_PERMISSION.getRoleType());
             steps.add(role.getId());
         }
         order.setSteps(steps);
@@ -79,9 +82,11 @@ public class OrderServiceImpl implements OrderService {
         int orderId = order.getId();
         for(Integer roleId : steps){
             OrderDetail orderDetail = new OrderDetail();
+            int roleType = roleTypeMap.get(roleId);
             orderDetail.setCreateTime(localDateTime);
             orderDetail.setUpdateTime(localDateTime);
             orderDetail.setOrderId(orderId);
+            orderDetail.setRoleType(roleType);
             orderDetail.setState(ApproveStateEnum.PENDING);
             orderDetail.setRoleId(roleId);
             orderDetailDao.insert(orderDetail);

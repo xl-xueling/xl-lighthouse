@@ -15,6 +15,8 @@ public class OrderDetail implements Serializable {
 
     private Integer roleId;
 
+    private Integer roleType;
+
     private Integer userId;
 
     private String reply;
@@ -85,5 +87,13 @@ public class OrderDetail implements Serializable {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Integer getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(Integer roleType) {
+        this.roleType = roleType;
     }
 }

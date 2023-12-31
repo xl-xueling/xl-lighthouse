@@ -21,6 +21,18 @@ export enum OrderTypeEnum {
     GROUP_THRESHOLD_ADJUST=3,
     STAT_ITEM_APPROVE=4,
 }
+export enum OrderStateEnum {
+    PENDING=0,
+    APPROVED=1,
+    REJECTED=2,
+    RETRACTED=3,
+}
+
+export enum ApproveStateEnum {
+    PENDING=0,
+    APPROVED=1,
+    REJECTED=2,
+}
 
 export enum RoleTypeEnum {
     SYSTEM_ADMIN=1,
