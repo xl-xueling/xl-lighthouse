@@ -84,7 +84,6 @@ public class OrderServiceImpl implements OrderService {
             OrderDetail orderDetail = new OrderDetail();
             RoleTypeEnum roleType = roleTypeMap.get(roleId);
             orderDetail.setCreateTime(localDateTime);
-            orderDetail.setUpdateTime(localDateTime);
             orderDetail.setOrderId(orderId);
             orderDetail.setRoleType(roleType);
             orderDetail.setState(ApproveStateEnum.PENDING);
@@ -157,7 +156,7 @@ public class OrderServiceImpl implements OrderService {
         orderDetail.setReply(approveParam.getReply());
         orderDetail.setOrderId(approveParam.getId());
         LocalDateTime localDateTime = LocalDateTime.now();
-        orderDetail.setUpdateTime(localDateTime);
+        orderDetail.setApproveTime(localDateTime);
         orderDetail.setCreateTime(localDateTime);
         if(result == 1){
             dbOrder.setState(OrderStateEnum.APPROVED);
