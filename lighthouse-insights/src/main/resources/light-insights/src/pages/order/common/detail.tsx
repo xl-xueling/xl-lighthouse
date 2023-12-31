@@ -165,14 +165,6 @@ export default function OrderDetail({orderInfo}) {
               <Steps.Step title='Processing' description='This is a description' />
               <Steps.Step title='Pending' description='This is a description' />
           </Steps>
-
-          <Typography.Title
-              style={{ marginTop: 30 }}
-              heading={6}
-          >
-              审核批复
-          </Typography.Title>
-          <Input.TextArea maxLength={200} rows={2}  showWordLimit={true}/>
       </div>
     );
 }

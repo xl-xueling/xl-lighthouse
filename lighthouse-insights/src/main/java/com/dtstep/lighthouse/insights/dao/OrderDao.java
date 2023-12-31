@@ -11,6 +11,8 @@ public interface OrderDao {
 
     int insert(Order order);
 
+    int update(Order order);
+
     Order queryById(Integer id);
 
     List<Order> queryApplyList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize);

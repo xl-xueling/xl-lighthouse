@@ -64,4 +64,15 @@ public class TestOrderDao {
         List<Order> orders = orderDao.queryApproveList(queryParam,1,100);
         System.out.println("orders:" + JsonUtil.toJSONString(orders));
     }
+
+    @Test
+    public void testUpdate(){
+        Order order = new Order();
+        order.setState(OrderStateEnum.APPROVED);
+        order.setId(100152);
+        order.setUpdateTime(LocalDateTime.now());
+        order.setCurrentNode(0);
+        int result = orderDao.update(order);
+        System.out.println("result:" + result);
+    }
 }

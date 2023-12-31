@@ -1,28 +1,44 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserUpdateParam implements Serializable {
 
-    @NotNull
     private Integer id;
 
     @NotEmpty
-    @Size(min = 5,max = 15)
+    @Pattern(regexp = "^[a-zA-Z0-9_]{5,15}$")
     private String username;
+
+    @NotEmpty
+    @Pattern(regexp = "^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{5,32}$")
+    private String password;
 
     @NotNull
     private Integer departmentId;
 
     private String phone;
 
+    @NotEmpty
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     private String email;
+
+    private UserStateEnum state;
+
+    private LocalDateTime lastTime;
+
+    private LocalDateTime createTime;
+
+    private LocalDateTime updateTime;
 
     public Integer getId() {
         return id;
@@ -62,5 +78,45 @@ public class UserUpdateParam implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public UserStateEnum getState() {
+        return state;
+    }
+
+    public void setState(UserStateEnum state) {
+        this.state = state;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public LocalDateTime getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(LocalDateTime lastTime) {
+        this.lastTime = lastTime;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 }

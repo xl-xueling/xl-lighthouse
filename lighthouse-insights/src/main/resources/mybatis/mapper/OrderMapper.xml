@@ -82,4 +82,19 @@
         limit ${offset},#{pageSize}
     </select>
 
+    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Order">
+        UPDATE ldp_order
+        <set>
+            <if test="state != null">
+                `state` = #{state.state},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+            <if test="currentNode != null">
+                `current_node` = #{currentNode},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
 </mapper>
