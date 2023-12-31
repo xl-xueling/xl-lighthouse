@@ -57,7 +57,6 @@ const i18n = {
     'approveList.user.approve.columns.username':'用户名',
     'approveList.user.approve.columns.email':'邮箱',
     'approveList.user.approve.columns.department':'部门',
-    'approveList.user.approve.columns.state':'用户状态',
   },
 };
 

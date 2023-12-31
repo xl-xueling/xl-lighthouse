@@ -27,7 +27,12 @@ const i18n = {
     'order.user.approve.columns.username':'username',
     'order.user.approve.columns.email':'Email',
     'order.user.approve.columns.department':'Department',
+    'order.user.approve.columns.createTime':'CreateTime',
     'order.user.approve.columns.state':'UserState',
+    'order.user.approve.columns.state.pending': 'Pending',
+    'order.user.approve.columns.state.normal': 'Normal',
+    'order.user.approve.columns.state.frozen': 'Frozen',
+    'order.user.approve.columns.state.deleted': 'Deleted',
   },
   'zh-CN': {
     'order.columns.id':'ID',
@@ -57,7 +62,13 @@ const i18n = {
     'order.user.approve.columns.username':'用户名',
     'order.user.approve.columns.email':'邮箱',
     'order.user.approve.columns.department':'部门',
+    'order.user.approve.columns.createTime':'创建时间',
     'order.user.approve.columns.state':'用户状态',
+    'order.user.approve.columns.state.pending': '待审核',
+    'order.user.approve.columns.state.normal': '正常',
+    'order.user.approve.columns.state.frozen': '已冻结',
+    'order.user.approve.columns.state.deleted': '已删除',
+
   },
 };
 

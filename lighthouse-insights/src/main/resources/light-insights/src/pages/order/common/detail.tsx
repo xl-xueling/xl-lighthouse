@@ -5,11 +5,13 @@ import {formatTimeStamp} from "@/utils/util";
 import useLocale from "@/utils/useLocale";
 const { Text } = Typography;
 import locale from "./locale/index";
+import DepartmentLabel from "@/pages/department/common/depart";
 
 export default function OrderDetail({orderInfo}) {
 
     const t = useLocale(locale);
     const [listData, setListData] = useState([]);
+    const [userListData, setUserListData] = useState([]);
     const orderColumns: TableColumnProps[] = [
             {
                 title: t['order.columns.id'],
@@ -76,61 +78,42 @@ export default function OrderDetail({orderInfo}) {
         },
         {
             title: t['order.user.approve.columns.username'],
-            dataIndex: 'user',
+            dataIndex: 'username',
             render: (value,record) =>
-                <UserGroup users={[value]}/>
+                <Text>{value}</Text>
             ,
         },
         {
             title: t['order.user.approve.columns.email'],
-            dataIndex: 'user',
+            dataIndex: 'email',
             render: (value,record) =>
-                <UserGroup users={[value]}/>
+                <Text>{value}</Text>
             ,
         },
         {
             title: t['order.user.approve.columns.department'],
-            dataIndex: 'user',
+            dataIndex: 'department',
             render: (value,record) =>
-                <UserGroup users={[value]}/>
+                <DepartmentLabel department={value}/>
             ,
         },
         {
-            title: t['order.user.approve.columns.state'],
-            dataIndex: 'orderType',
-            render: (value) => {
-                if(value == '1'){
-                    return <Text>{t['order.columns.type.project.access']}</Text>;
-                }else if(value == '2'){
-                    return <Text>{t['order.columns.type.stat.access']}</Text>;
-                }else if(value == '3'){
-                    return <Text>{t['order.columns.type.metrics.access']}</Text>;
-                }else if(value == '4'){
-                    return <Text>{t['order.columns.type.adjust.limited.threshold']}</Text>;
-                }else if(value == '5'){
-                    return <Text>{t['order.columns.type.stat.pend.approve']}</Text>;
-                }else if(value == '6'){
-                    return <Text>{t['order.columns.type.user.pend.approve']}</Text>;
-                }
-            },
-        },
-        {
-            title: t['order.columns.createTime'],
+            title: t['order.user.approve.columns.createTime'],
             dataIndex: 'createTime',
             render: (value) => {return formatTimeStamp(value)},
         },
         {
-            title: t['order.columns.state'],
+            title: t['order.user.approve.columns.state'],
             dataIndex: 'state',
             render: (value) => {
                 if(value === 0){
-                    return <Badge status="processing" text={t['order.columns.state.pending']}/>;
+                    return <Badge status="processing" text={t['order.user.approve.columns.state.pending']}/>;
                 }else if (value === 1) {
-                    return <Badge status="success" text={t['order.columns.state.approved']}/>;
+                    return <Badge status="success" text={t['order.user.approve.columns.state.normal']}/>;
                 }else if(value === 2){
-                    return <Badge status="error" text={t['order.columns.state.rejected']}/>;
+                    return <Badge status="error" text={t['order.user.approve.columns.state.frozen']}/>;
                 }else if(value === 3){
-                    return <Badge status="error" text={t['order.columns.state.retracted']}/>;
+                    return <Badge status="error" text={t['order.user.approve.columns.state.deleted']}/>;
                 }
             },
         }
@@ -139,6 +122,7 @@ export default function OrderDetail({orderInfo}) {
     useEffect(() => {
         console.log("orderInfo is:" + JSON.stringify(orderInfo));
         setListData([orderInfo]);
+        setUserListData([orderInfo.user])
     },[])
 
     return (
@@ -157,7 +141,7 @@ export default function OrderDetail({orderInfo}) {
           >
               用户信息
           </Typography.Title>
-          <Table rowKey="id" pagination={false} columns={userApproveColumns} data={listData} />
+          <Table rowKey="id" pagination={false} columns={userApproveColumns} data={userListData} />
 
           <Typography.Title
               style={{ marginTop: 30 }}
