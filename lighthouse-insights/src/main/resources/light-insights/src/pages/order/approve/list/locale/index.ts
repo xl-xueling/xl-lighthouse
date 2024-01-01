@@ -33,6 +33,7 @@ const i18n = {
     'approveModal.label.reply':'Order Reply',
     'approveModal.button.approve':'Approve',
     'approveModal.button.agree':'Agree',
+    'approveModal.form.submit.success':'Order process successfully!',
     'approveModal.button.reject':'Reject',
   },
   'zh-CN': {
@@ -68,6 +69,7 @@ const i18n = {
     'approveModal.label.reply':'审核批复',
     'approveModal.button.agree':'同意',
     'approveModal.button.reject':'驳回',
+    'approveModal.form.submit.success':'工单处理成功！',
   },
 };
 
