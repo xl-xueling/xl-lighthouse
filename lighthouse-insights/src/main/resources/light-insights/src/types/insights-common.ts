@@ -22,6 +22,13 @@ export enum OrderTypeEnum {
     STAT_ITEM_APPROVE=4,
 }
 
+export enum PermissionEnum {
+    readable="readable",
+    editable="editable",
+    approveable="approveable",
+    retractable="retractable",
+}
+
 export enum OrderStateEnum {
     Processing=0,
     Approved=1,

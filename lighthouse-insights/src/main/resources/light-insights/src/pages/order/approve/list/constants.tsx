@@ -5,7 +5,7 @@ import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
 import {formatTimeStamp} from "@/utils/util";
-import {OrderStateEnum} from "@/types/insights-common";
+import {OrderStateEnum, PermissionEnum} from "@/types/insights-common";
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
@@ -75,7 +75,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             dataIndex: 'operations',
             headerCellStyle: {width:'250px' },
             render: (_, record) => {
-                if(record.state == OrderStateEnum.Processing && record.permissions.includes('readable')){
+                if(record.state == OrderStateEnum.Processing && record.permissions.includes(PermissionEnum.approveable)){
                     return  <Space size={0} direction="horizontal">
                         <Button
                             onClick={() => callback(record, 'process')}

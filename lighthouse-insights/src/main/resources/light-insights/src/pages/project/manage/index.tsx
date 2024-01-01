@@ -9,7 +9,7 @@ import {
     Typography
 } from "@arco-design/web-react";
 import GroupManagePanel from "@/pages/group/manage";
-import {PermissionsEnum, Project} from "@/types/insights-web";
+import {Project} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {requestQueryById, requestQueryByIds} from "@/api/project";
 import ProjectManageMenu from "@/pages/project/manage/menu";

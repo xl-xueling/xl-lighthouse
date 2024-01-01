@@ -83,6 +83,7 @@
             </if>
         </where>
         <bind name="offset" value="(pageNum-1)*pageSize"></bind>
+        order by create_time desc
         limit ${offset},#{pageSize}
     </select>
 

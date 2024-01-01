@@ -6,7 +6,7 @@ import {GoGitMerge, GoStack} from "react-icons/go";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {requestBinded, requestPinList} from "@/api/metricset";
-import {ArcoTreeNode, Department, MetricSet, MetricSetPagination, PermissionsEnum} from "@/types/insights-web";
+import {ArcoTreeNode, Department, MetricSet} from "@/types/insights-web";
 import locale from "./locale";
 import {requestPrivilegeCheck} from "@/api/privilege";
 
@@ -71,17 +71,6 @@ export default function ReverseBindedPanel({projectId = 0,statId = 0,onClose}) {
         })
     }
 
-    const fetchPrivilegeInfo = async(ids) => {
-        return new Promise<Record<number,PermissionsEnum[]>>((resolve,reject) => {
-            requestPrivilegeCheck({type:"metric",ids:ids}).then((response) => {
-                console.log("data is:" + JSON.stringify(response.data));
-                resolve(response.data);
-            }).catch((error) => {
-                reject(error);
-            })
-        })
-    }
-
     const fetchData = async (): Promise<void> => {
         setLoading(true);
         // const fetchPinMerticsData:Promise<Array<MetricSet>> = new Promise<Array<MetricSet>>((resolve,reject) => {
@@ -96,20 +85,20 @@ export default function ReverseBindedPanel({projectId = 0,statId = 0,onClose}) {
         //
         const ids = pinMetricsInfo.map(z => z.id);
         console.log("ids is:" + JSON.stringify(ids));
-        Promise.all([fetchPrivilegeInfo(ids)])
-            .then(([r1]) => {
-                const treeData = pinMetricsInfo.reduce((result:ArcoTreeNode[],item:MetricSet) => {
-                    const metricInfo = pinMetricsInfo.find(x => String(x.id) == String(item.id));
-                    const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id]}};
-                    const v = translate(item.structure)
-                    result.push(v);
-                    return result;
-                },[]);
-                setTreeData(treeData);
-                setLoading(false);
-            }).catch((error) => {
-                console.log(error);
-            })
+        // Promise.all([fetchPrivilegeInfo(ids)])
+        //     .then(([r1]) => {
+        //         const treeData = pinMetricsInfo.reduce((result:ArcoTreeNode[],item:MetricSet) => {
+        //             const metricInfo = pinMetricsInfo.find(x => String(x.id) == String(item.id));
+        //             const combinedItem = { ...item, ...{"key":item.id,"permissions":r1[item.id]}};
+        //             const v = translate(item.structure)
+        //             result.push(v);
+        //             return result;
+        //         },[]);
+        //         setTreeData(treeData);
+        //         setLoading(false);
+        //     }).catch((error) => {
+        //         console.log(error);
+        //     })
     };
 
     useEffect(() => {
