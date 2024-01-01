@@ -7,11 +7,13 @@ import java.util.stream.Stream;
 
 public enum ApproveStateEnum {
 
-    PENDING(0),
+    WAIT(0),
 
-    APPROVED(1),
+    PENDING(1),
 
-    REJECTED(2),
+    APPROVED(2),
+
+    REJECTED(3),
 
     ;
 
