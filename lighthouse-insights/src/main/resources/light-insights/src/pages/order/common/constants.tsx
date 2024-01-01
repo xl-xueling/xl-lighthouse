@@ -178,12 +178,11 @@ export function getOrderDetailColumns(t: any,orderInfo:Order) {
                 if(value){
                     return <Text>{formatTimeStamp(value)}</Text>
                 }
-            }
-            ,
+            },
         },
         {
-            title: t['detailModal.detail.columns.approve.apply'],
-            dataIndex: 'apply',
+            title: t['detailModal.detail.columns.approve.reply'],
+            dataIndex: 'reply',
             render: (value,record) =>
                 <Text>{value}</Text>
             ,
