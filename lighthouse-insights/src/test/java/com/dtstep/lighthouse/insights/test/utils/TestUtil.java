@@ -6,6 +6,8 @@ import com.dtstep.lighthouse.insights.modal.Column;
 import com.dtstep.lighthouse.insights.modal.Order;
 import org.junit.Test;
 
+import java.util.List;
+
 public class TestUtil {
 
     @Test
@@ -26,5 +28,12 @@ public class TestUtil {
         System.out.println("order state:" + order.getState());
         System.out.println("order:" + JsonUtil.toJSONString(order));
 
+    }
+
+    @Test
+    public void testArray() throws Exception{
+        List<Integer> list = List.of(3,5,8,10);
+        Integer current = 11;
+        System.out.println("index:" + list.indexOf(current));
     }
 }

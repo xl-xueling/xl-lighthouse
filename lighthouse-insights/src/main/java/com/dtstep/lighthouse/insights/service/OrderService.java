@@ -12,7 +12,7 @@ public interface OrderService {
 
     int create(Order order);
 
-    int approve(OrderApproveParam approveParam);
+    void approve(OrderApproveParam approveParam);
 
     ListData<Order> queryApplyList(OrderQueryParam queryParam,Integer pageNum,Integer pageSize);
 

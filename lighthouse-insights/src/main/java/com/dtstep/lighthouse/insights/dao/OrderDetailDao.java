@@ -11,4 +11,6 @@ public interface OrderDetailDao {
     int insert(OrderDetail orderDetail);
 
     List<OrderDetail> queryList(Integer orderId);
+
+    int updateDetail(OrderDetail orderDetail);
 }

@@ -76,13 +76,18 @@ public class OrderServiceImpl implements OrderService {
         order.setSteps(steps);
         orderDao.insert(order);
         int orderId = order.getId();
-        for(Integer roleId : steps){
+        for(int i=0;i<steps.size();i++){
+            int roleId = steps.get(i);
             OrderDetail orderDetail = new OrderDetail();
             RoleTypeEnum roleType = roleTypeMap.get(roleId);
             orderDetail.setCreateTime(localDateTime);
             orderDetail.setOrderId(orderId);
             orderDetail.setRoleType(roleType);
-            orderDetail.setState(ApproveStateEnum.PENDING);
+            if(i == 0){
+                orderDetail.setState(ApproveStateEnum.PENDING);
+            }else{
+                orderDetail.setState(ApproveStateEnum.WAIT);
+            }
             orderDetail.setRoleId(roleId);
             orderDetailDao.insert(orderDetail);
         }
@@ -151,35 +156,65 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public int approve(OrderApproveParam approveParam) {
+    public void approve(OrderApproveParam approveParam) {
         int result = approveParam.getResult();
-        Order dbOrder = orderDao.queryById(approveParam.getId());
-        Validate.isTrue(approveParam.getRoleId().intValue() == dbOrder.getCurrentNode().intValue());
-        Validate.notNull(dbOrder);
-        OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setRoleId(approveParam.getRoleId());
-        orderDetail.setReply(approveParam.getReply());
-        orderDetail.setOrderId(approveParam.getId());
+        Order order = orderDao.queryById(approveParam.getId());
+        Validate.isTrue(approveParam.getRoleId().intValue() == order.getCurrentNode().intValue());
+        Validate.notNull(order);
+        List<Integer> steps = order.getSteps();
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        int stepIndex = steps.indexOf(order.getCurrentNode());
         LocalDateTime localDateTime = LocalDateTime.now();
-        orderDetail.setApproveTime(localDateTime);
-        orderDetail.setCreateTime(localDateTime);
         if(result == 1){
-            dbOrder.setState(OrderStateEnum.APPROVED);
+            order.setState(OrderStateEnum.APPROVED);
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setRoleId(approveParam.getRoleId());
+            orderDetail.setReply(approveParam.getReply());
+            orderDetail.setOrderId(approveParam.getId());
+            orderDetail.setApproveTime(localDateTime);
             orderDetail.setState(ApproveStateEnum.APPROVED);
+            if(stepIndex != steps.size() - 1){
+                order.setCurrentNode(steps.get(stepIndex + 1));
+            }else{
+                order.setCurrentNode(0);
+            }
+            orderDetails.add(orderDetail);
+            approveCallback(order);
         }else if(result == 2){
-            dbOrder.setState(OrderStateEnum.REJECTED);
+            order.setState(OrderStateEnum.REJECTED);
+            order.setCurrentNode(0);
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setRoleId(approveParam.getRoleId());
+            orderDetail.setReply(approveParam.getReply());
+            orderDetail.setOrderId(approveParam.getId());
+            orderDetail.setApproveTime(localDateTime);
             orderDetail.setState(ApproveStateEnum.REJECTED);
+            orderDetails.add(orderDetail);
+            if(stepIndex != steps.size() - 1){
+                for(int i = stepIndex + 1;i < steps.size();i++){
+                    int roleId = steps.get(i);
+                    OrderDetail tempOrderDetail = new OrderDetail();
+                    tempOrderDetail.setApproveTime(localDateTime);
+                    tempOrderDetail.setRoleId(roleId);
+                    tempOrderDetail.setOrderId(approveParam.getId());
+                    tempOrderDetail.setState(ApproveStateEnum.SUSPEND);
+                    orderDetails.add(tempOrderDetail);
+                }
+            }
         }
-        dbOrder.setUpdateTime(LocalDateTime.now());
-        dbOrder.setCurrentNode(0);
-        orderDao.update(dbOrder);
-        if(dbOrder.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
+        order.setUpdateTime(LocalDateTime.now());
+        orderDao.update(order);
+        for(int i=0;i<orderDetails.size();i++){
+            orderDetailDao.updateDetail(orderDetails.get(i));
+        }
+    }
+
+    private void approveCallback(Order order){
+        if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
             UserUpdateParam userUpdateParam = new UserUpdateParam();
             userUpdateParam.setState(UserStateEnum.USR_NORMAL);
             userUpdateParam.setUpdateTime(LocalDateTime.now());
             userService.update(userUpdateParam);
         }
-        orderDetailDao.insert(orderDetail);
-        return 0;
     }
 }
