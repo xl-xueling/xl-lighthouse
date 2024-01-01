@@ -41,7 +41,8 @@ export enum ApproveStateEnum {
     Pending=1,
     Approved=2,
     Rejected=3,
-    Suspend=4,
+    Retracted=4,
+    Suspend=5,
 }
 
 export enum RoleTypeEnum {

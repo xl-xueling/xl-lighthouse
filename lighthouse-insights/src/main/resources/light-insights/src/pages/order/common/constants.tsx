@@ -157,13 +157,17 @@ export function getOrderDetailColumns(t: any,orderInfo:Order) {
             dataIndex: 'state',
             render: (value) => {
                 if(value === 0){
+                    return <Badge status="default" text={t['detailModal.detail.columns.approve.state.wait']}/>;
+                } else if(value === 1){
                     return <Badge status="processing" text={t['detailModal.detail.columns.approve.state.pending']}/>;
-                }else if (value === 1) {
+                }else if (value === 2) {
                     return <Badge status="success" text={t['detailModal.detail.columns.approve.state.approved']}/>;
-                }else if(value === 2){
-                    return <Badge status="error" text={t['detailModal.detail.columns.approve.state.rejected']}/>;
                 }else if(value === 3){
-                    return <Badge status="error" text={t['detailModal.detail.columns.approve.state.retracted']}/>;
+                    return <Badge status="error" text={t['detailModal.detail.columns.approve.state.rejected']}/>;
+                }else if(value === 4){
+                    return <Badge status="warning" text={t['detailModal.detail.columns.approve.state.retracted']}/>;
+                }else if(value === 5){
+                    return <Badge status="error" text={t['detailModal.detail.columns.approve.state.suspend']}/>;
                 }
             },
         },

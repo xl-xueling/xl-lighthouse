@@ -15,7 +15,9 @@ public enum ApproveStateEnum {
 
     REJECTED(3),
 
-    SUSPEND(4),
+    RETRACTED(4),
+
+    SUSPEND(5),
 
     ;
 

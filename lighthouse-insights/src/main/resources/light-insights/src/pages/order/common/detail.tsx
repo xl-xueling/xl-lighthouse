@@ -30,16 +30,42 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
             orderInfo.orderDetails?.map(z => {
                 const roleId = z.roleId;
                 const admins = orderInfo.adminsMap[roleId];
-                if(z.state == ApproveStateEnum.Pending){
+                if(z.state == ApproveStateEnum.Wait){
+                    return <Steps.Step status={'wait'} key={z.id} title='Wait' description={
+                        <div>
+                            <UserGroup users={admins}/>
+                        </div>
+                    }/>;
+                }else if(z.state == ApproveStateEnum.Pending){
                     return <Steps.Step status={'process'} key={z.id} title='Pending' description={
                         <div>
                             <UserGroup users={admins}/>
                         </div>
                     }/>;
                 }else if(z.state == ApproveStateEnum.Approved){
-                    return <Steps.Step status={'finish'} key={z.id} title='Pending' />;
+                    return <Steps.Step status={'finish'} key={z.id} title='Pending' description={
+                        <div>
+                            <UserGroup users={[z.user]} />
+                        </div>
+                    }/>;
                 }else if(z.state == ApproveStateEnum.Rejected){
-                    return <Steps.Step status={"error"} key={z.id} title='Pending' />;
+                    return <Steps.Step status={'error'} key={z.id} title='Pending' description={
+                        <div>
+                            <UserGroup users={[z.user]} />
+                        </div>
+                    }/>;
+                }else if(z.state == ApproveStateEnum.Retracted){
+                    return <Steps.Step status={'finish'} key={z.id} title='Finish' description={
+                        <div>
+                            <UserGroup users={admins}/>
+                        </div>
+                    }/>;
+                }else if(z.state == ApproveStateEnum.Suspend){
+                    return <Steps.Step status={'wait'} key={z.id} title='Finish' description={
+                        <div>
+                            <UserGroup users={admins}/>
+                        </div>
+                    }/>;
                 }
             })
         );

@@ -10,6 +10,8 @@ public class OrderDto extends Order {
 
     private UserDto user;
 
+    private String desc;
+
     private HashMap<Integer,List<UserDto>> adminsMap;
 
     private List<OrderDetailDto> orderDetails;
@@ -41,5 +43,13 @@ public class OrderDto extends Order {
 
     public void setOrderDetails(List<OrderDetailDto> orderDetails) {
         this.orderDetails = orderDetails;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }
