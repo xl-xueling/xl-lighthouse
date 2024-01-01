@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LightHouseInsightsApplication.class,properties = {"spring.config.location=classpath:lighthouse-insights.yml"})
-public class TestPermissionDao {
+public class TestPermissionInfoDao {
 
     @Autowired
     private PermissionDao permissionDao;

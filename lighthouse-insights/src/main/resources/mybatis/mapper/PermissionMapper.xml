@@ -36,4 +36,11 @@
         <bind name="offset" value="(pageNum-1)*pageSize"></bind>
         limit ${offset},#{pageSize}
     </select>
+
+    <select id="hasPermission" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM ldp_permission
+        WHERE owner_id = #{ownerId} and owner_type = #{ownerType.ownerType} and role_id = #{roleId}
+    </select>
+
 </mapper>

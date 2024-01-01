@@ -7,10 +7,7 @@ import com.dtstep.lighthouse.insights.dao.OrderDao;
 import com.dtstep.lighthouse.insights.dao.OrderDetailDao;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
 import com.dtstep.lighthouse.insights.dto.*;
-import com.dtstep.lighthouse.insights.enums.ApproveStateEnum;
-import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
-import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.enums.*;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import org.apache.commons.collections.CollectionUtils;
@@ -101,8 +98,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private OrderDto translate(Order order){
+        Integer currentUserId = baseService.getCurrentUserId();
         OrderDto orderDto = new OrderDto(order);
-        int userId = orderDto.getUserId();
+        int applyUserId = orderDto.getUserId();
         List<Integer> roleIds = order.getSteps();
         HashMap<Integer,List<UserDto>> adminsMap = new HashMap<>();
         for(Integer roleId : roleIds){
@@ -119,9 +117,15 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
             adminsMap.put(roleId,admins);
+            boolean hashPermission = permissionDao.hasPermission(currentUserId, OwnerTypeEnum.USER,roleId);
+            orderDto.addPermission(PermissionInfo.PermissionEnum.readable);
+        }
+        Integer currentNode = order.getCurrentNode();
+        if(permissionDao.hasPermission(currentUserId, OwnerTypeEnum.USER,currentNode)){
+            orderDto.addPermission(PermissionInfo.PermissionEnum.approveable);
         }
         orderDto.setAdminsMap(adminsMap);
-        UserDto user = userService.queryById(userId);
+        UserDto user = userService.queryById(applyUserId);
         List<OrderDetailDto> orderDetails = orderDetailService.queryList(order.getId());
         orderDto.setOrderDetails(orderDetails);
         orderDto.setUser(user);
@@ -130,6 +134,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ListData<OrderDto> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
+        Integer currentUserId = baseService.getCurrentUserId();
+        queryParam.setApproveUserId(currentUserId);
         List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
         ListData<OrderDto> listData = new ListData<>();
         List<OrderDto> orderDtoList = new ArrayList<>();
