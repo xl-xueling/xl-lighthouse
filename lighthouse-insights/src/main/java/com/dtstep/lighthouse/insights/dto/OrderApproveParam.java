@@ -13,6 +13,8 @@ public class OrderApproveParam implements Serializable {
 
     private String reply;
 
+    private Integer userId;
+
     @NotNull
     private Integer result;
 
@@ -46,5 +48,13 @@ public class OrderApproveParam implements Serializable {
 
     public void setResult(Integer result) {
         this.result = result;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

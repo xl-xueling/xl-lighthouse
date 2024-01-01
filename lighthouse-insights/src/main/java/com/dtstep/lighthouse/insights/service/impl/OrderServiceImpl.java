@@ -171,6 +171,7 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setRoleId(approveParam.getRoleId());
             orderDetail.setReply(approveParam.getReply());
             orderDetail.setOrderId(approveParam.getId());
+            orderDetail.setUserId(approveParam.getUserId());
             orderDetail.setApproveTime(localDateTime);
             orderDetail.setState(ApproveStateEnum.APPROVED);
             if(stepIndex != steps.size() - 1){
@@ -188,6 +189,7 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setReply(approveParam.getReply());
             orderDetail.setOrderId(approveParam.getId());
             orderDetail.setApproveTime(localDateTime);
+            orderDetail.setUserId(approveParam.getUserId());
             orderDetail.setState(ApproveStateEnum.REJECTED);
             orderDetails.add(orderDetail);
             if(stepIndex != steps.size() - 1){

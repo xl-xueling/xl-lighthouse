@@ -35,6 +35,8 @@ public class ApproveController {
 
     @PostMapping("/approve/process")
     public ResultData<Integer> approve(@RequestBody OrderApproveParam approveParam){
+        int userId = baseService.getCurrentUserId();
+        approveParam.setUserId(userId);
         orderService.approve(approveParam);
         return ResultData.success(0);
     }
