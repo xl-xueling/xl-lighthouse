@@ -1,15 +1,12 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Button, Form, Input, Message, Modal, Space, Typography} from "@arco-design/web-react";
 import OrderDetail from "@/pages/order/common/detail";
-import styles from "@/pages/metricset/display/style/index.module.less";
-import {Order} from "@/types/insights-web";
 import {requestApprove} from "@/api/order";
 import useLocale from "@/utils/useLocale";
-import locale from "@/pages/login/locale";
+import locale from "./locale";
 
 export default function OrderProcessModal({orderInfo,onClose}) {
 
-    const [visible, setVisible] = React.useState(false);
     const formRef = useRef(null);
     const t = useLocale(locale);
     const [loading, setLoading] = useState(false);
@@ -17,14 +14,12 @@ export default function OrderProcessModal({orderInfo,onClose}) {
     async function approvedSubmit() {
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
-        console.log("values is:" + JSON.stringify(values))
         const approveParam = {
             id:orderInfo.id,
             roleId:orderInfo.currentNode,
             reply:values.reply,
             result:1,
         }
-        console.log("approvedSubmit is:" + JSON.stringify(approveParam))
         requestApprove(approveParam).then((result) => {
             console.log("result:" + JSON.stringify(result));
             if(result.code === '0'){
@@ -56,7 +51,7 @@ export default function OrderProcessModal({orderInfo,onClose}) {
 
     return(
         <Modal
-            title= '审核工单'
+            title= {t['approveModal.title']}
             style={{ width:'850px',top:'20px' }}
             visible={true}
             footer={null}
@@ -70,7 +65,7 @@ export default function OrderProcessModal({orderInfo,onClose}) {
                     style={{ marginTop: 30 }}
                     heading={6}
                 >
-                    审核批复
+                    {t['approveModal.label.reply']}
                 </Typography.Title>
                 <Form.Item field={'reply'}>
                     <Input.TextArea maxLength={200} rows={2}  showWordLimit={true}/>
@@ -78,8 +73,8 @@ export default function OrderProcessModal({orderInfo,onClose}) {
             </Form>
             <div style={{ textAlign: 'center', marginTop: '35px' }}>
                 <Space size={10}>
-                    <Button type="primary" onClick={approvedSubmit}>通过</Button>
-                    <Button type="primary" status='danger' onClick={rejectedSubmit}>拒绝</Button>
+                    <Button type="primary" onClick={approvedSubmit}>{t['approveModal.button.agree']}</Button>
+                    <Button type="primary" status='danger' onClick={rejectedSubmit}>{t['approveModal.button.reject']}</Button>
                 </Space>
             </div>
         </Modal>

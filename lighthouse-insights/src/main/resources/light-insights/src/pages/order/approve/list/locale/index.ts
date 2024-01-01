@@ -29,6 +29,11 @@ const i18n = {
     'approveList.user.approve.columns.email':'Email',
     'approveList.user.approve.columns.department':'Department',
     'approveList.user.approve.columns.state':'UserState',
+    'approveModal.title':'Order Approve',
+    'approveModal.label.reply':'Order Reply',
+    'approveModal.button.approve':'Approve',
+    'approveModal.button.agree':'Agree',
+    'approveModal.button.reject':'Reject',
   },
   'zh-CN': {
     'approveList.columns.id':'ID',
@@ -59,6 +64,10 @@ const i18n = {
     'approveList.user.approve.columns.username':'用户名',
     'approveList.user.approve.columns.email':'邮箱',
     'approveList.user.approve.columns.department':'部门',
+    'approveModal.title':'审核工单',
+    'approveModal.label.reply':'审核批复',
+    'approveModal.button.agree':'同意',
+    'approveModal.button.reject':'驳回',
   },
 };
 
