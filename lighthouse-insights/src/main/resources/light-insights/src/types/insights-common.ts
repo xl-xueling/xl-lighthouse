@@ -30,9 +30,10 @@ export enum OrderStateEnum {
 }
 
 export enum ApproveStateEnum {
-    Pending=0,
-    Approved=1,
-    Rejected=2,
+    Wait=0,
+    Pending=1,
+    Approved=2,
+    Rejected=3,
 }
 
 export enum RoleTypeEnum {

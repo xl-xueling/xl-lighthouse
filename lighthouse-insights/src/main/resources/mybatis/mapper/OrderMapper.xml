@@ -48,13 +48,17 @@
     </select>
 
     <select id="queryApproveList" resultMap="orderResultMap">
-        select c.`id`,c.`user_id`,c.`order_type`,c.`state`,c.`steps`,c.`extend_config`,
-        c.`hash`,c.`current_node`,
-        c.`desc`,c.`create_time`,c.`update_time`,u.username from (select a.`id`,a.`user_id`,a.`order_type`,a.`state`,a.`steps`,a.`extend_config`,
-        a.`hash`,a.`current_node`,
-        a.`desc`,a.`create_time`,a.`update_time` from ldp_order a inner join (
-        select role_id from ldp_permission where owner_id = #{queryParam.approveUserId} and owner_type = '1'
-        )b on a.current_node = b.role_id) c left join ldp_user u on c.user_id = u.id
+        select c.* from (SELECT `id`,`user_id`,`order_type`,`state`,`steps`,`extend_config`,
+        `hash`,`current_node`,
+        `desc`,`create_time`,`update_time`
+        FROM ldp_order o
+        inner JOIN (
+            SELECT a.`order_id`
+            FROM ldp_order_detail a
+            JOIN ldp_permission p ON a.role_id = p.role_id
+            WHERE p.owner_id = #{queryParam.approveUserId} and p.owner_type = '1' and a.state in ('1','2','3')
+            GROUP BY a.`order_id`
+        ) sub ON o.id = sub.order_id) c left join ldp_user u on c.user_id = u.id
         <where>
             <if test="queryParam.username != null">
                 AND `u.username` LIKE CONCAT('%', #{queryParam.username}, '%')
@@ -66,16 +70,16 @@
                 </foreach>
             </if>
             <if test="queryParam.states != null">
-                AND c.`state` IN
+                AND `state` IN
                 <foreach item="item" index="index" collection="queryParam.states" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
             <if test="queryParam.createStartTime!=null">
-                AND c.`create_time` &gt;= #{queryParam.createStartTime}
+                AND `create_time` &gt;= #{queryParam.createStartTime}
             </if>
             <if test="queryParam.createEndTime!=null">
-                AND c.`create_time` &lt;= #{queryParam.createEndTime}
+                AND `create_time` &lt;= #{queryParam.createEndTime}
             </if>
         </where>
         <bind name="offset" value="(pageNum-1)*pageSize"></bind>
