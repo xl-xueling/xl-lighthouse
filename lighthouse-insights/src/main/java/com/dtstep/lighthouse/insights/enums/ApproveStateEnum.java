@@ -15,6 +15,8 @@ public enum ApproveStateEnum {
 
     REJECTED(3),
 
+    SUSPEND(4),
+
     ;
 
     @JsonValue
