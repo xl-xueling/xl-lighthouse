@@ -24,12 +24,10 @@ public class ApproveController {
 
     @PostMapping("/approve/list")
     public ResultData<ListData<OrderDto>> queryList(@Validated @RequestBody ListSearchObject<OrderQueryParam> searchObject){
-        int currentUserId = baseService.getCurrentUserId();
         OrderQueryParam queryParam = searchObject.getQueryParams();
         if(queryParam == null){
             queryParam = new OrderQueryParam();
         }
-        queryParam.setApproveUserId(currentUserId);
         Pagination pagination = searchObject.getPagination();
         ListData<OrderDto> listData = orderService.queryApproveList(queryParam,pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);

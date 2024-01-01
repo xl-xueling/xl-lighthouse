@@ -58,6 +58,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
     }
 
     useEffect(() => {
+        console.log("orderInfo:" + JSON.stringify(orderInfo));
         setListData([orderInfo]);
         setUserListData([orderInfo.user])
         setOrderDetailData(orderInfo.orderDetails)

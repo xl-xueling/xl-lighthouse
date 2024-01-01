@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
+import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Permission;
 import com.dtstep.lighthouse.insights.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,10 @@ public class PermissionServiceImpl implements PermissionService {
         permission.setUpdateTime(localDateTime);
         permissionDao.insert(permission);
         return 0;
+    }
+
+    @Override
+    public boolean hasPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId) {
+        return permissionDao.hasPermission(ownerId,ownerType,roleId);
     }
 }
