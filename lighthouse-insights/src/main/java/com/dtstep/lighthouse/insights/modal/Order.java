@@ -27,7 +27,7 @@ public class Order extends PermissionInfo implements Serializable {
 
     private Integer currentNode;
 
-    private String desc;
+    private String reason;
 
     private LocalDateTime createTime;
 
@@ -97,12 +97,12 @@ public class Order extends PermissionInfo implements Serializable {
         this.orderType = orderType;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getReason() {
+        return reason;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public List<Integer> getSteps() {
@@ -120,4 +120,5 @@ public class Order extends PermissionInfo implements Serializable {
     public void setExtendConfig(Map<String, Object> extendConfig) {
         this.extendConfig = extendConfig;
     }
+
 }

@@ -10,7 +10,7 @@
         <result property="extendConfig" column="extend_config" typeHandler="com.dtstep.lighthouse.insights.types.MapConfigTypeHandler"/>
         <result property="hash" column="hash"/>
         <result property="currentNode" column="current_node"/>
-        <result property="desc" column="desc"/>
+        <result property="reason" column="reason"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
@@ -18,7 +18,7 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Order" >
         INSERT INTO ldp_order (`user_id`,`order_type`,`state`,`steps`,`extend_config`,
                                     `hash`,`current_node`,
-                                    `desc`,`create_time`,`update_time`) VALUES
+                                    `reason`,`create_time`,`update_time`) VALUES
         (
             #{userId,jdbcType=INTEGER},
             #{orderType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.OrderTypeEnumTypeHandler},
@@ -27,7 +27,7 @@
             #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.MapConfigTypeHandler},
             #{hash,jdbcType=VARCHAR},
             #{currentNode,jdbcType=INTEGER},
-            #{desc,jdbcType=VARCHAR},
+            #{reason,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
         )
@@ -36,21 +36,21 @@
     <select id="queryById" resultMap="orderResultMap">
         SELECT `id`,`user_id`,`order_type`,`state`,`steps`,`extend_config`,
                `hash`,`current_node`,
-               `desc`,`create_time`,`update_time`
+               `reason`,`create_time`,`update_time`
         FROM ldp_order WHERE id = #{id}
     </select>
 
     <select id="queryApplyList" resultMap="orderResultMap">
         SELECT `id`,`user_id`,`order_type`,`state`,`steps`,`extend_config`,
                `hash`,`current_node`,
-               `desc`,`create_time`,`update_time`
+               `reason`,`create_time`,`update_time`
         FROM ldp_order WHERE user_id = #{queryParam.applyUserId}
     </select>
 
     <select id="queryApproveList" resultMap="orderResultMap">
         select c.* from (SELECT `id`,`user_id`,`order_type`,`state`,`steps`,`extend_config`,
         `hash`,`current_node`,
-        `desc`,`create_time`,`update_time`
+        `reason`,`create_time`,`update_time`
         FROM ldp_order o
         inner JOIN (
             SELECT a.`order_id`
