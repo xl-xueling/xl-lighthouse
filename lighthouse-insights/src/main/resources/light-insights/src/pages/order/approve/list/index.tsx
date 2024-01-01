@@ -20,6 +20,7 @@ export default function ApproveList() {
     const [listData, setListData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentOrder,setCurrentOrder] = useState<Order>();
+    const [reloadTime,setReloadTime] = useState<number>(Date.now);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: true,
@@ -95,11 +96,12 @@ export default function ApproveList() {
     }
 
     useEffect(() => {
+        console.log("-----Load page...")
         fetchData().then().catch(error => {
             console.log(error);
             Message.error(t['system.error']);
         })
-    }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+    }, [reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
 
     return (
@@ -111,7 +113,7 @@ export default function ApproveList() {
                 size={"small"}
                 loading={loading}
                 columns={columns} data={listData} />
-            {showProcessPanel && <OrderProcessModal orderInfo={currentOrder} onClose={() => setShowProcessPanel(false)}/>}
+            {showProcessPanel && <OrderProcessModal orderInfo={currentOrder} onClose={() => {setShowProcessPanel(false);}} onReload={() => {setReloadTime(Date.now)}}/>}
             {showDetailPanel && <OrderDetailModal orderInfo={currentOrder} onClose={() => setShowDetailPanel(false)}/>}
         </Card>
     );

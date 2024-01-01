@@ -4,12 +4,14 @@ import OrderDetail from "@/pages/order/common/detail";
 import {requestApprove} from "@/api/order";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
+import {OrderStateEnum} from "@/types/insights-common";
 
-export default function OrderProcessModal({orderInfo,onClose}) {
+export default function OrderProcessModal({orderInfo,onClose,onReload}) {
 
     const formRef = useRef(null);
     const t = useLocale(locale);
-    const [loading, setLoading] = useState(false);
+    const [agreeLoading, setAgreeLoading] = useState(false);
+    const [rejectLoading, setRejectLoading] = useState(false);
 
     async function approvedSubmit() {
         await formRef.current.validate();
@@ -20,7 +22,7 @@ export default function OrderProcessModal({orderInfo,onClose}) {
             reply:values.reply,
             result:1,
         }
-        setLoading(true);
+        setAgreeLoading(true);
         requestApprove(approveParam).then((result) => {
             if(result.code === '0'){
                 Notification.info({
@@ -43,7 +45,9 @@ export default function OrderProcessModal({orderInfo,onClose}) {
                 content: t['system.error'],
             })
         }).finally(() => {
-            setLoading(false);
+            setAgreeLoading(false);
+            onClose();
+            onReload();
         })
     }
 
@@ -56,7 +60,7 @@ export default function OrderProcessModal({orderInfo,onClose}) {
             reply:values.reply,
             result:2,
         }
-        setLoading(true);
+        setRejectLoading(true);
         requestApprove(approveParam).then((result) => {
             console.log("result:" + JSON.stringify(result));
             if(result.code === '0'){
@@ -65,9 +69,6 @@ export default function OrderProcessModal({orderInfo,onClose}) {
                     title: 'Notification',
                     content: t['approveModal.form.submit.success'],
                 })
-                // setTimeout(() => {
-                //     window.location.href = "/project/list";
-                // },3000)
             }else{
                 Notification.warning({
                     style: { width: 420 },
@@ -83,7 +84,9 @@ export default function OrderProcessModal({orderInfo,onClose}) {
                 content: t['system.error'],
             })
         }).finally(() => {
-            setLoading(false);
+            setRejectLoading(false);
+            onClose();
+            onReload();
         })
     }
 
@@ -91,7 +94,6 @@ export default function OrderProcessModal({orderInfo,onClose}) {
         <Modal
             title= {t['approveModal.title']}
             style={{ width:'850px',top:'20px' }}
-            confirmLoading={loading}
             visible={true}
             footer={null}
             onCancel={onClose}>
@@ -112,8 +114,8 @@ export default function OrderProcessModal({orderInfo,onClose}) {
             </Form>
             <div style={{ textAlign: 'center', marginTop: '35px' }}>
                 <Space size={10}>
-                    <Button type="primary" onClick={approvedSubmit}>{t['approveModal.button.agree']}</Button>
-                    <Button type="primary" status='danger' onClick={rejectedSubmit}>{t['approveModal.button.reject']}</Button>
+                    <Button type="primary" loading={agreeLoading} onClick={approvedSubmit}>{t['approveModal.button.agree']}</Button>
+                    <Button type="primary" loading={rejectLoading} status='danger' onClick={rejectedSubmit}>{t['approveModal.button.reject']}</Button>
                 </Space>
             </div>
         </Modal>
