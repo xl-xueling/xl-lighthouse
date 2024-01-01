@@ -6,7 +6,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import {useSelector} from "react-redux";
 import locale from './locale';
-import { Department, PermissionsEnum, Stat} from "@/types/insights-web";
+import { Department, Stat} from "@/types/insights-web";
 import {requestList} from "@/api/stat";
 import {getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
 import Detail from "@/pages/stat/list/detail";

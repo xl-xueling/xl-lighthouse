@@ -34,6 +34,9 @@ export default function ApproveList() {
         if(type == 'process'){
             setShowProcessPanel(true);
             setCurrentOrder(record);
+        }else if(type == 'detail'){
+
+            setCurrentOrder(record);
         }
     };
 
@@ -64,7 +67,7 @@ export default function ApproveList() {
             combineParam.createStartTime = createTime[0];
             combineParam.createEndTime = createTime[1];
         }
-        const fetchApproveList:Promise<{list:Array<Project>,total:number}> = new Promise<{list:Array<Project>,total:number}>((resolve) => {
+        const fetchApproveList:Promise<{list:Array<Order>,total:number}> = new Promise<{list:Array<Order>,total:number}>((resolve) => {
             const proc = async () => {
                 const result = await requestApproveList({
                         queryParams:combineParam,
@@ -79,7 +82,7 @@ export default function ApproveList() {
             proc().then();
         })
         const result = await Promise.all([fetchApproveList]);
-        const {list,total}:{list:Array<Project>,total:number} = result[0];
+        const {list,total}:{list:Array<Order>,total:number} = result[0];
         setListData(list);
         setPagination({
             ...pagination,

@@ -4,7 +4,7 @@ import {IconTag} from "@arco-design/web-react/icon";
 import SearchForm from "@/pages/stat/display/search_form";
 import ChartPanel from "@/pages/stat/display/chart_panel";
 import BasicInfo from "@/pages/stat/display/basic";
-import {PermissionsEnum, Project, Stat} from "@/types/insights-web";
+import {Project, Stat} from "@/types/insights-web";
 import {requestQueryByIds} from "@/api/stat";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import FilterPanel from "@/pages/stat/display/filter/filter_panel";
@@ -23,29 +23,29 @@ export default function StatDisplayMode1({statId = 0}) {
         proc().then();
     })
 
-    const fetchPrivilegeInfo = async(ids) => {
-        return new Promise<Record<number,PermissionsEnum[]>>((resolve,reject) => {
-            requestPrivilegeCheck({type:"stat",ids:ids}).then((response) => {
-                resolve(response.data);
-            }).catch((error) => {
-                reject(error);
-            })
-        })
-    }
+    // const fetchPrivilegeInfo = async(ids) => {
+    //     return new Promise<Record<number,PermissionsEnum[]>>((resolve,reject) => {
+    //         requestPrivilegeCheck({type:"stat",ids:ids}).then((response) => {
+    //             resolve(response.data);
+    //         }).catch((error) => {
+    //             reject(error);
+    //         })
+    //     })
+    // }
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
         const result = await Promise.all([fetchStatInfo]);
         const statInfo = result[0];
-        Promise.all([fetchPrivilegeInfo([statId])])
-            .then(([r1]) => {
-                const combinedItem = { ...statInfo, ...{"permissions":r1[statInfo.id]}};
-                console.log("combinedItem:" + JSON.stringify(combinedItem))
-                setStatInfo(combinedItem);
-                setLoading(false);
-            }).catch((error) => {
-            console.log(error);
-        })
+        // Promise.all([fetchPrivilegeInfo([statId])])
+        //     .then(([r1]) => {
+        //         const combinedItem = { ...statInfo, ...{"permissions":r1[statInfo.id]}};
+        //         console.log("combinedItem:" + JSON.stringify(combinedItem))
+        //         setStatInfo(combinedItem);
+        //         setLoading(false);
+        //     }).catch((error) => {
+        //     console.log(error);
+        // })
     }
 
     useEffect(() => {

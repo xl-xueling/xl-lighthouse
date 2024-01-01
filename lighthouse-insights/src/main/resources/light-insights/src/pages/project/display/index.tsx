@@ -17,7 +17,7 @@ const { Row, Col } = Grid;
 import { RiAppsLine } from "react-icons/ri";
 import MetricNewDetail from "@/pages/metricset/manage/new_detail";
 import DisplayHeader from "@/pages/project/display/head";
-import {ArcoTreeNode, MetricSet, PermissionsEnum, Project} from "@/types/insights-web";
+import {ArcoTreeNode, MetricSet, Project} from "@/types/insights-web";
 import {requestList, requestQueryByIds} from "@/api/project";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {useSelector} from "react-redux";
@@ -42,15 +42,15 @@ export default function ProjectDisplay() {
         proc().then();
     })
 
-    const fetchPrivilegeInfo = async(ids) => {
-        return new Promise<Record<number,PermissionsEnum[]>>((resolve,reject) => {
-            requestPrivilegeCheck({type:"project",ids:ids}).then((response) => {
-                resolve(response.data);
-            }).catch((error) => {
-                reject(error);
-            })
-        })
-    }
+    // const fetchPrivilegeInfo = async(ids) => {
+    //     return new Promise<Record<number,PermissionsEnum[]>>((resolve,reject) => {
+    //         requestPrivilegeCheck({type:"project",ids:ids}).then((response) => {
+    //             resolve(response.data);
+    //         }).catch((error) => {
+    //             reject(error);
+    //         })
+    //     })
+    // }
 
     const menuCallback = async (id) => {
         setSelectedStatId(Number(id));
@@ -60,14 +60,14 @@ export default function ProjectDisplay() {
         setLoading(true);
         const result = await Promise.all([fetchProjectInfo]);
         const projectInfo = result[0];
-        Promise.all([fetchPrivilegeInfo([id])])
-            .then(([r1]) => {
-                const combinedItem = { ...projectInfo, ...{"permissions":r1[projectInfo.id]}};
-                setProjectInfo(combinedItem);
-                setLoading(false);
-            }).catch((error) => {
-                console.log(error);
-            })
+        // Promise.all([fetchPrivilegeInfo([id])])
+        //     .then(([r1]) => {
+        //         const combinedItem = { ...projectInfo, ...{"permissions":r1[projectInfo.id]}};
+        //         setProjectInfo(combinedItem);
+        //         setLoading(false);
+        //     }).catch((error) => {
+        //         console.log(error);
+        //     })
     }
 
 

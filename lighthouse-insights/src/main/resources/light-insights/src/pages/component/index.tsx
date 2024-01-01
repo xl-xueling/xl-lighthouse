@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {ArcoTreeNode, Department, PermissionsEnum, Project, Stat} from "@/types/insights-web";
+import {ArcoTreeNode, Department, Project, Stat} from "@/types/insights-web";
 import {requestQueryDimensValue} from "@/api/group";
 import {Button, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
 import {translate} from "@/pages/department/common";

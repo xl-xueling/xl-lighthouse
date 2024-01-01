@@ -3,15 +3,10 @@ import {
     ApproveStateEnum,
     DatePickerConfigParam,
     FilterConfigParam, OrderStateEnum,
-    OrderTypeEnum,
+    OrderTypeEnum, PermissionEnum,
     RenderTypeEnum, RoleTypeEnum
 } from "@/types/insights-common";
 
-export enum PermissionsEnum {
-    NONE = 0,
-    USER = 1,
-    ADMIN = 2,
-}
 
 export interface Department {
     id: number;
@@ -71,7 +66,7 @@ export interface Project {
     department?:Department;
     structure?:Array<ArcoTreeNode>;
     createTime?:number;
-    permissions?:PermissionsEnum[];
+    permissions?:PermissionEnum[];
 }
 
 export interface Column {
@@ -105,7 +100,7 @@ export interface Stat {
     dimensArray?:Array<string>;
     desc?:string;
     renderConfig?:{datepicker:DatePickerConfigParam,filters:Array<FilterConfigParam>}
-    permissions?:PermissionsEnum[];
+    permissions?:PermissionEnum[];
 }
 
 
@@ -119,7 +114,6 @@ export interface MetricSet {
 }
 
 export interface MetricSetPagination extends MetricSet{
-    permissions:PermissionsEnum[];
     admins?:Array<User>;
 }
 
@@ -136,6 +130,7 @@ export interface Order {
     orderType?:OrderTypeEnum;
     orderDetails?:OrderDetail[];
     extendConfig?:any;
+    permissions?:PermissionEnum;
 }
 
 export interface OrderDetail {
