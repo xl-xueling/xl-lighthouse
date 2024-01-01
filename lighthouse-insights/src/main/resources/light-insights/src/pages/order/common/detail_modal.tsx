@@ -12,7 +12,7 @@ export default function OrderDetailModal({orderInfo,onClose}) {
             visible={true}
             footer={null}
             onCancel={onClose}>
-            <OrderDetail orderInfo={orderInfo} />
+            <OrderDetail orderId={orderInfo.id} />
             <div style={{ textAlign: 'center', marginTop: '35px' }}>
                 <Space size={10}>
                     <Button type="primary" onClick={onClose}>关闭</Button>
