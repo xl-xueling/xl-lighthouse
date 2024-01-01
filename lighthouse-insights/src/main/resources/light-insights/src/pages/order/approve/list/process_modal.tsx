@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Form, Input, Message, Modal, Space, Typography} from "@arco-design/web-react";
+import {Button, Form, Input, Message, Modal, Notification, Space, Typography} from "@arco-design/web-react";
 import OrderDetail from "@/pages/order/common/detail";
 import {requestApprove} from "@/api/order";
 import useLocale from "@/utils/useLocale";
@@ -20,19 +20,28 @@ export default function OrderProcessModal({orderInfo,onClose}) {
             reply:values.reply,
             result:1,
         }
+        setLoading(true);
         requestApprove(approveParam).then((result) => {
-            console.log("result:" + JSON.stringify(result));
             if(result.code === '0'){
-                Message.success(t['projectCreate.form.submit.success']);
-                // setTimeout(() => {
-                //     window.location.href = "/project/list";
-                // },3000)
+                Notification.info({
+                    style: { width: 420 },
+                    title: 'Notification',
+                    content: t['approveModal.form.submit.success'],
+                })
             }else{
-                Message.error(result.message || t['system.error']);
+                Notification.warning({
+                    style: { width: 420 },
+                    title: 'Notification',
+                    content: result.message || t['system.error'],
+                })
             }
         }).catch((error) => {
             console.log(error);
-            Message.error(t['system.error'])
+            Notification.error({
+                style: { width: 420 },
+                title: 'Error',
+                content: t['system.error'],
+            })
         }).finally(() => {
             setLoading(false);
         })
@@ -47,12 +56,42 @@ export default function OrderProcessModal({orderInfo,onClose}) {
             reply:values.reply,
             result:2,
         }
+        setLoading(true);
+        requestApprove(approveParam).then((result) => {
+            console.log("result:" + JSON.stringify(result));
+            if(result.code === '0'){
+                Notification.info({
+                    style: { width: 420 },
+                    title: 'Notification',
+                    content: t['approveModal.form.submit.success'],
+                })
+                // setTimeout(() => {
+                //     window.location.href = "/project/list";
+                // },3000)
+            }else{
+                Notification.warning({
+                    style: { width: 420 },
+                    title: 'Notification',
+                    content: result.message || t['system.error'],
+                })
+            }
+        }).catch((error) => {
+            console.log(error);
+            Notification.error({
+                style: { width: 420 },
+                title: 'Notification',
+                content: t['system.error'],
+            })
+        }).finally(() => {
+            setLoading(false);
+        })
     }
 
     return(
         <Modal
             title= {t['approveModal.title']}
             style={{ width:'850px',top:'20px' }}
+            confirmLoading={loading}
             visible={true}
             footer={null}
             onCancel={onClose}>

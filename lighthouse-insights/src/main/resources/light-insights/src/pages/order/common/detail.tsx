@@ -60,7 +60,6 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
                     </div>
                 }/>;
             }else if(z.state == ApproveStateEnum.Approved){
-                console.log("----z.user is:" + JSON.stringify(z));
                 return <Steps.Step status={'finish'} key={z.id} title={title} description={
                     <div>
                         <UserGroup users={[z.user]} />
