@@ -7,7 +7,7 @@ import {requestApprove} from "@/api/order";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/login/locale";
 
-export default function OrderProcessPanel({orderInfo,onClose}) {
+export default function OrderProcessModal({orderInfo,onClose}) {
 
     const [visible, setVisible] = React.useState(false);
     const formRef = useRef(null);
@@ -41,20 +41,17 @@ export default function OrderProcessPanel({orderInfo,onClose}) {
         }).finally(() => {
             setLoading(false);
         })
-
     }
 
     async function rejectedSubmit() {
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
-        console.log("values is:" + JSON.stringify(values))
         const approveParam = {
             id:orderInfo.id,
             roleId:orderInfo.currentNode,
             reply:values.reply,
             result:2,
         }
-        console.log("rejectedSubmit is:" + JSON.stringify(approveParam))
     }
 
     return(

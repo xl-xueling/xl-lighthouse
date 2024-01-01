@@ -10,8 +10,9 @@ import {requestApproveList} from "@/api/order";
 import {getColumns} from "@/pages/order/approve/list/constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/order/approve/list/locale";
-import OrderProcessPanel from "@/pages/order/approve/list/process";
 import SearchForm from "@/pages/order/approve/list/form";
+import OrderDetailModal from "@/pages/order/common/detail_modal";
+import OrderProcessModal from "@/pages/order/approve/list/process_modal";
 
 export default function ApproveList() {
     const t = useLocale(locale);
@@ -29,13 +30,14 @@ export default function ApproveList() {
     });
 
     const [showProcessPanel, setShowProcessPanel] = useState(false);
+    const [showDetailPanel, setShowDetailPanel] = useState(false);
 
     const tableCallback = async (record, type) => {
         if(type == 'process'){
             setShowProcessPanel(true);
             setCurrentOrder(record);
         }else if(type == 'detail'){
-
+            setShowDetailPanel(true);
             setCurrentOrder(record);
         }
     };
@@ -109,7 +111,8 @@ export default function ApproveList() {
                 size={"small"}
                 loading={loading}
                 columns={columns} data={listData} />
-            {showProcessPanel && <OrderProcessPanel orderInfo={currentOrder} onClose={() => setShowProcessPanel(false)}/>}
+            {showProcessPanel && <OrderProcessModal orderInfo={currentOrder} onClose={() => setShowProcessPanel(false)}/>}
+            {showDetailPanel && <OrderDetailModal orderInfo={currentOrder} onClose={() => setShowDetailPanel(false)}/>}
         </Card>
     );
 }
