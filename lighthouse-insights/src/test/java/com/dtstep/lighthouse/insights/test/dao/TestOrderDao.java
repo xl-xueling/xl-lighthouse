@@ -30,7 +30,6 @@ public class TestOrderDao {
     public void testInsert(){
         Order order = new Order();
         LocalDateTime localDateTime = LocalDateTime.now();
-        order.setDesc("sss");
         order.setUserId(123);
         order.setOrderType(OrderTypeEnum.PROJECT_ACCESS);
         List<Integer> ids = new ArrayList<>();

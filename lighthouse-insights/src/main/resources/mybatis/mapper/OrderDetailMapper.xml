@@ -41,6 +41,9 @@
             <if test="reply != null">
                 `reply` = #{reply},
             </if>
+            <if test="userId != null">
+                `user_id` = #{userId},
+            </if>
             <if test="approveTime != null">
                 `approve_time` = #{approveTime},
             </if>
