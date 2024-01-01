@@ -70,7 +70,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
               style={{ marginTop: 0, marginBottom: 16 }}
               heading={6}
           >
-              工单信息
+              {t['detailModal.label.order.info']}
           </Typography.Title>
           <Table size={"small"} rowKey="id" pagination={false} columns={orderColumns} data={listData} />
 
@@ -78,7 +78,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
               style={{ marginTop: 30 }}
               heading={6}
           >
-              用户信息
+              {t['detailModal.label.user.info']}
           </Typography.Title>
           <Table size={"small"} rowKey="id" pagination={false} columns={userApproveColumns} data={userListData} />
 
@@ -86,7 +86,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
               style={{ marginTop: 30 }}
               heading={6}
           >
-              申请原因
+              {t['detailModal.label.reason']}
           </Typography.Title>
           <Input.TextArea maxLength={200} rows={3}  showWordLimit={true}/>
           <Grid.Row style={{ marginTop:'30px' }}>
@@ -94,7 +94,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
                   <Typography.Title
                       heading={6}
                   >
-                      流程信息
+                      {t['detailModal.label.process.info']}
                   </Typography.Title>
               </Grid.Col>
               <Grid.Col span={8} style={{ textAlign: 'right' }}>

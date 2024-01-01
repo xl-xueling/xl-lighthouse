@@ -10,55 +10,55 @@ const { Text } = Typography;
 export function getOrderColumns(t: any) {
     return [
         {
-            title: t['order.columns.id'],
+            title: t['detailModal.columns.id'],
             dataIndex: 'id',
             render: (value,record) =>
                 <Text>{value}</Text>
             ,
         },
         {
-            title: t['order.columns.user'],
+            title: t['detailModal.columns.user'],
             dataIndex: 'user',
             render: (value,record) =>
                 <UserGroup users={[value]}/>
             ,
         },
         {
-            title: t['order.columns.type'],
+            title: t['detailModal.columns.type'],
             dataIndex: 'orderType',
             render: (value) => {
                 if(value == '1'){
-                    return <Text>{t['order.columns.type.project.access']}</Text>;
+                    return <Text>{t['detailModal.columns.type.project.access']}</Text>;
                 }else if(value == '2'){
-                    return <Text>{t['order.columns.type.stat.access']}</Text>;
+                    return <Text>{t['detailModal.columns.type.stat.access']}</Text>;
                 }else if(value == '3'){
-                    return <Text>{t['order.columns.type.metrics.access']}</Text>;
+                    return <Text>{t['detailModal.columns.type.metrics.access']}</Text>;
                 }else if(value == '4'){
-                    return <Text>{t['order.columns.type.adjust.limited.threshold']}</Text>;
+                    return <Text>{t['detailModal.columns.type.adjust.limited.threshold']}</Text>;
                 }else if(value == '5'){
-                    return <Text>{t['order.columns.type.stat.pend.approve']}</Text>;
+                    return <Text>{t['detailModal.columns.type.stat.pend.approve']}</Text>;
                 }else if(value == '6'){
-                    return <Text>{t['order.columns.type.user.pend.approve']}</Text>;
+                    return <Text>{t['detailModal.columns.type.user.pend.approve']}</Text>;
                 }
             },
         },
         {
-            title: t['order.columns.createTime'],
+            title: t['detailModal.columns.createTime'],
             dataIndex: 'createTime',
             render: (value) => {return formatTimeStamp(value)},
         },
         {
-            title: t['order.columns.state'],
+            title: t['detailModal.columns.state'],
             dataIndex: 'state',
             render: (value) => {
                 if(value === 0){
-                    return <Badge status="processing" text={t['order.columns.state.process']}/>;
+                    return <Badge status="processing" text={t['detailModal.columns.state.process']}/>;
                 }else if (value === 1) {
-                    return <Badge status="success" text={t['order.columns.state.approved']}/>;
+                    return <Badge status="success" text={t['detailModal.columns.state.approved']}/>;
                 }else if(value === 2){
-                    return <Badge status="error" text={t['order.columns.state.rejected']}/>;
+                    return <Badge status="error" text={t['detailModal.columns.state.rejected']}/>;
                 }else if(value === 3){
-                    return <Badge status="error" text={t['order.columns.state.retracted']}/>;
+                    return <Badge status="error" text={t['detailModal.columns.state.retracted']}/>;
                 }
             },
         }
@@ -68,50 +68,50 @@ export function getOrderColumns(t: any) {
 export function getUserApproveColumns(t: any) {
     return [
         {
-            title: t['order.user.approve.columns.id'],
+            title: t['detailModal.user.approve.columns.id'],
             dataIndex: 'id',
             render: (value,record) =>
                 <Text>{value}</Text>
             ,
         },
         {
-            title: t['order.user.approve.columns.username'],
+            title: t['detailModal.user.approve.columns.username'],
             dataIndex: 'username',
             render: (value,record) =>
                 <Text>{value}</Text>
             ,
         },
         {
-            title: t['order.user.approve.columns.email'],
+            title: t['detailModal.user.approve.columns.email'],
             dataIndex: 'email',
             render: (value,record) =>
                 <Text>{value}</Text>
             ,
         },
         {
-            title: t['order.user.approve.columns.department'],
+            title: t['detailModal.user.approve.columns.department'],
             dataIndex: 'department',
             render: (value,record) =>
                 <DepartmentLabel department={value}/>
             ,
         },
         {
-            title: t['order.user.approve.columns.createTime'],
+            title: t['detailModal.user.approve.columns.createTime'],
             dataIndex: 'createTime',
             render: (value) => {return formatTimeStamp(value)},
         },
         {
-            title: t['order.user.approve.columns.state'],
+            title: t['detailModal.user.approve.columns.state'],
             dataIndex: 'state',
             render: (value) => {
                 if(value === 0){
-                    return <Badge status="processing" text={t['order.user.approve.columns.state.pending']}/>;
+                    return <Badge status="processing" text={t['detailModal.user.approve.columns.state.pending']}/>;
                 }else if (value === 1) {
-                    return <Badge status="success" text={t['order.user.approve.columns.state.normal']}/>;
+                    return <Badge status="success" text={t['detailModal.user.approve.columns.state.normal']}/>;
                 }else if(value === 2){
-                    return <Badge status="error" text={t['order.user.approve.columns.state.frozen']}/>;
+                    return <Badge status="error" text={t['detailModal.user.approve.columns.state.frozen']}/>;
                 }else if(value === 3){
-                    return <Badge status="error" text={t['order.user.approve.columns.state.deleted']}/>;
+                    return <Badge status="error" text={t['detailModal.user.approve.columns.state.deleted']}/>;
                 }
             },
         }
@@ -121,7 +121,7 @@ export function getUserApproveColumns(t: any) {
 export function getOrderDetailColumns(t: any,orderInfo:Order) {
     return [
         {
-            title: t['order.detail.columns.id'],
+            title: t['detailModal.detail.columns.id'],
             dataIndex: 'id',
             cellStyle:{
                 display:"none",
@@ -131,44 +131,44 @@ export function getOrderDetailColumns(t: any,orderInfo:Order) {
             ,
         },
         {
-            title: t['order.detail.columns.roleType'],
+            title: t['detailModal.detail.columns.roleType'],
             dataIndex: 'roleType',
             render: (value,record) => {
                 if(value === RoleTypeEnum.FULL_MANAGE_PERMISSION){
-                    return t['order.detail.columns.roleType.systemManager'];
+                    return t['detailModal.detail.columns.roleType.systemManager'];
                 }else if(value == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION){
-                    return t['order.detail.columns.roleType.departmentManager'];
+                    return t['detailModal.detail.columns.roleType.departmentManager'];
                 }else if(value == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
-                    return t['order.detail.columns.roleType.projectManager'];
+                    return t['detailModal.detail.columns.roleType.projectManager'];
                 }else if(value == RoleTypeEnum.OPT_MANAGE_PERMISSION){
-                    return t['order.detail.columns.roleType.operateManager'];
+                    return t['detailModal.detail.columns.roleType.operateManager'];
                 }
             },
         },
         {
-            title: t['order.detail.columns.approver'],
+            title: t['detailModal.detail.columns.approver'],
             dataIndex: 'user',
             render: (value,record) =>
                 <UserGroup users={orderInfo.adminsMap[record.roleId]}/>
             ,
         },
         {
-            title: t['order.detail.columns.approve.state'],
+            title: t['detailModal.detail.columns.approve.state'],
             dataIndex: 'state',
             render: (value) => {
                 if(value === 0){
-                    return <Badge status="processing" text={t['order.detail.columns.approve.state.pending']}/>;
+                    return <Badge status="processing" text={t['detailModal.detail.columns.approve.state.pending']}/>;
                 }else if (value === 1) {
-                    return <Badge status="success" text={t['order.detail.columns.approve.state.approved']}/>;
+                    return <Badge status="success" text={t['detailModal.detail.columns.approve.state.approved']}/>;
                 }else if(value === 2){
-                    return <Badge status="error" text={t['order.detail.columns.approve.state.rejected']}/>;
+                    return <Badge status="error" text={t['detailModal.detail.columns.approve.state.rejected']}/>;
                 }else if(value === 3){
-                    return <Badge status="error" text={t['order.detail.columns.approve.state.retracted']}/>;
+                    return <Badge status="error" text={t['detailModal.detail.columns.approve.state.retracted']}/>;
                 }
             },
         },
         {
-            title: t['order.detail.columns.approve.approveTime'],
+            title: t['detailModal.detail.columns.approve.approveTime'],
             dataIndex: 'approveTime',
             render: (value,record) => {
                 if(value){
@@ -178,7 +178,7 @@ export function getOrderDetailColumns(t: any,orderInfo:Order) {
             ,
         },
         {
-            title: t['order.detail.columns.approve.apply'],
+            title: t['detailModal.detail.columns.approve.apply'],
             dataIndex: 'apply',
             render: (value,record) =>
                 <Text>{value}</Text>
