@@ -5,6 +5,7 @@ import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
 import {formatTimeStamp} from "@/utils/util";
+import {OrderStateEnum} from "@/types/insights-common";
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
@@ -18,9 +19,9 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
         {
             title: t['approveList.columns.user'],
             dataIndex: 'user',
-            render: (value,record) =>
-                <UserGroup users={[value]}/>
-            ,
+            render: (value,record) => {
+                return <UserGroup users={[value]}/>;
+            },
         },
         {
             title: t['approveList.columns.type'],
@@ -50,13 +51,6 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             }
         },
         {
-            title: t['approveList.columns.admins'],
-            dataIndex: 'admins',
-            render: (value) => {
-                return (<UserGroup users={value}/>);
-            },
-        },
-        {
             title: t['approveList.columns.createTime'],
             dataIndex: 'createTime',
             render: (value) => {return formatTimeStamp(value)},
@@ -80,16 +74,28 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             title: t['approveList.columns.operations'],
             dataIndex: 'operations',
             headerCellStyle: {width:'250px' },
-            render: (_, record) => (
-                <Space size={0} direction="horizontal">
-                    <Button
-                        onClick={() => callback(record, 'process')}
-                        type="text"
-                        size="mini">
-                        {t['approveList.columns.operations.process']}
-                    </Button>
-                </Space>
-            ),
+            render: (_, record) => {
+                if(record.state == OrderStateEnum.Processing && record.permissions.includes('readable')){
+                    return  <Space size={0} direction="horizontal">
+                        <Button
+                            onClick={() => callback(record, 'process')}
+                            type="text"
+                            size="mini">
+                            {t['approveList.columns.operations.process']}
+                        </Button>
+                    </Space>
+                }else{
+                    return  <Space size={0} direction="horizontal">
+                        <Button
+                            onClick={() => callback(record, 'detail')}
+                            type="text"
+                            size="mini">
+                            {t['approveList.columns.operations.detail']}
+                        </Button>
+                    </Space>
+                }
+
+            },
         },
     ]
 }
