@@ -32,7 +32,6 @@ export default function ApproveList() {
 
     const tableCallback = async (record, type) => {
         if(type == 'process'){
-            console.log("process is ...")
             setShowProcessPanel(true);
             setCurrentOrder(record);
         }
@@ -55,7 +54,6 @@ export default function ApproveList() {
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
-        console.log("formParams is:" + JSON.stringify(formParams));
         const {current, pageSize} = pagination;
         const combineParam:any = {}
         combineParam.username = formParams.username;
@@ -66,7 +64,6 @@ export default function ApproveList() {
             combineParam.createStartTime = createTime[0];
             combineParam.createEndTime = createTime[1];
         }
-        console.log("combineParam:" + JSON.stringify(combineParam));
         const fetchApproveList:Promise<{list:Array<Project>,total:number}> = new Promise<{list:Array<Project>,total:number}>((resolve) => {
             const proc = async () => {
                 const result = await requestApproveList({
