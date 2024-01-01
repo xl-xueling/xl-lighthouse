@@ -16,7 +16,9 @@ public class PermissionInfo {
     }
 
     public void addPermission(PermissionEnum permissionEnum){
-        this.permissions.add(permissionEnum);
+        if(!this.permissions.contains(permissionEnum)){
+            this.permissions.add(permissionEnum);
+        }
     }
 
     public static enum PermissionEnum {

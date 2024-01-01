@@ -97,7 +97,7 @@ export default function OrderProcessModal({orderInfo,onClose,onReload}) {
             visible={true}
             footer={null}
             onCancel={onClose}>
-            <OrderDetail orderInfo={orderInfo} />
+            <OrderDetail orderId={orderInfo.id} />
             <Form
                 ref={formRef}
                 wrapperCol={{ span: 24 }}

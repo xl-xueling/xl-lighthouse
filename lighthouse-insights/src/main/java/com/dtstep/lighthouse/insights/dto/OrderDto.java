@@ -12,10 +12,6 @@ public class OrderDto extends Order {
 
     private String desc;
 
-    private HashMap<Integer,List<UserDto>> adminsMap;
-
-    private List<OrderDetailDto> orderDetails;
-
     public OrderDto(Order order){
         assert order != null;
         BeanCopyUtil.copy(order,this);
@@ -27,22 +23,6 @@ public class OrderDto extends Order {
 
     public void setUser(UserDto user) {
         this.user = user;
-    }
-
-    public HashMap<Integer, List<UserDto>> getAdminsMap() {
-        return adminsMap;
-    }
-
-    public void setAdminsMap(HashMap<Integer, List<UserDto>> adminsMap) {
-        this.adminsMap = adminsMap;
-    }
-
-    public List<OrderDetailDto> getOrderDetails() {
-        return orderDetails;
-    }
-
-    public void setOrderDetails(List<OrderDetailDto> orderDetails) {
-        this.orderDetails = orderDetails;
     }
 
     public String getDesc() {

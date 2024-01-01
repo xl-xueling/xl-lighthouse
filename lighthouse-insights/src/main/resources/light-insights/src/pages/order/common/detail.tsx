@@ -4,16 +4,20 @@ import UserGroup from "@/pages/user/common/groups";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale/index";
 import {Order} from "@/types/insights-web";
-import {ApproveStateEnum, OrderStateEnum, RoleTypeEnum} from "@/types/insights-common";
+import {ApproveStateEnum, OrderStateEnum, ResultData, RoleTypeEnum} from "@/types/insights-common";
 import {BiListUl} from "react-icons/bi";
 import {getOrderColumns, getOrderDetailColumns, getUserApproveColumns} from "@/pages/order/common/constants";
 import {getRandomString} from "@/utils/util";
+import {requestQueryAll} from "@/api/department";
+import {requestQueryById} from "@/api/order";
 
 const { Text } = Typography;
 
-export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
+export default function OrderDetail({orderId}:{orderId:number}) {
 
     const t = useLocale(locale);
+    const [loading,setLoading] = useState<boolean>(false);
+    const [orderInfo,setOrderInfo] = useState<Order>(null);
     const [listData, setListData] = useState([]);
     const [userListData, setUserListData] = useState([]);
     const [orderDetailData, setOrderDetailData] = useState([]);
@@ -21,7 +25,19 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
 
     const orderColumns = useMemo(() => getOrderColumns(t), [t]);
     const userApproveColumns = useMemo(() => getUserApproveColumns(t), [t]);
-    const orderDetailColumns = useMemo(() => getOrderDetailColumns(t,orderInfo), [t]);
+    const orderDetailColumns = useMemo(() => getOrderDetailColumns(t,orderInfo), [t,orderInfo]);
+
+    async function fetchData () {
+        const id = orderId;
+        setLoading(true);
+        requestQueryById({id}).then((response:ResultData) => {
+            setOrderInfo(response.data);
+        }).catch((error) => {
+            console.log(error);
+        }).finally(() => {
+            setLoading(false);
+        })
+    }
 
     const toggleShowOrderDetail = () => {
         setShowOrderDetail(!showOrderDetail);
@@ -31,7 +47,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
         const startNode = (
             <Steps.Step key={getRandomString(32)} title='Start' />
         );
-        const steps = orderInfo.orderDetails?.map(z => {
+        const steps = orderInfo?.orderDetails? orderInfo.orderDetails.map(z => {
             const roleId = z.roleId;
             const admins = orderInfo.adminsMap[roleId];
             const roleType = z.roleType;
@@ -84,19 +100,19 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
                     </div>
                 }/>;
             }
-        });
-        const stopNode = orderInfo.state == OrderStateEnum.Approved ?
+        }):[];
+        const stopNode = orderInfo?.state == OrderStateEnum.Approved ?
             <Steps.Step key={getRandomString(32)} status={'finish'} title='End' />
             :  <Steps.Step key={getRandomString(32)} status={'wait'} title='End' />;
         return [startNode,...steps,stopNode];
     }
 
     const getOrderStatus = ():string => {
-        if(orderInfo.state == OrderStateEnum.Processing){
+        if(orderInfo?.state == OrderStateEnum.Processing){
             return "process";
-        }else if(orderInfo.state == OrderStateEnum.Approved){
+        }else if(orderInfo?.state == OrderStateEnum.Approved){
             return "finish";
-        }else if(orderInfo.state == OrderStateEnum.Rejected){
+        }else if(orderInfo?.state == OrderStateEnum.Rejected){
             return "error";
         }else{
             return "finish";
@@ -104,11 +120,16 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
     }
 
     useEffect(() => {
-        console.log("orderInfo:" + JSON.stringify(orderInfo));
-        setListData([orderInfo]);
-        setUserListData([orderInfo.user])
-        setOrderDetailData(orderInfo.orderDetails)
+        fetchData().then();
     },[])
+
+    useEffect(() => {
+        if(orderInfo){
+            setListData([orderInfo]);
+            setUserListData([orderInfo?.user])
+            setOrderDetailData(orderInfo?.orderDetails)
+        }
+    },[orderInfo])
 
     return (
       <div>

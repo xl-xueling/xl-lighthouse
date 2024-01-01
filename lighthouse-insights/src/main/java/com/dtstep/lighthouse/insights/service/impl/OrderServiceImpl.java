@@ -48,6 +48,16 @@ public class OrderServiceImpl implements OrderService {
     private OrderDetailService orderDetailService;
 
     @Override
+    public ExtendOrderDto queryById(Integer id) {
+        Order order = orderDao.queryById(id);
+        if(order != null){
+            return translateExtend(order);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
     public int create(Order order) {
         LocalDateTime localDateTime = LocalDateTime.now();
         order.setCreateTime(localDateTime);
@@ -107,6 +117,27 @@ public class OrderServiceImpl implements OrderService {
         OrderDto orderDto = new OrderDto(order);
         int applyUserId = orderDto.getUserId();
         List<Integer> roleIds = order.getSteps();
+        for(Integer roleId : roleIds){
+            boolean hashPermission = permissionDao.hasPermission(currentUserId, OwnerTypeEnum.USER,roleId);
+            if(hashPermission){
+                orderDto.addPermission(PermissionInfo.PermissionEnum.readable);
+            }
+        }
+        Integer currentNode = order.getCurrentNode();
+        if(permissionDao.hasPermission(currentUserId, OwnerTypeEnum.USER,currentNode)){
+            orderDto.addPermission(PermissionInfo.PermissionEnum.approveable);
+        }
+        UserDto user = userService.queryById(applyUserId);
+        orderDto.setUser(user);
+        return orderDto;
+    }
+
+
+    private ExtendOrderDto translateExtend(Order order){
+        Integer currentUserId = baseService.getCurrentUserId();
+        ExtendOrderDto extendOrderDto = new ExtendOrderDto(order);
+        int applyUserId = extendOrderDto.getUserId();
+        List<Integer> roleIds = order.getSteps();
         HashMap<Integer,List<UserDto>> adminsMap = new HashMap<>();
         for(Integer roleId : roleIds){
             PermissionQueryParam permissionQueryParam = new PermissionQueryParam();
@@ -123,18 +154,20 @@ public class OrderServiceImpl implements OrderService {
             }
             adminsMap.put(roleId,admins);
             boolean hashPermission = permissionDao.hasPermission(currentUserId, OwnerTypeEnum.USER,roleId);
-            orderDto.addPermission(PermissionInfo.PermissionEnum.readable);
+            if(hashPermission){
+                extendOrderDto.addPermission(PermissionInfo.PermissionEnum.readable);
+            }
         }
         Integer currentNode = order.getCurrentNode();
         if(permissionDao.hasPermission(currentUserId, OwnerTypeEnum.USER,currentNode)){
-            orderDto.addPermission(PermissionInfo.PermissionEnum.approveable);
+            extendOrderDto.addPermission(PermissionInfo.PermissionEnum.approveable);
         }
-        orderDto.setAdminsMap(adminsMap);
+        extendOrderDto.setAdminsMap(adminsMap);
         UserDto user = userService.queryById(applyUserId);
         List<OrderDetailDto> orderDetails = orderDetailService.queryList(order.getId());
-        orderDto.setOrderDetails(orderDetails);
-        orderDto.setUser(user);
-        return orderDto;
+        extendOrderDto.setOrderDetails(orderDetails);
+        extendOrderDto.setUser(user);
+        return extendOrderDto;
     }
 
     @Override
