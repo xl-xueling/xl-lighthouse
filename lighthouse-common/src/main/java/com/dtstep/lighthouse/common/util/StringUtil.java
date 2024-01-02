@@ -354,6 +354,9 @@ public class StringUtil {
     }
 
     public static int getBLen(String value){
+        if(StringUtil.isEmpty(value)){
+            return 0;
+        }
         int valueLength = 0;
         String chinaChar = "[\u0391-\uFFE5]";
         for(int i=0;i<value.length();i++){

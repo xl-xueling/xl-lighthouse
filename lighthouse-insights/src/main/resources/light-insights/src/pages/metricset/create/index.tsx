@@ -22,8 +22,9 @@ export default function MetricSetAddPanel({onClose}) {
     const [showPickUpPanel,setShowPickUpPanel] = useState<boolean>(false);
     const [showGrantPrivileges,setShowGrantPrivileges] = useState<boolean>(true);
     const departmentTransferRef = useRef(null);
-    const [loading,setLoading] = useState<boolean>(false);
     const userTransferRef = useRef(null);
+    const [loading,setLoading] = useState<boolean>(false);
+
 
     function changeVisibleType(value){
         if(value == '0'){
