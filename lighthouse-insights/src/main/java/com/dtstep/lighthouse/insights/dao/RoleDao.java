@@ -11,9 +11,15 @@ public interface RoleDao {
 
     int insert(Role role);
 
+    int update(Role role);
+
+    int deleteById(Integer id);
+
     void batchInsert(List<Role> list);
 
     Role queryRole(RoleTypeEnum roleTypeEnum, Integer resourceId);
 
     boolean isRoleExist(RoleTypeEnum roleTypeEnum,Integer resourceId);
+
+    boolean isChildRoleExist(Integer pid);
 }

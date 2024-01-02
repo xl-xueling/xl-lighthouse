@@ -3,10 +3,13 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
+import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
+import com.dtstep.lighthouse.insights.modal.Resource;
 import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.service.DepartmentService;
+import com.dtstep.lighthouse.insights.service.ResourceService;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private ResourceService resourceService;
+
     @Transactional
     @Override
     public int create(Department department) {
@@ -37,17 +43,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         int departmentId = department.getId();
         List<Role> roleList = new ArrayList<>();
         int pid = department.getPid();
-        Integer manageRolePid = 0;
-        Integer accessRolePid = 0;
-        Role parentManageRole = roleService.queryRole(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,pid);
-        manageRolePid = parentManageRole.getId();
-        Role parentAccessRole = roleService.queryRole(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION,pid);
-        accessRolePid = parentAccessRole.getId();
-        Role manageRole = new Role(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,departmentId,manageRolePid);
-        Role accessRole = new Role(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION,departmentId,accessRolePid);
-        roleList.add(manageRole);
-        roleList.add(accessRole);
-        roleService.batchCreate(roleList);
+        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Department,departmentId,pid));
         return 0;
     }
 

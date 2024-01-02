@@ -49,4 +49,27 @@
         FROM ldp_role
         WHERE role_type = #{roleTypeEnum.roleType} and resource_id = #{resourceId}
     </select>
+
+    <select id="isChildRoleExist" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM ldp_role
+        WHERE pid=#{pid}
+    </select>
+
+    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Role">
+        UPDATE ldp_role
+        <set>
+            <if test="pid != null">
+                `pid` = #{pid},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+        </set>
+        WHERE role_type = #{roleType} and resource_id=#{resourceId}
+    </update>
+
+    <delete id="deleteById">
+        delete from ldp_role where id = #{id}
+    </delete>
 </mapper>

@@ -64,4 +64,19 @@ public class RoleServiceImpl implements RoleService {
     public Role queryRole(RoleTypeEnum roleTypeEnum, Integer projectId) {
         return roleDao.queryRole(roleTypeEnum,projectId);
     }
+
+    @Override
+    public int update(Role role) {
+        return roleDao.update(role);
+    }
+
+    @Override
+    public boolean isChildRoleExist(Integer pid) {
+        return roleDao.isChildRoleExist(pid);
+    }
+
+    @Override
+    public int deleteById(Integer id) {
+        return roleDao.deleteById(id);
+    }
 }
