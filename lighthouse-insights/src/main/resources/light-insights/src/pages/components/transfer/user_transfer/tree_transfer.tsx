@@ -57,11 +57,11 @@ const TreeTransfer = ({ dataSource, targetKeys, changeCurrentDataSource,...restP
             refFetchId.current = Date.now();
             const fetchId = refFetchId.current;
             setFetching(true);
-            requestTermList(null).then((result) => {
+            requestTermList({text:inputValue}).then((result) => {
                 if(result.code === '0'){
                     const dataArray:{key:string,title:string}[] = [];
                     if (refFetchId.current === fetchId) {
-                        const users:Array<User> = result.data.list;
+                        const users:Array<User> = result.data;
                         users.forEach(z => {
                             dataArray.push({"key":z.id+"","title":z.username})
                         })

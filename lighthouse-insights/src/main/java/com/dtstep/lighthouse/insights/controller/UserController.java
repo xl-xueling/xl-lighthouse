@@ -1,6 +1,8 @@
 package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
+import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
@@ -9,11 +11,14 @@ import com.dtstep.lighthouse.insights.config.SeedAuthenticationToken;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.UserService;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @ControllerAdvice
@@ -89,6 +94,17 @@ public class UserController {
         Pagination pagination = searchObject.getPagination();
         ListData<User> listData = userService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
+    }
+
+
+    @PostMapping("/user/termList")
+    public ResultData<List<User>> termList(@RequestBody TextParam text){
+        String search = text.getText();
+        if(!StringUtil.isLetterNumOrUnderLine(search)){
+            return ResultData.failed(ResultCode.paramValidateFailed);
+        }
+        List<User> users = userService.termQuery(search);
+        return ResultData.success(users);
     }
 
 }

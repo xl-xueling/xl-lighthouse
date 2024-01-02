@@ -104,4 +104,11 @@ public class TestUserDao {
         int count = userDao.count(userQueryParam);
         System.out.println("count:" + count);
     }
+
+    @Test
+    public void testTermQuery() throws Exception {
+        String s = "test";
+        List<User> users = userDao.termQuery(s);
+        System.out.println("users:" + JsonUtil.toJSONString(users));
+    }
 }

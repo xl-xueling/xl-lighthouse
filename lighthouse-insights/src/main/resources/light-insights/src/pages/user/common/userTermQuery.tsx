@@ -57,7 +57,7 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null})
             requestTermList(null).then((result) => {
                 if(result.code === '0'){
                     if (refFetchId.current === fetchId) {
-                        const users:Array<User> = result.data.list;
+                        const users:Array<User> = result.data;
                         const options = users.map((user) => ({
                             label: (
                                 <div style={{display: 'flex', alignItems: 'center'}}>

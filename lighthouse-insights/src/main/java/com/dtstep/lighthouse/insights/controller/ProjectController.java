@@ -8,7 +8,6 @@ import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
