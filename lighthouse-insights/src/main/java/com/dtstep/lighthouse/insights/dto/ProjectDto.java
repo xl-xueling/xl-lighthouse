@@ -11,8 +11,6 @@ import java.util.List;
 
 public class ProjectDto extends Project {
 
-    private Department department;
-
     private List<User> admins;
 
     private List<CommonTreeNode> structure;
@@ -22,14 +20,6 @@ public class ProjectDto extends Project {
     public ProjectDto(Project project){
         assert project != null;
         BeanCopyUtil.copy(project,this);
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
     }
 
     public List<User> getAdmins() {

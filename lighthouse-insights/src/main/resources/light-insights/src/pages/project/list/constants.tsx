@@ -5,6 +5,7 @@ import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
 import {formatTimeStamp} from "@/utils/util";
+import DepartmentLabel from "@/pages/department/common/depart";
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
@@ -35,8 +36,8 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
     },
       {
           title: t['projectList.columns.department'],
-          dataIndex: 'department.name',
-          render: (value) => <Text>{value}</Text>,
+          dataIndex: 'departmentId',
+          render: (value,record) => <DepartmentLabel departmentId={value}/> ,
       },
     {
           title: t['projectList.columns.admins'],

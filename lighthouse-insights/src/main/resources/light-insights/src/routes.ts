@@ -39,6 +39,7 @@ export const routes: IRoute[] = [
       {
         name: 'menu.statistics.project',
         key: 'project/list',
+        breadcrumb:true,
       },
       {
         name: 'menu.statistics.stat',

@@ -89,7 +89,6 @@ function Index() {
 
     requestFetchUserInfo().then((resultData) => {
       const userInfo = resultData.data;
-      userInfo.department = getDepartment(userInfo.departmentId, allDepartInfo);
       userInfo.permissions = {};
       store.dispatch({
         type: 'update-userInfo',

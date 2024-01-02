@@ -7,7 +7,7 @@ import {
   PaginationProps,
   Space,
   Table,
-  Message,
+  Message, Breadcrumb,
 } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
@@ -23,6 +23,8 @@ import {requestDeleteById} from "@/api/project";
 import Detail from "@/pages/project/list/detail";
 import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
 import ProjectApplyModal from "@/pages/project/apply";
+import {IconHome} from "@arco-design/web-react/icon";
+const BreadcrumbItem = Breadcrumb.Item;
 
 export default function Index() {
   const t = useLocale(locale);
@@ -163,6 +165,13 @@ export default function Index() {
   }
 
   return (
+      <>
+      <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+        <BreadcrumbItem>
+            <IconHome />
+        </BreadcrumbItem>
+        <BreadcrumbItem style={{fontWeight:20}}>{t['projectList.breadcrumb.title']}</BreadcrumbItem>
+      </Breadcrumb>
     <Card>
       <SearchForm onSearch={handleSearch} onClear={handleReset} allDepartInfo={allDepartInfo} form={form}/>
       <Grid.Row justify="space-between" align="center">
@@ -207,6 +216,7 @@ export default function Index() {
       {bindedVisible && <ReverseBindedPanel projectId={selectedProject.id} onClose={() => setBindedVisible(false)}/>}
       {applyVisible && <ProjectApplyModal projectInfo={selectedProject} onClose={() => setApplyVisible(false)}/>}
     </Card>
+      </>
   );
 
 }

@@ -1,5 +1,6 @@
 const i18n = {
   'en-US': {
+    'projectList.breadcrumb.title': 'Project List',
     'menu.list': 'List',
     'menu.list.projectList': 'Search Table',
     'projectList.form.search': 'Search',
@@ -24,6 +25,7 @@ const i18n = {
     'projectList.operations.create.project':'New Project',
   },
   'zh-CN': {
+    'projectList.breadcrumb.title': '工程列表',
     'menu.list': '列表页',
     'menu.list.projectList': '查询表格',
     'projectList.form.search': '查询',

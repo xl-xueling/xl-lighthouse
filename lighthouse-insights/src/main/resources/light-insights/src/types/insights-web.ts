@@ -49,7 +49,6 @@ export interface User {
     email?: string;
     phone?: string;
     departmentId?: number;
-    department?:Department;
     state?:number;
     createTime?:number;
     avatar?:string;
@@ -64,7 +63,6 @@ export interface Project {
     adminIds?:Array<number>;
     admins?:Array<User>;
     departmentId?:number;
-    department?:Department;
     structure?:Array<ArcoTreeNode>;
     createTime?:number;
     permissions?:PermissionEnum[];

@@ -141,9 +141,6 @@ export default function UserList() {
     ]);
 
     promiseAll.then(([result]) => {
-      result?.forEach(z => {
-        z.department = getDepartment(z.departmentId, allDepartInfo);
-      })
       setUserData(result);
     })
   }, [initReady,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
