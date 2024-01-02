@@ -90,9 +90,10 @@ export function getUserApproveColumns(t: any) {
         },
         {
             title: t['detailModal.user.approve.columns.department'],
-            dataIndex: 'department',
-            render: (value,record) =>
-                <DepartmentLabel department={value}/>
+            dataIndex: 'departmentId',
+            render: (value,record) => {
+                return <DepartmentLabel departmentId={value}/>
+            }
             ,
         },
         {
