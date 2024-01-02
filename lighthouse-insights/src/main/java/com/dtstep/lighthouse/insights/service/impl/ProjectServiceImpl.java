@@ -12,6 +12,7 @@ import com.dtstep.lighthouse.insights.dao.RoleDao;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
+import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
@@ -46,6 +47,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private PermissionService permissionService;
 
+    @Autowired
+    private ResourceService resourceService;
 
     @Transactional
     @Override
@@ -56,14 +59,9 @@ public class ProjectServiceImpl implements ProjectService {
         projectDao.insert(project);
         int projectId = project.getId();
         Integer departmentId = project.getDepartmentId();
-        Role departmentManageRole = roleService.queryRole(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,departmentId);
-        Role departmentAccessRole = roleService.queryRole(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION,departmentId);
-        Role projectManageRole = new Role(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,projectId,departmentManageRole.getId());
-        Role projectAccessRole = new Role(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,projectId,departmentManageRole.getId());
-        roleService.create(projectManageRole);
-        roleService.create(projectAccessRole);
-        int manageRoleId = projectManageRole.getId();
-        int accessRoleId = projectAccessRole.getId();
+        RolePair rolePair = resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Project,projectId,departmentId));
+        Integer manageRoleId = rolePair.getManageRoleId();
+        Integer accessRoleId = rolePair.getAccessRoleId();
         Permission permission = new Permission();
         permission.setRoleId(manageRoleId);
         permission.setOwnerType(OwnerTypeEnum.USER);

@@ -56,7 +56,7 @@ public class TestDepartmentDao {
     @Test
     public void deleteById(){
         int id = 10055;
-        int res = departmentDao.deleteById(Lists.list(id));
+        int res = departmentDao.deleteById(id);
         System.out.println("res:" + res);
     }
 }
