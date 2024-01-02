@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.modal;
 
+import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
 import com.dtstep.lighthouse.insights.validator.BLengthValidation;
 
 import javax.validation.constraints.NotEmpty;
@@ -19,7 +20,7 @@ public class Project implements Serializable {
     private Integer departmentId;
 
     @NotNull
-    private Integer privateType;
+    private PrivateTypeEnum privateType;
 
     @NotEmpty
     private String desc;
@@ -68,11 +69,11 @@ public class Project implements Serializable {
         this.departmentId = departmentId;
     }
 
-    public Integer getPrivateType() {
+    public PrivateTypeEnum getPrivateType() {
         return privateType;
     }
 
-    public void setPrivateType(Integer privateType) {
+    public void setPrivateType(PrivateTypeEnum privateType) {
         this.privateType = privateType;
     }
 

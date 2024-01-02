@@ -66,6 +66,8 @@ export interface Project {
     structure?:Array<ArcoTreeNode>;
     createTime?:number;
     permissions?:PermissionEnum[];
+    usersPermission?:number[],
+    departmentsPermission?:number[],
 }
 
 export interface Column {

@@ -9,11 +9,9 @@ import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.RoleDao;
-import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
-import com.dtstep.lighthouse.insights.dto.GroupDto;
-import com.dtstep.lighthouse.insights.dto.ProjectDto;
-import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
+import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
@@ -51,7 +49,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public int create(Project project){
+    public int create(ProjectCreateParam project){
         LocalDateTime localDateTime = LocalDateTime.now();
         project.setUpdateTime(localDateTime);
         project.setCreateTime(localDateTime);
@@ -72,6 +70,9 @@ public class ProjectServiceImpl implements ProjectService {
         Integer currentUserId = baseService.getCurrentUserId();
         permission.setOwnerId(currentUserId);
         permissionService.create(permission);
+        if(project.getPrivateType() == PrivateTypeEnum.Private){
+
+        }
         return projectId;
     }
 
