@@ -15,8 +15,6 @@ public class ProjectDto extends Project {
 
     private List<CommonTreeNode> structure;
 
-    private List<PermissionsEnum> permissions;
-
     public ProjectDto(Project project){
         assert project != null;
         BeanCopyUtil.copy(project,this);
@@ -28,14 +26,6 @@ public class ProjectDto extends Project {
 
     public void setAdmins(List<User> admins) {
         this.admins = admins;
-    }
-
-    public List<PermissionsEnum> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(List<PermissionsEnum> permissions) {
-        this.permissions = permissions;
     }
 
     public List<CommonTreeNode> getStructure() {
