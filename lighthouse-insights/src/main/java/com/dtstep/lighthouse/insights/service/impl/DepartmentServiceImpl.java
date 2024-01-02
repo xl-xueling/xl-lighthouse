@@ -3,11 +3,15 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
+import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.service.DepartmentService;
+import com.dtstep.lighthouse.insights.service.RoleService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,13 +24,31 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private DepartmentDao departmentDao;
 
+    @Autowired
+    private RoleService roleService;
+
+    @Transactional
     @Override
     public int create(Department department) {
         Date date = new Date();
         department.setUpdateTime(date);
         department.setCreateTime(date);
         departmentDao.insert(department);
-        return department.getId();
+        int departmentId = department.getId();
+        List<Role> roleList = new ArrayList<>();
+        int pid = department.getPid();
+        Integer manageRolePid = 0;
+        Integer accessRolePid = 0;
+        Role parentManageRole = roleService.queryRole(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,pid);
+        manageRolePid = parentManageRole.getId();
+        Role parentAccessRole = roleService.queryRole(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION,pid);
+        accessRolePid = parentAccessRole.getId();
+        Role manageRole = new Role(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,departmentId,manageRolePid);
+        Role accessRole = new Role(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION,departmentId,accessRolePid);
+        roleList.add(manageRole);
+        roleList.add(accessRole);
+        roleService.batchCreate(roleList);
+        return 0;
     }
 
     @Override
