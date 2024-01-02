@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LightHouseInsightsApplication.class,properties = {"spring.config.location=classpath:lighthouse-insights.yml"})
@@ -29,6 +31,18 @@ public class TestPermissionInfoDao {
         permission.setRoleId(1);
         int result = permissionDao.insert(permission);
         System.out.println("result:" + result);
+    }
+
+    @Test
+    public void testBatchInsert(){
+        List<Permission> permissionList = new ArrayList<>();
+        for(int i=0;i<3;i++){
+           Permission permission = new Permission(i,OwnerTypeEnum.USER,i);
+           permission.setUpdateTime(LocalDateTime.now());
+           permission.setCreateTime(LocalDateTime.now());
+           permissionList.add(permission);
+        }
+        permissionDao.batchInsert(permissionList);
     }
 
 }

@@ -22,6 +22,19 @@
         )
     </insert>
 
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO ldp_permission (`owner_id`, `owner_type`,`role_id`, `create_time`, `update_time`) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.ownerId,jdbcType=INTEGER},
+            #{item.ownerType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.OwnerTypeEnumTypeHandler},
+            #{item.roleId,jdbcType=INTEGER},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
     <select id="queryList" resultMap="permissionResultMap">
         SELECT `id`,`owner_id`,`owner_type`,`role_id`,`create_time`,`update_time`
         FROM ldp_permission

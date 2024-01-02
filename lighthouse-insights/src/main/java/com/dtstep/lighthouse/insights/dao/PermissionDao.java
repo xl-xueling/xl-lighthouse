@@ -12,6 +12,8 @@ public interface PermissionDao {
 
     int insert(Permission permission);
 
+    void batchInsert(List<Permission> list);
+
     boolean hasPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 
     List<Permission> queryList(PermissionQueryParam queryParam,Integer pageNum,Integer pageSize);

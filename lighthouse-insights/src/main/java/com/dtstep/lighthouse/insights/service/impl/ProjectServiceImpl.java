@@ -63,6 +63,7 @@ public class ProjectServiceImpl implements ProjectService {
         accessRole.setRoleType(RoleTypeEnum.PROJECT_ACCESS_PERMISSION);
         accessRole.setResourceId(projectId);
         roleService.create(accessRole);
+        int accessRoleId = accessRole.getId();
         int manageRoleId = manageRole.getId();;
         Permission permission = new Permission();
         permission.setRoleId(manageRoleId);
@@ -70,9 +71,28 @@ public class ProjectServiceImpl implements ProjectService {
         Integer currentUserId = baseService.getCurrentUserId();
         permission.setOwnerId(currentUserId);
         permissionService.create(permission);
-        if(project.getPrivateType() == PrivateTypeEnum.Private){
-
+        List<Integer> departmentIdList = project.getDepartmentsPermission();
+        List<Integer> userIdList = project.getUsersPermission();
+        List<Permission> permissionList = new ArrayList<>();
+        if(project.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(departmentIdList)){
+            for(int i=0;i<departmentIdList.size();i++){
+                Integer departmentId = departmentIdList.get(i);
+                if(!permissionService.hasPermission(departmentId,OwnerTypeEnum.DEPARTMENT,accessRoleId)){
+                    Permission tempPermission = new Permission(departmentId,OwnerTypeEnum.DEPARTMENT,accessRoleId);
+                    permissionList.add(tempPermission);
+                }
+            }
         }
+        if(project.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(userIdList)){
+            for(int i=0;i<userIdList.size();i++){
+                Integer userId = userIdList.get(i);
+                if(!permissionService.hasPermission(userId,OwnerTypeEnum.USER,accessRoleId)){
+                    Permission tempPermission = new Permission(userId,OwnerTypeEnum.USER,accessRoleId);
+                    permissionList.add(tempPermission);
+                }
+            }
+        }
+        permissionService.batchCreate(permissionList);
         return projectId;
     }
 
