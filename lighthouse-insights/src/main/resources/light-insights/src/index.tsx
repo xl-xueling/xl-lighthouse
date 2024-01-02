@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
-import {ConfigProvider, Message} from '@arco-design/web-react';
+import {ConfigProvider, Message, Notification} from '@arco-design/web-react';
 import zhCN from '@arco-design/web-react/es/locale/zh-CN';
 import enUS from '@arco-design/web-react/es/locale/en-US';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
@@ -98,7 +98,8 @@ function Index() {
   }
 
   useEffect(() => {
-    Message.config({ duration: 6000 });
+    Message.config({ duration: 5000});
+    Notification.config({duration:5000});
     if (checkLogin()) {
       fetchBasicInfo().then()
     } else if (window.location.pathname.replace(/\//g, '') !== 'login'

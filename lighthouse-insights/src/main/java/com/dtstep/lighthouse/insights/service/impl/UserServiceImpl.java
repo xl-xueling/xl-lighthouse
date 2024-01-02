@@ -148,4 +148,9 @@ public class UserServiceImpl implements UserService {
         listData.setPageSize(pageSize);
         return listData;
     }
+
+    @Override
+    public List<User> termQuery(String search) {
+        return userDao.termQuery(search);
+    }
 }

@@ -6,6 +6,8 @@ import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.User;
 
+import java.util.List;
+
 public interface UserService {
 
     void initAdmin();
@@ -15,6 +17,8 @@ public interface UserService {
     int update(UserUpdateParam user);
 
     int changePassword(ChangePasswordParam updateParam);
+
+    List<User> termQuery(String search);
 
     boolean isUserNameExist(String username);
 

@@ -42,11 +42,11 @@ export async function requestQueryByIds(ids:Array<number>) :Promise<ResultData<R
     })
 }
 
-export async function requestTermList(input:string) :Promise<ResultData<{list:Array<User>,total:number}>>  {
+export async function requestTermList(data) :Promise<ResultData<Array<User>>>  {
     return request({
         url:'/user/termList',
         method:'POST',
-        input,
+        data,
     })
 }
 

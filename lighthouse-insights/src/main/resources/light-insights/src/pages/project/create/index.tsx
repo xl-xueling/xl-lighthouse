@@ -1,5 +1,16 @@
 import React, {useRef, useState} from 'react';
-import {Form, Grid, Input, Message, Modal, Radio, Tabs, TreeSelect, Typography} from "@arco-design/web-react";
+import {
+    Form,
+    Grid,
+    Input,
+    Message,
+    Modal,
+    Notification,
+    Radio,
+    Tabs,
+    TreeSelect,
+    Typography
+} from "@arco-design/web-react";
 import UserTermQuery from "@/pages/user/common/userTermQuery";
 import {translate} from "@/pages/department/common";
 import useLocale from "@/utils/useLocale";
@@ -44,20 +55,32 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
             desc:values.desc,
             privateType:values.privateType,
         }
-        console.log("project is:" + JSON.stringify(project));
         requestCreate(project).then((result) => {
             if(result.code === '0'){
-                Message.success(t['projectCreate.form.submit.success']);
+                Notification.info({
+                    style: { width: 420 },
+                    title: 'Notification',
+                    content: t['projectCreate.form.submit.success'],
+                })
                 setTimeout(() => {
                     window.location.href = "/project/list";
+                    setLoading(false);
                 },3000)
             }else{
-                Message.error(result.message || t['system.error']);
+                Notification.warning({
+                    style: { width: 420 },
+                    title: 'Warning',
+                    content: result.message || t['system.error'],
+                })
+                setLoading(false);
             }
         }).catch((error) => {
             console.log(error);
-            Message.error(t['system.error'])
-        }).finally(() => {
+            Notification.error({
+                style: { width: 420 },
+                title: 'Error',
+                content:t['system.error'],
+            })
             setLoading(false);
         })
     }

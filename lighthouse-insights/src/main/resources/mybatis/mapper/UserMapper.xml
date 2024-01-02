@@ -47,6 +47,10 @@
         SELECT `id`,`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user WHERE username = #{username}
     </select>
 
+    <select id="termQuery" resultMap="userResultMap">
+        SELECT `id`,`username` FROM ldp_user WHERE username LIKE CONCAT('%', #{search}, '%') limit 10
+    </select>
+
     <select id="queryList" resultMap="userResultMap">
         WITH RECURSIVE cte AS (
         SELECT d.id

@@ -24,6 +24,8 @@ public interface UserDao {
 
     User queryByUserName(String username);
 
+    List<User> termQuery(String search);
+
     List<User> queryList(UserQueryParam queryParam, Integer pageNum,Integer pageSize);
 
     Integer count(@Param("queryParam")UserQueryParam queryParam);
