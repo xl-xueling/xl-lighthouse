@@ -8,18 +8,18 @@ public class Resource {
 
     private Integer resourceId;
 
-    private Integer pid;
+    private Integer resourcePid;
 
-    public static Resource newResource(ResourceTypeEnum resourceType,Integer resourceId,Integer pid){
-        return new Resource(resourceType,resourceId,pid);
+    public static Resource newResource(ResourceTypeEnum resourceType,Integer resourceId,Integer resourcePid){
+        return new Resource(resourceType,resourceId,resourcePid);
     }
 
     public Resource(){}
 
-    public Resource(ResourceTypeEnum resourceType,Integer resourceId,Integer pid){
+    public Resource(ResourceTypeEnum resourceType,Integer resourceId,Integer resourcePid){
         this.resourceType = resourceType;
         this.resourceId = resourceId;
-        this.pid = pid;
+        this.resourcePid = resourcePid;
     }
 
     public ResourceTypeEnum getResourceType() {
@@ -38,11 +38,11 @@ public class Resource {
         this.resourceId = resourceId;
     }
 
-    public Integer getPid() {
-        return pid;
+    public Integer getResourcePid() {
+        return resourcePid;
     }
 
-    public void setPid(Integer pid) {
-        this.pid = pid;
+    public void setResourcePid(Integer resourcePid) {
+        this.resourcePid = resourcePid;
     }
 }

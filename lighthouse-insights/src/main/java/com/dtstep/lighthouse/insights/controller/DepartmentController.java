@@ -45,7 +45,7 @@ public class DepartmentController {
     @RequestMapping("/department/delete")
     public ResultData<Integer> delete(@RequestBody DeleteParam deleteParam) {
         Validate.notNull(deleteParam.getId());
-        int result = departmentService.deleteById(List.of(deleteParam.getId()));
+        int result = departmentService.deleteById(deleteParam.getId());
         if(result == 1){
             return ResultData.success(result);
         }else{

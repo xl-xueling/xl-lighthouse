@@ -18,5 +18,5 @@ public interface DepartmentDao {
 
     boolean isExist(Integer id);
 
-    int deleteById(List<Integer> ids);
+    int deleteById(Integer id);
 }

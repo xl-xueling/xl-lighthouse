@@ -42,19 +42,29 @@ public class DepartmentServiceImpl implements DepartmentService {
         departmentDao.insert(department);
         int departmentId = department.getId();
         List<Role> roleList = new ArrayList<>();
-        int pid = department.getPid();
-        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Department,departmentId,pid));
-        return 0;
+        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Department,departmentId,department.getPid()));
+        return department.getId();
     }
 
+    @Transactional
     @Override
     public int update(Department department) {
+        if(department.getPid() != null){
+            resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),department.getPid()));
+        }
         return departmentDao.update(department);
     }
 
     @Override
-    public int deleteById(List<Integer> ids) {
-        return departmentDao.deleteById(ids);
+    public int deleteById(Integer id) {
+        Department department = departmentDao.queryById(id);
+        try{
+            resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),department.getPid()));
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return -1;
+        }
+        return departmentDao.deleteById(id);
     }
 
     @Override
