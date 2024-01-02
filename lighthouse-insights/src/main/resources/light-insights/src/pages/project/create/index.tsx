@@ -111,7 +111,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                     <Form.Item style={{ marginBottom: 0 }} label={t['projectCreate.form.label.privateType']} rules={[{ required: true }]} >
                         <Grid.Row gutter={8}>
                             <Grid.Col span={20}>
-                                <Form.Item field={"private_type"}>
+                                <Form.Item field={"privateType"}>
                                     <Radio.Group defaultValue={0} onChange={changeVisibleType}>
                                         <Radio value={0}>{t['projectCreate.form.label.privateType.private']}</Radio>
                                         <Radio value={1}>{t['projectCreate.form.label.privateType.public']}</Radio>
@@ -148,9 +148,6 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                         </Row>
                     </Form.Item>
                     }
-                    {/*<Form.Item label={'Admins'} field="admins" rules={[{ required: true,validateTrigger : ['onBlur']}]}>*/}
-                    {/*    <UserTermQuery formRef={formRef}/>*/}
-                    {/*</Form.Item>*/}
                 </Form>
             </div>
         </Modal>
