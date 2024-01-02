@@ -20,15 +20,16 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void initRole() {
         if(!isRoleExist(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,0)){
-            Role fullManageRole = new Role(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,0);
+            Role fullManageRole = new Role(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,0,0);
             create(fullManageRole);
         }
         if(!isRoleExist(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION,0)){
-            Role fullAccessRole = new Role(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION,0);
+            Role fullAccessRole = new Role(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION,0,0);
             create(fullAccessRole);
         }
         if(!isRoleExist(RoleTypeEnum.OPT_MANAGE_PERMISSION,0)){
-            Role optManageRole = new Role(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
+            Role parentRole = roleDao.queryRole(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,0);
+            Role optManageRole = new Role(RoleTypeEnum.OPT_MANAGE_PERMISSION,0, parentRole.getId());
             create(optManageRole);
         }
     }

@@ -55,16 +55,15 @@ public class ProjectServiceImpl implements ProjectService {
         project.setCreateTime(localDateTime);
         projectDao.insert(project);
         int projectId = project.getId();
-        Role manageRole = new Role();
-        manageRole.setRoleType(RoleTypeEnum.PROJECT_MANAGE_PERMISSION);
-        manageRole.setResourceId(projectId);
-        roleService.create(manageRole);
-        Role accessRole = new Role();
-        accessRole.setRoleType(RoleTypeEnum.PROJECT_ACCESS_PERMISSION);
-        accessRole.setResourceId(projectId);
-        roleService.create(accessRole);
-        int accessRoleId = accessRole.getId();
-        int manageRoleId = manageRole.getId();;
+        Integer departmentId = project.getDepartmentId();
+        Role departmentManageRole = roleService.queryRole(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,departmentId);
+        Role departmentAccessRole = roleService.queryRole(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION,departmentId);
+        Role projectManageRole = new Role(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,projectId,departmentManageRole.getId());
+        Role projectAccessRole = new Role(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,projectId,departmentManageRole.getId());
+        roleService.create(projectManageRole);
+        roleService.create(projectAccessRole);
+        int manageRoleId = projectManageRole.getId();
+        int accessRoleId = projectAccessRole.getId();
         Permission permission = new Permission();
         permission.setRoleId(manageRoleId);
         permission.setOwnerType(OwnerTypeEnum.USER);
@@ -76,20 +75,16 @@ public class ProjectServiceImpl implements ProjectService {
         List<Permission> permissionList = new ArrayList<>();
         if(project.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(departmentIdList)){
             for(int i=0;i<departmentIdList.size();i++){
-                Integer departmentId = departmentIdList.get(i);
-                if(!permissionService.hasPermission(departmentId,OwnerTypeEnum.DEPARTMENT,accessRoleId)){
-                    Permission tempPermission = new Permission(departmentId,OwnerTypeEnum.DEPARTMENT,accessRoleId);
-                    permissionList.add(tempPermission);
-                }
+                Integer tempDepartmentId = departmentIdList.get(i);
+                Permission tempPermission = new Permission(tempDepartmentId,OwnerTypeEnum.DEPARTMENT,accessRoleId);
+                permissionList.add(tempPermission);
             }
         }
         if(project.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(userIdList)){
             for(int i=0;i<userIdList.size();i++){
                 Integer userId = userIdList.get(i);
-                if(!permissionService.hasPermission(userId,OwnerTypeEnum.USER,accessRoleId)){
-                    Permission tempPermission = new Permission(userId,OwnerTypeEnum.USER,accessRoleId);
-                    permissionList.add(tempPermission);
-                }
+                Permission tempPermission = new Permission(userId,OwnerTypeEnum.USER,accessRoleId);
+                permissionList.add(tempPermission);
             }
         }
         permissionService.batchCreate(permissionList);
