@@ -1,16 +1,18 @@
 package com.dtstep.lighthouse.insights.modal;
 
+import com.dtstep.lighthouse.insights.validator.BLengthValidation;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Project implements Serializable {
 
     private Integer id;
 
     @NotEmpty
+    @BLengthValidation(min = 5,max = 25)
     private String title;
 
     @NotNull

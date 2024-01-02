@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Form, Input, Message, Modal, Radio, TreeSelect} from "@arco-design/web-react";
+import {Form, Grid, Input, Message, Modal, Radio, Tabs, TreeSelect, Typography} from "@arco-design/web-react";
 import UserTermQuery from "@/pages/user/common/userTermQuery";
 import {translate} from "@/pages/department/common";
 import useLocale from "@/utils/useLocale";
@@ -8,13 +8,32 @@ import {getTextBlenLength} from "@/utils/util";
 import {requestCreate} from "@/api/project";
 import {Simulate} from "react-dom/test-utils";
 import {Project} from "@/types/insights-web";
+import {IconCaretDown, IconCaretRight} from "@arco-design/web-react/icon";
+import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
+import UsersTransfer from "@/pages/components/transfer/user_transfer";
 
 function ProjectCreatePanel({onClose,allDepartInfo}){
-
+    const { Col, Row } = Grid;
     const t = useLocale(locale);
     const formRef = useRef(null);
     const [loading,setLoading] = useState<boolean>(false);
+    const [showPickUpPanel,setShowPickUpPanel] = useState<boolean>(false);
+    const departmentTransferRef = useRef(null);
+    const userTransferRef = useRef(null);
+    const [showGrantPrivileges,setShowGrantPrivileges] = useState<boolean>(true);
 
+    function toggleShowPickupPanel(){
+        setShowPickUpPanel(!showPickUpPanel);
+    }
+
+    function changeVisibleType(value){
+        if(value == '0'){
+            setShowGrantPrivileges(true);
+        }else{
+            setShowPickUpPanel(false);
+            setShowGrantPrivileges(false);
+        }
+    }
     async function handlerSubmit(){
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
@@ -46,7 +65,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
     return (
         <Modal
             title= {t['projectCreate.form.title']}
-            style={{ width:'750px',top:'20px' }}
+            style={{ width:'960px',verticalAlign:'top', marginTop: '130px' }}
             visible={true}
             confirmLoading={loading}
             onOk={handlerSubmit}
@@ -56,44 +75,79 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                 <Form
                     autoComplete='off'
                     ref={formRef}
+                    labelCol={{span: 4, offset: 0}}
                     initialValues={{
                         privateType:0,
                     }}
                 >
-                    <Form.Item label='Title' field='title' rules={[
-                        { required: true, message: t['projectCreate.form.name.errMsg'] , validateTrigger : ['onBlur']},
+                    <Form.Item label={t['projectCreate.form.label.title']} field='title' rules={[
+                        { required: true, message: t['projectCreate.form.name.errMsg'] , validateTrigger : ['onSubmit']},
                         {
                         required:true,
                         validator: (v, cb) => {
                             if (getTextBlenLength(v) < 5) {
                                 return cb(t['projectCreate.form.name.less.limit'])
-                            }else if (getTextBlenLength(v) > 26) {
+                            }else if (getTextBlenLength(v) > 25) {
                                 return cb(t['projectCreate.form.name.exceeds.limit'])
                             }
                             cb(null);
                         }
-                        , validateTrigger : ['onBlur']
+                        , validateTrigger : ['onSubmit']
                     }]}>
-                        <Input placeholder='Please enter project name' autoFocus={false} />
+                        <Input autoFocus={false} />
                     </Form.Item>
-                    <Form.Item label='Department' field="departmentId" rules={[{ required: true ,message: t['projectCreate.form.department.errMsg'], validateTrigger : ['onBlur']}]}>
+                    <Form.Item label={t['projectCreate.form.label.department']} field="departmentId" rules={[{ required: true ,message: t['projectCreate.form.department.errMsg'], validateTrigger : ['onSubmit']}]}>
                         <TreeSelect
                             placeholder={"Please Select"}
                             allowClear={true}
                             treeData={translate(allDepartInfo)}
                         />
                     </Form.Item>
-                    <Form.Item label={'Description'} field="desc" rules={[
-                        {required: true ,message:t['projectCreate.form.description.errMsg'],validateTrigger : ['onBlur']}
+                    <Form.Item label={t['projectCreate.form.label.desc']} field="desc" rules={[
+                        {required: true ,message:t['projectCreate.form.description.errMsg'],validateTrigger : ['onSubmit']}
                         ]}>
                         <Input.TextArea placeholder='Please enter ...' style={{ minHeight: 64}} maxLength={150} showWordLimit={true}/>
                     </Form.Item>
-                    <Form.Item label={'PrivateType'} field="privateType">
-                        <Radio.Group defaultValue={0}>
-                            <Radio value={0}>Private</Radio>
-                            <Radio value={1}>Public</Radio>
-                        </Radio.Group>
+                    <Form.Item style={{ marginBottom: 0 }} label={t['projectCreate.form.label.privateType']} rules={[{ required: true }]} >
+                        <Grid.Row gutter={8}>
+                            <Grid.Col span={20}>
+                                <Form.Item field={"private_type"}>
+                                    <Radio.Group defaultValue={0} onChange={changeVisibleType}>
+                                        <Radio value={0}>{t['projectCreate.form.label.privateType.private']}</Radio>
+                                        <Radio value={1}>{t['projectCreate.form.label.privateType.public']}</Radio>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Grid.Col>
+                            <Grid.Col span={4} style={{ textAlign:"right" }}>
+                                {showGrantPrivileges &&
+                                <div style={{cursor:"pointer",userSelect:"none"}} onClick={toggleShowPickupPanel}>
+                                    {showPickUpPanel?<IconCaretDown />:<IconCaretRight />}
+                                    <Typography.Text>{t['projectCreate.form.button.grantPrivilege']}</Typography.Text>
+                                </div>
+                                }
+                            </Grid.Col>
+                        </Grid.Row>
                     </Form.Item>
+
+                    {showPickUpPanel &&
+                    <Form.Item label={t['projectCreate.form.label.crowdPickUp']}>
+                        <Row>
+                            <Col
+                                span={24}
+                                style={{ marginBottom: 12 }}
+                            >
+                                <Tabs key='card' tabPosition={"right"}>
+                                    <Tabs.TabPane key='1' title='Tab1'>
+                                        <DepartmentsTransfer ref={departmentTransferRef}/>
+                                    </Tabs.TabPane>
+                                    <Tabs.TabPane key='2' title='Tab2'>
+                                        <UsersTransfer ref={userTransferRef}/>
+                                    </Tabs.TabPane>
+                                </Tabs>
+                            </Col>
+                        </Row>
+                    </Form.Item>
+                    }
                     {/*<Form.Item label={'Admins'} field="admins" rules={[{ required: true,validateTrigger : ['onBlur']}]}>*/}
                     {/*    <UserTermQuery formRef={formRef}/>*/}
                     {/*</Form.Item>*/}
