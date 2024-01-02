@@ -113,8 +113,8 @@ export default function ApproveList() {
                 size={"small"}
                 loading={loading}
                 columns={columns} data={listData} />
-            {showProcessPanel && <OrderProcessModal orderInfo={currentOrder} onClose={() => {setShowProcessPanel(false);}} onReload={() => {setReloadTime(Date.now)}}/>}
-            {showDetailPanel && <OrderDetailModal orderInfo={currentOrder} onClose={() => setShowDetailPanel(false)}/>}
+            {showProcessPanel && <OrderProcessModal orderId={currentOrder.id} onClose={() => {setShowProcessPanel(false);}} onReload={() => {setReloadTime(Date.now)}}/>}
+            {showDetailPanel && <OrderDetailModal orderId={currentOrder.id} onClose={() => setShowDetailPanel(false)}/>}
         </Card>
     );
 }
