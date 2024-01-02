@@ -88,9 +88,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     private ProjectDto translate(Project project){
         ProjectDto projectDto = new ProjectDto(project);
-        int departmentId = project.getDepartmentId();
-        Department department = departmentDao.queryById(departmentId);
-        projectDto.setDepartment(department);
         projectDto.setPermissions(List.of(PermissionsEnum.ADMIN));
         List<Group> dtoList = groupDao.queryByProjectId(project.getId());
         CommonTreeNode treeNode = new CommonTreeNode(String.valueOf(project.getId()),project.getTitle(), "0","1");
@@ -109,7 +106,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ListData<ProjectDto> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize) {
         Integer userId = baseService.getCurrentUserId();
-        System.out.println("userId:" + userId);
         List<Project> projectList = projectDao.queryList(queryParam,pageNum,pageSize);
         List<ProjectDto> dtoList = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(projectList)){
