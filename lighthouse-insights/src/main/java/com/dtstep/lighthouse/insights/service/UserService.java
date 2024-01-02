@@ -2,7 +2,6 @@ package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
-import com.dtstep.lighthouse.insights.dto.UserDto;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.User;
@@ -19,11 +18,13 @@ public interface UserService {
 
     boolean isUserNameExist(String username);
 
-    UserDto queryById(int id);
+    User queryById(int id);
 
-    UserDto queryAllInfoById(int id);
+    User cacheQueryById(int id);
 
-    UserDto queryByUserName(String userName);
+    User queryAllInfoById(int id);
+
+    User queryByUserName(String userName);
 
     ListData<User> queryList(UserQueryParam queryParam,Integer pageNum,Integer pageSize);
 }

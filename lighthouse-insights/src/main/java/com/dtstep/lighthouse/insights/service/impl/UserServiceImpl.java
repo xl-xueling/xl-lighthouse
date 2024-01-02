@@ -8,7 +8,6 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
-import com.dtstep.lighthouse.insights.dto.UserDto;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
@@ -21,6 +20,7 @@ import com.dtstep.lighthouse.insights.service.RoleService;
 import com.dtstep.lighthouse.insights.service.UserService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,20 +109,17 @@ public class UserServiceImpl implements UserService {
         return userDao.changePassword(updateParam);
     }
 
-    private UserDto translate(User user){
-        UserDto userDto = new UserDto(user);
-        Integer departmentId = user.getDepartmentId();
-        if(departmentId != null){
-            Department department = departmentDao.queryById(departmentId);
-            userDto.setDepartment(department);
-        }
-        return userDto;
+
+    @Override
+    public User queryById(int id) {
+        return userDao.queryById(id);
     }
 
     @Override
-    public UserDto queryById(int id) {
-        User user = userDao.queryById(id);
-        return translate(user);
+    @Cacheable(value = "normal",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    public User cacheQueryById(int id) {
+        System.out.println("cache query user by id:" + id);
+        return userDao.queryById(id);
     }
 
     @Override
@@ -131,15 +128,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto queryAllInfoById(int id) {
-        User user = userDao.queryAllInfoById(id);
-        return translate(user);
+    public User queryAllInfoById(int id) {
+        return userDao.queryAllInfoById(id);
     }
 
     @Override
-    public UserDto queryByUserName(String userName) {
-        User user = userDao.queryByUserName(userName);
-        return translate(user);
+    public User queryByUserName(String userName) {
+        return userDao.queryByUserName(userName);
     }
 
     @Override

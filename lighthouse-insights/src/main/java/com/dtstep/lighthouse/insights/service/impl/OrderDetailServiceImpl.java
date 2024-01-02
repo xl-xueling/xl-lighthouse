@@ -2,8 +2,8 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.OrderDetailDao;
 import com.dtstep.lighthouse.insights.dto.OrderDetailDto;
-import com.dtstep.lighthouse.insights.dto.UserDto;
 import com.dtstep.lighthouse.insights.modal.OrderDetail;
+import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.OrderDetailService;
 import com.dtstep.lighthouse.insights.service.UserService;
 import org.apache.commons.collections.CollectionUtils;
@@ -22,8 +22,6 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     @Autowired
     private UserService userService;
 
-
-
     @Override
     public List<OrderDetailDto> queryList(Integer orderId) {
         List<OrderDetail> orderDetails = orderDetailDao.queryList(orderId);
@@ -33,7 +31,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                 OrderDetailDto orderDetailDto = new OrderDetailDto(orderDetail);
                 Integer userId = orderDetail.getUserId();
                 if(userId != null){
-                    UserDto user = userService.queryById(userId);
+                    User user = userService.queryById(userId);
                     orderDetailDto.setUser(user);
                 }
                 dtoList.add(orderDetailDto);

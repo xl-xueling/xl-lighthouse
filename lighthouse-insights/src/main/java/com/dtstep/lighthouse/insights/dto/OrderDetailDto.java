@@ -7,18 +7,18 @@ import com.dtstep.lighthouse.insights.modal.User;
 
 public class OrderDetailDto extends OrderDetail {
 
-    private UserDto user;
+    private User user;
 
     public OrderDetailDto(OrderDetail orderDetail){
         assert orderDetail != null;
         BeanCopyUtil.copy(orderDetail,this);
     }
 
-    public UserDto getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserDto user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }
