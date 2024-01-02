@@ -15,16 +15,13 @@ import styles from './style/index.module.less';
 import {translate} from "@/pages/department/common";
 import {Project} from "@/types/insights-web";
 import {requestQueryById} from "@/api/project";
+import DepartmentLabel from "@/pages/department/common/depart";
 const { Row, Col } = Grid;
 const { useForm } = Form;
 
 export default function Detail({projectInfo,onClose}) {
 
     const [loading,setLoading] = useState(true);
-
-    useEffect(() => {
-        console.log("projectInfo is:" + JSON.stringify(projectInfo))
-    },[projectInfo])
 
     return <div>
         <Drawer
@@ -44,19 +41,19 @@ export default function Detail({projectInfo,onClose}) {
                 data={[
                     {
                         label: 'Name',
-                        value: projectInfo.name,
+                        value: projectInfo?.title,
                     },
                     {
                         label: 'Department',
-                        value: projectInfo.department.name,
+                        value: <DepartmentLabel departmentId={projectInfo?.departmentId}/>,
                     },
                     {
                         label: 'Description',
-                        value: projectInfo.desc,
+                        value: projectInfo?.desc,
                     },
                     {
                         label: 'Admins',
-                        value: projectInfo.adminIds,
+                        value: projectInfo?.adminIds,
                     },
                 ]}
             />

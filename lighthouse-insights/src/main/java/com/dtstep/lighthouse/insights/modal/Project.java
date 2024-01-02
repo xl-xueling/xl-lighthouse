@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.modal;
 
+import com.dtstep.lighthouse.insights.dto.PermissionInfo;
 import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
 import com.dtstep.lighthouse.insights.validator.BLengthValidation;
 
@@ -8,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Project implements Serializable {
+public class Project extends PermissionInfo implements Serializable {
 
     private Integer id;
 

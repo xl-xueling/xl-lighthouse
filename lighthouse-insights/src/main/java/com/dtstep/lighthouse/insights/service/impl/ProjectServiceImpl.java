@@ -109,7 +109,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     private ProjectDto translate(Project project){
         ProjectDto projectDto = new ProjectDto(project);
-        projectDto.setPermissions(List.of(PermissionsEnum.ADMIN));
         List<Group> dtoList = groupDao.queryByProjectId(project.getId());
         CommonTreeNode treeNode = new CommonTreeNode(String.valueOf(project.getId()),project.getTitle(), "0","1");
         if(CollectionUtils.isNotEmpty(dtoList)){
