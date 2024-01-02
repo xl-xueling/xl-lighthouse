@@ -22,6 +22,19 @@
         )
     </insert>
 
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO ldp_role (`role_type`, `resource_id`,`pid`, `create_time`, `update_time`) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.roleType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RoleTypeEnumTypeHandler},
+            #{item.resourceId,jdbcType=INTEGER},
+            #{item.pid,jdbcType=INTEGER},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
     <select id="queryById" resultMap="roleResultMap">
         SELECT `id`,`role_type`, `resource_id`,`pid`, `create_time`, `update_time` FROM ldp_role WHERE id = #{id}
     </select>
