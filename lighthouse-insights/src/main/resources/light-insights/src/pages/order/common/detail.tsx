@@ -13,11 +13,9 @@ import {requestQueryById} from "@/api/order";
 
 const { Text } = Typography;
 
-export default function OrderDetail({orderId}:{orderId:number}) {
+export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
 
     const t = useLocale(locale);
-    const [loading,setLoading] = useState<boolean>(false);
-    const [orderInfo,setOrderInfo] = useState<Order>(null);
     const [listData, setListData] = useState([]);
     const [userListData, setUserListData] = useState([]);
     const [orderDetailData, setOrderDetailData] = useState([]);
@@ -26,18 +24,6 @@ export default function OrderDetail({orderId}:{orderId:number}) {
     const orderColumns = useMemo(() => getOrderColumns(t), [t]);
     const userApproveColumns = useMemo(() => getUserApproveColumns(t), [t]);
     const orderDetailColumns = useMemo(() => getOrderDetailColumns(t,orderInfo), [t,orderInfo]);
-
-    async function fetchData () {
-        const id = orderId;
-        setLoading(true);
-        requestQueryById({id}).then((response:ResultData) => {
-            setOrderInfo(response.data);
-        }).catch((error) => {
-            console.log(error);
-        }).finally(() => {
-            setLoading(false);
-        })
-    }
 
     const toggleShowOrderDetail = () => {
         setShowOrderDetail(!showOrderDetail);
@@ -118,10 +104,6 @@ export default function OrderDetail({orderId}:{orderId:number}) {
             return "finish";
         }
     }
-
-    useEffect(() => {
-        fetchData().then();
-    },[])
 
     useEffect(() => {
         if(orderInfo){

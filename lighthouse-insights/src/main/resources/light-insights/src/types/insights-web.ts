@@ -127,6 +127,7 @@ export interface Order {
     desc?:string;
     adminsMap?:any;
     state?:OrderStateEnum;
+    currentNode?:number;
     orderType?:OrderTypeEnum;
     orderDetails?:OrderDetail[];
     extendConfig?:any;

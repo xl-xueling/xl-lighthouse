@@ -53,6 +53,8 @@ const i18n = {
     'detailModal.label.user.info':'User Info',
     'detailModal.label.reason':'Reason',
     'detailModal.label.process.info':'Process',
+    'detailModal.title':'Order Detail',
+    'detailModal.form.button.close':'Close',
   },
   'zh-CN': {
     'detailModal.columns.id':'ID',
@@ -108,6 +110,8 @@ const i18n = {
     'detailModal.label.user.info':'用户信息',
     'detailModal.label.reason':'申请原因',
     'detailModal.label.process.info':'流程信息',
+    'detailModal.title':'工单详情',
+    'detailModal.form.button.close':'关闭',
   },
 };
 
