@@ -55,6 +55,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentDao.update(department);
     }
 
+    @Transactional
     @Override
     public int deleteById(Integer id) {
         Department department = departmentDao.queryById(id);

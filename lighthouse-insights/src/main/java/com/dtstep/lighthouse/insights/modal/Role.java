@@ -19,6 +19,8 @@ public class Role implements Serializable {
 
     private LocalDateTime updateTime;
 
+    private String desc;
+
     public Role(RoleTypeEnum roleTypeEnum,Integer resourceId){
         this.roleType = roleTypeEnum;
         this.resourceId = resourceId;
@@ -78,5 +80,13 @@ public class Role implements Serializable {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

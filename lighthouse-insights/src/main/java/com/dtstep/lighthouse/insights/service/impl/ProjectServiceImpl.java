@@ -89,6 +89,7 @@ public class ProjectServiceImpl implements ProjectService {
         return projectId;
     }
 
+    @Transactional
     @Override
     public int update(Project project) {
         return projectDao.update(project);
