@@ -1,13 +1,14 @@
 package com.dtstep.lighthouse.insights.dto;
 
 import com.dtstep.lighthouse.insights.modal.Order;
+import com.dtstep.lighthouse.insights.modal.User;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class ExtendOrderDto extends OrderDto {
 
-    private HashMap<Integer, List<UserDto>> adminsMap;
+    private HashMap<Integer, List<User>> adminsMap;
 
     private List<OrderDetailDto> orderDetails;
 
@@ -15,11 +16,11 @@ public class ExtendOrderDto extends OrderDto {
         super(order);
     }
 
-    public HashMap<Integer, List<UserDto>> getAdminsMap() {
+    public HashMap<Integer, List<User>> getAdminsMap() {
         return adminsMap;
     }
 
-    public void setAdminsMap(HashMap<Integer, List<UserDto>> adminsMap) {
+    public void setAdminsMap(HashMap<Integer, List<User>> adminsMap) {
         this.adminsMap = adminsMap;
     }
 

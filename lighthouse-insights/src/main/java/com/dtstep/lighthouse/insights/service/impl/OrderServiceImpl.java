@@ -127,7 +127,7 @@ public class OrderServiceImpl implements OrderService {
         if(permissionDao.hasPermission(currentUserId, OwnerTypeEnum.USER,currentNode)){
             orderDto.addPermission(PermissionInfo.PermissionEnum.approveable);
         }
-        UserDto user = userService.queryById(applyUserId);
+        User user = userService.cacheQueryById(applyUserId);
         orderDto.setUser(user);
         return orderDto;
     }
@@ -138,17 +138,17 @@ public class OrderServiceImpl implements OrderService {
         ExtendOrderDto extendOrderDto = new ExtendOrderDto(order);
         int applyUserId = extendOrderDto.getUserId();
         List<Integer> roleIds = order.getSteps();
-        HashMap<Integer,List<UserDto>> adminsMap = new HashMap<>();
+        HashMap<Integer,List<User>> adminsMap = new HashMap<>();
         for(Integer roleId : roleIds){
             PermissionQueryParam permissionQueryParam = new PermissionQueryParam();
             permissionQueryParam.setRoleId(roleId);
             permissionQueryParam.setOwnerType(1);
-            List<UserDto> admins = new ArrayList<>();
+            List<User> admins = new ArrayList<>();
             List<Permission> permissions = permissionDao.queryList(permissionQueryParam,1,4);
             if(CollectionUtils.isNotEmpty(permissions)){
                 List<Integer> userIdList = permissions.stream().map(z -> z.getOwnerId()).collect(Collectors.toList());
                 for(Integer approveUserId : userIdList){
-                    UserDto user = userService.queryById(approveUserId);
+                    User user = userService.cacheQueryById(approveUserId);
                     admins.add(user);
                 }
             }
@@ -163,7 +163,7 @@ public class OrderServiceImpl implements OrderService {
             extendOrderDto.addPermission(PermissionInfo.PermissionEnum.approveable);
         }
         extendOrderDto.setAdminsMap(adminsMap);
-        UserDto user = userService.queryById(applyUserId);
+        User user = userService.cacheQueryById(applyUserId);
         List<OrderDetailDto> orderDetails = orderDetailService.queryList(order.getId());
         extendOrderDto.setOrderDetails(orderDetails);
         extendOrderDto.setUser(user);

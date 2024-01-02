@@ -8,7 +8,7 @@ import java.util.List;
 
 public class OrderDto extends Order {
 
-    private UserDto user;
+    private User user;
 
     private String desc;
 
@@ -17,11 +17,11 @@ public class OrderDto extends Order {
         BeanCopyUtil.copy(order,this);
     }
 
-    public UserDto getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserDto user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
