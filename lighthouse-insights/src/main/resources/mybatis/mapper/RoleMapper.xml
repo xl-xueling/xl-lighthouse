@@ -12,25 +12,27 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Role" >
-        INSERT INTO ldp_role (`role_type`, `resource_id`,`pid`, `create_time`, `update_time`) VALUES
+        INSERT INTO ldp_role (`role_type`, `resource_id`,`pid`, `create_time`, `update_time`,`desc`) VALUES
         (
                 #{roleType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RoleTypeEnumTypeHandler},
                 #{resourceId,jdbcType=INTEGER},
                 #{pid,jdbcType=INTEGER},
                 #{createTime,jdbcType=TIMESTAMP},
-                #{updateTime,jdbcType=TIMESTAMP}
+                #{updateTime,jdbcType=TIMESTAMP},
+                #{desc,jdbcType=VARCHAR}
         )
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO ldp_role (`role_type`, `resource_id`,`pid`, `create_time`, `update_time`) VALUES
+        INSERT INTO ldp_role (`role_type`, `resource_id`,`pid`, `create_time`, `update_time`,`desc`) VALUES
         <foreach collection="list" item="item" separator=",">
             (
             #{item.roleType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RoleTypeEnumTypeHandler},
             #{item.resourceId,jdbcType=INTEGER},
             #{item.pid,jdbcType=INTEGER},
             #{item.createTime,jdbcType=TIMESTAMP},
-            #{item.updateTime,jdbcType=TIMESTAMP}
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{desc,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -64,6 +66,9 @@
             </if>
             <if test="updateTime != null">
                 `update_time` = #{updateTime},
+            </if>
+            <if test="desc != null">
+                `desc` = #{desc},
             </if>
         </set>
         WHERE role_type = #{roleType} and resource_id=#{resourceId}

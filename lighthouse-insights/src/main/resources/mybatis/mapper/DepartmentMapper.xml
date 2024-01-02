@@ -44,9 +44,6 @@
     </select>
 
     <delete id="deleteById">
-        delete from ldp_department where id IN
-        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        delete from ldp_department where id = #{id}
     </delete>
 </mapper>
