@@ -1,6 +1,8 @@
 package com.dtstep.lighthouse.insights.test.service;
 
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
+import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
+import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.service.ProjectService;
 import org.junit.Test;
@@ -20,13 +22,13 @@ public class TestProjectService {
 
     @Test
     public void testCreate() throws Exception {
-        Project project = new Project();
+        ProjectCreateParam project = new ProjectCreateParam();
         project.setTitle("首页用户数据统计");
         LocalDateTime localDateTime = LocalDateTime.now();
         project.setCreateTime(localDateTime);
         project.setUpdateTime(localDateTime);
         project.setDepartmentId(10067);
-        project.setPrivateType(0);
+        project.setPrivateType(PrivateTypeEnum.Private);
         project.setDesc("测试数据");
         int result = projectService.create(project);
         System.out.println("result:" + result);

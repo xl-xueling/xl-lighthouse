@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
 import com.dtstep.lighthouse.insights.dto.ProjectDto;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.insights.modal.Project;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface ProjectService {
 
-    int create(Project project);
+    int create(ProjectCreateParam project);
 
     int update(Project project);
 

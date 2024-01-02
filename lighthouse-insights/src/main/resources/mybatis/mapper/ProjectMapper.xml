@@ -7,7 +7,7 @@
         <id property="id" column="id"/>
         <result property="title" column="title"/>
         <result property="departmentId" column="department_id"/>
-        <result property="privateType" column="private_type"/>
+        <result property="privateType" column="private_type" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
         <result property="desc" column="desc"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
@@ -18,7 +18,7 @@
         (
             #{title,jdbcType=VARCHAR},
             #{departmentId,jdbcType=INTEGER},
-            #{privateType,jdbcType=INTEGER},
+            #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
             #{desc,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
@@ -38,7 +38,7 @@
                 `desc` = #{desc},
             </if>
             <if test="privateType != null">
-                `private_type` = #{privateType},
+                `private_type` = #{privateType.privateType},
             </if>
             <if test="updateTime != null">
                 `update_time` = #{updateTime},

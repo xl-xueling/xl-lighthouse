@@ -49,11 +49,22 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
         setLoading(true);
+        const privateType = values.privateType;
+        let departmentsPermission = [];
+        let usersPermission = [];
+        if(privateType == 0 && departmentTransferRef?.current){
+            departmentsPermission = departmentTransferRef.current.getData();
+        }
+        if(privateType == 0 && userTransferRef?.current){
+            usersPermission = userTransferRef.current.getData();
+        }
         const project:Project = {
             title:values.title,
             departmentId:Number(values.departmentId),
             desc:values.desc,
-            privateType:values.privateType,
+            privateType:privateType,
+            usersPermission:usersPermission,
+            departmentsPermission:departmentsPermission,
         }
         requestCreate(project).then((result) => {
             if(result.code === '0'){

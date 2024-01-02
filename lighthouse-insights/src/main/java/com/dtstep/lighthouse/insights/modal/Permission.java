@@ -19,6 +19,14 @@ public class Permission implements Serializable {
 
     private LocalDateTime updateTime;
 
+    public Permission(){}
+
+    public Permission(Integer ownerId,OwnerTypeEnum ownerType,Integer roleId){
+        this.ownerId = ownerId;
+        this.ownerType = ownerType;
+        this.roleId = roleId;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -3,7 +3,9 @@ package com.dtstep.lighthouse.insights.test.dao;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
+import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
+import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Project;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,10 +26,10 @@ public class TestProjectDao {
 
     @Test
     public void testCreateProject() throws Exception {
-        Project project = new Project();
+        ProjectCreateParam project = new ProjectCreateParam();
         project.setTitle("title");
         project.setDepartmentId(1);
-        project.setPrivateType(1);
+        project.setPrivateType(PrivateTypeEnum.Private);
         project.setDesc("desc");
         project.setCreateTime(LocalDateTime.now());
         project.setUpdateTime(LocalDateTime.now());

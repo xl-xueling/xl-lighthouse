@@ -22,7 +22,7 @@ public class ProjectController {
     private MessageSource messageSource;
 
     @RequestMapping("/project/create")
-    public ResultData<Integer> create(@Validated @RequestBody Project createParam) {
+    public ResultData<Integer> create(@Validated @RequestBody ProjectCreateParam createParam) {
         int result = projectService.create(createParam);
         return ResultData.success(result);
     }
