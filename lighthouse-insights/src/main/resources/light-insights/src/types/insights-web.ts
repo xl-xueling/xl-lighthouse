@@ -12,6 +12,7 @@ export interface Department {
     id: number;
     name: string;
     children?:Array<Department>;
+    pid:number;
 }
 
 

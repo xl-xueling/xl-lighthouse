@@ -103,17 +103,34 @@ export const translateToFlatStruct = (list):Array<ArcoFlatNode> => {
 }
 
 export const getDepartment = (id:number,allDepartsInfo) : Department => {
-    for (let i = 0; i < allDepartsInfo.length; i++) {
-        const node = allDepartsInfo[i];
-        if (String(node.id) === String(id)) {
-            return node;
-        }
-        if (node.children && node.children.length > 0) {
-            const result = getDepartment(id,node.children);
-            if (result) {
-                return result;
+    const getInfo = (id,arrays) => {
+        for (let i = 0; i < arrays.length; i++) {
+            const node = arrays[i];
+            if (String(node.id) === String(id)) {
+                return node;
+            }
+            if (node.children && node.children.length > 0) {
+                const result = getInfo(id,node.children);
+                if (result) {
+                    return result;
+                }
             }
         }
     }
-    return null;
+    return getInfo(id,allDepartsInfo);
+}
+
+export const getCascadeDepartment = (department:Department,allDepartsInfo) : Array<Department> => {
+    const array:Department[] = [];
+    if(!department){
+        return array;
+    }
+    array.unshift(department);
+    let pid = department.pid;
+    while (pid != 0){
+        const parent = getDepartment(department.pid,allDepartsInfo);
+        array.unshift(parent);
+        pid = parent.pid;
+    }
+    return array;
 }
