@@ -14,19 +14,26 @@ const UsersTransfer = React.forwardRef((none,ref)  => {
 
     const [targetKeys, setTargetKeys] = useState([]);
 
+    const [targetObjects, setTargetObjects] = useState<any>([]);
+
     const [dataSource,setDataSource] = useState([]);
 
     const changeCurrentDataSource = (searchDataSource) => {
         const targetDataSource:{key:string,title:string,disabled:boolean,selected:boolean}[] = [];
-        targetKeys.forEach(z => {
-            targetDataSource.push({"key":z+"",title:z+"",disabled:false,selected:true})
+        targetObjects.forEach(z => {
+            targetDataSource.push({"key":z.key,title:z.title,disabled:false,selected:true})
         })
-        const filterDataSource = searchDataSource.filter(x => !targetKeys.includes(x.key));
-        setDataSource([...filterDataSource.filter(x => !targetKeys.includes(x.key)),...targetDataSource]);
+        setDataSource([...searchDataSource.filter(x => !targetKeys.includes(x.key)),...targetDataSource]);
     }
 
     const onChange = (keys) => {
         setTargetKeys(keys);
+        const tempTargetObjects = [];
+        keys.forEach(z => {
+            const obj = dataSource.filter(x => x.key == z)[0];
+            tempTargetObjects.push(obj);
+        })
+        setTargetObjects(tempTargetObjects);
         const updateDataSource = traverseTree(dataSource,keys);
         setDataSource(updateDataSource);
     };
