@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Button, Form, Input, Message, Modal, Space, Typography} from "@arco-design/web-react";
+import {Button, Form, Input, Message, Modal, Skeleton, Space, Typography} from "@arco-design/web-react";
 import OrderDetail from "@/pages/order/common/detail";
 import {Order} from "@/types/insights-web";
 import {requestQueryById} from "@/api/order";
@@ -37,12 +37,21 @@ export default function OrderDetailModal({orderId,onClose}) {
             visible={true}
             footer={null}
             onCancel={onClose}>
-            <OrderDetail orderInfo={orderInfo} />
-            <div style={{ textAlign: 'center', marginTop: '35px' }}>
-                <Space size={10}>
-                    <Button type="primary" onClick={onClose}>{t['detailModal.form.button.close']}</Button>
-                </Space>
-            </div>
+            <Skeleton
+                loading={loading}
+                text={{
+                    rows:5,
+                    width: ['100%'],
+                }}
+                animation
+            >
+                <OrderDetail orderInfo={orderInfo} />
+                <div style={{ textAlign: 'center', marginTop: '35px' }}>
+                    <Space size={10}>
+                        <Button type="primary" onClick={onClose}>{t['detailModal.form.button.close']}</Button>
+                    </Space>
+                </div>
+            </Skeleton>
         </Modal>
     );
 }
