@@ -43,6 +43,11 @@ public class DepartmentController {
 
     @RequestMapping("/department/updateById")
     public ResultData<Integer> updateById(@Validated @RequestBody Department updateParam) {
+        int pidLevel = departmentService.getLevel(updateParam.getPid());
+        int childLevel = departmentService.getChildLevel(updateParam.getId());
+        if(pidLevel + childLevel >= SystemConstant.DEPARTMENT_MAX_LEVEL){
+            return ResultData.failed(ResultCode.departCreateErrorLevelLimit);
+        }
         int id = departmentService.update(updateParam);
         if(id > 0){
             return ResultData.success(id);

@@ -15,6 +15,8 @@ public interface DepartmentService {
 
     int getLevel(Integer id);
 
+    int getChildLevel(Integer pid);
+
     int countChildByPid(Integer pid);
 
     Department queryById(Integer id);

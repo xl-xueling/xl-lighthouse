@@ -22,5 +22,7 @@ public interface DepartmentDao {
 
     int getLevel(Integer id);
 
+    int getChildLevel(Integer pid);
+
     int countChildByPid(Integer pid);
 }

@@ -60,6 +60,20 @@
         SELECT COALESCE(max(level),0) as level FROM cte
     </select>
 
+    <select id="getChildLevel" resultType="java.lang.Integer">
+        WITH RECURSIVE cte AS (
+            SELECT 1 AS level, id, pid
+            FROM ldp_department
+            WHERE pid = #{pid}
+            UNION ALL
+            SELECT cte.level + 1, t.id, t.pid
+            FROM ldp_department t
+                     JOIN cte ON t.pid = cte.id
+        )
+        SELECT COALESCE(max(level),0) as level FROM cte
+    </select>
+
+
     <select id="countChildByPid">
         WITH RECURSIVE cte AS (
             SELECT d.id

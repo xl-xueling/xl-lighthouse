@@ -111,6 +111,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    public int getChildLevel(Integer pid) {
+        return departmentDao.getChildLevel(pid);
+    }
+
+    @Override
     public int countChildByPid(Integer pid) {
         return departmentDao.countChildByPid(pid);
     }
