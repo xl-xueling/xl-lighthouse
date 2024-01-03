@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Input, Message, Notification, Popconfirm, Spin, Tree} from '@arco-design/web-react';
+import {Input, Notification, Popconfirm, Spin, Tree} from '@arco-design/web-react';
 import {IconFile, IconFolder, IconMinus, IconPen, IconPlus} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -8,11 +8,10 @@ import {ResultData} from "@/types/insights-common";
 import {
     requestCreate,
     requestDelete,
-    requestDragTo,
     requestQueryAll,
     requestUpdateById
 } from "@/api/department";
-import {getRandomString, stringifyObj, validateWithRegex} from "@/utils/util";
+import {getRandomString, getTextBlenLength, validateWithRegex} from "@/utils/util";
 import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 
 export default function ManagePanel() {
@@ -37,12 +36,12 @@ export default function ManagePanel() {
                     setTreeData([...data]);
                     setExpandedKeys(["0"]);
                 }else{
-                    Message.error(message || t['system.error'])
+                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
                 }
             });
         } catch (error) {
             console.log(error);
-            Message.error(t['system.error']);
+            Notification.error({style: { width: 420 }, title: 'Error', content: t['system.error']});
         }finally {
             setLoading(false);
         }
@@ -62,12 +61,12 @@ export default function ManagePanel() {
                 if (code === '0') {
                     id = data;
                 } else {
-                    Message.error(message || t['system.error'])
+                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
                 }
             });
         } catch (error) {
             console.log(error);
-            Message.error(t['system.error']);
+            Notification.error({style: { width: 420 }, title: 'Error', content: t['system.error']});
         } finally {
             setLoading(false);
         }
@@ -105,12 +104,12 @@ export default function ManagePanel() {
                 if (code === '0') {
                     result = code;
                 } else {
-                    Message.error(message || t['system.error']);
+                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
                 }
             });
         } catch (error) {
             console.log(error);
-            Message.error(t['system.error']);
+            Notification.error({style: { width: 420 }, title: 'Error', content: t['system.error']});
         } finally {
             setLoading(false);
         }
@@ -128,15 +127,6 @@ export default function ManagePanel() {
             );
         });
     };
-
-    function getStringLength(str){
-        let len = 0;
-        for(let i=0;i<str.length;i++){
-            if(str.charAt(i).match(/[\u4e00-\u9fa5]/g) != null) len+=2;
-            else len += 1;
-        }
-        return len;
-    }
 
     function deleteNodeByKey(dataArray,inputValue) {
         const params = dataArray;
@@ -193,7 +183,7 @@ export default function ManagePanel() {
                     }
                     const loop = (data, key, callback) => {
                         data.some((item, index, arr) => {
-                            if (item.id === key) {
+                            if (String(item.id) === String(key)) {
                                 callback(item, index, arr);
                                 return true;
                             }
@@ -290,7 +280,7 @@ export default function ManagePanel() {
                                                                   }}
                                                                   defaultValue={originTitle + ""}
                                                                   onBlur={async (ie) => {
-                                                                      const len = getStringLength(ie.target.value);
+                                                                      const len = getTextBlenLength(ie.target.value);
                                                                       if (len < 3 || len > 20) {
                                                                           Notification.warning({style: { width: 420 }, title: 'Warning', content: t['department.manage.invalidLength']});
                                                                           node.dataRef.title = originTitle;
@@ -327,7 +317,7 @@ export default function ManagePanel() {
                                   onOk={async () => {
                                       const dataChildren = node.dataRef.children || [];
                                       if (dataChildren.length > 0) {
-                                          Message.error(t['department.manage.deleteHasChild'])
+                                          Notification.warning({style: { width: 420 }, title: 'Warning', content: t['department.manage.deleteHasChild']});
                                       } else {
                                           const result = await deleteNode(node.dataRef.id);
                                           if (result == "-1") {
