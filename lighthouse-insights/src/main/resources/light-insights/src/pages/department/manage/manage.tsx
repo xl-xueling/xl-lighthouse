@@ -12,7 +12,8 @@ import {
     requestQueryAll,
     requestUpdateById
 } from "@/api/department";
-import {getRandomString, stringifyObj} from "@/utils/util";
+import {getRandomString, stringifyObj, validateWithRegex} from "@/utils/util";
+import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 
 export default function ManagePanel() {
     const t = useLocale(locale);
@@ -312,8 +313,11 @@ export default function ManagePanel() {
                                                                   defaultValue={originTitle + ""}
                                                                   onBlur={async (ie) => {
                                                                       const len = getStringLength(ie.target.value);
-                                                                      if (len > 20) {
-                                                                          Message.error(t['department.manage.limitExceeded']);
+                                                                      if (len < 3 || len > 20) {
+                                                                          Notification.warning({style: { width: 420 }, title: 'Warning', content: t['department.manage.invalidLength']});
+                                                                          node.dataRef.title = originTitle;
+                                                                      } else if(!validateWithRegex(TEXT_BASE_PATTERN_2,ie.target.value)) {
+                                                                          Notification.warning({style: { width: 420 }, title: 'Warning', content: t['department.manage.hasInvalidChars']});
                                                                           node.dataRef.title = originTitle;
                                                                       } else {
                                                                           const newTitle = ie.target.value;

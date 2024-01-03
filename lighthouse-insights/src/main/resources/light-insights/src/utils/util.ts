@@ -44,6 +44,9 @@ export function getTextBlenLength(str){
     return len;
 }
 
+export function validateWithRegex(regex, input) {
+    return regex.test(input);
+}
 
 export function getRandomString(len = 32) {
     const $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
