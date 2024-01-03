@@ -141,7 +141,6 @@ export default function ManagePanel() {
     const generatorTreeNodes = (treeData,pid = "0") => {
         return treeData.map((item) => {
             const { children, key, ...ret} = item;
-            item.title = item.name;
             return (
                 <Tree.Node icon={children || item.id == "0" ? <IconFolder /> : <IconFile/> }
                          key={item.id} title={item.name}  {...ret} dataRef={item}>
@@ -301,7 +300,7 @@ export default function ManagePanel() {
                                           cancelable: true
                                       });
                                       titleNode.dispatchEvent(clickEvent);
-                                      const originTitle = node.dataRef.title;
+                                      const originTitle = node.title;
                                       node.dataRef.title = <Input type={"text"} autoFocus={true}
                                                                   style={{
                                                                       width: 200,
@@ -310,7 +309,7 @@ export default function ManagePanel() {
                                                                       borderColor: 'rgb(132 160 224)',
                                                                       backgroundColor: "var(--color-fill-1)"
                                                                   }}
-                                                                  defaultValue={node.dataRef.title.valueOf() + ""}
+                                                                  defaultValue={originTitle + ""}
                                                                   onBlur={async (ie) => {
                                                                       const len = getStringLength(ie.target.value);
                                                                       if (len > 20) {
