@@ -63,7 +63,7 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
             }else{
                 Notification.warning({
                     style: { width: 420 },
-                    title: 'Notification',
+                    title: 'Warning',
                     content: result.message || t['system.error'],
                 })
             }

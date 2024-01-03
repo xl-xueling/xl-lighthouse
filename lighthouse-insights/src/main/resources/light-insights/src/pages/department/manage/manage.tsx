@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Input, Message, Popconfirm, Spin, Tree} from '@arco-design/web-react';
+import {Input, Message, Notification, Popconfirm, Spin, Tree} from '@arco-design/web-react';
 import {IconFile, IconFolder, IconMinus, IconPen, IconPlus} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -83,12 +83,12 @@ export default function ManagePanel() {
                 if (code === '0') {
                     result = code;
                 } else {
-                    Message.error(message || t['system.error'])
+                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
                 }
             });
         } catch (error) {
             console.log(error);
-            Message.error(t['system.error']);
+            Notification.error({style: { width: 420 }, title: 'Error', content: t['system.error']});
         } finally {
             setLoading(false);
         }
@@ -104,12 +104,12 @@ export default function ManagePanel() {
                 if (code === '0') {
                     result = code;
                 } else {
-                    Message.error(message || t['system.error']);
+                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
                 }
             });
         } catch (error) {
             console.log(error);
-            Message.error(t['system.error']);
+            Notification.error({style: { width: 420 }, title: 'Error', content: t['system.error']});
         } finally {
             setLoading(false);
         }
@@ -141,6 +141,7 @@ export default function ManagePanel() {
     const generatorTreeNodes = (treeData,pid = "0") => {
         return treeData.map((item) => {
             const { children, key, ...ret} = item;
+            item.title = item.name;
             return (
                 <Tree.Node icon={children || item.id == "0" ? <IconFolder /> : <IconFile/> }
                          key={item.id} title={item.name}  {...ret} dataRef={item}>
@@ -309,7 +310,7 @@ export default function ManagePanel() {
                                                                       borderColor: 'rgb(132 160 224)',
                                                                       backgroundColor: "var(--color-fill-1)"
                                                                   }}
-                                                                  defaultValue={node.title.valueOf() + ""}
+                                                                  defaultValue={node.dataRef.title.valueOf() + ""}
                                                                   onBlur={async (ie) => {
                                                                       const len = getStringLength(ie.target.value);
                                                                       if (len > 20) {
@@ -319,7 +320,7 @@ export default function ManagePanel() {
                                                                           const newTitle = ie.target.value;
                                                                           if(newTitle.length  > 0 && newTitle != originTitle){
                                                                               const result = await updateNode(node.dataRef.id,node.dataRef.pid, newTitle);
-                                                                              if(result == "0"){
+                                                                              if(result == '0'){
                                                                                   node.dataRef.title = newTitle;
                                                                               }else{
                                                                                   node.dataRef.title = originTitle;

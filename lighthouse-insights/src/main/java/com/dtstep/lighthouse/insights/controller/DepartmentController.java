@@ -42,7 +42,7 @@ public class DepartmentController {
     }
 
     @RequestMapping("/department/updateById")
-    public ResultData<Integer> updateById(@RequestBody Department updateParam) {
+    public ResultData<Integer> updateById(@Validated @RequestBody Department updateParam) {
         int id = departmentService.update(updateParam);
         if(id > 0){
             return ResultData.success(id);
