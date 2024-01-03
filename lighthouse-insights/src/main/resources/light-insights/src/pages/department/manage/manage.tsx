@@ -74,28 +74,6 @@ export default function ManagePanel() {
         return id;
     }
 
-
-    async function dragNodeTo(id, destPid) {
-        setLoading(true);
-        let result = "-1";
-        try {
-            await requestUpdateById({'id': id, 'pid': destPid}).then((response: ResultData) => {
-                const {code, message, data} = response;
-                if (code === '0') {
-                    result = code;
-                } else {
-                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-                }
-            });
-        } catch (error) {
-            console.log(error);
-            Notification.error({style: { width: 420 }, title: 'Error', content: t['system.error']});
-        } finally {
-            setLoading(false);
-        }
-        return result;
-    }
-
     async function updateNode(id,pid,title) {
         setLoading(true);
         let result = "-1";
@@ -209,7 +187,7 @@ export default function ManagePanel() {
                     }else{
                         destPid = treeRef.current.getCacheNode([dropNode.props._key])[0].props.dataRef.pid;
                     }
-                    const result = await dragNodeTo(dragNode.props._key, destPid);
+                    const result = await updateNode(dragNode.props._key, destPid,dragNode.props.title);
                     if(result == '-1'){
                         return;
                     }
