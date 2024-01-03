@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
@@ -32,6 +33,10 @@ public class DepartmentController {
 
     @RequestMapping("/department/create")
     public ResultData<Integer> create(@Validated @RequestBody Department createParam) {
+        int level = departmentService.getLevel(createParam.getPid());
+        if(level >= SystemConstant.DEPARTMENT_MAX_LEVEL){
+            return ResultData.failed(ResultCode.departCreateErrorLevelLimit);
+        }
         int result = departmentService.create(createParam);
         return ResultData.success(result);
     }
@@ -51,6 +56,10 @@ public class DepartmentController {
         Validate.notNull(deleteParam.getId());
         Department department = departmentService.queryById(deleteParam.getId());
         Validate.notNull(department);
+        int childSize = departmentService.countChildByPid(deleteParam.getId());
+        if(childSize > 0){
+            return ResultData.failed(ResultCode.departDelErrorChildExist);
+        }
         int projectSize = projectService.countByDepartmentId(deleteParam.getId());
         if(projectSize > 0){
             return ResultData.failed(ResultCode.departDelErrorProjectExist);

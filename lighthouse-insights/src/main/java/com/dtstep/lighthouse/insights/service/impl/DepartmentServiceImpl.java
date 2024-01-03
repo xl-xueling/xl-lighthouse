@@ -65,12 +65,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public int delete(Department department) {
         Validate.notNull(department);
-        try{
-            resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),department.getPid()));
-        }catch (Exception ex){
-            ex.printStackTrace();
-            return -1;
-        }
+        resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),department.getPid()));
         return departmentDao.deleteById(department.getId());
     }
 
@@ -110,5 +105,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         return nodeList;
     }
 
+    @Override
+    public int getLevel(Integer id) {
+        return departmentDao.getLevel(id);
+    }
 
+    @Override
+    public int countChildByPid(Integer pid) {
+        return departmentDao.countChildByPid(pid);
+    }
 }
