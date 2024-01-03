@@ -19,10 +19,12 @@ export const routes: IRoute[] = [
       {
         name: 'menu.dashboard.workplace',
         key: 'dashboard/workplace',
+        breadcrumb:false,
       },
       {
         name: 'menu.metricset.list',
         key: 'metricset/list',
+        breadcrumb:false,
       },
       // {
       //   name: '指标集管理',
@@ -39,11 +41,12 @@ export const routes: IRoute[] = [
       {
         name: 'menu.statistics.project',
         key: 'project/list',
-        breadcrumb:true,
+        breadcrumb:false,
       },
       {
         name: 'menu.statistics.stat',
         key: 'stat/list',
+        breadcrumb:false,
       },
     ],
   },
@@ -84,10 +87,12 @@ export const routes: IRoute[] = [
       {
         name: 'menu.order.application',
         key: 'order/application/list',
+        breadcrumb:false,
       },
       {
         name: 'menu.order.approve',
         key: 'order/approve/list',
+        breadcrumb:false,
       },
     ],
   },
@@ -98,10 +103,12 @@ export const routes: IRoute[] = [
       {
         name: 'menu.system.department',
         key: 'department/manage',
+        breadcrumb:false,
       },
       {
         name: 'menu.system.users',
         key: 'user/list',
+        breadcrumb:false,
       },
       {
         name: 'menu.system.user.settings',
@@ -111,10 +118,12 @@ export const routes: IRoute[] = [
       {
         name: 'menu.system.filterComponents',
         key: 'components/filter/list',
+        breadcrumb:false,
       },
       {
         name: 'menu.system.document',
         key: 'document/list',
+        breadcrumb:false,
       },
     ],
   },
