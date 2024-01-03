@@ -1,6 +1,8 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
@@ -11,8 +13,10 @@ public class Department implements Serializable {
 
     @NotEmpty
     @Size(min = 3,max = 20)
+    @Pattern(regexp = "^[\u4E00-\u9FA5A-Za-z0-9_\\-( )【】（）\\]\\[]+$")
     private String name;
 
+    @NotNull
     private Integer pid;
 
     private Date createTime;
