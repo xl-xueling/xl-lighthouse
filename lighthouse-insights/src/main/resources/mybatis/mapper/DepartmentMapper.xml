@@ -57,7 +57,7 @@
             FROM ldp_department t
                      JOIN cte ON t.id = cte.pid
         )
-        SELECT max(level) as level FROM cte
+        SELECT COALESCE(max(level),0) as level FROM cte
     </select>
 
     <select id="countChildByPid">

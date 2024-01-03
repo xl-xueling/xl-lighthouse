@@ -83,8 +83,8 @@ public class ResourceServiceImpl implements ResourceService {
         }
         Validate.notNull(manageRole);
         Validate.notNull(accessRole);
-        manageRole.setDesc(manageRole.getRoleType().name() + "-" + name);
-        accessRole.setDesc(accessRole.getRoleType().name() + "-" + name);
+        manageRole.setDesc(manageRole.getRoleType().name() + "(" + name + ")");
+        accessRole.setDesc(accessRole.getRoleType().name() + "(" + name + ")");
         roleService.create(manageRole);
         roleService.create(accessRole);
         return new RolePair(manageRole.getId(),accessRole.getId());
@@ -138,8 +138,8 @@ public class ResourceServiceImpl implements ResourceService {
         }
         Validate.notNull(manageRole);
         Validate.notNull(accessRole);
-        manageRole.setDesc(manageRole.getRoleType().name() + "-" + name);
-        accessRole.setDesc(accessRole.getRoleType().name() + "-" + name);
+        manageRole.setDesc(manageRole.getRoleType().name() + "(" + name + ")");
+        accessRole.setDesc(accessRole.getRoleType().name() + "(" + name + ")");
         roleService.update(manageRole);
         roleService.update(accessRole);
     }

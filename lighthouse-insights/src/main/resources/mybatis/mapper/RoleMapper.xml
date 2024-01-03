@@ -64,14 +64,14 @@
             <if test="pid != null">
                 `pid` = #{pid},
             </if>
-            <if test="updateTime != null">
-                `update_time` = #{updateTime},
-            </if>
             <if test="desc != null">
                 `desc` = #{desc},
             </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
         </set>
-        WHERE role_type = #{roleType} and resource_id=#{resourceId}
+        WHERE role_type = #{roleType.roleType} and resource_id=#{resourceId}
     </update>
 
     <delete id="deleteById">
