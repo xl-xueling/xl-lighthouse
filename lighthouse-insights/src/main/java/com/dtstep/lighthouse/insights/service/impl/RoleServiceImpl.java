@@ -79,4 +79,9 @@ public class RoleServiceImpl implements RoleService {
     public int deleteById(Integer id) {
         return roleDao.deleteById(id);
     }
+
+    @Override
+    public List<Role> queryListByPid(Integer pid, Integer pageNum, Integer pageSize) {
+        return roleDao.queryListByPid(pid,pageNum,pageSize);
+    }
 }

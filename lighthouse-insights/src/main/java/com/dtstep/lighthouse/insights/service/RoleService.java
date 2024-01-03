@@ -22,4 +22,6 @@ public interface RoleService {
     boolean isRoleExist(RoleTypeEnum roleTypeEnum,Integer resourceId);
 
     boolean isChildRoleExist(Integer pid);
+
+    List<Role> queryListByPid(Integer pid,Integer pageNum,Integer pageSize);
 }

@@ -77,4 +77,16 @@
     <delete id="deleteById">
         delete from ldp_role where id = #{id}
     </delete>
+
+    <select id="queryListByPid" resultMap="roleResultMap">
+        WITH RECURSIVE cte AS (
+            SELECT id FROM ldp_role WHERE pid in ('0')
+            UNION ALL
+            SELECT t.id FROM ldp_role AS t INNER JOIN cte ON t.pid = cte.id
+        )
+        SELECT a.`id` as `id`,`role_type`, `resource_id`,`pid`, `create_time`, `update_time` FROM ldp_role a
+        inner join (select id from cte) b on a.id = b.id
+        <bind name="offset" value="(pageNum-1)*pageSize"></bind>
+        limit ${offset},#{pageSize}
+    </select>
 </mapper>
