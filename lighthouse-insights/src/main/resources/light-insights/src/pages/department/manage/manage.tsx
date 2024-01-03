@@ -55,8 +55,7 @@ export default function ManagePanel() {
     async function addNode(pid, title) {
         setLoading(true);
         let id = "-1";
-        try {addNode
-            console.log("pid:" + pid + ",title:" + title);
+        try {
             await requestCreate({'pid': pid, 'name': title}).then((response: ResultData) => {
                 const {code, message, data} = response;
                 if (code === '0') {
@@ -96,11 +95,11 @@ export default function ManagePanel() {
         return result;
     }
 
-    async function updateNode(id,title) {
+    async function updateNode(id,pid,title) {
         setLoading(true);
         let result = "-1";
         try {
-            await requestUpdateById({'id': id, 'name': title}).then((response: ResultData) => {
+            await requestUpdateById({'id': id, 'pid':pid,'name': title}).then((response: ResultData) => {
                 const {code, message, data} = response;
                 if (code === '0') {
                     result = code;
@@ -319,7 +318,7 @@ export default function ManagePanel() {
                                                                       } else {
                                                                           const newTitle = ie.target.value;
                                                                           if(newTitle.length  > 0 && newTitle != originTitle){
-                                                                              const result = await updateNode(node.dataRef.id, newTitle);
+                                                                              const result = await updateNode(node.dataRef.id,node.dataRef.pid, newTitle);
                                                                               if(result == "0"){
                                                                                   node.dataRef.title = newTitle;
                                                                               }else{

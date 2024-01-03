@@ -55,18 +55,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Transactional
     @Override
     public int update(Department department) {
-        if(department.getPid() != null){
-            resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),department.getPid()));
-        }
-        return departmentDao.update(department);
+        int result = departmentDao.update(department);
+        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),department.getPid()));
+        return result;
     }
 
     @Transactional
     @Override
     public int delete(Department department) {
         Validate.notNull(department);
+        int result = departmentDao.deleteById(department.getId());
         resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),department.getPid()));
-        return departmentDao.deleteById(department.getId());
+        return result;
     }
 
     @Override

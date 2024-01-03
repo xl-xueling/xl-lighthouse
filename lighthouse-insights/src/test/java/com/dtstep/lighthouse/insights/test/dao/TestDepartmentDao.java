@@ -69,4 +69,10 @@ public class TestDepartmentDao {
         int res = departmentDao.deleteById(id);
         System.out.println("res:" + res);
     }
+
+    @Test
+    public void getLevel(){
+        int level = departmentDao.getLevel(0);
+        System.out.println("level:" + level);
+    }
 }
