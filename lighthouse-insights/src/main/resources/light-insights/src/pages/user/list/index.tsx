@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Card, Message, PaginationProps, Table, Typography,} from '@arco-design/web-react';
+import {Breadcrumb, Card, Message, PaginationProps, Table, Typography,} from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -9,6 +9,7 @@ import {Department, User} from "@/types/insights-web";
 import {useSelector} from "react-redux";
 import {ResultData} from "@/types/insights-common";
 import SearchForm from "@/pages/user/list/form";
+import {IconHome} from "@arco-design/web-react/icon";
 
 const { Title } = Typography;
 
@@ -154,24 +155,32 @@ export default function UserList() {
   }
 
   return (
-    <Card>
-      <SearchForm onSearch={handleSearch} />
-      <PermissionWrapper
-        requiredPermissions={[
-          { resource: 'menu.list.searchTable', actions: ['write'] },
-        ]}
-      >
-      </PermissionWrapper>
-      <Table
-        rowKey="id"
-        size={"small"}
-        loading={loading}
-        onChange={onChangeTable}
-        pagination={pagination}
-        columns={columns}
-        data={userData}
-      />
-    </Card>
+      <>
+        <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+          <Breadcrumb.Item>
+            <IconHome />
+          </Breadcrumb.Item>
+          <Breadcrumb.Item style={{fontWeight:20}}>{t['userList.breadcrumb.title']}</Breadcrumb.Item>
+        </Breadcrumb>
+        <Card>
+          <SearchForm onSearch={handleSearch} />
+          <PermissionWrapper
+            requiredPermissions={[
+              { resource: 'menu.list.searchTable', actions: ['write'] },
+            ]}
+          >
+          </PermissionWrapper>
+          <Table
+            rowKey="id"
+            size={"small"}
+            loading={loading}
+            onChange={onChangeTable}
+            pagination={pagination}
+            columns={columns}
+            data={userData}
+          />
+        </Card>
+      </>
   );
 }
 

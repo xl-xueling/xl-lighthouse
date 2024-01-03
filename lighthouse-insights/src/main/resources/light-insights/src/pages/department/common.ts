@@ -58,49 +58,6 @@ export const translateToTreeNodes = (list):Array<ArcoTreeNode> => {
     return nodeArr;
 }
 
-export const translateToMapStruct = (list:Array<Department>):Map<string,Department> => {
-    const result = new Map();
-    function traverse(nodes) {
-        nodes.forEach(node => {
-            const { id, name, children } = node;
-            result.set(id, {id,name});
-            if (children && children.length > 0) {
-                traverse(children);
-            }
-        });
-    }
-    traverse(list);
-    return result;
-}
-
-export const translateToFlatStruct = (list):Array<ArcoFlatNode> => {
-    const nodeArr = new Array<ArcoFlatNode>();
-    if(list){
-        const departMap = new Map<string,Department>();
-        list.forEach(z => {
-            departMap.set(z.id.toString(),z);
-        })
-        list.forEach(item => {
-            let title = "";
-            const parentArr = item.fullpath.split(",");
-            for (let i = 0; i < parentArr.length; i++) {
-                const curDepart = departMap.get(parentArr[i]);
-                if(curDepart){
-                    title += curDepart.name;
-                    if(i !== parentArr.length - 1){
-                        title += "_";
-                    }
-                }
-            }
-            const d:ArcoFlatNode = {
-                "key":item.id,
-                "title":title,
-            }
-            nodeArr.push(d);
-        })
-    }
-    return nodeArr;
-}
 
 export const getDepartment = (id:number,allDepartsInfo) : Department => {
     const getInfo = (id,arrays) => {

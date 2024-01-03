@@ -119,7 +119,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Cacheable(value = "normal",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public User cacheQueryById(int id) {
-        System.out.println("cache query user by id:" + id);
         return userDao.queryById(id);
     }
 

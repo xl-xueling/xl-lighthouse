@@ -24,8 +24,8 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
     },
     {
       title: t['userList.columns.department'],
-      dataIndex: 'department',
-      render: (value) => <DepartmentLabel department={value}/>,
+      dataIndex: 'departmentId',
+      render: (value) => <DepartmentLabel departmentId={value}/>,
     },
     {
       title: t['userList.columns.email'],

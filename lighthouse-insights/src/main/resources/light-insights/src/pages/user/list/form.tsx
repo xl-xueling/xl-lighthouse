@@ -22,11 +22,19 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
   const [loading, setLoading] = useState(false);
   const [treeData, setTreeData] = useState([]);
   const treeRef = useRef(null);
+  const formRef = useRef(null);
   const t = useLocale(locale);
   const [form] = Form.useForm();
   const handleSubmit = () => {
     const values = form.getFieldsValue();
     props.onSearch(values);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      const formInstance = formRef.current;
+      formInstance.submit();
+    }
   };
 
   const handleReset = () => {
@@ -45,6 +53,10 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
       }
     }
     proc().then();
+    document.addEventListener('keydown', handleKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
   },[])
 
 
@@ -52,8 +64,13 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
     <div className={styles['search-form-wrapper']}>
       <Form
         form={form}
+        ref={formRef}
         className={styles['search-form']}
         labelAlign="left"
+        onSubmit={() => {
+          handleSubmit();
+        }}
+        colon={" :"}
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 19 }}
       >
@@ -96,7 +113,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
         </Row>
       </Form>
       <div className={styles['right-button']}>
-        <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>
+        <Button type="primary" icon={<IconSearch />} htmlType="submit">
           {t['userList.form.search']}
         </Button>
         <Button icon={<IconRefresh />} onClick={handleReset}>
