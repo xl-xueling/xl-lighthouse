@@ -6,6 +6,7 @@ import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
 import com.dtstep.lighthouse.insights.dto.DeleteParam;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.service.DepartmentService;
+import com.dtstep.lighthouse.insights.service.ProjectService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +20,9 @@ public class DepartmentController {
 
     @Autowired
     private DepartmentService departmentService;
+
+    @Autowired
+    private ProjectService projectService;
 
     @RequestMapping("/department/all")
     public ResultData<List<CommonTreeNode>> all() {
@@ -45,7 +49,13 @@ public class DepartmentController {
     @RequestMapping("/department/delete")
     public ResultData<Integer> delete(@RequestBody DeleteParam deleteParam) {
         Validate.notNull(deleteParam.getId());
-        int result = departmentService.deleteById(deleteParam.getId());
+        Department department = departmentService.queryById(deleteParam.getId());
+        Validate.notNull(department);
+        int projectSize = projectService.countByDepartmentId(deleteParam.getId());
+        if(projectSize > 0){
+            return ResultData.failed(ResultCode.departDelErrorProjectExist);
+        }
+        int result = departmentService.delete(department);
         if(result == 1){
             return ResultData.success(result);
         }else{

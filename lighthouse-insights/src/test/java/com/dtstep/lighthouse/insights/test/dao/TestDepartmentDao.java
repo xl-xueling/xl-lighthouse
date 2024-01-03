@@ -4,6 +4,8 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.modal.Department;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,8 +51,16 @@ public class TestDepartmentDao {
 
     @Test
     public void testQueryAll(){
-        List<Department> departmentList = departmentDao.queryAll();
-        System.out.println("departmentList:" + JsonUtil.toJSONString(departmentList));
+        PageHelper.startPage(1,1);
+        try{
+            List<Department> departmentList = departmentDao.queryAll();
+            PageInfo<Department> departmentPageInfo = new PageInfo<>(departmentList);
+            System.out.println("departmentPageInfo:" + departmentPageInfo.getTotal());
+        }finally {
+            PageHelper.clearPage();
+        }
+
+
     }
 
     @Test

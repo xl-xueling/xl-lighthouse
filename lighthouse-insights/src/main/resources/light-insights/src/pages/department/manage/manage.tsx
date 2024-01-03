@@ -304,7 +304,7 @@ export default function ManagePanel() {
                                       const originTitle = node.dataRef.title;
                                       node.dataRef.title = <Input type={"text"} autoFocus={true}
                                                                   style={{
-                                                                      width: 120,
+                                                                      width: 200,
                                                                       height: 19,
                                                                       paddingLeft:3,
                                                                       borderColor: 'rgb(132 160 224)',
