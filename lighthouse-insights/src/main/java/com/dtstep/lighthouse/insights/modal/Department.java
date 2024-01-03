@@ -14,7 +14,7 @@ public class Department implements Serializable {
     private Integer id;
 
     @NotEmpty
-    @BLengthValidation(min = 3,max = 20)
+    @BLengthValidation(min = 3,max = 30)
     @Pattern(regexp = "^[\u4E00-\u9FA5A-Za-z0-9_\\-( )【】（）\\]\\[]+$")
     private String name;
 

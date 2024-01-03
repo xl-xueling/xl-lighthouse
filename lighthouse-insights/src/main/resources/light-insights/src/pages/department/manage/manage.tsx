@@ -281,7 +281,7 @@ export default function ManagePanel() {
                                                                   defaultValue={originTitle + ""}
                                                                   onBlur={async (ie) => {
                                                                       const len = getTextBlenLength(ie.target.value);
-                                                                      if (len < 3 || len > 20) {
+                                                                      if (len < 3 || len > 30) {
                                                                           Notification.warning({style: { width: 420 }, title: 'Warning', content: t['department.manage.invalidLength']});
                                                                           node.dataRef.title = originTitle;
                                                                       } else if(!validateWithRegex(TEXT_BASE_PATTERN_2,ie.target.value)) {
