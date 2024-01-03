@@ -2,6 +2,7 @@ const i18n = {
   'en-US': {
     'menu.list': 'List',
     'menu.list.userList': 'Search Table',
+    'userList.breadcrumb.title':'User List',
     'userList.form.search': 'Search',
     'userList.form.reset': 'Reset',
     'userList.columns.id': 'ID',
@@ -29,6 +30,7 @@ const i18n = {
   'zh-CN': {
     'menu.list': '列表页',
     'menu.list.userList': '查询表格',
+    'userList.breadcrumb.title':'用户列表',
     'userList.form.search': '查询',
     'userList.form.reset': '重置',
     'userList.columns.id': 'ID',
