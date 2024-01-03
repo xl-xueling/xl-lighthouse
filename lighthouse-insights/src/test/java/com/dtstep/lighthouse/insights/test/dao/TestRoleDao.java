@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LightHouseInsightsApplication.class,properties = {"spring.config.location=classpath:lighthouse-insights.yml"})
@@ -35,5 +36,11 @@ public class TestRoleDao {
     public void testQueryRole() throws Exception{
         Role role = roleDao.queryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,11050);
         System.out.println("role:" + JsonUtil.toJSONString(role));
+    }
+
+    @Test
+    public void testQueryList() throws Exception {
+        List<Role> roleList = roleDao.queryListByPid(0,1,100);
+        System.out.println("roleList:" + JsonUtil.toJSONString(roleList));
     }
 }
