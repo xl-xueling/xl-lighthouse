@@ -71,63 +71,12 @@
         )
         SELECT `id`,`username`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user
         <where>
-            <if test="queryParam.id!=null">
-                AND id = #{queryParam.id}
-            </if>
-            <if test="queryParam.username != null">
-                AND username LIKE CONCAT('%', #{queryParam.username}, '%')
+            <if test="queryParam.search != null">
+                AND (username LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})
             </if>
             <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
                 AND department_id IN(
                     select id from cte
-                )
-            </if>
-            <if test="queryParam.states!=null and queryParam.states.size > 0">
-                AND state IN
-                <foreach item="item" index="index" collection="queryParam.states" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-            </if>
-            <if test="queryParam.createStartTime!=null">
-                AND create_time &gt;= #{queryParam.createStartTime}
-            </if>
-            <if test="queryParam.createEndTime!=null">
-                AND create_time &lt;= #{queryParam.createEndTime}
-            </if>
-        </where>
-        <bind name="offset" value="(pageNum-1)*pageSize"></bind>
-        limit ${offset},#{pageSize}
-    </select>
-
-    <select id="count" resultType="int" parameterType="com.dtstep.lighthouse.insights.dto.UserQueryParam">
-        WITH RECURSIVE cte AS (
-        SELECT d.id
-        FROM ldp_department d
-        <where>
-            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
-                AND d.id IN (
-                <foreach item="item" index="index" collection="queryParam.departmentIds" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-                )
-            </if>
-        </where>
-        UNION ALL
-        SELECT d.id
-        FROM ldp_department d
-        JOIN cte ON cte.id = d.pid
-        )
-        SELECT count(1) FROM ldp_user
-        <where>
-            <if test="queryParam.id!=null">
-                AND id = #{queryParam.id}
-            </if>
-            <if test="queryParam.username != null">
-                AND username LIKE CONCAT('%', #{queryParam.username}, '%')
-            </if>
-            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
-                AND department_id IN(
-                select id from cte
                 )
             </if>
             <if test="queryParam.states!=null and queryParam.states.size > 0">

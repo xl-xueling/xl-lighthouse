@@ -34,7 +34,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
     props.onSearch({});
   };
 
-  const colSpan = lang === 'zh-CN' ? 8 : 12;
+  const colSpan = 12;
 
   useEffect(() => {
     const proc = async () => {
@@ -59,12 +59,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
       >
         <Row gutter={24}>
           <Col span={colSpan}>
-            <Form.Item label={t['userList.columns.id']} field="id">
-              <Input placeholder={t['userList.id.placeholder']} allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item label={t['userList.columns.userName']} field="username">
+            <Form.Item label={t['userList.columns.userName']} field="search">
               <Input
                 allowClear
                 placeholder={t['userList.userName.placeholder']}

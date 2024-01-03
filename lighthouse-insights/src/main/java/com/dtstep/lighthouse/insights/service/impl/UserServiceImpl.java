@@ -14,10 +14,9 @@ import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
-import com.dtstep.lighthouse.insights.service.OrderService;
-import com.dtstep.lighthouse.insights.service.PermissionService;
-import com.dtstep.lighthouse.insights.service.RoleService;
-import com.dtstep.lighthouse.insights.service.UserService;
+import com.dtstep.lighthouse.insights.service.*;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -49,6 +48,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PermissionService permissionService;
+
+    @Autowired
+    private BaseService baseService;
 
     @Transactional
     @Override
@@ -109,7 +111,6 @@ public class UserServiceImpl implements UserService {
         return userDao.changePassword(updateParam);
     }
 
-
     @Override
     public User queryById(int id) {
         return userDao.queryById(id);
@@ -139,13 +140,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ListData<User> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize) {
-        List<User> userList = userDao.queryList(queryParam,pageNum,pageSize);
-        ListData<User> listData = new ListData<>();
-        listData.setList(userList);
-        int total = userDao.count(queryParam);
-        listData.setTotal(total);
-        listData.setPageNum(pageNum);
-        listData.setPageSize(pageSize);
+        PageHelper.startPage(pageNum,pageSize);
+        ListData<User> listData = null;
+        try{
+            List<User> userList = userDao.queryList(queryParam);
+            listData = baseService.translateToListData(userList);
+        }finally {
+            PageHelper.clearPage();
+        }
         return listData;
     }
 

@@ -6,12 +6,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserQueryParam implements Serializable {
 
-    private Integer id;
-
-    private String username;
+    private String search;
 
     private List<Integer> departmentIds;
 
@@ -20,14 +17,6 @@ public class UserQueryParam implements Serializable {
     private Date createEndTime;
 
     private List<Integer> states;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public Date getCreateStartTime() {
         return createStartTime;
@@ -53,12 +42,12 @@ public class UserQueryParam implements Serializable {
         this.states = states;
     }
 
-    public Integer getId() {
-        return id;
+    public String getSearch() {
+        return search;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setSearch(String search) {
+        this.search = search;
     }
 
     public List<Integer> getDepartmentIds() {

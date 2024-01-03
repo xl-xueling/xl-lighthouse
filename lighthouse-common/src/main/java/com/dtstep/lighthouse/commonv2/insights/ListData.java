@@ -6,7 +6,7 @@ public class ListData<T> {
 
     private List<T> list;
 
-    private int total;
+    private long total;
 
     private int pageNum;
 
@@ -20,11 +20,11 @@ public class ListData<T> {
         this.list = list;
     }
 
-    public int getTotal() {
+    public long getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(long total) {
         this.total = total;
     }
 

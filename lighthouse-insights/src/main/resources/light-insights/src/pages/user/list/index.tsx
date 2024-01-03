@@ -7,7 +7,6 @@ import {getColumns} from './constants';
 import {requestChangeState, requestDeleteById, requestList, requestResetPasswd} from "@/api/user";
 import {Department, User} from "@/types/insights-web";
 import {useSelector} from "react-redux";
-import {getDepartment} from "@/pages/department/common";
 import {ResultData} from "@/types/insights-common";
 import SearchForm from "@/pages/user/list/form";
 

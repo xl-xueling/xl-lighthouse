@@ -8,6 +8,8 @@ import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.User;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,7 +74,11 @@ public class TestUserDao {
 //        userQueryParam.setStates(statesList);
         List<Integer> departmentIdList = new ArrayList<>();
         userQueryParam.setDepartmentIds(departmentIdList);
-        List<User> users = userDao.queryList(userQueryParam,1,10);
+        PageHelper.startPage(1,10);
+        userQueryParam.setSearch("11019");
+        List<User> users = userDao.queryList(userQueryParam);
+        PageInfo<User> pageInfo = new PageInfo<>(users);
+        System.out.println("pageInfo:" + pageInfo.getTotal());
         System.out.println("data:" + JsonUtil.toJSONString(users));
     }
 
