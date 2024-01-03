@@ -32,6 +32,13 @@ public class Role implements Serializable {
         this.pid = pid;
     }
 
+    public Role(RoleTypeEnum roleTypeEnum,Integer resourceId,Integer pid,String desc){
+        this.roleType = roleTypeEnum;
+        this.resourceId = resourceId;
+        this.pid = pid;
+        this.desc = desc;
+    }
+
     public Role(){}
 
     public Integer getId() {
