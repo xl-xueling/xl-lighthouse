@@ -10,5 +10,5 @@ public interface ResourceService {
 
     void updateResourcePidCallback(Resource resource);
 
-    void deleteResourceCallback(Resource resource) throws Exception;
+    void deleteResourceCallback(Resource resource);
 }

@@ -19,4 +19,8 @@ public interface DepartmentDao {
     boolean isExist(Integer id);
 
     int deleteById(Integer id);
+
+    int getLevel(Integer id);
+
+    int countChildByPid(Integer pid);
 }

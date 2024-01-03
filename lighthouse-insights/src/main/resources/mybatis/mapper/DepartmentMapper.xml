@@ -46,4 +46,29 @@
     <delete id="deleteById">
         delete from ldp_department where id = #{id}
     </delete>
+
+    <select id="getLevel" resultType="java.lang.Integer">
+        WITH RECURSIVE cte AS (
+            SELECT 1 AS level, id, pid
+            FROM ldp_department
+            WHERE id = #{id}
+            UNION ALL
+            SELECT cte.level + 1, t.id, t.pid
+            FROM ldp_department t
+                     JOIN cte ON t.id = cte.pid
+        )
+        SELECT max(level) as level FROM cte
+    </select>
+
+    <select id="countChildByPid">
+        WITH RECURSIVE cte AS (
+            SELECT d.id
+            FROM ldp_department d where pid = #{pid}
+            UNION ALL
+            SELECT d.id
+            FROM ldp_department d
+                     JOIN cte ON cte.id = d.pid
+        )
+        select count(1) from cte
+    </select>
 </mapper>

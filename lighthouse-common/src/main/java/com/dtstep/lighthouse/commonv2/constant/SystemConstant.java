@@ -13,4 +13,6 @@ public class SystemConstant {
     public final static String DEFAULT_PASSWORD = "123456";
 
     public final static boolean REGISTER_NEED_APPROVE = true;
+
+    public final static int DEPARTMENT_MAX_LEVEL = 4;
 }

@@ -24,6 +24,10 @@ public enum ResultCode {
 
     departDelErrorProjectExist("2001","departDelErrorProjectExist"),
 
+    departDelErrorChildExist("2002","departDelErrorChildExist"),
+
+    departCreateErrorLevelLimit("2003","departCreateErrorLevelLimit"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

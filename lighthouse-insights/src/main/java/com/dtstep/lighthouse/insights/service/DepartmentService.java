@@ -13,6 +13,10 @@ public interface DepartmentService {
 
     int delete(Department department);
 
+    int getLevel(Integer id);
+
+    int countChildByPid(Integer pid);
+
     Department queryById(Integer id);
 
     List<CommonTreeNode> queryAll();

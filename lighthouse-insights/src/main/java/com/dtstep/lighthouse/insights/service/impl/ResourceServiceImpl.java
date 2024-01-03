@@ -146,7 +146,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Transactional
     @Override
-    public void deleteResourceCallback(Resource resource) throws Exception {
+    public void deleteResourceCallback(Resource resource){
         List<Role> roleList = new ArrayList<>();
         Role manageRole = null;
         Role accessRole = null;
