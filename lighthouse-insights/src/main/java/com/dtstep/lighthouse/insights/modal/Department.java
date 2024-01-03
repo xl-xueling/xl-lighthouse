@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.insights.modal;
 
+import com.dtstep.lighthouse.insights.validator.BLengthValidation;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -12,7 +14,7 @@ public class Department implements Serializable {
     private Integer id;
 
     @NotEmpty
-    @Size(min = 3,max = 20)
+    @BLengthValidation(min = 3,max = 20)
     @Pattern(regexp = "^[\u4E00-\u9FA5A-Za-z0-9_\\-( )【】（）\\]\\[]+$")
     private String name;
 
