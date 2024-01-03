@@ -164,12 +164,6 @@ export default function UserList() {
         </Breadcrumb>
         <Card>
           <SearchForm onSearch={handleSearch} />
-          <PermissionWrapper
-            requiredPermissions={[
-              { resource: 'menu.list.searchTable', actions: ['write'] },
-            ]}
-          >
-          </PermissionWrapper>
           <Table
             rowKey="id"
             size={"small"}

@@ -93,7 +93,6 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
                 mode="multiple"
                 allowClear
               >
-                <Select.Option value={0}>{t['userList.columns.state.pending']}</Select.Option>
                 <Select.Option value={1}>{t['userList.columns.state.normal']}</Select.Option>
                 <Select.Option value={2}>{t['userList.columns.state.frozen']}</Select.Option>
               </Select>
