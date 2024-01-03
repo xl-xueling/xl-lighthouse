@@ -45,22 +45,31 @@ export default function RegisterForm() {
             departmentId:Number(params.departmentId),
           }
           await requestRegister(registerParams).then((response:ResultData) => {
-                  const {code, message, data} = response;
-                  if (code === '0') {
-                      Notification.info({
-                          style: { width: 420 },
-                          title: 'Notification',
-                          content: t['register.form.success'],
-                      })
-                  } else {
-                      Notification.info({
-                          style: { width: 420 },
-                          title: 'Notification',
-                          content:message || t['register.form.register.errMsg'],
-                      })
-                  }
+              const {code, message, data} = response;
+              if (code === '0') {
+                  Notification.info({
+                      style: { width: 420 },
+                      title: 'Notification',
+                      content: t['register.form.success'],
+                  })
+                  setTimeout(() => {
+                      window.location.href = '/login';
+                      setLoading(false);
+                  },3000)
+              } else {
+                  Notification.warning({
+                      style: { width: 420 },
+                      title: 'Notification',
+                      content:message || t['system.error'],
+                  })
+                  setLoading(false);
               }
-          ).finally(() => {
+          }).catch((error) => {
+              Notification.error({
+                  style: { width: 420 },
+                  title: 'Notification',
+                  content:t['system.error'],
+              })
               setLoading(false);
           })
       }
