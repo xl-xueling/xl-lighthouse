@@ -3,12 +3,15 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
+import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
+import com.dtstep.lighthouse.insights.dto.QueryParam;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.modal.Resource;
 import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.service.DepartmentService;
+import com.dtstep.lighthouse.insights.service.ProjectService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import org.apache.commons.lang3.Validate;
@@ -32,6 +35,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     private ResourceService resourceService;
+
+    @Autowired
+    private ProjectService projectService;
 
     @Transactional
     @Override
@@ -57,15 +63,15 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Transactional
     @Override
-    public int deleteById(Integer id) {
-        Department department = departmentDao.queryById(id);
+    public int delete(Department department) {
+        Validate.notNull(department);
         try{
             resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),department.getPid()));
         }catch (Exception ex){
             ex.printStackTrace();
             return -1;
         }
-        return departmentDao.deleteById(id);
+        return departmentDao.deleteById(department.getId());
     }
 
     @Override
@@ -103,4 +109,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         return nodeList;
     }
+
+
 }

@@ -11,7 +11,7 @@ public interface DepartmentService {
 
     int update(Department department);
 
-    int deleteById(Integer id);
+    int delete(Department department);
 
     Department queryById(Integer id);
 

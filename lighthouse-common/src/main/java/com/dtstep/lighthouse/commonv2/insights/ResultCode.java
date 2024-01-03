@@ -20,7 +20,9 @@ public enum ResultCode {
 
     userPendApprove("1004","userPendApprove"),
 
-    userStateUnAvailable("1005","userStateUnAvailable")
+    userStateUnAvailable("1005","userStateUnAvailable"),
+
+    departDelErrorProjectExist("2001","departDelErrorProjectExist"),
 
     ;
 

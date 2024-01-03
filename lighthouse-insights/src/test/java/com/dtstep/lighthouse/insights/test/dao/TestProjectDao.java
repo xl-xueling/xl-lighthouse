@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Project;
+import com.github.pagehelper.PageHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,12 @@ public class TestProjectDao {
         for(int i=0;i<list.size();i++){
             System.out.println("project:" + list.get(i).getTitle());
         }
+    }
+
+    @Test
+    public void testCount() throws Exception {
+        int count = projectDao.countByDepartmentId(1);
+        System.out.println("count:" + count);
     }
 
 

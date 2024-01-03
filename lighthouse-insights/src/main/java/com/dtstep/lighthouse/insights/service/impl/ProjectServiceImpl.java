@@ -131,4 +131,9 @@ public class ProjectServiceImpl implements ProjectService {
         listData.setList(dtoList);
         return listData;
     }
+
+    @Override
+    public int countByDepartmentId(Integer departmentId) {
+        return projectDao.countByDepartmentId(departmentId);
+    }
 }

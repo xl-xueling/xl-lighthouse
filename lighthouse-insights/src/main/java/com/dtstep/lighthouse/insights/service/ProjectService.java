@@ -18,4 +18,5 @@ public interface ProjectService {
 
     ListData<ProjectDto> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize);
 
+    int countByDepartmentId(Integer departmentId);
 }
