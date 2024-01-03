@@ -61,8 +61,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role queryRole(RoleTypeEnum roleTypeEnum, Integer projectId) {
-        return roleDao.queryRole(roleTypeEnum,projectId);
+    public Role queryRole(RoleTypeEnum roleTypeEnum, Integer resourceId) {
+        return roleDao.queryRole(roleTypeEnum,resourceId);
     }
 
     @Override

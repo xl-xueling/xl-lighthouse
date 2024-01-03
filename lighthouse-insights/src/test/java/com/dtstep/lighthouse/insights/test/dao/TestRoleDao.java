@@ -34,7 +34,7 @@ public class TestRoleDao {
 
     @Test
     public void testQueryRole() throws Exception{
-        Role role = roleDao.queryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,11050);
+        Role role = roleDao.queryRole(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,0);
         System.out.println("role:" + JsonUtil.toJSONString(role));
     }
 

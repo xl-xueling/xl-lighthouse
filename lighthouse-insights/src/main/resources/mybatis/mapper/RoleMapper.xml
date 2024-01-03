@@ -80,7 +80,7 @@
 
     <select id="queryListByPid" resultMap="roleResultMap">
         WITH RECURSIVE cte AS (
-            SELECT id FROM ldp_role WHERE pid in ('0')
+            SELECT id FROM ldp_role WHERE pid = #{pid}
             UNION ALL
             SELECT t.id FROM ldp_role AS t INNER JOIN cte ON t.pid = cte.id
         )

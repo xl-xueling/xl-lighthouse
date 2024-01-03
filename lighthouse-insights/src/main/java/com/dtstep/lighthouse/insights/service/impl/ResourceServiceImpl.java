@@ -171,12 +171,12 @@ public class ResourceServiceImpl implements ResourceService {
         List<Role> childManageRoles = roleService.queryListByPid(manageRole.getId(),1,20);
         if(CollectionUtils.isNotEmpty(childManageRoles)){
             String childRoles = childManageRoles.stream().map(z -> String.valueOf(z.getId())).collect(Collectors.joining(","));
-            throw new RoleDefendException("can't delete manage role [id:" + resource.getResourceId() + ",type:"+resource.getResourceType().name()+"],child roles ["+childRoles+"] exists!" );
+            throw new RoleDefendException("can't delete manage role [resourceId:" + resource.getResourceId() + ",roleType:"+resource.getResourceType().name()+"],child roles ["+childRoles+"] exists!" );
         }
         List<Role> childAccessRoles = roleService.queryListByPid(manageRole.getId(),1,20);
         if(CollectionUtils.isNotEmpty(childAccessRoles)){
             String childRoles = childAccessRoles.stream().map(z -> String.valueOf(z.getId())).collect(Collectors.joining(","));
-            throw new RoleDefendException("can't delete access role [id:" + resource.getResourceId() + ",type:"+resource.getResourceType().name()+"],child roles ["+childRoles+"] exists!" );
+            throw new RoleDefendException("can't delete access role [resourceId:" + resource.getResourceId() + ",roleType:"+resource.getResourceType().name()+"],child roles ["+childRoles+"] exists!" );
         }
         roleService.deleteById(manageRole.getId());
         roleService.deleteById(accessRole.getId());

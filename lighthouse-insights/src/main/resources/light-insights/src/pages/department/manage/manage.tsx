@@ -12,7 +12,7 @@ import {
     requestQueryAll,
     requestUpdateById
 } from "@/api/department";
-import {stringifyObj} from "@/utils/util";
+import {getRandomString, stringifyObj} from "@/utils/util";
 
 export default function ManagePanel() {
     const t = useLocale(locale);
@@ -55,7 +55,8 @@ export default function ManagePanel() {
     async function addNode(pid, title) {
         setLoading(true);
         let id = "-1";
-        try {
+        try {addNode
+            console.log("pid:" + pid + ",title:" + title);
             await requestCreate({'pid': pid, 'name': title}).then((response: ResultData) => {
                 const {code, message, data} = response;
                 if (code === '0') {
@@ -96,7 +97,6 @@ export default function ManagePanel() {
     }
 
     async function updateNode(id,title) {
-        console.log("id:" + id + ",title:"+title);
         setLoading(true);
         let result = "-1";
         try {
@@ -268,13 +268,13 @@ export default function ManagePanel() {
                                   });
                                   titleNode.dispatchEvent(event);
                                   const dataChildren = node.dataRef.children || [];
-                                  const title = node._key + '-' + (dataChildren.length + 1);
-                                  const currentId = await addNode(node.dataRef.id, title);
+                                  const nodeTitle = "New Node_" + getRandomString(8);
+                                  const currentId = await addNode(node.dataRef.id, nodeTitle);
                                   if(currentId == "-1"){
                                       return;
                                   }
                                   dataChildren.push({
-                                      name: "New Node_" + currentId,
+                                      name: nodeTitle,
                                       id: currentId,
                                       pid: node.dataRef.id,
                                   });
@@ -319,7 +319,6 @@ export default function ManagePanel() {
                                                                       } else {
                                                                           const newTitle = ie.target.value;
                                                                           if(newTitle.length  > 0 && newTitle != originTitle){
-                                                                              console.log("node.dataRef is:" + stringifyObj(node.dataRef));
                                                                               const result = await updateNode(node.dataRef.id, newTitle);
                                                                               if(result == "0"){
                                                                                   node.dataRef.title = newTitle;
