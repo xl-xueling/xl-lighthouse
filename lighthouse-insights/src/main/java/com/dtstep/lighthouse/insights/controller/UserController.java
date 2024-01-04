@@ -1,7 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
@@ -14,7 +13,6 @@ import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.UserService;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -70,7 +68,6 @@ public class UserController {
         }
     }
 
-
     @RequestMapping("/user/changePassword")
     public ResultData<Integer> changePassword(@Validated @RequestBody ChangePasswordParam updateParam) {
         Integer userId = updateParam.getId();
@@ -85,6 +82,23 @@ public class UserController {
             return ResultData.failed(ResultCode.systemError);
         }
         int id = userService.changePassword(updateParam);
+        if(id > 0){
+            return ResultData.success(id);
+        }else{
+            return ResultData.failed(ResultCode.systemError);
+        }
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
+    @RequestMapping("/user/changeState")
+    public ResultData<Integer> changeState(@Validated @RequestBody ChangeUserStateParam changeParam) {
+        Integer id = changeParam.getId();
+        UserStateEnum userStateEnum = changeParam.getState();
+        Validate.notNull(id);
+        Validate.notNull(userStateEnum);
+        User dbUser = userService.queryById(id);
+        Validate.notNull(dbUser);
+        int result = userService.changeState(changeParam);
         if(id > 0){
             return ResultData.success(id);
         }else{

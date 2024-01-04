@@ -10,7 +10,6 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserUpdateParam implements Serializable {
 
     private Integer id;

@@ -37,7 +37,7 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
         const response: AxiosResponse = await http.request(config);
         result = response.data;
     }catch (error) {
-        if(error.response.status == 401){
+        if(error.response?.status == 401){
             const refreshKey = localStorage.getItem('refreshKey')
             if(!refreshKey){
                 removeLoginStatus();
@@ -58,10 +58,10 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
             const dataResponse = await http.request(config);
             console.log("refreshKey again,dataResponse:" + dataResponse);
             result = dataResponse.data;
-        }else if(error.response.status == 404){
-            window.location.href = "/exception/404";
         }else{
-            window.location.href = "/exception/500";
+            result = {
+                code: error.response?error.response.status:'500',
+            };
         }
     }
     return result;

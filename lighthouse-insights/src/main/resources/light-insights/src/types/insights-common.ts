@@ -29,6 +29,13 @@ export enum PermissionEnum {
     retractable="retractable",
 }
 
+export enum UserStateEnum{
+    USER_PEND=0,
+    USR_NORMAL=1,
+    USER_FREEZE=2,
+    USER_DELETED=3,
+}
+
 export enum OrderStateEnum {
     Processing=0,
     Approved=1,
