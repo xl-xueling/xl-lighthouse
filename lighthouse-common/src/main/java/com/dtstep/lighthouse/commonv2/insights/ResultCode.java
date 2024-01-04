@@ -4,13 +4,13 @@ public enum ResultCode {
 
     success("0","success"),
 
-    systemError("1","systemError"),
+    paramValidateFailed("1","paramValidateFailed"),
 
-    paramValidateFailed("2","paramValidateFailed"),
+    unauthorized("401","unauthorized"),
 
-    accessDenied("3","accessDenied"),
+    accessDenied("403","accessDenied"),
 
-    unauthorized("4","unauthorized"),
+    systemError("500","systemError"),
 
     loginCheckFailed("1001","loginCheckFailed"),
 

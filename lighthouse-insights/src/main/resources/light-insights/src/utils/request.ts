@@ -1,9 +1,6 @@
 import axios, {AxiosResponse} from 'axios'
 import {ResultData} from "@/types/insights-common";
 import {removeLoginStatus} from "@/utils/checkLogin";
-import useStorage from "@/utils/useStorage";
-
-
 
 export const request = async <T>(config): Promise<ResultData<T>> => {
     let baseURL;
@@ -40,7 +37,6 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
         const response: AxiosResponse = await http.request(config);
         result = response.data;
     }catch (error) {
-        console.log("error is:" + error);
         if(error.response.status == 401){
             const refreshKey = localStorage.getItem('refreshKey')
             if(!refreshKey){
@@ -62,6 +58,10 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
             const dataResponse = await http.request(config);
             console.log("refreshKey again,dataResponse:" + dataResponse);
             result = dataResponse.data;
+        }else if(error.response.status == 404){
+            window.location.href = "/exception/404";
+        }else{
+            window.location.href = "/exception/500";
         }
     }
     return result;
