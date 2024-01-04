@@ -160,40 +160,40 @@ export const routes: IRoute[] = [
   //   ],
   // },
   //
-  {
-    name: 'menu.result',
-    key: 'result',
-    children: [
-      {
-        name: 'menu.result.success',
-        key: 'result/success',
-        breadcrumb: false,
-      },
-      {
-        name: 'menu.result.error',
-        key: 'result/error',
-        breadcrumb: false,
-      },
-    ],
-  },
-  {
-    name: 'menu.exception',
-    key: 'exception',
-    children: [
-      {
-        name: 'menu.exception.403',
-        key: 'exception/403',
-      },
-      {
-        name: 'menu.exception.404',
-        key: 'exception/404',
-      },
-      {
-        name: 'menu.exception.500',
-        key: 'exception/500',
-      },
-    ],
-  },
+  // {
+  //   name: 'menu.result',
+  //   key: 'result',
+  //   children: [
+  //     {
+  //       name: 'menu.result.success',
+  //       key: 'result/success',
+  //       breadcrumb: false,
+  //     },
+  //     {
+  //       name: 'menu.result.error',
+  //       key: 'result/error',
+  //       breadcrumb: false,
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'menu.exception',
+  //   key: 'exception',
+  //   children: [
+  //     {
+  //       name: 'menu.exception.403',
+  //       key: 'exception/403',
+  //     },
+  //     {
+  //       name: 'menu.exception.404',
+  //       key: 'exception/404',
+  //     },
+  //     {
+  //       name: 'menu.exception.500',
+  //       key: 'exception/500',
+  //     },
+  //   ],
+  // },
   // {
   //   name: 'menu.user',
   //   key: 'user',

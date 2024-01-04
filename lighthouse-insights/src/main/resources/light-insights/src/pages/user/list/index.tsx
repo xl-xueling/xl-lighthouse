@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Breadcrumb, Card, Message, PaginationProps, Table, Typography,} from '@arco-design/web-react';
+import {Breadcrumb, Card, Message, Notification, PaginationProps, Table, Typography,} from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import {getColumns} from './constants';
@@ -11,6 +11,8 @@ import SearchForm from "@/pages/user/list/form";
 import {IconHome} from "@arco-design/web-react/icon";
 import { useHistory } from 'react-router-dom';
 import {handleWarningCode} from "@/pages/common/prompt";
+import ErrorPage from "@/pages/common/error";
+import {GlobalErrorCodes} from "@/utils/constants";
 
 const { Title } = Typography;
 
@@ -19,6 +21,7 @@ export default function UserList() {
   const t = useLocale(locale);
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
   const [initReady,setInitReady] = useState<boolean>(false);
+  const [errorCode,setErrorCode] = useState<string>(null);
   const [userData, setUserData] = useState<Array<User>>([]);
 
   const tableCallback = async (record, type) => {
@@ -119,8 +122,10 @@ export default function UserList() {
             const {code, data ,message} = response;
             if (code === '0') {
               result = data.list;
+            }else if(GlobalErrorCodes.includes(code)){
+              setErrorCode(code);
             }else{
-              handleWarningCode(code,message || t['system.error'],history);
+              Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
             const {current, pageSize} = pagination;
             setPagination({
@@ -159,24 +164,29 @@ export default function UserList() {
 
   return (
       <>
-        <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
-          <Breadcrumb.Item>
-            <IconHome />
-          </Breadcrumb.Item>
-          <Breadcrumb.Item style={{fontWeight:20}}>{t['userList.breadcrumb.title']}</Breadcrumb.Item>
-        </Breadcrumb>
-        <Card>
-          <SearchForm onSearch={handleSearch} />
-          <Table
-            rowKey="id"
-            size={"small"}
-            loading={loading}
-            onChange={onChangeTable}
-            pagination={pagination}
-            columns={columns}
-            data={userData}
-          />
-        </Card>
+        {errorCode ? <ErrorPage errorCode={errorCode}/>
+          :
+            <>
+              <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+                <Breadcrumb.Item>
+                  <IconHome />
+                </Breadcrumb.Item>
+                <Breadcrumb.Item style={{fontWeight:20}}>{t['userList.breadcrumb.title']}</Breadcrumb.Item>
+              </Breadcrumb>
+              <Card>
+              <SearchForm onSearch={handleSearch} />
+                <Table
+                rowKey="id"
+                size={"small"}
+                loading={loading}
+                onChange={onChangeTable}
+                pagination={pagination}
+                columns={columns}
+                data={userData}
+                />
+          </Card>
+            </>
+        }
       </>
   );
 }
