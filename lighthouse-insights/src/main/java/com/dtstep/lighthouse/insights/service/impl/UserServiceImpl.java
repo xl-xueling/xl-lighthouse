@@ -52,6 +52,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BaseService baseService;
 
+    @Autowired
+    private ResourceService resourceService;
+
     @Transactional
     @Override
     public void initAdmin() {
@@ -63,7 +66,7 @@ public class UserServiceImpl implements UserService {
             create(user,false);
             adminId = user.getId();
             Validate.isTrue(adminId != 0);
-            Role role = roleService.queryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
+            resourceService.grantPermission(adminId,OwnerTypeEnum.USER,0,RoleTypeEnum.OPT_MANAGE_PERMISSION);
         }
     }
 

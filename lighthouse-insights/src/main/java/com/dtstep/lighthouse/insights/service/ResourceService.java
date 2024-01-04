@@ -13,4 +13,8 @@ public interface ResourceService {
     void updateResourcePidCallback(Resource resource);
 
     void deleteResourceCallback(Resource resource);
+
+    int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer resourceId,RoleTypeEnum roleTypeEnum);
+
+    int releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer resourceId,RoleTypeEnum roleTypeEnum);
 }

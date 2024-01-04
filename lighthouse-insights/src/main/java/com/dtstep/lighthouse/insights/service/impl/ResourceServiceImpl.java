@@ -36,6 +36,9 @@ public class ResourceServiceImpl implements ResourceService {
     @Autowired
     private StatService statService;
 
+    @Autowired
+    private PermissionService permissionService;
+
     @Transactional
     @Override
     public RolePair addResourceCallback(Resource resource) {
@@ -185,5 +188,18 @@ public class ResourceServiceImpl implements ResourceService {
         }
         roleService.deleteById(manageRole.getId());
         roleService.deleteById(accessRole.getId());
+    }
+
+    @Override
+    public int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer resourceId, RoleTypeEnum roleTypeEnum) {
+        Role role = roleService.queryRole(roleTypeEnum,resourceId);
+        Validate.notNull(role);
+        return permissionService.grantPermission(ownerId,ownerTypeEnum,role.getId());
+    }
+
+    @Override
+    public int releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer resourceId, RoleTypeEnum roleTypeEnum) {
+        Role role = roleService.queryRole(roleTypeEnum,resourceId);
+        return permissionService.releasePermission(ownerId,ownerTypeEnum,role.getId());
     }
 }

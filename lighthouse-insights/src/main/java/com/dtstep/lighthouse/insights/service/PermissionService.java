@@ -12,7 +12,7 @@ public interface PermissionService {
 
     void batchCreate(List<Permission> permissionList);
 
-    boolean hasPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
+    boolean checkUserPermission(Integer userId, Integer roleId);
 
     boolean existPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 

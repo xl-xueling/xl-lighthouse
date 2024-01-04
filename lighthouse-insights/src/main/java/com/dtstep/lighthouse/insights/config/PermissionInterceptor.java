@@ -63,7 +63,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
             }else{
                 return false;
             }
-            return permissionService.hasPermission(userId, OwnerTypeEnum.USER,role.getId());
+            return permissionService.checkUserPermission(userId,role.getId());
         }
         return false;
     }

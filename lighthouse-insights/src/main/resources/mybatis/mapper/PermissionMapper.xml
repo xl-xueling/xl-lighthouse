@@ -72,7 +72,7 @@
             FROM ldp_role t
                      INNER JOIN cte ON t.id = cte.pid
         )
-        SELECT id
+        SELECT COUNT(1) > 0
         FROM cte
                  INNER JOIN (
             SELECT role_id
