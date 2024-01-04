@@ -14,7 +14,7 @@ public interface PermissionDao {
 
     void batchInsert(List<Permission> list);
 
-    boolean hasPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
+    boolean checkUserPermission(Integer userId, Integer roleId);
 
     boolean existPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 

@@ -62,10 +62,38 @@
         WHERE owner_id = #{ownerId} and owner_type = #{ownerType.ownerType} and role_id = #{roleId}
     </select>
 
-    <select id="hasPermission" resultType="boolean">
-        SELECT COUNT(1) > 0
-        FROM ldp_permission
-        WHERE owner_id = #{ownerId} and owner_type = #{ownerType.ownerType} and role_id = #{roleId}
+    <select id="checkUserPermission" resultType="boolean">
+        WITH RECURSIVE cte AS (
+            SELECT id, pid
+            FROM ldp_role
+            WHERE id = #{roleId}
+            UNION ALL
+            SELECT t.id, t.pid
+            FROM ldp_role t
+                     INNER JOIN cte ON t.id = cte.pid
+        )
+        SELECT id
+        FROM cte
+                 INNER JOIN (
+            SELECT role_id
+            FROM (
+                     SELECT role_id
+                     FROM ldp_permission
+                     WHERE owner_id = #{userId}
+                       AND owner_type = '1'
+                     UNION ALL
+                     SELECT role_id
+                     FROM ldp_permission
+                     WHERE owner_id IN (
+                         SELECT department_id
+                         FROM ldp_user
+                         WHERE id = #{userId}
+                     )
+                       AND owner_type = '2'
+                 ) temp
+            GROUP BY role_id
+        ) d
+                            ON cte.id = d.role_id
     </select>
 
 </mapper>
