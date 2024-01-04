@@ -19,7 +19,7 @@ export const getDataWithLocalCache = async <T>(key: string, seconds: number, cal
     if(!result){
         result = await callback();
         const cachedData = {
-            result,
+            data:result,
             timestamp: Date.now()
         };
         storage.setItem(key, JSON.stringify(cachedData));
