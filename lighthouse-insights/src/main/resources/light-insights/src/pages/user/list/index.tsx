@@ -1,6 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {Breadcrumb, Card, Message, PaginationProps, Table, Typography,} from '@arco-design/web-react';
-import PermissionWrapper from '@/components/PermissionWrapper';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import {getColumns} from './constants';
@@ -10,6 +9,8 @@ import {useSelector} from "react-redux";
 import {ResultData} from "@/types/insights-common";
 import SearchForm from "@/pages/user/list/form";
 import {IconHome} from "@arco-design/web-react/icon";
+import { useHistory } from 'react-router-dom';
+import {handleWarningCode} from "@/pages/common/prompt";
 
 const { Title } = Typography;
 
@@ -97,6 +98,8 @@ export default function UserList() {
     }
   },[allDepartInfo])
 
+  const history = useHistory();
+
   useEffect(() => {
     if(!initReady){
       return;
@@ -117,14 +120,14 @@ export default function UserList() {
             if (code === '0') {
               result = data.list;
             }else{
-              Message.error(message || t['system.error']);
+              handleWarningCode(code,message || t['system.error'],history);
             }
             const {current, pageSize} = pagination;
             setPagination({
               ...pagination,
               current,
               pageSize,
-              total: data.total,
+              total: 2,
             })
             resolve(result);
           }).catch(error => {

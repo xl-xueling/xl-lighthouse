@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.exception.PermissionException;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.ResultData;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,6 +21,12 @@ public class DefaultExceptionHandler {
         return ResultData.failed(ResultCode.paramValidateFailed);
     }
 
+    @ExceptionHandler(value = PermissionException.class)
+    @ResponseBody
+    public Object globalPermissionExceptionHandler(HttpServletRequest request, PermissionException e)
+    {
+        return ResultData.failed(ResultCode.accessDenied);
+    }
 
     @ExceptionHandler(value = UnexpectedTypeException.class)
     @ResponseBody
@@ -27,4 +34,6 @@ public class DefaultExceptionHandler {
     {
         return ResultData.failed(ResultCode.paramValidateFailed);
     }
+
+
 }
