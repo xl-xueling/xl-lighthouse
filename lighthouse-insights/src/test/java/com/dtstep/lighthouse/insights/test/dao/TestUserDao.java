@@ -67,15 +67,9 @@ public class TestUserDao {
     @Test
     public void testQueryList() throws Exception {
         UserQueryParam userQueryParam = new UserQueryParam();
-//        List<Integer> statesList = new ArrayList<>();
-//        statesList.add(0);
-//        statesList.add(1);
-//        statesList.add(2);
-//        userQueryParam.setStates(statesList);
-        List<Integer> departmentIdList = new ArrayList<>();
+        List<Integer> departmentIdList = List.of(10180,10182);
         userQueryParam.setDepartmentIds(departmentIdList);
         PageHelper.startPage(1,10);
-        userQueryParam.setSearch("11019");
         List<User> users = userDao.queryList(userQueryParam);
         PageInfo<User> pageInfo = new PageInfo<>(users);
         System.out.println("pageInfo:" + pageInfo.getTotal());
