@@ -21,7 +21,6 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
   const { lang } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
-  const [treeData, setTreeData] = useState([]);
   const treeRef = useRef(null);
   const formRef = useRef(null);
   const t = useLocale(locale);
@@ -46,13 +45,6 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
   const colSpan = 12;
 
   useEffect(() => {
-    const proc = async () => {
-      if(allDepartInfo){
-        const data: ArcoTreeNode[] = translate(allDepartInfo);
-        setTreeData(data);
-      }
-    }
-    proc().then();
     document.addEventListener('keydown', handleKeyPress);
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
@@ -105,14 +97,14 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
                   placeholder={"Please Select"}
                   multiple={true}
                   allowClear={true}
-                  treeData={treeData}
+                  treeData={translate(allDepartInfo)}
               />
             </Form.Item>
           </Col>
         </Row>
       </Form>
       <div className={styles['right-button']}>
-        <Button type="primary" icon={<IconSearch />} htmlType="submit">
+        <Button type="primary" icon={<IconSearch />} htmlType="submit" onClick={handleSubmit}>
           {t['userList.form.search']}
         </Button>
         <Button icon={<IconRefresh />} onClick={handleReset}>

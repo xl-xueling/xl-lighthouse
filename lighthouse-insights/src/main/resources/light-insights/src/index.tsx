@@ -57,7 +57,6 @@ function Index() {
 
   async function fetchBasicInfo() {
     const allDepartInfo = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
-    console.log("allDepartInfo is:" + JSON.stringify(allDepartInfo));
     store.dispatch({
       type: 'update-allDepartInfo',
       payload: {allDepartInfo: allDepartInfo,departLoading:false},
