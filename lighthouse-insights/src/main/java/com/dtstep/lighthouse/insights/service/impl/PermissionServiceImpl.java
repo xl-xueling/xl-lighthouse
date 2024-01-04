@@ -59,8 +59,8 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public boolean hasPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId) {
-        return permissionDao.hasPermission(ownerId,ownerType,roleId);
+    public boolean checkUserPermission(Integer userId, Integer roleId) {
+        return permissionDao.checkUserPermission(userId,roleId);
     }
 
     @Override
