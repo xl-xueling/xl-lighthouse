@@ -64,11 +64,6 @@ public class UserServiceImpl implements UserService {
             adminId = user.getId();
             Validate.isTrue(adminId != 0);
             Role role = roleService.queryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
-            Permission permission = new Permission();
-            permission.setOwnerId(adminId);
-            permission.setOwnerType(OwnerTypeEnum.USER);
-            permission.setRoleId(role.getId());
-            permissionService.create(permission);
         }
     }
 

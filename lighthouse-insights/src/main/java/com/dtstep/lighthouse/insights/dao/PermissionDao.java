@@ -16,5 +16,9 @@ public interface PermissionDao {
 
     boolean hasPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 
+    boolean existPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
+
+    int delete(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
+
     List<Permission> queryList(PermissionQueryParam queryParam,Integer pageNum,Integer pageSize);
 }

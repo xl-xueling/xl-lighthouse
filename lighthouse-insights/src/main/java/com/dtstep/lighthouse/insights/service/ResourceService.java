@@ -1,6 +1,8 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.insights.dto.RolePair;
+import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Resource;
 import org.javatuples.Pair;
 

@@ -62,12 +62,6 @@ public class ProjectServiceImpl implements ProjectService {
         RolePair rolePair = resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Project,projectId,departmentId));
         Integer manageRoleId = rolePair.getManageRoleId();
         Integer accessRoleId = rolePair.getAccessRoleId();
-        Permission permission = new Permission();
-        permission.setRoleId(manageRoleId);
-        permission.setOwnerType(OwnerTypeEnum.USER);
-        Integer currentUserId = baseService.getCurrentUserId();
-        permission.setOwnerId(currentUserId);
-        permissionService.create(permission);
         List<Integer> departmentIdList = project.getDepartmentsPermission();
         List<Integer> userIdList = project.getUsersPermission();
         List<Permission> permissionList = new ArrayList<>();

@@ -50,6 +50,18 @@
         limit ${offset},#{pageSize}
     </select>
 
+    <select id="existPermission" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM ldp_permission
+        WHERE hash = #{hash}
+    </select>
+
+    <select id="delete" resultType="Integer">
+        delete
+        FROM ldp_permission
+        WHERE owner_id = #{ownerId} and owner_type = #{ownerType.ownerType} and role_id = #{roleId}
+    </select>
+
     <select id="hasPermission" resultType="boolean">
         SELECT COUNT(1) > 0
         FROM ldp_permission
