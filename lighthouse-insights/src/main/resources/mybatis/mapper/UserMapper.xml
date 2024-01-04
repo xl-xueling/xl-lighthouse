@@ -57,11 +57,10 @@
         FROM ldp_department d
         <where>
             <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
-                AND d.id IN (
+                AND d.id IN
                 <foreach item="item" index="index" collection="queryParam.departmentIds" open="(" separator="," close=")">
                     #{item}
                 </foreach>
-                )
             </if>
         </where>
         UNION ALL
