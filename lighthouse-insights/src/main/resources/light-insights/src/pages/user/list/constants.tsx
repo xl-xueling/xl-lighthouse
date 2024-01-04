@@ -72,7 +72,7 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
                 </Button>
               </Popconfirm>
               {
-                record.username != 'admin'? null:
+                record.username == 'admin'? null:
                     <>
                     <Popconfirm
                         focusLock

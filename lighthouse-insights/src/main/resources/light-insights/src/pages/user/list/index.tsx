@@ -9,8 +9,6 @@ import {useSelector} from "react-redux";
 import {ResultData, UserStateEnum} from "@/types/insights-common";
 import SearchForm from "@/pages/user/list/form";
 import {IconHome} from "@arco-design/web-react/icon";
-import { useHistory } from 'react-router-dom';
-import {handleWarningCode} from "@/pages/common/prompt";
 import ErrorPage from "@/pages/common/error";
 import {GlobalErrorCodes} from "@/utils/constants";
 
@@ -20,7 +18,6 @@ export default function UserList() {
 
   const t = useLocale(locale);
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
-  const [initReady,setInitReady] = useState<boolean>(false);
   const [errorCode,setErrorCode] = useState<string>(null);
   const [userData, setUserData] = useState<Array<User>>([]);
 
@@ -45,9 +42,9 @@ export default function UserList() {
 
   const [loading, setLoading] = useState(true);
   const [formParams, setFormParams] = useState({});
-  const columns = useMemo(() => getColumns(t,tableCallback), [t]);
+  const columns = useMemo(() => getColumns(t,tableCallback), [t,userData]);
 
-  const resetPasswd = async (userId: string) => {
+  const resetPasswd = async (userId: number) => {
     await requestResetPasswd({id:userId}).then((response) => {
       const {code, data ,message} = response;
       if(code == '0'){
@@ -62,12 +59,13 @@ export default function UserList() {
     })
   };
 
-
-  const frozenUser = async (userId: string) => {
+  const frozenUser = async (userId: number) => {
     await requestChangeState({"id":userId,"state":UserStateEnum.USER_FREEZE}).then((response) => {
       const {code, data ,message} = response;
       if(code == '0'){
         Notification.info({style: { width: 420 }, title: 'Notification', content: t['userList.columns.frozen.success']});
+        const updatedUsers = userData.map((user) => user.id == userId ? { ...user, state: UserStateEnum.USER_FREEZE } : user);
+        setUserData(updatedUsers);
       }else if(GlobalErrorCodes.includes(code)){
         setErrorCode(code);
       }else{
@@ -97,19 +95,7 @@ export default function UserList() {
     setPagination({ ...pagination, current: 1 });
   }
 
-
   useEffect(() => {
-    if(allDepartInfo && allDepartInfo.length > 0){
-      setInitReady(true);
-    }
-  },[allDepartInfo])
-
-  const history = useHistory();
-
-  useEffect(() => {
-    if(!initReady){
-      return;
-    }
     const promiseOfFetchUserData:Promise<Array<User>> = new Promise((resolve,reject) => {
       setLoading(true);
       const proc = async () => {
@@ -154,7 +140,7 @@ export default function UserList() {
     promiseAll.then(([result]) => {
       setUserData(result);
     })
-  }, [initReady,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+  }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
 
   function onChangeTable({ current, pageSize }) {
