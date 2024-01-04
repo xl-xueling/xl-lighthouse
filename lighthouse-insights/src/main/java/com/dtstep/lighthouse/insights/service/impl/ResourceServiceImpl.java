@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.exception.RoleDefendException;
 import com.dtstep.lighthouse.insights.dto.RolePair;
+import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Resource;
