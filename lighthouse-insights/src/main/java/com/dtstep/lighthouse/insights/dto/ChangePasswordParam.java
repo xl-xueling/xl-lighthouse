@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ChangePasswordParam implements Serializable {
 
     @NotNull
@@ -20,6 +19,20 @@ public class ChangePasswordParam implements Serializable {
     @NotEmpty
     @Size(min = 6,max = 50)
     private String password;
+
+    public ChangePasswordParam(){}
+
+    public ChangePasswordParam(Integer id,String originPassword,String password){
+        this.id = id;
+        this.originPassword = originPassword;
+        this.password = password;
+    }
+
+    public ChangePasswordParam(Integer id,String password){
+        this.id = id;
+        this.originPassword = originPassword;
+        this.password = password;
+    }
 
     public Integer getId() {
         return id;

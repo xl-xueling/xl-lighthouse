@@ -125,7 +125,7 @@ public class OrderServiceImpl implements OrderService {
         }
         Integer currentNode = order.getCurrentNode();
         if(permissionDao.checkUserPermission(currentUserId,currentNode)){
-            orderDto.addPermission(PermissionInfo.PermissionEnum.approveable);
+            orderDto.addPermission(PermissionInfo.PermissionEnum.editable);
         }
         User user = userService.cacheQueryById(applyUserId);
         orderDto.setUser(user);
@@ -160,7 +160,7 @@ public class OrderServiceImpl implements OrderService {
         }
         Integer currentNode = order.getCurrentNode();
         if(permissionDao.checkUserPermission(currentUserId,currentNode)){
-            extendOrderDto.addPermission(PermissionInfo.PermissionEnum.approveable);
+            extendOrderDto.addPermission(PermissionInfo.PermissionEnum.editable);
         }
         extendOrderDto.setAdminsMap(adminsMap);
         User user = userService.cacheQueryById(applyUserId);
