@@ -16,7 +16,7 @@ public class PermissionInfo {
     }
 
     public void addPermission(PermissionEnum permissionEnum){
-        if(!this.permissions.contains(permissionEnum)){
+        if(permissionEnum != null && !this.permissions.contains(permissionEnum)){
             this.permissions.add(permissionEnum);
         }
     }
@@ -24,9 +24,8 @@ public class PermissionInfo {
     public static enum PermissionEnum {
         readable,
         editable,
-        approveable,
-        retractable,
-
+        systemManageAble,
+        optManageable,
         ;
     }
 }

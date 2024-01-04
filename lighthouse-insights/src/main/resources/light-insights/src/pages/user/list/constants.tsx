@@ -56,48 +56,54 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
       title: t['userList.columns.operations'],
       dataIndex: 'operations',
       headerCellStyle: { paddingLeft: '15px',width:'280px' },
-      render: (_, record) => (
-          <Space size={16} direction="horizontal">
-            <Popconfirm
-                focusLock
-                title='Confirm'
-                content= {t['userList.form.resetpasswd.confirm']}
-                onOk={() => callback(record, 'resetPasswd')}
-            >
-              <Button
-                  type="secondary"
-                  size="mini">
-                {t['userList.columns.operations.resetpasswd']}
-              </Button>
-            </Popconfirm>
+      render: (_, record) => {
+          if(record.permissions.includes('editable')){
+            return <Space size={16} direction="horizontal">
+              <Popconfirm
+                  focusLock
+                  title='Confirm'
+                  content= {t['userList.form.resetpasswd.confirm']}
+                  onOk={() => callback(record, 'resetPasswd')}
+              >
+                <Button
+                    type="secondary"
+                    size="mini">
+                  {t['userList.columns.operations.resetpasswd']}
+                </Button>
+              </Popconfirm>
+              {
+                record.username == 'admin'? null:
+                    <>
+                    <Popconfirm
+                        focusLock
+                        title='Confirm'
+                        content={t['userList.form.frozen.confirm']}
+                        onOk={() => callback(record, 'frozen')}
+                    >
+                      <Button
+                          type="secondary"
+                          size="mini">
+                        {t['userList.columns.operations.frozen']}
+                      </Button>
+                    </Popconfirm>
 
-            <Popconfirm
-                focusLock
-                title='Confirm'
-                content={t['userList.form.frozen.confirm']}
-                onOk={() => callback(record, 'frozen')}
-            >
-              <Button
-                  type="secondary"
-                  size="mini">
-                  {t['userList.columns.operations.frozen']}
-              </Button>
-            </Popconfirm>
-
-            <Popconfirm
+                <Popconfirm
                 focusLock
                 title='Confirm'
                 content={t['userList.form.delete.confirm']}
                 onOk={() => callback(record, 'delete')}
-            >
-              <Button
-                  type="secondary"
-                  size="mini">
-                  {t['userList.columns.operations.delete']}
-              </Button>
-            </Popconfirm>
-          </Space>
-      ),
+                >
+                <Button
+                type="secondary"
+                size="mini">
+              {t['userList.columns.operations.delete']}
+                </Button>
+                </Popconfirm>
+                    </>
+              }
+            </Space>
+          }
+      },
     },
   ]
 }

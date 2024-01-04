@@ -8,6 +8,7 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
+import com.dtstep.lighthouse.insights.dto.PermissionInfo;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
@@ -17,6 +18,7 @@ import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -141,6 +143,15 @@ public class UserServiceImpl implements UserService {
         ListData<User> listData = null;
         try{
             List<User> userList = userDao.queryList(queryParam);
+            if(CollectionUtils.isNotEmpty(userList)){
+                int userId = baseService.getCurrentUserId();
+                Role role = roleService.queryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
+                boolean hasRole = permissionService.checkUserPermission(userId,role.getId());
+                PermissionInfo.PermissionEnum permissionEnum = hasRole? PermissionInfo.PermissionEnum.editable:null;
+                for(User user : userList){
+                    user.addPermission(permissionEnum);
+                }
+            }
             listData = baseService.translateToListData(userList);
         }finally {
             PageHelper.clearPage();

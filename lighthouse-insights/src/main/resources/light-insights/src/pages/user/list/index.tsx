@@ -48,17 +48,18 @@ export default function UserList() {
   const columns = useMemo(() => getColumns(t,tableCallback), [t]);
 
   const resetPasswd = async (userId: string) => {
-    try{
-      const result = await requestResetPasswd(userId);
-      if(result.code == '0'){
-          Message.success(t['userList.columns.resetPasswd.success']);
+    await requestResetPasswd({id:userId}).then((response) => {
+      const {code, data ,message} = response;
+      if(code == '0'){
+        Notification.info({style: { width: 420 }, title: 'Notification', content: t['userList.columns.resetPasswd.success']});
+      }else if(GlobalErrorCodes.includes(code)){
+        setErrorCode(code);
       }else{
-          Message.error(result.message || t['system.error']);
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
       }
-    }catch (error){
+    }).catch((error)=>{
       console.log(error);
-      Message.error(t['system.error']);
-    }
+    })
   };
 
   const frozenUser = async (userId: string) => {
@@ -122,19 +123,19 @@ export default function UserList() {
             const {code, data ,message} = response;
             if (code === '0') {
               result = data.list;
+              const {current, pageSize} = pagination;
+              setPagination({
+                ...pagination,
+                current,
+                pageSize,
+                total: data.total,
+              })
+              resolve(result);
             }else if(GlobalErrorCodes.includes(code)){
               setErrorCode(code);
             }else{
               Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
-            const {current, pageSize} = pagination;
-            setPagination({
-              ...pagination,
-              current,
-              pageSize,
-              total: 2,
-            })
-            resolve(result);
           }).catch(error => {
             console.log(error);
           }).finally(() => {

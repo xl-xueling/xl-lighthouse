@@ -1,12 +1,13 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
+import com.dtstep.lighthouse.insights.dto.PermissionInfo;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class User implements Serializable {
+public class User extends PermissionInfo implements Serializable {
 
     private Integer id;
 

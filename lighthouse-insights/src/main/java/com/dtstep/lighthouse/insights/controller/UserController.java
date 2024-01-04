@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
@@ -14,6 +15,7 @@ import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.UserService;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -89,6 +91,21 @@ public class UserController {
             return ResultData.failed(ResultCode.systemError);
         }
     }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
+    @RequestMapping("/user/resetPasswd")
+    public ResultData<Integer> resetPasswd(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        User dbUser = userService.queryById(id);
+        Validate.notNull(dbUser);
+        int result = userService.changePassword(new ChangePasswordParam(id, Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD)));
+        if(id > 0){
+            return ResultData.success(id);
+        }else{
+            return ResultData.failed(ResultCode.systemError);
+        }
+    }
+
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @PostMapping("/user/list")
