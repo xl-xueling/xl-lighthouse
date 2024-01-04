@@ -53,7 +53,7 @@
     <select id="existPermission" resultType="boolean">
         SELECT COUNT(1) > 0
         FROM ldp_permission
-        WHERE hash = #{hash}
+        WHERE owner_id = #{ownerId} and owner_type = #{ownerType.ownerType} and role_id = #{roleId}
     </select>
 
     <select id="delete" resultType="Integer">
