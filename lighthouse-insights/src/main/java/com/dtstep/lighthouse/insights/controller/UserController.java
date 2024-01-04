@@ -6,9 +6,11 @@ import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.config.SeedAuthenticationToken;
 import com.dtstep.lighthouse.insights.dto.*;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.UserService;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -88,6 +90,7 @@ public class UserController {
         }
     }
 
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @PostMapping("/user/list")
     public ResultData<ListData<User>> list(
             @Validated @RequestBody ListSearchObject<UserQueryParam> searchObject) {
