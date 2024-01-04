@@ -20,7 +20,7 @@ import {getDataWithLocalCache} from "@/utils/localCache";
 import {Department, MetricSet} from "@/types/insights-web";
 import {requestQueryAll as queryDepartmentAll} from "@/api/department";
 import {requestPinList} from "@/api/metricset";
-import {getDepartment} from "@/pages/department/common";
+import {fetchAllDepartmentData, getDepartment} from "@/pages/department/common";
 import {checkLogin} from "@/utils/checkLogin";
 
 const store = createStore(rootReducer);
@@ -45,25 +45,6 @@ function Index() {
     payload: todo,
   });
 
-
-  async function fetchAllDepartmentData(): Promise<Array<Department>> {
-    let result = null;
-    try {
-      await queryDepartmentAll().then((response) => {
-        const {code,message,data} = response;
-        if (code === '0') {
-          result = data;
-        }else{
-          Message.error(message)
-        }
-      });
-    } catch (error) {
-      console.error(error);
-      Message.error("System Error,fetch department data failed!")
-    }
-    return result;
-  }
-
   async function fetchPinMetricsData():Promise<Array<MetricSet>> {
     return new Promise<Array<MetricSet>>((resolve,reject) => {
       requestPinList().then((response) => {
@@ -76,6 +57,7 @@ function Index() {
 
   async function fetchBasicInfo() {
     const allDepartInfo = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
+    console.log("allDepartInfo is:" + JSON.stringify(allDepartInfo));
     store.dispatch({
       type: 'update-allDepartInfo',
       payload: {allDepartInfo: allDepartInfo,departLoading:false},

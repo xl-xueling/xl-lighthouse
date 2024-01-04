@@ -11,13 +11,14 @@ import locale from './locale';
 import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import styles from './style/index.module.less';
-import {getDataWithLocalCache} from "@/utils/localCache";
-import {fetchAllDepartmentData, translate} from "@/pages/department/common";
-import {ArcoTreeNode} from "@/types/insights-web";
-
+import {translate} from "@/pages/department/common";
+import {ArcoTreeNode, Department} from "@/types/insights-web";
+import {useSelector} from "react-redux";
 const { Row, Col } = Grid;
 
 function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
+
+  const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
   const { lang } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [treeData, setTreeData] = useState([]);
@@ -46,7 +47,6 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
 
   useEffect(() => {
     const proc = async () => {
-      const allDepartInfo = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
       if(allDepartInfo){
         const data: ArcoTreeNode[] = translate(allDepartInfo);
         setTreeData(data);
