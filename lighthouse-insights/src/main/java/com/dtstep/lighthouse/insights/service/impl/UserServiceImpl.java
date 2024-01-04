@@ -7,10 +7,7 @@ import com.dtstep.lighthouse.commonv2.enums.AuthRoleTypeEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.UserDao;
-import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
-import com.dtstep.lighthouse.insights.dto.PermissionInfo;
-import com.dtstep.lighthouse.insights.dto.UserQueryParam;
-import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
@@ -157,6 +154,11 @@ public class UserServiceImpl implements UserService {
             PageHelper.clearPage();
         }
         return listData;
+    }
+
+    @Override
+    public int changeState(ChangeUserStateParam updateParam) {
+        return userDao.changeState(updateParam.getId(),updateParam.getState());
     }
 
     @Override

@@ -6,7 +6,7 @@ import {getColumns} from './constants';
 import {requestChangeState, requestDeleteById, requestList, requestResetPasswd} from "@/api/user";
 import {Department, User} from "@/types/insights-web";
 import {useSelector} from "react-redux";
-import {ResultData} from "@/types/insights-common";
+import {ResultData, UserStateEnum} from "@/types/insights-common";
 import SearchForm from "@/pages/user/list/form";
 import {IconHome} from "@arco-design/web-react/icon";
 import { useHistory } from 'react-router-dom';
@@ -62,18 +62,20 @@ export default function UserList() {
     })
   };
 
+
   const frozenUser = async (userId: string) => {
-    try{
-      const result = await requestChangeState({"id":userId,"state":3});
-      if(result.code == '0'){
-        Message.success(t['userList.columns.frozen.success']);
+    await requestChangeState({"id":userId,"state":UserStateEnum.USER_FREEZE}).then((response) => {
+      const {code, data ,message} = response;
+      if(code == '0'){
+        Notification.info({style: { width: 420 }, title: 'Notification', content: t['userList.columns.frozen.success']});
+      }else if(GlobalErrorCodes.includes(code)){
+        setErrorCode(code);
       }else{
-        Message.error(result.message || t['system.error']);
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
       }
-    }catch (error){
+    }).catch((error) => {
       console.log(error);
-      Message.error(t['system.error']);
-    }
+    })
   };
 
   const deleteUser = async (userId: number) => {

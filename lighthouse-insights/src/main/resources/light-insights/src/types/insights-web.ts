@@ -4,7 +4,7 @@ import {
     DatePickerConfigParam,
     FilterConfigParam, OrderStateEnum,
     OrderTypeEnum, PermissionEnum,
-    RenderTypeEnum, RoleTypeEnum
+    RenderTypeEnum, RoleTypeEnum, UserStateEnum
 } from "@/types/insights-common";
 
 
@@ -49,7 +49,7 @@ export interface User {
     email?: string;
     phone?: string;
     departmentId?: number;
-    state?:number;
+    state?:UserStateEnum;
     createTime?:number;
     avatar?:string;
     permissions?: Record<string, string[]>;
