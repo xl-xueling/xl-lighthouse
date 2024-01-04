@@ -16,7 +16,7 @@ public interface PermissionService {
 
     boolean existPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 
-    void grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId);
+    int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId);
 
-    void releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId);
+    int releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId);
 }

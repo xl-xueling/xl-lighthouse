@@ -70,12 +70,12 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Transactional
     @Override
-    public void grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId) {
+    public int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId) {
         Validate.notNull(ownerId);
         Validate.notNull(ownerTypeEnum);
         Validate.notNull(roleId);
         if(existPermission(ownerId,ownerTypeEnum,roleId)){
-            return;
+            return 0;
         }
         if(ownerTypeEnum == OwnerTypeEnum.USER){
             User user = userService.queryById(ownerId);
@@ -92,14 +92,14 @@ public class PermissionServiceImpl implements PermissionService {
         LocalDateTime localDateTime = LocalDateTime.now();
         permission.setCreateTime(localDateTime);
         permission.setUpdateTime(localDateTime);
-        permissionDao.insert(permission);
+        return permissionDao.insert(permission);
     }
 
     @Override
-    public void releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId) {
+    public int releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId) {
         Validate.notNull(ownerId);
         Validate.notNull(ownerTypeEnum);
         Validate.notNull(roleId);
-        permissionDao.delete(ownerId, ownerTypeEnum, roleId);
+        return permissionDao.delete(ownerId, ownerTypeEnum, roleId);
     }
 }
