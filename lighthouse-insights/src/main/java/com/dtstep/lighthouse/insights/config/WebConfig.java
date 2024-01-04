@@ -17,17 +17,28 @@ package com.dtstep.lighthouse.insights.config;
  * limitations under the License.
  */
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Configuration
 @EnableWebMvc
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
     private PermissionInterceptor permissionInterceptor;
@@ -36,6 +47,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(permissionInterceptor);
     }
+
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -51,7 +63,24 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {}
 
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
+        SimpleModule simpleModule = new SimpleModule();
+        simpleModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerdeConfig.LocalDateTimeToEpochSerializer());
+        simpleModule.addSerializer(LocalDate.class, new LocalDateTimeSerdeConfig.LocalDateToEpochSerializer());
+        simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeSerdeConfig.LocalDateTimeFromEpochDeserializer());
+        simpleModule.addDeserializer(LocalDate.class, new LocalDateTimeSerdeConfig.LocalDateFromEpochDeserializer());
+        simpleModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerdeConfig.LocalDateTimeToEpochSerializer());
+        simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeSerdeConfig.LocalDateTimeFromEpochDeserializer());
+        objectMapper.registerModule(simpleModule);
+        converters.add(new MappingJackson2HttpMessageConverter(objectMapper));
     }
+
 }
