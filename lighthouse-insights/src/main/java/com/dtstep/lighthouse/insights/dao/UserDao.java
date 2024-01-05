@@ -18,7 +18,7 @@ public interface UserDao {
 
     int insert(User user);
     
-    User queryById(int id);
+    User queryBasicInfoById(int id);
 
     int deleteById(int id);
 

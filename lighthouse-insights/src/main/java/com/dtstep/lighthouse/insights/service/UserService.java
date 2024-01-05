@@ -25,7 +25,7 @@ public interface UserService {
 
     boolean isUserNameExist(String username);
 
-    User queryById(int id);
+    User queryBasicInfoById(int id);
 
     User cacheQueryById(int id);
 

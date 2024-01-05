@@ -38,6 +38,8 @@ public enum ResultCode {
 
     userDelErrorExistMetricPermission("2008","userDelErrorExistMetricPermission"),
 
+    userChangePasswordWrong("2009","userChangePasswordWrong"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

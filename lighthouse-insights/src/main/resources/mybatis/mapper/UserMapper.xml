@@ -35,7 +35,7 @@
         )
     </insert>
 
-    <select id="queryById" resultMap="userResultMap">
+    <select id="queryBasicInfoById" resultMap="userResultMap">
         SELECT `id`,`username`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user WHERE id = #{id}
     </select>
 

@@ -51,13 +51,13 @@ public class TestUserDao {
 
     @Test
     public void testQueryById() throws Exception {
-        User user = userDao.queryById(110154);
+        User user = userDao.queryBasicInfoById(110154);
         System.out.println("user:" + JsonUtil.toJSONString(user));
     }
 
     @Test
     public void testQueryByUserName() throws Exception {
-        User user = userDao.queryById(110137);
+        User user = userDao.queryBasicInfoById(110137);
         System.out.println("user:" + JsonUtil.toJSONString(user));
     }
 
