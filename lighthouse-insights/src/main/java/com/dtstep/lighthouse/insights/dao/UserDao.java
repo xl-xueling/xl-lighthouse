@@ -32,11 +32,6 @@ public interface UserDao {
 
     Integer count(@Param("queryParam")UserQueryParam queryParam);
 
-    int update(UserUpdateParam user);
+    int update(User user);
 
-    int changePassword(ChangePasswordParam updateParam);
-
-    int changePasswd(Integer id,String password);
-
-    int changeState(Integer id, UserStateEnum userStateEnum);
 }

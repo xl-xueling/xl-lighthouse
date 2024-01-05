@@ -73,7 +73,12 @@ public class UserController {
         if(currentUserId.intValue() != userId.intValue()){
             return ResultData.failed(ResultCode.systemError);
         }
-        int id = userService.update(updateParam);
+        User userInfo = new User();
+        userInfo.setId(userId);
+        userInfo.setEmail(updateParam.getEmail());
+        userInfo.setPhone(updateParam.getPhone());
+        userInfo.setDepartmentId(updateParam.getDepartmentId());
+        int id = userService.update(userInfo);
         if(id > 0){
             return ResultData.success(id);
         }else{
@@ -94,7 +99,10 @@ public class UserController {
         if(dbUser == null || !passwordEncoder.matches(originPassword,dbUser.getPassword())){
             return ResultData.failed(ResultCode.userChangePasswordWrong);
         }
-        int id = userService.changePassword(updateParam);
+        User userInfo = new User();
+        userInfo.setId(userId);
+        userInfo.setPassword(passwordEncoder.encode(updateParam.getPassword()));
+        int id = userService.update(userInfo);
         if(id > 0){
             return ResultData.success(id);
         }else{
@@ -111,7 +119,10 @@ public class UserController {
         Validate.notNull(userStateEnum);
         User dbUser = userService.queryBasicInfoById(id);
         Validate.notNull(dbUser);
-        int result = userService.changeState(changeParam);
+        User user = new User();
+        user.setState(userStateEnum);
+        user.setId(id);
+        int result = userService.update(user);
         if(id > 0){
             return ResultData.success(id);
         }else{
@@ -125,8 +136,11 @@ public class UserController {
         Integer id = idParam.getId();
         User dbUser = userService.queryBasicInfoById(id);
         Validate.notNull(dbUser);
-        int result = userService.changePassword(new ChangePasswordParam(id, Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD)));
-        if(id > 0){
+        User userInfo = new User();
+        userInfo.setId(id);
+        userInfo.setPassword(passwordEncoder.encode(Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD)));
+        int result = userService.update(userInfo);
+        if(result > 0){
             return ResultData.success(id);
         }else{
             return ResultData.failed(ResultCode.systemError);

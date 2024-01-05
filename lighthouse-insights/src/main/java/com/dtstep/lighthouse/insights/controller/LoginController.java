@@ -108,7 +108,7 @@ public class LoginController {
         if(dbUser.getState() != UserStateEnum.USR_NORMAL){
             return ResultData.failed(ResultCode.userStateUnAvailable);
         }
-        UserUpdateParam updateParam = new UserUpdateParam();
+        User updateParam = new User();
         updateParam.setId(dbUser.getId());
         updateParam.setLastTime(LocalDateTime.now());
         userService.update(updateParam);
