@@ -30,4 +30,6 @@ public interface UserService {
     int deleteById(int userId);
 
     ListData<User> queryList(UserQueryParam queryParam,Integer pageNum,Integer pageSize);
+
+    int count(UserQueryParam queryParam);
 }

@@ -5,9 +5,11 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
 import com.dtstep.lighthouse.insights.dto.DeleteParam;
+import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.service.DepartmentService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
+import com.dtstep.lighthouse.insights.service.UserService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +26,9 @@ public class DepartmentController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/department/all")
     public ResultData<List<CommonTreeNode>> all() {
@@ -64,6 +69,12 @@ public class DepartmentController {
         int childSize = departmentService.countChildByPid(deleteParam.getId());
         if(childSize > 0){
             return ResultData.failed(ResultCode.departDelErrorChildExist);
+        }
+        UserQueryParam userQueryParam = new UserQueryParam();
+        userQueryParam.setDepartmentIds(List.of(department.getId()));
+        int userSize = userService.count(userQueryParam);
+        if(userSize > 0){
+            return ResultData.failed(ResultCode.departDelErrorUserExist);
         }
         int projectSize = projectService.countByDepartmentId(deleteParam.getId());
         if(projectSize > 0){

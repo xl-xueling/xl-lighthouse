@@ -131,4 +131,41 @@
     <delete id="deleteById">
         delete from ldp_user where id = #{id}
     </delete>
+
+    <select id="count" resultType="Integer">
+        WITH RECURSIVE cte AS (
+        SELECT d.id
+        FROM ldp_department d
+        <where>
+            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
+                AND d.id IN
+                <foreach item="item" index="index" collection="queryParam.departmentIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        UNION ALL
+        SELECT d.id
+        FROM ldp_department d
+        JOIN cte ON cte.id = d.pid
+        )
+        SELECT count(1) FROM ldp_user
+        <where>
+            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
+                AND department_id IN(
+                select id from cte
+                )
+            </if>
+            <if test="queryParam.states!=null and queryParam.states.size > 0">
+                AND state IN
+                <foreach item="item" index="index" collection="queryParam.states" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="queryParam.states==null or queryParam.states.size == 0">
+                AND state IN ('1','2')
+            </if>
+
+        </where>
+    </select>
 </mapper>
