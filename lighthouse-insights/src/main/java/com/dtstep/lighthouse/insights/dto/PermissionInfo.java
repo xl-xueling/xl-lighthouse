@@ -22,10 +22,11 @@ public class PermissionInfo {
     }
 
     public static enum PermissionEnum {
-        readable,
-        editable,
-        systemManageAble,
-        optManageable,
+        ReadAble,
+        EditAble,
+        DeleteAble,
+        OperationManageAble,
+        SystemManageAble,
         ;
     }
 }

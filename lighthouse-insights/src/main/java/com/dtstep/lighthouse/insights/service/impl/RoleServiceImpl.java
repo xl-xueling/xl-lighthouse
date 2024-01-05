@@ -35,6 +35,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public Role queryById(Integer id) {
+        return roleDao.queryById(id);
+    }
+
+    @Override
     public boolean isRoleExist(RoleTypeEnum roleTypeEnum, Integer resourceId) {
         return roleDao.isRoleExist(roleTypeEnum,resourceId);
     }

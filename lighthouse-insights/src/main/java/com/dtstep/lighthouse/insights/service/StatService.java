@@ -11,5 +11,7 @@ public interface StatService {
 
     int create(Stat stat);
 
+    Stat queryById(Integer id);
+
     ListData<StatDto> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize);
 }

@@ -14,6 +14,8 @@ public interface PermissionService {
 
     boolean checkUserPermission(Integer userId, Integer roleId);
 
+    Permission getFirstUserManagePermission(Integer userId);
+
     boolean existPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 
     int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId);

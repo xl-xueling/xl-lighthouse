@@ -11,7 +11,9 @@ import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.config.SeedAuthenticationToken;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.modal.Permission;
 import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.insights.service.PermissionService;
 import com.dtstep.lighthouse.insights.service.UserService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class UserController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PermissionService permissionService;
 
     @RequestMapping("/user/register")
     public ResultData<Integer> register(@Validated @RequestBody User userParam) {
@@ -118,6 +123,26 @@ public class UserController {
         }else{
             return ResultData.failed(ResultCode.systemError);
         }
+    }
+
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.FULL_MANAGE_PERMISSION)
+    @RequestMapping("/user/delete")
+    public ResultData<Integer> delete(@Validated @RequestBody IDParam idParam) {
+//        Integer id = idParam.getId();
+//        User dbUser = userService.queryById(id);
+//        Validate.notNull(dbUser);
+//        int result = userService.changePassword(new ChangePasswordParam(id, Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD)));
+//        if(id > 0){
+//            return ResultData.success(id);
+//        }else{
+//            return ResultData.failed(ResultCode.systemError);
+//        }
+        Integer id = idParam.getId();
+        Permission permission = permissionService.getFirstUserManagePermission(id);
+        Integer roleId = permission.getRoleId();
+
+        return null;
     }
 
 
