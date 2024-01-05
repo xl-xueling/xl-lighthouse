@@ -111,7 +111,7 @@
         where owner_id = #{userId} and owner_type = '1' limit #{limit}
     </select>
 
-    <select id="queryUserPermissionsByRoleId" resultMap="Integer">
+    <select id="queryUserPermissionsByRoleId" resultType="Integer">
         select owner_id from ldp_permission where role_id = #{roleId} and owner_type = '1' limit #{limit}
     </select>
 
