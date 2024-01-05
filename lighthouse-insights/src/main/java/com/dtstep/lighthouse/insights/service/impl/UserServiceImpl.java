@@ -96,6 +96,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int update(UserUpdateParam user) {
+        user.setUpdateTime(LocalDateTime.now());
         return userDao.update(user);
     }
 

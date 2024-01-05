@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.dto.LoginParam;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.ResultData;
+import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
 import com.dtstep.lighthouse.insights.service.UserService;
@@ -22,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -106,6 +108,10 @@ public class LoginController {
         if(dbUser.getState() != UserStateEnum.USR_NORMAL){
             return ResultData.failed(ResultCode.userStateUnAvailable);
         }
+        UserUpdateParam updateParam = new UserUpdateParam();
+        updateParam.setId(dbUser.getId());
+        updateParam.setLastTime(LocalDateTime.now());
+        userService.update(updateParam);
         long now = System.currentTimeMillis();
         Map<String,Object> accessMap = new HashMap<>();
         accessMap.put("id",dbUser.getId());
