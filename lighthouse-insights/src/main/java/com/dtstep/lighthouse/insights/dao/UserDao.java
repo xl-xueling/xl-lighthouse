@@ -30,7 +30,7 @@ public interface UserDao {
 
     List<User> queryList(@Param("queryParam")UserQueryParam queryParam);
 
-    Integer count(@Param("queryParam")UserQueryParam queryParam);
+    int count(@Param("queryParam")UserQueryParam queryParam);
 
     int update(User user);
 

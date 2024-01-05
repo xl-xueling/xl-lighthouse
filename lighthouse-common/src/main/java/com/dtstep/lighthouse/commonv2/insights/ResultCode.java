@@ -28,6 +28,8 @@ public enum ResultCode {
 
     departCreateErrorLevelLimit("2003","departCreateErrorLevelLimit"),
 
+    departDelErrorUserExist("2001","departDelErrorUserExist"),
+
     userDelErrorExistDepartPermission("2004","userDelErrorExistDepartPermission"),
 
     userDelErrorExistProjectPermission("2005","userDelErrorExistProjectPermission"),

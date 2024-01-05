@@ -148,4 +148,9 @@ public class UserServiceImpl implements UserService {
         permissionService.deleteByUserId(id);
         return userDao.deleteById(id);
     }
+
+    @Override
+    public int count(UserQueryParam queryParam) {
+        return userDao.count(queryParam);
+    }
 }
