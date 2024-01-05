@@ -39,7 +39,7 @@ public enum UserStateEnum {
     /**
      * 冻结用户
      */
-    USER_FREEZE(2),
+    USER_FROZEN(2),
 
     /**
      * 已删除用户

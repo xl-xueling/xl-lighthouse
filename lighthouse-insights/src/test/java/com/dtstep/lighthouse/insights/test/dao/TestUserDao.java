@@ -10,7 +10,6 @@ import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -94,7 +91,7 @@ public class TestUserDao {
 
     @Test
     public void changeState() throws Exception {
-        int result = userDao.changeState(110137, UserStateEnum.USER_FREEZE);
+        int result = userDao.changeState(110137, UserStateEnum.USER_FROZEN);
         System.out.println("result:" + result);
     }
 

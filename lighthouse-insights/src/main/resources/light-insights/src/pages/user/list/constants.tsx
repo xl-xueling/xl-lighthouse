@@ -6,9 +6,11 @@ import IconVerticalVideo from './icons/vertical.svg';
 import dayjs from 'dayjs';
 import styles from './style/index.module.less';
 import DepartmentLabel from "@/pages/department/common/depart";
-import {formatTimeStamp} from "@/utils/util";
+import {formatTimeStamp, getRandomString} from "@/utils/util";
+import {UserStateEnum} from "@/types/insights-common";
 
 const { Text } = Typography;
+
 
 export function getColumns(t: any,callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
@@ -57,52 +59,66 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
       dataIndex: 'operations',
       headerCellStyle: { paddingLeft: '15px',width:'280px' },
       render: (_, record) => {
-          if(record.permissions.includes('editable')){
-            return <Space size={16} direction="horizontal">
-              <Popconfirm
-                  focusLock
-                  title='Confirm'
-                  content= {t['userList.form.resetpasswd.confirm']}
-                  onOk={() => callback(record, 'resetPasswd')}
-              >
-                <Button
-                    type="secondary"
-                    size="mini">
-                  {t['userList.columns.operations.resetpasswd']}
-                </Button>
-              </Popconfirm>
-              {
-                record.username == 'admin'? null:
-                    <>
-                    <Popconfirm
-                        focusLock
-                        title='Confirm'
-                        content={t['userList.form.frozen.confirm']}
-                        onOk={() => callback(record, 'frozen')}
-                    >
-                      <Button
-                          type="secondary"
-                          size="mini">
-                        {t['userList.columns.operations.frozen']}
-                      </Button>
-                    </Popconfirm>
+        if(!record.permissions.includes('editable')){
+          return ;
+        }
+        const resetPasswdButton = <Popconfirm key={getRandomString()}
+              focusLock
+              title='Confirm'
+              content= {t['userList.form.resetpasswd.confirm']}
+              onOk={() => callback(record, 'resetPasswd')}
+          >
+            <Button
+                type="secondary"
+                size="mini">
+              {t['userList.columns.operations.resetpasswd']}
+            </Button>
+          </Popconfirm>
 
-                <Popconfirm
-                focusLock
-                title='Confirm'
-                content={t['userList.form.delete.confirm']}
-                onOk={() => callback(record, 'delete')}
-                >
-                <Button
+        let changeStateButton;
+        if(record.username != 'admin' && record.state == UserStateEnum.USER_FROZEN){
+          changeStateButton = <Popconfirm  key={getRandomString()}
+              focusLock
+              title='Confirm'
+              content= {t['userList.form.activation.confirm']}
+              onOk={() => callback(record, 'activation')}
+          >
+            <Button
+                type="secondary"
+                size="mini">
+              {t['userList.columns.operations.activation']}
+            </Button>
+          </Popconfirm>
+        }else if(record.username != 'admin' && record.state == UserStateEnum.USR_NORMAL){
+          changeStateButton = <Popconfirm key={getRandomString()}
+              focusLock
+              title='Confirm'
+              content={t['userList.form.frozen.confirm']}
+              onOk={() => callback(record, 'frozen')}
+          >
+            <Button
+                type="secondary"
+                size="mini">
+              {t['userList.columns.operations.frozen']}
+            </Button>
+          </Popconfirm>
+        }
+        let deleteButton;
+        if(record.username != 'admin'){
+          deleteButton = <Popconfirm key={getRandomString()}
+              focusLock
+              title='Confirm'
+              content={t['userList.form.delete.confirm']}
+              onOk={() => callback(record, 'delete')}
+          >
+            <Button
                 type="secondary"
                 size="mini">
               {t['userList.columns.operations.delete']}
-                </Button>
-                </Popconfirm>
-                    </>
-              }
-            </Space>
-          }
+            </Button>
+          </Popconfirm>
+        }
+        return <Space size={16} direction="horizontal">{[resetPasswdButton,changeStateButton,deleteButton]}</Space>
       },
     },
   ]

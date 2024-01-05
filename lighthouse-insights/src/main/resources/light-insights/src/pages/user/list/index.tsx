@@ -27,7 +27,9 @@ export default function UserList() {
     }else if(type == 'delete'){
       await deleteUser(record.id);
     }else if(type == 'frozen'){
-      await frozenUser(record.id);
+      await changeState(record.id,UserStateEnum.USER_FROZEN);
+    }else if(type == 'activation'){
+      await changeState(record.id,UserStateEnum.USR_NORMAL);
     }
   };
 
@@ -59,12 +61,18 @@ export default function UserList() {
     })
   };
 
-  const frozenUser = async (userId: number) => {
-    await requestChangeState({"id":userId,"state":UserStateEnum.USER_FREEZE}).then((response) => {
+  const changeState = async (userId: number,state:UserStateEnum) => {
+    await requestChangeState({"id":userId,"state":state}).then((response) => {
       const {code, data ,message} = response;
       if(code == '0'){
-        Notification.info({style: { width: 420 }, title: 'Notification', content: t['userList.columns.frozen.success']});
-        const updatedUsers = userData.map((user) => user.id == userId ? { ...user, state: UserStateEnum.USER_FREEZE } : user);
+        let message;
+        if(state == UserStateEnum.USER_FROZEN){
+          message = t['userList.columns.frozen.success'];
+        }else if(state == UserStateEnum.USR_NORMAL){
+          message = t['userList.columns.activation.success'];
+        }
+        Notification.info({style: { width: 420 }, title: 'Notification', content: message});
+        const updatedUsers = userData.map((user) => user.id == userId ? { ...user, state: state } : user);
         setUserData(updatedUsers);
       }else if(GlobalErrorCodes.includes(code)){
         setErrorCode(code);

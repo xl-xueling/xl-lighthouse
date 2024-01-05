@@ -32,7 +32,7 @@ export enum PermissionEnum {
 export enum UserStateEnum{
     USER_PEND=0,
     USR_NORMAL=1,
-    USER_FREEZE=2,
+    USER_FROZEN=2,
     USER_DELETED=3,
 }
 
