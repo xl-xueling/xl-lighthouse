@@ -46,6 +46,24 @@ export const translate = (list:Array<Department>):Array<ArcoTreeNode> => {
     return nodeArr;
 }
 
+export const translateToFlatStruct = (list):Array<ArcoFlatNode> => {
+    function flattenTreeData(treeData, parentName = "") {
+        let result = [];
+        for (let i = 0; i < treeData.length; i++) {
+            const { id, pid, name, children } = treeData[i];
+            const fullName = parentName ? parentName + " > " + name : name;
+            result.push({key:id,title:fullName})
+            if (children && children.length > 0) {
+                const childResult = flattenTreeData(children, fullName);
+                result = result.concat(childResult);
+            }
+        }
+        return result;
+    }
+   return flattenTreeData(list);
+}
+
+
 export const translateToTreeNodes = (list):Array<ArcoTreeNode> => {
     const nodeArr = new Array<ArcoTreeNode>();
     list?.forEach(item => {
