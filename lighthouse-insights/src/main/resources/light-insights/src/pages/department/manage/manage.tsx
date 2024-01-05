@@ -60,6 +60,7 @@ export default function ManagePanel() {
                 const {code, message, data} = response;
                 if (code === '0') {
                     id = data;
+                    sessionStorage.removeItem('cache_all_department');
                 } else {
                     Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
                 }
@@ -81,6 +82,7 @@ export default function ManagePanel() {
                 const {code, message, data} = response;
                 if (code === '0') {
                     result = code;
+                    sessionStorage.removeItem('cache_all_department');
                 } else {
                     Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
                 }
@@ -103,6 +105,7 @@ export default function ManagePanel() {
                 const {code, message, data} = response;
                 if (code === '0') {
                     result = code;
+                    sessionStorage.removeItem('cache_all_department');
                 } else {
                     Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
                 }
