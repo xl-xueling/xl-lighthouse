@@ -36,7 +36,7 @@ export default function Security({userInfo}) {
   }
 
     const initialValues = {
-        "id":userInfo.id,
+        "id":userInfo?.id,
     }
 
   return (

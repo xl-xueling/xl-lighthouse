@@ -30,31 +30,31 @@ export default function Header({userInfo}) {
     data={[
         {
             label: t['userSetting.label.name'],
-            value:  userInfo.username,
+            value:  userInfo?.username,
         },
         {
             label: t['userSetting.label.userId'],
-            value: userInfo.id,
+            value: userInfo?.id,
         },
         {
             label: t['userSetting.label.department'],
-            value: (<DepartmentLabel departmentId={userInfo.departmentId}/>),
+            value: (<DepartmentLabel departmentId={userInfo?.departmentId}/>),
         },
         {
             label: t['userSetting.label.email'],
             value: (<span>
-                {userInfo.email}
+                {userInfo?.email}
               </span>),
         },
         {
             label: t['userSetting.label.phoneNumber'],
             value: (<span>
-                {userInfo.phone}
+                {userInfo?.phone}
               </span>),
         },
         {
             label: t['userSetting.label.registrationTime'],
-            value: formatTimeStamp(userInfo.createTime),
+            value: formatTimeStamp(userInfo?.createTime),
         },
     ]}
     />

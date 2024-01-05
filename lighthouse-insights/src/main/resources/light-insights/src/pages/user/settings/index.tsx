@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Spin, Tabs} from '@arco-design/web-react';
+import {Card, Notification, Spin, Tabs} from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import InfoHeader from './header';
@@ -7,21 +7,39 @@ import InfoForm from './basic';
 import Security from './security';
 import {useSelector} from "react-redux";
 import {Department, User} from "@/types/insights-web";
+import {requestChangeState, requestFetchUserInfo} from "@/api/user";
 
 export default function Index() {
   const t = useLocale(locale);
   const [activeTab, setActiveTab] = useState('basic');
-  const userInfo = useSelector((state: {userInfo:User}) => state.userInfo);
-  const userLoading = useSelector((state: {userLoading:boolean}) => state.userLoading);
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
   const departLoading = useSelector((state: {departLoading:boolean}) => state.departLoading);
   const [loading,setLoading] = useState<boolean>(true);
+  const [userInfo,setUserInfo] = useState<User>(null);
+  const [timestamp,setTimestamp] = useState<number>(Date.now);
 
-  useEffect(() => {
-      if(!userLoading && !departLoading){
-          setLoading(false);
-      }
-  },[userLoading,departLoading])
+    const fetchData = async () => {
+        await requestFetchUserInfo().then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                setUserInfo(response.data);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
+    const callback = () => {
+        setTimestamp(Date.now);
+    }
+
+    useEffect(() => {
+         fetchData().then();
+    },[timestamp])
+
 
   return (
       <Spin loading={loading} style={{ display: 'block' }}>
@@ -31,7 +49,7 @@ export default function Index() {
           <Card style={{ marginTop: '16px' }}>
             <Tabs activeTab={activeTab} onChange={setActiveTab} type="rounded">
               <Tabs.TabPane key="basic" title={t['userSetting.title.basicInfo']}>
-                <InfoForm userInfo={userInfo} allDepartInfo={allDepartInfo}/>
+                  {userInfo && <InfoForm userInfo={userInfo} allDepartInfo={allDepartInfo} callback={callback}/>}
               </Tabs.TabPane>
               <Tabs.TabPane key="security" title={t['userSetting.title.updatePasswd']}>
                 <Security userInfo={userInfo} />
