@@ -10,10 +10,12 @@ import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.config.SeedAuthenticationToken;
 import com.dtstep.lighthouse.insights.dto.*;
+import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Permission;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.PermissionService;
+import com.dtstep.lighthouse.insights.service.ResourceService;
+import com.dtstep.lighthouse.insights.service.RoleService;
 import com.dtstep.lighthouse.insights.service.UserService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,12 @@ public class UserController {
 
     @Autowired
     private PermissionService permissionService;
+
+    @Autowired
+    private ResourceService resourceService;
+
+    @Autowired
+    private RoleService roleService;
 
     @RequestMapping("/user/register")
     public ResultData<Integer> register(@Validated @RequestBody User userParam) {
@@ -129,20 +137,31 @@ public class UserController {
     @AuthPermission(roleTypeEnum = RoleTypeEnum.FULL_MANAGE_PERMISSION)
     @RequestMapping("/user/delete")
     public ResultData<Integer> delete(@Validated @RequestBody IDParam idParam) {
-//        Integer id = idParam.getId();
-//        User dbUser = userService.queryById(id);
-//        Validate.notNull(dbUser);
-//        int result = userService.changePassword(new ChangePasswordParam(id, Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD)));
-//        if(id > 0){
-//            return ResultData.success(id);
-//        }else{
-//            return ResultData.failed(ResultCode.systemError);
-//        }
         Integer id = idParam.getId();
         Permission permission = permissionService.getFirstUserManagePermission(id);
-        Integer roleId = permission.getRoleId();
-
-        return null;
+        String message;
+        if(permission != null){
+            Integer roleId = permission.getRoleId();
+            Resource resource = resourceService.queryByRoleId(roleId);
+            if(resource != null){
+                ResourceTypeEnum resourceTypeEnum = resource.getResourceType();
+                if(resourceTypeEnum == ResourceTypeEnum.Department){
+                    return ResultData.failed(ResultCode.userDelErrorExistDepartPermission,((Department)resource.getData()).getName());
+                }else if(resourceTypeEnum == ResourceTypeEnum.Project){
+                    return ResultData.failed(ResultCode.userDelErrorExistProjectPermission,((Project)resource.getData()).getTitle());
+                }else if(resourceTypeEnum == ResourceTypeEnum.Group){
+                    return ResultData.failed(ResultCode.userDelErrorExistGroupPermission,((Group)resource.getData()).getToken());
+                }else if(resourceTypeEnum == ResourceTypeEnum.Stat){
+                    return ResultData.failed(ResultCode.userDelErrorExistStatPermission,((Stat)resource.getData()).getTitle());
+                }
+            }
+        }
+        int result = userService.deleteById(id);
+        if(result > 0){
+            return ResultData.success();
+        }else{
+            return ResultData.failed(ResultCode.systemError);
+        }
     }
 
 

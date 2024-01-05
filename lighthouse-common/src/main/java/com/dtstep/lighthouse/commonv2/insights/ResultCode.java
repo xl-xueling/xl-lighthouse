@@ -28,6 +28,16 @@ public enum ResultCode {
 
     departCreateErrorLevelLimit("2003","departCreateErrorLevelLimit"),
 
+    userDelErrorExistDepartPermission("2004","userDelErrorExistDepartPermission"),
+
+    userDelErrorExistProjectPermission("2005","userDelErrorExistProjectPermission"),
+
+    userDelErrorExistGroupPermission("2006","userDelErrorExistGroupPermission"),
+
+    userDelErrorExistStatPermission("2007","userDelErrorExistStatPermission"),
+
+    userDelErrorExistMetricPermission("2008","userDelErrorExistMetricPermission"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

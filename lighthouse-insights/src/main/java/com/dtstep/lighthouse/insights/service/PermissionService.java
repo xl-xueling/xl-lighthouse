@@ -10,6 +10,8 @@ public interface PermissionService {
 
     int create(Permission permission);
 
+    int deleteByUserId(Integer userId);
+
     void batchCreate(List<Permission> permissionList);
 
     boolean checkUserPermission(Integer userId, Integer roleId);

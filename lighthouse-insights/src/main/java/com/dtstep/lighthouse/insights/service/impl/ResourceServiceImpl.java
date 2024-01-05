@@ -217,16 +217,16 @@ public class ResourceServiceImpl implements ResourceService {
         Integer resourceId = role.getResourceId();
         if(roleTypeEnum == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION){
             Department department = departmentService.queryById(resourceId);
-            resource = new Resource(ResourceTypeEnum.Department,resourceId,department.getPid());
+            resource = new Resource(ResourceTypeEnum.Department,resourceId,department.getPid(),department);
         }else if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION){
             Project project = projectService.queryById(resourceId);
-            resource = new Resource(ResourceTypeEnum.Project,resourceId,project.getDepartmentId());
+            resource = new Resource(ResourceTypeEnum.Project,resourceId,project.getDepartmentId(),project);
         }else if(roleTypeEnum == RoleTypeEnum.GROUP_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.GROUP_ACCESS_PERMISSION){
             Group group = groupService.queryById(resourceId);
-            resource = new Resource(ResourceTypeEnum.Group,resourceId,group.getProjectId());
+            resource = new Resource(ResourceTypeEnum.Group,resourceId,group.getProjectId(),group);
         }else if(roleTypeEnum == RoleTypeEnum.STAT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.STAT_ACCESS_PERMISSION){
             Stat stat = statService.queryById(resourceId);
-            resource = new Resource(ResourceTypeEnum.Group,resourceId,stat.getGroupId());
+            resource = new Resource(ResourceTypeEnum.Group,resourceId,stat.getGroupId(),stat);
         }else if(roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.METRIC_ACCESS_PERMISSION){
 
         }else if(roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){

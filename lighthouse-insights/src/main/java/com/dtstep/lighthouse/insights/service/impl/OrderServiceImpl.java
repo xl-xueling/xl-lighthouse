@@ -120,12 +120,12 @@ public class OrderServiceImpl implements OrderService {
         for(Integer roleId : roleIds){
             boolean hashPermission = permissionDao.checkUserPermission(currentUserId,roleId);
             if(hashPermission){
-                orderDto.addPermission(PermissionInfo.PermissionEnum.readable);
+                orderDto.addPermission(PermissionInfo.PermissionEnum.ReadAble);
             }
         }
         Integer currentNode = order.getCurrentNode();
         if(permissionDao.checkUserPermission(currentUserId,currentNode)){
-            orderDto.addPermission(PermissionInfo.PermissionEnum.editable);
+            orderDto.addPermission(PermissionInfo.PermissionEnum.EditAble);
         }
         User user = userService.cacheQueryById(applyUserId);
         orderDto.setUser(user);
@@ -155,12 +155,12 @@ public class OrderServiceImpl implements OrderService {
             adminsMap.put(roleId,admins);
             boolean hashPermission = permissionDao.checkUserPermission(currentUserId,roleId);
             if(hashPermission){
-                extendOrderDto.addPermission(PermissionInfo.PermissionEnum.readable);
+                extendOrderDto.addPermission(PermissionInfo.PermissionEnum.ReadAble);
             }
         }
         Integer currentNode = order.getCurrentNode();
         if(permissionDao.checkUserPermission(currentUserId,currentNode)){
-            extendOrderDto.addPermission(PermissionInfo.PermissionEnum.editable);
+            extendOrderDto.addPermission(PermissionInfo.PermissionEnum.EditAble);
         }
         extendOrderDto.setAdminsMap(adminsMap);
         User user = userService.cacheQueryById(applyUserId);
