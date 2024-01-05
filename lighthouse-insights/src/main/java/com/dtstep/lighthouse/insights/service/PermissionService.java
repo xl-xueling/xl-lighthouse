@@ -16,7 +16,9 @@ public interface PermissionService {
 
     boolean checkUserPermission(Integer userId, Integer roleId);
 
-    Permission getFirstUserManagePermission(Integer userId);
+    List<Integer> queryUserPermissionsByRoleId(Integer roleId, Integer limit);
+
+    List<Permission> queryUserManagePermission(Integer userId,Integer limit);
 
     boolean existPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 

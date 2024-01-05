@@ -17,6 +17,7 @@ import com.dtstep.lighthouse.insights.service.PermissionService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import com.dtstep.lighthouse.insights.service.UserService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -151,10 +152,10 @@ public class UserController {
     @RequestMapping("/user/deleteById")
     public ResultData<Integer> delete(@Validated @RequestBody IDParam idParam) {
         Integer id = idParam.getId();
-        Permission permission = permissionService.getFirstUserManagePermission(id);
+        List<Permission> permissions = permissionService.queryUserManagePermission(id,1);
         String message;
-        if(permission != null){
-            Integer roleId = permission.getRoleId();
+        if(CollectionUtils.isNotEmpty(permissions)){
+            Integer roleId = permissions.get(0).getRoleId();
             Resource resource = resourceService.queryByRoleId(roleId);
             if(resource != null){
                 ResourceTypeEnum resourceTypeEnum = resource.getResourceType();
