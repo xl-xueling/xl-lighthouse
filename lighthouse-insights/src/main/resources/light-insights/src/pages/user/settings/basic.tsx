@@ -3,16 +3,17 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import { GlobalContext } from '@/context';
 import {
-  Input,
-  Button,
-  Form,
-  Space,
-  Message, TreeSelect,
+    Input,
+    Button,
+    Form,
+    Space,
+    Message, TreeSelect, Notification,
 } from '@arco-design/web-react';
 import {FormInstance} from "@arco-design/web-react/es/Form";
 import {requestUpdateById} from "@/api/user";
 import {translate} from "@/pages/department/common";
 import {ResultData} from "@/types/insights-common";
+import {GlobalErrorCodes} from "@/utils/constants";
 
 export default function BasicInfoForm({userInfo,allDepartInfo}) {
 
@@ -23,29 +24,30 @@ export default function BasicInfoForm({userInfo,allDepartInfo}) {
   const [formLoading, setFormLoading] = useState(false);
 
   const initialValues = {
-     "id":userInfo.id,
-    "username":userInfo.username,
-    "departmentId":String(userInfo.departmentId),
-    "phone":userInfo.phone,
-    "email":userInfo.email,
-    "state":userInfo.state,
+    id:userInfo.id,
+    username:userInfo.username,
+    departmentId:userInfo.departmentId,
+    phone:userInfo.phone,
+    email:userInfo.email,
+    state:userInfo.state,
   }
 
   const onSubmitClick = () => {
       setFormLoading(true);
       formRef.current.validate().then((values) => {
           const proc = async () =>{
-              const result:ResultData = await requestUpdateById(values);
-              if (result.code === '0') {
-                  Message.success(t['userSetting.form.basicinfo.success']);
-              } else {
-                  Message.error(result.message || t['system.error']);
+              const response:ResultData = await requestUpdateById(values);
+              console.log("response is:" + JSON.stringify(response));
+              const {code, data ,message} = response;
+              if(code == '0'){
+                  Notification.info({style: { width: 420 }, title: 'Notification', content: t['userSetting.form.basicinfo.success']});
+              }else{
+                  Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
               }
           }
           proc().then();
       }).catch((error) => {
          console.log(error)
-          Message.error(t['system.error']);
       }).finally(() => {
           setFormLoading(false);
       })
@@ -85,8 +87,8 @@ export default function BasicInfoForm({userInfo,allDepartInfo}) {
             label={t['userSetting.info.userName']}
             field="username"
             rules={[
-                { required: true, message: t['userSetting.form.userName.errMsg'] , validateTrigger : ['onBlur']},
-                { required: true, match: new RegExp(/^[a-zA-Z0-9_]{5,15}$/,"g"),message: t['userSetting.form.userName.validate.errMsg'] , validateTrigger : ['onBlur']},
+                { required: true, message: t['userSetting.form.userName.errMsg'] , validateTrigger : ['onSubmit']},
+                { required: true, match: new RegExp(/^[a-zA-Z0-9_]{5,15}$/,"g"),message: t['userSetting.form.userName.validate.errMsg'] , validateTrigger : ['onSubmit']},
             ]}>
             <Input placeholder={t['userSetting.info.nickName.placeholder']}  disabled={true}/>
         </Form.Item>
@@ -94,8 +96,8 @@ export default function BasicInfoForm({userInfo,allDepartInfo}) {
             label={t['userSetting.info.email']}
             field="email"
             rules={[
-                { required: true, message: t['userSetting.form.email.errMsg'], validateTrigger : ['onBlur'] },
-                { required: true, match: new RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"g"),message: t['userSetting.form.email.validate.errMsg'] , validateTrigger : ['onBlur']},
+                { required: true, message: t['userSetting.form.email.errMsg'], validateTrigger : ['onSubmit'] },
+                { required: true, match: new RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"g"),message: t['userSetting.form.email.validate.errMsg'] , validateTrigger : ['onSubmit']},
             ]}>
             <Input placeholder={t['userSetting.info.email.placeholder']} />
         </Form.Item>
@@ -104,7 +106,7 @@ export default function BasicInfoForm({userInfo,allDepartInfo}) {
             label={t['userSetting.info.phone']}
             field="phone"
             rules={[
-                { required: true, match: new RegExp(/^[\d()\\-]{5,20}$/,"g"),message: t['userSetting.form.phone.validate.errMsg'] , validateTrigger : ['onBlur']},
+                { required: false, match: new RegExp(/^[\d()\\-]{5,20}$/,"g"),message: t['userSetting.form.phone.validate.errMsg'] , validateTrigger : ['onSubmit']},
             ]}
         >
             <Input placeholder={t['userSetting.info.phone.placeholder']} />
@@ -113,7 +115,7 @@ export default function BasicInfoForm({userInfo,allDepartInfo}) {
           <Form.Item label={t['userSetting.info.department']} field="departmentId"
                      rules={[
                          {
-                             required: true,
+                             required: true, message: t['userSetting.form.department.errMsg'], validateTrigger : ['onSubmit']
                          },
                      ]}>
               <TreeSelect
