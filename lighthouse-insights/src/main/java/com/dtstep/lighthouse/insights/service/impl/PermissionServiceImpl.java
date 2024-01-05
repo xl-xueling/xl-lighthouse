@@ -1,10 +1,8 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
-import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.modal.Permission;
 import com.dtstep.lighthouse.insights.modal.User;
@@ -78,7 +76,7 @@ public class PermissionServiceImpl implements PermissionService {
             return 0;
         }
         if(ownerTypeEnum == OwnerTypeEnum.USER){
-            User user = userService.queryById(ownerId);
+            User user = userService.queryBasicInfoById(ownerId);
             Validate.notNull(user);
             Validate.isTrue(user.getState() == UserStateEnum.USR_NORMAL);
         }else if (ownerTypeEnum == OwnerTypeEnum.DEPARTMENT){

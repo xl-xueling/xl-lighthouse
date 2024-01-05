@@ -1,6 +1,6 @@
 import React, {useContext, useRef, useState} from 'react';
 import { useSelector } from 'react-redux';
-import {Button, Form, Input, Message, Space, TreeSelect} from '@arco-design/web-react';
+import {Button, Form, Input, Message, Notification, Space, TreeSelect} from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
@@ -9,7 +9,7 @@ import {FormInstance} from "@arco-design/web-react/es/Form";
 import {GlobalContext} from "@/context";
 import {requestChangePassword, requestUpdateById} from "@/api/user";
 import {ResultData} from "@/types/insights-common";
-
+import md5 from 'md5';
 export default function Security({userInfo}) {
   const t = useLocale(locale);
   const formRef = useRef<FormInstance>();
@@ -21,18 +21,25 @@ export default function Security({userInfo}) {
     setFormLoading(true);
     formRef.current.validate().then((values) => {
       const proc = async () =>{
-        const response:ResultData = await requestChangePassword(values);
-        if (response.code === '0') {
-          Message.success(t['security.form.submit.success']);
-        } else {
-          Message.error(response.message || t['system.error']);
+        const changePasswdParams = {
+            id:values.id,
+            originPassword:md5(values.originPassword),
+            password:md5(values.password),
         }
+        console.log("changePasswdParams:" + JSON.stringify(changePasswdParams));
+        const response:ResultData = await requestChangePassword(changePasswdParams);
+        const {code, data ,message} = response;
+        if(code == '0'){
+          Notification.info({style: { width: 420 }, title: 'Notification', content: t['security.form.submit.success']});
+        }else{
+          Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+        }
+        setFormLoading(false);
       }
       proc().then();
     }).catch((error) => {
       console.log(error)
-      Message.error(t['system.error']);
-    }).finally(() => {setFormLoading(false);})
+    })
   }
 
     const initialValues = {
