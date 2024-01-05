@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface RoleService {
 
-    void initRole();
-
     int create(Role role);
 
     Role queryById(Integer id);

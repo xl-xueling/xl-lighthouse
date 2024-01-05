@@ -21,7 +21,7 @@ public class TestDepartmentService {
 
     @Test
     public void testQueryAll(){
-        List<CommonTreeNode> nodeList = departmentService.queryAll();
+        List<CommonTreeNode> nodeList = departmentService.queryTreeFormat();
         System.out.println("nodeList:" + JsonUtil.toJSONString(nodeList));
 
     }

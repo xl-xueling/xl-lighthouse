@@ -27,7 +27,7 @@ public class DepartmentController {
 
     @RequestMapping("/department/all")
     public ResultData<List<CommonTreeNode>> all() {
-        List<CommonTreeNode> list = departmentService.queryAll();
+        List<CommonTreeNode> list = departmentService.queryTreeFormat();
         return ResultData.success(list);
     }
 
