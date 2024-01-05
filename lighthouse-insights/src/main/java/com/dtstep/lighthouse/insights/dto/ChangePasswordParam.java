@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -13,11 +14,11 @@ public class ChangePasswordParam implements Serializable {
     private Integer id;
 
     @NotEmpty
-    @Size(min = 6,max = 50)
+    @Pattern(regexp = "^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{5,32}$")
     private String originPassword;
 
     @NotEmpty
-    @Size(min = 6,max = 50)
+    @Pattern(regexp = "^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{5,32}$")
     private String password;
 
     public ChangePasswordParam(){}

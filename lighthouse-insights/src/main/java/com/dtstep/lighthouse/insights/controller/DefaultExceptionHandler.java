@@ -18,6 +18,7 @@ public class DefaultExceptionHandler {
     @ResponseBody
     public Object globalErrorHandler(HttpServletRequest request, MethodArgumentNotValidException e)
     {
+        e.printStackTrace();
         return ResultData.failed(ResultCode.paramValidateFailed);
     }
 
@@ -25,6 +26,7 @@ public class DefaultExceptionHandler {
     @ResponseBody
     public Object globalPermissionExceptionHandler(HttpServletRequest request, PermissionException e)
     {
+        e.printStackTrace();
         return ResultData.failed(ResultCode.accessDenied);
     }
 
@@ -32,6 +34,7 @@ public class DefaultExceptionHandler {
     @ResponseBody
     public Object globalErrorHandler(HttpServletRequest request, UnexpectedTypeException e)
     {
+        e.printStackTrace();
         return ResultData.failed(ResultCode.paramValidateFailed);
     }
 

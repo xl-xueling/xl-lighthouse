@@ -18,10 +18,6 @@ public class UserUpdateParam implements Serializable {
     @Pattern(regexp = "^[a-zA-Z0-9_]{5,15}$")
     private String username;
 
-    @NotEmpty
-    @Pattern(regexp = "^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{5,32}$")
-    private String password;
-
     @NotNull
     private Integer departmentId;
 
@@ -85,14 +81,6 @@ public class UserUpdateParam implements Serializable {
 
     public void setState(UserStateEnum state) {
         this.state = state;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public LocalDateTime getLastTime() {
