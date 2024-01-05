@@ -14,7 +14,7 @@ public class ResultData<T> {
 
     private T data;
 
-    private MessageSource messageSource;
+    private static MessageSource messageSource;
 
     public ResultData(){}
 
@@ -24,6 +24,10 @@ public class ResultData<T> {
         this.code = resultCode.getCode();
         this.message = message;
         this.data = data;
+    }
+
+    public ResultData(String customMessage){
+
     }
 
     public static<T> ResultData<T> success(T data){
@@ -36,6 +40,16 @@ public class ResultData<T> {
 
     public static<T> ResultData<T> failed(ResultCode resultCode){
         return new ResultData<T>(resultCode,null);
+    }
+
+    public static<T> ResultData<T> failed(ResultCode resultCode,String ...params){
+        messageSource = SpringUtil.getBean(MessageSource.class);
+        String message = messageSource.getMessage(resultCode.getI18nLabel(),null,LocaleContextHolder.getLocale());
+        message = String.format(message,params);
+        ResultData resultData = new ResultData();
+        resultData.setCode("-1");
+        resultData.setMessage(message);
+        return resultData;
     }
 
     public String getCode() {

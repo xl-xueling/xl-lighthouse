@@ -169,4 +169,11 @@ public class UserServiceImpl implements UserService {
     public List<User> termQuery(String search) {
         return userDao.termQuery(search);
     }
+
+    @Transactional
+    @Override
+    public int deleteById(int id) {
+        permissionService.deleteByUserId(id);
+        return departmentDao.deleteById(id);
+    }
 }

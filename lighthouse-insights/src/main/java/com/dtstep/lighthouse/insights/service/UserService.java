@@ -33,5 +33,7 @@ public interface UserService {
 
     User queryByUserName(String userName);
 
+    int deleteById(int userId);
+
     ListData<User> queryList(UserQueryParam queryParam,Integer pageNum,Integer pageSize);
 }

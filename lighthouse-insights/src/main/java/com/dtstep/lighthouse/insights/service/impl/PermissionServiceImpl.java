@@ -107,4 +107,9 @@ public class PermissionServiceImpl implements PermissionService {
     public Permission getFirstUserManagePermission(Integer userId) {
         return permissionDao.getFirstUserManagePermission(userId);
     }
+
+    @Override
+    public int deleteByUserId(Integer userId) {
+        return permissionDao.deleteByUserId(userId);
+    }
 }

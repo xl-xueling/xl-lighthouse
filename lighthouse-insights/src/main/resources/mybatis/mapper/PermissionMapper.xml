@@ -111,4 +111,8 @@
         where owner_id = #{userId} and owner_type = '1' limit 1
     </select>
 
+    <delete id="deleteByUserId">
+        delete FROM ldp_permission WHERE owner_id = #{userId} and owner_type = '1'
+    </delete>
+
 </mapper>
