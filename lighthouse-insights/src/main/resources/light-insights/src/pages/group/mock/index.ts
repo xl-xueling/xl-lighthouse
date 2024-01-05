@@ -2,8 +2,7 @@ import Mock from 'mockjs';
 import qs from 'query-string';
 import dayjs from 'dayjs';
 import setupMock from '@/utils/setupMock';
-import {generatePermission, routes} from "@/routes";
-import {ArcoSelectNode, ArcoTreeNode, Group, Project, Stat} from "@/types/insights-web";
+import {ArcoTreeNode, Group} from "@/types/insights-web";
 
 export const _Mock_group1:Group = Mock.mock({
     id:11,

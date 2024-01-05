@@ -15,7 +15,6 @@ export interface Department {
     pid:number;
 }
 
-
 export interface GrantPrivileges {
     id:number;
     departments?:Array<number>;
@@ -29,12 +28,6 @@ export interface ArcoTreeNode {
     disabled?:boolean;
     icon?:any;
     children?:Array<ArcoTreeNode>;
-}
-
-export interface ArcoSelectNode {
-    label: string;
-    value: string;
-    children?:Array<ArcoSelectNode>;
 }
 
 export interface ArcoFlatNode {

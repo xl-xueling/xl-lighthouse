@@ -12,7 +12,7 @@ import {
     Typography
 } from "@arco-design/web-react";
 import UserTermQuery from "@/pages/user/common/userTermQuery";
-import {translate} from "@/pages/department/common";
+import {translate, translateToFlatStruct} from "@/pages/department/common";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {getTextBlenLength} from "@/utils/util";
@@ -134,7 +134,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                         <TreeSelect
                             placeholder={"Please Select"}
                             allowClear={true}
-                            treeData={translate(allDepartInfo)}
+                            treeData={translateToFlatStruct(allDepartInfo)}
                         />
                     </Form.Item>
                     <Form.Item label={t['projectCreate.form.label.desc']} field="desc" rules={[
