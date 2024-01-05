@@ -174,6 +174,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public int deleteById(int id) {
         permissionService.deleteByUserId(id);
-        return departmentDao.deleteById(id);
+        return userDao.deleteById(id);
     }
 }
