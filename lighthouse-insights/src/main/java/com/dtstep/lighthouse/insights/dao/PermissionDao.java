@@ -22,7 +22,9 @@ public interface PermissionDao {
 
     int delete(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 
-    Permission getFirstUserManagePermission(Integer userId);
+    List<Integer> queryUserPermissionsByRoleId(Integer roleId, Integer limit);
+
+    List<Permission> queryUserManagePermission(Integer userId,Integer limit);
 
     List<Permission> queryList(PermissionQueryParam queryParam,Integer pageNum,Integer pageSize);
 }

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PermissionServiceImpl implements PermissionService {
@@ -40,25 +41,34 @@ public class PermissionServiceImpl implements PermissionService {
         permission.setCreateTime(localDateTime);
         permission.setUpdateTime(localDateTime);
         permissionDao.insert(permission);
-        return 0;
+        return permission.getId();
     }
 
+    @Transactional
     @Override
     public void batchCreate(List<Permission> permissionList) {
         if(CollectionUtils.isEmpty(permissionList)){
             return;
         }
         LocalDateTime localDateTime = LocalDateTime.now();
-        permissionList.forEach(z -> {
+        List<Permission> permissions = permissionList.stream().filter(z -> !existPermission(z.getOwnerId(),z.getOwnerType(),z.getRoleId())).map(z -> {
             z.setCreateTime(localDateTime);
             z.setUpdateTime(localDateTime);
-        });
-        permissionDao.batchInsert(permissionList);
+            return z;
+        }).collect(Collectors.toList());
+        if(CollectionUtils.isNotEmpty(permissions)){
+            permissionDao.batchInsert(permissions);
+        }
     }
 
     @Override
     public boolean checkUserPermission(Integer userId, Integer roleId) {
         return permissionDao.checkUserPermission(userId,roleId);
+    }
+
+    @Override
+    public List<Integer> queryUserPermissionsByRoleId(Integer roleId, Integer limit) {
+        return permissionDao.queryUserPermissionsByRoleId(roleId,limit);
     }
 
     @Override
@@ -102,8 +112,8 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public Permission getFirstUserManagePermission(Integer userId) {
-        return permissionDao.getFirstUserManagePermission(userId);
+    public List<Permission> queryUserManagePermission(Integer userId,Integer limit) {
+        return permissionDao.queryUserManagePermission(userId,limit);
     }
 
     @Override

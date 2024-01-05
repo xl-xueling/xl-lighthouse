@@ -96,7 +96,7 @@
                             ON cte.id = d.role_id
     </select>
 
-    <select id="getFirstUserManagePermission" resultMap="permissionResultMap">
+    <select id="queryUserManagePermission" resultMap="permissionResultMap">
         WITH RECURSIVE cte AS (
             SELECT id
             FROM ldp_role
@@ -108,7 +108,11 @@
         )
         select a.* from ldp_permission a
                             inner join (select id from cte) b on a.role_id = b.id
-        where owner_id = #{userId} and owner_type = '1' limit 1
+        where owner_id = #{userId} and owner_type = '1' limit #{limit}
+    </select>
+
+    <select id="queryUserPermissionsByRoleId" resultMap="Integer">
+        select owner_id from ldp_permission where role_id = #{roleId} and owner_type = '1' limit #{limit}
     </select>
 
     <delete id="deleteByUserId">

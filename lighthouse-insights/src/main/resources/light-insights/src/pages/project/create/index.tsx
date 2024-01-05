@@ -22,8 +22,11 @@ import {Project} from "@/types/insights-web";
 import {IconCaretDown, IconCaretRight} from "@arco-design/web-react/icon";
 import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
 import UsersTransfer from "@/pages/components/transfer/user_transfer";
+import {useSelector} from "react-redux";
+import {GlobalState} from "@/store";
 
 function ProjectCreatePanel({onClose,allDepartInfo}){
+    const { userInfo, userLoading } = useSelector((state: GlobalState) => state);
     const { Col, Row } = Grid;
     const t = useLocale(locale);
     const formRef = useRef(null);
@@ -112,6 +115,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                     labelCol={{span: 4, offset: 0}}
                     initialValues={{
                         privateType:0,
+                        departmentId:userInfo?.departmentId,
                     }}
                 >
                     <Form.Item label={t['projectCreate.form.label.title']} field='title' rules={[
@@ -132,6 +136,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                     </Form.Item>
                     <Form.Item label={t['projectCreate.form.label.department']} field="departmentId" rules={[{ required: true ,message: t['projectCreate.form.department.errMsg'], validateTrigger : ['onSubmit']}]}>
                         <TreeSelect
+                            disabled={true}
                             placeholder={"Please Select"}
                             allowClear={true}
                             treeData={translateToFlatStruct(allDepartInfo)}
