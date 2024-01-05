@@ -58,7 +58,7 @@ export async function requestUpdateById(data:User) :Promise<ResultData>  {
     })
 }
 
-export async function requestChangePassword(data:User) :Promise<ResultData>  {
+export async function requestChangePassword(data) :Promise<ResultData>  {
     return request({
         url:'/user/changePassword',
         method:'POST',
@@ -67,11 +67,11 @@ export async function requestChangePassword(data:User) :Promise<ResultData>  {
 }
 
 
-export async function requestDeleteById(id:number) :Promise<ResultData>  {
+export async function requestDeleteById(data) :Promise<ResultData>  {
     return request({
         url:'/user/deleteById',
         method:'POST',
-        id,
+        data,
     })
 }
 

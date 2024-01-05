@@ -2,15 +2,17 @@ package com.dtstep.lighthouse.insights.enums;
 
 public enum ResourceTypeEnum {
 
-    Department(1),
+    System(1),
 
-    Project(2),
+    Department(2),
 
-    Group(3),
+    Project(3),
 
-    Stat(4),
+    Group(4),
 
-    Metric(5),
+    Stat(5),
+
+    Metric(6),
 
     ;
 

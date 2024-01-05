@@ -5,8 +5,7 @@ import com.dtstep.lighthouse.insights.dto.RolePair;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Resource;
-import com.dtstep.lighthouse.insights.modal.Role;
+import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
@@ -38,6 +37,10 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private PermissionService permissionService;
+
+    @Autowired
+    private MetricService metricService;
+
 
     @Transactional
     @Override
@@ -201,5 +204,36 @@ public class ResourceServiceImpl implements ResourceService {
     public int releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer resourceId, RoleTypeEnum roleTypeEnum) {
         Role role = roleService.queryRole(roleTypeEnum,resourceId);
         return permissionService.releasePermission(ownerId,ownerTypeEnum,role.getId());
+    }
+
+    @Override
+    public Resource queryByRoleId(Integer roleId) {
+        Role role = roleService.queryById(roleId);
+        if(role == null){
+            return null;
+        }
+        Resource resource = null;
+        RoleTypeEnum roleTypeEnum = role.getRoleType();
+        Integer resourceId = role.getResourceId();
+        if(roleTypeEnum == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION){
+            Department department = departmentService.queryById(resourceId);
+            resource = new Resource(ResourceTypeEnum.Department,resourceId,department.getPid());
+        }else if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION){
+            Project project = projectService.queryById(resourceId);
+            resource = new Resource(ResourceTypeEnum.Project,resourceId,project.getDepartmentId());
+        }else if(roleTypeEnum == RoleTypeEnum.GROUP_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.GROUP_ACCESS_PERMISSION){
+            Group group = groupService.queryById(resourceId);
+            resource = new Resource(ResourceTypeEnum.Group,resourceId,group.getProjectId());
+        }else if(roleTypeEnum == RoleTypeEnum.STAT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.STAT_ACCESS_PERMISSION){
+            Stat stat = statService.queryById(resourceId);
+            resource = new Resource(ResourceTypeEnum.Group,resourceId,stat.getGroupId());
+        }else if(roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.METRIC_ACCESS_PERMISSION){
+
+        }else if(roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){
+            resource = new Resource(ResourceTypeEnum.System,0);
+        }else if (roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){
+            resource = new Resource(ResourceTypeEnum.System,0);
+        }
+        return resource;
     }
 }

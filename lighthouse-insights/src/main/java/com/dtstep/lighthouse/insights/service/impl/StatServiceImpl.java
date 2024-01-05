@@ -74,4 +74,9 @@ public class StatServiceImpl implements StatService {
         listData.setList(dtoList);
         return listData;
     }
+
+    @Override
+    public Stat queryById(Integer id) {
+        return statDao.queryById(id);
+    }
 }

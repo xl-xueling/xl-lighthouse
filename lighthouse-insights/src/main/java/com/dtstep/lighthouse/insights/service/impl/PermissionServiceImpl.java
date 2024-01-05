@@ -102,4 +102,9 @@ public class PermissionServiceImpl implements PermissionService {
         Validate.notNull(roleId);
         return permissionDao.delete(ownerId, ownerTypeEnum, roleId);
     }
+
+    @Override
+    public Permission getFirstUserManagePermission(Integer userId) {
+        return permissionDao.getFirstUserManagePermission(userId);
+    }
 }

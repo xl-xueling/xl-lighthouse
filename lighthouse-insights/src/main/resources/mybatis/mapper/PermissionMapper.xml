@@ -96,4 +96,19 @@
                             ON cte.id = d.role_id
     </select>
 
+    <select id="getFirstUserManagePermission" resultMap="permissionResultMap">
+        WITH RECURSIVE cte AS (
+            SELECT id
+            FROM ldp_role
+            WHERE role_type = '1' and resource_id = '0'
+            UNION ALL
+            SELECT t.id
+            FROM ldp_role t
+                     INNER JOIN cte ON t.pid = cte.id
+        )
+        select a.* from ldp_permission a
+                            inner join (select id from cte) b on a.role_id = b.id
+        where owner_id = #{userId} and owner_type = '1' limit 1
+    </select>
+
 </mapper>

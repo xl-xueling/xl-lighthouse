@@ -33,6 +33,8 @@ public enum RoleTypeEnum {
 
     OPT_MANAGE_PERMISSION(100),
 
+    OPT_ACCESS_PERMISSION(101),
+
     ;
 
     RoleTypeEnum(int roleType){

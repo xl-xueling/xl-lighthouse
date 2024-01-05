@@ -16,6 +16,11 @@ public class Resource {
 
     public Resource(){}
 
+    public Resource(ResourceTypeEnum resourceType,Integer resourceId){
+        this.resourceType = resourceType;
+        this.resourceId = resourceId;
+    }
+
     public Resource(ResourceTypeEnum resourceType,Integer resourceId,Integer resourcePid){
         this.resourceType = resourceType;
         this.resourceId = resourceId;

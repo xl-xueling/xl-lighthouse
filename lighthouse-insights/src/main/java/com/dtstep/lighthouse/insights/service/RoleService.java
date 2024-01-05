@@ -11,6 +11,8 @@ public interface RoleService {
 
     int create(Role role);
 
+    Role queryById(Integer id);
+
     int deleteById(Integer id);
 
     int update(Role role);

@@ -13,6 +13,8 @@ public interface RoleDao {
 
     int update(Role role);
 
+    Role queryById(Integer id);
+
     int deleteById(Integer id);
 
     void batchInsert(List<Role> list);

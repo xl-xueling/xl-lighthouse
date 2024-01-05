@@ -85,17 +85,18 @@ export default function UserList() {
   };
 
   const deleteUser = async (userId: number) => {
-    try{
-      const result = await requestDeleteById(userId);
-      if(result.code == '0'){
-        Message.success(t['userList.columns.delete.success']);
+    await requestDeleteById({"id":userId}).then((response) => {
+      const {code, data ,message} = response;
+      if(code == '0'){
+        Notification.info({style: { width: 420 }, title: 'Notification', content: t['userList.columns.delete.success']});
+      }else if(GlobalErrorCodes.includes(code)){
+        setErrorCode(code);
       }else{
-        Message.error(result.message || t['system.error']);
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
       }
-    }catch (error){
-      console.log(error);
-      Message.error(t['system.error']);
-    }
+      }).catch((error) => {
+        console.log(error);
+      })
   };
 
   function handleSearch(params) {
