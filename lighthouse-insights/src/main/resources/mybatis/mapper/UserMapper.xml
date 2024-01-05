@@ -115,6 +115,12 @@
             <if test="state != null">
                 `state` = #{state.state},
             </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+            <if test="lastTime != null">
+                `last_time` = #{lastTime},
+            </if>
         </set>
         WHERE id = #{id}
     </update>
