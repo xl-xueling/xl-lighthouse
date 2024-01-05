@@ -96,11 +96,8 @@ export default function Security({userInfo}) {
             label={t['security.form.label.password']}
             field="password"
             rules={[
-              {
-                required: true,
-                message: t['security.form.password.errMsg'],
-                validateTrigger : ['onSubmit']
-              },
+                { required: true, message: t['security.form.password.errMsg'], validateTrigger : ['onBlur'] },
+                { required: true, match: new RegExp(/^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{5,24}$/,"g"),message: t['security.form.password.validate.errMsg'] , validateTrigger : ['onSubmit']},
             ]}
         >
           {(
