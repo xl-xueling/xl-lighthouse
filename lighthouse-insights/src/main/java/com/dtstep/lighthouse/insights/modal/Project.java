@@ -6,6 +6,7 @@ import com.dtstep.lighthouse.insights.validator.BLengthValidation;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -15,6 +16,7 @@ public class Project extends PermissionInfo implements Serializable {
 
     @NotEmpty
     @BLengthValidation(min = 5,max = 25)
+    @Pattern(regexp = "^[\\u4E00-\\u9FA5a-zA-Z0-9_()（）【】 \\[\\]#\\s]+$")
     private String title;
 
     @NotNull
