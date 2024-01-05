@@ -13,9 +13,8 @@ import {FormInstance} from "@arco-design/web-react/es/Form";
 import {requestUpdateById} from "@/api/user";
 import {translate} from "@/pages/department/common";
 import {ResultData} from "@/types/insights-common";
-import {GlobalErrorCodes} from "@/utils/constants";
 
-export default function BasicInfoForm({userInfo,allDepartInfo}) {
+export default function BasicInfoForm({userInfo,allDepartInfo,callback}) {
 
   const t = useLocale(locale);
   const [form] = Form.useForm();
@@ -24,12 +23,12 @@ export default function BasicInfoForm({userInfo,allDepartInfo}) {
   const [formLoading, setFormLoading] = useState(false);
 
   const initialValues = {
-    id:userInfo.id,
-    username:userInfo.username,
-    departmentId:userInfo.departmentId,
-    phone:userInfo.phone,
-    email:userInfo.email,
-    state:userInfo.state,
+    id:userInfo?.id,
+    username:userInfo?.username,
+    departmentId:userInfo?.departmentId,
+    phone:userInfo?.phone,
+    email:userInfo?.email,
+    state:userInfo?.state,
   }
 
   const onSubmitClick = () => {
@@ -37,19 +36,18 @@ export default function BasicInfoForm({userInfo,allDepartInfo}) {
       formRef.current.validate().then((values) => {
           const proc = async () =>{
               const response:ResultData = await requestUpdateById(values);
-              console.log("response is:" + JSON.stringify(response));
               const {code, data ,message} = response;
               if(code == '0'){
                   Notification.info({style: { width: 420 }, title: 'Notification', content: t['userSetting.form.basicinfo.success']});
               }else{
                   Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
               }
+              callback();
+              setFormLoading(false);
           }
           proc().then();
       }).catch((error) => {
          console.log(error)
-      }).finally(() => {
-          setFormLoading(false);
       })
   }
 
