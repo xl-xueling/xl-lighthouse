@@ -97,11 +97,14 @@
         order by create_time desc
     </select>
 
-    <update id="update" parameterType="com.dtstep.lighthouse.insights.dto.UserUpdateParam">
+    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.User">
         UPDATE ldp_user
         <set>
             <if test="username != null">
                 `username` = #{username},
+            </if>
+            <if test="password != null">
+                `password` = #{password},
             </if>
             <if test="email != null">
                 `email` = #{email},
@@ -120,26 +123,6 @@
             </if>
             <if test="lastTime != null">
                 `last_time` = #{lastTime},
-            </if>
-        </set>
-        WHERE id = #{id}
-    </update>
-
-    <update id="changePassword" parameterType="com.dtstep.lighthouse.insights.dto.ChangePasswordParam">
-        UPDATE ldp_user
-        <set>
-            <if test="password != null">
-                `password` = #{password},
-            </if>
-        </set>
-        WHERE id = #{id}
-    </update>
-
-    <update id="changeState">
-        UPDATE ldp_user
-        <set>
-            <if test="userStateEnum != null">
-                `state` = #{userStateEnum.state},
             </if>
         </set>
         WHERE id = #{id}

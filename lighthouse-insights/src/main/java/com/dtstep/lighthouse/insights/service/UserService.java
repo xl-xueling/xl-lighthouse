@@ -15,11 +15,7 @@ public interface UserService {
 
     int create(User user,boolean needApprove);
 
-    int update(UserUpdateParam user);
-
-    int changePassword(ChangePasswordParam updateParam);
-
-    int changeState(ChangeUserStateParam updateParam);
+    int update(User user);
 
     List<User> termQuery(String search);
 

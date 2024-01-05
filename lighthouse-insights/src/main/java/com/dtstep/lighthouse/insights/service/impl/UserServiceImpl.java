@@ -95,15 +95,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int update(UserUpdateParam user) {
+    public int update(User user) {
         user.setUpdateTime(LocalDateTime.now());
         return userDao.update(user);
-    }
-
-    @Override
-    public int changePassword(ChangePasswordParam updateParam) {
-        updateParam.setPassword(passwordEncoder.encode(updateParam.getPassword()));
-        return userDao.changePassword(updateParam);
     }
 
     @Override
@@ -156,11 +150,6 @@ public class UserServiceImpl implements UserService {
             PageHelper.clearPage();
         }
         return listData;
-    }
-
-    @Override
-    public int changeState(ChangeUserStateParam updateParam) {
-        return userDao.changeState(updateParam.getId(),updateParam.getState());
     }
 
     @Override

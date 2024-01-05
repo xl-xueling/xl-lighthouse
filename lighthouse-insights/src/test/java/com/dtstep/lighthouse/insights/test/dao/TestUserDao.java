@@ -75,7 +75,7 @@ public class TestUserDao {
 
     @Test
     public void testUpdate() throws Exception {
-        UserUpdateParam user = new UserUpdateParam();
+        User user = new User();
         user.setId(110183);
         user.setState(UserStateEnum.USR_NORMAL);
         user.setPhone("150111");
@@ -83,17 +83,6 @@ public class TestUserDao {
         System.out.println("result:" + result);
     }
 
-    @Test
-    public void changePassword() throws Exception {
-        int result = userDao.changePasswd(110137, "123654");
-        System.out.println("result:" + result);
-    }
-
-    @Test
-    public void changeState() throws Exception {
-        int result = userDao.changeState(110137, UserStateEnum.USER_FROZEN);
-        System.out.println("result:" + result);
-    }
 
     @Test
     public void testCount() throws Exception {

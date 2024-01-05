@@ -246,7 +246,7 @@ public class OrderServiceImpl implements OrderService {
 
     private void approveCallback(Order order){
         if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
-            UserUpdateParam userUpdateParam = new UserUpdateParam();
+            User userUpdateParam = new User();
             userUpdateParam.setId(order.getUserId());
             userUpdateParam.setState(UserStateEnum.USR_NORMAL);
             userUpdateParam.setUpdateTime(LocalDateTime.now());
