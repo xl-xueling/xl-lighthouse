@@ -10,6 +10,7 @@ import {GlobalContext} from "@/context";
 import {requestChangePassword, requestUpdateById} from "@/api/user";
 import {ResultData} from "@/types/insights-common";
 import md5 from 'md5';
+import {removeLoginStatus} from "@/utils/checkLogin";
 export default function Security({userInfo}) {
   const t = useLocale(locale);
   const formRef = useRef<FormInstance>();
@@ -26,7 +27,6 @@ export default function Security({userInfo}) {
             originPassword:md5(values.originPassword),
             password:md5(values.password),
         }
-        console.log("changePasswdParams:" + JSON.stringify(changePasswdParams));
         const response:ResultData = await requestChangePassword(changePasswdParams);
         const {code, data ,message} = response;
         if(code == '0'){
@@ -35,6 +35,10 @@ export default function Security({userInfo}) {
           Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
         }
         setFormLoading(false);
+        setTimeout(() => {
+            removeLoginStatus();
+            window.location.href = '/login';
+        },2000)
       }
       proc().then();
     }).catch((error) => {
@@ -79,11 +83,12 @@ export default function Security({userInfo}) {
               {
                 required: true,
                 message: t['security.form.original.password.errMsg'],
+                validateTrigger : ['onSubmit']
               },
             ]}
         >
           {(
-              <Input />
+              <Input.Password />
           )}
         </Form.Item>
 
@@ -94,11 +99,12 @@ export default function Security({userInfo}) {
               {
                 required: true,
                 message: t['security.form.password.errMsg'],
+                validateTrigger : ['onSubmit']
               },
             ]}
         >
           {(
-              <Input />
+              <Input.Password />
           )}
         </Form.Item>
 
@@ -107,7 +113,7 @@ export default function Security({userInfo}) {
               field="confirmPassword"
               dependencies={['password']}
               rules={[
-                  { required: true, message: t['security.form.confirm.password.errMsg'], validateTrigger : ['onBlur'] },
+                  { required: true, message: t['security.form.confirm.password.errMsg'], validateTrigger : ['onSubmit'] },
                   {
                       validator: (v, callback) => {
                           try{
@@ -119,11 +125,11 @@ export default function Security({userInfo}) {
                           }catch (error){
                               console.log(error);
                           }
-                      }
+                      }, validateTrigger : ['onSubmit']
                   }]}
           >
               {(
-                  <Input />
+                  <Input.Password />
               )}
           </Form.Item>
           <Form.Item label=" ">
