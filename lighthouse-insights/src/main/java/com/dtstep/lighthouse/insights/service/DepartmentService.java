@@ -21,5 +21,7 @@ public interface DepartmentService {
 
     Department queryById(Integer id);
 
-    List<CommonTreeNode> queryAll();
+    List<CommonTreeNode> queryTreeFormat();
+
+    List<Department> queryAll();
 }

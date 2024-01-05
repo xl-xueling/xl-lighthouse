@@ -18,23 +18,6 @@ public class RoleServiceImpl implements RoleService {
     private RoleDao roleDao;
 
     @Override
-    public void initRole() {
-        if(!isRoleExist(RoleTypeEnum.FULL_MANAGE_PERMISSION,0)){
-            Role fullManageRole = new Role(RoleTypeEnum.FULL_MANAGE_PERMISSION,0);
-            create(fullManageRole);
-        }
-        if(!isRoleExist(RoleTypeEnum.FULL_ACCESS_PERMISSION,0)){
-            Role fullAccessRole = new Role(RoleTypeEnum.FULL_ACCESS_PERMISSION,0);
-            create(fullAccessRole);
-        }
-        if(!isRoleExist(RoleTypeEnum.OPT_MANAGE_PERMISSION,0)){
-            Role parentRole = roleDao.queryRole(RoleTypeEnum.FULL_MANAGE_PERMISSION,0);
-            Role optManageRole = new Role(RoleTypeEnum.OPT_MANAGE_PERMISSION,0, parentRole.getId());
-            create(optManageRole);
-        }
-    }
-
-    @Override
     public Role queryById(Integer id) {
         return roleDao.queryById(id);
     }

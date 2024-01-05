@@ -22,6 +22,7 @@ import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.insights.service.InitService;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
 import com.dtstep.lighthouse.insights.service.UserService;
@@ -52,6 +53,9 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private InitService initService;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         try{
@@ -62,14 +66,21 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
         }
 
         try{
-            roleService.initRole();
+            initService.initRole();
         }catch (Exception ex){
             logger.error("Exception in initializing system roles!",ex);
             System.exit(-1);
         }
 
         try{
-            userService.initAdmin();
+            initService.initDepartment();
+        }catch (Exception ex){
+            logger.error("Exception in initializing department info!",ex);
+            System.exit(-1);
+        }
+
+        try{
+            initService.initAdmin();
         }catch (Exception ex){
             logger.error("Admin account initialization failed!",ex);
             System.exit(-1);

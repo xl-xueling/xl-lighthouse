@@ -75,8 +75,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<CommonTreeNode> queryAll() {
-        List<Department> departmentList = departmentDao.queryAll();
+    public List<CommonTreeNode> queryTreeFormat() {
+        List<Department> departmentList = queryAll();
         HashMap<Integer,CommonTreeNode> departmentMap = new HashMap<>();
         for (Department department : departmentList) {
             CommonTreeNode commonTreeNode = new CommonTreeNode();
@@ -103,6 +103,11 @@ public class DepartmentServiceImpl implements DepartmentService {
             }
         }
         return nodeList;
+    }
+
+    @Override
+    public List<Department> queryAll() {
+        return departmentDao.queryAll();
     }
 
     @Override

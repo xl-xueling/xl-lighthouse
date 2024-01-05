@@ -53,21 +53,6 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void initAdmin() {
-        if(!isUserNameExist(SystemConstant.DEFAULT_ADMIN_USER)){
-            int adminId;
-            User user = new User();
-            user.setUsername(SystemConstant.DEFAULT_ADMIN_USER);
-            user.setPassword(Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD));
-            create(user,false);
-            adminId = user.getId();
-            Validate.isTrue(adminId != 0);
-            resourceService.grantPermission(adminId,OwnerTypeEnum.USER,0,RoleTypeEnum.OPT_MANAGE_PERMISSION);
-        }
-    }
-
-    @Transactional
-    @Override
     public int create(User user,boolean needApprove) {
         boolean isExist = userDao.isUserNameExist(user.getUsername());
         if(isExist){

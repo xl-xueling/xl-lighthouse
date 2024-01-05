@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface UserService {
 
-    void initAdmin();
-
     int create(User user,boolean needApprove);
 
     int update(User user);
