@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.dtstep.lighthouse.common.constant.SysConst;
-import com.dtstep.lighthouse.common.entity.authorize.LicenceViewEntity;
 import com.dtstep.lighthouse.common.entity.department.DepartmentViewEntity;
 import com.dtstep.lighthouse.common.entity.list.ListViewDataObject;
 import com.dtstep.lighthouse.common.entity.user.UserEntity;
@@ -176,7 +175,7 @@ public class UserController extends BaseController{
     ObjectNode freeze(HttpServletRequest request){
         int id = ParamWrapper.getIntValue(request,"id");
         try{
-            userService.changeState(id, UserStateEnum.USER_FREEZE);
+            userService.changeState(id, UserStateEnum.USER_FROZEN);
         }catch (Exception ex){
             logger.error("freeze user[id:{}] state error!",id, ex);
             RequestCodeEnum.toJSON(RequestCodeEnum.SYSTEM_ERROR);
