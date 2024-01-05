@@ -154,6 +154,7 @@ export default function Index() {
       proc().then();
     })
     const result = await Promise.all([fetchProjectsInfo]);
+    console.log("result is:" + JSON.stringify(result));
     const {list,total}:{list:Array<Project>,total:number} = result[0];
     setListData(list);
     setPagination({
