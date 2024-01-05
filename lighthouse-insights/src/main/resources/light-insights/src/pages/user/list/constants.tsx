@@ -59,7 +59,7 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
       dataIndex: 'operations',
       headerCellStyle: { paddingLeft: '15px',width:'280px' },
       render: (_, record) => {
-        if(!record.permissions.includes('editable')){
+        if(!record.permissions.includes('EditAble')){
           return ;
         }
         const resetPasswdButton = <Popconfirm key={getRandomString()}

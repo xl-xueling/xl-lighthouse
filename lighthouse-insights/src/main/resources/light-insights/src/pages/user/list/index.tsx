@@ -89,6 +89,9 @@ export default function UserList() {
       const {code, data ,message} = response;
       if(code == '0'){
         Notification.info({style: { width: 420 }, title: 'Notification', content: t['userList.columns.delete.success']});
+        setTimeout(() => {
+          handleSearch({...formParams,t:Date.now()});
+        },2000)
       }else if(GlobalErrorCodes.includes(code)){
         setErrorCode(code);
       }else{

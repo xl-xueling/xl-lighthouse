@@ -134,8 +134,9 @@ public class UserController {
     }
 
 
-    @AuthPermission(roleTypeEnum = RoleTypeEnum.FULL_MANAGE_PERMISSION)
-    @RequestMapping("/user/delete")
+//    @AuthPermission(roleTypeEnum = RoleTypeEnum.FULL_MANAGE_PERMISSION)
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
+    @RequestMapping("/user/deleteById")
     public ResultData<Integer> delete(@Validated @RequestBody IDParam idParam) {
         Integer id = idParam.getId();
         Permission permission = permissionService.getFirstUserManagePermission(id);
