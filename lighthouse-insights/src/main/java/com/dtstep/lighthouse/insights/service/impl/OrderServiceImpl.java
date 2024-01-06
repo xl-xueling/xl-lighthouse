@@ -69,14 +69,14 @@ public class OrderServiceImpl implements OrderService {
         String hash;
         if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
             int projectId = (Integer) configMap.get("projectId");
-            Role role = roleService.queryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,projectId);
+            Role role = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,projectId);
             String message = order.getUserId() + "_" + OrderTypeEnum.PROJECT_ACCESS.getOrderType() + "_" + projectId;
             order.setHash(Md5Util.getMD5(message));
             order.setCurrentNode(role.getId());
             roleTypeMap.put(role.getId(),RoleTypeEnum.PROJECT_MANAGE_PERMISSION);
             steps.add(role.getId());
         }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
-            Role role = roleService.queryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
+            Role role = roleService.cacheQueryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
             String message = order.getUserId() + "_" + "register";
             order.setHash(Md5Util.getMD5(message));
             order.setCurrentNode(role.getId());

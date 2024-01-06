@@ -47,7 +47,7 @@ public class InitServiceImpl implements InitService {
             Validate.isTrue(result > 0);
         }
         if(!roleService.isRoleExist(RoleTypeEnum.OPT_MANAGE_PERMISSION,0)){
-            Role parentRole = roleService.queryRole(RoleTypeEnum.FULL_MANAGE_PERMISSION,0);
+            Role parentRole = roleService.cacheQueryRole(RoleTypeEnum.FULL_MANAGE_PERMISSION,0);
             Role optManageRole = new Role(RoleTypeEnum.OPT_MANAGE_PERMISSION,0, parentRole.getId());
             int result = roleService.create(optManageRole);
             Validate.isTrue(result > 0);
@@ -85,7 +85,7 @@ public class InitServiceImpl implements InitService {
             Validate.isTrue(result > 0);
         }else{
             User user = userService.queryByUserName(SystemConstant.DEFAULT_ADMIN_USER);
-            Role role = roleService.queryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
+            Role role = roleService.cacheQueryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
             Validate.notNull(role);
             if(!permissionService.existPermission(user.getId(),OwnerTypeEnum.USER,role.getId())){
                 int result = permissionService.grantPermission(user.getId(),OwnerTypeEnum.USER,role.getId());
