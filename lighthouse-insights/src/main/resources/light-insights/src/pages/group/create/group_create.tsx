@@ -140,7 +140,6 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       <Modal
           title='Create Group'
           onOk={onOk}
-          maskClosable={false}
           visible={true}
           style={{ width:'750px' }}
           confirmLoading={confirmLoading}

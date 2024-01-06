@@ -22,7 +22,8 @@ import {CiViewTable} from "react-icons/ci";
 import GroupCreateModal from "@/pages/group/create/group_create";
 import UserGroup from "@/pages/user/common/groups";
 import {formatTimeStamp} from "@/utils/util";
-import {GlobalErrorCodes} from "@/utils/constants";
+import DepartmentLabel from "@/pages/department/common/depart";
+import { ImTree } from "react-icons/im";
 
 export default function ProjectManage() {
 
@@ -33,7 +34,6 @@ export default function ProjectManage() {
   const [projectInfo,setProjectInfo] = useState<Project>(null);
   const [loading,setLoading] = useState<boolean>(true);
   const { id } = useParams();
-
 
     const menuCallback = async (id) => {
         setGroupId(Number(id));
@@ -73,6 +73,7 @@ export default function ProjectManage() {
         fetchData().then();
     },[])
 
+
     const descriptionData = [
         {
             label: <IconBook/>,
@@ -81,6 +82,10 @@ export default function ProjectManage() {
         {
             label: <IconUserGroup/>,
             value: <UserGroup users={projectInfo?.admins}/>,
+        },
+        {
+            label: <ImTree/>,
+            value: <DepartmentLabel departmentId={projectInfo?.departmentId}/>,
         },
         {
             label: <IconClockCircle />,
@@ -146,7 +151,7 @@ export default function ProjectManage() {
                               }}
                               animation
                           >
-                          <Descriptions colon=':' layout='horizontal'
+                          <Descriptions colon=' :' layout='horizontal'
                                         labelStyle={{ textAlign: 'left', width:'24px',}}
                                         style={{whiteSpace:"normal"}}
                                         data={descriptionData} column={1}/>

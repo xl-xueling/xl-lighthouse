@@ -20,8 +20,6 @@ import {RiAppsLine} from "react-icons/ri";
 
 export default function ProjectManageMenu({structure,callback}:{structure:Array<ArcoTreeNode>,callback:(id: string) => Promise<void>}) {
 
-    const [defaultOpenKeys,setDefaultOpenKeys] = useState<Array<number>>([]);
-
     const renderMenuItems = (items) => {
         const types = ['1','2'];
         return items?.filter(x => types.includes(x.type)).map((item) => {
