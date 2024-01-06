@@ -4,8 +4,8 @@ import styles from './style/index.module.less';
 import {
     Breadcrumb,
     Card, Descriptions,
-    Link, Notification,
-    Space,
+    Link, Notification, Skeleton,
+    Space, Spin,
     Typography
 } from "@arco-design/web-react";
 import GroupManagePanel from "@/pages/group/manage";
@@ -73,20 +73,19 @@ export default function ProjectManage() {
         fetchData().then();
     },[])
 
-    const data = [
+    const descriptionData = [
         {
             label: <IconBook/>,
             value: <span style={{ wordBreak: 'break-word' }}>{projectInfo?.desc}</span>
         },
         {
-            label: <IconClockCircle />,
-            value: formatTimeStamp(projectInfo?.createTime),
-        },
-        {
             label: <IconUserGroup/>,
             value: <UserGroup users={projectInfo?.admins}/>,
         },
-
+        {
+            label: <IconClockCircle />,
+            value: formatTimeStamp(projectInfo?.createTime),
+        },
     ];
 
     const shortcuts = [
@@ -104,22 +103,22 @@ export default function ProjectManage() {
 
   return (
       <>
-      {/*<Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>*/}
-      {/*    <BreadcrumbItem>*/}
-      {/*        <IconHome />*/}
-      {/*    </BreadcrumbItem>*/}
-      {/*    <BreadcrumbItem style={{fontWeight:20}}>{t['projectManage.breadcrumbItem']}</BreadcrumbItem>*/}
-      {/*</Breadcrumb>*/}
-
-      <div className={styles.layout}>
+      <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+          <BreadcrumbItem>
+              <IconHome />
+          </BreadcrumbItem>
+          <BreadcrumbItem style={{fontWeight:20}}>{t['projectManage.breadcrumbItem']}</BreadcrumbItem>
+      </Breadcrumb>
+      <Spin loading={loading} style={{ width: '100%' }}>
+        <div className={styles.layout}>
           <div className={styles['layout-left-side']}>
               <Space size={15} direction="vertical" style={{width:'100%'}}>
+                  <ProjectManageMenu structure={projectInfo?.structure} callback={menuCallback} />
                   <Card>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Typography.Title heading={6}>
                               {"工程管理"}
                           </Typography.Title>
-                          <Link>{t['workplace.seeMore']}</Link>
                       </div>
                       <div className={styles.shortcuts}>
                           <div className={styles.item} onClick={handlerCreateGroup}>
@@ -132,7 +131,6 @@ export default function ProjectManage() {
                           </div>
                       </div>
                   </Card>
-                  {projectInfo?.structure.length > 0 && <ProjectManageMenu structure={projectInfo.structure} callback={menuCallback} />}
                   <Card>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Typography.Title heading={6}>
@@ -140,22 +138,32 @@ export default function ProjectManage() {
                           </Typography.Title>
                       </div>
                       <div>
+                          <Skeleton
+                              loading={loading}
+                              text={{
+                                  rows:3,
+                                  width: ['100%'],
+                              }}
+                              animation
+                          >
                           <Descriptions colon=':' layout='horizontal'
                                         labelStyle={{ textAlign: 'left', width:'24px',}}
                                         style={{whiteSpace:"normal"}}
-                                        data={data} column={1}/>
+                                        data={descriptionData} column={1}/>
+                          </Skeleton>
                       </div>
                   </Card>
               </Space>
           </div>
-          <div className={styles['layout-content']}>
-              <Card>
-                  {/*{showManagePanel && <GroupManagePanel groupId={groupId}/>}*/}
-              </Card>
-          </div>
+          {/*<div className={styles['layout-content']}>*/}
+          {/*    <Card>*/}
+          {/*        /!*{showManagePanel && <GroupManagePanel groupId={groupId}/>}*!/*/}
+          {/*    </Card>*/}
+          {/*</div>*/}
 
           {showGroupCreatePanel && <GroupCreateModal projectId={id} callback={callback} onClose={() => setShowGroupCreatePanel(false)}/>}
       </div>
+      </Spin>
       </>
   );
 }
