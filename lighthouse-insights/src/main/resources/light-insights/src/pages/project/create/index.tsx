@@ -120,6 +120,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                 >
                     <Form.Item label={t['projectCreate.form.label.title']} field='title' rules={[
                         { required: true, message: t['projectCreate.form.name.errMsg'] , validateTrigger : ['onSubmit']},
+                        { required: true, match: new RegExp(/^[\u4E00-\u9FA5a-zA-Z0-9_()（）【】 \[\]#\s]+$/,"g"),message: t['projectCreate.form.name.validate.errMsg'] , validateTrigger : ['onSubmit']},
                         {
                         required:true,
                         validator: (v, cb) => {
