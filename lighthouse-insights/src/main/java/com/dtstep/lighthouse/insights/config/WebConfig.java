@@ -48,7 +48,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(permissionInterceptor);
     }
 
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

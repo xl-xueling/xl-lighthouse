@@ -2,9 +2,12 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.dto.*;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Project;
+import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +28,9 @@ public class ProjectController {
     @Autowired
     private MessageSource messageSource;
 
+    @Autowired
+    private GroupService groupService;
+
     @RequestMapping("/project/create")
     public ResultData<Integer> create(@Validated @RequestBody ProjectCreateParam createParam) {
         int result = projectService.create(createParam);
@@ -44,10 +50,26 @@ public class ProjectController {
         return ResultData.success(listData);
     }
 
-
     @RequestMapping("/project/updateById")
     public ResultData<Integer> updateById(@Validated @RequestBody Project updateParam) {
         int id = projectService.update(updateParam);
+        if(id > 0){
+            return ResultData.success(id);
+        }else{
+            return ResultData.failed(ResultCode.systemError);
+        }
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/project/deleteById")
+    public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        GroupQueryParam queryParam = new GroupQueryParam();
+        queryParam.setProjectId(id);
+        int groupCount = groupService.count(queryParam);
+        if(groupCount > 0){
+            return ResultData.failed(ResultCode.projectDelErrorGroupExist);
+        }
         if(id > 0){
             return ResultData.success(id);
         }else{

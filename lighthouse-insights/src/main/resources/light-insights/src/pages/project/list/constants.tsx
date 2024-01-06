@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Typography, Space, Link} from '@arco-design/web-react';
+import {Button, Typography, Space, Link, Popconfirm} from '@arco-design/web-react';
 const { Text } = Typography;
 import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
@@ -82,13 +82,20 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                       {t['projectList.columns.operations.manage']}
                   </Button>
               </Link>
-              deleteButton = <Link key={getRandomString()} target={"_blank"} href={'/project/manage/' + record.id}>
+              deleteButton =
+                  <Popconfirm key={getRandomString()}
+                              focusLock
+                              position={"tr"}
+                              title='Confirm'
+                              content={t['projectList.form.delete.confirm']}
+                              onOk={() => callback(record, 'delete')}
+                  >
                   <Button
                       type="text"
                       size="mini">
                       {t['projectList.columns.operations.delete']}
                   </Button>
-              </Link>
+                  </Popconfirm>
           }else if(record.permissions.includes('AccessAble')){
               viewButton = <Link key={getRandomString()} target={"_blank"} href={'/project/display/' + record.id}>
                   <Button
@@ -98,12 +105,20 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                   </Button>
               </Link>;
           }else{
-              applyButton = <Button key={getRandomString()}
-                  onClick={() => callback(record, 'apply')}
-                  type="text"
-                  size="mini">
-                  {t['projectList.columns.operations.apply']}
-              </Button>
+              applyButton =
+                  <Popconfirm key={getRandomString()}
+                              focusLock
+                              title='Confirm'
+                              content={t['projectList.form.apply.confirm']}
+                              onOk={() => callback(record, 'delete')}
+                  >
+                      <Button
+                      onClick={() => callback(record, 'apply')}
+                      type="text"
+                      size="mini">
+                      {t['projectList.columns.operations.apply']}
+                  </Button>
+                  </Popconfirm>
           }
           return  <Space size={0} direction="horizontal">{[viewButton,updateButton,manageButton,deleteButton,applyButton]}</Space>;
       }

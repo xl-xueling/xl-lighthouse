@@ -145,4 +145,9 @@ public class ProjectServiceImpl implements ProjectService {
     public int countByDepartmentId(Integer departmentId) {
         return projectDao.countByDepartmentId(departmentId);
     }
+
+    @Override
+    public int deleteById(Integer id) {
+        return projectDao.deleteById(id);
+    }
 }

@@ -51,11 +51,11 @@ export async function requestUpdateById(data:Project):Promise<ResultData> {
     })
 }
 
-export async function requestDeleteById(id:number):Promise<ResultData> {
+export async function requestDeleteById(data):Promise<ResultData> {
     return request({
         url:'/project/deleteById',
         method:'POST',
-        id,
+        data,
     })
 }
 

@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dto.GroupDto;
+import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.service.GroupService;
@@ -44,5 +45,10 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<Group> queryByProjectId(Integer projectId) {
         return groupDao.queryByProjectId(projectId);
+    }
+
+    @Override
+    public int count(GroupQueryParam queryParam) {
+        return groupDao.count(queryParam);
     }
 }
