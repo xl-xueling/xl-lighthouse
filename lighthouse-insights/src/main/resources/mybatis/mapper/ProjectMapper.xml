@@ -47,7 +47,6 @@
         WHERE id = #{id}
     </update>
 
-
     <select id="queryList" resultMap="projectResultMap">
         WITH RECURSIVE cte AS (
         SELECT d.id
@@ -65,7 +64,7 @@
         FROM ldp_department d
         JOIN cte ON cte.id = d.pid
         )
-        select * from (select `title`,`department_id`,`private_type`,`desc`,`create_time`,`update_time` from ldp_stat_project
+        select * from (select `id`,`title`,`department_id`,`private_type`,`desc`,`create_time`,`update_time` from ldp_stat_project
         <where>
             <if test="queryParam.id!=null">
                 AND id = #{queryParam.id}
@@ -93,8 +92,6 @@
             inner join (select resource_id from ldp_role r where r.role_type = '5'
             and r.id IN (select role_id from ldp_permission where owner_id = #{queryParam.owner} and owner_type = '1')) b on a.id = b.resource_id
         </if>
-        <bind name="offset" value="(pageNum-1)*pageSize"></bind>
-        limit ${offset},#{pageSize}
     </select>
 
 

@@ -181,10 +181,10 @@ public class UserController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @PostMapping("/user/list")
-    public ResultData<ListData<User>> list(
+    public ResultData<ListData<UserDto>> list(
             @Validated @RequestBody ListSearchObject<UserQueryParam> searchObject) {
         Pagination pagination = searchObject.getPagination();
-        ListData<User> listData = userService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
+        ListData<UserDto> listData = userService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
     }
 

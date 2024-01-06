@@ -1,10 +1,10 @@
 import React from 'react';
-import {Button, Typography, Space, Popconfirm, Message, Link} from '@arco-design/web-react';
+import {Button, Typography, Space, Link} from '@arco-design/web-react';
 const { Text } = Typography;
 import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
-import {formatTimeStamp} from "@/utils/util";
+import {formatTimeStamp, getRandomString} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
@@ -55,122 +55,58 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
       title: t['projectList.columns.operations'],
       dataIndex: 'operations',
       headerCellStyle: {width:'250px' },
-      render: (_, record) => (
-          <Space size={0} direction="horizontal">
-              <Link target={"_blank"} href={'/project/display/' + record.id}>
+      render: (_, record) => {
+          let viewButton;
+          let updateButton;
+          let manageButton;
+          let deleteButton;
+          let applyButton;
+          if(record.permissions.includes('ManageAble')){
+              viewButton = <Link key={getRandomString()} target={"_blank"} href={'/project/display/' + record.id}>
                   <Button
                       type="text"
                       size="mini">
                       {t['projectList.columns.operations.view']}
                   </Button>
-              </Link>
-              <Button
-                  onClick={() => callback(record, 'update')}
-                  type="text"
-                  size="mini">
-                {t['projectList.columns.operations.update']}
-              </Button>
-              <Link target={"_blank"} href={'/project/manage/' + record.id}>
+              </Link>;
+                updateButton = <Button key={getRandomString()}
+                    onClick={() => callback(record, 'update')}
+                    type="text"
+                    size="mini">
+                    {t['projectList.columns.operations.update']}
+                </Button>;
+              manageButton = <Link key={getRandomString()} target={"_blank"} href={'/project/manage/' + record.id}>
                   <Button
                       type="text"
                       size="mini">
-                    {t['projectList.columns.operations.manage']}
+                      {t['projectList.columns.operations.manage']}
                   </Button>
               </Link>
-              <Button
+              deleteButton = <Link key={getRandomString()} target={"_blank"} href={'/project/manage/' + record.id}>
+                  <Button
+                      type="text"
+                      size="mini">
+                      {t['projectList.columns.operations.delete']}
+                  </Button>
+              </Link>
+          }else if(record.permissions.includes('AccessAble')){
+              viewButton = <Link key={getRandomString()} target={"_blank"} href={'/project/display/' + record.id}>
+                  <Button
+                      type="text"
+                      size="mini">
+                      {t['projectList.columns.operations.view']}
+                  </Button>
+              </Link>;
+          }else{
+              applyButton = <Button key={getRandomString()}
                   onClick={() => callback(record, 'apply')}
                   type="text"
                   size="mini">
                   {t['projectList.columns.operations.apply']}
               </Button>
-            {/*<Popconfirm*/}
-            {/*    position={"tr"}*/}
-            {/*    focusLock*/}
-            {/*    title='Confirm'*/}
-            {/*    content='Are you sure to delete this project?'*/}
-            {/*    onOk={() => callback(record, 'delete')}*/}
-            {/*    onCancel={() => {*/}
-            {/*      Message.error({*/}
-            {/*        content: 'cancel',*/}
-            {/*      });*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*  <Button*/}
-            {/*      type="text"*/}
-            {/*      size="mini">*/}
-            {/*    {t['projectList.columns.operations.delete']}*/}
-            {/*  </Button>*/}
-            {/*</Popconfirm>*/}
-          </Space>
-
-
-      ),
+          }
+          return  <Space size={0} direction="horizontal">{[viewButton,updateButton,manageButton,deleteButton,applyButton]}</Space>;
+      }
     },
-
-
   ]
-  // return [
-  //   {
-  //     title: t['searchTable.columns.id'],
-  //     dataIndex: 'id',
-  //     render: (value) => <Text copyable>{value}</Text>,
-  //   },
-  //   {
-  //     title: t['searchTable.columns.name'],
-  //     dataIndex: 'name',
-  //   },
-  //   {
-  //     title: t['searchTable.columns.contentType'],
-  //     dataIndex: 'contentType',
-  //     render: (value) => (
-  //       <div className={styles['content-type']}>
-  //         {ContentIcon[value]}
-  //         {ContentType[value]}
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     title: t['searchTable.columns.filterType'],
-  //     dataIndex: 'filterType',
-  //     render: (value) => FilterType[value],
-  //   },
-  //   {
-  //     title: t['searchTable.columns.contentNum'],
-  //     dataIndex: 'count',
-  //     sorter: (a, b) => a.count - b.count,
-  //     render(x) {
-  //       return Number(x).toLocaleString();
-  //     },
-  //   },
-  //   {
-  //     title: t['searchTable.columns.createdTime'],
-  //     dataIndex: 'createdTime',
-  //     render: (x) => dayjs().subtract(x, 'days').format('YYYY-MM-DD HH:mm:ss'),
-  //     sorter: (a, b) => b.createdTime - a.createdTime,
-  //   },
-  //   {
-  //     title: t['searchTable.columns.status'],
-  //     dataIndex: 'status',
-  //     render: (x) => {
-  //       if (x === 0) {
-  //         return <Badge status="error" text={Status[x]}></Badge>;
-  //       }
-  //       return <Badge status="success" text={Status[x]}></Badge>;
-  //     },
-  //   },
-  //   {
-  //     title: t['searchTable.columns.operations'],
-  //     dataIndex: 'operations',
-  //     headerCellStyle: { paddingLeft: '15px' },
-  //     render: (_, record) => (
-  //       <Button
-  //         type="text"
-  //         size="small"
-  //         onClick={() => callback(record, 'view')}
-  //       >
-  //         {t['searchTable.columns.operations.view']}
-  //       </Button>
-  //     ),
-  //   },
-  // ];
 }

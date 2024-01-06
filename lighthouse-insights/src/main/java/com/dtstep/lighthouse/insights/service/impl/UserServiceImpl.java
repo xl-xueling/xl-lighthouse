@@ -1,20 +1,16 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
-import com.dtstep.lighthouse.common.util.Md5Util;
-import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
-import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -112,10 +108,9 @@ public class UserServiceImpl implements UserService {
         return userDao.queryByUserName(userName);
     }
 
-    private UserDto translate(User user,PermissionInfo.PermissionEnum editPermission,PermissionInfo.PermissionEnum deletePermission){
+    private UserDto translate(User user,PermissionInfo.PermissionEnum permission){
         UserDto userDto = new UserDto(user);
-        userDto.addPermission(editPermission);
-        userDto.addPermission(deletePermission);
+        userDto.addPermission(permission);
         return userDto;
     }
 
@@ -132,10 +127,9 @@ public class UserServiceImpl implements UserService {
                 boolean hasOptManageRole = permissionService.checkUserPermission(userId,optManageRole.getId());
                 Role systemManageRole = roleService.queryRole(RoleTypeEnum.FULL_MANAGE_PERMISSION,0);
                 boolean hasSysManageRole = permissionService.checkUserPermission(userId,systemManageRole.getId());
-                PermissionInfo.PermissionEnum editPermission = hasOptManageRole? PermissionInfo.PermissionEnum.EditAble:null;
-                PermissionInfo.PermissionEnum deletePermission = hasSysManageRole? PermissionInfo.PermissionEnum.DeleteAble:null;
+                PermissionInfo.PermissionEnum managePermission = hasOptManageRole? PermissionInfo.PermissionEnum.ManageAble :null;
                 for(int i=0;i<userList.size();i++){
-                    UserDto userDto = translate(userList.get(i),editPermission,deletePermission);
+                    UserDto userDto = translate(userList.get(i),managePermission);
                     dtoList.add(userDto);
                 }
             }

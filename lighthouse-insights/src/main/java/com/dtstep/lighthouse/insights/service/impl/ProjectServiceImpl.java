@@ -11,6 +11,7 @@ import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,14 +107,10 @@ public class ProjectServiceImpl implements ProjectService {
             List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
             projectDto.setAdmins(admins);
         }
-        boolean manageAble = permissionService.checkUserPermission(currentUserId, manageRole.getId());
-        if(manageAble){
-            projectDto.addPermission(PermissionInfo.PermissionEnum.EditAble);
-            projectDto.addPermission(PermissionInfo.PermissionEnum.DeleteAble);
-        }
-        boolean accessAble = permissionService.checkUserPermission(currentUserId, accessRole.getId());
-        if(accessAble){
-            projectDto.addPermission(PermissionInfo.PermissionEnum.ReadAble);
+        if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
+            projectDto.addPermission(PermissionInfo.PermissionEnum.ManageAble);
+        }else if(permissionService.checkUserPermission(currentUserId, accessRole.getId())){
+            projectDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
         }
         List<Group> dtoList = groupDao.queryByProjectId(project.getId());
         CommonTreeNode treeNode = new CommonTreeNode(String.valueOf(project.getId()),project.getTitle(), "0","1");
@@ -132,16 +129,26 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ListData<ProjectDto> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize) {
         Integer userId = baseService.getCurrentUserId();
-        List<Project> projectList = projectDao.queryList(queryParam,pageNum,pageSize);
+        PageHelper.startPage(pageNum,pageSize);
         List<ProjectDto> dtoList = new ArrayList<>();
+        List<Project> projectList;
+        try{
+            projectList = projectDao.queryList(queryParam,pageNum,pageSize);
+        }finally {
+            PageHelper.clearPage();
+        }
         if(CollectionUtils.isNotEmpty(projectList)){
             for(Project project : projectList){
-                dtoList.add(translate(project));
+                ProjectDto projectDto = null;
+                try{
+                    projectDto = translate(project);
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                dtoList.add(projectDto);
             }
         }
-        ListData<ProjectDto> listData = new ListData<>();
-        listData.setList(dtoList);
-        return listData;
+        return baseService.translateToListData(dtoList);
     }
 
     @Override
