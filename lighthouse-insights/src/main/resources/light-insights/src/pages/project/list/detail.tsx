@@ -16,16 +16,15 @@ import {translate} from "@/pages/department/common";
 import {Project} from "@/types/insights-web";
 import {requestQueryById} from "@/api/project";
 import DepartmentLabel from "@/pages/department/common/depart";
+import UserGroup from "@/pages/user/common/groups";
 const { Row, Col } = Grid;
 const { useForm } = Form;
 
 export default function Detail({projectInfo,onClose}) {
 
-    const [loading,setLoading] = useState(true);
-
     return <div>
         <Drawer
-            width={350}
+            width={500}
             title={<span>Project Information</span>}
             visible={true}
             onCancel={() => {
@@ -48,12 +47,12 @@ export default function Detail({projectInfo,onClose}) {
                         value: <DepartmentLabel departmentId={projectInfo?.departmentId}/>,
                     },
                     {
-                        label: 'Description',
-                        value: projectInfo?.desc,
+                        label: 'Admins',
+                        value: <UserGroup users={projectInfo?.admins}/>,
                     },
                     {
-                        label: 'Admins',
-                        value: projectInfo?.adminIds,
+                        label: 'Description',
+                        value: projectInfo?.desc,
                     },
                 ]}
             />
