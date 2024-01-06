@@ -38,6 +38,10 @@ export default function ProjectManageMenu({structure,callback}:{structure:Array<
         });
     }
 
+    useEffect(() => {
+        console.log("structure is:" + JSON.stringify(structure));
+    },[])
+
     return (
         <>
             <Menu

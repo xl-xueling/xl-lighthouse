@@ -13,5 +13,7 @@ public interface StatService {
 
     Stat queryById(Integer id);
 
+    List<Stat> queryByProjectId(Integer projectId);
+
     ListData<StatDto> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize);
 }

@@ -16,6 +16,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @ControllerAdvice
 public class ProjectController {
@@ -38,9 +40,12 @@ public class ProjectController {
     }
 
     @RequestMapping("/project/queryById")
-    public ResultData<ProjectDto> queryById(@RequestBody QueryParam queryParam) {
+    public ResultData<ProjectExtendDto> queryById(@RequestBody QueryParam queryParam) {
         ProjectDto projectDto = projectService.queryById(queryParam.getId());
-        return ResultData.success(projectDto);
+        ProjectExtendDto projectExtendDto = new ProjectExtendDto(projectDto);
+        List<CommonTreeNode> structure = projectService.getStructure(projectDto);
+        projectExtendDto.setStructure(structure);
+        return ResultData.success(projectExtendDto);
     }
 
     @PostMapping("/project/list")
@@ -50,6 +55,7 @@ public class ProjectController {
         return ResultData.success(listData);
     }
 
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/project/updateById")
     public ResultData<Integer> updateById(@Validated @RequestBody Project updateParam) {
         int id = projectService.update(updateParam);

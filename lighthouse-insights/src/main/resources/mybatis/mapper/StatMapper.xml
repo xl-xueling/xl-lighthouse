@@ -55,6 +55,11 @@
         limit ${offset},#{pageSize}
     </select>
 
+    <select id="queryByProjectId" resultMap="statResultMap">
+        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`create_time`,`update_time`
+        from ldp_stat_item where project_id = #{projectId}
+    </select>
+
     <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Stat">
         UPDATE ldp_stat_item
         <set>
