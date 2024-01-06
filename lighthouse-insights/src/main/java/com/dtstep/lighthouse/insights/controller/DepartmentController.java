@@ -2,10 +2,12 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
 import com.dtstep.lighthouse.insights.dto.DeleteParam;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.service.DepartmentService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
@@ -36,6 +38,7 @@ public class DepartmentController {
         return ResultData.success(list);
     }
 
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @RequestMapping("/department/create")
     public ResultData<Integer> create(@Validated @RequestBody Department createParam) {
         int level = departmentService.getLevel(createParam.getPid());
@@ -46,6 +49,7 @@ public class DepartmentController {
         return ResultData.success(result);
     }
 
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @RequestMapping("/department/updateById")
     public ResultData<Integer> updateById(@Validated @RequestBody Department updateParam) {
         int pidLevel = departmentService.getLevel(updateParam.getPid());
@@ -61,6 +65,7 @@ public class DepartmentController {
         }
     }
 
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @RequestMapping("/department/delete")
     public ResultData<Integer> delete(@RequestBody DeleteParam deleteParam) {
         Validate.notNull(deleteParam.getId());

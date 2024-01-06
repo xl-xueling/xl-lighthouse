@@ -4,7 +4,7 @@ import styles from './style/index.module.less';
 import {
     Breadcrumb,
     Card, Descriptions,
-    Link,
+    Link, Notification,
     Space,
     Typography
 } from "@arco-design/web-react";
@@ -22,6 +22,7 @@ import {CiViewTable} from "react-icons/ci";
 import GroupCreateModal from "@/pages/group/create/group_create";
 import UserGroup from "@/pages/user/common/groups";
 import {formatTimeStamp} from "@/utils/util";
+import {GlobalErrorCodes} from "@/utils/constants";
 
 export default function ProjectManage() {
 
@@ -33,13 +34,6 @@ export default function ProjectManage() {
   const [loading,setLoading] = useState<boolean>(true);
   const { id } = useParams();
 
-    const fetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
-        const proc = async () => {
-            const result = await requestQueryById({id});
-            resolve(result.data);
-        }
-        proc().then();
-    })
 
     const menuCallback = async (id) => {
         setGroupId(Number(id));
@@ -62,30 +56,21 @@ export default function ProjectManage() {
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
-        const result = await Promise.all([fetchProjectInfo]);
-        setProjectInfo(result[0]);
+        await requestQueryById({id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                setProjectInfo(data);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error)
+        })
     }
-
-  // const handlerProcess = (action:string,params:any):void => {
-  //     switch (action){
-  //         case 'group-add':{
-  //             setShowAddPanel(true);
-  //             break;
-  //         }
-  //         case 'selected-group':{
-  //             setGroupId(params.groupId);
-  //             setShowManagePanel(true);
-  //             break;
-  //         }
-  //         default:{
-  //             return;
-  //         }
-  //     }
-  // }
 
     useEffect(() => {
         fetchData().then();
-        setGroupId(1);
     },[])
 
     const data = [
@@ -147,7 +132,7 @@ export default function ProjectManage() {
                           </div>
                       </div>
                   </Card>
-                  {projectInfo?.structure.length > 0 && <ProjectManageMenu structure={projectInfo.structure[0]?.children} callback={menuCallback} />}
+                  {projectInfo?.structure.length > 0 && <ProjectManageMenu structure={projectInfo.structure} callback={menuCallback} />}
                   <Card>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Typography.Title heading={6}>
@@ -165,7 +150,7 @@ export default function ProjectManage() {
           </div>
           <div className={styles['layout-content']}>
               <Card>
-                  {showManagePanel && <GroupManagePanel groupId={groupId}/>}
+                  {/*{showManagePanel && <GroupManagePanel groupId={groupId}/>}*/}
               </Card>
           </div>
 

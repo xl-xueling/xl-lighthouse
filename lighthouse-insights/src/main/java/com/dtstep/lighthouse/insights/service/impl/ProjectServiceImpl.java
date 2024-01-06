@@ -1,9 +1,11 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.util.TreeViewUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
+import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
@@ -11,6 +13,7 @@ import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
+import com.dtstep.lighthouse.insights.util.TreeUtil;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +51,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StatDao statDao;
 
     @Transactional
     @Override
@@ -149,5 +155,29 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public int deleteById(Integer id) {
         return projectDao.deleteById(id);
+    }
+
+    @Override
+    public List<CommonTreeNode> getStructure(Project project) {
+        Integer id = project.getId();
+        List<CommonTreeNode> nodeList = new ArrayList<>();
+        CommonTreeNode commonTreeNode = new CommonTreeNode(String.valueOf(id),project.getTitle(),String.valueOf(0),"1");
+        List<Group> groupList = groupDao.queryByProjectId(id);
+        if(CollectionUtils.isNotEmpty(groupList)){
+            for(Group group : groupList){
+                CommonTreeNode groupNode = new CommonTreeNode(String.valueOf(group.getId()),group.getToken(),String.valueOf(id),"2");
+                nodeList.add(groupNode);
+            }
+            List<Stat> statList = statDao.queryByProjectId(id);
+            if(CollectionUtils.isNotEmpty(statList)){
+                for(Stat stat : statList){
+                    CommonTreeNode groupNode = new CommonTreeNode(String.valueOf(stat.getId()),stat.getTitle(),String.valueOf(stat.getGroupId()),"3");
+                    nodeList.add(groupNode);
+                }
+            }
+        }
+        nodeList.add(commonTreeNode);
+        List<CommonTreeNode> structure = TreeUtil.buildTree(nodeList,"0");
+        return structure;
     }
 }

@@ -13,6 +13,8 @@ public class CommonTreeNode implements Serializable {
 
     private String type;
 
+    private List<CommonTreeNode> children;
+
     public CommonTreeNode(){}
 
     public CommonTreeNode(String id,String name,String pid,String type){
@@ -21,8 +23,6 @@ public class CommonTreeNode implements Serializable {
         this.pid = pid;
         this.type = type;
     }
-
-    private List<CommonTreeNode> children;
 
     public String getId() {
         return id;

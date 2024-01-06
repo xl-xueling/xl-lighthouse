@@ -79,4 +79,9 @@ public class StatServiceImpl implements StatService {
     public Stat queryById(Integer id) {
         return statDao.queryById(id);
     }
+
+    @Override
+    public List<Stat> queryByProjectId(Integer projectId) {
+        return statDao.queryByProjectId(projectId);
+    }
 }
