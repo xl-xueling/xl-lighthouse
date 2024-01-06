@@ -19,7 +19,7 @@ public interface ProjectService {
 
     List<CommonTreeNode> getStructure(Project project);
 
-    int deleteById(Integer id);
+    int delete(Project project);
 
     ListData<ProjectDto> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize);
 
