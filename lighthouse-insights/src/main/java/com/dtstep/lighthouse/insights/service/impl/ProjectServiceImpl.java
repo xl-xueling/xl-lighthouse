@@ -100,8 +100,8 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectDto translate(Project project){
         int currentUserId = baseService.getCurrentUserId();
         ProjectDto projectDto = new ProjectDto(project);
-        Role manageRole = roleService.queryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION, project.getId());
-        Role accessRole = roleService.queryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION, project.getId());
+        Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION, project.getId());
+        Role accessRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION, project.getId());
         List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
         if(CollectionUtils.isNotEmpty(adminIds)){
             List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
@@ -112,17 +112,6 @@ public class ProjectServiceImpl implements ProjectService {
         }else if(permissionService.checkUserPermission(currentUserId, accessRole.getId())){
             projectDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
         }
-        List<Group> dtoList = groupDao.queryByProjectId(project.getId());
-        CommonTreeNode treeNode = new CommonTreeNode(String.valueOf(project.getId()),project.getTitle(), "0","1");
-        if(CollectionUtils.isNotEmpty(dtoList)){
-            List<CommonTreeNode> children = new ArrayList<>();
-            treeNode.setChildren(children);
-            for(Group group : dtoList){
-                CommonTreeNode groupNode = new CommonTreeNode(String.valueOf(group.getId()),group.getToken(),String.valueOf(project.getId()),"2");
-                children.add(groupNode);
-            }
-        }
-        projectDto.setStructure(List.of(treeNode));
         return projectDto;
     }
 

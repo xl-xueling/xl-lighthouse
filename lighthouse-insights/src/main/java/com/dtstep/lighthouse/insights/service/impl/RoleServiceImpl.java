@@ -6,6 +6,7 @@ import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -49,7 +50,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role queryRole(RoleTypeEnum roleTypeEnum, Integer resourceId) {
+    @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryRole' + '_' + #roleTypeEnum.roleType + '_' + #resourceId",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    public Role cacheQueryRole(RoleTypeEnum roleTypeEnum, Integer resourceId) {
         return roleDao.queryRole(roleTypeEnum,resourceId);
     }
 

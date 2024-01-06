@@ -14,8 +14,6 @@ public class ProjectDto extends Project {
 
     private List<User> admins;
 
-    private List<CommonTreeNode> structure;
-
     private List<PermissionInfo.PermissionEnum> permissions = new ArrayList<>();
 
     public List<PermissionInfo.PermissionEnum> getPermissions() {
@@ -43,13 +41,5 @@ public class ProjectDto extends Project {
 
     public void setAdmins(List<User> admins) {
         this.admins = admins;
-    }
-
-    public List<CommonTreeNode> getStructure() {
-        return structure;
-    }
-
-    public void setStructure(List<CommonTreeNode> structure) {
-        this.structure = structure;
     }
 }

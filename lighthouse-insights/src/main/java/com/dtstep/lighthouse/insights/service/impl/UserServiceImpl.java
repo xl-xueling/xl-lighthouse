@@ -123,9 +123,9 @@ public class UserServiceImpl implements UserService {
             List<UserDto> dtoList = new ArrayList<>();
             if(CollectionUtils.isNotEmpty(userList)){
                 int userId = baseService.getCurrentUserId();
-                Role optManageRole = roleService.queryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
+                Role optManageRole = roleService.cacheQueryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
                 boolean hasOptManageRole = permissionService.checkUserPermission(userId,optManageRole.getId());
-                Role systemManageRole = roleService.queryRole(RoleTypeEnum.FULL_MANAGE_PERMISSION,0);
+                Role systemManageRole = roleService.cacheQueryRole(RoleTypeEnum.FULL_MANAGE_PERMISSION,0);
                 boolean hasSysManageRole = permissionService.checkUserPermission(userId,systemManageRole.getId());
                 PermissionInfo.PermissionEnum managePermission = hasOptManageRole? PermissionInfo.PermissionEnum.ManageAble :null;
                 for(int i=0;i<userList.size();i++){

@@ -2,25 +2,19 @@ package com.dtstep.lighthouse.insights.config;
 
 import com.dtstep.lighthouse.common.exception.PermissionException;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
-import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.service.PermissionService;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 @Component
@@ -59,7 +53,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
             Role role = null;
             System.out.println("roleService:" + roleService);
             if(roleTypeEnum == RoleTypeEnum.OPT_MANAGE_PERMISSION){
-                role = roleService.queryRole(roleTypeEnum,0);
+                role = roleService.cacheQueryRole(roleTypeEnum,0);
             }else{
                 return false;
             }
