@@ -6,6 +6,8 @@ import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.service.ProjectService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @ControllerAdvice
 public class ProjectController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
 
     @Autowired
     private ProjectService projectService;
@@ -40,8 +44,9 @@ public class ProjectController {
         return ResultData.success(listData);
     }
 
+
     @RequestMapping("/project/updateById")
-    public ResultData<Integer> updateById(@RequestBody Project updateParam) {
+    public ResultData<Integer> updateById(@Validated @RequestBody Project updateParam) {
         int id = projectService.update(updateParam);
         if(id > 0){
             return ResultData.success(id);

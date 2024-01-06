@@ -3,6 +3,8 @@ package com.dtstep.lighthouse.insights.controller;
 import com.dtstep.lighthouse.common.exception.PermissionException;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.ResultData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,11 +16,13 @@ import javax.validation.UnexpectedTypeException;
 @ControllerAdvice
 public class DefaultExceptionHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(DefaultExceptionHandler.class);
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
     public Object globalErrorHandler(HttpServletRequest request, MethodArgumentNotValidException e)
     {
-        e.printStackTrace();
+        logger.info(e.getMessage());
         return ResultData.failed(ResultCode.paramValidateFailed);
     }
 
@@ -26,7 +30,7 @@ public class DefaultExceptionHandler {
     @ResponseBody
     public Object globalPermissionExceptionHandler(HttpServletRequest request, PermissionException e)
     {
-        e.printStackTrace();
+        logger.info(e.getMessage());
         return ResultData.failed(ResultCode.accessDenied);
     }
 
@@ -34,7 +38,7 @@ public class DefaultExceptionHandler {
     @ResponseBody
     public Object globalErrorHandler(HttpServletRequest request, UnexpectedTypeException e)
     {
-        e.printStackTrace();
+        logger.info(e.getMessage());
         return ResultData.failed(ResultCode.paramValidateFailed);
     }
 
