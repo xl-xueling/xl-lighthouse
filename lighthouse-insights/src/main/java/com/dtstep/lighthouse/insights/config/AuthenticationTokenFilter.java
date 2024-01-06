@@ -56,7 +56,9 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
         SeedAuthenticationToken authentication = new SeedAuthenticationToken(id,seed);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        filterChain.doFilter(request, response);
+        HttpServletRequest req = (HttpServletRequest)request;
+        RepeatableRequestWrapper requestWrapper  = new RepeatableRequestWrapper(req);
+        filterChain.doFilter(requestWrapper, response);
 
     }
 

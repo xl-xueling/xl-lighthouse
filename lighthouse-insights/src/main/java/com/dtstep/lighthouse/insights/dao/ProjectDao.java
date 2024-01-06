@@ -15,6 +15,8 @@ public interface ProjectDao {
 
     Project queryById(Integer id);
 
+    int deleteById(Integer id);
+
     List<Project> queryList(ProjectQueryParam queryParam,Integer pageNum,Integer pageSize);
 
     int countByDepartmentId(Integer departmentId);

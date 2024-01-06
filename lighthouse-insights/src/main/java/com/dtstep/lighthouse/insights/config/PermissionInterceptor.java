@@ -1,11 +1,16 @@
 package com.dtstep.lighthouse.insights.config;
 
 import com.dtstep.lighthouse.common.exception.PermissionException;
+import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.service.PermissionService;
 import com.dtstep.lighthouse.insights.service.RoleService;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +20,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class PermissionInterceptor implements HandlerInterceptor {
@@ -28,6 +35,8 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+//        RepeatableRequestWrapper repeatableRequestWrapper = new RepeatableRequestWrapper(request);
+//        request = repeatableRequestWrapper;
         System.out.println("Request URI:" + request.getRequestURI());
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -35,7 +44,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
             if (method.isAnnotationPresent(AuthPermission.class)) {
                 AuthPermission[] authPermissions = method.getDeclaredAnnotationsByType(AuthPermission.class);
                 for(AuthPermission authPermission : authPermissions){
-                    if(!hasPermission(authPermission)){
+                    if(!hasPermission(authPermission,request)){
                         throw new PermissionException();
                     }
                 }
@@ -44,21 +53,43 @@ public class PermissionInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private boolean hasPermission(AuthPermission authPermission) {
+    private boolean hasPermission(AuthPermission authPermission,HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         RoleTypeEnum roleTypeEnum = authPermission.roleTypeEnum();
         String relatedParam = authPermission.relationParam();
         if(authentication.getClass() == SeedAuthenticationToken.class){
             Integer userId = ((SeedAuthenticationToken) authentication).getUserId();
             Role role = null;
-            System.out.println("roleService:" + roleService);
             if(roleTypeEnum == RoleTypeEnum.OPT_MANAGE_PERMISSION){
                 role = roleService.cacheQueryRole(roleTypeEnum,0);
-            }else{
-                return false;
+            }else if(roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION){
+                role = roleService.cacheQueryRole(roleTypeEnum,0);
+            }else if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
+                int id = getRelateParam(request,authPermission.relationParam());
+                if(id != 0){
+                    role = roleService.cacheQueryRole(roleTypeEnum,id);
+                }
             }
+            Validate.notNull(role);
             return permissionService.checkUserPermission(userId,role.getId());
         }
         return false;
+    }
+
+    private int getRelateParam(HttpServletRequest request,String relateParam){
+        int id = 0;
+        try{
+            System.out.println("request class is:" + request);
+            InputStream inputStream = request.getInputStream();
+            String requestBody = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+            if(StringUtil.isNotEmpty(requestBody)){
+                JsonNode objectNode = JsonUtil.readTree(requestBody);
+                id = objectNode.get(relateParam).asInt();
+                System.out.println("id is:" + id);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return id;
     }
 }

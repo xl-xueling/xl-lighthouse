@@ -7,7 +7,7 @@ import {
   PaginationProps,
   Space,
   Table,
-  Message, Breadcrumb,
+  Message, Breadcrumb, Notification,
 } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
@@ -24,6 +24,7 @@ import Detail from "@/pages/project/list/detail";
 import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
 import ProjectApplyModal from "@/pages/project/apply";
 import {IconHome} from "@arco-design/web-react/icon";
+import {GlobalErrorCodes} from "@/utils/constants";
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function Index() {
@@ -105,19 +106,17 @@ export default function Index() {
     setBindedVisible(true);
   };
 
-
   const handlerDeleteProject = async (id: number) => {
-    try{
-      const result = await requestDeleteById(id);
-      if(result.code == '0'){
-        Message.success("删除工程成功！");
+    await requestDeleteById({id}).then((response) => {
+      const {code, data ,message} = response;
+      if(code == '0'){
+        Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
       }else{
-        Message.error(result.message || "System Error!");
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
       }
-    }catch (error){
+    }).catch((error) => {
       console.log(error);
-      Message.error("System Error!");
-    }
+    })
   };
 
   useEffect(() => {
