@@ -142,7 +142,7 @@ public class OrderServiceImpl implements OrderService {
         for(Integer roleId : roleIds){
             PermissionQueryParam permissionQueryParam = new PermissionQueryParam();
             permissionQueryParam.setRoleId(roleId);
-            permissionQueryParam.setOwnerType(1);
+            permissionQueryParam.setOwnerType(OwnerTypeEnum.USER);
             List<User> admins = new ArrayList<>();
             List<Permission> permissions = permissionDao.queryList(permissionQueryParam,1,4);
             if(CollectionUtils.isNotEmpty(permissions)){

@@ -9,6 +9,7 @@ import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,13 +71,15 @@ public class ProjectController {
     @RequestMapping("/project/deleteById")
     public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) {
         Integer id = idParam.getId();
+        Project project = projectService.queryById(id);
+        Validate.notNull(project);
         GroupQueryParam queryParam = new GroupQueryParam();
         queryParam.setProjectId(id);
         int groupCount = groupService.count(queryParam);
         if(groupCount > 0){
             return ResultData.failed(ResultCode.projectDelErrorGroupExist);
         }
-        int result = projectService.deleteById(id);
+        int result = projectService.delete(project);
         if(result > 0){
             return ResultData.success(id);
         }else{

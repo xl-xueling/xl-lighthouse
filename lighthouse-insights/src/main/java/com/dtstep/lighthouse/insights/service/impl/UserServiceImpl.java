@@ -6,6 +6,7 @@ import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
+import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
@@ -148,7 +149,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public int deleteById(int id) {
-        permissionService.deleteByUserId(id);
+        PermissionQueryParam queryParam = new PermissionQueryParam();
+        queryParam.setOwnerId(id);
+        queryParam.setOwnerType(OwnerTypeEnum.USER);
+        permissionService.delete(queryParam);
         return userDao.deleteById(id);
     }
 

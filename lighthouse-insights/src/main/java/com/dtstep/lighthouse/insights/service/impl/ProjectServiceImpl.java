@@ -94,6 +94,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public int update(Project project) {
+        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Project,project.getId(),project.getDepartmentId()));
         return projectDao.update(project);
     }
 
@@ -153,8 +154,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public int deleteById(Integer id) {
-        return projectDao.deleteById(id);
+    public int delete(Project project) {
+        int result = projectDao.deleteById(project.getId());
+        resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Project,project.getId(),project.getDepartmentId()));
+        return result;
     }
 
     @Override

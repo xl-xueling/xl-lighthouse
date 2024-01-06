@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service;
 
+import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Permission;
@@ -10,7 +11,7 @@ public interface PermissionService {
 
     int create(Permission permission);
 
-    int deleteByUserId(Integer userId);
+    int delete(PermissionQueryParam queryParam);
 
     void batchCreate(List<Permission> permissionList);
 

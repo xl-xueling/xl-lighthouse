@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
+import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.dto.RolePair;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
@@ -193,6 +194,12 @@ public class ResourceServiceImpl implements ResourceService {
             String childRoles = childAccessRoles.stream().map(z -> String.valueOf(z.getId())).collect(Collectors.joining(","));
             throw new RoleDefendException("can't delete access role [resourceId:" + resource.getResourceId() + ",roleType:"+resource.getResourceType().name()+"],child roles ["+childRoles+"] exists!" );
         }
+        PermissionQueryParam manageQueryParam = new PermissionQueryParam();
+        manageQueryParam.setRoleId(manageRole.getId());
+        permissionService.delete(manageQueryParam);
+        PermissionQueryParam accessQueryParam = new PermissionQueryParam();
+        accessQueryParam.setRoleId(accessRole.getId());
+        permissionService.delete(accessQueryParam);
         roleService.deleteById(manageRole.getId());
         roleService.deleteById(accessRole.getId());
     }

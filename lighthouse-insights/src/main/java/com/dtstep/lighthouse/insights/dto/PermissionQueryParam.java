@@ -1,10 +1,14 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
+
 public class PermissionQueryParam {
 
     private Integer roleId;
 
-    private Integer ownerType;
+    private Integer ownerId;
+
+    private OwnerTypeEnum ownerType;
 
     public Integer getRoleId() {
         return roleId;
@@ -14,11 +18,19 @@ public class PermissionQueryParam {
         this.roleId = roleId;
     }
 
-    public Integer getOwnerType() {
+    public Integer getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public OwnerTypeEnum getOwnerType() {
         return ownerType;
     }
 
-    public void setOwnerType(Integer ownerType) {
+    public void setOwnerType(OwnerTypeEnum ownerType) {
         this.ownerType = ownerType;
     }
 }

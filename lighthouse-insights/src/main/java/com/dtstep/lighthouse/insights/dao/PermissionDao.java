@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.dao;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Permission;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface PermissionDao {
 
     void batchInsert(List<Permission> list);
 
-    int deleteByUserId(Integer userId);
+    int delete(@Param("queryParam")PermissionQueryParam queryParam);
 
     boolean checkUserPermission(Integer userId, Integer roleId);
 

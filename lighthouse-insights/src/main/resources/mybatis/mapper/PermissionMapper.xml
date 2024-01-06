@@ -59,7 +59,20 @@
     <select id="delete" resultType="Integer">
         delete
         FROM ldp_permission
-        WHERE owner_id = #{ownerId} and owner_type = #{ownerType.ownerType} and role_id = #{roleId}
+        <where>
+            <if test="queryParam.roleId != null">
+                AND role_id = #{queryParam.roleId}
+            </if>
+            <if test="queryParam.ownerId != null">
+                AND owner_id = #{queryParam.ownerId}
+            </if>
+            <if test="queryParam.ownerType != null">
+                AND owner_type = #{queryParam.ownerType}
+            </if>
+            <if test="queryParam.roleId != null">
+                AND role_id = #{queryParam.roleId}
+            </if>
+        </where>
     </select>
 
     <select id="checkUserPermission" resultType="boolean">

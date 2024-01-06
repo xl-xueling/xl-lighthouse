@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
+import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.modal.Permission;
@@ -117,7 +118,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public int deleteByUserId(Integer userId) {
-        return permissionDao.deleteByUserId(userId);
+    public int delete(PermissionQueryParam queryParam) {
+        return 0;
     }
 }
