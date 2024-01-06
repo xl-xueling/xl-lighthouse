@@ -65,18 +65,10 @@
         FROM ldp_department d
         JOIN cte ON cte.id = d.pid
         )
-        select * from (select * from ldp_stat_project
+        select * from (select `title`,`department_id`,`private_type`,`desc`,`create_time`,`update_time` from ldp_stat_project
         <where>
             <if test="queryParam.id!=null">
                 AND id = #{queryParam.id}
-            </if>
-            <if test="queryParam.title != null">
-                AND title LIKE CONCAT('%', #{queryParam.title}, '%')
-            </if>
-            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
-                AND department_id IN(
-                select id from cte
-                )
             </if>
             <if test="queryParam.privateType!=null">
                 AND private_type = #{queryParam.privateType}
@@ -87,10 +79,18 @@
             <if test="queryParam.createEndTime!=null">
                 AND create_time &lt;= #{queryParam.createEndTime}
             </if>
+            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
+                AND department_id IN(
+                select id from cte
+                )
+            </if>
+            <if test="queryParam.title != null">
+                AND title LIKE CONCAT('%', #{queryParam.title}, '%')
+            </if>
         </where>
         ) a
         <if test="queryParam.owner != null">
-            inner join (select resource_id from ldp_role r where r.role_type in ('5')
+            inner join (select resource_id from ldp_role r where r.role_type = '5'
             and r.id IN (select role_id from ldp_permission where owner_id = #{queryParam.owner} and owner_type = '1')) b on a.id = b.resource_id
         </if>
         <bind name="offset" value="(pageNum-1)*pageSize"></bind>

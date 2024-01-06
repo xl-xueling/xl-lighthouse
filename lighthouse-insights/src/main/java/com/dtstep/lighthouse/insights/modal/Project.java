@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Project extends PermissionInfo implements Serializable {
+public class Project implements Serializable {
 
     private Integer id;
 

@@ -7,7 +7,7 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class User extends PermissionInfo implements Serializable {
+public class User implements Serializable {
 
     private Integer id;
 
