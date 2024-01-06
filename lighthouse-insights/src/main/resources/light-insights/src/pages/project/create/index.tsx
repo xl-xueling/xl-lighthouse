@@ -24,6 +24,7 @@ import DepartmentsTransfer from "@/pages/components/transfer/department_transfer
 import UsersTransfer from "@/pages/components/transfer/user_transfer";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
+import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 
 function ProjectCreatePanel({onClose,allDepartInfo}){
     const { userInfo, userLoading } = useSelector((state: GlobalState) => state);
@@ -69,23 +70,16 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
             usersPermission:usersPermission,
             departmentsPermission:departmentsPermission,
         }
-        requestCreate(project).then((result) => {
-            if(result.code === '0'){
-                Notification.info({
-                    style: { width: 420 },
-                    title: 'Notification',
-                    content: t['projectCreate.form.submit.success'],
-                })
+        requestCreate(project).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectCreate.form.submit.success']});
                 setTimeout(() => {
                     window.location.href = "/project/list";
                     setLoading(false);
-                },3000)
+                },2000)
             }else{
-                Notification.warning({
-                    style: { width: 420 },
-                    title: 'Warning',
-                    content: result.message || t['system.error'],
-                })
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
                 setLoading(false);
             }
         }).catch((error) => {
@@ -120,7 +114,7 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
                 >
                     <Form.Item label={t['projectCreate.form.label.title']} field='title' rules={[
                         { required: true, message: t['projectCreate.form.name.errMsg'] , validateTrigger : ['onSubmit']},
-                        { required: true, match: new RegExp(/^[\u4E00-\u9FA5a-zA-Z0-9_()（）【】 \[\]#\s]+$/,"g"),message: t['projectCreate.form.name.validate.errMsg'] , validateTrigger : ['onSubmit']},
+                        { required: true, match: new RegExp(TEXT_BASE_PATTERN_2,"g"),message: t['projectCreate.form.name.validate.errMsg'] , validateTrigger : ['onSubmit']},
                         {
                         required:true,
                         validator: (v, cb) => {

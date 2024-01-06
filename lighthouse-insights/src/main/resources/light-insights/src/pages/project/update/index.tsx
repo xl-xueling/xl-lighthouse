@@ -10,7 +10,7 @@ import {getTextBlenLength} from "@/utils/util";
 import {ArcoFlatNode, Department, Project, User} from "@/types/insights-web";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import {GlobalErrorCodes} from "@/utils/constants";
+import {GlobalErrorCodes, TEXT_BASE_PATTERN_2} from "@/utils/constants";
 
 export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose}){
 
@@ -54,9 +54,11 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose}){
                 },2000)
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+                setLoading(false);
             }
         }).catch((error) => {
             console.log(error);
+            setLoading(false);
         })
     }
 
@@ -75,7 +77,7 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose}){
                 scrollToFirstError>
                     <Form.Item label='Title' field='title' rules={[
                         { required: true, message: t['projectUpdate.form.name.errMsg'] , validateTrigger : ['onSubmit']},
-                        { required: true, match: new RegExp(/^[\u4E00-\u9FA5a-zA-Z0-9_()（）【】 \[\]#\s]+$/,"g"),message: t['projectUpdate.form.name.validate.errMsg'] , validateTrigger : ['onSubmit']},
+                        { required: true, match: new RegExp(TEXT_BASE_PATTERN_2,"g"),message: t['projectUpdate.form.name.validate.errMsg'] , validateTrigger : ['onSubmit']},
                         {
                             required:true,
                             validator: (v, cb) => {
