@@ -30,7 +30,7 @@ const BreadcrumbItem = Breadcrumb.Item;
 export default function Index() {
   const t = useLocale(locale);
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
-  const [listData, setListData] = useState([]);
+  const [listData, setListData] = useState<Project[]>([]);
   const [owner, setOwner] = useState(true);
   const [selectedProject,setSelectedProject] = useState<Project>(null);
   const [form] = useForm();
@@ -111,6 +111,8 @@ export default function Index() {
       const {code, data ,message} = response;
       if(code == '0'){
         Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
+        const updatedList = listData.filter(x => x.id != id);
+        setListData(updatedList);
       }else{
         Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
       }

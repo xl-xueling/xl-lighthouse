@@ -70,7 +70,8 @@ public class ProjectController {
         if(groupCount > 0){
             return ResultData.failed(ResultCode.projectDelErrorGroupExist);
         }
-        if(id > 0){
+        int result = projectService.deleteById(id);
+        if(result > 0){
             return ResultData.success(id);
         }else{
             return ResultData.failed(ResultCode.systemError);
