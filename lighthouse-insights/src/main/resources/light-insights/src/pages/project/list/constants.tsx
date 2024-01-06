@@ -6,6 +6,10 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
 import {formatTimeStamp, getRandomString} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
+import { CiLock } from "react-icons/ci";
+import { LuLock } from "react-icons/lu";
+import { PiLockBold } from "react-icons/pi";
+import {RiAppsLine} from "react-icons/ri";
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
@@ -29,8 +33,10 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
       dataIndex: 'title',
       render: (value,record) =>
       {
-          return (<div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} >
-              <Text>{value}</Text></div>)
+          return (
+              <div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} >
+                  <span style={{display:"inline-flex",alignItems:"center"}}>{value}{record.privateType == 0 ?<CiLock style={{marginLeft:'5px'}}/>:null}</span>
+              </div>)
       }
               ,
     },

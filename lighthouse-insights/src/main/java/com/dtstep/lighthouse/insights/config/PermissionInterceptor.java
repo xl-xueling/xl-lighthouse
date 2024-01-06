@@ -78,17 +78,25 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
     private int getRelateParam(HttpServletRequest request,String relateParam){
         int id = 0;
+        InputStream inputStream = null;
         try{
-            System.out.println("request class is:" + request);
-            InputStream inputStream = request.getInputStream();
+            inputStream = request.getInputStream();
             String requestBody = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
             if(StringUtil.isNotEmpty(requestBody)){
                 JsonNode objectNode = JsonUtil.readTree(requestBody);
                 id = objectNode.get(relateParam).asInt();
-                System.out.println("id is:" + id);
+                return id;
             }
         }catch (Exception ex){
             ex.printStackTrace();
+        }finally {
+            if(inputStream != null){
+                try{
+                    inputStream.close();
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
         }
         return id;
     }
