@@ -1,10 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.insights.dto.ChangePasswordParam;
-import com.dtstep.lighthouse.insights.dto.ChangeUserStateParam;
-import com.dtstep.lighthouse.insights.dto.UserQueryParam;
-import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.modal.User;
 
 import java.util.List;
@@ -29,7 +26,7 @@ public interface UserService {
 
     int deleteById(int userId);
 
-    ListData<User> queryList(UserQueryParam queryParam,Integer pageNum,Integer pageSize);
+    ListData<UserDto> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize);
 
     int count(UserQueryParam queryParam);
 }

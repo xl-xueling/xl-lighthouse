@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -111,12 +112,20 @@ public class UserServiceImpl implements UserService {
         return userDao.queryByUserName(userName);
     }
 
+    private UserDto translate(User user,PermissionInfo.PermissionEnum editPermission,PermissionInfo.PermissionEnum deletePermission){
+        UserDto userDto = new UserDto(user);
+        userDto.addPermission(editPermission);
+        userDto.addPermission(deletePermission);
+        return userDto;
+    }
+
     @Override
-    public ListData<User> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize) {
+    public ListData<UserDto> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        ListData<User> listData = null;
+        ListData<UserDto> listData = null;
         try{
             List<User> userList = userDao.queryList(queryParam);
+            List<UserDto> dtoList = new ArrayList<>();
             if(CollectionUtils.isNotEmpty(userList)){
                 int userId = baseService.getCurrentUserId();
                 Role optManageRole = roleService.queryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
@@ -125,12 +134,12 @@ public class UserServiceImpl implements UserService {
                 boolean hasSysManageRole = permissionService.checkUserPermission(userId,systemManageRole.getId());
                 PermissionInfo.PermissionEnum editPermission = hasOptManageRole? PermissionInfo.PermissionEnum.EditAble:null;
                 PermissionInfo.PermissionEnum deletePermission = hasSysManageRole? PermissionInfo.PermissionEnum.DeleteAble:null;
-                for(User user : userList){
-                    user.addPermission(editPermission);
-                    user.addPermission(deletePermission);
+                for(int i=0;i<userList.size();i++){
+                    UserDto userDto = translate(userList.get(i),editPermission,deletePermission);
+                    dtoList.add(userDto);
                 }
             }
-            listData = baseService.translateToListData(userList);
+            listData = baseService.translateToListData(dtoList);
         }finally {
             PageHelper.clearPage();
         }
