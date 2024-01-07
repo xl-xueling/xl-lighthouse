@@ -28,9 +28,15 @@ public class GroupController {
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @RequestMapping("/group/create")
     public ResultData<Integer> register(@Validated @RequestBody Group createParam) {
-        GroupQueryParam queryParam = new GroupQueryParam();
-        queryParam.setProjectId(createParam.getProjectId());
-        int groupCount = groupService.count(queryParam);
+        GroupQueryParam countByTokenParam = new GroupQueryParam();
+        countByTokenParam.setToken(createParam.getToken());
+        int tokenCount = groupService.count(countByTokenParam);
+        if(tokenCount > 0){
+            return ResultData.failed(ResultCode.createGroupTokenExist);
+        }
+        GroupQueryParam countByProjectParam = new GroupQueryParam();
+        countByProjectParam.setProjectId(createParam.getProjectId());
+        int groupCount = groupService.count(countByProjectParam);
         if(groupCount > SystemConstant.PROJECT_MAX_GROUP_SIZE){
             return ResultData.failed(ResultCode.createGroupUnderProjectExceedLimit);
         }

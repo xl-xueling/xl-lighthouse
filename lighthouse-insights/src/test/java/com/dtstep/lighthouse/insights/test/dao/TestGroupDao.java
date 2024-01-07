@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
+import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.insights.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.insights.enums.LimitedStrategyEnum;
 import com.dtstep.lighthouse.insights.modal.*;
@@ -67,5 +68,13 @@ public class TestGroupDao {
         Integer projectId = 11040;
         List<Group> groupList = groupDao.queryByProjectId(projectId);
         System.out.println("groupList:" + JsonUtil.toJSONString(groupList));
+    }
+
+    @Test
+    public void testCount() throws Exception {
+        GroupQueryParam queryParam = new GroupQueryParam();
+        queryParam.setToken("homepage_avg_stat2");
+        int size = groupDao.count(queryParam);
+        System.out.println("size:" + size);
     }
 }
