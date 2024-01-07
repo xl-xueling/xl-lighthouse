@@ -108,7 +108,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       title: 'Type',
       dataIndex: 'type',
       editable: true,
-      initValue:"number",
+      initValue:"string",
       componentType:EditTableComponentEnum.SELECT,
       headerCellStyle: { width:'130px'},
       render:(text, record) => {
@@ -127,7 +127,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
                     onBlur={() => {
                       setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
                     }}
-                          defaultValue={"number"}>
+                          defaultValue={"string"}>
               <Select.Option key={"string"}  value={"string"} onClick={() => {
                 setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
               }}>
@@ -197,10 +197,8 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
                 <Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>
               </Grid.Col>
             </Grid.Row>
-
             <EditTable ref={editTableRef} columnsProps={columnsProps} columnsData={columnsData}/>
           </Form.Item>
-
           <Typography.Title
               style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
           >
