@@ -1,7 +1,7 @@
 import {
     AutoComplete, Button,
     Form, Grid, Icon, Input, Message,
-    Modal, Select, Typography,
+    Modal, Notification, Select, Typography,
 } from '@arco-design/web-react';
 import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -22,8 +22,9 @@ import Draggable from 'react-draggable';
 import { MdOutlineDragIndicator } from "react-icons/md";
 import {Project, Stat} from "@/types/insights-web";
 import {requestCreate} from "@/api/stat";
+import {GlobalErrorCodes} from "@/utils/constants";
 
-export default function StatAddPanel({groupInfo,onClose}) {
+export default function StatAddPanel({projectInfo,groupInfo,onClose}) {
 
     const [loading,setLoading] = useState<boolean>(false);
     const t = useLocale(locale);
@@ -99,19 +100,18 @@ export default function StatAddPanel({groupInfo,onClose}) {
             timeparam:values.timeparam,
             desc:values.desc,
         }
-        console.log("stat is:" + JSON.stringify(stat));
-        requestCreate(stat).then((result) => {
-            if(result.code === '0'){
-                Message.success(t['projectCreate.form.submit.success']);
-                // setTimeout(() => {
-                //     window.location.href = "/project/list";
-                // },3000)
+        setLoading(true);
+        requestCreate(stat).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['statCreate.form.submit.success']});
             }else{
-                Message.error(result.message || t['system.error']);
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
+            onClose();
         }).catch((error) => {
             console.log(error);
-            Message.error(t['system.error'])
+            Notification.error({style: { width: 420 }, title: 'Warning', content: t['system.error']});
         }).finally(() => {
             setLoading(false);
         })
@@ -153,7 +153,7 @@ export default function StatAddPanel({groupInfo,onClose}) {
                 wrapperCol={{ span: 20 }}
                 layout={"vertical"}
                 initialValues={{
-                    group:'['+groupInfo.project?.title +']' + groupInfo.token,
+                    group:projectInfo?.title + ' : ' + groupInfo.token,
                     timeparam:'1-day',
                     expired:1209600,
                 }}

@@ -157,7 +157,7 @@ export default function ProjectManage() {
               </Space>
           </div>
           <div className={styles['layout-content']}>
-              {showManagePanel && <Card><GroupManagePanel groupId={groupId}/></Card>}
+              {showManagePanel && <Card><GroupManagePanel projectInfo={projectInfo} groupId={groupId}/></Card>}
           </div>
           {showGroupCreatePanel && <GroupCreateModal projectId={id} callback={callback} onClose={() => setShowGroupCreatePanel(false)}/>}
       </div>

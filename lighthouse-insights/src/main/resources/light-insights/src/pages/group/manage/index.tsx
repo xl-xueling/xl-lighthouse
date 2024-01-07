@@ -32,7 +32,7 @@ import { RiShieldKeyholeLine } from "react-icons/ri";
 import {GlobalErrorCodes} from "@/utils/constants";
 
 
-export default function GroupManagePanel({groupId}) {
+export default function GroupManagePanel({projectInfo,groupId}) {
     const TabPane = Tabs.TabPane;
     const { Text } = Typography;
     const [showStatAddPanel, setShowsStatAddPanel] = useState(false);
@@ -154,7 +154,7 @@ export default function GroupManagePanel({groupId}) {
                         <GroupBasicPanel groupInfo={groupInfo}/>
                     </TabPane>
                 </Tabs>
-                {showStatAddPanel && <StatCreatePanel groupInfo={groupInfo} onClose={() => setShowsStatAddPanel(false)}/>}
+                {showStatAddPanel && <StatCreatePanel projectInfo={projectInfo} groupInfo={groupInfo} onClose={() => setShowsStatAddPanel(false)}/>}
                 {showGroupEditPanel && <GroupEditPanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)}/>}
             </Spin>
         </>);
