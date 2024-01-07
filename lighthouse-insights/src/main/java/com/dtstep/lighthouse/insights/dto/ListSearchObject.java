@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.dto;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 
 public class ListSearchObject<T> implements Serializable {
 
