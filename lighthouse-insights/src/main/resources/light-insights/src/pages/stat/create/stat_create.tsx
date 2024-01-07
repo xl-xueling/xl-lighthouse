@@ -99,6 +99,7 @@ export default function StatAddPanel({groupInfo,onClose}) {
             timeparam:values.timeparam,
             desc:values.desc,
         }
+        console.log("stat is:" + JSON.stringify(stat));
         requestCreate(stat).then((result) => {
             if(result.code === '0'){
                 Message.success(t['projectCreate.form.submit.success']);
@@ -153,8 +154,9 @@ export default function StatAddPanel({groupInfo,onClose}) {
                 layout={"vertical"}
                 initialValues={{
                     group:'['+groupInfo.project?.title +']' + groupInfo.token,
+                    timeparam:'1-day',
+                    expired:1209600,
                 }}
-                // onValuesChange={onValuesChange}
             >
                 <Typography.Title
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
@@ -190,18 +192,24 @@ export default function StatAddPanel({groupInfo,onClose}) {
                     {'TimeParam: '}
                 </Typography.Title>
                 <FormItem field='timeparam' rules={[{ required: true }]}>
-                    <Select placeholder='Please Select' allowClear defaultValue={1}>
+                    <Select placeholder='Please Select' allowClear>
                         <Select.Option value={"1-minute"}>
                             1-minute
                         </Select.Option>
                         <Select.Option value={"2-minute"}>
                             2-minute
                         </Select.Option>
-                        <Select.Option value={"3-minute"}>
+                        <Select.Option value={"5-minute"}>
                             5-minute
                         </Select.Option>
-                        <Select.Option value={"4-minute"}>
-                            2-hour
+                        <Select.Option value={"10-minute"}>
+                            10-minute
+                        </Select.Option>
+                        <Select.Option value={"1-hour"}>
+                            1-hour
+                        </Select.Option>
+                        <Select.Option value={"1-day"}>
+                            1-day
                         </Select.Option>
                     </Select>
                 </FormItem>
@@ -212,18 +220,30 @@ export default function StatAddPanel({groupInfo,onClose}) {
                     {'Expired: '}
                 </Typography.Title>
                 <FormItem field='expired' rules={[{ required: true }]}>
-                    <Select placeholder='Please Select' allowClear defaultValue={1}>
-                        <Select.Option key={1} value={1}>
+                    <Select placeholder='Please Select' allowClear>
+                        <Select.Option value={604800}>
                             7 Day
                         </Select.Option>
-                        <Select.Option key={2} value={2}>
+                        <Select.Option value={1209600}>
                             14 Day
                         </Select.Option>
-                        <Select.Option key={3} value={3}>
+                        <Select.Option value={2592000}>
                             1 Month
                         </Select.Option>
-                        <Select.Option key={4} value={4}>
-                            2 Month
+                        <Select.Option value={7776000}>
+                            3 Month
+                        </Select.Option>
+                        <Select.Option value={15552000}>
+                            6 Month
+                        </Select.Option>
+                        <Select.Option value={31104000}>
+                            12 Month
+                        </Select.Option>
+                        <Select.Option value={62208000}>
+                            24 Month
+                        </Select.Option>
+                        <Select.Option value={93312000}>
+                            36 Month
                         </Select.Option>
                     </Select>
                 </FormItem>
@@ -240,10 +260,7 @@ export default function StatAddPanel({groupInfo,onClose}) {
                 >
                     {'Description: '}
                 </Typography.Title>
-                <Form.Item field="desc" rules={[
-                    { required: true, message: t['register.form.password.errMsg'], validateTrigger : ['onSubmit'] },
-                    { required: true, match: new RegExp(/^[^￥{}【】#@=^&|《》]{0,200}$/,"g"),message: t['register.form.userName.validate.errMsg'] , validateTrigger : ['onSubmit']},
-                ]}>
+                <Form.Item field="desc">
                     <Input.TextArea maxLength={200} rows={3}  showWordLimit={true}/>
                 </Form.Item>
             </Form>

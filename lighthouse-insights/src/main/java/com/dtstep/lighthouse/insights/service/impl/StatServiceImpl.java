@@ -8,9 +8,12 @@ import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto.StatDto;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
+import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.modal.Project;
+import com.dtstep.lighthouse.insights.modal.Resource;
 import com.dtstep.lighthouse.insights.modal.Stat;
+import com.dtstep.lighthouse.insights.service.ResourceService;
 import com.dtstep.lighthouse.insights.service.StatService;
 import com.dtstep.lighthouse.insights.template.TemplateContext;
 import com.dtstep.lighthouse.insights.template.TemplateParser;
@@ -35,6 +38,9 @@ public class StatServiceImpl implements StatService {
     @Autowired
     private ProjectDao projectDao;
 
+    @Autowired
+    private ResourceService resourceService;
+
     @Override
     public int create(Stat stat) {
         int groupId = stat.getGroupId();
@@ -43,7 +49,6 @@ public class StatServiceImpl implements StatService {
         String timeParam = stat.getTimeparam();
         try{
             TemplateEntity templateEntity = TemplateParser.parse(new TemplateContext(template,timeParam, group.getColumns()));
-            System.out.println("templateEntity:" + templateEntity);
             stat.setTitle(templateEntity.getTitle());
         }catch (Exception ex){
             ex.printStackTrace();
@@ -51,9 +56,12 @@ public class StatServiceImpl implements StatService {
         LocalDateTime localDateTime = LocalDateTime.now();
         stat.setUpdateTime(localDateTime);
         stat.setCreateTime(localDateTime);
-        stat.setState(StatStateEnum.FROZEN);
+        stat.setState(StatStateEnum.RUNNING);
         stat.setRandomId(UUID.randomUUID().toString());
-        return statDao.insert(stat);
+        statDao.insert(stat);
+        int id = stat.getId();
+        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Stat,id,stat.getGroupId()));
+        return id;
     }
 
     @Override
