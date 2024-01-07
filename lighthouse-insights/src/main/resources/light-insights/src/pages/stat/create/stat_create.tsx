@@ -23,6 +23,7 @@ import { MdOutlineDragIndicator } from "react-icons/md";
 import {Project, Stat} from "@/types/insights-web";
 import {requestCreate} from "@/api/stat";
 import {GlobalErrorCodes} from "@/utils/constants";
+import {StatExpiredEnum} from "@/types/insights-common";
 
 export default function StatAddPanel({projectInfo,groupInfo,onClose}) {
 
@@ -221,28 +222,28 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose}) {
                 </Typography.Title>
                 <FormItem field='expired' rules={[{ required: true }]}>
                     <Select placeholder='Please Select' allowClear>
-                        <Select.Option value={604800}>
+                        <Select.Option value={StatExpiredEnum.Week_1}>
                             7 Day
                         </Select.Option>
-                        <Select.Option value={1209600}>
+                        <Select.Option value={StatExpiredEnum.Week_2}>
                             14 Day
                         </Select.Option>
-                        <Select.Option value={2592000}>
+                        <Select.Option value={StatExpiredEnum.MONTH_1}>
                             1 Month
                         </Select.Option>
-                        <Select.Option value={7776000}>
+                        <Select.Option value={StatExpiredEnum.MONTH_3}>
                             3 Month
                         </Select.Option>
-                        <Select.Option value={15552000}>
+                        <Select.Option value={StatExpiredEnum.MONTH_6}>
                             6 Month
                         </Select.Option>
-                        <Select.Option value={31104000}>
+                        <Select.Option value={StatExpiredEnum.MONTH_12}>
                             12 Month
                         </Select.Option>
-                        <Select.Option value={62208000}>
+                        <Select.Option value={StatExpiredEnum.MONTH_24}>
                             24 Month
                         </Select.Option>
-                        <Select.Option value={93312000}>
+                        <Select.Option value={StatExpiredEnum.MONTH_36}>
                             36 Month
                         </Select.Option>
                     </Select>

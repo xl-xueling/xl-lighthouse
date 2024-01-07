@@ -85,3 +85,26 @@ export interface FilterComponent {
     renderType?:number,
     config?:any,
 }
+
+export enum StatExpiredEnum {
+    Week_1=604800,
+    Week_2=1209600,
+    MONTH_1=2592000,
+    MONTH_2=5184000,
+    MONTH_3=7776000,
+    MONTH_6=15552000,
+    MONTH_12=31104000,
+    MONTH_24=62208000,
+    MONTH_36=93312000,
+}
+
+export enum StatStateEnum {
+    PENDING=0,
+    RUNNING=1,
+    STOPPED=2,
+    LIMITING=3,
+    DELETED=4,
+    REJECTED=5,
+    FROZEN=6,
+    INVALID=7,
+}
