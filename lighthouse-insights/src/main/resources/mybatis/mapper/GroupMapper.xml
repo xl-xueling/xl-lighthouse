@@ -58,6 +58,9 @@
             <if test="queryParam.projectId != null">
                 AND project_id = #{queryParam.projectId}
             </if>
+            <if test="queryParam.token != null">
+                AND token = #{queryParam.token}
+            </if>
         </where>
     </select>
 

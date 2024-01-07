@@ -8,6 +8,8 @@ public class GroupQueryParam implements Serializable {
 
     private Integer projectId;
 
+    private String token;
+
     public Integer getId() {
         return id;
     }
@@ -22,5 +24,13 @@ public class GroupQueryParam implements Serializable {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -46,6 +46,8 @@ public enum ResultCode {
 
     createGroupUnderProjectExceedLimit("2001","createGroupUnderProjectExceedLimit"),
 
+    createGroupTokenExist("2001","createGroupTokenExist"),
+
     ;
 
     ResultCode(String code , String i18nLabel){
