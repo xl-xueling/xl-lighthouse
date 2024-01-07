@@ -140,7 +140,6 @@ export default function StatAddPanel({groupInfo,onClose}) {
             </>}
             visible={true}
             confirmLoading={loading}
-            maskClosable={false}
             onCancel={onClose}
             onOk={handlerSubmit}
             modalRender={(modal) => <Draggable bounds="parent" handle=".modal-draggable-handle" disabled={false}>{modal}</Draggable>}

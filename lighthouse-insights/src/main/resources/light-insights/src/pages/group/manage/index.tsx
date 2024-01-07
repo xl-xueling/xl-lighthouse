@@ -144,7 +144,7 @@ export default function GroupManagePanel({groupId}) {
                                 </Col>
                             </Row>
                         </Form>
-                        {/*{groupInfo && <StatisticalListPanel formParams={formParams} from={"group-manage"} />}*/}
+                        <StatisticalListPanel formParams={formParams} from={"group-manage"}/>
                     </TabPane>
                     <TabPane key='3' title={
                         <span style={{display:"inline-flex",alignItems:"center"}}>
