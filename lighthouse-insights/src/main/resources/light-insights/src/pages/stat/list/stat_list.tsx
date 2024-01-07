@@ -69,8 +69,11 @@ export default function StatisticalListPanel({formParams,from = null}) {
                 }
                 proc().then();
             })
-
-            const {list,total}:{list:Array<Stat>,total:number} = (await Promise.all([fetchStatsInfo]))[0];
+            const result = await Promise.all([fetchStatsInfo]);
+            console.log("stat list is:" + JSON.stringify(result))
+            // const {list,total}:{list:Array<Stat>,total:number} = (result)[0];
+            const list = null;
+            const total = 0;
             const combineList = [];
             list?.forEach(z => {
                 const combineItem = {...z ,"key":getRandomString()};
