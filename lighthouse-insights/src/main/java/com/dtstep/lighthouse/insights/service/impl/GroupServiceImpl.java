@@ -30,7 +30,8 @@ public class GroupServiceImpl implements GroupService {
         group.setCreateTime(localDateTime);
         group.setUpdateTime(localDateTime);
         group.setRefreshTime(localDateTime);
-        return groupDao.insert(group);
+        groupDao.insert(group);
+        return group.getId();
     }
 
     @Override

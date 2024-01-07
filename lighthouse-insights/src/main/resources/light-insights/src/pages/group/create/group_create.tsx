@@ -15,6 +15,7 @@ import {IconMinusCircleFill, IconPlus} from "@arco-design/web-react/icon";
 import {formatString, getTextBlenLength, stringifyObj} from "@/utils/util";
 import {requestCreate} from "@/api/group";
 import {Group, Project} from "@/types/insights-web";
+import {GlobalErrorCodes} from "@/utils/constants";
 
 export default function GroupCreateModal({projectId,callback,onClose}) {
 
@@ -34,7 +35,6 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
     const columns = editTableRef.current.getData();
     if(!columns || columns.length == 0){
       Notification.warning({style: { width: 420 }, title: 'Warning', content: t['groupCreate.form.validate.column.notEmpty.errorMsg']});
-      setConfirmLoading(false);
       return;
     }
     for(let i=0;i<columns.length;i++){
@@ -42,27 +42,22 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       const comment = columns[i].comment;
       if(!name){
         Notification.warning({style: { width: 420 }, title: 'Warning', content: t['groupCreate.form.validate.columnName.notEmpty']});
-        setConfirmLoading(false);
         return;
       }
       if(name.length < 3 || name.length > 15){
         Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupCreate.form.validate.columnName.length.failed'],name)});
-        setConfirmLoading(false);
         return;
       }
       if(!columnNameRegex.test(name)){
         Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupCreate.form.validate.columnName.failed'],name)});
-        setConfirmLoading(false);
         return;
       }
       if(comment && getTextBlenLength(comment) > 50){
         Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupCreate.form.validate.columnComment.length.failed'],name)});
-        setConfirmLoading(false);
         return;
       }
       if(comment && getTextBlenLength(comment) < 3){
         Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupCreate.form.validate.columnComment.length.failed'],name)});
-        setConfirmLoading(false);
         return;
       }
       delete columns[i].key;
@@ -74,16 +69,18 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       columns:columns,
     }
     setConfirmLoading(true);
-    requestCreate(group).then((result) => {
-      if(result.code === '0'){
-        Message.success(t['groupCreate.form.submit.success']);
-        setTimeout(() => {
-          window.location.href = "/project/manage/"+projectId;
-          setConfirmLoading(false);
-        },3000)
+    requestCreate(group).then((response) => {
+      console.log("create group result is:" + JSON.stringify(response));
+      const {code, data ,message} = response;
+      if(code == '0'){
+        Notification.info({style: { width: 420 }, title: 'Notification', content: t['groupCreate.form.submit.success']});
+        group.id = data;
+        callback('create-group',group);
+        onClose();
       }else{
-        Message.error(result.message || t['system.error']);
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
       }
+      setConfirmLoading(false);
     }).catch((error) => {
       console.log(error);
       Message.error(t['system.error'])

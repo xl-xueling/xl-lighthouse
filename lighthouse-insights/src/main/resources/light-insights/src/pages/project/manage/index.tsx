@@ -9,7 +9,7 @@ import {
     Typography
 } from "@arco-design/web-react";
 import GroupManagePanel from "@/pages/group/manage";
-import {Project} from "@/types/insights-web";
+import {ArcoTreeNode, Project, TreeNode} from "@/types/insights-web";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {requestQueryById, requestQueryByIds} from "@/api/project";
 import ProjectManageMenu from "@/pages/project/manage/menu";
@@ -44,10 +44,19 @@ export default function ProjectManage() {
         setShowGroupCreatePanel(true);
     }
 
-    const callback = async (record,type) => {
-        switch (type){
+    const callback = async (operation,data) => {
+        switch (operation){
             case "create-group":
-
+                const newGroup:TreeNode = {
+                    "id":String(data.id),
+                    "name":data.token,
+                    "pid":String(projectInfo.id),
+                    "type":'2',
+                }
+                let groups = projectInfo.structure[0].children?projectInfo.structure[0].children:[];
+                groups = [...groups,newGroup];
+                projectInfo.structure[0].children = groups;
+                setProjectInfo(projectInfo);
                 break;
             default:
                 break;
