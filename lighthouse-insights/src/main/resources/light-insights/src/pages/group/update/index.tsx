@@ -1,26 +1,21 @@
 import {
     Typography,
     Grid,
-    Message, Form, Input, Select, Spin, Modal, Space, Button
+    Message, Form, Input, Select, Spin, Modal, Space, Button, Notification
 } from '@arco-design/web-react';
 import {IconMinusCircleFill, IconPenFill} from '@arco-design/web-react/icon';
 import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 const { Title } = Typography;
 import locale from './locale';
-import styles from './style/index.module.less';
-import AceEditor from "react-ace";
-import {useSelector} from "react-redux";
-import {GlobalState} from "@/store";
-import {Column, Department, Group, Stat, User} from "@/types/insights-web";
-import {requestQueryById} from "@/api/group";
-import {requestQueryByGroupId} from "@/api/stat";
 import EditTable, {
     EditTableColumn,
     EditTableColumnProps,
     EditTableComponentEnum
 } from "@/pages/common/edittable/EditTable";
-import {getRandomString} from "@/utils/util";
+import {formatString, getRandomString, getTextBlenLength} from "@/utils/util";
+import {Group} from "@/types/insights-web";
+import {requestCreate} from "@/api/group";
 const { Row, Col } = Grid;
 
 export default function GroupUpdatePanel({groupInfo,onClose}) {
@@ -32,8 +27,9 @@ export default function GroupUpdatePanel({groupInfo,onClose}) {
     const [loading,setLoading] = useState<boolean>(true);
     const [formInstance] = Form.useForm();
     const [initData,setInitData] = useState(null);
-
+    const formRef = useRef(null);
     const [expandedKeys, setExpandedKeys] = useState([]);
+    const columnNameRegex = /^[a-zA-Z]\w{2,14}$/;
 
     const columnsProps: EditTableColumnProps[]  = [
         {
@@ -47,7 +43,7 @@ export default function GroupUpdatePanel({groupInfo,onClose}) {
             title: 'Type',
             dataIndex: 'type',
             editable: true,
-            initValue:"number",
+            initValue:"string",
             componentType:EditTableComponentEnum.SELECT,
             headerCellStyle: { width:'130px'},
             render:(text, record) => {
@@ -66,7 +62,7 @@ export default function GroupUpdatePanel({groupInfo,onClose}) {
                             onBlur={() => {
                                 setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
                             }}
-                            defaultValue={"number"}>
+                            defaultValue={"string"}>
                         <Select.Option key={"string"}  value={"string"} onClick={() => {
                             setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
                         }}>
@@ -99,6 +95,70 @@ export default function GroupUpdatePanel({groupInfo,onClose}) {
         },
     ];
 
+    const onOk = async() => {
+        await formRef.current.validate();
+        const values = formRef.current.getFieldsValue();
+        const columns = editTableRef.current.getData();
+        if(!columns || columns.length == 0){
+            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['groupUpdate.form.validate.column.notEmpty.errorMsg']});
+            return;
+        }
+        const columnNameArray:string[] = [];
+        for(let i=0;i<columns.length;i++){
+            const name = columns[i].name;
+            const comment = columns[i].comment;
+            if(!name){
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: t['groupUpdate.form.validate.columnName.notEmpty']});
+                return;
+            }
+            if(name.length < 3 || name.length > 15){
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupUpdate.form.validate.columnName.length.failed'],name)});
+                return;
+            }
+            if(!columnNameRegex.test(name)){
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupUpdate.form.validate.columnName.failed'],name)});
+                return;
+            }
+            if(comment && getTextBlenLength(comment) > 50){
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupUpdate.form.validate.columnComment.length.failed'],name)});
+                return;
+            }
+            if(comment && getTextBlenLength(comment) < 3){
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupUpdate.form.validate.columnComment.length.failed'],name)});
+                return;
+            }
+            if(columnNameArray.includes(name)){
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupUpdate.form.validate.columnName.duplicate.failed'],name)});
+                return;
+            }else{
+                columnNameArray.push(name);
+            }
+            delete columns[i].key;
+        }
+        const group:Group = {
+            projectId:groupInfo.projectId,
+            token:values.token,
+            desc:values.desc,
+            columns:columns,
+        }
+        setConfirmLoading(true);
+        requestCreate(group).then((response) => {
+            console.log("update group result is:" + JSON.stringify(response));
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['groupUpdate.form.submit.success']});
+                group.id = data;
+                onClose();
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setConfirmLoading(false);
+        }).catch((error) => {
+            console.log(error);
+            Message.error(t['system.error'])
+        })
+    }
+
     useEffect(() => {
         if(groupInfo != null){
             const formData = {
@@ -116,62 +176,56 @@ export default function GroupUpdatePanel({groupInfo,onClose}) {
     },[groupInfo])
 
     return (
-
         <Modal
-            title='Group Update'
+            title={t['groupUpdate.modal.title']}
+            onOk={onOk}
             visible={true}
-            maskClosable={false}
+            style={{ width:'750px' }}
             confirmLoading={confirmLoading}
-            onCancel={onClose}
-            style={{ width:'50%',top:'20px' }}
-        >
-            <Spin loading={loading} size={20} style={{ display: 'block' }}>
-                <Form
-                    form={formInstance}
-                    className={styles['search-form']}
-                    layout={"vertical"}
-                    autoComplete={'off'}
+            onCancel={onClose}>
+            <Form
+                ref={formRef}
+                autoComplete={"off"}
+                layout={"vertical"}>
+                <Typography.Title
+                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                 >
-                    <Typography.Title
-                        style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                    >
-                        {'Token'}
-                    </Typography.Title>
-                    <Form.Item field="token">
-                        <Input
-                            allowClear
-                            placeholder={'Please Input Token'}
-                        />
-                    </Form.Item>
-                    <Form.Item>
-                        <Grid.Row>
-                            <Grid.Col span={16}>
-                                <Typography.Title
-                                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                                >
-                                    {'Columns'}
-                                </Typography.Title>
-                            </Grid.Col>
-                            <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                                <Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>
-                            </Grid.Col>
-                        </Grid.Row>
-
-                        <EditTable ref={editTableRef} columnsProps={columnsProps} columnsData={initData}/>
-                    </Form.Item>
-                    <Typography.Title
-                        style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                    >
-                        {'Description'}
-                    </Typography.Title>
-                    <Form.Item field="desc">
-                        <Input.TextArea
-                            style={{ minHeight: 18, width: '100%' }}
-                        />
-                    </Form.Item>
-                </Form>
-            </Spin>
+                    {'Token'}
+                </Typography.Title>
+                <Form.Item field="token"
+                           rules={[
+                               { required: true, message: t['groupUpdate.form.validate.token.notEmpty.errorMsg'], validateTrigger : ['onSubmit'] },
+                               { required: true, match: new RegExp(/^[a-z0-9_]{5,25}$/,"g"),message: t['groupUpdate.form.validate.token.failed'] , validateTrigger : ['onSubmit']},
+                           ]}>
+                    <Input
+                        allowClear
+                        placeholder={'Please Input Token'} />
+                </Form.Item>
+                <Form.Item field="columns">
+                    <Grid.Row>
+                        <Grid.Col span={16}>
+                            <Typography.Title
+                                style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}>
+                                {'Columns'}
+                            </Typography.Title>
+                        </Grid.Col>
+                        <Grid.Col span={8} style={{ textAlign: 'right' }}>
+                            <Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>
+                        </Grid.Col>
+                    </Grid.Row>
+                    <EditTable ref={editTableRef} columnsProps={columnsProps} columnsData={initData}/>
+                </Form.Item>
+                <Typography.Title
+                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                >
+                    {'Description'}
+                </Typography.Title>
+                <Form.Item field="desc" rules={[
+                    { required: true, message: t['groupUpdate.form.validate.desc.notEmpty.errorMsg'], validateTrigger : ['onSubmit'] },
+                ]}>
+                    <Input.TextArea maxLength={200} rows={3}  showWordLimit={true}/>
+                </Form.Item>
+            </Form>
         </Modal>
-
     );
 }
