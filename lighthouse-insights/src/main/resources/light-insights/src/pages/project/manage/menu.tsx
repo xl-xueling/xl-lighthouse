@@ -15,10 +15,10 @@ import {IconApps, IconBug, IconBulb, IconFile, IconFolder, IconTag, IconTags} fr
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
 import { CiViewTable } from "react-icons/ci";
-import {ArcoTreeNode} from "@/types/insights-web";
+import {ArcoTreeNode, TreeNode} from "@/types/insights-web";
 import {RiAppsLine} from "react-icons/ri";
 
-export default function ProjectManageMenu({structure,callback}:{structure:Array<ArcoTreeNode>,callback:(id: string) => Promise<void>}) {
+export default function ProjectManageMenu({structure,callback}:{structure:Array<TreeNode>,callback:(id: string) => Promise<void>}) {
 
     const renderMenuItems = (items) => {
         const types = ['1','2'];

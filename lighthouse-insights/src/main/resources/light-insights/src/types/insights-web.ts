@@ -30,6 +30,14 @@ export interface ArcoTreeNode {
     children?:Array<ArcoTreeNode>;
 }
 
+export interface TreeNode {
+    id?: string;
+    name?: string;
+    pid?:string;
+    type?:string;
+    children?:Array<TreeNode>;
+}
+
 export interface ArcoFlatNode {
     key: string;
     title: string;
@@ -56,7 +64,7 @@ export interface Project {
     adminIds?:Array<number>;
     admins?:Array<User>;
     departmentId?:number;
-    structure?:Array<ArcoTreeNode>;
+    structure?:Array<TreeNode>;
     createTime?:number;
     permissions?:PermissionEnum[];
     usersPermission?:number[],

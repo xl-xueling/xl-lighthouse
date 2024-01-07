@@ -84,7 +84,7 @@ export default function ProjectDisplay() {
                 <div className={styles.wrapper}>
                 <Space size={16} direction="vertical" className={styles.left}>
                     <Row>
-                        <ProjectMenu structure={projectInfo?.structure} callback={menuCallback} />
+                        {/*<ProjectMenu structure={projectInfo?.structure} callback={menuCallback} />*/}
                     </Row>
                 </Space>
                 <Space className={styles.right} size={16} direction="vertical">
