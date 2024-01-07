@@ -194,7 +194,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
                 </Typography.Title>
               </Grid.Col>
               <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                <Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>添加</Button>
+                <Button type={"secondary"} size={"mini"} onClick={() => editTableRef.current.addRow()}>{t['groupCreate.form.button.columnAdd']}</Button>
               </Grid.Col>
             </Grid.Row>
             <EditTable ref={editTableRef} columnsProps={columnsProps} columnsData={columnsData}/>

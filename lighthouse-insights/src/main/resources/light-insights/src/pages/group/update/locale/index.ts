@@ -10,6 +10,7 @@ const i18n = {
     'groupUpdate.form.validate.desc.notEmpty.errorMsg':'Description cannot be empty!',
     'groupUpdate.form.validate.columnComment.length.failed':'Column[%s] comment length should be between 3-50 chars!',
     'groupUpdate.form.validate.columnName.duplicate.failed':'Column name[%s] cannot be duplicate!',
+    'groupUpdate.form.button.columnAdd':'Add',
     'groupUpdate.form.submit.success':'Create group successfully!',
 
   },
@@ -24,6 +25,7 @@ const i18n = {
     'groupUpdate.form.validate.desc.notEmpty.errorMsg':'描述信息不能为空！',
     'groupUpdate.form.validate.columnComment.length.failed':'字段[%s]注释长度应处于3-50字符之间！',
     'groupUpdate.form.validate.columnName.duplicate.failed':'字段名称[%s]不能重复！',
+    'groupUpdate.form.button.columnAdd':'添加',
     'groupUpdate.form.submit.success':'统计组创建成功!',
   },
 };
