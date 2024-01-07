@@ -23,6 +23,13 @@ export function blockMainThread(seconds) {
     while (Date.now() - start < delay) {}
 }
 
+
+export function formatString(format, ...args) {
+    return format.replace(/%s/g, function() {
+        return args.shift();
+    });
+}
+
 export function isJSON(str):boolean {
     if (typeof str == 'string') {
         try {
