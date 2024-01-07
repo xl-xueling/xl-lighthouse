@@ -166,13 +166,11 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
           visible={true}
           style={{ width:'750px' }}
           confirmLoading={confirmLoading}
-          onCancel={onClose}
-      >
+          onCancel={onClose}>
         <Form
             ref={formRef}
             autoComplete={"off"}
             layout={"vertical"}>
-
           <Typography.Title
               style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
           >
@@ -181,7 +179,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
           <Form.Item field="token"
                      rules={[
                        { required: true, message: t['groupCreate.form.validate.token.notEmpty.errorMsg'], validateTrigger : ['onSubmit'] },
-                       { required: true, match: new RegExp(/^[a-z0-9_]{5,20}$/,"g"),message: t['groupCreate.form.validate.token.failed'] , validateTrigger : ['onSubmit']},
+                       { required: true, match: new RegExp(/^[a-z0-9_]{5,25}$/,"g"),message: t['groupCreate.form.validate.token.failed'] , validateTrigger : ['onSubmit']},
                      ]}>
             <Input
                 allowClear
