@@ -15,4 +15,6 @@ public class SystemConstant {
     public final static boolean REGISTER_NEED_APPROVE = true;
 
     public final static int DEPARTMENT_MAX_LEVEL = 4;
+
+    public final static int PROJECT_MAX_GROUP_SIZE = 10;
 }

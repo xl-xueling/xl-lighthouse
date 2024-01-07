@@ -35,8 +35,6 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        RepeatableRequestWrapper repeatableRequestWrapper = new RepeatableRequestWrapper(request);
-//        request = repeatableRequestWrapper;
         System.out.println("Request URI:" + request.getRequestURI());
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
