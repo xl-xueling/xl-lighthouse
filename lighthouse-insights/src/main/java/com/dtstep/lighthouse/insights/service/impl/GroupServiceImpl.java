@@ -43,12 +43,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDto queryById(Integer id) {
-        Group group = groupDao.queryById(id);
-        GroupDto groupDto = new GroupDto(group);
-        Project project = projectDao.queryById(group.getProjectId());
-        groupDto.setProject(project);
-        return groupDto;
+    public Group queryById(Integer id) {
+        return groupDao.queryById(id);
     }
 
     @Override

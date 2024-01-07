@@ -1,5 +1,6 @@
 const i18n = {
   'en-US': {
+    'groupManage.group':'Group',
     'groupManage.operations.button.title':'Operation',
     'groupManage.operations.button.create.stat':'Create Statistic',
     'groupManage.operations.button.update.group':'Update Group',
@@ -9,6 +10,7 @@ const i18n = {
     'groupManage.operations.button.delete.group':'Delete Group',
   },
   'zh-CN': {
+    'groupManage.group':'统计组',
     'groupManage.operations.button.title':'操作',
     'groupManage.operations.button.create.stat':'创建统计项',
     'groupManage.operations.button.update.group':'修改统计组',

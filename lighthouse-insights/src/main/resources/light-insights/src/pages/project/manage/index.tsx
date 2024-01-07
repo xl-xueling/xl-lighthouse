@@ -102,19 +102,6 @@ export default function ProjectManage() {
         },
     ];
 
-    const shortcuts = [
-        {
-            title: '创建统计组',
-            key: 'Content Management',
-            icon: <CiViewTable />,
-        },
-        {
-            title: '权限管理',
-            key: 'Content Statistic',
-            icon: <VscGistSecret />,
-        },
-    ];
-
   return (
       <>
       <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
@@ -131,24 +118,24 @@ export default function ProjectManage() {
                   <Card>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Typography.Title heading={6}>
-                              {"工程管理"}
+                              {t['projectManage.card.label.projectManage']}
                           </Typography.Title>
                       </div>
                       <div className={styles.shortcuts}>
                           <div className={styles.item} onClick={handlerCreateGroup}>
                               <div className={styles.icon}><CiViewTable /></div>
-                              <div className={styles.title}>创建统计组</div>
+                              <div className={styles.title}>{t['projectManage.shortcuts.createGroup']}</div>
                           </div>
                           <div className={styles.item}>
                               <div className={styles.icon}><VscGistSecret /></div>
-                              <div className={styles.title}>权限管理</div>
+                              <div className={styles.title}>{t['projectManage.shortcuts.permissionsManage']}</div>
                           </div>
                       </div>
                   </Card>
                   <Card>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Typography.Title heading={6}>
-                              {"描述信息"}
+                              {t['projectManage.card.label.description']}
                           </Typography.Title>
                       </div>
                       <div>
@@ -169,12 +156,9 @@ export default function ProjectManage() {
                   </Card>
               </Space>
           </div>
-          {/*<div className={styles['layout-content']}>*/}
-          {/*    <Card>*/}
-          {/*        /!*{showManagePanel && <GroupManagePanel groupId={groupId}/>}*!/*/}
-          {/*    </Card>*/}
-          {/*</div>*/}
-
+          <div className={styles['layout-content']}>
+              {showManagePanel && <Card><GroupManagePanel groupId={groupId}/></Card>}
+          </div>
           {showGroupCreatePanel && <GroupCreateModal projectId={id} callback={callback} onClose={() => setShowGroupCreatePanel(false)}/>}
       </div>
       </Spin>

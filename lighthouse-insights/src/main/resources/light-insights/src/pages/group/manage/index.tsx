@@ -5,7 +5,7 @@ import {
     Form,
     Input,
     Tabs,
-    Dropdown, Menu, Message, Space, Divider,
+    Dropdown, Menu, Message, Space, Divider, Notification,
 } from '@arco-design/web-react';
 import {
     IconDelete,
@@ -29,6 +29,7 @@ import {getRandomString} from "@/utils/util";
 import {HiMiniBoltSlash} from "react-icons/hi2";
 const { Row, Col } = Grid;
 import { RiShieldKeyholeLine } from "react-icons/ri";
+import {GlobalErrorCodes} from "@/utils/constants";
 
 
 export default function GroupManagePanel({groupId}) {
@@ -58,41 +59,22 @@ export default function GroupManagePanel({groupId}) {
         }
     }
 
-    const promiseFetchGroupInfo:Promise<Group> = new Promise<Group>((resolve, reject) => {
-        let result:Group;
-        const proc = async () => {
-            const response = await requestQueryById({id:groupId});
-            if(response.code != '0'){
-                reject(new Error(response.message));
+    const fetchData = async () => {
+        await requestQueryById({id:groupId}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                setGroupInfo(data)
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
-            result = response.data;
-            resolve(result);
-        }
-        proc().then();
-    })
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
 
 
     useEffect(() => {
-        setFormParams({"groupId":groupId});
-        const promiseAll:Promise<[Group]> = Promise.all([
-            promiseFetchGroupInfo,
-        ])
-
-        promiseAll.then((results) => {
-            const groupInfo = results[0];
-            setGroupInfo(groupInfo);
-            // const columnArr:Array<EditTableColumn> = [];
-            // for(let i=0;i<groupInfo.columns.length;i++){
-            //     const columnInfo = groupInfo.columns[i];
-            //     columnArr.push({...columnInfo,"key":getRandomString(),"editable":false})
-            // }
-            // setInitData(columnArr);
-        }).catch(error => {
-            console.log(error);
-            Message.error(t['system.error']);
-        }).finally(() => {
-            setLoading(false);
-        });
+        fetchData().then();
     },[groupId])
 
     const handlerSubmit = (input) => {
@@ -104,7 +86,7 @@ export default function GroupManagePanel({groupId}) {
             <Row style={{marginBottom:'15px'}}>
                 <Typography.Text style={{fontSize:'14px',fontWeight:500}}>
                     <Button icon={<CiViewTable/>} shape={"circle"} size={"small"} style={{marginRight:'10px'}}/>
-                    统计组：<Text copyable>{'homepage_behavior_stat1'}</Text>
+                    {t['groupManage.group']}：<Text copyable>{groupInfo?.token}</Text>
                 </Typography.Text>
             </Row>
             <Tabs
@@ -159,7 +141,7 @@ export default function GroupManagePanel({groupId}) {
                             </Col>
                         </Row>
                     </Form>
-                    {groupInfo && <StatisticalListPanel formParams={formParams} from={"group-manage"} />}
+                    {/*{groupInfo && <StatisticalListPanel formParams={formParams} from={"group-manage"} />}*/}
                 </TabPane>
                 <TabPane key='3' title={
                     <span style={{display:"inline-flex",alignItems:"center"}}>

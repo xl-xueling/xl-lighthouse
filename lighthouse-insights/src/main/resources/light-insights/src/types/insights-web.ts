@@ -75,7 +75,7 @@ export interface Column {
     key?:number|string;
     name?:string;
     type?:number;
-    desc?:string;
+    comment?:string;
 }
 
 export interface Group {
