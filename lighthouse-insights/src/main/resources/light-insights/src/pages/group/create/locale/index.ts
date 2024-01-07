@@ -9,6 +9,7 @@ const i18n = {
         'groupCreate.form.validate.columnName.failed':'Column name[%s] verification failed!',
         'groupCreate.form.validate.desc.notEmpty.errorMsg':'Description cannot be empty!',
         'groupCreate.form.validate.columnComment.length.failed':'Column[%s] comment length should be between 3-50 chars!',
+        'groupCreate.form.validate.columnName.duplicate.failed':'Column name[%s] cannot be duplicate!',
         'groupCreate.form.submit.success':'Create group successfully!',
 
     },
@@ -22,6 +23,7 @@ const i18n = {
         'groupCreate.form.validate.columnName.failed':'字段名称[%s]校验失败!',
         'groupCreate.form.validate.desc.notEmpty.errorMsg':'描述信息不能为空！',
         'groupCreate.form.validate.columnComment.length.failed':'字段[%s]注释长度应处于3-50字符之间！',
+        'groupCreate.form.validate.columnName.duplicate.failed':'字段名称[%s]不能重复！',
         'groupCreate.form.submit.success':'统计组创建成功!',
     },
 };

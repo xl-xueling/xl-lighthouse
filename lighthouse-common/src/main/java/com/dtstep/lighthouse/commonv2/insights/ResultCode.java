@@ -43,6 +43,9 @@ public enum ResultCode {
     userChangePasswordWrong("2009","userChangePasswordWrong"),
 
     projectDelErrorGroupExist("2001","projectDelErrorGroupExist"),
+
+    createGroupUnderProjectExceedLimit("2001","createGroupUnderProjectExceedLimit"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

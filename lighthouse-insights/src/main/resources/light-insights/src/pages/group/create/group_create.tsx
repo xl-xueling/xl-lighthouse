@@ -37,6 +37,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       Notification.warning({style: { width: 420 }, title: 'Warning', content: t['groupCreate.form.validate.column.notEmpty.errorMsg']});
       return;
     }
+    const columnNameArray:string[] = [];
     for(let i=0;i<columns.length;i++){
       const name = columns[i].name;
       const comment = columns[i].comment;
@@ -59,6 +60,12 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       if(comment && getTextBlenLength(comment) < 3){
         Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupCreate.form.validate.columnComment.length.failed'],name)});
         return;
+      }
+      if(columnNameArray.includes(name)){
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupCreate.form.validate.columnName.duplicate.failed'],name)});
+        return;
+      }else{
+        columnNameArray.push(name);
       }
       delete columns[i].key;
     }

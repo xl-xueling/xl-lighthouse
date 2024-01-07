@@ -4,9 +4,13 @@ import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dto.GroupDto;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
+import com.dtstep.lighthouse.insights.dto.RolePair;
+import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.modal.Project;
+import com.dtstep.lighthouse.insights.modal.Resource;
 import com.dtstep.lighthouse.insights.service.GroupService;
+import com.dtstep.lighthouse.insights.service.ResourceService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,9 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private ProjectDao projectDao;
 
+    @Autowired
+    private ResourceService resourceService;
+
     @Override
     public int create(Group group) {
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -31,6 +38,7 @@ public class GroupServiceImpl implements GroupService {
         group.setUpdateTime(localDateTime);
         group.setRefreshTime(localDateTime);
         groupDao.insert(group);
+        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Group,group.getId(),group.getProjectId()));
         return group.getId();
     }
 

@@ -1,9 +1,12 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.dto.GroupDto;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +25,15 @@ public class GroupController {
     @Autowired
     private GroupService groupService;
 
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @RequestMapping("/group/create")
     public ResultData<Integer> register(@Validated @RequestBody Group createParam) {
+        GroupQueryParam queryParam = new GroupQueryParam();
+        queryParam.setProjectId(createParam.getProjectId());
+        int groupCount = groupService.count(queryParam);
+        if(groupCount > SystemConstant.PROJECT_MAX_GROUP_SIZE){
+            return ResultData.failed(ResultCode.createGroupUnderProjectExceedLimit);
+        }
         int id = groupService.create(createParam);
         if(id > 0){
             return ResultData.success(id);
