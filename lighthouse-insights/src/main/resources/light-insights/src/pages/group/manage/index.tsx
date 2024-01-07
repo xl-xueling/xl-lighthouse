@@ -77,6 +77,7 @@ export default function GroupManagePanel({projectInfo,groupId}) {
 
     useEffect(() => {
         fetchData().then();
+        setFormParams({"groupId":groupId});
     },[groupId])
 
     const handlerSubmit = (input) => {

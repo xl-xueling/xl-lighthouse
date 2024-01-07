@@ -1,6 +1,6 @@
 import {
     Table,
-    Message, PaginationProps,
+    Message, PaginationProps, Notification,
 } from '@arco-design/web-react';
 import React, {useEffect, useMemo, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -12,11 +12,11 @@ import {getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
 import Detail from "@/pages/stat/list/detail";
 import StatUpdateModal from "@/pages/stat/update";
 import {getRandomString} from "@/utils/util";
+import {GlobalErrorCodes} from "@/utils/constants";
 
-export default function StatisticalListPanel({formParams,from = null}) {
+export default function StatisticalListPanel({formParams = {},from = null}) {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
-
     const [listData,setListData] = useState<Array<Stat>>([]);
     const [detailVisible, setDetailVisible] = React.useState(false);
     const [updateModalVisible,setUpdateModalVisible] = React.useState(false);
@@ -52,41 +52,35 @@ export default function StatisticalListPanel({formParams,from = null}) {
         });
     }
 
+    const fetchData = async () => {
+        console.log("formParams stat list is:" + JSON.stringify(formParams))
+        const {current, pageSize} = pagination;
+        await requestList({
+            queryParams:formParams,
+            pagination:{
+                pageSize:pageSize,
+                pageNum:current,
+            }
+        }).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                setListData(data.list);
+                setPagination({
+                    ...pagination,
+                    current,
+                    pageSize,
+                    total: data.total});
+                setLoading(false);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
     useEffect(() => {
         setLoading(true);
-        const {current, pageSize} = pagination;
-        const fetchData = async () => {
-            const fetchStatsInfo:Promise<{list:Array<Stat>,total:number}> = new Promise<{list:Array<Stat>,total:number}>((resolve, reject) => {
-                const proc = async () => {
-                    const result = await requestList({
-                        queryParams:formParams,
-                        pagination:{
-                            pageSize:pageSize,
-                            pageNum:current,
-                        }
-                    });
-                    resolve(result.data);
-                }
-                proc().then();
-            })
-            const result = await Promise.all([fetchStatsInfo]);
-            console.log("stat list is:" + JSON.stringify(result))
-            // const {list,total}:{list:Array<Stat>,total:number} = (result)[0];
-            const list = null;
-            const total = 0;
-            const combineList = [];
-            list?.forEach(z => {
-                const combineItem = {...z ,"key":getRandomString()};
-                combineList.push(combineItem);
-            })
-            setListData(combineList);
-            setPagination({
-                ...pagination,
-                current,
-                pageSize,
-                total: total});
-            setLoading(false);
-         }
         fetchData().then();
     },[pagination.current, pagination.pageSize, JSON.stringify(formParams)])
 
@@ -94,6 +88,7 @@ export default function StatisticalListPanel({formParams,from = null}) {
     return (
         <>
         <Table border={false}
+               rowKey={'id'}
                size={"small"} columns={columns}
                data={listData}
                onChange={onChangeTable}
