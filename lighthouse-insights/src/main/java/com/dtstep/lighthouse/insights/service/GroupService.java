@@ -10,7 +10,7 @@ public interface GroupService {
 
     int create(Group group);
 
-    GroupDto queryById(Integer id);
+    Group queryById(Integer id);
 
     int count(GroupQueryParam queryParam);
 

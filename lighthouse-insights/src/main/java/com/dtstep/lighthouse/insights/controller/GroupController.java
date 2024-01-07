@@ -50,8 +50,8 @@ public class GroupController {
 
     @RequestMapping("/group/queryById")
     public ResultData<Group> queryById(@Validated @RequestBody GroupQueryParam queryParam) {
-        GroupDto groupDto = groupService.queryById(queryParam.getId());
-        return ResultData.success(groupDto);
+        Group group = groupService.queryById(queryParam.getId());
+        return ResultData.success(group);
     }
 
     @RequestMapping("/group/queryByProjectId")
