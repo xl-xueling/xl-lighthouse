@@ -3,7 +3,7 @@ import {
   Form,
   Grid,
   Input, Message,
-  Modal,
+  Modal, Notification,
   Select, Space,
   Typography
 } from '@arco-design/web-react';
@@ -12,7 +12,7 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import EditTable, {EditTableColumnProps, EditTableComponentEnum} from "@/pages/common/edittable/EditTable";
 import {IconMinusCircleFill, IconPlus} from "@arco-design/web-react/icon";
-import {getTextBlenLength, stringifyObj} from "@/utils/util";
+import {formatString, getTextBlenLength, stringifyObj} from "@/utils/util";
 import {requestCreate} from "@/api/group";
 import {Group, Project} from "@/types/insights-web";
 
@@ -29,23 +29,40 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
   const formRef = useRef(null);
 
   const onOk = async() => {
-    // setConfirmLoading(true);
     await formRef.current.validate();
     const values = formRef.current.getFieldsValue();
     const columns = editTableRef.current.getData();
     if(!columns || columns.length == 0){
-      Message.error("列信息不能为空！")
+      Notification.warning({style: { width: 420 }, title: 'Warning', content: t['groupCreate.form.validate.column.notEmpty.errorMsg']});
+      setConfirmLoading(false);
       return;
     }
     for(let i=0;i<columns.length;i++){
       const name = columns[i].name;
-      const desc = columns[i].desc;
-      if(!columnNameRegex.test(name)){
-        Message.error("列名称校验失败！")
+      const comment = columns[i].comment;
+      if(!name){
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: t['groupCreate.form.validate.columnName.notEmpty']});
+        setConfirmLoading(false);
         return;
       }
-      if(desc && getTextBlenLength(desc) > 50){
-        Message.error("列名称描述校验失败！")
+      if(name.length < 3 || name.length > 15){
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupCreate.form.validate.columnName.length.failed'],name)});
+        setConfirmLoading(false);
+        return;
+      }
+      if(!columnNameRegex.test(name)){
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupCreate.form.validate.columnName.failed'],name)});
+        setConfirmLoading(false);
+        return;
+      }
+      if(comment && getTextBlenLength(comment) > 50){
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupCreate.form.validate.columnComment.length.failed'],name)});
+        setConfirmLoading(false);
+        return;
+      }
+      if(comment && getTextBlenLength(comment) < 3){
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupCreate.form.validate.columnComment.length.failed'],name)});
+        setConfirmLoading(false);
         return;
       }
       delete columns[i].key;
@@ -56,11 +73,13 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       desc:values.desc,
       columns:columns,
     }
+    setConfirmLoading(true);
     requestCreate(group).then((result) => {
       if(result.code === '0'){
         Message.success(t['groupCreate.form.submit.success']);
         setTimeout(() => {
           window.location.href = "/project/manage/"+projectId;
+          setConfirmLoading(false);
         },3000)
       }else{
         Message.error(result.message || t['system.error']);
@@ -138,7 +157,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
   ];
   return (
       <Modal
-          title='Create Group'
+          title={t['groupCreate.modal.title']}
           onOk={onOk}
           visible={true}
           style={{ width:'750px' }}
@@ -157,8 +176,8 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
           </Typography.Title>
           <Form.Item field="token"
                      rules={[
-                       { required: true, message: t['register.form.password.errMsg'], validateTrigger : ['onSubmit'] },
-                       { required: true, match: new RegExp(/^[a-z0-9_]{5,20}$/,"g"),message: t['register.form.userName.validate.errMsg'] , validateTrigger : ['onSubmit']},
+                       { required: true, message: t['groupCreate.form.validate.token.notEmpty.errorMsg'], validateTrigger : ['onSubmit'] },
+                       { required: true, match: new RegExp(/^[a-z0-9_]{5,20}$/,"g"),message: t['groupCreate.form.validate.token.failed'] , validateTrigger : ['onSubmit']},
                      ]}>
             <Input
                 allowClear
@@ -186,8 +205,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
             {'Description'}
           </Typography.Title>
           <Form.Item field="desc" rules={[
-            { required: true, message: t['register.form.password.errMsg'], validateTrigger : ['onSubmit'] },
-            { required: true, match: new RegExp(/^[^￥{}【】#@=^&|《》]{0,200}$/,"g"),message: t['register.form.userName.validate.errMsg'] , validateTrigger : ['onSubmit']},
+            { required: true, message: t['groupCreate.form.validate.desc.notEmpty.errorMsg'], validateTrigger : ['onSubmit'] },
           ]}>
             <Input.TextArea maxLength={200} rows={3}  showWordLimit={true}/>
           </Form.Item>
