@@ -143,7 +143,6 @@ export default function GroupUpdatePanel({groupInfo,onClose}) {
         }
         setConfirmLoading(true);
         requestCreate(group).then((response) => {
-            console.log("update group result is:" + JSON.stringify(response));
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['groupUpdate.form.submit.success']});
@@ -160,19 +159,17 @@ export default function GroupUpdatePanel({groupInfo,onClose}) {
     }
 
     useEffect(() => {
-        if(groupInfo != null){
-            const formData = {
-                "token":groupInfo.token,
-            }
-            const columnArr: Array<EditTableColumn> = [];
-            for (let i = 0; i < groupInfo.columns.length; i++) {
-                const columnInfo = groupInfo.columns[i];
-                columnArr.push({...columnInfo, "key": i})
-            }
-            setInitData(columnArr);
-            formInstance.setFieldsValue(formData);
-            setLoading(false);
+        const columnArr: Array<EditTableColumn> = [];
+        for (let i = 0; i < groupInfo?.columns.length; i++) {
+            const columnInfo = groupInfo?.columns[i];
+            columnArr.push({...columnInfo, "key": getRandomString()})
         }
+        setInitData(columnArr);
+        const formData = {
+            token:groupInfo?.token,
+            desc:groupInfo?.desc,
+        }
+        formInstance.setFieldsValue(formData);
     },[groupInfo])
 
     return (
@@ -184,6 +181,7 @@ export default function GroupUpdatePanel({groupInfo,onClose}) {
             confirmLoading={confirmLoading}
             onCancel={onClose}>
             <Form
+                form={formInstance}
                 ref={formRef}
                 autoComplete={"off"}
                 layout={"vertical"}>
@@ -199,7 +197,7 @@ export default function GroupUpdatePanel({groupInfo,onClose}) {
                            ]}>
                     <Input
                         allowClear
-                        placeholder={'Please Input Token'} />
+                        placeholder={'Please Input Token'} disabled={true}/>
                 </Form.Item>
                 <Form.Item field="columns">
                     <Grid.Row>
