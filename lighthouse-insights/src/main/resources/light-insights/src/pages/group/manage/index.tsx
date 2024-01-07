@@ -86,78 +86,81 @@ export default function GroupManagePanel({projectInfo,groupId}) {
 
     return (
         <>
-            <Spin loading={loading} style={{ width: '100%' }}>
+            <Skeleton
+                text={{rows: 1, width: ['100%']}}
+                animation
+                loading={loading}>
                 <Row style={{marginBottom:'15px'}}>
                     <Typography.Text style={{fontSize:'14px',fontWeight:500}}>
                         <Button icon={<CiViewTable/>} shape={"circle"} size={"small"} style={{marginRight:'10px'}}/>
                         {t['groupManage.group']}：<Text copyable>{groupInfo?.token}</Text>
                     </Typography.Text>
                 </Row>
-                <Tabs
-                    type="line"
-                    tabPosition={"top"}
-                    extra={
-                        <Space size={5}>
-                        <Button type={"primary"} onClick={() => handlerProcess('createStatistic')} size={"mini"} icon={<IconTag/>}>{t['groupManage.operations.button.create.stat']}</Button>
-                        <Button type={"primary"} onClick={() => handlerProcess('updateGroup')} size={"mini"} icon={<CiViewTable/>} >{t['groupManage.operations.button.update.group']}</Button>
-                        <Dropdown
-                            position={"br"}
-                            trigger={"click"}
-                            droplist={
-                                <Menu onClickMenuItem={handlerProcess} style={{ maxHeight:'280px' }}>
-                                    <Menu.Item key={'limitedRecord'}>
-                                        <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<HiMiniBoltSlash/>} />&nbsp;&nbsp;
-                                        {t['groupManage.operations.button.limited.records']}</Menu.Item>
-                                    <Menu.Item key={'secretKey'}>
-                                        <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<RiShieldKeyholeLine/>} />&nbsp;&nbsp;
-                                        {t['groupManage.operations.button.secret.key']}</Menu.Item>
-                                    <Menu.Item key={'deleteGroup'}>
-                                        <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<IconDelete/>} />&nbsp;&nbsp;
-                                        {t['groupManage.operations.button.delete.group']}</Menu.Item>
-                                </Menu>
-                            }>
-                            <Button size={"mini"} type={"primary"}><IconDownCircle />More</Button>
-                        </Dropdown>
-                        </Space>
-                    }>
-                    <TabPane
-                        key='1'
-                        title={
-                            <span style={{display:"inline-flex",alignItems:"center"}}>
-                                <IconTags style={{ marginRight: 6 }} />
-                                Statistic Items
-                            </span>
+            </Skeleton>
+            <Tabs
+                type="line"
+                tabPosition={"top"}
+                extra={
+                    <Space size={5}>
+                    <Button type={"primary"} onClick={() => handlerProcess('createStatistic')} size={"mini"} icon={<IconTag/>}>{t['groupManage.operations.button.create.stat']}</Button>
+                    <Button type={"primary"} onClick={() => handlerProcess('updateGroup')} size={"mini"} icon={<CiViewTable/>} >{t['groupManage.operations.button.update.group']}</Button>
+                    <Dropdown
+                        position={"br"}
+                        trigger={"click"}
+                        droplist={
+                            <Menu onClickMenuItem={handlerProcess} style={{ maxHeight:'280px' }}>
+                                <Menu.Item key={'limitedRecord'}>
+                                    <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<HiMiniBoltSlash/>} />&nbsp;&nbsp;
+                                    {t['groupManage.operations.button.limited.records']}</Menu.Item>
+                                <Menu.Item key={'secretKey'}>
+                                    <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<RiShieldKeyholeLine/>} />&nbsp;&nbsp;
+                                    {t['groupManage.operations.button.secret.key']}</Menu.Item>
+                                <Menu.Item key={'deleteGroup'}>
+                                    <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<IconDelete/>} />&nbsp;&nbsp;
+                                    {t['groupManage.operations.button.delete.group']}</Menu.Item>
+                            </Menu>
                         }>
-                        <Form
-                            className={styles['search-form']}
-                            labelAlign="left"
-                            style={{marginTop:'10px'}}
-                            labelCol={{ span: 5 }}
-                            wrapperCol={{ span: 19 }}
-                        >
-                            <Row gutter={24}>
-                                <Col span={10}>
-                                    <Form.Item field="Title">
-                                        <Input.Search  placeholder={'Search Title'} allowClear onSearch={(v) => {
-                                            handlerSubmit(v);
-                                        }} />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        </Form>
-                        <StatisticalListPanel formParams={formParams} from={"group-manage"}/>
-                    </TabPane>
-                    <TabPane key='3' title={
+                        <Button size={"mini"} type={"primary"}><IconDownCircle />More</Button>
+                    </Dropdown>
+                    </Space>
+                }>
+                <TabPane
+                    key='1'
+                    title={
                         <span style={{display:"inline-flex",alignItems:"center"}}>
-                            <CiViewTable style={{ marginRight: 6 }} />
-                            Group Information
-                      </span>}>
-                        <GroupBasicPanel groupInfo={groupInfo}/>
-                    </TabPane>
-                </Tabs>
-                {showStatAddPanel && <StatCreatePanel projectInfo={projectInfo} groupInfo={groupInfo} onClose={() => setShowsStatAddPanel(false)}/>}
-                {showGroupEditPanel && <GroupEditPanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)}/>}
-            </Spin>
+                            <IconTags style={{ marginRight: 6 }} />
+                            Statistic Items
+                        </span>
+                    }>
+                    <Form
+                        className={styles['search-form']}
+                        labelAlign="left"
+                        style={{marginTop:'10px'}}
+                        labelCol={{ span: 5 }}
+                        wrapperCol={{ span: 19 }}
+                    >
+                        <Row gutter={24}>
+                            <Col span={10}>
+                                <Form.Item field="Title">
+                                    <Input.Search  placeholder={'Search Title'} allowClear onSearch={(v) => {
+                                        handlerSubmit(v);
+                                    }} />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Form>
+                    <StatisticalListPanel formParams={formParams} from={"group-manage"}/>
+                </TabPane>
+                <TabPane key='3' title={
+                    <span style={{display:"inline-flex",alignItems:"center"}}>
+                        <CiViewTable style={{ marginRight: 6 }} />
+                        Group Information
+                  </span>}>
+                    <GroupBasicPanel groupInfo={groupInfo}/>
+                </TabPane>
+            </Tabs>
+            {showStatAddPanel && <StatCreatePanel projectInfo={projectInfo} groupInfo={groupInfo} onClose={() => setShowsStatAddPanel(false)}/>}
+            {showGroupEditPanel && <GroupEditPanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)}/>}
         </>);
 
 }
