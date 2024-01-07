@@ -87,6 +87,7 @@ public class ResourceServiceImpl implements ResourceService {
             Integer accessRolePid = parentAccessRole.getId();
             manageRole = new Role(RoleTypeEnum.STAT_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
             accessRole = new Role(RoleTypeEnum.STAT_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
+            name = statDao.queryById(resource.getResourceId()).getTitle();
         }else if(resource.getResourceType() == ResourceTypeEnum.Metric){
             Role parentManageRole = roleService.cacheQueryRole(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,resource.getResourcePid());
             Integer manageRolePid = parentManageRole.getId();
