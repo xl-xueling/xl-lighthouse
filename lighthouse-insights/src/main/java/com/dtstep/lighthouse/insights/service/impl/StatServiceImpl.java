@@ -90,6 +90,12 @@ public class StatServiceImpl implements StatService {
         return result;
     }
 
+    @Override
+    public int delete(Stat stat) {
+        Integer id = stat.getId();
+        return statDao.deleteById(id);
+    }
+
     private StatDto translate(Stat stat){
         int userId = baseService.getCurrentUserId();
         StatDto statDto = new StatDto(stat);

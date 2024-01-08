@@ -13,6 +13,8 @@ public interface StatService {
 
     int update(Stat stat);
 
+    int delete(Stat stat);
+
     Stat queryById(Integer id);
 
     List<Stat> queryByProjectId(Integer projectId);

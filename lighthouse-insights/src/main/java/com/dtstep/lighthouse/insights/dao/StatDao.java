@@ -14,6 +14,8 @@ public interface StatDao {
 
     Stat queryById(Integer id);
 
+    int deleteById(Integer id);
+
     List<Stat> queryByProjectId(Integer projectId);
 
     int update(Stat stat);
