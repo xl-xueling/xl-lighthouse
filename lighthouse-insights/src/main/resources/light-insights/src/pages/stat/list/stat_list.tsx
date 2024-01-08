@@ -25,12 +25,15 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
     const refFetchId = useRef<number>(null);
 
     const tableCallback = async (record, type) => {
-        if(type == 'update'){
+        if(type == 'showUpdateModal'){
             setCurrentItem(record);
             setUpdateModalVisible(true);
-        }else if(type == 'detail'){
+        }else if(type == 'showDetailModal'){
             setCurrentItem(record);
             setDetailVisible(!detailVisible);
+        }else if(type == 'updateCallBack'){
+            setCurrentItem(record);
+            setListData(listData.map(x => record.id == x.id ? record:x))
         }
     };
 
@@ -102,7 +105,7 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
                pagination={pagination}
                loading={loading}/>
             {detailVisible && <Detail statInfo={currentItem} onClose={() => setDetailVisible(false)}/>}
-            {updateModalVisible && <StatUpdateModal statInfo={currentItem} onClose={() => setUpdateModalVisible(false)} />}
+            {updateModalVisible && <StatUpdateModal statInfo={currentItem} onClose={() => setUpdateModalVisible(false)} listCallback={tableCallback}/>}
         </>
         );
 }
