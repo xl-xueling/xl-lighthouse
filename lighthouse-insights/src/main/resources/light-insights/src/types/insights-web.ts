@@ -4,7 +4,7 @@ import {
     DatePickerConfigParam,
     FilterConfigParam, OrderStateEnum,
     OrderTypeEnum, PermissionEnum,
-    RenderTypeEnum, RoleTypeEnum, UserStateEnum
+    RenderTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum
 } from "@/types/insights-common";
 
 
@@ -101,6 +101,7 @@ export interface Stat {
     project?:Project;
     dimensArray?:Array<string>;
     desc?:string;
+    state?:StatStateEnum;
     renderConfig?:{datepicker:DatePickerConfigParam,filters:Array<FilterConfigParam>}
     permissions?:PermissionEnum[];
 }
