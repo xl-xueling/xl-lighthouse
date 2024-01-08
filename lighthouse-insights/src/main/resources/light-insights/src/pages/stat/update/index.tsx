@@ -7,6 +7,9 @@ import "ace-builds";
 import 'ace-builds/src-noconflict/ace'
 import 'ace-builds/src-noconflict/theme-textmate';
 import 'ace-builds/src-noconflict/theme-sqlserver';
+import 'ace-builds/src-noconflict/theme-dawn';
+import 'ace-builds/src-noconflict/theme-kuroir';
+import 'ace-builds/src-noconflict/theme-gruvbox';
 import 'ace-builds/src-noconflict/mode-xml';
 import "ace-builds/webpack-resolver";
 import 'ace-builds/src-noconflict/ext-language_tools';
@@ -125,7 +128,7 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
     }
 
     useEffect(() => {
-        initAceEditor();
+        // initAceEditor();
         setGroupInfo(statInfo.group);
         setProjectInfo(statInfo.project);
     },[])
@@ -165,6 +168,7 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
                             title:statInfo?.title,
                             group:projectInfo?.title + ' : ' + groupInfo?.token,
                             timeparam:statInfo?.timeparam,
+                            template:statInfo?.template,
                             expired:statInfo?.expired,
                             desc:statInfo?.desc,
                         }}
@@ -182,28 +186,29 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
                         >
                             {'Template: '}
                         </Typography.Title>
-                        <FormItem rules={[{ required: true }]}>
-                            <AceEditor
-                                style={{ height:'60px',backgroundColor:"var(--color-fill-2)",width:'100%'}}
-                                ref={editorRef}
-                                readOnly={true}
-                                mode="xml"
-                                theme="textmate"
-                                name="code-editor"
-                                editorProps={{ $blockScrolling: true }}
-                                enableLiveAutocompletion={true}
-                                enableSnippets={true}
-                                highlightActiveLine={false}
-                                showPrintMargin={false}
-                                showGutter={false}
-                                enableBasicAutocompletion={true}
-                                onChange={handleEditorChange}
-                                setOptions={{
-                                    enableBasicAutocompletion: true,
-                                    enableSnippets:true,
-                                    enableLiveAutocompletion:true,
-                                }}
-                            />
+                        <FormItem rules={[{ required: true }]} field={"template"}>
+                            {/*<AceEditor*/}
+                            {/*    style={{ height:'60px',backgroundColor:"var(--color-fill-2)",width:'100%'}}*/}
+                            {/*    ref={editorRef}*/}
+                            {/*    readOnly={true}*/}
+                            {/*    mode="xml"*/}
+                            {/*    theme="kuroir"*/}
+                            {/*    name="code-editor"*/}
+                            {/*    editorProps={{ $blockScrolling: true }}*/}
+                            {/*    enableLiveAutocompletion={true}*/}
+                            {/*    enableSnippets={true}*/}
+                            {/*    highlightActiveLine={false}*/}
+                            {/*    showPrintMargin={false}*/}
+                            {/*    showGutter={false}*/}
+                            {/*    enableBasicAutocompletion={true}*/}
+                            {/*    onChange={handleEditorChange}*/}
+                            {/*    setOptions={{*/}
+                            {/*        enableBasicAutocompletion: true,*/}
+                            {/*        enableSnippets:true,*/}
+                            {/*        enableLiveAutocompletion:true,*/}
+                            {/*    }}*/}
+                            {/*/>*/}
+                            <Input.TextArea disabled={true}/>
                         </FormItem>
 
                         <Typography.Title
