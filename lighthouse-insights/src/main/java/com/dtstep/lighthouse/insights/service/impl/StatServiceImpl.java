@@ -6,15 +6,13 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
+import com.dtstep.lighthouse.insights.dto.PermissionInfo;
 import com.dtstep.lighthouse.insights.dto.StatDto;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Group;
-import com.dtstep.lighthouse.insights.modal.Project;
-import com.dtstep.lighthouse.insights.modal.Resource;
-import com.dtstep.lighthouse.insights.modal.Stat;
-import com.dtstep.lighthouse.insights.service.ResourceService;
-import com.dtstep.lighthouse.insights.service.StatService;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.modal.*;
+import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.template.TemplateContext;
 import com.dtstep.lighthouse.insights.template.TemplateParser;
 import org.apache.commons.collections.CollectionUtils;
@@ -40,6 +38,15 @@ public class StatServiceImpl implements StatService {
 
     @Autowired
     private ResourceService resourceService;
+
+    @Autowired
+    private BaseService baseService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private PermissionService permissionService;
 
     @Override
     public int create(Stat stat) {
@@ -86,17 +93,30 @@ public class StatServiceImpl implements StatService {
         return result;
     }
 
+    private StatDto translate(Stat stat){
+        int userId = baseService.getCurrentUserId();
+        StatDto statDto = new StatDto(stat);
+        Group group = groupDao.queryById(stat.getGroupId());
+        Project project = projectDao.queryById(stat.getProjectId());
+        Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,stat.getId());
+        Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,stat.getId());
+        if(permissionService.checkUserPermission(userId, manageRole.getId())){
+            statDto.addPermission(PermissionInfo.PermissionEnum.ManageAble);
+        }else if(permissionService.checkUserPermission(userId,accessRole.getId())){
+            statDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
+        }
+        statDto.setGroup(group);
+        statDto.setProject(project);
+        return statDto;
+    }
+
     @Override
     public ListData<StatDto> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize) {
         List<Stat> list = statDao.queryList(queryParam,pageNum,pageSize);
         List<StatDto> dtoList = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(list)){
             for(Stat stat : list){
-                StatDto statDto = new StatDto(stat);
-                Group group = groupDao.queryById(stat.getGroupId());
-                Project project = projectDao.queryById(stat.getProjectId());
-                statDto.setGroup(group);
-                statDto.setProject(project);
+                StatDto statDto = translate(stat);
                 dtoList.add(statDto);
             }
         }

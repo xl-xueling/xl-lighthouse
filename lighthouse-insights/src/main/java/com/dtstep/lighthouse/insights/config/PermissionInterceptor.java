@@ -40,12 +40,15 @@ public class PermissionInterceptor implements HandlerInterceptor {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();
             if (method.isAnnotationPresent(AuthPermission.class)) {
+                boolean flag = false;
                 AuthPermission[] authPermissions = method.getDeclaredAnnotationsByType(AuthPermission.class);
                 for(AuthPermission authPermission : authPermissions){
-                    if(!hasPermission(authPermission,request)){
-                        throw new PermissionException();
+                    if(hasPermission(authPermission,request)){
+                        flag = true;
+                        break;
                     }
                 }
+                if(!flag){throw new PermissionException();}
             }
         }
         return true;

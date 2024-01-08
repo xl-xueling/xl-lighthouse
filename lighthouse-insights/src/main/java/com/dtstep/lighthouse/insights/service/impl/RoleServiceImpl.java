@@ -75,4 +75,9 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> queryListByPid(Integer pid, Integer pageNum, Integer pageSize) {
         return roleDao.queryListByPid(pid,pageNum,pageSize);
     }
+
+    @Override
+    public Role queryRole(RoleTypeEnum roleTypeEnum, Integer resourceId) {
+        return roleDao.queryRole(roleTypeEnum,resourceId);
+    }
 }

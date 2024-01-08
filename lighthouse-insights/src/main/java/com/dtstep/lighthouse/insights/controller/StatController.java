@@ -4,10 +4,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
-import com.dtstep.lighthouse.insights.dto.ResultData;
-import com.dtstep.lighthouse.insights.dto.ListSearchObject;
-import com.dtstep.lighthouse.insights.dto.StatDto;
-import com.dtstep.lighthouse.insights.dto.StatQueryParam;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
@@ -48,6 +45,21 @@ public class StatController {
     @RequestMapping("/stat/update")
     public ResultData<Integer> update(@Validated @RequestBody Stat createParam) {
         int id = statService.update(createParam);
+        if(id > 0){
+            return ResultData.success(id);
+        }else{
+            return ResultData.failed(ResultCode.systemError);
+        }
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
+    @RequestMapping("/stat/changeState")
+    public ResultData<Integer> changeState(@Validated @RequestBody ChangeStatStateParam changeParam) {
+        Stat stat = new Stat();
+        stat.setState(changeParam.getState());
+        stat.setId(changeParam.getId());
+        int id = statService.update(stat);
         if(id > 0){
             return ResultData.success(id);
         }else{
