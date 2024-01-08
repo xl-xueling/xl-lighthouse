@@ -25,6 +25,10 @@ const i18n = {
     'statList.columns.state.limiting':'Limiting',
     'statList.columns.state.frozen':'Frozen',
     'statList.columns.state.deleted':'Deleted',
+    'statList.columns.frozen.success':'The statistic has been frozen!',
+    'statList.columns.restart.success':'The statistic has been restarted!',
+    'statList.columns.stop.success':'The statistic has been stopped!',
+    'statList.columns.delete.success':'The statistic has been deleted!',
   },
   'zh-CN': {
     'statList.table.columns.name':'名称',
@@ -52,6 +56,10 @@ const i18n = {
     'statList.columns.state.limiting':'限流',
     'statList.columns.state.frozen':'已冻结',
     'statList.columns.state.deleted':'已删除',
+    'statList.columns.frozen.success':'统计任务已冻结！',
+    'statList.columns.restart.success':'统计任务已冻结！',
+    'statList.columns.stop.success':'统计任务已停止！',
+    'statList.columns.delete.success':'统计任务已删除！',
   },
 };
 

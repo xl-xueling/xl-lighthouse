@@ -97,6 +97,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
                         stopButton =  <Popconfirm key={getRandomString()}
                                                   position={"tr"}
                                                   focusLock
+                                                  onOk={() => callback(record, 'stop')}
                                                   title='Confirm'
                                                   content={t['statList.table.operations.stop.confirm']}
                         >
@@ -110,6 +111,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
                         startButton =  <Popconfirm key={getRandomString()}
                                                   position={"tr"}
                                                   focusLock
+                                                  onOk={() => callback(record, 'restart')}
                                                   title='Confirm'
                                                   content={t['statList.table.operations.restart.confirm']}
                         >
@@ -119,19 +121,20 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
                                 {t['statList.table.operations.restart']}
                             </Button>
                         </Popconfirm>;
+                        deleteButton = <Popconfirm key={getRandomString()}
+                                                   position={"tr"}
+                                                   focusLock
+                                                   onOk={() => callback(record, 'delete')}
+                                                   title='Confirm'
+                                                   content={t['statList.table.operations.delete.confirm']}
+                        >
+                            <Button
+                                type="text"
+                                size="mini">
+                                {t['statList.table.operations.delete']}
+                            </Button>
+                        </Popconfirm>;
                     }
-                    deleteButton = <Popconfirm key={getRandomString()}
-                        position={"tr"}
-                        focusLock
-                        title='Confirm'
-                        content={t['statList.table.operations.delete.confirm']}
-                    >
-                        <Button
-                            type="text"
-                            size="mini">
-                            {t['statList.table.operations.delete']}
-                        </Button>
-                    </Popconfirm>;
                 }
                 return <Space size={16} direction="horizontal">{[updateButton,stopButton,startButton,deleteButton]}</Space>
             }

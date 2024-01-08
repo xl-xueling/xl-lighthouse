@@ -8,6 +8,7 @@ import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -56,11 +57,12 @@ public class StatController {
     @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @RequestMapping("/stat/changeState")
     public ResultData<Integer> changeState(@Validated @RequestBody ChangeStatStateParam changeParam) {
-        Stat stat = new Stat();
+        Integer id = changeParam.getId();
+        Stat stat = statService.queryById(id);
+        Validate.notNull(stat);
         stat.setState(changeParam.getState());
-        stat.setId(changeParam.getId());
-        int id = statService.update(stat);
-        if(id > 0){
+        int result = statService.update(stat);
+        if(result > 0){
             return ResultData.success(id);
         }else{
             return ResultData.failed(ResultCode.systemError);

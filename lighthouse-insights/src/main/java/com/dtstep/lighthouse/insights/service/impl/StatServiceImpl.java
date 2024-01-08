@@ -85,9 +85,6 @@ public class StatServiceImpl implements StatService {
         }
         LocalDateTime localDateTime = LocalDateTime.now();
         stat.setUpdateTime(localDateTime);
-        stat.setCreateTime(localDateTime);
-        stat.setState(StatStateEnum.RUNNING);
-        stat.setRandomId(UUID.randomUUID().toString());
         int result = statDao.update(stat);
         resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Stat,stat.getId(),stat.getGroupId()));
         return result;

@@ -27,6 +27,14 @@ export async function requestUpdate(data):Promise<ResultData> {
     })
 }
 
+export async function requestChangeState(data):Promise<ResultData> {
+    return request({
+        url:'/stat/changeState',
+        method:'POST',
+        data,
+    })
+}
+
 export async function requestQueryById(id:number) :Promise<ResultData<Stat>> {
     return request({
         url:'/stat/queryById',
