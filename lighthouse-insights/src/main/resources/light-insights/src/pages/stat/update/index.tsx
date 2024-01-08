@@ -21,7 +21,7 @@ const { Row, Col } = Grid;
 import Draggable from 'react-draggable';
 import { MdOutlineDragIndicator } from "react-icons/md";
 import {Group, Project, Stat} from "@/types/insights-web";
-import {requestCreate} from "@/api/stat";
+import {requestCreate, requestUpdate} from "@/api/stat";
 import {GlobalErrorCodes} from "@/utils/constants";
 import {StatExpiredEnum} from "@/types/insights-common";
 
@@ -106,7 +106,7 @@ export default function StatUpdateModal({statInfo,onClose}) {
         requestUpdate(stat).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['statCreate.form.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['statUpdate.form.submit.success']});
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
