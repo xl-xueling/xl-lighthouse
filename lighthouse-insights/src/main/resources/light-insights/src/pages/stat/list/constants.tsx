@@ -13,6 +13,7 @@ import React from "react";
 import {IconStar, IconStarFill} from "@arco-design/web-react/icon";
 import {PiLinkSimple} from "react-icons/pi";
 import {getStatExpiredEnumDescription, StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
+import {getRandomString} from "@/utils/util";
 const TabPane = Tabs.TabPane;
 const { Text } = Typography;
 export function getColumnsOfManage(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
@@ -79,40 +80,61 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
             title: 'Operate',
             dataIndex: 'operate',
             headerCellStyle: {width:'200px' },
-            render: (_, record) => (
-                <Space size={16} direction="horizontal">
-                    <Button
-                        onClick={() => {callback(record,"showUpdateModal")}}
-                        type="secondary"
-                        size="mini">
-                        {t['statList.table.operations.update']}
-                    </Button>
-                    <Popconfirm
-                        position={"tr"}
-                        focusLock
-                        title='Confirm'
-                        content={t['statList.table.operations.frozen.confirm']}
-                    >
-                        <Button
-                            type="secondary"
+            render: (_, record) => {
+                let updateButton;
+                let stopButton;
+                let startButton;
+                let deleteButton;
+                let activeButton;
+                if(record.permissions.includes('ManageAble')){
+                    updateButton = <Button key={getRandomString()}
+                            onClick={() => callback(record, 'showUpdateModal')}
+                            type="text"
                             size="mini">
-                            {t['statList.table.operations.frozen']}
-                        </Button>
-                    </Popconfirm>
-                    <Popconfirm
+                        {t['statList.table.operations.update']}
+                    </Button>;
+                    if(record.state == StatStateEnum.RUNNING){
+                        stopButton =  <Popconfirm key={getRandomString()}
+                                                  position={"tr"}
+                                                  focusLock
+                                                  title='Confirm'
+                                                  content={t['statList.table.operations.stop.confirm']}
+                        >
+                            <Button
+                                type="text"
+                                size="mini">
+                                {t['statList.table.operations.stop']}
+                            </Button>
+                        </Popconfirm>;
+                    }else if(record.state == StatStateEnum.STOPPED){
+                        startButton =  <Popconfirm key={getRandomString()}
+                                                  position={"tr"}
+                                                  focusLock
+                                                  title='Confirm'
+                                                  content={t['statList.table.operations.restart.confirm']}
+                        >
+                            <Button
+                                type="text"
+                                size="mini">
+                                {t['statList.table.operations.restart']}
+                            </Button>
+                        </Popconfirm>;
+                    }
+                    deleteButton = <Popconfirm key={getRandomString()}
                         position={"tr"}
                         focusLock
                         title='Confirm'
                         content={t['statList.table.operations.delete.confirm']}
                     >
                         <Button
-                            type="secondary"
+                            type="text"
                             size="mini">
                             {t['statList.table.operations.delete']}
                         </Button>
-                    </Popconfirm>
-                </Space>
-            ),
+                    </Popconfirm>;
+                }
+                return <Space size={16} direction="horizontal">{[updateButton,stopButton,startButton,deleteButton]}</Space>
+            }
         },
     ];
 }
