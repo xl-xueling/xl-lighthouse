@@ -68,4 +68,18 @@ public class StatController {
             return ResultData.failed(ResultCode.systemError);
         }
     }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/stat/deleteById")
+    public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        Stat stat = statService.queryById(id);
+        Validate.notNull(stat);
+        int result = statService.delete(stat);
+        if(result > 0){
+            return ResultData.success(id);
+        }else{
+            return ResultData.failed(ResultCode.systemError);
+        }
+    }
 }

@@ -43,19 +43,19 @@ export async function requestQueryById(id:number) :Promise<ResultData<Stat>> {
     })
 }
 
-export async function requestQueryByGroupId(id:number) :Promise<ResultData<{list:Array<Stat>}>> {
+export async function requestQueryByGroupId(data) :Promise<ResultData<{list:Array<Stat>}>> {
     return request({
         url:'/stat/queryByGroupId',
         method:'POST',
-        id,
+        data,
     })
 }
 
-export async function requestDeleteByID(id:number) :Promise<ResultData> {
+export async function requestDeleteById(data) :Promise<ResultData> {
     return request({
         url:'/stat/deleteById',
         method:'POST',
-        id,
+        data,
     })
 }
 

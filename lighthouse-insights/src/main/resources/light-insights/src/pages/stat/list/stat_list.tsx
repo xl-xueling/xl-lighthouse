@@ -7,7 +7,7 @@ import useLocale from '@/utils/useLocale';
 import {useSelector} from "react-redux";
 import locale from './locale';
 import { Department, Stat} from "@/types/insights-web";
-import {requestChangeState, requestList} from "@/api/stat";
+import {requestChangeState, requestDeleteById, requestList} from "@/api/stat";
 import {getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
 import Detail from "@/pages/stat/list/detail";
 import StatUpdateModal from "@/pages/stat/update";
@@ -42,7 +42,7 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
         }else if(type == 'stop'){
             await handlerChangeState(record.id,StatStateEnum.STOPPED);
         }else if(type == 'delete'){
-            console.log("---delete item...")
+            await handlerDelete(record.id);
         }
     };
 
@@ -71,6 +71,21 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
             }
         }).catch((error)=>{
             console.log(error);
+        })
+    }
+
+    const handlerDelete = async (id:number) => {
+        await requestDeleteById({id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['statList.columns.delete.success']});
+                const updatedList = listData.filter(x => x.id != id);
+                setListData(updatedList);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error) => {
+            console.log(error)
         })
     }
 

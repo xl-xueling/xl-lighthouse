@@ -89,4 +89,8 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <delete id="deleteById">
+        delete from ldp_stat_item where id = #{id}
+    </delete>
 </mapper>
