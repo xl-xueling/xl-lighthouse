@@ -7,13 +7,15 @@ import useLocale from '@/utils/useLocale';
 import {useSelector} from "react-redux";
 import locale from './locale';
 import { Department, Stat} from "@/types/insights-web";
-import {requestList} from "@/api/stat";
+import {requestChangeState, requestList} from "@/api/stat";
 import {getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
 import Detail from "@/pages/stat/list/detail";
 import StatUpdateModal from "@/pages/stat/update";
 import {getRandomString} from "@/utils/util";
 import {GlobalErrorCodes} from "@/utils/constants";
 import StatDetailModal from "@/pages/stat/list/detail";
+import {StatStateEnum} from "@/types/insights-common";
+import {requestResetPasswd} from "@/api/user";
 
 export default function StatisticalListPanel({formParams = {},from = null}) {
     const t = useLocale(locale);
@@ -35,8 +37,40 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
         }else if(type == 'updateCallBack'){
             setCurrentItem(record);
             setListData(listData.map(x => record.id == x.id ? record:x))
+        }else if(type == 'restart'){
+            await handlerChangeState(record.id,StatStateEnum.RUNNING);
+        }else if(type == 'stop'){
+            await handlerChangeState(record.id,StatStateEnum.STOPPED);
+        }else if(type == 'delete'){
+            console.log("---delete item...")
         }
     };
+
+    const handlerChangeState = async (id:number,state:StatStateEnum) => {
+        console.log("state:" + state);
+        const changeParam = {
+            id:id,
+            state:state,
+        }
+        await requestChangeState(changeParam).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                let tooltips;
+                if(state == StatStateEnum.RUNNING){
+                    tooltips = t['statList.columns.restart.success'];
+                }else if(state == StatStateEnum.STOPPED){
+                    tooltips = t['statList.columns.stop.success'];
+                }else if(state == StatStateEnum.FROZEN){
+                    tooltips = t['statList.columns.frozen.success'];
+                }
+                Notification.info({style: { width: 420 }, title: 'Notification', content: tooltips});
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }
 
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
     const columns = useMemo(() => (from && from == 'group-manage') ? getColumnsOfManage(t, tableCallback) : getColumns(t,tableCallback), [t]);
