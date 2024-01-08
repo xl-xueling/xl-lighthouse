@@ -34,7 +34,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
             title: 'Title',
             dataIndex: 'title',
             render:(value,record) => {
-                return (<div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
+                return (<div onClick={() => callback(record, 'showDetailModal')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
             }
         },
         {
@@ -100,7 +100,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
             render: (_, record) => (
                 <Space size={16} direction="horizontal">
                     <Button
-                        onClick={() => {callback(record,"update")}}
+                        onClick={() => {callback(record,"showUpdateModal")}}
                         type="secondary"
                         size="mini">
                         {t['statList.table.operations.update']}

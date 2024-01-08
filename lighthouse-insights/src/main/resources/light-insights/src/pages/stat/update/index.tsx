@@ -1,12 +1,7 @@
-import {
-    AutoComplete, Button,
-    Form, Grid, Icon, Input, Message,
-    Modal, Notification, Select, Typography,
-} from '@arco-design/web-react';
+import {Button, Form, Grid, Input, Modal, Notification, Select, Typography,} from '@arco-design/web-react';
 import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
-import styles from './style/index.module.less';
 import AceEditor from "react-ace";
 import "ace-builds";
 import 'ace-builds/src-noconflict/ace'
@@ -17,15 +12,15 @@ import "ace-builds/webpack-resolver";
 import 'ace-builds/src-noconflict/ext-language_tools';
 import "brace/mode/xml";
 import "brace/theme/textmate";
-const { Row, Col } = Grid;
 import Draggable from 'react-draggable';
-import { MdOutlineDragIndicator } from "react-icons/md";
+import {MdOutlineDragIndicator} from "react-icons/md";
 import {Group, Project, Stat} from "@/types/insights-web";
-import {requestCreate, requestUpdate} from "@/api/stat";
-import {GlobalErrorCodes} from "@/utils/constants";
+import {requestUpdate} from "@/api/stat";
 import {StatExpiredEnum} from "@/types/insights-common";
 
-export default function StatUpdateModal({statInfo,onClose}) {
+const { Row, Col } = Grid;
+
+export default function StatUpdateModal({statInfo,onClose,listCallback}) {
 
     const [loading,setLoading] = useState<boolean>(false);
     const t = useLocale(locale);
@@ -94,19 +89,29 @@ export default function StatUpdateModal({statInfo,onClose}) {
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
         const template = editorRef.current.editor.getValue();
-        const stat:Stat = {
+        const updateParam:Stat = {
+            id:statInfo.id,
             template:template,
             groupId:groupInfo.id,
             projectId:groupInfo.projectId,
             expired:values.expired,
+            title:values.title,
             timeparam:values.timeparam,
             desc:values.desc,
         }
+        console.log("updateParam is:" + JSON.stringify(updateParam));
         setLoading(true);
-        requestUpdate(stat).then((response) => {
+        requestUpdate(updateParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['statUpdate.form.submit.success']});
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(updateParam.template, "text/xml");
+                const configNode = xmlDoc.documentElement;
+                configNode.setAttribute("title",updateParam.title);
+                updateParam.template = new XMLSerializer().serializeToString(xmlDoc);
+                const newObject = {...statInfo,...updateParam}
+                listCallback(newObject,'updateCallBack');
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -138,7 +143,7 @@ export default function StatUpdateModal({statInfo,onClose}) {
                             </Grid.Col>
                             <Grid.Col span={20}>
                                 <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-                                    <p style={{ margin: '0 auto' }}>Create Statistics</p>
+                                    <p style={{ margin: '0 auto' }}>{t['statUpdate.modal.title']}</p>
                                 </div>
                             </Grid.Col>
                         </Row>
@@ -157,6 +162,7 @@ export default function StatUpdateModal({statInfo,onClose}) {
                         wrapperCol={{ span: 20 }}
                         layout={"vertical"}
                         initialValues={{
+                            title:statInfo.title,
                             group:projectInfo?.title + ' : ' + groupInfo?.token,
                             timeparam:'1-day',
                             expired:1209600,
@@ -166,12 +172,21 @@ export default function StatUpdateModal({statInfo,onClose}) {
                         <Typography.Title
                             style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                         >
+                            {'Title: '}
+                        </Typography.Title>
+                        <FormItem field='title' rules={[{ required: true }]}>
+                            <Input />
+                        </FormItem>
+                        <Typography.Title
+                            style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                        >
                             {'Template: '}
                         </Typography.Title>
                         <FormItem rules={[{ required: true }]}>
                             <AceEditor
                                 style={{ height:'60px',backgroundColor:"var(--color-fill-2)",width:'100%'}}
                                 ref={editorRef}
+                                readOnly={true}
                                 mode="xml"
                                 theme="textmate"
                                 name="code-editor"
