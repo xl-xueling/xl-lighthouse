@@ -12,12 +12,13 @@
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.StatStateEnumTypeHandler"/>
         <result property="randomId" column="random_id"/>
         <result property="expired" column="expired"/>
+        <result property="desc" column="desc"/>
         <result property="updateTime" column="update_time"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Stat" >
-        INSERT INTO ldp_stat_item (`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_stat_item (`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`) VALUES
         (
             #{title,jdbcType=VARCHAR},
             #{groupId,jdbcType=INTEGER},
@@ -27,18 +28,19 @@
             #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.StatStateEnumTypeHandler},
             #{randomId,jdbcType=BIGINT},
             #{expired,jdbcType=BIGINT},
+            #{desc,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
     <select id="queryById" resultMap="statResultMap">
-        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`create_time`,`update_time`
+        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`
         FROM ldp_stat_item WHERE id = #{id}
     </select>
 
     <select id="queryList" resultMap="statResultMap">
-        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`create_time`,`update_time`
+        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`
         from ldp_stat_item
         <where>
             <if test="queryParam!= null and queryParam.id!=null">
@@ -56,7 +58,7 @@
     </select>
 
     <select id="queryByProjectId" resultMap="statResultMap">
-        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`create_time`,`update_time`
+        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`
         from ldp_stat_item where project_id = #{projectId}
     </select>
 
@@ -74,6 +76,9 @@
             </if>
             <if test="state != null">
                 `state` = #{state.state},
+            </if>
+            <if test="desc != null">
+                `desc` = #{desc},
             </if>
             <if test="expired != null">
                 `expired` = #{expired},

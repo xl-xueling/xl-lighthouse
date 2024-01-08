@@ -15,16 +15,15 @@ import styles from './style/index.module.less';
 import {translate} from "@/pages/department/common";
 import {Project} from "@/types/insights-web";
 import {requestQueryById} from "@/api/project";
+import {getStatExpiredEnumDescription, StatExpiredEnum} from "@/types/insights-common";
 const { Row, Col } = Grid;
 const { useForm } = Form;
 
-export default function Detail({statInfo,onClose}) {
+export default function StatDetailModal({statInfo,onClose}) {
 
     const [loading,setLoading] = useState(true);
 
-    useEffect(() => {
-        console.log("statInfo is:" + JSON.stringify(statInfo))
-    },[statInfo])
+
 
     return <div>
         <Drawer
@@ -39,23 +38,33 @@ export default function Detail({statInfo,onClose}) {
         >
             <Descriptions
                 colon='：'
+                column={1}
                 labelStyle={{ width: 100 }}
                 data={[
                     {
                         label: 'Title',
                         value: statInfo?.title,
+                        span:1,
                     },
                     {
                         label: 'Expired',
-                        value: statInfo?.expired,
+                        value: getStatExpiredEnumDescription(statInfo?.expired),
+                        span:1,
                     },
                     {
                         label: 'TimeParam',
                         value: statInfo?.timeparam,
+                        span:1,
                     },
                     {
                         label: 'Template',
                         value: statInfo?.template,
+                        span:3,
+                    },
+                    {
+                        label: 'Description',
+                        value: statInfo?.desc,
+                        span:3,
                     },
                 ]}
             />

@@ -12,7 +12,7 @@ import {
 import React from "react";
 import {IconStar, IconStarFill} from "@arco-design/web-react/icon";
 import {PiLinkSimple} from "react-icons/pi";
-import {StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
+import {getStatExpiredEnumDescription, StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
 const TabPane = Tabs.TabPane;
 const { Text } = Typography;
 export function getColumnsOfManage(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
@@ -49,25 +49,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
             title: 'Expired',
             dataIndex: 'expired',
             render:(value,record) => {
-                if(value == StatExpiredEnum.Week_1){
-                    return '1 Week';
-                }else if(value == StatExpiredEnum.Week_2){
-                    return '2 Week';
-                }else if(value == StatExpiredEnum.MONTH_1){
-                    return '1 month';
-                }else if(value == StatExpiredEnum.MONTH_2){
-                    return '2 month';
-                }else if(value == StatExpiredEnum.MONTH_3){
-                    return '3 month';
-                }else if(value == StatExpiredEnum.MONTH_6){
-                    return '6 month';
-                }else if(value == StatExpiredEnum.MONTH_12){
-                    return '12 month';
-                }else if(value == StatExpiredEnum.MONTH_24){
-                    return '24 month';
-                }else if(value == StatExpiredEnum.MONTH_36){
-                    return '36 month';
-                }
+                return getStatExpiredEnumDescription(value);
             }
         },
         {
