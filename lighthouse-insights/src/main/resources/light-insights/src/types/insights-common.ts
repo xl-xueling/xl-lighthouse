@@ -1,4 +1,6 @@
 import {ArcoTreeNode} from "@/types/insights-web";
+import {Badge} from "@arco-design/web-react";
+import React from "react";
 
 export interface ResultData<S = any> {
     code: string;
@@ -133,7 +135,6 @@ export const getStatExpiredEnumDescription = (expired) => {
     }
 }
 
-
 export enum StatStateEnum {
     PENDING=0,
     RUNNING=1,
@@ -144,3 +145,4 @@ export enum StatStateEnum {
     FROZEN=6,
     INVALID=7,
 }
+
