@@ -47,7 +47,6 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
     };
 
     const handlerChangeState = async (id:number,state:StatStateEnum) => {
-        console.log("state:" + state);
         const changeParam = {
             id:id,
             state:state,
@@ -63,6 +62,9 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
                 }else if(state == StatStateEnum.FROZEN){
                     tooltips = t['statList.columns.frozen.success'];
                 }
+                currentItem.state = state;
+                setCurrentItem(currentItem);
+                setListData(listData.map(x => id == x.id ? currentItem:x))
                 Notification.info({style: { width: 420 }, title: 'Notification', content: tooltips});
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
