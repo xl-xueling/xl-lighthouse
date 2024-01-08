@@ -37,6 +37,14 @@ export async function requestCreate(data) :Promise<ResultData> {
     })
 }
 
+export async function requestUpdate(data) :Promise<ResultData> {
+    return request({
+        url:'/group/update',
+        method:'POST',
+        data,
+    })
+}
+
 
 
 

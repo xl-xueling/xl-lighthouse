@@ -22,7 +22,7 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Group" >
         INSERT INTO ldp_stat_group (`token`,`project_id`,`columns`,`secret_key`,
                                     `state`,`desc`,
-                                    `extend_config`,`debug_mode`,`refresh_time`,`create_time`,`update_time`) VALUES
+                                    `extend_config`,`debug_mode`,`refresh_time`,`create_time`,`update_time`,`refresh_time`) VALUES
         (
             #{token,jdbcType=VARCHAR},
             #{projectId,jdbcType=INTEGER},
@@ -34,9 +34,35 @@
             #{debugMode,jdbcType=INTEGER},
             #{refreshTime,jdbcType=TIMESTAMP},
             #{createTime,jdbcType=TIMESTAMP},
-            #{updateTime,jdbcType=TIMESTAMP}
+            #{updateTime,jdbcType=TIMESTAMP},
+            #{refreshTime,jdbcType=TIMESTAMP},
         )
     </insert>
+
+    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Group">
+        UPDATE ldp_stat_group
+        <set>
+            <if test="columns != null">
+                `columns` = #{columns,typeHandler=com.dtstep.lighthouse.insights.types.GroupColumnArrayTypeHandler},
+            </if>
+            <if test="state != null">
+                `state` = #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.GroupStateEnumTypeHandler},
+            </if>
+            <if test="extendConfig != null">
+                `extend_config` = #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.GroupExtendConfigTypeHandler},
+            </if>
+            <if test="debugMode != null">
+                `debug_mode` = #{debugMode},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+            <if test="refreshTime != null">
+                `refresh_time` = #{refreshTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
 
     <select id="queryById" resultMap="groupResultMap">
         SELECT `id`,`token`,`project_id`,`columns`,`secret_key`,
