@@ -14,8 +14,12 @@ import {IconStar, IconStarFill} from "@arco-design/web-react/icon";
 import {PiLinkSimple} from "react-icons/pi";
 import {getStatExpiredEnumDescription, StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
 import {getRandomString} from "@/utils/util";
+import {getStatStateDescription} from "@/pages/common/desc/base";
 const TabPane = Tabs.TabPane;
 const { Text } = Typography;
+
+
+
 export function getColumnsOfManage(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
 
     return [
@@ -57,23 +61,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
             title: 'State',
             dataIndex: 'state',
             render: (value) => {
-                if(value === StatStateEnum.PENDING){
-                    return <Badge color={'gold'} text={t['statList.columns.state.pending']}/>;
-                }else if (value === StatStateEnum.RUNNING) {
-                    return <Badge color={'arcoblue'} text={t['statList.columns.state.running']}/>;
-                }else if(value === StatStateEnum.STOPPED){
-                    return <Badge color={'gray'} text={t['statList.columns.state.limiting']}/>;
-                }else if(value === StatStateEnum.LIMITING){
-                    return <Badge color={'pinkpurple'} text={t['statList.columns.state.frozen']}/>;
-                }else if(value === StatStateEnum.DELETED){
-                    return <Badge color={'cyan'} text={t['statList.columns.state.frozen']}/>;
-                }else if(value === StatStateEnum.REJECTED){
-                    return <Badge color={'cyan'} text={t['statList.columns.state.frozen']}/>;
-                }else if(value === StatStateEnum.FROZEN){
-                    return <Badge color={'red'} text={t['statList.columns.state.frozen']}/>;
-                }else if(value === StatStateEnum.INVALID){
-                    return <Badge color={'red'} text={t['statList.columns.state.frozen']}/>;
-                }
+                return getStatStateDescription(t,value)
             },
         },
         {
@@ -200,15 +188,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             title: 'State',
             dataIndex: 'state',
             render: (value) => {
-                if(value === 0){
-                    return <Badge status="processing" text={t['statList.columns.state.pending']}/>;
-                }else if (value === 1) {
-                    return <Badge status="success" text={t['statList.columns.state.running']}/>;
-                }else if(value === 2){
-                    return <Badge status="error" text={t['statList.columns.state.limiting']}/>;
-                }else if(value === 3){
-                    return <Badge status="error" text={t['statList.columns.state.frozen']}/>;
-                }
+                return getStatStateDescription(t,value)
             },
         },
         {
