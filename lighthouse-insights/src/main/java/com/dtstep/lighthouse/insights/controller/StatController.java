@@ -43,4 +43,15 @@ public class StatController {
             return ResultData.failed(ResultCode.systemError);
         }
     }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
+    @RequestMapping("/stat/update")
+    public ResultData<Integer> update(@Validated @RequestBody Stat createParam) {
+        int id = statService.update(createParam);
+        if(id > 0){
+            return ResultData.success(id);
+        }else{
+            return ResultData.failed(ResultCode.systemError);
+        }
+    }
 }

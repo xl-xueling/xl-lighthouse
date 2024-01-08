@@ -11,9 +11,17 @@ export async function requestList(data) :Promise<ResultData<{list:Array<Stat>,to
     })
 }
 
-export async function requestCreate(data:Project):Promise<ResultData> {
+export async function requestCreate(data):Promise<ResultData> {
     return request({
         url:'/stat/create',
+        method:'POST',
+        data,
+    })
+}
+
+export async function requestUpdate(data):Promise<ResultData> {
+    return request({
+        url:'/stat/update',
         method:'POST',
         data,
     })
