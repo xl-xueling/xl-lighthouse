@@ -13,6 +13,7 @@ import Detail from "@/pages/stat/list/detail";
 import StatUpdateModal from "@/pages/stat/update";
 import {getRandomString} from "@/utils/util";
 import {GlobalErrorCodes} from "@/utils/constants";
+import StatDetailModal from "@/pages/stat/list/detail";
 
 export default function StatisticalListPanel({formParams = {},from = null}) {
     const t = useLocale(locale);
@@ -104,7 +105,7 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
                onChange={onChangeTable}
                pagination={pagination}
                loading={loading}/>
-            {detailVisible && <Detail statInfo={currentItem} onClose={() => setDetailVisible(false)}/>}
+            {detailVisible && <StatDetailModal statInfo={currentItem} onClose={() => setDetailVisible(false)}/>}
             {updateModalVisible && <StatUpdateModal statInfo={currentItem} onClose={() => setUpdateModalVisible(false)} listCallback={tableCallback}/>}
         </>
         );

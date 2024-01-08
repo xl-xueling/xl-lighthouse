@@ -23,7 +23,7 @@ import { MdOutlineDragIndicator } from "react-icons/md";
 import {Project, Stat} from "@/types/insights-web";
 import {requestCreate} from "@/api/stat";
 import {GlobalErrorCodes} from "@/utils/constants";
-import {StatExpiredEnum} from "@/types/insights-common";
+import {getStatExpiredEnumDescription, StatExpiredEnum, StatTimeParamEnum} from "@/types/insights-common";
 
 export default function StatAddPanel({projectInfo,groupInfo,onClose}) {
 
@@ -154,9 +154,7 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose}) {
                 wrapperCol={{ span: 20 }}
                 layout={"vertical"}
                 initialValues={{
-                    group:projectInfo?.title + ' : ' + groupInfo.token,
-                    timeparam:'1-day',
-                    expired:1209600,
+                    group:projectInfo?.title + ' : ' + groupInfo?.token,
                 }}
             >
                 <Typography.Title
@@ -194,24 +192,13 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose}) {
                 </Typography.Title>
                 <FormItem field='timeparam' rules={[{ required: true }]}>
                     <Select placeholder='Please Select' allowClear>
-                        <Select.Option value={"1-minute"}>
-                            1-minute
-                        </Select.Option>
-                        <Select.Option value={"2-minute"}>
-                            2-minute
-                        </Select.Option>
-                        <Select.Option value={"5-minute"}>
-                            5-minute
-                        </Select.Option>
-                        <Select.Option value={"10-minute"}>
-                            10-minute
-                        </Select.Option>
-                        <Select.Option value={"1-hour"}>
-                            1-hour
-                        </Select.Option>
-                        <Select.Option value={"1-day"}>
-                            1-day
-                        </Select.Option>
+                        {
+                            Object.keys(StatTimeParamEnum).filter(key => Number.isNaN(Number(key))).map((option,index) => {
+                                return <Select.Option key={index} value={option}>
+                                    {option}
+                                </Select.Option>
+                            })
+                        }
                     </Select>
                 </FormItem>
 
@@ -222,30 +209,13 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose}) {
                 </Typography.Title>
                 <FormItem field='expired' rules={[{ required: true }]}>
                     <Select placeholder='Please Select' allowClear>
-                        <Select.Option value={StatExpiredEnum.Week_1}>
-                            7 Day
-                        </Select.Option>
-                        <Select.Option value={StatExpiredEnum.Week_2}>
-                            14 Day
-                        </Select.Option>
-                        <Select.Option value={StatExpiredEnum.MONTH_1}>
-                            1 Month
-                        </Select.Option>
-                        <Select.Option value={StatExpiredEnum.MONTH_3}>
-                            3 Month
-                        </Select.Option>
-                        <Select.Option value={StatExpiredEnum.MONTH_6}>
-                            6 Month
-                        </Select.Option>
-                        <Select.Option value={StatExpiredEnum.MONTH_12}>
-                            12 Month
-                        </Select.Option>
-                        <Select.Option value={StatExpiredEnum.MONTH_24}>
-                            24 Month
-                        </Select.Option>
-                        <Select.Option value={StatExpiredEnum.MONTH_36}>
-                            36 Month
-                        </Select.Option>
+                        {
+                            Object.keys(StatExpiredEnum).filter(key => Number.isNaN(Number(key))).map((option,index) => {
+                                return <Select.Option key={index} value={option}>
+                                    {getStatExpiredEnumDescription(StatExpiredEnum[option])}
+                                </Select.Option>
+                            })
+                        }
                     </Select>
                 </FormItem>
                 <Typography.Title
