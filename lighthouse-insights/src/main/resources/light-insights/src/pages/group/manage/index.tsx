@@ -170,7 +170,10 @@ export default function GroupManagePanel({projectInfo,groupId}) {
                     <GroupBasicPanel groupInfo={groupInfo}/>
                 </TabPane>
             </Tabs>
-            {showStatAddPanel && <StatCreatePanel projectInfo={projectInfo} groupInfo={groupInfo} onClose={() => setShowsStatAddPanel(false)}/>}
+            {showStatAddPanel && <StatCreatePanel projectInfo={projectInfo} groupInfo={groupInfo} onClose={() => {
+                setShowsStatAddPanel(false);
+                setFormParams({"groupId":groupId,t:new Date().getTime()});
+            }}/>}
             {showGroupEditPanel && <GroupUpdatePanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)} callback={callback}/>}
         </>);
 
