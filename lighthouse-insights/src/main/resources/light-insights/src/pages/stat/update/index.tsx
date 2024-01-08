@@ -165,7 +165,7 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
                             title:statInfo?.title,
                             group:projectInfo?.title + ' : ' + groupInfo?.token,
                             timeparam:statInfo?.timeparam,
-                            expired:StatExpiredEnum[statInfo?.expired],
+                            expired:statInfo?.expired,
                             desc:statInfo?.desc,
                         }}
                     >
@@ -231,9 +231,9 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
                         <FormItem field='expired' rules={[{ required: true }]}>
                             <Select placeholder='Please Select' allowClear>
                                 {
-                                    Object.keys(StatExpiredEnum).filter(key => Number.isNaN(Number(key))).map((option,index) => {
-                                        return <Select.Option key={index} value={option}>
-                                            {getStatExpiredEnumDescription(StatExpiredEnum[option])}
+                                    Object.keys(StatExpiredEnum).filter(key => !Number.isNaN(Number(key))).map((option,index) => {
+                                        return <Select.Option key={index} value={Number(option)}>
+                                            {getStatExpiredEnumDescription(option)}
                                         </Select.Option>
                                     })
                                 }
