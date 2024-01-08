@@ -26,6 +26,7 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
     const [updateModalVisible,setUpdateModalVisible] = React.useState(false);
     const [currentItem,setCurrentItem] = useState<Stat>(null);
     const refFetchId = useRef<number>(null);
+    const [refreshTime,setRefreshTime] = useState<number>(null);
 
     const tableCallback = async (record, type) => {
         if(type == 'showUpdateModal'){
@@ -144,7 +145,7 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
     useEffect(() => {
         setLoading(true);
         fetchData().then();
-    },[pagination.current, pagination.pageSize, JSON.stringify(formParams)])
+    },[refreshTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)])
 
 
     return (
