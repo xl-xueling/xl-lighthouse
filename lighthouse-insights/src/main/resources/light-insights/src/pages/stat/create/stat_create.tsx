@@ -11,7 +11,7 @@ import AceEditor from "react-ace";
 import "ace-builds";
 import 'ace-builds/src-noconflict/ace'
 import 'ace-builds/src-noconflict/theme-textmate';
-import 'ace-builds/src-noconflict/theme-sqlserver';
+import 'ace-builds/src-noconflict/theme-gruvbox';
 import 'ace-builds/src-noconflict/mode-xml';
 import "ace-builds/webpack-resolver";
 import 'ace-builds/src-noconflict/ext-language_tools';
@@ -22,19 +22,16 @@ import Draggable from 'react-draggable';
 import { MdOutlineDragIndicator } from "react-icons/md";
 import {Project, Stat} from "@/types/insights-web";
 import {requestCreate} from "@/api/stat";
-import {GlobalErrorCodes} from "@/utils/constants";
 import {getStatExpiredEnumDescription, StatExpiredEnum, StatTimeParamEnum} from "@/types/insights-common";
+import useStorage from "@/utils/useStorage";
 
 export default function StatAddPanel({projectInfo,groupInfo,onClose}) {
 
     const [loading,setLoading] = useState<boolean>(false);
     const t = useLocale(locale);
     const formRef = useRef(null);
-    const [size, setSize] = useState('default');
-    // const onValuesChange = (changeValue, values) => {
-    //     console.log('onValuesChange: ', changeValue, values);
-    // };
-
+    const [theme, setTheme] = useStorage('arco-theme', 'light');
+    const [editorTheme,setEditorTheme] = useState('textmate');
     const editorRef = useRef<any>();
 
     const customCompletions = [
@@ -119,6 +116,14 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose}) {
     }
 
     useEffect(() => {
+        if(theme == 'light'){
+            setEditorTheme('textmate');
+        }else if(theme == 'dark'){
+            setEditorTheme('gruvbox');
+        }
+    },[theme])
+
+    useEffect(() => {
         addCustomCompletion();
     },[editorRef])
 
@@ -167,7 +172,7 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose}) {
                         style={{ height:'60px',backgroundColor:"var(--color-fill-2)",width:'100%'}}
                         ref={editorRef}
                         mode="xml"
-                        theme="textmate"
+                        theme={editorTheme}
                         name="code-editor"
                         editorProps={{ $blockScrolling: true }}
                         enableLiveAutocompletion={true}
