@@ -12,6 +12,8 @@ public interface GroupDao {
 
     int insert(Group group);
 
+    int update(Group group);
+
     Group queryById(Integer id);
 
     List<Group> queryByProjectId(Integer projectId);

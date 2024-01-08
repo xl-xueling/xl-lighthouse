@@ -43,6 +43,16 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public int update(Group group) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        group.setUpdateTime(localDateTime);
+        group.setRefreshTime(localDateTime);
+        int result = groupDao.update(group);
+        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Group,group.getId(),group.getProjectId()));
+        return result;
+    }
+
+    @Override
     public Group queryById(Integer id) {
         return groupDao.queryById(id);
     }

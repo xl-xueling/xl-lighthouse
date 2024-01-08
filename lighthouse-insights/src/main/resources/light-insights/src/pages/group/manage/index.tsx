@@ -22,7 +22,7 @@ import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/update";
 import {CiViewTable} from "react-icons/ci";
 import {RiAppsLine} from "react-icons/ri";
-import {Group} from "@/types/insights-web";
+import {Group, TreeNode} from "@/types/insights-web";
 import {requestQueryById} from "@/api/group";
 import {EditTableColumn} from "@/pages/common/edittable/EditTable";
 import {getRandomString} from "@/utils/util";
@@ -30,6 +30,7 @@ import {HiMiniBoltSlash} from "react-icons/hi2";
 const { Row, Col } = Grid;
 import { RiShieldKeyholeLine } from "react-icons/ri";
 import {GlobalErrorCodes} from "@/utils/constants";
+import GroupUpdatePanel from "@/pages/group/update";
 
 
 export default function GroupManagePanel({projectInfo,groupId}) {
@@ -42,6 +43,16 @@ export default function GroupManagePanel({projectInfo,groupId}) {
     const [groupInfo,setGroupInfo] = useState<Group>(null);
     const [form] = useForm();
     const t = useLocale(locale);
+
+    const callback = async (operation,data) => {
+        switch (operation){
+            case "update-group":
+                setGroupInfo(data);
+                break;
+            default:
+                break;
+        }
+    }
 
     const handlerProcess = (action):void => {
         switch (action){
@@ -160,7 +171,7 @@ export default function GroupManagePanel({projectInfo,groupId}) {
                 </TabPane>
             </Tabs>
             {showStatAddPanel && <StatCreatePanel projectInfo={projectInfo} groupInfo={groupInfo} onClose={() => setShowsStatAddPanel(false)}/>}
-            {showGroupEditPanel && <GroupEditPanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)}/>}
+            {showGroupEditPanel && <GroupUpdatePanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)} callback={callback}/>}
         </>);
 
 }

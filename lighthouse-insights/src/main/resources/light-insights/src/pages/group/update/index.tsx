@@ -15,10 +15,10 @@ import EditTable, {
 } from "@/pages/common/edittable/EditTable";
 import {formatString, getRandomString, getTextBlenLength} from "@/utils/util";
 import {Group} from "@/types/insights-web";
-import {requestCreate} from "@/api/group";
+import {requestCreate, requestUpdate} from "@/api/group";
 const { Row, Col } = Grid;
 
-export default function GroupUpdatePanel({groupInfo,onClose}) {
+export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
 
     const t = useLocale(locale);
     const editTableRef= useRef(null);
@@ -136,17 +136,18 @@ export default function GroupUpdatePanel({groupInfo,onClose}) {
             delete columns[i].key;
         }
         const group:Group = {
+            id:groupInfo.id,
             projectId:groupInfo.projectId,
             token:values.token,
             desc:values.desc,
             columns:columns,
         }
         setConfirmLoading(true);
-        requestCreate(group).then((response) => {
+        requestUpdate(group).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['groupUpdate.form.submit.success']});
-                group.id = data;
+                callback('update-group',group);
                 onClose();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});

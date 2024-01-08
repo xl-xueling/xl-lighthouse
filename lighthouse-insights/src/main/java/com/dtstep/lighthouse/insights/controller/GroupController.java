@@ -27,7 +27,7 @@ public class GroupController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @RequestMapping("/group/create")
-    public ResultData<Integer> register(@Validated @RequestBody Group createParam) {
+    public ResultData<Integer> create(@Validated @RequestBody Group createParam) {
         GroupQueryParam countByTokenParam = new GroupQueryParam();
         countByTokenParam.setToken(createParam.getToken());
         int tokenCount = groupService.count(countByTokenParam);
@@ -43,6 +43,17 @@ public class GroupController {
         int id = groupService.create(createParam);
         if(id > 0){
             return ResultData.success(id);
+        }else{
+            return ResultData.failed(ResultCode.systemError);
+        }
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
+    @RequestMapping("/group/update")
+    public ResultData<Integer> update(@Validated @RequestBody Group updateParam) {
+        int result = groupService.update(updateParam);
+        if(result > 0){
+            return ResultData.success(result);
         }else{
             return ResultData.failed(ResultCode.systemError);
         }
