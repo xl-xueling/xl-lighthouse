@@ -11,6 +11,8 @@ public interface StatService {
 
     int create(Stat stat);
 
+    int update(Stat stat);
+
     Stat queryById(Integer id);
 
     List<Stat> queryByProjectId(Integer projectId);

@@ -65,6 +65,28 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
+    public int update(Stat stat) {
+        int groupId = stat.getGroupId();
+        Group group = groupDao.queryById(groupId);
+        String template = stat.getTemplate();
+        String timeParam = stat.getTimeparam();
+        try{
+            TemplateEntity templateEntity = TemplateParser.parse(new TemplateContext(template,timeParam, group.getColumns()));
+            stat.setTitle(templateEntity.getTitle());
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        LocalDateTime localDateTime = LocalDateTime.now();
+        stat.setUpdateTime(localDateTime);
+        stat.setCreateTime(localDateTime);
+        stat.setState(StatStateEnum.RUNNING);
+        stat.setRandomId(UUID.randomUUID().toString());
+        int result = statDao.update(stat);
+        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Stat,stat.getId(),stat.getGroupId()));
+        return result;
+    }
+
+    @Override
     public ListData<StatDto> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize) {
         List<Stat> list = statDao.queryList(queryParam,pageNum,pageSize);
         List<StatDto> dtoList = new ArrayList<>();
