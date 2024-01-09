@@ -30,71 +30,13 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
     const [groupInfo,setGroupInfo] = useState<Group>(null);
     const [projectInfo,setProjectInfo] = useState<Project>(null);
     const formRef = useRef(null);
-    const [size, setSize] = useState('default');
-
-    const editorRef = useRef<any>();
-
-    const customCompletions = [
-        { caption: 'stat-item',name: '<stat-item',value: "stat-item    />" ,meta: "Structure" ,score:10000},
-        { caption: 'title',name: 'title',value: "title=\"\"", meta: "Attribute" ,score:1000},
-        { caption: 'stat',name: 'stat',value: "stat=\"\"", meta: "Attribute" ,score:1000 },
-        { caption: 'dimens',name: 'dimens',value: "dimens=\"\"", meta: "Attribute" ,score:1000 },
-        { caption: 'limit',name: 'limit',value: "limit=\"\"", meta: "Attribute" ,score:1000},
-        { caption: 'count()',name: 'count()',value: "count()", meta: "Function" ,score:100},
-        { caption: 'sum()',name: 'sum()',value: "sum()", meta: "Function" ,score:100},
-        { caption: 'avg()',name: 'avg()',value: "avg()", meta: "Function" ,score:100},
-        { caption: 'bitcount()',name: 'bitcount()',value: "bitcount()", meta: "Function" ,score:100},
-        { caption: 'max()',name: 'max()',value: "max()", meta: "Function" ,score:100},
-        { caption: 'min()',name: 'min()',value: "min()", meta: "Function" ,score:100},
-        { caption: 'seq()',name: 'seq()',value: "seq()", meta: "Function" ,score:100},
-        { caption: 'top',name: 'top',value: "top", meta: "Keyword" ,score:10},
-        { caption: 'last',name: 'last',value: "last", meta: "Keyword" ,score:10},
-    ];
-
-    const initAceEditor = () => {
-        groupInfo?.columns?.forEach(z => {
-            const columnCompletion = { caption: z.name,name: z.name,value: z.name, meta: "GroupColumn" ,score:10};
-            customCompletions.push(columnCompletion);
-        })
-        setTimeout(() => {
-            editorRef.current.editor.completers = [{
-                getCompletions: function(editor, session, pos, prefix, callback) {
-                    callback(null, customCompletions);
-                },
-            }];
-            editorRef.current.editor.setValue(statInfo.template);
-            editorRef.current.editor.clearSelection();
-        },0)
-    };
-
-    const handleEditorChange = (newValue, event) => {
-        const selectedText = editorRef.current.editor.getSelectedText();
-        const action = event.action;
-        const lines = event.lines[0];
-        const editor = editorRef.current.editor;
-        const matchArray = ['title=\"\"','stat=\"\"','dimens=\"\"','limit=\"\"','count()','sum()','max()','min()','avg()','bitcount()','seq()'];
-        const row = event.end.row + 1;
-        if(action == 'insert' && lines == "stat-item    />"){
-            const endColumn = event.end.column;
-            setTimeout(() => {
-                editor.gotoLine(row, endColumn - 4, false);
-            }, 5)
-        }
-        else if(action == 'insert' && matchArray.includes(lines)){
-            const endColumn = event.end.column;
-            setTimeout(() => {
-                editor.gotoLine(row, endColumn - 1, false);
-            }, 5)
-        }
-    };
 
     async function handlerSubmit(){
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
-        const template = editorRef.current.editor.getValue();
         const updateParam:Stat = {
             id:statInfo.id,
-            template:template,
+            template:values.template,
             groupId:groupInfo.id,
             projectId:groupInfo.projectId,
             expired:values.expired,
@@ -128,7 +70,6 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
     }
 
     useEffect(() => {
-        // initAceEditor();
         setGroupInfo(statInfo.group);
         setProjectInfo(statInfo.project);
     },[])
@@ -187,27 +128,6 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
                             {'Template: '}
                         </Typography.Title>
                         <FormItem rules={[{ required: true }]} field={"template"}>
-                            {/*<AceEditor*/}
-                            {/*    style={{ height:'60px',backgroundColor:"var(--color-fill-2)",width:'100%'}}*/}
-                            {/*    ref={editorRef}*/}
-                            {/*    readOnly={true}*/}
-                            {/*    mode="xml"*/}
-                            {/*    theme="kuroir"*/}
-                            {/*    name="code-editor"*/}
-                            {/*    editorProps={{ $blockScrolling: true }}*/}
-                            {/*    enableLiveAutocompletion={true}*/}
-                            {/*    enableSnippets={true}*/}
-                            {/*    highlightActiveLine={false}*/}
-                            {/*    showPrintMargin={false}*/}
-                            {/*    showGutter={false}*/}
-                            {/*    enableBasicAutocompletion={true}*/}
-                            {/*    onChange={handleEditorChange}*/}
-                            {/*    setOptions={{*/}
-                            {/*        enableBasicAutocompletion: true,*/}
-                            {/*        enableSnippets:true,*/}
-                            {/*        enableLiveAutocompletion:true,*/}
-                            {/*    }}*/}
-                            {/*/>*/}
                             <Input.TextArea disabled={true}/>
                         </FormItem>
 

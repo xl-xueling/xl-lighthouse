@@ -11,22 +11,22 @@ const i18n = {
     'groupUpdate.form.validate.columnComment.length.failed':'Column[%s] comment length should be between 3-50 chars!',
     'groupUpdate.form.validate.columnName.duplicate.failed':'Column name[%s] cannot be duplicate!',
     'groupUpdate.form.button.columnAdd':'Add',
-    'groupUpdate.form.submit.success':'Create group successfully!',
+    'groupUpdate.form.submit.success':'Update group successfully!',
 
   },
   'zh-CN': {
     'groupUpdate.modal.title':'创建统计组',
-    'groupUpdate.form.validate.token.notEmpty.errorMsg':'Token cannot be empty!',
+    'groupUpdate.form.validate.token.notEmpty.errorMsg':'Token不能为空！',
     'groupUpdate.form.validate.token.failed':'Token校验失败！',
     'groupUpdate.form.validate.column.notEmpty.errorMsg':'字段信息不能为空！',
-    'groupUpdate.form.validate.columnName.notEmpty':'字段名称不能为空!',
-    'groupUpdate.form.validate.columnName.length.failed':'字段名称[%s]长度应处于3-15字符之间!',
-    'groupUpdate.form.validate.columnName.failed':'字段名称[%s]校验失败!',
+    'groupUpdate.form.validate.columnName.notEmpty':'字段名称不能为空！',
+    'groupUpdate.form.validate.columnName.length.failed':'字段名称[%s]长度应处于3-15字符之间！',
+    'groupUpdate.form.validate.columnName.failed':'字段名称[%s]校验失败！',
     'groupUpdate.form.validate.desc.notEmpty.errorMsg':'描述信息不能为空！',
     'groupUpdate.form.validate.columnComment.length.failed':'字段[%s]注释长度应处于3-50字符之间！',
     'groupUpdate.form.validate.columnName.duplicate.failed':'字段名称[%s]不能重复！',
     'groupUpdate.form.button.columnAdd':'添加',
-    'groupUpdate.form.submit.success':'统计组创建成功!',
+    'groupUpdate.form.submit.success':'修改统计组信息成功！',
   },
 };
 

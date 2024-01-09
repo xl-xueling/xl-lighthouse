@@ -57,7 +57,7 @@ const i18n = {
     'statList.columns.state.frozen':'已冻结',
     'statList.columns.state.deleted':'已删除',
     'statList.columns.frozen.success':'统计任务已冻结！',
-    'statList.columns.restart.success':'统计任务已冻结！',
+    'statList.columns.restart.success':'统计任务已启动！',
     'statList.columns.stop.success':'统计任务已停止！',
     'statList.columns.delete.success':'统计任务已删除！',
   },
