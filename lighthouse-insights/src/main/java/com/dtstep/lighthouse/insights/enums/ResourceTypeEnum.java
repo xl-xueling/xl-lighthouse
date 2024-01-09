@@ -1,5 +1,10 @@
 package com.dtstep.lighthouse.insights.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
+
 public enum ResourceTypeEnum {
 
     System(1),
@@ -22,6 +27,7 @@ public enum ResourceTypeEnum {
         this.resourceType = resourceType;
     }
 
+    @JsonValue
     private Integer resourceType;
 
     public Integer getResourceType() {
@@ -30,5 +36,11 @@ public enum ResourceTypeEnum {
 
     public void setResourceType(Integer resourceType) {
         this.resourceType = resourceType;
+    }
+
+    @JsonCreator
+    public static ResourceTypeEnum forValue(int value){
+        ResourceTypeEnum[] values = ResourceTypeEnum.values();
+        return Stream.of(values).filter(it -> it.getResourceType() == value).findAny().orElse(null);
     }
 }

@@ -1,5 +1,10 @@
 package com.dtstep.lighthouse.insights.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
+
 public enum RecordTypeEnum {
 
     CREATE_DEPARTMENT(1),
@@ -36,21 +41,9 @@ public enum RecordTypeEnum {
 
     RELEASE_PERMISSION(17),
 
-    CHANGE_GROUP_STATE_RUNNING(18),
+    CHANGE_GROUP_STATE(18),
 
-    CHANGE_GROUP_STATE_STOPPED(19),
-
-    CHANGE_GROUP_STATE_LIMITED(20),
-
-    CHANGE_GROUP_STATE_FROZEN(21),
-
-    CHANGE_STAT_STATE_RUNNING(22),
-
-    CHANGE_STAT_STATE_STOPPED(23),
-
-    CHANGE_STAT_STATE_LIMITED(24),
-
-    CHANGE_STAT_STATE_FROZEN(25),
+    CHANGE_STAT_STATE(19),
 
     ;
 
@@ -58,6 +51,7 @@ public enum RecordTypeEnum {
         this.recordType = recordType;
     }
 
+    @JsonValue
     private Integer recordType;
 
     public Integer getRecordType() {
@@ -66,5 +60,11 @@ public enum RecordTypeEnum {
 
     public void setRecordType(Integer recordType) {
         this.recordType = recordType;
+    }
+
+    @JsonCreator
+    public static RecordTypeEnum forValue(int value){
+        RecordTypeEnum[] values = RecordTypeEnum.values();
+        return Stream.of(values).filter(it -> it.getRecordType() == value).findAny().orElse(null);
     }
 }
