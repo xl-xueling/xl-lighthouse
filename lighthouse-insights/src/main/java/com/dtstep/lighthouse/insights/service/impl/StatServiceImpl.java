@@ -76,6 +76,7 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
+    @RecordAnnotation(recordType = RecordTypeEnum.UPDATE_STAT)
     public int update(Stat stat) {
         int groupId = stat.getGroupId();
         Group group = groupDao.queryById(groupId);
@@ -94,15 +95,6 @@ public class StatServiceImpl implements StatService {
         return result;
     }
 
-    @RecordAnnotation(recordType = RecordTypeEnum.CHANGE_STAT_STATE)
-    @Override
-    public int changeState(ChangeStatStateParam changeParam) {
-        Integer id = changeParam.getId();
-        Stat stat = queryById(id);
-        Validate.notNull(stat);
-        stat.setState(changeParam.getState());
-        return update(stat);
-    }
 
     @Override
     public int delete(Stat stat) {

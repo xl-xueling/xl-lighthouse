@@ -57,7 +57,11 @@ public class StatController {
     @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @RequestMapping("/stat/changeState")
     public ResultData<Integer> changeState(@Validated @RequestBody ChangeStatStateParam changeParam) {
-        int result = statService.changeState(changeParam);
+        Integer id = changeParam.getId();
+        Stat stat = statService.queryById(id);
+        Validate.notNull(stat);
+        stat.setState(changeParam.getState());
+        int result = statService.update(stat);
         if(result > 0){
             return ResultData.success(result);
         }else{
