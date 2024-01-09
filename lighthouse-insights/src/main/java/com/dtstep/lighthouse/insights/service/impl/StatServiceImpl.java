@@ -3,12 +3,15 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.insights.controller.annotation.RecordAnnotation;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
+import com.dtstep.lighthouse.insights.dto.ChangeStatStateParam;
 import com.dtstep.lighthouse.insights.dto.PermissionInfo;
 import com.dtstep.lighthouse.insights.dto.StatDto;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
+import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
@@ -16,6 +19,7 @@ import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.template.TemplateContext;
 import com.dtstep.lighthouse.insights.template.TemplateParser;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,6 +92,16 @@ public class StatServiceImpl implements StatService {
         int result = statDao.update(stat);
         resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Stat,stat.getId(),stat.getGroupId()));
         return result;
+    }
+
+    @RecordAnnotation(recordType = RecordTypeEnum.CHANGE_STAT_STATE)
+    @Override
+    public int changeState(ChangeStatStateParam changeParam) {
+        Integer id = changeParam.getId();
+        Stat stat = queryById(id);
+        Validate.notNull(stat);
+        stat.setState(changeParam.getState());
+        return update(stat);
     }
 
     @Override

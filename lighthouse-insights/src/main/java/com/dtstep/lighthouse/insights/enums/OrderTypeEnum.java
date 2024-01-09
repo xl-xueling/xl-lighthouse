@@ -36,7 +36,6 @@ public enum OrderTypeEnum {
         this.orderType = orderType;
     }
 
-
     @JsonCreator
     public static OrderTypeEnum forValue(int value){
         OrderTypeEnum[] values = OrderTypeEnum.values();
