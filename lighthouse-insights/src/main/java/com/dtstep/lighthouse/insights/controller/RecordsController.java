@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
@@ -24,8 +25,11 @@ public class RecordsController {
 
     @PostMapping("/record/list")
     public ResultData<ListData<Record>> queryList(@Validated @RequestBody ListSearchObject<RecordQueryParam> searchObject){
+        System.out.println("ss:" + JsonUtil.toJSONString(searchObject.getPagination()));
         RecordQueryParam queryParam = new RecordQueryParam();
-        ListData<Record> listData = recordService.queryList(queryParam);
+        Integer pageNum = searchObject.getPagination().getPageNum();
+        Integer pageSize = searchObject.getPagination().getPageSize();
+        ListData<Record> listData = recordService.queryList(queryParam,pageNum,pageSize);
         return ResultData.success(listData);
     }
 }

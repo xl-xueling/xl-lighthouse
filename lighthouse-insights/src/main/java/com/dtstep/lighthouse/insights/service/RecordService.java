@@ -12,5 +12,5 @@ public interface RecordService {
 
     int create(Record record);
 
-    ListData<Record> queryList(RecordQueryParam queryParam);
+    ListData<Record> queryList(RecordQueryParam queryParam,Integer pageNum,Integer pageSize);
 }
