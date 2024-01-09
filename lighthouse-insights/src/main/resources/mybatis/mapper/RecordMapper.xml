@@ -23,4 +23,22 @@
             #{recordTime,jdbcType=TIMESTAMP}
         )
     </insert>
+
+    <select id="queryList" resultMap="recordResultMap">
+        SELECT `id`,`user_id`,`resource_id`,`resource_type`,`record_type`,`desc`,`record_time` FROM ldp_history_record
+        <where>
+            <if test="queryParam.resourceId != null">
+                AND `resource_id`  = #{queryParam.resourceId}
+            </if>
+            <if test="queryParam.resourceType != null">
+                AND `resource_type`  = #{queryParam.resourceType.resourceType}
+            </if>
+            <if test="queryParam.recordTypes != null and queryParam.recordTypes.size > 0">
+                AND record_type IN
+                <foreach item="item" index="index" collection="queryParam.recordTypes" open="(" separator="," close=")">
+                    #{item.recordType}
+                </foreach>
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -3,8 +3,8 @@ import {
     ApproveStateEnum,
     DatePickerConfigParam,
     FilterConfigParam, OrderStateEnum,
-    OrderTypeEnum, PermissionEnum,
-    RenderTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum
+    OrderTypeEnum, PermissionEnum, RecordTypeEnum,
+    RenderTypeEnum, ResourceTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum
 } from "@/types/insights-common";
 
 
@@ -151,6 +151,16 @@ export interface OrderDetail {
 export interface LoginParam {
     username?:string;
     password?:string;
+}
+
+export interface Record {
+    id?:number;
+    userId?:number;
+    resourceId?:number;
+    resourceType?:ResourceTypeEnum;
+    recordType?:RecordTypeEnum;
+    desc?:string;
+    recordTime?:number;
 }
 
 

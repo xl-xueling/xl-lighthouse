@@ -31,6 +31,7 @@ const { Row, Col } = Grid;
 import { RiShieldKeyholeLine } from "react-icons/ri";
 import {GlobalErrorCodes} from "@/utils/constants";
 import GroupUpdatePanel from "@/pages/group/update";
+import {RecordModal} from "@/pages/record/record_modal";
 
 
 export default function GroupManagePanel({projectInfo,groupId}) {
@@ -38,6 +39,7 @@ export default function GroupManagePanel({projectInfo,groupId}) {
     const { Text } = Typography;
     const [showStatAddPanel, setShowsStatAddPanel] = useState(false);
     const [showGroupEditPanel, setShowGroupEditPanel] = useState(false);
+    const [showLimitedRecordPanel, setShowLimitedRecordPanel] = useState(false);
     const [formParams,setFormParams] = useState(null);
     const [loading,setLoading] = useState<boolean>(true);
     const [groupInfo,setGroupInfo] = useState<Group>(null);
@@ -55,6 +57,7 @@ export default function GroupManagePanel({projectInfo,groupId}) {
     }
 
     const handlerProcess = (action):void => {
+        console.log("-----handlerProcess is:" + action);
         switch (action){
             case 'createStatistic':{
                 setShowsStatAddPanel(true);
@@ -62,6 +65,10 @@ export default function GroupManagePanel({projectInfo,groupId}) {
             }
             case 'updateGroup':{
                 setShowGroupEditPanel(true);
+                break;
+            }
+            case 'limitedRecord':{
+                setShowLimitedRecordPanel(true);
                 break;
             }
             default:{
@@ -175,6 +182,7 @@ export default function GroupManagePanel({projectInfo,groupId}) {
                 setFormParams({"groupId":groupId,t:new Date().getTime()});
             }}/>}
             {showGroupEditPanel && <GroupUpdatePanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)} callback={callback}/>}
+            {showLimitedRecordPanel && <RecordModal onClose={() => setShowLimitedRecordPanel(false)}/>}
         </>);
 
 }
