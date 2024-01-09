@@ -14,6 +14,8 @@ public enum ResourceTypeEnum {
 
     Metric(6),
 
+    Order(7),
+
     ;
 
     ResourceTypeEnum(Integer resourceType){
