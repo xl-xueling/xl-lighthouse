@@ -90,4 +90,7 @@
         </where>
     </select>
 
+    <select id="getSecretKey" resultType="String">
+        SELECT `secret_key` FROM ldp_stat_group WHERE id = #{id}
+    </select>
 </mapper>

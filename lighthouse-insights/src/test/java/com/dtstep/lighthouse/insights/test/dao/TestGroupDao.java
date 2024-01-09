@@ -77,4 +77,11 @@ public class TestGroupDao {
         int size = groupDao.count(queryParam);
         System.out.println("size:" + size);
     }
+
+    @Test
+    public void testGetSecretKey() throws Exception {
+        Integer id = 100215;
+        String s = groupDao.getSecretKey(id);
+        System.out.println("s:" + s);
+    }
 }
