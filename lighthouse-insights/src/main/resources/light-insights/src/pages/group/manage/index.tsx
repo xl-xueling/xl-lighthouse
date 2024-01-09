@@ -182,7 +182,7 @@ export default function GroupManagePanel({projectInfo,groupId}) {
                 setFormParams({"groupId":groupId,t:new Date().getTime()});
             }}/>}
             {showGroupEditPanel && <GroupUpdatePanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)} callback={callback}/>}
-            {showLimitedRecordPanel && <RecordModal onClose={() => setShowLimitedRecordPanel(false)}/>}
+            {showLimitedRecordPanel && <RecordModal resourceId={0} recordType={0} resourceType={[0]} onClose={() => setShowLimitedRecordPanel(false)}/>}
         </>);
 
 }

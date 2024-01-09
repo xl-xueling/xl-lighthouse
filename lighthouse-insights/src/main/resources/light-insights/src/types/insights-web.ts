@@ -53,7 +53,7 @@ export interface User {
     state?:UserStateEnum;
     createTime?:number;
     avatar?:string;
-    permissions?: Record<string, string[]>;
+    permissions?: any;
 }
 
 export interface Project {
