@@ -39,17 +39,18 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
             setCurrentItem(record);
             setListData(listData.map(x => record.id == x.id ? record:x))
         }else if(type == 'restart'){
-            await handlerChangeState(record.id,StatStateEnum.RUNNING);
+            await handlerChangeState(record,StatStateEnum.RUNNING);
         }else if(type == 'stop'){
-            await handlerChangeState(record.id,StatStateEnum.STOPPED);
+            await handlerChangeState(record,StatStateEnum.STOPPED);
         }else if(type == 'delete'){
+            setCurrentItem(record);
             await handlerDelete(record.id);
         }
     };
 
-    const handlerChangeState = async (id:number,state:StatStateEnum) => {
+    const handlerChangeState = async (record:Stat,state:StatStateEnum) => {
         const changeParam = {
-            id:id,
+            id:record.id,
             state:state,
         }
         await requestChangeState(changeParam).then((response) => {
@@ -63,9 +64,9 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
                 }else if(state == StatStateEnum.FROZEN){
                     tooltips = t['statList.columns.frozen.success'];
                 }
-                currentItem.state = state;
-                setCurrentItem(currentItem);
-                setListData(listData.map(x => id == x.id ? currentItem:x))
+                record.state = state;
+                setCurrentItem(record);
+                setListData(listData.map(x => record.id == x.id ? record:x))
                 Notification.info({style: { width: 420 }, title: 'Notification', content: tooltips});
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -91,7 +92,7 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
     }
 
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
-    const columns = useMemo(() => (from && from == 'group-manage') ? getColumnsOfManage(t, tableCallback) : getColumns(t,tableCallback), [t]);
+    const columns = useMemo(() => (from && from == 'group-manage') ? getColumnsOfManage(t, tableCallback) : getColumns(t,tableCallback), [t,listData]);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: true,
@@ -124,6 +125,7 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
             const {code, data ,message} = response;
             if(code == '0'){
                 if (refFetchId.current === fetchId) {
+                    console.log("-----update list data=====,data list:" + JSON.stringify(data.list))
                     setListData(data.list);
                     setPagination({
                         ...pagination,
