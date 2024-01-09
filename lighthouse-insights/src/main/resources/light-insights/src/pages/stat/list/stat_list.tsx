@@ -125,7 +125,6 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
             const {code, data ,message} = response;
             if(code == '0'){
                 if (refFetchId.current === fetchId) {
-                    console.log("-----update list data=====,data list:" + JSON.stringify(data.list))
                     setListData(data.list);
                     setPagination({
                         ...pagination,
