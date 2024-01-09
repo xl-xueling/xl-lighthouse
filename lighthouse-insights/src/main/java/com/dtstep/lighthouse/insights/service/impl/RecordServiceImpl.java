@@ -30,8 +30,8 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public ListData<Record> queryList(RecordQueryParam queryParam) {
-        PageHelper.startPage(1,10);
+    public ListData<Record> queryList(RecordQueryParam queryParam,Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         ListData<Record> result;
         try{
             List<Record> recordList = recordDao.queryList(queryParam);
