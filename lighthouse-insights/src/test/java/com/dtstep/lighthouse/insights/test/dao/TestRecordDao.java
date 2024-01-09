@@ -23,7 +23,7 @@ public class TestRecordDao {
     @Test
     public void testInsert() throws Exception {
         Record record = new Record();
-        record.setRecordType(RecordTypeEnum.CHANGE_STAT_STATE);
+        record.setRecordType(RecordTypeEnum.UPDATE_STAT);
         record.setResourceType(ResourceTypeEnum.Stat);
         record.setResourceId(101);
         record.setRecordTime(LocalDateTime.now());
