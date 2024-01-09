@@ -32,6 +32,7 @@ import { RiShieldKeyholeLine } from "react-icons/ri";
 import {GlobalErrorCodes} from "@/utils/constants";
 import GroupUpdatePanel from "@/pages/group/update";
 import {RecordModal} from "@/pages/record/record_modal";
+import SecretKeyModal from "@/pages/group/basic/secret_key";
 
 
 export default function GroupManagePanel({projectInfo,groupId}) {
@@ -40,6 +41,7 @@ export default function GroupManagePanel({projectInfo,groupId}) {
     const [showStatAddPanel, setShowsStatAddPanel] = useState(false);
     const [showGroupEditPanel, setShowGroupEditPanel] = useState(false);
     const [showLimitedRecordPanel, setShowLimitedRecordPanel] = useState(false);
+    const [showSecretKeyModal, setShowSecretKeyModal] = useState(false);
     const [formParams,setFormParams] = useState(null);
     const [loading,setLoading] = useState<boolean>(true);
     const [groupInfo,setGroupInfo] = useState<Group>(null);
@@ -69,6 +71,10 @@ export default function GroupManagePanel({projectInfo,groupId}) {
             }
             case 'limitedRecord':{
                 setShowLimitedRecordPanel(true);
+                break;
+            }
+            case 'secretKey': {
+                setShowSecretKeyModal(true);
                 break;
             }
             default:{
@@ -183,6 +189,7 @@ export default function GroupManagePanel({projectInfo,groupId}) {
             }}/>}
             {showGroupEditPanel && <GroupUpdatePanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)} callback={callback}/>}
             {showLimitedRecordPanel && <RecordModal resourceId={0} recordType={0} resourceType={[0]} onClose={() => setShowLimitedRecordPanel(false)}/>}
+            {showSecretKeyModal && <SecretKeyModal onClose={() => setShowSecretKeyModal(false)}/>}
         </>);
 
 }

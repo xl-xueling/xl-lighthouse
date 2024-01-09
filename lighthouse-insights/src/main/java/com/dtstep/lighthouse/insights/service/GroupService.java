@@ -16,5 +16,7 @@ public interface GroupService {
 
     int count(GroupQueryParam queryParam);
 
+    String getSecretKey(Integer id);
+
     List<Group> queryByProjectId(Integer projectId);
 }

@@ -16,6 +16,8 @@ public interface GroupDao {
 
     Group queryById(Integer id);
 
+    String getSecretKey(Integer id);
+
     List<Group> queryByProjectId(Integer projectId);
 
     int count(@Param("queryParam")GroupQueryParam queryParam);

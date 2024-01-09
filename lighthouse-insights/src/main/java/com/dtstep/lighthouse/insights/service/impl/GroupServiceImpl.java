@@ -66,4 +66,9 @@ public class GroupServiceImpl implements GroupService {
     public int count(GroupQueryParam queryParam) {
         return groupDao.count(queryParam);
     }
+
+    @Override
+    public String getSecretKey(Integer id) {
+        return groupDao.getSecretKey(id);
+    }
 }

@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.controller;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
+import com.dtstep.lighthouse.insights.dto.IDParam;
 import com.dtstep.lighthouse.insights.dto.ResultData;
 import com.dtstep.lighthouse.insights.dto.GroupDto;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
@@ -63,6 +64,15 @@ public class GroupController {
     public ResultData<Group> queryById(@Validated @RequestBody GroupQueryParam queryParam) {
         Group group = groupService.queryById(queryParam.getId());
         return ResultData.success(group);
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/group/querySecretKey")
+    public ResultData<String> querySecretKey(@Validated @RequestBody IDParam idParam) {
+        String s = "sss";
+        Integer id = idParam.getId();
+
+        return ResultData.success(s);
     }
 
     @RequestMapping("/group/queryByProjectId")
