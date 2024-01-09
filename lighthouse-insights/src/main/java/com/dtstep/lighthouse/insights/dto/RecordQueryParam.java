@@ -3,13 +3,15 @@ package com.dtstep.lighthouse.insights.dto;
 import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 
+import java.util.List;
+
 public class RecordQueryParam {
 
     private Integer resourceId;
 
     private ResourceTypeEnum resourceType;
 
-    private RecordTypeEnum recordType;
+    private List<RecordTypeEnum> recordTypes;
 
     public Integer getResourceId() {
         return resourceId;
@@ -27,11 +29,11 @@ public class RecordQueryParam {
         this.resourceType = resourceType;
     }
 
-    public RecordTypeEnum getRecordType() {
-        return recordType;
+    public List<RecordTypeEnum> getRecordTypes() {
+        return recordTypes;
     }
 
-    public void setRecordType(RecordTypeEnum recordType) {
-        this.recordType = recordType;
+    public void setRecordTypes(List<RecordTypeEnum> recordTypes) {
+        this.recordTypes = recordTypes;
     }
 }

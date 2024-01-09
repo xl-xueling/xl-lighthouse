@@ -31,6 +31,28 @@ export enum PermissionEnum {
     retractable="retractable",
 }
 
+export enum RecordTypeEnum {
+    CREATE_DEPARTMENT=1,
+    UPDATE_DEPARTMENT=2,
+    DELETE_DEPARTMENT=3,
+    CREATE_PROJECT=4,
+    UPDATE_PROJECT=5,
+    DELETE_PROJECT=6,
+    CRATE_GROUP=7,
+    UPDATE_GROUP=8,
+    DELETE_GROUP=9,
+    CREATE_STAT=10,
+    UPDATE_STAT=11,
+    DELETE_STAT=12,
+    CREATE_METRIC=13,
+    UPDATE_METRIC=14,
+    DELETE_METRIC=15,
+    GRANT_PERMISSION=16,
+    RELEASE_PERMISSION=17,
+    GROUP_LIMITED=18,
+    STAT_LIMITED=19,
+}
+
 export enum UserStateEnum{
     USER_PEND=0,
     USR_NORMAL=1,
@@ -52,6 +74,16 @@ export enum ApproveStateEnum {
     Rejected=3,
     Retracted=4,
     Suspend=5,
+}
+
+export enum ResourceTypeEnum {
+    System=1,
+    Department=2,
+    Project=3,
+    Group=4,
+    Stat=5,
+    Metric=6,
+    Order=7,
 }
 
 export enum RoleTypeEnum {
