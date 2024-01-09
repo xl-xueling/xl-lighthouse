@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
+import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.insights.dto.RecordQueryParam;
 import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Record;
@@ -10,5 +12,5 @@ public interface RecordService {
 
     int create(Record record);
 
-    List<Record> queryList(ResourceTypeEnum resourceType, Integer resourceId, RecordTypeEnum recordTypeEnum);
+    ListData<Record> queryList(RecordQueryParam queryParam);
 }

@@ -1,10 +1,15 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.RecordDao;
+import com.dtstep.lighthouse.insights.dto.RecordQueryParam;
 import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Record;
+import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.RecordService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +21,24 @@ public class RecordServiceImpl implements RecordService {
     @Autowired
     private RecordDao recordDao;
 
+    @Autowired
+    private BaseService baseService;
+
     @Override
     public int create(Record record) {
         return recordDao.insert(record);
     }
 
     @Override
-    public List<Record> queryList(ResourceTypeEnum resourceType, Integer resourceId, RecordTypeEnum recordTypeEnum) {
-
-        return null;
+    public ListData<Record> queryList(RecordQueryParam queryParam) {
+        PageHelper.startPage(1,10);
+        ListData<Record> result;
+        try{
+            List<Record> recordList = recordDao.queryList(queryParam);
+            result = baseService.translateToListData(recordList);
+        }finally {
+            PageHelper.clearPage();
+        }
+        return result;
     }
 }
