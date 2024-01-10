@@ -22,7 +22,7 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Group" >
         INSERT INTO ldp_stat_group (`token`,`project_id`,`columns`,`secret_key`,
                                     `state`,`desc`,
-                                    `extend_config`,`debug_mode`,`refresh_time`,`create_time`,`update_time`,`refresh_time`) VALUES
+                                    `extend_config`,`debug_mode`,`refresh_time`,`create_time`,`update_time`) VALUES
         (
             #{token,jdbcType=VARCHAR},
             #{projectId,jdbcType=INTEGER},
@@ -34,8 +34,7 @@
             #{debugMode,jdbcType=INTEGER},
             #{refreshTime,jdbcType=TIMESTAMP},
             #{createTime,jdbcType=TIMESTAMP},
-            #{updateTime,jdbcType=TIMESTAMP},
-            #{refreshTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
 

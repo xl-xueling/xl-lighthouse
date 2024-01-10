@@ -35,7 +35,7 @@ import {RecordModal} from "@/pages/record/record_modal";
 import SecretKeyModal from "@/pages/group/basic/secret_key";
 
 
-export default function GroupManagePanel({projectInfo,groupId}) {
+export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
     const TabPane = Tabs.TabPane;
     const { Text } = Typography;
     const [showStatAddPanel, setShowsStatAddPanel] = useState(false);
@@ -87,18 +87,19 @@ export default function GroupManagePanel({projectInfo,groupId}) {
     }
 
     const handlerDeleteGroup = async () => {
-        await requestDeleteById({id:groupId}).then((response) => {
-            console.log("Response is:" + JSON.stringify(response));
-            const {code, data ,message} = response;
-            if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Warning', content: t['groupManage.form.submit.deleteSuccess']});
-            }else{
-                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-            }
-            setLoading(false);
-        }).catch((error) => {
-            console.log(error);
-        })
+        deleteCallback('deleteGroup',groupId);
+        // await requestDeleteById({id:groupId}).then((response) => {
+        //     const {code, data ,message} = response;
+        //     if(code == '0'){
+        //         Notification.info({style: { width: 420 }, title: 'Warning', content: t['groupManage.form.submit.deleteSuccess']});
+        //         deleteCallback();
+        //     }else{
+        //         Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+        //     }
+        //     setLoading(false);
+        // }).catch((error) => {
+        //     console.log(error);
+        // })
     }
 
     const fetchData = async () => {
