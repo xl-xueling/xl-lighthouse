@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.modal.Stat;
+import com.dtstep.lighthouse.insights.modal.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,8 @@ public class StatDto extends Stat {
     private Group group;
 
     private Project project;
+
+    private List<User> admins;
 
     private List<PermissionInfo.PermissionEnum> permissions = new ArrayList<>();
 
@@ -49,5 +52,13 @@ public class StatDto extends Stat {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public List<User> getAdmins() {
+        return admins;
+    }
+
+    public void setAdmins(List<User> admins) {
+        this.admins = admins;
     }
 }

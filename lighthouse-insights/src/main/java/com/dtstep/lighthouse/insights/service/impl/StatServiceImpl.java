@@ -50,6 +50,9 @@ public class StatServiceImpl implements StatService {
     private RoleService roleService;
 
     @Autowired
+    private ProjectService projectService;
+
+    @Autowired
     private PermissionService permissionService;
 
     @Override
@@ -114,6 +117,8 @@ public class StatServiceImpl implements StatService {
         }else if(permissionService.checkUserPermission(userId,accessRole.getId())){
             statDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
         }
+        List<User> admins = projectService.cacheQueryAdmins(project.getId());
+        statDto.setAdmins(admins);
         statDto.setGroup(group);
         statDto.setProject(project);
         return statDto;
