@@ -1,8 +1,6 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -24,6 +22,8 @@ public class Stat implements Serializable {
     private Integer projectId;
 
     private Integer groupId;
+
+    private RenderConfig renderConfig;
 
     private LocalDateTime createTime;
 
