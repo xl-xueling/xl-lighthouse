@@ -7,7 +7,7 @@ import {
     Table,
     TableColumnProps,
     Popconfirm,
-    Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag, Icon, Link, Modal
+    Message, Button, Form, Input, InputTag, Select, Skeleton, Spin, Tag, Icon, Link, Modal, Notification
 } from '@arco-design/web-react';
 import {
     IconCopy,
@@ -19,7 +19,6 @@ import {
     IconPlusCircleFill, IconSearch
 } from '@arco-design/web-react/icon';
 import React, {useEffect, useRef, useState} from 'react';
-import useLocale from '@/utils/useLocale';
 const { Title } = Typography;
 import locale from './locale';
 import styles from './style/index.module.less';
@@ -27,7 +26,7 @@ import AceEditor from "react-ace";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {Column, Department, Group, Stat, User} from "@/types/insights-web";
-import {requestQueryById} from "@/api/group";
+import {requestGetSecretKey, requestQueryById} from "@/api/group";
 import {requestQueryByGroupId} from "@/api/stat";
 import EditTable, {
     EditTableColumn,
@@ -36,21 +35,44 @@ import EditTable, {
 } from "@/pages/common/edittable/EditTable";
 import {FormInstance} from "@arco-design/web-react/lib";
 import {formatTimeStamp} from "@/utils/util";
+import useLocale from "@/utils/useLocale";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
-export default function SecretKeyModal({onClose}) {
+export default function SecretKeyModal({groupId,onClose}) {
+
+    const t = useLocale(locale);
+    const [secretKey,setSecretKey] = useState<string>(null);
+    const [loading,setLoading] = useState<boolean>(false);
+
+    const fetchData = async () => {
+        setLoading(true);
+        await requestGetSecretKey({id:groupId}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                setSecretKey(data);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
+
+    useEffect(()=> {
+        fetchData().then();
+    },[groupId])
 
     return (
         <Modal
-            title={'Secret Key'}
+            title={t['group.basic.secretKey']}
             visible={true}
+            footer={null}
             style={{ width:'750px' }}
             onCancel={onClose}>
-            <p>
-                You can customize modal body text by the current situation. This modal will be closed
-                immediately once you press the OK button.
-            </p>
+            <div>{secretKey}</div>
         </Modal>
     )
 }

@@ -45,6 +45,14 @@ export async function requestUpdate(data) :Promise<ResultData> {
     })
 }
 
+export async function requestGetSecretKey(data) :Promise<ResultData<string>> {
+    return request({
+        url:'/group/getSecretKey',
+        method:'POST',
+        data,
+    })
+}
+
 
 
 
