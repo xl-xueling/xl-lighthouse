@@ -79,8 +79,8 @@ function Index() {
   }
 
   useEffect(() => {
-    Message.config({ duration: 5000});
-    Notification.config({duration:5000});
+    Message.config({ duration: 3000});
+    Notification.config({duration:3000});
     if (checkLogin()) {
       fetchBasicInfo().then()
     } else if (window.location.pathname.replace(/\//g, '') !== 'login'

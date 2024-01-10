@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -35,6 +36,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public int create(Group group) {
         LocalDateTime localDateTime = LocalDateTime.now();
+        group.setSecretKey(UUID.randomUUID().toString().replace("-",""));
         group.setCreateTime(localDateTime);
         group.setUpdateTime(localDateTime);
         group.setRefreshTime(localDateTime);
