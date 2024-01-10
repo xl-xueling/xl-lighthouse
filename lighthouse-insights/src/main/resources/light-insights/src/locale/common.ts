@@ -9,6 +9,11 @@ const vi18n = {
         'basic.columns.state.rejected':'Rejected',
         'basic.columns.state.stopped':'Stopped',
         'basic.columns.state.invalid':'Invalid',
+        'components.type.dateSelect':'Date Select',
+        'components.type.dateRangeSelect':'Date Range Select',
+        'components.type.datetimeRangeSelect':'DateTime Range Select',
+        'components.type.filterInput':'Filter Input',
+        'components.type.filterSelect':'Select Box',
     },
     'zh-CN': {
         'system.error':'系统异常!',
@@ -20,6 +25,11 @@ const vi18n = {
         'basic.columns.state.rejected':'已拒绝',
         'basic.columns.state.stopped':'已停止',
         'basic.columns.state.invalid':'无效配置',
+        'components.type.dateSelect':'日期选择',
+        'components.type.dateRangeSelect':'日期范围选择',
+        'components.type.datetimeRangeSelect':'日期时间范围选择',
+        'components.type.filterInput':'输入框',
+        'components.type.filterSelect':'下拉选择组件',
     }
 }
 export default vi18n;

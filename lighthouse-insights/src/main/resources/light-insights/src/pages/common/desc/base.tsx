@@ -1,6 +1,6 @@
 import React from "react";
 import {Badge} from "@arco-design/web-react";
-import {StatStateEnum} from "@/types/insights-common";
+import {ComponentTypeEnum, StatStateEnum} from "@/types/insights-common";
 
 export function getStatStateDescription (t: any, value:StatStateEnum) {
     if(value === StatStateEnum.PENDING){
@@ -19,5 +19,17 @@ export function getStatStateDescription (t: any, value:StatStateEnum) {
         return <Badge color={'red'} text={t['basic.columns.state.frozen']}/>;
     }else if(value === StatStateEnum.INVALID){
         return <Badge color={'red'} text={t['basic.columns.state.invalid']}/>;
+    }
+}
+
+export function getComponentTypeDescription(t:any,value:ComponentTypeEnum) {
+    if(value == ComponentTypeEnum.DATEPICKER_DATE_SELECT){
+        return t['components.type.dateSelect'];
+    }else if(value == ComponentTypeEnum.DATEPICKER_DATE_RANGE_SELECT){
+        return t['components.type.dateRangeSelect'];
+    }else if(value == ComponentTypeEnum.FILTER_INPUT){
+        return t['components.type.filterInput'];
+    }else if(value == ComponentTypeEnum.FILTER_SELECT){
+        return t['components.type.filterSelect'];
     }
 }

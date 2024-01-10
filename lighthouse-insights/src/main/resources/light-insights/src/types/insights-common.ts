@@ -178,7 +178,11 @@ export enum StatStateEnum {
     INVALID=7,
 }
 
-
-export enum FilterTypeEnum {
-    SingleSelectBox=1,
+export enum ComponentTypeEnum {
+    DATEPICKER_DATE_SELECT=1,
+    DATEPICKER_DATE_RANGE_SELECT=2,
+    DATEPICKER_DATE_TIME_RANGE_SELECT=3,
+    FILTER_INPUT=4,
+    FILTER_SELECT=5,
+    FILTER_REMOTE_SEARCH_SELECT=6,
 }
