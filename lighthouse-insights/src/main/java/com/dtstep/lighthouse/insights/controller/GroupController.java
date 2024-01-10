@@ -67,12 +67,11 @@ public class GroupController {
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
-    @RequestMapping("/group/querySecretKey")
+    @RequestMapping("/group/getSecretKey")
     public ResultData<String> querySecretKey(@Validated @RequestBody IDParam idParam) {
-        String s = "sss";
         Integer id = idParam.getId();
-
-        return ResultData.success(s);
+        String secretKey = groupService.getSecretKey(id);
+        return ResultData.success(secretKey);
     }
 
     @RequestMapping("/group/queryByProjectId")
