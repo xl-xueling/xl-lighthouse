@@ -10,6 +10,7 @@ import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.service.GroupService;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -60,10 +61,19 @@ public class GroupController {
         }
     }
 
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/group/queryById")
     public ResultData<Group> queryById(@Validated @RequestBody GroupQueryParam queryParam) {
         Group group = groupService.queryById(queryParam.getId());
         return ResultData.success(group);
+    }
+
+    @RequestMapping("/group/deleteById")
+    public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) {
+        Group group = groupService.queryById(idParam.getId());
+        Validate.notNull(group);
+        Integer result = groupService.delete(group);
+        return ResultData.success(result);
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")

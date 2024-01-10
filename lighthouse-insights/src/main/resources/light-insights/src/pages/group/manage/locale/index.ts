@@ -8,6 +8,7 @@ const i18n = {
     'groupManage.operations.button.limited.records':'Limited Records',
     'groupManage.operations.button.secret.key':'Secret Key',
     'groupManage.operations.button.delete.group':'Delete Group',
+    'groupManage.form.submit.deleteSuccess':'Delete group successfully!',
   },
   'zh-CN': {
     'groupManage.group':'统计组',
@@ -18,7 +19,7 @@ const i18n = {
     'groupManage.operations.button.limited.records':'查看限流记录',
     'groupManage.operations.button.secret.key':'秘钥',
     'groupManage.operations.button.delete.group':'删除统计组',
-
+    'groupManage.form.submit.deleteSuccess':'删除统计组成功！',
   },
 };
 

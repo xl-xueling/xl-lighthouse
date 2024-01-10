@@ -23,7 +23,7 @@ import GroupEditPanel from "@/pages/group/update";
 import {CiViewTable} from "react-icons/ci";
 import {RiAppsLine} from "react-icons/ri";
 import {Group, TreeNode} from "@/types/insights-web";
-import {requestQueryById} from "@/api/group";
+import {requestDeleteById, requestQueryById} from "@/api/group";
 import {EditTableColumn} from "@/pages/common/edittable/EditTable";
 import {getRandomString} from "@/utils/util";
 import {HiMiniBoltSlash} from "react-icons/hi2";
@@ -58,8 +58,7 @@ export default function GroupManagePanel({projectInfo,groupId}) {
         }
     }
 
-    const handlerProcess = (action):void => {
-        console.log("-----handlerProcess is:" + action);
+    const handlerProcess = async (action):Promise<void> => {
         switch (action){
             case 'createStatistic':{
                 setShowsStatAddPanel(true);
@@ -77,10 +76,29 @@ export default function GroupManagePanel({projectInfo,groupId}) {
                 setShowSecretKeyModal(true);
                 break;
             }
+            case 'deleteGroup':{
+                await handlerDeleteGroup();
+                break;
+            }
             default:{
                 return;
             }
         }
+    }
+
+    const handlerDeleteGroup = async () => {
+        await requestDeleteById({id:groupId}).then((response) => {
+            console.log("Response is:" + JSON.stringify(response));
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Warning', content: t['groupManage.form.submit.deleteSuccess']});
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
     const fetchData = async () => {
