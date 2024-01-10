@@ -1,14 +1,13 @@
 package com.dtstep.lighthouse.insights.modal;
 
-import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
 import com.dtstep.lighthouse.insights.dto.TreeNode;
-import com.dtstep.lighthouse.insights.enums.RenderTypeEnum;
+import com.dtstep.lighthouse.insights.enums.ComponentTypeEnum;
 
 import java.util.List;
 
 public class RenderFilterConfig {
 
-    private RenderTypeEnum renderType;
+    private ComponentTypeEnum renderType;
 
     private String label;
 
@@ -18,11 +17,11 @@ public class RenderFilterConfig {
 
     private List<TreeNode> configData;
 
-    public RenderTypeEnum getRenderType() {
+    public ComponentTypeEnum getRenderType() {
         return renderType;
     }
 
-    public void setRenderType(RenderTypeEnum renderType) {
+    public void setRenderType(ComponentTypeEnum renderType) {
         this.renderType = renderType;
     }
 

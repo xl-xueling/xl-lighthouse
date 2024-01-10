@@ -7,8 +7,8 @@ import {
     Space,
     Table,
 } from '@arco-design/web-react';
-import SearchForm from "@/pages/components/filter/list/form";
-import FilterAddPanel from "@/pages/components/filter/add/filter_add";
+import SearchForm from "@/pages/filter/list/form";
+import FilterAddPanel from "@/pages/filter/add/filter_add";
 import {getColumns} from "./constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/list/locale";

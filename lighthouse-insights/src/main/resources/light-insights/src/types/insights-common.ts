@@ -178,3 +178,7 @@ export enum StatStateEnum {
     INVALID=7,
 }
 
+
+export enum FilterTypeEnum {
+    SingleSelectBox=1,
+}
