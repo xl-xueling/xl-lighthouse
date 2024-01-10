@@ -6,12 +6,15 @@ import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
 import com.dtstep.lighthouse.insights.dto.ProjectDto;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.insights.modal.Project;
+import com.dtstep.lighthouse.insights.modal.User;
 
 import java.util.List;
 
 public interface ProjectService {
 
     int create(ProjectCreateParam project);
+
+    List<User> cacheQueryAdmins(Integer id);
 
     int update(Project project);
 

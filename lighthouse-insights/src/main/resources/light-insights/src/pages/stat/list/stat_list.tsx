@@ -16,6 +16,7 @@ import {GlobalErrorCodes} from "@/utils/constants";
 import StatDetailModal from "@/pages/stat/list/detail";
 import {StatStateEnum} from "@/types/insights-common";
 import {requestResetPasswd} from "@/api/user";
+import SearchForm from "@/pages/stat/list/form";
 
 export default function StatisticalListPanel({formParams = {},from = null}) {
     const t = useLocale(locale);

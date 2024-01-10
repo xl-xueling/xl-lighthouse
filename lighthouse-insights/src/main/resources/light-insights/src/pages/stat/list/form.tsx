@@ -48,11 +48,6 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
             >
                 <Row gutter={24}>
                     <Col span={colSpan}>
-                        <Form.Item label={'ID'} field="id">
-                            <Input placeholder={'ID'} allowClear />
-                        </Form.Item>
-                    </Col>
-                    <Col span={colSpan}>
                         <Form.Item label={t['statList.table.columns.name']} field="name">
                             <Input
                                 allowClear
