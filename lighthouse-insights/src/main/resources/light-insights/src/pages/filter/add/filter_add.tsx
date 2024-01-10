@@ -36,12 +36,15 @@ import {
 import useLocale from '@/utils/useLocale';
 import {isJSON, stringifyObj} from "@/utils/util";
 import {calculateMaxLevel, validateNode} from "@/pages/components/common";
+import {getComponentTypeDescription} from "@/pages/common/desc/base";
+import locale from "./locale";
+import {ComponentTypeEnum} from "@/types/insights-common";
 const FormItem = Form.Item;
 const Option = Select.Option;
 export default function FilterAddPanel({onClose}) {
 
     const form = useRef(null);
-
+    const t = useLocale(locale);
     // const [children,setChildren] = useState([]);
 
     function handlerSubmit(){
@@ -65,7 +68,6 @@ export default function FilterAddPanel({onClose}) {
             return;
         }
         const level = calculateMaxLevel(obj,0);
-        console.log("level is:" + level);
         if(Array.isArray(obj)){
             setFormElements([{"type":values.type,"options":obj}]);
         }else{
@@ -75,7 +77,7 @@ export default function FilterAddPanel({onClose}) {
 
     return (
         <Modal
-            title='Create Statistic'
+            title={t['componentAdd.modal.title']}
             visible={true}
             onCancel={onClose}
             onOk={handlerSubmit}
@@ -100,16 +102,8 @@ export default function FilterAddPanel({onClose}) {
                         placeholder='please select' defaultValue={1}
                         options={[
                             {
-                                label: '多选下拉框',
-                                value: 1,
-                            },
-                            {
-                                label: '单选下拉框',
-                                value: 2,
-                            },
-                            {
-                                label: '级联下拉框',
-                                value: 3,
+                                label: getComponentTypeDescription(t,ComponentTypeEnum.FILTER_SELECT),
+                                value: 5,
                             },
                         ]}
                         allowClear
