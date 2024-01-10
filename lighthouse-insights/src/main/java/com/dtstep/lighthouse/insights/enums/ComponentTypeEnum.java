@@ -2,27 +2,31 @@ package com.dtstep.lighthouse.insights.enums;
 
 public enum ComponentTypeEnum {
 
-    FilterComponent(1),
+    DATEPICKER_DATE_SELECT(1),
 
-    DatePickerComponent(2),
+    DATEPICKER_DATE_RANGE_SELECT(2),
 
-    ChartComponent(3),
+    DATEPICKER_DATE_TIME_RANGE_SELECT(3),
 
-    TableComponent(4),
+    FILTER_INPUT(4),
+
+    FILTER_SELECT(5),
+
+    FILTER_REMOTE_SEARCH_SELECT(6),
 
     ;
 
-    private int type;
+    private int renderType;
 
-    public int getType() {
-        return type;
+    ComponentTypeEnum(int renderType){
+        this.renderType = renderType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public int getRenderType() {
+        return renderType;
     }
 
-    ComponentTypeEnum(int type){
-        this.type = type;
+    public void setRenderType(int renderType) {
+        this.renderType = renderType;
     }
 }

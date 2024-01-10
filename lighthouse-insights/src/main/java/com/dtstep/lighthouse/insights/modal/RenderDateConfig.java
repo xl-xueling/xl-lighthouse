@@ -1,21 +1,18 @@
 package com.dtstep.lighthouse.insights.modal;
 
-import com.dtstep.lighthouse.insights.dto.TreeNode;
-import com.dtstep.lighthouse.insights.enums.RenderTypeEnum;
-
-import java.util.List;
+import com.dtstep.lighthouse.insights.enums.ComponentTypeEnum;
 
 public class RenderDateConfig {
 
-    private RenderTypeEnum renderType;
+    private ComponentTypeEnum renderType;
 
     private String label;
 
-    public RenderTypeEnum getRenderType() {
+    public ComponentTypeEnum getRenderType() {
         return renderType;
     }
 
-    public void setRenderType(RenderTypeEnum renderType) {
+    public void setRenderType(ComponentTypeEnum renderType) {
         this.renderType = renderType;
     }
 
