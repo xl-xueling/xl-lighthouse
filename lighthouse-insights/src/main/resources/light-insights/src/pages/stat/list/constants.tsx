@@ -10,11 +10,12 @@ import {
     Typography
 } from "@arco-design/web-react";
 import React from "react";
-import {IconStar, IconStarFill} from "@arco-design/web-react/icon";
+import {IconEdit, IconStar, IconStarFill} from "@arco-design/web-react/icon";
 import {PiLinkSimple} from "react-icons/pi";
 import {getStatExpiredEnumDescription, StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
 import {getRandomString} from "@/utils/util";
 import {getStatStateDescription} from "@/pages/common/desc/base";
+import {Link} from "@arco-design/web-react/lib";
 const TabPane = Tabs.TabPane;
 const { Text } = Typography;
 
@@ -150,38 +151,22 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             title: 'Title',
             dataIndex: 'title',
             render:(value,record) => {
-                return (<div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
+                return (<div onClick={() => callback(record, 'showDetailModal')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
             }
         },
         {
-            title: 'Project',
-            dataIndex: 'project.title',
+            title: 'Group',
+            dataIndex: 'group.token',
         },
         {
-            title: 'Department',
-            dataIndex: 'department.name',
+            title: 'TimeParam',
+            dataIndex: 'timeparam',
         },
         {
-            title: 'Admins',
-            dataIndex: 'adminIds',
+            title: 'Expired',
+            dataIndex: 'expired',
             render:(value,record) => {
-                return (
-                    record.admins.map((user) => (
-                        <Popover
-                            key={user.id}
-                            trigger='click'
-                            content={
-                                <span>
-                                <div><b>Email：</b>{user.email}</div>
-                                <div><b>Phone：</b>{user.phone}</div>
-                              </span>
-                            }>
-                            <Text style={{ cursor:"pointer" }}>
-                                {user.userName};
-                            </Text>
-                        </Popover>
-                        ))
-                )
+                return getStatExpiredEnumDescription(value);
             }
         },
         {
@@ -192,47 +177,37 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             },
         },
         {
-            title: 'Operate',
-            dataIndex: 'operate',
+            title: 'Operation',
+            dataIndex: 'operation',
             headerCellStyle: {width:'200px' },
-            render: (_, record) => (
-                <Space size={16} direction="horizontal">
-                    <Button
-                        type="secondary"
-                        size="mini">
-                        {t['statList.table.operations.view']}
-                    </Button>
-                    <Button
-                        type="secondary"
-                        size="mini">
-                        {t['statList.table.operations.update']}
-                    </Button>
-                    <Popconfirm
-                        position={"tr"}
-                        focusLock
-                        title='Confirm'
-                        content={t['statList.table.operations.frozen.confirm']}
+            render: (_, record) => {
+                let viewButton;
+                let applyButton;
+                if(record.permissions.includes('ManageAble') || record.permissions.includes('AccessAble')){
+                    viewButton = <Link key={getRandomString()} target={"_blank"} href={'/stat/display/' + record.id}>
+                        <Button
+                            type="text"
+                            size="mini">
+                            {t['statList.table.operations.view']}
+                        </Button>
+                    </Link>
+                }else{
+                    applyButton = <Popconfirm key={getRandomString()}
+                                               position={"tr"}
+                                               focusLock
+                                               onOk={() => callback(record, 'apply')}
+                                               title='Confirm'
+                                               content={t['statList.table.operations.apply.confirm']}
                     >
                         <Button
-                            type="secondary"
+                            type="text"
                             size="mini">
-                            {t['statList.table.operations.frozen']}
+                            {t['statList.table.operations.apply']}
                         </Button>
-                    </Popconfirm>
-                    <Popconfirm
-                        position={"tr"}
-                        focusLock
-                        title='Confirm'
-                        content={t['statList.table.operations.delete.confirm']}
-                    >
-                        <Button
-                            type="secondary"
-                            size="mini">
-                            {t['statList.table.operations.delete']}
-                        </Button>
-                    </Popconfirm>
-                </Space>
-            ),
+                    </Popconfirm>;
+                }
+                return <Space size={16} direction="horizontal">{[viewButton,applyButton]}</Space>
+            }
         },
     ];
 }
