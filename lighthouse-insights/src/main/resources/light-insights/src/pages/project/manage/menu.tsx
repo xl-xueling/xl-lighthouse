@@ -17,22 +17,25 @@ const SubMenu = Menu.SubMenu;
 import { CiViewTable } from "react-icons/ci";
 import {ArcoTreeNode, TreeNode} from "@/types/insights-web";
 import {RiAppsLine} from "react-icons/ri";
+import {stringifyObj} from "@/utils/util";
 
-export default function ProjectManageMenu({structure,callback}:{structure:Array<TreeNode>,callback:(id: string) => Promise<void>}) {
+export default function ProjectManageMenu({structure,callback}:{structure:Array<TreeNode>,callback:(id:number) => Promise<void>}) {
 
     const renderMenuItems = (items) => {
         const types = ['1','2'];
         return items?.filter(x => types.includes(x.type)).map((item) => {
             if (Array.isArray(item.children) && item.children.length > 0 && item.children.filter(x => types.includes(x.type))?.length > 0) {
                 return (
-                    <Menu.SubMenu key={item.id} title={
+                    <Menu.SubMenu key={item.id}
+                                  title={
                         <span style={{display:"inline-flex",alignItems:"center"}}><RiAppsLine style={{marginRight:'10px'}}/>{item.name}</span>
                     }>
                         {renderMenuItems(item.children)}
                     </Menu.SubMenu>
                 );
             }
-            return <Menu.Item key={item.id}><span style={{display:"inline-flex",alignItems:"center"}}><CiViewTable style={{marginRight:'10px'}}/>{item.name}</span></Menu.Item>;
+            return <Menu.Item key={item.id}
+            ><span style={{display:"inline-flex",alignItems:"center"}}><CiViewTable style={{marginRight:'10px'}}/>{item.name}</span></Menu.Item>;
         });
     }
 
@@ -40,7 +43,11 @@ export default function ProjectManageMenu({structure,callback}:{structure:Array<
         <>
             <Menu
                 autoOpen={true} style={{minHeight:'450px',userSelect:"none",overflow: "auto"}}
-                onClickMenuItem={callback}
+                onClickMenuItem = {(key, event, keyPath) => {
+                    if(keyPath.length == 2){
+                        callback(Number(key));
+                    }
+                }}
             >
                 {
                     renderMenuItems(structure == null?[]:structure)

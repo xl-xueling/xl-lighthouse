@@ -1,29 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from './style/index.module.less';
-import {
-    Breadcrumb,
-    Card, Descriptions,
-    Link, Notification, Skeleton,
-    Space, Spin,
-    Typography
-} from "@arco-design/web-react";
+import {Breadcrumb, Card, Descriptions, Notification, Skeleton, Space, Spin, Typography} from "@arco-design/web-react";
 import GroupManagePanel from "@/pages/group/manage";
-import {ArcoTreeNode, Project, TreeNode} from "@/types/insights-web";
-import {requestPrivilegeCheck} from "@/api/privilege";
-import {requestQueryById, requestQueryByIds} from "@/api/project";
+import {Project, TreeNode} from "@/types/insights-web";
+import {requestQueryById} from "@/api/project";
 import ProjectManageMenu from "@/pages/project/manage/menu";
 import {IconBook, IconClockCircle, IconHome, IconUserGroup} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-const BreadcrumbItem = Breadcrumb.Item;
-import { VscGistSecret } from "react-icons/vsc";
+import {VscGistSecret} from "react-icons/vsc";
 import {CiViewTable} from "react-icons/ci";
 import GroupCreateModal from "@/pages/group/create/group_create";
 import UserGroup from "@/pages/user/common/groups";
-import {formatTimeStamp} from "@/utils/util";
+import {formatTimeStamp, stringifyObj} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
-import { ImTree } from "react-icons/im";
+import {ImTree} from "react-icons/im";
+
+const BreadcrumbItem = Breadcrumb.Item;
 
 export default function ProjectManage() {
 
@@ -35,8 +29,8 @@ export default function ProjectManage() {
   const [loading,setLoading] = useState<boolean>(true);
   const { id } = useParams();
 
-    const menuCallback = async (id) => {
-        setGroupId(Number(id));
+    const menuCallback = async (id:number) => {
+        setGroupId(id);
         setShowManagePanel(true);
     }
 
@@ -58,6 +52,16 @@ export default function ProjectManage() {
                 projectInfo.structure[0].children = groups;
                 setProjectInfo(projectInfo);
                 break;
+            case 'deleteGroup': {
+                setLoading(true);
+                projectInfo.structure[0].children = projectInfo.structure[0].children.filter(x => x.id != String(data));
+                setProjectInfo(projectInfo);
+                setTimeout(() => {
+                    setLoading(false);
+                    setShowManagePanel(false);
+                },0)
+                break;
+            }
             default:
                 break;
         }
@@ -157,7 +161,7 @@ export default function ProjectManage() {
               </Space>
           </div>
           <div className={styles['layout-content']}>
-              {showManagePanel && <Card><GroupManagePanel projectInfo={projectInfo} groupId={groupId}/></Card>}
+              {showManagePanel && <Card><GroupManagePanel projectInfo={projectInfo} groupId={groupId} deleteCallback={callback}/></Card>}
           </div>
           {showGroupCreatePanel && <GroupCreateModal projectId={id} callback={callback} onClose={() => setShowGroupCreatePanel(false)}/>}
       </div>
