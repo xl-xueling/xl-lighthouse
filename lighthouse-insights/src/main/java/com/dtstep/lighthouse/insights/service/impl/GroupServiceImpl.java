@@ -12,6 +12,7 @@ import com.dtstep.lighthouse.insights.modal.Resource;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,13 @@ public class GroupServiceImpl implements GroupService {
         int result = groupDao.update(group);
         resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Group,group.getId(),group.getProjectId()));
         return result;
+    }
+
+    @Override
+    public int delete(Group group) {
+        Validate.notNull(group);
+        Integer id = group.getId();
+        return groupDao.deleteById(id);
     }
 
     @Override

@@ -16,6 +16,8 @@ public interface GroupDao {
 
     Group queryById(Integer id);
 
+    int deleteById(Integer id);
+
     String getSecretKey(Integer id);
 
     List<Group> queryByProjectId(Integer projectId);

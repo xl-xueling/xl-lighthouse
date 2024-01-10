@@ -12,6 +12,8 @@ public interface GroupService {
 
     int update(Group group);
 
+    int delete(Group group);
+
     Group queryById(Integer id);
 
     int count(GroupQueryParam queryParam);

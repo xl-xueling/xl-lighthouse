@@ -20,11 +20,11 @@ export async function requestQueryDimensValue(data:{groupId:number,dimensArray:s
 }
 
 
-export async function requestDeleteByID(id:number) :Promise<ResultData> {
+export async function requestDeleteById(data) :Promise<ResultData> {
     return request({
         url:'/group/deleteById',
         method:'POST',
-        id,
+        data,
     })
 }
 
