@@ -2,17 +2,23 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.ComponentDao;
+import com.dtstep.lighthouse.insights.dto.ComponentDto;
+import com.dtstep.lighthouse.insights.dto.ComponentQueryParam;
 import com.dtstep.lighthouse.insights.modal.Component;
+import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.ComponentService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +29,9 @@ public class ComponentServiceImpl implements ComponentService {
 
     @Autowired
     private ComponentDao componentDao;
+
+    @Autowired
+    private BaseService baseService;
 
     @Override
     public ResultCode verify(String configuration) {
@@ -130,5 +139,25 @@ public class ComponentServiceImpl implements ComponentService {
         }else{
             return ResultCode.systemError;
         }
+    }
+
+    @Override
+    public ListData<ComponentDto> queryList(ComponentQueryParam queryParam, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        ListData<ComponentDto> listData;
+        try{
+            List<Component> components = componentDao.queryList(queryParam);
+            List<ComponentDto> dtoList = new ArrayList<>();
+            if(CollectionUtils.isNotEmpty(components)){
+                for(Component component : components){
+                    ComponentDto componentDto = new ComponentDto(component);
+                    dtoList.add(componentDto);
+                }
+            }
+            listData = baseService.translateToListData(dtoList);
+        }finally {
+            PageHelper.clearPage();
+        }
+        return listData;
     }
 }

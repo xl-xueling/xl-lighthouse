@@ -1,5 +1,5 @@
 import {request} from "@/utils/request";
-import {FilterComponent, ResultData} from "@/types/insights-common";
+import {Component, ResultData} from "@/types/insights-common";
 import {Department, Order, Project} from "@/types/insights-web";
 
 export async function requestQueryById(data) :Promise<ResultData<Order>> {

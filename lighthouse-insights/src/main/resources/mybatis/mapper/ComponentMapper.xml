@@ -25,4 +25,24 @@
         )
     </insert>
 
+    <select id="queryList" resultMap="componentResultMap">
+        select `id`,`title`,`component_type`,`private_type`,`configuration`,`user_id`,`create_time`,`update_time` from ldp_components
+        <where>
+            <if test="queryParam.id!=null">
+                AND id = #{queryParam.id}
+            </if>
+            <if test="queryParam.privateType!=null">
+                AND private_type = #{queryParam.privateType}
+            </if>
+            <if test="queryParam.createStartTime!=null">
+                AND create_time &gt;= #{queryParam.createStartTime}
+            </if>
+            <if test="queryParam.createEndTime!=null">
+                AND create_time &lt;= #{queryParam.createEndTime}
+            </if>
+            <if test="queryParam.title != null">
+                AND title LIKE CONCAT('%', #{queryParam.title}, '%')
+            </if>
+        </where>
+    </select>
 </mapper>

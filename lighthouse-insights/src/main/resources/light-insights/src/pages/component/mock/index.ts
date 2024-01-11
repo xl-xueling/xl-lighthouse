@@ -5,9 +5,9 @@ import setupMock from '@/utils/setupMock';
 import {Project, Stat} from "@/types/insights-web";
 import {_Mock_project1} from "@/pages/project/mock";
 import {_Mock_user1, _Mock_user2, _Mock_user3} from "@/pages/user/mock";
-import {FilterComponent} from "@/types/insights-common";
+import {Component} from "@/types/insights-common";
 
-const _Mock_component1:FilterComponent = Mock.mock({
+const _Mock_component1:Component = Mock.mock({
     id:101,
     renderType:5,
     title:'省份选择组件1',
@@ -23,7 +23,7 @@ const _Mock_component1:FilterComponent = Mock.mock({
     ]
 });
 
-const _Mock_component2:FilterComponent = Mock.mock({
+const _Mock_component2:Component = Mock.mock({
     id:102,
     renderType:5,
     title:'省份选择组件2',
@@ -44,7 +44,7 @@ setupMock({
     setup: () => {
         Mock.mock('/api/v1/component/queryByIds', (params) => {
             console.log("receive param is:" + JSON.stringify(params));
-            const componentData: Record<number, FilterComponent> = {};
+            const componentData: Record<number, Component> = {};
             componentData[1] = _Mock_component1;
             return {
                 code: '0',

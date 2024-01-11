@@ -112,12 +112,20 @@ export interface DatePickerConfigParam {
     label:string,
 }
 
-export interface FilterComponent {
+export interface Component {
     id?:number,
-    key?:string,
     title?:string,
-    renderType?:number,
-    config?:any,
+    componentType?:ComponentTypeEnum,
+    privateType?:PrivateTypeEnum,
+    configuration?:string,
+    userId?:number,
+    createTime?:number,
+    updateTime?:number,
+}
+
+export enum PrivateTypeEnum {
+    Private= 0,
+    Public =1,
 }
 
 export enum StatTimeParamEnum {

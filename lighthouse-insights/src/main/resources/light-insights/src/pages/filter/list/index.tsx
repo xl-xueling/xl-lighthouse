@@ -29,31 +29,37 @@ import FilterAddPanel from "@/pages/filter/add/filter_add";
 import {IconHome} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
+import {Component} from "@/types/insights-common";
+import {Project} from "@/types/insights-web";
+import {requestList} from "@/api/component";
 
 export default function FilterList() {
 
     const [formParams, setFormParams] = useState({});
     const t = useLocale(locale);
-    const [pagination, setPatination] = useState<PaginationProps>({
+    const [listData,setListData] = useState<Component[]>(null);
+    const [loading,setLoading] = useState<boolean>(true);
+    const [pagination, setPagination] = useState<PaginationProps>({
+        sizeOptions: [15,20,30,50],
         sizeCanChange: true,
         showTotal: true,
-        pageSize: 10,
+        pageSize: 15,
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
 
-    const [showAddPanel, setShowsAddPanel] = useState(false);
-
     function onChangeTable({ current, pageSize }) {
-        setPatination({
+        setPagination({
             ...pagination,
             current,
             pageSize,
         });
     }
 
+    const [showAddPanel, setShowsAddPanel] = useState(false);
+
     function handleSearch(params) {
-        setPatination({ ...pagination, current: 1 });
+        setPagination({ ...pagination, current: 1 });
         setFormParams(params);
     }
 
@@ -75,8 +81,38 @@ export default function FilterList() {
             dataIndex: 'email',
         },
     ];
-    const data = [
-    ];
+
+    const fetchData = async (): Promise<void> => {
+        setLoading(true);
+        const {current, pageSize} = pagination;
+        const fetchComponentsInfo:Promise<{list:Array<Component>,total:number}> = new Promise<{list:Array<Component>,total:number}>((resolve) => {
+            const proc = async () => {
+                const result = await requestList({
+                        queryParams:{},
+                        pagination:{
+                            pageSize:pageSize,
+                            pageNum:current,
+                        }
+                    }
+                );
+                resolve(result.data);
+            }
+            proc().then();
+        })
+        const result = await Promise.all([fetchComponentsInfo]);
+        const {list,total}:{list:Array<Project>,total:number} = result[0];
+        setListData(list);
+        setPagination({
+            ...pagination,
+            current,
+            pageSize,
+            total: total});
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        fetchData().then();
+    },[])
 
     return (
         <>
@@ -99,8 +135,7 @@ export default function FilterList() {
                 </Grid.Row>
                 <Table
                     style={{ marginTop:12}}
-                    columns={columns} data={data} />
-
+                    columns={columns} data={listData} pagination={pagination}/>
                 {showAddPanel && <FilterAddPanel onClose={() => setShowsAddPanel(false)}/>}
             </Card>
         </>
