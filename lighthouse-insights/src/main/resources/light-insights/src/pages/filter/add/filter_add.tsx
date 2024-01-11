@@ -56,7 +56,7 @@ import "brace/mode/xml";
 import "brace/mode/json";
 import "brace/mode/jsoniq";
 import "brace/theme/textmate";
-import {requestCreate} from "@/api/stat";
+import {requestCreate} from "@/api/component";
 import {requestVerify} from "@/api/component";
 import {translate, translateResponse} from "@/pages/department/common";
 
@@ -70,9 +70,30 @@ export default function FilterAddPanel({onClose}) {
     const formRef = useRef(null);
 
     async function handlerSubmit(){
+        setLoading(true);
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
-        console.log("values is:" + values);
+        const configuration = values.configuration;
+        const verifyData = {
+            title:values.title,
+            type:values.type,
+            configuration:values.configuration,
+        }
+        const obj = JSON.parse(configuration);
+        requestCreate(verifyData).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['statCreate.form.submit.success']});
+                setFormElements([{"type":values.type,"options":obj}]);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error) => {
+            console.log(error);
+            Notification.error({style: { width: 420 }, title: 'Warning', content: t['system.error']});
+        }).finally(() => {
+            setLoading(false);
+        })
     }
 
     async function verifySubmit(){
@@ -85,8 +106,7 @@ export default function FilterAddPanel({onClose}) {
             configuration:values.configuration,
         }
         const obj = JSON.parse(configuration);
-        console.log("obj is:" + JSON.stringify(obj))
-        requestVerify(verifyData).then((response) => {
+        requestCreate(verifyData).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['statCreate.form.submit.success']});
@@ -193,39 +213,8 @@ export default function FilterAddPanel({onClose}) {
 
             {formElements.map((element, index) => {
                 const {type,options} = element;
-                console.log("type:" + type + ",options:" + JSON.stringify(options));
                 switch (type){
-                    case 1:
-                        return(
-                            <div key={index}>
-                            <Typography.Text
-                                style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                            >
-                                {'Display'}
-                            </Typography.Text>
-                            <Select mode='multiple' key={index}  allowClear showSearch>
-                            {options.map((option:any, index) => {
-                                return <Option key={option.value} value={option.value}>
-                                    {option.label}
-                                </Option>
-                            })}
-                        </Select></div>);
-                    case 2:
-                        return (
-                            <div key={index}>
-                                <Typography.Text
-                                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                                >
-                                    {'Display'}
-                                </Typography.Text>
-                            <Select key={index} allowClear showSearch>
-                            {options.map((option:any, index) => {
-                                return <Option key={option.value} value={option.value}>
-                                    {option.label}
-                                </Option>
-                            })}
-                        </Select></div>);
-                    case 5:
+                    case ComponentTypeEnum.FILTER_SELECT:
                         return (
                             <div key={index}>
                                 <Typography.Text

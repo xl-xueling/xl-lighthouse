@@ -25,3 +25,11 @@ export async function requestVerify(data) :Promise<ResultData> {
         data,
     })
 }
+
+export async function requestCreate(data) :Promise<ResultData> {
+    return request({
+        url:'/component/create',
+        method:'POST',
+        data,
+    })
+}

@@ -28,4 +28,12 @@ public class ComponentController {
         ResultCode resultCode = componentService.verify(verifyParam.getConfiguration());
         return ResultData.result(resultCode);
     }
+
+    @RequestMapping("/component/create")
+    public ResultData<Integer> create(@Validated @RequestBody ComponentVerifyParam createParam) {
+        System.out.println("createParam:" + JsonUtil.toJSONString(createParam));
+        ResultCode resultCode = componentService.verify(createParam.getConfiguration());
+        return ResultData.result(resultCode);
+    }
+
 }

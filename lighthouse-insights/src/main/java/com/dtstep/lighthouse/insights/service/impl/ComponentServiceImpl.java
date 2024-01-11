@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.modal.Component;
 import com.dtstep.lighthouse.insights.service.ComponentService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -107,4 +108,9 @@ public class ComponentServiceImpl implements ComponentService {
         return ResultCode.success;
     }
 
+
+    @Override
+    public Integer create(Component component) {
+        return null;
+    }
 }
