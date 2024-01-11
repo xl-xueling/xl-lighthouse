@@ -1,8 +1,8 @@
 import {request} from "@/utils/request";
-import {FilterComponent, ResultData} from "@/types/insights-common";
-import {Department, Project} from "@/types/insights-web";
+import {Component, ResultData} from "@/types/insights-common";
+import {Department, Order, Project} from "@/types/insights-web";
 
-export async function requestQueryByIds(ids:number[]) :Promise<ResultData<Record<number,FilterComponent>>> {
+export async function requestQueryByIds(ids:number[]) :Promise<ResultData<Record<number,Component>>> {
     return request({
         url:'/component/queryByIds',
         method:'POST',
@@ -10,7 +10,7 @@ export async function requestQueryByIds(ids:number[]) :Promise<ResultData<Record
     })
 }
 
-export async function requestList(data) :Promise<ResultData<{list:Array<FilterComponent>,total:number}>> {
+export async function requestList(data) :Promise<ResultData<{list:Array<Component>,total:number}>> {
     return request({
         url:'/component/list',
         method:'POST',

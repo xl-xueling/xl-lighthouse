@@ -20,7 +20,7 @@ import {
 } from "@arco-design/web-react";
 const FormItem = Form.Item;
 import styles from "./style/index.module.less";
-import {FilterComponent, RenderTypeEnum} from "@/types/insights-common";
+import {Component, RenderTypeEnum} from "@/types/insights-common";
 import {requestList} from "@/api/component";
 import {translateToTreeNodes} from "@/pages/department/common";
 import {getRandomString} from "@/utils/util";
@@ -107,7 +107,7 @@ export default function FilterPanel({onClose = null}) {
         },
     ];
 
-    const selectComponent = (component:FilterComponent) => {
+    const selectComponent = (component:Component) => {
         const copyComponent = {...component,"key":getRandomString()}
         setTargetData([...targetData,copyComponent])
     }
@@ -116,11 +116,11 @@ export default function FilterPanel({onClose = null}) {
         setTargetData(targetData.filter(x => x.key != key))
     }
 
-    const [sourceData,setSourceData] = useState<Array<FilterComponent>>([]);
+    const [sourceData,setSourceData] = useState<Array<Component>>([]);
 
-    const [targetData,setTargetData] = useState<Array<FilterComponent>>([]);
+    const [targetData,setTargetData] = useState<Array<Component>>([]);
 
-    const fetchComponentsInfo:Promise<{list:Array<FilterComponent>,total:number}> = new Promise<{list:Array<FilterComponent>,total:number}>((resolve) => {
+    const fetchComponentsInfo:Promise<{list:Array<Component>,total:number}> = new Promise<{list:Array<Component>,total:number}>((resolve) => {
         const proc = async () => {
             const result = await requestList({
                 params: {
