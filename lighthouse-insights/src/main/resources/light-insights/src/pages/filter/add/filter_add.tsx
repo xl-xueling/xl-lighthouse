@@ -38,7 +38,7 @@ import {getTextBlenLength, isJSON, stringifyObj} from "@/utils/util";
 import {calculateMaxLevel, validateNode} from "@/pages/components/common";
 import {getComponentTypeDescription} from "@/pages/common/desc/base";
 import locale from "./locale";
-import {ComponentTypeEnum} from "@/types/insights-common";
+import {ComponentTypeEnum, PrivateTypeEnum} from "@/types/insights-common";
 import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -74,13 +74,16 @@ export default function FilterAddPanel({onClose}) {
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
         const configuration = values.configuration;
+        if(!isJSON(configuration)){
+            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['componentCreate.form.configuration.validate.failed']});
+            return;
+        }
         const verifyData = {
             title:values.title,
             componentType:values.componentType,
             privateType:values.privateType,
             configuration:values.configuration,
         }
-        const obj = JSON.parse(configuration);
         requestCreate(verifyData).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -102,6 +105,10 @@ export default function FilterAddPanel({onClose}) {
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
         const configuration = values.configuration;
+        if(!isJSON(configuration)){
+            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['componentCreate.form.configuration.validate.failed']});
+            return;
+        }
         const verifyData = {
             title:values.title,
             componentType:values.componentType,
@@ -110,11 +117,10 @@ export default function FilterAddPanel({onClose}) {
         }
         const obj = JSON.parse(configuration);
         requestCreate(verifyData).then((response) => {
-            console.log("response is:" + JSON.stringify(response));
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['componentCreate.form.verify.submit.success']});
-                setFormElements([{"type":values.type,"options":obj}]);
+                setFormElements([{"componentType":values.componentType,"options":obj}]);
             }else{
                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -134,18 +140,19 @@ export default function FilterAddPanel({onClose}) {
             visible={true}
             onCancel={onClose}
             onOk={handlerSubmit}
-            style={{ width:'800px' }}
+            style={{ width:'900px' }}
         >
             <Form ref={formRef} layout={"vertical"}
                   initialValues={{
-                      type:5,
+                      componentType:ComponentTypeEnum.FILTER_SELECT,
+                      privateType:PrivateTypeEnum.Private,
                   }}
                   autoComplete='off'>
-                <Typography.Text
-                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                <Typography.Title
+                    style={{fontSize:13}}
                 >
                     {t['componentCreate.form.label.title']}
-                </Typography.Text>
+                </Typography.Title>
                 <FormItem field={'title'} rules={[
                     { required: true, message: t['componentCreate.form.title.errMsg'] , validateTrigger : ['onSubmit']},
                     { required: true, match: new RegExp(TEXT_BASE_PATTERN_2,"g"),message: t['componentCreate.form.title.validate.errMsg'] , validateTrigger : ['onSubmit']},
@@ -163,11 +170,11 @@ export default function FilterAddPanel({onClose}) {
                     }]}>
                     <Input/>
                 </FormItem>
-                <Typography.Text
-                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                <Typography.Title
+                    style={{fontSize:13}}
                 >
                     {t['componentCreate.form.label.type']}
-                </Typography.Text>
+                </Typography.Title>
                 <FormItem field='componentType' rules={[{ required: true }]}>
                     <Select
                         placeholder='please select' defaultValue={1}
@@ -182,17 +189,17 @@ export default function FilterAddPanel({onClose}) {
                 </FormItem>
                 <Grid.Row style={{ marginBottom:'10px' }}>
                     <Grid.Col span={16}>
-                        <Typography.Text
-                            style={{ marginTop: 0 ,fontSize:14}}
+                        <Typography.Title
+                            style={{fontSize:13}}
                         >
                             {t['componentCreate.form.label.configuration']}
-                        </Typography.Text>
+                        </Typography.Title>
                     </Grid.Col>
                     <Grid.Col span={8} style={{ textAlign: 'right' }}>
                         <Button type={"secondary"} size={"mini"} onClick={verifySubmit}>{t['componentCreate.form.button.verify']}</Button>
                     </Grid.Col>
                 </Grid.Row>
-                <FormItem field={'configuration'} rules={[{ required: true }]}>
+                <FormItem field={'configuration'} rules={[{ required: true,message: t['componentCreate.form.configuration.errMsg'] , validateTrigger : ['onSubmit']}]}>
                     <AceEditor
                         style={{ height:'400px',backgroundColor:"var(--color-fill-2)",width:'100%'}}
                         ref={editorRef}
@@ -213,12 +220,11 @@ export default function FilterAddPanel({onClose}) {
                         }}
                     />
                 </FormItem>
-                <Typography.Text
-                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                >
+                <Typography.Title
+                    style={{fontSize:13}}>
                     {t['componentCreate.form.label.privateType']}
-                </Typography.Text>
-                <FormItem field='privateType' rules={[{ required: true }]}>
+                </Typography.Title>
+                <FormItem field='privateType' rules={[{ required: true}]}>
                     <Radio.Group defaultValue={0}>
                         <Radio value={0}>{t['componentCreate.form.label.privateType.private']}</Radio>
                         <Radio value={1}>{t['componentCreate.form.label.privateType.public']}</Radio>
@@ -227,16 +233,15 @@ export default function FilterAddPanel({onClose}) {
             </Form>
 
             {formElements.map((element, index) => {
-                const {type,options} = element;
-                switch (type){
+                const {componentType,options} = element;
+                switch (componentType){
                     case ComponentTypeEnum.FILTER_SELECT:
                         return (
                             <div key={index}>
-                                <Typography.Text
-                                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                                >
-                                    {'Display'}
-                                </Typography.Text>
+                                <Typography.Title
+                                    style={{fontSize:13}}>
+                                    {t['componentUpdate.form.label.display']}
+                                </Typography.Title>
                                 <TreeSelect
                                     placeholder={"Please Select"}
                                     multiple={true}
