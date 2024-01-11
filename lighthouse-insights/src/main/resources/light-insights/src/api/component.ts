@@ -33,3 +33,11 @@ export async function requestCreate(data) :Promise<ResultData> {
         data,
     })
 }
+
+export async function requestUpdate(data) :Promise<ResultData> {
+    return request({
+        url:'/component/update',
+        method:'POST',
+        data,
+    })
+}

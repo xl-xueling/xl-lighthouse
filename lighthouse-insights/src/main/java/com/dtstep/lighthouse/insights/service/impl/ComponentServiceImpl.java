@@ -139,6 +139,14 @@ public class ComponentServiceImpl implements ComponentService {
         return id;
     }
 
+    @Override
+    public int update(Component component) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        component.setUpdateTime(localDateTime);
+        Integer id = componentDao.update(component);
+        return id;
+    }
+
     private ComponentDto translate(Component component){
         ComponentDto componentDto = new ComponentDto(component);
         int userId = component.getUserId();

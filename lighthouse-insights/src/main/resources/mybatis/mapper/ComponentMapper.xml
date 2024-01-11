@@ -39,4 +39,23 @@
             </if>
         </where>
     </select>
+
+    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Component">
+        UPDATE ldp_components
+        <set>
+            <if test="title != null">
+                `title` = #{title},
+            </if>
+            <if test="privateType != null">
+                `private_type` = #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
+            </if>
+            <if test="configuration != null">
+                `configuration` = #{configuration,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.ListTreeNodeTypeHandler},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
 </mapper>

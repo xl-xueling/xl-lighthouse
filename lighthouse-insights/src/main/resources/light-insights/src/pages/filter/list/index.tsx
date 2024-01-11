@@ -33,6 +33,7 @@ import {Component} from "@/types/insights-common";
 import {Project} from "@/types/insights-web";
 import {requestList} from "@/api/component";
 import {getColumns} from "./constants";
+import FilterUpdatePanel from "@/pages/filter/update/filter_update";
 
 export default function FilterList() {
 
@@ -40,6 +41,7 @@ export default function FilterList() {
     const t = useLocale(locale);
     const [listData,setListData] = useState<Component[]>(null);
     const [loading,setLoading] = useState<boolean>(true);
+    const [currentComponent,setCurrentComponent] = useState<Component>(null);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: true,
@@ -58,13 +60,17 @@ export default function FilterList() {
     }
 
     const [showAddPanel, setShowsAddPanel] = useState(false);
+    const [showUpdatePanel, setShowsUpdatePanel] = useState(false);
 
     function handleSearch(params) {
         setPagination({ ...pagination, current: 1 });
         setFormParams(params);
     }
     const tableCallback = async (record, type) => {
-        console.log("type is:" + type)
+        if(type == 'update'){
+            setCurrentComponent(record);
+            setShowsUpdatePanel(true);
+        }
     };
 
     const columns = useMemo(() => getColumns(t, tableCallback), [t]);
@@ -125,6 +131,7 @@ export default function FilterList() {
                     style={{ marginTop:12}}
                     columns={columns} data={listData} />
                 {showAddPanel && <FilterAddPanel onClose={() => setShowsAddPanel(false)}/>}
+                {showUpdatePanel && <FilterUpdatePanel componentInfo={currentComponent} onClose={() => setShowsUpdatePanel(false)}/>}
             </Card>
         </>
     );

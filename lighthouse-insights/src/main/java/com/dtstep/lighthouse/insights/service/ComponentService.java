@@ -13,5 +13,7 @@ public interface ComponentService {
 
     int create(Component component);
 
+    int update(Component component);
+
     ListData<ComponentDto> queryList(ComponentQueryParam queryParam,Integer pageNum,Integer pageSize);
 }

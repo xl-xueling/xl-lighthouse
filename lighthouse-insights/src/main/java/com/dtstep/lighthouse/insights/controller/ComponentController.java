@@ -51,6 +51,28 @@ public class ComponentController {
         }
     }
 
+    @RequestMapping("/component/update")
+    public ResultData<Integer> update(@Validated @RequestBody ComponentUpdateParam createParam) {
+        ResultCode resultCode = componentService.verify(createParam.getConfiguration());
+        if(resultCode != ResultCode.success){
+            return ResultData.result(resultCode);
+        }
+        Component component = new Component();
+        component.setId(createParam.getId());
+        component.setComponentType(createParam.getComponentType());
+        component.setPrivateType(createParam.getPrivateType());
+        component.setConfiguration(JsonUtil.toJavaObjectList(createParam.getConfiguration(),TreeNode.class));
+        component.setTitle(createParam.getTitle());
+        Integer userId = baseService.getCurrentUserId();
+        component.setUserId(userId);
+        int result = componentService.update(component);
+        if(result > 0){
+            return ResultData.success();
+        }else{
+            return ResultData.result(ResultCode.systemError);
+        }
+    }
+
     @PostMapping("/component/list")
     public ResultData<ListData<ComponentDto>> queryList(@Validated @RequestBody ListSearchObject<ComponentQueryParam> searchObject){
         Pagination pagination = searchObject.getPagination();
