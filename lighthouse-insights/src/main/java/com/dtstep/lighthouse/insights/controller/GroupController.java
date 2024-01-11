@@ -5,7 +5,6 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.IDParam;
 import com.dtstep.lighthouse.insights.dto.ResultData;
-import com.dtstep.lighthouse.insights.dto.GroupDto;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
@@ -34,19 +33,19 @@ public class GroupController {
         countByTokenParam.setToken(createParam.getToken());
         int tokenCount = groupService.count(countByTokenParam);
         if(tokenCount > 0){
-            return ResultData.failed(ResultCode.createGroupTokenExist);
+            return ResultData.result(ResultCode.createGroupTokenExist);
         }
         GroupQueryParam countByProjectParam = new GroupQueryParam();
         countByProjectParam.setProjectId(createParam.getProjectId());
         int groupCount = groupService.count(countByProjectParam);
         if(groupCount > SystemConstant.PROJECT_MAX_GROUP_SIZE){
-            return ResultData.failed(ResultCode.createGroupUnderProjectExceedLimit);
+            return ResultData.result(ResultCode.createGroupUnderProjectExceedLimit);
         }
         int id = groupService.create(createParam);
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 
@@ -57,7 +56,7 @@ public class GroupController {
         if(result > 0){
             return ResultData.success(result);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 

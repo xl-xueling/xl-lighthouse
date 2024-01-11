@@ -43,7 +43,7 @@ public class DepartmentController {
     public ResultData<Integer> create(@Validated @RequestBody Department createParam) {
         int level = departmentService.getLevel(createParam.getPid());
         if(level >= SystemConstant.DEPARTMENT_MAX_LEVEL){
-            return ResultData.failed(ResultCode.departCreateErrorLevelLimit);
+            return ResultData.result(ResultCode.departCreateErrorLevelLimit);
         }
         int result = departmentService.create(createParam);
         return ResultData.success(result);
@@ -55,13 +55,13 @@ public class DepartmentController {
         int pidLevel = departmentService.getLevel(updateParam.getPid());
         int childLevel = departmentService.getChildLevel(updateParam.getId());
         if(pidLevel + childLevel >= SystemConstant.DEPARTMENT_MAX_LEVEL){
-            return ResultData.failed(ResultCode.departCreateErrorLevelLimit);
+            return ResultData.result(ResultCode.departCreateErrorLevelLimit);
         }
         int id = departmentService.update(updateParam);
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 
@@ -73,23 +73,23 @@ public class DepartmentController {
         Validate.notNull(department);
         int childSize = departmentService.countChildByPid(deleteParam.getId());
         if(childSize > 0){
-            return ResultData.failed(ResultCode.departDelErrorChildExist);
+            return ResultData.result(ResultCode.departDelErrorChildExist);
         }
         UserQueryParam userQueryParam = new UserQueryParam();
         userQueryParam.setDepartmentIds(List.of(department.getId()));
         int userSize = userService.count(userQueryParam);
         if(userSize > 0){
-            return ResultData.failed(ResultCode.departDelErrorUserExist);
+            return ResultData.result(ResultCode.departDelErrorUserExist);
         }
         int projectSize = projectService.countByDepartmentId(deleteParam.getId());
         if(projectSize > 0){
-            return ResultData.failed(ResultCode.departDelErrorProjectExist);
+            return ResultData.result(ResultCode.departDelErrorProjectExist);
         }
         int result = departmentService.delete(department);
         if(result == 1){
             return ResultData.success(result);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 

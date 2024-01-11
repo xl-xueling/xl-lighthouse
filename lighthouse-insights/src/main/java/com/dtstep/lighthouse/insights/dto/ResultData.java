@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,7 @@ public class ResultData<T> {
         this.data = data;
     }
 
-    public ResultData(String customMessage){
-
-    }
+    public ResultData(String customMessage){}
 
     public static<T> ResultData<T> success(T data){
         return new ResultData<T>(ResultCode.success,data);
@@ -38,11 +37,22 @@ public class ResultData<T> {
         return new ResultData<T>(ResultCode.success,null);
     }
 
-    public static<T> ResultData<T> failed(ResultCode resultCode){
-        return new ResultData<T>(resultCode,null);
+    public static<T> ResultData<T> result(ResultCode resultCode){
+        String[] params = resultCode.getParams();
+        String message = null;
+        if(params != null){
+            message = messageSource.getMessage(resultCode.getI18nLabel(),null,LocaleContextHolder.getLocale());
+            message = String.format(message,params);
+        }
+        ResultData resultData = new ResultData();
+        resultData.setCode(resultData.getCode());
+        resultData.setMessage(message);
+        resultData.setData(null);
+        return resultData;
     }
 
-    public static<T> ResultData<T> failed(ResultCode resultCode,String ...params){
+
+    public static<T> ResultData<T> result(ResultCode resultCode, String ...params){
         messageSource = SpringUtil.getBean(MessageSource.class);
         String message = messageSource.getMessage(resultCode.getI18nLabel(),null,LocaleContextHolder.getLocale());
         message = String.format(message,params);

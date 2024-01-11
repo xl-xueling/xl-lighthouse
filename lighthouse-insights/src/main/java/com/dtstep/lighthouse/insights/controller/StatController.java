@@ -10,7 +10,6 @@ import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +37,7 @@ public class StatController {
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 
@@ -49,7 +48,7 @@ public class StatController {
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 
@@ -65,7 +64,7 @@ public class StatController {
         if(result > 0){
             return ResultData.success(result);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 
@@ -79,7 +78,7 @@ public class StatController {
         if(result > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 }
