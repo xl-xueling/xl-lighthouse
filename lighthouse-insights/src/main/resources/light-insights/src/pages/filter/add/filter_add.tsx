@@ -103,7 +103,9 @@ export default function FilterAddPanel({onClose}) {
         const values = formRef.current.getFieldsValue();
         const configuration = values.configuration;
         const verifyData = {
-            type:values.type,
+            title:values.title,
+            componentType:values.componentType,
+            privateType:values.privateType,
             configuration:values.configuration,
         }
         const obj = JSON.parse(configuration);

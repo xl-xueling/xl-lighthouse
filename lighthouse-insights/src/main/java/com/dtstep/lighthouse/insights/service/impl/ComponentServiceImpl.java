@@ -69,12 +69,11 @@ public class ComponentServiceImpl implements ComponentService {
         if (depth > MAX_DEPTH) {
             return ResultCode.componentVerifyLevelLimit;
         }
-
         for (JsonNode objectNode : arrayNode) {
             if (!objectNode.isObject()) {
                 return ResultCode.componentVerifyFormatError;
             }
-            ResultCode resultCode = validateObject(objectNode, depth + 1);
+            ResultCode resultCode = validateObject(objectNode, depth);
             if (resultCode != ResultCode.success) {
                 return resultCode;
             }
