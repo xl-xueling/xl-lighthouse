@@ -7,9 +7,12 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.ComponentDao;
 import com.dtstep.lighthouse.insights.dto.ComponentDto;
 import com.dtstep.lighthouse.insights.dto.ComponentQueryParam;
+import com.dtstep.lighthouse.insights.dto.PermissionInfo;
 import com.dtstep.lighthouse.insights.modal.Component;
+import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.ComponentService;
+import com.dtstep.lighthouse.insights.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
@@ -32,6 +35,9 @@ public class ComponentServiceImpl implements ComponentService {
 
     @Autowired
     private BaseService baseService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public ResultCode verify(String configuration) {
@@ -133,6 +139,20 @@ public class ComponentServiceImpl implements ComponentService {
         return id;
     }
 
+    private ComponentDto translate(Component component){
+        ComponentDto componentDto = new ComponentDto(component);
+        int userId = component.getUserId();
+        int currentUserId = baseService.getCurrentUserId();
+        if(userId == currentUserId){
+            componentDto.setPermissions(List.of(PermissionInfo.PermissionEnum.ManageAble));
+        }else{
+            componentDto.setPermissions(List.of(PermissionInfo.PermissionEnum.AccessAble));
+        }
+        User user = userService.cacheQueryById(userId);
+        componentDto.setUser(user);
+        return componentDto;
+    }
+
     @Override
     public ListData<ComponentDto> queryList(ComponentQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
@@ -142,7 +162,7 @@ public class ComponentServiceImpl implements ComponentService {
             List<ComponentDto> dtoList = new ArrayList<>();
             if(CollectionUtils.isNotEmpty(components)){
                 for(Component component : components){
-                    ComponentDto componentDto = new ComponentDto(component);
+                    ComponentDto componentDto = translate(component);
                     dtoList.add(componentDto);
                 }
             }

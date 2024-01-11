@@ -36,7 +36,6 @@ public class ComponentController {
         if(resultCode != ResultCode.success){
             return ResultData.result(resultCode);
         }
-        System.out.println("createParam:" + JsonUtil.toJSONString(createParam));
         Component component = new Component();
         component.setComponentType(createParam.getComponentType());
         component.setPrivateType(createParam.getPrivateType());
