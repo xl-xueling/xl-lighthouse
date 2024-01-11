@@ -62,7 +62,7 @@ import {translate, translateResponse} from "@/pages/department/common";
 import {requestUpdate} from "@/api/component";
 
 
-export default function FilterUpdatePanel({componentInfo,onClose}) {
+export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
 
     const t = useLocale(locale);
     const [editorTheme,setEditorTheme] = useState('textmate');
@@ -88,6 +88,7 @@ export default function FilterUpdatePanel({componentInfo,onClose}) {
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['componentUpdate.form.create.submit.success']});
                 onClose();
+                onReload();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }

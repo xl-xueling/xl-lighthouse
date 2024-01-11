@@ -42,6 +42,8 @@ export default function FilterList() {
     const [listData,setListData] = useState<Component[]>(null);
     const [loading,setLoading] = useState<boolean>(true);
     const [currentComponent,setCurrentComponent] = useState<Component>(null);
+    const [reloadSwitch,setReloadSwitch] = useState<number>(Date.now);
+
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: true,
@@ -50,6 +52,11 @@ export default function FilterList() {
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
+
+    function handlerReloadList(){
+        console.log('--------Handler Reload....')
+        setReloadSwitch(Date.now);
+    }
 
     function onChangeTable({ current, pageSize }) {
         setPagination({
@@ -105,7 +112,7 @@ export default function FilterList() {
 
     useEffect(() => {
         fetchData().then();
-    },[])
+    },[reloadSwitch])
 
     return (
         <>
@@ -127,11 +134,12 @@ export default function FilterList() {
                     </Grid.Col>
                 </Grid.Row>
                 <Table
+                    loading={loading}
                     rowKey={'id'}
                     style={{ marginTop:12}}
                     columns={columns} data={listData} />
                 {showAddPanel && <FilterAddPanel onClose={() => setShowsAddPanel(false)}/>}
-                {showUpdatePanel && <FilterUpdatePanel componentInfo={currentComponent} onClose={() => setShowsUpdatePanel(false)}/>}
+                {showUpdatePanel && <FilterUpdatePanel componentInfo={currentComponent} onClose={() => setShowsUpdatePanel(false)} onReload={handlerReloadList}/>}
             </Card>
         </>
     );
