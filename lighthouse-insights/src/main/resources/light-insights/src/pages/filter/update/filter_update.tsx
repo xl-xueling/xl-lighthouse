@@ -154,7 +154,9 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
                       configuration:JSON.stringify(componentInfo?.configuration, null, 4),
                   }}
                   autoComplete='off'>
-                <Typography.Title style={{fontSize:13}}>
+                <Typography.Title
+                    style={{fontSize:13}}
+                >
                     {t['componentUpdate.form.label.title']}
                 </Typography.Title>
                 <FormItem field={'title'} rules={[
@@ -174,7 +176,9 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
                     }]}>
                     <Input/>
                 </FormItem>
-                <Typography.Title style={{fontSize:13}}>
+                <Typography.Title
+                    style={{fontSize:13}}
+                >
                     {t['componentUpdate.form.label.type']}
                 </Typography.Title>
                 <FormItem field='componentType' rules={[{ required: true }]}>
@@ -191,7 +195,9 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
                 </FormItem>
                 <Grid.Row style={{ marginBottom:'10px' }}>
                     <Grid.Col span={16}>
-                        <Typography.Title style={{fontSize:13}}>
+                        <Typography.Title
+                            style={{fontSize:13}}
+                        >
                             {t['componentUpdate.form.label.configuration']}
                         </Typography.Title>
                     </Grid.Col>
@@ -199,7 +205,7 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
                         <Button type={"secondary"} size={"mini"} onClick={verifySubmit}>{t['componentUpdate.form.button.verify']}</Button>
                     </Grid.Col>
                 </Grid.Row>
-                <FormItem field={'configuration'} rules={[{ required: true }]}>
+                <FormItem field={'configuration'} rules={[{ required: true,message: t['componentUpdate.form.configuration.errMsg'] , validateTrigger : ['onSubmit']}]}>
                     <AceEditor
                         style={{ height:'400px',backgroundColor:"var(--color-fill-2)",width:'100%'}}
                         ref={editorRef}
@@ -220,37 +226,39 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
                         }}
                     />
                 </FormItem>
-                <Typography.Title style={{fontSize:13}}>
+                <Typography.Title
+                    style={{fontSize:13}}>
                     {t['componentUpdate.form.label.privateType']}
                 </Typography.Title>
-                <FormItem field='privateType' rules={[{ required: true }]}>
+                <FormItem field='privateType' rules={[{ required: true}]}>
                     <Radio.Group defaultValue={0}>
                         <Radio value={0}>{t['componentUpdate.form.label.privateType.private']}</Radio>
                         <Radio value={1}>{t['componentUpdate.form.label.privateType.public']}</Radio>
                     </Radio.Group>
                 </FormItem>
             </Form>
+
             {formElements.map((element, index) => {
-                const {componentType,options} = element;
-                switch (componentType){
-                    case ComponentTypeEnum.FILTER_SELECT:
-                        return (
-                            <div key={index}>
-                                <Typography.Title
-                                    style={{fontSize:13}}>
-                                    {t['componentUpdate.form.label.display']}
-                                </Typography.Title>
-                                <TreeSelect
-                                    placeholder={"Please Select"}
-                                    multiple={true}
-                                    allowClear={true}
-                                    treeData={translateResponse(options)}
-                                />
-                            </div>);
-                    default:
-                        break;
+                    const {componentType,options} = element;
+                    switch (componentType){
+                        case ComponentTypeEnum.FILTER_SELECT:
+                            return (
+                                <div key={index}>
+                                    <Typography.Title
+                                        style={{fontSize:13}}>
+                                        {t['componentUpdate.form.label.display']}
+                                    </Typography.Title>
+                                    <TreeSelect
+                                        placeholder={"Please Select"}
+                                        multiple={true}
+                                        allowClear={true}
+                                        treeData={translateResponse(options)}
+                                    />
+                                </div>);
+                        default:
+                            break;
+                    }
                 }
-            }
             )}
         </Modal>
 
