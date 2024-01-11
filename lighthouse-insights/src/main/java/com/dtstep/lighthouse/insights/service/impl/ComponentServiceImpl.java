@@ -180,4 +180,14 @@ public class ComponentServiceImpl implements ComponentService {
         }
         return listData;
     }
+
+    @Override
+    public int delete(Component component) {
+        return componentDao.deleteById(component.getId());
+    }
+
+    @Override
+    public Component queryById(Integer id) {
+        return componentDao.queryById(id);
+    }
 }

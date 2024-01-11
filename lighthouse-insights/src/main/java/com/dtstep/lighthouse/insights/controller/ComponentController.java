@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.modal.Component;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.ComponentService;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +67,20 @@ public class ComponentController {
         Integer userId = baseService.getCurrentUserId();
         component.setUserId(userId);
         int result = componentService.update(component);
+        if(result > 0){
+            return ResultData.success();
+        }else{
+            return ResultData.result(ResultCode.systemError);
+        }
+    }
+
+
+    @RequestMapping("/component/deleteById")
+    public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        Component component = componentService.queryById(id);
+        Validate.notNull(component);
+        int result = componentService.delete(component);
         if(result > 0){
             return ResultData.success();
         }else{

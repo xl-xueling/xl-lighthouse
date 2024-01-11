@@ -58,4 +58,12 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <delete id="deleteById">
+        delete from ldp_components where id = #{id}
+    </delete>
+
+    <select id="queryById" resultMap="componentResultMap">
+        SELECT `id`,`title`,`component_type`,`private_type`,`configuration`,`user_id`,`create_time`,`update_time` FROM ldp_components WHERE id = #{id}
+    </select>
 </mapper>
