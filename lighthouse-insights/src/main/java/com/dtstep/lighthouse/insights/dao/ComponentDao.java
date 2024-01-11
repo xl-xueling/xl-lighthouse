@@ -14,5 +14,9 @@ public interface ComponentDao {
 
     Integer update(Component component);
 
+    int deleteById(Integer id);
+
+    Component queryById(Integer id);
+
     List<Component> queryList(@Param("queryParam")ComponentQueryParam queryParam);
 }

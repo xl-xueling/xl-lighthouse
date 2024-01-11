@@ -53,6 +53,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             headerCellStyle: {width: '250px'},
             render: (value, record) => {
                 let updateButton;
+                let deleteButton;
                 if(record.permissions.includes('ManageAble')){
                     updateButton = <Button key={getRandomString()}
                                            onClick={() => callback(record, 'update')}
@@ -60,8 +61,22 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                                            size="mini">
                         {'修改'}
                     </Button>;
+                    deleteButton =
+                        <Popconfirm key={getRandomString()}
+                                    focusLock
+                                    position={"tr"}
+                                    title='Confirm'
+                                    content={t['projectList.form.delete.confirm']}
+                                    onOk={() => callback(record, 'delete')}
+                        >
+                            <Button
+                                type="text"
+                                size="mini">
+                                {'Delete'}
+                            </Button>
+                        </Popconfirm>
                 }
-                return  <Space size={0} direction="horizontal">{[updateButton]}</Space>;
+                return  <Space size={0} direction="horizontal">{[updateButton,deleteButton]}</Space>;
             }
         }
     ];

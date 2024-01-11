@@ -21,7 +21,7 @@ import {
     TreeSelect,
     Switch,
     Message,
-    TableColumnProps, Breadcrumb,
+    TableColumnProps, Breadcrumb, Notification,
 } from '@arco-design/web-react';
 
 import SearchForm from "@/pages/filter/list/form";
@@ -34,6 +34,7 @@ import {Project} from "@/types/insights-web";
 import {requestList} from "@/api/component";
 import {getColumns} from "./constants";
 import FilterUpdatePanel from "@/pages/filter/update/filter_update";
+import {requestDeleteById} from "@/api/component";
 
 export default function FilterList() {
 
@@ -54,7 +55,6 @@ export default function FilterList() {
     });
 
     function handlerReloadList(){
-        console.log('--------Handler Reload....')
         setReloadSwitch(Date.now);
     }
 
@@ -77,6 +77,8 @@ export default function FilterList() {
         if(type == 'update'){
             setCurrentComponent(record);
             setShowsUpdatePanel(true);
+        }else if(type == 'delete'){
+            await handlerDeleteComponent(record.id);
         }
     };
 
@@ -109,6 +111,21 @@ export default function FilterList() {
             total: total});
         setLoading(false);
     }
+
+
+    const handlerDeleteComponent = async (id: number) => {
+        await requestDeleteById({id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
+                handlerReloadList();
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error) => {
+            console.log(error);
+        })
+    };
 
     useEffect(() => {
         fetchData().then();
