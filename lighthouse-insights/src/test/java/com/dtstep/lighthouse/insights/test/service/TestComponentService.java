@@ -23,19 +23,87 @@ public class TestComponentService {
 
     @Test
     public void testVerify() {
-        List<TreeNode> list = new ArrayList<>();
-        TreeNode treeNode1 = new TreeNode();
-        treeNode1.setLabel("1");
-        treeNode1.setValue("beijing");
-        list.add(treeNode1);
-        TreeNode treeNode2 = new TreeNode();
-        treeNode2.setLabel("2");
-        treeNode2.setValue("shanghai");
-        list.add(treeNode2);
-        String json = JsonUtil.toJSONString(list);
-        System.out.println(json);
-        String json2 = "[{\"value\":\"beijing\",\"label\":\"1\"},{\"value\":\"ss\"}]";
-        ResultCode resultCode = componentService.verify(json2);
+        String s = "[\n" +
+                "  {\n" +
+                "    \"label\": \"Category 1\",\n" +
+                "    \"value\": \"category1\",\n" +
+                "    \"children\": [\n" +
+                "      {\n" +
+                "        \"label\": \"Subcategory 1.1\",\n" +
+                "        \"value\": \"subcategory1.1\",\n" +
+                "        \"children\": [\n" +
+                "          {\n" +
+                "            \"label\": \"Item 1.1.1\",\n" +
+                "            \"value\": \"item1.1.1\"\n" +
+                "          },\n" +
+                "          {\n" +
+                "            \"label\": \"Item 1.1.2\",\n" +
+                "            \"value\": \"item1.1.2\"\n" +
+                "          }\n" +
+                "        ]\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"label\": \"Subcategory 1.2\",\n" +
+                "        \"value\": \"subcategory1.2\",\n" +
+                "        \"children\": [\n" +
+                "          {\n" +
+                "            \"label\": \"Item 1.2.1\",\n" +
+                "            \"value\": \"item1.2.1\"\n" +
+                "          },\n" +
+                "          {\n" +
+                "            \"label\": \"Item 1.2.2\",\n" +
+                "            \"value\": \"item1.2.2\"\n" +
+                "          }\n" +
+                "        ]\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"label\": \"Category 2\",\n" +
+                "    \"value\": \"category2\",\n" +
+                "    \"children\": [\n" +
+                "      {\n" +
+                "        \"label\": \"Subcategory 2.1\",\n" +
+                "        \"value\": \"subcategory2.1\",\n" +
+                "        \"children\": [\n" +
+                "          {\n" +
+                "            \"label\": \"Item 2.1.1\",\n" +
+                "            \"value\": \"item2.1.1\"\n" +
+                "          },\n" +
+                "          {\n" +
+                "            \"label\": \"Item 2.1.2\",\n" +
+                "            \"value\": \"item2.1.2\"\n" +
+                "          }\n" +
+                "        ]\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]";
+
+
+        String s2 = "[\n" +
+                "  {\n" +
+                "    \"label\": \"Category 2\",\n" +
+                "    \"value\": \"category2\",\n" +
+                "    \"children\": [\n" +
+                "      {\n" +
+                "        \"label\": \"Subcategory 2.1\",\n" +
+                "        \"value\": \"subcategory2.1\",\n" +
+                "        \"children\": [\n" +
+                "          {\n" +
+                "            \"label\": \"Item 2.1.1\",\n" +
+                "            \"value\": \"item2.1.1\"\n" +
+                "          },\n" +
+                "          {\n" +
+                "            \"label\": \"Item 2.1.2\",\n" +
+                "            \"value\": \"item2.1.2\"\n" +
+                "          }\n" +
+                "        ]\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]";
+        ResultCode resultCode = componentService.verify(s);
         System.out.println("resultCode:" + JsonUtil.toJSONString(resultCode));
         System.out.println("resultCode:" + JsonUtil.toJSONString(resultCode.getParams()));
     }
