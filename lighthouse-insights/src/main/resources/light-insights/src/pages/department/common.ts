@@ -1,4 +1,4 @@
-import {Department, ArcoTreeNode, ArcoFlatNode} from "@/types/insights-web";
+import {Department, ArcoTreeNode, ArcoFlatNode, ResponseTreeNode} from "@/types/insights-web";
 import {requestQueryAll as queryDepartmentAll} from "@/api/department";
 import {Message} from "@arco-design/web-react";
 
@@ -40,6 +40,18 @@ export const translate = (list:Array<Department>):Array<ArcoTreeNode> => {
         const nodeItem:ArcoTreeNode = {"key":String(item.id),"title":item.name};
         if(item.children){
             nodeItem.children = translate(item.children);
+        }
+        nodeArr.push(nodeItem)
+    })
+    return nodeArr;
+}
+
+export const translateResponse = (list:Array<ResponseTreeNode>):Array<ArcoTreeNode> => {
+    const nodeArr = new Array<ArcoTreeNode>();
+    list?.forEach(item => {
+        const nodeItem:ArcoTreeNode = {"key":String(item.value),"title":item.label};
+        if(item.children){
+            nodeItem.children = translateResponse(item.children);
         }
         nodeArr.push(nodeItem)
     })
