@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -114,6 +115,10 @@ public class JsonUtil {
             e.printStackTrace();
         }
         return defaultSupplier.get();
+    }
+
+    public static <T> T readValue(String value, TypeReference<T> t) throws Exception{
+        return objectMapper.readValue(value,t);
     }
 
     public static <T> List<T> toJavaObjectList(String value, Class<T> tClass) {

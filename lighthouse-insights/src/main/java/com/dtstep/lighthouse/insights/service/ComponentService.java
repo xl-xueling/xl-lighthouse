@@ -11,7 +11,7 @@ public interface ComponentService {
 
     ResultCode verify(String configuration);
 
-    ResultCode create(Component component);
+    int create(Component component);
 
     ListData<ComponentDto> queryList(ComponentQueryParam queryParam,Integer pageNum,Integer pageSize);
 }

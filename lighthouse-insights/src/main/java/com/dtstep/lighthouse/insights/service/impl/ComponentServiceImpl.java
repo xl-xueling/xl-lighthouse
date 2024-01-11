@@ -125,20 +125,12 @@ public class ComponentServiceImpl implements ComponentService {
 
 
     @Override
-    public ResultCode create(Component component) {
-        ResultCode resultCode = validate(component.getConfiguration());
-        if(resultCode != ResultCode.success){
-            return resultCode;
-        }
+    public int create(Component component) {
         LocalDateTime localDateTime = LocalDateTime.now();
         component.setCreateTime(localDateTime);
         component.setUpdateTime(localDateTime);
         Integer id = componentDao.insert(component);
-        if(id > 0){
-            return ResultCode.success;
-        }else{
-            return ResultCode.systemError;
-        }
+        return id;
     }
 
     @Override

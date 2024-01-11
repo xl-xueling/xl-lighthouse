@@ -1,9 +1,11 @@
 package com.dtstep.lighthouse.insights.modal;
 
+import com.dtstep.lighthouse.insights.dto.TreeNode;
 import com.dtstep.lighthouse.insights.enums.ComponentTypeEnum;
 import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Component {
 
@@ -13,7 +15,7 @@ public class Component {
 
     private ComponentTypeEnum componentType;
 
-    private String configuration;
+    private List<TreeNode> configuration;
 
     private PrivateTypeEnum privateType;
 
@@ -37,14 +39,6 @@ public class Component {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getConfiguration() {
-        return configuration;
-    }
-
-    public void setConfiguration(String configuration) {
-        this.configuration = configuration;
     }
 
     public Integer getUserId() {
@@ -85,5 +79,13 @@ public class Component {
 
     public void setPrivateType(PrivateTypeEnum privateType) {
         this.privateType = privateType;
+    }
+
+    public List<TreeNode> getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(List<TreeNode> configuration) {
+        this.configuration = configuration;
     }
 }
