@@ -19,8 +19,14 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             dataIndex: 'id',
         },
         {
-            title: 'PrivateType',
-            dataIndex: 'privateType',
+            title: 'Title',
+            dataIndex: 'title',
+            render: (value,record) =>
+            {
+                return (
+                        <span style={{display:"inline-flex",alignItems:"center"}}>{value}{record.privateType == 0 ?<CiLock style={{marginLeft:'5px'}}/>:null}</span>
+                    )
+            }
         },
         {
             title: 'Configuration',
@@ -35,15 +41,27 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             }
         },
         {
-            title: 'Email',
-            dataIndex: 'email',
+            title: 'Admin',
+            dataIndex: 'user',
+            render: (value) => {
+                return (<UserGroup users={[value]}/>);
+            },
         },
         {
             title: 'Operations',
             dataIndex: 'operations',
             headerCellStyle: {width: '250px'},
             render: (value, record) => {
-                console.log("value is:" + value)
+                let updateButton;
+                if(record.permissions.includes('ManageAble')){
+                    updateButton = <Button key={getRandomString()}
+                                           onClick={() => callback(record, 'update')}
+                                           type="text"
+                                           size="mini">
+                        {'修改'}
+                    </Button>;
+                }
+                return  <Space size={0} direction="horizontal">{[updateButton]}</Space>;
             }
         }
     ];
