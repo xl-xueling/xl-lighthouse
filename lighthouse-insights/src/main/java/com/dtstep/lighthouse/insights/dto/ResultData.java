@@ -45,7 +45,7 @@ public class ResultData<T> {
             message = String.format(message,params);
         }
         ResultData resultData = new ResultData();
-        resultData.setCode(resultData.getCode());
+        resultData.setCode(resultCode.getCode());
         resultData.setMessage(message);
         resultData.setData(null);
         return resultData;

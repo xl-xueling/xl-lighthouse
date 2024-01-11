@@ -58,6 +58,7 @@ import "brace/mode/jsoniq";
 import "brace/theme/textmate";
 import {requestCreate} from "@/api/stat";
 import {requestVerify} from "@/api/component";
+import {translate, translateResponse} from "@/pages/department/common";
 
 
 export default function FilterAddPanel({onClose}) {
@@ -83,10 +84,13 @@ export default function FilterAddPanel({onClose}) {
             type:values.type,
             configuration:values.configuration,
         }
+        const obj = JSON.parse(configuration);
+        console.log("obj is:" + JSON.stringify(obj))
         requestVerify(verifyData).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['statCreate.form.submit.success']});
+                setFormElements([{"type":values.type,"options":obj}]);
             }else{
                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -98,49 +102,7 @@ export default function FilterAddPanel({onClose}) {
         })
     }
 
-    const addCustomCompletion = () => {
-        setTimeout(() => {
-            editorRef.current.editor.session.setUseWorker(true);
-            console.log("user Worker i.....")
-            // editorRef.current.editor.getSession().on('change', () => {
-            //     // 检查 JSON 语法错误
-            //     const annotations = editorRef.current.editor.getSession().getAnnotations();
-            //     console.log("annotaions:" + annotations)
-            //     // 在控制台输出错误位置和信息
-            //     annotations.forEach((error) => {
-            //         console.log("---error...")
-            //         console.log(`错误行：${error.row}，错误列：${error.column}，错误信息：${error.text}`);
-            //     });
-            // });
-        },0)
-
-
-    };
-    useEffect(() => {
-        addCustomCompletion();
-    },[editorRef])
-
     const [formElements, setFormElements] = useState([]);
-
-    const verify = () => {
-        const values = formRef.current.getFieldsValue();
-        const configuration = values.configuration;
-        if(!isJSON(configuration)){
-            Message.error("格式校验错误!");
-            return;
-        }
-        const obj = JSON.parse(configuration);
-        if(!validateNode(obj,new Set())){
-            Message.error("格式校验错误!");
-            return;
-        }
-        const level = calculateMaxLevel(obj,0);
-        if(Array.isArray(obj)){
-            setFormElements([{"type":values.type,"options":obj}]);
-        }else{
-            setFormElements([{"type":values.type,"options":[obj]}]);
-        }
-    };
 
     return (
         <Modal
@@ -207,7 +169,6 @@ export default function FilterAddPanel({onClose}) {
                     </Grid.Col>
                 </Grid.Row>
                 <FormItem field={'configuration'} rules={[{ required: true }]}>
-                    {/*<Input.TextArea rows={18} />*/}
                     <AceEditor
                         style={{ height:'400px',backgroundColor:"var(--color-fill-2)",width:'100%'}}
                         ref={editorRef}
@@ -232,6 +193,7 @@ export default function FilterAddPanel({onClose}) {
 
             {formElements.map((element, index) => {
                 const {type,options} = element;
+                console.log("type:" + type + ",options:" + JSON.stringify(options));
                 switch (type){
                     case 1:
                         return(
@@ -263,7 +225,7 @@ export default function FilterAddPanel({onClose}) {
                                 </Option>
                             })}
                         </Select></div>);
-                    case 3:
+                    case 5:
                         return (
                             <div key={index}>
                                 <Typography.Text
@@ -271,9 +233,13 @@ export default function FilterAddPanel({onClose}) {
                                 >
                                     {'Display'}
                                 </Typography.Text>
-                                <Cascader key={index} allowClear showSearch options={options} mode='multiple'
-                                          checkedStrategy='parent'>
-                                </Cascader></div>);
+                                <TreeSelect
+                                    placeholder={"Please Select"}
+                                    multiple={true}
+                                    allowClear={true}
+                                    treeData={translateResponse(options)}
+                                />
+                            </div>);
                     default:
                         break;
                 }
