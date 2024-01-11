@@ -12,5 +12,7 @@ public interface ComponentDao {
 
     Integer insert(Component component);
 
+    Integer update(Component component);
+
     List<Component> queryList(@Param("queryParam")ComponentQueryParam queryParam);
 }

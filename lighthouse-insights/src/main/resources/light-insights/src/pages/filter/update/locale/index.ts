@@ -1,0 +1,36 @@
+const i18n = {
+  'en-US': {
+    'componentUpdate.modal.title':'Create Custom Component',
+    'componentUpdate.form.label.title':'Title',
+    'componentUpdate.form.label.type':'Component Type',
+    'componentUpdate.form.label.privateType':'PrivateType',
+    'componentUpdate.form.label.configuration':'Configuration',
+    'componentUpdate.form.title.errMsg':'Title cannot be empty!',
+    'componentUpdate.form.title.validate.errMsg':'Title validated failed!',
+    'componentUpdate.form.title.less.limit':'Title length is less than required!',
+    'componentUpdate.form.title.exceeds.limit':'Title length exceeds limit!',
+    'componentUpdate.form.button.verify':'Verify',
+    'componentUpdate.form.create.submit.success':'Create component successfully!',
+    'componentUpdate.form.verify.submit.success':'Create verify successfully!',
+    'componentUpdate.form.label.privateType.private':'Private',
+    'componentUpdate.form.label.privateType.public':'Public',
+  },
+  'zh-CN': {
+    'componentUpdate.modal.title':'创建自定义组件',
+    'componentUpdate.form.label.title':'名称',
+    'componentUpdate.form.label.type':'组件类型',
+    'componentUpdate.form.label.privateType':'私有类型',
+    'componentUpdate.form.label.configuration':'配置',
+    'componentUpdate.form.title.errMsg':'组件名称不能为空！',
+    'componentUpdate.form.title.validate.errMsg':'组件名称校验失败！',
+    'componentUpdate.form.title.less.limit':'组件名称长度低于要求！',
+    'componentUpdate.form.title.exceeds.limit':'组件名称长度超出限制！',
+    'componentUpdate.form.button.verify':'校验',
+    'componentUpdate.form.create.submit.success':'组件创建成功！',
+    'componentUpdate.form.verify.submit.success':'组件配置检验成功！',
+    'componentUpdate.form.label.privateType.private':'私有',
+    'componentUpdate.form.label.privateType.public':'公开',
+  },
+};
+
+export default i18n;
