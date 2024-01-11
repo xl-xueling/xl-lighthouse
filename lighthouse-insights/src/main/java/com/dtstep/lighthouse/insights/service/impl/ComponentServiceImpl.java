@@ -66,6 +66,8 @@ public class ComponentServiceImpl implements ComponentService {
         if (!arrayNode.isArray()) {
             return ResultCode.componentVerifyNonArrayStructure;
         }
+        System.out.println("arrayNode:" + arrayNode);
+        System.out.println("depth:" + depth);
         if (depth > MAX_DEPTH) {
             return ResultCode.componentVerifyLevelLimit;
         }
