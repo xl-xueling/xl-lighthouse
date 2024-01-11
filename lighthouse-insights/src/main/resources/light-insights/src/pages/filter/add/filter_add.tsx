@@ -76,7 +76,8 @@ export default function FilterAddPanel({onClose}) {
         const configuration = values.configuration;
         const verifyData = {
             title:values.title,
-            type:values.type,
+            componentType:values.componentType,
+            privateType:values.privateType,
             configuration:values.configuration,
         }
         const obj = JSON.parse(configuration);
@@ -84,7 +85,7 @@ export default function FilterAddPanel({onClose}) {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['componentCreate.form.create.submit.success']});
-                setFormElements([{"type":values.type,"options":obj}]);
+                onClose();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
