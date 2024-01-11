@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dtstep.lighthouse.insights.dao.ComponentDao">
+    <resultMap id="componentResultMap" type="com.dtstep.lighthouse.insights.modal.Component">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="component_type" property="componentType" typeHandler="com.dtstep.lighthouse.insights.types.ComponentTypeEnumTypeHandler"/>
+        <result column="private_type" property="privateType" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
+        <result column="configuration" property="configuration"/>
+        <result column="user_id" property="userId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Component">
+        INSERT INTO ldp_components (`title`,`component_type`,`private_type`,`configuration`,`user_id`,`create_time`,`update_time`) VALUES
+        (
+            #{title,jdbcType=VARCHAR},
+            #{componentType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ComponentTypeEnumTypeHandler},
+            #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
+            #{configuration,jdbcType=VARCHAR},
+            #{userId,jdbcType=INTEGER},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+</mapper>

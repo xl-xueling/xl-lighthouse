@@ -8,5 +8,5 @@ public interface ComponentService {
 
     ResultCode verify(String configuration);
 
-    Integer create(Component component);
+    ResultCode create(Component component);
 }
