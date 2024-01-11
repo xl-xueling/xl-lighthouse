@@ -75,6 +75,10 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
         const configuration = values.configuration;
+        if(!isJSON(configuration)){
+            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['componentUpdate.form.configuration.validate.failed']});
+            return;
+        }
         const verifyData = {
             id:componentInfo?.id,
             title:values.title,
@@ -82,11 +86,10 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
             privateType:values.privateType,
             configuration:values.configuration,
         }
-        const obj = JSON.parse(configuration);
         requestUpdate(verifyData).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['componentUpdate.form.create.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['componentUpdate.form.update.submit.success']});
                 onClose();
                 onReload();
             }else{
@@ -105,6 +108,10 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
         const configuration = values.configuration;
+        if(!isJSON(configuration)){
+            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['componentUpdate.form.configuration.validate.failed']});
+            return;
+        }
         const verifyData = {
             id:componentInfo?.id,
             title:values.title,
@@ -114,11 +121,10 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
         }
         const obj = JSON.parse(configuration);
         requestUpdate(verifyData).then((response) => {
-            console.log("response is:" + JSON.stringify(response));
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['componentUpdate.form.verify.submit.success']});
-                setFormElements([{"type":values.type,"options":obj}]);
+                setFormElements([{"componentType":values.componentType,"options":obj}]);
             }else{
                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -148,11 +154,9 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
                       configuration:JSON.stringify(componentInfo?.configuration, null, 4),
                   }}
                   autoComplete='off'>
-                <Typography.Text
-                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                >
+                <Typography.Title style={{fontSize:13}}>
                     {t['componentUpdate.form.label.title']}
-                </Typography.Text>
+                </Typography.Title>
                 <FormItem field={'title'} rules={[
                     { required: true, message: t['componentUpdate.form.title.errMsg'] , validateTrigger : ['onSubmit']},
                     { required: true, match: new RegExp(TEXT_BASE_PATTERN_2,"g"),message: t['componentUpdate.form.title.validate.errMsg'] , validateTrigger : ['onSubmit']},
@@ -170,11 +174,9 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
                     }]}>
                     <Input/>
                 </FormItem>
-                <Typography.Text
-                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                >
+                <Typography.Title style={{fontSize:13}}>
                     {t['componentUpdate.form.label.type']}
-                </Typography.Text>
+                </Typography.Title>
                 <FormItem field='componentType' rules={[{ required: true }]}>
                     <Select
                         placeholder='please select' defaultValue={1}
@@ -189,11 +191,9 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
                 </FormItem>
                 <Grid.Row style={{ marginBottom:'10px' }}>
                     <Grid.Col span={16}>
-                        <Typography.Text
-                            style={{ marginTop: 0 ,fontSize:14}}
-                        >
+                        <Typography.Title style={{fontSize:13}}>
                             {t['componentUpdate.form.label.configuration']}
-                        </Typography.Text>
+                        </Typography.Title>
                     </Grid.Col>
                     <Grid.Col span={8} style={{ textAlign: 'right' }}>
                         <Button type={"secondary"} size={"mini"} onClick={verifySubmit}>{t['componentUpdate.form.button.verify']}</Button>
@@ -220,11 +220,9 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
                         }}
                     />
                 </FormItem>
-                <Typography.Text
-                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                >
+                <Typography.Title style={{fontSize:13}}>
                     {t['componentUpdate.form.label.privateType']}
-                </Typography.Text>
+                </Typography.Title>
                 <FormItem field='privateType' rules={[{ required: true }]}>
                     <Radio.Group defaultValue={0}>
                         <Radio value={0}>{t['componentUpdate.form.label.privateType.private']}</Radio>
@@ -232,18 +230,16 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
                     </Radio.Group>
                 </FormItem>
             </Form>
-
             {formElements.map((element, index) => {
-                const {type,options} = element;
-                switch (type){
+                const {componentType,options} = element;
+                switch (componentType){
                     case ComponentTypeEnum.FILTER_SELECT:
                         return (
                             <div key={index}>
-                                <Typography.Text
-                                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
-                                >
-                                    {'Display'}
-                                </Typography.Text>
+                                <Typography.Title
+                                    style={{fontSize:13}}>
+                                    {t['componentUpdate.form.label.display']}
+                                </Typography.Title>
                                 <TreeSelect
                                     placeholder={"Please Select"}
                                     multiple={true}
