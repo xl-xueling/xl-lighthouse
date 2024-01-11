@@ -36,7 +36,7 @@ import {getColumns} from "./constants";
 import FilterUpdatePanel from "@/pages/filter/update/filter_update";
 import {requestDeleteById} from "@/api/component";
 
-export default function FilterList() {
+export default function ComponentList() {
 
     const [formParams, setFormParams] = useState({});
     const t = useLocale(locale);
@@ -112,12 +112,11 @@ export default function FilterList() {
         setLoading(false);
     }
 
-
     const handlerDeleteComponent = async (id: number) => {
         await requestDeleteById({id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['componentList.operations.delete.submit.success']});
                 handlerReloadList();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -137,7 +136,7 @@ export default function FilterList() {
                 <Breadcrumb.Item>
                     <IconHome />
                 </Breadcrumb.Item>
-                <Breadcrumb.Item style={{fontWeight:20}}>{t['filterList.breadcrumb.title']}</Breadcrumb.Item>
+                <Breadcrumb.Item style={{fontWeight:20}}>{t['componentList.breadcrumb.title']}</Breadcrumb.Item>
             </Breadcrumb>
             <Card>
                 <SearchForm onSearch={handleSearch} />
@@ -146,7 +145,7 @@ export default function FilterList() {
                     </Grid.Col>
                     <Grid.Col span={8} style={{ textAlign: 'right' }}>
                         <Space>
-                            <Button size={"small"} type="primary" onClick={() => setShowsAddPanel(true)}>创建</Button>
+                            <Button size={"small"} type="primary" onClick={() => setShowsAddPanel(true)}>{t['componentList.button.create']}</Button>
                         </Space>
                     </Grid.Col>
                 </Grid.Row>
