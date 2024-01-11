@@ -3,13 +3,16 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.dao.ComponentDao;
 import com.dtstep.lighthouse.insights.modal.Component;
 import com.dtstep.lighthouse.insights.service.ComponentService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +20,9 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class ComponentServiceImpl implements ComponentService {
+
+    @Autowired
+    private ComponentDao componentDao;
 
     @Override
     public ResultCode verify(String configuration) {
@@ -111,6 +117,18 @@ public class ComponentServiceImpl implements ComponentService {
 
     @Override
     public ResultCode create(Component component) {
-        return null;
+        ResultCode resultCode = validate(component.getConfiguration());
+        if(resultCode != ResultCode.success){
+            return resultCode;
+        }
+        LocalDateTime localDateTime = LocalDateTime.now();
+        component.setCreateTime(localDateTime);
+        component.setUpdateTime(localDateTime);
+        Integer id = componentDao.insert(component);
+        if(id > 0){
+            return ResultCode.success;
+        }else{
+            return ResultCode.systemError;
+        }
     }
 }
