@@ -110,6 +110,7 @@ export default function FilterAddPanel({onClose}) {
         }
         const obj = JSON.parse(configuration);
         requestCreate(verifyData).then((response) => {
+            console.log("response is:" + JSON.stringify(response));
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['componentCreate.form.verify.submit.success']});

@@ -38,10 +38,10 @@ public class ResultData<T> {
     }
 
     public static<T> ResultData<T> result(ResultCode resultCode){
+        messageSource = SpringUtil.getBean(MessageSource.class);
         String[] params = resultCode.getParams();
-        String message = null;
+        String message = messageSource.getMessage(resultCode.getI18nLabel(),null,LocaleContextHolder.getLocale());
         if(params != null){
-            message = messageSource.getMessage(resultCode.getI18nLabel(),null,LocaleContextHolder.getLocale());
             message = String.format(message,params);
         }
         ResultData resultData = new ResultData();
