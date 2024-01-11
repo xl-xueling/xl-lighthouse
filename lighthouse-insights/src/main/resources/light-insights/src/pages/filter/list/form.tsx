@@ -39,76 +39,15 @@ function SearchForm(props: {
 
   return (
     <div className={styles['search-form-wrapper']}>
-      <Form
-        form={form}
-        className={styles['search-form']}
-        labelAlign="left"
-        labelCol={{ span: 5 }}
-        wrapperCol={{ span: 19 }}
-      >
-        <Row gutter={24}>
-          <Col span={colSpan}>
-            <Form.Item label={'UserName'} field="username">
-              <Input
-                allowClear
-                placeholder={t['searchForm.name.placeholder']}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item
-                label={'OrderType'}
-                field="orderType"
-            >
-              <Select
-                  placeholder={t['userList.state.placeholder']}
-                  mode="multiple"
-                  allowClear
-              >
-                <Select.Option value={0}>PENDING</Select.Option>
-                <Select.Option value={1}>NORMAL</Select.Option>
-                <Select.Option value={2}>APPROVED</Select.Option>
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item
-                label={'State'}
-                field="states"
-            >
-              <Select
-                  placeholder={t['userList.state.placeholder']}
-                  mode="multiple"
-                  allowClear
-              >
-                <Select.Option value={0}>PENDING</Select.Option>
-                <Select.Option value={1}>NORMAL</Select.Option>
-                <Select.Option value={2}>APPROVED</Select.Option>
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item
-              label={'CreateTime'}
-              field="createTime"
-            >
-              <DatePicker.RangePicker
-                  allowClear
-                  style={{ width: '100%' }}
-                  disabledDate={(date) => dayjs(date).isAfter(dayjs())}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
-      <div className={styles['right-button']}>
-        <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>
-          {'搜索'}
-        </Button>
-        <Button icon={<IconRefresh />} onClick={handleReset}>
-          {'重置'}
-        </Button>
-      </div>
+
+      {/*<div className={styles['right-button']}>*/}
+      {/*  <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>*/}
+      {/*    {t['componentList.form.button.search']}*/}
+      {/*  </Button>*/}
+      {/*  <Button icon={<IconRefresh />} onClick={handleReset}>*/}
+      {/*    {t['componentList.form.button.reset']}*/}
+      {/*  </Button>*/}
+      {/*</div>*/}
     </div>
   );
 }

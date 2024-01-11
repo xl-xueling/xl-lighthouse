@@ -26,7 +26,7 @@ import {
 
 import SearchForm from "@/pages/filter/list/form";
 import FilterAddPanel from "@/pages/filter/add/filter_add";
-import {IconHome} from "@arco-design/web-react/icon";
+import {IconHome, IconPlus} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {Component} from "@/types/insights-common";
@@ -35,7 +35,9 @@ import {requestList} from "@/api/component";
 import {getColumns} from "./constants";
 import FilterUpdatePanel from "@/pages/filter/update/filter_update";
 import {requestDeleteById} from "@/api/component";
-
+import styles from "@/pages/filter/list/style/index.module.less";
+const { Row, Col } = Grid;
+const { useForm } = Form;
 export default function ComponentList() {
 
     const [formParams, setFormParams] = useState({});
@@ -44,7 +46,7 @@ export default function ComponentList() {
     const [loading,setLoading] = useState<boolean>(true);
     const [currentComponent,setCurrentComponent] = useState<Component>(null);
     const [reloadSwitch,setReloadSwitch] = useState<number>(Date.now);
-
+    const [form] = useForm();
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: true,
@@ -73,6 +75,7 @@ export default function ComponentList() {
         setPagination({ ...pagination, current: 1 });
         setFormParams(params);
     }
+
     const tableCallback = async (record, type) => {
         if(type == 'update'){
             setCurrentComponent(record);
@@ -86,11 +89,13 @@ export default function ComponentList() {
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
+        const combineParam:any = {}
+        console.log("FormParams is:" + JSON.stringify(formParams));
         const {current, pageSize} = pagination;
         const fetchComponentsInfo:Promise<{list:Array<Component>,total:number}> = new Promise<{list:Array<Component>,total:number}>((resolve) => {
             const proc = async () => {
                 const result = await requestList({
-                        queryParams:{},
+                        queryParams:formParams,
                         pagination:{
                             pageSize:pageSize,
                             pageNum:current,
@@ -128,7 +133,7 @@ export default function ComponentList() {
 
     useEffect(() => {
         fetchData().then();
-    },[reloadSwitch])
+    },[reloadSwitch,pagination.current, pagination.pageSize, JSON.stringify(formParams)])
 
     return (
         <>
@@ -139,16 +144,27 @@ export default function ComponentList() {
                 <Breadcrumb.Item style={{fontWeight:20}}>{t['componentList.breadcrumb.title']}</Breadcrumb.Item>
             </Breadcrumb>
             <Card>
-                <SearchForm onSearch={handleSearch} />
-                <Grid.Row justify="space-between" align="center">
-                    <Grid.Col span={16} style={{ textAlign: 'left' }}>
-                    </Grid.Col>
-                    <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                        <Space>
-                            <Button size={"small"} type="primary" onClick={() => setShowsAddPanel(true)}>{t['componentList.button.create']}</Button>
-                        </Space>
-                    </Grid.Col>
-                </Grid.Row>
+                <div className={styles['search-form-wrapper']}>
+                <Form
+                    form={form}
+                    className={styles['search-form']}
+                    labelAlign="left"
+                    wrapperCol={{ span: 24 }}
+                >
+                    <Row gutter={24}>
+                        <Col span={9}>
+                            <Form.Item field="Title">
+                                <Input.Search  placeholder={t['componentList.label.title']} allowClear onSearch={(v) => {handleSearch({title:v})}} />
+                            </Form.Item>
+                        </Col>
+                        <Grid.Col span={15} style={{ textAlign: 'right' }}>
+                            <Space>
+                                <Button size={"small"} type="primary" onClick={() => setShowsAddPanel(true)}>{t['componentList.button.create']}</Button>
+                            </Space>
+                        </Grid.Col>
+                    </Row>
+                </Form>
+                </div>
                 <Table
                     loading={loading}
                     rowKey={'id'}
