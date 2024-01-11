@@ -15,11 +15,11 @@ import {translateResponse} from "@/pages/department/common";
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
         {
-            title: 'ID',
+            title: t['componentList.label.id'],
             dataIndex: 'id',
         },
         {
-            title: 'Title',
+            title: t['componentList.label.title'],
             dataIndex: 'title',
             render: (value,record) =>
             {
@@ -29,8 +29,9 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             }
         },
         {
-            title: 'Configuration',
+            title: t['componentList.label.display'],
             dataIndex: 'configuration',
+            headerCellStyle: {width: '500px'},
             render: (value, record) => {
                 return <TreeSelect
                     placeholder={"Please Select"}
@@ -41,14 +42,14 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             }
         },
         {
-            title: 'Admin',
+            title: t['componentList.label.admins'],
             dataIndex: 'user',
             render: (value) => {
                 return (<UserGroup users={[value]}/>);
             },
         },
         {
-            title: 'Operations',
+            title: t['componentList.label.operations'],
             dataIndex: 'operations',
             headerCellStyle: {width: '250px'},
             render: (value, record) => {
@@ -59,20 +60,20 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                                            onClick={() => callback(record, 'update')}
                                            type="text"
                                            size="mini">
-                        {'修改'}
+                        {t['componentList.columns.button.update']}
                     </Button>;
                     deleteButton =
                         <Popconfirm key={getRandomString()}
                                     focusLock
                                     position={"tr"}
                                     title='Confirm'
-                                    content={t['projectList.form.delete.confirm']}
+                                    content={t['componentList.form.delete.confirm']}
                                     onOk={() => callback(record, 'delete')}
                         >
                             <Button
                                 type="text"
                                 size="mini">
-                                {'Delete'}
+                                {t['componentList.columns.button.delete']}
                             </Button>
                         </Popconfirm>
                 }
