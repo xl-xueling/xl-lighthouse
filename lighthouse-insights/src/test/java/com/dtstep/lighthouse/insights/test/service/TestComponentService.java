@@ -34,7 +34,7 @@ public class TestComponentService {
         list.add(treeNode2);
         String json = JsonUtil.toJSONString(list);
         System.out.println(json);
-        String json2 = "[{\"value\":\"beijing\",\"label\":\"1\"},{\"value\":\"\",\"label\":\"2\"}]";
+        String json2 = "[{\"value\":\"beijing\",\"label\":\"1\"},{\"value\":\"ss\"}]";
         ResultCode resultCode = componentService.verify(json2);
         System.out.println("resultCode:" + JsonUtil.toJSONString(resultCode));
         System.out.println("resultCode:" + JsonUtil.toJSONString(resultCode.getParams()));

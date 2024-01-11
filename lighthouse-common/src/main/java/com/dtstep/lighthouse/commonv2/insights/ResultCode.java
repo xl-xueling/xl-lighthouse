@@ -48,6 +48,18 @@ public enum ResultCode {
 
     createGroupTokenExist("2001","createGroupTokenExist"),
 
+    componentVerifyFormatError("2001","componentVerifyFormatError"),
+
+    componentVerifyNonArrayStructure("2002","componentVerifyNonArrayStructure"),
+
+    componentVerifyLevelLimit("2003","componentVerifyLevelLimit"),
+
+    componentVerifyInvalidParams("2004","componentVerifyInvalidParams"),
+
+    componentVerifyMissingParams("2004","componentVerifyMissingParams"),
+
+    componentVerifyNotEmpty("2004","componentVerifyNotEmpty"),
+
     ;
 
     ResultCode(String code , String i18nLabel){
@@ -58,6 +70,8 @@ public enum ResultCode {
     private String code;
 
     private String i18nLabel;
+
+    private String[] params;
 
     public String getCode() {
         return code;
@@ -73,5 +87,18 @@ public enum ResultCode {
 
     public void setI18nLabel(String i18nLabel) {
         this.i18nLabel = i18nLabel;
+    }
+
+    public String[] getParams() {
+        return params;
+    }
+
+    public void setParams(String[] params) {
+        this.params = params;
+    }
+
+    public static ResultCode getExtendResultCode(ResultCode resultCode, String [] params){
+        resultCode.setParams(params);
+        return resultCode;
     }
 }

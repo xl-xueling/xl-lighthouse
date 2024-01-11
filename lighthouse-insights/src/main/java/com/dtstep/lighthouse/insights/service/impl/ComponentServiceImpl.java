@@ -6,9 +6,13 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.service.ComponentService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class ComponentServiceImpl implements ComponentService {
@@ -57,26 +61,46 @@ public class ComponentServiceImpl implements ComponentService {
         return ResultCode.success;
     }
 
+    private static <T> List<T> convertToList(Iterator<T> iterator) {
+        Iterable<T> iterable = () -> iterator;
+        return StreamSupport.stream(iterable.spliterator(), false)
+                .collect(Collectors.toList());
+    }
+
     private static ResultCode validateObject(JsonNode objectNode, int depth) {
-        Iterator<String> iterator = objectNode.fieldNames();
-        while (iterator.hasNext()){
-            String fieldName = iterator.next();
-            if (!fieldName.equals("label") && !fieldName.equals("value") && !fieldName.equals("children")) {
-                return ResultCode.getExtendResultCode(ResultCode.componentVerifyInvalidParams,new String[]{fieldName});
+        List<String> list = null;
+        if(objectNode.isObject()){
+            Iterator<String> iterator = objectNode.fieldNames();
+            list = convertToList(iterator);
+            if(CollectionUtils.isEmpty(list)){
+                return ResultCode.componentVerifyFormatError;
             }
-            JsonNode fieldValue = objectNode.get(fieldName);
-            if (fieldName.equals("children")) {
-                ResultCode resultCode = validateArray(fieldValue, depth + 1);
-                if (resultCode != ResultCode.success) {
-                    return resultCode;
+            if(!list.contains("label")){
+                return ResultCode.getExtendResultCode(ResultCode.componentVerifyMissingParams,new String[]{"label"});
+            }
+            if(!list.contains("value")){
+                return ResultCode.getExtendResultCode(ResultCode.componentVerifyMissingParams,new String[]{"value"});
+            }
+            for (String fieldName : list){
+                if (!fieldName.equals("label") && !fieldName.equals("value") && !fieldName.equals("children")) {
+                    return ResultCode.getExtendResultCode(ResultCode.componentVerifyInvalidParams,new String[]{fieldName});
                 }
-            } else {
-                if(StringUtil.isEmpty(fieldValue.asText())){
-                    return ResultCode.getExtendResultCode(ResultCode.componentVerifyNotEmpty,new String[]{fieldName});
-                }
-                ResultCode resultCode = validateObject(fieldValue, depth);
-                if (resultCode != ResultCode.success) {
-                    return resultCode;
+                JsonNode fieldValue = objectNode.get(fieldName);
+                if (fieldName.equals("children")) {
+                    ResultCode resultCode = validateArray(fieldValue, depth + 1);
+                    if (resultCode != ResultCode.success) {
+                        return resultCode;
+                    }
+                } else {
+                    if(StringUtil.isEmpty(fieldValue.asText())){
+                        return ResultCode.getExtendResultCode(ResultCode.componentVerifyNotEmpty,new String[]{fieldName});
+                    }else if(fieldValue.isTextual()){
+                        continue;
+                    }
+                    ResultCode resultCode = validateObject(fieldValue, depth);
+                    if (resultCode != ResultCode.success) {
+                        return resultCode;
+                    }
                 }
             }
         }
