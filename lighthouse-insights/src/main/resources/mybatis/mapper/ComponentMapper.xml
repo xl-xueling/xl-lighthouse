@@ -6,7 +6,7 @@
         <result column="title" property="title"/>
         <result column="component_type" property="componentType" typeHandler="com.dtstep.lighthouse.insights.types.ComponentTypeEnumTypeHandler"/>
         <result column="private_type" property="privateType" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
-        <result column="configuration" property="configuration"/>
+        <result column="configuration" property="configuration" typeHandler="com.dtstep.lighthouse.insights.types.ListTreeNodeTypeHandler"/>
         <result column="user_id" property="userId"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -18,7 +18,7 @@
             #{title,jdbcType=VARCHAR},
             #{componentType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ComponentTypeEnumTypeHandler},
             #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
-            #{configuration,jdbcType=VARCHAR},
+            #{configuration,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.ListTreeNodeTypeHandler},
             #{userId,jdbcType=INTEGER},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
@@ -32,13 +32,7 @@
                 AND id = #{queryParam.id}
             </if>
             <if test="queryParam.privateType!=null">
-                AND private_type = #{queryParam.privateType}
-            </if>
-            <if test="queryParam.createStartTime!=null">
-                AND create_time &gt;= #{queryParam.createStartTime}
-            </if>
-            <if test="queryParam.createEndTime!=null">
-                AND create_time &lt;= #{queryParam.createEndTime}
+                AND private_type = #{queryParam.privateType.privateType}
             </if>
             <if test="queryParam.title != null">
                 AND title LIKE CONCAT('%', #{queryParam.title}, '%')

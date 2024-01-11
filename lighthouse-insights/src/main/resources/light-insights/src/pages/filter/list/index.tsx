@@ -32,6 +32,7 @@ import locale from "./locale";
 import {Component} from "@/types/insights-common";
 import {Project} from "@/types/insights-web";
 import {requestList} from "@/api/component";
+import {getColumns} from "./constants";
 
 export default function FilterList() {
 
@@ -62,25 +63,11 @@ export default function FilterList() {
         setPagination({ ...pagination, current: 1 });
         setFormParams(params);
     }
+    const tableCallback = async (record, type) => {
+        console.log("type is:" + type)
+    };
 
-    const columns: TableColumnProps[] = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-        },
-        {
-            title: 'Salary',
-            dataIndex: 'salary',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-        },
-    ];
+    const columns = useMemo(() => getColumns(t, tableCallback), [t]);
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
@@ -134,8 +121,9 @@ export default function FilterList() {
                     </Grid.Col>
                 </Grid.Row>
                 <Table
+                    rowKey={'id'}
                     style={{ marginTop:12}}
-                    columns={columns} data={listData} pagination={pagination}/>
+                    columns={columns} data={listData} />
                 {showAddPanel && <FilterAddPanel onClose={() => setShowsAddPanel(false)}/>}
             </Card>
         </>

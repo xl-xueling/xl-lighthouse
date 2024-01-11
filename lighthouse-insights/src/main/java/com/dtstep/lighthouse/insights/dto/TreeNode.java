@@ -5,9 +5,9 @@ import java.util.List;
 
 public class TreeNode implements Serializable {
 
-    public String value;
-
     private String label;
+
+    public String value;
 
     private List<TreeNode> children;
 

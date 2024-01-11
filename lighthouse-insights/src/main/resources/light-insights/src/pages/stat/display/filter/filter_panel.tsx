@@ -100,9 +100,9 @@ export default function FilterPanel({onClose = null}) {
             componentType:EditTableComponentEnum.INPUT,
             cellStyle:{textAlign:"center"},
             render: (value, record) => {
-                return (
-                    <IconMinus onClick={() => removeComponent(record.key)}/>
-                )
+                // return (
+                //     // <IconMinus onClick={() => removeComponent(record.key)}/>
+                // )
             }
         },
     ];
@@ -112,9 +112,9 @@ export default function FilterPanel({onClose = null}) {
         setTargetData([...targetData,copyComponent])
     }
 
-    const removeComponent = (key) => {
-        setTargetData(targetData.filter(x => x.key != key))
-    }
+    // const removeComponent = (key) => {
+    //     setTargetData(targetData.filter(x => x.key != key))
+    // }
 
     const [sourceData,setSourceData] = useState<Array<Component>>([]);
 
@@ -172,10 +172,11 @@ export default function FilterPanel({onClose = null}) {
     }
 
     function handleSave(row) {
-        const newData = [...targetData];
-        const index = newData.findIndex((item) => row.key === item.key);
-        newData.splice(index, 1, { ...newData[index], ...row });
-        setTargetData(newData);
+        // const newData = [...targetData];
+        // const index = newData.findIndex((item) => row.key === item.key);
+        // newData.splice(index, 1, { ...newData[index], ...row });
+        // setTargetData(newData);
+        console.log("-")
     }
 
     return (

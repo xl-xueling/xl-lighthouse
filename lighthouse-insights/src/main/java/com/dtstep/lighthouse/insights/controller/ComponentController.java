@@ -32,16 +32,24 @@ public class ComponentController {
 
     @RequestMapping("/component/create")
     public ResultData<Integer> create(@Validated @RequestBody ComponentCreateParam createParam) {
+        ResultCode resultCode = componentService.verify(createParam.getConfiguration());
+        if(resultCode != ResultCode.success){
+            return ResultData.result(resultCode);
+        }
         System.out.println("createParam:" + JsonUtil.toJSONString(createParam));
         Component component = new Component();
         component.setComponentType(createParam.getComponentType());
         component.setPrivateType(createParam.getPrivateType());
-        component.setConfiguration(createParam.getConfiguration());
+        component.setConfiguration(JsonUtil.toJavaObjectList(createParam.getConfiguration(),TreeNode.class));
         component.setTitle(createParam.getTitle());
         Integer userId = baseService.getCurrentUserId();
         component.setUserId(userId);
-        ResultCode resultCode = componentService.create(component);
-        return ResultData.result(resultCode);
+        int result = componentService.create(component);
+        if(result > 0){
+            return ResultData.success();
+        }else{
+            return ResultData.result(ResultCode.systemError);
+        }
     }
 
     @PostMapping("/component/list")

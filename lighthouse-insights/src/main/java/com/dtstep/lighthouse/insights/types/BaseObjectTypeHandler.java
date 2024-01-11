@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.types;
 
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,9 +27,9 @@ public class BaseObjectTypeHandler<T> extends BaseTypeHandler<T> {
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException {
         try {
-            String json = objectMapper.writeValueAsString(parameter);
+            String json = JsonUtil.toJSONString(parameter);
             ps.setString(i, json);
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             throw new SQLException("Failed to convert Map to JSON", e);
         }
     }
@@ -56,8 +57,10 @@ public class BaseObjectTypeHandler<T> extends BaseTypeHandler<T> {
             if (json == null) {
                 return null;
             }
-            return objectMapper.readValue(json, typeReference);
+            return JsonUtil.readValue(json, typeReference);
         } catch (IOException e) {
+            throw new SQLException("Failed to parse JSON", e);
+        } catch (Exception e){
             throw new SQLException("Failed to parse JSON", e);
         }
     }
