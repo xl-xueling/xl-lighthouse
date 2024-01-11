@@ -11,11 +11,11 @@ public class Component {
 
     private String title;
 
-    private ComponentTypeEnum componentTypeEnum;
+    private ComponentTypeEnum componentType;
 
     private String configuration;
 
-    private PrivateTypeEnum privateTypeEnum;
+    private PrivateTypeEnum privateType;
 
     private Integer userId;
 
@@ -39,28 +39,12 @@ public class Component {
         this.title = title;
     }
 
-    public ComponentTypeEnum getComponentTypeEnum() {
-        return componentTypeEnum;
-    }
-
-    public void setComponentTypeEnum(ComponentTypeEnum componentTypeEnum) {
-        this.componentTypeEnum = componentTypeEnum;
-    }
-
     public String getConfiguration() {
         return configuration;
     }
 
     public void setConfiguration(String configuration) {
         this.configuration = configuration;
-    }
-
-    public PrivateTypeEnum getPrivateTypeEnum() {
-        return privateTypeEnum;
-    }
-
-    public void setPrivateTypeEnum(PrivateTypeEnum privateTypeEnum) {
-        this.privateTypeEnum = privateTypeEnum;
     }
 
     public Integer getUserId() {
@@ -85,5 +69,21 @@ public class Component {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public ComponentTypeEnum getComponentType() {
+        return componentType;
+    }
+
+    public void setComponentType(ComponentTypeEnum componentType) {
+        this.componentType = componentType;
+    }
+
+    public PrivateTypeEnum getPrivateType() {
+        return privateType;
+    }
+
+    public void setPrivateType(PrivateTypeEnum privateType) {
+        this.privateType = privateType;
     }
 }

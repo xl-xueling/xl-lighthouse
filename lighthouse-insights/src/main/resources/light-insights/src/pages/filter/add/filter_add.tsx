@@ -83,7 +83,7 @@ export default function FilterAddPanel({onClose}) {
         requestCreate(verifyData).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['statCreate.form.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['componentCreate.form.create.submit.success']});
                 setFormElements([{"type":values.type,"options":obj}]);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -109,7 +109,7 @@ export default function FilterAddPanel({onClose}) {
         requestCreate(verifyData).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['statCreate.form.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['componentCreate.form.verify.submit.success']});
                 setFormElements([{"type":values.type,"options":obj}]);
             }else{
                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -140,7 +140,7 @@ export default function FilterAddPanel({onClose}) {
                 <Typography.Text
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                 >
-                    {t['componentAdd.form.label.title']}
+                    {t['componentCreate.form.label.title']}
                 </Typography.Text>
                 <FormItem field={'title'} rules={[
                     { required: true, message: t['componentCreate.form.title.errMsg'] , validateTrigger : ['onSubmit']},
@@ -162,9 +162,9 @@ export default function FilterAddPanel({onClose}) {
                 <Typography.Text
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                 >
-                    {t['componentAdd.form.label.type']}
+                    {t['componentCreate.form.label.type']}
                 </Typography.Text>
-                <FormItem field='type' rules={[{ required: true }]}>
+                <FormItem field='componentType' rules={[{ required: true }]}>
                     <Select
                         placeholder='please select' defaultValue={1}
                         options={[
@@ -181,11 +181,11 @@ export default function FilterAddPanel({onClose}) {
                         <Typography.Text
                             style={{ marginTop: 0 ,fontSize:14}}
                         >
-                            {t['componentAdd.form.label.configuration']}
+                            {t['componentCreate.form.label.configuration']}
                         </Typography.Text>
                     </Grid.Col>
                     <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                        <Button type={"secondary"} size={"mini"} onClick={verifySubmit}>{t['componentAdd.form.button.verify']}</Button>
+                        <Button type={"secondary"} size={"mini"} onClick={verifySubmit}>{t['componentCreate.form.button.verify']}</Button>
                     </Grid.Col>
                 </Grid.Row>
                 <FormItem field={'configuration'} rules={[{ required: true }]}>
@@ -208,6 +208,17 @@ export default function FilterAddPanel({onClose}) {
                             enableLiveAutocompletion:true,
                         }}
                     />
+                </FormItem>
+                <Typography.Text
+                    style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
+                >
+                    {t['componentCreate.form.label.privateType']}
+                </Typography.Text>
+                <FormItem field='privateType' rules={[{ required: true }]}>
+                    <Radio.Group defaultValue={0}>
+                        <Radio value={0}>{t['componentCreate.form.label.privateType.private']}</Radio>
+                        <Radio value={1}>{t['componentCreate.form.label.privateType.public']}</Radio>
+                    </Radio.Group>
                 </FormItem>
             </Form>
 

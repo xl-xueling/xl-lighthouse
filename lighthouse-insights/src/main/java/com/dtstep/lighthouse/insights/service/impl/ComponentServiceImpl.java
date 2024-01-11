@@ -110,7 +110,7 @@ public class ComponentServiceImpl implements ComponentService {
 
 
     @Override
-    public Integer create(Component component) {
+    public ResultCode create(Component component) {
         return null;
     }
 }

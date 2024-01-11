@@ -1,13 +1,22 @@
 package com.dtstep.lighthouse.insights.dto;
 
 import com.dtstep.lighthouse.insights.enums.ComponentTypeEnum;
+import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
+
+import javax.validation.constraints.NotNull;
 
 public class ComponentCreateParam {
 
+    @NotNull
     private String title;
 
+    @NotNull
     private ComponentTypeEnum componentType;
 
+    @NotNull
+    private PrivateTypeEnum privateType;
+
+    @NotNull
     private String configuration;
 
     public String getTitle() {
@@ -32,5 +41,13 @@ public class ComponentCreateParam {
 
     public void setConfiguration(String configuration) {
         this.configuration = configuration;
+    }
+
+    public PrivateTypeEnum getPrivateType() {
+        return privateType;
+    }
+
+    public void setPrivateType(PrivateTypeEnum privateType) {
+        this.privateType = privateType;
     }
 }
