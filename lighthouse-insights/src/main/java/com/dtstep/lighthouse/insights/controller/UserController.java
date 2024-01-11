@@ -52,9 +52,9 @@ public class UserController {
         if(result > 0){
             return ResultData.success(result);
         }else if(result == -1){
-            return ResultData.failed(ResultCode.registerUserNameExist);
+            return ResultData.result(ResultCode.registerUserNameExist);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 
@@ -72,7 +72,7 @@ public class UserController {
         SeedAuthenticationToken authentication = (SeedAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Integer currentUserId = authentication.getUserId();
         if(currentUserId.intValue() != userId.intValue()){
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
         User userInfo = new User();
         userInfo.setId(userId);
@@ -83,7 +83,7 @@ public class UserController {
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 
@@ -93,12 +93,12 @@ public class UserController {
         SeedAuthenticationToken authentication = (SeedAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Integer currentUserId = authentication.getUserId();
         if(currentUserId.intValue() != userId.intValue()){
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
         String originPassword = updateParam.getOriginPassword();
         User dbUser = userService.queryAllInfoById(userId);
         if(dbUser == null || !passwordEncoder.matches(originPassword,dbUser.getPassword())){
-            return ResultData.failed(ResultCode.userChangePasswordWrong);
+            return ResultData.result(ResultCode.userChangePasswordWrong);
         }
         User userInfo = new User();
         userInfo.setId(userId);
@@ -107,7 +107,7 @@ public class UserController {
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 
@@ -127,7 +127,7 @@ public class UserController {
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 
@@ -144,7 +144,7 @@ public class UserController {
         if(result > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 
@@ -160,13 +160,13 @@ public class UserController {
             if(resource != null){
                 ResourceTypeEnum resourceTypeEnum = resource.getResourceType();
                 if(resourceTypeEnum == ResourceTypeEnum.Department){
-                    return ResultData.failed(ResultCode.userDelErrorExistDepartPermission,((Department)resource.getData()).getName());
+                    return ResultData.result(ResultCode.userDelErrorExistDepartPermission,((Department)resource.getData()).getName());
                 }else if(resourceTypeEnum == ResourceTypeEnum.Project){
-                    return ResultData.failed(ResultCode.userDelErrorExistProjectPermission,((Project)resource.getData()).getTitle());
+                    return ResultData.result(ResultCode.userDelErrorExistProjectPermission,((Project)resource.getData()).getTitle());
                 }else if(resourceTypeEnum == ResourceTypeEnum.Group){
-                    return ResultData.failed(ResultCode.userDelErrorExistGroupPermission,((Group)resource.getData()).getToken());
+                    return ResultData.result(ResultCode.userDelErrorExistGroupPermission,((Group)resource.getData()).getToken());
                 }else if(resourceTypeEnum == ResourceTypeEnum.Stat){
-                    return ResultData.failed(ResultCode.userDelErrorExistStatPermission,((Stat)resource.getData()).getTitle());
+                    return ResultData.result(ResultCode.userDelErrorExistStatPermission,((Stat)resource.getData()).getTitle());
                 }
             }
         }
@@ -174,7 +174,7 @@ public class UserController {
         if(result > 0){
             return ResultData.success();
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 
@@ -193,7 +193,7 @@ public class UserController {
     public ResultData<List<User>> termList(@RequestBody TextParam text){
         String search = text.getText();
         if(!StringUtil.isLetterNumOrUnderLine(search)){
-            return ResultData.failed(ResultCode.paramValidateFailed);
+            return ResultData.result(ResultCode.paramValidateFailed);
         }
         List<User> users = userService.termQuery(search);
         return ResultData.success(users);

@@ -1,5 +1,10 @@
 package com.dtstep.lighthouse.insights.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
+
 public enum ComponentTypeEnum {
 
     DATEPICKER_DATE_SELECT(1),
@@ -16,6 +21,7 @@ public enum ComponentTypeEnum {
 
     ;
 
+    @JsonValue
     private int renderType;
 
     ComponentTypeEnum(int renderType){
@@ -28,5 +34,11 @@ public enum ComponentTypeEnum {
 
     public void setRenderType(int renderType) {
         this.renderType = renderType;
+    }
+
+    @JsonCreator
+    public static ComponentTypeEnum forValue(int renderType){
+        ComponentTypeEnum[] values = ComponentTypeEnum.values();
+        return Stream.of(values).filter(it -> it.getRenderType() == renderType).findAny().orElse(null);
     }
 }

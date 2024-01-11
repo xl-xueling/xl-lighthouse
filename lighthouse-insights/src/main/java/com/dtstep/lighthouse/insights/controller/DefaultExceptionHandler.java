@@ -23,7 +23,7 @@ public class DefaultExceptionHandler {
     public Object globalErrorHandler(HttpServletRequest request, MethodArgumentNotValidException e)
     {
         logger.info(e.getMessage());
-        return ResultData.failed(ResultCode.paramValidateFailed);
+        return ResultData.result(ResultCode.paramValidateFailed);
     }
 
     @ExceptionHandler(value = PermissionException.class)
@@ -31,7 +31,7 @@ public class DefaultExceptionHandler {
     public Object globalPermissionExceptionHandler(HttpServletRequest request, PermissionException e)
     {
         logger.info(e.getMessage());
-        return ResultData.failed(ResultCode.accessDenied);
+        return ResultData.result(ResultCode.accessDenied);
     }
 
     @ExceptionHandler(value = UnexpectedTypeException.class)
@@ -39,7 +39,7 @@ public class DefaultExceptionHandler {
     public Object globalErrorHandler(HttpServletRequest request, UnexpectedTypeException e)
     {
         logger.info(e.getMessage());
-        return ResultData.failed(ResultCode.paramValidateFailed);
+        return ResultData.result(ResultCode.paramValidateFailed);
     }
 
 

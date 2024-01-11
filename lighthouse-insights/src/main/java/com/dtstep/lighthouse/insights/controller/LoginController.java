@@ -7,7 +7,6 @@ import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.dto.LoginParam;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.ResultData;
-import com.dtstep.lighthouse.insights.dto.UserUpdateParam;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
 import com.dtstep.lighthouse.insights.service.UserService;
@@ -51,12 +50,12 @@ public class LoginController {
     public ResultData<Map<String,String>> login(@Validated @RequestBody LoginParam user) {
         User dbUser = userService.queryByUserName(user.getUsername());
         if(dbUser == null || !passwordEncoder.matches(user.getPassword(),dbUser.getPassword())){
-            return ResultData.failed(ResultCode.loginCheckFailed);
+            return ResultData.result(ResultCode.loginCheckFailed);
         }
         if(dbUser.getState() == UserStateEnum.USER_PEND){
-            return ResultData.failed(ResultCode.userPendApprove);
+            return ResultData.result(ResultCode.userPendApprove);
         }else if(dbUser.getState() != UserStateEnum.USR_NORMAL){
-            return ResultData.failed(ResultCode.userStateUnAvailable);
+            return ResultData.result(ResultCode.userStateUnAvailable);
         }
         String signKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
         long now = System.currentTimeMillis();
@@ -83,30 +82,30 @@ public class LoginController {
     public ResultData<Map<String,String>> refreshKey(HttpServletRequest request) {
         String refreshKey = request.getHeader(SystemConstant.AUTH_REFRESH_PARAM);
         if(StringUtil.isEmpty(refreshKey)){
-            return ResultData.failed(ResultCode.authRenewalFailed);
+            return ResultData.result(ResultCode.authRenewalFailed);
         }
         String signKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
         Jws<Claims> jws;
         try{
             jws = Jwts.parser().setSigningKey(signKey).parseClaimsJws(refreshKey);
             if(jws == null){
-                return ResultData.failed(ResultCode.authRenewalFailed);
+                return ResultData.result(ResultCode.authRenewalFailed);
             }
         }catch (Exception ex){
-            return ResultData.failed(ResultCode.authRenewalFailed);
+            return ResultData.result(ResultCode.authRenewalFailed);
         }
         Long expired = (Long)jws.getBody().get("expired");
         if(expired == null || expired <= System.currentTimeMillis()){
-            return ResultData.failed(ResultCode.authRenewalFailed);
+            return ResultData.result(ResultCode.authRenewalFailed);
         }
         String username = (String)jws.getBody().get("username");
         String password = (String)jws.getBody().get("password");
         User dbUser = userService.queryByUserName(username);
         if(dbUser == null || !password.equals(dbUser.getPassword())){
-            return ResultData.failed(ResultCode.paramValidateFailed);
+            return ResultData.result(ResultCode.paramValidateFailed);
         }
         if(dbUser.getState() != UserStateEnum.USR_NORMAL){
-            return ResultData.failed(ResultCode.userStateUnAvailable);
+            return ResultData.result(ResultCode.userStateUnAvailable);
         }
         User updateParam = new User();
         updateParam.setId(dbUser.getId());

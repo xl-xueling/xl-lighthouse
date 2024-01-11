@@ -17,3 +17,11 @@ export async function requestList(data) :Promise<ResultData<{list:Array<FilterCo
         data,
     })
 }
+
+export async function requestVerify(data) :Promise<ResultData> {
+    return request({
+        url:'/component/verify',
+        method:'POST',
+        data,
+    })
+}

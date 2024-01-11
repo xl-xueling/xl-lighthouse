@@ -63,7 +63,7 @@ public class ProjectController {
         if(id > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 
@@ -77,13 +77,13 @@ public class ProjectController {
         queryParam.setProjectId(id);
         int groupCount = groupService.count(queryParam);
         if(groupCount > 0){
-            return ResultData.failed(ResultCode.projectDelErrorGroupExist);
+            return ResultData.result(ResultCode.projectDelErrorGroupExist);
         }
         int result = projectService.delete(project);
         if(result > 0){
             return ResultData.success(id);
         }else{
-            return ResultData.failed(ResultCode.systemError);
+            return ResultData.result(ResultCode.systemError);
         }
     }
 }
