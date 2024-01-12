@@ -4,7 +4,7 @@ const { Text } = Typography;
 import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
-import {formatTimeStamp, getRandomString} from "@/utils/util";
+import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
 import { CiLock } from "react-icons/ci";
 import { LuLock } from "react-icons/lu";

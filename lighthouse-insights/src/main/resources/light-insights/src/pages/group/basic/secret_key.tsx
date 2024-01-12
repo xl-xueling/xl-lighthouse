@@ -34,7 +34,7 @@ import EditTable, {
     EditTableComponentEnum
 } from "@/pages/common/edittable/EditTable";
 import {FormInstance} from "@arco-design/web-react/lib";
-import {formatTimeStamp} from "@/utils/util";
+import {formatTimeStampBackUp} from "@/utils/util";
 import useLocale from "@/utils/useLocale";
 const { Row, Col } = Grid;
 const { Text } = Typography;

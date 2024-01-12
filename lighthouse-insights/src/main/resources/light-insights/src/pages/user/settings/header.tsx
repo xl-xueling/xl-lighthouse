@@ -8,7 +8,7 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/header.module.less';
 import DepartmentLabel from "@/pages/department/common/depart";
-import {formatTimeStamp} from "@/utils/util";
+import {formatTimeStampBackUp} from "@/utils/util";
 
 export default function Header({userInfo}) {
 
@@ -54,7 +54,7 @@ export default function Header({userInfo}) {
         },
         {
             label: t['userSetting.label.registrationTime'],
-            value: formatTimeStamp(userInfo?.createTime),
+            value: formatTimeStampBackUp(userInfo?.createTime),
         },
     ]}
     />

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Typography, Space, Popconfirm, Message, Link, Badge} from '@arco-design/web-react';
 import UserGroup from "@/pages/user/common/groups";
-import {formatTimeStamp} from "@/utils/util";
+import {formatTimeStampBackUp} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
 import {RoleTypeEnum} from "@/types/insights-common";
 import {Order} from "@/types/insights-web";
@@ -45,7 +45,7 @@ export function getOrderColumns(t: any) {
         {
             title: t['detailModal.columns.createTime'],
             dataIndex: 'createTime',
-            render: (value) => {return formatTimeStamp(value)},
+            render: (value) => {return formatTimeStampBackUp(value)},
         },
         {
             title: t['detailModal.columns.state'],
@@ -99,7 +99,7 @@ export function getUserApproveColumns(t: any) {
         {
             title: t['detailModal.user.approve.columns.createTime'],
             dataIndex: 'createTime',
-            render: (value) => {return formatTimeStamp(value)},
+            render: (value) => {return formatTimeStampBackUp(value)},
         },
         {
             title: t['detailModal.user.approve.columns.state'],
@@ -177,7 +177,7 @@ export function getOrderDetailColumns(t: any,orderInfo:Order) {
             dataIndex: 'approveTime',
             render: (value,record) => {
                 if(value){
-                    return <Text>{formatTimeStamp(value)}</Text>
+                    return <Text>{formatTimeStampBackUp(value)}</Text>
                 }
             },
         },

@@ -17,7 +17,7 @@ import {ResultData} from "@/types/insights-common";
 import {GlobalErrorCodes} from "@/utils/constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/user/list/locale";
-import {formatTimeStamp} from "@/utils/util";
+import {formatTimeStampBackUp} from "@/utils/util";
 
 
 export function RecordModal({resourceId,resourceType,recordType,onClose}){
@@ -52,12 +52,12 @@ export function RecordModal({resourceId,resourceType,recordType,onClose}){
         {
             title: 'StartTime',
             dataIndex: 'startTime',
-            render: (value) => {return formatTimeStamp(value)},
+            render: (value) => {return formatTimeStampBackUp(value)},
         },
         {
             title: 'EndTime',
             dataIndex: 'endTime',
-            render: (value) => {return formatTimeStamp(value)},
+            render: (value) => {return formatTimeStampBackUp(value)},
         },
         {
             title: 'Description',

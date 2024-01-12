@@ -13,7 +13,7 @@ import {VscGistSecret} from "react-icons/vsc";
 import {CiViewTable} from "react-icons/ci";
 import GroupCreateModal from "@/pages/group/create/group_create";
 import UserGroup from "@/pages/user/common/groups";
-import {formatTimeStamp, stringifyObj} from "@/utils/util";
+import {formatTimeStampBackUp, stringifyObj} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
 import {ImTree} from "react-icons/im";
 
@@ -102,7 +102,7 @@ export default function ProjectManage() {
         },
         {
             label: <IconClockCircle />,
-            value: formatTimeStamp(projectInfo?.createTime),
+            value: formatTimeStampBackUp(projectInfo?.createTime),
         },
     ];
 

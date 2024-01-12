@@ -334,4 +334,9 @@ public final class DateUtil {
         LocalDateTime currentDate = LocalDateTime.now();
         return currentDate.getYear();
     }
+
+    public static long translateToTimeStamp(LocalDateTime localDateTime){
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+        return zonedDateTime.toInstant().toEpochMilli();
+    }
 }

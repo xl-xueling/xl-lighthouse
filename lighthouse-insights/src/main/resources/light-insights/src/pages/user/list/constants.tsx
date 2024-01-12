@@ -6,7 +6,7 @@ import IconVerticalVideo from './icons/vertical.svg';
 import dayjs from 'dayjs';
 import styles from './style/index.module.less';
 import DepartmentLabel from "@/pages/department/common/depart";
-import {formatTimeStamp, getRandomString} from "@/utils/util";
+import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import {UserStateEnum} from "@/types/insights-common";
 
 const { Text } = Typography;
@@ -37,7 +37,7 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
     {
       title: t['userList.columns.createdTime'],
       dataIndex: 'createTime',
-      render: (value) => {return formatTimeStamp(value)},
+      render: (value) => {return formatTimeStampBackUp(value)},
     },
     {
       title: t['userList.columns.state'],
