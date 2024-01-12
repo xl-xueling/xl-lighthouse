@@ -2,13 +2,15 @@ package com.dtstep.lighthouse.insights.dto;
 
 import java.util.List;
 
-public class StatisticDataObject {
+public class StatDataObject {
+
+    private Integer statId;
 
     private String dimens;
 
     private String dimensValue;
 
-    private Integer statId;
+    private String displayDimensValue;
 
     private List<StatValue> valuesList;
 
@@ -42,5 +44,13 @@ public class StatisticDataObject {
 
     public void setValuesList(List<StatValue> valuesList) {
         this.valuesList = valuesList;
+    }
+
+    public String getDisplayDimensValue() {
+        return displayDimensValue;
+    }
+
+    public void setDisplayDimensValue(String displayDimensValue) {
+        this.displayDimensValue = displayDimensValue;
     }
 }

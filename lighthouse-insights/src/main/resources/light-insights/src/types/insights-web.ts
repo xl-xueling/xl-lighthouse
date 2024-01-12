@@ -170,3 +170,11 @@ export interface Record {
 }
 
 
+export interface StatData{
+
+}
+
+export interface StatValue {
+
+}
+

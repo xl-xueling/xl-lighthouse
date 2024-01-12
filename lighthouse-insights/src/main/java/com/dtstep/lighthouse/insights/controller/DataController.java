@@ -1,11 +1,8 @@
 package com.dtstep.lighthouse.insights.controller;
 
-import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dto.*;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -15,13 +12,13 @@ import java.util.List;
 public class DataController {
 
     @PostMapping("/test-data/stat")
-    public ResultData<List<StatisticDataObject>> testDataQuery(){
+    public ResultData<List<StatDataObject>> testDataQuery(){
 
         return null;
     }
 
     @PostMapping("/data/stat")
-    public ResultData<List<StatisticDataObject>> dataQuery(){
+    public ResultData<List<StatDataObject>> dataQuery(){
 
         return null;
     }
