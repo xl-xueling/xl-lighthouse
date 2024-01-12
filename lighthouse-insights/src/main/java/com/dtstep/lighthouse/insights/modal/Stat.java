@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.modal;
 
+import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 
 import java.io.Serializable;
@@ -28,6 +29,8 @@ public class Stat implements Serializable {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
+
+    private TemplateEntity templateEntity;
 
     private String desc;
 
@@ -127,5 +130,21 @@ public class Stat implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public RenderConfig getRenderConfig() {
+        return renderConfig;
+    }
+
+    public void setRenderConfig(RenderConfig renderConfig) {
+        this.renderConfig = renderConfig;
+    }
+
+    public TemplateEntity getTemplateEntity() {
+        return templateEntity;
+    }
+
+    public void setTemplateEntity(TemplateEntity templateEntity) {
+        this.templateEntity = templateEntity;
     }
 }

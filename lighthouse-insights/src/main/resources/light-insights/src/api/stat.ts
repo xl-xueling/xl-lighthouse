@@ -35,11 +35,11 @@ export async function requestChangeState(data):Promise<ResultData> {
     })
 }
 
-export async function requestQueryById(id:number) :Promise<ResultData<Stat>> {
+export async function requestQueryById(data) :Promise<ResultData<Stat>> {
     return request({
         url:'/stat/queryById',
         method:'POST',
-        id,
+        data,
     })
 }
 

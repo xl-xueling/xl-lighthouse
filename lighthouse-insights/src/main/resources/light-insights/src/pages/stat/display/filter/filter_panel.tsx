@@ -20,7 +20,7 @@ import {
 } from "@arco-design/web-react";
 const FormItem = Form.Item;
 import styles from "./style/index.module.less";
-import {Component, RenderTypeEnum} from "@/types/insights-common";
+import {Component, ComponentTypeEnum} from "@/types/insights-common";
 import {requestList} from "@/api/component";
 import {translateToTreeNodes} from "@/pages/department/common";
 import {getRandomString} from "@/utils/util";
@@ -39,7 +39,7 @@ export default function FilterPanel({onClose = null}) {
             title: 'Display',
             dataIndex: 'renderType',
             render: (value, record) => {
-                if(value == RenderTypeEnum.FILTER_INPUT){
+                if(value == ComponentTypeEnum.FILTER_INPUT){
                     return (
                         <Input size={"small"}/>
                     )
@@ -82,7 +82,7 @@ export default function FilterPanel({onClose = null}) {
             editable:true,
             componentType:EditTableComponentEnum.INPUT,
             render: (value, record) => {
-                if(value == RenderTypeEnum.FILTER_INPUT){
+                if(value == ComponentTypeEnum.FILTER_INPUT){
                     return (
                         <Input size={"small"}/>
                     )
@@ -141,14 +141,14 @@ export default function FilterPanel({onClose = null}) {
             id:1,
             isBuiltIn:true,
             title:"内置输入框",
-            renderType:RenderTypeEnum.FILTER_INPUT,
+            renderType:ComponentTypeEnum.FILTER_INPUT,
         },
         {
             key: getRandomString(),
             id:2,
             isBuiltIn:true,
             title:"内置选择框",
-            renderType:RenderTypeEnum.FILTER_SELECT,
+            renderType:ComponentTypeEnum.FILTER_SELECT,
         },
     ]
 

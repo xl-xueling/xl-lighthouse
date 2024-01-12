@@ -1,10 +1,10 @@
 import {List} from "@arco-design/web-react";
 import {
     ApproveStateEnum,
-    DatePickerConfigParam,
-    FilterConfigParam, OrderStateEnum,
+    RenderDateConfig,
+    RenderFilterConfig, OrderStateEnum,
     OrderTypeEnum, PermissionEnum, RecordTypeEnum,
-    RenderTypeEnum, ResourceTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum
+    ResourceTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum
 } from "@/types/insights-common";
 
 
@@ -108,7 +108,7 @@ export interface Stat {
     dimensArray?:Array<string>;
     desc?:string;
     state?:StatStateEnum;
-    renderConfig?:{datepicker:DatePickerConfigParam,filters:Array<FilterConfigParam>}
+    renderConfig?:{datepicker:RenderDateConfig,filters:Array<RenderFilterConfig>}
     permissions?:PermissionEnum[];
 }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class RenderFilterConfig {
 
-    private ComponentTypeEnum renderType;
+    private ComponentTypeEnum componentType;
 
     private String label;
 
@@ -17,12 +17,12 @@ public class RenderFilterConfig {
 
     private List<TreeNode> configData;
 
-    public ComponentTypeEnum getRenderType() {
-        return renderType;
+    public ComponentTypeEnum getComponentType() {
+        return componentType;
     }
 
-    public void setRenderType(ComponentTypeEnum renderType) {
-        this.renderType = renderType;
+    public void setComponentType(ComponentTypeEnum componentType) {
+        this.componentType = componentType;
     }
 
     public String getLabel() {
@@ -47,5 +47,13 @@ public class RenderFilterConfig {
 
     public void setComponentId(Integer componentId) {
         this.componentId = componentId;
+    }
+
+    public List<TreeNode> getConfigData() {
+        return configData;
+    }
+
+    public void setConfigData(List<TreeNode> configData) {
+        this.configData = configData;
     }
 }

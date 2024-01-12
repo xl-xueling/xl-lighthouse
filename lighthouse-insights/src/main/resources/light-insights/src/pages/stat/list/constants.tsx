@@ -14,7 +14,7 @@ import {IconEdit, IconStar, IconStarFill} from "@arco-design/web-react/icon";
 import {PiLinkSimple} from "react-icons/pi";
 import {getStatExpiredEnumDescription, StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
 import {getRandomString} from "@/utils/util";
-import {getStatStateDescription} from "@/pages/common/desc/base";
+import {getStatStateDescriptionWithBadge} from "@/pages/common/desc/base";
 import {Link} from "@arco-design/web-react/lib";
 const TabPane = Tabs.TabPane;
 const { Text } = Typography;
@@ -62,7 +62,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
             title: 'State',
             dataIndex: 'state',
             render: (value) => {
-                return getStatStateDescription(t,value)
+                return getStatStateDescriptionWithBadge(t,value)
             },
         },
         {
@@ -173,7 +173,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             title: 'State',
             dataIndex: 'state',
             render: (value) => {
-                return getStatStateDescription(t,value)
+                return getStatStateDescriptionWithBadge(t,value)
             },
         },
         {
