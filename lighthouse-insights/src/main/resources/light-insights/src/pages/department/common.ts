@@ -79,9 +79,10 @@ export const translateToFlatStruct = (list):Array<ArcoFlatNode> => {
 export const translateToTreeNodes = (list):Array<ArcoTreeNode> => {
     const nodeArr = new Array<ArcoTreeNode>();
     list?.forEach(item => {
+        console.log("item,key:" + item.label + ",value:" + item.value);
         const nodeItem:ArcoTreeNode = {"key":String(item.value),"title":item.label};
         if(item.children){
-            nodeItem.children = translate(item.children);
+            nodeItem.children = translateToTreeNodes(item.children);
         }
         nodeArr.push(nodeItem)
     })

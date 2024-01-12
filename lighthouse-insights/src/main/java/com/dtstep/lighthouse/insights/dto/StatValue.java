@@ -7,6 +7,8 @@ public class StatValue implements Serializable {
 
     private long batchTime;
 
+    private String displayBatchTime;
+
     private Object value = 0;
 
     private List<Object> statesValue;
@@ -43,5 +45,13 @@ public class StatValue implements Serializable {
 
     public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getDisplayBatchTime() {
+        return displayBatchTime;
+    }
+
+    public void setDisplayBatchTime(String displayBatchTime) {
+        this.displayBatchTime = displayBatchTime;
     }
 }

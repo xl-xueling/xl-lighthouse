@@ -64,7 +64,7 @@ public class LocalDateTimeSerdeConfig {
                 return localDate.atStartOfDay();
             }else{
                 long epoch = Long.parseLong(text);
-                return LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
+                return LocalDateTime.ofInstant(Instant.ofEpochMilli(epoch), ZoneId.systemDefault());
             }
         }
     }
@@ -79,7 +79,7 @@ public class LocalDateTimeSerdeConfig {
                 return LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             }else{
                 long epoch = Long.parseLong(text);
-                return LocalDate.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
+                return LocalDate.ofInstant(Instant.ofEpochMilli(epoch), ZoneId.systemDefault());
             }
         }
     }

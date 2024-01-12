@@ -1,60 +1,45 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {AntChartValue, ArcoTreeNode, Department, Stat, StatData} from "@/types/insights-web";
-import { Line } from '@ant-design/plots';
-import { Chart, Line as Line2, Point, Tooltip,getTheme } from "bizcharts";
-import { LineAdvance} from 'bizcharts';
-import {IconEdit, IconList, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
-import {requestQueryById} from "@/api/stat";
-import {Notification} from "@arco-design/web-react";
+import {Stat, StatData, EChartChartValue} from "@/types/insights-web";
+import {Notification, Space} from "@arco-design/web-react";
 import {requestData, requestTestData} from "@/api/data";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import {formatTimeStampBackUp} from "@/utils/util";
+import ReactECharts from 'echarts-for-react';
+import echarts from "echarts";
 import {
     convertDateToTimestamp,
-    formatTimeStamp, DateTimeFormat,
     getDailyEndTimestamp,
     getDailyStartTimestamp,
-    getSystemTimeZone, DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
+ DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
-
 
 export default function ChartPanel({searchForm={},statInfo}:{searchForm:any,statInfo:Stat}) {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
-    const [chartData,setChartData] = useState<Array<AntChartValue>>([]);
+    const [batchTimeList,setBatchTimeList] = useState<string[]>([]);
+    const [eChartData,setEChartData] = useState<Array<EChartChartValue>>([]);
 
-    const translateData = (data:Array<StatData>) => {
-        const valuesArray:Array<AntChartValue> = [];
+    const loadData = (data:Array<StatData>) => {
+        const eChartChartValues:Array<EChartChartValue> = [];
+        if(data && data.length > 0){
+            setBatchTimeList(data[0].valuesList?.map(z => z.displayBatchTime))
+        }
         data?.forEach(z => {
             const dimens = z.dimens;
             const dimensValue = z.dimensValue;
             const displayDimensValue = z.displayDimensValue;
             const statId = z.statId;
-            z.valuesList?.forEach(v => {
-                const chartValue:AntChartValue = {
-                    Date: v.displayBatchTime,
-                    Value: v.value,
-                    Dimens: displayDimensValue?displayDimensValue:' ',
-                }
-                valuesArray.push(chartValue);
-            })
-            console.log("valuesArray is:" + JSON.stringify(valuesArray));
+            const seriesObject:EChartChartValue = {
+                name:dimensValue,
+                type:'line',
+                data:z.valuesList?.map(z => z.value),
+            }
+            eChartChartValues.push(seriesObject);
+            setEChartData(eChartChartValues);
         })
-        return valuesArray;
     }
 
-    const config = {
-        data: chartData,
-        xField: 'Date',
-        yField: 'Value',
-        // seriesField: 'Dimens',
-        point: {
-            size: 5,
-        },
-        theme:'light',
-    };
 
     const fetchData = async () => {
         setLoading(true);
@@ -82,8 +67,7 @@ export default function ChartPanel({searchForm={},statInfo}:{searchForm:any,stat
         await requestTestData(combineParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                const chartData = translateData(data);
-                setChartData(chartData);
+                loadData(data);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -93,11 +77,37 @@ export default function ChartPanel({searchForm={},statInfo}:{searchForm:any,stat
         })
     }
 
+    const option = {
+        xAxis: {
+            type: 'category',
+            data: batchTimeList,
+        },
+        yAxis: {
+            type: 'value',
+        },
+        dataZoom: [
+            {
+                type: 'inside',
+                start: 0,
+                end: 100
+            }
+        ],
+        grid: {
+            left: '50px;',
+            right: '5px;',
+            bottom: '25px;',
+            top: '10px;'
+        },
+        series: eChartData,
+    };
+
     useEffect(() => {
         fetchData().then();
     },[JSON.stringify(searchForm)])
 
     return (<>
-        <Line style={{ height:'300px'}} {...config} />
+        <Space size={16} direction="vertical" style={{ width: '100%' }}>
+            <ReactECharts option={option} style={{ height: '400px' ,width:'100%',marginLeft:'0px'}} />
+        </Space>
     </>);
 }

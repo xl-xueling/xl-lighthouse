@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Department, ResponseTreeNode, Stat} from "@/types/insights-web";
-import {ComponentTypeEnum, RenderDateConfig} from "@/types/insights-common";
+import {ComponentTypeEnum, RenderDateConfig, RenderFilterConfig} from "@/types/insights-common";
 import {Button, DatePicker, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
 import useLocale from "@/utils/useLocale";
@@ -31,7 +31,7 @@ export default function SearchForm({statInfo,onSearch}:{statInfo:Stat,onSearch:(
 
     const Option = Select.Option;
 
-    const [filtersConfig,setFiltersConfig] = useState<Array<ResponseTreeNode>>([]);
+    const [filtersConfig,setFiltersConfig] = useState<Array<RenderFilterConfig>>([]);
 
     const getDatePicker = (datePickerConfig:RenderDateConfig) => {
         switch (datePickerConfig?.componentType){
@@ -76,22 +76,24 @@ export default function SearchForm({statInfo,onSearch}:{statInfo:Stat,onSearch:(
                         {getDatePicker(datePickerConfig)}
                     </Form.Item>
                 </Col>
-                {/*{*/}
-                {/*    filtersConfig.map((option,index) => {*/}
-                {/*        return (*/}
-                {/*            <Col span={12} key={index}>*/}
-                {/*                /!*<Form.Item label={option.label} field={option.dimens}>*!/*/}
-                {/*                /!*    <TreeSelect*!/*/}
-                {/*                /!*        placeholder={"Please Select"}*!/*/}
-                {/*                /!*        multiple={true}*!/*/}
-                {/*                /!*        allowClear={true}*!/*/}
-                {/*                /!*        treeData={translateToTreeNodes(option.configData)}*!/*/}
-                {/*                /!*    />*!/*/}
-                {/*                /!*</Form.Item>*!/*/}
-                {/*            </Col>*/}
-                {/*        );*/}
-                {/*    })*/}
-                {/*}*/}
+                {
+                    filtersConfig.map((option,index) => {
+                        return (
+                            <Col span={12} key={index}>
+                                <Form.Item label={option.label} field={option.dimens}>
+                                    <TreeSelect
+                                        placeholder={"Please Select"}
+                                        multiple={true}
+                                        treeCheckable={true}
+                                        treeCheckStrictly={false}
+                                        allowClear={true}
+                                        treeData={translateToTreeNodes(option.configData)}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        );
+                    })
+                }
             </Row>
         </Form>
             <div className={styles['right-button']}>

@@ -33,8 +33,6 @@ public class DataServiceImpl implements DataService {
         StatDto statDto = statService.queryById(statId);
         long startTimeStamp = DateUtil.translateToTimeStamp(startTime);
         long endTimeStamp = DateUtil.translateToTimeStamp(endTime);
-        System.out.println("startTimeStamp:" + startTimeStamp);
-        System.out.println("endTimeStamp:" + endTimeStamp);
         List<Long> batchList = null;
         try{
             batchList = BatchAdapter.queryBatchTimeList(statDto.getTimeparam(), startTimeStamp, endTimeStamp);
@@ -47,6 +45,7 @@ public class DataServiceImpl implements DataService {
             StatValue statValue = new StatValue();
             statValue.setValue(ThreadLocalRandom.current().nextInt(10000));
             statValue.setBatchTime(batchTime);
+            statValue.setDisplayBatchTime(DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
             statValues.add(statValue);
         }
         StatDataObject statDataObject = new StatDataObject();
