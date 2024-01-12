@@ -12,7 +12,7 @@ import {translateToTreeNodes} from "@/pages/department/common";
 const { useForm } = Form;
 
 
-export default function SearchForm({statInfo}:{statInfo:Stat}) {
+export default function SearchForm({statInfo,onSearch}:{statInfo:Stat,onSearch:(values: Record<string, any>) => void}) {
 
     const t = useLocale(locale);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
@@ -28,7 +28,6 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
         });
         setFiltersConfig(statInfo?.renderConfig?.filters);
     },[statInfo])
-
 
     const Option = Select.Option;
 
@@ -52,6 +51,7 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
     const handleSubmit = () => {
         const values = form.getFieldsValue();
         console.log("values is:" + JSON.stringify(values));
+        onSearch(values);
     };
 
     const handleReset = () => {

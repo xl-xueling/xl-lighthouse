@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import SearchForm from "./search_form";
-import {Breadcrumb, Button, Card, Divider, Grid, Notification, Space, Typography} from "@arco-design/web-react";
+import {Breadcrumb, Button, Card, Divider, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
 import styles from "./style/index.module.less";
 import {useSelector} from "react-redux";
 import {Department, Stat} from "@/types/insights-web";
@@ -22,6 +22,8 @@ export default function StatDisplay() {
     const t = useLocale(locale);
     const [statInfo,setStatInfo] = useState<Stat>(null);
     const [loading,setLoading] = useState<boolean>(true);
+    const [searchForm,setSearchForm] = useState(null);
+
     const { id } = useParams();
 
     const fetchData = async () => {
@@ -39,6 +41,11 @@ export default function StatDisplay() {
         })
     }
 
+    function handleSearch(params) {
+        console.log("params is:" + JSON.stringify(params));
+        setSearchForm(params);
+    }
+
     useEffect(() => {
         fetchData().then();
     },[])
@@ -51,6 +58,7 @@ export default function StatDisplay() {
             </Breadcrumb.Item>
             <Breadcrumb.Item style={{fontWeight:20}}>{t['statDisplay.breadcrumbItem']}</Breadcrumb.Item>
         </Breadcrumb>
+        <Spin loading={loading} size={20} style={{ display: 'block' }}>
         <Space size={16} direction="vertical" style={{ width: '100%' }}>
             <Card>
                 <Typography.Title
@@ -59,10 +67,10 @@ export default function StatDisplay() {
                 >
                     <IconTag style={{marginRight:'10px'}}/>
                     {statInfo?.title}
-                    <span style={{color:"red",fontSize:'15px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
+                    <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
                 </Typography.Title>
-                <SearchForm statInfo={statInfo} />
-                {/*<ChartPanel statInfo={null}/>*/}
+                {statInfo && <SearchForm statInfo={statInfo} onSearch={handleSearch}/>}
+                {statInfo && <ChartPanel statInfo={statInfo} searchForm={searchForm}/>}
             </Card>
             <Card>
                 <Typography.Title
@@ -73,6 +81,7 @@ export default function StatDisplay() {
                 {/*<BasicInfo statInfo={null}/>*/}
             </Card>
         </Space>
+        </Spin>
         </>
     );
 }

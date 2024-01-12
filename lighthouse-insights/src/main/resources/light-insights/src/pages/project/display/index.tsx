@@ -23,7 +23,6 @@ import {requestPrivilegeCheck} from "@/api/privilege";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {IconTag} from "@arco-design/web-react/icon";
-import StatDisplayMode1 from "@/pages/stat/display/display_mode1";
 import { LoadingOutlined } from '@ant-design/icons';
 
 
@@ -88,7 +87,6 @@ export default function ProjectDisplay() {
                     </Row>
                 </Space>
                 <Space className={styles.right} size={16} direction="vertical">
-                    <StatDisplayMode1 statId={selectedStatId}/>
                 </Space>
             </div>
             </Space>
