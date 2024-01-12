@@ -177,10 +177,10 @@ export interface StatData{
     valuesList?:StatValue[];
 }
 
-export interface AntChartValue {
-    Date?:string;
-    Value?:number;
-    Dimens?:string;
+export interface EChartChartValue {
+    name?:string;
+    type?:string;
+    data?:Array<number>;
 }
 
 export interface StatValue {

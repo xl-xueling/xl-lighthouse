@@ -26,7 +26,6 @@ import com.dtstep.lighthouse.common.enums.stat.LimitTypeEnum;
 import com.dtstep.lighthouse.common.exception.TemplateParseException;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
-import com.dtstep.lighthouse.core.formula.ImitateCompile;
 import com.dtstep.lighthouse.insights.modal.Column;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -106,17 +105,17 @@ public final class IterativeParsePattern implements Parser {
         }
         List<Column> columnList = context.getColumnList();
         String dimensFormula = element.attr("dimens");
-//        if(!StringUtil.isEmpty(dimensFormula)){
-//            String[] dimensArray = dimensFormula.split(StatConst.DIMENS_SEPARATOR);
-//            for(String dimens:dimensArray){
-//                boolean checkFlag = ImitateCompile.imitateDimensFormula(context.getStatId(),dimens,columnList);
-//                if(!checkFlag){
-//                    throw new TemplateParseException(String.format("i18n<<ldp_i18n_template_parse_1019#%s>>",dimensFormula));
-//                }
-//            }
-//            templateEntity.setDimens(dimensFormula);
-//            templateEntity.setDimensArr(dimensArray);
-//        }
+        if(!StringUtil.isEmpty(dimensFormula)){
+            String[] dimensArray = dimensFormula.split(StatConst.DIMENS_SEPARATOR);
+            for(String dimens:dimensArray){
+                boolean checkFlag = ImitateCompile.imitateDimensFormula(context.getStatId(),dimens,columnList);
+                if(!checkFlag){
+                    throw new TemplateParseException(String.format("i18n<<ldp_i18n_template_parse_1019#%s>>",dimensFormula));
+                }
+            }
+            templateEntity.setDimens(dimensFormula);
+            templateEntity.setDimensArr(dimensArray);
+        }
 
         String limit = element.attr("limit");
         if(!StringUtil.isEmpty(limit)){

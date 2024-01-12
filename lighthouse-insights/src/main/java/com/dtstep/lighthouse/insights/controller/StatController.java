@@ -27,7 +27,6 @@ public class StatController {
     @RequestMapping("/stat/list")
     public ResultData<ListData<StatDto>> list(@Validated @RequestBody ListSearchObject<StatQueryParam> searchObject) {
         ListData<StatDto> listData = statService.queryList(searchObject.getQueryParams(),searchObject.getPagination().getPageNum(),searchObject.getPagination().getPageSize());
-        System.out.println("listData:" + JsonUtil.toJSONString(listData));
         return ResultData.success(listData);
     }
 
