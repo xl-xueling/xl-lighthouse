@@ -1,8 +1,8 @@
 import {request} from "@/utils/request";
 import {ResultData} from "@/types/insights-common";
-import {Group, Project, Stat, User} from "@/types/insights-web";
+import {Group, Project, Stat, StatData, User} from "@/types/insights-web";
 
-export async function requestTestData(data) :Promise<ResultData<{list:Array<Stat>,total:number}>> {
+export async function requestTestData(data) :Promise<ResultData<Array<StatData>>> {
     return request({
         url:'/test-data/stat',
         method:'POST',
@@ -10,7 +10,7 @@ export async function requestTestData(data) :Promise<ResultData<{list:Array<Stat
     })
 }
 
-export async function requestData(data) :Promise<ResultData<{list:Array<Stat>,total:number}>> {
+export async function requestData(data) :Promise<ResultData<Array<StatData>>> {
     return request({
         url:'/data/stat',
         method:'POST',

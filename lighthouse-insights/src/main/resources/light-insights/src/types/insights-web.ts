@@ -169,12 +169,25 @@ export interface Record {
     recordTime?:number;
 }
 
-
 export interface StatData{
+    statId?:number;
+    dimens?:string;
+    dimensValue?:string;
+    displayDimensValue?:string;
+    valuesList?:StatValue[];
+}
 
+export interface AntChartValue {
+    Date?:string;
+    Value?:number;
+    Dimens?:string;
 }
 
 export interface StatValue {
-
+    batchTime?:number;
+    displayBatchTime?:string;
+    value?:number;
+    statesValue?:number[];
+    updateTime?:number;
 }
 

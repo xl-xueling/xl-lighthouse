@@ -35,7 +35,7 @@ import EditTable, {
     EditTableComponentEnum
 } from "@/pages/common/edittable/EditTable";
 import {FormInstance} from "@arco-design/web-react/lib";
-import {formatTimeStamp} from "@/utils/util";
+import {formatTimeStampBackUp} from "@/utils/util";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
@@ -57,7 +57,7 @@ export default function GroupBasicPanel({groupInfo}) {
             }
             setColumnsData(columnArr);
             formInstance.setFieldValue("token", groupInfo.token);
-            formInstance.setFieldValue("createTime", formatTimeStamp(groupInfo.createTime));
+            formInstance.setFieldValue("createTime", formatTimeStampBackUp(groupInfo.createTime));
             formInstance.setFieldValue("desc", groupInfo.desc);
             setLoading(false);
         }

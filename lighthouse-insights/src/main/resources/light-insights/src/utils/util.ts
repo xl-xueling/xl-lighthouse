@@ -65,7 +65,7 @@ export function getRandomString(len = 32) {
     return text;
 }
 
-export function formatTimeStamp(timestamp) {
+export function formatTimeStampBackUp(timestamp) {
     if(!timestamp){
         return null;
     }

@@ -251,6 +251,8 @@ export default function FilterUpdatePanel({componentInfo,onClose,onReload}) {
                                     <TreeSelect
                                         placeholder={"Please Select"}
                                         multiple={true}
+                                        treeCheckable={true}
+                                        // treeCheckStrictly={false}
                                         allowClear={true}
                                         treeData={translateResponse(options)}
                                     />

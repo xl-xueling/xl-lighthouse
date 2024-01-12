@@ -4,7 +4,7 @@ const { Text } = Typography;
 import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
-import {formatTimeStamp} from "@/utils/util";
+import {formatTimeStampBackUp} from "@/utils/util";
 import {OrderStateEnum, PermissionEnum} from "@/types/insights-common";
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
@@ -53,7 +53,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
         {
             title: t['approveList.columns.createTime'],
             dataIndex: 'createTime',
-            render: (value) => {return formatTimeStamp(value)},
+            render: (value) => {return formatTimeStampBackUp(value)},
         },
         {
             title: t['approveList.columns.state'],
