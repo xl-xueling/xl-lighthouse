@@ -2,15 +2,18 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.core.wrapper.DimensDBWrapper;
 import com.dtstep.lighthouse.insights.controller.annotation.RecordAnnotation;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
-import com.dtstep.lighthouse.insights.dto.ChangeStatStateParam;
 import com.dtstep.lighthouse.insights.dto.PermissionInfo;
 import com.dtstep.lighthouse.insights.dto.StatDto;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
+import com.dtstep.lighthouse.insights.dto.TreeNode;
+import com.dtstep.lighthouse.insights.enums.ComponentTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
@@ -19,14 +22,11 @@ import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.template.TemplateContext;
 import com.dtstep.lighthouse.insights.template.TemplateParser;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class StatServiceImpl implements StatService {
@@ -54,6 +54,9 @@ public class StatServiceImpl implements StatService {
 
     @Autowired
     private PermissionService permissionService;
+
+    @Autowired
+    private ComponentService componentService;
 
     @Override
     public int create(Stat stat) {
@@ -139,13 +142,78 @@ public class StatServiceImpl implements StatService {
         return listData;
     }
 
+
     @Override
-    public Stat queryById(Integer id) {
-        return statDao.queryById(id);
+    public StatDto queryById(Integer id) {
+        Stat stat = statDao.queryById(id);
+        String template = stat.getTemplate();
+        String timeParam = stat.getTimeparam();
+        Group group = groupDao.queryById(stat.getGroupId());
+        List<Column> columnList = group.getColumns();
+        try{
+            TemplateEntity templateEntity = TemplateParser.parse(new TemplateContext(template,timeParam, columnList));
+            stat.setTemplateEntity(templateEntity);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return translate(stat);
     }
 
     @Override
     public List<Stat> queryByProjectId(Integer projectId) {
         return statDao.queryByProjectId(projectId);
+    }
+
+    @Override
+    public RenderConfig getStatRenderConfig(Stat stat) {
+        RenderConfig renderConfig = stat.getRenderConfig();
+        List<String> defaultDimensList = new ArrayList<>();
+        HashMap<String,RenderFilterConfig> filtersConfigMap = new HashMap<>();
+        if(renderConfig == null || CollectionUtils.isEmpty(renderConfig.getFilters())){
+            TemplateEntity templateEntity = stat.getTemplateEntity();
+            String[] dimensArray = templateEntity.getDimensArr();
+            if(dimensArray != null){
+                defaultDimensList = Arrays.asList(dimensArray);
+            }
+        }else{
+            List<RenderFilterConfig> filterConfigs = renderConfig.getFilters();
+            for(RenderFilterConfig filterConfig : filterConfigs){
+                Integer componentId = filterConfig.getComponentId();
+                ComponentTypeEnum componentTypeEnum = filterConfig.getComponentType();
+                if(componentId != 0){
+                    Component component = componentService.queryById(componentId);
+                    RenderFilterConfig renderFilterConfig = new RenderFilterConfig();
+                    renderFilterConfig.setComponentType(ComponentTypeEnum.FILTER_SELECT);
+                    renderFilterConfig.setComponentId(componentId);
+                    renderFilterConfig.setLabel(filterConfig.getLabel());
+                    renderFilterConfig.setConfigData(component.getConfiguration());
+                    filtersConfigMap.put(filterConfig.getDimens(),renderFilterConfig);
+                }else{
+                    defaultDimensList.add(filterConfig.getDimens());
+                }
+            }
+        }
+        for(String dimens : defaultDimensList){
+            List<TreeNode> dimensValueList = new ArrayList<>();
+            for(int i=0;i<3;i++){
+                dimensValueList.add(new TreeNode("dimens_" + i,"dimens_" + i));
+            }
+            RenderFilterConfig renderFilterConfig = new RenderFilterConfig();
+            renderFilterConfig.setComponentType(ComponentTypeEnum.FILTER_SELECT);
+            renderFilterConfig.setComponentId(0);
+            renderFilterConfig.setLabel(dimens);
+            renderFilterConfig.setConfigData(dimensValueList);
+            filtersConfigMap.put(dimens,renderFilterConfig);
+        }
+        List<RenderFilterConfig> configList = new ArrayList<>();
+        for(String key : filtersConfigMap.keySet()){
+            configList.add(filtersConfigMap.get(key));
+        }
+        if(renderConfig == null){
+            renderConfig = new RenderConfig();
+        }
+        renderConfig.setFilters(configList);
+        System.out.println("renderConfig is:" + JsonUtil.toJSONString(renderConfig));
+        return renderConfig;
     }
 }

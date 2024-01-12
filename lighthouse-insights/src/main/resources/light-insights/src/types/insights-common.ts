@@ -1,4 +1,4 @@
-import {ArcoTreeNode} from "@/types/insights-web";
+import {ArcoTreeNode, ResponseTreeNode} from "@/types/insights-web";
 import {Badge} from "@arco-design/web-react";
 import React from "react";
 
@@ -8,14 +8,6 @@ export interface ResultData<S = any> {
     data?:S ;
 }
 
-export enum RenderTypeEnum {
-    DATEPICKER_DATE_RANGE_SELECT=1,
-    DATEPICKER_DATE_SELECT = 2,
-    DATEPICKER_DATE_TIME_RANGE_SELECT=3,
-    FILTER_INPUT=4,
-    FILTER_SELECT=5,
-    FILTER_REMOTE_SEARCH_SELECT=6,
-}
 
 export enum OrderTypeEnum {
     PROJECT_ACCESS=1,
@@ -99,17 +91,17 @@ export enum RoleTypeEnum {
     OPT_MANAGE_PERMISSION=10,
 }
 
-export interface FilterConfigParam {
-    renderType:number,
-    label:string,
-    dimens:string,
+export interface RenderFilterConfig {
+    componentType?:ComponentTypeEnum,
+    label?:string,
+    dimens?:string,
     componentId?:number,
-    configData?:Array<ArcoTreeNode>,
+    configData?:Array<ResponseTreeNode>,
 }
 
-export interface DatePickerConfigParam {
-    renderType:number,
-    label:string,
+export interface RenderDateConfig {
+    componentType?:ComponentTypeEnum,
+    label?:string,
 }
 
 export interface Component {

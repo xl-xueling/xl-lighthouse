@@ -13,6 +13,11 @@ public class TreeNode implements Serializable {
 
     public TreeNode(){}
 
+    public TreeNode(String label,String value){
+        this.label = label;
+        this.value = value;
+    }
+
     public String getValue() {
         return value;
     }

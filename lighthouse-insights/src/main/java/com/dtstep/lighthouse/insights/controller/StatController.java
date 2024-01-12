@@ -6,6 +6,7 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.modal.RenderConfig;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
 import org.apache.commons.lang3.Validate;
@@ -80,5 +81,16 @@ public class StatController {
         }else{
             return ResultData.result(ResultCode.systemError);
         }
+    }
+
+    @RequestMapping("/stat/queryById")
+    public ResultData<StatExtendDto> queryById(@Validated @RequestBody IDParam idParam){
+        Integer id = idParam.getId();
+        StatDto stat = statService.queryById(id);
+        RenderConfig renderConfig = statService.getStatRenderConfig(stat);
+        StatExtendDto statExtendDto = new StatExtendDto(stat);
+        statExtendDto.setRenderConfig(renderConfig);
+        Validate.notNull(stat);
+        return ResultData.success(statExtendDto);
     }
 }

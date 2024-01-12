@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
-import {Department, Stat} from "@/types/insights-web";
-import {DatePickerConfigParam, FilterConfigParam, RenderTypeEnum} from "@/types/insights-common";
-import {Button, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
+import {Department, ResponseTreeNode, Stat} from "@/types/insights-web";
+import {ComponentTypeEnum, RenderDateConfig} from "@/types/insights-common";
+import {Button, DatePicker, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/list/locale";
 import styles from "./style/index.module.less";
 import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
-import {DatePicker} from "@arco-design/web-react";
 import {translateToTreeNodes} from "@/pages/department/common";
+
 const { useForm } = Form;
 
 
@@ -19,27 +18,29 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
     const { Row, Col } = Grid;
 
+    const [datePickerConfig,setDatePickerConfig] = useState<RenderDateConfig>(null);
+
     useEffect(() => {
-        if(!statInfo){
-            return;
-        }
-        setDatePickerConfig(statInfo.renderConfig.datepicker);
-        setFiltersConfig(statInfo.renderConfig.filters);
+        const dateConfig = statInfo?.renderConfig?.datepicker;
+        setDatePickerConfig(dateConfig ? dateConfig : {
+            componentType: ComponentTypeEnum.DATEPICKER_DATE_RANGE_SELECT,
+            label: 'Date'
+        });
+        setFiltersConfig(statInfo?.renderConfig?.filters);
     },[statInfo])
 
 
     const Option = Select.Option;
 
-    const [datePickerConfig,setDatePickerConfig] = useState<DatePickerConfigParam>(null);
-    const [filtersConfig,setFiltersConfig] = useState<Array<FilterConfigParam>>([]);
+    const [filtersConfig,setFiltersConfig] = useState<Array<ResponseTreeNode>>([]);
 
-    const getDatePicker = (datePickerConfig:DatePickerConfigParam) => {
-        switch (datePickerConfig?.renderType){
-            case RenderTypeEnum.DATEPICKER_DATE_SELECT:
+    const getDatePicker = (datePickerConfig:RenderDateConfig) => {
+        switch (datePickerConfig?.componentType){
+            case ComponentTypeEnum.DATEPICKER_DATE_SELECT:
                 return <DatePicker style={{width:'100%'}}/>
-            case RenderTypeEnum.DATEPICKER_DATE_RANGE_SELECT:
+            case ComponentTypeEnum.DATEPICKER_DATE_RANGE_SELECT:
                 return <DatePicker.RangePicker style={{width:'100%'}}/>
-            case RenderTypeEnum.DATEPICKER_DATE_TIME_RANGE_SELECT:
+            case ComponentTypeEnum.DATEPICKER_DATE_TIME_RANGE_SELECT:
                 return <DatePicker.RangePicker showTime={true} style={{width:'100%'}}/>
             default:
                 return null;
@@ -65,6 +66,7 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
             className={styles['search-form']}
             labelAlign="left"
             colon={": "}
+            // style={{minHeight:'90px'}}
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 19 }}
         >
@@ -74,31 +76,31 @@ export default function SearchForm({statInfo}:{statInfo:Stat}) {
                         {getDatePicker(datePickerConfig)}
                     </Form.Item>
                 </Col>
-                {
-                    filtersConfig.map((option,index) => {
-                        return (
-                            <Col span={12} key={index}>
-                                <Form.Item label={option.label} field={option.dimens}>
-                                    <TreeSelect
-                                        placeholder={"Please Select"}
-                                        multiple={true}
-                                        allowClear={true}
-                                        treeData={translateToTreeNodes(option.configData)}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        );
-                    })
-                }
+                {/*{*/}
+                {/*    filtersConfig.map((option,index) => {*/}
+                {/*        return (*/}
+                {/*            <Col span={12} key={index}>*/}
+                {/*                /!*<Form.Item label={option.label} field={option.dimens}>*!/*/}
+                {/*                /!*    <TreeSelect*!/*/}
+                {/*                /!*        placeholder={"Please Select"}*!/*/}
+                {/*                /!*        multiple={true}*!/*/}
+                {/*                /!*        allowClear={true}*!/*/}
+                {/*                /!*        treeData={translateToTreeNodes(option.configData)}*!/*/}
+                {/*                /!*    />*!/*/}
+                {/*                /!*</Form.Item>*!/*/}
+                {/*            </Col>*/}
+                {/*        );*/}
+                {/*    })*/}
+                {/*}*/}
             </Row>
         </Form>
             <div className={styles['right-button']}>
                 <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>
                     {'搜索'}
                 </Button>
-                <Button icon={<IconRefresh />}  onClick={handleReset}>
-                    {'重置'}
-                </Button>
+                {/*<Button type="secondary" icon={<IconSearch />} onClick={handleReset}>*/}
+                {/*    {'重置'}*/}
+                {/*</Button>*/}
             </div>
         </div>
     );
