@@ -1,6 +1,6 @@
 import React from "react";
 import {Badge} from "@arco-design/web-react";
-import {ComponentTypeEnum, StatStateEnum} from "@/types/insights-common";
+import {ComponentTypeEnum, StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
 
 export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
     if(value === StatStateEnum.PENDING){
@@ -38,6 +38,30 @@ export function getStatStateDescription (t: any, value:StatStateEnum) {
         return t['basic.columns.state.frozen'];
     }else if(value === StatStateEnum.INVALID){
         return t['basic.columns.state.invalid'];
+    }
+}
+
+export const getStatExpiredEnumDescription = (expired) => {
+    if(expired == StatExpiredEnum.Week_1){
+        return "1 Week";
+    }else if(expired == StatExpiredEnum.Week_2){
+        return "2 Week";
+    }else if(expired == StatExpiredEnum.MONTH_1){
+        return "1 Month";
+    }else if(expired == StatExpiredEnum.MONTH_2){
+        return "2 Month";
+    }else if(expired == StatExpiredEnum.MONTH_3){
+        return "3 Month";
+    }else if(expired == StatExpiredEnum.MONTH_6){
+        return "6 Month";
+    }else if(expired == StatExpiredEnum.MONTH_12){
+        return "1 Year";
+    }else if(expired == StatExpiredEnum.MONTH_24){
+        return "2 Year";
+    }else if(expired == StatExpiredEnum.MONTH_36){
+        return "3 Year";
+    }else{
+        return "--";
     }
 }
 

@@ -5,6 +5,8 @@ import {Button, Descriptions, Divider, Form, Grid, Select, Space, TreeSelect, Ty
 import {IconEdit, IconList, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
 import UserGroup from "@/pages/user/common/groups";
 import { TbFilterEdit } from "react-icons/tb";
+import {getStatExpiredEnumDescription} from "@/pages/common/desc/base";
+import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 
 
 export default function BasicInfo({statInfo}) {
@@ -16,19 +18,19 @@ export default function BasicInfo({statInfo}) {
         },
         {
             label: 'CreatedTime',
-            value: statInfo?.createdTime,
-        },
-        {
-            label: 'Group',
-            value: <span>{statInfo?.group.token}</span>,
+            value: formatTimeStamp(statInfo?.createTime,DateTimeFormat),
         },
         {
             label: 'Project',
             value: <span>{statInfo?.project.title}</span>,
         },
         {
+            label: 'Group',
+            value: <span>{statInfo?.group.token}</span>,
+        },
+        {
             label: 'Expired',
-            value: <span>{statInfo?.expired}</span>,
+            value: <span>{getStatExpiredEnumDescription(statInfo?.expired)}</span>,
         },
         {
             label: 'Admins',

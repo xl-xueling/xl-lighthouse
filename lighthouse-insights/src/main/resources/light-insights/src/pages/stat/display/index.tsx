@@ -78,7 +78,7 @@ export default function StatDisplay() {
                 >
                     {'Metric Information'}
                 </Typography.Title>
-                {/*<BasicInfo statInfo={null}/>*/}
+                <BasicInfo statInfo={statInfo}/>
             </Card>
         </Space>
         </Spin>
