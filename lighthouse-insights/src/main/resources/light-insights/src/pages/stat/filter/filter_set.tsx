@@ -76,7 +76,7 @@ export default function StatFilterConfigModal({onClose}) {
             dataIndex: 'operation',
             headerCellStyle: { width: '150px' },
             editable:true,
-            componentType:EditTableComponentEnum.INPUT,
+            componentType:EditTableComponentEnum.BUTTON,
             cellStyle:{textAlign:"center"},
             render: (value, record) => {
                 return (
