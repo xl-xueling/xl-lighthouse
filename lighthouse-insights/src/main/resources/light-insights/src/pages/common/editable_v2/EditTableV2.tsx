@@ -90,9 +90,9 @@ function EditableRow(props) {
                 style={{ display: 'table-row' }}
                 ref={refForm}
                 wrapper='tr'
+                autoComplete={'off'}
                 wrapperProps={rest}
-                className={`${className} editable-row`}
-            >
+                className={`${className} editable-row`}>
                 {props.children}
             </Form>
         </EditableContext.Provider>
