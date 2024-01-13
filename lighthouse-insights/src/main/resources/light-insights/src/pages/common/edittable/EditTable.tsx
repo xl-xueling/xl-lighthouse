@@ -1,17 +1,18 @@
-import React, { useState, useRef, useEffect, useContext, useCallback } from 'react';
-import {Button, Table, Input, Select, Form, FormInstance, Space, TableColumnProps, Card} from '@arco-design/web-react';
-import {IconMinusCircleFill} from "@arco-design/web-react/icon";
-const FormItem = Form.Item;
-const EditableContext = React.createContext<{ getForm?: () => FormInstance }>({});
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import {Form, FormInstance, Input, Table, TableColumnProps} from '@arco-design/web-react';
 import styles from './style/index.module.less';
 import {Column} from "@/types/insights-web";
 import {getRandomString} from "@/utils/util";
+
+const FormItem = Form.Item;
+const EditableContext = React.createContext<{ getForm?: () => FormInstance }>({});
 
 
 export enum EditTableComponentEnum {
     INPUT,
     SELECT,
-    BUTTON
+    BUTTON,
+    TreeSelect=3,
 }
 
 export interface EditTableColumn extends Column{
@@ -65,7 +66,11 @@ const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
     }));
 
     useEffect(() => {
-        setData(columnsData);
+        if(columnsData){
+            setData(columnsData.map(z => {
+                return {...z, key: getRandomString()};
+            }));
+        }
     },[columnsData])
 
 
