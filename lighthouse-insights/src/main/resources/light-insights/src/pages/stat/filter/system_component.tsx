@@ -1,7 +1,7 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import {getRandomString} from "@/utils/util";
 import {ComponentTypeEnum, RenderFilterConfig} from "@/types/insights-common";
-import {Input, Table, TableColumnProps, TreeSelect} from "@arco-design/web-react";
+import {Input, Space, Table, TableColumnProps, TreeSelect} from "@arco-design/web-react";
 import {translateToTreeNodes} from "@/pages/department/common";
 import {IconPlus} from "@arco-design/web-react/icon";
 
@@ -53,6 +53,8 @@ export default function SystemComponents({onSelect}) {
 
 
     return (
-        <Table rowKey={() => getRandomString()} size={"small"} columns={columns} data={systemComponents} pagination={false}/>
+        <Space size={16} direction="vertical" style={{ width: '100%',height:'270px' }}>
+            <Table rowKey={() => getRandomString()} size={"mini"} columns={columns} data={systemComponents} pagination={false}/>
+        </Space>
     );
 }

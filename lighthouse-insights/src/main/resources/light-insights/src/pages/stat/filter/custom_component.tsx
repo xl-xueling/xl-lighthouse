@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Component, ComponentTypeEnum, RenderFilterConfig} from "@/types/insights-common";
-import {Input, Notification, PaginationProps, Table, TableColumnProps, TreeSelect} from "@arco-design/web-react";
+import {Input, Notification, PaginationProps, Space, Table, TableColumnProps, TreeSelect} from "@arco-design/web-react";
 import {translateToTreeNodes} from "@/pages/department/common";
 import {IconPlus} from "@arco-design/web-react/icon";
 import {requestList} from "@/api/component";
@@ -16,11 +16,9 @@ export default function CustomComponents({onSelect}) {
 
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
-        sizeCanChange: true,
         showTotal: true,
         pageSize: 15,
         current: 1,
-        pageSizeChangeResetCurrent: true,
     });
 
     const columns: TableColumnProps[] = [
@@ -110,8 +108,10 @@ export default function CustomComponents({onSelect}) {
         console.log("--------")
     },[])
 
-    return (<div>
-        <Input.Search  placeholder={'Search'} allowClear />
-        <Table rowKey={'componentId'} size={"small"} columns={columns} data={listData} pagination={pagination}/>
-    </div>);
+    return (
+        <Space size={16} direction="vertical" style={{ width: '100%',height:'270px' }}>
+            <Input.Search  placeholder={'Search'} allowClear style={{width:'320px',marginLeft:'3px'}}/>
+            <Table rowKey={'componentId'} size={"mini"} columns={columns} data={listData} pagination={pagination}/>
+        </Space>
+    );
 }
