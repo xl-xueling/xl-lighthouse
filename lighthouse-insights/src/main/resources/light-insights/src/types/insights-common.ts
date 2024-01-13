@@ -92,6 +92,7 @@ export enum RoleTypeEnum {
 }
 
 export interface RenderFilterConfig {
+    key?:string,
     componentType?:ComponentTypeEnum,
     label?:string,
     dimens?:string,
