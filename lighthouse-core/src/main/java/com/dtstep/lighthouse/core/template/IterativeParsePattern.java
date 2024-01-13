@@ -115,7 +115,7 @@ public final class IterativeParsePattern implements Parser {
                 }
             }
             templateEntity.setDimens(dimensFormula);
-            templateEntity.setDimensArr(dimensArray);
+            templateEntity.setDimensArray(dimensArray);
         }
 
         String limit = element.attr("limit");

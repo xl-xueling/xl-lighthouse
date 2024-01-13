@@ -60,6 +60,12 @@ public enum ResultCode {
 
     componentVerifyNotEmpty("2004","componentVerifyNotEmpty"),
 
+    filterConfigDimensNotExist("2005","filterConfigDimensNotExist"),
+
+    filterConfigDimensDuplicate("2005","filterConfigDimensDuplicate"),
+
+    filterConfigDimensMissing("2005","filterConfigDimensMissing"),
+
     ;
 
     ResultCode(String code , String i18nLabel){
@@ -97,7 +103,7 @@ public enum ResultCode {
         this.params = params;
     }
 
-    public static ResultCode getExtendResultCode(ResultCode resultCode, String [] params){
+    public static ResultCode getExtendResultCode(ResultCode resultCode, String ... params){
         resultCode.setParams(params);
         return resultCode;
     }

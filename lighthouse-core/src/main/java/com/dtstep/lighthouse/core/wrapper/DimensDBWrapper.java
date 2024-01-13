@@ -110,7 +110,7 @@ public final class DimensDBWrapper {
             currentDimensList.addAll(Arrays.asList(filterParam.getFilterKey().split(StatConst.DIMENS_SEPARATOR)));
             i++;
         }
-        List<String> statDimensList = Arrays.asList(statExtEntity.getTemplateEntity().getDimensArr());
+        List<String> statDimensList = Arrays.asList(statExtEntity.getTemplateEntity().getDimensArray());
         Set<List<FilterParamElement>> set = Sets.cartesianProduct(sets);
         Iterator<List<FilterParamElement>> it = set.iterator();
         HashMap<String,String> dimensMapper = new HashMap<>();

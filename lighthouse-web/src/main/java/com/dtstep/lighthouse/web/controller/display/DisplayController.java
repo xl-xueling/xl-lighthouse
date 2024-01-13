@@ -31,7 +31,6 @@ import com.dtstep.lighthouse.common.entity.department.DepartmentEntity;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.project.ProjectEntity;
 import com.dtstep.lighthouse.common.entity.project.ProjectViewEntity;
-import com.dtstep.lighthouse.common.entity.sitemap.SiteMapEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.tree.ZTreeViewNode;
 import com.dtstep.lighthouse.common.entity.user.UserEntity;
@@ -219,11 +218,11 @@ public class DisplayController extends BaseController {
         Assert.notNull(statExtEntity);
         GroupExtEntity groupExtEntity = groupManager.queryById(statExtEntity.getGroupId());
         Assert.notNull(groupExtEntity);
-        String[] dimensArr = statExtEntity.getTemplateEntity().getDimensArr();
+        String[] dimensArr = statExtEntity.getTemplateEntity().getDimensArray();
         if(ArrayUtils.isEmpty(dimensArr)){
             return RequestCodeEnum.toJSON(RequestCodeEnum.NO_FILTER_PARAMS_SELECTED);
         }
-        List<String> columnNameList = Arrays.asList(statExtEntity.getTemplateEntity().getDimensArr());
+        List<String> columnNameList = Arrays.asList(statExtEntity.getTemplateEntity().getDimensArray());
         List<String> tempList = new ArrayList<>();
         String filterConfig = request.getParameter("data");
         ObjectMapper objectMapper = new ObjectMapper();

@@ -16,7 +16,7 @@ public class BaseServiceImpl implements BaseService {
     @Override
     public Integer getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (Integer) authentication.getPrincipal();
+        return authentication == null ? -1 : (Integer) authentication.getPrincipal();
     }
 
     @Override
