@@ -15,6 +15,8 @@ const { Row, Col } = Grid;
 import { RiGlobalLine } from "react-icons/ri";
 import { AiOutlineBarChart } from "react-icons/ai";
 import {getStatStateDescription, getStatStateDescriptionWithBadge} from "@/pages/common/desc/base";
+import StatDetailModal from "@/pages/stat/list/detail";
+import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
 
 export default function StatDisplay() {
 
@@ -23,8 +25,16 @@ export default function StatDisplay() {
     const [statInfo,setStatInfo] = useState<Stat>(null);
     const [loading,setLoading] = useState<boolean>(true);
     const [searchForm,setSearchForm] = useState(null);
+    const [showFilterConfigModal,setShowFilterConfigModal] = useState<boolean>(false);
 
     const { id } = useParams();
+
+    const tableCallback = async (type) => {
+        if(type == 'showFilterConfigModal'){
+            console.log("------show..list")
+            setShowFilterConfigModal(true);
+        }
+    }
 
     const fetchData = async () => {
         setLoading(true);
@@ -78,9 +88,11 @@ export default function StatDisplay() {
                 >
                     {'Metric Information'}
                 </Typography.Title>
-                <BasicInfo statInfo={statInfo}/>
+                <BasicInfo statInfo={statInfo} callback={tableCallback}/>
             </Card>
         </Space>
+
+            {showFilterConfigModal && <StatFilterConfigModal onClose={() => setShowFilterConfigModal(false)}/>}
         </Spin>
         </>
     );
