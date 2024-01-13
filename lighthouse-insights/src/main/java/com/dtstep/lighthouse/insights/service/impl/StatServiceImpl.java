@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.core.formula.TemplateUtil;
@@ -22,6 +23,7 @@ import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.template.TemplateContext;
 import com.dtstep.lighthouse.insights.template.TemplateParser;
+import com.dtstep.lighthouse.insights.util.TreeUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -234,6 +236,13 @@ public class StatServiceImpl implements StatService {
         List<String> configList = new ArrayList<>();
         for(RenderFilterConfig filterConfig : filterConfigs){
             String dimens = filterConfig.getDimens();
+            String label = filterConfig.getLabel();
+            if(StringUtil.isEmpty(dimens)){
+                return ResultCode.getExtendResultCode(ResultCode.filterConfigDimensCannotBeEmpty,"dimens");
+            }
+            if(StringUtil.isEmpty(label)){
+                return ResultCode.getExtendResultCode(ResultCode.filterConfigLabelCannotBeEmpty,"label");
+            }
             String [] dimensArrayUnit = TemplateUtil.split(dimens);
             for(String temp:dimensArrayUnit){
                 if(!list.contains(temp)){
@@ -245,7 +254,13 @@ public class StatServiceImpl implements StatService {
                 }
             }
             int componentId = filterConfig.getComponentId();
-            Component component = componentService.queryById(componentId);
+            if(componentId != 0 && filterConfig.getComponentType() == ComponentTypeEnum.FILTER_SELECT){
+                Component component = componentService.queryById(componentId);
+                int level = TreeUtil.getMaxLevel(component.getConfiguration());
+                if(dimensArrayUnit.length != level){
+                    return ResultCode.getExtendResultCode(ResultCode.filterConfigLevelNotMatch,dimens);
+                }
+            }
         }
         List<String> missList = list.stream().filter(item -> !configList.contains(item)).collect(toList());
         if(CollectionUtils.isNotEmpty(missList)){
