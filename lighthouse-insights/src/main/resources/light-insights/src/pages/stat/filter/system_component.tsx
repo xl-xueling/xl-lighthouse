@@ -34,7 +34,7 @@ export default function SystemComponents({onSelect}) {
             cellStyle:{textAlign:"center"},
             render: (value, record) => {
                 return (
-                    <IconPlus onClick={onSelect}/>
+                    <IconPlus onClick={() => onSelect(record)}/>
                 )
             }
         },
