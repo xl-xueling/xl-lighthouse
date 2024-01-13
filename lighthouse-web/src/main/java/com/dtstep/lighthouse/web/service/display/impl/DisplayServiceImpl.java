@@ -128,7 +128,7 @@ public class DisplayServiceImpl implements DisplayService {
 
     @Override
     public ArrayNode queryPageFilterConfig(StatExtEntity statExtEntity) throws Exception {
-        String[] dimensArr = statExtEntity.getTemplateEntity().getDimensArr();
+        String[] dimensArr = statExtEntity.getTemplateEntity().getDimensArray();
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayNode arrayNode = objectMapper.createArrayNode();
         String filterConfig = statExtEntity.getFilterConfig();

@@ -41,7 +41,7 @@ public final class TemplateEntity implements Serializable {
     @TemplateAttrAnnotation
     private String dimens;
 
-    private String[] dimensArr;
+    private String[] dimensArray;
 
     private boolean limitFlag = false;
 
@@ -151,11 +151,11 @@ public final class TemplateEntity implements Serializable {
         this.limitSize = limitSize;
     }
 
-    public String[] getDimensArr() {
-        return dimensArr;
+    public String[] getDimensArray() {
+        return dimensArray;
     }
 
-    public void setDimensArr(String[] dimensArr) {
-        this.dimensArr = dimensArr;
+    public void setDimensArray(String[] dimensArray) {
+        this.dimensArray = dimensArray;
     }
 }

@@ -66,7 +66,7 @@ public final class DimensStatProcess extends Process {
         }
         BitSetFilterSupplier roaringBitMap = BitSetFilterSupplier.getInstance();
         TemplateEntity templateEntity = statExtEntity.getTemplateEntity();
-        String[] dimensArr = templateEntity.getDimensArr();
+        String[] dimensArr = templateEntity.getDimensArray();
         int i=0;
         StringTokenizer stringTokenizer = new StringTokenizer(dimensValue, StatConst.DIMENS_SEPARATOR);
         while(stringTokenizer.hasMoreTokens()){

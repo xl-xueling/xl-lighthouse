@@ -92,4 +92,9 @@ public class StatController {
         Validate.notNull(stat);
         return ResultData.success(statExtendDto);
     }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")
+    public ResultData<Integer> filterConfig(@Validated @RequestBody StatFilterConfigParam filterConfigParam) {
+        return null;
+    }
 }

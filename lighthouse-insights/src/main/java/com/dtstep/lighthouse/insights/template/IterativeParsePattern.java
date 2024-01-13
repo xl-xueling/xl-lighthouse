@@ -17,7 +17,6 @@ package com.dtstep.lighthouse.insights.template;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.constant.StatConst;
-import com.dtstep.lighthouse.common.entity.meta.MetaColumn;
 import com.dtstep.lighthouse.common.entity.stat.StatVariableEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
@@ -26,6 +25,7 @@ import com.dtstep.lighthouse.common.enums.stat.LimitTypeEnum;
 import com.dtstep.lighthouse.common.exception.TemplateParseException;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
+import com.dtstep.lighthouse.core.formula.TemplateUtil;
 import com.dtstep.lighthouse.insights.modal.Column;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -106,7 +106,7 @@ public final class IterativeParsePattern implements Parser {
         List<Column> columnList = context.getColumnList();
         String dimensFormula = element.attr("dimens");
         if(!StringUtil.isEmpty(dimensFormula)){
-            String[] dimensArray = dimensFormula.split(StatConst.DIMENS_SEPARATOR);
+            String[] dimensArray = TemplateUtil.split(dimensFormula);
             for(String dimens:dimensArray){
                 boolean checkFlag = ImitateCompile.imitateDimensFormula(context.getStatId(),dimens,columnList);
                 if(!checkFlag){
@@ -114,7 +114,7 @@ public final class IterativeParsePattern implements Parser {
                 }
             }
             templateEntity.setDimens(dimensFormula);
-            templateEntity.setDimensArr(dimensArray);
+            templateEntity.setDimensArray(dimensArray);
         }
 
         String limit = element.attr("limit");

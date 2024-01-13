@@ -248,7 +248,7 @@ public class StatServiceImpl implements StatService {
 
     @Override
     public StatExtEntity queryMatchStat(UserEntity userEntity, StatExtEntity statExtEntity, Set<String> filterDimensSet) throws Exception {
-        String[] dimensArr = statExtEntity.getTemplateEntity().getDimensArr();
+        String[] dimensArr = statExtEntity.getTemplateEntity().getDimensArray();
         if(dimensArr != null){
             Set<String> curDimensSet = new HashSet<>(Arrays.asList(dimensArr));
             if(SetUtils.isEqualSet(curDimensSet,filterDimensSet)){
@@ -271,7 +271,7 @@ public class StatServiceImpl implements StatService {
             if(!timeParamA.equals(timeParamB)){
                 continue;
             }
-            String[] compareDimensArr = compareEntity.getTemplateEntity().getDimensArr();
+            String[] compareDimensArr = compareEntity.getTemplateEntity().getDimensArray();
             if(compareDimensArr == null){
                 continue;
             }

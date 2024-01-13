@@ -109,7 +109,6 @@ export default function StatFilterConfigModal({statInfo,onClose}) {
             }
             return {...z,key:getRandomString(),title:title};
         })
-        console.log("initData is:" + JSON.stringify(initData));
         setInitFilterConfig(initData);
     },[statInfo])
 
@@ -126,12 +125,34 @@ export default function StatFilterConfigModal({statInfo,onClose}) {
         return editTableRef.current.getData();
     }
 
+    const onSubmit = () => {
+        const dimensArray = statInfo?.templateEntity?.dimensArray;
+        const configData = getConfigData();
+        const params = configData?.map(z => {
+            const dimens = z.dimens;
+            const label = z.labelCol;
+            const componentId = z.componentId;
+            const componentType = z.componentType;
+        })
+
+        configData?.forEach(z => {
+            const dimens = z.dimens;
+            const result = dimens.split(';');
+
+
+        })
+        // console.log("--data is:" + JSON.stringify(config));
+        console.log("--")
+
+    }
+
     return (
         <Modal
             className={styles['edit-cell']}
             title= '修改筛选项'
             style={{ width:'1100px',top:'20px',maxWidth:'80%',height:'800px' }}
             visible={true}
+            onOk={() => onSubmit()}
             onCancel={() => onClose()}>
             <Space size={10} direction="vertical" style={{width:'100%'}}>
                 <Tabs type={"card-gutter"} defaultActiveTab='1' style={{height:'330px'}}>

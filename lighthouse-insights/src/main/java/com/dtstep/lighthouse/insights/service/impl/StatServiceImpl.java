@@ -4,7 +4,8 @@ import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.core.wrapper.DimensDBWrapper;
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.core.formula.TemplateUtil;
 import com.dtstep.lighthouse.insights.controller.annotation.RecordAnnotation;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
@@ -22,11 +23,15 @@ import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.template.TemplateContext;
 import com.dtstep.lighthouse.insights.template.TemplateParser;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class StatServiceImpl implements StatService {
@@ -171,7 +176,7 @@ public class StatServiceImpl implements StatService {
         HashMap<String,RenderFilterConfig> filtersConfigMap = new HashMap<>();
         if(renderConfig == null || CollectionUtils.isEmpty(renderConfig.getFilters())){
             TemplateEntity templateEntity = stat.getTemplateEntity();
-            String[] dimensArray = templateEntity.getDimensArr();
+            String[] dimensArray = templateEntity.getDimensArray();
             if(dimensArray != null){
                 defaultDimensList = Arrays.asList(dimensArray);
             }
@@ -218,5 +223,34 @@ public class StatServiceImpl implements StatService {
         renderConfig.setFilters(configList);
         System.out.println("renderConfig is:" + JsonUtil.toJSONString(renderConfig));
         return renderConfig;
+    }
+
+    @Override
+    public ResultCode filterConfig(Stat stat, List<RenderFilterConfig> filterConfigs) {
+        String[] dimensArray = stat.getTemplateEntity().getDimensArray();
+        Validate.notNull(dimensArray);
+        Validate.isTrue(CollectionUtils.isNotEmpty(filterConfigs));
+        List<String> list = Arrays.asList(dimensArray);
+        List<String> configList = new ArrayList<>();
+        for(RenderFilterConfig filterConfig : filterConfigs){
+            String dimens = filterConfig.getDimens();
+            String [] dimensArrayUnit = TemplateUtil.split(dimens);
+            for(String temp:dimensArrayUnit){
+                if(!list.contains(temp)){
+                    return ResultCode.getExtendResultCode(ResultCode.filterConfigDimensNotExist,temp);
+                }else if(configList.contains(temp)){
+                    return ResultCode.getExtendResultCode(ResultCode.filterConfigDimensDuplicate,temp);
+                }else{
+                    configList.add(temp);
+                }
+            }
+            int componentId = filterConfig.getComponentId();
+            Component component = componentService.queryById(componentId);
+        }
+        List<String> missList = list.stream().filter(item -> !configList.contains(item)).collect(toList());
+        if(CollectionUtils.isNotEmpty(missList)){
+            return ResultCode.getExtendResultCode(ResultCode.filterConfigDimensMissing,JsonUtil.toJSONString(missList));
+        }
+        return ResultCode.success;
     }
 }
