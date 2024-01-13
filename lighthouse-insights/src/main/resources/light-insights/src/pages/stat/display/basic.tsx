@@ -9,7 +9,7 @@ import {getStatExpiredEnumDescription} from "@/pages/common/desc/base";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 
 
-export default function BasicInfo({statInfo}) {
+export default function BasicInfo({statInfo,callback}) {
 
     const descriptionData = [
         {
@@ -49,7 +49,7 @@ export default function BasicInfo({statInfo}) {
                         <Button shape={"circle"} icon={<IconList/>} size={"mini"}/>
                         <Button shape={"circle"} icon={<IconEdit/>} size={"mini"}/>
                         <Button shape={"circle"} icon={<IconPushpin/>} size={"mini"}/>
-                        <Button shape={"circle"} icon={<TbFilterEdit/>} size={"mini"}/>
+                        <Button shape={"circle"} icon={<TbFilterEdit/>} size={"mini"} onClick={() => callback('showFilterConfigModal')}/>
                     </Space>
                 </div>,
         },
