@@ -15,16 +15,17 @@ import {
     Radio,
     Space,
     Table,
-    TableColumnProps, TreeSelect,
+    TableColumnProps, Tabs, TreeSelect,
     Typography
 } from "@arco-design/web-react";
 const FormItem = Form.Item;
 import styles from "./style/index.module.less";
-import {Component, ComponentTypeEnum} from "@/types/insights-common";
+import {Component, ComponentTypeEnum, RenderFilterConfig} from "@/types/insights-common";
 import {requestList} from "@/api/component";
 import {translateToTreeNodes} from "@/pages/department/common";
 import {getRandomString} from "@/utils/util";
 import EditTable, {EditTableColumnProps, EditTableComponentEnum} from "@/pages/common/edittable/EditTable";
+import SystemComponents from "@/pages/stat/filter/system_component";
 const RadioGroup = Radio.Group;
 
 export default function StatFilterConfigModal({onClose}) {
@@ -33,10 +34,12 @@ export default function StatFilterConfigModal({onClose}) {
         {
             title: 'Title',
             dataIndex: 'title',
+            headerCellStyle: { width: '300px' },
         },
         {
             title: 'Display',
             dataIndex: 'renderType',
+            headerCellStyle: { width: '450px' },
             render: (value, record) => {
                 if(value == ComponentTypeEnum.FILTER_INPUT){
                     return (
@@ -52,6 +55,7 @@ export default function StatFilterConfigModal({onClose}) {
         {
             title: 'Operation',
             dataIndex: 'operation',
+            headerCellStyle: { width: '300px' },
             cellStyle:{textAlign:"center"},
             render: (value, record) => {
                 return (
@@ -64,20 +68,23 @@ export default function StatFilterConfigModal({onClose}) {
 
     const targetColumns : EditTableColumnProps[] = [
         {
-            title: 'Title',
-            dataIndex: 'title',
+            title: 'Label',
+            dataIndex: 'label',
             editable:true,
+            headerCellStyle: { width: '250px' },
             componentType:EditTableComponentEnum.INPUT,
         },
         {
             title: 'Dimens',
             dataIndex: 'dimens',
             editable:true,
+            headerCellStyle: { width: '250px' },
             componentType:EditTableComponentEnum.INPUT,
         },
         {
             title: 'Display',
-            dataIndex: 'renderType',
+            dataIndex: 'componentType',
+            headerCellStyle: { width: '400px' },
             editable:true,
             componentType:EditTableComponentEnum.INPUT,
             render: (value, record) => {
@@ -95,6 +102,7 @@ export default function StatFilterConfigModal({onClose}) {
         {
             title: 'Operation',
             dataIndex: 'operation',
+            headerCellStyle: { width: '150px' },
             editable:true,
             componentType:EditTableComponentEnum.INPUT,
             cellStyle:{textAlign:"center"},
@@ -106,9 +114,9 @@ export default function StatFilterConfigModal({onClose}) {
         },
     ];
 
-    const selectComponent = (component:Component) => {
-        const copyComponent = {...component,"key":getRandomString()}
-        setTargetData([...targetData,copyComponent])
+    const selectComponent = (component:RenderFilterConfig) => {
+        component = {...component,label:'--',dimens:'--'}
+        setTargetData([...targetData,component])
     }
 
     // const removeComponent = (key) => {
@@ -117,7 +125,7 @@ export default function StatFilterConfigModal({onClose}) {
 
     const [sourceData,setSourceData] = useState<Array<Component>>([]);
 
-    const [targetData,setTargetData] = useState<Array<Component>>([]);
+    const [targetData,setTargetData] = useState<Array<RenderFilterConfig>>([]);
 
     const fetchComponentsInfo:Promise<{list:Array<Component>,total:number}> = new Promise<{list:Array<Component>,total:number}>((resolve) => {
         const proc = async () => {
@@ -181,24 +189,24 @@ export default function StatFilterConfigModal({onClose}) {
     return (
         <Modal
             title= '修改筛选项'
-            style={{ width:'900px',top:'20px' }}
+            style={{ width:'1000px',top:'20px',maxWidth:'70%' }}
             visible={true}
             onCancel={() => onClose()}>
             <Space size={10} direction="vertical" style={{width:'100%'}}>
-                <Form initialValues={{componentType: 0}}>
-                    <Form.Item field={"componentType"}>
-                        <RadioGroup onChange={changeComponentType}>
-                            <Radio value={0}>内置筛选组件</Radio>
-                            <Radio value={1}>自定义筛选组件</Radio>
-                        </RadioGroup>
-                    </Form.Item>
-                </Form>
-                <Input.Search  placeholder={'Search'} allowClear />
-                <Table size={"small"} columns={sourceColumns} data={sourceData} />
-                <Typography.Title style={{fontSize:'14px'}}>
-                    {'已选择：'}
+                <Tabs type={"card-gutter"} defaultActiveTab='1'>
+                    <Tabs.TabPane key='1' title='内置组件' style={{padding:'5px'}}>
+                        <SystemComponents onSelect={selectComponent}/>
+                    </Tabs.TabPane>
+                    <Tabs.TabPane key='2' title='自定义组件'>
+                        <Input.Search  placeholder={'Search'} allowClear />
+                        <Table size={"small"} columns={sourceColumns} data={sourceData} />
+                    </Tabs.TabPane>
+                </Tabs>
+                <Typography.Title style={{fontSize:'14px',marginTop:'20px'}}>
+                    {'当前配置：'}
                 </Typography.Title>
                 <Table size={"small"}
+                       rowKey={() => getRandomString()}
                        data={targetData}
                        components={{
                            body: {
@@ -206,18 +214,18 @@ export default function StatFilterConfigModal({onClose}) {
                                cell: EditableCell,
                            },
                        }}
-                       columns={targetColumns.map((column) => {
-                               return column.editable
-                                   ? {
-                                       ...column,
-                                       onCell: () => ({
-                                           onHandleSave: handleSave,
-                                       }),
-                                   }
-                                   : column
-                           }
-
-                       )}
+                       // columns={targetColumns.map((column) => {
+                       //         return column.editable
+                       //             ? {
+                       //                 ...column,
+                       //                 onCell: () => ({
+                       //                     onHandleSave: handleSave,
+                       //                 }),
+                       //             }
+                       //             : column
+                       //     }
+                       // )}
+                    columns={targetColumns}
                 />
             </Space>
         </Modal>
