@@ -7,10 +7,10 @@ import {IconPlus} from "@arco-design/web-react/icon";
 
 export default function SystemComponents({onSelect}) {
 
-    const sourceColumns: TableColumnProps[] = [
+    const columns: TableColumnProps[] = [
         {
             title: 'Title',
-            dataIndex: 'label',
+            dataIndex: 'title',
         },
         {
             title: 'Display',
@@ -42,17 +42,17 @@ export default function SystemComponents({onSelect}) {
 
     const systemComponents:RenderFilterConfig[] = [
         {
-            label:"默认下拉选择框",
+            title:"默认下拉选择框",
             componentType:ComponentTypeEnum.FILTER_SELECT,
         },
         {
-            label:"默认输入框",
+            title:"默认输入框",
             componentType:ComponentTypeEnum.FILTER_INPUT,
         },
     ]
 
 
     return (
-        <Table rowKey={() => getRandomString()} size={"small"} columns={sourceColumns} data={systemComponents} pagination={false}/>
+        <Table rowKey={() => getRandomString()} size={"small"} columns={columns} data={systemComponents} pagination={false}/>
     );
 }

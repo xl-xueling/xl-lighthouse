@@ -13,6 +13,7 @@ export enum EditTableComponentEnum {
     SELECT,
     BUTTON,
     TreeSelect=3,
+    Label=4,
 }
 
 export interface EditTableColumn extends Column{
