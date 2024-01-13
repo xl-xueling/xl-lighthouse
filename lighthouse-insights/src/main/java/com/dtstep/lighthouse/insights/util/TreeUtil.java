@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.util;
 
 import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
+import com.dtstep.lighthouse.insights.dto.TreeNode;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
@@ -20,5 +21,26 @@ public class TreeUtil {
             }
         }
         return tempList;
+    }
+
+
+    public static int getMaxLevel(List<TreeNode> root) {
+        if (root == null || root.isEmpty()) {
+            return 0;
+        }
+        int maxLevel = 0;
+        List<TreeNode> levelNodes = new ArrayList<>(root);
+        while (!levelNodes.isEmpty()) {
+            int size = levelNodes.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = levelNodes.remove(0);
+                if (node.getChildren() != null) {
+                    levelNodes.addAll(node.getChildren());
+                }
+            }
+            maxLevel++;
+        }
+
+        return maxLevel;
     }
 }

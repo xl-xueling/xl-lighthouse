@@ -62,9 +62,15 @@ public enum ResultCode {
 
     filterConfigDimensNotExist("2005","filterConfigDimensNotExist"),
 
-    filterConfigDimensDuplicate("2005","filterConfigDimensDuplicate"),
+    filterConfigDimensDuplicate("2009","filterConfigDimensDuplicate"),
 
-    filterConfigDimensMissing("2005","filterConfigDimensMissing"),
+    filterConfigDimensMissing("2006","filterConfigDimensMissing"),
+
+    filterConfigLevelNotMatch("2007","filterConfigLevelNotMatch"),
+
+    filterConfigDimensCannotBeEmpty("2005","filterConfigDimensCannotBeEmpty"),
+
+    filterConfigLabelCannotBeEmpty("2006","filterConfigLabelCannotBeEmpty"),
 
     ;
 

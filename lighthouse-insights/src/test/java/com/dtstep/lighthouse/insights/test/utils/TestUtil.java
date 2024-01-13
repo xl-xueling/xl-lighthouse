@@ -1,11 +1,14 @@
 package com.dtstep.lighthouse.insights.test.utils;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.insights.dto.TreeNode;
 import com.dtstep.lighthouse.insights.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Column;
 import com.dtstep.lighthouse.insights.modal.Order;
+import com.dtstep.lighthouse.insights.util.TreeUtil;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestUtil {
@@ -35,5 +38,18 @@ public class TestUtil {
         List<Integer> list = List.of(3,5,8,10);
         Integer current = 11;
         System.out.println("index:" + list.indexOf(current));
+    }
+
+    @Test
+    public void testTreeUtil() throws Exception{
+        TreeNode treeNode = new TreeNode();
+        treeNode.setLabel("1");
+        List<TreeNode> children = new ArrayList<>();
+        TreeNode treeNode2 = new TreeNode();
+        treeNode2.setLabel("1");
+        children.add(treeNode2);
+        treeNode.setChildren(children);
+        int maxLevel = TreeUtil.getMaxLevel(List.of(treeNode));
+        System.out.println(maxLevel);
     }
 }
