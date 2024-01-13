@@ -116,11 +116,11 @@ export default function StatFilterConfigModal({onClose}) {
         <Modal
             className={styles['edit-cell']}
             title= '修改筛选项'
-            style={{ width:'1000px',top:'20px',maxWidth:'70%',minHeight:'600px' }}
+            style={{ width:'1000px',top:'20px',maxWidth:'70%',height:'800px' }}
             visible={true}
             onCancel={() => onClose()}>
             <Space size={10} direction="vertical" style={{width:'100%'}}>
-                <Tabs type={"card-gutter"} defaultActiveTab='1'>
+                <Tabs type={"card-gutter"} defaultActiveTab='1' style={{height:'330px'}}>
                     <Tabs.TabPane key='1' title='内置组件' style={{padding:'5px'}}>
                         <SystemComponents onSelect={selectComponent}/>
                     </Tabs.TabPane>
