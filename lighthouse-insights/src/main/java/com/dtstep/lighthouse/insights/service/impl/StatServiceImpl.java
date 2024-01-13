@@ -185,6 +185,8 @@ public class StatServiceImpl implements StatService {
                     RenderFilterConfig renderFilterConfig = new RenderFilterConfig();
                     renderFilterConfig.setComponentType(ComponentTypeEnum.FILTER_SELECT);
                     renderFilterConfig.setComponentId(componentId);
+                    renderFilterConfig.setDimens(filterConfig.getDimens());
+                    renderFilterConfig.setTitle(component.getTitle());
                     renderFilterConfig.setLabel(filterConfig.getLabel());
                     renderFilterConfig.setConfigData(component.getConfiguration());
                     filtersConfigMap.put(filterConfig.getDimens(),renderFilterConfig);
@@ -202,6 +204,7 @@ public class StatServiceImpl implements StatService {
             renderFilterConfig.setComponentType(ComponentTypeEnum.FILTER_SELECT);
             renderFilterConfig.setComponentId(0);
             renderFilterConfig.setLabel(dimens);
+            renderFilterConfig.setDimens(dimens);
             renderFilterConfig.setConfigData(dimensValueList);
             filtersConfigMap.put(dimens,renderFilterConfig);
         }

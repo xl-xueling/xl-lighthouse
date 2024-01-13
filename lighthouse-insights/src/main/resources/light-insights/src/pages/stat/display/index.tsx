@@ -31,7 +31,6 @@ export default function StatDisplay() {
 
     const tableCallback = async (type) => {
         if(type == 'showFilterConfigModal'){
-            console.log("------show..list")
             setShowFilterConfigModal(true);
         }
     }
@@ -91,8 +90,7 @@ export default function StatDisplay() {
                 <BasicInfo statInfo={statInfo} callback={tableCallback}/>
             </Card>
         </Space>
-
-            {showFilterConfigModal && <StatFilterConfigModal onClose={() => setShowFilterConfigModal(false)}/>}
+            {showFilterConfigModal && <StatFilterConfigModal statInfo={statInfo} onClose={() => setShowFilterConfigModal(false)}/>}
         </Spin>
         </>
     );

@@ -77,3 +77,12 @@ export function getComponentTypeDescription(t:any,value:ComponentTypeEnum) {
         return t['components.type.filterSelect'];
     }
 }
+
+
+export function getSystemComponentTypeDescription(t:any,value:ComponentTypeEnum) {
+    if(value == ComponentTypeEnum.FILTER_INPUT){
+        return t['components.type.system.filterInput'];
+    }else if(value == ComponentTypeEnum.FILTER_SELECT){
+        return t['components.type.system.filterSelect'];
+    }
+}
