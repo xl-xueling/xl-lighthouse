@@ -87,7 +87,7 @@ export default function StatFilterConfigModal({onClose}) {
     ];
 
     const selectComponent = (component:RenderFilterConfig) => {
-        component = {...component,label:'--',dimens:'--',key:getRandomString()}
+        component = {...component,label:'--',dimens:'--',key:'1'}
         editTableRef.current.addRow(component);
     }
 

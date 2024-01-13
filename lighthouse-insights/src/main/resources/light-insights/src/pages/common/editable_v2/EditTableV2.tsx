@@ -5,6 +5,7 @@ import {FormInstance} from "@arco-design/web-react/lib";
 import {getRandomString} from "@/utils/util";
 const EditableContext = React.createContext<{ getForm?: () => FormInstance }>({});
 const FormItem = Form.Item;
+import styles from './style/index.module.less';
 
 const EditTableV2 = React.forwardRef( (props:{columns,data},ref) => {
     const columns = props.columns;
@@ -47,35 +48,36 @@ const EditTableV2 = React.forwardRef( (props:{columns,data},ref) => {
     },[data])
 
     return (
-        <Table size={"mini"} className={'editable-cell'}
-               style={{minHeight:'200px'}}
-               data={targetData}
-               components={{
-                   body: {
-                       row: EditableRow,
-                       cell: EditableCell,
-                   },
-               }}
-               columns={targetColumns.map((column) => {
-                       return column.editable
-                           ? {
-                               ...column,
-                               onCell: () => ({
-                                   onHandleSave: handleSave,
-                               }),
-                           }
-                           : column
-                   }
-
-               )}
-        />
+        <div className={styles["edit_panel"]}>
+            <Table size={"mini"}
+                   className={"edit_table_panel_v2"}
+                   style={{minHeight:'200px'}}
+                   data={targetData}
+                   components={{
+                       body: {
+                           row: EditableRow,
+                           cell: EditableCell,
+                       },
+                   }}
+                   columns={targetColumns.map((column) => {
+                           return column.editable
+                               ? {
+                                   ...column,
+                                   onCell: () => ({
+                                       onHandleSave: handleSave,
+                                   }),
+                               }
+                               : column
+                       }
+                   )}
+            />
+        </div>
     );
 })
 
 function EditableRow(props) {
     const { children, record, className, ...rest } = props;
     const refForm = useRef(null);
-
     const getForm = () => refForm.current;
 
     return (
@@ -112,7 +114,6 @@ function EditableCell(props) {
                 ref.current &&
                 !ref.current.contains(e.target)
             ) {
-                console.log("----Handler click..")
                 cellValueChangeHandler(rowData[column.dataIndex]);
             }
         },
@@ -131,8 +132,8 @@ function EditableCell(props) {
         };
     }, [handleClick]);
 
-    const cellValueChangeHandler = (value) => {
-        console.log("-----cellValueChange,value is:" + value)
+    const cellValueChangeHandler = (event) => {
+        const value = event.target.value;
         if (column.componentType == EditTableComponentEnum.SELECT) {
             const values = {
                 [column.dataIndex]: value,
@@ -144,23 +145,28 @@ function EditableCell(props) {
             form.validate([column.dataIndex], (errors, values) => {
                 if (!errors || !errors[column.dataIndex]) {
                     setEditing(!editing);
+                    Object.entries(values).forEach(([key, value]) => {
+                        if (value === null || value === undefined || value == '') {
+                            values[key] = '--';
+                        }
+                    });
                     onHandleSave && onHandleSave({ ...rowData, ...values });
                 }
             });
         }
     };
 
+
     if (column.componentType == EditTableComponentEnum.INPUT && editing) {
-        console.log("show cell input...")
         return (
             <div ref={ref}>
                 <FormItem
                     style={{ marginBottom: 0 }}
                     labelCol={{ span: 0 }}
                     wrapperCol={{ span: 24 }}
-                    initialValue={rowData[column.dataIndex]}
+                    initialValue={rowData[column.dataIndex] == '--'?'':rowData[column.dataIndex]}
                     field={column.dataIndex}>
-                    <Input size={"mini"} ref={refInput} />
+                    <Input size={"mini"} ref={refInput} onBlur={cellValueChangeHandler}/>
                 </FormItem>
             </div>
         );
