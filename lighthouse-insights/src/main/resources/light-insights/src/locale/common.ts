@@ -14,6 +14,8 @@ const vi18n = {
         'components.type.datetimeRangeSelect':'DateTime Range Select',
         'components.type.filterInput':'Filter Input',
         'components.type.filterSelect':'Select Box',
+        'components.type.system.filterSelect':'Default Selection Box',
+        'components.type.system.filterInput':'Default Input Box',
     },
     'zh-CN': {
         'system.error':'系统异常!',
@@ -30,6 +32,8 @@ const vi18n = {
         'components.type.datetimeRangeSelect':'日期时间范围选择',
         'components.type.filterInput':'输入框',
         'components.type.filterSelect':'下拉选择组件',
+        'components.type.system.filterSelect':'默认下拉选择框',
+        'components.type.system.filterInput':'默认输入框',
     }
 }
 export default vi18n;

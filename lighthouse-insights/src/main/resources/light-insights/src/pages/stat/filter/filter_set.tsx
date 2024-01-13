@@ -28,11 +28,12 @@ const FormItem = Form.Item;
 import styles from "./style/index.module.less";
 import EditTableV2 from "@/pages/common/editable_v2/EditTableV2";
 import CustomComponents from "@/pages/stat/filter/custom_component";
+import {getSystemComponentTypeDescription} from "@/pages/common/desc/base";
 
-export default function StatFilterConfigModal({onClose}) {
+export default function StatFilterConfigModal({statInfo,onClose}) {
 
     const editTableRef = useRef(null);
-
+    const t = useLocale(locale);
     const [initFilterConfig,setInitFilterConfig] = useState<Array<RenderFilterConfig>>([]);
 
     const targetColumns : EditTableColumnProps[] = [
@@ -67,7 +68,6 @@ export default function StatFilterConfigModal({onClose}) {
                 const componentId = record.componentId;
                 const configData = record.configData ? record.configData:[];
                 const componentType = record.componentType;
-                console.log("---componentId:" + componentId + ",componentType:" + componentType + ",configData:" + JSON.stringify(configData));
                 if(componentType == ComponentTypeEnum.FILTER_INPUT){
                     return (
                         <Input size={"small"} autoComplete={'off'}/>
@@ -99,6 +99,20 @@ export default function StatFilterConfigModal({onClose}) {
         },
     ];
 
+    useEffect(() => {
+        const initData = statInfo?.renderConfig?.filters?.map(z => {
+            let title;
+            if(z.componentId == 0){
+                title = getSystemComponentTypeDescription(t,z.componentType);
+            }else{
+                title = z.title;
+            }
+            return {...z,key:getRandomString(),title:title};
+        })
+        console.log("initData is:" + JSON.stringify(initData));
+        setInitFilterConfig(initData);
+    },[statInfo])
+
     const selectComponent = (component:RenderFilterConfig) => {
         component = {...component,label:'--',dimens:'--',key:getRandomString()}
         editTableRef.current.addRow(component);
@@ -116,7 +130,7 @@ export default function StatFilterConfigModal({onClose}) {
         <Modal
             className={styles['edit-cell']}
             title= '修改筛选项'
-            style={{ width:'1000px',top:'20px',maxWidth:'70%',height:'800px' }}
+            style={{ width:'1100px',top:'20px',maxWidth:'80%',height:'800px' }}
             visible={true}
             onCancel={() => onClose()}>
             <Space size={10} direction="vertical" style={{width:'100%'}}>

@@ -9,6 +9,8 @@ public class RenderFilterConfig {
 
     private ComponentTypeEnum componentType;
 
+    private String title;
+
     private String label;
 
     private String dimens;
@@ -55,5 +57,13 @@ public class RenderFilterConfig {
 
     public void setConfigData(List<TreeNode> configData) {
         this.configData = configData;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

@@ -83,11 +83,9 @@ export default function CustomComponents({onSelect}) {
                 pageNum:current,
             }
         }).then((response) => {
-            console.log("result is:" + JSON.stringify(response))
             const {code, data ,message} = response;
             if(code == '0'){
                 const listData = dataFormat(data.list);
-                console.log("listData is:" + JSON.stringify(listData));
                 setListData(listData);
                 setPagination({
                     ...pagination,
@@ -105,7 +103,6 @@ export default function CustomComponents({onSelect}) {
 
     useEffect(() => {
         fetchData().then();
-        console.log("--------")
     },[])
 
     return (
