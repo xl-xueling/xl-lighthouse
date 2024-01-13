@@ -27,6 +27,7 @@ const EditableContext = React.createContext<{ getForm?: () => FormInstance }>({}
 const FormItem = Form.Item;
 import styles from "./style/index.module.less";
 import EditTableV2 from "@/pages/common/editable_v2/EditTableV2";
+import CustomComponents from "@/pages/stat/filter/custom_component";
 
 export default function StatFilterConfigModal({onClose}) {
 
@@ -50,25 +51,37 @@ export default function StatFilterConfigModal({onClose}) {
             componentType:EditTableComponentEnum.INPUT,
         },
         {
+            title: 'Title',
+            dataIndex: 'title',
+            editable:true,
+            headerCellStyle: { width: '250px' },
+            componentType:EditTableComponentEnum.Label,
+        },
+        {
             title: 'Display',
             dataIndex: 'componentType',
             headerCellStyle: { width: '400px' },
             editable:true,
             componentType:EditTableComponentEnum.TreeSelect,
             render: (value, record) => {
-                if(value == ComponentTypeEnum.FILTER_INPUT){
+                const componentId = record.componentId;
+                const configData = record.configData ? record.configData:[];
+                const componentType = record.componentType;
+                console.log("---componentId:" + componentId + ",componentType:" + componentType + ",configData:" + JSON.stringify(configData));
+                if(componentType == ComponentTypeEnum.FILTER_INPUT){
                     return (
-                        <Input size={"small"}/>
+                        <Input size={"small"} autoComplete={'off'}/>
                     )
-                }if(value == ComponentTypeEnum.FILTER_SELECT){
+                }if(componentType == ComponentTypeEnum.FILTER_SELECT){
                     return (
-                        <TreeSelect size={"mini"} treeData={translateToTreeNodes(record.config)} />
+                        <TreeSelect size={"mini"} treeData={translateToTreeNodes(configData)} />
                     )
                 }else{
                     return (
-                        <TreeSelect size={"mini"} treeData={translateToTreeNodes(record.config)} />
+                        <TreeSelect size={"mini"} treeData={translateToTreeNodes(configData)} />
                     )
                 }
+
             },
         },
         {
@@ -87,7 +100,7 @@ export default function StatFilterConfigModal({onClose}) {
     ];
 
     const selectComponent = (component:RenderFilterConfig) => {
-        component = {...component,label:'--',dimens:'--',key:'1'}
+        component = {...component,label:'--',dimens:'--',key:getRandomString()}
         editTableRef.current.addRow(component);
     }
 
@@ -98,24 +111,6 @@ export default function StatFilterConfigModal({onClose}) {
     const getConfigData = () => {
         return editTableRef.current.getData();
     }
-
-    const [sourceData,setSourceData] = useState<Array<Component>>([]);
-
-    const fetchComponentsInfo:Promise<{list:Array<Component>,total:number}> = new Promise<{list:Array<Component>,total:number}>((resolve) => {
-        const proc = async () => {
-            const result = await requestList({
-                params: {
-                    // page: current,
-                    // pageSize,
-                    // owner:owner?1:0,
-                    // ...formParams,
-                },
-            });
-            resolve(result.data);
-        }
-        proc().then();
-    })
-
 
     return (
         <Modal
@@ -130,8 +125,7 @@ export default function StatFilterConfigModal({onClose}) {
                         <SystemComponents onSelect={selectComponent}/>
                     </Tabs.TabPane>
                     <Tabs.TabPane key='2' title='自定义组件'>
-                        <Input.Search  placeholder={'Search'} allowClear />
-                        {/*<Table size={"small"} columns={sourceColumns} data={sourceData} />*/}
+                        <CustomComponents onSelect={selectComponent}/>
                     </Tabs.TabPane>
                 </Tabs>
                 <Typography.Title style={{fontSize:'14px',marginTop:'20px'}}>

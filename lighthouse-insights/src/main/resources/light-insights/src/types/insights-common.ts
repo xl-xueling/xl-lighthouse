@@ -94,6 +94,7 @@ export enum RoleTypeEnum {
 export interface RenderFilterConfig {
     key?:string,
     componentType?:ComponentTypeEnum,
+    title?:string,
     label?:string,
     dimens?:string,
     componentId?:number,
@@ -110,7 +111,7 @@ export interface Component {
     title?:string,
     componentType?:ComponentTypeEnum,
     privateType?:PrivateTypeEnum,
-    configuration?:string,
+    configuration?:Array<ResponseTreeNode>,
     userId?:number,
     createTime?:number,
     updateTime?:number,
