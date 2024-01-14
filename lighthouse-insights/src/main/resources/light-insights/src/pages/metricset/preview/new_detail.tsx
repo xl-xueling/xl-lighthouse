@@ -28,80 +28,22 @@ import styles from './style/shortcuts.module.less';
 import {requestStructure} from "@/api/project";
 import {ArcoTreeNode} from "@/types/insights-web";
 import { LuLayers } from "react-icons/lu";
+import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
+import UserGroup from "@/pages/user/common/groups";
 
-export default function MetricNewDetail() {
+export default function MetricNewDetail({metricSetInfo}) {
 
     const t = useLocale(locale);
 
-    const shortcuts = [
-        {
-            title: '添加指标',
-            key: 'Content Management',
-            icon: <IconFile />,
-        },
-        {
-            title: '数据预览',
-            key: 'Content Statistic',
-            icon: <IconStorage />,
-        },
-        {
-            title: '权限管理',
-            key: 'Advanced Management',
-            icon: <IconSettings />,
-        },
-        // {
-        //     title: '线上推广',
-        //     key: 'Online Promotion',
-        //     icon: <IconMobile />,
-        // },
-        // {
-        //     title: '内容投放',
-        //     key: 'Marketing',
-        //     icon: <IconFire />,
-        // },
-    ];
-
-
-    const recentShortcuts = [
-        {
-            title: '内容数据',
-            key: 'Content Statistic',
-            icon: <IconStorage />,
-        },
-        {
-            title: '内容管理',
-            key: 'Content Management',
-            icon: <IconFile />,
-        },
-        {
-            title: '高级管理',
-            key: 'Advanced Management',
-            icon: <IconSettings />,
-        },
-    ];
-
-
-    function onClickShortcut(key) {
-        Message.info({
-            content: (
-                <span>
-          You clicked <b>{key}</b>
-        </span>
-            ),
-        });
-    }
-
-
-
-    const dataPicture = [
+    const metricDetail = [
         {
             label: <IconClockCircle />,
-            value: '2023-12-08 11:00:08',
+            value: formatTimeStamp(metricSetInfo?.createTime,DateTimeFormat),
             span:1,
         },
         {
             label: <IconUserGroup/>,
-            value: 'zhangsan;lisi;wangwu;',
+            value: <UserGroup users={metricSetInfo.admins}/>,
             span:1,
         },
         {
@@ -111,23 +53,11 @@ export default function MetricNewDetail() {
                 <span>This is a very long text that needs to be wrapped to multiple lines ithat needs to be wrapped to multiple lines if necessary.f necessary.This is a very long text that needs to be wrapped to multiple lines ithat needs to be wrapped to multiple lines if necessary.f necessary.</span>
             </div>
         },
-
     ];
 
     return (
         <>
             <Space align="start">
-                {/*<div className={styles.icon}>*/}
-                {/*    <IconPushpin/>*/}
-                {/*</div>*/}
-                {/*<Typography.Title*/}
-                {/*    heading={6}*/}
-                {/*>*/}
-                {/*    指标集：{'首页用户行为数据集'}*/}
-                {/*    /!*<IconLock style={{ marginLeft:'10px',fontSize:13,marginBottom:1}}/>*!/*/}
-                {/*</Typography.Title>*/}
-
-
                 <div className={styles.icon}>
                     <LuLayers/>
                 </div>
@@ -143,7 +73,7 @@ export default function MetricNewDetail() {
                     <Descriptions
                         size={"mini"}
                         layout="horizontal"
-                        data={dataPicture}
+                        data={metricDetail}
                         column={2}
                     />
                 </div>

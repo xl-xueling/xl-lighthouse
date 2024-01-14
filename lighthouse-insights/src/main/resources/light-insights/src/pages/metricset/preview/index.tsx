@@ -1,24 +1,46 @@
-import React from 'react';
-import {Card, Typography, Grid, Space, Tabs, Divider} from '@arco-design/web-react';
+import React, {useState} from 'react';
+import {useParams} from "react-router-dom";
+import {Card, Typography, Grid, Space, Tabs, Divider, Notification} from '@arco-design/web-react';
 import MetricNewDetail from "@/pages/metricset/preview/new_detail";
 import {IconDashboard, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
 import BindedList from "@/pages/metricset/binded/list/binded";
 import GroupBasicPanel from "@/pages/group/basic";
 import ProjectPreview from "@/pages/project/preview";
-
-
+import useLocale from "@/utils/useLocale";
+import locale from "./locale";
+import {requestQueryById} from "@/api/metricset";
+import {MetricSet} from "@/types/insights-web";
 const { Title } = Typography;
 const { Row, Col } = Grid;
-
-const defaultList = new Array(10).fill({});
 const TabPane = Tabs.TabPane;
 
 export default function MetricSetPreview() {
 
+    const { id } = useParams();
+    const t = useLocale(locale);
+    const [loading,setLoading] = useState<boolean>(false);
+    const [metricSetInfo,setMetricSetInfo] = useState<MetricSet>(null);
+
+    const fetchMetricSetInfo = async (): Promise<void> => {
+        setLoading(true);
+        await requestQueryById({id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                console.log("metricSetInfo is:" + JSON.stringify(metricSetInfo));
+                setMetricSetInfo(data);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
     return (
         <Space size={16} direction="vertical" style={{ width: '100%' }}>
             <Card>
-                <MetricNewDetail/>
+                <MetricNewDetail metricSetInfo={metricSetInfo}/>
             </Card>
 
             <Tabs
