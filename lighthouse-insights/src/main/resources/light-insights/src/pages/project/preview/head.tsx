@@ -29,14 +29,14 @@ export default function PreviewHeader({projectInfo}:{projectInfo:Project}) {
             {
                 label: <IconUserGroup/>,
                 value: <UserGroup users={projectInfo?.admins}/>,
-                span: 2,
+                span: 1,
             },
             {
                 label: <div style={{ marginTop: 0 }}><IconBook/></div>,
                 value: <div style={{ wordBreak: 'break-word' }}>
                     <span>{projectInfo?.desc}</span>
                 </div>,
-                span : 3,
+                span :2,
             },
         ];
         setData(detail);
@@ -61,7 +61,7 @@ export default function PreviewHeader({projectInfo}:{projectInfo:Project}) {
                     size={"mini"}
                     layout="horizontal"
                     data={data}
-                    column={3}
+                    column={2}
                 />
             </Row>
         </Space>

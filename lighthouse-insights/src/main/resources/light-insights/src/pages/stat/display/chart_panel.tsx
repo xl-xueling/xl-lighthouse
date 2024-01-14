@@ -107,7 +107,7 @@ export default function ChartPanel({searchForm={},statInfo}:{searchForm:any,stat
 
     return (<>
         <Space size={16} direction="vertical" style={{ width: '100%' }}>
-            <ReactECharts option={option} style={{ height: '400px' ,width:'100%',marginLeft:'0px'}} />
+            <ReactECharts option={option} style={{ height: '260px' ,width:'100%',marginLeft:'0px'}} />
         </Space>
     </>);
 }
