@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.RenderConfig;
+import com.dtstep.lighthouse.insights.modal.RenderFilterConfig;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
 import org.apache.commons.lang3.Validate;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @ControllerAdvice
@@ -94,7 +97,13 @@ public class StatController {
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/stat/filterConfig")
     public ResultData<Integer> filterConfig(@Validated @RequestBody StatFilterConfigParam filterConfigParam) {
-        return null;
+        Integer id = filterConfigParam.getId();
+        Stat stat = statService.queryById(id);
+        Validate.notNull(stat);
+        List<RenderFilterConfig> configList = filterConfigParam.getFilters();
+        ResultCode resultCode = statService.filterConfig(stat,configList);
+        return ResultData.result(resultCode);
     }
 }

@@ -260,6 +260,8 @@ public class StatServiceImpl implements StatService {
                 if(dimensArrayUnit.length != level){
                     return ResultCode.getExtendResultCode(ResultCode.filterConfigLevelNotMatch,dimens);
                 }
+            }else if(componentId == 0 && dimensArrayUnit.length != 1){
+                return ResultCode.getExtendResultCode(ResultCode.filterConfigLevelNotMatch,dimens);
             }
         }
         List<String> missList = list.stream().filter(item -> !configList.contains(item)).collect(toList());
