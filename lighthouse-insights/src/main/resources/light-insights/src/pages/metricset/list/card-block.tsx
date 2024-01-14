@@ -23,6 +23,7 @@ import styles from './style/index.module.less';
 import {MetricSet} from "@/types/insights-web";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import {CiLock} from "react-icons/ci";
+import { useHistory } from 'react-router-dom';
 
 interface CardBlockType {
   item: MetricSet;
@@ -44,6 +45,7 @@ function CardBlock(props: CardBlockType) {
   const {item ,callback } = props;
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(props.loading);
+  const history = useHistory();
 
   const t = useLocale(locale);
   const changeStatus = async () => {
@@ -83,16 +85,17 @@ function CardBlock(props: CardBlockType) {
 
   const className = cs(styles['card-block']);
 
+    const handleClick = () => {
+        window.open('/metricset/preview/' + item?.id, '_blank');
+    };
+
   return (
     <Card
       bordered={true}
       className={className}
       size="small"
       style={{cursor:'pointer'}}
-      onClick={() => {
-          console.log("---click card,itemId:" + item.id)
-          window.open( '/metricset/display/' + item?.id);
-      }}
+      onClick={handleClick}
       actions={[
           <span key={3} className='icon-hover' onClick={() => callback('update',item)}>
           <IconEdit />
