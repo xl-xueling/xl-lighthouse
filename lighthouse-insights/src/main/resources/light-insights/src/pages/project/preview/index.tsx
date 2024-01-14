@@ -37,6 +37,7 @@ import {IconHome, IconTag} from "@arco-design/web-react/icon";
 import { LoadingOutlined } from '@ant-design/icons';
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
+import StatPreviewPanel from "@/pages/stat/display/preview";
 
 
 export default function ProjectPreview() {
@@ -96,6 +97,7 @@ export default function ProjectPreview() {
                     </Row>
                 </Space>
                 <Space className={styles.right} size={16} direction="vertical">
+                    {selectedStatId && <StatPreviewPanel id={selectedStatId}/>}
                 </Space>
             </div>
             </Space>
