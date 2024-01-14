@@ -116,10 +116,10 @@ export interface Stat {
 export interface MetricSet {
     id?:number;
     title?:string;
-    createdTime?:number;
+    createTime?:number;
     description?:string;
     adminIds?:Array<number>;
-    structure?:Array<ArcoTreeNode>;
+    admins?:Array<User>;
 }
 
 export interface MetricSetPagination extends MetricSet{
