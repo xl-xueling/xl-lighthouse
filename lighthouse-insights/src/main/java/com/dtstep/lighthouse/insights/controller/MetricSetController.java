@@ -42,7 +42,6 @@ public class MetricSetController {
 
     @RequestMapping("/metricset/update")
     public ResultData<Integer> update(@Validated @RequestBody MetricSetUpdateParam updateParam) {
-        System.out.println("createParam is:" + JsonUtil.toJSONString(updateParam));
         Integer id = updateParam.getId();
         MetricSet metricSet = metricSetService.queryById(id);
         Validate.notNull(metricSet);
@@ -56,6 +55,14 @@ public class MetricSetController {
         }else{
             return ResultData.result(ResultCode.systemError);
         }
+    }
+
+    @RequestMapping("/metricset/queryById")
+    public ResultData<MetricSet> queryById(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        MetricSetDto metricSet = metricSetService.queryById(id);
+        System.out.println("metricSet:" + JsonUtil.toJSONString(metricSet));
+        return ResultData.success(metricSet);
     }
 
     @RequestMapping("/metricset/list")

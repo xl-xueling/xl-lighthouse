@@ -33,10 +33,11 @@ export async function requestPinList() :Promise<ResultData<Array<MetricSet>>> {
     })
 }
 
-export async function requestByIds(data:{ids:Array<number>}) :Promise<ResultData<Record<number, MetricSet>>> {
+export async function requestQueryById(data) :Promise<ResultData<MetricSet>> {
     return request({
-        url:'/metricset/requestByIds',
+        url:'/metricset/queryById',
         method:'POST',
+        data,
     })
 }
 
