@@ -47,8 +47,12 @@ export default function ProjectPreview() {
     const [projectInfo,setProjectInfo] = useState<Project>(null);
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
 
-    const menuCallback = async (id) => {
-        setSelectedStatId(Number(id));
+    const handlerCallback = async (type,record) => {
+        if(type == 'clickStatMenu'){
+            console.log("type is:" + type + ",record is:" + JSON.stringify(record))
+            setSelectedStatId(Number(record));
+        }
+
     }
 
     const fetchProjectInfo = async (): Promise<void> => {
@@ -88,7 +92,7 @@ export default function ProjectPreview() {
                 <div className={styles.wrapper}>
                 <Space size={16} direction="vertical" className={styles.left}>
                     <Row>
-                        <ProjectMenu projectInfo={projectInfo} callback={menuCallback} />
+                        <ProjectMenu projectInfo={projectInfo} callback={handlerCallback} />
                     </Row>
                 </Space>
                 <Space className={styles.right} size={16} direction="vertical">
