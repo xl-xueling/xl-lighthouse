@@ -11,6 +11,9 @@ import { RiAppsLine } from "react-icons/ri";
 import {Project} from "@/types/insights-web";
 import UserGroup from "@/pages/user/common/groups";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
+import styles from "@/pages/metricset/preview/style/shortcuts.module.less";
+import {LuLayers} from "react-icons/lu";
+import {CiLock, CiViewTable} from "react-icons/ci";
 const { Row, Col } = Grid;
 export default function PreviewHeader({projectInfo}:{projectInfo:Project}) {
     const t = useLocale(locale);
@@ -43,15 +46,14 @@ export default function PreviewHeader({projectInfo}:{projectInfo:Project}) {
         projectInfo?
         <Space size={0} direction="vertical" style={{ width: '100%' }}>
             <Row>
-                <Button icon={<RiAppsLine/>} shape={"circle"} size={"small"} style={{marginRight:'10px'}}/>
+                <Button icon={<RiAppsLine/>} shape={"circle"} size={"small"} style={{marginRight:'10px',marginBottom:'15px'}}/>
                 <Typography.Title
-                    style={{marginRight:'5px'}}
-                    heading={6}>
+                    heading={6}
+                    style={{marginTop:'1px'}}
+                >
                     统计工程：{projectInfo?.title}
+                    <CiLock style={{marginLeft:'5px',fontSize:14}}/>
                 </Typography.Title>
-                <IconLock
-                    style={{fontSize:13,marginTop:'6px'}}
-                />
             </Row>
             <Row>
                 <Descriptions

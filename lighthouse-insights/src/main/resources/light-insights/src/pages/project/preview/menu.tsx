@@ -16,8 +16,9 @@ const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
 import { CiViewTable } from "react-icons/ci";
 import {ArcoTreeNode, BackUpTreeNode, Project, TreeNode} from "@/types/insights-web";
+import {stringifyObj} from "@/utils/util";
 
-export default function ProjectMenu({projectInfo,callback}:{projectInfo:Project,callback:(id: string) => Promise<void>}) {
+export default function ProjectMenu({projectInfo,callback}:{projectInfo:Project,callback:(type: string,id:number) => Promise<void>}) {
 
     const renderMenuItems = (items) =>
         items?.map((item) => {
@@ -38,7 +39,14 @@ export default function ProjectMenu({projectInfo,callback}:{projectInfo:Project,
         <Menu
             className={'disable-select'}
             style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}
-            onClickMenuItem={callback}>
+            onClickMenuItem = {(key, event, keyPath) => {
+                const type = key.split("_")[0];
+                const id = key.split("_")[1];
+                if(type == '3'){
+                    callback("clickStatMenu",Number(id));
+                }
+            }}
+        >
         {
             renderMenuItems(projectInfo?.structure[0].children)
         }
