@@ -6,6 +6,8 @@ import com.dtstep.lighthouse.insights.modal.MetricSet;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MetricSetDao {
 
@@ -13,5 +15,5 @@ public interface MetricSetDao {
 
     MetricSet queryById(Integer id);
 
-    ListData<MetricSet> queryList(@Param("queryParam")MetricSetQueryParam queryParam);
+    List<MetricSet> queryList(@Param("queryParam")MetricSetQueryParam queryParam);
 }
