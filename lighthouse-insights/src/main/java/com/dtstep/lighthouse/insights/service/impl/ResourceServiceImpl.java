@@ -44,7 +44,7 @@ public class ResourceServiceImpl implements ResourceService {
     private PermissionService permissionService;
 
     @Autowired
-    private MetricService metricService;
+    private MetricSetService metricService;
 
 
     @Transactional

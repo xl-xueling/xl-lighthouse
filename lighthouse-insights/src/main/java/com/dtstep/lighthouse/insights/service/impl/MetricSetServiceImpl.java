@@ -1,17 +1,25 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.insights.dao.MetricSetDao;
 import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
 import com.dtstep.lighthouse.insights.service.MetricSetService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class MetricSetServiceImpl implements MetricSetService {
 
+    private MetricSetDao metricSetDao;
+
     @Override
     public Integer create(MetricSet metricSet) {
-        return null;
+        LocalDateTime localDateTime = LocalDateTime.now();
+        metricSet.setCreateTime(localDateTime);
+        metricSet.setUpdateTime(localDateTime);
+        return metricSetDao.insert(metricSet);
     }
 
     @Override
