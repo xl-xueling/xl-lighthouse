@@ -10,7 +10,7 @@ const i18n = {
     'createMetricSet.form.private.type.private':'Private',
     'createMetricSet.form.private.type.public':'Public',
     'createMetricSet.form.label.grant.privilege':'Grant Privilege',
-    'createMetricSet.form.submit.success':'Crate MetricSet successfully!'
+    'createMetricSet.form.submit.success':'Create MetricSet successfully!'
   },
   'zh-CN': {
     'createMetricSet.modal.title':'创建指标集',
@@ -23,7 +23,7 @@ const i18n = {
     'createMetricSet.form.private.type.private':'私有',
     'createMetricSet.form.private.type.public':'公有',
     'createMetricSet.form.label.grant.privilege':'初始权限',
-    'createMetricSet.form.submit.success':'指标集创建成功！'
+    'createMetricSet.form.submit.success':'创建指标集成功！'
   },
 };
 

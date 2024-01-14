@@ -9,9 +9,10 @@ import {IconCaretDown, IconCaretRight} from "@arco-design/web-react/icon";
 import {GrantPrivileges, MetricSet} from "@/types/insights-web";
 import {ResultData} from "@/types/insights-common";
 import {requestGrantPrivilege} from "@/api/privilege";
-import {requestCreate} from "@/api/metricset";
+import {requestCreate, requestUpdate} from "@/api/metricset";
 
-export default function MetricSetAddPanel({onClose,onSuccess}) {
+
+export default function MetricSetUpdateModal({metricInfo,onClose,onSuccess}) {
 
     const [form] = Form.useForm();
     const t = useLocale(locale);
@@ -23,7 +24,6 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
     const departmentTransferRef = useRef(null);
     const userTransferRef = useRef(null);
     const [loading,setLoading] = useState<boolean>(false);
-
 
     function changeVisibleType(value){
         if(value == '0'){
@@ -42,15 +42,16 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
         await formRef.current.validate().catch()
         setLoading(true);
         const values = formRef.current.getFieldsValue();
-        const createParams:MetricSet = {
+        const updateParams:MetricSet = {
+            id:metricInfo?.id,
             title:values.title,
             desc:values.desc,
             privateType:values.privateType,
         }
-        await requestCreate(createParams).then((response) => {
+        await requestUpdate(updateParams).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['createMetricSet.form.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['updateMetricSet.form.submit.success']});
                 setLoading(false);
                 onSuccess();
             }else{
@@ -64,7 +65,7 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
 
     return (
         <Modal
-            title={t['createMetricSet.modal.title']}
+            title={t['updateMetricSet.modal.title']}
             visible={true}
             style={{ width:'960px',verticalAlign:'top', marginTop: '130px' }}
             confirmLoading={loading}
@@ -76,48 +77,52 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
                 colon={true}
                 ref={formRef}
                 autoComplete={"off"}
-                initialValues={{privateType: 0}}
+                initialValues={{
+                    title:metricInfo?.title,
+                    privateType: metricInfo?.privateType,
+                    desc:metricInfo?.desc,
+                }}
                 style={{ minHeight:'300px' }}
                 labelCol={{span: 4, offset: 0}}
                 layout={"horizontal"}>
-                <Form.Item field="title" label={t['createMetricSet.form.label.title']}
+                <Form.Item field="title" label={t['updateMetricSet.form.label.title']}
                            rules={[
-                               { required: true, message: t['createMetricSet.form.title.errMsg'], validateTrigger : ['onSubmit'] },
+                               { required: true, message: t['updateMetricSet.form.title.errMsg'], validateTrigger : ['onSubmit'] },
                            ]}>
                     <Input
                         allowClear
                         placeholder={'Please Input Title'} />
                 </Form.Item>
 
-                <Form.Item field="desc" label={t['createMetricSet.form.label.description']} rules={[
-                    { required: true, message: t['createMetricSet.form.description.errMsg'], validateTrigger : ['onSubmit'] },
+                <Form.Item field="desc" label={t['updateMetricSet.form.label.description']} rules={[
+                    { required: true, message: t['updateMetricSet.form.description.errMsg'], validateTrigger : ['onSubmit'] },
                 ]}>
                     <Input.TextArea maxLength={200} rows={3}  showWordLimit={true}  placeholder={'Please Input Description'}/>
                 </Form.Item>
 
-                <Form.Item style={{ marginBottom: 0 }} label={t['createMetricSet.form.label.private.type']} rules={[{ required: true }]} >
+                <Form.Item style={{ marginBottom: 0 }} label={t['updateMetricSet.form.label.private.type']} rules={[{ required: true }]} >
                     <Grid.Row gutter={8}>
                         <Grid.Col span={20}>
                             <Form.Item field={"privateType"}>
                                 <Radio.Group defaultValue={0} onChange={changeVisibleType}>
-                                    <Radio value={0}>{t['createMetricSet.form.private.type.private']}</Radio>
-                                    <Radio value={1}>{t['createMetricSet.form.private.type.public']}</Radio>
+                                    <Radio value={0}>{t['updateMetricSet.form.private.type.private']}</Radio>
+                                    <Radio value={1}>{t['updateMetricSet.form.private.type.public']}</Radio>
                                 </Radio.Group>
                             </Form.Item>
                         </Grid.Col>
                         <Grid.Col span={4} style={{ textAlign:"right" }}>
-                                {showGrantPrivileges &&
-                                <div style={{cursor:"pointer",userSelect:"none"}} onClick={toggleShowPickupPanel}>
-                                    {showPickUpPanel?<IconCaretDown />:<IconCaretRight />}
-                                    <Typography.Text>{t['createMetricSet.form.label.grant.privilege']}</Typography.Text>
-                                </div>
-                                }
+                            {showGrantPrivileges &&
+                            <div style={{cursor:"pointer",userSelect:"none"}} onClick={toggleShowPickupPanel}>
+                                {showPickUpPanel?<IconCaretDown />:<IconCaretRight />}
+                                <Typography.Text>{t['updateMetricSet.form.label.grant.privilege']}</Typography.Text>
+                            </div>
+                            }
                         </Grid.Col>
                     </Grid.Row>
                 </Form.Item>
 
                 {showPickUpPanel &&
-                <Form.Item label={t['createMetricSet.form.label.crowd.pickup']}>
+                <Form.Item label={t['updateMetricSet.form.label.crowd.pickup']}>
                     <Row>
                         <Col
                             span={24}
