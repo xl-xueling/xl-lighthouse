@@ -1,4 +1,4 @@
-import {Department, ArcoTreeNode, ArcoFlatNode, ResponseTreeNode} from "@/types/insights-web";
+import {Department, ArcoTreeNode, ArcoFlatNode, TreeNode} from "@/types/insights-web";
 import {requestQueryAll as queryDepartmentAll} from "@/api/department";
 import {Message} from "@arco-design/web-react";
 
@@ -46,7 +46,7 @@ export const translate = (list:Array<Department>):Array<ArcoTreeNode> => {
     return nodeArr;
 }
 
-export const translateResponse = (list:Array<ResponseTreeNode>):Array<ArcoTreeNode> => {
+export const translateResponse = (list:Array<TreeNode>):Array<ArcoTreeNode> => {
     const nodeArr = new Array<ArcoTreeNode>();
     list?.forEach(item => {
         const nodeItem:ArcoTreeNode = {"key":String(item.value),"title":item.label};

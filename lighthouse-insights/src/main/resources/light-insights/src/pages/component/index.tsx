@@ -10,7 +10,6 @@ import locale from "@/pages/project/list/locale";
 import styles from "@/pages/stat/display/style/index.module.less";
 import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
 import {DatePicker} from "@arco-design/web-react";
-import {requestQueryByIds} from "@/api/project";
 import {requestQueryByIds as requestQueryComponentsByIds} from "@/api/component";
 import {requestPrivilegeCheck} from "@/api/privilege";
 

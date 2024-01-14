@@ -1,10 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
-import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
-import com.dtstep.lighthouse.insights.dto.ProjectDto;
-import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.modal.User;
 
@@ -20,7 +17,7 @@ public interface ProjectService {
 
     ProjectDto queryById(Integer id);
 
-    List<CommonTreeNode> getStructure(Project project);
+    List<TreeNode> getStructure(Project project) throws Exception;
 
     int delete(Project project);
 

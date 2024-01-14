@@ -10,30 +10,30 @@ import {Button, Descriptions, Grid, Message, Modal, Skeleton, Space, Typography}
 import { RiAppsLine } from "react-icons/ri";
 import {Project} from "@/types/insights-web";
 import UserGroup from "@/pages/user/common/groups";
+import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 const { Row, Col } = Grid;
-export default function DisplayHeader({projectInfo}:{projectInfo:Project}) {
+export default function PreviewHeader({projectInfo}:{projectInfo:Project}) {
     const t = useLocale(locale);
     const [data,setData] = useState(null);
 
     useEffect(() => {
-        if(!projectInfo){
-            return;
-        }
         const detail = [
+            {
+                label: <IconClockCircle />,
+                value: formatTimeStamp(projectInfo?.createTime,DateTimeFormat),
+                span: 1,
+            },
             {
                 label: <IconUserGroup/>,
                 value: <UserGroup users={projectInfo?.admins}/>,
-            },
-            {
-                label: <IconClockCircle />,
-                value: projectInfo?.createTime,
+                span: 2,
             },
             {
                 label: <div style={{ marginTop: 0 }}><IconBook/></div>,
                 value: <div style={{ wordBreak: 'break-word' }}>
                     <span>{projectInfo?.desc}</span>
                 </div>,
-                span : 2,
+                span : 3,
             },
         ];
         setData(detail);
@@ -59,7 +59,7 @@ export default function DisplayHeader({projectInfo}:{projectInfo:Project}) {
                     size={"mini"}
                     layout="horizontal"
                     data={data}
-                    column={2}
+                    column={3}
                 />
             </Row>
         </Space>

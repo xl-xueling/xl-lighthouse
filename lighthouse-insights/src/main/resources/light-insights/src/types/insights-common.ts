@@ -1,4 +1,4 @@
-import {ArcoTreeNode, ResponseTreeNode} from "@/types/insights-web";
+import {ArcoTreeNode, TreeNode} from "@/types/insights-web";
 import {Badge} from "@arco-design/web-react";
 import React from "react";
 
@@ -98,7 +98,7 @@ export interface RenderFilterConfig {
     label?:string,
     dimens?:string,
     componentId?:number,
-    configData?:Array<ResponseTreeNode>,
+    configData?:Array<TreeNode>,
 }
 
 export interface RenderDateConfig {
@@ -111,7 +111,7 @@ export interface Component {
     title?:string,
     componentType?:ComponentTypeEnum,
     privateType?:PrivateTypeEnum,
-    configuration?:Array<ResponseTreeNode>,
+    configuration?:Array<TreeNode>,
     userId?:number,
     createTime?:number,
     updateTime?:number,

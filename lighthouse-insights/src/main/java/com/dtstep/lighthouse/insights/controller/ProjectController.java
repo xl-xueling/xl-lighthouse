@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
@@ -41,10 +42,11 @@ public class ProjectController {
     }
 
     @RequestMapping("/project/queryById")
-    public ResultData<ProjectExtendDto> queryById(@RequestBody QueryParam queryParam) {
+    public ResultData<ProjectExtendDto> queryById(@RequestBody QueryParam queryParam) throws Exception{
         ProjectDto projectDto = projectService.queryById(queryParam.getId());
         ProjectExtendDto projectExtendDto = new ProjectExtendDto(projectDto);
-        List<CommonTreeNode> structure = projectService.getStructure(projectDto);
+        List<TreeNode> structure = projectService.getStructure(projectDto);
+        System.out.println("structure:" + JsonUtil.toJSONString(structure));
         projectExtendDto.setStructure(structure);
         return ResultData.success(projectExtendDto);
     }
