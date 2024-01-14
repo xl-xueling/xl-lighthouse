@@ -88,10 +88,12 @@ function CardBlock(props: CardBlockType) {
       bordered={true}
       className={className}
       size="small"
+      style={{cursor:'pointer'}}
+      onClick={() => {
+          console.log("---click card,itemId:" + item.id)
+          window.open( '/metricset/display/' + item?.id);
+      }}
       actions={[
-        // <span key={2} className='icon-hover' onClick={() => callback('share',item.id)}>
-        //   <IconShareInternal />
-        // </span>,
           <span key={3} className='icon-hover' onClick={() => callback('update',item)}>
           <IconEdit />
         </span>,

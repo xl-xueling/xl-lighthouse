@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import useLocale from "@/utils/useLocale";
-import locale from "@/pages/metricset/manage/locale";
+import locale from "@/pages/metricset/preview/locale";
 import {
     IconBook,
     IconClockCircle, IconLock,

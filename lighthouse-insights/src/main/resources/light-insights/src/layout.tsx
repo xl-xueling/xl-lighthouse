@@ -34,13 +34,13 @@ import lazyload from './utils/lazyload';
 import { GlobalState } from './store';
 import styles from './style/layout.module.less';
 import ProjectManage from "@/pages/project/manage";
-import ProjectDisplay from "@/pages/project/display";
+import ProjectPreview from "@/pages/project/preview";
 import StatDisplay from "@/pages/stat/display";
 import { MdOutlineInsights } from "react-icons/md";
 import { PiShareNetwork } from "react-icons/pi";
 import { GoTasklist } from "react-icons/go";
 import { RiAppsLine } from "react-icons/ri";
-import MaticManage from "@/pages/metricset/manage";
+import MetricSetPreview from "@/pages/metricset/preview";
 import { PiDiamondsFour } from "react-icons/pi";
 
 const MenuItem = Menu.Item;
@@ -290,8 +290,8 @@ function PageLayout() {
               <Content>
                 <Switch>
                   <Route path="/project/manage/:id" component={ProjectManage} />
-                  <Route path="/metric/manage/:id" component={MaticManage} />
-                  <Route path="/project/display/:id" component={ProjectDisplay} />
+                  <Route path="/metricset/preview/:id" component={MetricSetPreview} />
+                  <Route path="/project/preview/:id" component={ProjectPreview} />
                   <Route path="/stat/display/:id" component={StatDisplay} />
                   {flattenRoutes.map((route, index) => {
                     return (

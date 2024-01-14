@@ -23,7 +23,7 @@ import {
     IconPlus, IconPushpin, IconSettings, IconStar, IconStarFill, IconStorage, IconTag, IconUser, IconUserGroup,
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
-import locale from '../manage/locale';
+import locale from './/locale';
 import styles from './style/shortcuts.module.less';
 import {requestStructure} from "@/api/project";
 import {ArcoTreeNode} from "@/types/insights-web";
