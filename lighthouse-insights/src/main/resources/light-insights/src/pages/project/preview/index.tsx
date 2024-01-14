@@ -9,14 +9,14 @@ import Shortcuts from "@/pages/dashboard/workplace/shortcuts";
 import Carousel from "@/pages/dashboard/workplace/carousel";
 import Announcement from "@/pages/dashboard/workplace/announcement";
 import Docs from "@/pages/dashboard/workplace/docs";
-import ProjectMenu from "@/pages/project/display/menu";
+import ProjectMenu from "@/pages/project/preview/menu";
 import SearchForm from "@/pages/stat/display/search_form";
 import ChartPanel from "@/pages/stat/display/chart_panel";
 import BasicInfo from "@/pages/stat/display/basic";
 const { Row, Col } = Grid;
 import { RiAppsLine } from "react-icons/ri";
-import MetricNewDetail from "@/pages/metricset/manage/new_detail";
-import DisplayHeader from "@/pages/project/display/head";
+import MetricNewDetail from "@/pages/metricset/preview/new_detail";
+import DisplayHeader from "@/pages/project/preview/head";
 import {ArcoTreeNode, MetricSet, Project} from "@/types/insights-web";
 import {requestList, requestQueryByIds} from "@/api/project";
 import {requestPrivilegeCheck} from "@/api/privilege";
@@ -26,7 +26,7 @@ import {IconTag} from "@arco-design/web-react/icon";
 import { LoadingOutlined } from '@ant-design/icons';
 
 
-export default function ProjectDisplay() {
+export default function ProjectPreview() {
 
     const { id } = useParams();
     const [loading,setLoading] = useState<boolean>(true);

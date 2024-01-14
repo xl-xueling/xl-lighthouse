@@ -1,11 +1,10 @@
 import React from 'react';
 import {Card, Typography, Grid, Space, Tabs, Divider} from '@arco-design/web-react';
-import MetricNewDetail from "@/pages/metricset/manage/new_detail";
+import MetricNewDetail from "@/pages/metricset/preview/new_detail";
 import {IconDashboard, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
-import MetricDisplay from "../display/display";
 import BindedList from "@/pages/metricset/binded/list/binded";
 import GroupBasicPanel from "@/pages/group/basic";
-import ProjectDisplay from "@/pages/project/display";
+import ProjectPreview from "@/pages/project/preview";
 
 
 const { Title } = Typography;
@@ -14,7 +13,7 @@ const { Row, Col } = Grid;
 const defaultList = new Array(10).fill({});
 const TabPane = Tabs.TabPane;
 
-export default function MaticManage() {
+export default function MetricSetPreview() {
 
     return (
         <Space size={16} direction="vertical" style={{ width: '100%' }}>
@@ -32,7 +31,7 @@ export default function MaticManage() {
                             Data View
                         </span>
                     }>
-                    <ProjectDisplay/>
+                    <ProjectPreview/>
                 </TabPane>
                 <TabPane
                     key='2'
