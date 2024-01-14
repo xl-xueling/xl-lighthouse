@@ -4,17 +4,23 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.MetricSetDao;
 import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
+import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.MetricSetService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class MetricSetServiceImpl implements MetricSetService {
 
     @Autowired
     private MetricSetDao metricSetDao;
+
+    @Autowired
+    private BaseService baseService;
 
     @Override
     public Integer create(MetricSet metricSet) {
@@ -31,6 +37,14 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     @Override
     public ListData<MetricSet> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize) {
-        return null;
+        PageHelper.startPage(pageNum,pageSize);
+        ListData<MetricSet> metricSetListData = null;
+        try{
+            List<MetricSet> metricSetList = metricSetDao.queryList(queryParam);
+            metricSetListData = baseService.translateToListData(metricSetList);
+        }finally {
+            PageHelper.clearPage();
+        }
+        return metricSetListData;
     }
 }

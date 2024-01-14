@@ -12,7 +12,7 @@ import {requestGrantPrivilege} from "@/api/privilege";
 import {requestCreate} from "@/api/metricset";
 
 
-export default function MetricSetAddPanel({onClose}) {
+export default function MetricSetAddPanel({onClose,onSuccess}) {
 
     const [form] = Form.useForm();
     const t = useLocale(locale);
@@ -53,6 +53,7 @@ export default function MetricSetAddPanel({onClose}) {
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['createMetricSet.form.submit.success']});
                 setLoading(false);
+                onSuccess();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
                 setLoading(false);

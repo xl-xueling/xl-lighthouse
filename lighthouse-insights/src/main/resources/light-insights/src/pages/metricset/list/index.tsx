@@ -32,6 +32,7 @@ export default function ListCard() {
   const [loading, setLoading] = useState(true);
   const [showCreatePanel,setShowCreatePanel] = useState<boolean>(false);
   const [listData,setListData] = useState<MetricSet[]>([]);
+  const [reloadTime,setReloadTime] = useState<number>(Date.now);
   const [activeKey, setActiveKey] = useState('all');
   const { Meta } = Card;
 
@@ -60,6 +61,7 @@ export default function ListCard() {
           },
       }).then((response) => {
           const {code, data ,message} = response;
+          console.log("response is:" + JSON.stringify(response));
           if(code == '0'){
               setListData(data.list);
               setPagination({
@@ -79,12 +81,15 @@ export default function ListCard() {
 
     useEffect(() => {
         fetchData().then();
-    }, []);
+    }, [reloadTime]);
 
   const handleShowCreatePanel = () => {
       setShowCreatePanel(true);
   }
 
+  const handlerReloadList = () => {
+      setReloadTime(Date.now);
+  }
 
     const getCardList = () => {
         return (
@@ -133,10 +138,10 @@ export default function ListCard() {
               {getCardList()}
           </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Pagination defaultCurrent={5} total={200} sizeCanChange />
+            <Pagination defaultCurrent={pagination.current} total={pagination.total} showTotal={true}/>
           </div>
       </div>
-        {showCreatePanel && <MetricSetAddPanel onClose={() => setShowCreatePanel(false)}/>}
+        {showCreatePanel && <MetricSetAddPanel onClose={() => setShowCreatePanel(false)} onSuccess={handlerReloadList}/>}
     </Card>
       </>
   );

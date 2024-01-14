@@ -2,11 +2,10 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
+import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
-import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
-import com.dtstep.lighthouse.insights.dto.MetricSetCreateParam;
-import com.dtstep.lighthouse.insights.dto.ResultData;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
@@ -38,5 +37,13 @@ public class MetricSetController {
         }else{
             return ResultData.result(ResultCode.systemError);
         }
+    }
+
+    @RequestMapping("/metricset/list")
+    public ResultData<ListData<MetricSet>> list(@Validated @RequestBody ListSearchObject<MetricSetQueryParam> searchObject) {
+        MetricSetQueryParam queryParam = searchObject.getQueryParams();
+        Pagination pagination = searchObject.getPagination();
+        ListData<MetricSet> listData = metricSetService.queryList(queryParam, pagination.getPageNum(), pagination.getPageSize());
+        return ResultData.success(listData);
     }
 }
