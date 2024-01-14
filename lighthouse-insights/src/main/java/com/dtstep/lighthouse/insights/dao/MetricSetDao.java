@@ -11,7 +11,9 @@ import java.util.List;
 @Repository
 public interface MetricSetDao {
 
-    Integer insert(MetricSet metricSet);
+    int insert(MetricSet metricSet);
+
+    int update(MetricSet metricSet);
 
     MetricSet queryById(Integer id);
 

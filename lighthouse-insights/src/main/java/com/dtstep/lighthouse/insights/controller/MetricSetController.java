@@ -10,6 +10,7 @@ import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
 import com.dtstep.lighthouse.insights.service.MetricSetService;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -40,13 +41,16 @@ public class MetricSetController {
     }
 
     @RequestMapping("/metricset/update")
-    public ResultData<Integer> update(@Validated @RequestBody MetricSetCreateParam updateParam) {
+    public ResultData<Integer> update(@Validated @RequestBody MetricSetUpdateParam updateParam) {
         System.out.println("createParam is:" + JsonUtil.toJSONString(updateParam));
-        MetricSet metricSet = new MetricSet();
+        Integer id = updateParam.getId();
+        MetricSet metricSet = metricSetService.queryById(id);
+        Validate.notNull(metricSet);
         metricSet.setDesc(updateParam.getDesc());
         metricSet.setTitle(updateParam.getTitle());
+        metricSet.setId(updateParam.getId());
         metricSet.setPrivateType(updateParam.getPrivateType());
-        int result = metricSetService.create(metricSet);
+        int result = metricSetService.update(metricSet);
         if(result > 0){
             return ResultData.success(result);
         }else{

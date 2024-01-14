@@ -23,7 +23,7 @@ public class MetricSetServiceImpl implements MetricSetService {
     private BaseService baseService;
 
     @Override
-    public Integer create(MetricSet metricSet) {
+    public int create(MetricSet metricSet) {
         LocalDateTime localDateTime = LocalDateTime.now();
         metricSet.setCreateTime(localDateTime);
         metricSet.setUpdateTime(localDateTime);
@@ -31,8 +31,15 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
+    public int update(MetricSet metricSet) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        metricSet.setUpdateTime(localDateTime);
+        return metricSetDao.update(metricSet);
+    }
+
+    @Override
     public MetricSet queryById(Integer id) {
-        return null;
+        return metricSetDao.queryById(id);
     }
 
     @Override

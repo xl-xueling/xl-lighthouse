@@ -7,7 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface MetricSetService {
 
-    Integer create(MetricSet metricSet);
+    int create(MetricSet metricSet);
+
+    int update(MetricSet metricSet);
 
     MetricSet queryById(Integer id);
 
