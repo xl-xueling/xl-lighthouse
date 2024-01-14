@@ -19,6 +19,14 @@ export async function requestCreate(data):Promise<ResultData> {
     })
 }
 
+export async function requestFilterConfig(data):Promise<ResultData> {
+    return request({
+        url:'/stat/filterConfig',
+        method:'POST',
+        data,
+    })
+}
+
 export async function requestUpdate(data):Promise<ResultData> {
     return request({
         url:'/stat/update',

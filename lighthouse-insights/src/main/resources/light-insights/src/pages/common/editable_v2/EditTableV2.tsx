@@ -7,9 +7,9 @@ const EditableContext = React.createContext<{ getForm?: () => FormInstance }>({}
 const FormItem = Form.Item;
 import styles from './style/index.module.less';
 
-const EditTableV2 = React.forwardRef( (props:{columns,data},ref) => {
+const EditTableV2 = React.forwardRef( (props:{columns,initData}, ref) => {
     const columns = props.columns;
-    const data = props.data;
+    const initData = props.initData;
 
     const [targetColumns,setTargetColumns] = useState([]);
     const [targetData,setTargetData] = useState([]);
@@ -26,7 +26,15 @@ const EditTableV2 = React.forwardRef( (props:{columns,data},ref) => {
     }
 
     const getData = () => {
-        return data;
+        return targetData?.map((z) => {
+            const obj = {...z};
+            Object.entries(z).forEach(([key, value]) => {
+                if (value === null || value === undefined || value == '--') {
+                    obj[key] = '';
+                }
+            });
+            return obj;
+        });
     }
 
     const addRow = (row) => {
@@ -44,8 +52,8 @@ const EditTableV2 = React.forwardRef( (props:{columns,data},ref) => {
     },[])
 
     useEffect(() => {
-        setTargetData(data);
-    },[data])
+        setTargetData(initData);
+    },[initData])
 
     return (
         <div className={styles["edit_panel"]}>

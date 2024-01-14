@@ -15,7 +15,7 @@ import locale from './locale';
 import EditTable, {EditTableColumnProps, EditTableComponentEnum} from "@/pages/common/edittable/EditTable";
 import {IconMinus, IconMinusCircleFill, IconPlus} from "@arco-design/web-react/icon";
 import {formatString, getRandomString, getTextBlenLength, stringifyObj} from "@/utils/util";
-import {requestCreate} from "@/api/group";
+import {requestFilterConfig} from "@/api/stat";
 import {Group, Project} from "@/types/insights-web";
 import {GlobalErrorCodes} from "@/utils/constants";
 import {Component, ComponentTypeEnum, RenderFilterConfig} from "@/types/insights-common";
@@ -35,6 +35,7 @@ export default function StatFilterConfigModal({statInfo,onClose}) {
     const editTableRef = useRef(null);
     const t = useLocale(locale);
     const [initFilterConfig,setInitFilterConfig] = useState<Array<RenderFilterConfig>>([]);
+    const [loading,setLoading] = useState<boolean>(false);
 
     const targetColumns : EditTableColumnProps[] = [
         {
@@ -128,22 +129,36 @@ export default function StatFilterConfigModal({statInfo,onClose}) {
     const onSubmit = () => {
         const dimensArray = statInfo?.templateEntity?.dimensArray;
         const configData = getConfigData();
-        const params = configData?.map(z => {
-            const dimens = z.dimens;
-            const label = z.labelCol;
-            const componentId = z.componentId;
-            const componentType = z.componentType;
+        const filters = configData?.map(z => {
+            // const dimens = z.dimens;
+            // const label = z.label;
+            // const componentId = z.componentId;
+            // const componentType = z.componentType;
+            return {
+                dimens:z.dimens,
+                label:z.label,
+                componentId:z.componentId,
+                componentType:z.componentType,
+            }
         })
-
-        configData?.forEach(z => {
-            const dimens = z.dimens;
-            const result = dimens.split(';');
-
-
+        const params = {filters,id:statInfo.id}
+        console.log("--data is:" + JSON.stringify(params));
+        setLoading(true);
+        requestFilterConfig(params).then((response) => {
+            console.log("Response is:" + JSON.stringify(response));
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['statCreate.form.submit.success']});
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            // onClose();
+        }).catch((error) => {
+            console.log(error);
+            Notification.error({style: { width: 420 }, title: 'Warning', content: t['system.error']});
+        }).finally(() => {
+            setLoading(false);
         })
-        // console.log("--data is:" + JSON.stringify(config));
-        console.log("--")
-
     }
 
     return (
@@ -166,7 +181,7 @@ export default function StatFilterConfigModal({statInfo,onClose}) {
                 <Typography.Title style={{fontSize:'14px',marginTop:'20px'}}>
                     {'当前配置：'}
                 </Typography.Title>
-                <EditTableV2 ref={editTableRef} columns={targetColumns} data={initFilterConfig}/>
+                <EditTableV2 ref={editTableRef} columns={targetColumns} initData={initFilterConfig}/>
 
             </Space>
         </Modal>
