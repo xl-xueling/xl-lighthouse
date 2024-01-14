@@ -22,6 +22,7 @@ import MetricSetAddPanel from "@/pages/metricset/create";
 import {MetricSet, Project} from "@/types/insights-web";
 import {requestList} from "@/api/metricset";
 import {IconHome} from "@arco-design/web-react/icon";
+import MetricSetUpdateModal from "@/pages/metricset/update";
 
 const { Title } = Typography;
 const { Row, Col } = Grid;
@@ -31,6 +32,8 @@ export default function ListCard() {
   const t = useLocale(locale);
   const [loading, setLoading] = useState(true);
   const [showCreatePanel,setShowCreatePanel] = useState<boolean>(false);
+  const [showUpdatePanel,setShowUpdatePanel] = useState<boolean>(false);
+  const [currentItem,setCurrentItem] = useState<MetricSet>(null);
   const [listData,setListData] = useState<MetricSet[]>([]);
   const [reloadTime,setReloadTime] = useState<number>(Date.now);
   const [activeKey, setActiveKey] = useState('all');
@@ -46,8 +49,12 @@ export default function ListCard() {
     });
     const [formParams, setFormParams] = useState({});
 
-    const tableCallback = async (record, type) => {
-        console.log("record:" + record + ",type:" + type);
+    const tableCallback = async (type,record) => {
+        if(type == 'update'){
+            console.log("---show update modal...")
+            setCurrentItem(record);
+            setShowUpdatePanel(true);
+        }
     };
 
   const fetchData = async () => {
@@ -61,7 +68,6 @@ export default function ListCard() {
           },
       }).then((response) => {
           const {code, data ,message} = response;
-          console.log("response is:" + JSON.stringify(response));
           if(code == '0'){
               setListData(data.list);
               setPagination({
@@ -142,6 +148,7 @@ export default function ListCard() {
           </div>
       </div>
         {showCreatePanel && <MetricSetAddPanel onClose={() => setShowCreatePanel(false)} onSuccess={handlerReloadList}/>}
+        {showUpdatePanel && <MetricSetUpdateModal metricInfo={currentItem} onClose={() => setShowUpdatePanel(false)} onSuccess={handlerReloadList}/>}
     </Card>
       </>
   );

@@ -39,6 +39,21 @@ public class MetricSetController {
         }
     }
 
+    @RequestMapping("/metricset/update")
+    public ResultData<Integer> update(@Validated @RequestBody MetricSetCreateParam updateParam) {
+        System.out.println("createParam is:" + JsonUtil.toJSONString(updateParam));
+        MetricSet metricSet = new MetricSet();
+        metricSet.setDesc(updateParam.getDesc());
+        metricSet.setTitle(updateParam.getTitle());
+        metricSet.setPrivateType(updateParam.getPrivateType());
+        int result = metricSetService.create(metricSet);
+        if(result > 0){
+            return ResultData.success(result);
+        }else{
+            return ResultData.result(ResultCode.systemError);
+        }
+    }
+
     @RequestMapping("/metricset/list")
     public ResultData<ListData<MetricSet>> list(@Validated @RequestBody ListSearchObject<MetricSetQueryParam> searchObject) {
         MetricSetQueryParam queryParam = searchObject.getQueryParams();

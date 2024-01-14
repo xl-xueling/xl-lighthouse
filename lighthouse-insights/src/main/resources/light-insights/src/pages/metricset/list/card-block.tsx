@@ -21,6 +21,8 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import {MetricSet} from "@/types/insights-web";
+import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
+import {CiLock} from "react-icons/ci";
 
 interface CardBlockType {
   item: MetricSet;
@@ -68,21 +70,16 @@ function CardBlock(props: CardBlockType) {
         />
       );
     }
-    // if (type !== 'quality') {
-    //   return <Paragraph>{item.description}</Paragraph>;
-    // }
     return (
       <Descriptions
         column={2}
-        colon=' :'
         data={[
-          { label: '总点击数', value: "--" },
-          { label: '总点赞数', value: "--" },
+          { label: '', value: item?.desc },
         ]}
       />
     );
-
   };
+
 
   const className = cs(styles['card-block']);
 
@@ -92,16 +89,13 @@ function CardBlock(props: CardBlockType) {
       className={className}
       size="small"
       actions={[
-        <span key={1} className='icon-hover' onClick={() => callback('like',item.id)}>
-          <IconThumbUp/>
-        </span>,
-        <span key={2} className='icon-hover' onClick={() => callback('share',item.id)}>
-          <IconShareInternal />
-        </span>,
-          <span key={3} className='icon-hover' onClick={() => callback('update',item.id)}>
+        // <span key={2} className='icon-hover' onClick={() => callback('share',item.id)}>
+        //   <IconShareInternal />
+        // </span>,
+          <span key={3} className='icon-hover' onClick={() => callback('update',item)}>
           <IconEdit />
         </span>,
-        <span key={4} className='icon-hover' onClick={() => callback('delete',item.id)}>
+        <span key={4} className='icon-hover' onClick={() => callback('delete',item)}>
           <IconDelete />
         </span>,
       ]}
@@ -121,13 +115,12 @@ function CardBlock(props: CardBlockType) {
                 [styles['title-more']]: visible,
               })}
             >
-              {/*{getTitleIcon()}*/}
-              {item.title}
+              {item.title}{item.privateType == 0 ? <CiLock style={{marginLeft:'5px'}}/>:null}
               <div className={styles.more} onClick={() => callback('fixed',item.id)}>
                 <IconPushpin />
               </div>
             </div>
-            <div className={styles.time}>{item.createTime}</div>
+            <div className={styles.time}>{formatTimeStamp(item.createTime,DateTimeFormat)}</div>
           </>
         )
       }
