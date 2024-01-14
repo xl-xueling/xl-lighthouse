@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -162,27 +163,29 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<CommonTreeNode> getStructure(Project project) {
+    public List<TreeNode> getStructure(Project project) throws Exception{
         Integer id = project.getId();
-        List<CommonTreeNode> nodeList = new ArrayList<>();
-        CommonTreeNode commonTreeNode = new CommonTreeNode(String.valueOf(id),project.getTitle(),String.valueOf(0),"1");
+        List<TreeNode> nodeList = new ArrayList<>();
+        TreeNode projectNode = new TreeNode(project.getTitle(),String.valueOf(project.getId()),1);
+        HashMap<String,TreeNode> nodeMap = new HashMap<>();
+        nodeMap.put(String.valueOf(project.getId()),projectNode);
         List<Group> groupList = groupDao.queryByProjectId(id);
         if(CollectionUtils.isNotEmpty(groupList)){
             for(Group group : groupList){
-                CommonTreeNode groupNode = new CommonTreeNode(String.valueOf(group.getId()),group.getToken(),String.valueOf(id),"2");
-                nodeList.add(groupNode);
+                TreeNode groupNode = new TreeNode(group.getToken(),String.valueOf(group.getId()),2);
+                nodeMap.put(String.valueOf(group.getId()),groupNode);
+                projectNode.addChild(groupNode);
             }
             List<Stat> statList = statDao.queryByProjectId(id);
             if(CollectionUtils.isNotEmpty(statList)){
                 for(Stat stat : statList){
-                    CommonTreeNode groupNode = new CommonTreeNode(String.valueOf(stat.getId()),stat.getTitle(),String.valueOf(stat.getGroupId()),"3");
-                    nodeList.add(groupNode);
+                    TreeNode statNode = new TreeNode(stat.getTitle(),String.valueOf(stat.getId()),3);
+                    TreeNode parentNode = nodeMap.get(String.valueOf(stat.getGroupId()));
+                    parentNode.addChild(statNode);
                 }
             }
         }
-        nodeList.add(commonTreeNode);
-        List<CommonTreeNode> structure = TreeUtil.buildTree(nodeList,"0");
-        return structure;
+        return List.of(projectNode);
     }
 
 

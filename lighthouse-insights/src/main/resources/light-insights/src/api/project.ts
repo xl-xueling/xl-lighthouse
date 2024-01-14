@@ -26,14 +26,6 @@ export async function requestQueryById(data):Promise<ResultData<Project>> {
     })
 }
 
-export async function requestQueryByIds(data:{ids:Array<number>}) :Promise<ResultData<Record<number,Project>>> {
-    return request({
-        url:'/project/queryByIds',
-        method:'POST',
-        data,
-    })
-}
-
 
 export async function requestCreate(data:Project):Promise<ResultData> {
     return request({

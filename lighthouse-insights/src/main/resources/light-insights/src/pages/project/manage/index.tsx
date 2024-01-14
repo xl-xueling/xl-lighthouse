@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import styles from './style/index.module.less';
 import {Breadcrumb, Card, Descriptions, Notification, Skeleton, Space, Spin, Typography} from "@arco-design/web-react";
 import GroupManagePanel from "@/pages/group/manage";
-import {Project, TreeNode} from "@/types/insights-web";
+import {Project, BackUpTreeNode} from "@/types/insights-web";
 import {requestQueryById} from "@/api/project";
 import ProjectManageMenu from "@/pages/project/manage/menu";
 import {IconBook, IconClockCircle, IconHome, IconUserGroup} from "@arco-design/web-react/icon";
@@ -41,7 +41,7 @@ export default function ProjectManage() {
     const callback = async (operation,data) => {
         switch (operation){
             case "create-group":
-                const newGroup:TreeNode = {
+                const newGroup:BackUpTreeNode = {
                     "id":String(data.id),
                     "name":data.token,
                     "pid":String(projectInfo.id),
@@ -54,7 +54,7 @@ export default function ProjectManage() {
                 break;
             case 'deleteGroup': {
                 setLoading(true);
-                projectInfo.structure[0].children = projectInfo.structure[0].children.filter(x => x.id != String(data));
+                projectInfo.structure[0].children = projectInfo.structure[0].children.filter(x => x.value != String(data));
                 setProjectInfo(projectInfo);
                 setTimeout(() => {
                     setLoading(false);

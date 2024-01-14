@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.dto;
 import java.io.Serializable;
 import java.util.List;
 
+@Deprecated
 public class CommonTreeNode implements Serializable {
 
     public String id;

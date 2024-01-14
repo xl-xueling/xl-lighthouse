@@ -22,10 +22,11 @@ export interface GrantPrivileges {
     teams?:Array<number>;
 }
 
-export interface ResponseTreeNode {
+export interface TreeNode {
     label?:string;
     value?:string;
-    children?:Array<ResponseTreeNode>;
+    type?:any;
+    children?:Array<TreeNode>;
 }
 
 export interface ArcoTreeNode {
@@ -36,12 +37,12 @@ export interface ArcoTreeNode {
     children?:Array<ArcoTreeNode>;
 }
 
-export interface TreeNode {
+export interface BackUpTreeNode {
     id?: string;
     name?: string;
     pid?:string;
     type?:string;
-    children?:Array<TreeNode>;
+    children?:Array<BackUpTreeNode>;
 }
 
 export interface ArcoFlatNode {

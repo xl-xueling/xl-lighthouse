@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Department, ResponseTreeNode, Stat} from "@/types/insights-web";
+import {Department, TreeNode, Stat} from "@/types/insights-web";
 import {ComponentTypeEnum, RenderDateConfig, RenderFilterConfig} from "@/types/insights-common";
 import {Button, DatePicker, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
 import {useSelector} from "react-redux";

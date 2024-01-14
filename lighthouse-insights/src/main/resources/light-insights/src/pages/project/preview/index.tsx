@@ -1,7 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from "./style/index.module.less";
-import {Button, Card, DatePicker, Divider, Grid, Space, Typography,Spin} from "@arco-design/web-react";
+import {
+    Button,
+    Card,
+    DatePicker,
+    Divider,
+    Grid,
+    Space,
+    Typography,
+    Spin,
+    Notification,
+    Breadcrumb
+} from "@arco-design/web-react";
 import Overview from "@/pages/dashboard/workplace/overview";
 import PopularContents from "@/pages/dashboard/workplace/popular-contents";
 import ContentPercentage from "@/pages/dashboard/workplace/content-percentage";
@@ -16,74 +27,68 @@ import BasicInfo from "@/pages/stat/display/basic";
 const { Row, Col } = Grid;
 import { RiAppsLine } from "react-icons/ri";
 import MetricNewDetail from "@/pages/metricset/preview/new_detail";
-import DisplayHeader from "@/pages/project/preview/head";
+import PreviewHeader from "@/pages/project/preview/head";
 import {ArcoTreeNode, MetricSet, Project} from "@/types/insights-web";
-import {requestList, requestQueryByIds} from "@/api/project";
+import {requestList, requestQueryById} from "@/api/project";
 import {requestPrivilegeCheck} from "@/api/privilege";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import {IconTag} from "@arco-design/web-react/icon";
+import {IconHome, IconTag} from "@arco-design/web-react/icon";
 import { LoadingOutlined } from '@ant-design/icons';
+import useLocale from "@/utils/useLocale";
+import locale from "./locale";
 
 
 export default function ProjectPreview() {
 
     const { id } = useParams();
+    const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(true);
     const [projectInfo,setProjectInfo] = useState<Project>(null);
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
-
-    const fetchProjectInfo:Promise<Project> = new Promise<Project>((resolve,reject) => {
-        const proc = async () => {
-            const result = await requestQueryByIds({ids:[id]});
-            resolve(result?.data?.[id]);
-        }
-        proc().then();
-    })
-
-    // const fetchPrivilegeInfo = async(ids) => {
-    //     return new Promise<Record<number,PermissionsEnum[]>>((resolve,reject) => {
-    //         requestPrivilegeCheck({type:"project",ids:ids}).then((response) => {
-    //             resolve(response.data);
-    //         }).catch((error) => {
-    //             reject(error);
-    //         })
-    //     })
-    // }
 
     const menuCallback = async (id) => {
         setSelectedStatId(Number(id));
     }
 
-    const fetchData = async (): Promise<void> => {
+    const fetchProjectInfo = async (): Promise<void> => {
         setLoading(true);
-        const result = await Promise.all([fetchProjectInfo]);
-        const projectInfo = result[0];
-        // Promise.all([fetchPrivilegeInfo([id])])
-        //     .then(([r1]) => {
-        //         const combinedItem = { ...projectInfo, ...{"permissions":r1[projectInfo.id]}};
-        //         setProjectInfo(combinedItem);
-        //         setLoading(false);
-        //     }).catch((error) => {
-        //         console.log(error);
-        //     })
+        await requestQueryById({id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                console.log("projectInfo is:" + JSON.stringify(data));
+                setProjectInfo(data);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
 
     useEffect(() => {
-        fetchData().then();
+        fetchProjectInfo().then();
     },[])
 
     return (
+        <>
+        <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+            <Breadcrumb.Item>
+                <IconHome />
+            </Breadcrumb.Item>
+            <Breadcrumb.Item style={{fontWeight:20}}>{t['projectPreview.breadcrumb']}</Breadcrumb.Item>
+        </Breadcrumb>
         <Spin loading={loading} style={{display:'block'}}>
             <Space size={16} direction="vertical" style={{ width: '100%'}}>
                 <Card>
-                    <DisplayHeader projectInfo={projectInfo}/>
+                    <PreviewHeader projectInfo={projectInfo}/>
                 </Card>
                 <div className={styles.wrapper}>
                 <Space size={16} direction="vertical" className={styles.left}>
                     <Row>
-                        {/*<ProjectMenu structure={projectInfo?.structure} callback={menuCallback} />*/}
+                        <ProjectMenu projectInfo={projectInfo} callback={menuCallback} />
                     </Row>
                 </Space>
                 <Space className={styles.right} size={16} direction="vertical">
@@ -91,21 +96,6 @@ export default function ProjectPreview() {
             </div>
             </Space>
         </Spin>
-
-            // <Space size={16} direction="vertical" style={{ width: '100%'}}>
-            //     <Card>
-            //         <DisplayHeader projectInfo={projectInfo}/>
-            //     </Card>
-            //     <div className={styles.wrapper}>
-            //     <Space size={16} direction="vertical" className={styles.left}>
-            //         <Row>
-            //             <ProjectMenu structure={projectInfo?.structure} callback={menuCallback} />
-            //         </Row>
-            //     </Space>
-            //     <Space className={styles.right} size={16} direction="vertical">
-            //         <StatDisplayMode1 statId={selectedStatId}/>
-            //     </Space>
-            // </div>
-            // </Space>
+        </>
     );
 }
