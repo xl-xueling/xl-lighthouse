@@ -4,7 +4,7 @@ import {
     RenderDateConfig,
     RenderFilterConfig, OrderStateEnum,
     OrderTypeEnum, PermissionEnum, RecordTypeEnum,
-    ResourceTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum
+    ResourceTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum, PrivateTypeEnum
 } from "@/types/insights-common";
 
 
@@ -112,14 +112,15 @@ export interface Stat {
     permissions?:PermissionEnum[];
 }
 
-
 export interface MetricSet {
     id?:number;
     title?:string;
-    createTime?:number;
-    description?:string;
     adminIds?:Array<number>;
     admins?:Array<User>;
+    privateType?:PrivateTypeEnum;
+    desc?:string;
+    createTime?:number;
+    updateTime?:number;
 }
 
 export interface MetricSetPagination extends MetricSet{

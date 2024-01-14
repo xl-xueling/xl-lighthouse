@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Form, Grid, Input, Message, Modal, Radio, Tabs, Typography} from "@arco-design/web-react";
+import {Form, Grid, Input, Message, Modal, Notification, Radio, Tabs, Typography} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {Col} from "antd";
@@ -39,57 +39,27 @@ export default function MetricSetAddPanel({onClose}) {
         setShowPickUpPanel(!showPickUpPanel);
     }
 
-
     async function handlerSubmit(){
         await formRef.current.validate().catch()
         setLoading(true);
         const values = formRef.current.getFieldsValue();
-        console.log("values is:" + JSON.stringify(values));
-        const metricSet:MetricSet = {
+        const createParams:MetricSet = {
             title:values.title,
-            description:values.description,
+            desc:values.desc,
+            privateType:values.privateType,
         }
-
-        let metricId;
-        try{
-            const result:ResultData = await requestCreate(metricSet);
-            if(result.code != '0'){
-                Message.error(result.message || t['system.error']);
-                return;
-            }
-            metricId = result.data.id;
-        }catch (error){
-            console.log(error);
-            Message.error(t['system.error']);
-            return;
-        }
-        console.log("create metric success,metricId:" + metricId);
-        try{
-            const grantPrivilege:GrantPrivileges = {id:metricId};
-            if(departmentTransferRef.current){
-                grantPrivilege.departments = departmentTransferRef.current.getData();
-            }
-            if(userTransferRef.current){
-                grantPrivilege.users = userTransferRef.current.getData();
-            }
-            if(grantPrivilege.departments || grantPrivilege.users){
-                const result:ResultData = await requestGrantPrivilege(grantPrivilege);
-                console.log("grant result is:" + JSON.stringify(result));
-                if(result.code == '0'){
-                    Message.success("创建数据集成功！");
-                }else{
-                    Message.error(result.message || t['system.error']);
-                }
+        await requestCreate(createParams).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['createMetricSet.form.submit.success']});
+                setLoading(false);
             }else{
-                Message.success("创建数据集成功！");
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+                setLoading(false);
             }
-        }catch (error){
+        }).catch((error) => {
             console.log(error);
-            Message.error(t['system.error']);
-            return;
-        }finally {
-            setLoading(false);
-        }
+        })
     }
 
     return (
@@ -106,7 +76,7 @@ export default function MetricSetAddPanel({onClose}) {
                 colon={true}
                 ref={formRef}
                 autoComplete={"off"}
-                initialValues={{private_type: 0}}
+                initialValues={{privateType: 0}}
                 style={{ minHeight:'300px' }}
                 labelCol={{span: 4, offset: 0}}
                 layout={"horizontal"}>
@@ -128,7 +98,7 @@ export default function MetricSetAddPanel({onClose}) {
                 <Form.Item style={{ marginBottom: 0 }} label={t['createMetricSet.form.label.private.type']} rules={[{ required: true }]} >
                     <Grid.Row gutter={8}>
                         <Grid.Col span={20}>
-                            <Form.Item field={"private_type"}>
+                            <Form.Item field={"privateType"}>
                                 <Radio.Group defaultValue={0} onChange={changeVisibleType}>
                                     <Radio value={0}>{t['createMetricSet.form.private.type.private']}</Radio>
                                     <Radio value={1}>{t['createMetricSet.form.private.type.public']}</Radio>
