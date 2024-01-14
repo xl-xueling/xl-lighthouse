@@ -127,7 +127,7 @@ function CardBlock(props: CardBlockType) {
                 <IconPushpin />
               </div>
             </div>
-            <div className={styles.time}>{item.createdTime}</div>
+            <div className={styles.time}>{item.createTime}</div>
           </>
         )
       }

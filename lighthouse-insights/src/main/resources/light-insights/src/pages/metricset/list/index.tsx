@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Tabs, Card, Input, Typography, Grid, Space, Avatar, PaginationProps, Pagination} from '@arco-design/web-react';
+import {
+    Tabs,
+    Card,
+    Input,
+    Typography,
+    Grid,
+    Space,
+    Avatar,
+    PaginationProps,
+    Pagination,
+    Breadcrumb, Notification, Divider
+} from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
@@ -10,6 +21,7 @@ import { QualityInspection, BasicCard } from './interface';
 import MetricSetAddPanel from "@/pages/metricset/create";
 import {MetricSet, Project} from "@/types/insights-web";
 import {requestList} from "@/api/metricset";
+import {IconHome} from "@arco-design/web-react/icon";
 
 const { Title } = Typography;
 const { Row, Col } = Grid;
@@ -19,7 +31,7 @@ export default function ListCard() {
   const t = useLocale(locale);
   const [loading, setLoading] = useState(true);
   const [showCreatePanel,setShowCreatePanel] = useState<boolean>(false);
-  const [listData,setListData] = useState<{quality:MetricSet[]}>({quality:[]});
+  const [listData,setListData] = useState<MetricSet[]>([]);
   const [activeKey, setActiveKey] = useState('all');
   const { Meta } = Card;
 
@@ -35,39 +47,34 @@ export default function ListCard() {
 
     const tableCallback = async (record, type) => {
         console.log("record:" + record + ",type:" + type);
-        // if(type == 'update'){
-        //     console.log("record:" + record + ",type:" + type);
-        // }else if(type == 'delete'){
-        //     console.log("record:" + record + ",type:" + type);
-        // }else if(type == 'fixed'){
-        //     console.log("record:" + record + ",type:" + type);
-        // }else if(type == 'share'){
-        //     console.log("record:" + record + ",type:" + type);
-        // }
     };
 
   const fetchData = async () => {
       setLoading(true);
       const {current, pageSize} = pagination;
-      const fetchMetricSetsInfo:Promise<{list:Array<MetricSet>,total:number}> = new Promise<{list:Array<MetricSet>,total:number}>((resolve) => {
-          const proc = async () => {
-              const result = await requestList({
-                  params: {
-                      page: current,
-                      pageSize,
-                      ...formParams,
-                  },
-              });
-              resolve(result.data);
+      await requestList({
+          queryParams:formParams,
+          pagination:{
+              pageSize:pageSize,
+              pageNum:current,
+          },
+      }).then((response) => {
+          const {code, data ,message} = response;
+          if(code == '0'){
+              setListData(data.list);
+              setPagination({
+                  ...pagination,
+                  current,
+                  pageSize,
+                  total: data.total});
+              setLoading(false);
+          }else{
+              Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+              setLoading(false);
           }
-          proc().then();
+      }).catch((error) => {
+          console.log(error);
       })
-
-      const result = await Promise.all([fetchMetricSetsInfo]);
-      const {list,total}:{list:Array<MetricSet>,total:number} = result[0];
-      console.log("result is:" + JSON.stringify(result));
-      setListData({"quality":list});
-      setLoading(false);
   }
 
     useEffect(() => {
@@ -78,37 +85,38 @@ export default function ListCard() {
       setShowCreatePanel(true);
   }
 
-  const handleHideCreatePanel = () => {
-      setShowCreatePanel(false);
-  }
 
-  const getCardList = (
-    list: Array<BasicCard & QualityInspection>,
-    type: keyof typeof listData
-  ) => {
-    return (
-      <Row gutter={24} className={styles['card-content']}>
-        {type === 'quality' && (
-          <Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={6}>
-            <AddCard description={t['cardList.add.quality']} onShow={handleShowCreatePanel}/>
-          </Col>
-        )}
-        {list.map((item, index) => (
-          <Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={6} key={index}>
-            <CardBlock item={item} loading={loading} callback={tableCallback} />
-          </Col>
-        ))}
-      </Row>
-    );
-  };
+    const getCardList = () => {
+        return (
+            <Row gutter={24} className={styles['card-content']}>
+                <Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={6}>
+                    <AddCard description={t['metricSetList.button.createMetric']} onShow={handleShowCreatePanel}/>
+                </Col>
+                {listData.map((item, index) => (
+                    <Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={6} key={index}>
+                        <CardBlock item={item} loading={loading} callback={tableCallback} />
+                    </Col>
+                ))}
+            </Row>
+        );
+    };
+
 
   return (
+      <>
+      <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+          <Breadcrumb.Item>
+              <IconHome />
+          </Breadcrumb.Item>
+          <Breadcrumb.Item style={{fontWeight:20}}>{t['metricSetList.breadcrumb.title']}</Breadcrumb.Item>
+      </Breadcrumb>
     <Card>
       <Title heading={6}>{t['menu.list.card']}</Title>
       <Tabs
         activeTab={activeKey}
         type="rounded"
         size={"small"}
+        defaultActiveTab={'all'}
         onChange={setActiveKey}
         extra={
           <Input.Search
@@ -118,24 +126,18 @@ export default function ListCard() {
         }
       >
         <Tabs.TabPane key="all" title={t['metricSetList.tab.title.all']} />
-        <Tabs.TabPane key="quality" title={t['metricSetList.tab.title.owner']} />
+        <Tabs.TabPane key="owner" title={t['metricSetList.tab.title.owner']} />
       </Tabs>
       <div className={styles.container}>
-          {
-              Object.entries(listData).map(([key, list]) => (
-                  <div key={key}>
-                      <Title heading={6}>{t[`cardList.tab.title.${key}`]}</Title>
-                      {getCardList(list, key as keyof typeof listData)}
-                  </div>
-              ))
-          }
+          <div>
+              {getCardList()}
+          </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Pagination defaultCurrent={5} total={200} sizeCanChange />
           </div>
       </div>
-
-        {showCreatePanel && <MetricSetAddPanel onClose={handleHideCreatePanel}/>}
-
+        {showCreatePanel && <MetricSetAddPanel onClose={() => setShowCreatePanel(false)}/>}
     </Card>
+      </>
   );
 }
