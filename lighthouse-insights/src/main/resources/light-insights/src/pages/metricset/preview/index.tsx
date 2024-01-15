@@ -3,14 +3,12 @@ import {useParams} from "react-router-dom";
 import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb} from '@arco-design/web-react';
 import PreviewHeader from "@/pages/metricset/preview/header";
 import {IconDashboard, IconHome, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
-import BindedList from "@/pages/metricset/binded/list";
-import GroupBasicPanel from "@/pages/group/basic";
-import ProjectPreview from "@/pages/project/preview";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {requestQueryById} from "@/api/metricset";
 import {MetricSet} from "@/types/insights-web";
 import MetricSetPreviewPanel from "@/pages/metricset/preview/panel_dashboard/dashboard";
+import MetricBindedList from "@/pages/metricset/binded/list";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
@@ -75,7 +73,7 @@ export default function MetricSetPreview() {
                             Binded Items
                         </span>
                     }>
-                    <BindedList metricId={0}/>
+                    <MetricBindedList metricId={metricSetInfo?.id}/>
                 </TabPane>
                 <TabPane key='3' title={
                     <span>
