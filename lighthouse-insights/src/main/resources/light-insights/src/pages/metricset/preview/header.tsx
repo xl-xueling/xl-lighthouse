@@ -3,10 +3,10 @@ import {
     Button,
     Card,
     Descriptions,
-    Divider,
+    Divider, Grid,
     Input,
     Link,
-    Message,
+    Message, Skeleton,
     Space,
     Spin,
     Tag,
@@ -30,7 +30,9 @@ import {ArcoTreeNode} from "@/types/insights-web";
 import { LuLayers } from "react-icons/lu";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
-
+import {RiAppsLine} from "react-icons/ri";
+import {CiLock} from "react-icons/ci";
+const { Row, Col } = Grid;
 export default function PreviewHeader({metricSetInfo}) {
 
     const t = useLocale(locale);
@@ -57,26 +59,38 @@ export default function PreviewHeader({metricSetInfo}) {
 
     return (
         <>
-            <Space align="start">
-                <div className={styles.icon}>
-                    <LuLayers/>
-                </div>
-                <Typography.Title
-                    heading={6}
-                >
-                    指标集：{'首页用户行为数据集'}
-                    <IconLock style={{ marginLeft:'10px',fontSize:13,marginBottom:1}}/>
-                </Typography.Title>
-
-            </Space>
-                <div style={{width:'80%',marginTop:'10px'}}>
-                    <Descriptions
-                        size={"mini"}
-                        layout="horizontal"
-                        data={metricDetail}
-                        column={2}
+            {
+                metricSetInfo?
+                    <Space size={0} direction="vertical" style={{ width: '100%' }}>
+                        <Row>
+                            <Button icon={<LuLayers/>} shape={"circle"} size={"small"} style={{marginRight:'10px',marginBottom:'15px'}}/>
+                            <Typography.Title
+                                heading={6}
+                                style={{marginTop:'1px'}}
+                            >
+                                {t['metricsetPreview.title.prefix']}：{metricSetInfo?.title}
+                                <CiLock style={{marginLeft:'5px',fontSize:14}}/>
+                            </Typography.Title>
+                        </Row>
+                        <Row>
+                            <Descriptions
+                                style={{width:'80%'}}
+                                size={"mini"}
+                                layout="horizontal"
+                                data={metricDetail}
+                                column={2}
+                            />
+                        </Row>
+                    </Space>
+                    :
+                    <Skeleton
+                        text={{
+                            rows:3,
+                            width: ['100%'],
+                        }}
+                        animation
                     />
-                </div>
+            }
         </>
     );
 }
