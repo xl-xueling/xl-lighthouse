@@ -60,4 +60,11 @@ public class TestStatService {
         ResultCode resultCode = statService.filterConfig(stat, List.of(renderFilterConfig));
         System.out.println("resultCode:" + JsonUtil.toJSONString(resultCode));
     }
+
+    @Test
+    public void testQueryList2() {
+        Integer projectId = 23;
+        List<Stat> statList = statService.queryByProjectId(projectId);
+        System.out.println("size:" + statList.size());
+    }
 }

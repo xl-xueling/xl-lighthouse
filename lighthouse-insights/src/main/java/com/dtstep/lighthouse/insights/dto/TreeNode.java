@@ -7,33 +7,29 @@ import java.util.stream.Collectors;
 
 public class TreeNode implements Serializable {
 
+    private String key;
+
     private String label;
 
-    public String value;
+    public int value;
 
-    private int type;
+    private String type;
 
     private List<TreeNode> children;
 
-    public TreeNode(){}
+    private TreeNode(){}
 
-    public TreeNode(String label,String value){
+    public TreeNode(String label,int value){
         this.label = label;
         this.value = value;
+        this.key = String.valueOf(value);
     }
 
-    public TreeNode(String label,String value,int type){
+    public TreeNode(String label,int value,String type){
         this.label = label;
         this.value = value;
         this.type = type;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+        this.key = type + "_" + value;
     }
 
     public String getLabel() {
@@ -52,11 +48,19 @@ public class TreeNode implements Serializable {
         this.children = children;
     }
 
-    public int getType() {
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -64,10 +68,18 @@ public class TreeNode implements Serializable {
         if(this.children == null){
             this.children = new ArrayList<>();
         }
-        List<String> childKeys = children.stream().map(z -> z.value).collect(Collectors.toList());
-        if(childKeys.contains(treeNode.getValue())){
+        List<String> childKeys = children.stream().map(z -> z.getKey()).collect(Collectors.toList());
+        if(childKeys.contains(treeNode.getKey())){
             throw new Exception("Duplicate node error!");
         }
         this.children.add(treeNode);
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

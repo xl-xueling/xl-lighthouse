@@ -205,7 +205,7 @@ public class StatServiceImpl implements StatService {
         for(String dimens : defaultDimensList){
             List<TreeNode> dimensValueList = new ArrayList<>();
             for(int i=0;i<3;i++){
-                dimensValueList.add(new TreeNode("dimens_" + i,"dimens_" + i));
+//                dimensValueList.add(new TreeNode("dimens_" + i,"dimens_" + i));
             }
             RenderFilterConfig renderFilterConfig = new RenderFilterConfig();
             renderFilterConfig.setComponentType(ComponentTypeEnum.FILTER_SELECT);

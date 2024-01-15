@@ -40,7 +40,34 @@ public class TreeUtil {
             }
             maxLevel++;
         }
-
         return maxLevel;
     }
+
+    public static List<String> getAllKeys(List<TreeNode> nodes) {
+        List<String> values = new ArrayList<>();
+        for (TreeNode node : nodes) {
+            values.add(node.getKey());
+            if (CollectionUtils.isNotEmpty(node.getChildren())) {
+                values.addAll(getAllKeys(node.getChildren()));
+            }
+        }
+        return values;
+    }
+
+
+    public static TreeNode findNodeByValue(List<TreeNode> nodes, String key) {
+        for (TreeNode node : nodes) {
+            if (node.getKey().equals(key)) {
+                return node;
+            }
+            if (CollectionUtils.isNotEmpty(node.getChildren())) {
+                TreeNode childResult = findNodeByValue(node.getChildren(), key);
+                if (childResult != null) {
+                    return childResult;
+                }
+            }
+        }
+        return null;
+    }
+
 }

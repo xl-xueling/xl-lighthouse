@@ -163,29 +163,25 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<TreeNode> getStructure(Project project) throws Exception{
+    public TreeNode getStructure(Project project) throws Exception{
         Integer id = project.getId();
         List<TreeNode> nodeList = new ArrayList<>();
-        TreeNode projectNode = new TreeNode(project.getTitle(),String.valueOf(project.getId()),1);
+        TreeNode rootNode = new TreeNode(project.getTitle(),project.getId(),"project");
         HashMap<String,TreeNode> nodeMap = new HashMap<>();
-        nodeMap.put(String.valueOf(project.getId()),projectNode);
+        nodeMap.put(String.valueOf(project.getId()),rootNode);
         List<Group> groupList = groupDao.queryByProjectId(id);
-        if(CollectionUtils.isNotEmpty(groupList)){
-            for(Group group : groupList){
-                TreeNode groupNode = new TreeNode(group.getToken(),String.valueOf(group.getId()),2);
-                nodeMap.put(String.valueOf(group.getId()),groupNode);
-                projectNode.addChild(groupNode);
-            }
-            List<Stat> statList = statDao.queryByProjectId(id);
-            if(CollectionUtils.isNotEmpty(statList)){
-                for(Stat stat : statList){
-                    TreeNode statNode = new TreeNode(stat.getTitle(),String.valueOf(stat.getId()),3);
-                    TreeNode parentNode = nodeMap.get(String.valueOf(stat.getGroupId()));
-                    parentNode.addChild(statNode);
-                }
-            }
+        for(Group group : groupList){
+            TreeNode groupNode = new TreeNode(group.getToken(),group.getId(),"group");
+            nodeMap.put(String.valueOf(group.getId()),groupNode);
+            rootNode.addChild(groupNode);
         }
-        return List.of(projectNode);
+        List<Stat> statList = statDao.queryByProjectId(id);
+        for(Stat stat : statList){
+            TreeNode statNode = new TreeNode(stat.getTitle(),stat.getId(),"stat");
+            TreeNode parentNode = nodeMap.get(String.valueOf(stat.getGroupId()));
+            parentNode.addChild(statNode);
+        }
+        return rootNode;
     }
 
 

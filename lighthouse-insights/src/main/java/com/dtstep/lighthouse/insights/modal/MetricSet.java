@@ -1,9 +1,11 @@
 package com.dtstep.lighthouse.insights.modal;
 
+import com.dtstep.lighthouse.insights.dto.TreeNode;
 import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class MetricSet implements Serializable {
 
@@ -18,6 +20,8 @@ public class MetricSet implements Serializable {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
+
+    private List<TreeNode> structure;
 
     public Integer getId() {
         return id;
@@ -65,5 +69,13 @@ public class MetricSet implements Serializable {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<TreeNode> getStructure() {
+        return structure;
+    }
+
+    public void setStructure(List<TreeNode> structure) {
+        this.structure = structure;
     }
 }

@@ -1,10 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.insights.dto.GrantPermissionsParam;
-import com.dtstep.lighthouse.insights.dto.MetricBindParam;
-import com.dtstep.lighthouse.insights.dto.MetricSetDto;
-import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
 import org.springframework.data.repository.query.Param;
 
@@ -23,4 +20,6 @@ public interface MetricSetService {
     MetricSetDto queryById(Integer id);
 
     ListData<MetricSet> queryList(MetricSetQueryParam queryParam,Integer pageNum,Integer pageSize);
+
+    List<TreeNode> getStructure(MetricSet metricSet) throws Exception;
 }

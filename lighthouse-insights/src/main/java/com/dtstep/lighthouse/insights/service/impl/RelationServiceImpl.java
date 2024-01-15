@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.RelationDao;
+import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Relation;
 import com.dtstep.lighthouse.insights.service.RelationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,10 @@ public class RelationServiceImpl implements RelationService {
     @Override
     public boolean isExist(String hash) {
         return relationDao.isExist(hash);
+    }
+
+    @Override
+    public List<Relation> queryList(Integer relationId, RelationTypeEnum relationTypeEnum) {
+        return relationDao.queryList(relationId,relationTypeEnum);
     }
 }

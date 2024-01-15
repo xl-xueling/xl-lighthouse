@@ -40,16 +40,4 @@ public class TestUtil {
         System.out.println("index:" + list.indexOf(current));
     }
 
-    @Test
-    public void testTreeUtil() throws Exception{
-        TreeNode treeNode = new TreeNode();
-        treeNode.setLabel("1");
-        List<TreeNode> children = new ArrayList<>();
-        TreeNode treeNode2 = new TreeNode();
-        treeNode2.setLabel("1");
-        children.add(treeNode2);
-        treeNode.setChildren(children);
-        int maxLevel = TreeUtil.getMaxLevel(List.of(treeNode));
-        System.out.println(maxLevel);
-    }
 }

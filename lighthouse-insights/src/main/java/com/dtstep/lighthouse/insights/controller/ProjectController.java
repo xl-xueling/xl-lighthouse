@@ -45,7 +45,7 @@ public class ProjectController {
     public ResultData<ProjectExtendDto> queryById(@RequestBody QueryParam queryParam) throws Exception{
         ProjectDto projectDto = projectService.queryById(queryParam.getId());
         ProjectExtendDto projectExtendDto = new ProjectExtendDto(projectDto);
-        List<TreeNode> structure = projectService.getStructure(projectDto);
+        TreeNode structure = projectService.getStructure(projectDto);
         System.out.println("structure:" + JsonUtil.toJSONString(structure));
         projectExtendDto.setStructure(structure);
         return ResultData.success(projectExtendDto);

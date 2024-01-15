@@ -17,7 +17,7 @@ public interface ProjectService {
 
     ProjectDto queryById(Integer id);
 
-    List<TreeNode> getStructure(Project project) throws Exception;
+    TreeNode getStructure(Project project) throws Exception;
 
     int delete(Project project);
 
