@@ -122,11 +122,10 @@ export interface MetricSet {
     desc?:string;
     createTime?:number;
     updateTime?:number;
+    initUsersPermission?:number[],
+    initDepartmentsPermission?:number[],
 }
 
-export interface MetricSetPagination extends MetricSet{
-    admins?:Array<User>;
-}
 
 export interface Order {
     id?:number;

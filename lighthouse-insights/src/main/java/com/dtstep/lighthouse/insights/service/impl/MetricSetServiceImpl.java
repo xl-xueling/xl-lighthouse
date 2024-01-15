@@ -52,31 +52,30 @@ public class MetricSetServiceImpl implements MetricSetService {
         metricSet.setUpdateTime(localDateTime);
         metricSetDao.insert(metricSet);
         int id = metricSet.getId();
+        RolePair rolePair = resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Metric,id,0));
+        Integer manageRoleId = rolePair.getManageRoleId();
         int currentUserId = baseService.getCurrentUserId();
-        Role role = roleService.cacheQueryRole(RoleTypeEnum.METRIC_MANAGE_PERMISSION,id);
-        Permission adminPermission = new Permission(currentUserId,OwnerTypeEnum.USER,role.getId());
+        Permission adminPermission = new Permission(currentUserId,OwnerTypeEnum.USER,manageRoleId);
         permissionService.create(adminPermission);
         return id;
     }
 
 
     @Override
-    public int grantAccessPermissions(Integer id, GrantPermissionsParam permissionsParam) {
+    public int grantAccessPermissions(Integer id, List<Integer> initUsersPermission,List<Integer> initDepartmentsPermission) {
         MetricSet metricSet = metricSetDao.queryById(id);
         Role role = roleService.cacheQueryRole(RoleTypeEnum.METRIC_ACCESS_PERMISSION,id);
-        List<Integer> departmentIdList = permissionsParam.getDepartmentsPermission();
-        List<Integer> userIdList = permissionsParam.getUsersPermission();
         List<Permission> permissionList = new ArrayList<>();
-        if(metricSet.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(departmentIdList)){
-            for(int i=0;i<departmentIdList.size();i++){
-                Integer tempDepartmentId = departmentIdList.get(i);
+        if(metricSet.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(initDepartmentsPermission)){
+            for(int i=0;i<initDepartmentsPermission.size();i++){
+                Integer tempDepartmentId = initDepartmentsPermission.get(i);
                 Permission tempPermission = new Permission(tempDepartmentId,OwnerTypeEnum.DEPARTMENT,role.getId());
                 permissionList.add(tempPermission);
             }
         }
-        if(metricSet.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(userIdList)){
-            for(int i=0;i<userIdList.size();i++){
-                Integer userId = userIdList.get(i);
+        if(metricSet.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(initUsersPermission)){
+            for(int i=0;i<initUsersPermission.size();i++){
+                Integer userId = initUsersPermission.get(i);
                 Permission tempPermission = new Permission(userId,OwnerTypeEnum.USER, role.getId());
                 permissionList.add(tempPermission);
             }
