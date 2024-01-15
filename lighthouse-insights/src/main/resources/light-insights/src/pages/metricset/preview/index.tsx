@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {Card, Typography, Grid, Space, Tabs, Divider, Notification} from '@arco-design/web-react';
+import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb} from '@arco-design/web-react';
 import PreviewHeader from "@/pages/metricset/preview/header";
-import {IconDashboard, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
+import {IconDashboard, IconHome, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
 import BindedList from "@/pages/metricset/binded/list/binded";
 import GroupBasicPanel from "@/pages/group/basic";
 import ProjectPreview from "@/pages/project/preview";
@@ -27,7 +27,6 @@ export default function MetricSetPreview() {
         await requestQueryById({id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                console.log("metricSetInfo is:" + JSON.stringify(metricSetInfo));
                 setMetricSetInfo(data);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -44,6 +43,13 @@ export default function MetricSetPreview() {
     },[])
 
     return (
+        <>
+        <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+            <Breadcrumb.Item>
+                <IconHome />
+            </Breadcrumb.Item>
+            <Breadcrumb.Item style={{fontWeight:20}}>{t['metricSetPreview.breadcrumb']}</Breadcrumb.Item>
+        </Breadcrumb>
         <Space size={16} direction="vertical" style={{ width: '100%' }}>
             <Card>
                 <PreviewHeader metricSetInfo={metricSetInfo}/>
@@ -79,8 +85,7 @@ export default function MetricSetPreview() {
                     {/*<GroupBasicPanel groupId={0}/>*/}
                 </TabPane>
             </Tabs>
-
-
         </Space>
+        </>
     );
 }
