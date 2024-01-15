@@ -85,19 +85,19 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
             metricIds:selectedItems.map(z => z.id),
         }
         setLoading(true);
-        requestBinded(bindParams).then((result) => {
-            if(result.code === '0'){
-                Message.success(t['reverseBinded.form.submit.success']);
-                setTimeout(() => {
-                    setLoading(false);
-                    onClose();
-                },1000)
+        requestBinded(bindParams).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['reverseBinded.form.submit.success']});
+                onClose();
             }else{
-                Message.error(result.message || t['system.error']);
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
         }).catch((error) => {
             console.log(error);
             Message.error(t['system.error'])
+        }).finally(() => {
+            setLoading(false);
         })
     }
 
@@ -113,7 +113,6 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
                 pageNum:current,
             }
         }).then((response) => {
-            console.log("result is:" + JSON.stringify(response));
             const {code, data ,message} = response;
             if(code == '0'){
                 setMetricSetList(data.list);
