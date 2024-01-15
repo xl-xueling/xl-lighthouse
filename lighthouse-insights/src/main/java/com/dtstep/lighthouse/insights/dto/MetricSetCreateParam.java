@@ -16,7 +16,9 @@ public class MetricSetCreateParam {
     @NotNull
     private String desc;
 
-    private GrantPermissionsParam permissionsParam;
+    private List<Integer> initUsersPermission;
+
+    private List<Integer> initDepartmentsPermission;
 
     public String getTitle() {
         return title;
@@ -42,11 +44,19 @@ public class MetricSetCreateParam {
         this.desc = desc;
     }
 
-    public GrantPermissionsParam getPermissionsParam() {
-        return permissionsParam;
+    public List<Integer> getInitUsersPermission() {
+        return initUsersPermission;
     }
 
-    public void setPermissionsParam(GrantPermissionsParam permissionsParam) {
-        this.permissionsParam = permissionsParam;
+    public void setInitUsersPermission(List<Integer> initUsersPermission) {
+        this.initUsersPermission = initUsersPermission;
+    }
+
+    public List<Integer> getInitDepartmentsPermission() {
+        return initDepartmentsPermission;
+    }
+
+    public void setInitDepartmentsPermission(List<Integer> initDepartmentsPermission) {
+        this.initDepartmentsPermission = initDepartmentsPermission;
     }
 }

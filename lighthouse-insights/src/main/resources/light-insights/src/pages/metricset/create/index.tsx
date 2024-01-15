@@ -42,10 +42,21 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
         await formRef.current.validate().catch()
         setLoading(true);
         const values = formRef.current.getFieldsValue();
+        const privateType = values.privateType;
+        let initDepartmentsPermission = [];
+        let initUsersPermission = [];
+        if(privateType == 0 && departmentTransferRef?.current){
+            initDepartmentsPermission = departmentTransferRef.current.getData();
+        }
+        if(privateType == 0 && userTransferRef?.current){
+            initUsersPermission = userTransferRef.current.getData();
+        }
         const createParams:MetricSet = {
             title:values.title,
             desc:values.desc,
             privateType:values.privateType,
+            initUsersPermission:initUsersPermission,
+            initDepartmentsPermission:initDepartmentsPermission,
         }
         await requestCreate(createParams).then((response) => {
             const {code, data ,message} = response;
@@ -53,6 +64,7 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['createMetricSet.form.submit.success']});
                 setLoading(false);
                 onSuccess();
+                onClose();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
                 setLoading(false);

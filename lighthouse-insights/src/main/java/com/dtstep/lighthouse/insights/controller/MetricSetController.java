@@ -32,12 +32,10 @@ public class MetricSetController {
         metricSet.setDesc(createParam.getDesc());
         metricSet.setTitle(createParam.getTitle());
         metricSet.setPrivateType(createParam.getPrivateType());
-        int result = metricSetService.create(metricSet);
-        if(result > 0){
-            if(createParam.getPermissionsParam() != null){
-                metricSetService.grantAccessPermissions(result, createParam.getPermissionsParam());
-            }
-            return ResultData.success(result);
+        int id = metricSetService.create(metricSet);
+        if(id > 0){
+            metricSetService.grantAccessPermissions(id, createParam.getInitUsersPermission(),createParam.getInitDepartmentsPermission());
+            return ResultData.success(id);
         }else{
             return ResultData.result(ResultCode.systemError);
         }

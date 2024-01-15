@@ -7,11 +7,13 @@ import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface MetricSetService {
 
     int create(MetricSet metricSet);
 
-    int grantAccessPermissions(Integer id, GrantPermissionsParam permissionsParam);
+    int grantAccessPermissions(Integer id, List<Integer> initUsersPermission,List<Integer> initDepartmentsPermission);
 
     int update(MetricSet metricSet);
 
