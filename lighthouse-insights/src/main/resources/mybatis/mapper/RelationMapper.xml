@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dtstep.lighthouse.insights.dao.RelationDao">
+    <resultMap id="relationResultMap" type="com.dtstep.lighthouse.insights.modal.Relation">
+        <result property="id" column="id"/>
+        <result property="relationId" column="relation_id"/>
+        <result property="relationType" column="relation_type" typeHandler="com.dtstep.lighthouse.insights.types.RelationTypeEnumTypeHandler"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="resourceType" column="resource_type" typeHandler="com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Permission" >
+        INSERT INTO ldp_relation (`relation_id`, `relation_type`,`resource_id`, `resource_type`, `create_time`) VALUES
+        (
+            #{relationId,jdbcType=INTEGER},
+            #{relationType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RelationTypeEnumTypeHandler},
+            #{resourceId,jdbcType=INTEGER},
+            #{resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
+            #{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO ldp_relation (`relation_id`, `relation_type`,`resource_id`, `resource_type`, `create_time`) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{relationId,jdbcType=INTEGER},
+            #{relationType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RelationTypeEnumTypeHandler},
+            #{resourceId,jdbcType=INTEGER},
+            #{resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
+            #{createTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <select id="queryList" resultMap="relationResultMap">
+        SELECT `id`,`relation_id`, `relation_type`,`resource_id`, `resource_type`, `create_time`
+        FROM ldp_relation
+        <where>
+            <if test="queryParam.relationId != null">
+                AND relation_id = #{queryParam.relationId}
+            </if>
+            <if test="queryParam.relationType != null">
+                AND relation_type = #{queryParam.relationType.relationType}
+            </if>
+        </where>
+        <bind name="offset" value="(pageNum-1)*pageSize"></bind>
+        limit ${offset},#{pageSize}
+    </select>
+
+    <select id="delete" resultType="Integer">
+        delete
+        FROM ldp_relation
+        <where>
+            <if test="queryParam.relationId != null">
+                AND relation_id = #{queryParam.relationId}
+            </if>
+            <if test="queryParam.id != null">
+                AND id = #{queryParam.id}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
