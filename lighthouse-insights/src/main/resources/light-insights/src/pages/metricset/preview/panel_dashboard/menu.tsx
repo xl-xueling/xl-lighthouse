@@ -14,7 +14,7 @@ import {
 } from '@arco-design/web-react';
 import PreviewHeader from "@/pages/metricset/preview/header";
 import {IconDashboard, IconHome, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
-import BindedList from "@/pages/metricset/binded/list/binded";
+import BindedList from "@/pages/metricset/binded/list";
 import GroupBasicPanel from "@/pages/group/basic";
 import ProjectPreview from "@/pages/project/preview";
 import useLocale from "@/utils/useLocale";
