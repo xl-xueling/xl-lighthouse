@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {Card, Typography, Grid, Space, Tabs, Divider, Notification} from '@arco-design/web-react';
-import MetricNewDetail from "@/pages/metricset/preview/new_detail";
+import PreviewHeader from "@/pages/metricset/preview/header";
 import {IconDashboard, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
 import BindedList from "@/pages/metricset/binded/list/binded";
 import GroupBasicPanel from "@/pages/group/basic";
@@ -23,6 +23,7 @@ export default function MetricSetPreview() {
 
     const fetchMetricSetInfo = async (): Promise<void> => {
         setLoading(true);
+        console.log("fetchMetricInfo,id:" + id);
         await requestQueryById({id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -37,10 +38,15 @@ export default function MetricSetPreview() {
         })
     }
 
+    useEffect(() => {
+        console.log("fetch metric..")
+        fetchMetricSetInfo().then();
+    },[])
+
     return (
         <Space size={16} direction="vertical" style={{ width: '100%' }}>
             <Card>
-                <MetricNewDetail metricSetInfo={metricSetInfo}/>
+                <PreviewHeader metricSetInfo={metricSetInfo}/>
             </Card>
 
             <Tabs

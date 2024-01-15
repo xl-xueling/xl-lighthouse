@@ -26,7 +26,6 @@ import ChartPanel from "@/pages/stat/display/chart_panel";
 import BasicInfo from "@/pages/stat/display/basic";
 const { Row, Col } = Grid;
 import { RiAppsLine } from "react-icons/ri";
-import MetricNewDetail from "@/pages/metricset/preview/new_detail";
 import PreviewHeader from "@/pages/project/preview/head";
 import {ArcoTreeNode, MetricSet, Project} from "@/types/insights-web";
 import {requestList, requestQueryById} from "@/api/project";
