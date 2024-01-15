@@ -47,9 +47,10 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Transactional
     @Override
-    public void batchCreate(List<Permission> permissionList) {
+    public int batchCreate(List<Permission> permissionList) {
+        int result = 0;
         if(CollectionUtils.isEmpty(permissionList)){
-            return;
+            return result;
         }
         LocalDateTime localDateTime = LocalDateTime.now();
         List<Permission> permissions = permissionList.stream().filter(z -> !existPermission(z.getOwnerId(),z.getOwnerType(),z.getRoleId())).map(z -> {
@@ -58,8 +59,9 @@ public class PermissionServiceImpl implements PermissionService {
             return z;
         }).collect(Collectors.toList());
         if(CollectionUtils.isNotEmpty(permissions)){
-            permissionDao.batchInsert(permissions);
+            result = permissionDao.batchInsert(permissions);
         }
+        return result;
     }
 
     @Override

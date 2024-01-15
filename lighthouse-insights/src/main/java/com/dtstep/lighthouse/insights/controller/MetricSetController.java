@@ -34,6 +34,9 @@ public class MetricSetController {
         metricSet.setPrivateType(createParam.getPrivateType());
         int result = metricSetService.create(metricSet);
         if(result > 0){
+            if(createParam.getPermissionsParam() != null){
+                metricSetService.grantAccessPermissions(result, createParam.getPermissionsParam());
+            }
             return ResultData.success(result);
         }else{
             return ResultData.result(ResultCode.systemError);

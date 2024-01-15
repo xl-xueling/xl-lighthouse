@@ -31,7 +31,7 @@ import { LuLayers } from "react-icons/lu";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
 
-export default function MetricNewDetail({metricSetInfo}) {
+export default function PreviewHeader({metricSetInfo}) {
 
     const t = useLocale(locale);
 
@@ -43,14 +43,14 @@ export default function MetricNewDetail({metricSetInfo}) {
         },
         {
             label: <IconUserGroup/>,
-            value: <UserGroup users={metricSetInfo.admins}/>,
+            value: <UserGroup users={metricSetInfo?.admins}/>,
             span:1,
         },
         {
             label: <IconBook/>,
             span : 2,
             value: <div style={{ wordBreak: 'break-word' }}>
-                <span>This is a very long text that needs to be wrapped to multiple lines ithat needs to be wrapped to multiple lines if necessary.f necessary.This is a very long text that needs to be wrapped to multiple lines ithat needs to be wrapped to multiple lines if necessary.f necessary.</span>
+                <span>{metricSetInfo?.desc}</span>
             </div>
         },
     ];

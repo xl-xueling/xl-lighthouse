@@ -13,7 +13,7 @@ public interface PermissionService {
 
     int delete(PermissionQueryParam queryParam);
 
-    void batchCreate(List<Permission> permissionList);
+    int batchCreate(List<Permission> permissionList);
 
     boolean checkUserPermission(Integer userId, Integer roleId);
 

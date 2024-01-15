@@ -13,7 +13,7 @@ public interface PermissionDao {
 
     int insert(Permission permission);
 
-    void batchInsert(List<Permission> list);
+    int batchInsert(List<Permission> list);
 
     int delete(@Param("queryParam")PermissionQueryParam queryParam);
 
