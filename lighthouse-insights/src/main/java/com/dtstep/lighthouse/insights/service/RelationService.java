@@ -7,4 +7,6 @@ import java.util.List;
 public interface RelationService {
 
     int batchCreate(List<Relation> relationList);
+
+    boolean isExist(String hash);
 }

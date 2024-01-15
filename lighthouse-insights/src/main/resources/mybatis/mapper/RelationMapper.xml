@@ -12,32 +12,34 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Permission" >
-        INSERT INTO ldp_relation (`relation_id`, `relation_type`,`resource_id`, `resource_type`, `create_time`) VALUES
+        INSERT INTO ldp_relations (`relation_id`, `relation_type`,`resource_id`, `resource_type`,`hash`, `create_time`) VALUES
         (
             #{relationId,jdbcType=INTEGER},
             #{relationType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RelationTypeEnumTypeHandler},
             #{resourceId,jdbcType=INTEGER},
             #{resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
+            #{hash,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO ldp_relation (`relation_id`, `relation_type`,`resource_id`, `resource_type`, `create_time`) VALUES
+        INSERT INTO ldp_relations (`relation_id`, `relation_type`,`resource_id`, `resource_type`,`hash`,`create_time`) VALUES
         <foreach collection="list" item="item" separator=",">
             (
-            #{relationId,jdbcType=INTEGER},
-            #{relationType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RelationTypeEnumTypeHandler},
-            #{resourceId,jdbcType=INTEGER},
-            #{resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
-            #{createTime,jdbcType=TIMESTAMP}
+            #{item.relationId,jdbcType=INTEGER},
+            #{item.relationType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RelationTypeEnumTypeHandler},
+            #{item.resourceId,jdbcType=INTEGER},
+            #{item.resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
+            #{item.hash,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP}
             )
         </foreach>
     </insert>
 
     <select id="queryList" resultMap="relationResultMap">
         SELECT `id`,`relation_id`, `relation_type`,`resource_id`, `resource_type`, `create_time`
-        FROM ldp_relation
+        FROM ldp_relations
         <where>
             <if test="queryParam.relationId != null">
                 AND relation_id = #{queryParam.relationId}
@@ -50,9 +52,15 @@
         limit ${offset},#{pageSize}
     </select>
 
+    <select id="isExist" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM ldp_relations
+        WHERE hash = #{hash}
+    </select>
+
     <select id="delete" resultType="Integer">
         delete
-        FROM ldp_relation
+        FROM ldp_relations
         <where>
             <if test="queryParam.relationId != null">
                 AND relation_id = #{queryParam.relationId}

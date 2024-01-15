@@ -16,6 +16,11 @@ public class RelationServiceImpl implements RelationService {
 
     @Override
     public int batchCreate(List<Relation> relationList) {
-        return relationDao.batchCreate(relationList);
+        return relationDao.batchInsert(relationList);
+    }
+
+    @Override
+    public boolean isExist(String hash) {
+        return relationDao.isExist(hash);
     }
 }
