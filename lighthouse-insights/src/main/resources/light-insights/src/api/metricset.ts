@@ -1,6 +1,6 @@
 import {request} from "@/utils/request";
 import {ResultData} from "@/types/insights-common";
-import {ArcoTreeNode, MetricSet} from "@/types/insights-web";
+import {ArcoTreeNode, MetricSet, Relation} from "@/types/insights-web";
 
 export async function requestCreate(data:MetricSet) :Promise<ResultData>{
     return request({
@@ -26,7 +26,7 @@ export async function requestList(data) :Promise<ResultData<{list:Array<MetricSe
     })
 }
 
-export async function requestBindList(data) :Promise<ResultData<{list:Array<MetricSet>,total:number}>> {
+export async function requestBindList(data) :Promise<ResultData<Relation[]>> {
     return request({
         url:'/metricset/bindlist',
         method:'POST',

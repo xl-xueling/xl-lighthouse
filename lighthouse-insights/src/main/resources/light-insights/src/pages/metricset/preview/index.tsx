@@ -73,7 +73,7 @@ export default function MetricSetPreview() {
                             Binded Items
                         </span>
                     }>
-                    <MetricBindedList metricId={metricSetInfo?.id}/>
+                    {metricSetInfo && <MetricBindedList metricId={metricSetInfo?.id}/>}
                 </TabPane>
                 <TabPane key='3' title={
                     <span>
