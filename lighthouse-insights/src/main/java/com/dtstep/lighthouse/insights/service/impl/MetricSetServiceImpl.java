@@ -7,8 +7,11 @@ import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.*;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
+import com.dtstep.lighthouse.insights.util.TreeUtil;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -165,5 +168,66 @@ public class MetricSetServiceImpl implements MetricSetService {
             PageHelper.clearPage();
         }
         return metricSetListData;
+    }
+
+    @Override
+    public List<TreeNode> getStructure(MetricSet metricSet) throws Exception{
+        Validate.notNull(metricSet);
+        List<TreeNode> structure = metricSet.getStructure();
+        if(CollectionUtils.isEmpty(structure)){
+            structure = new ArrayList<>();
+            TreeNode rootNode = new TreeNode(metricSet.getTitle(),metricSet.getId(),"metric");
+            structure.add(rootNode);
+            List<Relation> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
+            for(Relation relation : relationList){
+                if(relation.getResourceType() == ResourceTypeEnum.Project){
+                    Project project = projectService.queryById(relation.getResourceId());
+                    if(project != null){
+                        TreeNode projectStructure = projectService.getStructure(project);
+                        rootNode.addChild(projectStructure);
+                    }
+                }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
+                    Stat stat = statService.queryById(relation.getResourceId());
+                    TreeNode statNode = new TreeNode(stat.getTitle(), stat.getId(),"stat");
+                    rootNode.addChild(statNode);
+                }
+            }
+        }else {
+            List<String> keys = TreeUtil.getAllKeys(structure);
+            TreeNode newElementNode = TreeUtil.findNodeByValue(structure,"-1");
+            if(newElementNode == null){
+                newElementNode = new TreeNode("",-1);
+                structure.add(newElementNode);
+            }
+            TreeNode wasteNode = TreeUtil.findNodeByValue(structure,"-2");
+            if(wasteNode == null){
+                wasteNode = new TreeNode("",-2);
+                structure.add(wasteNode);
+            }
+            List<Relation> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
+            for(Relation relation : relationList){
+                if(relation.getResourceType() == ResourceTypeEnum.Project){
+                    Project project = projectService.queryById(relation.getResourceId());
+                    if(project != null){
+                        List<Stat> statList = statService.queryByProjectId(project.getId());
+                        for(Stat stat:statList){
+                            String tempKey = "stat" + "_" + stat.getId();
+                            if(!keys.contains(tempKey)){
+                                newElementNode.addChild(new TreeNode(stat.getTitle(),stat.getId(),"stat"));
+                            }
+                        }
+                    }
+                }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
+                    Stat stat = statService.queryById(relation.getResourceId());
+                    if(stat != null){
+                        String tempKey = "stat" + "_" + stat.getId();
+                        if(!keys.contains(tempKey)){
+                            newElementNode.addChild(new TreeNode(stat.getTitle(),stat.getId(),"stat"));
+                        }
+                    }
+                }
+            }
+        }
+        return structure;
     }
 }

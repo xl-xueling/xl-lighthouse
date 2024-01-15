@@ -6,17 +6,17 @@ import java.util.List;
 
 public class ProjectExtendDto extends ProjectDto {
 
-    private List<TreeNode> structure;
+    private TreeNode structure;
 
     public ProjectExtendDto(Project project) {
         super(project);
     }
 
-    public List<TreeNode> getStructure() {
+    public TreeNode getStructure() {
         return structure;
     }
 
-    public void setStructure(List<TreeNode> structure) {
+    public void setStructure(TreeNode structure) {
         this.structure = structure;
     }
 }

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @ControllerAdvice
 public class MetricSetController {
@@ -59,10 +61,12 @@ public class MetricSetController {
     }
 
     @RequestMapping("/metricset/queryById")
-    public ResultData<MetricSet> queryById(@Validated @RequestBody IDParam idParam) {
+    public ResultData<MetricSet> queryById(@Validated @RequestBody IDParam idParam) throws Exception{
         Integer id = idParam.getId();
         MetricSetDto metricSet = metricSetService.queryById(id);
-        System.out.println("metricSet:" + JsonUtil.toJSONString(metricSet));
+        List<TreeNode> structure = metricSetService.getStructure(metricSet);
+        System.out.println("metricSet structure:" + JsonUtil.toJSONString(structure));
+        metricSet.setStructure(structure);
         return ResultData.success(metricSet);
     }
 

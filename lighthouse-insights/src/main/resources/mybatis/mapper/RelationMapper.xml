@@ -41,15 +41,13 @@
         SELECT `id`,`relation_id`, `relation_type`,`resource_id`, `resource_type`, `create_time`
         FROM ldp_relations
         <where>
-            <if test="queryParam.relationId != null">
-                AND relation_id = #{queryParam.relationId}
+            <if test="relationId != null">
+                AND relation_id = #{relationId}
             </if>
-            <if test="queryParam.relationType != null">
-                AND relation_type = #{queryParam.relationType.relationType}
+            <if test="relationType != null">
+                AND relation_type = #{relationType.relationType}
             </if>
         </where>
-        <bind name="offset" value="(pageNum-1)*pageSize"></bind>
-        limit ${offset},#{pageSize}
     </select>
 
     <select id="isExist" resultType="boolean">

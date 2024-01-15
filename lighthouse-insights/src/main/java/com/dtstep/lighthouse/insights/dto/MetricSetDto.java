@@ -12,8 +12,6 @@ public class MetricSetDto extends MetricSet {
 
     private List<User> admins;
 
-    private List<TreeNode> structure;
-
     public MetricSetDto(MetricSet metricSet){
         Validate.notNull(metricSet);
         BeanCopyUtil.copy(metricSet,this);
@@ -25,13 +23,5 @@ public class MetricSetDto extends MetricSet {
 
     public void setAdmins(List<User> admins) {
         this.admins = admins;
-    }
-
-    public List<TreeNode> getStructure() {
-        return structure;
-    }
-
-    public void setStructure(List<TreeNode> structure) {
-        this.structure = structure;
     }
 }
