@@ -178,16 +178,16 @@ public class MetricSetServiceImpl implements MetricSetService {
             structure = new ArrayList<>();
             TreeNode rootNode = new TreeNode(metricSet.getTitle(),metricSet.getId(),"metric");
             structure.add(rootNode);
-            List<Relation> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
-            for(Relation relation : relationList){
+            List<RelationDto> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
+            for(RelationDto relation : relationList){
                 if(relation.getResourceType() == ResourceTypeEnum.Project){
-                    Project project = projectService.queryById(relation.getResourceId());
+                    Project project = (Project) relation.getExtend();
                     if(project != null){
                         TreeNode projectStructure = projectService.getStructure(project);
                         rootNode.addChild(projectStructure);
                     }
                 }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
-                    Stat stat = statService.queryById(relation.getResourceId());
+                    Stat stat = (Stat)relation.getExtend();
                     TreeNode statNode = new TreeNode(stat.getTitle(), stat.getId(),"stat");
                     rootNode.addChild(statNode);
                 }
@@ -204,10 +204,10 @@ public class MetricSetServiceImpl implements MetricSetService {
                 wasteNode = new TreeNode("",-2);
                 structure.add(wasteNode);
             }
-            List<Relation> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
-            for(Relation relation : relationList){
+            List<RelationDto> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
+            for(RelationDto relation : relationList){
                 if(relation.getResourceType() == ResourceTypeEnum.Project){
-                    Project project = projectService.queryById(relation.getResourceId());
+                    Project project = (Project) relation.getExtend();
                     if(project != null){
                         List<Stat> statList = statService.queryByProjectId(project.getId());
                         for(Stat stat:statList){
@@ -218,7 +218,7 @@ public class MetricSetServiceImpl implements MetricSetService {
                         }
                     }
                 }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
-                    Stat stat = statService.queryById(relation.getResourceId());
+                    Stat stat = (Stat) relation.getExtend();
                     if(stat != null){
                         String tempKey = "stat" + "_" + stat.getId();
                         if(!keys.contains(tempKey)){

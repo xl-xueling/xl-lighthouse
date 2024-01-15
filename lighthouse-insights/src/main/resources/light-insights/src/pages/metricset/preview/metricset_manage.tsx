@@ -12,7 +12,7 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import GroupBasicPanel from "@/pages/group/basic";
 import useForm from "@arco-design/web-react/es/Form/useForm";
-import BindedList from "@/pages/metricset/binded/list/binded";
+import BindedList from "@/pages/metricset/binded/list";
 const { Row, Col } = Grid;
 
 export default function MetricManagePanel({groupId}) {

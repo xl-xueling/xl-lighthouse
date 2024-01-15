@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service;
 
+import com.dtstep.lighthouse.insights.dto.RelationDto;
 import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Relation;
 
@@ -11,5 +12,5 @@ public interface RelationService {
 
     boolean isExist(String hash);
 
-    List<Relation> queryList(Integer relationId, RelationTypeEnum relationTypeEnum);
+    List<RelationDto> queryList(Integer relationId, RelationTypeEnum relationTypeEnum);
 }

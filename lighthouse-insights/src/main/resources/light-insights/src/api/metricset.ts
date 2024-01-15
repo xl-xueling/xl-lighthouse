@@ -26,6 +26,14 @@ export async function requestList(data) :Promise<ResultData<{list:Array<MetricSe
     })
 }
 
+export async function requestBindList(data) :Promise<ResultData<{list:Array<MetricSet>,total:number}>> {
+    return request({
+        url:'/metricset/bindlist',
+        method:'POST',
+        data,
+    })
+}
+
 export async function requestPinList() :Promise<ResultData<Array<MetricSet>>> {
     return request({
         url:'/metricset/pinList',

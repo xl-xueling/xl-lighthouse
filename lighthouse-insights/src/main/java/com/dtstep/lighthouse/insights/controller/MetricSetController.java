@@ -6,10 +6,12 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.*;
+import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
 import com.dtstep.lighthouse.insights.service.MetricSetService;
+import com.dtstep.lighthouse.insights.service.RelationService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +28,9 @@ public class MetricSetController {
 
     @Autowired
     private MetricSetService metricSetService;
+
+    @Autowired
+    private RelationService relationService;
 
     @RequestMapping("/metricset/create")
     public ResultData<Integer> create(@Validated @RequestBody MetricSetCreateParam createParam) {
@@ -76,6 +81,15 @@ public class MetricSetController {
         int result = metricSetService.binded(bindParam);
         return ResultData.success();
     }
+
+    @RequestMapping("/metricset/bindlist")
+    public ResultData<List<RelationDto>> bindedList(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        List<RelationDto> relationDtos = relationService.queryList(id, RelationTypeEnum.MetricSetBindRelation);
+        System.out.println("relationDtos is:" + JsonUtil.toJSONString(relationDtos));
+        return ResultData.success(relationDtos);
+    }
+
 
     @RequestMapping("/metricset/list")
     public ResultData<ListData<MetricSet>> list(@Validated @RequestBody ListSearchObject<MetricSetQueryParam> searchObject) {

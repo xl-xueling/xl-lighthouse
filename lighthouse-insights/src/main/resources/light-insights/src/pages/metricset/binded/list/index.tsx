@@ -5,7 +5,7 @@ import {
     Form,
     Input,
     Tabs,
-    Dropdown, Menu, TreeSelect, Card, Table, TableColumnProps, Space, Divider
+    Dropdown, Menu, TreeSelect, Card, Table, TableColumnProps, Space, Divider, PaginationProps
 } from '@arco-design/web-react';
 import {
     IconDownCircle, IconPlus, IconTag, IconThunderbolt
@@ -13,10 +13,25 @@ import {
 import React, {useEffect, useState} from 'react';
 import locale from './locale';
 import styles from './style/index.module.less';
+import useLocale from "@/utils/useLocale";
+import {Project} from "@/types/insights-web";
+import {requestBindList} from "@/api/metricset";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
-export default function BindedList({metricId}) {
+export default function MetricBindedList({metricId}) {
+
+    const t = useLocale(locale);
+    const [listData, setListData] = useState<Project[]>([]);
+
+    const [pagination, setPagination] = useState<PaginationProps>({
+        sizeOptions: [15,20,30,50],
+        sizeCanChange: true,
+        showTotal: true,
+        pageSize: 15,
+        current: 1,
+        pageSizeChangeResetCurrent: true,
+    });
 
     const columns: TableColumnProps[] = [
         {
@@ -73,6 +88,31 @@ export default function BindedList({metricId}) {
             email: 'william.smith@example.com',
         },
     ];
+
+    const fetchData = async () => {
+        const {current, pageSize} = pagination;
+        const combineParam = {
+            id:metricId,
+        }
+        await requestBindList({
+                queryParams:combineParam,
+                pagination:{
+                    pageSize:pageSize,
+                    pageNum:current,
+                }
+            }
+        ).then((response) => {
+            console.log("response is:" + JSON.stringify(response))
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
+
+    useEffect(() => {
+        console.log("metricId is:" + metricId)
+        fetchData().then();
+    },[])
 
     return (
         <div>
