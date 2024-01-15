@@ -20,6 +20,13 @@ const TabPane = Tabs.TabPane;
 
 export default function MetricSetPreviewPanel({metricSetInfo}) {
     const [loading,setLoading] = useState<boolean>(false);
+    const [selectedStatId,setSelectedStatId] = useState<number>(null);
+    const handlerCallback = async (type,record) => {
+        if(type == 'clickStatMenu'){
+            setSelectedStatId(Number(record));
+        }
+
+    }
 
     return (
         <Spin loading={loading} style={{display:'block'}}>
@@ -27,11 +34,11 @@ export default function MetricSetPreviewPanel({metricSetInfo}) {
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
                         <Row>
-                            <DashboardMenu metricSetInfo={metricSetInfo} />
+                            <DashboardMenu metricSetInfo={metricSetInfo} callback={handlerCallback}/>
                         </Row>
                     </Space>
                     <Space className={styles.right} size={16} direction="vertical">
-                        {/*{selectedStatId && <StatPreviewPanel id={selectedStatId}/>}*/}
+                        {selectedStatId && <StatPreviewPanel id={selectedStatId}/>}
                     </Space>
                 </div>
             </Space>
