@@ -1,30 +1,32 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
-  Radio,
+  Breadcrumb,
   Button,
   Card,
   Grid,
+  Message,
+  Notification,
   PaginationProps,
+  Radio,
   Space,
   Table,
-  Message, Breadcrumb, Notification,
 } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
 import {getColumns} from './constants';
-import {requestList} from "@/api/project";
+import {requestDeleteById, requestList} from "@/api/project";
 import {Department, Project} from "@/types/insights-web";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useSelector} from "react-redux";
 import ProjectCreatePanel from "@/pages/project/create";
 import ProjectUpdatePanel from "@/pages/project/update";
-import {requestDeleteById} from "@/api/project";
 import Detail from "@/pages/project/list/detail";
 import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
 import ProjectApplyModal from "@/pages/project/apply";
 import {IconHome} from "@arco-design/web-react/icon";
-import {GlobalErrorCodes} from "@/utils/constants";
+import {BindElementType} from "@/types/insights-common";
+
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function Index() {
@@ -214,7 +216,7 @@ export default function Index() {
       {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} />}
       {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)}/>}
       {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
-      {bindedVisible && <ReverseBindedPanel projectId={selectedProject.id} onClose={() => setBindedVisible(false)}/>}
+      {bindedVisible && <ReverseBindedPanel bindElement={{id:selectedProject?.id,type:BindElementType.Project,title:selectedProject?.title}} onClose={() => setBindedVisible(false)}/>}
       {applyVisible && <ProjectApplyModal projectInfo={selectedProject} onClose={() => setApplyVisible(false)}/>}
     </Card>
       </>

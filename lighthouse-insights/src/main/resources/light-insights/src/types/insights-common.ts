@@ -23,6 +23,17 @@ export enum PermissionEnum {
     retractable="retractable",
 }
 
+export interface BindElement {
+    id?:number,
+    type?:BindElementType,
+    title?:string,
+}
+
+export enum BindElementType {
+    Project=0,
+    Stat=1,
+}
+
 export enum RecordTypeEnum {
     CREATE_DEPARTMENT=1,
     UPDATE_DEPARTMENT=2,

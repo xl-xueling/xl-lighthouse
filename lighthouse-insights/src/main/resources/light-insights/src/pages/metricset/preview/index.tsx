@@ -10,6 +10,7 @@ import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {requestQueryById} from "@/api/metricset";
 import {MetricSet} from "@/types/insights-web";
+import MetricSetPreviewPanel from "@/pages/metricset/preview/panel_dashboard/dashboard";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
@@ -65,7 +66,7 @@ export default function MetricSetPreview() {
                             Data View
                         </span>
                     }>
-                    <ProjectPreview/>
+                    <MetricSetPreviewPanel metricSetInfo={metricSetInfo}/>
                 </TabPane>
                 <TabPane
                     key='2'
