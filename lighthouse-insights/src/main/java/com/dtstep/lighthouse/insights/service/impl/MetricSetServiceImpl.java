@@ -3,14 +3,12 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.MetricSetDao;
 import com.dtstep.lighthouse.insights.dto.*;
-import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
-import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
-import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.enums.*;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +38,15 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     @Autowired
     private ResourceService resourceService;
+
+    @Autowired
+    private ProjectService projectService;
+
+    @Autowired
+    private StatService statService;
+
+    @Autowired
+    private RelationService relationService;
 
     @Transactional
     @Override
@@ -106,8 +113,38 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     @Override
     public int binded(MetricBindParam bindParam) {
-
-        return 0;
+        int result = 0;
+        List<Integer> metricIds = bindParam.getMetricIds();
+        List<MetricBindElement> bindElements = bindParam.getBindElements();
+        for(Integer metricId : metricIds){
+            List<Integer> projectIds = bindElements.stream().filter(x -> x.getType() == MetricBindType.Project).map(z -> z.getId()).collect(Collectors.toList());
+            List<Relation> relationList = new ArrayList<>();
+            for(Integer projectId : projectIds){
+                Project project = projectService.queryById(projectId);
+                if(project != null){
+                    Relation relation = new Relation();
+                    relation.setRelationId(metricId);
+                    relation.setRelationType(RelationTypeEnum.MetricSetBindRelation);
+                    relation.setResourceId(projectId);
+                    relation.setResourceTypeEnum(ResourceTypeEnum.Project);
+                    relationList.add(relation);
+                }
+            }
+            List<Integer> statIds = bindElements.stream().filter(x -> x.getType() == MetricBindType.Stat).map(z -> z.getId()).collect(Collectors.toList());
+            for(Integer statId : statIds){
+                Stat stat = statService.queryById(statId);
+                if(stat != null){
+                    Relation relation = new Relation();
+                    relation.setRelationId(metricId);
+                    relation.setRelationType(RelationTypeEnum.MetricSetBindRelation);
+                    relation.setResourceId(statId);
+                    relation.setResourceTypeEnum(ResourceTypeEnum.Stat);
+                    relationList.add(relation);
+                }
+            }
+            result += relationService.batchCreate(relationList);
+        }
+        return result;
     }
 
     @Override
