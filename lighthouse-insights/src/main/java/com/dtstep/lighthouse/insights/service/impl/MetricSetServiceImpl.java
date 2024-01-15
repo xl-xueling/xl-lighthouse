@@ -2,10 +2,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.MetricSetDao;
-import com.dtstep.lighthouse.insights.dto.GrantPermissionsParam;
-import com.dtstep.lighthouse.insights.dto.MetricSetDto;
-import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
-import com.dtstep.lighthouse.insights.dto.RolePair;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
@@ -107,6 +104,11 @@ public class MetricSetServiceImpl implements MetricSetService {
         return translate(metricSet);
     }
 
+    @Override
+    public int binded(MetricBindParam bindParam) {
+
+        return 0;
+    }
 
     @Override
     public ListData<MetricSet> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize) {

@@ -69,6 +69,7 @@ public class MetricSetController {
     @RequestMapping("/metricset/binded")
     public ResultData<MetricSet> binded(@Validated @RequestBody MetricBindParam bindParam) {
         System.out.println("metricSet:" + JsonUtil.toJSONString(bindParam));
+
         return ResultData.success();
     }
 
