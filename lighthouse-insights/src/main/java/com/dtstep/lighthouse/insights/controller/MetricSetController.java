@@ -66,6 +66,12 @@ public class MetricSetController {
         return ResultData.success(metricSet);
     }
 
+    @RequestMapping("/metricset/binded")
+    public ResultData<MetricSet> binded(@Validated @RequestBody MetricBindParam bindParam) {
+        System.out.println("metricSet:" + JsonUtil.toJSONString(bindParam));
+        return ResultData.success();
+    }
+
     @RequestMapping("/metricset/list")
     public ResultData<ListData<MetricSet>> list(@Validated @RequestBody ListSearchObject<MetricSetQueryParam> searchObject) {
         MetricSetQueryParam queryParam = searchObject.getQueryParams();

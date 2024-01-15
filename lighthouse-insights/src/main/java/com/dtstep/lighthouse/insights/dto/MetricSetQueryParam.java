@@ -6,6 +6,8 @@ public class MetricSetQueryParam {
 
     private String title;
 
+    private Integer ownerId;
+
     public Integer getId() {
         return id;
     }
@@ -20,5 +22,13 @@ public class MetricSetQueryParam {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Integer getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 }
