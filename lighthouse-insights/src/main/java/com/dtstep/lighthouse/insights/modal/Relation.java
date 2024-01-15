@@ -15,9 +15,11 @@ public class Relation {
 
     private Integer resourceId;
 
-    private ResourceTypeEnum resourceTypeEnum;
+    private ResourceTypeEnum resourceType;
 
     private LocalDateTime createTime;
+
+    private String hash;
 
     public Integer getId() {
         return id;
@@ -51,12 +53,12 @@ public class Relation {
         this.resourceId = resourceId;
     }
 
-    public ResourceTypeEnum getResourceTypeEnum() {
-        return resourceTypeEnum;
+    public ResourceTypeEnum getResourceType() {
+        return resourceType;
     }
 
-    public void setResourceTypeEnum(ResourceTypeEnum resourceTypeEnum) {
-        this.resourceTypeEnum = resourceTypeEnum;
+    public void setResourceType(ResourceTypeEnum resourceType) {
+        this.resourceType = resourceType;
     }
 
     public LocalDateTime getCreateTime() {
@@ -65,5 +67,13 @@ public class Relation {
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }

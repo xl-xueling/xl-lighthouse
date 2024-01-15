@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.MetricSetDao;
 import com.dtstep.lighthouse.insights.dto.*;
@@ -8,7 +9,6 @@ import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,17 +116,21 @@ public class MetricSetServiceImpl implements MetricSetService {
         int result = 0;
         List<Integer> metricIds = bindParam.getMetricIds();
         List<MetricBindElement> bindElements = bindParam.getBindElements();
+        List<Relation> relationList = new ArrayList<>();
         for(Integer metricId : metricIds){
             List<Integer> projectIds = bindElements.stream().filter(x -> x.getType() == MetricBindType.Project).map(z -> z.getId()).collect(Collectors.toList());
-            List<Relation> relationList = new ArrayList<>();
             for(Integer projectId : projectIds){
                 Project project = projectService.queryById(projectId);
                 if(project != null){
                     Relation relation = new Relation();
+                    String hash = Md5Util.getMD5(metricId + "_" + RelationTypeEnum.MetricSetBindRelation.getRelationType() + "_" + projectId + "_" + ResourceTypeEnum.Project.getResourceType());
+                    boolean isExist = relationService.isExist(hash);
                     relation.setRelationId(metricId);
                     relation.setRelationType(RelationTypeEnum.MetricSetBindRelation);
                     relation.setResourceId(projectId);
-                    relation.setResourceTypeEnum(ResourceTypeEnum.Project);
+                    relation.setResourceType(ResourceTypeEnum.Project);
+                    relation.setHash(hash);
+                    relation.setCreateTime(LocalDateTime.now());
                     relationList.add(relation);
                 }
             }
@@ -134,17 +138,20 @@ public class MetricSetServiceImpl implements MetricSetService {
             for(Integer statId : statIds){
                 Stat stat = statService.queryById(statId);
                 if(stat != null){
+                    String hash = Md5Util.getMD5(metricId + "_" + RelationTypeEnum.MetricSetBindRelation.getRelationType() + "_" + statId + "_" + ResourceTypeEnum.Stat.getResourceType());
+                    boolean isExist = relationService.isExist(hash);
                     Relation relation = new Relation();
                     relation.setRelationId(metricId);
                     relation.setRelationType(RelationTypeEnum.MetricSetBindRelation);
                     relation.setResourceId(statId);
-                    relation.setResourceTypeEnum(ResourceTypeEnum.Stat);
+                    relation.setResourceType(ResourceTypeEnum.Stat);
+                    relation.setHash(hash);
+                    relation.setCreateTime(LocalDateTime.now());
                     relationList.add(relation);
                 }
             }
-            result += relationService.batchCreate(relationList);
         }
-        return result;
+        return relationService.batchCreate(relationList);
     }
 
     @Override

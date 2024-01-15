@@ -8,5 +8,7 @@ import java.util.List;
 @Repository
 public interface RelationDao {
 
-    int batchCreate(List<Relation> relationList);
+    int batchInsert(List<Relation> list);
+
+    boolean isExist(String hash);
 }
