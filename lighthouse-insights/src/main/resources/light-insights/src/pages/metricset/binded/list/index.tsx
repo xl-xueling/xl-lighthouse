@@ -24,15 +24,6 @@ export default function MetricBindedList({metricId}) {
     const t = useLocale(locale);
     const [listData, setListData] = useState<Project[]>([]);
 
-    const [pagination, setPagination] = useState<PaginationProps>({
-        sizeOptions: [15,20,30,50],
-        sizeCanChange: true,
-        showTotal: true,
-        pageSize: 15,
-        current: 1,
-        pageSizeChangeResetCurrent: true,
-    });
-
     const columns: TableColumnProps[] = [
         {
             title: 'Name',
@@ -90,24 +81,18 @@ export default function MetricBindedList({metricId}) {
     ];
 
     const fetchData = async () => {
-        const {current, pageSize} = pagination;
-        const combineParam = {
-            id:metricId,
-        }
-        await requestBindList({
-                queryParams:combineParam,
-                pagination:{
-                    pageSize:pageSize,
-                    pageNum:current,
-                }
-            }
-        ).then((response) => {
+        await requestBindList({id:metricId})
+            .then((response) => {
             console.log("response is:" + JSON.stringify(response))
         }).catch((error) => {
             console.log(error);
         })
     }
 
+
+    useEffect(() => {
+        console.log("----metricId is:" + metricId)
+    },[metricId])
 
     useEffect(() => {
         console.log("metricId is:" + metricId)
