@@ -78,6 +78,25 @@ export interface Project {
     departmentsPermission?:number[],
 }
 
+export interface Relation {
+    id?:number;
+    relationId?:number;
+    relationType?:RelationTypeEnum;
+    resourceId?:number;
+    resourceType?:ResourceTypeEnum;
+    createTime?:number;
+    extend?:any;
+}
+
+export enum RelationTypeEnum {
+    MetricSetBindRelation=1,
+    UserPickUpMetricSetRelation=2,
+    StatPrecedingIndicator=3,
+    StatParallelIndicator=4,
+    StatSubsequentIndicator=5,
+}
+
+
 export interface Column {
     key?:number|string;
     name?:string;
