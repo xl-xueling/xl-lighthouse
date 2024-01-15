@@ -55,7 +55,6 @@ export default function MetricSetPreview() {
             <Card>
                 <PreviewHeader metricSetInfo={metricSetInfo}/>
             </Card>
-
             <Tabs
                 type="line">
                 <TabPane

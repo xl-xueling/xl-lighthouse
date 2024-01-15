@@ -25,24 +25,36 @@ import styles from "@/pages/project/preview/style/index.module.less";
 import ProjectMenu from "@/pages/project/preview/menu";
 import StatPreviewPanel from "@/pages/stat/display/preview";
 import {CiViewTable} from "react-icons/ci";
+import get = Reflect.get;
+import {PiDiamondsFour} from "react-icons/pi";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
-export default function DashboardMenu({metricSetInfo}) {
+export default function DashboardMenu({metricSetInfo,callback}) {
+
+    const getIcon = (item) => {
+        if(item.type == 'stat'){
+            return <IconTag/>
+        }else if(item.type == 'group'){
+            return <CiViewTable style={{marginRight:'10px'}}/>
+        }else if(item.type == 'project'){
+            return <PiDiamondsFour style={{marginRight:'10px'}}/>
+        }
+    }
 
     const renderMenuItems = (items) =>
         items?.map((item) => {
             if (Array.isArray(item.children) && item.children.length > 0) {
                 return (
-                    <Menu.SubMenu key={item.type + "_" + item.value} title={
-                        <span style={{display:"inline-flex",alignItems:"center"}}><CiViewTable style={{marginRight:'10px'}}/>{item.label}</span>
+                    <Menu.SubMenu key={item.key} title={
+                        <span style={{display:"inline-flex",alignItems:"center"}}>{getIcon(item)}{item.label}</span>
                     }>
                         {renderMenuItems(item.children)}
                     </Menu.SubMenu>
                 );
             }
-            return <Menu.Item key={item.type + "_" + item.value}><IconTag/>{item.label}</Menu.Item>;
+            return <Menu.Item key={item.key}>{getIcon(item)}{item.label}</Menu.Item>;
         });
 
     return (
@@ -53,14 +65,13 @@ export default function DashboardMenu({metricSetInfo}) {
                 onClickMenuItem = {(key, event, keyPath) => {
                     const type = key.split("_")[0];
                     const id = key.split("_")[1];
-                    if(type == '3'){
-                        // callback("clickStatMenu",Number(id));
+                    if(type == 'stat'){
+                        callback("clickStatMenu",Number(id));
                     }
-                }}
-            >
-                {/*{*/}
-                {/*    renderMenuItems(metricSetInfo?.structure[0]?.children)*/}
-                {/*}*/}
+                }}>
+                {
+                    renderMenuItems(metricSetInfo?.structure[0]?.children)
+                }
             </Menu>
         </>
     );
