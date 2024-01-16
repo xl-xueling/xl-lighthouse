@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Input, Notification, Popconfirm, Spin, Tree} from '@arco-design/web-react';
+import {Button, Card, Grid, Input, Notification, Popconfirm, Space, Spin, Tree} from '@arco-design/web-react';
 import {
     IconDragDotVertical,
     IconFile,
     IconFolder, IconMindMapping,
     IconMinus,
     IconPen,
-    IconPlus,
+    IconPlus, IconRefresh, IconSearch,
     IconStorage,
     IconTag,
     IconTags
@@ -24,9 +24,10 @@ import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 import {LuLayers} from "react-icons/lu";
 import {getParentKey} from "@/pages/department/common";
 import {RxCube} from "react-icons/rx";
-
-
-export default function StructurePanel({structure}) {
+import styles from "@/pages/metricset/structure/style/index.module.less";
+import {MdOutlineDragIndicator} from "react-icons/md";
+const { Row, Col } = Grid;
+export default function StructurePanel({structure,menuCallback}) {
     const t = useLocale(locale);
     const [loading, setLoading] = useState(false);
     const [treeData, setTreeData] = useState([]);
@@ -190,6 +191,13 @@ export default function StructurePanel({structure}) {
                     } else {
                         const newArr = [...expandedKeys].filter(item => item !== keys[0]);
                         setExpandedKeys([...newArr, ...keys]);
+                    }
+                    const key = keys[0];
+                    console.log("key is:" + key)
+                    const array = key.split("_");
+                    if(array[0] == 'stat'){
+                        console.log("click stat,key is:" + array[0] + ",v:" + array[1]);
+                        menuCallback("clickStatMenu",array[1]);
                     }
                 }}
                 onCheck={(keys, extra) => {

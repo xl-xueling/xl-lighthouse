@@ -21,7 +21,9 @@ const TabPane = Tabs.TabPane;
 export default function MetricSetPreviewPanel({metricSetInfo}) {
     const [loading,setLoading] = useState<boolean>(false);
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
+
     const handlerCallback = async (type,record) => {
+        console.log("---click menu,type:" + type + ",record:" + record);
         if(type == 'clickStatMenu'){
             setSelectedStatId(Number(record));
         }
