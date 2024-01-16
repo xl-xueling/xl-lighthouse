@@ -174,7 +174,7 @@ export default function StructurePanel({structure,menuCallback}) {
     }
 
     return (
-        <div style={{width:'100%'}}>
+        <div style={{width:'100%',minHeight:'450px',maxHeight:'1000px',overflow:'auto'}}>
             <Tree
                 className={'disable-select'}
                 ref={treeRef}
@@ -393,6 +393,14 @@ export default function StructurePanel({structure,menuCallback}) {
             >
                 {generatorTreeNodes(treeData)}
             </Tree>
+            {/*<Grid.Row justify="end" style={{marginTop:'50px'}}>*/}
+            {/*    <Grid.Col span={8}>*/}
+            {/*        <Space className={styles.right} size={16} direction="horizontal">*/}
+            {/*            <Button size={"small"} type="primary">确认</Button>*/}
+            {/*            <Button size={"small"}>取消</Button>*/}
+            {/*        </Space>*/}
+            {/*    </Grid.Col>*/}
+            {/*</Grid.Row>*/}
         </div>
   );
 
