@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Input, Notification, Popconfirm, Spin, Tree} from '@arco-design/web-react';
 import {
+    IconDragDotVertical,
     IconFile,
     IconFolder, IconMindMapping,
     IconMinus,
@@ -18,7 +19,7 @@ import {
     requestDelete,
     requestUpdateById
 } from "@/api/department";
-import {getRandomString, getTextBlenLength, validateWithRegex} from "@/utils/util";
+import {getRandomString, getTextBlenLength, stringifyObj, validateWithRegex} from "@/utils/util";
 import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 import {LuLayers} from "react-icons/lu";
 import {getParentKey} from "@/pages/department/common";
@@ -126,15 +127,12 @@ export default function StructurePanel({structure}) {
     }
 
     const getIconByLevel = (level) => {
-        console.log("level is:" + level)
         if(level == 0){
             return <LuLayers style={{marginRight:'8px'}}/>
         }else if(level == 1){
             return <RxCube style={{marginRight:'8px'}}/>
-        } else if(level == 2){
+        } else{
             return <IconMindMapping  style={{marginRight:'8px'}}/>
-        }else{
-            return <IconFile/>
         }
     }
 
@@ -147,16 +145,16 @@ export default function StructurePanel({structure}) {
             return (
                 <Tree.Node
                         draggable={item.type == 'stat'}
-                      icon={getIcon(item.type,level)}
-                         key={item.key}
-                         title={item.label}
+                        icon={<span>{getIcon(item.type,level)}{item.type == 'stat'?<IconDragDotVertical style={{marginRight:'10px'}} />:null}</span>}
+                        key={item.key}
+                        title={item.label}
                      {...ret} dataRef={item}>
-
                     {children ? generatorTreeNodes(item.children,item.key,++level) : null}
                 </Tree.Node>
             );
         });
     };
+
 
     function deleteNodeByKey(dataArray,inputValue) {
         const params = dataArray;
@@ -207,10 +205,11 @@ export default function StructurePanel({structure}) {
                     }else{
                         destPid = treeRef.current.getCacheNode([dropNode.props._key])[0].props.dataRef.pid;
                     }
-                    // const result = await updateNode(dragNode.props._key, destPid,dragNode.props.title);
-                    // if(result == '-1'){
-                    //     return;
-                    // }
+                    const destRef = treeRef.current.getCacheNode([destPid])[0].props.dataRef;
+                    if(destRef.type == 'stat'){
+                        Notification.warning({style: { width: 420 }, title: 'Warning', content: '不支持移动元素到指标节点下'});
+                        return;
+                    }
                     const loop = (data, key, callback) => {
                         data.some((item, index, arr) => {
                             if (String(item.id) === String(key)) {
@@ -266,8 +265,11 @@ export default function StructurePanel({structure}) {
                                     });
                                     titleNode.dispatchEvent(event);
                                     const dataChildren = node.dataRef.children || [];
+                                    if(node._level >= 2){
+                                        Notification.warning({style: { width: 420 }, title: 'Warning', content: '超出最大层级限制！'});
+                                        return;
+                                    }
                                     const nodeTitle = "New Node_" + getRandomString(8);
-                                    // const currentId = await addNode(node.dataRef.id, nodeTitle);
                                     const currentId = getRandomString();
                                     if(currentId == "-1"){
                                         return;
