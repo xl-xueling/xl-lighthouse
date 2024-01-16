@@ -10,6 +10,7 @@ import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.enums.*;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,7 +145,13 @@ public class OrderServiceImpl implements OrderService {
             permissionQueryParam.setRoleId(roleId);
             permissionQueryParam.setOwnerType(OwnerTypeEnum.USER);
             List<User> admins = new ArrayList<>();
-            List<Permission> permissions = permissionDao.queryList(permissionQueryParam,1,4);
+            PageHelper.startPage(1,4);
+            List<Permission> permissions = null;
+            try{
+                permissions = permissionDao.queryList(permissionQueryParam);
+            }finally {
+                PageHelper.clearPage();
+            }
             if(CollectionUtils.isNotEmpty(permissions)){
                 List<Integer> userIdList = permissions.stream().map(z -> z.getOwnerId()).collect(Collectors.toList());
                 for(Integer approveUserId : userIdList){

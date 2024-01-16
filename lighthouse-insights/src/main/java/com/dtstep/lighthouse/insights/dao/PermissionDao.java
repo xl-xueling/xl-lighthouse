@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.dao;
 
+import com.dtstep.lighthouse.insights.dto.PermissionListQueryParam;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Permission;
@@ -27,5 +28,5 @@ public interface PermissionDao {
 
     List<Permission> queryUserManagePermission(Integer userId,Integer limit);
 
-    List<Permission> queryList(PermissionQueryParam queryParam,Integer pageNum,Integer pageSize);
+    List<Permission> queryList(@Param("queryParam")PermissionQueryParam queryParam);
 }
