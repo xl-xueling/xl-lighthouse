@@ -14,6 +14,8 @@ const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 import { PiTreeStructure } from "react-icons/pi";
 import MetricSetStructure from "@/pages/metricset/structure";
+import MetricSetPermissions from "@/pages/metricset/permissions";
+import {ResourceTypeEnum} from "@/types/insights-common";
 
 
 export default function MetricSetPreview() {
@@ -80,7 +82,7 @@ export default function MetricSetPreview() {
                     <span>
                         <span style={{display:"inline-flex",alignItems:"center"}}><IconTag style={{ marginRight: 6}} />Authority Info</span>
                   </span>}>
-                    {/*<GroupBasicPanel groupId={0}/>*/}
+                    <MetricSetPermissions resourceType={ResourceTypeEnum.Metric} resourceId={metricSetInfo?.id}/>
                 </TabPane>
                 <TabPane key='4' title={
                     <span>

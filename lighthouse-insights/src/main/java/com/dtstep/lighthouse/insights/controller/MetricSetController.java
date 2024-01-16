@@ -98,4 +98,5 @@ public class MetricSetController {
         ListData<MetricSet> listData = metricSetService.queryList(queryParam, pagination.getPageNum(), pagination.getPageSize());
         return ResultData.success(listData);
     }
+
 }

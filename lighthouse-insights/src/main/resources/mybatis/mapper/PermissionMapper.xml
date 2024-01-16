@@ -46,8 +46,6 @@
                 AND owner_type = #{queryParam.ownerType}
             </if>
         </where>
-        <bind name="offset" value="(pageNum-1)*pageSize"></bind>
-        limit ${offset},#{pageSize}
     </select>
 
     <select id="existPermission" resultType="boolean">

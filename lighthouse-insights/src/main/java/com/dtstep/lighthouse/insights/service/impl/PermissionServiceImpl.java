@@ -1,16 +1,23 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
+import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
+import com.dtstep.lighthouse.insights.dto.PermissionDto;
+import com.dtstep.lighthouse.insights.dto.PermissionListQueryParam;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
+import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.modal.Permission;
+import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.DepartmentService;
 import com.dtstep.lighthouse.insights.service.PermissionService;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import com.dtstep.lighthouse.insights.service.UserService;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,5 +130,34 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public int delete(PermissionQueryParam queryParam) {
         return 0;
+    }
+
+    private PermissionDto translate(Permission permission){
+        PermissionDto permissionDto = new PermissionDto(permission);
+        if(permissionDto.getOwnerType() == OwnerTypeEnum.USER){
+            User user = userService.cacheQueryById(permissionDto.getOwnerId());
+            permissionDto.setExtend(user);
+        }else if(permissionDto.getOwnerType() == OwnerTypeEnum.DEPARTMENT){
+            Department department = departmentService.queryById(permissionDto.getOwnerId());
+            permissionDto.setExtend(department);
+        }
+        return permissionDto;
+    }
+
+    @Override
+    public ListData<PermissionDto> queryList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize) {
+        ListData<PermissionDto> listData = null;
+        PageHelper.startPage(pageNum,pageSize);
+        try{
+            List<Permission> permissionList = permissionDao.queryList(queryParam);
+            List<PermissionDto> dtoList = new ArrayList<>();
+            for(Permission permission : permissionList){
+                PermissionDto dto = translate(permission);
+                dtoList.add(dto);
+            }
+        }finally {
+            PageHelper.clearPage();
+        }
+        return null;
     }
 }
