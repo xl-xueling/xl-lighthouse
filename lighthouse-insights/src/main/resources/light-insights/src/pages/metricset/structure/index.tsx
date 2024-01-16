@@ -1,8 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb, Spin} from '@arco-design/web-react';
+import {
+    Card,
+    Typography,
+    Grid,
+    Space,
+    Tabs,
+    Divider,
+    Notification,
+    Breadcrumb,
+    Spin,
+    Button
+} from '@arco-design/web-react';
 import PreviewHeader from "@/pages/metricset/preview/header";
-import {IconDashboard, IconHome, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
+import {IconDashboard, IconHome, IconRefresh, IconSearch, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {requestQueryById} from "@/api/metricset";
@@ -20,6 +31,13 @@ const TabPane = Tabs.TabPane;
 export default function MetricSetStructure({metricSetInfo}) {
 
     const [loading,setLoading] = useState<boolean>(false);
+    const [selectedStatId,setSelectedStatId] = useState<number>(null);
+    const handlerCallback = async (type,record) => {
+        if(type == 'clickStatMenu'){
+            setSelectedStatId(Number(record));
+        }
+
+    }
 
     useEffect(() => {
         console.log("structure is:" + JSON.stringify(metricSetInfo.structure))
@@ -31,11 +49,21 @@ export default function MetricSetStructure({metricSetInfo}) {
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
                         <Card>
-                            <StructurePanel structure={metricSetInfo?.structure}/>
+                            <StructurePanel structure={metricSetInfo?.structure} menuCallback={handlerCallback}/>
+                        </Card>
+                        <Card>
+                            <Grid.Row justify="end">
+                                <Grid.Col span={8}>
+                                    <Space className={styles.right} size={16} direction="horizontal">
+                                        <Button size={"small"} type="primary">确认</Button>
+                                        <Button size={"small"}>取消</Button>
+                                    </Space>
+                                </Grid.Col>
+                            </Grid.Row>
                         </Card>
                     </Space>
                     <Space className={styles.right} size={16} direction="vertical">
-                        {/*{selectedStatId && <StatPreviewPanel id={selectedStatId}/>}*/}
+                        {selectedStatId && <StatPreviewPanel id={selectedStatId}/>}
                     </Space>
                 </div>
             </Space>
