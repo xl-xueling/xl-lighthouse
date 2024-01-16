@@ -12,6 +12,9 @@ import MetricBindedList from "@/pages/metricset/binded/list";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
+import { PiTreeStructure } from "react-icons/pi";
+import MetricSetStructure from "@/pages/metricset/structure";
+
 
 export default function MetricSetPreview() {
 
@@ -59,8 +62,7 @@ export default function MetricSetPreview() {
                     key='1'
                     title={
                         <span>
-                            <IconDashboard style={{ marginRight: 6 }} />
-                            Data View
+                            <span style={{display:"inline-flex",alignItems:"center"}}><IconDashboard style={{ marginRight: 6}} />Data View</span>
                         </span>
                     }>
                     <MetricSetPreviewPanel metricSetInfo={metricSetInfo}/>
@@ -69,18 +71,22 @@ export default function MetricSetPreview() {
                     key='2'
                     title={
                         <span>
-                            <IconThunderbolt style={{ marginRight: 6 }} />
-                            Binded Items
+                            <span style={{display:"inline-flex",alignItems:"center"}}><IconThunderbolt style={{ marginRight: 6}} />Binded Items</span>
                         </span>
                     }>
                     {metricSetInfo && <MetricBindedList metricId={metricSetInfo?.id}/>}
                 </TabPane>
                 <TabPane key='3' title={
                     <span>
-                        <IconTag style={{ marginRight: 6 }} />
-                        Authority Info
+                        <span style={{display:"inline-flex",alignItems:"center"}}><IconTag style={{ marginRight: 6}} />Authority Info</span>
                   </span>}>
                     {/*<GroupBasicPanel groupId={0}/>*/}
+                </TabPane>
+                <TabPane key='4' title={
+                    <span>
+                        <span style={{display:"inline-flex",alignItems:"center"}}><PiTreeStructure style={{ marginRight: 6}} />Structure</span>
+                  </span>}>
+                    {metricSetInfo && <MetricSetStructure metricSetInfo={metricSetInfo}/>}
                 </TabPane>
             </Tabs>
         </Space>
