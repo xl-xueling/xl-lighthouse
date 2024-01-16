@@ -13,7 +13,14 @@ import {
     Menu
 } from '@arco-design/web-react';
 import PreviewHeader from "@/pages/metricset/preview/header";
-import {IconDashboard, IconHome, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
+import {
+    IconDashboard,
+    IconFolder,
+    IconHome,
+    IconMindMapping,
+    IconTag,
+    IconThunderbolt
+} from "@arco-design/web-react/icon";
 import BindedList from "@/pages/metricset/binded/list";
 import GroupBasicPanel from "@/pages/group/basic";
 import ProjectPreview from "@/pages/project/preview";
@@ -30,6 +37,10 @@ import {PiDiamondsFour} from "react-icons/pi";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
+import { BiExtension } from "react-icons/bi";
+import { BiWalletAlt } from "react-icons/bi";
+import { RxCube } from "react-icons/rx";
+
 
 export default function DashboardMenu({metricSetInfo,callback}) {
 
@@ -37,9 +48,12 @@ export default function DashboardMenu({metricSetInfo,callback}) {
         if(item.type == 'stat'){
             return <IconTag/>
         }else if(item.type == 'group'){
-            return <CiViewTable style={{marginRight:'10px'}}/>
+            // return <CiViewTable style={{marginRight:'10px'}}/>
+            return <IconMindMapping style={{marginRight:'10px'}}/>
         }else if(item.type == 'project'){
-            return <PiDiamondsFour style={{marginRight:'10px'}}/>
+            // return <PiDiamondsFour style={{marginRight:'10px'}}/>
+            // return <IconFolder/>
+            return <RxCube style={{marginRight:'10px'}}/>
         }
     }
 

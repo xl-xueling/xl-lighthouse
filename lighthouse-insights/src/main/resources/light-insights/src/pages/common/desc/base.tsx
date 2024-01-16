@@ -1,6 +1,10 @@
 import React from "react";
 import {Badge} from "@arco-design/web-react";
-import {ComponentTypeEnum, StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
+import {ComponentTypeEnum, ResourceTypeEnum, StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
+import {PiDiamondsFour} from "react-icons/pi";
+import {CiViewTable} from "react-icons/ci";
+import {IconTag} from "@arco-design/web-react/icon";
+import {LuLayers} from "react-icons/lu";
 
 export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
     if(value === StatStateEnum.PENDING){
@@ -40,6 +44,7 @@ export function getStatStateDescription (t: any, value:StatStateEnum) {
         return t['basic.columns.state.invalid'];
     }
 }
+
 
 export const getStatExpiredEnumDescription = (expired) => {
     if(expired == StatExpiredEnum.Week_1){
@@ -84,5 +89,21 @@ export function getSystemComponentTypeDescription(t:any,value:ComponentTypeEnum)
         return t['components.type.system.filterInput'];
     }else if(value == ComponentTypeEnum.FILTER_SELECT){
         return t['components.type.system.filterSelect'];
+    }
+}
+
+export function getIcon(type:string){
+    if(type == 'project'){
+        return <PiDiamondsFour style={{marginRight:'10px'}}/>
+    }else if(type == 'group'){
+        return <CiViewTable style={{marginRight:'10px'}}/>
+    }else if(type == 'stat'){
+        return <IconTag/>
+    }else if(type == 'metric'){
+        return <LuLayers style={{marginRight:'10px'}}/>
+    }else if(type == 'permission'){
+        return <LuLayers style={{marginRight:'10px'}}/>
+    }else if(type == 'order'){
+
     }
 }

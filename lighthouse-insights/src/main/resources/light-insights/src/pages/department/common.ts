@@ -58,6 +58,28 @@ export const translateResponse = (list:Array<TreeNode>):Array<ArcoTreeNode> => {
     return nodeArr;
 }
 
+export const getParentKey = (list, targetKey, parentKey = "0") => {
+    for (let i = 0; i < list.length; i++) {
+        const node = list[i];
+        console.log("node.key is:" + node.key + ",targetKey:"+targetKey)
+        if (node.key === targetKey) {
+            console.log("--match..")
+            return parentKey;
+        }
+        console.log("node.children is:" + node.children)
+        if (node.children) {
+            console.log("---hashchild,node.key is:" + node.key);
+            const result = getParentKey(node.children, targetKey, node.key);
+            if (result) {
+                return result;
+            }
+        }
+    }
+
+    return null;
+}
+
+
 export const translateToFlatStruct = (list):Array<ArcoFlatNode> => {
     function flattenTreeData(treeData, parentName = "") {
         let result = [];
