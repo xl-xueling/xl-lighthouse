@@ -93,21 +93,6 @@ export function getUserApproveColumns(t: any) {
             title: t['detailModal.user.approve.columns.createTime'],
             dataIndex: 'createTime',
             render: (value) => {return formatTimeStampBackUp(value)},
-        },
-        {
-            title: t['detailModal.user.approve.columns.state'],
-            dataIndex: 'state',
-            render: (value) => {
-                if(value === 0){
-                    return <Badge status="processing" text={t['detailModal.user.approve.columns.state.pending']}/>;
-                }else if (value === 1) {
-                    return <Badge status="success" text={t['detailModal.user.approve.columns.state.normal']}/>;
-                }else if(value === 2){
-                    return <Badge status="error" text={t['detailModal.user.approve.columns.state.frozen']}/>;
-                }else if(value === 3){
-                    return <Badge status="error" text={t['detailModal.user.approve.columns.state.deleted']}/>;
-                }
-            },
         }
     ];
 }

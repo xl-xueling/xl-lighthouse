@@ -6,7 +6,7 @@ import {
     ResourceTypeEnum,
     RoleTypeEnum,
     StatExpiredEnum,
-    StatStateEnum
+    StatStateEnum, UserStateEnum
 } from "@/types/insights-common";
 import {PiDiamondsFour} from "react-icons/pi";
 import {CiViewTable} from "react-icons/ci";
@@ -157,5 +157,19 @@ export function getOrderDetailStateDescription(t:any,value:ApproveStateEnum){
         return <Badge status="error" text={t['basic.orderDetail.approveState.description.retracted']}/>;
     }else if(value === ApproveStateEnum.Suspend){
         return <Badge status="error" text={t['basic.orderDetail.approveState.description.suspend']}/>;
+    }
+}
+
+export function getUserStateDescription(t:any,value:UserStateEnum){
+    if(value == UserStateEnum.USER_PEND){
+        return <Badge status="processing" text={t['basic.userState.description.pending']}/>;
+    }else if (value == UserStateEnum.USR_NORMAL) {
+        return <Badge status="success" text={t['basic.userState.description.normal']}/>;
+    }else if(value == UserStateEnum.USER_FROZEN){
+        return <Badge status="error" text={t['basic.userState.description.frozen']}/>;
+    }else if(value == UserStateEnum.USER_REJECT){
+        return <Badge status="error" text={t['basic.userState.description.rejected']}/>;
+    }else if(value == UserStateEnum.USER_DELETED){
+        return <Badge status="error" text={t['basic.userState.description.deleted']}/>;
     }
 }
