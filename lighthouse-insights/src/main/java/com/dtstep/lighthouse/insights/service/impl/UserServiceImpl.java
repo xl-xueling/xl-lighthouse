@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.UserDao;
+import com.dtstep.lighthouse.insights.dto.UserCreateParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
@@ -51,23 +52,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public int create(User user,boolean needApprove) {
-        boolean isExist = userDao.isUserNameExist(user.getUsername());
-        if(isExist){
-            return -1;
-        }
-        if(needApprove){
-            user.setState(UserStateEnum.USER_PEND);
-        }else{
-            user.setState(UserStateEnum.USR_NORMAL);
-        }
+    public int create(User user, boolean needApprove) {
+        user.setState(needApprove?UserStateEnum.USER_PEND:UserStateEnum.USR_NORMAL);
         LocalDateTime localDateTime = LocalDateTime.now();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreateTime(localDateTime);
         user.setUpdateTime(localDateTime);
         user.setLastTime(localDateTime);
         userDao.insert(user);
-        Integer userId = user.getId();
+        int userId = user.getId();
         if(needApprove){
             Order order = new Order();
             order.setUserId(userId);
