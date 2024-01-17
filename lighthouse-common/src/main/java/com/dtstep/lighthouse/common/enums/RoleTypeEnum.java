@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.enums;
+package com.dtstep.lighthouse.common.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

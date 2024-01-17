@@ -6,7 +6,7 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto_bak.ResultData;
 import com.dtstep.lighthouse.insights.dto_bak.*;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ProjectService;

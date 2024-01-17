@@ -25,4 +25,6 @@ public interface DepartmentDao {
     int getChildLevel(Integer pid);
 
     int countChildByPid(Integer pid);
+
+    String getFullPath(Integer id);
 }

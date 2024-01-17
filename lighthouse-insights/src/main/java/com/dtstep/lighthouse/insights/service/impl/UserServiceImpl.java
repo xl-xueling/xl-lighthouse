@@ -4,11 +4,10 @@ import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.UserDao;
-import com.dtstep.lighthouse.insights.dto.UserCreateParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
-import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
+import com.dtstep.lighthouse.common.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.github.pagehelper.PageHelper;
@@ -52,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public int create(User user, boolean needApprove) {
+    public int create(User user, boolean needApprove) throws Exception{
         user.setState(needApprove?UserStateEnum.USER_PEND:UserStateEnum.USR_NORMAL);
         LocalDateTime localDateTime = LocalDateTime.now();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -62,10 +61,7 @@ public class UserServiceImpl implements UserService {
         userDao.insert(user);
         int userId = user.getId();
         if(needApprove){
-            Order order = new Order();
-            order.setUserId(userId);
-            order.setOrderType(OrderTypeEnum.USER_PEND_APPROVE);
-            orderService.create(order);
+            orderService.submit(user,OrderTypeEnum.USER_PEND_APPROVE,user);
         }
         return userId;
     }

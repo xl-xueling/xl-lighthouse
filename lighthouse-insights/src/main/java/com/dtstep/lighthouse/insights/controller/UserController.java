@@ -13,7 +13,7 @@ import com.dtstep.lighthouse.insights.dto_bak.ResultData;
 import com.dtstep.lighthouse.insights.config.SeedAuthenticationToken;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.PermissionService;
 import com.dtstep.lighthouse.insights.service.ResourceService;

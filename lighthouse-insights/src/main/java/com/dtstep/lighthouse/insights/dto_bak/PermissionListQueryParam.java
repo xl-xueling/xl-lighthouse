@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.dto_bak;
 
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;

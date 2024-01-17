@@ -18,7 +18,7 @@ import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import com.dtstep.lighthouse.insights.enums.ComponentTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.template.TemplateContext;

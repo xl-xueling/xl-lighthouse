@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.modal;
 
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

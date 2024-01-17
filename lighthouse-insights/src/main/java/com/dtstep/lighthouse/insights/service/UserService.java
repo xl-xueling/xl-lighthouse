@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserService {
 
-    int create(User user, boolean needApprove);
+    int create(User user, boolean needApprove) throws Exception;
 
     int update(User user);
 

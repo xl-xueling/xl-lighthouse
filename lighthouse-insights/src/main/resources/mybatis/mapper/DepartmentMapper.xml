@@ -10,7 +10,7 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Department">
-        INSERT INTO ldp_department (`name`,`pid`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_departments (`name`,`pid`,`create_time`,`update_time`) VALUES
         (
             #{name,jdbcType=VARCHAR},
             #{pid,jdbcType=INTEGER},
@@ -20,7 +20,7 @@
     </insert>
 
     <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Department">
-        UPDATE ldp_department
+        UPDATE ldp_departments
         <set>
             <if test="name != null">
                 name = #{name},
@@ -36,25 +36,25 @@
     </update>
 
     <select id="queryAll" resultMap="departmentResultMap">
-        SELECT * FROM ldp_department limit 100000
+        SELECT * FROM ldp_departments limit 100000
     </select>
 
     <select id="queryById" resultMap="departmentResultMap">
-        SELECT * FROM ldp_department WHERE id = #{id}
+        SELECT * FROM ldp_departments WHERE id = #{id}
     </select>
 
     <delete id="deleteById">
-        delete from ldp_department where id = #{id}
+        delete from ldp_departments where id = #{id}
     </delete>
 
     <select id="getLevel" resultType="java.lang.Integer">
         WITH RECURSIVE cte AS (
             SELECT 1 AS level, id, pid
-            FROM ldp_department
+            FROM ldp_departments
             WHERE id = #{id}
             UNION ALL
             SELECT cte.level + 1, t.id, t.pid
-            FROM ldp_department t
+            FROM ldp_departments t
                      JOIN cte ON t.id = cte.pid
         )
         SELECT COALESCE(max(level),0) as level FROM cte
@@ -63,11 +63,11 @@
     <select id="getChildLevel" resultType="java.lang.Integer">
         WITH RECURSIVE cte AS (
             SELECT 1 AS level, id, pid
-            FROM ldp_department
+            FROM ldp_departments
             WHERE pid = #{pid}
             UNION ALL
             SELECT cte.level + 1, t.id, t.pid
-            FROM ldp_department t
+            FROM ldp_departments t
                      JOIN cte ON t.pid = cte.id
         )
         SELECT COALESCE(max(level),0) as level FROM cte
@@ -77,12 +77,28 @@
     <select id="countChildByPid">
         WITH RECURSIVE cte AS (
             SELECT d.id
-            FROM ldp_department d where pid = #{pid}
+            FROM ldp_departments d where pid = #{pid}
             UNION ALL
             SELECT d.id
-            FROM ldp_department d
+            FROM ldp_departments d
                      JOIN cte ON cte.id = d.pid
         )
         select count(1) from cte
+    </select>
+
+    <select id="getFullPath" resultType="java.lang.String">
+        WITH recursive cte AS (
+            SELECT id, name, pid, CAST(id AS CHAR(100)) AS fullpath
+            FROM ldp_departments
+            WHERE id = #{id}
+            UNION ALL
+            SELECT t.id, t.name, t.pid, CONCAT(t.id, ',', cte.fullpath) AS fullpath
+            FROM ldp_departments t
+                     JOIN cte ON t.id = cte.pid
+        )
+        SELECT fullpath
+        FROM cte
+        ORDER BY LENGTH(fullpath) ASC
+            LIMIT 1;
     </select>
 </mapper>

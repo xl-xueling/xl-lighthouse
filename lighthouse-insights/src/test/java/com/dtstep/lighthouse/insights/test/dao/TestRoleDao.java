@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.insights.test.dao;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.RoleDao;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Role;
 import org.junit.Test;
 import org.junit.runner.RunWith;

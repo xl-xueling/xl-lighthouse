@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.RoleDao;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import org.apache.commons.collections.CollectionUtils;

@@ -7,7 +7,7 @@ import com.dtstep.lighthouse.insights.dto_bak.ResultData;
 import com.dtstep.lighthouse.insights.dto_bak.CommonTreeNode;
 import com.dtstep.lighthouse.insights.dto_bak.DeleteParam;
 import com.dtstep.lighthouse.insights.dto_bak.UserQueryParam;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.service.DepartmentService;
 import com.dtstep.lighthouse.insights.service.ProjectService;

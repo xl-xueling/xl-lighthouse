@@ -1,7 +1,6 @@
 package com.dtstep.lighthouse.insights.controller.annotation;
 
-import com.dtstep.lighthouse.common.enums.role.PrivilegeTypeEnum;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 
 import java.lang.annotation.*;
 

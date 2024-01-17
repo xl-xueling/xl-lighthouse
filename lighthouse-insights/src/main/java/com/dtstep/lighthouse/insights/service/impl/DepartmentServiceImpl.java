@@ -120,4 +120,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     public int countChildByPid(Integer pid) {
         return departmentDao.countChildByPid(pid);
     }
+
+    @Override
+    public String getFullPath(Integer id) {
+        return departmentDao.getFullPath(id);
+    }
 }

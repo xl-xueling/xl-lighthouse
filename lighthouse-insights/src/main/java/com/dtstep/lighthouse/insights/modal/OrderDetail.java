@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.insights.enums.ApproveStateEnum;
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -24,7 +24,7 @@ public class OrderDetail implements Serializable {
 
     private LocalDateTime createTime;
 
-    private LocalDateTime approveTime;
+    private LocalDateTime processTime;
 
     public Integer getId() {
         return id;
@@ -74,12 +74,12 @@ public class OrderDetail implements Serializable {
         this.createTime = createTime;
     }
 
-    public LocalDateTime getApproveTime() {
-        return approveTime;
+    public LocalDateTime getProcessTime() {
+        return processTime;
     }
 
-    public void setApproveTime(LocalDateTime approveTime) {
-        this.approveTime = approveTime;
+    public void setProcessTime(LocalDateTime processTime) {
+        this.processTime = processTime;
     }
 
     public Integer getUserId() {
