@@ -63,6 +63,7 @@ export enum UserStateEnum{
     USER_DELETED=1,
     USR_NORMAL=2,
     USER_FROZEN=3,
+    USER_REJECT=4,
 }
 
 export enum OrderStateEnum {

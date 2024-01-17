@@ -3,8 +3,9 @@ import {Button, Typography, Space, Popconfirm, Message, Link, Badge} from '@arco
 import UserGroup from "@/pages/user/common/groups";
 import {formatTimeStampBackUp} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
-import {RoleTypeEnum} from "@/types/insights-common";
+import {OrderStateEnum, RoleTypeEnum} from "@/types/insights-common";
 import {Order} from "@/types/insights-web";
+import {getOrderStateDescription} from "@/pages/common/desc/base";
 const { Text } = Typography;
 
 export function getOrderColumns(t: any) {
@@ -51,15 +52,7 @@ export function getOrderColumns(t: any) {
             title: t['detailModal.columns.state'],
             dataIndex: 'state',
             render: (value) => {
-                if(value === 0){
-                    return <Badge status="processing" text={t['detailModal.columns.state.process']}/>;
-                }else if (value === 1) {
-                    return <Badge status="success" text={t['detailModal.columns.state.approved']}/>;
-                }else if(value === 2){
-                    return <Badge status="error" text={t['detailModal.columns.state.rejected']}/>;
-                }else if(value === 3){
-                    return <Badge status="error" text={t['detailModal.columns.state.retracted']}/>;
-                }
+                return getOrderStateDescription(t,value);
             },
         }
     ];

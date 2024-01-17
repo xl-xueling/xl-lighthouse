@@ -7,7 +7,6 @@ import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
 import com.dtstep.lighthouse.insights.dao.OrderDetailDao;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
@@ -269,7 +268,7 @@ public class OrderServiceImpl implements OrderService {
         }else{
             order.setCurrentNode(0);
             order.setState(OrderStateEnum.APPROVED);
-            approveCallback(order);
+            orderAgreeCallback(order);
         }
         order.setUpdateTime(localDateTime);
         int result = orderDao.update(order);
@@ -307,14 +306,25 @@ public class OrderServiceImpl implements OrderService {
             orderDetailDao.updateDetail(orderDetails.get(i));
         }
         int result = orderDao.update(order);
+        orderRejectCallback(order);
         return result;
     }
 
-    private void approveCallback(Order order){
+    private void orderAgreeCallback(Order order){
         if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
             User userUpdateParam = new User();
             userUpdateParam.setId(order.getUserId());
             userUpdateParam.setState(UserStateEnum.USR_NORMAL);
+            userUpdateParam.setUpdateTime(LocalDateTime.now());
+            userService.update(userUpdateParam);
+        }
+    }
+
+    private void orderRejectCallback(Order order){
+        if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
+            User userUpdateParam = new User();
+            userUpdateParam.setId(order.getUserId());
+            userUpdateParam.setState(UserStateEnum.USER_REJECT);
             userUpdateParam.setUpdateTime(LocalDateTime.now());
             userService.update(userUpdateParam);
         }
