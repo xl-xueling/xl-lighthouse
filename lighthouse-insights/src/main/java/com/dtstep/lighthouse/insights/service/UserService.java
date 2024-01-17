@@ -21,7 +21,7 @@ public interface UserService {
 
     User queryById(int id);
 
-    User queryByUserName(String userName);
+    User queryAllInfoByUserName(String userName);
 
     int deleteById(int userId);
 

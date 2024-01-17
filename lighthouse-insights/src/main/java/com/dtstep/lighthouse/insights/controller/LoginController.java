@@ -48,7 +48,7 @@ public class LoginController {
 
     @RequestMapping("/user/login")
     public ResultData<Map<String,String>> login(@Validated @RequestBody LoginParam user) {
-        User dbUser = userService.queryByUserName(user.getUsername());
+        User dbUser = userService.queryAllInfoByUserName(user.getUsername());
         if(dbUser == null || !passwordEncoder.matches(user.getPassword(),dbUser.getPassword())){
             return ResultData.result(ResultCode.loginCheckFailed);
         }
@@ -100,7 +100,7 @@ public class LoginController {
         }
         String username = (String)jws.getBody().get("username");
         String password = (String)jws.getBody().get("password");
-        User dbUser = userService.queryByUserName(username);
+        User dbUser = userService.queryAllInfoByUserName(username);
         if(dbUser == null || !password.equals(dbUser.getPassword())){
             return ResultData.result(ResultCode.paramValidateFailed);
         }

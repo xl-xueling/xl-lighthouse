@@ -84,7 +84,7 @@ public class InitServiceImpl implements InitService {
             int result = resourceService.grantPermission(adminId, OwnerTypeEnum.USER,0, RoleTypeEnum.OPT_MANAGE_PERMISSION);
             Validate.isTrue(result > 0);
         }else{
-            User user = userService.queryByUserName(SystemConstant.DEFAULT_ADMIN_USER);
+            User user = userService.queryAllInfoByUserName(SystemConstant.DEFAULT_ADMIN_USER);
             Role role = roleService.cacheQueryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
             Validate.notNull(role);
             if(!permissionService.existPermission(user.getId(),OwnerTypeEnum.USER,role.getId())){

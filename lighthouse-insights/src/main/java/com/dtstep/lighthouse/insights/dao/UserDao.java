@@ -13,21 +13,21 @@ public interface UserDao {
     boolean isUserNameExist(String username);
 
     int insert(User user);
+
+    String getUserPassword(String username);
+
+    int update(User user);
     
-    User queryBasicInfoById(int id);
+    User queryById(Integer id);
 
-    int deleteById(int id);
+    User queryAllInfoByUserName(String username);
 
-    User queryAllInfoById(int id);
-
-    User queryByUserName(String username);
+    int deleteById(Integer id);
 
     List<User> termQuery(String search);
 
     List<User> queryList(@Param("queryParam")UserQueryParam queryParam);
 
     int count(@Param("queryParam")UserQueryParam queryParam);
-
-    int update(User user);
 
 }
