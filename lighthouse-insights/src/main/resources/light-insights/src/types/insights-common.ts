@@ -12,8 +12,10 @@ export interface ResultData<S = any> {
 export enum OrderTypeEnum {
     PROJECT_ACCESS=1,
     STAT_ACCESS=2,
-    GROUP_THRESHOLD_ADJUST=3,
-    STAT_ITEM_APPROVE=4,
+    METRIC_ACCESS=3,
+    GROUP_THRESHOLD_ADJUST=4,
+    STAT_PEND_APPROVE=5,
+    USER_PEND_APPROVE=6,
 }
 
 export enum PermissionEnum {

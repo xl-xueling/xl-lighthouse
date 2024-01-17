@@ -4,12 +4,10 @@ import UserGroup from "@/pages/user/common/groups";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale/index";
 import {Order} from "@/types/insights-web";
-import {ApproveStateEnum, OrderStateEnum, ResultData, RoleTypeEnum} from "@/types/insights-common";
+import {ApproveStateEnum, OrderStateEnum, OrderTypeEnum} from "@/types/insights-common";
 import {BiListUl} from "react-icons/bi";
 import {getOrderColumns, getOrderDetailColumns, getUserApproveColumns} from "@/pages/order/common/constants";
 import {getRandomString} from "@/utils/util";
-import {requestQueryAll} from "@/api/department";
-import {requestQueryById} from "@/api/order";
 import {getOrderApproveRoleTypeDescription} from "@/pages/common/desc/base";
 
 const { Text } = Typography;
@@ -120,14 +118,18 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
               {t['detailModal.label.user.info']}
           </Typography.Title>
           <Table size={"small"} rowKey="id" pagination={false} columns={userApproveColumns} data={userListData} />
-
-          <Typography.Title
+          {
+              orderInfo.orderType == OrderTypeEnum.USER_PEND_APPROVE ? null :
+                  <>
+              <Typography.Title
               style={{ marginTop: 30 }}
               heading={6}
-          >
-              {t['detailModal.label.reason']}
-          </Typography.Title>
-          <Input.TextArea maxLength={200} rows={3}  showWordLimit={true}/>
+              >
+                {t['detailModal.label.reason']}
+              </Typography.Title>
+              <Input.TextArea maxLength={200} rows={3}  showWordLimit={true} disabled={true}/>
+                  </>
+          }
           <Grid.Row style={{ marginTop:'30px' }}>
               <Grid.Col span={16}>
                   <Typography.Title
