@@ -5,7 +5,7 @@ import {formatTimeStampBackUp} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
 import {OrderStateEnum, RoleTypeEnum} from "@/types/insights-common";
 import {Order} from "@/types/insights-web";
-import {getOrderStateDescription} from "@/pages/common/desc/base";
+import {getOrderDetailStateDescription, getOrderStateDescription} from "@/pages/common/desc/base";
 const { Text } = Typography;
 
 export function getOrderColumns(t: any) {
@@ -150,24 +150,12 @@ export function getOrderDetailColumns(t: any,orderInfo:Order) {
             title: t['detailModal.detail.columns.approve.state'],
             dataIndex: 'state',
             render: (value) => {
-                if(value === 0){
-                    return <Badge status="default" text={t['detailModal.detail.columns.approve.state.wait']}/>;
-                } else if(value === 1){
-                    return <Badge status="processing" text={t['detailModal.detail.columns.approve.state.pending']}/>;
-                }else if (value === 2) {
-                    return <Badge status="success" text={t['detailModal.detail.columns.approve.state.approved']}/>;
-                }else if(value === 3){
-                    return <Badge status="error" text={t['detailModal.detail.columns.approve.state.rejected']}/>;
-                }else if(value === 4){
-                    return <Badge status="warning" text={t['detailModal.detail.columns.approve.state.retracted']}/>;
-                }else if(value === 5){
-                    return <Badge status="error" text={t['detailModal.detail.columns.approve.state.suspend']}/>;
-                }
+                return getOrderDetailStateDescription(t,value);
             },
         },
         {
             title: t['detailModal.detail.columns.approve.approveTime'],
-            dataIndex: 'approveTime',
+            dataIndex: 'processTime',
             render: (value,record) => {
                 if(value){
                     return <Text>{formatTimeStampBackUp(value)}</Text>

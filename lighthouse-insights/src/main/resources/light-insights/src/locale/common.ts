@@ -26,6 +26,12 @@ const vi18n = {
         'basic.orderState.description.rejected':'Rejected',
         'basic.orderState.description.retracted':'Retracted',
         'basic.orderState.description.deleted':'Deleted',
+        'basic.orderDetail.approveState.description.wait':'wait',
+        'basic.orderDetail.approveState.description.pending':'pending',
+        'basic.orderDetail.approveState.description.approved':'approved',
+        'basic.orderDetail.approveState.description.rejected':'rejected',
+        'basic.orderDetail.approveState.description.retracted':'retracted',
+        'basic.orderDetail.approveState.description.suspend':'suspend',
     },
     'zh-CN': {
         'system.error':'系统异常!',
@@ -54,6 +60,12 @@ const vi18n = {
         'basic.orderState.description.rejected':'已驳回',
         'basic.orderState.description.retracted':'已撤回',
         'basic.orderState.description.deleted':'已删除',
+        'basic.orderDetail.approveState.description.wait':'流程等待',
+        'basic.orderDetail.approveState.description.pending':'待审核',
+        'basic.orderDetail.approveState.description.approved':'已通过',
+        'basic.orderDetail.approveState.description.rejected':'已驳回',
+        'basic.orderDetail.approveState.description.retracted':'已撤回',
+        'basic.orderDetail.approveState.description.suspend':'已中断',
     }
 }
 export default vi18n;
