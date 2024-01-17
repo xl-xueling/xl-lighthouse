@@ -75,7 +75,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             dataIndex: 'operations',
             headerCellStyle: {width:'250px' },
             render: (_, record) => {
-                if(record.state == OrderStateEnum.Processing && record.permissions.includes(PermissionEnum.approveable)){
+                if(record.state == OrderStateEnum.Processing && record.permissions.includes(PermissionEnum.ManageAble)){
                     return  <Space size={0} direction="horizontal">
                         <Button
                             onClick={() => callback(record, 'process')}

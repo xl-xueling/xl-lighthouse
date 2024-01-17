@@ -87,13 +87,16 @@ public class OrderServiceImpl implements OrderService {
         HashMap<Integer,List<User>> adminsMap = new HashMap<>();
         for(Integer roleId : roleIds){
             List<User> admins = new ArrayList<>();
-            List<Integer> adminIds = permissionDao.queryUserPermissionsByRoleId(roleId,4);
+            List<Integer> adminIds = permissionDao.queryUserPermissionsByRoleId(roleId,5);
             for(Integer approveUserId : adminIds){
                 User user = userService.cacheQueryById(approveUserId);
-                admins.add(user);
+                if(user != null){
+                    admins.add(user);
+                }
             }
             adminsMap.put(roleId,admins);
         }
+        orderVO.setAdminsMap(adminsMap);
         return orderVO;
     }
 
@@ -176,7 +179,6 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderStateEnum.PROCESSING);
         Map<String,Object> configMap = order.getExtendConfig();
         List<Integer> steps = new ArrayList<>();
-        Map<Integer,RoleTypeEnum> roleTypeMap = new HashMap<>();
         String hash;
         List<Role> roleList = getApproveRoleList(applyUser,orderTypeEnum,param);
         order.setSteps(roleList.stream().map(z -> z.getId()).collect(Collectors.toList()));
@@ -195,7 +197,7 @@ public class OrderServiceImpl implements OrderService {
         for(int i=0;i<roleList.size();i++){
             Role role = roleList.get(i);
             OrderDetail orderDetail = new OrderDetail();
-            RoleTypeEnum roleType = roleTypeMap.get(role.getId());
+            RoleTypeEnum roleType = role.getRoleType();
             orderDetail.setCreateTime(localDateTime);
             orderDetail.setOrderId(orderId);
             orderDetail.setRoleType(roleType);

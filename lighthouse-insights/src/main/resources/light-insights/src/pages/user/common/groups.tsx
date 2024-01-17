@@ -16,7 +16,7 @@ export default function UserGroup(props:Props) {
         <>
         {
             users?.map((option,index) => {
-                const currentDepartment = getDepartment(option.departmentId,allDepartInfo);
+                const currentDepartment = getDepartment(option?.departmentId,allDepartInfo);
                 const cascadeDepartments:Department[] = getCascadeDepartment(currentDepartment,allDepartInfo);
                 return (
                     <Popover

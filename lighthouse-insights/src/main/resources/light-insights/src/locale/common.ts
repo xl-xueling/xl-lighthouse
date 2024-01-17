@@ -16,6 +16,11 @@ const vi18n = {
         'components.type.filterSelect':'Select Box',
         'components.type.system.filterSelect':'Default Selection Box',
         'components.type.system.filterInput':'Default Input Box',
+        'orderApprove.roleType.description.systemManager':'System Manager',
+        'orderApprove.roleType.description.operationManager':'Operation Manager',
+        'orderApprove.roleType.description.departmentManager':'Department Manager',
+        'orderApprove.roleType.description.projectManager':'Project Manager',
+        'orderApprove.roleType.description.metricManager':'MetricSet Manager',
     },
     'zh-CN': {
         'system.error':'系统异常!',
@@ -34,6 +39,11 @@ const vi18n = {
         'components.type.filterSelect':'下拉选择组件',
         'components.type.system.filterSelect':'默认下拉选择框',
         'components.type.system.filterInput':'默认输入框',
+        'orderApprove.roleType.description.systemManager':'系统管理员',
+        'orderApprove.roleType.description.operationManager':'运维管理员',
+        'orderApprove.roleType.description.departmentManager':'部门管理员',
+        'orderApprove.roleType.description.projectManager':'工程管理员',
+        'orderApprove.roleType.description.metricManager':'指标集管理员',
     }
 }
 export default vi18n;

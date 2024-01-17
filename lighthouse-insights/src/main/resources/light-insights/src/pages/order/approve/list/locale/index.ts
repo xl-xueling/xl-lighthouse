@@ -1,5 +1,6 @@
 const i18n = {
   'en-US': {
+    'approveList.breadcrumb.title':'Order List',
     'approveList.columns.id':'ID',
     'approveList.columns.user':'User',
     'approveList.columns.type':'OrderType',
@@ -37,6 +38,7 @@ const i18n = {
     'approveModal.button.reject':'Reject',
   },
   'zh-CN': {
+    'approveList.breadcrumb.title':'工单列表',
     'approveList.columns.id':'ID',
     'approveList.columns.user':'申请人',
     'approveList.columns.type':'工单类型',

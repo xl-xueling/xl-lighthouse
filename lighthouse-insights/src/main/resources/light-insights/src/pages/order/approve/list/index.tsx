@@ -3,7 +3,7 @@ import {
     Card,
     PaginationProps,
     Table,
-    Message,
+    Message, Breadcrumb,
 } from '@arco-design/web-react';
 import {Order, Project} from "@/types/insights-web";
 import {requestApproveList} from "@/api/order";
@@ -13,6 +13,7 @@ import locale from "@/pages/order/approve/list/locale";
 import SearchForm from "@/pages/order/approve/list/form";
 import OrderDetailModal from "@/pages/order/common/detail_modal";
 import OrderProcessModal from "@/pages/order/approve/list/process_modal";
+import {IconHome} from "@arco-design/web-react/icon";
 
 export default function ApproveList() {
     const t = useLocale(locale);
@@ -96,7 +97,6 @@ export default function ApproveList() {
     }
 
     useEffect(() => {
-        console.log("-----Load page...")
         fetchData().then().catch(error => {
             console.log(error);
             Message.error(t['system.error']);
@@ -105,7 +105,15 @@ export default function ApproveList() {
 
 
     return (
+        <>
+        <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+            <Breadcrumb.Item>
+                <IconHome />
+            </Breadcrumb.Item>
+            <Breadcrumb.Item style={{fontWeight:20}}>{t['approveList.breadcrumb.title']}</Breadcrumb.Item>
+        </Breadcrumb>
         <Card>
+
             <SearchForm onSearch={handleSearch} />
             <Table
                 rowKey="id"
@@ -116,5 +124,6 @@ export default function ApproveList() {
             {showProcessPanel && <OrderProcessModal orderId={currentOrder.id} onClose={() => {setShowProcessPanel(false);}} onReload={() => {setReloadTime(Date.now)}}/>}
             {showDetailPanel && <OrderDetailModal orderId={currentOrder.id} onClose={() => setShowDetailPanel(false)}/>}
         </Card>
+        </>
     );
 }

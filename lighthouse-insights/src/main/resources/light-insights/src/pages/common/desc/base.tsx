@@ -1,6 +1,12 @@
 import React from "react";
 import {Badge} from "@arco-design/web-react";
-import {ComponentTypeEnum, ResourceTypeEnum, StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
+import {
+    ComponentTypeEnum,
+    ResourceTypeEnum,
+    RoleTypeEnum,
+    StatExpiredEnum,
+    StatStateEnum
+} from "@/types/insights-common";
 import {PiDiamondsFour} from "react-icons/pi";
 import {CiViewTable} from "react-icons/ci";
 import {IconTag} from "@arco-design/web-react/icon";
@@ -43,6 +49,22 @@ export function getStatStateDescription (t: any, value:StatStateEnum) {
     }else if(value === StatStateEnum.INVALID){
         return t['basic.columns.state.invalid'];
     }
+}
+
+export function getOrderApproveRoleTypeDescription(t:any,value:RoleTypeEnum){
+    let title = "";
+    if(value == RoleTypeEnum.OPT_MANAGE_PERMISSION){
+        title = t['orderApprove.roleType.description.operationManager'];
+    }else if(value == RoleTypeEnum.FULL_MANAGE_PERMISSION){
+        title = t['orderApprove.roleType.description.systemManager'];
+    }else if(value == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION){
+        title = t['orderApprove.roleType.description.departmentManager'];
+    }else if(value == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
+        title = t['orderApprove.roleType.description.projectManager'];
+    }else if(value == RoleTypeEnum.METRIC_MANAGE_PERMISSION){
+        title = t['orderApprove.roleType.description.metricManager'];
+    }
+    return title;
 }
 
 

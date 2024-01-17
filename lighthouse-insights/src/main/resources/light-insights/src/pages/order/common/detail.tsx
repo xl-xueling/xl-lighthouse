@@ -10,6 +10,7 @@ import {getOrderColumns, getOrderDetailColumns, getUserApproveColumns} from "@/p
 import {getRandomString} from "@/utils/util";
 import {requestQueryAll} from "@/api/department";
 import {requestQueryById} from "@/api/order";
+import {getOrderApproveRoleTypeDescription} from "@/pages/common/desc/base";
 
 const { Text } = Typography;
 
@@ -37,18 +38,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
             const roleId = z.roleId;
             const admins = orderInfo.adminsMap[roleId];
             const roleType = z.roleType;
-            let title = "";
-            if(roleType == RoleTypeEnum.OPT_MANAGE_PERMISSION){
-                title = t['detailModal.detail.columns.roleType.operateManager'];
-            }else if(roleType == RoleTypeEnum.FULL_MANAGE_PERMISSION){
-                title = t['detailModal.detail.columns.roleType.systemManager'];
-            }else if(roleType == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION){
-                title = t['detailModal.detail.columns.roleType.departmentManager'];
-            }else if(roleType == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
-                title = t['detailModal.detail.columns.roleType.projectManager'];
-            }else if(roleType == RoleTypeEnum.METRIC_MANAGE_PERMISSION){
-                title = t['detailModal.detail.columns.roleType.metricManager'];
-            }
+            const title = getOrderApproveRoleTypeDescription(t,roleType);
             if(z.state == ApproveStateEnum.Wait){
                 return <Steps.Step status={'wait'} key={z.id} title={title} description={
                     <div>

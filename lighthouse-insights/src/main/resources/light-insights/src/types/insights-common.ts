@@ -17,10 +17,10 @@ export enum OrderTypeEnum {
 }
 
 export enum PermissionEnum {
-    readable="readable",
-    editable="editable",
-    approveable="approveable",
-    retractable="retractable",
+    AccessAble="AccessAble",
+    ManageAble="ManageAble",
+    OperationManageAble="OperationManageAble",
+    SystemManageAble="SystemManageAble",
 }
 
 export interface BindElement {
@@ -97,10 +97,14 @@ export enum RoleTypeEnum {
     DEPARTMENT_ACCESS_PERMISSION=4,
     PROJECT_MANAGE_PERMISSION=5,
     PROJECT_ACCESS_PERMISSION=6,
-    METRIC_MANAGE_PERMISSION=7,
-    METRIC_ACCESS_PERMISSION=8,
-    STAT_ACCESS_PERMISSION=9,
-    OPT_MANAGE_PERMISSION=10,
+    GROUP_MANAGE_PERMISSION=7,
+    GROUP_ACCESS_PERMISSION=8,
+    STAT_MANAGE_PERMISSION=9,
+    STAT_ACCESS_PERMISSION=10,
+    METRIC_MANAGE_PERMISSION=11,
+    METRIC_ACCESS_PERMISSION=12,
+    OPT_MANAGE_PERMISSION=100,
+    OPT_ACCESS_PERMISSION=101,
 }
 
 export interface RenderFilterConfig {
