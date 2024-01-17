@@ -50,7 +50,7 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
             id:orderInfo.id,
             roleId:orderInfo.currentNode,
             reply:values.reply,
-            result:1,
+            state:1,
         }
         setAgreeLoading(true);
         requestApprove(approveParam).then((result) => {
@@ -88,7 +88,7 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
             id:orderInfo.id,
             roleId:orderInfo.currentNode,
             reply:values.reply,
-            result:2,
+            state:2,
         }
         setRejectLoading(true);
         requestApprove(approveParam).then((result) => {
