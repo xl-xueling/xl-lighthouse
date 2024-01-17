@@ -61,7 +61,7 @@
         ) sub ON o.id = sub.order_id) c left join ldp_users u on c.user_id = u.id
         <where>
             <if test="queryParam.username != null">
-                AND `u.username` LIKE CONCAT('%', #{queryParam.username}, '%')
+                AND `username` LIKE CONCAT('%', #{queryParam.username}, '%')
             </if>
             <if test="queryParam.types != null and queryParam.types.size > 0">
                 AND `order_type` IN

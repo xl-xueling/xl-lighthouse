@@ -3,7 +3,7 @@ import {
     Card,
     PaginationProps,
     Table,
-    Message, Breadcrumb,
+    Message, Breadcrumb, Notification,
 } from '@arco-design/web-react';
 import {Order, Project} from "@/types/insights-web";
 import {requestApproveList} from "@/api/order";
@@ -71,36 +71,33 @@ export default function ApproveList() {
             combineParam.createStartTime = createTime[0];
             combineParam.createEndTime = createTime[1];
         }
-        const fetchApproveList:Promise<{list:Array<Order>,total:number}> = new Promise<{list:Array<Order>,total:number}>((resolve) => {
-            const proc = async () => {
-                const result = await requestApproveList({
-                        queryParams:combineParam,
-                        pagination:{
-                            pageSize:pageSize,
-                            pageNum:current,
-                        }
-                    }
-                );
-                resolve(result.data);
+        await requestApproveList({
+            queryParams:combineParam,
+            pagination:{
+                pageSize:pageSize,
+                pageNum:current,
             }
-            proc().then();
+        }).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                setListData(data.list);
+                setPagination({
+                    ...pagination,
+                    current,
+                    pageSize,
+                    total: data.total});
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
         })
-        const result = await Promise.all([fetchApproveList]);
-        const {list,total}:{list:Array<Order>,total:number} = result[0];
-        setListData(list);
-        setPagination({
-            ...pagination,
-            current,
-            pageSize,
-            total: total});
-        setLoading(false);
+
     }
 
     useEffect(() => {
-        fetchData().then().catch(error => {
-            console.log(error);
-            Message.error(t['system.error']);
-        })
+        fetchData().then();
     }, [reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
 
