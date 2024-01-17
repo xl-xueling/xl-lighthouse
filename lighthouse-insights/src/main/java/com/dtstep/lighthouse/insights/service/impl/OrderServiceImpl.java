@@ -62,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
     public ListData<OrderVO> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
         Integer currentUserId = baseService.getCurrentUserId();
         queryParam.setApproveUserId(currentUserId);
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum,pageSize,"create_time desc");
         List<OrderVO> orderDtoList = new ArrayList<>();
         try{
             List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
