@@ -1,6 +1,7 @@
 import React from "react";
 import {Badge} from "@arco-design/web-react";
 import {
+    ApproveStateEnum,
     ComponentTypeEnum, OrderStateEnum,
     ResourceTypeEnum,
     RoleTypeEnum,
@@ -140,5 +141,21 @@ export function getOrderStateDescription(t:any,value:OrderStateEnum){
         return <Badge status="error" text={t['basic.orderState.description.retracted']}/>;
     }else if(value === OrderStateEnum.Deleted){
         return <Badge status="error" text={t['basic.orderState.description.deleted']}/>;
+    }
+}
+
+export function getOrderDetailStateDescription(t:any,value:ApproveStateEnum){
+    if(value == ApproveStateEnum.Wait){
+        return <Badge status="processing" text={t['basic.orderDetail.approveState.description.wait']}/>;
+    }else if(value === ApproveStateEnum.Pending){
+        return <Badge status="error" text={t['basic.orderDetail.approveState.description.pending']}/>;
+    }else if (value === ApproveStateEnum.Approved) {
+        return <Badge status="success" text={t['basic.orderDetail.approveState.description.approved']}/>;
+    }else if(value === ApproveStateEnum.Rejected){
+        return <Badge status="error" text={t['basic.orderDetail.approveState.description.rejected']}/>;
+    }else if(value === ApproveStateEnum.Retracted){
+        return <Badge status="error" text={t['basic.orderDetail.approveState.description.retracted']}/>;
+    }else if(value === ApproveStateEnum.Suspend){
+        return <Badge status="error" text={t['basic.orderDetail.approveState.description.suspend']}/>;
     }
 }
