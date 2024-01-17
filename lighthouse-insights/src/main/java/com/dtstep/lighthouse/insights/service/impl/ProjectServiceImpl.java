@@ -193,7 +193,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
         List<User> users = new ArrayList<>();
         for(Integer userId:userIds){
-            User user = userService.queryBasicInfoById(userId);
+            User user = userService.queryById(userId);
             users.add(user);
         }
         return users;

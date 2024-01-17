@@ -72,10 +72,6 @@ public class UserServiceImpl implements UserService {
         return userDao.update(user);
     }
 
-    @Override
-    public User queryBasicInfoById(int id) {
-        return userDao.queryBasicInfoById(id);
-    }
 
     @Override
     @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
@@ -89,7 +85,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User queryAllInfoById(int id) {
+    public User queryById(int id) {
         return userDao.queryAllInfoById(id);
     }
 

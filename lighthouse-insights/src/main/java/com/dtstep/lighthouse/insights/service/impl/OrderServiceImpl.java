@@ -17,7 +17,6 @@ import com.dtstep.lighthouse.insights.service.*;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,13 +59,24 @@ public class OrderServiceImpl implements OrderService {
     private DepartmentService departmentService;
 
     @Override
-    public ExtendOrderDto queryById(Integer id) {
+    public OrderVO queryById(Integer id) {
         Order order = orderDao.queryById(id);
-        if(order != null){
-            return translateExtend(order);
-        }else{
-            return null;
+        Validate.notNull(order);
+        OrderVO orderVO = translate(order);
+        List<OrderDetailDto> orderDetails = orderDetailService.queryList(id);
+        orderVO.setOrderDetails(orderDetails);
+        List<Integer> roleIds = orderVO.getSteps();
+        HashMap<Integer,List<User>> adminsMap = new HashMap<>();
+        for(Integer roleId : roleIds){
+            List<User> admins = new ArrayList<>();
+            List<Integer> adminIds = permissionDao.queryUserPermissionsByRoleId(roleId,4);
+            for(Integer approveUserId : adminIds){
+                User user = userService.cacheQueryById(approveUserId);
+                admins.add(user);
+            }
+            adminsMap.put(roleId,admins);
         }
+        return orderVO;
     }
 
     private void checkAddRole(List<Role> list,Role role){
@@ -188,9 +198,9 @@ public class OrderServiceImpl implements OrderService {
         return listData;
     }
 
-    private OrderDto translate(Order order){
+    private OrderVO translate(Order order){
         Integer currentUserId = baseService.getCurrentUserId();
-        OrderDto orderDto = new OrderDto(order);
+        OrderVO orderDto = new OrderVO(order);
         int applyUserId = orderDto.getUserId();
         List<Integer> roleIds = order.getSteps();
         orderDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
@@ -204,60 +214,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    @Deprecated
-    private ExtendOrderDto translateExtend(Order order){
-        Integer currentUserId = baseService.getCurrentUserId();
-        ExtendOrderDto extendOrderDto = new ExtendOrderDto(order);
-        int applyUserId = extendOrderDto.getUserId();
-        List<Integer> roleIds = order.getSteps();
-        HashMap<Integer,List<User>> adminsMap = new HashMap<>();
-        for(Integer roleId : roleIds){
-            PermissionQueryParam permissionQueryParam = new PermissionQueryParam();
-            permissionQueryParam.setRoleId(roleId);
-            permissionQueryParam.setOwnerType(OwnerTypeEnum.USER);
-            List<User> admins = new ArrayList<>();
-            PageHelper.startPage(1,4);
-            List<Permission> permissions = null;
-            try{
-                permissions = permissionDao.queryList(permissionQueryParam);
-            }finally {
-                PageHelper.clearPage();
-            }
-            if(CollectionUtils.isNotEmpty(permissions)){
-                List<Integer> userIdList = permissions.stream().map(z -> z.getOwnerId()).collect(Collectors.toList());
-                for(Integer approveUserId : userIdList){
-                    User user = userService.cacheQueryById(approveUserId);
-                    admins.add(user);
-                }
-            }
-            adminsMap.put(roleId,admins);
-            boolean hashPermission = permissionDao.checkUserPermission(currentUserId,roleId);
-            if(hashPermission){
-                extendOrderDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
-            }
-        }
-        Integer currentNode = order.getCurrentNode();
-        if(permissionDao.checkUserPermission(currentUserId,currentNode)){
-            extendOrderDto.addPermission(PermissionInfo.PermissionEnum.ManageAble);
-        }
-        extendOrderDto.setAdminsMap(adminsMap);
-        User user = userService.cacheQueryById(applyUserId);
-        List<OrderDetailDto> orderDetails = orderDetailService.queryList(order.getId());
-        extendOrderDto.setOrderDetails(orderDetails);
-        extendOrderDto.setUser(user);
-        return extendOrderDto;
-    }
 
     @Override
-    public ListData<OrderDto> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
+    public ListData<OrderVO> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
         Integer currentUserId = baseService.getCurrentUserId();
         queryParam.setApproveUserId(currentUserId);
         PageHelper.startPage(pageNum,pageSize);
-        List<OrderDto> orderDtoList = new ArrayList<>();
+        List<OrderVO> orderDtoList = new ArrayList<>();
         try{
             List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
             for(Order order : orders){
-                OrderDto orderDto = translate(order);
+                OrderVO orderDto = translate(order);
                 orderDtoList.add(orderDto);
             }
         }finally {

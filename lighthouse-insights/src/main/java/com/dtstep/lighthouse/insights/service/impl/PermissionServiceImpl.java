@@ -93,7 +93,7 @@ public class PermissionServiceImpl implements PermissionService {
             return 0;
         }
         if(ownerTypeEnum == OwnerTypeEnum.USER){
-            User user = userService.queryBasicInfoById(ownerId);
+            User user = userService.queryById(ownerId);
             Validate.notNull(user);
             Validate.isTrue(user.getState() == UserStateEnum.USR_NORMAL);
         }else if (ownerTypeEnum == OwnerTypeEnum.DEPARTMENT){
