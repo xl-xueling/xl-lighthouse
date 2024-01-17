@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.test.service;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
-import com.dtstep.lighthouse.insights.dto.OrderDetailDto;
+import com.dtstep.lighthouse.insights.dto_bak.OrderDetailDto;
 import com.dtstep.lighthouse.insights.service.OrderDetailService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.exception.PermissionException;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.insights.dto.ResultData;
+import com.dtstep.lighthouse.insights.dto_bak.ResultData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.MethodArgumentNotValidException;

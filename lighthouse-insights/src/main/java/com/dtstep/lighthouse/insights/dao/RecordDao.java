@@ -1,8 +1,6 @@
 package com.dtstep.lighthouse.insights.dao;
 
-import com.dtstep.lighthouse.insights.dto.RecordQueryParam;
-import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
-import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.insights.dto_bak.RecordQueryParam;
 import com.dtstep.lighthouse.insights.modal.Record;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

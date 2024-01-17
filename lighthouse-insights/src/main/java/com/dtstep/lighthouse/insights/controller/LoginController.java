@@ -1,12 +1,12 @@
 package com.dtstep.lighthouse.insights.controller;
 
-import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
+import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
-import com.dtstep.lighthouse.insights.dto.LoginParam;
+import com.dtstep.lighthouse.insights.dto_bak.LoginParam;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.insights.dto.ResultData;
+import com.dtstep.lighthouse.insights.dto_bak.ResultData;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
 import com.dtstep.lighthouse.insights.service.UserService;

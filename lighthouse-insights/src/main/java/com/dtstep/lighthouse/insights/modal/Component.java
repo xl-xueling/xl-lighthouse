@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.modal;
 
-import com.dtstep.lighthouse.insights.dto.TreeNode;
+import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import com.dtstep.lighthouse.insights.enums.ComponentTypeEnum;
 import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
 

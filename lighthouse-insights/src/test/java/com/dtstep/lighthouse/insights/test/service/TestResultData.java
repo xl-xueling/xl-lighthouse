@@ -1,9 +1,6 @@
 package com.dtstep.lighthouse.insights.test.service;
 
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
-import com.dtstep.lighthouse.insights.dto.ResultData;
-import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

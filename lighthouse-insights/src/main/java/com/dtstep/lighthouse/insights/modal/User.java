@@ -1,7 +1,6 @@
 package com.dtstep.lighthouse.insights.modal;
 
-import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
-import com.dtstep.lighthouse.insights.dto.PermissionInfo;
+import com.dtstep.lighthouse.common.enums.UserStateEnum;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -11,24 +10,19 @@ public class User implements Serializable {
 
     private Integer id;
 
-    @NotEmpty
-    @Pattern(regexp = "^[a-zA-Z0-9_]{5,15}$")
     private String username;
 
-    @NotEmpty
-    @Pattern(regexp = "^[a-zA-Z0-9_][a-zA-Z0-9_,.#!$%]{5,32}$")
     private String password;
 
-    @NotNull
     private Integer departmentId;
 
     private String phone;
 
-    @NotEmpty
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     private String email;
 
     private UserStateEnum state;
+
+    private Integer thirdId;
 
     private LocalDateTime lastTime;
 
@@ -114,5 +108,13 @@ public class User implements Serializable {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getThirdId() {
+        return thirdId;
+    }
+
+    public void setThirdId(Integer thirdId) {
+        this.thirdId = thirdId;
     }
 }

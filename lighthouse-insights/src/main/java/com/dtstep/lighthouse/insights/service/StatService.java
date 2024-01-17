@@ -1,11 +1,9 @@
 package com.dtstep.lighthouse.insights.service;
 
-import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.insights.dto.ChangeStatStateParam;
-import com.dtstep.lighthouse.insights.dto.StatDto;
-import com.dtstep.lighthouse.insights.dto.StatQueryParam;
+import com.dtstep.lighthouse.insights.dto_bak.StatDto;
+import com.dtstep.lighthouse.insights.dto_bak.StatQueryParam;
 import com.dtstep.lighthouse.insights.modal.RenderConfig;
 import com.dtstep.lighthouse.insights.modal.RenderFilterConfig;
 import com.dtstep.lighthouse.insights.modal.Stat;

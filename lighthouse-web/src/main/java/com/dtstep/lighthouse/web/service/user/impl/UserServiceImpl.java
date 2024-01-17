@@ -23,7 +23,7 @@ import com.dtstep.lighthouse.common.entity.list.ListViewDataObject;
 import com.dtstep.lighthouse.common.entity.paging.PageEntity;
 import com.dtstep.lighthouse.common.entity.user.UserEntity;
 import com.dtstep.lighthouse.common.entity.user.UserViewEntity;
-import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
+import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
 import com.dtstep.lighthouse.core.dao.DaoHelper;

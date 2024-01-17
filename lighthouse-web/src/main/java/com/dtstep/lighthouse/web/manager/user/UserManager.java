@@ -18,7 +18,7 @@ package com.dtstep.lighthouse.web.manager.user;
  */
 import com.dtstep.lighthouse.common.entity.user.UserEntity;
 import com.dtstep.lighthouse.common.enums.role.PrivilegeTypeEnum;
-import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
+import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;

@@ -8,20 +8,22 @@
         <result column="password" property="password"/>
         <result column="phone" property="phone"/>
         <result column="email" property="email"/>
+        <result column="third_id" property="thirdId"/>
         <result column="state" property="state" typeHandler="com.dtstep.lighthouse.insights.types.UserStateEnumTypeHandler"/>
         <result column="department_id" property="departmentId"/>
         <result column="last_time" property="lastTime"/>
         <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
     <select id="isUserNameExist" resultType="boolean">
         SELECT COUNT(1) > 0
-        FROM ldp_user
+        FROM ldp_users
         WHERE username = #{username}
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.User" >
-        INSERT INTO ldp_user (`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_users (`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time`) VALUES
         (
             #{username,jdbcType=VARCHAR},
             #{password,jdbcType=VARCHAR},
@@ -36,19 +38,19 @@
     </insert>
 
     <select id="queryBasicInfoById" resultMap="userResultMap">
-        SELECT `id`,`username`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user WHERE id = #{id}
+        SELECT `id`,`username`,`phone`,`email`,`department_id`,`state`,`third_id`,`last_time`,`create_time`,`update_time` FROM ldp_users WHERE id = #{id}
     </select>
 
     <select id="queryAllInfoById" resultMap="userResultMap">
-        SELECT `id`,`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user WHERE id = #{id}
+        SELECT `id`,`username`,`password`,`phone`,`email`,`department_id`,`state`,,`third_id`,`last_time`,`create_time`,`update_time` FROM ldp_users WHERE id = #{id}
     </select>
 
     <select id="queryByUserName" resultMap="userResultMap">
-        SELECT `id`,`username`,`password`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user WHERE username = #{username}
+        SELECT `id`,`username`,`password`,`phone`,`email`,`department_id`,`state`,`third_id`,`last_time`,`create_time`,`update_time` FROM ldp_users WHERE username = #{username}
     </select>
 
     <select id="termQuery" resultMap="userResultMap">
-        SELECT `id`,`username` FROM ldp_user WHERE username LIKE CONCAT('%', #{search}, '%') limit 10
+        SELECT `id`,`username` FROM ldp_users WHERE username LIKE CONCAT('%', #{search}, '%') limit 10
     </select>
 
     <select id="queryList" resultMap="userResultMap">
@@ -68,7 +70,7 @@
         FROM ldp_department d
         JOIN cte ON cte.id = d.pid
         )
-        SELECT `id`,`username`,`phone`,`email`,`department_id`,`state`,`last_time`,`create_time`,`update_time` FROM ldp_user
+        SELECT `id`,`username`,`phone`,`email`,`department_id`,`state`,`third_id`,`last_time`,`create_time`,`update_time` FROM ldp_users
         <where>
             <if test="queryParam.search != null">
                 AND (username LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})
@@ -98,7 +100,7 @@
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.User">
-        UPDATE ldp_user
+        UPDATE ldp_users
         <set>
             <if test="username != null">
                 `username` = #{username},
@@ -118,6 +120,9 @@
             <if test="state != null">
                 `state` = #{state.state},
             </if>
+            <if test="thirdId != null">
+                `third_id` = #{thirdId},
+            </if>
             <if test="updateTime != null">
                 `update_time` = #{updateTime},
             </if>
@@ -128,9 +133,9 @@
         WHERE id = #{id}
     </update>
 
-    <delete id="deleteById">
-        delete from ldp_user where id = #{id}
-    </delete>
+    <update id="deleteById">
+        update ldp_users set state = '1' where id = #{id}
+    </update>
 
     <select id="count" resultType="Integer">
         WITH RECURSIVE cte AS (
@@ -149,7 +154,7 @@
         FROM ldp_department d
         JOIN cte ON cte.id = d.pid
         )
-        SELECT count(1) FROM ldp_user
+        SELECT count(1) FROM ldp_users
         <where>
             <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
                 AND department_id IN(
@@ -165,7 +170,6 @@
             <if test="queryParam.states==null or queryParam.states.size == 0">
                 AND state IN ('1','2')
             </if>
-
         </where>
     </select>
 </mapper>

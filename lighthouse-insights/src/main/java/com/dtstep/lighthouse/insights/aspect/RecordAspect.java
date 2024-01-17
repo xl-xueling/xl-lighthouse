@@ -2,7 +2,6 @@ package com.dtstep.lighthouse.insights.aspect;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.controller.annotation.RecordAnnotation;
-import com.dtstep.lighthouse.insights.dto.ChangeStatStateParam;
 import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Record;

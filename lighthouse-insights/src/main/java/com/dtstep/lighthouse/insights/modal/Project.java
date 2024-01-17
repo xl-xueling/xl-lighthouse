@@ -1,6 +1,5 @@
 package com.dtstep.lighthouse.insights.modal;
 
-import com.dtstep.lighthouse.insights.dto.PermissionInfo;
 import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
 import com.dtstep.lighthouse.insights.validator.BLengthValidation;
 

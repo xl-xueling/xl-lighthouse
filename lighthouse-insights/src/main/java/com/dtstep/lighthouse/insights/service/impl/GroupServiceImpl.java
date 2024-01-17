@@ -2,22 +2,17 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
-import com.dtstep.lighthouse.insights.dto.GroupDto;
-import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
-import com.dtstep.lighthouse.insights.dto.RolePair;
+import com.dtstep.lighthouse.insights.dto_bak.GroupQueryParam;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
-import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.modal.Resource;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

@@ -4,8 +4,8 @@ import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.RecordDao;
-import com.dtstep.lighthouse.insights.dto.LimitedRecord;
-import com.dtstep.lighthouse.insights.dto.RecordQueryParam;
+import com.dtstep.lighthouse.insights.dto_bak.LimitedRecord;
+import com.dtstep.lighthouse.insights.dto_bak.RecordQueryParam;
 import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Record;
@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)

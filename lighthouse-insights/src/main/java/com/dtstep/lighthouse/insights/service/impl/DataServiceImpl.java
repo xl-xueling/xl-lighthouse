@@ -2,15 +2,14 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
-import com.dtstep.lighthouse.insights.dto.StatDataObject;
-import com.dtstep.lighthouse.insights.dto.StatDto;
-import com.dtstep.lighthouse.insights.dto.StatValue;
+import com.dtstep.lighthouse.insights.dto_bak.StatDataObject;
+import com.dtstep.lighthouse.insights.dto_bak.StatDto;
+import com.dtstep.lighthouse.insights.dto_bak.StatValue;
 import com.dtstep.lighthouse.insights.service.DataService;
 import com.dtstep.lighthouse.insights.service.StatService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

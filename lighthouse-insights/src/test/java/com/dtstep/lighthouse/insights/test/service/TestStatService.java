@@ -6,8 +6,8 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.core.formula.TemplateUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.StatDao;
-import com.dtstep.lighthouse.insights.dto.StatDto;
-import com.dtstep.lighthouse.insights.dto.StatQueryParam;
+import com.dtstep.lighthouse.insights.dto_bak.StatDto;
+import com.dtstep.lighthouse.insights.dto_bak.StatQueryParam;
 import com.dtstep.lighthouse.insights.modal.RenderFilterConfig;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.servlet.FilterConfig;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
