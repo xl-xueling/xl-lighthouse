@@ -2,9 +2,8 @@ package com.dtstep.lighthouse.web.service.login.impl;
 
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.entity.user.UserEntity;
-import com.dtstep.lighthouse.common.enums.authorize.AuthorizeStateEnum;
 import com.dtstep.lighthouse.common.enums.result.RequestCodeEnum;
-import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
+import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.web.manager.login.LoginManager;
 import com.dtstep.lighthouse.web.manager.user.UserManager;

@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.dao;
 
-import com.dtstep.lighthouse.insights.dto.ComponentQueryParam;
+import com.dtstep.lighthouse.insights.dto_bak.ComponentQueryParam;
 import com.dtstep.lighthouse.insights.modal.Component;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

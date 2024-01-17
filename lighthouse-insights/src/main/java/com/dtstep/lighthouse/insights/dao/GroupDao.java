@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.dao;
 
-import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
+import com.dtstep.lighthouse.insights.dto_bak.GroupQueryParam;
 import com.dtstep.lighthouse.insights.modal.Group;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

@@ -19,7 +19,7 @@ package com.dtstep.lighthouse.web.controller.home;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.user.UserEntity;
 import com.dtstep.lighthouse.common.enums.order.OrderStateEnum;
-import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
+import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.web.manager.project.ProjectManager;

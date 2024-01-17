@@ -17,7 +17,7 @@ package com.dtstep.lighthouse.web.dao;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.entity.user.UserEntity;
-import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
+import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,14 +2,11 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.RecordDao;
-import com.dtstep.lighthouse.insights.dto.RecordQueryParam;
-import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
-import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.insights.dto_bak.RecordQueryParam;
 import com.dtstep.lighthouse.insights.modal.Record;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.RecordService;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.util;
 
-import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
-import com.dtstep.lighthouse.insights.dto.TreeNode;
+import com.dtstep.lighthouse.insights.dto_bak.CommonTreeNode;
+import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;

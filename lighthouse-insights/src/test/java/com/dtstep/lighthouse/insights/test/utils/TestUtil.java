@@ -1,14 +1,9 @@
 package com.dtstep.lighthouse.insights.test.utils;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.insights.dto.TreeNode;
-import com.dtstep.lighthouse.insights.enums.ColumnTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Column;
 import com.dtstep.lighthouse.insights.modal.Order;
-import com.dtstep.lighthouse.insights.util.TreeUtil;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestUtil {

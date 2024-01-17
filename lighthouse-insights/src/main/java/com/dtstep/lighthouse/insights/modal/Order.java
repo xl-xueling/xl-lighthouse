@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.modal;
 
-import com.dtstep.lighthouse.insights.dto.PermissionInfo;
+import com.dtstep.lighthouse.insights.dto_bak.PermissionInfo;
 import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
 import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
 

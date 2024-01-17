@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.service;
 
-import com.dtstep.lighthouse.insights.dto.RelationDto;
+import com.dtstep.lighthouse.insights.dto_bak.RelationDto;
 import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Relation;
 

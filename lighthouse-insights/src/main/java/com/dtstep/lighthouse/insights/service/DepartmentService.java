@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.service;
 
-import com.dtstep.lighthouse.insights.dto.CommonTreeNode;
+import com.dtstep.lighthouse.insights.dto_bak.CommonTreeNode;
 import com.dtstep.lighthouse.insights.modal.Department;
 
 import java.util.List;

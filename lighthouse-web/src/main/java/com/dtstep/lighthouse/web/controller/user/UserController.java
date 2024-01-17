@@ -29,7 +29,7 @@ import com.dtstep.lighthouse.common.entity.list.ListViewDataObject;
 import com.dtstep.lighthouse.common.entity.user.UserEntity;
 import com.dtstep.lighthouse.common.enums.result.RequestCodeEnum;
 import com.dtstep.lighthouse.common.enums.role.PrivilegeTypeEnum;
-import com.dtstep.lighthouse.common.enums.user.UserStateEnum;
+import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.exception.ProcessException;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
