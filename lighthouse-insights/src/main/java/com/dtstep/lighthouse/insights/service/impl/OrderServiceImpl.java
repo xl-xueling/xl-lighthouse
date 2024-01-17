@@ -59,6 +59,24 @@ public class OrderServiceImpl implements OrderService {
     private DepartmentService departmentService;
 
     @Override
+    public ListData<OrderVO> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
+        Integer currentUserId = baseService.getCurrentUserId();
+        queryParam.setApproveUserId(currentUserId);
+        PageHelper.startPage(pageNum,pageSize);
+        List<OrderVO> orderDtoList = new ArrayList<>();
+        try{
+            List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
+            for(Order order : orders){
+                OrderVO orderDto = translate(order);
+                orderDtoList.add(orderDto);
+            }
+        }finally {
+            PageHelper.clearPage();
+        }
+        return baseService.translateToListData(orderDtoList);
+    }
+
+    @Override
     public OrderVO queryById(Integer id) {
         Order order = orderDao.queryById(id);
         Validate.notNull(order);
@@ -213,25 +231,6 @@ public class OrderServiceImpl implements OrderService {
         return orderDto;
     }
 
-
-
-    @Override
-    public ListData<OrderVO> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
-        Integer currentUserId = baseService.getCurrentUserId();
-        queryParam.setApproveUserId(currentUserId);
-        PageHelper.startPage(pageNum,pageSize);
-        List<OrderVO> orderDtoList = new ArrayList<>();
-        try{
-            List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
-            for(Order order : orders){
-                OrderVO orderDto = translate(order);
-                orderDtoList.add(orderDto);
-            }
-        }finally {
-            PageHelper.clearPage();
-        }
-        return baseService.translateToListData(orderDtoList);
-    }
 
     @Transactional
     @Override
