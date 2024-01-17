@@ -49,7 +49,7 @@ public class UserController {
     private RoleService roleService;
 
     @RequestMapping("/user/register")
-    public ResultData<Integer> register(@Validated @RequestBody UserCreateParam createParam) {
+    public ResultData<Integer> register(@Validated @RequestBody UserCreateParam createParam) throws Exception{
         String userName = createParam.getUsername();
         boolean isExist = userService.isUserNameExist(userName);
         if(isExist){

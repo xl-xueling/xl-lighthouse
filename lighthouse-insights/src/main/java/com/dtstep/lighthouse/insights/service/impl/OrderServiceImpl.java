@@ -149,6 +149,7 @@ public class OrderServiceImpl implements OrderService {
         String hash;
         List<Role> roleList = getApproveRoleList(applyUser,orderTypeEnum,param);
         order.setSteps(roleList.stream().map(z -> z.getId()).collect(Collectors.toList()));
+        order.setCurrentNode(CollectionUtils.isNotEmpty(roleList)?roleList.get(0).getId():null);
         if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
 
         }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
