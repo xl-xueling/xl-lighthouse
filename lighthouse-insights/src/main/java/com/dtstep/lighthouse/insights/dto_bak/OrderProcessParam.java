@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.insights.dto_bak;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-public class OrderApproveParam implements Serializable {
+public class OrderProcessParam implements Serializable {
 
     @NotNull
     private Integer id;
@@ -11,12 +11,10 @@ public class OrderApproveParam implements Serializable {
     @NotNull
     private Integer roleId;
 
-    private String reply;
-
-    private Integer userId;
-
     @NotNull
     private Integer result;
+
+    private String reply;
 
     public Integer getId() {
         return id;
@@ -48,13 +46,5 @@ public class OrderApproveParam implements Serializable {
 
     public void setResult(Integer result) {
         this.result = result;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 }

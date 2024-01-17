@@ -1,7 +1,8 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.insights.dto_bak.OrderApproveParam;
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.dto_bak.OrderProcessParam;
 import com.dtstep.lighthouse.insights.dto_bak.OrderVO;
 import com.dtstep.lighthouse.insights.dto_bak.OrderQueryParam;
 import com.dtstep.lighthouse.common.enums.OrderTypeEnum;
@@ -12,7 +13,7 @@ public interface OrderService {
 
     <T>int submit(User applyUser, OrderTypeEnum orderTypeEnum, T param) throws Exception;
 
-    void approve(OrderApproveParam approveParam);
+    ResultCode process(OrderProcessParam processParam);
 
     OrderVO queryById(Integer id);
 
