@@ -89,7 +89,7 @@
         </where>
         ) a
         <if test="queryParam.owner != null">
-            inner join (select resource_id from ldp_role r where r.role_type = '5'
+            inner join (select resource_id from ldp_roles r where r.role_type = '5'
             and r.id IN (select role_id from ldp_permission where owner_id = #{queryParam.owner} and owner_type = '1')) b on a.id = b.resource_id
         </if>
     </select>

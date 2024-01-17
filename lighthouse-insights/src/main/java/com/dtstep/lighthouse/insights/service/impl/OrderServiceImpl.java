@@ -193,14 +193,9 @@ public class OrderServiceImpl implements OrderService {
         OrderDto orderDto = new OrderDto(order);
         int applyUserId = orderDto.getUserId();
         List<Integer> roleIds = order.getSteps();
-        for(Integer roleId : roleIds){
-            boolean hashPermission = permissionDao.checkUserPermission(currentUserId,roleId);
-            if(hashPermission){
-                orderDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
-            }
-        }
+        orderDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
         Integer currentNode = order.getCurrentNode();
-        if(permissionDao.checkUserPermission(currentUserId,currentNode)){
+        if(permissionDao.existPermission(currentUserId,OwnerTypeEnum.USER,currentNode)){
             orderDto.addPermission(PermissionInfo.PermissionEnum.ManageAble);
         }
         User user = userService.cacheQueryById(applyUserId);
@@ -209,6 +204,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    @Deprecated
     private ExtendOrderDto translateExtend(Order order){
         Integer currentUserId = baseService.getCurrentUserId();
         ExtendOrderDto extendOrderDto = new ExtendOrderDto(order);

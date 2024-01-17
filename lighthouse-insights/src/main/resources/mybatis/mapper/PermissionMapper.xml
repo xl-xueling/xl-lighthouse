@@ -76,11 +76,11 @@
     <select id="checkUserPermission" resultType="boolean">
         WITH RECURSIVE cte AS (
             SELECT id, pid
-            FROM ldp_role
+            FROM ldp_roles
             WHERE id = #{roleId}
             UNION ALL
             SELECT t.id, t.pid
-            FROM ldp_role t
+            FROM ldp_roles t
                      INNER JOIN cte ON t.id = cte.pid
         )
         SELECT COUNT(1) > 0
@@ -97,7 +97,7 @@
                      FROM ldp_permissions
                      WHERE owner_id IN (
                          SELECT department_id
-                         FROM ldp_user
+                         FROM ldp_users
                          WHERE id = #{userId}
                      )
                        AND owner_type = '2'
@@ -110,11 +110,11 @@
     <select id="queryUserManagePermission" resultMap="permissionResultMap">
         WITH RECURSIVE cte AS (
             SELECT id
-            FROM ldp_role
+            FROM ldp_roles
             WHERE role_type = '1' and resource_id = '0'
             UNION ALL
             SELECT t.id
-            FROM ldp_role t
+            FROM ldp_roles t
                      INNER JOIN cte ON t.pid = cte.id
         )
         select a.* from ldp_permissions a
