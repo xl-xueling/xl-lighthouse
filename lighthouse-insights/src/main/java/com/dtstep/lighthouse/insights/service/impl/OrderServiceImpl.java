@@ -236,19 +236,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public ResultCode process(OrderProcessParam processParam) {
+    public int process(OrderProcessParam processParam) {
         int currentUserId = baseService.getCurrentUserId();
-        int result = processParam.getResult();
+        int state = processParam.getState();
         Order order = orderDao.queryById(processParam.getId());
         Validate.notNull(order);
         Validate.isTrue(processParam.getRoleId().intValue() == order.getCurrentNode().intValue());
         List<OrderDetail> orderDetails = new ArrayList<>();
-        if(result == 1){
-            agreeOrder(currentUserId,processParam,order);
-        }else if(result == 2){
-            rejectOrder(currentUserId,processParam,order);
+        int result = 0;
+        if(state == 1){
+            result = agreeOrder(currentUserId,processParam,order);
+        }else if(state == 2){
+            result = rejectOrder(currentUserId,processParam,order);
         }
-        return ResultCode.success;
+        return result;
     }
 
     private int agreeOrder(Integer currentUserId, OrderProcessParam processParam, Order order){

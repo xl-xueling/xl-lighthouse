@@ -13,7 +13,7 @@ public interface OrderService {
 
     <T>int submit(User applyUser, OrderTypeEnum orderTypeEnum, T param) throws Exception;
 
-    ResultCode process(OrderProcessParam processParam);
+    int process(OrderProcessParam processParam);
 
     OrderVO queryById(Integer id);
 

@@ -12,7 +12,7 @@ public class OrderProcessParam implements Serializable {
     private Integer roleId;
 
     @NotNull
-    private Integer result;
+    private Integer state;
 
     private String reply;
 
@@ -40,11 +40,11 @@ public class OrderProcessParam implements Serializable {
         this.reply = reply;
     }
 
-    public Integer getResult() {
-        return result;
+    public Integer getState() {
+        return state;
     }
 
-    public void setResult(Integer result) {
-        this.result = result;
+    public void setState(Integer state) {
+        this.state = state;
     }
 }

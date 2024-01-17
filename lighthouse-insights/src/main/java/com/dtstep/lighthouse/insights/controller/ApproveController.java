@@ -33,9 +33,8 @@ public class ApproveController {
     }
 
     @PostMapping("/approve/process")
-    public ResultData<Integer> process(@RequestBody OrderProcessParam approveParam){
-
-        orderService.process(approveParam);
-        return ResultData.success(0);
+    public ResultData<Integer> process(@Validated @RequestBody OrderProcessParam approveParam){
+        int result = orderService.process(approveParam);
+        return ResultData.success(result);
     }
 }
