@@ -159,6 +159,7 @@ public class OrderServiceImpl implements OrderService {
         }
         orderDao.insert(order);
         int orderId = order.getId();
+        List<OrderDetail> detailList = new ArrayList<>();
         for(int i=0;i<roleList.size();i++){
             Role role = roleList.get(i);
             OrderDetail orderDetail = new OrderDetail();
@@ -167,8 +168,9 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setOrderId(orderId);
             orderDetail.setRoleType(roleType);
             orderDetail.setState(i == 0?ApproveStateEnum.PENDING:ApproveStateEnum.WAIT);
-            orderDetailDao.insert(orderDetail);
+            detailList.add(orderDetail);
         }
+        orderDetailDao.batchInsert(detailList);
         return orderId;
     }
 
