@@ -58,16 +58,17 @@ export enum RecordTypeEnum {
 
 export enum UserStateEnum{
     USER_PEND=0,
-    USR_NORMAL=1,
-    USER_FROZEN=2,
-    USER_DELETED=3,
+    USER_DELETED=1,
+    USR_NORMAL=2,
+    USER_FROZEN=3,
 }
 
 export enum OrderStateEnum {
     Processing=0,
-    Approved=1,
-    Rejected=2,
-    Retracted=3,
+    Deleted=1,
+    Approved=2,
+    Rejected=3,
+    Retracted=4,
 }
 
 export enum ApproveStateEnum {
