@@ -256,17 +256,18 @@ public class OrderServiceImpl implements OrderService {
     public ListData<OrderDto> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
         Integer currentUserId = baseService.getCurrentUserId();
         queryParam.setApproveUserId(currentUserId);
-        List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
-        ListData<OrderDto> listData = new ListData<>();
+        PageHelper.startPage(pageNum,pageSize);
         List<OrderDto> orderDtoList = new ArrayList<>();
-        if(CollectionUtils.isNotEmpty(orders)){
+        try{
+            List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
             for(Order order : orders){
                 OrderDto orderDto = translate(order);
                 orderDtoList.add(orderDto);
             }
+        }finally {
+            PageHelper.clearPage();
         }
-        listData.setList(orderDtoList);
-        return listData;
+        return baseService.translateToListData(orderDtoList);
     }
 
     @Transactional

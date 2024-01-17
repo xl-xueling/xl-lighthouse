@@ -12,7 +12,7 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Permission" >
-        INSERT INTO ldp_permission (`owner_id`, `owner_type`,`role_id`, `create_time`, `update_time`) VALUES
+        INSERT INTO ldp_permissions (`owner_id`, `owner_type`,`role_id`, `create_time`, `update_time`) VALUES
         (
             #{ownerId,jdbcType=INTEGER},
             #{ownerType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.OwnerTypeEnumTypeHandler},
@@ -23,7 +23,7 @@
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO ldp_permission (`owner_id`, `owner_type`,`role_id`, `create_time`, `update_time`) VALUES
+        INSERT INTO ldp_permissions (`owner_id`, `owner_type`,`role_id`, `create_time`, `update_time`) VALUES
         <foreach collection="list" item="item" separator=",">
             (
             #{item.ownerId,jdbcType=INTEGER},
@@ -37,7 +37,7 @@
 
     <select id="queryList" resultMap="permissionResultMap">
         SELECT `id`,`owner_id`,`owner_type`,`role_id`,`create_time`,`update_time`
-        FROM ldp_permission
+        FROM ldp_permissions
         <where>
             <if test="queryParam.roleId != null">
                 AND role_id = #{queryParam.roleId}
@@ -50,13 +50,13 @@
 
     <select id="existPermission" resultType="boolean">
         SELECT COUNT(1) > 0
-        FROM ldp_permission
+        FROM ldp_permissions
         WHERE owner_id = #{ownerId} and owner_type = #{ownerType.ownerType} and role_id = #{roleId}
     </select>
 
     <select id="delete" resultType="Integer">
         delete
-        FROM ldp_permission
+        FROM ldp_permissions
         <where>
             <if test="queryParam.roleId != null">
                 AND role_id = #{queryParam.roleId}
@@ -89,12 +89,12 @@
             SELECT role_id
             FROM (
                      SELECT role_id
-                     FROM ldp_permission
+                     FROM ldp_permissions
                      WHERE owner_id = #{userId}
                        AND owner_type = '1'
                      UNION ALL
                      SELECT role_id
-                     FROM ldp_permission
+                     FROM ldp_permissions
                      WHERE owner_id IN (
                          SELECT department_id
                          FROM ldp_user
@@ -117,17 +117,17 @@
             FROM ldp_role t
                      INNER JOIN cte ON t.pid = cte.id
         )
-        select a.* from ldp_permission a
+        select a.* from ldp_permissions a
                             inner join (select id from cte) b on a.role_id = b.id
         where owner_id = #{userId} and owner_type = '1' limit #{limit}
     </select>
 
     <select id="queryUserPermissionsByRoleId" resultType="Integer">
-        select owner_id from ldp_permission where role_id = #{roleId} and owner_type = '1' limit #{limit}
+        select owner_id from ldp_permissions where role_id = #{roleId} and owner_type = '1' limit #{limit}
     </select>
 
     <delete id="deleteByUserId">
-        delete FROM ldp_permission WHERE owner_id = #{userId} and owner_type = '1'
+        delete FROM ldp_permissions WHERE owner_id = #{userId} and owner_type = '1'
     </delete>
 
 </mapper>
