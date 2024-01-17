@@ -8,6 +8,7 @@ import styles from './style/index.module.less';
 import DepartmentLabel from "@/pages/department/common/depart";
 import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import {UserStateEnum} from "@/types/insights-common";
+import {getUserStateDescription} from "@/pages/common/desc/base";
 
 const { Text } = Typography;
 
@@ -43,15 +44,7 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
       title: t['userList.columns.state'],
       dataIndex: 'state',
       render: (value) => {
-        if(value === 0){
-          return <Badge status="processing" text={t['userList.columns.state.pending']}/>;
-        }else if (value === 1) {
-          return <Badge status="success" text={t['userList.columns.state.normal']}/>;
-        }else if(value === 2){
-          return <Badge status="error" text={t['userList.columns.state.frozen']}/>;
-        }else if(value === 3){
-          return <Badge status="error" text={t['userList.columns.state.deleted']}/>;
-        }
+        return getUserStateDescription(t,value);
       },
     },
     {
