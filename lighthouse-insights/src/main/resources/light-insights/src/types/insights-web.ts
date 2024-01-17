@@ -153,14 +153,14 @@ export interface Order {
     title?:string;
     createTime?:number;
     updateTime?:number;
-    desc?:string;
+    reason?:string;
     adminsMap?:any;
     state?:OrderStateEnum;
     currentNode?:number;
     orderType?:OrderTypeEnum;
     orderDetails?:OrderDetail[];
     extendConfig?:any;
-    permissions?:PermissionEnum;
+    permissions?:PermissionEnum[];
 }
 
 export interface OrderDetail {

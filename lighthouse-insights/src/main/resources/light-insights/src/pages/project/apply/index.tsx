@@ -18,7 +18,7 @@ export default function ProjectApplyModal({projectInfo,onClose}) {
         console.log("projectInfo:" + JSON.stringify(projectInfo));
         const order:Order = {
             orderType:1,
-            desc:values.desc,
+            // desc:values.desc,
             extendConfig:{
                 projectId:projectInfo.id,
             }
