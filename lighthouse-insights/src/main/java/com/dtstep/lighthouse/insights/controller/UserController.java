@@ -1,12 +1,14 @@
 package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
+import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
+import com.dtstep.lighthouse.insights.dto.UserCreateParam;
 import com.dtstep.lighthouse.insights.dto_bak.ResultData;
 import com.dtstep.lighthouse.insights.config.SeedAuthenticationToken;
 import com.dtstep.lighthouse.insights.dto_bak.*;
@@ -47,12 +49,17 @@ public class UserController {
     private RoleService roleService;
 
     @RequestMapping("/user/register")
-    public ResultData<Integer> register(@Validated @RequestBody User userParam) {
-        int result = userService.create(userParam,SystemConstant.REGISTER_NEED_APPROVE);
+    public ResultData<Integer> register(@Validated @RequestBody UserCreateParam createParam) {
+        String userName = createParam.getUsername();
+        boolean isExist = userService.isUserNameExist(userName);
+        if(isExist){
+            return ResultData.result(ResultCode.registerUserNameExist);
+        }
+        User user = new User();
+        BeanCopyUtil.copy(createParam,user);
+        int result = userService.create(user,SystemConstant.REGISTER_NEED_APPROVE);
         if(result > 0){
             return ResultData.success(result);
-        }else if(result == -1){
-            return ResultData.result(ResultCode.registerUserNameExist);
         }else{
             return ResultData.result(ResultCode.systemError);
         }
