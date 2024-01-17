@@ -54,8 +54,8 @@
         FROM ldp_orders o
         inner JOIN (
             SELECT a.`order_id`
-            FROM ldp_orders_detail a
-            JOIN ldp_permission p ON a.role_id = p.role_id
+            FROM ldp_orders_details a
+            JOIN ldp_permissions p ON a.role_id = p.role_id
             WHERE p.owner_id = #{queryParam.approveUserId} and p.owner_type = '1' and a.state in ('1','2','3')
             GROUP BY a.`order_id`
         ) sub ON o.id = sub.order_id) c left join ldp_user u on c.user_id = u.id
@@ -82,9 +82,6 @@
                 AND `create_time` &lt;= #{queryParam.createEndTime}
             </if>
         </where>
-        <bind name="offset" value="(pageNum-1)*pageSize"></bind>
-        order by create_time desc
-        limit ${offset},#{pageSize}
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Order">
