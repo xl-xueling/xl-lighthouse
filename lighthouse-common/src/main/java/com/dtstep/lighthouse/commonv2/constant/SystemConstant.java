@@ -1,5 +1,10 @@
 package com.dtstep.lighthouse.commonv2.constant;
 
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.List;
+
 public class SystemConstant {
 
     public static final String PARAM_SIGN_KEY = "sign_key";

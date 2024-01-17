@@ -1,8 +1,8 @@
 package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.insights.dto_bak.PermissionInfo;
-import com.dtstep.lighthouse.insights.enums.OrderStateEnum;
-import com.dtstep.lighthouse.insights.enums.OrderTypeEnum;
+import com.dtstep.lighthouse.common.enums.OrderStateEnum;
+import com.dtstep.lighthouse.common.enums.OrderTypeEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

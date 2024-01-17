@@ -24,4 +24,6 @@ public interface DepartmentService {
     List<CommonTreeNode> queryTreeFormat();
 
     List<Department> queryAll();
+
+    String getFullPath(Integer id);
 }

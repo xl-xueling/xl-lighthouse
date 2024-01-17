@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.dao;
 
-import com.dtstep.lighthouse.insights.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Role;
 import org.springframework.stereotype.Repository;
 

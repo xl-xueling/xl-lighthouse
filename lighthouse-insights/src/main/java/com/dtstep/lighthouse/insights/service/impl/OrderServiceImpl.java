@@ -1,5 +1,9 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.entity.FlowNode;
+import com.dtstep.lighthouse.common.enums.OrderStateEnum;
+import com.dtstep.lighthouse.common.enums.OrderTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
@@ -13,6 +17,7 @@ import com.dtstep.lighthouse.insights.service.*;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +53,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderDetailService orderDetailService;
 
+    @Autowired
+    private ProjectService projectService;
+
+    @Autowired
+    private DepartmentService departmentService;
+
     @Override
     public ExtendOrderDto queryById(Integer id) {
         Order order = orderDao.queryById(id);
@@ -58,8 +69,76 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    private void checkAddRole(List<Role> list,Role role){
+        List<Integer> roleIds = list.stream().map(z -> z.getId()).collect(Collectors.toList());
+        if(!roleIds.contains(role.getId())){
+            list.add(role);
+        }
+    }
+
+    private <T> List<Role> getApproveRoleList(User applyUser,OrderTypeEnum orderTypeEnum,T param) throws Exception {
+        List<FlowNode> flow = orderTypeEnum.getDefaultWorkFlow();
+        List<Role> roleList = new ArrayList<>();
+        for(FlowNode flowNode : flow){
+            RoleTypeEnum roleTypeEnum = flowNode.getRoleTypeEnum();
+            if(roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION){
+                Role role = roleService.queryRole(roleTypeEnum,0);
+                checkAddRole(roleList,role);
+            }else if(roleTypeEnum == RoleTypeEnum.OPT_MANAGE_PERMISSION){
+                Role role = roleService.queryRole(roleTypeEnum,0);
+                checkAddRole(roleList,role);
+            }else if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
+                if(orderTypeEnum == OrderTypeEnum.PROJECT_ACCESS){
+                    Project project = (Project) param;
+                    Role role = roleService.queryRole(roleTypeEnum,project.getId());
+                    checkAddRole(roleList,role);
+                }else if(orderTypeEnum == OrderTypeEnum.STAT_ACCESS){
+                    Stat stat = (Stat) param;
+                    Role role = roleService.queryRole(roleTypeEnum,stat.getProjectId());
+                    checkAddRole(roleList,role);
+                }
+            }else if(roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION){
+                MetricSet metricSet = (MetricSet) param;
+                Role role = roleService.queryRole(roleTypeEnum, metricSet.getId());
+                checkAddRole(roleList,role);
+            }else if(roleTypeEnum == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION){
+                int departmentId = 0;
+                FlowNode.Extend extend = flowNode.getExtend();
+                boolean itemNear = extend.isItemNear();
+                if (itemNear){
+                    if(orderTypeEnum == OrderTypeEnum.PROJECT_ACCESS){
+                        Project project = (Project) param;
+                        departmentId = project.getDepartmentId();
+                    }else if(orderTypeEnum == OrderTypeEnum.STAT_ACCESS){
+                        Stat stat = (Stat) param;
+                        Project project = projectService.queryById(stat.getProjectId());
+                        departmentId = project.getDepartmentId();
+                    }else{
+                        throw new Exception();
+                    }
+                }else{
+                    departmentId = applyUser.getDepartmentId();
+                }
+                Integer extendParam = (Integer)(extend.getParam());
+                if(extendParam == 0){
+                    Role role = roleService.queryRole(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,departmentId);
+                    checkAddRole(roleList,role);
+                }else{
+                    String departmentFullPath = departmentService.getFullPath(departmentId);
+                    String [] array = departmentFullPath.split(",");
+                    if(extendParam - 1 < array.length){
+                        Role role = roleService.queryRole(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,Integer.parseInt(array[extendParam - 1]));
+                        checkAddRole(roleList,role);
+                    }
+                }
+            }
+        }
+        return roleList;
+    }
+
     @Override
-    public int create(Order order) {
+    public <T> int submit(User applyUser,OrderTypeEnum orderTypeEnum, T param) throws Exception{
+        Order order = new Order();
         LocalDateTime localDateTime = LocalDateTime.now();
         order.setCreateTime(localDateTime);
         order.setUpdateTime(localDateTime);
@@ -68,38 +147,25 @@ public class OrderServiceImpl implements OrderService {
         List<Integer> steps = new ArrayList<>();
         Map<Integer,RoleTypeEnum> roleTypeMap = new HashMap<>();
         String hash;
+        List<Role> roleList = getApproveRoleList(applyUser,orderTypeEnum,param);
+        order.setSteps(roleList.stream().map(z -> z.getId()).collect(Collectors.toList()));
         if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
-            int projectId = (Integer) configMap.get("projectId");
-            Role role = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,projectId);
-            String message = order.getUserId() + "_" + OrderTypeEnum.PROJECT_ACCESS.getOrderType() + "_" + projectId;
-            order.setHash(Md5Util.getMD5(message));
-            order.setCurrentNode(role.getId());
-            roleTypeMap.put(role.getId(),RoleTypeEnum.PROJECT_MANAGE_PERMISSION);
-            steps.add(role.getId());
+
         }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
-            Role role = roleService.cacheQueryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
-            String message = order.getUserId() + "_" + "register";
+            User user = (User) param;
+            String message = order.getOrderType() + "_" + order.getUserId();
             order.setHash(Md5Util.getMD5(message));
-            order.setCurrentNode(role.getId());
-            roleTypeMap.put(role.getId(),RoleTypeEnum.OPT_MANAGE_PERMISSION);
-            steps.add(role.getId());
         }
-        order.setSteps(steps);
         orderDao.insert(order);
         int orderId = order.getId();
-        for(int i=0;i<steps.size();i++){
-            int roleId = steps.get(i);
+        for(int i=0;i<roleList.size();i++){
+            Role role = roleList.get(i);
             OrderDetail orderDetail = new OrderDetail();
-            RoleTypeEnum roleType = roleTypeMap.get(roleId);
+            RoleTypeEnum roleType = roleTypeMap.get(role.getId());
             orderDetail.setCreateTime(localDateTime);
             orderDetail.setOrderId(orderId);
             orderDetail.setRoleType(roleType);
-            if(i == 0){
-                orderDetail.setState(ApproveStateEnum.PENDING);
-            }else{
-                orderDetail.setState(ApproveStateEnum.WAIT);
-            }
-            orderDetail.setRoleId(roleId);
+            orderDetail.setState(i == 0?ApproveStateEnum.PENDING:ApproveStateEnum.WAIT);
             orderDetailDao.insert(orderDetail);
         }
         return orderId;
@@ -212,7 +278,7 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setReply(approveParam.getReply());
             orderDetail.setOrderId(approveParam.getId());
             orderDetail.setUserId(approveParam.getUserId());
-            orderDetail.setApproveTime(localDateTime);
+            orderDetail.setProcessTime(localDateTime);
             orderDetail.setState(ApproveStateEnum.APPROVED);
             if(stepIndex != steps.size() - 1){
                 order.setCurrentNode(steps.get(stepIndex + 1));
@@ -228,7 +294,7 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setRoleId(approveParam.getRoleId());
             orderDetail.setReply(approveParam.getReply());
             orderDetail.setOrderId(approveParam.getId());
-            orderDetail.setApproveTime(localDateTime);
+            orderDetail.setProcessTime(localDateTime);
             orderDetail.setUserId(approveParam.getUserId());
             orderDetail.setState(ApproveStateEnum.REJECTED);
             orderDetails.add(orderDetail);
@@ -236,7 +302,7 @@ public class OrderServiceImpl implements OrderService {
                 for(int i = stepIndex + 1;i < steps.size();i++){
                     int roleId = steps.get(i);
                     OrderDetail tempOrderDetail = new OrderDetail();
-                    tempOrderDetail.setApproveTime(localDateTime);
+                    tempOrderDetail.setProcessTime(localDateTime);
                     tempOrderDetail.setRoleId(roleId);
                     tempOrderDetail.setOrderId(approveParam.getId());
                     tempOrderDetail.setState(ApproveStateEnum.SUSPEND);

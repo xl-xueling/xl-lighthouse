@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.enums;
+package com.dtstep.lighthouse.common.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -9,11 +9,13 @@ public enum OrderStateEnum {
 
     PROCESSING(0),
 
-    APPROVED(1),
+    DELETED(1),
 
-    REJECTED(2),
+    APPROVED(2),
 
-    RETRACTED(3),
+    REJECTED(3),
+
+    RETRACTED(4),
 
     ;
 
