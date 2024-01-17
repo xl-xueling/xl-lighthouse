@@ -37,15 +37,11 @@
         )
     </insert>
 
-    <select id="queryBasicInfoById" resultMap="userResultMap">
+    <select id="queryById" resultMap="userResultMap">
         SELECT `id`,`username`,`phone`,`email`,`department_id`,`state`,`third_id`,`last_time`,`create_time`,`update_time` FROM ldp_users WHERE id = #{id}
     </select>
 
-    <select id="queryAllInfoById" resultMap="userResultMap">
-        SELECT `id`,`username`,`password`,`phone`,`email`,`department_id`,`state`,,`third_id`,`last_time`,`create_time`,`update_time` FROM ldp_users WHERE id = #{id}
-    </select>
-
-    <select id="queryByUserName" resultMap="userResultMap">
+    <select id="queryAllInfoByUserName" resultMap="userResultMap">
         SELECT `id`,`username`,`password`,`phone`,`email`,`department_id`,`state`,`third_id`,`last_time`,`create_time`,`update_time` FROM ldp_users WHERE username = #{username}
     </select>
 

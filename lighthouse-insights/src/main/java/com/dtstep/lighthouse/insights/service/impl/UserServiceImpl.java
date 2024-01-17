@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public User cacheQueryById(int id) {
-        return userDao.queryBasicInfoById(id);
+        return userDao.queryById(id);
     }
 
     @Override
@@ -86,12 +86,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User queryById(int id) {
-        return userDao.queryAllInfoById(id);
+        return userDao.queryById(id);
     }
 
     @Override
-    public User queryByUserName(String userName) {
-        return userDao.queryByUserName(userName);
+    public User queryAllInfoByUserName(String userName) {
+        return userDao.queryAllInfoByUserName(userName);
     }
 
     private UserDto translate(User user,PermissionInfo.PermissionEnum permission){
