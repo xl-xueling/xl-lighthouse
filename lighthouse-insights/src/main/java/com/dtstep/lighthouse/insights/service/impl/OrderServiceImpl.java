@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
 import com.dtstep.lighthouse.insights.dao.OrderDetailDao;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
@@ -233,62 +234,79 @@ public class OrderServiceImpl implements OrderService {
         return orderDto;
     }
 
-
     @Transactional
     @Override
-    public void approve(OrderApproveParam approveParam) {
-        int result = approveParam.getResult();
-        Order order = orderDao.queryById(approveParam.getId());
-        Validate.isTrue(approveParam.getRoleId().intValue() == order.getCurrentNode().intValue());
+    public ResultCode process(OrderProcessParam processParam) {
+        int currentUserId = baseService.getCurrentUserId();
+        int result = processParam.getResult();
+        Order order = orderDao.queryById(processParam.getId());
         Validate.notNull(order);
-        List<Integer> steps = order.getSteps();
+        Validate.isTrue(processParam.getRoleId().intValue() == order.getCurrentNode().intValue());
         List<OrderDetail> orderDetails = new ArrayList<>();
-        int stepIndex = steps.indexOf(order.getCurrentNode());
-        LocalDateTime localDateTime = LocalDateTime.now();
         if(result == 1){
-            order.setState(OrderStateEnum.APPROVED);
-            OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setRoleId(approveParam.getRoleId());
-            orderDetail.setReply(approveParam.getReply());
-            orderDetail.setOrderId(approveParam.getId());
-            orderDetail.setUserId(approveParam.getUserId());
-            orderDetail.setProcessTime(localDateTime);
-            orderDetail.setState(ApproveStateEnum.APPROVED);
-            if(stepIndex != steps.size() - 1){
-                order.setCurrentNode(steps.get(stepIndex + 1));
-            }else{
-                order.setCurrentNode(0);
-            }
-            orderDetails.add(orderDetail);
-            approveCallback(order);
+            agreeOrder(currentUserId,processParam,order);
         }else if(result == 2){
-            order.setState(OrderStateEnum.REJECTED);
+            rejectOrder(currentUserId,processParam,order);
+        }
+        return ResultCode.success;
+    }
+
+    private int agreeOrder(Integer currentUserId, OrderProcessParam processParam, Order order){
+        LocalDateTime localDateTime = LocalDateTime.now();
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setRoleId(processParam.getRoleId());
+        orderDetail.setReply(processParam.getReply());
+        orderDetail.setOrderId(processParam.getId());
+        orderDetail.setUserId(currentUserId);
+        orderDetail.setProcessTime(localDateTime);
+        orderDetail.setState(ApproveStateEnum.APPROVED);
+        List<Integer> steps = order.getSteps();
+        int stepIndex = steps.indexOf(order.getCurrentNode());
+        orderDetailDao.updateDetail(orderDetail);
+        if(stepIndex < steps.size() - 1){
+            order.setCurrentNode(steps.get(stepIndex + 1));
+        }else{
             order.setCurrentNode(0);
-            OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setRoleId(approveParam.getRoleId());
-            orderDetail.setReply(approveParam.getReply());
-            orderDetail.setOrderId(approveParam.getId());
-            orderDetail.setProcessTime(localDateTime);
-            orderDetail.setUserId(approveParam.getUserId());
-            orderDetail.setState(ApproveStateEnum.REJECTED);
-            orderDetails.add(orderDetail);
-            if(stepIndex != steps.size() - 1){
-                for(int i = stepIndex + 1;i < steps.size();i++){
-                    int roleId = steps.get(i);
-                    OrderDetail tempOrderDetail = new OrderDetail();
-                    tempOrderDetail.setProcessTime(localDateTime);
-                    tempOrderDetail.setRoleId(roleId);
-                    tempOrderDetail.setOrderId(approveParam.getId());
-                    tempOrderDetail.setState(ApproveStateEnum.SUSPEND);
-                    orderDetails.add(tempOrderDetail);
-                }
+            order.setState(OrderStateEnum.APPROVED);
+            approveCallback(order);
+        }
+        order.setUpdateTime(localDateTime);
+        int result = orderDao.update(order);
+        return result;
+    }
+
+    private int rejectOrder(Integer currentUserId, OrderProcessParam processParam, Order order){
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setRoleId(processParam.getRoleId());
+        orderDetail.setReply(processParam.getReply());
+        orderDetail.setOrderId(processParam.getId());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        orderDetail.setProcessTime(localDateTime);
+        orderDetail.setUserId(currentUserId);
+        orderDetail.setState(ApproveStateEnum.REJECTED);
+        orderDetails.add(orderDetail);
+        List<Integer> steps = order.getSteps();
+        int stepIndex = steps.indexOf(order.getCurrentNode());
+        if(stepIndex != steps.size() - 1){
+            for(int i = stepIndex + 1;i < steps.size();i++){
+                int roleId = steps.get(i);
+                OrderDetail remainDetail = new OrderDetail();
+                remainDetail.setProcessTime(localDateTime);
+                remainDetail.setRoleId(roleId);
+                remainDetail.setOrderId(processParam.getId());
+                remainDetail.setState(ApproveStateEnum.SUSPEND);
+                orderDetails.add(remainDetail);
             }
         }
         order.setUpdateTime(LocalDateTime.now());
-        orderDao.update(order);
+        order.setState(OrderStateEnum.REJECTED);
+        order.setCurrentNode(0);
         for(int i=0;i<orderDetails.size();i++){
             orderDetailDao.updateDetail(orderDetails.get(i));
         }
+        int result = orderDao.update(order);
+        return result;
     }
 
     private void approveCallback(Order order){
