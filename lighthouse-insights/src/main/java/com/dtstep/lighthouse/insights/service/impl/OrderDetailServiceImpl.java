@@ -31,7 +31,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                 OrderDetailDto orderDetailDto = new OrderDetailDto(orderDetail);
                 Integer userId = orderDetail.getUserId();
                 if(userId != null){
-                    User user = userService.queryBasicInfoById(userId);
+                    User user = userService.queryById(userId);
                     orderDetailDto.setUser(user);
                 }
                 dtoList.add(orderDetailDto);

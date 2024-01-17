@@ -17,8 +17,8 @@ public class OrderController {
     private OrderService orderService;
 
     @RequestMapping("/order/queryById")
-    public ResultData<ExtendOrderDto> queryById(@Validated @RequestBody QueryParam queryParam) {
-        ExtendOrderDto extendOrderDto = orderService.queryById(queryParam.getId());
-        return ResultData.success(extendOrderDto);
+    public ResultData<OrderVO> queryById(@Validated @RequestBody QueryParam queryParam) {
+        OrderVO orderVO = orderService.queryById(queryParam.getId());
+        return ResultData.success(orderVO);
     }
 }

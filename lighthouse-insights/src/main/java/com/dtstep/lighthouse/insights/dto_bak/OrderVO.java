@@ -1,19 +1,40 @@
 package com.dtstep.lighthouse.insights.dto_bak;
 
-import com.dtstep.lighthouse.insights.modal.Order;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.util.BeanCopyUtil;
+import com.dtstep.lighthouse.insights.modal.*;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class ExtendOrderDto extends OrderDto {
+public class OrderVO extends Order {
+
+    private User user;
+
+    private String desc;
 
     private HashMap<Integer, List<User>> adminsMap;
 
     private List<OrderDetailDto> orderDetails;
 
-    public ExtendOrderDto(Order order) {
-        super(order);
+    public OrderVO(Order order){
+        assert order != null;
+        BeanCopyUtil.copy(order,this);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public HashMap<Integer, List<User>> getAdminsMap() {

@@ -22,13 +22,13 @@ public class ApproveController {
     private BaseService baseService;
 
     @PostMapping("/approve/list")
-    public ResultData<ListData<OrderDto>> queryList(@Validated @RequestBody ListSearchObject<OrderQueryParam> searchObject){
+    public ResultData<ListData<OrderVO>> queryList(@Validated @RequestBody ListSearchObject<OrderQueryParam> searchObject){
         OrderQueryParam queryParam = searchObject.getQueryParams();
         if(queryParam == null){
             queryParam = new OrderQueryParam();
         }
         Pagination pagination = searchObject.getPagination();
-        ListData<OrderDto> listData = orderService.queryApproveList(queryParam,pagination.getPageNum(),pagination.getPageSize());
+        ListData<OrderVO> listData = orderService.queryApproveList(queryParam,pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
     }
 

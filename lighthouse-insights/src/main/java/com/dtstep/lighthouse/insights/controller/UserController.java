@@ -69,7 +69,7 @@ public class UserController {
     public ResultData<User> fetchUserInfo(){
         SeedAuthenticationToken authentication = (SeedAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Integer userId = authentication.getUserId();
-        User user = userService.queryBasicInfoById(userId);
+        User user = userService.queryById(userId);
         return ResultData.success(user);
     }
 
@@ -103,7 +103,7 @@ public class UserController {
             return ResultData.result(ResultCode.systemError);
         }
         String originPassword = updateParam.getOriginPassword();
-        User dbUser = userService.queryAllInfoById(userId);
+        User dbUser = userService.queryById(userId);
         if(dbUser == null || !passwordEncoder.matches(originPassword,dbUser.getPassword())){
             return ResultData.result(ResultCode.userChangePasswordWrong);
         }
@@ -125,7 +125,7 @@ public class UserController {
         UserStateEnum userStateEnum = changeParam.getState();
         Validate.notNull(id);
         Validate.notNull(userStateEnum);
-        User dbUser = userService.queryBasicInfoById(id);
+        User dbUser = userService.queryById(id);
         Validate.notNull(dbUser);
         User user = new User();
         user.setState(userStateEnum);
@@ -142,7 +142,7 @@ public class UserController {
     @RequestMapping("/user/resetPasswd")
     public ResultData<Integer> resetPasswd(@Validated @RequestBody IDParam idParam) {
         Integer id = idParam.getId();
-        User dbUser = userService.queryBasicInfoById(id);
+        User dbUser = userService.queryById(id);
         Validate.notNull(dbUser);
         User userInfo = new User();
         userInfo.setId(id);
