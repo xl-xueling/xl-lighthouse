@@ -12,7 +12,7 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Role" >
-        INSERT INTO ldp_role (`role_type`, `resource_id`,`pid`, `create_time`, `update_time`,`desc`) VALUES
+        INSERT INTO ldp_roles (`role_type`, `resource_id`,`pid`, `create_time`, `update_time`,`desc`) VALUES
         (
                 #{roleType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RoleTypeEnumTypeHandler},
                 #{resourceId,jdbcType=INTEGER},
@@ -24,7 +24,7 @@
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO ldp_role (`role_type`, `resource_id`,`pid`, `create_time`, `update_time`,`desc`) VALUES
+        INSERT INTO ldp_roles (`role_type`, `resource_id`,`pid`, `create_time`, `update_time`,`desc`) VALUES
         <foreach collection="list" item="item" separator=",">
             (
             #{item.roleType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RoleTypeEnumTypeHandler},
@@ -38,28 +38,28 @@
     </insert>
 
     <select id="queryById" resultMap="roleResultMap">
-        SELECT `id`,`role_type`, `resource_id`,`pid`, `create_time`, `update_time` FROM ldp_role WHERE id = #{id}
+        SELECT `id`,`role_type`, `resource_id`,`pid`, `create_time`, `update_time` FROM ldp_roles WHERE id = #{id}
     </select>
 
     <select id="queryRole" resultMap="roleResultMap">
-        SELECT `id`,`role_type`, `resource_id`,`pid`, `create_time`, `update_time` FROM ldp_role
+        SELECT `id`,`role_type`, `resource_id`,`pid`, `create_time`, `update_time` FROM ldp_roles
         WHERE role_type = #{roleTypeEnum.roleType} and resource_id = #{resourceId}
     </select>
 
     <select id="isRoleExist" resultType="boolean">
         SELECT COUNT(1) > 0
-        FROM ldp_role
+        FROM ldp_roles
         WHERE role_type = #{roleTypeEnum.roleType} and resource_id = #{resourceId}
     </select>
 
     <select id="isChildRoleExist" resultType="boolean">
         SELECT COUNT(1) > 0
-        FROM ldp_role
+        FROM ldp_roles
         WHERE pid=#{pid}
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Role">
-        UPDATE ldp_role
+        UPDATE ldp_roles
         <set>
             <if test="pid != null">
                 `pid` = #{pid},
@@ -75,16 +75,16 @@
     </update>
 
     <delete id="deleteById">
-        delete from ldp_role where id = #{id}
+        delete from ldp_roles where id = #{id}
     </delete>
 
     <select id="queryListByPid" resultMap="roleResultMap">
         WITH RECURSIVE cte AS (
-            SELECT id FROM ldp_role WHERE pid = #{pid}
+            SELECT id FROM ldp_roles WHERE pid = #{pid}
             UNION ALL
-            SELECT t.id FROM ldp_role AS t INNER JOIN cte ON t.pid = cte.id
+            SELECT t.id FROM ldp_roles AS t INNER JOIN cte ON t.pid = cte.id
         )
-        SELECT a.`id` as `id`,`role_type`, `resource_id`,`pid`, `create_time`, `update_time` FROM ldp_role a
+        SELECT a.`id` as `id`,`role_type`, `resource_id`,`pid`, `create_time`, `update_time` FROM ldp_roles a
         inner join (select id from cte) b on a.id = b.id
         <bind name="offset" value="(pageNum-1)*pageSize"></bind>
         limit ${offset},#{pageSize}
