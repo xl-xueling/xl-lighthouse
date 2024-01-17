@@ -92,7 +92,6 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
         }
         setRejectLoading(true);
         requestApprove(approveParam).then((result) => {
-            console.log("result:" + JSON.stringify(result));
             if(result.code === '0'){
                 Notification.info({
                     style: { width: 420 },

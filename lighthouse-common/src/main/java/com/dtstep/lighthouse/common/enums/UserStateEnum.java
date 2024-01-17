@@ -45,6 +45,11 @@ public enum UserStateEnum {
      */
     USER_FROZEN(3),
 
+    /**
+     * 审核未通过
+     */
+    USER_REJECT(4),
+
     ;
 
     @JsonValue

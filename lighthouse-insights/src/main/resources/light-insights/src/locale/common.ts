@@ -21,6 +21,11 @@ const vi18n = {
         'orderApprove.roleType.description.departmentManager':'Department Manager',
         'orderApprove.roleType.description.projectManager':'Project Manager',
         'orderApprove.roleType.description.metricManager':'MetricSet Manager',
+        'basic.orderState.description.processing':'Processing',
+        'basic.orderState.description.approved':'Approved',
+        'basic.orderState.description.rejected':'Rejected',
+        'basic.orderState.description.retracted':'Retracted',
+        'basic.orderState.description.deleted':'Deleted',
     },
     'zh-CN': {
         'system.error':'系统异常!',
@@ -44,6 +49,11 @@ const vi18n = {
         'orderApprove.roleType.description.departmentManager':'部门管理员',
         'orderApprove.roleType.description.projectManager':'工程管理员',
         'orderApprove.roleType.description.metricManager':'指标集管理员',
+        'basic.orderState.description.processing':'处理中',
+        'basic.orderState.description.approved':'已通过',
+        'basic.orderState.description.rejected':'已驳回',
+        'basic.orderState.description.retracted':'已撤回',
+        'basic.orderState.description.deleted':'已删除',
     }
 }
 export default vi18n;

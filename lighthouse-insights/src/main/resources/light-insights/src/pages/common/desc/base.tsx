@@ -1,7 +1,7 @@
 import React from "react";
 import {Badge} from "@arco-design/web-react";
 import {
-    ComponentTypeEnum,
+    ComponentTypeEnum, OrderStateEnum,
     ResourceTypeEnum,
     RoleTypeEnum,
     StatExpiredEnum,
@@ -125,7 +125,20 @@ export function getIcon(type:string){
         return <LuLayers style={{marginRight:'10px'}}/>
     }else if(type == 'permission'){
         return <LuLayers style={{marginRight:'10px'}}/>
-    }else if(type == 'order'){
+    }
+}
 
+
+export function getOrderStateDescription(t:any,value:OrderStateEnum){
+    if(value == OrderStateEnum.Processing){
+        return <Badge status="processing" text={t['basic.orderState.description.processing']}/>;
+    }else if (value === OrderStateEnum.Approved) {
+        return <Badge status="success" text={t['basic.orderState.description.approved']}/>;
+    }else if(value === OrderStateEnum.Rejected){
+        return <Badge status="error" text={t['basic.orderState.description.rejected']}/>;
+    }else if(value === OrderStateEnum.Retracted){
+        return <Badge status="error" text={t['basic.orderState.description.retracted']}/>;
+    }else if(value === OrderStateEnum.Deleted){
+        return <Badge status="error" text={t['basic.orderState.description.deleted']}/>;
     }
 }

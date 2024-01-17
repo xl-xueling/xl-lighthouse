@@ -6,6 +6,7 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
 import {formatTimeStampBackUp} from "@/utils/util";
 import {OrderStateEnum, PermissionEnum} from "@/types/insights-common";
+import {getOrderStateDescription} from "@/pages/common/desc/base";
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
@@ -59,15 +60,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             title: t['approveList.columns.state'],
             dataIndex: 'state',
             render: (value) => {
-                if(value === 0){
-                    return <Badge status="processing" text={t['approveList.columns.state.pending']}/>;
-                }else if (value === 1) {
-                    return <Badge status="success" text={t['approveList.columns.state.approved']}/>;
-                }else if(value === 2){
-                    return <Badge status="error" text={t['approveList.columns.state.rejected']}/>;
-                }else if(value === 3){
-                    return <Badge status="error" text={t['approveList.columns.state.retracted']}/>;
-                }
+                return getOrderStateDescription(t,value)
             },
         },
         {

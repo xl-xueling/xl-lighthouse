@@ -81,17 +81,6 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
         return [startNode,...steps,stopNode];
     }
 
-    const getOrderStatus = ():string => {
-        if(orderInfo?.state == OrderStateEnum.Processing){
-            return "process";
-        }else if(orderInfo?.state == OrderStateEnum.Approved){
-            return "finish";
-        }else if(orderInfo?.state == OrderStateEnum.Rejected){
-            return "error";
-        }else{
-            return "finish";
-        }
-    }
 
     useEffect(() => {
         if(orderInfo){
