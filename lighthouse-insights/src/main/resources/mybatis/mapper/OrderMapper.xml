@@ -16,7 +16,7 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Order" >
-        INSERT INTO ldp_order (`user_id`,`order_type`,`state`,`steps`,`extend_config`,
+        INSERT INTO ldp_orders (`user_id`,`order_type`,`state`,`steps`,`extend_config`,
                                     `hash`,`current_node`,
                                     `reason`,`create_time`,`update_time`) VALUES
         (
@@ -37,24 +37,24 @@
         SELECT `id`,`user_id`,`order_type`,`state`,`steps`,`extend_config`,
                `hash`,`current_node`,
                `reason`,`create_time`,`update_time`
-        FROM ldp_order WHERE id = #{id}
+        FROM ldp_orders WHERE id = #{id}
     </select>
 
     <select id="queryApplyList" resultMap="orderResultMap">
         SELECT `id`,`user_id`,`order_type`,`state`,`steps`,`extend_config`,
                `hash`,`current_node`,
                `reason`,`create_time`,`update_time`
-        FROM ldp_order WHERE user_id = #{queryParam.applyUserId}
+        FROM ldp_orders WHERE user_id = #{queryParam.applyUserId}
     </select>
 
     <select id="queryApproveList" resultMap="orderResultMap">
         select c.* from (SELECT `id`,`user_id`,`order_type`,`state`,`steps`,`extend_config`,
         `hash`,`current_node`,
         `reason`,`create_time`,`update_time`
-        FROM ldp_order o
+        FROM ldp_orders o
         inner JOIN (
             SELECT a.`order_id`
-            FROM ldp_order_detail a
+            FROM ldp_orders_detail a
             JOIN ldp_permission p ON a.role_id = p.role_id
             WHERE p.owner_id = #{queryParam.approveUserId} and p.owner_type = '1' and a.state in ('1','2','3')
             GROUP BY a.`order_id`
@@ -88,7 +88,7 @@
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Order">
-        UPDATE ldp_order
+        UPDATE ldp_orders
         <set>
             <if test="state != null">
                 `state` = #{state.state},

@@ -10,6 +10,8 @@ public interface OrderDetailDao {
 
     int insert(OrderDetail orderDetail);
 
+    int batchInsert(List<OrderDetail> list);
+
     List<OrderDetail> queryList(Integer orderId);
 
     int updateDetail(OrderDetail orderDetail);
