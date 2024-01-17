@@ -138,10 +138,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public <T> int submit(User applyUser,OrderTypeEnum orderTypeEnum, T param) throws Exception{
+        Validate.notNull(applyUser);
+        Validate.notNull(orderTypeEnum);
         Order order = new Order();
         LocalDateTime localDateTime = LocalDateTime.now();
         order.setCreateTime(localDateTime);
         order.setUpdateTime(localDateTime);
+        order.setOrderType(orderTypeEnum);
         order.setState(OrderStateEnum.PROCESSING);
         Map<String,Object> configMap = order.getExtendConfig();
         List<Integer> steps = new ArrayList<>();
@@ -157,6 +160,7 @@ public class OrderServiceImpl implements OrderService {
             String message = order.getOrderType() + "_" + order.getUserId();
             order.setHash(Md5Util.getMD5(message));
         }
+        order.setUserId(applyUser.getId());
         orderDao.insert(order);
         int orderId = order.getId();
         List<OrderDetail> detailList = new ArrayList<>();
@@ -167,6 +171,8 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setCreateTime(localDateTime);
             orderDetail.setOrderId(orderId);
             orderDetail.setRoleType(roleType);
+            orderDetail.setUserId(applyUser.getId());
+            orderDetail.setRoleId(role.getId());
             orderDetail.setState(i == 0?ApproveStateEnum.PENDING:ApproveStateEnum.WAIT);
             detailList.add(orderDetail);
         }
