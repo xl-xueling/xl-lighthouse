@@ -69,7 +69,7 @@ public class InitServiceImpl implements InitService {
 
     @Transactional
     @Override
-    public void initAdmin() {
+    public void initAdmin() throws Exception{
         if(!userService.isUserNameExist(SystemConstant.DEFAULT_ADMIN_USER)){
             List<Department> departmentList = departmentService.queryAll();
             Validate.notNull(departmentList);

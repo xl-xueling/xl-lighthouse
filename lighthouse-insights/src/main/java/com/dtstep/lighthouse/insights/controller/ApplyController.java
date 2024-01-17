@@ -23,18 +23,18 @@ public class ApplyController {
     private BaseService baseService;
 
     @RequestMapping("/apply/create")
-    public ResultData<Integer> create(@Validated @RequestBody Order createParam) {
+    public ResultData<Integer> create(@Validated @RequestBody Order createParam) throws Exception {
         System.out.println("order create...");
         int userId = baseService.getCurrentUserId();
         createParam.setUserId(userId);
-        orderService.create(createParam);
+//        orderService.create(createParam);
         return ResultData.success(null);
     }
 
     @RequestMapping("/apply/list")
     public ResultData<ListData<Order>> list(@Validated @RequestBody Order createParam) {
         System.out.println("order create...");
-        orderService.create(createParam);
+//        orderService.create(createParam);
         return ResultData.success(null);
     }
 }

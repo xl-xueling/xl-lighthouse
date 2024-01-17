@@ -6,5 +6,5 @@ public interface InitService {
 
     void initDepartment();
 
-    void initAdmin();
+    void initAdmin() throws Exception;
 }
