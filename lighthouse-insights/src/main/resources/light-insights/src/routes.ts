@@ -104,11 +104,17 @@ export const routes: IRoute[] = [
         name: 'menu.system.department',
         key: 'department/manage',
         breadcrumb:false,
+        requiredPermissions: [
+          { resource: 'ldp.resource', actions: ['OperationManageAble'] },
+        ],
       },
       {
         name: 'menu.system.users',
         key: 'user/list',
         breadcrumb:false,
+        requiredPermissions: [
+          { resource: 'ldp.resource', actions: ['OperationManageAble'] },
+        ],
       },
       {
         name: 'menu.system.user.settings',
@@ -222,6 +228,9 @@ export const routes: IRoute[] = [
   {
     name: 'menu.visualization',
     key: 'visualization',
+    requiredPermissions: [
+      { resource: 'ldp.resource', actions: ['OperationManageAble'] },
+    ],
     children: [
       {
         name: 'menu.visualization.dataAnalysis',
