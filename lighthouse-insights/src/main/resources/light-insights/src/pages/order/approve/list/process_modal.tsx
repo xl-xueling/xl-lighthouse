@@ -147,7 +147,7 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
                         {t['approveModal.label.reply']}
                     </Typography.Title>
                     <Form.Item field={'reply'}>
-                        <Input.TextArea maxLength={200} rows={2}  showWordLimit={true}/>
+                        <Input.TextArea maxLength={100} rows={2} showWordLimit={true}/>
                     </Form.Item>
                 </Form>
                 <div style={{ textAlign: 'center', marginTop: '35px' }}>
