@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
@@ -19,6 +20,7 @@ import com.dtstep.lighthouse.insights.service.PermissionService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import com.dtstep.lighthouse.insights.service.UserService;
+import com.dtstep.lighthouse.insights.vo.UserVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @ControllerAdvice
@@ -66,11 +69,15 @@ public class UserController {
     }
 
     @RequestMapping("/user/fetchUserInfo")
-    public ResultData<User> fetchUserInfo(){
+    public ResultData<UserVO> fetchUserInfo(){
         SeedAuthenticationToken authentication = (SeedAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Integer userId = authentication.getUserId();
         User user = userService.queryById(userId);
-        return ResultData.success(user);
+        Validate.notNull(user);
+        UserVO userVO = new UserVO(user);
+        Set<PermissionInfo.PermissionEnum> permissionEnumSets = userService.getUserPermissions(userId);
+        userVO.setPermissions(permissionEnumSets);
+        return ResultData.success(userVO);
     }
 
     @RequestMapping("/user/updateById")
@@ -194,10 +201,10 @@ public class UserController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @PostMapping("/user/list")
-    public ResultData<ListData<UserDto>> list(
+    public ResultData<ListData<User>> list(
             @Validated @RequestBody ListSearchObject<UserQueryParam> searchObject) {
         Pagination pagination = searchObject.getPagination();
-        ListData<UserDto> listData = userService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
+        ListData<User> listData = userService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
     }
 

@@ -5,27 +5,15 @@ import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.modal.User;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ProjectDto extends Project {
 
     private List<User> admins;
 
-    private List<PermissionInfo.PermissionEnum> permissions = new ArrayList<>();
-
-    public List<PermissionInfo.PermissionEnum> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(List<PermissionInfo.PermissionEnum> permissions) {
-        this.permissions = permissions;
-    }
-
-    public void addPermission(PermissionInfo.PermissionEnum permissionEnum){
-        if(permissionEnum != null && !this.permissions.contains(permissionEnum)){
-            this.permissions.add(permissionEnum);
-        }
-    }
+    private Set<PermissionInfo.PermissionEnum> permissions = new HashSet<>();
 
     public ProjectDto(Project project){
         assert project != null;
@@ -38,5 +26,13 @@ public class ProjectDto extends Project {
 
     public void setAdmins(List<User> admins) {
         this.admins = admins;
+    }
+
+    public Set<PermissionInfo.PermissionEnum> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Set<PermissionInfo.PermissionEnum> permissions) {
+        this.permissions = permissions;
     }
 }
