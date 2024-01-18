@@ -10,6 +10,7 @@ import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
+import com.dtstep.lighthouse.insights.vo.UserVO;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -94,32 +97,13 @@ public class UserServiceImpl implements UserService {
         return userDao.queryAllInfoByUserName(userName);
     }
 
-    private UserDto translate(User user,PermissionInfo.PermissionEnum permission){
-        UserDto userDto = new UserDto(user);
-        userDto.addPermission(permission);
-        return userDto;
-    }
-
     @Override
-    public ListData<UserDto> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize) {
+    public ListData<User> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        ListData<UserDto> listData = null;
+        ListData<User> listData = null;
         try{
             List<User> userList = userDao.queryList(queryParam);
-            List<UserDto> dtoList = new ArrayList<>();
-            if(CollectionUtils.isNotEmpty(userList)){
-                int userId = baseService.getCurrentUserId();
-                Role optManageRole = roleService.cacheQueryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
-                boolean hasOptManageRole = permissionService.checkUserPermission(userId,optManageRole.getId());
-                Role systemManageRole = roleService.cacheQueryRole(RoleTypeEnum.FULL_MANAGE_PERMISSION,0);
-                boolean hasSysManageRole = permissionService.checkUserPermission(userId,systemManageRole.getId());
-                PermissionInfo.PermissionEnum managePermission = hasOptManageRole? PermissionInfo.PermissionEnum.ManageAble :null;
-                for(int i=0;i<userList.size();i++){
-                    UserDto userDto = translate(userList.get(i),managePermission);
-                    dtoList.add(userDto);
-                }
-            }
-            listData = baseService.translateToListData(dtoList);
+            listData = baseService.translateToListData(userList);
         }finally {
             PageHelper.clearPage();
         }
@@ -149,5 +133,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public String queryUserPassword(Integer id) {
         return userDao.queryUserPassword(id);
+    }
+
+    @Override
+    @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'getUserPermissions' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    public Set<PermissionInfo.PermissionEnum> getUserPermissions(Integer id) {
+        Role optManageRole = roleService.cacheQueryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
+        boolean hasOptManageRole = permissionService.checkUserPermission(id,optManageRole.getId());
+        Role sysManageRole = roleService.cacheQueryRole(RoleTypeEnum.FULL_MANAGE_PERMISSION,0);
+        boolean hasSysManageRole = permissionService.checkUserPermission(id,sysManageRole.getId());
+        Set<PermissionInfo.PermissionEnum> sets = new HashSet<>();
+        if(hasOptManageRole){
+            sets.add(PermissionInfo.PermissionEnum.OperationManageAble);
+        }
+        if(hasSysManageRole){
+            sets.add(PermissionInfo.PermissionEnum.SystemManageAble);
+        }
+        return sets;
     }
 }

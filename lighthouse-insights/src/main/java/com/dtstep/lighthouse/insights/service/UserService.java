@@ -1,11 +1,12 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.insights.dto.UserCreateParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.insights.vo.UserVO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
 
@@ -27,7 +28,9 @@ public interface UserService {
 
     int deleteById(int userId);
 
-    ListData<UserDto> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize);
+    ListData<User> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize);
 
     int count(UserQueryParam queryParam);
+
+    Set<PermissionInfo.PermissionEnum> getUserPermissions(Integer id);
 }

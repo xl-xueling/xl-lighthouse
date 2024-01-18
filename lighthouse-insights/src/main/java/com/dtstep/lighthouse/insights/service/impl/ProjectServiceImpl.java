@@ -115,10 +115,10 @@ public class ProjectServiceImpl implements ProjectService {
             projectDto.setAdmins(admins);
         }
         if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
-            projectDto.addPermission(PermissionInfo.PermissionEnum.ManageAble);
+//            projectDto.addPermission(PermissionInfo.PermissionEnum.ManageAble);
         }else if(project.getPrivateType() == PrivateTypeEnum.Public
                 || permissionService.checkUserPermission(currentUserId, accessRole.getId())){
-            projectDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
+//            projectDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
         }
         return projectDto;
     }

@@ -1,10 +1,13 @@
 package com.dtstep.lighthouse.insights.test.utils;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.insights.dto_bak.PermissionInfo;
 import com.dtstep.lighthouse.insights.modal.Order;
 import org.junit.Test;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TestUtil {
 
@@ -30,9 +33,12 @@ public class TestUtil {
 
     @Test
     public void testArray() throws Exception{
-        List<Integer> list = List.of(3,5,8,10);
-        Integer current = 11;
-        System.out.println("index:" + list.indexOf(current));
+        Set<PermissionInfo.PermissionEnum> sets = new HashSet<>();
+        sets.add(PermissionInfo.PermissionEnum.AccessAble);
+        sets.add(PermissionInfo.PermissionEnum.ManageAble);
+        sets.add(PermissionInfo.PermissionEnum.ManageAble);
+        sets.add(null);
+        System.out.println("sets:" + JsonUtil.toJSONString(sets));
     }
 
 }
