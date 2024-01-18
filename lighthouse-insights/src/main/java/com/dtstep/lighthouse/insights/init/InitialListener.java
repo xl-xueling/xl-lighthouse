@@ -63,6 +63,13 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
         }
 
         try{
+            initService.initDefaultDomain();
+        }catch (Exception ex){
+            logger.error("Exception in initialization default domain info!",ex);
+            System.exit(-1);
+        }
+
+        try{
             initService.initDepartment();
         }catch (Exception ex){
             logger.error("Exception in initializing department info!",ex);
@@ -75,6 +82,5 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
             logger.error("Admin account initialization failed!",ex);
             System.exit(-1);
         }
-
     }
 }

@@ -83,7 +83,7 @@ public class StatServiceImpl implements StatService {
         stat.setRandomId(UUID.randomUUID().toString());
         statDao.insert(stat);
         int id = stat.getId();
-        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Stat,id,stat.getGroupId()));
+        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Stat,id, ResourceTypeEnum.Group,stat.getGroupId()));
         return id;
     }
 
@@ -103,7 +103,7 @@ public class StatServiceImpl implements StatService {
         LocalDateTime localDateTime = LocalDateTime.now();
         stat.setUpdateTime(localDateTime);
         int result = statDao.update(stat);
-        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Stat,stat.getId(),stat.getGroupId()));
+        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Stat,stat.getId(),ResourceTypeEnum.Group,stat.getGroupId()));
         return result;
     }
 

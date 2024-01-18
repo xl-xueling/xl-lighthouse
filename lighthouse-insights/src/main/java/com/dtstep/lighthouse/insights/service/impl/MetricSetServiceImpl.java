@@ -51,6 +51,9 @@ public class MetricSetServiceImpl implements MetricSetService {
     @Autowired
     private RelationService relationService;
 
+    @Autowired
+    private DomainService domainService;
+
     @Transactional
     @Override
     public int create(MetricSet metricSet) {
@@ -59,7 +62,8 @@ public class MetricSetServiceImpl implements MetricSetService {
         metricSet.setUpdateTime(localDateTime);
         metricSetDao.insert(metricSet);
         int id = metricSet.getId();
-        RolePair rolePair = resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Metric,id,0));
+        Domain domain = domainService.queryDefault();
+        RolePair rolePair = resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.MetricSet,id,ResourceTypeEnum.Domain,domain.getId()));
         Integer manageRoleId = rolePair.getManageRoleId();
         int currentUserId = baseService.getCurrentUserId();
         Permission adminPermission = new Permission(currentUserId,OwnerTypeEnum.USER,manageRoleId);

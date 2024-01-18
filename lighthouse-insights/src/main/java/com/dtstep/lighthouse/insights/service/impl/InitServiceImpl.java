@@ -1,10 +1,12 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
+import com.dtstep.lighthouse.insights.modal.Domain;
 import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.*;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,6 +35,9 @@ public class InitServiceImpl implements InitService {
 
     @Autowired
     private DepartmentService departmentService;
+
+    @Autowired
+    private DomainService domainService;
 
     @Transactional
     @Override
@@ -91,6 +97,22 @@ public class InitServiceImpl implements InitService {
                 int result = permissionService.grantPermission(user.getId(),OwnerTypeEnum.USER,role.getId());
                 Validate.isTrue(result > 0);
             }
+        }
+    }
+
+
+    @Transactional
+    @Override
+    public void initDefaultDomain() throws Exception {
+        Domain defaultDomain = domainService.queryDefault();
+        if(defaultDomain == null){
+            Domain domain = new Domain();
+            LocalDateTime localDateTime = LocalDateTime.now();
+            domain.setCreateTime(localDateTime);
+            domain.setUpdateTime(localDateTime);
+            domain.setName(RandomID.id(5));
+            int result = domainService.create(domain);
+            Validate.isTrue(result > 0);
         }
     }
 }

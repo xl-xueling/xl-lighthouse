@@ -64,7 +64,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectDao.insert(project);
         int projectId = project.getId();
         Integer departmentId = project.getDepartmentId();
-        RolePair rolePair = resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Project,projectId,departmentId));
+        RolePair rolePair = resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Project,projectId,ResourceTypeEnum.Department,departmentId));
         Integer manageRoleId = rolePair.getManageRoleId();
         Integer accessRoleId = rolePair.getAccessRoleId();
         List<Integer> departmentIdList = project.getDepartmentsPermission();
@@ -94,7 +94,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public int update(Project project) {
-        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Project,project.getId(),project.getDepartmentId()));
+        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Project,project.getId(),ResourceTypeEnum.Department,project.getDepartmentId()));
         return projectDao.update(project);
     }
 
@@ -156,7 +156,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public int delete(Project project) {
         int result = projectDao.deleteById(project.getId());
-        resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Project,project.getId(),project.getDepartmentId()));
+        resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Project,project.getId(),ResourceTypeEnum.Department,project.getDepartmentId()));
         return result;
     }
 

@@ -7,4 +7,6 @@ public interface InitService {
     void initDepartment();
 
     void initAdmin() throws Exception;
+
+    void initDefaultDomain() throws Exception;
 }

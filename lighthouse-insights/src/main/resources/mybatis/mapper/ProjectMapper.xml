@@ -50,7 +50,7 @@
     <select id="queryList" resultMap="projectResultMap">
         WITH RECURSIVE cte AS (
         SELECT d.id
-        FROM ldp_department d
+        FROM ldp_departments d
         <where>
             <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
                 AND d.id IN
@@ -61,7 +61,7 @@
         </where>
         UNION ALL
         SELECT d.id
-        FROM ldp_department d
+        FROM ldp_departments d
         JOIN cte ON cte.id = d.pid
         )
         select * from (select `id`,`title`,`department_id`,`private_type`,`desc`,`create_time`,`update_time` from ldp_stat_project
@@ -98,10 +98,10 @@
     <select id="countByDepartmentId">
         WITH RECURSIVE cte AS (
             SELECT d.id
-            FROM ldp_department d where id = #{id}
+            FROM ldp_departments d where id = #{id}
             UNION ALL
             SELECT d.id
-            FROM ldp_department d
+            FROM ldp_departments d
                      JOIN cte ON cte.id = d.pid
         )
         select count(1) from ldp_stat_project where department_id IN (select id from cte)

@@ -42,9 +42,11 @@ export default function LoginForm() {
         Notification.warning({
           style: { width: 420 },
           title: 'Warning',
-          content: message || t['login.form.login.errMsg'],
+          content: message || t['system.error'],
         })
       }
+    }).catch((error)=>{
+      Notification.warning({style: { width: 420 }, title: 'Error', content: t['system.error']})
     }).finally(() => {setLoading(false)})
   }
 
