@@ -1,6 +1,8 @@
 package com.dtstep.lighthouse.insights.test.utils;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.insights.dto_bak.ListSearchObject;
+import com.dtstep.lighthouse.insights.dto_bak.OrderQueryParam;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import org.junit.Test;
@@ -15,6 +17,22 @@ public class TestJson {
         stat.setCreateTime(LocalDateTime.now());
         String s = JsonUtil.toJSONString(stat);
         System.out.println("s is:" + s);
+    }
+
+    @Test
+    public void testJsonParam() throws Exception {
+//        String json = "{\n" +
+//                "\t\"pagination\": {\n" +
+//                "\t\t\"pageSize\": 1,\n" +
+//                "\t\t\"pageNum\": 2\n" +
+//                "\t}\n" +
+//                "}";
+//        ListSearchObject<OrderQueryParam> searchObject = JsonUtil.toJavaObject(json,ListSearchObject.class);
+//        System.out.println("searchObject:" + JsonUtil.toJSONString(searchObject.getPagination()));
+//        System.out.println("queryParam:" + JsonUtil.toJSONString(searchObject.getQueryParams()));
+
+        ListSearchObject<OrderQueryParam> o1 = new ListSearchObject<>();
+        System.out.println(o1.getQueryParams());
     }
 
 
