@@ -24,6 +24,7 @@ export default function Security({userInfo}) {
       const proc = async () =>{
         const changePasswdParams = {
             id:values.id,
+            username:userInfo.username,
             originPassword:md5(values.originPassword),
             password:md5(values.password),
         }
@@ -31,14 +32,15 @@ export default function Security({userInfo}) {
         const {code, data ,message} = response;
         if(code == '0'){
           Notification.info({style: { width: 420 }, title: 'Notification', content: t['security.form.submit.success']});
+            setTimeout(() => {
+                removeLoginStatus();
+                window.location.href = '/login';
+                setFormLoading(false);
+            },3000)
         }else{
           Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            setFormLoading(false);
         }
-        setFormLoading(false);
-        setTimeout(() => {
-            removeLoginStatus();
-            window.location.href = '/login';
-        },2000)
       }
       proc().then();
     }).catch((error) => {

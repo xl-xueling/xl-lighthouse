@@ -44,7 +44,7 @@ public class LoginServiceImpl implements LoginService  {
                 adminUser.setCreateTime(date);
                 adminUser.setLastTime(date);
                 adminUser.setUserName(SysConst._ADMIN_USER_NAME);
-                adminUser.setState(UserStateEnum.USR_NORMAL.getState());
+                adminUser.setState(UserStateEnum.USER_NORMAL.getState());
                 adminUser.setPassword(initialPwd);
                 int userId = userManager.createAdmin(adminUser);
                 adminUser.setId(userId);
@@ -58,7 +58,7 @@ public class LoginServiceImpl implements LoginService  {
         }else{
             if(userManager.check(userName, password)){
                 UserEntity userEntity = userManager.queryByUserName(userName);
-                if(userEntity.getState() != UserStateEnum.USR_NORMAL.getState()){
+                if(userEntity.getState() != UserStateEnum.USER_NORMAL.getState()){
                     logger.info("login submit failure,user status not available.userName:{}",userName);
                     return RequestCodeEnum.USER_STATUS_NOT_AVAILABLE;
                 }else{

@@ -30,4 +30,6 @@ public interface UserDao {
 
     int count(@Param("queryParam")UserQueryParam queryParam);
 
+    String queryUserPassword(Integer id);
+
 }

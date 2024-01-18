@@ -19,9 +19,9 @@ function Workplace() {
       <Space size={16} direction="vertical" className={styles.left}>
         <Overview />
         <Row gutter={gutter}>
-          <Col span={12}>
-            <PopularContents />
-          </Col>
+        {/*  <Col span={12}>*/}
+        {/*    <PopularContents />*/}
+        {/*  </Col>*/}
           <Col span={12}>
             <ContentPercentage />
           </Col>

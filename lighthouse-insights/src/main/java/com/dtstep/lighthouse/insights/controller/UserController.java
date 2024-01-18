@@ -100,11 +100,17 @@ public class UserController {
         SeedAuthenticationToken authentication = (SeedAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Integer currentUserId = authentication.getUserId();
         if(currentUserId.intValue() != userId.intValue()){
-            return ResultData.result(ResultCode.systemError);
+            return ResultData.result(ResultCode.paramValidateFailed);
         }
+        String username = updateParam.getUsername();;
+        User dbUser = userService.queryAllInfoByUserName(username);
         String originPassword = updateParam.getOriginPassword();
-        User dbUser = userService.queryById(userId);
-        if(dbUser == null || !passwordEncoder.matches(originPassword,dbUser.getPassword())){
+        if(dbUser == null
+                || dbUser.getState() != UserStateEnum.USER_NORMAL
+                || dbUser.getId().intValue() != userId.intValue()){
+            return ResultData.result(ResultCode.unauthorized);
+        }
+        if(!passwordEncoder.matches(originPassword,dbUser.getPassword())){
             return ResultData.result(ResultCode.userChangePasswordWrong);
         }
         User userInfo = new User();

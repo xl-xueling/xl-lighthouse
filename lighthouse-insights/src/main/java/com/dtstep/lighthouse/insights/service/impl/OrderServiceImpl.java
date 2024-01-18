@@ -314,7 +314,7 @@ public class OrderServiceImpl implements OrderService {
         if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
             User userUpdateParam = new User();
             userUpdateParam.setId(order.getUserId());
-            userUpdateParam.setState(UserStateEnum.USR_NORMAL);
+            userUpdateParam.setState(UserStateEnum.USER_NORMAL);
             userUpdateParam.setUpdateTime(LocalDateTime.now());
             userService.update(userUpdateParam);
         }

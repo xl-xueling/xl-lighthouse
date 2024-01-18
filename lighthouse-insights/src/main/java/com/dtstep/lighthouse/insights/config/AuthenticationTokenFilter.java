@@ -48,7 +48,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
         }
         Integer id = (Integer) jws.getBody().get("id");
         User dbUser = userService.cacheQueryById(id);
-        if(dbUser == null || dbUser.getState() != UserStateEnum.USR_NORMAL){
+        if(dbUser == null || dbUser.getState() != UserStateEnum.USER_NORMAL){
             filterChain.doFilter(request,response);
             return;
         }

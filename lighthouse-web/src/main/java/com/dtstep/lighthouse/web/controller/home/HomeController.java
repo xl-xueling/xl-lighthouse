@@ -96,7 +96,7 @@ public class HomeController extends BaseController {
 
         int totalUserCount = 0;
         try{
-            totalUserCount = userManager.countByState(UserStateEnum.USR_NORMAL);
+            totalUserCount = userManager.countByState(UserStateEnum.USER_NORMAL);
         }catch (Exception ex){
             logger.error("homepage index,totalUserCount error",ex);
         }

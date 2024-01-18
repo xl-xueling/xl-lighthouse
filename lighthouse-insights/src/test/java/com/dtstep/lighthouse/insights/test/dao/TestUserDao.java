@@ -76,7 +76,7 @@ public class TestUserDao {
     public void testUpdate() throws Exception {
         User user = new User();
         user.setId(110183);
-        user.setState(UserStateEnum.USR_NORMAL);
+        user.setState(UserStateEnum.USER_NORMAL);
         user.setPhone("150111");
         int result = userDao.update(user);
         System.out.println("result:" + result);

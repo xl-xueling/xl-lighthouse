@@ -95,7 +95,7 @@ public class PermissionServiceImpl implements PermissionService {
         if(ownerTypeEnum == OwnerTypeEnum.USER){
             User user = userService.queryById(ownerId);
             Validate.notNull(user);
-            Validate.isTrue(user.getState() == UserStateEnum.USR_NORMAL);
+            Validate.isTrue(user.getState() == UserStateEnum.USER_NORMAL);
         }else if (ownerTypeEnum == OwnerTypeEnum.DEPARTMENT){
             Department department = departmentService.queryById(ownerId);
             Validate.notNull(department);
