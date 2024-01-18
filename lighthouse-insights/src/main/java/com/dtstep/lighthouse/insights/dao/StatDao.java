@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.dao;
 
-import com.dtstep.lighthouse.insights.dto_bak.StatQueryParam;
+import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.dto;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;

@@ -13,7 +13,7 @@ import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto_bak.PermissionInfo;
 import com.dtstep.lighthouse.insights.dto_bak.StatDto;
-import com.dtstep.lighthouse.insights.dto_bak.StatQueryParam;
+import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import com.dtstep.lighthouse.insights.enums.ComponentTypeEnum;
 import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;

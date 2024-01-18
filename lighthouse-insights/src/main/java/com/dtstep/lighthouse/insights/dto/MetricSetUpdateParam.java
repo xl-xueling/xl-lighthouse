@@ -1,11 +1,13 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.dto;
 
 import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
-public class MetricSetCreateParam {
+public class MetricSetUpdateParam {
+
+    @NotNull
+    private Integer id;
 
     @NotNull
     private String title;
@@ -15,10 +17,6 @@ public class MetricSetCreateParam {
 
     @NotNull
     private String desc;
-
-    private List<Integer> initUsersPermission;
-
-    private List<Integer> initDepartmentsPermission;
 
     public String getTitle() {
         return title;
@@ -44,19 +42,11 @@ public class MetricSetCreateParam {
         this.desc = desc;
     }
 
-    public List<Integer> getInitUsersPermission() {
-        return initUsersPermission;
+    public Integer getId() {
+        return id;
     }
 
-    public void setInitUsersPermission(List<Integer> initUsersPermission) {
-        this.initUsersPermission = initUsersPermission;
-    }
-
-    public List<Integer> getInitDepartmentsPermission() {
-        return initDepartmentsPermission;
-    }
-
-    public void setInitDepartmentsPermission(List<Integer> initDepartmentsPermission) {
-        this.initDepartmentsPermission = initDepartmentsPermission;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

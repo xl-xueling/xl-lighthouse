@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.dao;
 
-import com.dtstep.lighthouse.insights.dto_bak.OrderQueryParam;
+import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
 import com.dtstep.lighthouse.insights.modal.Order;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.dto;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;

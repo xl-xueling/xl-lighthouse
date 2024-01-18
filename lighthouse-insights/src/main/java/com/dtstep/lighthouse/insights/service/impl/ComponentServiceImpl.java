@@ -6,7 +6,7 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.ComponentDao;
 import com.dtstep.lighthouse.insights.dto_bak.ComponentDto;
-import com.dtstep.lighthouse.insights.dto_bak.ComponentQueryParam;
+import com.dtstep.lighthouse.insights.dto.ComponentQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.PermissionInfo;
 import com.dtstep.lighthouse.insights.modal.Component;
 import com.dtstep.lighthouse.insights.modal.User;

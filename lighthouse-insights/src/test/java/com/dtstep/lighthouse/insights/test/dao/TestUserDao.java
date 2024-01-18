@@ -5,7 +5,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.UserDao;
-import com.dtstep.lighthouse.insights.dto_bak.UserQueryParam;
+import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

@@ -1,6 +1,8 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.insights.dto.MetricBindParam;
+import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
 
@@ -18,7 +20,7 @@ public interface MetricSetService {
 
     MetricSetDto queryById(Integer id);
 
-    ListData<MetricSet> queryList(MetricSetQueryParam queryParam,Integer pageNum,Integer pageSize);
+    ListData<MetricSet> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize);
 
     List<TreeNode> getStructure(MetricSet metricSet) throws Exception;
 }

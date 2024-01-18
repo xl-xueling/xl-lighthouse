@@ -5,7 +5,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.RecordDao;
 import com.dtstep.lighthouse.insights.dto_bak.LimitedRecord;
-import com.dtstep.lighthouse.insights.dto_bak.RecordQueryParam;
+import com.dtstep.lighthouse.insights.dto.RecordQueryParam;
 import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Record;
