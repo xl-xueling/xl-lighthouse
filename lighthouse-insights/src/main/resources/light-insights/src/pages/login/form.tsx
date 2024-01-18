@@ -9,7 +9,7 @@ import {
 
 import { FormInstance } from '@arco-design/web-react/es/Form';
 import { IconLock, IconUser } from '@arco-design/web-react/icon';
-import React, {useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
@@ -25,7 +25,8 @@ export default function LoginForm() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
-  async function login(params) {
+  const login = async () => {
+    const params = formRef.current.getFieldsValue();
     const loginParam:LoginParam = {
       username:params.username,
       password:md5(params.password),
@@ -50,15 +51,28 @@ export default function LoginForm() {
     }).finally(() => {setLoading(false)})
   }
 
-  function onSubmitClick() {
+  const handleSubmit = async () => {
     try{
-      formRef.current.validate().then((values) => {
-        login(values).then();
-      });
+      await formRef.current.validate();
+      login().then();
     }catch (error){
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
+
+  useEffect(() => {
+    const handleKeyPress = async (event) => {
+      if (event.key === 'Enter') {
+        await handleSubmit();
+      }
+    };
+    document.addEventListener('keypress', handleKeyPress);
+    return () => {
+      document.removeEventListener('keypress', handleKeyPress);
+    };
+  }, []);
+
+
   return (
     <div className={styles['login-form-wrapper']}>
       <div className={styles['login-form-title']}>{t['login.form.title']}</div>
@@ -69,7 +83,7 @@ export default function LoginForm() {
         ref={formRef}
         autoComplete='off'
         onSubmit={(v) => {
-          onSubmitClick();
+          handleSubmit();
         }}
       >
         <Form.Item
@@ -83,7 +97,6 @@ export default function LoginForm() {
             prefix={<IconUser />}
             autoComplete='off'
             placeholder={t['login.form.userName.placeholder']}
-            onPressEnter={onSubmitClick}
           />
         </Form.Item>
         <Form.Item
@@ -97,7 +110,6 @@ export default function LoginForm() {
             prefix={<IconLock />}
             autoComplete='off'
             placeholder={t['login.form.password.placeholder']}
-            onPressEnter={onSubmitClick}
           />
         </Form.Item>
         <Form.Item field="agreeLicence"
