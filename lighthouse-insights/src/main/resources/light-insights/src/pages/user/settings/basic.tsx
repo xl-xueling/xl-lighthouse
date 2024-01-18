@@ -50,6 +50,7 @@ export default function BasicInfoForm({userInfo,allDepartInfo,callback}) {
               if(code == '0'){
                   Notification.info({style: { width: 420 }, title: 'Notification', content: t['userSetting.form.basicinfo.success']});
                   const newUserInfo =  Object.assign({}, userInfo,updateParam)
+                  console.log("userInfo:" + JSON.stringify(newUserInfo));
                   store.dispatch({
                       type: 'update-userInfo',
                       payload: {userInfo: newUserInfo, userLoading: false},

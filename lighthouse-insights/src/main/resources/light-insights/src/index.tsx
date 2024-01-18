@@ -70,7 +70,6 @@ function Index() {
 
     requestFetchUserInfo().then((resultData) => {
       const userInfo = resultData.data;
-      userInfo.permissions = {};
       store.dispatch({
         type: 'update-userInfo',
         payload: {userInfo: resultData.data, userLoading: false},
