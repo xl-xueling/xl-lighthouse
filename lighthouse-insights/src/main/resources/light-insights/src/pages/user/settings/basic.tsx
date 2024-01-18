@@ -13,6 +13,10 @@ import {FormInstance} from "@arco-design/web-react/es/Form";
 import {requestUpdateById} from "@/api/user";
 import {translate} from "@/pages/department/common";
 import {ResultData} from "@/types/insights-common";
+import {User} from "@/types/insights-web";
+import {createStore} from "redux";
+import rootReducer from "@/store";
+const store = createStore(rootReducer);
 
 export default function BasicInfoForm({userInfo,allDepartInfo,callback}) {
 
@@ -28,17 +32,28 @@ export default function BasicInfoForm({userInfo,allDepartInfo,callback}) {
     departmentId:userInfo?.departmentId,
     phone:userInfo?.phone,
     email:userInfo?.email,
-    state:userInfo?.state,
   }
 
   const onSubmitClick = () => {
       setFormLoading(true);
       formRef.current.validate().then((values) => {
           const proc = async () =>{
-              const response:ResultData = await requestUpdateById(values);
+              const updateParam:User = {
+                  id:userInfo?.id,
+                  username:userInfo?.username,
+                  departmentId:values.departmentId,
+                  phone:values.phone,
+                  email:values.email,
+              }
+              const response:ResultData = await requestUpdateById(updateParam);
               const {code, data ,message} = response;
               if(code == '0'){
                   Notification.info({style: { width: 420 }, title: 'Notification', content: t['userSetting.form.basicinfo.success']});
+                  const newUserInfo =  Object.assign({}, userInfo,updateParam)
+                  store.dispatch({
+                      type: 'update-userInfo',
+                      payload: {userInfo: newUserInfo, userLoading: false},
+                  });
               }else{
                   Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
               }
