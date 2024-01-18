@@ -1,6 +1,11 @@
 const vi18n = {
     'en-US': {
         'system.error':'System Error!',
+        'basic.form.button.search':'Search',
+        'basic.form.button.reset':'Reset',
+        'basic.form.button.submit':'Submit',
+        'basic.form.button.cancel':'Cancel',
+        'basic.form.button.close':'Close',
         'basic.columns.state.pending':'Pending',
         'basic.columns.state.running':'Running',
         'basic.columns.state.limiting':'Limiting',
@@ -46,6 +51,11 @@ const vi18n = {
     },
     'zh-CN': {
         'system.error':'系统异常!',
+        'basic.form.button.search':'搜索',
+        'basic.form.button.reset':'重置',
+        'basic.form.button.submit':'确定',
+        'basic.form.button.cancel':'取消',
+        'basic.form.button.close':'关闭',
         'basic.columns.state.pending':'待审核',
         'basic.columns.state.running':'运行中',
         'basic.columns.state.limiting':'限流',

@@ -14,6 +14,7 @@ import SearchForm from "@/pages/order/approve/list/form";
 import OrderDetailModal from "@/pages/order/common/detail_modal";
 import OrderProcessModal from "@/pages/order/approve/list/process_modal";
 import {IconHome} from "@arco-design/web-react/icon";
+import {convertDateToTimestamp, DateFormat, getDayEndTimestamp, getDayStartTimestamp} from "@/utils/date";
 
 export default function ApproveList() {
     const t = useLocale(locale);
@@ -68,8 +69,8 @@ export default function ApproveList() {
         combineParam.states = formParams.states;
         const createTime = formParams.createTime;
         if(createTime && Array.isArray(createTime)){
-            combineParam.createStartTime = createTime[0];
-            combineParam.createEndTime = createTime[1];
+            combineParam.createStartTime = getDayStartTimestamp(convertDateToTimestamp(createTime[0],DateFormat));
+            combineParam.createEndTime = getDayEndTimestamp(convertDateToTimestamp(createTime[1],DateFormat));
         }
         await requestApproveList({
             queryParams:combineParam,
