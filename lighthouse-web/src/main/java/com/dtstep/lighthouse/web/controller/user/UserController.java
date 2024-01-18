@@ -159,7 +159,7 @@ public class UserController extends BaseController{
     ObjectNode activate(HttpServletRequest request) throws Exception {
         int id = ParamWrapper.getIntValue(request,"id");
         try{
-            userService.changeState(id, UserStateEnum.USR_NORMAL);
+            userService.changeState(id, UserStateEnum.USER_NORMAL);
         }catch (Exception ex){
             logger.error("activate user[id:{}] state error!",id ,ex);
             RequestCodeEnum.toJSON(RequestCodeEnum.SYSTEM_ERROR);

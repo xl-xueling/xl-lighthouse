@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public int create(User user, boolean needApprove) throws Exception{
-        user.setState(needApprove?UserStateEnum.USER_PEND:UserStateEnum.USR_NORMAL);
+        user.setState(needApprove?UserStateEnum.USER_PEND:UserStateEnum.USER_NORMAL);
         LocalDateTime localDateTime = LocalDateTime.now();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreateTime(localDateTime);
@@ -144,5 +144,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public int count(UserQueryParam queryParam) {
         return userDao.count(queryParam);
+    }
+
+    @Override
+    public String queryUserPassword(Integer id) {
+        return userDao.queryUserPassword(id);
     }
 }

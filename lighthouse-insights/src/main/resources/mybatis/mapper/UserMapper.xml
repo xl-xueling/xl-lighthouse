@@ -45,6 +45,10 @@
         SELECT `id`,`username`,`password`,`phone`,`email`,`department_id`,`state`,`third_id`,`last_time`,`create_time`,`update_time` FROM ldp_users WHERE username = #{username}
     </select>
 
+    <select id="queryUserPassword" resultType="java.lang.String">
+        SELECT `password` FROM ldp_users WHERE id = #{id}
+    </select>
+
     <select id="termQuery" resultMap="userResultMap">
         SELECT `id`,`username` FROM ldp_users WHERE username LIKE CONCAT('%', #{search}, '%') limit 10
     </select>

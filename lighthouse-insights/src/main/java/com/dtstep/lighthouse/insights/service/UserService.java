@@ -23,6 +23,8 @@ public interface UserService {
 
     User queryAllInfoByUserName(String userName);
 
+    String queryUserPassword(Integer id);
+
     int deleteById(int userId);
 
     ListData<UserDto> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize);

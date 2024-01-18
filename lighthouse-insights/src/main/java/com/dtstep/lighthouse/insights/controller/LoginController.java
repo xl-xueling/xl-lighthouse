@@ -54,7 +54,7 @@ public class LoginController {
         }
         if(dbUser.getState() == UserStateEnum.USER_PEND){
             return ResultData.result(ResultCode.userPendApprove);
-        }else if(dbUser.getState() != UserStateEnum.USR_NORMAL){
+        }else if(dbUser.getState() != UserStateEnum.USER_NORMAL){
             return ResultData.result(ResultCode.userStateUnAvailable);
         }
         String signKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
@@ -104,7 +104,7 @@ public class LoginController {
         if(dbUser == null || !password.equals(dbUser.getPassword())){
             return ResultData.result(ResultCode.paramValidateFailed);
         }
-        if(dbUser.getState() != UserStateEnum.USR_NORMAL){
+        if(dbUser.getState() != UserStateEnum.USER_NORMAL){
             return ResultData.result(ResultCode.userStateUnAvailable);
         }
         User updateParam = new User();

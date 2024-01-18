@@ -38,7 +38,7 @@ public enum UserStateEnum {
     /**
      * 正常用户
      */
-    USR_NORMAL(2),
+    USER_NORMAL(2),
 
     /**
      * 冻结用户
