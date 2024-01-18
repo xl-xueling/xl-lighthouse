@@ -79,9 +79,9 @@ function SearchForm(props: {
                     mode="multiple"
                     allowClear
                 >
-                  <Select.Option value={0}>{t['approveList.columns.state.pending']}</Select.Option>
-                  <Select.Option value={1}>{t['approveList.columns.state.approved']}</Select.Option>
-                  <Select.Option value={2}>{t['approveList.columns.state.rejected']}</Select.Option>
+                  <Select.Option value={0}>{t['basic.orderState.description.processing']}</Select.Option>
+                  <Select.Option value={2}>{t['basic.orderState.description.approved']}</Select.Option>
+                  <Select.Option value={3}>{t['basic.orderState.description.rejected']}</Select.Option>
                 </Select>
               </Form.Item>
             </Col>
