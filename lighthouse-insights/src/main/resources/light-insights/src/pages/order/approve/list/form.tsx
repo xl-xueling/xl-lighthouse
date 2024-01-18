@@ -13,6 +13,8 @@ import locale from './locale';
 import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import styles from './style/index.module.less';
+import {OrderTypeEnum, StatTimeParamEnum} from "@/types/insights-common";
+import {getOrderTypeDescription} from "@/pages/common/desc/base";
 
 const { Row, Col } = Grid;
 const { useForm } = Form;
@@ -61,12 +63,13 @@ function SearchForm(props: {
                     mode="multiple"
                     allowClear
                 >
-                  <Select.Option value={1}>{t['approveList.columns.type.project.access']}</Select.Option>
-                  <Select.Option value={2}>{t['approveList.columns.type.stat.access']}</Select.Option>
-                  <Select.Option value={3}>{t['approveList.columns.type.metrics.access']}</Select.Option>
-                  <Select.Option value={4}>{t['approveList.columns.type.adjust.limited.threshold']}</Select.Option>
-                  <Select.Option value={5}>{t['approveList.columns.type.stat.pend.approve']}</Select.Option>
-                  <Select.Option value={6}>{t['approveList.columns.type.user.pend.approve']}</Select.Option>
+                  {
+                    Object.keys(OrderTypeEnum).filter(key => !Number.isNaN(Number(key))).map((option,index) => {
+                      return <Select.Option key={index} value={option}>
+                        {getOrderTypeDescription(t,Number(option))}
+                      </Select.Option>
+                    })
+                  }
                 </Select>
               </Form.Item>
             </Col>
