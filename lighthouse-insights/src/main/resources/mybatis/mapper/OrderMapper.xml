@@ -48,38 +48,37 @@
     </select>
 
     <select id="queryApproveList" resultMap="orderResultMap">
-        select c.* from (SELECT `id`,`user_id`,`order_type`,`state`,`steps`,`extend_config`,
-        `hash`,`current_node`,
-        `reason`,`create_time`,`update_time`
-        FROM ldp_orders o
+        select o.`id`,o.`user_id`,o.`order_type`,o.`state`,o.`steps`,o.`extend_config`,
+        o.`hash`,o.`current_node`,o.`reason`,o.`create_time`,o.`update_time` from ldp_orders o
         inner JOIN (
-            SELECT a.`order_id`
-            FROM ldp_order_details a
-            JOIN ldp_permissions p ON a.role_id = p.role_id
-            WHERE p.owner_id = #{queryParam.approveUserId} and p.owner_type = '1' and a.state in ('1','2','3')
-            GROUP BY a.`order_id`
-        ) sub ON o.id = sub.order_id) c left join ldp_users u on c.user_id = u.id
+        SELECT a.`order_id`
+        FROM ldp_order_details a
+        JOIN ldp_permissions p ON a.role_id = p.role_id
+        WHERE p.owner_id = #{queryParam.approveUserId} and p.owner_type = '1' and a.state in ('1','2','3')
+        GROUP BY a.`order_id`
+        ) sub ON o.id = sub.order_id
+        inner join ldp_users u on o.user_id = u.id
         <where>
             <if test="queryParam.username != null">
-                AND `username` LIKE CONCAT('%', #{queryParam.username}, '%')
+                AND u.`username` LIKE CONCAT('%', #{queryParam.username}, '%')
             </if>
             <if test="queryParam.types != null and queryParam.types.size > 0">
-                AND `order_type` IN
+                AND o.`order_type` IN
                 <foreach item="item" index="index" collection="queryParam.types" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
-            <if test="queryParam.states != null">
-                AND `state` IN
+            <if test="queryParam.states != null and queryParam.states.size > 0">
+                AND o.`state` IN
                 <foreach item="item" index="index" collection="queryParam.states" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
             <if test="queryParam.createStartTime!=null">
-                AND `create_time` &gt;= #{queryParam.createStartTime}
+                AND o.`create_time` &gt;= #{queryParam.createStartTime}
             </if>
             <if test="queryParam.createEndTime!=null">
-                AND `create_time` &lt;= #{queryParam.createEndTime}
+                AND o.`create_time` &lt;= #{queryParam.createEndTime}
             </if>
         </where>
     </select>
