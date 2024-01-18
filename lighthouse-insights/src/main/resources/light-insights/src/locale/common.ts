@@ -37,6 +37,12 @@ const vi18n = {
         'basic.userState.description.frozen':'Frozen',
         'basic.userState.description.rejected':'Rejected',
         'basic.userState.description.deleted':'Deleted',
+        'basic.orderType.description.projectAccess':'Request Project Access',
+        'basic.orderType.description.statAccess':'Request Statistic Access',
+        'basic.orderType.description.metricAccess':'Request MetricSet Access',
+        'basic.orderType.description.limitedThresholdAdjust':'Adjust Limited Threshold',
+        'basic.orderType.description.statPendApprove':'Stat Pend Approve',
+        'basic.orderType.description.userPendApprove':'User Pend Approve',
     },
     'zh-CN': {
         'system.error':'系统异常!',
@@ -76,6 +82,12 @@ const vi18n = {
         'basic.userState.description.frozen':'冻结',
         'basic.userState.description.rejected':'审核未通过',
         'basic.userState.description.deleted':'已删除',
+        'basic.orderType.description.projectAccess':'申请工程访问权限',
+        'basic.orderType.description.statAccess':'申请统计项访问权限',
+        'basic.orderType.description.metricAccess':'申请指标集访问权限',
+        'basic.orderType.description.limitedThresholdAdjust':'修改限流阈值',
+        'basic.orderType.description.statPendApprove':'审核统计项',
+        'basic.orderType.description.userPendApprove':'审核新用户',
     }
 }
 export default vi18n;

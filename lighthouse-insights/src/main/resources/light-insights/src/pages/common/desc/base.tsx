@@ -2,11 +2,13 @@ import React from "react";
 import {Badge} from "@arco-design/web-react";
 import {
     ApproveStateEnum,
-    ComponentTypeEnum, OrderStateEnum,
-    ResourceTypeEnum,
+    ComponentTypeEnum,
+    OrderStateEnum,
+    OrderTypeEnum,
     RoleTypeEnum,
     StatExpiredEnum,
-    StatStateEnum, UserStateEnum
+    StatStateEnum,
+    UserStateEnum
 } from "@/types/insights-common";
 import {PiDiamondsFour} from "react-icons/pi";
 import {CiViewTable} from "react-icons/ci";
@@ -171,5 +173,21 @@ export function getUserStateDescription(t:any,value:UserStateEnum){
         return <Badge status="error" text={t['basic.userState.description.rejected']}/>;
     }else if(value == UserStateEnum.USER_DELETED){
         return <Badge status="error" text={t['basic.userState.description.deleted']}/>;
+    }
+}
+
+export function getOrderTypeDescription(t:any,value:OrderTypeEnum){
+    if(value == OrderTypeEnum.USER_PEND_APPROVE){
+        return t['basic.orderType.description.userPendApprove'];
+    }else if (value == OrderTypeEnum.STAT_PEND_APPROVE) {
+        return t['basic.orderType.description.statPendApprove'];
+    }else if(value == OrderTypeEnum.PROJECT_ACCESS){
+        return t['basic.orderType.description.projectAccess']
+    }else if(value == OrderTypeEnum.METRIC_ACCESS){
+        return t['basic.orderType.description.metricAccess']
+    }else if(value == OrderTypeEnum.STAT_ACCESS){
+        return t['basic.orderType.description.statAccess'];
+    }else if(value == OrderTypeEnum.GROUP_THRESHOLD_ADJUST){
+        return t['basic.orderType.description.limitedThresholdAdjust'];
     }
 }
