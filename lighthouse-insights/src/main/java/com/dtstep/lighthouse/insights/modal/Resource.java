@@ -8,31 +8,33 @@ public class Resource <T extends Object> {
 
     private Integer resourceId;
 
+    private ResourceTypeEnum parentResourceType;
+
     private Integer resourcePid;
 
     private T data;
 
-    public static Resource newResource(ResourceTypeEnum resourceType,Integer resourceId,Integer resourcePid){
-        return new Resource(resourceType,resourceId,resourcePid);
+    public static Resource newResource(ResourceTypeEnum resourceType,Integer resourceId,ResourceTypeEnum parentResourceType,Integer parentResourceId){
+        return new Resource(resourceType,resourceId,parentResourceType,parentResourceId);
     }
 
-    public Resource(){}
+    private Resource(){}
 
     public Resource(ResourceTypeEnum resourceType,Integer resourceId){
         this.resourceType = resourceType;
         this.resourceId = resourceId;
     }
 
-    public Resource(ResourceTypeEnum resourceType,Integer resourceId,Integer resourcePid){
+    public Resource(ResourceTypeEnum resourceType,Integer resourceId,ResourceTypeEnum parentResourceType,Integer resourcePid){
         this.resourceType = resourceType;
         this.resourceId = resourceId;
+        this.parentResourceType = parentResourceType;
         this.resourcePid = resourcePid;
     }
 
-    public Resource(ResourceTypeEnum resourceType,Integer resourceId,Integer resourcePid,T data){
+    public Resource(ResourceTypeEnum resourceType,Integer resourceId,T data){
         this.resourceType = resourceType;
         this.resourceId = resourceId;
-        this.resourcePid = resourcePid;
         this.data = data;
     }
 
@@ -66,5 +68,13 @@ public class Resource <T extends Object> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public ResourceTypeEnum getParentResourceType() {
+        return parentResourceType;
+    }
+
+    public void setParentResourceType(ResourceTypeEnum parentResourceType) {
+        this.parentResourceType = parentResourceType;
     }
 }

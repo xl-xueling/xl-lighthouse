@@ -36,7 +36,7 @@ public class GroupServiceImpl implements GroupService {
         group.setUpdateTime(localDateTime);
         group.setRefreshTime(localDateTime);
         groupDao.insert(group);
-        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Group,group.getId(),group.getProjectId()));
+        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
         return group.getId();
     }
 
@@ -46,7 +46,7 @@ public class GroupServiceImpl implements GroupService {
         group.setUpdateTime(localDateTime);
         group.setRefreshTime(localDateTime);
         int result = groupDao.update(group);
-        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Group,group.getId(),group.getProjectId()));
+        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
         return result;
     }
 
@@ -54,6 +54,7 @@ public class GroupServiceImpl implements GroupService {
     public int delete(Group group) {
         Validate.notNull(group);
         Integer id = group.getId();
+        resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
         return groupDao.deleteById(id);
     }
 

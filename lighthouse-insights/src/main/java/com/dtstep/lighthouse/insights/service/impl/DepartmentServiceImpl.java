@@ -6,10 +6,7 @@ import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.modal.Resource;
 import com.dtstep.lighthouse.insights.modal.Role;
-import com.dtstep.lighthouse.insights.service.DepartmentService;
-import com.dtstep.lighthouse.insights.service.ProjectService;
-import com.dtstep.lighthouse.insights.service.ResourceService;
-import com.dtstep.lighthouse.insights.service.RoleService;
+import com.dtstep.lighthouse.insights.service.*;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +32,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private DomainService domainService;
+
     @Transactional
     @Override
     public int create(Department department) {
@@ -44,7 +44,14 @@ public class DepartmentServiceImpl implements DepartmentService {
         departmentDao.insert(department);
         int departmentId = department.getId();
         List<Role> roleList = new ArrayList<>();
-        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Department,departmentId,department.getPid()));
+        Integer resourcePid;
+        if(department.getPid() == 0){
+            resourcePid = domainService.queryDefault().getId();
+            resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Department,departmentId,ResourceTypeEnum.Domain,resourcePid));
+        }else{
+            resourcePid = department.getPid();
+            resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Department,departmentId,ResourceTypeEnum.Department,resourcePid));
+        }
         return department.getId();
     }
 
@@ -52,7 +59,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public int update(Department department) {
         int result = departmentDao.update(department);
-        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),department.getPid()));
+        Integer resourcePid;
+        if(department.getPid() == 0){
+            resourcePid = domainService.queryDefault().getId();
+            resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Domain,resourcePid));
+        }else{
+            resourcePid = department.getPid();
+            resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Department,resourcePid));
+        }
         return result;
     }
 
@@ -61,7 +75,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     public int delete(Department department) {
         Validate.notNull(department);
         int result = departmentDao.deleteById(department.getId());
-        resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),department.getPid()));
+        Integer resourcePid;
+        if(department.getPid() == 0){
+            resourcePid = domainService.queryDefault().getId();
+            resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Domain,resourcePid));
+        }else{
+            resourcePid = department.getPid();
+            resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Department,resourcePid));
+        }
         return result;
     }
 

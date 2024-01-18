@@ -9,17 +9,19 @@ public enum ResourceTypeEnum {
 
     System(1),
 
-    Department(2),
+    Domain(2),
 
-    Project(3),
+    Department(3),
 
-    Group(4),
+    Project(4),
 
-    Stat(5),
+    Group(5),
 
-    Metric(6),
+    Stat(6),
 
-    Order(7),
+    MetricSet(7),
+
+    View(8),
 
     ;
 
