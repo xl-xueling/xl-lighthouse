@@ -5,7 +5,7 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto_bak.IDParam;
 import com.dtstep.lighthouse.insights.dto_bak.ResultData;
-import com.dtstep.lighthouse.insights.dto_bak.GroupQueryParam;
+import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.service.GroupService;

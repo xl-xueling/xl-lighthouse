@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.insights.dto.QueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;

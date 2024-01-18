@@ -1,6 +1,8 @@
 package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.insights.dto.PermissionListQueryParam;
+import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Role;

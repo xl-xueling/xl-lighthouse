@@ -4,7 +4,7 @@ import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
-import com.dtstep.lighthouse.insights.dto_bak.GroupQueryParam;
+import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.insights.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.insights.enums.LimitedStrategyEnum;
 import com.dtstep.lighthouse.insights.modal.*;

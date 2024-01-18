@@ -2,8 +2,7 @@ package com.dtstep.lighthouse.insights.test.utils;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dto_bak.ListSearchObject;
-import com.dtstep.lighthouse.insights.dto_bak.OrderQueryParam;
-import com.dtstep.lighthouse.insights.modal.Group;
+import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import org.junit.Test;
 
