@@ -11,7 +11,7 @@ import com.dtstep.lighthouse.insights.controller.annotation.RecordAnnotation;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
-import com.dtstep.lighthouse.insights.dto_bak.PermissionInfo;
+import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.dto_bak.StatDto;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
@@ -122,9 +122,9 @@ public class StatServiceImpl implements StatService {
         Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,stat.getId());
         Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,stat.getId());
         if(permissionService.checkUserPermission(userId, manageRole.getId())){
-            statDto.addPermission(PermissionInfo.PermissionEnum.ManageAble);
+            statDto.addPermission(PermissionEnum.ManageAble);
         }else if(permissionService.checkUserPermission(userId,accessRole.getId())){
-            statDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
+            statDto.addPermission(PermissionEnum.AccessAble);
         }
         List<User> admins = projectService.cacheQueryAdmins(project.getId());
         statDto.setAdmins(admins);

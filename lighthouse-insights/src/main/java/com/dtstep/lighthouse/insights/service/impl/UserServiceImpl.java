@@ -12,6 +12,7 @@ import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
+import com.dtstep.lighthouse.insights.vo.UserVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -97,12 +99,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ListData<User> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize) {
+    public ListData<UserVO> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        ListData<User> listData = null;
+        ListData<UserVO> listData = null;
         try{
             List<User> userList = userDao.queryList(queryParam);
-            listData = baseService.translateToListData(userList);
+            List<UserVO> voList = new ArrayList<>();
+            for(User user : userList){
+                UserVO vo = new UserVO(user);
+                vo.addPermission(PermissionEnum.ManageAble);
+                voList.add(vo);
+            }
+            listData = baseService.translateToListData(voList);
         }finally {
             PageHelper.clearPage();
         }
@@ -136,17 +144,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'getUserPermissions' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
-    public Set<PermissionInfo.PermissionEnum> getUserPermissions(Integer id) {
+    public Set<PermissionEnum> getUserPermissions(Integer id) {
         Role optManageRole = roleService.cacheQueryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
         boolean hasOptManageRole = permissionService.checkUserPermission(id,optManageRole.getId());
         Role sysManageRole = roleService.cacheQueryRole(RoleTypeEnum.FULL_MANAGE_PERMISSION,0);
         boolean hasSysManageRole = permissionService.checkUserPermission(id,sysManageRole.getId());
-        Set<PermissionInfo.PermissionEnum> sets = new HashSet<>();
+        Set<PermissionEnum> sets = new HashSet<>();
         if(hasOptManageRole){
-            sets.add(PermissionInfo.PermissionEnum.OperationManageAble);
+            sets.add(PermissionEnum.OperationManageAble);
         }
         if(hasSysManageRole){
-            sets.add(PermissionInfo.PermissionEnum.SystemManageAble);
+            sets.add(PermissionEnum.SystemManageAble);
         }
         return sets;
     }

@@ -1,6 +1,5 @@
 package com.dtstep.lighthouse.insights.modal;
 
-import com.dtstep.lighthouse.insights.dto_bak.PermissionInfo;
 import com.dtstep.lighthouse.common.enums.OrderStateEnum;
 import com.dtstep.lighthouse.common.enums.OrderTypeEnum;
 
@@ -9,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-public class Order extends PermissionInfo implements Serializable {
+public class Order implements Serializable {
 
     private Integer id;
 
