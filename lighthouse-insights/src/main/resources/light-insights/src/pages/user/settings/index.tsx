@@ -6,13 +6,13 @@ import InfoHeader from './header';
 import InfoForm from './basic';
 import Security from './security';
 import {useSelector} from "react-redux";
-import {Department, User} from "@/types/insights-web";
+import {Department, TreeNode, User} from "@/types/insights-web";
 import {requestChangeState, requestFetchUserInfo} from "@/api/user";
 
 export default function Index() {
   const t = useLocale(locale);
   const [activeTab, setActiveTab] = useState('basic');
-  const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+  const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
   const departLoading = useSelector((state: {departLoading:boolean}) => state.departLoading);
   const [loading,setLoading] = useState<boolean>(true);
   const [userInfo,setUserInfo] = useState<User>(null);

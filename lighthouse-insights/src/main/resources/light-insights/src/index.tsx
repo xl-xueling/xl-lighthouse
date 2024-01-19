@@ -20,7 +20,7 @@ import {getDataWithLocalCache} from "@/utils/localCache";
 import {Department, MetricSet} from "@/types/insights-web";
 import {requestStructure as queryDepartmentAll} from "@/api/department";
 import {requestPinList} from "@/api/metricset";
-import {fetchAllDepartmentData, getDepartment} from "@/pages/department/common";
+import {fetchAllDepartmentData} from "@/pages/department/common";
 import {checkLogin} from "@/utils/checkLogin";
 
 const store = createStore(rootReducer);

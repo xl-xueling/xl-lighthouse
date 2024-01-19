@@ -23,6 +23,7 @@ export interface GrantPrivileges {
 }
 
 export interface TreeNode {
+    key?:string;
     label?:string;
     value?:string;
     type?:any;

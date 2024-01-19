@@ -2,12 +2,12 @@ import React, {useEffect, useRef} from 'react';
 import { useState } from 'react';
 import TreeTransfer from "@/pages/components/transfer/department_transfer/tree_transfer";
 import {useSelector} from "react-redux";
-import {Department} from "@/types/insights-web";
+import {Department, TreeNode} from "@/types/insights-web";
 import {translate} from "@/pages/department/common";
 
 const DepartmentsTransfer = React.forwardRef((none,ref)  => {
 
-    const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+    const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
 
     const [targetKeys, setTargetKeys] = useState([]);
 

@@ -16,7 +16,7 @@ import {GoGitMerge, GoStack} from "react-icons/go";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {requestBinded, requestPinList} from "@/api/metricset";
-import {ArcoTreeNode, Department, MetricSet} from "@/types/insights-web";
+import {ArcoTreeNode, Department, MetricSet, TreeNode} from "@/types/insights-web";
 import locale from "./locale";
 import {requestList} from "@/api/metricset";
 import {getColumns} from "./constants";
@@ -34,7 +34,7 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
     const [confirmLoading,setConfirmLoading] = useState(false);
     const formRef = useRef(null);
     const [selectedItems,setSelectedItems] = useState<MetricSet[]>([]);
-    const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+    const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const pinMetricsInfo = useSelector((state: {pinMetricsInfo:Array<MetricSet>}) => state.pinMetricsInfo);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],

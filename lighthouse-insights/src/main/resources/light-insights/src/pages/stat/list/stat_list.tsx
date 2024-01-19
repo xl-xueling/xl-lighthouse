@@ -6,7 +6,7 @@ import React, {useEffect, useMemo, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import {useSelector} from "react-redux";
 import locale from './locale';
-import { Department, Stat} from "@/types/insights-web";
+import {Department, Stat, TreeNode} from "@/types/insights-web";
 import {requestChangeState, requestDeleteById, requestList} from "@/api/stat";
 import {getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
 import Detail from "@/pages/stat/list/detail";
@@ -92,7 +92,7 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
         })
     }
 
-    const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+    const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const columns = useMemo(() => (from && from == 'group-manage') ? getColumnsOfManage(t, tableCallback) : getColumns(t,tableCallback), [t,listData]);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
