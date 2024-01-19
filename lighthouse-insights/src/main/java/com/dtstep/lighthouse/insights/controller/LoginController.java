@@ -106,10 +106,10 @@ public class LoginController {
         String password = (String)jws.getBody().get("password");
         User dbUser = userService.queryAllInfoByUserName(username);
         if(dbUser == null || !password.equals(dbUser.getPassword())){
-            return ResultData.result(ResultCode.paramValidateFailed);
+            return ResultData.result(ResultCode.authRenewalFailed);
         }
         if(dbUser.getState() != UserStateEnum.USER_NORMAL){
-            return ResultData.result(ResultCode.userStateUnAvailable);
+            return ResultData.result(ResultCode.authRenewalFailed);
         }
         User updateParam = new User();
         updateParam.setId(dbUser.getId());

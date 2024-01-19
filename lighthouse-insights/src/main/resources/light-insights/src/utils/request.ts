@@ -37,8 +37,8 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
     try{
         const response: AxiosResponse = await http.request(config);
         result = response.data;
-        console.log("result is:" + JSON.stringify(result));
     }catch (error) {
+        console.log(error)
         if(error.message == 'Network Error'){
             console.log(error);
             Notification.error({style: { width: 420 }, title: 'Warning', content:'Unable to connect to remote server!'});
