@@ -8,7 +8,7 @@ import {ResultData} from "@/types/insights-common";
 import {
     requestCreate,
     requestDelete,
-    requestQueryAll,
+    requestStructure,
     requestUpdateById
 } from "@/api/department";
 import {getRandomString, getTextBlenLength, validateWithRegex} from "@/utils/util";
@@ -26,13 +26,14 @@ export default function ManagePanel() {
     async function fetchData() {
         setLoading(true);
         try {
-            await requestQueryAll().then((response:ResultData) => {
+            await requestStructure().then((response:ResultData) => {
                 const {code, message} = response;
                 let data = response.data;
                 if (code === '0') {
                     data = [{
-                        "id":"0",
-                        "name":t['department.enterprise.structure'],"children":data}] ;
+                        "key":"0",
+                        "value":0,
+                        "label":t['department.enterprise.structure'],"children":data}] ;
                     setTreeData([...data]);
                     setExpandedKeys(["0"]);
                 }else{
@@ -119,12 +120,13 @@ export default function ManagePanel() {
         return result;
     }
 
-    const generatorTreeNodes = (treeData,pid = "0") => {
+    const generatorTreeNodes = (treeData,parentKey = "0") => {
         return treeData.map((item) => {
             const { children, key, ...ret} = item;
+            item.parentKey = parentKey;
             return (
-                <Tree.Node icon={children || item.id == "0" ? <IconFolder /> : <IconFile/> }
-                         key={item.id} title={item.name}  {...ret} dataRef={item}>
+                <Tree.Node icon={children || item.key == "0" ? <IconFolder /> : <IconFile/> }
+                         key={item.key} title={item.label}  {...ret} dataRef={item}>
                     {children ? generatorTreeNodes(item.children,item.key) : null}
                 </Tree.Node>
             );
@@ -135,7 +137,7 @@ export default function ManagePanel() {
         const params = dataArray;
         const loop = (data) => {
             data.map((item,index) => {
-                if(item.id === inputValue) {
+                if(item.key === inputValue) {
                     data.splice(index,1);
                 }
                 if (item.children) {
@@ -176,9 +178,9 @@ export default function ManagePanel() {
                 onDrop={async ({dragNode, dropNode, dropPosition}) => {
                     let destPid;
                     if(dropPosition === 0){
-                        destPid = treeRef.current.getCacheNode([dropNode.props._key])[0].props.dataRef.id;
+                        destPid = treeRef.current.getCacheNode([dropNode.props._key])[0].props.dataRef.key;
                     }else{
-                        destPid = treeRef.current.getCacheNode([dropNode.props._key])[0].props.dataRef.pid;
+                        destPid = treeRef.current.getCacheNode([dropNode.props._key])[0].props.dataRef.parentKey;
                     }
                     const result = await updateNode(dragNode.props._key, destPid,dragNode.props.title);
                     if(result == '-1'){
@@ -186,7 +188,7 @@ export default function ManagePanel() {
                     }
                     const loop = (data, key, callback) => {
                         data.some((item, index, arr) => {
-                            if (String(item.id) === String(key)) {
+                            if (String(item.key) === String(key)) {
                                 callback(item, index, arr);
                                 return true;
                             }
@@ -240,25 +242,26 @@ export default function ManagePanel() {
                                   titleNode.dispatchEvent(event);
                                   const dataChildren = node.dataRef.children || [];
                                   const nodeTitle = "New Node_" + getRandomString(8);
-                                  const currentId = await addNode(node.dataRef.id, nodeTitle);
+                                  const currentId = await addNode(node.dataRef.key, nodeTitle);
                                   if(currentId == "-1"){
                                       return;
                                   }
                                   dataChildren.push({
-                                      name: nodeTitle,
-                                      id: currentId,
-                                      pid: node.dataRef.id,
+                                      key: currentId,
+                                      value:currentId,
+                                      label: nodeTitle,
+                                      parentKey: node.dataRef.key,
                                   });
                                   node.dataRef.children = dataChildren;
                                   setTreeData([...treeData]);
-                                  const newArr = [...expandedKeys].filter(item => item !== node.dataRef.id);
-                                  setExpandedKeys([...newArr, node.dataRef.id]);
+                                  const newArr = [...expandedKeys].filter(item => item !== node.dataRef.key);
+                                  setExpandedKeys([...newArr, node.dataRef.key]);
                               }}
                           />
                           {node._level != 0  &&  (
                               <IconPen
                                   style={{
-                                      display:`${node.dataRef.id != "0" ? 'block' : 'none'}`,
+                                      display:`${node.dataRef.key != "0" ? 'block' : 'none'}`,
                                       position: 'absolute',
                                       right: 25,
                                       fontSize: 13,
@@ -293,7 +296,8 @@ export default function ManagePanel() {
                                                                       } else {
                                                                           const newTitle = ie.target.value;
                                                                           if(newTitle.length  > 0 && newTitle != originTitle){
-                                                                              const result = await updateNode(node.dataRef.id,node.dataRef.pid, newTitle);
+                                                                              console.log("update node,key:" + node.dataRef.key + ",parentKey:" + node.dataRef.parentKey + ",newTitle:" + newTitle);
+                                                                              const result = await updateNode(node.dataRef.key,node.dataRef.parentKey, newTitle);
                                                                               if(result == '0'){
                                                                                   node.dataRef.title = newTitle;
                                                                               }else{
@@ -307,8 +311,8 @@ export default function ManagePanel() {
                                                                   }}
                                       />;
                                       setTreeData([...treeData]);
-                                      const newArr = [...expandedKeys].filter(item => item !== node.dataRef.id);
-                                      setExpandedKeys([...newArr, node.dataRef.id]);
+                                      const newArr = [...expandedKeys].filter(item => item !== node.dataRef.key);
+                                      setExpandedKeys([...newArr, node.dataRef.key]);
                                   }}
                               />
                           )}
@@ -322,18 +326,18 @@ export default function ManagePanel() {
                                       if (dataChildren.length > 0) {
                                           Notification.warning({style: { width: 420 }, title: 'Warning', content: t['department.manage.deleteHasChild']});
                                       } else {
-                                          const result = await deleteNode(node.dataRef.id);
+                                          const result = await deleteNode(node.dataRef.key);
                                           if (result == "-1") {
                                               return;
                                           }
-                                          const w = deleteNodeByKey([...treeData], node.dataRef.id)
+                                          const w = deleteNodeByKey([...treeData], node.dataRef.key)
                                           setTreeData([...w]);
                                       }
                                   }}
                               >
                                   <IconMinus
                                       style={{
-                                          display:`${node.dataRef.id != "0" ? 'block' : 'none'}`,
+                                          display:`${node.dataRef.key != "0" ? 'block' : 'none'}`,
                                           position: 'absolute',
                                           right: 8,
                                           fontSize: 13,

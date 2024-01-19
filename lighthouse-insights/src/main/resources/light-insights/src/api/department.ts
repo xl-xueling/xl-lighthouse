@@ -1,10 +1,10 @@
 import {request} from "@/utils/request";
 import {ResultData} from "@/types/insights-common";
-import {Department} from "@/types/insights-web";
+import {Department, TreeNode} from "@/types/insights-web";
 
-export async function requestQueryAll() :Promise<ResultData<Array<Department>>>{
+export async function requestStructure() :Promise<ResultData<Array<TreeNode>>>{
     return request({
-        url:'/department/all',
+        url:'/department/structure',
         method:'POST',
     })
 }

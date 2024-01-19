@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dto_bak.CommonTreeNode;
+import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.modal.Resource;
@@ -92,26 +93,23 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<CommonTreeNode> queryTreeFormat() {
+    public List<TreeNode> getStructure() {
         List<Department> departmentList = queryAll();
-        HashMap<Integer,CommonTreeNode> departmentMap = new HashMap<>();
+        HashMap<Integer,TreeNode> departmentMap = new HashMap<>();
         for (Department department : departmentList) {
-            CommonTreeNode commonTreeNode = new CommonTreeNode();
-            commonTreeNode.setId(String.valueOf(department.getId()));
-            commonTreeNode.setPid(String.valueOf(department.getPid()));
-            commonTreeNode.setName(department.getName());
-            departmentMap.put(department.getId(),commonTreeNode);
+            TreeNode treeNode = new TreeNode(department.getName(),department.getId());
+            departmentMap.put(department.getId(),treeNode);
         }
-        List<CommonTreeNode> nodeList = new ArrayList<>();
+        List<TreeNode> nodeList = new ArrayList<>();
         for(Department department:departmentList){
-            CommonTreeNode currentNode = departmentMap.get(department.getId());
+            TreeNode currentNode = departmentMap.get(department.getId());
             int pid = department.getPid();
             if(pid == 0){
                 nodeList.add(currentNode);
             }else{
-                CommonTreeNode parentNode = departmentMap.get(pid);
+                TreeNode parentNode = departmentMap.get(pid);
                 if(parentNode != null){
-                    List<CommonTreeNode> children = (parentNode.getChildren() == null ? new ArrayList<>() : parentNode.getChildren());
+                    List<TreeNode> children = (parentNode.getChildren() == null ? new ArrayList<>() : parentNode.getChildren());
                     children.add(currentNode);
                     parentNode.setChildren(children);
                 }else{

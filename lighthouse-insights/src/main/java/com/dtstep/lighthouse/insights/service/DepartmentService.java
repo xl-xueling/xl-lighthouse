@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.insights.dto_bak.CommonTreeNode;
+import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import com.dtstep.lighthouse.insights.modal.Department;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface DepartmentService {
 
     Department queryById(Integer id);
 
-    List<CommonTreeNode> queryTreeFormat();
+    List<TreeNode> getStructure();
 
     List<Department> queryAll();
 
