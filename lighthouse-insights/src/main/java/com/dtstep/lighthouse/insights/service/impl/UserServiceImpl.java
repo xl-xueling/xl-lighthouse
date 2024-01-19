@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
         userDao.insert(user);
         int userId = user.getId();
         if(needApprove){
-            orderService.submit(user,OrderTypeEnum.USER_PEND_APPROVE,user);
+            orderService.submit(user,OrderTypeEnum.USER_PEND_APPROVE,null,null);
         }
         return userId;
     }
