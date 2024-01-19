@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.test.utils;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.insights.dto_bak.PermissionInfo;
+import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.modal.Order;
 import org.junit.Test;
 
@@ -33,10 +33,10 @@ public class TestUtil {
 
     @Test
     public void testArray() throws Exception{
-        Set<PermissionInfo.PermissionEnum> sets = new HashSet<>();
-        sets.add(PermissionInfo.PermissionEnum.AccessAble);
-        sets.add(PermissionInfo.PermissionEnum.ManageAble);
-        sets.add(PermissionInfo.PermissionEnum.ManageAble);
+        Set<PermissionEnum> sets = new HashSet<>();
+        sets.add(PermissionEnum.AccessAble);
+        sets.add(PermissionEnum.ManageAble);
+        sets.add(PermissionEnum.ManageAble);
         sets.add(null);
         System.out.println("sets:" + JsonUtil.toJSONString(sets));
     }

@@ -7,7 +7,7 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.ComponentDao;
 import com.dtstep.lighthouse.insights.dto_bak.ComponentDto;
 import com.dtstep.lighthouse.insights.dto.ComponentQueryParam;
-import com.dtstep.lighthouse.insights.dto_bak.PermissionInfo;
+import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.modal.Component;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.BaseService;
@@ -153,9 +153,9 @@ public class ComponentServiceImpl implements ComponentService {
         int userId = component.getUserId();
         int currentUserId = baseService.getCurrentUserId();
         if(userId == currentUserId){
-            componentDto.setPermissions(List.of(PermissionInfo.PermissionEnum.ManageAble));
+            componentDto.addPermission(PermissionEnum.ManageAble);
         }else{
-            componentDto.setPermissions(List.of(PermissionInfo.PermissionEnum.AccessAble));
+            componentDto.addPermission(PermissionEnum.AccessAble);
         }
         User user = userService.cacheQueryById(userId);
         componentDto.setUser(user);

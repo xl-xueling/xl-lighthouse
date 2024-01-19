@@ -4,7 +4,9 @@ import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.insights.modal.*;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class OrderVO extends Order {
 
@@ -19,6 +21,22 @@ public class OrderVO extends Order {
     public OrderVO(Order order){
         assert order != null;
         BeanCopyUtil.copy(order,this);
+    }
+
+    private Set<PermissionEnum> permissions = new HashSet<>();
+
+    public Set<PermissionEnum> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Set<PermissionEnum> permissions) {
+        this.permissions = permissions;
+    }
+
+    public void addPermission(PermissionEnum permission){
+        if(permission != null){
+            permissions.add(permission);
+        }
     }
 
     public User getUser() {

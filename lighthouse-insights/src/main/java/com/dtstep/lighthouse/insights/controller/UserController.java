@@ -74,7 +74,7 @@ public class UserController {
         User user = userService.queryById(userId);
         Validate.notNull(user);
         UserVO userVO = new UserVO(user);
-        Set<PermissionInfo.PermissionEnum> permissionEnumSets = userService.getUserPermissions(userId);
+        Set<PermissionEnum> permissionEnumSets = userService.getUserPermissions(userId);
         userVO.setPermissions(permissionEnumSets);
         return ResultData.success(userVO);
     }
@@ -200,10 +200,10 @@ public class UserController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @PostMapping("/user/list")
-    public ResultData<ListData<User>> list(
+    public ResultData<ListData<UserVO>> list(
             @Validated @RequestBody ListSearchObject<UserQueryParam> searchObject) {
         Pagination pagination = searchObject.getPagination();
-        ListData<User> listData = userService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
+        ListData<UserVO> listData = userService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
     }
 

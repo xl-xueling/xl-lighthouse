@@ -5,25 +5,27 @@ import com.dtstep.lighthouse.insights.modal.Component;
 import com.dtstep.lighthouse.insights.modal.User;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ComponentDto extends Component {
 
     private User user;
 
-    private List<PermissionInfo.PermissionEnum> permissions = new ArrayList<>();
+    private Set<PermissionEnum> permissions = new HashSet<>();
 
-    public List<PermissionInfo.PermissionEnum> getPermissions() {
+    public Set<PermissionEnum> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(List<PermissionInfo.PermissionEnum> permissions) {
+    public void setPermissions(Set<PermissionEnum> permissions) {
         this.permissions = permissions;
     }
 
-    public void addPermission(PermissionInfo.PermissionEnum permissionEnum){
-        if(permissionEnum != null && !this.permissions.contains(permissionEnum)){
-            this.permissions.add(permissionEnum);
+    public void addPermission(PermissionEnum permission){
+        if(permission != null){
+            permissions.add(permission);
         }
     }
 

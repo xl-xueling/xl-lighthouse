@@ -17,6 +17,7 @@ public class TestMd5Util {
 
     @Test
     public void test() throws Exception {
-
+        String md5 = Md5Util.getMD5(null);
+        System.out.println(md5);
     }
 }

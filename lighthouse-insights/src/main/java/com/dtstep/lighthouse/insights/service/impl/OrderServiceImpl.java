@@ -225,10 +225,10 @@ public class OrderServiceImpl implements OrderService {
         OrderVO orderDto = new OrderVO(order);
         int applyUserId = orderDto.getUserId();
         List<Integer> roleIds = order.getSteps();
-        orderDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
+        orderDto.addPermission(PermissionEnum.AccessAble);
         Integer currentNode = order.getCurrentNode();
         if(permissionDao.existPermission(currentUserId,OwnerTypeEnum.USER,currentNode)){
-            orderDto.addPermission(PermissionInfo.PermissionEnum.ManageAble);
+            orderDto.addPermission(PermissionEnum.ManageAble);
         }
         User user = userService.cacheQueryById(applyUserId);
         orderDto.setUser(user);

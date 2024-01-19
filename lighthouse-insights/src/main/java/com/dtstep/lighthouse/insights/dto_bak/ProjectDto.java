@@ -13,7 +13,21 @@ public class ProjectDto extends Project {
 
     private List<User> admins;
 
-    private Set<PermissionInfo.PermissionEnum> permissions = new HashSet<>();
+    private Set<PermissionEnum> permissions = new HashSet<>();
+
+    public Set<PermissionEnum> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Set<PermissionEnum> permissions) {
+        this.permissions = permissions;
+    }
+
+    public void addPermission(PermissionEnum permission){
+        if(permission != null){
+            permissions.add(permission);
+        }
+    }
 
     public ProjectDto(Project project){
         assert project != null;
@@ -28,11 +42,4 @@ public class ProjectDto extends Project {
         this.admins = admins;
     }
 
-    public Set<PermissionInfo.PermissionEnum> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(Set<PermissionInfo.PermissionEnum> permissions) {
-        this.permissions = permissions;
-    }
 }
