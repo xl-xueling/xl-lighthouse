@@ -68,13 +68,12 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
           let deleteButton;
           let applyButton;
           if(record.permissions.includes('ManageAble')){
-              viewButton = <Link key={getRandomString()} target={"_blank"} href={'/project/display/' + record.id}>
-                  <Button
-                      type="text"
-                      size="mini">
-                      {t['projectList.columns.operations.view']}
-                  </Button>
-              </Link>;
+              viewButton = <Button key={getRandomString()}
+                  type="text"
+                  onClick={() => window.open('/project/display/' + record.id)}
+                  size="mini">
+                  {t['projectList.columns.operations.view']}
+              </Button>;
                 updateButton = <Button key={getRandomString()}
                     onClick={() => callback(record, 'update')}
                     type="text"
@@ -103,13 +102,12 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                   </Button>
                   </Popconfirm>
           }else if(record.permissions.includes('AccessAble')){
-              viewButton = <Link key={getRandomString()} target={"_blank"} href={'/project/display/' + record.id}>
-                  <Button
+              viewButton = <Button key={getRandomString()}
                       type="text"
+                      onClick={() => window.open('/project/display/' + record.id)}
                       size="mini">
                       {t['projectList.columns.operations.view']}
-                  </Button>
-              </Link>;
+                  </Button>;
           }else{
               applyButton =
                   <Popconfirm key={getRandomString()}

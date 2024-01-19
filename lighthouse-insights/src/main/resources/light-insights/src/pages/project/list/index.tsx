@@ -34,7 +34,7 @@ export default function Index() {
   const t = useLocale(locale);
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
   const [listData, setListData] = useState<Project[]>([]);
-  const [owner, setOwner] = useState(true);
+  const [owner, setOwner] = useState<number>(1);
   const [selectedProject,setSelectedProject] = useState<Project>(null);
   const [form] = useForm();
   const [createVisible, setCreateVisible] = React.useState(false);
@@ -102,7 +102,8 @@ export default function Index() {
   }
 
   function onClickRadio(p){
-    setOwner(p==1);
+    console.log("owner is:" + owner + ",p is:" + p);
+    setOwner(p);
     handleReset();
   }
 
@@ -148,6 +149,8 @@ export default function Index() {
       combineParam.createStartTime = createTime[0];
       combineParam.createEndTime = createTime[1];
     }
+    combineParam.owner = owner;
+    console.log("combineParam is:" + JSON.stringify(combineParam));
     await requestList({
       queryParams:combineParam,
       pagination:{
@@ -155,7 +158,6 @@ export default function Index() {
         pageNum:current,
       }
     }).then((response) => {
-      console.log("response is:" + JSON.stringify(response));
       const {code, data ,message} = response;
       if (code === '0') {
         setListData(data.list);
