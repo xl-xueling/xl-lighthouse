@@ -23,7 +23,7 @@ import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 
-function ProjectCreatePanel({onClose,allDepartInfo}){
+function ProjectCreatePanel({onClose,allDepartInfo,onSuccess}){
     const { userInfo, userLoading } = useSelector((state: GlobalState) => state);
     const { Col, Row } = Grid;
     const t = useLocale(locale);
@@ -71,14 +71,12 @@ function ProjectCreatePanel({onClose,allDepartInfo}){
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectCreate.form.submit.success']});
-                setTimeout(() => {
-                    window.location.href = "/project/list";
-                    setLoading(false);
-                },2000)
+                onClose();
+                onSuccess();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-                setLoading(false);
             }
+            setLoading(false);
         }).catch((error) => {
             console.log(error);
             Notification.error({
