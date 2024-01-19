@@ -58,6 +58,12 @@ public class InitServiceImpl implements InitService {
             int result = roleService.create(optManageRole);
             Validate.isTrue(result > 0);
         }
+        if(!roleService.isRoleExist(RoleTypeEnum.OPT_ACCESS_PERMISSION,0)){
+            Role parentRole = roleService.cacheQueryRole(RoleTypeEnum.FULL_ACCESS_PERMISSION,0);
+            Role optAccessRole = new Role(RoleTypeEnum.OPT_ACCESS_PERMISSION,0, parentRole.getId());
+            int result = roleService.create(optAccessRole);
+            Validate.isTrue(result > 0);
+        }
     }
 
     @Transactional
@@ -110,7 +116,7 @@ public class InitServiceImpl implements InitService {
             LocalDateTime localDateTime = LocalDateTime.now();
             domain.setCreateTime(localDateTime);
             domain.setUpdateTime(localDateTime);
-            domain.setName(RandomID.id(5));
+            domain.setName(RandomID.id(4));
             int result = domainService.create(domain);
             Validate.isTrue(result > 0);
         }

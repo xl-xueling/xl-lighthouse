@@ -38,7 +38,7 @@ export default function Header({userInfo}) {
         },
         {
             label: t['userSetting.label.department'],
-            value: (<DepartmentLabel departmentId={userInfo?.departmentId}/>),
+            value: (userInfo && <DepartmentLabel departmentId={userInfo?.departmentId}/>),
         },
         {
             label: t['userSetting.label.email'],
