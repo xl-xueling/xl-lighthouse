@@ -29,7 +29,7 @@ export default function BasicInfoForm({userInfo,allDepartInfo,callback}) {
   const initialValues = {
     id:userInfo?.id,
     username:userInfo?.username,
-    departmentId:userInfo?.departmentId,
+    departmentId:String(userInfo?.departmentId),
     phone:userInfo?.phone,
     email:userInfo?.email,
   }

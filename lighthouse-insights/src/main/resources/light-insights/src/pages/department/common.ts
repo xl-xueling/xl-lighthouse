@@ -81,9 +81,9 @@ export const translateToFlatStruct = (list):Array<ArcoFlatNode> => {
     function flattenTreeData(treeData, parentName = "") {
         let result = [];
         for (let i = 0; i < treeData.length; i++) {
-            const { id, pid, name, children } = treeData[i];
-            const fullName = parentName ? parentName + " > " + name : name;
-            result.push({key:id,title:fullName})
+            const { key, label, value, children } = treeData[i];
+            const fullName = parentName ? parentName + " > " + label:label;
+            result.push({key:key,title:fullName})
             if (children && children.length > 0) {
                 const childResult = flattenTreeData(children, fullName);
                 result = result.concat(childResult);

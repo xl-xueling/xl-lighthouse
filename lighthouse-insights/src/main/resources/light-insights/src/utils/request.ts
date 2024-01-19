@@ -37,6 +37,7 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
     try{
         const response: AxiosResponse = await http.request(config);
         result = response.data;
+        console.log("result is:" + JSON.stringify(result));
     }catch (error) {
         if(error.message == 'Network Error'){
             console.log(error);
