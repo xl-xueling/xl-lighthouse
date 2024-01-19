@@ -88,9 +88,9 @@
             </if>
         </where>
         ) a
-        <if test="queryParam.owner != null">
+        <if test="queryParam.owner != null and queryParam.owner == 1">
             inner join (select resource_id from ldp_roles r where r.role_type = '9'
-            and r.id IN (select role_id from ldp_permission where owner_id = #{queryParam.owner} and owner_type = '1')) b on a.id = b.resource_id
+            and r.id IN (select role_id from ldp_permissions where owner_id = #{queryParam.owner} and owner_type = '1')) b on a.id = b.resource_id
         </if>
     </select>
 
