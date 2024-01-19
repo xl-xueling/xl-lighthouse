@@ -15,10 +15,7 @@ import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
-import com.dtstep.lighthouse.insights.service.PermissionService;
-import com.dtstep.lighthouse.insights.service.ResourceService;
-import com.dtstep.lighthouse.insights.service.RoleService;
-import com.dtstep.lighthouse.insights.service.UserService;
+import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.UserVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
@@ -49,6 +46,9 @@ public class UserController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private BaseService baseService;
 
     @RequestMapping("/user/register")
     public ResultData<Integer> register(@Validated @RequestBody UserCreateParam createParam) throws Exception{
@@ -167,10 +167,14 @@ public class UserController {
         }
     }
 
-    @AuthPermission(roleTypeEnum = RoleTypeEnum.FULL_MANAGE_PERMISSION)
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @RequestMapping("/user/deleteById")
     public ResultData<Integer> delete(@Validated @RequestBody IDParam idParam) {
         Integer id = idParam.getId();
+        int currentUserId = baseService.getCurrentUserId();
+        if(id.intValue() == currentUserId){
+            return ResultData.result(ResultCode.userDelErrorCannotDelCurrentUser);
+        }
         List<Permission> permissions = permissionService.queryUserManagePermission(id,1);
         String message;
         if(CollectionUtils.isNotEmpty(permissions)){
