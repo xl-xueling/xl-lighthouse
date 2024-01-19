@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.dao;
 
-import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
+import com.dtstep.lighthouse.insights.dto.ApplyOrderQueryParam;
+import com.dtstep.lighthouse.insights.dto.ApproveOrderQueryParam;
 import com.dtstep.lighthouse.insights.modal.Order;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ public interface OrderDao {
 
     Order queryById(Integer id);
 
-    List<Order> queryApplyList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize);
+    List<Order> queryApplyList(ApplyOrderQueryParam queryParam, Integer pageNum, Integer pageSize);
 
-    List<Order> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize);
+    List<Order> queryApproveList(ApproveOrderQueryParam queryParam, Integer pageNum, Integer pageSize);
 }

@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.test.utils;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dto_bak.ListSearchObject;
-import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
+import com.dtstep.lighthouse.insights.dto.ApproveOrderQueryParam;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class TestJson {
 //        System.out.println("searchObject:" + JsonUtil.toJSONString(searchObject.getPagination()));
 //        System.out.println("queryParam:" + JsonUtil.toJSONString(searchObject.getQueryParams()));
 
-        ListSearchObject<OrderQueryParam> o1 = new ListSearchObject<>();
+        ListSearchObject<ApproveOrderQueryParam> o1 = new ListSearchObject<>();
         System.out.println(o1.getQueryParams());
     }
 

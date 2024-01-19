@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.insights.test.dao;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
-import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
+import com.dtstep.lighthouse.insights.dto.ApproveOrderQueryParam;
 import com.dtstep.lighthouse.common.enums.OrderStateEnum;
 import com.dtstep.lighthouse.common.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Order;
@@ -56,7 +56,7 @@ public class TestOrderDao {
 
     @Test
     public void testApproveList(){
-        OrderQueryParam queryParam = new OrderQueryParam();
+        ApproveOrderQueryParam queryParam = new ApproveOrderQueryParam();
         queryParam.setApproveUserId(110163);
         queryParam.setStates(List.of(0,1,2,3));
         queryParam.setTypes(List.of(1,2,3,6));
