@@ -56,7 +56,7 @@
     <select id="queryList" resultMap="userResultMap">
         WITH RECURSIVE cte AS (
         SELECT d.id
-        FROM ldp_department d
+        FROM ldp_departments d
         <where>
             <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
                 AND d.id IN
@@ -67,7 +67,7 @@
         </where>
         UNION ALL
         SELECT d.id
-        FROM ldp_department d
+        FROM ldp_departments d
         JOIN cte ON cte.id = d.pid
         )
         SELECT `id`,`username`,`phone`,`email`,`department_id`,`state`,`third_id`,`last_time`,`create_time`,`update_time` FROM ldp_users
@@ -140,7 +140,7 @@
     <select id="count" resultType="Integer">
         WITH RECURSIVE cte AS (
         SELECT d.id
-        FROM ldp_department d
+        FROM ldp_departments d
         <where>
             <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
                 AND d.id IN
@@ -151,7 +151,7 @@
         </where>
         UNION ALL
         SELECT d.id
-        FROM ldp_department d
+        FROM ldp_departments d
         JOIN cte ON cte.id = d.pid
         )
         SELECT count(1) FROM ldp_users
