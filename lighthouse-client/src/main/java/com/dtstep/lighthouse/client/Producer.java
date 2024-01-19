@@ -26,6 +26,8 @@ import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
 import com.dtstep.lighthouse.common.hash.HashUtil;
 import com.dtstep.lighthouse.common.ice.AuxInterfacePrx;
 import com.dtstep.lighthouse.common.ice.AuxInterfacePrxHelper;
+import com.dtstep.lighthouse.common.lru.Cache;
+import com.dtstep.lighthouse.common.lru.LRU;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.MessageHelper;
@@ -34,6 +36,7 @@ import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 final class Producer {
@@ -53,13 +56,16 @@ final class Producer {
         this.messageSender = new MessageSender(ic);
     }
 
+    private static final Cache<String,String> cacheHolder = LRU.newBuilder().maximumSize(5000).expireAfterWrite(2, TimeUnit.MINUTES).softValues().build();
+
     void send(String token, String secretKey, Map<String, Object> paramMap, int repeat, long timestamp,boolean isSync) throws Exception{
         GroupVerifyEntity groupVerifyEntity = AuxHandler.queryStatGroup(auxInterfacePrx,token);
         if(groupVerifyEntity == null){
             logger.error("statistic group({}) not exist!",token);
             return;
         }
-        if(!groupVerifyEntity.getVerifyKey().equals(Md5Util.getMD5(secretKey))){
+        String md5 = cacheHolder.get(secretKey,t -> {return Md5Util.getMD5(secretKey);});
+        if(!groupVerifyEntity.getVerifyKey().equals(md5)){
             logger.error("light client key validation failed,token:{},key:{}",token,secretKey);
             return;
         }
