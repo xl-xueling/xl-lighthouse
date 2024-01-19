@@ -56,7 +56,7 @@
         WHERE hash = #{hash}
     </select>
 
-    <select id="delete" resultType="Integer">
+    <select id="delete" resultType="int">
         delete
         FROM ldp_relations
         <where>

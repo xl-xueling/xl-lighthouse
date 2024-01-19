@@ -207,16 +207,6 @@ public class ResourceServiceImpl implements ResourceService {
         }
         Validate.notNull(manageRole);
         Validate.notNull(accessRole);
-        List<Role> childManageRoles = roleService.queryListByPid(manageRole.getId(),1,20);
-        if(CollectionUtils.isNotEmpty(childManageRoles)){
-            String childRoles = childManageRoles.stream().map(z -> String.valueOf(z.getId())).collect(Collectors.joining(","));
-            throw new RoleDefendException("can't delete manage role [resourceId:" + resource.getResourceId() + ",roleType:"+resource.getResourceType().name()+"],child roles ["+childRoles+"] exists!" );
-        }
-        List<Role> childAccessRoles = roleService.queryListByPid(manageRole.getId(),1,20);
-        if(CollectionUtils.isNotEmpty(childAccessRoles)){
-            String childRoles = childAccessRoles.stream().map(z -> String.valueOf(z.getId())).collect(Collectors.joining(","));
-            throw new RoleDefendException("can't delete access role [resourceId:" + resource.getResourceId() + ",roleType:"+resource.getResourceType().name()+"],child roles ["+childRoles+"] exists!" );
-        }
         PermissionQueryParam manageQueryParam = new PermissionQueryParam();
         manageQueryParam.setRoleId(manageRole.getId());
         permissionService.delete(manageQueryParam);

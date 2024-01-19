@@ -77,7 +77,7 @@
         FROM ldp_stat_group WHERE project_id = #{projectId}
     </select>
 
-    <select id="count" resultType="Integer">
+    <select id="count" resultType="int">
         SELECT count(1) FROM ldp_stat_group
         <where>
             <if test="queryParam.projectId != null">

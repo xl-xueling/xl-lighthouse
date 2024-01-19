@@ -1,12 +1,15 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
+import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.CommonTreeNode;
 import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
+import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.modal.Resource;
 import com.dtstep.lighthouse.insights.modal.Role;
+import com.dtstep.lighthouse.insights.modal.Domain;
 import com.dtstep.lighthouse.insights.service.*;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     private DomainService domainService;
+
+    @Autowired
+    private PermissionService permissionService;
 
     @Transactional
     @Override
@@ -76,9 +82,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     public int delete(Department department) {
         Validate.notNull(department);
         int result = departmentDao.deleteById(department.getId());
+
         Integer resourcePid;
         if(department.getPid() == 0){
-            resourcePid = domainService.queryDefault().getId();
+            Domain domain = domainService.queryDefault();
+            resourcePid = domain.getId();
             resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Domain,resourcePid));
         }else{
             resourcePid = department.getPid();

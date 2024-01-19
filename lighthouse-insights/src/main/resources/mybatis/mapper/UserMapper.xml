@@ -137,7 +137,7 @@
         update ldp_users set state = '1' where id = #{id}
     </update>
 
-    <select id="count" resultType="Integer">
+    <select id="count" resultType="int">
         WITH RECURSIVE cte AS (
         SELECT d.id
         FROM ldp_departments d

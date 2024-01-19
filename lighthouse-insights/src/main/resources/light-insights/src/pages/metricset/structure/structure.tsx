@@ -16,7 +16,7 @@ import locale from './locale';
 import {ResultData} from "@/types/insights-common";
 import {
     requestCreate,
-    requestDelete,
+    requestDeleteById,
     requestUpdateById
 } from "@/api/department";
 import {getRandomString, getTextBlenLength, stringifyObj, validateWithRegex} from "@/utils/util";
@@ -95,7 +95,7 @@ export default function StructurePanel({structure,menuCallback}) {
         setLoading(true);
         let result = "-1";
         try {
-            await requestDelete({id}).then((response: ResultData) => {
+            await requestDeleteById({id}).then((response: ResultData) => {
                 const {code, message, data} = response;
                 if (code === '0') {
                     result = code;
