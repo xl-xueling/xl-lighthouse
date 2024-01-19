@@ -72,7 +72,7 @@ export interface Project {
     adminIds?:Array<number>;
     admins?:Array<User>;
     departmentId?:number;
-    structure?:Array<TreeNode>;
+    structure?:TreeNode;
     createTime?:number;
     permissions?:PermissionEnum[];
     usersPermission?:number[],

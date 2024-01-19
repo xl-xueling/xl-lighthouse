@@ -2,38 +2,19 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from "./style/index.module.less";
 import {
-    Button,
     Card,
-    DatePicker,
-    Divider,
     Grid,
     Space,
-    Typography,
     Spin,
     Notification,
     Breadcrumb
 } from "@arco-design/web-react";
-import Overview from "@/pages/dashboard/workplace/overview";
-import PopularContents from "@/pages/dashboard/workplace/popular-contents";
-import ContentPercentage from "@/pages/dashboard/workplace/content-percentage";
-import Shortcuts from "@/pages/dashboard/workplace/shortcuts";
-import Carousel from "@/pages/dashboard/workplace/carousel";
-import Announcement from "@/pages/dashboard/workplace/announcement";
-import Docs from "@/pages/dashboard/workplace/docs";
 import ProjectMenu from "@/pages/project/preview/menu";
-import SearchForm from "@/pages/stat/display/search_form";
-import ChartPanel from "@/pages/stat/display/chart_panel";
-import BasicInfo from "@/pages/stat/display/basic";
 const { Row, Col } = Grid;
-import { RiAppsLine } from "react-icons/ri";
 import PreviewHeader from "@/pages/project/preview/head";
-import {ArcoTreeNode, MetricSet, Project} from "@/types/insights-web";
-import {requestList, requestQueryById} from "@/api/project";
-import {requestPrivilegeCheck} from "@/api/privilege";
-import {useSelector} from "react-redux";
-import {GlobalState} from "@/store";
-import {IconHome, IconTag} from "@arco-design/web-react/icon";
-import { LoadingOutlined } from '@ant-design/icons';
+import {Project} from "@/types/insights-web";
+import {requestQueryById} from "@/api/project";
+import {IconHome} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import StatPreviewPanel from "@/pages/stat/display/preview";
@@ -52,7 +33,6 @@ export default function ProjectPreview() {
             console.log("type is:" + type + ",record is:" + JSON.stringify(record))
             setSelectedStatId(Number(record));
         }
-
     }
 
     const fetchProjectInfo = async (): Promise<void> => {
