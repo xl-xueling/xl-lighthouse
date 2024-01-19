@@ -1,6 +1,7 @@
 import axios, {AxiosResponse} from 'axios'
 import {ResultData} from "@/types/insights-common";
 import {removeLoginStatus} from "@/utils/checkLogin";
+import {Message, Notification} from "@arco-design/web-react";
 
 export const request = async <T>(config): Promise<ResultData<T>> => {
     let baseURL;
@@ -37,7 +38,13 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
         const response: AxiosResponse = await http.request(config);
         result = response.data;
     }catch (error) {
-        if(error.response?.status == 401){
+        if(error.message == 'Network Error'){
+            console.log(error);
+            Notification.error({style: { width: 420 }, title: 'Warning', content:'Unable to connect to remote server!'});
+            result = {
+                code: error.response?error.response.status:'503',
+            };
+        }else if(error.response?.status == 401){
             const refreshKey = localStorage.getItem('refreshKey')
             if(!refreshKey){
                 removeLoginStatus();
