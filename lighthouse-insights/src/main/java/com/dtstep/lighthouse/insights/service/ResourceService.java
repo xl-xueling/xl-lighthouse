@@ -18,4 +18,5 @@ public interface ResourceService {
     int releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer resourceId,RoleTypeEnum roleTypeEnum);
 
     Resource queryByRoleId(Integer roleId);
+
 }

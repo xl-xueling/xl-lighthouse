@@ -17,6 +17,8 @@ import com.dtstep.lighthouse.insights.service.*;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProjectServiceImpl.class);
 
     @Autowired
     private ProjectDao projectDao;
@@ -117,10 +121,11 @@ public class ProjectServiceImpl implements ProjectService {
             projectDto.setAdmins(admins);
         }
         if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
-//            projectDto.addPermission(PermissionInfo.PermissionEnum.ManageAble);
+            projectDto.addPermission(PermissionEnum.ManageAble);
+            projectDto.addPermission(PermissionEnum.AccessAble);
         }else if(project.getPrivateType() == PrivateTypeEnum.Public
                 || permissionService.checkUserPermission(currentUserId, accessRole.getId())){
-//            projectDto.addPermission(PermissionInfo.PermissionEnum.AccessAble);
+            projectDto.addPermission(PermissionEnum.AccessAble);
         }
         return projectDto;
     }
@@ -136,15 +141,13 @@ public class ProjectServiceImpl implements ProjectService {
         }finally {
             PageHelper.clearPage();
         }
-        if(CollectionUtils.isNotEmpty(projectList)){
-            for(Project project : projectList){
-                ProjectDto projectDto = null;
-                try{
-                    projectDto = translate(project);
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                }
+        for(Project project : projectList){
+            ProjectDto projectDto = null;
+            try{
+                projectDto = translate(project);
                 dtoList.add(projectDto);
+            }catch (Exception ex){
+                logger.error("translate to page display element error,projectId:{}!",project.getId(),ex);
             }
         }
         return baseService.translateToListData(dtoList);

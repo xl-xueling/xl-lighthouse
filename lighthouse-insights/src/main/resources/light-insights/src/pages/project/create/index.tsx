@@ -3,7 +3,6 @@ import {
     Form,
     Grid,
     Input,
-    Message,
     Modal,
     Notification,
     Radio,
@@ -11,13 +10,11 @@ import {
     TreeSelect,
     Typography
 } from "@arco-design/web-react";
-import UserTermQuery from "@/pages/user/common/userTermQuery";
-import {translate, translateToFlatStruct} from "@/pages/department/common";
+import {translateToFlatStruct} from "@/pages/department/common";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {getTextBlenLength} from "@/utils/util";
 import {requestCreate} from "@/api/project";
-import {Simulate} from "react-dom/test-utils";
 import {Project} from "@/types/insights-web";
 import {IconCaretDown, IconCaretRight} from "@arco-design/web-react/icon";
 import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";

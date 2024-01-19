@@ -26,6 +26,7 @@ import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
 import ProjectApplyModal from "@/pages/project/apply";
 import {IconHome} from "@arco-design/web-react/icon";
 import {BindElementType} from "@/types/insights-common";
+import {GlobalErrorCodes} from "@/utils/constants";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -142,29 +143,29 @@ export default function Index() {
       combineParam.createStartTime = createTime[0];
       combineParam.createEndTime = createTime[1];
     }
-    const fetchProjectsInfo:Promise<{list:Array<Project>,total:number}> = new Promise<{list:Array<Project>,total:number}>((resolve) => {
-      const proc = async () => {
-        const result = await requestList({
-              queryParams:combineParam,
-              pagination:{
-                pageSize:pageSize,
-                pageNum:current,
-              }
-            }
-        );
-        resolve(result.data);
+    await requestList({
+      queryParams:combineParam,
+      pagination:{
+        pageSize:pageSize,
+        pageNum:current,
       }
-      proc().then();
+    }).then((response) => {
+      console.log("response is:" + JSON.stringify(response));
+      const {code, data ,message} = response;
+      if (code === '0') {
+        setListData(data.list);
+        setPagination({
+          ...pagination,
+          current,
+          pageSize,
+          total: data.total});
+        setLoading(false);
+      }else{
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+      }
+    }).catch((error) => {
+      console.log(error);
     })
-    const result = await Promise.all([fetchProjectsInfo]);
-    const {list,total}:{list:Array<Project>,total:number} = result[0];
-    setListData(list);
-    setPagination({
-      ...pagination,
-      current,
-      pageSize,
-      total: total});
-    setLoading(false);
   }
 
   return (
