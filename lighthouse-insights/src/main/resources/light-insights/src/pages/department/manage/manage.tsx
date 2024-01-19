@@ -7,7 +7,7 @@ import styles from './style/index.module.less';
 import {ResultData} from "@/types/insights-common";
 import {
     requestCreate,
-    requestDelete,
+    requestDeleteById,
     requestStructure,
     requestUpdateById
 } from "@/api/department";
@@ -102,7 +102,7 @@ export default function ManagePanel() {
         setLoading(true);
         let result = "-1";
         try {
-            await requestDelete({id}).then((response: ResultData) => {
+            await requestDeleteById({id}).then((response: ResultData) => {
                 const {code, message, data} = response;
                 if (code === '0') {
                     result = code;

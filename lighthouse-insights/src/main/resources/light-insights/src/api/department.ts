@@ -34,9 +34,9 @@ export async function requestUpdateById(data):Promise<ResultData> {
     })
 }
 
-export async function requestDelete(data) :Promise<ResultData>{
+export async function requestDeleteById(data) :Promise<ResultData>{
     return request({
-        url:'/department/delete',
+        url:'/department/deleteById',
         method:'POST',
         data,
     })

@@ -125,7 +125,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public int delete(PermissionQueryParam queryParam) {
-        return 0;
+        return permissionDao.delete(queryParam);
     }
 
     private PermissionDto translate(Permission permission){

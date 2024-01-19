@@ -54,25 +54,6 @@
         WHERE owner_id = #{ownerId} and owner_type = #{ownerType.ownerType} and role_id = #{roleId}
     </select>
 
-    <select id="delete" resultType="Integer">
-        delete
-        FROM ldp_permissions
-        <where>
-            <if test="queryParam.roleId != null">
-                AND role_id = #{queryParam.roleId}
-            </if>
-            <if test="queryParam.ownerId != null">
-                AND owner_id = #{queryParam.ownerId}
-            </if>
-            <if test="queryParam.ownerType != null">
-                AND owner_type = #{queryParam.ownerType}
-            </if>
-            <if test="queryParam.roleId != null">
-                AND role_id = #{queryParam.roleId}
-            </if>
-        </where>
-    </select>
-
     <select id="checkUserPermission" resultType="boolean">
         WITH RECURSIVE cte AS (
             SELECT id, pid
@@ -122,9 +103,25 @@
         where owner_id = #{userId} and owner_type = '1' limit #{limit}
     </select>
 
-    <select id="queryUserPermissionsByRoleId" resultType="Integer">
+    <select id="queryUserPermissionsByRoleId" resultType="int">
         select owner_id from ldp_permissions where role_id = #{roleId} and owner_type = '1' limit #{limit}
     </select>
+
+    <delete id="delete">
+        delete
+        FROM ldp_permissions
+        <where>
+            <if test="queryParam.roleId != null">
+                AND role_id = #{queryParam.roleId}
+            </if>
+            <if test="queryParam.ownerId != null">
+                AND owner_id = #{queryParam.ownerId}
+            </if>
+            <if test="queryParam.ownerType != null">
+                AND owner_type = #{queryParam.ownerType}
+            </if>
+        </where>
+    </delete>
 
     <delete id="deleteByUserId">
         delete FROM ldp_permissions WHERE owner_id = #{userId} and owner_type = '1'
