@@ -102,7 +102,6 @@ export default function Index() {
   }
 
   function onClickRadio(p){
-    console.log("owner is:" + owner + ",p is:" + p);
     setOwner(p);
     handleReset();
   }

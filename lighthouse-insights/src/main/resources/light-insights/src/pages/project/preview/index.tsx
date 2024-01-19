@@ -30,7 +30,6 @@ export default function ProjectPreview() {
 
     const handlerCallback = async (type,record) => {
         if(type == 'clickStatMenu'){
-            console.log("type is:" + type + ",record is:" + JSON.stringify(record))
             setSelectedStatId(Number(record));
         }
     }
@@ -40,7 +39,6 @@ export default function ProjectPreview() {
         await requestQueryById({id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                console.log("projectInfo is:" + JSON.stringify(data));
                 setProjectInfo(data);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
