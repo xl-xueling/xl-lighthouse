@@ -13,7 +13,9 @@ export default function DepartmentLabel(props:Props) {
 
     const getDepartmentInfo = (props) => {
         const { departmentId } = props;
+        console.log("departmentId:===============" + departmentId)
         const fullPathNodes:TreeNode[] = getFullPathNodes(departmentId,allDepartInfo);
+        console.log("fullPathNodes is:" + JSON.stringify(fullPathNodes))
         if(departmentId){
             return (
                 <Popover trigger={"click"} content={fullPathNodes.map(z => z?.label).join(" > ")}>
@@ -22,6 +24,8 @@ export default function DepartmentLabel(props:Props) {
             );
         }
     }
+
+
 
     return (
         <>

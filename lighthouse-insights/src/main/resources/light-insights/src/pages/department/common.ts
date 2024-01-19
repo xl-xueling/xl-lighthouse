@@ -34,20 +34,23 @@ export const translateToTreeStruct = (list, rootPid):Array<ArcoTreeNode> => {
     return nodeArr;
 }
 
-export const getFullPathNodes = (id, treeData:Array<TreeNode>, parentNodes:Array<TreeNode> = []) => {
-    for (let i = 0; i < treeData.length; i++) {
-        const node = treeData[i];
+export const getFullPathNodes = (id, treeData:Array<TreeNode>) => {
+    let result = [];
+    function findNodeAndParents(node, parents) {
         if (node.value === id) {
-            parentNodes.unshift(node);
-            if (node.children) {
-                getFullPathNodes(id, node.children, parentNodes);
+            result = parents.concat(node);
+        } else {
+            if (node.children && node.children.length > 0) {
+                for (const child of node.children) {
+                    findNodeAndParents(child, parents.concat(node));
+                }
             }
-            break;
-        } else if (node.children) {
-            getFullPathNodes(id, node.children, parentNodes);
         }
     }
-    return parentNodes;
+    for (const node of treeData) {
+        findNodeAndParents(node, []);
+    }
+    return result;
 }
 
 export const translate = (list:Array<TreeNode>):Array<ArcoTreeNode> => {
