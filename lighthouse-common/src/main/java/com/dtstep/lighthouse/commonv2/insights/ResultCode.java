@@ -34,6 +34,8 @@ public enum ResultCode {
 
     departDelErrorUserExist("2001","departDelErrorUserExist"),
 
+    userDelErrorCannotDelCurrentUser("2004","userDelErrorCannotDelCurrentUser"),
+
     userDelErrorExistDepartPermission("2004","userDelErrorExistDepartPermission"),
 
     userDelErrorExistProjectPermission("2005","userDelErrorExistProjectPermission"),
