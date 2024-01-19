@@ -54,6 +54,10 @@ public class LoginController {
         }
         if(dbUser.getState() == UserStateEnum.USER_PEND){
             return ResultData.result(ResultCode.userPendApprove);
+        }else if(dbUser.getState() == UserStateEnum.USER_REJECT){
+            return ResultData.result(ResultCode.userStateUnAvailableRejected);
+        }else if(dbUser.getState() == UserStateEnum.USER_FROZEN){
+            return ResultData.result(ResultCode.userStateUnAvailableFrozen);
         }else if(dbUser.getState() != UserStateEnum.USER_NORMAL){
             return ResultData.result(ResultCode.userStateUnAvailable);
         }
