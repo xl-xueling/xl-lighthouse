@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Breadcrumb, Card, Message, Notification, PaginationProps, Table, Typography,} from '@arco-design/web-react';
+import {Breadcrumb, Card, Notification, PaginationProps, Table, Typography,} from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import {getColumns} from './constants';

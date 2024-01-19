@@ -14,6 +14,8 @@ import styles from './style/index.module.less';
 import {translate} from "@/pages/department/common";
 import {ArcoTreeNode, Department} from "@/types/insights-web";
 import {useSelector} from "react-redux";
+import {OrderTypeEnum, UserStateEnum} from "@/types/insights-common";
+import {getOrderTypeDescription, getUserStateDescription} from "@/pages/common/desc/base";
 const { Row, Col } = Grid;
 
 function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
@@ -85,8 +87,14 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
                 mode="multiple"
                 allowClear
               >
-                <Select.Option value={1}>{t['userList.columns.state.normal']}</Select.Option>
-                <Select.Option value={2}>{t['userList.columns.state.frozen']}</Select.Option>
+                {
+                  Object.keys(UserStateEnum).filter(key => !Number.isNaN(Number(key)))
+                      .filter(key => [UserStateEnum.USR_NORMAL,UserStateEnum.USER_FROZEN].includes(Number(key))).map((option,index) => {
+                    return <Select.Option key={index} value={option}>
+                      {getUserStateDescription(t,Number(option))}
+                    </Select.Option>
+                  })
+                }
               </Select>
             </Form.Item>
           </Col>
