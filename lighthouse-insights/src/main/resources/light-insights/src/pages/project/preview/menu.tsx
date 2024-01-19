@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from "./style/index.module.less";
-import {Grid, Input, Skeleton, Space, Spin, Tree} from "@arco-design/web-react";
+import {Empty, Grid, Input, Skeleton, Space, Spin, Tree} from "@arco-design/web-react";
 import Overview from "@/pages/dashboard/workplace/overview";
 import PopularContents from "@/pages/dashboard/workplace/popular-contents";
 import ContentPercentage from "@/pages/dashboard/workplace/content-percentage";
@@ -17,8 +17,12 @@ const SubMenu = Menu.SubMenu;
 import { CiViewTable } from "react-icons/ci";
 import {ArcoTreeNode, BackUpTreeNode, Project, TreeNode} from "@/types/insights-web";
 import {stringifyObj} from "@/utils/util";
+import useLocale from "@/utils/useLocale";
+import locale from "./locale";
 
 export default function ProjectMenu({projectInfo,callback}:{projectInfo:Project,callback:(type: string,id:number) => Promise<void>}) {
+
+    const t = useLocale(locale);
 
     const renderMenuItems = (items) =>
         items?.map((item) => {
@@ -34,6 +38,8 @@ export default function ProjectMenu({projectInfo,callback}:{projectInfo:Project,
             return <Menu.Item key={item.type + "_" + item.value}><IconTag/>{item.label}</Menu.Item>;
         });
 
+
+
     return (
         <>
         <Menu
@@ -48,7 +54,13 @@ export default function ProjectMenu({projectInfo,callback}:{projectInfo:Project,
             }}
         >
         {
-            renderMenuItems(projectInfo?.structure[0].children)
+            (projectInfo && projectInfo.structure.children) ? renderMenuItems(projectInfo.structure.children)
+                : <Empty style={{marginTop:'50px'}} description={
+                    <>
+                    <div>{t['projectPreview.nodata.tooltip1']}</div>
+                    <div>{t['projectPreview.nodata.tooltip2']}</div>
+                    </>
+                }/>
         }
         </Menu>
         </>

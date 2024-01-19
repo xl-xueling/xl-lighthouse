@@ -70,7 +70,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
           if(record.permissions.includes('ManageAble')){
               viewButton = <Button key={getRandomString()}
                   type="text"
-                  onClick={() => window.open('/project/display/' + record.id)}
+                  onClick={() => window.open('/project/preview/' + record.id)}
                   size="mini">
                   {t['projectList.columns.operations.view']}
               </Button>;
@@ -104,7 +104,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
           }else if(record.permissions.includes('AccessAble')){
               viewButton = <Button key={getRandomString()}
                       type="text"
-                      onClick={() => window.open('/project/display/' + record.id)}
+                      onClick={() => window.open('/project/preview/' + record.id)}
                       size="mini">
                       {t['projectList.columns.operations.view']}
                   </Button>;
