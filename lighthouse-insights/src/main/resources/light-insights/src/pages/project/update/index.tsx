@@ -12,7 +12,7 @@ import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {GlobalErrorCodes, TEXT_BASE_PATTERN_2} from "@/utils/constants";
 
-export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose}){
+export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,onSuccess}){
 
     const t = useLocale(locale);
     const [form] = useForm();
@@ -48,14 +48,12 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose}){
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectUpdate.form.submit.success']});
-                setTimeout(() => {
-                    window.location.href = "/project/list";
-                    setLoading(false);
-                },2000)
+                onClose();
+                onSuccess();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-                setLoading(false);
             }
+            setLoading(false);
         }).catch((error) => {
             console.log(error);
             setLoading(false);

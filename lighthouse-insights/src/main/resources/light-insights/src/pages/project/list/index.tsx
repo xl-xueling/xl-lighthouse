@@ -42,6 +42,7 @@ export default function Index() {
   const [detailVisible, setDetailVisible] = React.useState(false);
   const [bindedVisible,setBindedVisible] = React.useState(false);
   const [applyVisible,setApplyVisible] = React.useState(false);
+  const [reloadTime,setReloadTime] = useState<number>(Date.now);
 
   const tableCallback = async (record, type) => {
     if(type == 'update'){
@@ -69,7 +70,7 @@ export default function Index() {
     setUpdateVisible(false);
   };
 
-  const columns = useMemo(() => getColumns(t, tableCallback), [t]);
+  const columns = useMemo(() => getColumns(t, tableCallback), [t,listData]);
   const [pagination, setPagination] = useState<PaginationProps>({
     sizeOptions: [15,20,30,50],
     sizeCanChange: true,
@@ -105,6 +106,10 @@ export default function Index() {
     handleReset();
   }
 
+  const handlerReloadList = () => {
+    setReloadTime(Date.now);
+  }
+
   const handlerBindedProject = async () => {
     setBindedVisible(true);
   };
@@ -129,7 +134,7 @@ export default function Index() {
       console.log(error);
       Message.error(t['system.error']);
     })
-  }, [owner,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+  }, [reloadTime,owner,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
   const fetchData = async (): Promise<void> => {
     setLoading(true);
@@ -214,8 +219,8 @@ export default function Index() {
           columns={columns}
           data={listData}
       />
-      {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} />}
-      {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)}/>}
+      {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} onSuccess={handlerReloadList}/>}
+      {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)} onSuccess={handlerReloadList}/>}
       {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
       {bindedVisible && <ReverseBindedPanel bindElement={{id:selectedProject?.id,type:BindElementType.Project,title:selectedProject?.title}} onClose={() => setBindedVisible(false)}/>}
       {applyVisible && <ProjectApplyModal projectInfo={selectedProject} onClose={() => setApplyVisible(false)}/>}
