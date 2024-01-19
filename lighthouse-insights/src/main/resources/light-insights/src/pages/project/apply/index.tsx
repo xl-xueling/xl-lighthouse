@@ -1,9 +1,12 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Descriptions, Form, Input, Message, Modal, Typography} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
-import locale from "@/pages/project/create/locale";
+import locale from "./locale";
 import {requestUpdateById} from "@/api/project";
 import {Order, Project} from "@/types/insights-web";
+import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
+import UserGroup from "@/pages/user/common/groups";
+import DepartmentLabel from "@/pages/department/common/depart";
 
 export default function ProjectApplyModal({projectInfo,onClose}) {
 
@@ -42,32 +45,29 @@ export default function ProjectApplyModal({projectInfo,onClose}) {
         // })
     }
 
+
     const data = [
         {
-            label: 'Name',
-            value: 'Socrates',
+            label: t['projectApply.column.title'],
+            value: projectInfo?.title,
         },
         {
-            label: 'Mobile',
-            value: '123-1234-1234',
+            label: t['projectApply.column.department'],
+            value: <DepartmentLabel departmentId={projectInfo?.departmentId}/> ,
         },
         {
-            label: 'Residence',
-            value: 'Beijing',
+            label: t['projectApply.column.admins'],
+            value: <UserGroup users={projectInfo?.admins} />,
         },
         {
-            label: 'Hometown',
-            value: 'Beijing',
-        },
-        {
-            label: 'Address',
-            value: 'Yingdu Building, Zhichun Road, Beijing',
+            label: t['projectApply.column.description'],
+            value: projectInfo?.desc,
         },
     ];
 
     return (
         <Modal
-            title= '申请工程权限'
+            title= {t['projectApply.modal.title']}
             style={{ width:'750px',top:'20px' }}
             visible={true}
             onOk={handlerSubmit}
@@ -75,9 +75,10 @@ export default function ProjectApplyModal({projectInfo,onClose}) {
             <Typography.Title
                 style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
             >
-                {'工程信息：'}
+                {t['projectApply.projectInfo']}
             </Typography.Title>
             <Descriptions
+                colon={" :"}
                 column={1}
                 data={data}
                 style={{ marginBottom: 20 }}
@@ -91,12 +92,12 @@ export default function ProjectApplyModal({projectInfo,onClose}) {
                 <Typography.Title
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                 >
-                    {'申请原因：'}
+                    {t['projectApply.reason']}
                 </Typography.Title>
                 <Form.Item  field="desc" rules={[
                     {required: true ,message:t['projectCreate.form.description.errMsg'],validateTrigger : ['onSubmit']}
                 ]}>
-                    <Input.TextArea placeholder='Please enter description.' style={{ minHeight: 64}} maxLength={150} showWordLimit={true}/>
+                    <Input.TextArea placeholder='Please enter the reason.' style={{ minHeight: 64}} maxLength={150} showWordLimit={true}/>
                 </Form.Item>
             </Form>
         </Modal>

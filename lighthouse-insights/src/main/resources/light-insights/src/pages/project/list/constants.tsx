@@ -110,19 +110,12 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                   </Button>;
           }else{
               applyButton =
-                  <Popconfirm key={getRandomString()}
-                              focusLock
-                              title='Confirm'
-                              content={t['projectList.form.apply.confirm']}
-                              onOk={() => callback(record, 'delete')}
-                  >
-                      <Button
+                  <Button
                       onClick={() => callback(record, 'apply')}
                       type="text"
                       size="mini">
                       {t['projectList.columns.operations.apply']}
                   </Button>
-                  </Popconfirm>
           }
           return  <Space size={0} direction="horizontal">{[viewButton,updateButton,manageButton,deleteButton,applyButton]}</Space>;
       }
