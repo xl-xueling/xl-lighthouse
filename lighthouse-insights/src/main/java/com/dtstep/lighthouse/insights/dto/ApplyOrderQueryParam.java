@@ -3,9 +3,9 @@ package com.dtstep.lighthouse.insights.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class OrderQueryParam {
+public class ApplyOrderQueryParam {
 
-    private String username;
+    private Integer userId;
 
     private List<Integer> types;
 
@@ -15,22 +15,12 @@ public class OrderQueryParam {
 
     private LocalDateTime createEndTime;
 
-    private Integer approveUserId;
-
-    public String getUsername() {
-        return username;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Integer getApproveUserId() {
-        return approveUserId;
-    }
-
-    public void setApproveUserId(Integer approveUserId) {
-        this.approveUserId = approveUserId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public List<Integer> getTypes() {

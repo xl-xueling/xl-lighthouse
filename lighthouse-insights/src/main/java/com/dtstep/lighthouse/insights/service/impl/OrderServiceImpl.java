@@ -11,8 +11,9 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
 import com.dtstep.lighthouse.insights.dao.OrderDetailDao;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
+import com.dtstep.lighthouse.insights.dto.ApplyOrderQueryParam;
 import com.dtstep.lighthouse.insights.dto.OrderProcessParam;
-import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
+import com.dtstep.lighthouse.insights.dto.ApproveOrderQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.enums.*;
 import com.dtstep.lighthouse.insights.modal.*;
@@ -65,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
     private StatService statService;
 
     @Override
-    public ListData<OrderVO> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
+    public ListData<OrderVO> queryApproveList(ApproveOrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
         Integer currentUserId = baseService.getCurrentUserId();
         queryParam.setApproveUserId(currentUserId);
         PageHelper.startPage(pageNum,pageSize,"create_time desc");
@@ -73,8 +74,24 @@ public class OrderServiceImpl implements OrderService {
         try{
             List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
             for(Order order : orders){
-                OrderVO orderDto = translate(order);
+                OrderVO orderDto = translateApproveEntity(order);
                 orderDtoList.add(orderDto);
+            }
+        }finally {
+            PageHelper.clearPage();
+        }
+        return baseService.translateToListData(orderDtoList);
+    }
+
+    @Override
+    public ListData<OrderVO> queryApplyList(ApplyOrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize,"create_time desc");
+        List<OrderVO> orderDtoList = new ArrayList<>();
+        try{
+            List<Order> orders = orderDao.queryApplyList(queryParam,pageNum,pageSize);
+            for(Order order : orders){
+                OrderVO orderVO = translateApplyEntity(order);
+                orderDtoList.add(orderVO);
             }
         }finally {
             PageHelper.clearPage();
@@ -86,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderVO queryById(Integer id) {
         Order order = orderDao.queryById(id);
         Validate.notNull(order);
-        OrderVO orderVO = translate(order);
+        OrderVO orderVO = translateApproveEntity(order);
         List<OrderDetailDto> orderDetails = orderDetailService.queryList(id);
         orderVO.setOrderDetails(orderDetails);
         List<Integer> roleIds = orderVO.getSteps();
@@ -173,6 +190,7 @@ public class OrderServiceImpl implements OrderService {
         return roleList;
     }
 
+    @Transactional
     @Override
     public ResultCode submit(User applyUser, OrderTypeEnum orderTypeEnum, String reason, Map<String,Object> extendConfig) throws Exception{
         Validate.notNull(applyUser);
@@ -225,15 +243,7 @@ public class OrderServiceImpl implements OrderService {
         return ResultCode.success;
     }
 
-    @Override
-    public ListData<Order> queryApplyList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
-        List<Order> orders = orderDao.queryApplyList(queryParam,pageNum,pageSize);
-        ListData<Order> listData = new ListData<>();
-        listData.setList(orders);
-        return listData;
-    }
-
-    private OrderVO translate(Order order){
+    private OrderVO translateApproveEntity(Order order){
         Integer currentUserId = baseService.getCurrentUserId();
         OrderVO orderDto = new OrderVO(order);
         int applyUserId = orderDto.getUserId();
@@ -242,6 +252,20 @@ public class OrderServiceImpl implements OrderService {
         Integer currentNode = order.getCurrentNode();
         if(permissionDao.existPermission(currentUserId,OwnerTypeEnum.USER,currentNode)){
             orderDto.addPermission(PermissionEnum.ManageAble);
+        }
+        User user = userService.cacheQueryById(applyUserId);
+        orderDto.setUser(user);
+        return orderDto;
+    }
+
+    private OrderVO translateApplyEntity(Order order){
+        Integer currentUserId = baseService.getCurrentUserId();
+        OrderVO orderDto = new OrderVO(order);
+        int applyUserId = orderDto.getUserId();
+        if(orderDto.getState() == OrderStateEnum.PROCESSING){
+            orderDto.addPermission(PermissionEnum.ManageAble);
+        }else{
+            orderDto.addPermission(PermissionEnum.AccessAble);
         }
         User user = userService.cacheQueryById(applyUserId);
         orderDto.setUser(user);

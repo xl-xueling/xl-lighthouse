@@ -44,7 +44,30 @@
         SELECT `id`,`user_id`,`order_type`,`state`,`steps`,`extend_config`,
                `hash`,`current_node`,
                `reason`,`create_time`,`update_time`
-        FROM ldp_orders WHERE user_id = #{queryParam.applyUserId}
+        FROM ldp_orders
+        <where>
+            <if test="queryParam.types != null and queryParam.types.size > 0">
+                AND `order_type` IN
+                <foreach item="item" index="index" collection="queryParam.types" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="queryParam.states != null and queryParam.states.size > 0">
+                AND `state` IN
+                <foreach item="item" index="index" collection="queryParam.states" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="queryParam.createStartTime!=null">
+                AND `create_time` &gt;= #{queryParam.createStartTime}
+            </if>
+            <if test="queryParam.createEndTime!=null">
+                AND `create_time` &lt;= #{queryParam.createEndTime}
+            </if>
+            <if test="queryParam.userId != null">
+                AND `user_id` = #{queryParam.userId}
+            </if>
+        </where>
     </select>
 
     <select id="queryApproveList" resultMap="orderResultMap">

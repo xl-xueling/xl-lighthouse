@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dto.OrderProcessParam;
-import com.dtstep.lighthouse.insights.dto.OrderQueryParam;
+import com.dtstep.lighthouse.insights.dto.ApproveOrderQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.OrderService;
@@ -24,8 +24,8 @@ public class ApproveController {
     private BaseService baseService;
 
     @PostMapping("/approve/list")
-    public ResultData<ListData<OrderVO>> queryList(@Validated @RequestBody ListSearchObject<OrderQueryParam> searchObject){
-        OrderQueryParam queryParam = searchObject.getQueryParamOrDefault(new OrderQueryParam());
+    public ResultData<ListData<OrderVO>> queryList(@Validated @RequestBody ListSearchObject<ApproveOrderQueryParam> searchObject){
+        ApproveOrderQueryParam queryParam = searchObject.getQueryParamOrDefault(new ApproveOrderQueryParam());
         Pagination pagination = searchObject.getPagination();
         ListData<OrderVO> listData = orderService.queryApproveList(queryParam,pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);

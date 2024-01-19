@@ -3,7 +3,11 @@ package com.dtstep.lighthouse.insights.controller;
 import com.dtstep.lighthouse.common.enums.OrderStateEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.dto.ApplyOrderQueryParam;
 import com.dtstep.lighthouse.insights.dto.OrderCreateParam;
+import com.dtstep.lighthouse.insights.dto_bak.ListSearchObject;
+import com.dtstep.lighthouse.insights.dto_bak.OrderVO;
+import com.dtstep.lighthouse.insights.dto_bak.Pagination;
 import com.dtstep.lighthouse.insights.dto_bak.ResultData;
 import com.dtstep.lighthouse.insights.modal.Order;
 import com.dtstep.lighthouse.insights.modal.User;
@@ -41,9 +45,10 @@ public class ApplyController {
     }
 
     @RequestMapping("/apply/list")
-    public ResultData<ListData<Order>> list(@Validated @RequestBody Order createParam) {
-        System.out.println("order create...");
-//        orderService.create(createParam);
-        return ResultData.success(null);
+    public ResultData<ListData<OrderVO>> list(@Validated @RequestBody ListSearchObject<ApplyOrderQueryParam> searchObject) {
+        ApplyOrderQueryParam queryParam = searchObject.getQueryParamOrDefault(new ApplyOrderQueryParam());
+        Pagination pagination = searchObject.getPagination();
+        ListData<OrderVO> listData = orderService.queryApplyList(queryParam, pagination.getPageNum(), pagination.getPageSize());
+        return ResultData.success(listData);
     }
 }
