@@ -1,10 +1,16 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.enums.OrderStateEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.dto.OrderCreateParam;
 import com.dtstep.lighthouse.insights.dto_bak.ResultData;
 import com.dtstep.lighthouse.insights.modal.Order;
+import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.OrderService;
+import com.dtstep.lighthouse.insights.service.UserService;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,15 +26,18 @@ public class ApplyController {
     private OrderService orderService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private BaseService baseService;
 
     @RequestMapping("/apply/create")
-    public ResultData<Integer> create(@Validated @RequestBody Order createParam) throws Exception {
-        System.out.println("order create...");
-        int userId = baseService.getCurrentUserId();
-        createParam.setUserId(userId);
-//        orderService.create(createParam);
-        return ResultData.success(null);
+    public ResultData<Integer> create(@Validated @RequestBody OrderCreateParam createParam) throws Exception {
+        int currentUserId = baseService.getCurrentUserId();
+        Validate.isTrue(currentUserId == createParam.getUserId().intValue());
+        User user = userService.queryById(currentUserId);
+        ResultCode resultCode = orderService.submit(user,createParam.getOrderType(),createParam.getReason(),createParam.getExtendConfig());
+        return ResultData.result(resultCode);
     }
 
     @RequestMapping("/apply/list")

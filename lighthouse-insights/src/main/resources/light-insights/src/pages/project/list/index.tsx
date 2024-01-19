@@ -27,6 +27,7 @@ import ProjectApplyModal from "@/pages/project/apply";
 import {IconHome} from "@arco-design/web-react/icon";
 import {BindElementType} from "@/types/insights-common";
 import {GlobalErrorCodes} from "@/utils/constants";
+import {getRandomString} from "@/utils/util";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -209,9 +210,8 @@ export default function Index() {
           <Button size={"small"} type="primary" onClick={() => setCreateVisible(true)}>{t['projectList.operations.create.project']}</Button>
         </Grid.Col>
       </Grid.Row>
-
       <Table
-          rowKey="id"
+          rowKey={'id'}
           style={{ marginTop:12}}
           size={"small"}
           loading={loading}

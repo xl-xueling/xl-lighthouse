@@ -33,3 +33,11 @@ export async function requestApplyList(data) :Promise<ResultData<{list:Array<Ord
         data,
     })
 }
+
+export async function requestCreateApply(data) :Promise<ResultData<{list:Array<Order>,total:number}>> {
+    return request({
+        url:'/apply/create',
+        method:'POST',
+        data,
+    })
+}

@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.OrderDao;
 import com.dtstep.lighthouse.insights.dao.OrderDetailDao;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
@@ -59,6 +60,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private DepartmentService departmentService;
+
+    @Autowired
+    private StatService statService;
 
     @Override
     public ListData<OrderVO> queryApproveList(OrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
@@ -170,7 +174,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public <T> int submit(User applyUser,OrderTypeEnum orderTypeEnum, T param) throws Exception{
+    public ResultCode submit(User applyUser, OrderTypeEnum orderTypeEnum, String reason, Map<String,Object> extendConfig) throws Exception{
         Validate.notNull(applyUser);
         Validate.notNull(orderTypeEnum);
         Order order = new Order();
@@ -179,19 +183,28 @@ public class OrderServiceImpl implements OrderService {
         order.setUpdateTime(localDateTime);
         order.setOrderType(orderTypeEnum);
         order.setState(OrderStateEnum.PROCESSING);
-        Map<String,Object> configMap = order.getExtendConfig();
+        order.setReason(reason);
+        order.setExtendConfig(extendConfig);
         List<Integer> steps = new ArrayList<>();
         String hash;
-        List<Role> roleList = getApproveRoleList(applyUser,orderTypeEnum,param);
+        List<Role> roleList = null;
+        if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
+            if(!extendConfig.containsKey("projectId")){
+                return ResultCode.paramValidateFailed;
+            }
+            Integer projectId = (Integer) extendConfig.get("projectId");
+            Project project = projectService.queryById(projectId);
+            Validate.notNull(project);
+            String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + projectId;
+            order.setHash(Md5Util.getMD5(message));
+            roleList = getApproveRoleList(applyUser,orderTypeEnum,project);
+        }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
+            String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING;
+            order.setHash(Md5Util.getMD5(message));
+            roleList = getApproveRoleList(applyUser,orderTypeEnum,applyUser);
+        }
         order.setSteps(roleList.stream().map(z -> z.getId()).collect(Collectors.toList()));
         order.setCurrentNode(CollectionUtils.isNotEmpty(roleList)?roleList.get(0).getId():null);
-        if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
-
-        }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
-            User user = (User) param;
-            String message = order.getOrderType() + "_" + order.getUserId();
-            order.setHash(Md5Util.getMD5(message));
-        }
         order.setUserId(applyUser.getId());
         orderDao.insert(order);
         int orderId = order.getId();
@@ -209,7 +222,7 @@ public class OrderServiceImpl implements OrderService {
             detailList.add(orderDetail);
         }
         orderDetailDao.batchInsert(detailList);
-        return orderId;
+        return ResultCode.success;
     }
 
     @Override

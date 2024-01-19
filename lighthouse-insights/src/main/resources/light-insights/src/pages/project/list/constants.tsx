@@ -111,6 +111,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
           }else{
               applyButton =
                   <Button
+                      key={getRandomString()}
                       onClick={() => callback(record, 'apply')}
                       type="text"
                       size="mini">

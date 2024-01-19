@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Descriptions, Form, Input, Message, Modal, Typography} from "@arco-design/web-react";
+import {Descriptions, Form, Input, Message, Modal, Notification, Typography} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {requestUpdateById} from "@/api/project";
@@ -7,42 +7,44 @@ import {Order, Project} from "@/types/insights-web";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
 import DepartmentLabel from "@/pages/department/common/depart";
+import {OrderTypeEnum} from "@/types/insights-common";
+import {requestCreateApply} from "@/api/order";
+import {useSelector} from "react-redux";
+import {GlobalState} from "@/store";
 
 export default function ProjectApplyModal({projectInfo,onClose}) {
 
     const t = useLocale(locale);
     const [loading, setLoading] = useState(false);
     const formRef = useRef(null);
+    const userInfo = useSelector((state: GlobalState) => state.userInfo);
 
     async function handlerSubmit() {
+        setLoading(true);
         await formRef.current.validate();
         const values = formRef.current.getFieldsValue();
-        console.log("handler submit,values:" + JSON.stringify(values));
-        console.log("projectInfo:" + JSON.stringify(projectInfo));
-        const order:Order = {
-            orderType:1,
-            // desc:values.desc,
+        const applyParam = {
+            orderType:OrderTypeEnum.PROJECT_ACCESS,
+            userId:userInfo?.id,
+            reason:values?.reason,
             extendConfig:{
                 projectId:projectInfo.id,
             }
         }
-        console.log("order is:" + JSON.stringify(order));
-        // requestCreateApply(order).then((result) => {
-        //     console.log("result:" + JSON.stringify(result));
-        //     if(result.code === '0'){
-        //         Message.success(t['projectCreate.form.submit.success']);
-        //         // setTimeout(() => {
-        //         //     window.location.href = "/project/list";
-        //         // },3000)
-        //     }else{
-        //         Message.error(result.message || t['system.error']);
-        //     }
-        // }).catch((error) => {
-        //     console.log(error);
-        //     Message.error(t['system.error'])
-        // }).finally(() => {
-        //     setLoading(false);
-        // })
+        requestCreateApply(applyParam).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectApply.form.submit.success']});
+                onClose();
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error) => {
+            console.log(error);
+            Message.error(t['system.error'])
+        }).finally(() => {
+            setLoading(false);
+        })
     }
 
 
@@ -70,6 +72,7 @@ export default function ProjectApplyModal({projectInfo,onClose}) {
             title= {t['projectApply.modal.title']}
             style={{ width:'750px',top:'20px' }}
             visible={true}
+            confirmLoading={loading}
             onOk={handlerSubmit}
             onCancel={onClose}>
             <Typography.Title
@@ -94,7 +97,7 @@ export default function ProjectApplyModal({projectInfo,onClose}) {
                 >
                     {t['projectApply.reason']}
                 </Typography.Title>
-                <Form.Item  field="desc" rules={[
+                <Form.Item  field="reason" rules={[
                     {required: true ,message:t['projectCreate.form.description.errMsg'],validateTrigger : ['onSubmit']}
                 ]}>
                     <Input.TextArea placeholder='Please enter the reason.' style={{ minHeight: 64}} maxLength={150} showWordLimit={true}/>
