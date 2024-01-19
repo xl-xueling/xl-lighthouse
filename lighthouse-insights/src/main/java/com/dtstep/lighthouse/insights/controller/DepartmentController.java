@@ -4,10 +4,10 @@ import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto_bak.ResultData;
-import com.dtstep.lighthouse.insights.dto_bak.CommonTreeNode;
 import com.dtstep.lighthouse.insights.dto.DeleteParam;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.service.DepartmentService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
@@ -32,9 +32,9 @@ public class DepartmentController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/department/all")
-    public ResultData<List<CommonTreeNode>> all() {
-        List<CommonTreeNode> list = departmentService.queryTreeFormat();
+    @RequestMapping("/department/structure")
+    public ResultData<List<TreeNode>> all() {
+        List<TreeNode> list = departmentService.getStructure();
         return ResultData.success(list);
     }
 

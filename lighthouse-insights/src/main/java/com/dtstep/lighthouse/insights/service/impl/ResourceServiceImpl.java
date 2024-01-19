@@ -123,11 +123,19 @@ public class ResourceServiceImpl implements ResourceService {
         Role manageRole = null;
         Role accessRole = null;
         String name = null;
-        if(resource.getResourceType() == ResourceTypeEnum.Department){
-            RoleTypeEnum parentManageRoleType = resource.getResourcePid().intValue() == 0 ? RoleTypeEnum.FULL_MANAGE_PERMISSION : RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION;
+        if(resource.getResourceType() == ResourceTypeEnum.Domain){
+            Role parentManageRole = roleService.cacheQueryRole(RoleTypeEnum.FULL_MANAGE_PERMISSION,0);
+            Role parentAccessRole = roleService.cacheQueryRole(RoleTypeEnum.FULL_ACCESS_PERMISSION,0);
+            Integer manageRolePid = parentManageRole.getId();
+            Integer accessRolePid = parentAccessRole.getId();
+            manageRole = new Role(RoleTypeEnum.DOMAIN_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
+            accessRole = new Role(RoleTypeEnum.DOMAIN_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
+            name = domainService.queryById(resource.getResourceId()).getName();
+        }else if(resource.getResourceType() == ResourceTypeEnum.Department){
+            RoleTypeEnum parentManageRoleType = resource.getParentResourceType() == ResourceTypeEnum.Domain ? RoleTypeEnum.DOMAIN_MANAGE_PERMISSION : RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION;
             Role parentManageRole = roleService.cacheQueryRole(parentManageRoleType,resource.getResourcePid());
             Integer manageRolePid = parentManageRole.getId();
-            RoleTypeEnum parentAccessRoleType = resource.getResourcePid().intValue() == 0 ? RoleTypeEnum.FULL_ACCESS_PERMISSION : RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION;
+            RoleTypeEnum parentAccessRoleType = resource.getParentResourceType() == ResourceTypeEnum.Domain ? RoleTypeEnum.DOMAIN_ACCESS_PERMISSION : RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION;
             Role parentAccessRole = roleService.cacheQueryRole(parentAccessRoleType,resource.getResourcePid());
             Integer accessRolePid = parentAccessRole.getId();
             manageRole = new Role(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
@@ -178,7 +186,10 @@ public class ResourceServiceImpl implements ResourceService {
         List<Role> roleList = new ArrayList<>();
         Role manageRole = null;
         Role accessRole = null;
-        if(resource.getResourceType() == ResourceTypeEnum.Department){
+        if(resource.getResourceType() == ResourceTypeEnum.Domain){
+            manageRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_MANAGE_PERMISSION,resource.getResourceId());
+            accessRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_ACCESS_PERMISSION,resource.getResourceId());
+        }else if(resource.getResourceType() == ResourceTypeEnum.Department){
             manageRole = roleService.cacheQueryRole(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,resource.getResourceId());
             accessRole = roleService.cacheQueryRole(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION,resource.getResourceId());
         }else if(resource.getResourceType() == ResourceTypeEnum.Project){
@@ -238,7 +249,10 @@ public class ResourceServiceImpl implements ResourceService {
         Resource resource = null;
         RoleTypeEnum roleTypeEnum = role.getRoleType();
         Integer resourceId = role.getResourceId();
-        if(roleTypeEnum == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION){
+        if(roleTypeEnum == RoleTypeEnum.DOMAIN_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.DOMAIN_ACCESS_PERMISSION){
+            Domain domain = domainService.queryById(resourceId);
+            resource = new Resource(ResourceTypeEnum.Domain,resourceId,domain);
+        }else if(roleTypeEnum == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION){
             Department department = departmentDao.queryById(resourceId);
             resource = new Resource(ResourceTypeEnum.Department,resourceId,department);
         }else if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION){
@@ -251,7 +265,8 @@ public class ResourceServiceImpl implements ResourceService {
             Stat stat = statDao.queryById(resourceId);
             resource = new Resource(ResourceTypeEnum.Group,resourceId,stat);
         }else if(roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.METRIC_ACCESS_PERMISSION){
-
+            MetricSet metricSet = metricService.queryById(resourceId);
+            resource = new Resource(ResourceTypeEnum.MetricSet,resourceId,metricSet);
         }else if(roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){
             resource = new Resource(ResourceTypeEnum.System,0);
         }else if (roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){

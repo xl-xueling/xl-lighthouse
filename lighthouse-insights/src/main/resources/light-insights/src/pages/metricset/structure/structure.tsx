@@ -287,7 +287,6 @@ export default function StructurePanel({structure,menuCallback}) {
                                         parentKey:node.dataRef.id,
                                         name: nodeTitle,
                                         title:nodeTitle,
-                                        level:node.dataRef.level + 1,
                                         id: currentId,
                                         pid: node.dataRef.id,
                                         icon:getIconByLevel(node._level + 1),

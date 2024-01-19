@@ -18,7 +18,7 @@ import Register from "@/pages/register";
 import {requestFetchUserInfo} from "@/api/user";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import {Department, MetricSet} from "@/types/insights-web";
-import {requestQueryAll as queryDepartmentAll} from "@/api/department";
+import {requestStructure as queryDepartmentAll} from "@/api/department";
 import {requestPinList} from "@/api/metricset";
 import {fetchAllDepartmentData, getDepartment} from "@/pages/department/common";
 import {checkLogin} from "@/utils/checkLogin";
