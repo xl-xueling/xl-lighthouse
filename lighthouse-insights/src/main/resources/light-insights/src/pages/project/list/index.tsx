@@ -16,7 +16,7 @@ import SearchForm from './form';
 import locale from './locale';
 import {getColumns} from './constants';
 import {requestDeleteById, requestList} from "@/api/project";
-import {Department, Project} from "@/types/insights-web";
+import {Department, Project, TreeNode} from "@/types/insights-web";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useSelector} from "react-redux";
 import ProjectCreatePanel from "@/pages/project/create";
@@ -31,7 +31,7 @@ const BreadcrumbItem = Breadcrumb.Item;
 
 export default function Index() {
   const t = useLocale(locale);
-  const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+  const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
   const [listData, setListData] = useState<Project[]>([]);
   const [owner, setOwner] = useState(true);
   const [selectedProject,setSelectedProject] = useState<Project>(null);

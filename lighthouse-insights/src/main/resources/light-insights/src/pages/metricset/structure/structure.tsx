@@ -22,7 +22,6 @@ import {
 import {getRandomString, getTextBlenLength, stringifyObj, validateWithRegex} from "@/utils/util";
 import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 import {LuLayers} from "react-icons/lu";
-import {getParentKey} from "@/pages/department/common";
 import {RxCube} from "react-icons/rx";
 import styles from "@/pages/metricset/structure/style/index.module.less";
 import {MdOutlineDragIndicator} from "react-icons/md";

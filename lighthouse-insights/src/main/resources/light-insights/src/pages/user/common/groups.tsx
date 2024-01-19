@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Department, User} from "@/types/insights-web";
+import {Department, TreeNode, User} from "@/types/insights-web";
 import {Descriptions, Popover} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
-import {getCascadeDepartment, getDepartment} from "@/pages/department/common";
+import {getFullPathNodes} from "@/pages/department/common";
 
 export interface Props {
     users: Array<User>;
@@ -10,14 +10,13 @@ export interface Props {
 
 export default function UserGroup(props:Props) {
     const { users } = props;
-    const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+    const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
 
     return (
         <>
         {
             users?.map((option,index) => {
-                const currentDepartment = getDepartment(option?.departmentId,allDepartInfo);
-                const cascadeDepartments:Department[] = getCascadeDepartment(currentDepartment,allDepartInfo);
+                const fullPathNodes:TreeNode[] = getFullPathNodes(option?.departmentId,allDepartInfo);
                 return (
                     <Popover
                         key={index}
@@ -42,7 +41,7 @@ export default function UserGroup(props:Props) {
                                     },
                                     {
                                         label: 'department',
-                                        value: cascadeDepartments.map(z => z?.name).join(" > "),
+                                        value: fullPathNodes.map(z => z?.label).join(" > "),
                                     }
                                 ]}
                                 labelStyle={{ textAlign: 'right', paddingRight: 15}}

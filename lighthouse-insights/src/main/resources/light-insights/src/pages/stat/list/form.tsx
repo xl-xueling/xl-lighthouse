@@ -12,7 +12,7 @@ import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import styles from './style/index.module.less';
 import {useSelector} from "react-redux";
-import {Department} from "@/types/insights-web";
+import {Department, TreeNode} from "@/types/insights-web";
 import {translate} from "@/pages/department/common";
 import ProjectTermQuery from "@/pages/project/common/projectTermQuery";
 
@@ -23,7 +23,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
     const t = useLocale(locale);
     const { lang } = useContext(GlobalContext);
     const [form] = useForm();
-    const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+    const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
 
     const handleSubmit = () => {
         const values = form.getFieldsValue();

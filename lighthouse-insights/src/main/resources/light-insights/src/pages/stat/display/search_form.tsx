@@ -15,7 +15,7 @@ const { useForm } = Form;
 export default function SearchForm({statInfo,onSearch}:{statInfo:Stat,onSearch:(values: Record<string, any>) => void}) {
 
     const t = useLocale(locale);
-    const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+    const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const { Row, Col } = Grid;
 
     const [datePickerConfig,setDatePickerConfig] = useState<RenderDateConfig>(null);

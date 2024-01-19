@@ -4,7 +4,7 @@ import SearchForm from "./search_form";
 import {Breadcrumb, Button, Card, Divider, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
 import styles from "./style/index.module.less";
 import {useSelector} from "react-redux";
-import {Department, Stat} from "@/types/insights-web";
+import {Department, Stat, TreeNode} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import ChartPanel from "@/pages/stat/display/chart_panel";
@@ -21,7 +21,7 @@ import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
 
 export default function StatPreviewPanel({id}) {
 
-    const allDepartInfo = useSelector((state: {allDepartInfo:Array<Department>}) => state.allDepartInfo);
+    const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const t = useLocale(locale);
     const [statInfo,setStatInfo] = useState<Stat>(null);
     const [loading,setLoading] = useState<boolean>(true);

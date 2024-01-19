@@ -2,7 +2,7 @@ import {Department, ArcoTreeNode, ArcoFlatNode, TreeNode} from "@/types/insights
 import {requestStructure as queryDepartmentAll} from "@/api/department";
 import {Message} from "@arco-design/web-react";
 
-export async function fetchAllDepartmentData(): Promise<Array<Department>> {
+export async function fetchAllDepartmentData(): Promise<Array<TreeNode>> {
     let result = null;
     await queryDepartmentAll().then((response) => {
         const {code,message,data} = response;
@@ -34,10 +34,26 @@ export const translateToTreeStruct = (list, rootPid):Array<ArcoTreeNode> => {
     return nodeArr;
 }
 
-export const translate = (list:Array<Department>):Array<ArcoTreeNode> => {
+export const getFullPathNodes = (id, treeData:Array<TreeNode>, parentNodes:Array<TreeNode> = []) => {
+    for (let i = 0; i < treeData.length; i++) {
+        const node = treeData[i];
+        if (node.value === id) {
+            parentNodes.unshift(node);
+            if (node.children) {
+                getFullPathNodes(id, node.children, parentNodes);
+            }
+            break;
+        } else if (node.children) {
+            getFullPathNodes(id, node.children, parentNodes);
+        }
+    }
+    return parentNodes;
+}
+
+export const translate = (list:Array<TreeNode>):Array<ArcoTreeNode> => {
     const nodeArr = new Array<ArcoTreeNode>();
     list?.forEach(item => {
-        const nodeItem:ArcoTreeNode = {"key":String(item.id),"title":item.name};
+        const nodeItem:ArcoTreeNode = {"key":String(item.value),"title":item.label};
         if(item.children){
             nodeItem.children = translate(item.children);
         }
@@ -57,28 +73,6 @@ export const translateResponse = (list:Array<TreeNode>):Array<ArcoTreeNode> => {
     })
     return nodeArr;
 }
-
-export const getParentKey = (list, targetKey, parentKey = "0") => {
-    for (let i = 0; i < list.length; i++) {
-        const node = list[i];
-        console.log("node.key is:" + node.key + ",targetKey:"+targetKey)
-        if (node.key === targetKey) {
-            console.log("--match..")
-            return parentKey;
-        }
-        console.log("node.children is:" + node.children)
-        if (node.children) {
-            console.log("---hashchild,node.key is:" + node.key);
-            const result = getParentKey(node.children, targetKey, node.key);
-            if (result) {
-                return result;
-            }
-        }
-    }
-
-    return null;
-}
-
 
 export const translateToFlatStruct = (list):Array<ArcoFlatNode> => {
     function flattenTreeData(treeData, parentName = "") {
@@ -110,36 +104,3 @@ export const translateToTreeNodes = (list):Array<ArcoTreeNode> => {
     return nodeArr;
 }
 
-
-export const getDepartment = (id:number,allDepartsInfo) : Department => {
-    const getInfo = (id,arrays) => {
-        for (let i = 0; i < arrays.length; i++) {
-            const node = arrays[i];
-            if (String(node.id) === String(id)) {
-                return node;
-            }
-            if (node.children && node.children.length > 0) {
-                const result = getInfo(id,node.children);
-                if (result) {
-                    return result;
-                }
-            }
-        }
-    }
-    return getInfo(id,allDepartsInfo);
-}
-
-export const getCascadeDepartment = (department:Department,allDepartsInfo) : Array<Department> => {
-    const array:Department[] = [];
-    if(!department){
-        return array;
-    }
-    array.unshift(department);
-    let pid = department.pid;
-    while (pid != 0){
-        const parent = getDepartment(department.pid,allDepartsInfo);
-        array.unshift(parent);
-        pid = parent.pid;
-    }
-    return array;
-}
