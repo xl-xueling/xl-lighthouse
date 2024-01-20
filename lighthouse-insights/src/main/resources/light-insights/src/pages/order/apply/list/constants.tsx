@@ -4,35 +4,28 @@ const { Text } = Typography;
 import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
-import {formatTimeStampBackUp} from "@/utils/util";
+import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import {OrderStateEnum, PermissionEnum} from "@/types/insights-common";
 import {getOrderStateDescription, getOrderTypeDescription} from "@/pages/common/desc/base";
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
         {
-            title: t['approveList.columns.id'],
+            title: t['applyList.columns.id'],
             dataIndex: 'id',
             render: (value,record) =>
                 <Text>{value}</Text>
             ,
         },
         {
-            title: t['approveList.columns.user'],
-            dataIndex: 'user',
-            render: (value,record) => {
-                return <UserGroup users={[value]}/>;
-            },
-        },
-        {
-            title: t['approveList.columns.type'],
+            title: t['applyList.columns.type'],
             dataIndex: 'orderType',
             render: (value,record) => {
                 return getOrderTypeDescription(t,record.orderType)
             },
         },
         {
-            title: t['approveList.columns.desc'],
+            title: t['applyList.columns.desc'],
             dataIndex: 'detail',
             render: (value,record) =>
             {
@@ -40,42 +33,49 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             }
         },
         {
-            title: t['approveList.columns.createTime'],
+            title: t['applyList.columns.createTime'],
             dataIndex: 'createTime',
             render: (value) => {return formatTimeStampBackUp(value)},
         },
         {
-            title: t['approveList.columns.state'],
+            title: t['applyList.columns.state'],
             dataIndex: 'state',
             render: (value) => {
                 return getOrderStateDescription(t,value)
             },
         },
         {
-            title: t['approveList.columns.operations'],
+            title: t['applyList.columns.operations'],
             dataIndex: 'operations',
             headerCellStyle: {width:'250px' },
             render: (_, record) => {
+                let viewButton;
+                let retractButton;
                 if(record.state == OrderStateEnum.Processing && record.permissions.includes(PermissionEnum.ManageAble)){
-                    return  <Space size={0} direction="horizontal">
-                        <Button
-                            onClick={() => callback(record, 'process')}
-                            type="text"
-                            size="mini">
-                            {t['approveList.columns.operations.process']}
-                        </Button>
-                    </Space>
-                }else{
-                    return  <Space size={0} direction="horizontal">
-                        <Button
+                    viewButton =
+                        <Button key={getRandomString()}
                             onClick={() => callback(record, 'detail')}
                             type="text"
                             size="mini">
-                            {t['approveList.columns.operations.detail']}
+                            {t['applyList.columns.operations.detail']}
                         </Button>
-                    </Space>
+                    retractButton =
+                        <Button key={getRandomString()}
+                            onClick={() => callback(record, 'retract')}
+                            type="text"
+                            size="mini">
+                            {t['applyList.columns.operations.retracted']}
+                        </Button>
+                }else{
+                    viewButton =
+                        <Button key={getRandomString()}
+                            onClick={() => callback(record, 'detail')}
+                            type="text"
+                            size="mini">
+                            {t['applyList.columns.operations.detail']}
+                        </Button>
                 }
-
+                return  <Space size={0} direction="horizontal">{[viewButton,retractButton]}</Space>;
             },
         },
     ]

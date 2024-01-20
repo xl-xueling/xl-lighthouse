@@ -11,7 +11,7 @@ import '../pages/group/mock'
 import '../pages/stat/mock'
 import '../pages/metricset/mock'
 import '../pages/component/mock'
-import '../pages/order/application/mock'
+import '../pages/order/apply/mock'
 
 if (!isSSR) {
   Mock.setup({
