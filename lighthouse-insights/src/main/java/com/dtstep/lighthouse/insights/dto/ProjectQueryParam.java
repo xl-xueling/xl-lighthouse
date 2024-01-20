@@ -18,7 +18,7 @@ public class ProjectQueryParam {
 
     private Integer privateType;
 
-    private Integer owner;
+    private Integer ownerId;
 
     public Integer getId() {
         return id;
@@ -52,12 +52,12 @@ public class ProjectQueryParam {
         this.createEndTime = createEndTime.with(LocalTime.MAX);
     }
 
-    public Integer getOwner() {
-        return owner;
+    public Integer getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(Integer owner) {
-        this.owner = owner;
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 
     public Integer getPrivateType() {

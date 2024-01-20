@@ -28,6 +28,7 @@ import {IconHome} from "@arco-design/web-react/icon";
 import {BindElementType} from "@/types/insights-common";
 import {GlobalErrorCodes} from "@/utils/constants";
 import {getRandomString} from "@/utils/util";
+import {GlobalState} from "@/store";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -44,6 +45,7 @@ export default function Index() {
   const [bindedVisible,setBindedVisible] = React.useState(false);
   const [applyVisible,setApplyVisible] = React.useState(false);
   const [reloadTime,setReloadTime] = useState<number>(Date.now);
+  const userInfo = useSelector((state: GlobalState) => state.userInfo);
 
   const tableCallback = async (record, type) => {
     if(type == 'update'){
@@ -149,7 +151,7 @@ export default function Index() {
       combineParam.createStartTime = createTime[0];
       combineParam.createEndTime = createTime[1];
     }
-    combineParam.owner = owner;
+    combineParam.ownerId = owner == 1?userInfo?.id:null;
     await requestList({
       queryParams:combineParam,
       pagination:{

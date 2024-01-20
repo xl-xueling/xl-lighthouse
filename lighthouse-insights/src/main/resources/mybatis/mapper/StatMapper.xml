@@ -18,7 +18,7 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Stat" >
-        INSERT INTO ldp_stat_item (`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_stats (`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`) VALUES
         (
             #{title,jdbcType=VARCHAR},
             #{groupId,jdbcType=INTEGER},
@@ -36,12 +36,12 @@
 
     <select id="queryById" resultMap="statResultMap">
         SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`
-        FROM ldp_stat_item WHERE id = #{id}
+        FROM ldp_stats WHERE id = #{id}
     </select>
 
     <select id="queryList" resultMap="statResultMap">
         SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`
-        from ldp_stat_item
+        from ldp_stats
         <where>
             <if test="queryParam!= null and queryParam.id!=null">
                 AND id = #{queryParam.id}
@@ -59,11 +59,11 @@
 
     <select id="queryByProjectId" resultMap="statResultMap">
         SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`
-        from ldp_stat_item where project_id = #{projectId}
+        from ldp_stats where project_id = #{projectId}
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Stat">
-        UPDATE ldp_stat_item
+        UPDATE ldp_stats
         <set>
             <if test="title != null">
                 `title` = #{title},
@@ -91,6 +91,6 @@
     </update>
 
     <delete id="deleteById">
-        delete from ldp_stat_item where id = #{id}
+        delete from ldp_stats where id = #{id}
     </delete>
 </mapper>
