@@ -107,6 +107,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDto queryById(Integer id) {
         Project project = projectDao.queryById(id);
+        if(project == null){
+            return null;
+        }
         return translate(project);
     }
 
