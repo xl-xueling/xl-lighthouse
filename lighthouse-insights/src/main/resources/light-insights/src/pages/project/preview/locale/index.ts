@@ -7,7 +7,7 @@ const i18n = {
   'zh-CN': {
     'projectPreview.breadcrumb':'工程视图',
     'projectPreview.nodata.tooltip1':'暂无数据',
-    'projectPreview.nodata.tooltip2':'请首先创建统计组和统计项！',
+    'projectPreview.nodata.tooltip2':'当前工程下暂无统计组和统计项！',
   },
 };
 
