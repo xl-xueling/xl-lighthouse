@@ -1,3 +1,4 @@
+
 import './style/global.less';
 import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
@@ -17,8 +18,7 @@ import './mock';
 import Register from "@/pages/register";
 import {requestFetchUserInfo} from "@/api/user";
 import {getDataWithLocalCache} from "@/utils/localCache";
-import {Department, MetricSet} from "@/types/insights-web";
-import {requestStructure as queryDepartmentAll} from "@/api/department";
+import {MetricSet} from "@/types/insights-web";
 import {requestPinList} from "@/api/metricset";
 import {fetchAllDepartmentData} from "@/pages/department/common";
 import {checkLogin} from "@/utils/checkLogin";
