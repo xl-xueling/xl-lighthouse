@@ -47,14 +47,14 @@ export default function ProjectManage() {
                     value:data.id,
                     type:'group',
                 }
-                let groups = projectInfo.structure[0].children?projectInfo.structure[0].children:[];
+                let groups = projectInfo.structure.children?projectInfo.structure.children:[];
                 groups = [...groups,newGroup];
-                projectInfo.structure[0].children = groups;
+                projectInfo.structure.children = groups;
                 setProjectInfo(projectInfo);
                 break;
             case 'deleteGroup': {
                 setLoading(true);
-                projectInfo.structure[0].children = projectInfo.structure[0].children.filter(x => x.value != String(data));
+                projectInfo.structure.children = projectInfo.structure.children.filter(x => x.value != String(data));
                 setProjectInfo(projectInfo);
                 setTimeout(() => {
                     setLoading(false);
