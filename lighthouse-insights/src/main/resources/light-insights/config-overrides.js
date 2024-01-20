@@ -23,7 +23,8 @@ module.exports = {
     }),
     addWebpackPlugin(
       new ArcoWebpackPlugin({
-        theme: '@arco-themes/react-arco-pro',
+        // theme: '@arco-themes/react-arco-pro',
+          theme: '@arco-themes/react-ldp-theme',
         modifyVars: {
           'arcoblue-6': setting.themeColor,
         },
