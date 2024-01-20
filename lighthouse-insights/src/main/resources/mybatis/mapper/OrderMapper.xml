@@ -40,6 +40,12 @@
         FROM ldp_orders WHERE id = #{id}
     </select>
 
+    <select id="isExist" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM ldp_orders
+        WHERE hash = #{hash}
+    </select>
+
     <select id="queryApplyList" resultMap="orderResultMap">
         SELECT `id`,`user_id`,`order_type`,`state`,`steps`,`extend_config`,
                `hash`,`current_node`,

@@ -150,7 +150,6 @@ export default function Index() {
       combineParam.createEndTime = createTime[1];
     }
     combineParam.owner = owner;
-    console.log("combineParam is:" + JSON.stringify(combineParam));
     await requestList({
       queryParams:combineParam,
       pagination:{
