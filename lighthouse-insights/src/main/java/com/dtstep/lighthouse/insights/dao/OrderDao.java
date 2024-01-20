@@ -16,6 +16,8 @@ public interface OrderDao {
 
     Order queryById(Integer id);
 
+    boolean isExist(String hash);
+
     List<Order> queryApplyList(ApplyOrderQueryParam queryParam, Integer pageNum, Integer pageSize);
 
     List<Order> queryApproveList(ApproveOrderQueryParam queryParam, Integer pageNum, Integer pageSize);

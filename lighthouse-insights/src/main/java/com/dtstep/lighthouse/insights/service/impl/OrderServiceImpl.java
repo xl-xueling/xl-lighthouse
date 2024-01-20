@@ -207,7 +207,7 @@ public class OrderServiceImpl implements OrderService {
         order.setReason(reason);
         order.setExtendConfig(extendConfig);
         List<Integer> steps = new ArrayList<>();
-        String hash;
+        String hash = null;
         List<Role> roleList = null;
         if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
             if(!extendConfig.containsKey("projectId")){
@@ -217,13 +217,18 @@ public class OrderServiceImpl implements OrderService {
             Project project = projectService.queryById(projectId);
             Validate.notNull(project);
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + projectId;
-            order.setHash(Md5Util.getMD5(message));
+            hash = Md5Util.getMD5(message);
             roleList = getApproveRoleList(applyUser,orderTypeEnum,project);
         }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING;
-            order.setHash(Md5Util.getMD5(message));
+            hash = Md5Util.getMD5(message);
             roleList = getApproveRoleList(applyUser,orderTypeEnum,applyUser);
         }
+        boolean isExist = orderDao.isExist(hash);
+        if(isExist){
+            return ResultCode.orderCreateRepeatSubmit;
+        }
+        order.setHash(hash);
         order.setSteps(roleList.stream().map(z -> z.getId()).collect(Collectors.toList()));
         order.setCurrentNode(CollectionUtils.isNotEmpty(roleList)?roleList.get(0).getId():null);
         order.setUserId(applyUser.getId());

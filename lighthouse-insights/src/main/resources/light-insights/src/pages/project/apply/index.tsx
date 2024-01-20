@@ -20,8 +20,8 @@ export default function ProjectApplyModal({projectInfo,onClose}) {
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
 
     async function handlerSubmit() {
-        setLoading(true);
         await formRef.current.validate();
+        setLoading(true);
         const values = formRef.current.getFieldsValue();
         const applyParam = {
             orderType:OrderTypeEnum.PROJECT_ACCESS,

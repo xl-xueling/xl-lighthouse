@@ -78,6 +78,8 @@ public enum ResultCode {
 
     filterConfigLabelCannotBeEmpty("2006","filterConfigLabelCannotBeEmpty"),
 
+    orderCreateRepeatSubmit("2007","orderCreateRepeatSubmit"),
+
     ;
 
     ResultCode(String code , String i18nLabel){
