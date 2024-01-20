@@ -33,6 +33,7 @@ export default function ProjectManage() {
   const { id } = useParams();
 
     const menuCallback = async (id:number) => {
+        console.log("menuCallBack id:" + id);
         setGroupId(id);
         setShowManagePanel(true);
     }
@@ -45,7 +46,7 @@ export default function ProjectManage() {
         switch (operation){
             case "create-group":
                 const newGroup:TreeNode = {
-                    key:String(data.id),
+                    key:'group_'+data.id,
                     label:data.token,
                     value:data.id,
                     type:'group',
@@ -62,7 +63,7 @@ export default function ProjectManage() {
                 setTimeout(() => {
                     setLoading(false);
                     setShowManagePanel(false);
-                },0)
+                },1000)
                 break;
             }
             default:
