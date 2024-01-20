@@ -51,7 +51,7 @@ export default function UserList() {
       const {code, data ,message} = response;
       if(code == '0'){
         Notification.info({style: { width: 420 }, title: 'Notification', content: t['userList.columns.resetPasswd.success']});
-      }else if(GlobalErrorCodes.includes(code)){
+      }else if(GlobalErrorCodes.includes(String(code))){
         setErrorCode(code);
       }else{
         Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -74,7 +74,7 @@ export default function UserList() {
         Notification.info({style: { width: 420 }, title: 'Notification', content: message});
         const updatedUsers = userData.map((user) => user.id == userId ? { ...user, state: state } : user);
         setUserData(updatedUsers);
-      }else if(GlobalErrorCodes.includes(code)){
+      }else if(GlobalErrorCodes.includes(String(code))){
         setErrorCode(code);
       }else{
         Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -92,7 +92,7 @@ export default function UserList() {
         setTimeout(() => {
           handleSearch({...formParams,t:Date.now()});
         },2000)
-      }else if(GlobalErrorCodes.includes(code)){
+      }else if(GlobalErrorCodes.includes(String(code))){
         setErrorCode(code);
       }else{
         Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -131,7 +131,7 @@ export default function UserList() {
                 total: data.total,
               })
               resolve(result);
-            }else if(GlobalErrorCodes.includes(code)){
+            }else if(GlobalErrorCodes.includes(String(code))){
               setErrorCode(code);
             }else{
               Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});

@@ -46,9 +46,11 @@ public class ProjectController {
     @RequestMapping("/project/queryById")
     public ResultData<ProjectExtendDto> queryById(@RequestBody QueryParam queryParam) throws Exception{
         ProjectDto projectDto = projectService.queryById(queryParam.getId());
+        if(projectDto == null){
+            return ResultData.result(ResultCode.elementNotFound);
+        }
         ProjectExtendDto projectExtendDto = new ProjectExtendDto(projectDto);
         TreeNode structure = projectService.getStructure(projectDto);
-        System.out.println("structure:" + JsonUtil.toJSONString(structure));
         projectExtendDto.setStructure(structure);
         return ResultData.success(projectExtendDto);
     }

@@ -10,6 +10,8 @@ public enum ResultCode {
 
     accessDenied("403","accessDenied"),
 
+    elementNotFound("404","elementNotFound"),
+
     systemError("500","systemError"),
 
     loginCheckFailed("1001","loginCheckFailed"),

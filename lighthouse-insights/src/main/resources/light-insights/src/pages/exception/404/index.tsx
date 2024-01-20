@@ -13,14 +13,6 @@ function Exception404() {
         className={styles.result}
         status="404"
         subTitle={t['exception.result.404.description']}
-        extra={[
-          <Button key="again" style={{ marginRight: 16 }}>
-            {t['exception.result.404.retry']}
-          </Button>,
-          <Button key="back" type="primary">
-            {t['exception.result.404.back']}
-          </Button>,
-        ]}
       />
     </div>
   );
