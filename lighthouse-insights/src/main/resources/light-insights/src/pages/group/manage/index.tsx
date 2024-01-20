@@ -188,7 +188,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                             </Col>
                         </Row>
                     </Form>
-                    <StatisticalListPanel formParams={formParams} from={"group-manage"}/>
+                    <StatisticalListPanel formParams={formParams} from={"group-manage"} parentLoading={loading}/>
                 </TabPane>
                 <TabPane key='3' title={
                     <span style={{display:"inline-flex",alignItems:"center"}}>

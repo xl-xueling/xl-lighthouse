@@ -18,7 +18,7 @@ import {StatStateEnum} from "@/types/insights-common";
 import {requestResetPasswd} from "@/api/user";
 import SearchForm from "@/pages/stat/list/form";
 
-export default function StatisticalListPanel({formParams = {},from = null}) {
+export default function StatisticalListPanel({formParams = {},from = null,parentLoading=false}) {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const [listData,setListData] = useState<Array<Stat>>([]);
@@ -92,6 +92,7 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
         })
     }
 
+
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const columns = useMemo(() => (from && from == 'group-manage') ? getColumnsOfManage(t, tableCallback) : getColumns(t,tableCallback), [t,listData]);
     const [pagination, setPagination] = useState<PaginationProps>({
@@ -158,7 +159,7 @@ export default function StatisticalListPanel({formParams = {},from = null}) {
                data={listData}
                onChange={onChangeTable}
                pagination={pagination}
-               loading={loading}/>
+               loading={parentLoading ? false : loading}/>
             {detailVisible && <StatDetailModal statInfo={currentItem} onClose={() => setDetailVisible(false)}/>}
             {updateModalVisible && <StatUpdateModal statInfo={currentItem} onClose={() => setUpdateModalVisible(false)} listCallback={tableCallback}/>}
         </>
