@@ -137,7 +137,6 @@ export default function ApplyListPage() {
     }
 
     function handleSearch(params) {
-        console.log("params is:" + JSON.stringify(params))
         setPagination({ ...pagination, current: 1 });
         setFormParams(params);
     }
