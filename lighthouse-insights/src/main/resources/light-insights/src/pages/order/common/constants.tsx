@@ -49,6 +49,11 @@ export function getOrderColumns(t: any) {
             render: (value) => {return formatTimeStampBackUp(value)},
         },
         {
+            title: t['detailModal.columns.updateTime'],
+            dataIndex: 'updateTime',
+            render: (value) => {return formatTimeStampBackUp(value)},
+        },
+        {
             title: t['detailModal.columns.state'],
             dataIndex: 'state',
             render: (value) => {

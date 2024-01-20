@@ -16,7 +16,7 @@ import locale from "./locale";
 import {Order, Project} from "@/types/insights-web";
 import {getRandomString} from "@/utils/util";
 import {IconHome} from "@arco-design/web-react/icon";
-import {requestApplyList} from "@/api/order";
+import {requestApplyList, requestProcess} from "@/api/order";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {convertDateToTimestamp, DateFormat, getDayEndTimestamp, getDayStartTimestamp} from "@/utils/date";
@@ -45,13 +45,45 @@ export default function ApplyListPage() {
     const tableCallback = async (record, type) => {
         if(type == 'retract'){
             setCurrentOrder(record);
-            // setShowProcessPanel(true);
+            retractOrder(record.id);
         }else if(type == 'detail'){
             setCurrentOrder(record);
             setShowDetailPanel(true);
 
         }
     };
+
+    const retractOrder = async (id) => {
+        const retractParam = {
+            id:id,
+            state:3,
+        }
+        await requestProcess(retractParam)
+            .then((result) => {
+            if(result.code === '0'){
+                Notification.info({
+                    style: { width: 420 },
+                    title: 'Notification',
+                    content: t['applyList.form.submit.retractSuccess'],
+                })
+                setReloadTime(Date.now);
+            }else{
+                Notification.warning({
+                    style: { width: 420 },
+                    title: 'Warning',
+                    content: result.message || t['system.error'],
+                })
+            }
+        }).catch((error) => {
+            console.log(error);
+            Notification.error({
+                style: { width: 420 },
+                title: 'Error',
+                content: t['system.error'],
+            })
+        })
+    }
+
     const columns = useMemo(() => getColumns(t, tableCallback), [t]);
 
     const fetchData = async (): Promise<void> => {
