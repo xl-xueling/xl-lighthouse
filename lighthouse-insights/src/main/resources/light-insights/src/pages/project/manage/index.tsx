@@ -33,7 +33,6 @@ export default function ProjectManage() {
   const { id } = useParams();
 
     const menuCallback = async (id:number) => {
-        console.log("menuCallBack id:" + id);
         setGroupId(id);
         setShowManagePanel(true);
     }
@@ -63,7 +62,7 @@ export default function ProjectManage() {
                 setTimeout(() => {
                     setLoading(false);
                     setShowManagePanel(false);
-                },1000)
+                },0);
                 break;
             }
             default:
