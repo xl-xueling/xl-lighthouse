@@ -38,14 +38,6 @@ export interface ArcoTreeNode {
     children?:Array<ArcoTreeNode>;
 }
 
-export interface BackUpTreeNode {
-    id?: string;
-    name?: string;
-    pid?:string;
-    type?:string;
-    children?:Array<BackUpTreeNode>;
-}
-
 export interface ArcoFlatNode {
     key: string;
     title: string;

@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import styles from './style/index.module.less';
 import {Breadcrumb, Card, Descriptions, Notification, Skeleton, Space, Spin, Typography} from "@arco-design/web-react";
 import GroupManagePanel from "@/pages/group/manage";
-import {Project, BackUpTreeNode} from "@/types/insights-web";
+import {Project, TreeNode} from "@/types/insights-web";
 import {requestQueryById} from "@/api/project";
 import ProjectManageMenu from "@/pages/project/manage/menu";
 import {IconBook, IconClockCircle, IconHome, IconUserGroup} from "@arco-design/web-react/icon";
@@ -41,11 +41,11 @@ export default function ProjectManage() {
     const callback = async (operation,data) => {
         switch (operation){
             case "create-group":
-                const newGroup:BackUpTreeNode = {
-                    "id":String(data.id),
-                    "name":data.token,
-                    "pid":String(projectInfo.id),
-                    "type":'2',
+                const newGroup:TreeNode = {
+                    key:String(data.id),
+                    label:data.token,
+                    value:data.id,
+                    type:'group',
                 }
                 let groups = projectInfo.structure[0].children?projectInfo.structure[0].children:[];
                 groups = [...groups,newGroup];
