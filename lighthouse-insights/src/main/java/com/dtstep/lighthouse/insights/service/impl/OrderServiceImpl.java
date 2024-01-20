@@ -258,6 +258,8 @@ public class OrderServiceImpl implements OrderService {
         }
         User user = userService.cacheQueryById(applyUserId);
         orderDto.setUser(user);
+        Object relatedObject = queryRelatedElement(order);
+        orderDto.setExtend(relatedObject);
         return orderDto;
     }
 
@@ -272,6 +274,8 @@ public class OrderServiceImpl implements OrderService {
         }
         User user = userService.cacheQueryById(applyUserId);
         orderDto.setUser(user);
+        Object relatedObject = queryRelatedElement(order);
+        orderDto.setExtend(relatedObject);
         return orderDto;
     }
 

@@ -4,9 +4,25 @@ const { Text } = Typography;
 import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
-import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
-import {OrderStateEnum, PermissionEnum} from "@/types/insights-common";
+import {formatString, formatTimeStampBackUp, getRandomString} from "@/utils/util";
+import {OrderStateEnum, OrderTypeEnum, PermissionEnum} from "@/types/insights-common";
 import {getOrderStateDescription, getOrderTypeDescription} from "@/pages/common/desc/base";
+
+const getApplyDescription = (t: any, orderInfo) => {
+    if(orderInfo.orderType == OrderTypeEnum.PROJECT_ACCESS){
+        return formatString(t['applyList.description.projectAccess'],orderInfo?.extend?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.STAT_ACCESS){
+        return formatString(t['applyList.description.statAccess'],orderInfo?.extend?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.METRIC_ACCESS){
+        return formatString(t['applyList.description.metricAccess'],orderInfo?.extend?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.GROUP_THRESHOLD_ADJUST){
+        return formatString(t['applyList.description.adjustLimitedThreshold'],orderInfo?.extend?.token)
+    } else if(orderInfo.orderType == OrderTypeEnum.USER_PEND_APPROVE){
+        return formatString(t['applyList.description.userPendApprove'],orderInfo?.extend?.name)
+    } else if(orderInfo.orderType == OrderTypeEnum.STAT_PEND_APPROVE){
+        return formatString(t['applyList.description.statPendApprove'],orderInfo?.extend?.title)
+    }
+}
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
@@ -29,7 +45,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             dataIndex: 'detail',
             render: (value,record) =>
             {
-                return "--";
+                return getApplyDescription(t,record);
             }
         },
         {
