@@ -1,12 +1,17 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Grid, Input, Steps, Table, Typography} from "@arco-design/web-react";
+import {Button, Form, Grid, Input, Steps, Table, Typography} from "@arco-design/web-react";
 import UserGroup from "@/pages/user/common/groups";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale/index";
 import {Order} from "@/types/insights-web";
 import {ApproveStateEnum, OrderStateEnum, OrderTypeEnum} from "@/types/insights-common";
 import {BiListUl} from "react-icons/bi";
-import {getOrderColumns, getOrderDetailColumns, getUserApproveColumns} from "@/pages/order/common/constants";
+import {
+    getOrderColumns,
+    getOrderDetailColumns,
+    getProjectAccessColumns,
+    getUserApproveColumns
+} from "@/pages/order/common/constants";
 import {getRandomString} from "@/utils/util";
 import {getOrderApproveRoleTypeDescription} from "@/pages/common/desc/base";
 
@@ -22,6 +27,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
 
     const orderColumns = useMemo(() => getOrderColumns(t), [t]);
     const userApproveColumns = useMemo(() => getUserApproveColumns(t), [t]);
+    const projectAccessColumns = useMemo(() => getProjectAccessColumns(t), [t]);
     const orderDetailColumns = useMemo(() => getOrderDetailColumns(t,orderInfo), [t,orderInfo]);
 
     const toggleShowOrderDetail = () => {
@@ -90,52 +96,77 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
         }
     },[orderInfo])
 
+    const getRelateInformation = () => {
+        if(orderInfo.orderType == OrderTypeEnum.USER_PEND_APPROVE){
+            return (
+                <Table size={"small"} rowKey="id" pagination={false} columns={userApproveColumns} data={userListData} />
+            )
+        }else if(orderInfo.orderType == OrderTypeEnum.PROJECT_ACCESS){
+            return (
+                <Table size={"small"} rowKey="id" pagination={false} columns={projectAccessColumns} data={[orderInfo.extend]} />
+            )
+        }
+    }
+
     return (
       <div>
-          <Typography.Title
-              style={{ marginTop: 0, marginBottom: 16 }}
-              heading={6}
+          <Form
+              labelCol={{ span: 0 }}
+              wrapperCol={{ span: 24 }}
+              initialValues={{
+                  reason:orderInfo?.reason,
+              }}
           >
-              {t['detailModal.label.order.info']}
-          </Typography.Title>
-          <Table size={"small"} rowKey="id" pagination={false} columns={orderColumns} data={listData} />
-
-          <Typography.Title
-              style={{ marginTop: 30 }}
-              heading={6}
-          >
-              {t['detailModal.label.user.info']}
-          </Typography.Title>
-          <Table size={"small"} rowKey="id" pagination={false} columns={userApproveColumns} data={userListData} />
-          {
-              orderInfo.orderType == OrderTypeEnum.USER_PEND_APPROVE ? null :
-                  <>
               <Typography.Title
-              style={{ marginTop: 30 }}
-              heading={6}
+                  style={{ marginTop: 0, marginBottom: 16 }}
+                  heading={6}
               >
-                {t['detailModal.label.reason']}
+                  {t['detailModal.label.order.info']}
               </Typography.Title>
-              <Input.TextArea maxLength={200} rows={3}  showWordLimit={true} disabled={true}/>
-                  </>
-          }
-          <Grid.Row style={{ marginTop:'30px' }}>
-              <Grid.Col span={16}>
-                  <Typography.Title
-                      heading={6}
-                  >
-                      {t['detailModal.label.process.info']}
-                  </Typography.Title>
-              </Grid.Col>
-              <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                  <Button type={"secondary"} size={"mini"} icon={<BiListUl/>} onClick={toggleShowOrderDetail}/>
-              </Grid.Col>
-          </Grid.Row>
-          <Steps  size={"small"}
-                 current={4} style={{maxWidth: 780, marginBottom: 20,marginTop:10}}>
+              <Table size={"small"} rowKey="id" pagination={false} columns={orderColumns} data={listData} />
 
-              {generateOrderSteps()}
-          </Steps>
+              <Typography.Title
+                  style={{ marginTop: 30 }}
+                  heading={6}>
+                  {t['detailModal.label.related.information']}
+              </Typography.Title>
+              {
+                  getRelateInformation()
+              }
+
+
+              {
+                  orderInfo?.orderType == OrderTypeEnum.USER_PEND_APPROVE ? null :
+                  <>
+                      <Typography.Title
+                          style={{ marginTop: 30 }}
+                          heading={6}
+                      >
+                          {t['detailModal.label.reason']}
+                      </Typography.Title>
+                      <Form.Item field="reason" >
+                            <Input.TextArea maxLength={200} rows={3}  showWordLimit={true} disabled={true}/>
+                      </Form.Item>
+                  </>
+              }
+              <Grid.Row style={{ marginTop:'30px' }}>
+                  <Grid.Col span={16}>
+                      <Typography.Title
+                          heading={6}
+                      >
+                          {t['detailModal.label.process.info']}
+                      </Typography.Title>
+                  </Grid.Col>
+                  <Grid.Col span={8} style={{ textAlign: 'right' }}>
+                      <Button type={"secondary"} size={"mini"} icon={<BiListUl/>} onClick={toggleShowOrderDetail}/>
+                  </Grid.Col>
+              </Grid.Row>
+              <Steps  size={"small"}
+                     current={4} style={{maxWidth: 780, marginBottom: 20,marginTop:10}}>
+
+                  {generateOrderSteps()}
+              </Steps>
+          </Form>
           {showOrderDetail && <Table size={"small"} rowKey="id" pagination={false} columns={orderDetailColumns} data={orderDetailData} />}
       </div>
     );

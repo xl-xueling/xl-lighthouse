@@ -272,6 +272,19 @@ public class OrderServiceImpl implements OrderService {
         return orderDto;
     }
 
+    @Override
+    public Object queryRelatedElement(Order order) {
+        Map<String,Object> configMap = order.getExtendConfig();
+        if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
+            Integer projectId = (Integer) configMap.get("projectId");
+            Project project = projectService.queryById(projectId);
+            return project;
+        }else if(order.getOrderType() == OrderTypeEnum.STAT_ACCESS){
+
+        }
+        return null;
+    }
+
     @Transactional
     @Override
     public int process(OrderProcessParam processParam) {

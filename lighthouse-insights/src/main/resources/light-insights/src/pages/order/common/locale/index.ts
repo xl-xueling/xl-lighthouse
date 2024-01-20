@@ -55,6 +55,12 @@ const i18n = {
     'detailModal.label.process.info':'Process',
     'detailModal.title':'Order Detail',
     'detailModal.form.button.close':'Close',
+    'detailModal.projectAccess.columns.id':'ID',
+    'detailModal.projectAccess.columns.title':'Title',
+    'detailModal.projectAccess.columns.department':'Department',
+    'detailModal.projectAccess.columns.admins':"Admins",
+    'detailModal.projectAccess.columns.desc':'Description',
+    'detailModal.label.related.information':'Related Information',
   },
   'zh-CN': {
     'detailModal.columns.id':'ID',
@@ -112,6 +118,12 @@ const i18n = {
     'detailModal.label.process.info':'流程信息',
     'detailModal.title':'工单详情',
     'detailModal.form.button.close':'关闭',
+    'detailModal.projectAccess.columns.id':'ID',
+    'detailModal.projectAccess.columns.title':'工程名称',
+    'detailModal.projectAccess.columns.department':'所属部门',
+    'detailModal.projectAccess.columns.admins':"工程管理员",
+    'detailModal.projectAccess.columns.desc':'工程描述',
+    'detailModal.label.related.information':'关联信息',
   },
 };
 
