@@ -18,24 +18,25 @@ import { CiViewTable } from "react-icons/ci";
 import {ArcoTreeNode, BackUpTreeNode, TreeNode} from "@/types/insights-web";
 import {RiAppsLine} from "react-icons/ri";
 import {stringifyObj} from "@/utils/util";
+import {getIcon} from "@/pages/common/desc/base";
 
 export default function ProjectManageMenu({structure,callback}:{structure:TreeNode,callback:(id:number) => Promise<void>}) {
 
     const renderMenuItems = (items) => {
-        const types = ['1','2'];
+        const types = ['project','group'];
         return items?.filter(x => types.includes(x.type)).map((item) => {
             if (Array.isArray(item.children) && item.children.length > 0 && item.children.filter(x => types.includes(x.type))?.length > 0) {
                 return (
-                    <Menu.SubMenu key={item.id}
+                    <Menu.SubMenu key={item.key}
                                   title={
-                        <span style={{display:"inline-flex",alignItems:"center"}}><RiAppsLine style={{marginRight:'10px'}}/>{item.name}</span>
+                        <span style={{display:"inline-flex",alignItems:"center"}}>{getIcon(item.type)}{item.label}</span>
                     }>
                         {renderMenuItems(item.children)}
                     </Menu.SubMenu>
                 );
             }
-            return <Menu.Item key={item.id}
-            ><span style={{display:"inline-flex",alignItems:"center"}}><CiViewTable style={{marginRight:'10px'}}/>{item.name}</span></Menu.Item>;
+            return <Menu.Item key={item.key}
+            ><span style={{display:"inline-flex",alignItems:"center"}}>{getIcon(item.type)}{item.label}</span></Menu.Item>;
         });
     }
 
@@ -50,7 +51,7 @@ export default function ProjectManageMenu({structure,callback}:{structure:TreeNo
                 }}
             >
                 {
-                    renderMenuItems(structure == null?[]:structure)
+                    renderMenuItems(structure == null?[]:[structure])
                 }
             </Menu>
         </>
