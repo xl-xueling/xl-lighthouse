@@ -65,6 +65,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private StatService statService;
 
+    @Autowired
+    private PermissionService permissionService;
+
     @Override
     public ListData<OrderVO> queryApproveList(ApproveOrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
         Integer currentUserId = baseService.getCurrentUserId();
@@ -292,13 +295,20 @@ public class OrderServiceImpl implements OrderService {
         int state = processParam.getState();
         Order order = orderDao.queryById(processParam.getId());
         Validate.notNull(order);
-        Validate.isTrue(processParam.getRoleId().intValue() == order.getCurrentNode().intValue());
+        Validate.isTrue(order.getState() == OrderStateEnum.PROCESSING);
         List<OrderDetail> orderDetails = new ArrayList<>();
         int result = 0;
         if(state == 1){
+            int currentNode = order.getCurrentNode();
+            Validate.isTrue(permissionService.checkUserPermission(currentUserId,currentNode));
             result = agreeOrder(currentUserId,processParam,order);
         }else if(state == 2){
+            int currentNode = order.getCurrentNode();
+            Validate.isTrue(permissionService.checkUserPermission(currentUserId,currentNode));
             result = rejectOrder(currentUserId,processParam,order);
+        }else if(state == 3){
+            Validate.isTrue(currentUserId == order.getUserId().intValue());
+            result = retractOrder(currentUserId,processParam,order);
         }
         return result;
     }
@@ -306,7 +316,7 @@ public class OrderServiceImpl implements OrderService {
     private int agreeOrder(Integer currentUserId, OrderProcessParam processParam, Order order){
         LocalDateTime localDateTime = LocalDateTime.now();
         OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setRoleId(processParam.getRoleId());
+        orderDetail.setRoleId(order.getCurrentNode());
         orderDetail.setReply(processParam.getReply());
         orderDetail.setOrderId(processParam.getId());
         orderDetail.setUserId(currentUserId);
@@ -327,10 +337,33 @@ public class OrderServiceImpl implements OrderService {
         return result;
     }
 
+    private int retractOrder(Integer currentUserId,OrderProcessParam processParam,Order order){
+        LocalDateTime localDateTime = LocalDateTime.now();
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        List<Integer> steps = order.getSteps();
+        int stepIndex = steps.indexOf(order.getCurrentNode());
+        for(int i = stepIndex ;i < steps.size();i++){
+            int roleId = steps.get(i);
+            OrderDetail remainDetail = new OrderDetail();
+            remainDetail.setProcessTime(localDateTime);
+            remainDetail.setRoleId(roleId);
+            remainDetail.setOrderId(processParam.getId());
+            remainDetail.setState(ApproveStateEnum.SUSPEND);
+            orderDetails.add(remainDetail);
+        }
+        order.setUpdateTime(LocalDateTime.now());
+        order.setState(OrderStateEnum.RETRACTED);
+        order.setCurrentNode(0);
+        for(int i=0;i<orderDetails.size();i++){
+            orderDetailDao.updateDetail(orderDetails.get(i));
+        }
+        return orderDao.update(order);
+    }
+
     private int rejectOrder(Integer currentUserId, OrderProcessParam processParam, Order order){
         List<OrderDetail> orderDetails = new ArrayList<>();
         OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setRoleId(processParam.getRoleId());
+        orderDetail.setRoleId(order.getCurrentNode());
         orderDetail.setReply(processParam.getReply());
         orderDetail.setOrderId(processParam.getId());
         LocalDateTime localDateTime = LocalDateTime.now();

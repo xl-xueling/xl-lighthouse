@@ -96,7 +96,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
         }
     },[orderInfo])
 
-    const getRelateInformation = () => {
+    const getRelatedInformation = () => {
         if(orderInfo.orderType == OrderTypeEnum.USER_PEND_APPROVE){
             return (
                 <Table size={"small"} rowKey="id" pagination={false} columns={userApproveColumns} data={userListData} />
@@ -131,9 +131,8 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
                   {t['detailModal.label.related.information']}
               </Typography.Title>
               {
-                  getRelateInformation()
+                  getRelatedInformation()
               }
-
 
               {
                   orderInfo?.orderType == OrderTypeEnum.USER_PEND_APPROVE ? null :
@@ -162,7 +161,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
                   </Grid.Col>
               </Grid.Row>
               <Steps  size={"small"}
-                     current={4} style={{maxWidth: 780, marginBottom: 20,marginTop:10}}>
+                     current={4} style={{marginBottom: 20,marginTop:10}}>
 
                   {generateOrderSteps()}
               </Steps>

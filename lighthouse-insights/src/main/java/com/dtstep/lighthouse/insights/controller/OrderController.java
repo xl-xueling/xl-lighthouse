@@ -1,15 +1,13 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.insights.dto.OrderProcessParam;
 import com.dtstep.lighthouse.insights.dto.QueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.service.OrderService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @ControllerAdvice
@@ -25,5 +23,11 @@ public class OrderController {
         Object extend = orderService.queryRelatedElement(orderVO);
         orderVO.setExtend(extend);
         return ResultData.success(orderVO);
+    }
+
+    @PostMapping("/order/process")
+    public ResultData<Integer> process(@Validated @RequestBody OrderProcessParam approveParam){
+        int result = orderService.process(approveParam);
+        return ResultData.success(result);
     }
 }

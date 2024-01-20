@@ -10,9 +10,9 @@ export async function requestQueryById(data) :Promise<ResultData<Order>> {
     })
 }
 
-export async function requestApprove(data) :Promise<ResultData<{list:Array<Order>,total:number}>> {
+export async function requestProcess(data) :Promise<ResultData<{list:Array<Order>,total:number}>> {
     return request({
-        url:'/approve/process',
+        url:'/order/process',
         method:'POST',
         data,
     })

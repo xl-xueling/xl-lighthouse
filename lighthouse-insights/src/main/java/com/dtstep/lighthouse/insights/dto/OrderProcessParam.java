@@ -9,9 +9,6 @@ public class OrderProcessParam implements Serializable {
     private Integer id;
 
     @NotNull
-    private Integer roleId;
-
-    @NotNull
     private Integer state;
 
     private String reply;
@@ -22,14 +19,6 @@ public class OrderProcessParam implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
     }
 
     public String getReply() {

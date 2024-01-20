@@ -12,7 +12,7 @@ import {
     Typography
 } from "@arco-design/web-react";
 import OrderDetail from "@/pages/order/common/detail";
-import {requestApprove, requestQueryById} from "@/api/order";
+import {requestProcess, requestQueryById} from "@/api/order";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {OrderStateEnum, ResultData} from "@/types/insights-common";
@@ -53,7 +53,7 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
             state:1,
         }
         setAgreeLoading(true);
-        requestApprove(approveParam).then((result) => {
+        requestProcess(approveParam).then((result) => {
             if(result.code === '0'){
                 Notification.info({
                     style: { width: 420 },
@@ -91,7 +91,7 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
             state:2,
         }
         setRejectLoading(true);
-        requestApprove(approveParam).then((result) => {
+        requestProcess(approveParam).then((result) => {
             if(result.code === '0'){
                 Notification.info({
                     style: { width: 420 },
@@ -123,7 +123,7 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
 
         <Modal
             title= {t['approveModal.title']}
-            style={{ width:'850px',top:'20px' }}
+            style={{ width:'950px',top:'20px' }}
             visible={true}
             footer={null}
             onCancel={onClose}>

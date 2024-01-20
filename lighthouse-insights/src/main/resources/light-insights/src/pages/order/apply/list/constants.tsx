@@ -60,12 +60,19 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                             {t['applyList.columns.operations.detail']}
                         </Button>
                     retractButton =
-                        <Button key={getRandomString()}
-                            onClick={() => callback(record, 'retract')}
-                            type="text"
-                            size="mini">
-                            {t['applyList.columns.operations.retracted']}
-                        </Button>
+                        <Popconfirm key={getRandomString()}
+                                    focusLock
+                                    position={"tr"}
+                                    title='Confirm'
+                                    content={t['applyList.columns.operations.retracted.confirm']}
+                                    onOk={() => callback(record, 'retract')}
+                        >
+                            <Button
+                                type="text"
+                                size="mini">
+                                {t['applyList.columns.operations.retracted']}
+                            </Button>
+                        </Popconfirm>
                 }else{
                     viewButton =
                         <Button key={getRandomString()}
