@@ -16,6 +16,7 @@ import EditTable, {
 import {formatString, getRandomString, getTextBlenLength} from "@/utils/util";
 import {Group} from "@/types/insights-web";
 import {requestCreate, requestUpdate} from "@/api/group";
+import {_ColumnNamePattern, _TokenPattern} from "@/utils/constants";
 const { Row, Col } = Grid;
 
 export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
@@ -115,7 +116,7 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupUpdate.form.validate.columnName.length.failed'],name)});
                 return;
             }
-            if(!columnNameRegex.test(name)){
+            if(!_ColumnNamePattern.test(name)){
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupUpdate.form.validate.columnName.failed'],name)});
                 return;
             }
@@ -194,7 +195,7 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
                 <Form.Item field="token"
                            rules={[
                                { required: true, message: t['groupUpdate.form.validate.token.notEmpty.errorMsg'], validateTrigger : ['onSubmit'] },
-                               { required: true, match: new RegExp(/^[a-z0-9_]{5,25}$/,"g"),message: t['groupUpdate.form.validate.token.failed'] , validateTrigger : ['onSubmit']},
+                               { required: true, match: new RegExp(_TokenPattern,"g"),message: t['groupUpdate.form.validate.token.failed'] , validateTrigger : ['onSubmit']},
                            ]}>
                     <Input
                         allowClear

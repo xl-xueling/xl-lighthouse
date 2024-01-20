@@ -15,7 +15,7 @@ import {IconMinusCircleFill, IconPlus} from "@arco-design/web-react/icon";
 import {formatString, getTextBlenLength, stringifyObj} from "@/utils/util";
 import {requestCreate} from "@/api/group";
 import {Group, Project} from "@/types/insights-web";
-import {GlobalErrorCodes} from "@/utils/constants";
+import {_TokenPattern, _ColumnNamePattern} from "@/utils/constants";
 
 export default function GroupCreateModal({projectId,callback,onClose}) {
 
@@ -26,7 +26,6 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
   const editTableRef= useRef(null);
   const t = useLocale(locale);
   const FormItem = Form.Item;
-  const columnNameRegex = /^[a-zA-Z]\w{2,14}$/;
   const formRef = useRef(null);
 
   const onOk = async() => {
@@ -49,7 +48,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
         Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupCreate.form.validate.columnName.length.failed'],name)});
         return;
       }
-      if(!columnNameRegex.test(name)){
+      if(!_ColumnNamePattern.test(name)){
         Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['groupCreate.form.validate.columnName.failed'],name)});
         return;
       }
@@ -179,7 +178,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
           <Form.Item field="token"
                      rules={[
                        { required: true, message: t['groupCreate.form.validate.token.notEmpty.errorMsg'], validateTrigger : ['onSubmit'] },
-                       { required: true, match: new RegExp(/^[a-z0-9_]{5,25}$/,"g"),message: t['groupCreate.form.validate.token.failed'] , validateTrigger : ['onSubmit']},
+                       { required: true, match: new RegExp(_TokenPattern,"g"),message: t['groupCreate.form.validate.token.failed'] , validateTrigger : ['onSubmit']},
                      ]}>
             <Input
                 allowClear
