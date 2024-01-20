@@ -119,6 +119,7 @@ public class StatServiceImpl implements StatService {
         StatDto statDto = new StatDto(stat);
         Group group = groupDao.queryById(stat.getGroupId());
         Project project = projectDao.queryById(stat.getProjectId());
+        Validate.notNull(project);
         Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,stat.getId());
         Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,stat.getId());
         if(permissionService.checkUserPermission(userId, manageRole.getId())){
