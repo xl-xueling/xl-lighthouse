@@ -1,27 +1,33 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {
+    Breadcrumb,
+    Button,
     Card,
+    Grid, Notification,
     PaginationProps,
+    Space,
     Table,
-    Message, Breadcrumb, Notification,
 } from '@arco-design/web-react';
-import {Order, Project} from "@/types/insights-web";
-import {requestApproveList} from "@/api/order";
-import {getColumns} from "@/pages/order/approve/list/constants";
+import SearchForm from "./form";
+import FilterAddPanel from "@/pages/filter/add/filter_add";
+import {getColumns} from "./constants";
 import useLocale from "@/utils/useLocale";
-import locale from "@/pages/order/approve/list/locale";
-import SearchForm from "@/pages/order/approve/list/form";
-import OrderDetailModal from "@/pages/order/common/detail_modal";
-import OrderProcessModal from "@/pages/order/approve/list/process_modal";
+import locale from "./locale";
+import {Order, Project} from "@/types/insights-web";
+import {getRandomString} from "@/utils/util";
 import {IconHome} from "@arco-design/web-react/icon";
+import {requestApplyList} from "@/api/order";
+import {useSelector} from "react-redux";
+import {GlobalState} from "@/store";
 import {convertDateToTimestamp, DateFormat, getDayEndTimestamp, getDayStartTimestamp} from "@/utils/date";
 
-export default function ApproveList() {
+export default function ApplyListPage() {
+
     const t = useLocale(locale);
-    const [formParams, setFormParams] = useState<any>({});
+    const userInfo = useSelector((state: GlobalState) => state.userInfo);
     const [listData, setListData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [currentOrder,setCurrentOrder] = useState<Order>();
+    const [loading,setLoading] = useState<boolean>(true);
+    const [formParams, setFormParams] = useState<any>({});
     const [reloadTime,setReloadTime] = useState<number>(Date.now);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
@@ -32,48 +38,31 @@ export default function ApproveList() {
         pageSizeChangeResetCurrent: true,
     });
 
-    const [showProcessPanel, setShowProcessPanel] = useState(false);
-    const [showDetailPanel, setShowDetailPanel] = useState(false);
-
     const tableCallback = async (record, type) => {
-        if(type == 'process'){
-            setShowProcessPanel(true);
-            setCurrentOrder(record);
+        if(type == 'retract'){
+            // setShowProcessPanel(true);
+            // setCurrentOrder(record);
         }else if(type == 'detail'){
-            setShowDetailPanel(true);
-            setCurrentOrder(record);
+            // setShowDetailPanel(true);
+            // setCurrentOrder(record);
         }
     };
-
     const columns = useMemo(() => getColumns(t, tableCallback), [t]);
-
-    function onChangeTable({ current, pageSize }) {
-        setPagination({
-            ...pagination,
-            current,
-            pageSize,
-        });
-    }
-
-    function handleSearch(params) {
-        setPagination({ ...pagination, current: 1 });
-        setFormParams(params);
-    }
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
-        const {current, pageSize} = pagination;
-        const combineParam:any = {}
-        combineParam.username = formParams.username;
-        combineParam.types = formParams.types;
-        combineParam.states = formParams.states;
+        const queryParams:any = {};
+        queryParams.userId = userInfo?.id;
+        queryParams.types = formParams.types;
+        queryParams.states = formParams.states;
         const createTime = formParams.createTime;
         if(createTime && Array.isArray(createTime)){
-            combineParam.createStartTime = getDayStartTimestamp(convertDateToTimestamp(createTime[0],DateFormat));
-            combineParam.createEndTime = getDayEndTimestamp(convertDateToTimestamp(createTime[1],DateFormat));
+            queryParams.createStartTime = getDayStartTimestamp(convertDateToTimestamp(createTime[0],DateFormat));
+            queryParams.createEndTime = getDayEndTimestamp(convertDateToTimestamp(createTime[1],DateFormat));
         }
-        await requestApproveList({
-            queryParams:combineParam,
+        const {current, pageSize} = pagination;
+        await requestApplyList({
+            queryParams:queryParams,
             pagination:{
                 pageSize:pageSize,
                 pageNum:current,
@@ -94,13 +83,27 @@ export default function ApproveList() {
         }).catch((error) => {
             console.log(error);
         })
-
     }
 
     useEffect(() => {
         fetchData().then();
     }, [reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
+    const [showAddPanel, setShowsAddPanel] = useState(false);
+
+    function onChangeTable({ current, pageSize }) {
+        setPagination({
+            ...pagination,
+            current,
+            pageSize,
+        });
+    }
+
+    function handleSearch(params) {
+        console.log("params is:" + JSON.stringify(params))
+        setPagination({ ...pagination, current: 1 });
+        setFormParams(params);
+    }
 
     return (
         <>
@@ -108,20 +111,19 @@ export default function ApproveList() {
             <Breadcrumb.Item>
                 <IconHome />
             </Breadcrumb.Item>
-            <Breadcrumb.Item style={{fontWeight:20}}>{t['approveList.breadcrumb.title']}</Breadcrumb.Item>
+            <Breadcrumb.Item style={{fontWeight:20}}>{t['applyList.breadcrumb.title']}</Breadcrumb.Item>
         </Breadcrumb>
         <Card>
-
             <SearchForm onSearch={handleSearch} />
             <Table
-                rowKey="id"
-                style={{ marginTop:12}}
+                loading={loading}
+                rowKey={'id'}
                 size={"small"}
                 onChange={onChangeTable}
-                loading={loading}
+                style={{ marginTop:12}}
+                pagination={pagination}
                 columns={columns} data={listData} />
-            {showProcessPanel && <OrderProcessModal orderId={currentOrder.id} onClose={() => {setShowProcessPanel(false);}} onReload={() => {setReloadTime(Date.now)}}/>}
-            {showDetailPanel && <OrderDetailModal orderId={currentOrder.id} onClose={() => setShowDetailPanel(false)}/>}
+            {showAddPanel && <FilterAddPanel onClose={() => setShowsAddPanel(false)}/>}
         </Card>
         </>
     );

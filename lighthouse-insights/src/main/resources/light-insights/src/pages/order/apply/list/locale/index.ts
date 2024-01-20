@@ -1,0 +1,36 @@
+const i18n = {
+  'en-US': {
+    'applyList.breadcrumb.title':'My Application',
+    'applyList.columns.id':'ID',
+    'applyList.columns.user':'User',
+    'applyList.columns.type':'OrderType',
+    'applyList.columns.desc':'Description',
+    'applyList.columns.createTime':'CreateTime',
+    'applyList.searchForm.username.label':'UserName',
+    'applyList.searchForm.orderType.label':'OrderType',
+    'applyList.searchForm.state.label':'State',
+    'applyList.searchForm.createTime.label':'CreateTime',
+    'applyList.columns.state':'State',
+    'applyList.columns.operations':'Operations',
+    'applyList.columns.operations.retracted':'Retract',
+    'applyList.columns.operations.detail':'Detail',
+  },
+  'zh-CN': {
+    'applyList.breadcrumb.title':'我的申请',
+    'applyList.columns.id':'ID',
+    'applyList.columns.user':'申请人',
+    'applyList.columns.type':'工单类型',
+    'applyList.columns.desc':'描述',
+    'applyList.columns.createTime':'创建时间',
+    'applyList.searchForm.username.label':'申请人',
+    'applyList.searchForm.orderType.label':'工单类型',
+    'applyList.searchForm.state.label':'工单状态',
+    'applyList.searchForm.createTime.label':'创建时间',
+    'applyList.columns.state':'状态',
+    'applyList.columns.operations':'操作',
+    'applyList.columns.operations.retracted':'撤回',
+    'applyList.columns.operations.detail':'查看',
+  },
+};
+
+export default i18n;

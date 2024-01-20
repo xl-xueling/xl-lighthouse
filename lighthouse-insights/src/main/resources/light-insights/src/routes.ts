@@ -86,7 +86,7 @@ export const routes: IRoute[] = [
     children: [
       {
         name: 'menu.order.application',
-        key: 'order/application/list',
+        key: 'order/apply/list',
         breadcrumb:false,
       },
       {
