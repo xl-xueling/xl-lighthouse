@@ -102,7 +102,7 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
                     ]}>
                         <Input.TextArea placeholder='Please enter description' style={{ minHeight: 64}} maxLength={150} showWordLimit={true}/>
                     </Form.Item>
-                    <Form.Item label={'PrivateType'} field="privateType">
+                    <Form.Item label={'PrivateType'} field="privateType" rules={[{required:true}]}>
                         <Radio.Group defaultValue={0}>
                             <Radio value={0}>Private</Radio>
                             <Radio value={1}>Public</Radio>

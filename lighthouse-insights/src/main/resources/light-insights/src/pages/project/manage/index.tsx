@@ -137,6 +137,7 @@ export default function ProjectManage() {
                       </div>
                   </Card>
                   <Card>
+                      <Space size={10} direction="vertical" style={{ width: '100%' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Typography.Title heading={6}>
                               {t['projectManage.card.label.description']}
@@ -157,6 +158,7 @@ export default function ProjectManage() {
                                         data={descriptionData} column={1}/>
                           </Skeleton>
                       </div>
+                      </Space>
                   </Card>
               </Space>
           </div>
