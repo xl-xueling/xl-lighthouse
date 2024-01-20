@@ -87,6 +87,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
     }
 
     const handlerDeleteGroup = async () => {
+        setLoading(true);
         await requestDeleteById({id:groupId}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -128,17 +129,13 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
 
     return (
         <>
-            <Skeleton
-                text={{rows: 1, width: ['100%']}}
-                animation
-                loading={loading}>
+            <Spin loading={loading} style={{width: '100%'}}>
                 <Row style={{marginBottom:'15px'}}>
                     <Typography.Text style={{fontSize:'14px',fontWeight:500}}>
                         <Button icon={<CiViewTable/>} shape={"circle"} size={"small"} style={{marginRight:'10px'}}/>
                         {t['groupManage.group']}：<Text copyable>{groupInfo?.token}</Text>
                     </Typography.Text>
                 </Row>
-            </Skeleton>
             <Tabs
                 type="line"
                 tabPosition={"top"}
@@ -208,6 +205,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
             {showGroupEditPanel && <GroupUpdatePanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)} callback={callback}/>}
             {showLimitedRecordPanel && <RecordModal resourceId={0} recordType={0} resourceType={[0]} onClose={() => setShowLimitedRecordPanel(false)}/>}
             {showSecretKeyModal && <SecretKeyModal groupId={groupInfo?.id} onClose={() => setShowSecretKeyModal(false)}/>}
+            </Spin>
         </>);
 
 }
