@@ -5,7 +5,7 @@ import {
     Input,
     Message,
     Modal,
-    Notification,
+    Notification, Popconfirm,
     Skeleton,
     Space,
     Spin,
@@ -17,6 +17,7 @@ import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {OrderStateEnum, ResultData} from "@/types/insights-common";
 import {Order} from "@/types/insights-web";
+import {getRandomString} from "@/utils/util";
 
 export default function OrderProcessModal({orderId,onClose,onReload}) {
 
@@ -152,8 +153,24 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
                 </Form>
                 <div style={{ textAlign: 'center', marginTop: '35px' }}>
                     <Space size={10}>
-                        <Button type="primary" loading={agreeLoading} onClick={approvedSubmit}>{t['approveModal.button.agree']}</Button>
-                        <Button type="primary" loading={rejectLoading} status='danger' onClick={rejectedSubmit}>{t['approveModal.button.reject']}</Button>
+                        <Popconfirm key={getRandomString()}
+                                    focusLock
+                                    position={"tr"}
+                                    title='Confirm'
+                                    content={t['approveModal.button.agree.confirm']}
+                                    onOk={approvedSubmit}
+                        >
+                            <Button type="primary" loading={agreeLoading}>{t['approveModal.button.agree']}</Button>
+                        </Popconfirm>
+                        <Popconfirm key={getRandomString()}
+                                    focusLock
+                                    position={"tr"}
+                                    title='Confirm'
+                                    content={t['approveModal.button.reject.confirm']}
+                                    onOk={rejectedSubmit}
+                        >
+                            <Button type="primary" loading={rejectLoading} status='danger'>{t['approveModal.button.reject']}</Button>
+                        </Popconfirm>
                     </Space>
                 </div>
             </Skeleton>

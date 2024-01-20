@@ -405,12 +405,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void orderAgreeCallback(Order order){
+        Integer userId = order.getUserId();
         if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
             User userUpdateParam = new User();
-            userUpdateParam.setId(order.getUserId());
+            userUpdateParam.setId(userId);
             userUpdateParam.setState(UserStateEnum.USER_NORMAL);
             userUpdateParam.setUpdateTime(LocalDateTime.now());
             userService.update(userUpdateParam);
+        }else if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
+            Integer projectId = (Integer) order.getExtendConfig().get("projectId");
+            Role role = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,projectId);
+            Validate.notNull(role);
+            permissionService.grantPermission(userId,OwnerTypeEnum.USER,role.getId());
         }
     }
 

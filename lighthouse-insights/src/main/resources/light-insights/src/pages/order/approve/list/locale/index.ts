@@ -33,6 +33,8 @@ const i18n = {
     'approveModal.title':'Order Approve',
     'approveModal.label.reply':'Order Reply',
     'approveModal.button.approve':'Approve',
+    'approveModal.button.agree.confirm':'Are you sure to approve this order?',
+    'approveModal.button.reject.confirm':'Are you sure to reject this order?',
     'approveModal.button.agree':'Agree',
     'approveModal.form.submit.success':'Order process successfully!',
     'approveModal.button.reject':'Reject',
@@ -72,6 +74,8 @@ const i18n = {
     'approveModal.button.agree':'同意',
     'approveModal.button.reject':'驳回',
     'approveModal.form.submit.success':'工单处理成功！',
+    'approveModal.button.agree.confirm':'是否确认同意该申请？',
+    'approveModal.button.reject.confirm':'是否确认拒绝该申请？',
   },
 };
 
