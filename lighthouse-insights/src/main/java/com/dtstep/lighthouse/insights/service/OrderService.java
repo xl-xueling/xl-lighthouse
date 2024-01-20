@@ -20,6 +20,8 @@ public interface OrderService {
 
     OrderVO queryById(Integer id);
 
+    Object queryRelatedElement(Order order);
+
     ListData<OrderVO> queryApplyList(ApplyOrderQueryParam queryParam, Integer pageNum, Integer pageSize);
 
     ListData<OrderVO> queryApproveList(ApproveOrderQueryParam queryParam, Integer pageNum, Integer pageSize);

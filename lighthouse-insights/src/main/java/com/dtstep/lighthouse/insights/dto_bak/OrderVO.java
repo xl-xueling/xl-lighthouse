@@ -18,6 +18,8 @@ public class OrderVO extends Order {
 
     private List<OrderDetailDto> orderDetails;
 
+    private Object extend;
+
     public OrderVO(Order order){
         assert order != null;
         BeanCopyUtil.copy(order,this);
@@ -69,5 +71,13 @@ public class OrderVO extends Order {
 
     public void setOrderDetails(List<OrderDetailDto> orderDetails) {
         this.orderDetails = orderDetails;
+    }
+
+    public Object getExtend() {
+        return extend;
+    }
+
+    public void setExtend(Object extend) {
+        this.extend = extend;
     }
 }

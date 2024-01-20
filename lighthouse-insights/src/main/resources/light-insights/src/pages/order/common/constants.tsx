@@ -97,6 +97,51 @@ export function getUserApproveColumns(t: any) {
     ];
 }
 
+export function getProjectAccessColumns(t: any) {
+    return [
+        {
+            title: t['detailModal.projectAccess.columns.id'],
+            dataIndex: 'id',
+            render: (value,record) =>
+                <Text>{value}</Text>
+            ,
+        },
+        {
+            title: t['detailModal.projectAccess.columns.title'],
+            dataIndex: 'title',
+            render: (value,record) =>
+                <Text>{value}</Text>
+            ,
+        },
+        {
+            title: t['detailModal.projectAccess.columns.department'],
+            dataIndex: 'departmentId',
+            render: (value,record) => {
+                return <DepartmentLabel departmentId={value}/>
+            }
+            ,
+        },
+        {
+            title: t['detailModal.projectAccess.columns.admins'],
+            dataIndex: 'admins',
+            render: (value,record) => {
+                return <UserGroup users={value}/>
+            }
+        },
+        {
+            title: t['detailModal.projectAccess.columns.desc'],
+            dataIndex: 'desc',
+            render: (value,record) => {
+                return <Text>{value}</Text>
+            }
+            ,
+        },
+    ];
+}
+
+
+
+
 export function getOrderDetailColumns(t: any,orderInfo:Order) {
     return [
         {

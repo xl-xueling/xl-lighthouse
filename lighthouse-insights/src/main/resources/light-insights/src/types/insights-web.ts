@@ -161,6 +161,7 @@ export interface Order {
     orderType?:OrderTypeEnum;
     orderDetails?:OrderDetail[];
     extendConfig?:any;
+    extend?:any,
     permissions?:PermissionEnum[];
 }
 

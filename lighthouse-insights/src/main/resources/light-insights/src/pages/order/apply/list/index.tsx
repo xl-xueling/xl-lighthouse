@@ -20,6 +20,7 @@ import {requestApplyList} from "@/api/order";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {convertDateToTimestamp, DateFormat, getDayEndTimestamp, getDayStartTimestamp} from "@/utils/date";
+import OrderDetailModal from "@/pages/order/common/detail_modal";
 
 export default function ApplyListPage() {
 
@@ -29,6 +30,7 @@ export default function ApplyListPage() {
     const [loading,setLoading] = useState<boolean>(true);
     const [formParams, setFormParams] = useState<any>({});
     const [reloadTime,setReloadTime] = useState<number>(Date.now);
+    const [currentOrder,setCurrentOrder] = useState<Order>();
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: true,
@@ -38,13 +40,16 @@ export default function ApplyListPage() {
         pageSizeChangeResetCurrent: true,
     });
 
+    const [showDetailPanel, setShowDetailPanel] = useState(false);
+
     const tableCallback = async (record, type) => {
         if(type == 'retract'){
+            setCurrentOrder(record);
             // setShowProcessPanel(true);
-            // setCurrentOrder(record);
         }else if(type == 'detail'){
-            // setShowDetailPanel(true);
-            // setCurrentOrder(record);
+            setCurrentOrder(record);
+            setShowDetailPanel(true);
+
         }
     };
     const columns = useMemo(() => getColumns(t, tableCallback), [t]);
@@ -124,6 +129,7 @@ export default function ApplyListPage() {
                 pagination={pagination}
                 columns={columns} data={listData} />
             {showAddPanel && <FilterAddPanel onClose={() => setShowsAddPanel(false)}/>}
+            {showDetailPanel && <OrderDetailModal orderId={currentOrder.id} onClose={() => setShowDetailPanel(false)}/>}
         </Card>
         </>
     );
