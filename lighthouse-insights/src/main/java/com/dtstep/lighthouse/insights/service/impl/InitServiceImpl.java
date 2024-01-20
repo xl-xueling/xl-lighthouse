@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class InitServiceImpl implements InitService {
@@ -116,7 +117,8 @@ public class InitServiceImpl implements InitService {
             LocalDateTime localDateTime = LocalDateTime.now();
             domain.setCreateTime(localDateTime);
             domain.setUpdateTime(localDateTime);
-            domain.setName(RandomID.id(4));
+            domain.setName("Default-Domain-" + System.currentTimeMillis());
+            domain.setDefaultTokenPrefix(RandomID.id(4));
             int result = domainService.create(domain);
             Validate.isTrue(result > 0);
         }

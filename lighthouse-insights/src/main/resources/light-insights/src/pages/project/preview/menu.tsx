@@ -15,8 +15,7 @@ import {IconApps, IconBug, IconBulb, IconFile, IconFolder, IconTag, IconTags} fr
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
 import { CiViewTable } from "react-icons/ci";
-import {ArcoTreeNode, BackUpTreeNode, Project, TreeNode} from "@/types/insights-web";
-import {stringifyObj} from "@/utils/util";
+import {Project, TreeNode} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 

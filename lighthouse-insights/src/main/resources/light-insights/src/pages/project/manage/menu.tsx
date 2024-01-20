@@ -1,23 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import styles from "./style/index.module.less";
-import {Button, Grid, Input, Skeleton, Space, Tree, Typography} from "@arco-design/web-react";
-import Overview from "@/pages/dashboard/workplace/overview";
-import PopularContents from "@/pages/dashboard/workplace/popular-contents";
-import ContentPercentage from "@/pages/dashboard/workplace/content-percentage";
-import Shortcuts from "@/pages/dashboard/workplace/shortcuts";
-import Carousel from "@/pages/dashboard/workplace/carousel";
-import Announcement from "@/pages/dashboard/workplace/announcement";
-import Docs from "@/pages/dashboard/workplace/docs";
+import {Button, Grid} from "@arco-design/web-react";
 const { Row, Col } = Grid;
 import { Menu, Slider } from '@arco-design/web-react';
 import {IconApps, IconBug, IconBulb, IconFile, IconFolder, IconTag, IconTags} from '@arco-design/web-react/icon';
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
-import { CiViewTable } from "react-icons/ci";
-import {ArcoTreeNode, BackUpTreeNode, TreeNode} from "@/types/insights-web";
-import {RiAppsLine} from "react-icons/ri";
-import {stringifyObj} from "@/utils/util";
+import {TreeNode} from "@/types/insights-web";
 import {getIcon} from "@/pages/common/desc/base";
 
 export default function ProjectManageMenu({structure,callback}:{structure:TreeNode,callback:(id:number) => Promise<void>}) {

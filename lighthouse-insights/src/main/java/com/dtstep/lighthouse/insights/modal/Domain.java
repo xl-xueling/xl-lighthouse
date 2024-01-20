@@ -9,6 +9,8 @@ public class Domain implements Serializable {
 
     private String name;
 
+    private String defaultTokenPrefix;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
@@ -29,6 +31,14 @@ public class Domain implements Serializable {
         this.name = name;
     }
 
+    public String getDefaultTokenPrefix() {
+        return defaultTokenPrefix;
+    }
+
+    public void setDefaultTokenPrefix(String defaultTokenPrefix) {
+        this.defaultTokenPrefix = defaultTokenPrefix;
+    }
+
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -44,4 +54,6 @@ public class Domain implements Serializable {
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
+
+
 }

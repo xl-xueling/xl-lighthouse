@@ -22,7 +22,7 @@ import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import GroupEditPanel from "@/pages/group/update";
 import {CiViewTable} from "react-icons/ci";
 import {RiAppsLine} from "react-icons/ri";
-import {Group, BackUpTreeNode} from "@/types/insights-web";
+import {Group} from "@/types/insights-web";
 import {requestDeleteById, requestQueryById} from "@/api/group";
 import {EditTableColumn} from "@/pages/common/edittable/EditTable";
 import {getRandomString} from "@/utils/util";
