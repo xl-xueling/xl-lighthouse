@@ -6,6 +6,7 @@
     <resultMap id="domainResultMap" type="com.dtstep.lighthouse.insights.modal.Domain">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
+        <result property="defaultTokenPrefix" column="default_token_prefix"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
@@ -14,17 +15,18 @@
         INSERT INTO ldp_domains (`name`,`create_time`,`update_time`) VALUES
         (
             #{name,jdbcType=VARCHAR},
+            #{defaultTokenPrefix,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
     <select id="queryById" resultMap="domainResultMap">
-        SELECT `id`,`name`,`create_time`,`update_time` FROM ldp_domains WHERE id = #{id}
+        SELECT `id`,`name`,`default_token_prefix`,`create_time`,`update_time` FROM ldp_domains WHERE id = #{id}
     </select>
 
     <select id="queryDefault" resultMap="domainResultMap">
-        SELECT `id`,`name`,`create_time`,`update_time` FROM ldp_domains order by create_time desc limit 1
+        SELECT `id`,`name`,`default_token_prefix`,`create_time`,`update_time` FROM ldp_domains order by create_time desc limit 1
     </select>
 
 </mapper>

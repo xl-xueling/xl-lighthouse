@@ -3,12 +3,15 @@ package com.dtstep.lighthouse.insights.controller;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
+import com.dtstep.lighthouse.insights.dto.GroupCreateParam;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.IDParam;
 import com.dtstep.lighthouse.insights.dto_bak.ResultData;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.modal.Domain;
 import com.dtstep.lighthouse.insights.modal.Group;
+import com.dtstep.lighthouse.insights.service.DomainService;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.StatService;
 import com.dtstep.lighthouse.insights.vo.ResultWrapper;
@@ -32,11 +35,16 @@ public class GroupController {
     @Autowired
     private StatService statService;
 
+    @Autowired
+    private DomainService domainService;
+
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @RequestMapping("/group/create")
-    public ResultData<Integer> create(@Validated @RequestBody Group createParam) {
+    public ResultData<Integer> create(@Validated @RequestBody GroupCreateParam createParam) {
         GroupQueryParam countByTokenParam = new GroupQueryParam();
-        countByTokenParam.setToken(createParam.getToken());
+        Domain domain = domainService.queryDefault();
+        String token = String.format("%s:%s",domain.getDefaultTokenPrefix(),createParam.getToken());
+        countByTokenParam.setToken(token);
         int tokenCount = groupService.count(countByTokenParam);
         if(tokenCount > 0){
             return ResultData.result(ResultCode.createGroupTokenExist);
@@ -47,7 +55,12 @@ public class GroupController {
         if(groupCount > SystemConstant.PROJECT_MAX_GROUP_SIZE){
             return ResultData.result(ResultCode.createGroupUnderProjectExceedLimit);
         }
-        int id = groupService.create(createParam);
+        Group group = new Group();
+        group.setToken(token);
+        group.setColumns(createParam.getColumns());
+        group.setDesc(createParam.getDesc());
+        group.setProjectId(createParam.getProjectId());
+        int id = groupService.create(group);
         if(id > 0){
             return ResultData.success(id);
         }else{
