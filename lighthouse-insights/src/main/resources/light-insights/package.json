@@ -20,7 +20,7 @@
     "@arco-design/color": "^0.4.0",
     "@arco-design/web-react": "^2.32.2",
     "@arco-themes/react-arco-pro": "^0.0.7",
-    "@arco-themes/react-ldp-theme": "^0.0.6",
+    "@arco-themes/react-ldp-theme": "^0.0.12",
     "@loadable/component": "^5.13.2",
     "@reduxjs/toolkit": "^1.9.7",
     "@turf/turf": "^6.5.0",
