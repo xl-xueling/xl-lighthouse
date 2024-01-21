@@ -31,9 +31,9 @@ const { Row, Col } = Grid;
 import { RiShieldKeyholeLine } from "react-icons/ri";
 import {GlobalErrorCodes} from "@/utils/constants";
 import GroupUpdatePanel from "@/pages/group/update";
-import {RecordModal} from "@/pages/record/record_modal";
 import SecretKeyModal from "@/pages/group/basic/secret_key";
 import {RecordTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
+import {LimitedRecordModal} from "@/pages/record/limited_records";
 
 
 export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
@@ -203,7 +203,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                 setShowsStatAddPanel(false);
             }} onSuccess={() => {setFormParams({"groupId":groupId,t:new Date().getTime()});}}/>}
             {showGroupEditPanel && <GroupUpdatePanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)} callback={callback}/>}
-            {showLimitedRecordPanel && <RecordModal resourceId={groupInfo?.id} recordTypes={[RecordTypeEnum.GROUP_LIMITED]} resourceType={ResourceTypeEnum.Group} onClose={() => setShowLimitedRecordPanel(false)}/>}
+            {showLimitedRecordPanel && <LimitedRecordModal resourceId={groupInfo?.id} recordTypes={[RecordTypeEnum.GROUP_MESSAGE_LIMITED]} resourceType={ResourceTypeEnum.Group} onClose={() => setShowLimitedRecordPanel(false)}/>}
             {showSecretKeyModal && <SecretKeyModal groupId={groupInfo?.id} onClose={() => setShowSecretKeyModal(false)}/>}
             </Spin>
         </>);

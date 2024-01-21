@@ -15,6 +15,7 @@ import {CiViewTable} from "react-icons/ci";
 import {IconTag} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
 import {Record} from "@/types/insights-web";
+import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 
 
 export interface LimitedRecord {
@@ -24,11 +25,19 @@ export interface LimitedRecord {
     desc?:string,
 }
 
-export function translateRecord(record:Record){
+export function translateRecord(t: any,record:Record){
     const type = record.recordType;
-    if(type === RecordTypeEnum.GROUP_LIMITED){
+    const descObject = JSON.parse(record.desc);
+    if(type === RecordTypeEnum.GROUP_MESSAGE_LIMITED){
         {
-
+            const result:LimitedRecord = {
+                id:record.id,
+                desc: t['recordType.groupLimited.startTime'] + ": " + formatTimeStamp(Number(descObject.startTime),DateTimeFormat) + " , "
+                + t['recordType.groupLimited.endTime'] + ": " + formatTimeStamp(Number(descObject.endTime),DateTimeFormat)
+                ,
+            }
+            return result;
         }
     }
+    return {};
 }

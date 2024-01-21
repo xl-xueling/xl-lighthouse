@@ -54,8 +54,8 @@ export enum RecordTypeEnum {
     DELETE_METRIC=15,
     GRANT_PERMISSION=16,
     RELEASE_PERMISSION=17,
-    GROUP_LIMITED=18,
-    STAT_LIMITED=19,
+    GROUP_MESSAGE_LIMITED=18,
+    STAT_RESULT_LIMITED=19,
 }
 
 export enum UserStateEnum{
