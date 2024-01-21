@@ -4,7 +4,7 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.ApplyOrderQueryParam;
 import com.dtstep.lighthouse.insights.dto.OrderProcessParam;
-import com.dtstep.lighthouse.insights.dto_bak.OrderVO;
+import com.dtstep.lighthouse.insights.vo.OrderVO;
 import com.dtstep.lighthouse.insights.dto.ApproveOrderQueryParam;
 import com.dtstep.lighthouse.common.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Order;

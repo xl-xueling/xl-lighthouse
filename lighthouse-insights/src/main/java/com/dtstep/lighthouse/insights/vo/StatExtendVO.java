@@ -1,12 +1,12 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.insights.modal.RenderConfig;
 
-public class StatExtendDto extends StatDto {
+public class StatExtendVO extends StatVO {
 
     private RenderConfig renderConfig;
 
-    public StatExtendDto(StatDto stat) {
+    public StatExtendVO(StatVO stat) {
         super(stat);
     }
 

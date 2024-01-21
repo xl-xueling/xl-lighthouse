@@ -1,6 +1,5 @@
 package com.dtstep.lighthouse.insights.controller;
 
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
@@ -14,6 +13,8 @@ import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
+import com.dtstep.lighthouse.insights.vo.ProjectVO;
+import com.dtstep.lighthouse.insights.vo.ProjectExtendVO;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,21 +45,21 @@ public class ProjectController {
     }
 
     @RequestMapping("/project/queryById")
-    public ResultData<ProjectExtendDto> queryById(@RequestBody QueryParam queryParam) throws Exception{
-        ProjectDto projectDto = projectService.queryById(queryParam.getId());
-        if(projectDto == null){
+    public ResultData<ProjectExtendVO> queryById(@RequestBody QueryParam queryParam) throws Exception{
+        ProjectVO projectVO = projectService.queryById(queryParam.getId());
+        if(projectVO == null){
             return ResultData.result(ResultCode.elementNotFound);
         }
-        ProjectExtendDto projectExtendDto = new ProjectExtendDto(projectDto);
-        TreeNode structure = projectService.getStructure(projectDto);
+        ProjectExtendVO projectExtendDto = new ProjectExtendVO(projectVO);
+        TreeNode structure = projectService.getStructure(projectVO);
         projectExtendDto.setStructure(structure);
         return ResultData.success(projectExtendDto);
     }
 
     @PostMapping("/project/list")
-    public ResultData<ListData<ProjectDto>> queryList(@Validated @RequestBody ListSearchObject<ProjectQueryParam> searchObject){
+    public ResultData<ListData<ProjectVO>> queryList(@Validated @RequestBody ListSearchObject<ProjectQueryParam> searchObject){
         Pagination pagination = searchObject.getPagination();
-        ListData<ProjectDto> listData = projectService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
+        ListData<ProjectVO> listData = projectService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
     }
 

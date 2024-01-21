@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
@@ -7,11 +7,11 @@ import org.apache.commons.lang3.Validate;
 
 import java.util.List;
 
-public class MetricSetDto extends MetricSet {
+public class MetricSetVO extends MetricSet {
 
     private List<User> admins;
 
-    public MetricSetDto(MetricSet metricSet){
+    public MetricSetVO(MetricSet metricSet){
         Validate.notNull(metricSet);
         BeanCopyUtil.copy(metricSet,this);
     }

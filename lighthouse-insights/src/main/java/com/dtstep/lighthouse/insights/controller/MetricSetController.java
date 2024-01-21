@@ -12,6 +12,8 @@ import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
 import com.dtstep.lighthouse.insights.service.MetricSetService;
 import com.dtstep.lighthouse.insights.service.RelationService;
+import com.dtstep.lighthouse.insights.vo.MetricSetVO;
+import com.dtstep.lighthouse.insights.vo.RelationVO;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -68,7 +70,7 @@ public class MetricSetController {
     @RequestMapping("/metricset/queryById")
     public ResultData<MetricSet> queryById(@Validated @RequestBody IDParam idParam) throws Exception{
         Integer id = idParam.getId();
-        MetricSetDto metricSet = metricSetService.queryById(id);
+        MetricSetVO metricSet = metricSetService.queryById(id);
         List<TreeNode> structure = metricSetService.getStructure(metricSet);
         System.out.println("metricSet structure:" + JsonUtil.toJSONString(structure));
         metricSet.setStructure(structure);
@@ -83,11 +85,11 @@ public class MetricSetController {
     }
 
     @RequestMapping("/metricset/bindlist")
-    public ResultData<List<RelationDto>> bindedList(@Validated @RequestBody IDParam idParam) {
+    public ResultData<List<RelationVO>> bindedList(@Validated @RequestBody IDParam idParam) {
         Integer id = idParam.getId();
-        List<RelationDto> relationDtos = relationService.queryList(id, RelationTypeEnum.MetricSetBindRelation);
-        System.out.println("relationDtos is:" + JsonUtil.toJSONString(relationDtos));
-        return ResultData.success(relationDtos);
+        List<RelationVO> relationVOS = relationService.queryList(id, RelationTypeEnum.MetricSetBindRelation);
+        System.out.println("relationDtos is:" + JsonUtil.toJSONString(relationVOS));
+        return ResultData.success(relationVOS);
     }
 
 

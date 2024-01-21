@@ -1,13 +1,13 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.insights.modal.Permission;
 
-public class PermissionDto extends Permission {
+public class PermissionVO extends Permission {
 
     private Object extend;
 
-    public PermissionDto(Permission permission){
+    public PermissionVO(Permission permission){
         assert permission != null;
         BeanCopyUtil.copy(permission,this);
     }

@@ -1,6 +1,7 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
+import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.modal.Stat;
@@ -11,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class StatDto extends Stat {
+public class StatVO extends Stat {
 
     private Group group;
 
@@ -35,7 +36,7 @@ public class StatDto extends Stat {
         }
     }
 
-    public StatDto(Stat stat){
+    public StatVO(Stat stat){
         assert stat != null;
         BeanCopyUtil.copy(stat,this);
     }

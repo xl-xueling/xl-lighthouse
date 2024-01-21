@@ -1,6 +1,7 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
+import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.modal.User;
 
@@ -9,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ProjectDto extends Project {
+public class ProjectVO extends Project {
 
     private List<User> admins;
 
@@ -29,7 +30,7 @@ public class ProjectDto extends Project {
         }
     }
 
-    public ProjectDto(Project project){
+    public ProjectVO(Project project){
         assert project != null;
         BeanCopyUtil.copy(project,this);
     }

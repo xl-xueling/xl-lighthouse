@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
-import com.dtstep.lighthouse.insights.dto_bak.PermissionDto;
+import com.dtstep.lighthouse.insights.vo.PermissionVO;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
@@ -128,27 +128,27 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionDao.delete(queryParam);
     }
 
-    private PermissionDto translate(Permission permission){
-        PermissionDto permissionDto = new PermissionDto(permission);
-        if(permissionDto.getOwnerType() == OwnerTypeEnum.USER){
-            User user = userService.cacheQueryById(permissionDto.getOwnerId());
-            permissionDto.setExtend(user);
-        }else if(permissionDto.getOwnerType() == OwnerTypeEnum.DEPARTMENT){
-            Department department = departmentService.queryById(permissionDto.getOwnerId());
-            permissionDto.setExtend(department);
+    private PermissionVO translate(Permission permission){
+        PermissionVO permissionVO = new PermissionVO(permission);
+        if(permissionVO.getOwnerType() == OwnerTypeEnum.USER){
+            User user = userService.cacheQueryById(permissionVO.getOwnerId());
+            permissionVO.setExtend(user);
+        }else if(permissionVO.getOwnerType() == OwnerTypeEnum.DEPARTMENT){
+            Department department = departmentService.queryById(permissionVO.getOwnerId());
+            permissionVO.setExtend(department);
         }
-        return permissionDto;
+        return permissionVO;
     }
 
     @Override
-    public ListData<PermissionDto> queryList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize) {
-        ListData<PermissionDto> listData = null;
+    public ListData<PermissionVO> queryList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize) {
+        ListData<PermissionVO> listData = null;
         PageHelper.startPage(pageNum,pageSize);
         try{
             List<Permission> permissionList = permissionDao.queryList(queryParam);
-            List<PermissionDto> dtoList = new ArrayList<>();
+            List<PermissionVO> dtoList = new ArrayList<>();
             for(Permission permission : permissionList){
-                PermissionDto dto = translate(permission);
+                PermissionVO dto = translate(permission);
                 dtoList.add(dto);
             }
         }finally {

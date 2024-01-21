@@ -11,6 +11,7 @@ import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.modal.Component;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.ComponentService;
+import com.dtstep.lighthouse.insights.vo.ComponentVO;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -93,9 +94,9 @@ public class ComponentController {
     }
 
     @PostMapping("/component/list")
-    public ResultData<ListData<ComponentDto>> queryList(@Validated @RequestBody ListSearchObject<ComponentQueryParam> searchObject){
+    public ResultData<ListData<ComponentVO>> queryList(@Validated @RequestBody ListSearchObject<ComponentQueryParam> searchObject){
         Pagination pagination = searchObject.getPagination();
-        ListData<ComponentDto> listData = componentService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
+        ListData<ComponentVO> listData = componentService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
     }
 
