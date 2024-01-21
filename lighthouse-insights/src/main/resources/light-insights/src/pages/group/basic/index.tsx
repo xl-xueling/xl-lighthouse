@@ -18,7 +18,7 @@ import {
     IconPlus,
     IconPlusCircleFill, IconSearch
 } from '@arco-design/web-react/icon';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 const { Title } = Typography;
 import locale from './locale';
@@ -36,6 +36,7 @@ import EditTable, {
 } from "@/pages/common/edittable/EditTable";
 import {FormInstance} from "@arco-design/web-react/lib";
 import {formatTimeStampBackUp} from "@/utils/util";
+import {getColumns} from "./constants";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
@@ -65,59 +66,7 @@ export default function GroupBasicPanel({groupInfo}) {
 
     const [expandedKeys, setExpandedKeys] = useState([]);
 
-    const columnsProps: EditTableColumnProps[]  = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            editable: true,
-            componentType:EditTableComponentEnum.INPUT,
-            headerCellStyle: { width:'20%'},
-        },
-        {
-            title: 'Type',
-            dataIndex: 'type',
-            editable: true,
-            initValue:"number",
-            componentType:EditTableComponentEnum.SELECT,
-            headerCellStyle: { width:'130px'},
-            render:(text, record) => {
-                return (
-                    <Select size={"mini"}
-                            disabled={true}
-                            popupVisible={expandedKeys.includes(record.key)}
-                            onChange={(value) => {record['type'] = value}}
-                            onFocus={(e) => {
-                                setExpandedKeys((keys) => [...keys, record.key]);
-                            }}
-                            onKeyDown={(event) => {
-                                if(event.key == 'Enter'){
-                                    setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
-                                }
-                            }}
-                            onBlur={() => {
-                                setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
-                            }}
-                            defaultValue={"number"}>
-                        <Select.Option key={"string"}  value={"string"} onClick={() => {
-                            setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
-                        }}>
-                            String
-                        </Select.Option>
-                        <Select.Option key={"number"}  value={"number"} onClick={() => {
-                            setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
-                        }}>
-                            Number
-                        </Select.Option>
-                    </Select>)
-            }
-        },
-        {
-            title: 'Comment',
-            dataIndex: 'comment',
-            componentType:EditTableComponentEnum.INPUT,
-            editable: true,
-        }
-    ];
+    const columnsProps = useMemo(() => getColumns(t), [t]);
 
     return (
         <div>

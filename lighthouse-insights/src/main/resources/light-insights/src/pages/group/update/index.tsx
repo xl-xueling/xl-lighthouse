@@ -87,11 +87,19 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
             dataIndex: 'operation',
             componentType:EditTableComponentEnum.BUTTON,
             headerCellStyle: { width:'12%'},
-            render: (_, record) => (
-                <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%'}}>
-                    <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
-                </Space>
-            ),
+            render: (_, record) => {
+                const isLock = record.lockColumns && record.lockColumns.includes('operation');
+                if(isLock){
+                    return <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%'}}>
+                        <IconMinusCircleFill style={{ cursor:"pointer",color:"gray"}}/>
+                    </Space>
+                }else{
+                    return <Space size={24} direction="vertical" style={{ textAlign:"center",width:'100%'}}>
+                        <IconMinusCircleFill style={{ cursor:"pointer"}} onClick={() => editTableRef.current.removeRow(record.key)}/>
+                    </Space>
+                }
+            }
+            ,
         },
     ];
 
@@ -163,7 +171,7 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
         const columnArr: Array<EditTableColumn> = [];
         for (let i = 0; i < groupInfo?.columns.length; i++) {
             const columnInfo = groupInfo?.columns[i];
-            columnArr.push({...columnInfo, "key": getRandomString(),lockColumns:['name','type']})
+            columnArr.push({...columnInfo, "key": getRandomString(),lockColumns:['name','type','operation']})
         }
         setInitData(columnArr);
         const formData = {
