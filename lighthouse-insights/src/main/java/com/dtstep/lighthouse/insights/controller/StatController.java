@@ -15,6 +15,8 @@ import com.dtstep.lighthouse.insights.service.StatService;
 import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.vo.StatExtendVO;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -27,6 +29,8 @@ import java.util.List;
 @RestController
 @ControllerAdvice
 public class StatController {
+
+    private static final Logger logger = LoggerFactory.getLogger(StatController.class);
 
     @Autowired
     private StatService statService;

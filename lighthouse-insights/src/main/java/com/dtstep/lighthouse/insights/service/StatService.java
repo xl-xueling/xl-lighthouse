@@ -14,7 +14,7 @@ public interface StatService {
 
     ResultCode create(Stat stat);
 
-    int update(Stat stat);
+    ResultCode update(Stat stat);
 
     int delete(Stat stat);
 
