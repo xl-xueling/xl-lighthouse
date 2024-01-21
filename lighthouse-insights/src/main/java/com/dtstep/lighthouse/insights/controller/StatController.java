@@ -52,12 +52,8 @@ public class StatController {
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @RequestMapping("/stat/update")
     public ResultData<Integer> update(@Validated @RequestBody Stat createParam) {
-        int id = statService.update(createParam);
-        if(id > 0){
-            return ResultData.success(id);
-        }else{
-            return ResultData.result(ResultCode.systemError);
-        }
+        ResultCode resultCode = statService.update(createParam);
+        return ResultData.result(resultCode);
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
@@ -68,12 +64,8 @@ public class StatController {
         Stat stat = statService.queryById(id);
         Validate.notNull(stat);
         stat.setState(changeParam.getState());
-        int result = statService.update(stat);
-        if(result > 0){
-            return ResultData.success(result);
-        }else{
-            return ResultData.result(ResultCode.systemError);
-        }
+        ResultCode resultCode = statService.update(stat);
+        return ResultData.result(resultCode);
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")
