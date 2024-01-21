@@ -189,7 +189,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
               <Grid.Col span={16}>
                 <Typography.Title
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}>
-                  {'Columns'}
+                  {t['groupCreate.form.label.columns']}
                 </Typography.Title>
               </Grid.Col>
               <Grid.Col span={8} style={{ textAlign: 'right' }}>
@@ -201,7 +201,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
           <Typography.Title
               style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
           >
-            {'Description'}
+            {t['groupCreate.form.label.description']}
           </Typography.Title>
           <Form.Item field="desc" rules={[
             { required: true, message: t['groupCreate.form.validate.desc.notEmpty.errorMsg'], validateTrigger : ['onSubmit'] },
