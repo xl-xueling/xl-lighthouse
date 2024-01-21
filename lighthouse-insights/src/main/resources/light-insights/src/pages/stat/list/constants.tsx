@@ -66,7 +66,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
             },
         },
         {
-            title: 'Operate',
+            title: 'Operation',
             dataIndex: 'operate',
             headerCellStyle: {width:'200px' },
             render: (_, record) => {
