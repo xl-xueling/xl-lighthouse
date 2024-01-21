@@ -7,7 +7,7 @@ public class TestAviator {
 
     @Test
     public void testFormula() throws Exception {
-        String formula = "bbbcontains";
+        String formula = "ass";
         Object obj = AviatorHandler.execute(formula);
         System.out.println(obj);
     }
