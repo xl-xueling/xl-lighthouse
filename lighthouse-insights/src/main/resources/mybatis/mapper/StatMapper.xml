@@ -53,8 +53,6 @@
                 AND group_id = #{queryParam.groupId}
             </if>
         </where>
-        <bind name="offset" value="(pageNum-1)*pageSize"></bind>
-        limit ${offset},#{pageSize}
     </select>
 
     <select id="count" resultType="java.lang.Integer">
