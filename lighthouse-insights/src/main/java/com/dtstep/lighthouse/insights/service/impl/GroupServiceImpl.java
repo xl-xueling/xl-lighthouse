@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
@@ -8,6 +9,7 @@ import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.modal.Resource;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
+import com.dtstep.lighthouse.insights.vo.ResultWrapper;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +57,8 @@ public class GroupServiceImpl implements GroupService {
         Validate.notNull(group);
         Integer id = group.getId();
         resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
-        return groupDao.deleteById(id);
+        int result = groupDao.deleteById(id);
+        return result;
     }
 
     @Override

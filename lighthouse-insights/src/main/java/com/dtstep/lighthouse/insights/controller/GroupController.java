@@ -3,12 +3,15 @@ package com.dtstep.lighthouse.insights.controller;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
+import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.IDParam;
 import com.dtstep.lighthouse.insights.dto_bak.ResultData;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
 import com.dtstep.lighthouse.insights.service.GroupService;
+import com.dtstep.lighthouse.insights.service.StatService;
+import com.dtstep.lighthouse.insights.vo.ResultWrapper;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +28,9 @@ public class GroupController {
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private StatService statService;
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @RequestMapping("/group/create")
@@ -71,8 +77,18 @@ public class GroupController {
     public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) {
         Group group = groupService.queryById(idParam.getId());
         Validate.notNull(group);
-        Integer result = groupService.delete(group);
-        return ResultData.success(result);
+        StatQueryParam queryParam = new StatQueryParam();
+        queryParam.setGroupId(group.getId());
+        int countStat = statService.count(queryParam);
+        if(countStat > 0){
+            return ResultData.result(ResultCode.groupDelExistSubStat);
+        }
+        int result = groupService.delete(group);
+        if(result > 0) {
+            return ResultData.success(result);
+        }else{
+            return ResultData.result(ResultCode.systemError);
+        }
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
