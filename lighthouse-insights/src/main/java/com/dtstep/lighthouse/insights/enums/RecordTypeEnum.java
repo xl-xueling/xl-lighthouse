@@ -41,9 +41,9 @@ public enum RecordTypeEnum {
 
     RELEASE_PERMISSION(17),
 
-    GROUP_LIMITED(18),
+    GROUP_MESSAGE_LIMITED(18),
 
-    STAT_LIMITED(19),
+    STAT_RESULT_LIMITED(19),
 
     ;
 

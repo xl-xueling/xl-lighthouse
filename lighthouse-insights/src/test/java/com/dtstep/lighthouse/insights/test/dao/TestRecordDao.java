@@ -39,7 +39,7 @@ public class TestRecordDao {
             limitedRecord.setEndTime(localDateTime);
             Record record = new Record();
             record.setRecordTime(LocalDateTime.now());
-            record.setRecordType(RecordTypeEnum.GROUP_LIMITED);
+            record.setRecordType(RecordTypeEnum.GROUP_MESSAGE_LIMITED);
             record.setResourceId(100215);
             record.setResourceType(ResourceTypeEnum.Group);
             record.setDesc(JsonUtil.toJSONString(record));
@@ -50,7 +50,7 @@ public class TestRecordDao {
     @Test
     public void testQueryList() throws Exception {
         RecordQueryParam queryParam = new RecordQueryParam();
-        queryParam.setRecordTypes(List.of(RecordTypeEnum.GROUP_LIMITED));
+        queryParam.setRecordTypes(List.of(RecordTypeEnum.GROUP_MESSAGE_LIMITED));
         List<Record> recordList = recordDao.queryList(queryParam);
         System.out.println("recordList:" + JsonUtil.toJSONString(recordList));
         System.out.println("size:" + recordList.size());

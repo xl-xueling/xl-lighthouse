@@ -16,13 +16,15 @@ import {requestList} from "@/api/record";
 import {RecordTypeEnum, ResultData} from "@/types/insights-common";
 import {GlobalErrorCodes} from "@/utils/constants";
 import useLocale from "@/utils/useLocale";
-import locale from "@/pages/user/list/locale";
+import locale from "./locale";
 import {formatTimeStampBackUp} from "@/utils/util";
+import {translateRecord} from "@/pages/record/record";
 
 
-export function RecordModal({resourceId,resourceType,recordTypes,onClose}){
+export function LimitedRecordModal({resourceId,resourceType,recordTypes,onClose}){
 
     const t = useLocale(locale);
+    const [loading, setLoading] = useState(true);
     const [recordData, setRecordData] = useState<Array<Record>>([]);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
@@ -41,23 +43,13 @@ export function RecordModal({resourceId,resourceType,recordTypes,onClose}){
     }
 
     const [limitedData,setLimitedData] = useState<LimitedRecord[]>(null);
-    const [loading, setLoading] = useState(true);
+
     const [formParams, setFormParams] = useState({});
 
     const columns: TableColumnProps[] = [
         {
             title: 'ID',
             dataIndex: 'id',
-        },
-        {
-            title: 'StartTime',
-            dataIndex: 'startTime',
-            render: (value) => {return formatTimeStampBackUp(value)},
-        },
-        {
-            title: 'EndTime',
-            dataIndex: 'endTime',
-            render: (value) => {return formatTimeStampBackUp(value)},
         },
         {
             title: 'Description',
@@ -82,6 +74,7 @@ export function RecordModal({resourceId,resourceType,recordTypes,onClose}){
             recordTypes:recordTypes,
         }
         console.log("queryParams is:" + JSON.stringify(queryParams));
+        setLoading(true);
         await requestList({
             queryParams:queryParams,
             pagination:{
@@ -94,11 +87,7 @@ export function RecordModal({resourceId,resourceType,recordTypes,onClose}){
                 const list = data.list;
                 const records:LimitedRecord[] = [];
                 list?.map(z => {
-                    const limitRecord:LimitedRecord = {
-                        id:z.id,
-                        startTime:z.recordTime,
-                        endTime:z.recordTime,
-                    }
+                    const limitRecord = translateRecord(t,z);
                     records.push(limitRecord);
                 })
                 setRecordData(records);
@@ -128,7 +117,9 @@ export function RecordModal({resourceId,resourceType,recordTypes,onClose}){
             style={{ width:'960px',verticalAlign:'top', marginTop: '130px' }}
             visible={true}
             onCancel={onClose}>
-            <Table rowKey={'id'} pagination={pagination} columns={columns} data={recordData} onChange={onChangeTable} />
+            <Table rowKey={'id'}
+                   loading={loading}
+                   size={"small"} pagination={pagination} columns={columns} data={recordData} onChange={onChangeTable} />
         </Modal>
     );
 }
