@@ -21,7 +21,6 @@ import {
 import React, {useEffect, useRef, useState} from 'react';
 const { Title } = Typography;
 import locale from './locale';
-import styles from './style/index.module.less';
 import AceEditor from "react-ace";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
@@ -38,7 +37,7 @@ import {formatTimeStampBackUp} from "@/utils/util";
 import useLocale from "@/utils/useLocale";
 const { Row, Col } = Grid;
 const { Text } = Typography;
-
+import styles from './style/index.module.less';
 export default function SecretKeyModal({groupId,onClose}) {
 
     const t = useLocale(locale);
@@ -67,10 +66,11 @@ export default function SecretKeyModal({groupId,onClose}) {
 
     return (
         <Modal
+            className={styles['ss']}
             title={t['group.basic.secretKey']}
             visible={true}
             footer={null}
-            style={{ width:'750px' }}
+            style={{ width:'750px',top:'300px',display:"grid"}}
             onCancel={onClose}>
 
             <Spin loading={loading} style={{ width:'100%',display: 'block' }}>
