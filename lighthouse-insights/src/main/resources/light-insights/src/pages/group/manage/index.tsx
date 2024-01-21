@@ -181,7 +181,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                         <Row gutter={24}>
                             <Col span={10}>
                                 <Form.Item field="Title">
-                                    <Input.Search  placeholder={'Search Title'} allowClear onSearch={(v) => {
+                                    <Input.Search autoComplete={"off"} placeholder={'Search Title'} allowClear onSearch={(v) => {
                                         handlerSubmit(v);
                                     }} />
                                 </Form.Item>

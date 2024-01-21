@@ -117,6 +117,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
         const {current, pageSize} = pagination;
         refFetchId.current = Date.now();
         const fetchId = refFetchId.current;
+        console.log("query fromParams is:" + JSON.stringify(formParams));
         await requestList({
             queryParams:formParams,
             pagination:{
