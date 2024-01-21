@@ -30,7 +30,6 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
     const [initData,setInitData] = useState(null);
     const formRef = useRef(null);
     const [expandedKeys, setExpandedKeys] = useState([]);
-    const columnNameRegex = /^[a-zA-Z]\w{2,14}$/;
 
     const columnsProps: EditTableColumnProps[]  = [
         {
@@ -206,7 +205,7 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
                         <Grid.Col span={16}>
                             <Typography.Title
                                 style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}>
-                                {'Columns'}
+                                {t['groupUpdate.form.label.columns']}
                             </Typography.Title>
                         </Grid.Col>
                         <Grid.Col span={8} style={{ textAlign: 'right' }}>
@@ -218,7 +217,7 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
                 <Typography.Title
                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                 >
-                    {'Description'}
+                    {t['groupUpdate.form.label.description']}
                 </Typography.Title>
                 <Form.Item field="desc" rules={[
                     { required: true, message: t['groupUpdate.form.validate.desc.notEmpty.errorMsg'], validateTrigger : ['onSubmit'] },

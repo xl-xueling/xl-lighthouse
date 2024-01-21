@@ -1,6 +1,6 @@
 const i18n = {
   'en-US': {
-    'groupUpdate.modal.title':'Create Group',
+    'groupUpdate.modal.title':'Update Group Information',
     'groupUpdate.form.validate.token.notEmpty.errorMsg':'Token cannot be empty!',
     'groupUpdate.form.validate.token.failed':'Token verification failed!',
     'groupUpdate.form.validate.column.notEmpty.errorMsg':'Columns information cannot be empty!',
@@ -12,10 +12,12 @@ const i18n = {
     'groupUpdate.form.validate.columnName.duplicate.failed':'Column name[%s] cannot be duplicate!',
     'groupUpdate.form.button.columnAdd':'Add',
     'groupUpdate.form.submit.success':'Update group successfully!',
+    'groupUpdate.form.label.columns':'Columns',
+    'groupUpdate.form.label.description':'desc',
 
   },
   'zh-CN': {
-    'groupUpdate.modal.title':'创建统计组',
+    'groupUpdate.modal.title':'修改统计组',
     'groupUpdate.form.validate.token.notEmpty.errorMsg':'Token不能为空！',
     'groupUpdate.form.validate.token.failed':'Token校验失败！',
     'groupUpdate.form.validate.column.notEmpty.errorMsg':'字段信息不能为空！',
@@ -27,6 +29,8 @@ const i18n = {
     'groupUpdate.form.validate.columnName.duplicate.failed':'字段名称[%s]不能重复！',
     'groupUpdate.form.button.columnAdd':'添加',
     'groupUpdate.form.submit.success':'修改统计组信息成功！',
+    'groupUpdate.form.label.columns':'字段',
+    'groupUpdate.form.label.description':'描述',
   },
 };
 
