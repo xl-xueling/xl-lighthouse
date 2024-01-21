@@ -14,6 +14,7 @@ import com.dtstep.lighthouse.insights.vo.ResultWrapper;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +32,7 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private ResourceService resourceService;
 
+    @Transactional
     @Override
     public int create(Group group) {
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -43,6 +45,7 @@ public class GroupServiceImpl implements GroupService {
         return group.getId();
     }
 
+    @Transactional
     @Override
     public int update(Group group) {
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -53,6 +56,7 @@ public class GroupServiceImpl implements GroupService {
         return result;
     }
 
+    @Transactional
     @Override
     public int delete(Group group) {
         Validate.notNull(group);
