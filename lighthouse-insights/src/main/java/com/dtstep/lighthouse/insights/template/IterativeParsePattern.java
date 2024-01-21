@@ -40,6 +40,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class IterativeParsePattern implements Parser {
 
@@ -233,11 +234,15 @@ public final class IterativeParsePattern implements Parser {
         List<Column> columnList = context.getColumnList();
         String dimensFormula = element.attr("dimens");
         if(!StringUtil.isEmpty(dimensFormula)){
+            List<String> groupColumnName = columnList.stream().map(z -> z.getName()).collect(Collectors.toList());
             String[] dimensArray = TemplateUtil.split(dimensFormula);
             for(String dimens:dimensArray){
+                if(StringUtil.isLetterNumOrUnderLine(dimens) && !groupColumnName.contains(dimens)){
+                    return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserDimensNotExist,dimens));
+                }
                 boolean checkFlag = ImitateCompile.imitateDimensFormula(context.getStatId(),dimens,columnList);
                 if(!checkFlag){
-                    return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserDimensNotExist,dimensFormula));
+                    return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserDimensValidFailed,dimens));
                 }
             }
             templateEntity.setDimens(dimensFormula);

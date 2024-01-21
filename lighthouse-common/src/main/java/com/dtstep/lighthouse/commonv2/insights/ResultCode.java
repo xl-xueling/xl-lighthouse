@@ -98,6 +98,8 @@ public enum ResultCode {
 
     templateParserDimensNotExist("2012","templateParserDimensNotExist"),
 
+    templateParserDimensValidFailed("2012","templateParserDimensValidFailed"),
+
     templateParserLimitValidFailed("2013","templateParserLimitValidFailed"),
 
     templateParserLimitValueExceed("2014","templateParserLimitValueExceed"),

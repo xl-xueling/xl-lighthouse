@@ -23,6 +23,7 @@ import com.dtstep.lighthouse.core.formula.FormulaCalculate;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.dtstep.lighthouse.insights.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Column;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +80,8 @@ public final class ImitateCompile {
                 }
             }
             AviatorHandler.compileDimensFormula(formula,paramMap);
+            Object result = AviatorHandler.execute(formula,paramMap);
+            Validate.notNull(result);
         }catch (Exception ex){
             logger.error("xl-formula dimens format check failed,statId:[{}],formula:[{}]!",statId,formula);
             return false;
