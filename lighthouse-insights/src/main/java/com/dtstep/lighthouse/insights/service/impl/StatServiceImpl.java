@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.core.formula.TemplateUtil;
+import com.dtstep.lighthouse.insights.controller.StatController;
 import com.dtstep.lighthouse.insights.controller.annotation.RecordAnnotation;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
@@ -25,8 +26,11 @@ import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.template.TemplateContext;
 import com.dtstep.lighthouse.insights.template.TemplateParser;
 import com.dtstep.lighthouse.insights.util.TreeUtil;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +42,8 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class StatServiceImpl implements StatService {
+
+    private static final Logger logger = LoggerFactory.getLogger(StatServiceImpl.class);
 
     @Autowired
     private StatDao statDao;
@@ -94,22 +100,23 @@ public class StatServiceImpl implements StatService {
     @Transactional
     @Override
     @RecordAnnotation(recordType = RecordTypeEnum.UPDATE_STAT)
-    public int update(Stat stat) {
+    public ResultCode update(Stat stat) {
         int groupId = stat.getGroupId();
         Group group = groupDao.queryById(groupId);
         String template = stat.getTemplate();
         String timeParam = stat.getTimeparam();
-        try{
-            TemplateEntity templateEntity = TemplateParser.parse(new TemplateContext(template,timeParam, group.getColumns()));
-            stat.setTitle(templateEntity.getTitle());
-        }catch (Exception ex){
-            ex.printStackTrace();
+        ResultWrapper<TemplateEntity> resultWrapper = TemplateParser.parseConfig(new TemplateContext(template,timeParam, group.getColumns()));
+        ResultCode resultCode = resultWrapper.getResultCode();
+        if(resultCode != ResultCode.success){
+            return resultCode;
         }
+        TemplateEntity templateEntity = resultWrapper.getData();
+        stat.setTitle(templateEntity.getTitle());
         LocalDateTime localDateTime = LocalDateTime.now();
         stat.setUpdateTime(localDateTime);
         int result = statDao.update(stat);
         resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Stat,stat.getId(),ResourceTypeEnum.Group,stat.getGroupId()));
-        return result;
+        return ResultCode.success;
     }
 
 
@@ -141,17 +148,25 @@ public class StatServiceImpl implements StatService {
 
     @Override
     public ListData<StatVO> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize) {
-        List<Stat> list = statDao.queryList(queryParam,pageNum,pageSize);
+        PageHelper.startPage(pageNum,pageSize);
         List<StatVO> dtoList = new ArrayList<>();
+        List<Stat> list;
+        try{
+            list = statDao.queryList(queryParam);
+        }finally {
+            PageHelper.clearPage();
+        }
         if(CollectionUtils.isNotEmpty(list)){
             for(Stat stat : list){
-                StatVO statVO = translate(stat);
-                dtoList.add(statVO);
+                try{
+                    StatVO statVO = translate(stat);
+                    dtoList.add(statVO);
+                }catch (Exception ex){
+                    logger.error("translate stat info error,statId:{}!",stat.getId(),ex);
+                }
             }
         }
-        ListData<StatVO> listData = new ListData<>();
-        listData.setList(dtoList);
-        return listData;
+        return baseService.translateToListData(dtoList);
     }
 
 
