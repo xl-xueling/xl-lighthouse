@@ -18,7 +18,7 @@ import {GlobalErrorCodes} from "@/utils/constants";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {formatTimeStampBackUp} from "@/utils/util";
-import {translateRecord} from "@/pages/record/record";
+import {LimitedRecord, translateRecord} from "@/pages/record/record";
 
 
 export function LimitedRecordModal({resourceId,resourceType,recordTypes,onClose}){
@@ -35,12 +35,6 @@ export function LimitedRecordModal({resourceId,resourceType,recordTypes,onClose}
         pageSizeChangeResetCurrent: true,
     });
 
-    interface LimitedRecord {
-        id?:number,
-        startTime?:number,
-        endTime?:number,
-        desc?:string,
-    }
 
     const [limitedData,setLimitedData] = useState<LimitedRecord[]>(null);
 
@@ -113,7 +107,7 @@ export function LimitedRecordModal({resourceId,resourceType,recordTypes,onClose}
 
     return (
         <Modal
-            title= {'限流记录'}
+            title= {t['recordType.limited.title']}
             style={{ width:'960px',verticalAlign:'top', marginTop: '130px' }}
             visible={true}
             onCancel={onClose}>
