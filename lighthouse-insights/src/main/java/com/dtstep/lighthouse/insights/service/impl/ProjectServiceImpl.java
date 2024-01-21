@@ -175,17 +175,17 @@ public class ProjectServiceImpl implements ProjectService {
         List<TreeNode> nodeList = new ArrayList<>();
         TreeNode rootNode = new TreeNode(project.getTitle(),project.getId(),"project");
         HashMap<String,TreeNode> nodeMap = new HashMap<>();
-        nodeMap.put(String.valueOf(project.getId()),rootNode);
+        nodeMap.put("project_"+project.getId(),rootNode);
         List<Group> groupList = groupDao.queryByProjectId(id);
         for(Group group : groupList){
             TreeNode groupNode = new TreeNode(group.getToken(),group.getId(),"group");
-            nodeMap.put(String.valueOf(group.getId()),groupNode);
+            nodeMap.put("group_"+group.getId(),groupNode);
             rootNode.addChild(groupNode);
         }
         List<Stat> statList = statDao.queryByProjectId(id);
         for(Stat stat : statList){
             TreeNode statNode = new TreeNode(stat.getTitle(),stat.getId(),"stat");
-            TreeNode parentNode = nodeMap.get(String.valueOf(stat.getGroupId()));
+            TreeNode parentNode = nodeMap.get("group_"+stat.getGroupId());
             parentNode.addChild(statNode);
         }
         return rootNode;
