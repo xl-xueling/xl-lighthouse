@@ -23,5 +23,5 @@ interface Parser {
 
     TemplateEntity parse(TemplateContext context) throws Exception;
 
-    ResultWrapper<TemplateEntity> parseConfig(TemplateContext context) throws Exception;
+    ResultWrapper<TemplateEntity> parseConfig(TemplateContext context);
 }

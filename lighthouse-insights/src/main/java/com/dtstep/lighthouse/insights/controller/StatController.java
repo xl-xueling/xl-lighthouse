@@ -41,12 +41,8 @@ public class StatController {
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @RequestMapping("/stat/create")
     public ResultData<Integer> create(@Validated @RequestBody Stat createParam) {
-        int id = statService.create(createParam);
-        if(id > 0){
-            return ResultData.success(id);
-        }else{
-            return ResultData.result(ResultCode.systemError);
-        }
+        ResultCode resultCode = statService.create(createParam);
+        return ResultData.result(resultCode);
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")

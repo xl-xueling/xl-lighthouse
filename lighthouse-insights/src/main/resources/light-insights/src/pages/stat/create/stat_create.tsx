@@ -104,10 +104,10 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose,onSuccess}) 
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['statCreate.form.submit.success']});
                 onSuccess();
+                onClose();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
-            onClose();
         }).catch((error) => {
             console.log(error);
             Notification.error({style: { width: 420 }, title: 'Warning', content: t['system.error']});
