@@ -8,7 +8,7 @@ public class StatQueryParam {
 
     private Integer projectId;
 
-    private String search;
+    private String title;
 
     public Integer getId() {
         return id;
@@ -34,11 +34,11 @@ public class StatQueryParam {
         this.projectId = projectId;
     }
 
-    public String getSearch() {
-        return search;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSearch(String search) {
-        this.search = search;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
