@@ -44,7 +44,6 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
             timeparam:values.timeparam,
             desc:values.desc,
         }
-        console.log("updateParam is:" + JSON.stringify(updateParam));
         setLoading(true);
         requestUpdate(updateParam).then((response) => {
             const {code, data ,message} = response;
@@ -136,7 +135,7 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
                         >
                             {'TimeParam: '}
                         </Typography.Title>
-                        <FormItem field='timeparam' rules={[{ required: true }]}>
+                        <FormItem field='timeparam' rules={[{ required: true }]} disabled={true}>
                             <Select placeholder='Please Select' allowClear>
                                 {
                                     Object.keys(StatTimeParamEnum).filter(key => Number.isNaN(Number(key))).map((option,index) => {
