@@ -22,8 +22,7 @@ public class RecordsController {
 
     @PostMapping("/record/list")
     public ResultData<ListData<Record>> queryList(@Validated @RequestBody ListSearchObject<RecordQueryParam> searchObject){
-        System.out.println("ss:" + JsonUtil.toJSONString(searchObject.getPagination()));
-        RecordQueryParam queryParam = new RecordQueryParam();
+        RecordQueryParam queryParam = searchObject.getQueryParamOrDefault(new RecordQueryParam());
         Integer pageNum = searchObject.getPagination().getPageNum();
         Integer pageSize = searchObject.getPagination().getPageSize();
         ListData<Record> listData = recordService.queryList(queryParam,pageNum,pageSize);

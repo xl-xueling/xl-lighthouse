@@ -29,13 +29,12 @@ public class RecordServiceImpl implements RecordService {
     @Override
     public ListData<Record> queryList(RecordQueryParam queryParam,Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        ListData<Record> result;
+        List<Record> recordList = null;
         try{
-            List<Record> recordList = recordDao.queryList(queryParam);
-            result = baseService.translateToListData(recordList);
+            recordList = recordDao.queryList(queryParam);
         }finally {
             PageHelper.clearPage();
         }
-        return result;
+        return baseService.translateToListData(recordList);
     }
 }

@@ -13,14 +13,14 @@ import {
 } from "@arco-design/web-react";
 import {Record, User} from "@/types/insights-web";
 import {requestList} from "@/api/record";
-import {ResultData} from "@/types/insights-common";
+import {RecordTypeEnum, ResultData} from "@/types/insights-common";
 import {GlobalErrorCodes} from "@/utils/constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/user/list/locale";
 import {formatTimeStampBackUp} from "@/utils/util";
 
 
-export function RecordModal({resourceId,resourceType,recordType,onClose}){
+export function RecordModal({resourceId,resourceType,recordTypes,onClose}){
 
     const t = useLocale(locale);
     const [recordData, setRecordData] = useState<Array<Record>>([]);
@@ -65,46 +65,8 @@ export function RecordModal({resourceId,resourceType,recordType,onClose}){
         },
     ];
 
-    const data = [
-        {
-            key: '1',
-            name: 'Jane Doe',
-            salary: 23000,
-            address: '32 Park Road, London',
-            email: 'jane.doe@example.com',
-        },
-        {
-            key: '2',
-            name: 'Alisa Ross',
-            salary: 25000,
-            address: '35 Park Road, London',
-            email: 'alisa.ross@example.com',
-        },
-        {
-            key: '3',
-            name: 'Kevin Sandra',
-            salary: 22000,
-            address: '31 Park Road, London',
-            email: 'kevin.sandra@example.com',
-        },
-        {
-            key: '4',
-            name: 'Ed Hellen',
-            salary: 17000,
-            address: '42 Park Road, London',
-            email: 'ed.hellen@example.com',
-        },
-        {
-            key: '5',
-            name: 'William Smith',
-            salary: 27000,
-            address: '62 Park Road, London',
-            email: 'william.smith@example.com',
-        },
-    ];
 
     function onChangeTable({ current, pageSize }) {
-        console.log("current is:" + current + ",pageSize:" + pageSize)
         setPagination({
             ...pagination,
             current,
@@ -114,8 +76,14 @@ export function RecordModal({resourceId,resourceType,recordType,onClose}){
 
     const fetchData = async () => {
         const {current, pageSize} = pagination;
+        const queryParams = {
+            resourceId:resourceId,
+            resourceType:resourceType,
+            recordTypes:recordTypes,
+        }
+        console.log("queryParams is:" + JSON.stringify(queryParams));
         await requestList({
-            queryParams:formParams,
+            queryParams:queryParams,
             pagination:{
                 pageSize:pageSize,
                 pageNum:current,
@@ -151,7 +119,6 @@ export function RecordModal({resourceId,resourceType,recordType,onClose}){
     }
 
     useEffect(() => {
-        console.log("pagination is:" + JSON.stringify(pagination));
         fetchData().then();
     },[pagination.current, pagination.pageSize, JSON.stringify(formParams)])
 
