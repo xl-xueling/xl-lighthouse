@@ -116,6 +116,9 @@ public enum ResultCode {
 
     templateParserLimitSeqNotSupport("2020","templateParserLimitSeqNotSupport"),
 
+    resourceDelExistSubElement("2021","resourceDelExistSubElement"),
+
+    groupDelExistSubStat("2021","groupDelExistSubStat"),
     ;
 
     ResultCode(String code , String i18nLabel){

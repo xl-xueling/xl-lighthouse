@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.exception.RoleDefendException;
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
@@ -182,7 +183,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Transactional
     @Override
-    public void deleteResourceCallback(Resource resource){
+    public ResultCode deleteResourceCallback(Resource resource){
         List<Role> roleList = new ArrayList<>();
         Role manageRole = null;
         Role accessRole = null;
@@ -215,6 +216,7 @@ public class ResourceServiceImpl implements ResourceService {
         permissionService.delete(accessQueryParam);
         roleService.deleteById(manageRole.getId());
         roleService.deleteById(accessRole.getId());
+        return ResultCode.success;
     }
 
     @Override

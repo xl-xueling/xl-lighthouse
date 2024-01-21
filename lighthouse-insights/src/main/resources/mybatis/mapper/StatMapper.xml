@@ -57,6 +57,21 @@
         limit ${offset},#{pageSize}
     </select>
 
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(1) from ldp_stats
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="projectId != null ">
+                AND project_id = #{projectId}
+            </if>
+            <if test="groupId != null">
+                AND group_id = #{groupId}
+            </if>
+        </where>
+    </select>
+
     <select id="queryByProjectId" resultMap="statResultMap">
         SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`
         from ldp_stats where project_id = #{projectId}

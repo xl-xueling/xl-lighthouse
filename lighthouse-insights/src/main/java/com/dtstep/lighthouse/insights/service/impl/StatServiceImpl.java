@@ -275,4 +275,9 @@ public class StatServiceImpl implements StatService {
         }
         return ResultCode.success;
     }
+
+    @Override
+    public int count(StatQueryParam queryParam) {
+        return statDao.count(queryParam);
+    }
 }

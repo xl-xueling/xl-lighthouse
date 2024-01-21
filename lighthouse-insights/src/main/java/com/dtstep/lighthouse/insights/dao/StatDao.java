@@ -18,6 +18,8 @@ public interface StatDao {
 
     List<Stat> queryByProjectId(Integer projectId);
 
+    int count(@Param("queryParam")StatQueryParam queryParam);
+
     int update(Stat stat);
 
     List<Stat> queryList(@Param("queryParam")StatQueryParam queryParam, Integer pageNum, Integer pageSize);

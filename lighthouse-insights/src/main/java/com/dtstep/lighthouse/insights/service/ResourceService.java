@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service;
 
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto_bak.RolePair;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
@@ -11,7 +12,7 @@ public interface ResourceService {
 
     void updateResourcePidCallback(Resource resource);
 
-    void deleteResourceCallback(Resource resource);
+    ResultCode deleteResourceCallback(Resource resource);
 
     int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer resourceId,RoleTypeEnum roleTypeEnum);
 
