@@ -92,7 +92,6 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
         })
     }
 
-
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const columns = useMemo(() => (from && from == 'group-manage') ? getColumnsOfManage(t, tableCallback) : getColumns(t,tableCallback), [t,listData]);
     const [pagination, setPagination] = useState<PaginationProps>({
@@ -117,7 +116,6 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
         const {current, pageSize} = pagination;
         refFetchId.current = Date.now();
         const fetchId = refFetchId.current;
-        console.log("query fromParams is:" + JSON.stringify(formParams));
         await requestList({
             queryParams:formParams,
             pagination:{
