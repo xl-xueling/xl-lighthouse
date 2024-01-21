@@ -55,7 +55,7 @@ public final class IterativeParsePattern implements Parser {
         }
         Element element = elements.get(0);
         Attributes attributes = element.attributes();
-        List<String> fieldList = TemplateEntity.getStatAttr();
+        List<String> fieldList = TemplateEntity.getTemplateAttrs();
         for (Attribute attribute : attributes) {
             if (!fieldList.contains(attribute.getKey())) {
                 throw new TemplateParseException(String.format("i18n(ldp_i18n_template_parse_1002,%s)", attribute.getKey()));

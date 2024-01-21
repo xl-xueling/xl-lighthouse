@@ -82,6 +82,38 @@ public enum ResultCode {
 
     orderCreateRepeatSubmit("2007","orderCreateRepeatSubmit"),
 
+    templateParserNoValidItem("2008","templateParserNoValidItem"),
+
+    templateParserValidFailed("2008","templateParserValidFailed"),
+
+    templateParserInValidAttrExist("2008","templateParserInValidAttrExist"),
+
+    templateParserAttrCannotBeEmpty("2009","templateParserAttrCannotBeEmpty"),
+
+    templateParserTitleCannotBeEmpty("2010","templateParserTitleCannotBeEmpty"),
+
+    templateParserDimensCannotBeEmpty("2010","templateParserDimensCannotBeEmpty"),
+
+    templateParserTitleLengthValidFailed("2011","templateParserTitleLengthValidFailed"),
+
+    templateParserDimensNotExist("2012","templateParserDimensNotExist"),
+
+    templateParserLimitValidFailed("2013","templateParserLimitValidFailed"),
+
+    templateParserLimitValueExceed("2014","templateParserLimitValueExceed"),
+
+    templateParserLimitMinuteNotSupport("2015","templateParserLimitMinuteNotSupport"),
+
+    templateParserLimitDimensExistTogether("2016","templateParserLimitDimensExistTogether"),
+
+    templateParserStatValidFailed("2017","templateParserStatValidFailed"),
+
+    templateParserStateExceedLimit("2018","templateParserStateExceedLimit"),
+
+    templateParserSeqTogether("2019","templateParserSeqTogether"),
+
+    templateParserLimitSeqNotSupport("2020","templateParserLimitSeqNotSupport"),
+
     ;
 
     ResultCode(String code , String i18nLabel){
