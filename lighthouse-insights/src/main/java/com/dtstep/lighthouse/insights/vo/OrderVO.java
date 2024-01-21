@@ -1,6 +1,7 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
+import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public class OrderVO extends Order {
 
     private HashMap<Integer, List<User>> adminsMap;
 
-    private List<OrderDetailDto> orderDetails;
+    private List<OrderDetailVO> orderDetails;
 
     private Object extend;
 
@@ -65,11 +66,11 @@ public class OrderVO extends Order {
         this.adminsMap = adminsMap;
     }
 
-    public List<OrderDetailDto> getOrderDetails() {
+    public List<OrderDetailVO> getOrderDetails() {
         return orderDetails;
     }
 
-    public void setOrderDetails(List<OrderDetailDto> orderDetails) {
+    public void setOrderDetails(List<OrderDetailVO> orderDetails) {
         this.orderDetails = orderDetails;
     }
 

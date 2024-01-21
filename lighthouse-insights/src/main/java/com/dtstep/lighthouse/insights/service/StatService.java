@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.insights.dto_bak.StatDto;
+import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.modal.RenderConfig;
 import com.dtstep.lighthouse.insights.modal.RenderFilterConfig;
@@ -18,11 +18,11 @@ public interface StatService {
 
     int delete(Stat stat);
 
-    StatDto queryById(Integer id);
+    StatVO queryById(Integer id);
 
     List<Stat> queryByProjectId(Integer projectId);
 
-    ListData<StatDto> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize);
+    ListData<StatVO> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize);
 
     RenderConfig getStatRenderConfig(Stat stat);
 

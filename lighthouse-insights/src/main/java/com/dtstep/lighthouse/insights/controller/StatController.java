@@ -12,6 +12,8 @@ import com.dtstep.lighthouse.insights.modal.RenderConfig;
 import com.dtstep.lighthouse.insights.modal.RenderFilterConfig;
 import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
+import com.dtstep.lighthouse.insights.vo.StatVO;
+import com.dtstep.lighthouse.insights.vo.StatExtendVO;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -30,9 +32,9 @@ public class StatController {
     private StatService statService;
 
     @RequestMapping("/stat/list")
-    public ResultData<ListData<StatDto>> list(@Validated @RequestBody ListSearchObject<StatQueryParam> searchObject) {
+    public ResultData<ListData<StatVO>> list(@Validated @RequestBody ListSearchObject<StatQueryParam> searchObject) {
         StatQueryParam queryParam = searchObject.getQueryParamOrDefault(new StatQueryParam());
-        ListData<StatDto> listData = statService.queryList(queryParam,searchObject.getPagination().getPageNum(),searchObject.getPagination().getPageSize());
+        ListData<StatVO> listData = statService.queryList(queryParam,searchObject.getPagination().getPageNum(),searchObject.getPagination().getPageSize());
         return ResultData.success(listData);
     }
 
@@ -89,11 +91,11 @@ public class StatController {
     }
 
     @RequestMapping("/stat/queryById")
-    public ResultData<StatExtendDto> queryById(@Validated @RequestBody IDParam idParam){
+    public ResultData<StatExtendVO> queryById(@Validated @RequestBody IDParam idParam){
         Integer id = idParam.getId();
-        StatDto stat = statService.queryById(id);
+        StatVO stat = statService.queryById(id);
         RenderConfig renderConfig = statService.getStatRenderConfig(stat);
-        StatExtendDto statExtendDto = new StatExtendDto(stat);
+        StatExtendVO statExtendDto = new StatExtendVO(stat);
         statExtendDto.setRenderConfig(renderConfig);
         Validate.notNull(stat);
         return ResultData.success(statExtendDto);

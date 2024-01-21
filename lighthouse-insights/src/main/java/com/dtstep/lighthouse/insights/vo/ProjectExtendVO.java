@@ -1,12 +1,13 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.vo;
 
+import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import com.dtstep.lighthouse.insights.modal.Project;
 
-public class ProjectExtendDto extends ProjectDto {
+public class ProjectExtendVO extends ProjectVO {
 
     private TreeNode structure;
 
-    public ProjectExtendDto(Project project) {
+    public ProjectExtendVO(Project project) {
         super(project);
     }
 

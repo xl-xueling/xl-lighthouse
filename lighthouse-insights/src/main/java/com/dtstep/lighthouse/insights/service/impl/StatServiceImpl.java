@@ -12,7 +12,7 @@ import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
-import com.dtstep.lighthouse.insights.dto_bak.StatDto;
+import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import com.dtstep.lighthouse.insights.enums.ComponentTypeEnum;
@@ -28,6 +28,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -64,6 +65,7 @@ public class StatServiceImpl implements StatService {
     @Autowired
     private ComponentService componentService;
 
+    @Transactional
     @Override
     public int create(Stat stat) {
         int groupId = stat.getGroupId();
@@ -87,6 +89,7 @@ public class StatServiceImpl implements StatService {
         return id;
     }
 
+    @Transactional
     @Override
     @RecordAnnotation(recordType = RecordTypeEnum.UPDATE_STAT)
     public int update(Stat stat) {
@@ -114,44 +117,44 @@ public class StatServiceImpl implements StatService {
         return statDao.deleteById(id);
     }
 
-    private StatDto translate(Stat stat){
+    private StatVO translate(Stat stat){
         int userId = baseService.getCurrentUserId();
-        StatDto statDto = new StatDto(stat);
+        StatVO statVO = new StatVO(stat);
         Group group = groupDao.queryById(stat.getGroupId());
         Project project = projectDao.queryById(stat.getProjectId());
         Validate.notNull(project);
         Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,stat.getId());
         Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,stat.getId());
         if(permissionService.checkUserPermission(userId, manageRole.getId())){
-            statDto.addPermission(PermissionEnum.ManageAble);
+            statVO.addPermission(PermissionEnum.ManageAble);
         }else if(permissionService.checkUserPermission(userId,accessRole.getId())){
-            statDto.addPermission(PermissionEnum.AccessAble);
+            statVO.addPermission(PermissionEnum.AccessAble);
         }
         List<User> admins = projectService.cacheQueryAdmins(project.getId());
-        statDto.setAdmins(admins);
-        statDto.setGroup(group);
-        statDto.setProject(project);
-        return statDto;
+        statVO.setAdmins(admins);
+        statVO.setGroup(group);
+        statVO.setProject(project);
+        return statVO;
     }
 
     @Override
-    public ListData<StatDto> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize) {
+    public ListData<StatVO> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize) {
         List<Stat> list = statDao.queryList(queryParam,pageNum,pageSize);
-        List<StatDto> dtoList = new ArrayList<>();
+        List<StatVO> dtoList = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(list)){
             for(Stat stat : list){
-                StatDto statDto = translate(stat);
-                dtoList.add(statDto);
+                StatVO statVO = translate(stat);
+                dtoList.add(statVO);
             }
         }
-        ListData<StatDto> listData = new ListData<>();
+        ListData<StatVO> listData = new ListData<>();
         listData.setList(dtoList);
         return listData;
     }
 
 
     @Override
-    public StatDto queryById(Integer id) {
+    public StatVO queryById(Integer id) {
         Stat stat = statDao.queryById(id);
         String template = stat.getTemplate();
         String timeParam = stat.getTimeparam();

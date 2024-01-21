@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.insights.dto_bak.StatDataObject;
-import com.dtstep.lighthouse.insights.dto_bak.StatDto;
+import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.dto_bak.StatValue;
 import com.dtstep.lighthouse.insights.service.DataService;
 import com.dtstep.lighthouse.insights.service.StatService;
@@ -29,12 +29,12 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public List<StatDataObject> testDataQuery(Integer statId, LocalDateTime startTime, LocalDateTime endTime, List<String> dimens) {
-        StatDto statDto = statService.queryById(statId);
+        StatVO statVO = statService.queryById(statId);
         long startTimeStamp = DateUtil.translateToTimeStamp(startTime);
         long endTimeStamp = DateUtil.translateToTimeStamp(endTime);
         List<Long> batchList = null;
         try{
-            batchList = BatchAdapter.queryBatchTimeList(statDto.getTimeparam(), startTimeStamp, endTimeStamp);
+            batchList = BatchAdapter.queryBatchTimeList(statVO.getTimeparam(), startTimeStamp, endTimeStamp);
         }catch (Exception ex){
             ex.printStackTrace();
         }

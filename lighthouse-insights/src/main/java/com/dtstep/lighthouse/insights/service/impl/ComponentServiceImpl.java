@@ -5,7 +5,7 @@ import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.ComponentDao;
-import com.dtstep.lighthouse.insights.dto_bak.ComponentDto;
+import com.dtstep.lighthouse.insights.vo.ComponentVO;
 import com.dtstep.lighthouse.insights.dto.ComponentQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.modal.Component;
@@ -148,31 +148,31 @@ public class ComponentServiceImpl implements ComponentService {
         return id;
     }
 
-    private ComponentDto translate(Component component){
-        ComponentDto componentDto = new ComponentDto(component);
+    private ComponentVO translate(Component component){
+        ComponentVO componentVO = new ComponentVO(component);
         int userId = component.getUserId();
         int currentUserId = baseService.getCurrentUserId();
         if(userId == currentUserId){
-            componentDto.addPermission(PermissionEnum.ManageAble);
+            componentVO.addPermission(PermissionEnum.ManageAble);
         }else{
-            componentDto.addPermission(PermissionEnum.AccessAble);
+            componentVO.addPermission(PermissionEnum.AccessAble);
         }
         User user = userService.cacheQueryById(userId);
-        componentDto.setUser(user);
-        return componentDto;
+        componentVO.setUser(user);
+        return componentVO;
     }
 
     @Override
-    public ListData<ComponentDto> queryList(ComponentQueryParam queryParam, Integer pageNum, Integer pageSize) {
+    public ListData<ComponentVO> queryList(ComponentQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        ListData<ComponentDto> listData;
+        ListData<ComponentVO> listData;
         try{
             List<Component> components = componentDao.queryList(queryParam);
-            List<ComponentDto> dtoList = new ArrayList<>();
+            List<ComponentVO> dtoList = new ArrayList<>();
             if(CollectionUtils.isNotEmpty(components)){
                 for(Component component : components){
-                    ComponentDto componentDto = translate(component);
-                    dtoList.add(componentDto);
+                    ComponentVO componentVO = translate(component);
+                    dtoList.add(componentVO);
                 }
             }
             listData = baseService.translateToListData(dtoList);

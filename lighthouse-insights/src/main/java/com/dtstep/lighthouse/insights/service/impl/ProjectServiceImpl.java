@@ -14,6 +14,7 @@ import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
+import com.dtstep.lighthouse.insights.vo.ProjectVO;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
@@ -105,7 +106,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectDto queryById(Integer id) {
+    public ProjectVO queryById(Integer id) {
         Project project = projectDao.queryById(id);
         if(project == null){
             return null;
@@ -113,31 +114,31 @@ public class ProjectServiceImpl implements ProjectService {
         return translate(project);
     }
 
-    private ProjectDto translate(Project project){
+    private ProjectVO translate(Project project){
         int currentUserId = baseService.getCurrentUserId();
-        ProjectDto projectDto = new ProjectDto(project);
+        ProjectVO projectVO = new ProjectVO(project);
         Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION, project.getId());
         Role accessRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION, project.getId());
         List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
         if(CollectionUtils.isNotEmpty(adminIds)){
             List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
-            projectDto.setAdmins(admins);
+            projectVO.setAdmins(admins);
         }
         if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
-            projectDto.addPermission(PermissionEnum.ManageAble);
-            projectDto.addPermission(PermissionEnum.AccessAble);
+            projectVO.addPermission(PermissionEnum.ManageAble);
+            projectVO.addPermission(PermissionEnum.AccessAble);
         }else if(project.getPrivateType() == PrivateTypeEnum.Public
                 || permissionService.checkUserPermission(currentUserId, accessRole.getId())){
-            projectDto.addPermission(PermissionEnum.AccessAble);
+            projectVO.addPermission(PermissionEnum.AccessAble);
         }
-        return projectDto;
+        return projectVO;
     }
 
     @Override
-    public ListData<ProjectDto> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize) {
+    public ListData<ProjectVO> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize) {
         Integer userId = baseService.getCurrentUserId();
         PageHelper.startPage(pageNum,pageSize);
-        List<ProjectDto> dtoList = new ArrayList<>();
+        List<ProjectVO> dtoList = new ArrayList<>();
         List<Project> projectList;
         try{
             projectList = projectDao.queryList(queryParam,pageNum,pageSize);
@@ -145,10 +146,10 @@ public class ProjectServiceImpl implements ProjectService {
             PageHelper.clearPage();
         }
         for(Project project : projectList){
-            ProjectDto projectDto = null;
+            ProjectVO projectVO = null;
             try{
-                projectDto = translate(project);
-                dtoList.add(projectDto);
+                projectVO = translate(project);
+                dtoList.add(projectVO);
             }catch (Exception ex){
                 logger.error("translate to page display element error,projectId:{}!",project.getId(),ex);
             }

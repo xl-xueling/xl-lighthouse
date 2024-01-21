@@ -1,14 +1,14 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.insights.modal.OrderDetail;
 import com.dtstep.lighthouse.insights.modal.User;
 
-public class OrderDetailDto extends OrderDetail {
+public class OrderDetailVO extends OrderDetail {
 
     private User user;
 
-    public OrderDetailDto(OrderDetail orderDetail){
+    public OrderDetailVO(OrderDetail orderDetail){
         assert orderDetail != null;
         BeanCopyUtil.copy(orderDetail,this);
     }

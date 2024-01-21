@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.test.service;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
-import com.dtstep.lighthouse.insights.dto_bak.OrderDetailDto;
+import com.dtstep.lighthouse.insights.vo.OrderDetailVO;
 import com.dtstep.lighthouse.insights.service.OrderDetailService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ public class TestOrderDetailService {
     @Test
     public void testQuery() throws Exception {
         int orderId = 100167;
-        List<OrderDetailDto> detailDtoList = orderDetailService.queryList(orderId);
+        List<OrderDetailVO> detailDtoList = orderDetailService.queryList(orderId);
         System.out.println("detailList:" + JsonUtil.toJSONString(detailDtoList));
     }
 }

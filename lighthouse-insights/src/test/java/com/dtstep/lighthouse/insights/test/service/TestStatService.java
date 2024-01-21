@@ -6,7 +6,7 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.core.formula.TemplateUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.StatDao;
-import com.dtstep.lighthouse.insights.dto_bak.StatDto;
+import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.modal.RenderFilterConfig;
 import com.dtstep.lighthouse.insights.modal.Stat;
@@ -43,7 +43,7 @@ public class TestStatService {
     public void testQueryList(){
         StatQueryParam queryParam = new StatQueryParam();
         queryParam.setGroupId(100186);
-        ListData<StatDto> listData = statService.queryList(queryParam,1,100);
+        ListData<StatVO> listData = statService.queryList(queryParam,1,100);
         System.out.println("listData:" + JsonUtil.toJSONString(listData));
     }
 

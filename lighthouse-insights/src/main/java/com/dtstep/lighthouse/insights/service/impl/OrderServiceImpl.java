@@ -18,6 +18,8 @@ import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.enums.*;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
+import com.dtstep.lighthouse.insights.vo.OrderDetailVO;
+import com.dtstep.lighthouse.insights.vo.OrderVO;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
@@ -107,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderDao.queryById(id);
         Validate.notNull(order);
         OrderVO orderVO = translateApproveEntity(order);
-        List<OrderDetailDto> orderDetails = orderDetailService.queryList(id);
+        List<OrderDetailVO> orderDetails = orderDetailService.queryList(id);
         orderVO.setOrderDetails(orderDetails);
         List<Integer> roleIds = orderVO.getSteps();
         HashMap<Integer,List<User>> adminsMap = new HashMap<>();

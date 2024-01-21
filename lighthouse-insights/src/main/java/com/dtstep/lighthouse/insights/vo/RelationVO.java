@@ -1,13 +1,13 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.insights.modal.Relation;
 
-public class RelationDto extends Relation {
+public class RelationVO extends Relation {
 
     private Object extend;
 
-    public RelationDto(Relation relation){
+    public RelationVO(Relation relation){
         assert relation != null;
         BeanCopyUtil.copy(relation,this);
     }

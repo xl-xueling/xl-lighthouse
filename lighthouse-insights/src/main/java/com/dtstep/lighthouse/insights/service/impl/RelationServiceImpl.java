@@ -1,9 +1,9 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.RelationDao;
-import com.dtstep.lighthouse.insights.dto_bak.ProjectDto;
-import com.dtstep.lighthouse.insights.dto_bak.RelationDto;
-import com.dtstep.lighthouse.insights.dto_bak.StatDto;
+import com.dtstep.lighthouse.insights.vo.ProjectVO;
+import com.dtstep.lighthouse.insights.vo.RelationVO;
+import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Relation;
@@ -42,24 +42,24 @@ public class RelationServiceImpl implements RelationService {
         return relationDao.isExist(hash);
     }
 
-    private RelationDto translate(Relation relation){
-        RelationDto relationDto = new RelationDto(relation);
+    private RelationVO translate(Relation relation){
+        RelationVO relationVO = new RelationVO(relation);
         if(relation.getResourceType() == ResourceTypeEnum.Project){
-            ProjectDto projectDto = projectService.queryById(relation.getResourceId());
-            relationDto.setExtend(projectDto);
+            ProjectVO projectVO = projectService.queryById(relation.getResourceId());
+            relationVO.setExtend(projectVO);
         }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
-            StatDto statDto = statService.queryById(relation.getResourceId());
-            relationDto.setExtend(statDto);
+            StatVO statVO = statService.queryById(relation.getResourceId());
+            relationVO.setExtend(statVO);
         }
-        return relationDto;
+        return relationVO;
     }
 
     @Override
-    public List<RelationDto> queryList(Integer relationId, RelationTypeEnum relationTypeEnum) {
-        List<RelationDto> dtoList = new ArrayList<>();
+    public List<RelationVO> queryList(Integer relationId, RelationTypeEnum relationTypeEnum) {
+        List<RelationVO> dtoList = new ArrayList<>();
         List<Relation> relationList = relationDao.queryList(relationId,relationTypeEnum);
         for(Relation relation : relationList){
-            RelationDto dto = translate(relation);
+            RelationVO dto = translate(relation);
             dtoList.add(dto);
         }
         return dtoList;

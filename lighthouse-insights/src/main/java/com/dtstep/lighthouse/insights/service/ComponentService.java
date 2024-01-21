@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.insights.dto_bak.ComponentDto;
+import com.dtstep.lighthouse.insights.vo.ComponentVO;
 import com.dtstep.lighthouse.insights.dto.ComponentQueryParam;
 import com.dtstep.lighthouse.insights.modal.Component;
 
@@ -18,5 +18,5 @@ public interface ComponentService {
 
     int update(Component component);
 
-    ListData<ComponentDto> queryList(ComponentQueryParam queryParam,Integer pageNum,Integer pageSize);
+    ListData<ComponentVO> queryList(ComponentQueryParam queryParam, Integer pageNum, Integer pageSize);
 }

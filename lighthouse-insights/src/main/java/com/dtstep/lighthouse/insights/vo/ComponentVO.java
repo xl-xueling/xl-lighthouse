@@ -1,6 +1,7 @@
-package com.dtstep.lighthouse.insights.dto_bak;
+package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
+import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.modal.Component;
 import com.dtstep.lighthouse.insights.modal.User;
 
@@ -9,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ComponentDto extends Component {
+public class ComponentVO extends Component {
 
     private User user;
 
@@ -29,7 +30,7 @@ public class ComponentDto extends Component {
         }
     }
 
-    public ComponentDto(Component component){
+    public ComponentVO(Component component){
         assert component != null;
         BeanCopyUtil.copy(component,this);
     }

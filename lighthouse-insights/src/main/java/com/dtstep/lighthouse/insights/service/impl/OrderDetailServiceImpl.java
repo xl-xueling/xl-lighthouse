@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.OrderDetailDao;
-import com.dtstep.lighthouse.insights.dto_bak.OrderDetailDto;
+import com.dtstep.lighthouse.insights.vo.OrderDetailVO;
 import com.dtstep.lighthouse.insights.modal.OrderDetail;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.OrderDetailService;
@@ -23,18 +23,18 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     private UserService userService;
 
     @Override
-    public List<OrderDetailDto> queryList(Integer orderId) {
+    public List<OrderDetailVO> queryList(Integer orderId) {
         List<OrderDetail> orderDetails = orderDetailDao.queryList(orderId);
-        List<OrderDetailDto> dtoList = new ArrayList<>();
+        List<OrderDetailVO> dtoList = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(orderDetails)){
             for(OrderDetail orderDetail : orderDetails){
-                OrderDetailDto orderDetailDto = new OrderDetailDto(orderDetail);
+                OrderDetailVO orderDetailVO = new OrderDetailVO(orderDetail);
                 Integer userId = orderDetail.getUserId();
                 if(userId != null){
                     User user = userService.cacheQueryById(userId);
-                    orderDetailDto.setUser(user);
+                    orderDetailVO.setUser(user);
                 }
-                dtoList.add(orderDetailDto);
+                dtoList.add(orderDetailVO);
             }
         }
         return dtoList;

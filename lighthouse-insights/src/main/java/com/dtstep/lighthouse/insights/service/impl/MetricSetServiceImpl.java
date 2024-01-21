@@ -11,6 +11,8 @@ import com.dtstep.lighthouse.insights.enums.*;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.util.TreeUtil;
+import com.dtstep.lighthouse.insights.vo.MetricSetVO;
+import com.dtstep.lighthouse.insights.vo.RelationVO;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
@@ -103,19 +105,19 @@ public class MetricSetServiceImpl implements MetricSetService {
         return metricSetDao.update(metricSet);
     }
 
-    private MetricSetDto translate(MetricSet metricSet){
-        MetricSetDto metricSetDto = new MetricSetDto(metricSet);
+    private MetricSetVO translate(MetricSet metricSet){
+        MetricSetVO metricSetVO = new MetricSetVO(metricSet);
         Role role = roleService.cacheQueryRole(RoleTypeEnum.METRIC_MANAGE_PERMISSION,metricSet.getId());
         List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(role.getId(),3);
         if(CollectionUtils.isNotEmpty(adminIds)){
             List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
-            metricSetDto.setAdmins(admins);
+            metricSetVO.setAdmins(admins);
         }
-        return metricSetDto;
+        return metricSetVO;
     }
 
     @Override
-    public MetricSetDto queryById(Integer id) {
+    public MetricSetVO queryById(Integer id) {
         MetricSet metricSet = metricSetDao.queryById(id);
         return translate(metricSet);
     }
@@ -184,8 +186,8 @@ public class MetricSetServiceImpl implements MetricSetService {
             structure = new ArrayList<>();
             TreeNode rootNode = new TreeNode(metricSet.getTitle(),metricSet.getId(),"metric");
             structure.add(rootNode);
-            List<RelationDto> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
-            for(RelationDto relation : relationList){
+            List<RelationVO> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
+            for(RelationVO relation : relationList){
                 if(relation.getResourceType() == ResourceTypeEnum.Project){
                     Project project = (Project) relation.getExtend();
                     if(project != null){
@@ -210,8 +212,8 @@ public class MetricSetServiceImpl implements MetricSetService {
                 wasteNode = new TreeNode("",-2);
                 structure.add(wasteNode);
             }
-            List<RelationDto> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
-            for(RelationDto relation : relationList){
+            List<RelationVO> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
+            for(RelationVO relation : relationList){
                 if(relation.getResourceType() == ResourceTypeEnum.Project){
                     Project project = (Project) relation.getExtend();
                     if(project != null){
