@@ -200,8 +200,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
             </Tabs>
             {showStatAddPanel && <StatCreatePanel projectInfo={projectInfo} groupInfo={groupInfo} onClose={() => {
                 setShowsStatAddPanel(false);
-                setFormParams({"groupId":groupId,t:new Date().getTime()});
-            }}/>}
+            }} onSuccess={() => {setFormParams({"groupId":groupId,t:new Date().getTime()});}}/>}
             {showGroupEditPanel && <GroupUpdatePanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)} callback={callback}/>}
             {showLimitedRecordPanel && <RecordModal resourceId={0} recordType={0} resourceType={[0]} onClose={() => setShowLimitedRecordPanel(false)}/>}
             {showSecretKeyModal && <SecretKeyModal groupId={groupInfo?.id} onClose={() => setShowSecretKeyModal(false)}/>}

@@ -25,7 +25,7 @@ import {requestCreate} from "@/api/stat";
 import {getStatExpiredEnumDescription, StatExpiredEnum, StatTimeParamEnum} from "@/types/insights-common";
 import useStorage from "@/utils/useStorage";
 
-export default function StatAddPanel({projectInfo,groupInfo,onClose}) {
+export default function StatAddPanel({projectInfo,groupInfo,onClose,onSuccess}) {
 
     const [loading,setLoading] = useState<boolean>(false);
     const t = useLocale(locale);
@@ -103,6 +103,7 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose}) {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['statCreate.form.submit.success']});
+                onSuccess();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
