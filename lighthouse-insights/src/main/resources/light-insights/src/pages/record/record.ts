@@ -32,7 +32,9 @@ export function translateRecord(t: any,record:Record){
         {
             const result:LimitedRecord = {
                 id:record.id,
-                desc: t['recordType.groupLimited.startTime'] + ": " + formatTimeStamp(Number(descObject.startTime),DateTimeFormat) + " , "
+                desc:
+                    t['recordType.groupLimited.strategy'] + ": " + descObject.strategy + " , " +
+                    t['recordType.groupLimited.startTime'] + ": " + formatTimeStamp(Number(descObject.startTime),DateTimeFormat) + " , "
                 + t['recordType.groupLimited.endTime'] + ": " + formatTimeStamp(Number(descObject.endTime),DateTimeFormat)
                 ,
             }
