@@ -72,7 +72,13 @@ export default function SecretKeyModal({groupId,onClose}) {
             footer={null}
             style={{ width:'750px' }}
             onCancel={onClose}>
-            <div>{secretKey}</div>
+
+            <Spin loading={loading} style={{ width:'100%',display: 'block' }}>
+                <Space size={4} direction="vertical" style={{ width: '100%' }}>
+                        {secretKey && <div style={{textAlign:"center"}}><Text copyable>{secretKey}</Text></div>}
+                </Space>
+            </Spin>
+
         </Modal>
     )
 }
