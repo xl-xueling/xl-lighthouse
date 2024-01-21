@@ -30,22 +30,18 @@ public final class TemplateEntity implements Serializable {
 
     private static final long serialVersionUID = -216878909821657855L;
 
-    @TemplateAttrAnnotation
     private String stat;
 
     private String completeStat;
 
-    @TemplateAttrAnnotation
     private String title;
 
-    @TemplateAttrAnnotation
     private String dimens;
 
     private String[] dimensArray;
 
     private boolean limitFlag = false;
 
-    @TemplateAttrAnnotation
     private String limit;
 
     private LimitTypeEnum limitTypeEnum;
@@ -104,16 +100,8 @@ public final class TemplateEntity implements Serializable {
         this.statStateList = statStateList;
     }
 
-    public static List<String> getStatAttr(){
-        List<String> list = new ArrayList<>();
-        Field[] fields = TemplateEntity.class.getDeclaredFields();
-        for (Field field : fields) {
-            TemplateAttrAnnotation annotation = field.getAnnotation(TemplateAttrAnnotation.class);
-            if (annotation != null) {
-                list.add(field.getName());
-            }
-        }
-        return list;
+    public static List<String> getTemplateAttrs(){
+        return List.of("stat","title","dimens","limit");
     }
 
     public String getLimit() {
