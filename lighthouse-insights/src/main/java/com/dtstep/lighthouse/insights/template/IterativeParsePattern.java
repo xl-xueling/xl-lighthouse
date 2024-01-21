@@ -307,9 +307,6 @@ public final class IterativeParsePattern implements Parser {
         if(isSequence && stateList.size() > 1){
             return ResultWrapper.result(ResultCode.templateParserSeqTogether);
         }
-        if(isSequence && !StringUtil.isEmpty(limit)){
-            return ResultWrapper.result(ResultCode.templateParserLimitSeqNotSupport);
-        }
         templateEntity.setStatStateList(stateList);
         return ResultWrapper.result(ResultCode.success,templateEntity);
     }
