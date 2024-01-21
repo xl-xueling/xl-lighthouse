@@ -149,7 +149,8 @@ function EditableCell(props) {
         [editing, rowData, column]
     );
     useEffect(() => {
-        if(column.componentType == EditTableComponentEnum.INPUT){
+        const isLock = rowData.lockColumns && rowData.lockColumns.includes(column.dataIndex);
+        if(column.componentType == EditTableComponentEnum.INPUT && !isLock){
             editing && refInput.current.focus();
         }
     }, [editing]);
@@ -180,6 +181,7 @@ function EditableCell(props) {
     };
 
     if (column.componentType == EditTableComponentEnum.INPUT) {
+        const isLock = rowData.lockColumns && rowData.lockColumns.includes(column.dataIndex);
         return (
             <div ref={ref}>
                 <FormItem
@@ -189,7 +191,7 @@ function EditableCell(props) {
                     initialValue={rowData[column.dataIndex]}
                     field={column.dataIndex}
                 >
-                    <Input size={"mini"} ref={refInput} onChange={cellValueChangeHandler}/>
+                    <Input size={"mini"} ref={refInput} onChange={cellValueChangeHandler} disabled={isLock}/>
                 </FormItem>
             </div>
         );

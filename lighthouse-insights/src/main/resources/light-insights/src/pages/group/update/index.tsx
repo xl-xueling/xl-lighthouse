@@ -35,21 +35,22 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
         {
             title: 'Name',
             dataIndex: 'name',
-            editable: true,
             componentType:EditTableComponentEnum.INPUT,
             headerCellStyle: { width:'20%'},
         },
         {
             title: 'Type',
             dataIndex: 'type',
-            editable: true,
             initValue:"string",
             componentType:EditTableComponentEnum.SELECT,
             headerCellStyle: { width:'130px'},
-            render:(text, record) => {
+            render:(value, record) => {
+                const isLock = record.lockColumns && record.lockColumns.includes('type');
                 return (
                     <Select size={"mini"}
+                            disabled={isLock}
                             popupVisible={expandedKeys.includes(record.key)}
+                            value={value}
                             onChange={(value) => {record['type'] = value}}
                             onFocus={(e) => {
                                 setExpandedKeys((keys) => [...keys, record.key]);
@@ -80,7 +81,6 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
             title: 'Comment',
             dataIndex: 'comment',
             componentType:EditTableComponentEnum.INPUT,
-            editable: true,
         },
         {
             title: 'Operation',
@@ -163,7 +163,7 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
         const columnArr: Array<EditTableColumn> = [];
         for (let i = 0; i < groupInfo?.columns.length; i++) {
             const columnInfo = groupInfo?.columns[i];
-            columnArr.push({...columnInfo, "key": getRandomString()})
+            columnArr.push({...columnInfo, "key": getRandomString(),lockColumns:['name','type']})
         }
         setInitData(columnArr);
         const formData = {
