@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
@@ -33,7 +34,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public int create(Group group) {
         LocalDateTime localDateTime = LocalDateTime.now();
-        group.setSecretKey(UUID.randomUUID().toString().replace("-",""));
+        group.setSecretKey(RandomID.id(40));
         group.setCreateTime(localDateTime);
         group.setUpdateTime(localDateTime);
         group.setRefreshTime(localDateTime);
