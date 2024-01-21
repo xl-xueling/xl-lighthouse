@@ -118,7 +118,7 @@ public class StatServiceImpl implements StatService {
         resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Stat,stat.getId(),ResourceTypeEnum.Group,stat.getGroupId()));
         return ResultCode.success;
     }
-    
+
     @Transactional
     @Override
     public int delete(Stat stat) {

@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.insights.test.utils;
 
+import IceInternal.Ex;
+import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.modal.Order;
@@ -39,6 +41,13 @@ public class TestUtil {
         sets.add(PermissionEnum.ManageAble);
         sets.add(null);
         System.out.println("sets:" + JsonUtil.toJSONString(sets));
+    }
+
+    @Test
+    public void testRandom() throws Exception{
+        for(int i=0;i<10000;i++){
+            System.out.println(RandomID.id(3));
+        }
     }
 
 }
