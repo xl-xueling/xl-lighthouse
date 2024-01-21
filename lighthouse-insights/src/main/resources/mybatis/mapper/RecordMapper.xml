@@ -13,7 +13,7 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Record" >
-        INSERT INTO ldp_history_record (`user_id`,`resource_id`,`resource_type`,`record_type`,`desc`,`record_time`) VALUES
+        INSERT INTO ldp_records (`user_id`,`resource_id`,`resource_type`,`record_type`,`desc`,`record_time`) VALUES
         (
             #{userId,jdbcType=INTEGER},
             #{resourceId,jdbcType=INTEGER},
@@ -25,7 +25,7 @@
     </insert>
 
     <select id="queryList" resultMap="recordResultMap">
-        SELECT `id`,`user_id`,`resource_id`,`resource_type`,`record_type`,`desc`,`record_time` FROM ldp_history_record
+        SELECT `id`,`user_id`,`resource_id`,`resource_type`,`record_type`,`desc`,`record_time` FROM ldp_records
         <where>
             <if test="queryParam.resourceId != null">
                 AND `resource_id`  = #{queryParam.resourceId}
