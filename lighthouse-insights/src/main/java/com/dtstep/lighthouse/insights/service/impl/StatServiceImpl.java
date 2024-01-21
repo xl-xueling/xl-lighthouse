@@ -12,6 +12,7 @@ import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
+import com.dtstep.lighthouse.insights.vo.ResultWrapper;
 import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
@@ -67,17 +68,18 @@ public class StatServiceImpl implements StatService {
 
     @Transactional
     @Override
-    public int create(Stat stat) {
+    public ResultCode create(Stat stat) {
         int groupId = stat.getGroupId();
         Group group = groupDao.queryById(groupId);
         String template = stat.getTemplate();
         String timeParam = stat.getTimeparam();
-        try{
-            TemplateEntity templateEntity = TemplateParser.parse(new TemplateContext(template,timeParam, group.getColumns()));
-            stat.setTitle(templateEntity.getTitle());
-        }catch (Exception ex){
-            ex.printStackTrace();
+        ResultWrapper<TemplateEntity> resultWrapper = TemplateParser.parseConfig(new TemplateContext(template,timeParam, group.getColumns()));
+        ResultCode resultCode = resultWrapper.getResultCode();
+        if(resultCode != ResultCode.success){
+            return resultCode;
         }
+        TemplateEntity templateEntity = resultWrapper.getData();
+        stat.setTitle(templateEntity.getTitle());
         LocalDateTime localDateTime = LocalDateTime.now();
         stat.setUpdateTime(localDateTime);
         stat.setCreateTime(localDateTime);
@@ -86,7 +88,7 @@ public class StatServiceImpl implements StatService {
         statDao.insert(stat);
         int id = stat.getId();
         resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Stat,id, ResourceTypeEnum.Group,stat.getGroupId()));
-        return id;
+        return ResultCode.success;
     }
 
     @Transactional

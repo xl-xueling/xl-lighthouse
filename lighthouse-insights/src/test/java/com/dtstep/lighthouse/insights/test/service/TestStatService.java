@@ -35,7 +35,7 @@ public class TestStatService {
         String template = "<stat-item title=\"每分钟_uv统计\" stat=\"count()\"  dimens=\"province\"/>";
         stat.setTemplate(template);
         stat.setGroupId(100182);
-        int result = statService.create(stat);
+        ResultCode result = statService.create(stat);
         System.out.println("result:" + result);
     }
 

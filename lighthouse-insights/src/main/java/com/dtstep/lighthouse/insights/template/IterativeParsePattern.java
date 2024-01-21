@@ -193,7 +193,7 @@ public final class IterativeParsePattern implements Parser {
 
 
     @Override
-    public ResultWrapper<TemplateEntity> parseConfig(TemplateContext context) throws Exception {
+    public ResultWrapper<TemplateEntity> parseConfig(TemplateContext context) {
         TemplateEntity templateEntity = new TemplateEntity();
         String template = context.getTemplate();
         Document document = Jsoup.parse(template,"", org.jsoup.parser.Parser.xmlParser());
