@@ -43,7 +43,7 @@
                 AND role_id = #{queryParam.roleId}
             </if>
             <if test="queryParam.ownerType != null">
-                AND owner_type = #{queryParam.ownerType}
+                AND owner_type = #{queryParam.ownerType.ownerType}
             </if>
         </where>
     </select>
