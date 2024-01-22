@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
+import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
 import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
@@ -97,6 +98,40 @@ public class ProjectServiceImpl implements ProjectService {
         permissionService.batchCreate(permissionList);
         return projectId;
     }
+
+    @Override
+    public void batchGrantPermissions(PermissionGrantParam grantParam) throws Exception{
+        Integer resourceId = grantParam.getResourceId();
+        Project project = projectDao.queryById(resourceId);
+        RoleTypeEnum roleTypeEnum = grantParam.getRoleType();
+        Validate.notNull(project);
+        Integer roleId;
+        if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
+            Role role = roleService.queryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,resourceId);
+            roleId = role.getId();
+        }else if(roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION){
+            Role role = roleService.queryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,resourceId);
+            roleId = role.getId();
+        }else {
+            throw new Exception();
+        }
+        List<Integer> departmentIdList = grantParam.getDepartmentsPermissions();
+        List<Integer> userIdList = grantParam.getUsersPermissions();
+        if(project.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(departmentIdList)){
+            for(int i=0;i<departmentIdList.size();i++){
+                Integer tempDepartmentId = departmentIdList.get(i);
+                Validate.isTrue(roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION);
+                permissionService.grantPermission(tempDepartmentId,OwnerTypeEnum.DEPARTMENT,roleId);
+            }
+        }
+        if(project.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(userIdList)){
+            for(int i=0;i<userIdList.size();i++){
+                Integer userId = userIdList.get(i);
+                permissionService.grantPermission(userId,OwnerTypeEnum.USER,roleId);
+            }
+        }
+    }
+
 
     @Transactional
     @Override
@@ -207,4 +242,6 @@ public class ProjectServiceImpl implements ProjectService {
         }
         return users;
     }
+
+
 }
