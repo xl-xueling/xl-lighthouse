@@ -53,6 +53,9 @@
             <if test="debugMode != null">
                 `debug_mode` = #{debugMode},
             </if>
+            <if test="desc != null">
+                `desc` = #{desc},
+            </if>
             <if test="updateTime != null">
                 `update_time` = #{updateTime},
             </if>
