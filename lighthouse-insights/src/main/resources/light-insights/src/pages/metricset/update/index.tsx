@@ -8,7 +8,6 @@ import DepartmentsTransfer from "@/pages/components/transfer/department_transfer
 import {IconCaretDown, IconCaretRight} from "@arco-design/web-react/icon";
 import {GrantPrivileges, MetricSet} from "@/types/insights-web";
 import {ResultData} from "@/types/insights-common";
-import {requestGrantPrivilege} from "@/api/privilege";
 import {requestCreate, requestUpdate} from "@/api/metricset";
 
 

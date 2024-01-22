@@ -39,4 +39,6 @@ public class PermissionController {
         ListData<PermissionVO> listData = permissionService.queryList(queryParam, pagination.getPageNum(), pagination.getPageSize());
         return ResultData.success(listData);
     }
+
+
 }
