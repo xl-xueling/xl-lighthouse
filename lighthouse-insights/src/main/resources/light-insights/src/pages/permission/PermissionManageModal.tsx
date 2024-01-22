@@ -21,8 +21,8 @@ import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {formatTimeStampBackUp} from "@/utils/util";
 import {LimitedRecord, translateRecord} from "@/pages/record/record";
-import {requestGrantPermission, requestQueryList} from "@/api/permission";
-import {getColumns} from "./constants";
+import {requestGrantProjectPermission, requestQueryList} from "@/api/permission";
+import {getDepartPermissionColumns} from "./constants";
 import './styles/index.module.less'
 import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
 import {IconPlus} from "@arco-design/web-react/icon";
@@ -52,7 +52,7 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
     const tableCallback = async (record, type) => {
         console.log("tableCallBack,record:" + record + ",type:" + type);
     }
-    const columns = useMemo(() => getColumns(t,tableCallback), [t]);
+    const departPermissionColumns = useMemo(() => getDepartPermissionColumns(t,tableCallback), [t]);
 
     const [pagination1, setPagination1] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
@@ -95,8 +95,19 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
                 pageSize:pageSize,
                 pageNum:current,
             }
-        }).then((result) => {
-            console.log("result:" + JSON.stringify(result));
+        }).then((response) => {
+            const {code, data ,message} = response;
+            if (code === '0') {
+                setDepartListData(data.list);
+                setPagination1({
+                    ...pagination1,
+                    current,
+                    pageSize,
+                    total: data.total});
+                setLoading(false);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
         }).catch((error) => {
             console.log(error)
         }).finally(() => {
@@ -129,7 +140,7 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
             usersPermissions:usersPermissions,
             departmentsPermissions:departmentsPermissions,
         }
-        await requestGrantPermission(requestParam)
+        await requestGrantProjectPermission(requestParam)
             .then((result) => {
                 console.log("result is:" + JSON.stringify(result));
             }).catch((error) => {
@@ -152,22 +163,25 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
             <Tabs type={"card-gutter"} defaultActiveTab='1'>
                 <TabPane key='1' title= {t['permissionManage.department.accessPermission']}>
                     <Space direction={"vertical"} style={{width:'100%'}}>
-                        <Table style={{maxHeight:'300px'}} size={"mini"} pagination={pagination1} columns={columns} data={departListData} />
-                        <Collapse>
-                            <CollapseItem header={
+                        <Input.Search style={{width:'350px',marginLeft:'3px'}}/>
+                        <Table style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1} columns={departPermissionColumns} data={departListData} />
+                        <Collapse style={{marginTop:'40px',borderLeft:"none",borderRight:"none"}}>
+                            <CollapseItem style={{borderLeft:"none",borderRight:"none"}} header={
                                 <div style={{display:"flex"}}>
                                     <span>{t['permissionManage.user.grantPermission']}</span>
                                     <Button style={{marginRight:'5px',marginLeft:"auto"}} type={"primary"} onClick={handleSubmit} size={"mini"}>{t['permissionManage.grant.submit']}</Button>
                                 </div>
                             } name='3'>
 
-                                    <Form.Item label={" "} field='title'>
-                                        <DepartmentsTransfer ref={departmentTransferRef}/>
-                                    </Form.Item>
+                                <Form.Item label={" "} field='title'>
+                                    <DepartmentsTransfer ref={departmentTransferRef}/>
+                                </Form.Item>
                             </CollapseItem>
                         </Collapse>
                     </Space>
                 </TabPane>
+
+
                 <TabPane key='2' title={t['permissionManage.user.accessPermission']}>
                     <Typography.Paragraph>Content of Tab Panel 2</Typography.Paragraph>
                 </TabPane>

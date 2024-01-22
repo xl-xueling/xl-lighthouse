@@ -94,7 +94,7 @@ public class ProjectController {
     }
 
 
-    @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "id")
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "resourceId")
     @RequestMapping("/project/grant")
     public ResultData<Integer> grant(@Validated @RequestBody PermissionGrantParam grantParam) throws Exception{
         projectService.batchGrantPermissions(grantParam);
