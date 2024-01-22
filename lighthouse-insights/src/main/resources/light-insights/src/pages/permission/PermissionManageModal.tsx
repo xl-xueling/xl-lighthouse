@@ -123,21 +123,21 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
 
     return (
         <Modal
-            title= {'权限管理'}
+            title= {t['permissionManage.modal.title']}
             style={{ width:'1180px',verticalAlign:'top', maxWidth:'90%', marginTop: '130px' }}
             visible={true}
             className={"permission_table"}
             footer={null}
             onCancel={onClose}>
             <Tabs type={"card-gutter"} defaultActiveTab='1'>
-                <TabPane key='1' title='部门访问权限'>
+                <TabPane key='1' title= {t['permissionManage.department.accessPermission']}>
                     <Space direction={"vertical"} style={{width:'100%'}}>
                         <Table style={{maxHeight:'300px'}} size={"mini"} pagination={pagination1} columns={columns} data={departListData} />
                         <Collapse>
                             <CollapseItem header={
                                 <div style={{display:"flex"}}>
-                                    <span>添加权限</span>
-                                    <Button style={{marginRight:'5px',marginLeft:"auto"}} type={"primary"} onClick={handleSubmit} size={"mini"}>提交修改</Button>
+                                    <span>{t['permissionManage.user.grantPermission']}</span>
+                                    <Button style={{marginRight:'5px',marginLeft:"auto"}} type={"primary"} onClick={handleSubmit} size={"mini"}>{t['permissionManage.grant.submit']}</Button>
                                 </div>
                             } name='3'>
                                 <Form
@@ -151,10 +151,10 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
                         </Collapse>
                     </Space>
                 </TabPane>
-                <TabPane key='2' title='用户访问权限'>
+                <TabPane key='2' title={t['permissionManage.user.accessPermission']}>
                     <Typography.Paragraph>Content of Tab Panel 2</Typography.Paragraph>
                 </TabPane>
-                <TabPane key='3' title='管理员权限'>
+                <TabPane key='3' title={t['permissionManage.user.managePermission']}>
                     <Typography.Paragraph>Content of Tab Panel 3</Typography.Paragraph>
                 </TabPane>
             </Tabs>
