@@ -18,6 +18,8 @@ import DepartmentLabel from "@/pages/department/common/depart";
 import {ImTree} from "react-icons/im";
 import {GlobalErrorCodes} from "@/utils/constants";
 import ErrorPage from "@/pages/common/error";
+import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
+import {ResourceTypeEnum} from "@/types/insights-common";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -27,6 +29,7 @@ export default function ProjectManage() {
   const [groupId,setGroupId] = useState<number>(null);
   const [showGroupCreatePanel, setShowGroupCreatePanel] = useState(false);
   const [showManagePanel, setShowManagePanel] = useState(false);
+  const [showPermissionManageModal, setShowPermissionManageModal] = useState(false);
   const [errorCode,setErrorCode] = useState<string>(null);
   const [projectInfo,setProjectInfo] = useState<Project>(null);
   const [loading,setLoading] = useState<boolean>(true);
@@ -39,6 +42,10 @@ export default function ProjectManage() {
 
     const handlerCreateGroup = () => {
         setShowGroupCreatePanel(true);
+    }
+
+    const handlerPermissionManage = () => {
+        setShowPermissionManageModal(true);
     }
 
     const callback = async (operation,data) => {
@@ -140,7 +147,7 @@ export default function ProjectManage() {
                                               <div
                                                   className={styles.title}>{t['projectManage.shortcuts.createGroup']}</div>
                                           </div>
-                                          <div className={styles.item}>
+                                          <div className={styles.item} onClick={handlerPermissionManage}>
                                               <div className={styles.icon}><VscGistSecret/></div>
                                               <div
                                                   className={styles.title}>{t['projectManage.shortcuts.permissionsManage']}</div>
@@ -179,6 +186,7 @@ export default function ProjectManage() {
                           </div>
                           {showGroupCreatePanel && <GroupCreateModal projectId={id} callback={callback}
                                                                      onClose={() => setShowGroupCreatePanel(false)}/>}
+                          {showPermissionManageModal && <PermissionManageModal resourceId={id} resourceType={ResourceTypeEnum.Project} onClose={() => setShowPermissionManageModal(false)} />}
                       </div>
                   </Spin>
               </>

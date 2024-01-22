@@ -151,6 +151,7 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
             columns:columns,
         }
         setConfirmLoading(true);
+        console.log("groupInfo:" + JSON.stringify(group));
         requestUpdate(group).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
