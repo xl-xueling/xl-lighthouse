@@ -1,13 +1,14 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
-    Collapse, Divider,
+    Button,
+    Collapse, DatePicker, Divider, Drawer,
     Form,
     Grid,
     Input,
     Message,
     Modal,
     Notification, PaginationProps,
-    Radio, Table, TableColumnProps,
+    Radio, Select, Space, Table, TableColumnProps,
     Tabs,
     TreeSelect,
     Typography
@@ -22,11 +23,17 @@ import {formatTimeStampBackUp} from "@/utils/util";
 import {LimitedRecord, translateRecord} from "@/pages/record/record";
 import {requestQueryList} from "@/api/permission";
 import {getColumns} from "./constants";
+import './styles/index.module.less'
+import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
+import {IconPlus} from "@arco-design/web-react/icon";
+import UsersTransfer from "@/pages/components/transfer/user_transfer";
 const CollapseItem = Collapse.Item;
+const TabPane = Tabs.TabPane;
 
 export function PermissionManageModal({resourceId,resourceType,onClose}){
 
     const t = useLocale(locale);
+    const { Col, Row } = Grid;
     const [loading,setLoading] = useState<boolean>(true);
 
     const [departListData,setDepartListData] = useState<Permission[]>([]);
@@ -38,6 +45,8 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
     const [departPermissionForms,setDepartPermissionForms] = useState(null);
 
     const [userPermissionForms,setUserPermissionForms] = useState(null);
+    const departmentTransferRef = useRef(null);
+    const userTransferRef = useRef(null);
 
     const tableCallback = async (record, type) => {
         console.log("tableCallBack,record:" + record + ",type:" + type);
@@ -107,28 +116,48 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
         fetchDepartListData().then();
     },[])
 
+    const handleSubmit = (e) => {
+        e.stopPropagation();
+        Message.success("ssssss");
+    }
 
     return (
         <Modal
             title= {'权限管理'}
             style={{ width:'1180px',verticalAlign:'top', maxWidth:'90%', marginTop: '130px' }}
             visible={true}
+            className={"permission_table"}
+            footer={null}
             onCancel={onClose}>
-
-            <Collapse
-                defaultActiveKey={['1', '2']}
-            >
-                <CollapseItem header='部门访问权限' name='1'>
-                    <Table size={"small"} pagination={pagination1} columns={columns} data={departListData} />
-                </CollapseItem>
-                <CollapseItem header='用户访问权限' name='2'>
-                    <Table size={"small"} pagination={pagination1} columns={columns} data={userListData} />
-                </CollapseItem>
-
-                <CollapseItem header='管理员权限' name='3'>
-                    ssasg
-                </CollapseItem>
-            </Collapse>
+            <Tabs type={"card-gutter"} defaultActiveTab='1'>
+                <TabPane key='1' title='部门访问权限'>
+                    <Space direction={"vertical"} style={{width:'100%'}}>
+                        <Table style={{maxHeight:'300px'}} size={"mini"} pagination={pagination1} columns={columns} data={departListData} />
+                        <Collapse>
+                            <CollapseItem header={
+                                <div style={{display:"flex"}}>
+                                    <span>添加权限</span>
+                                    <Button style={{marginRight:'5px',marginLeft:"auto"}} type={"primary"} onClick={handleSubmit} size={"mini"}>提交修改</Button>
+                                </div>
+                            } name='3'>
+                                <Form
+                                    labelCol={{span: 4, offset: 0}}
+                                >
+                                    <Form.Item label={" "} field='title'>
+                                        <DepartmentsTransfer ref={departmentTransferRef}/>
+                                    </Form.Item>
+                                </Form>
+                            </CollapseItem>
+                        </Collapse>
+                    </Space>
+                </TabPane>
+                <TabPane key='2' title='用户访问权限'>
+                    <Typography.Paragraph>Content of Tab Panel 2</Typography.Paragraph>
+                </TabPane>
+                <TabPane key='3' title='管理员权限'>
+                    <Typography.Paragraph>Content of Tab Panel 3</Typography.Paragraph>
+                </TabPane>
+            </Tabs>
         </Modal>
     );
 }
