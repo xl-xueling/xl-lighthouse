@@ -3,16 +3,13 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
+import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.PermissionVO;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.modal.Permission;
 import com.dtstep.lighthouse.insights.modal.User;
-import com.dtstep.lighthouse.insights.service.DepartmentService;
-import com.dtstep.lighthouse.insights.service.PermissionService;
-import com.dtstep.lighthouse.insights.service.RoleService;
-import com.dtstep.lighthouse.insights.service.UserService;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
@@ -39,6 +36,9 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private BaseService baseService;
 
     @Override
     public int create(Permission permission) {
@@ -144,16 +144,23 @@ public class PermissionServiceImpl implements PermissionService {
     public ListData<PermissionVO> queryList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize) {
         ListData<PermissionVO> listData = null;
         PageHelper.startPage(pageNum,pageSize);
+        List<PermissionVO> dtoList = new ArrayList<>();
+        List<Permission> permissionList = null;
         try{
-            List<Permission> permissionList = permissionDao.queryList(queryParam);
-            List<PermissionVO> dtoList = new ArrayList<>();
-            for(Permission permission : permissionList){
-                PermissionVO dto = translate(permission);
-                dtoList.add(dto);
-            }
+            permissionList = permissionDao.queryList(queryParam);
         }finally {
             PageHelper.clearPage();
         }
-        return null;
+        if(CollectionUtils.isNotEmpty(permissionList)){
+            for(Permission permission : permissionList){
+                try{
+                    PermissionVO dto = translate(permission);
+                    dtoList.add(dto);
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return baseService.translateToListData(dtoList);
     }
 }

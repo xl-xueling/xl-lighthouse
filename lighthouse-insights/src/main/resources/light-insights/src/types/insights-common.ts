@@ -8,6 +8,10 @@ export interface ResultData<S = any> {
     data?:S ;
 }
 
+export enum OwnerTypeEnum {
+    USER=1,
+    DEPARTMENT=2,
+}
 
 export enum OrderTypeEnum {
     PROJECT_ACCESS=1,

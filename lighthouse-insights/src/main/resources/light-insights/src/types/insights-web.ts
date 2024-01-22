@@ -205,3 +205,13 @@ export interface StatValue {
     updateTime?:number;
 }
 
+export interface Permission {
+    id?:number;
+    ownerId?:number;
+    ownerType?:number;
+    roleId?:number;
+    extend?:any;
+    createTime?:number;
+    updateTime?:number;
+}
+
