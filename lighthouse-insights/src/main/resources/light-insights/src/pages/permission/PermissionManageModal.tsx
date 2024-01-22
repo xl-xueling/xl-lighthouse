@@ -21,7 +21,7 @@ import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {formatTimeStampBackUp} from "@/utils/util";
 import {LimitedRecord, translateRecord} from "@/pages/record/record";
-import {requestQueryList} from "@/api/permission";
+import {requestGrantPermission, requestQueryList} from "@/api/permission";
 import {getColumns} from "./constants";
 import './styles/index.module.less'
 import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
@@ -47,6 +47,7 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
     const [userPermissionForms,setUserPermissionForms] = useState(null);
     const departmentTransferRef = useRef(null);
     const userTransferRef = useRef(null);
+    const formRef = useRef(null);
 
     const tableCallback = async (record, type) => {
         console.log("tableCallBack,record:" + record + ",type:" + type);
@@ -103,22 +104,37 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
         })
     }
 
-    // const fetchUserListData = async () => {
-    //
-    // }
-    //
-    // const fetchAdminListData = async () => {
-    //
-    // }
-
     useEffect(() => {
         console.log("resourceId:" + resourceId + ",resourceType:" + resourceType)
         fetchDepartListData().then();
     },[])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.stopPropagation();
-        Message.success("ssssss");
+        const values = formRef.current.getFieldsValue();
+        let departmentsPermissions = [];
+        let usersPermissions = [];
+        const privateType = 0;
+        if(privateType == 0 && departmentTransferRef?.current){
+            departmentsPermissions = departmentTransferRef.current.getData();
+        }
+        if(privateType == 0 && userTransferRef?.current){
+            usersPermissions = userTransferRef.current.getData();
+        }
+        console.log("departmentPermission:" + JSON.stringify(departmentsPermissions));
+        console.log("usersPermissions:" + JSON.stringify(usersPermissions));
+        const requestParam = {
+            resourceId:resourceId,
+            roleType:RoleTypeEnum.PROJECT_ACCESS_PERMISSION,
+            usersPermissions:usersPermissions,
+            departmentsPermissions:departmentsPermissions,
+        }
+        await requestGrantPermission(requestParam)
+            .then((result) => {
+                console.log("result is:" + JSON.stringify(result));
+            }).catch((error) => {
+                console.log(error)
+            })
     }
 
     return (
@@ -129,6 +145,10 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
             className={"permission_table"}
             footer={null}
             onCancel={onClose}>
+            <Form
+                ref={formRef}
+                labelCol={{span: 4, offset: 0}}
+            >
             <Tabs type={"card-gutter"} defaultActiveTab='1'>
                 <TabPane key='1' title= {t['permissionManage.department.accessPermission']}>
                     <Space direction={"vertical"} style={{width:'100%'}}>
@@ -140,13 +160,10 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
                                     <Button style={{marginRight:'5px',marginLeft:"auto"}} type={"primary"} onClick={handleSubmit} size={"mini"}>{t['permissionManage.grant.submit']}</Button>
                                 </div>
                             } name='3'>
-                                <Form
-                                    labelCol={{span: 4, offset: 0}}
-                                >
+
                                     <Form.Item label={" "} field='title'>
                                         <DepartmentsTransfer ref={departmentTransferRef}/>
                                     </Form.Item>
-                                </Form>
                             </CollapseItem>
                         </Collapse>
                     </Space>
@@ -158,6 +175,7 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
                     <Typography.Paragraph>Content of Tab Panel 3</Typography.Paragraph>
                 </TabPane>
             </Tabs>
+            </Form>
         </Modal>
     );
 }

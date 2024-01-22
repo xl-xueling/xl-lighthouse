@@ -1,9 +1,12 @@
 package com.dtstep.lighthouse.insights.service;
 
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
 import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
+import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
@@ -27,4 +30,6 @@ public interface ProjectService {
     ListData<ProjectVO> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize);
 
     int countByDepartmentId(Integer departmentId);
+
+    void batchGrantPermissions(PermissionGrantParam grantParam) throws Exception;
 }

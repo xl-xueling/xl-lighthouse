@@ -9,3 +9,11 @@ export async function requestQueryList(data) :Promise<ResultData<Order>> {
         data,
     })
 }
+
+export async function requestGrantPermission(data) :Promise<ResultData<Order>> {
+    return request({
+        url:'/permission/grant',
+        method:'POST',
+        data,
+    })
+}

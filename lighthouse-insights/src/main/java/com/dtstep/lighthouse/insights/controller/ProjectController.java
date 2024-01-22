@@ -3,10 +3,7 @@ package com.dtstep.lighthouse.insights.controller;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
-import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
-import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
-import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
-import com.dtstep.lighthouse.insights.dto.QueryParam;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.dto_bak.ResultData;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
@@ -22,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @ControllerAdvice
@@ -92,5 +91,13 @@ public class ProjectController {
         }else{
             return ResultData.result(ResultCode.systemError);
         }
+    }
+
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/project/grant")
+    public ResultData<Integer> grant(@Validated @RequestBody PermissionGrantParam grantParam) throws Exception{
+        projectService.batchGrantPermissions(grantParam);
+        return ResultData.success();
     }
 }
