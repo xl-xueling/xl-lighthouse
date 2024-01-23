@@ -71,7 +71,7 @@ public class ComponentServiceImpl implements ComponentService {
                 return ResultCode.getExtendResultCode(ResultCode.componentVerifyNotEmpty,new String[]{"value"});
             }
             if(valueList.contains(value)){
-                return ResultCode.componentVerifyDuplicateValue;
+                return ResultCode.getExtendResultCode(ResultCode.componentVerifyDuplicateValue,new String[]{value.toString()});
             }else{
                 valueList.add(value.toString());
             }
