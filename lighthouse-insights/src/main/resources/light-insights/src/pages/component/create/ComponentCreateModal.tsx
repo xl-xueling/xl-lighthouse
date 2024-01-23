@@ -236,6 +236,7 @@ export default function ComponentCreateModal({onClose,onSuccess}) {
                                 <TreeSelect
                                     placeholder={"Please Select"}
                                     multiple={true}
+                                    treeCheckable={true}
                                     allowClear={true}
                                     treeData={translateResponse(options)}
                                 />
