@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
+import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.PermissionVO;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
@@ -151,6 +152,9 @@ public class PermissionServiceImpl implements PermissionService {
             Department department = departmentService.queryById(permissionVO.getOwnerId());
             permissionVO.setExtend(department);
         }
+        int roleId = permission.getRoleId();
+        Role role = roleService.cacheQueryById(roleId);
+        permissionVO.setRoleType(role.getRoleType());
         return permissionVO;
     }
 

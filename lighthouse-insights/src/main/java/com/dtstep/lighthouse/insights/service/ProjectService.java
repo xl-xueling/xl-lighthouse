@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
 import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
 import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
@@ -34,5 +35,5 @@ public interface ProjectService {
 
     void batchGrantPermissions(PermissionGrantParam grantParam) throws Exception;
 
-    void releasePermission(PermissionReleaseParam releaseParam) throws Exception;
+    ResultCode releasePermission(PermissionReleaseParam releaseParam) throws Exception;
 }

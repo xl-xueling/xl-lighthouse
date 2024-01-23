@@ -11,6 +11,8 @@ public interface RoleService {
 
     Role queryById(Integer id);
 
+    Role cacheQueryById(Integer id);
+
     Role queryRole(RoleTypeEnum roleTypeEnum, Integer resourceId);
 
     int deleteById(Integer id);

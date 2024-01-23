@@ -104,7 +104,7 @@ public class ProjectController {
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "resourceId")
     @RequestMapping("/project/release")
     public ResultData<Integer> release(@Validated @RequestBody PermissionReleaseParam releaseParam) throws Exception{
-        projectService.releasePermission(releaseParam);
-        return ResultData.success();
+        ResultCode resultCode = projectService.releasePermission(releaseParam);
+        return ResultData.result(resultCode);
     }
 }

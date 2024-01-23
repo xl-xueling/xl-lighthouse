@@ -11,6 +11,7 @@ import { LuLock } from "react-icons/lu";
 import { PiLockBold } from "react-icons/pi";
 import {RiAppsLine} from "react-icons/ri";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
+import {getRoleTypeDescription} from "@/pages/common/desc/base";
 
 export function getUserPermissionColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
 
@@ -19,6 +20,14 @@ export function getUserPermissionColumns(t: any, callback: (record: Record<strin
             title: 'ID',
             dataIndex: 'id',
             headerCellStyle: { width:'20px' },
+        },
+        {
+            title: 'RoleType',
+            dataIndex: 'roleType',
+            headerCellStyle: { width:'20px' },
+            render: (value, record) => {
+                return getRoleTypeDescription(t,value);
+            }
         },
         {
             title: 'User',
@@ -68,6 +77,14 @@ export function getDepartPermissionColumns(t: any, callback: (record: Record<str
             title: 'ID',
             dataIndex: 'id',
             headerCellStyle: { width:'20px' },
+        },
+        {
+            title: 'RoleType',
+            dataIndex: 'roleType',
+            headerCellStyle: { width:'20px' },
+            render: (value, record) => {
+                return getRoleTypeDescription(t,value);
+            }
         },
         {
             title: 'Department',

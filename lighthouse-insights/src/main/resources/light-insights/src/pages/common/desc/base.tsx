@@ -191,3 +191,31 @@ export function getOrderTypeDescription(t:any,value:OrderTypeEnum){
         return t['basic.orderType.description.limitedThresholdAdjust'];
     }
 }
+
+export function getRoleTypeDescription(t:any,value:RoleTypeEnum){
+    if(value == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
+        return t['basic.roleType.description.projectManage'];
+    }else if(value == RoleTypeEnum.PROJECT_ACCESS_PERMISSION){
+        return t['basic.roleType.description.projectAccess'];
+    }else if(value == RoleTypeEnum.GROUP_MANAGE_PERMISSION){
+        return t['basic.roleType.description.groupManage'];
+    }else if(value == RoleTypeEnum.GROUP_ACCESS_PERMISSION){
+        return t['basic.roleType.description.groupAccess'];
+    }else if(value == RoleTypeEnum.METRIC_MANAGE_PERMISSION){
+        return t['basic.roleType.description.metricManage'];
+    }else if(value == RoleTypeEnum.METRIC_ACCESS_PERMISSION){
+        return t['basic.roleType.description.metricAccess'];
+    }else if(value == RoleTypeEnum.STAT_MANAGE_PERMISSION){
+        return t['basic.roleType.description.statManage'];
+    }else if(value == RoleTypeEnum.STAT_ACCESS_PERMISSION){
+        return t['basic.roleType.description.statAccess'];
+    }else if(value == RoleTypeEnum.DOMAIN_MANAGE_PERMISSION){
+        return t['basic.roleType.description.domainManage'];
+    }else if(value == RoleTypeEnum.DOMAIN_ACCESS_PERMISSION){
+        return t['basic.roleType.description.domainAccess'];
+    }else if(value == RoleTypeEnum.OPT_MANAGE_PERMISSION){
+        return t['basic.roleType.description.operationManage'];
+    }else if(value == RoleTypeEnum.OPT_ACCESS_PERMISSION){
+        return t['basic.roleType.description.operationAccess'];
+    }
+}

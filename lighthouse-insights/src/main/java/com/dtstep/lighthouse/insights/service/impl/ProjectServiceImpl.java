@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
@@ -134,14 +135,26 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void releasePermission(PermissionReleaseParam releaseParam) throws Exception {
+    public ResultCode releasePermission(PermissionReleaseParam releaseParam) throws Exception {
+        int currentUserId = baseService.getCurrentUserId();
         Integer resourceId = releaseParam.getResourceId();
         Integer permissionId = releaseParam.getPermissionId();
         Permission permission = permissionService.queryById(permissionId);
+        Integer ownerId = permission.getOwnerId();
         Integer roleId = permission.getRoleId();
+        if(releaseParam.getRoleType() == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
+            List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(roleId,3);
+            if(adminIds.size() <= 1){
+                return ResultCode.releasePermissionAdminAtLeastOne;
+            }
+        }
+        if(ownerId.intValue() == currentUserId){
+            return ResultCode.releasePermissionCurrentNotAllowed;
+        }
         Role role = roleService.queryById(roleId);
         Validate.isTrue(role.getResourceId().intValue() == resourceId.intValue());
         permissionService.releasePermission(permissionId);
+        return ResultCode.success;
     }
 
     @Transactional

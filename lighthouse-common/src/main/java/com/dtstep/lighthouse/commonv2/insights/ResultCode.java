@@ -119,6 +119,11 @@ public enum ResultCode {
     resourceDelExistSubElement("2021","resourceDelExistSubElement"),
 
     groupDelExistSubStat("2021","groupDelExistSubStat"),
+
+    releasePermissionCurrentNotAllowed("2021","releasePermissionCurrentNotAllowed"),
+
+    releasePermissionAdminAtLeastOne("2021","releasePermissionAdminAtLeastOne"),
+
     ;
 
     ResultCode(String code , String i18nLabel){
