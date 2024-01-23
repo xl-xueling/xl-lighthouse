@@ -15,6 +15,8 @@ public interface PermissionDao {
 
     int batchInsert(List<Permission> list);
 
+    Permission queryById(Integer id);
+
     int delete(@Param("queryParam")PermissionQueryParam queryParam);
 
     boolean checkUserPermission(Integer userId, Integer roleId);

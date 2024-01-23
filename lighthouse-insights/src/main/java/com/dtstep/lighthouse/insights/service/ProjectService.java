@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.service;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
+import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
 import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
@@ -32,4 +33,6 @@ public interface ProjectService {
     int countByDepartmentId(Integer departmentId);
 
     void batchGrantPermissions(PermissionGrantParam grantParam) throws Exception;
+
+    void releasePermission(PermissionReleaseParam releaseParam) throws Exception;
 }

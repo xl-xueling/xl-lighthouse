@@ -4,6 +4,8 @@ import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 
 public class PermissionQueryParam {
 
+    private Integer id;
+
     private Integer roleId;
 
     private Integer ownerId;
@@ -42,5 +44,13 @@ public class PermissionQueryParam {
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

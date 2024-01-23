@@ -24,9 +24,7 @@ export function getDepartPermissionColumns(t: any, callback: (record: Record<str
             title: 'Department',
             dataIndex: 'ownerId',
             headerCellStyle: { width:'20px' },
-            render: (value, record) => {
-                return <DepartmentLabel departmentId={value} /> ;
-            }
+            render: (value, record) => <DepartmentLabel departmentId={value} />
         },
         {
             title: 'CreateTime',
@@ -41,12 +39,19 @@ export function getDepartPermissionColumns(t: any, callback: (record: Record<str
             dataIndex: 'operation',
             headerCellStyle: { width:'20px' },
             render: (value, record) => {
-                const button = <Button key={getRandomString()}
+                const button = <Popconfirm key={getRandomString()}
+                                           focusLock
+                                           position={"tr"}
+                                           title='Confirm'
+                                           content={t['permissionManage.list.operation.remove.confirm']}
+                                           onOk={() => callback(record, 'release')}
+                >
+                    <Button key={getRandomString()}
                                        type="text"
-                                       onClick={() => window.open('/project/preview/' + record.id)}
                                        size="mini">
-                    {'移除'}
-                </Button>;
+                    {t['permissionManage.list.operation.remove']}
+                </Button>
+                </Popconfirm>
                 return  <Space size={0} direction="horizontal">{[button]}</Space>;
             }
         }

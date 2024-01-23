@@ -113,10 +113,17 @@
         select owner_id from ldp_permissions where role_id = #{roleId} and owner_type = '1' limit #{limit}
     </select>
 
+    <select id="queryById" resultMap="permissionResultMap">
+        SELECT `id`,`owner_id`, `owner_type`,`role_id`, `create_time`, `update_time` FROM ldp_permissions WHERE id = #{id}
+    </select>
+
     <delete id="delete">
         delete
         FROM ldp_permissions
         <where>
+            <if test="queryParam.id != null">
+                AND id = #{queryParam.id}
+            </if>
             <if test="queryParam.roleId != null">
                 AND role_id = #{queryParam.roleId}
             </if>
