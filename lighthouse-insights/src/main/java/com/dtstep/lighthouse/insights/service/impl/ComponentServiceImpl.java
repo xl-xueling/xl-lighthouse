@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.ComponentDao;
+import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import com.dtstep.lighthouse.insights.vo.ComponentVO;
 import com.dtstep.lighthouse.insights.dto.ComponentQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
@@ -13,9 +14,7 @@ import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.ComponentService;
 import com.dtstep.lighthouse.insights.service.UserService;
-import com.dtstep.lighthouse.insights.vo.PermissionVO;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
@@ -26,10 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class ComponentServiceImpl implements ComponentService {
@@ -53,87 +49,44 @@ public class ComponentServiceImpl implements ComponentService {
         }catch (Exception ex){
             return ResultCode.componentVerifyFormatError;
         }
-        return validate(configuration);
+        List<TreeNode> nodeList = JsonUtil.toJavaObjectList(configuration, TreeNode.class);
+        return verifyConfiguration(nodeList,1,new ArrayList<String>());
     }
 
     private static final int MAX_DEPTH = 3;
 
-    public static ResultCode validate(String jsonData) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            JsonNode arrayNode = mapper.readTree(jsonData);
-            return validateArray(arrayNode, 1);
-        } catch (Exception e) {
-            return ResultCode.componentVerifyFormatError;
-        }
-    }
-
-    private static ResultCode validateArray(JsonNode arrayNode, int depth) {
-        if (!arrayNode.isArray()) {
-            return ResultCode.componentVerifyNonArrayStructure;
-        }
-        System.out.println("arrayNode:" + arrayNode);
-        System.out.println("depth:" + depth);
-        if (depth > MAX_DEPTH) {
+    public static ResultCode verifyConfiguration(List<TreeNode> nodeList, int level,List<String> valueList){
+        ResultCode resultCode = ResultCode.success;
+        if(level > 3){
             return ResultCode.componentVerifyLevelLimit;
         }
-        for (JsonNode objectNode : arrayNode) {
-            if (!objectNode.isObject()) {
-                return ResultCode.componentVerifyFormatError;
+        for(int i=0;i<nodeList.size();i++){
+            TreeNode treeNode = nodeList.get(i);
+            String label = treeNode.getLabel();
+            Object value = treeNode.getValue();
+            if(StringUtil.isEmpty(label) ){
+                return ResultCode.getExtendResultCode(ResultCode.componentVerifyNotEmpty,new String[]{"label"});
             }
-            ResultCode resultCode = validateObject(objectNode, depth);
-            if (resultCode != ResultCode.success) {
-                return resultCode;
+            if(value == null || StringUtil.isEmpty(value.toString())){
+                return ResultCode.getExtendResultCode(ResultCode.componentVerifyNotEmpty,new String[]{"value"});
             }
-        }
-
-        return ResultCode.success;
-    }
-
-    private static <T> List<T> convertToList(Iterator<T> iterator) {
-        Iterable<T> iterable = () -> iterator;
-        return StreamSupport.stream(iterable.spliterator(), false)
-                .collect(Collectors.toList());
-    }
-
-    private static ResultCode validateObject(JsonNode objectNode, int depth) {
-        List<String> list = null;
-        if(objectNode.isObject()){
-            Iterator<String> iterator = objectNode.fieldNames();
-            list = convertToList(iterator);
-            if(CollectionUtils.isEmpty(list)){
-                return ResultCode.componentVerifyFormatError;
+            if(valueList.contains(value)){
+                return ResultCode.componentVerifyDuplicateValue;
+            }else{
+                valueList.add(value.toString());
             }
-            if(!list.contains("label")){
-                return ResultCode.getExtendResultCode(ResultCode.componentVerifyMissingParams,new String[]{"label"});
+            List<TreeNode> children = treeNode.getChildren();
+            if(children != null && children.size() == 0){
+                return ResultCode.getExtendResultCode(ResultCode.componentVerifyEmptyChildren,new String[]{label});
             }
-            if(!list.contains("value")){
-                return ResultCode.getExtendResultCode(ResultCode.componentVerifyMissingParams,new String[]{"value"});
-            }
-            for (String fieldName : list){
-                if (!fieldName.equals("label") && !fieldName.equals("value") && !fieldName.equals("children")) {
-                    return ResultCode.getExtendResultCode(ResultCode.componentVerifyInvalidParams,new String[]{fieldName});
-                }
-                JsonNode fieldValue = objectNode.get(fieldName);
-                if (fieldName.equals("children")) {
-                    ResultCode resultCode = validateArray(fieldValue, depth + 1);
-                    if (resultCode != ResultCode.success) {
-                        return resultCode;
-                    }
-                } else {
-                    if(StringUtil.isEmpty(fieldValue.asText())){
-                        return ResultCode.getExtendResultCode(ResultCode.componentVerifyNotEmpty,new String[]{fieldName});
-                    }else if(fieldValue.isTextual()){
-                        continue;
-                    }
-                    ResultCode resultCode = validateObject(fieldValue, depth);
-                    if (resultCode != ResultCode.success) {
-                        return resultCode;
-                    }
+            if(CollectionUtils.isNotEmpty(children)){
+                resultCode = verifyConfiguration(children,level + 1,valueList);
+                if(resultCode != ResultCode.success){
+                    return resultCode;
                 }
             }
         }
-        return ResultCode.success;
+        return resultCode;
     }
 
 

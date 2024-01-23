@@ -68,6 +68,10 @@ public enum ResultCode {
 
     componentVerifyNotEmpty("2004","componentVerifyNotEmpty"),
 
+    componentVerifyDuplicateValue("2004","componentVerifyDuplicateValue"),
+
+    componentVerifyEmptyChildren("2004","componentVerifyEmptyChildren"),
+
     filterConfigDimensNotExist("2005","filterConfigDimensNotExist"),
 
     filterConfigDimensDuplicate("2009","filterConfigDimensDuplicate"),
