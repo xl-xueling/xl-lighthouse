@@ -21,7 +21,12 @@ import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import {LimitedRecord, translateRecord} from "@/pages/record/record";
-import {requestGrantProjectPermission, requestQueryList} from "@/api/permission";
+import {
+    requestGrantMetricPermission,
+    requestGrantProjectPermission,
+    requestQueryList,
+    requestReleaseProjectPermission
+} from "@/api/permission";
 import {getDepartPermissionColumns} from "./constants";
 import './styles/index.module.less'
 import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
@@ -44,6 +49,7 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
     const [adminListData,setAdminListData] = useState<Permission[]>([]);
 
     const [departPermissionForms,setDepartPermissionForms] = useState(null);
+    const [reloadTime,setReloadTime] = useState<number>(Date.now);
 
     const [userPermissionForms,setUserPermissionForms] = useState(null);
     const departmentTransferRef = useRef(null);
@@ -55,7 +61,11 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
 
     const tableCallback = async (record, type) => {
         console.log("tableCallBack,record:" + record + ",type:" + type);
+        if(type == 'release'){
+            await releasePermission(record.id);
+        }
     }
+
     const departPermissionColumns = useMemo(() => getDepartPermissionColumns(t,tableCallback), [t]);
 
     const [pagination1, setPagination1] = useState<PaginationProps>({
@@ -76,9 +86,29 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
         pageSizeChangeResetCurrent: false,
     });
 
+    const releasePermission = async (permissionId) => {
+        const requestParam = {
+            resourceId:resourceId,
+            roleType:RoleTypeEnum.PROJECT_ACCESS_PERMISSION,
+            permissionId:permissionId,
+        }
+        console.log("requestParam is:" + JSON.stringify(requestParam));
+        await requestReleaseProjectPermission(requestParam).then((response) => {
+            console.log("response is:" + JSON.stringify(response));
+            const {code, data ,message} = response;
+            if (code === '0') {
+                Notification.success({style: { width: 420 }, title: 'Success', content: t['permissionManage.list.operation.remove.success']});
+                setReloadTime(Date.now);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
 
     const fetchDepartListData = async (search = null) => {
-        console.log("search:" + JSON.stringify(search));
         const {current, pageSize} = pagination1;
         let roleType;
         if(resourceType == ResourceTypeEnum.Project){
@@ -123,9 +153,8 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
     }
 
     useEffect(() => {
-        console.log("resourceId:" + resourceId + ",resourceType:" + resourceType)
         fetchDepartListData().then();
-    },[])
+    },[reloadTime])
 
     const handleSubmit = async (e) => {
         e.stopPropagation();
@@ -139,8 +168,6 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
         if(privateType == 0 && userTransferRef?.current){
             usersPermissions = userTransferRef.current.getData();
         }
-        console.log("departmentPermission:" + JSON.stringify(departmentsPermissions));
-        console.log("usersPermissions:" + JSON.stringify(usersPermissions));
         setSubmitLoading(true);
         const requestParam = {
             resourceId:resourceId,
@@ -149,8 +176,14 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
             departmentsPermissions:departmentsPermissions,
         }
         await requestGrantProjectPermission(requestParam)
-            .then((result) => {
-                console.log("result is:" + JSON.stringify(result));
+            .then((response) => {
+                const {code, data ,message} = response;
+                if (code === '0') {
+                    Notification.warning({style: { width: 420 }, title: 'Warning', content: t['permissionManage.list.operation.grant.success']});
+                    setReloadTime(Date.now);
+                }else{
+                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+                }
             }).catch((error) => {
                 console.log(error)
             }).finally(()=> {
@@ -181,7 +214,7 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
                 <TabPane key='1' title= {t['permissionManage.department.accessPermission']}>
                     <Space direction={"vertical"} style={{width:'100%'}}>
                         <Input.Search size={"small"} style={{width:'350px',marginLeft:'3px'}} allowClear={true} onSearch={fetchDepartListData}/>
-                        <Table loading={loading} style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1}  columns={departPermissionColumns} data={departListData} />
+                        <Table rowKey={'id'} loading={loading} style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1}  columns={departPermissionColumns} data={departListData} />
                         <Collapse activeKey={activeKeys} style={{marginTop:'40px',borderLeft:"none",borderRight:"none"}} onChange={updateActiveKeys}>
                             <CollapseItem style={{borderLeft:"none",borderRight:"none"}} header={<span>{t['permissionManage.user.grantPermission']}</span>}
                                           extra={
@@ -201,7 +234,7 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
                 <TabPane key='2' title={t['permissionManage.user.accessPermission']}>
                     <Space direction={"vertical"} style={{width:'100%'}}>
                         <Input.Search style={{width:'350px',marginLeft:'3px'}}/>
-                        <Table style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1} columns={departPermissionColumns} data={departListData} />
+                        {/*<Table rowKey={'id'} style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1} columns={departPermissionColumns} data={departListData} />*/}
                         <Collapse style={{marginTop:'40px',borderLeft:"none",borderRight:"none"}}>
                             <CollapseItem style={{borderLeft:"none",borderRight:"none"}} header={
                                 <div style={{display:"flex"}}>

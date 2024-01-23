@@ -120,6 +120,18 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    public int releasePermission(Integer id) {
+        PermissionQueryParam queryParam = new PermissionQueryParam();
+        queryParam.setId(id);
+        return permissionDao.delete(queryParam);
+    }
+
+    @Override
+    public Permission queryById(Integer id) {
+        return permissionDao.queryById(id);
+    }
+
+    @Override
     public List<Permission> queryUserManagePermission(Integer userId,Integer limit) {
         return permissionDao.queryUserManagePermission(userId,limit);
     }

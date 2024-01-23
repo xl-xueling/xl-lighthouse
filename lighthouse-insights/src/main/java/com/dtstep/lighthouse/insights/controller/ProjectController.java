@@ -100,4 +100,11 @@ public class ProjectController {
         projectService.batchGrantPermissions(grantParam);
         return ResultData.success();
     }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "resourceId")
+    @RequestMapping("/project/release")
+    public ResultData<Integer> release(@Validated @RequestBody PermissionReleaseParam releaseParam) throws Exception{
+        projectService.releasePermission(releaseParam);
+        return ResultData.success();
+    }
 }

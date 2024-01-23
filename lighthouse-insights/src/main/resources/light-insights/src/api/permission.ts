@@ -18,9 +18,25 @@ export async function requestGrantProjectPermission(data) :Promise<ResultData<Or
     })
 }
 
+export async function requestReleaseProjectPermission(data) :Promise<ResultData<Order>> {
+    return request({
+        url:'/project/release',
+        method:'POST',
+        data,
+    })
+}
+
 export async function requestGrantMetricPermission(data) :Promise<ResultData<Order>> {
     return request({
         url:'/metric/grant',
+        method:'POST',
+        data,
+    })
+}
+
+export async function requestReleaseMetricPermission(data) :Promise<ResultData<Order>> {
+    return request({
+        url:'/metric/release',
         method:'POST',
         data,
     })

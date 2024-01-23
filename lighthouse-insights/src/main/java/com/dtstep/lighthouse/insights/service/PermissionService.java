@@ -17,6 +17,8 @@ public interface PermissionService {
 
     int batchCreate(List<Permission> permissionList);
 
+    Permission queryById(Integer id);
+
     boolean checkUserPermission(Integer userId, Integer roleId);
 
     List<Integer> queryUserPermissionsByRoleId(Integer roleId, Integer limit);
@@ -30,4 +32,6 @@ public interface PermissionService {
     int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId);
 
     int releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId);
+
+    int releasePermission(Integer id);
 }

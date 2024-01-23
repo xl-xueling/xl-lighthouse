@@ -6,6 +6,7 @@ import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
+import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
 import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
@@ -132,6 +133,16 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+    @Override
+    public void releasePermission(PermissionReleaseParam releaseParam) throws Exception {
+        Integer resourceId = releaseParam.getResourceId();
+        Integer permissionId = releaseParam.getPermissionId();
+        Permission permission = permissionService.queryById(permissionId);
+        Integer roleId = permission.getRoleId();
+        Role role = roleService.queryById(roleId);
+        Validate.isTrue(role.getResourceId().intValue() == resourceId.intValue());
+        permissionService.releasePermission(permissionId);
+    }
 
     @Transactional
     @Override
