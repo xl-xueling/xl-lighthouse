@@ -12,6 +12,18 @@ public class ListData<T> {
 
     private int pageSize;
 
+    public ListData(){}
+
+
+    public static <T>ListData<T> newInstance(List<T> list,long total,int pageNum,int pageSize){
+        ListData<T> listData = new ListData<>();
+        listData.setList(list);
+        listData.setTotal(total);
+        listData.setPageNum(pageNum);
+        listData.setPageSize(pageSize);
+        return listData;
+    }
+
     public List<T> getList() {
         return list;
     }
@@ -43,4 +55,5 @@ public class ListData<T> {
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
+
 }
