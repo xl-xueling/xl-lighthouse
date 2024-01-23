@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,15 +103,18 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void batchGrantPermissions(PermissionGrantParam grantParam) throws Exception{
+    public ResultCode batchGrantPermissions(PermissionGrantParam grantParam) throws Exception{
         Integer resourceId = grantParam.getResourceId();
         Project project = projectDao.queryById(resourceId);
         RoleTypeEnum roleTypeEnum = grantParam.getRoleType();
         Validate.notNull(project);
         Integer roleId;
+        HashSet<Integer> adminsSet = new HashSet<>();
         if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
             Role role = roleService.queryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,resourceId);
             roleId = role.getId();
+            List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(roleId,5);
+            adminsSet.addAll(adminIds);
         }else if(roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION){
             Role role = roleService.queryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,resourceId);
             roleId = role.getId();
@@ -127,11 +131,18 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
         if(project.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(userIdList)){
+            if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
+                adminsSet.addAll(userIdList);
+            }
+            if(adminsSet.size() > 3){
+                return ResultCode.grantPermissionAdminExceedLimit;
+            }
             for(int i=0;i<userIdList.size();i++){
                 Integer userId = userIdList.get(i);
                 permissionService.grantPermission(userId,OwnerTypeEnum.USER,roleId);
             }
         }
+        return ResultCode.success;
     }
 
     @Override

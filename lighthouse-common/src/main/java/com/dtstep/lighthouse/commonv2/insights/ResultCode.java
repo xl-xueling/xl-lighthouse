@@ -124,6 +124,8 @@ public enum ResultCode {
 
     releasePermissionAdminAtLeastOne("2021","releasePermissionAdminAtLeastOne"),
 
+    grantPermissionAdminExceedLimit("2021","grantPermissionAdminExceedLimit"),
+
     ;
 
     ResultCode(String code , String i18nLabel){
