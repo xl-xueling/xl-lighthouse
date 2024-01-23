@@ -13,10 +13,14 @@ import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.ComponentService;
 import com.dtstep.lighthouse.insights.service.UserService;
+import com.dtstep.lighthouse.insights.vo.PermissionVO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +33,8 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class ComponentServiceImpl implements ComponentService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ComponentServiceImpl.class);
 
     @Autowired
     private ComponentDao componentDao;
@@ -166,20 +172,23 @@ public class ComponentServiceImpl implements ComponentService {
     public ListData<ComponentVO> queryList(ComponentQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         ListData<ComponentVO> listData;
+        PageInfo<Component> pageInfo = null;
         try{
             List<Component> components = componentDao.queryList(queryParam);
-            List<ComponentVO> dtoList = new ArrayList<>();
-            if(CollectionUtils.isNotEmpty(components)){
-                for(Component component : components){
-                    ComponentVO componentVO = translate(component);
-                    dtoList.add(componentVO);
-                }
-            }
-            listData = baseService.translateToListData(dtoList);
+            pageInfo = new PageInfo<>(components);
         }finally {
             PageHelper.clearPage();
         }
-        return listData;
+        List<ComponentVO> dtoList = new ArrayList<>();
+        for(Component component : pageInfo.getList()){
+            try{
+                ComponentVO componentVO = translate(component);
+                dtoList.add(componentVO);
+            }catch (Exception ex){
+                logger.error("translate item info error,itemId:{}",component.getId(),ex);
+            }
+        }
+        return ListData.newInstance(dtoList,pageInfo.getTotal(),pageNum,pageSize);
     }
 
     @Override

@@ -16,6 +16,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PermissionServiceImpl implements PermissionService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PermissionServiceImpl.class);
 
     @Autowired
     private PermissionDao permissionDao;
@@ -175,7 +179,7 @@ public class PermissionServiceImpl implements PermissionService {
                 PermissionVO dto = translate(permission);
                 dtoList.add(dto);
             }catch (Exception ex){
-                ex.printStackTrace();
+                logger.error("translate item info error,itemId:{}",permission.getId(),ex);
             }
         }
         return ListData.newInstance(dtoList,pageInfo.getTotal(),pageNum,pageSize);
