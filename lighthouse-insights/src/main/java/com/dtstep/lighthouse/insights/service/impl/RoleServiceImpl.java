@@ -24,6 +24,12 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    public Role cacheQueryById(Integer id) {
+        return roleDao.queryById(id);
+    }
+
+    @Override
     public boolean isRoleExist(RoleTypeEnum roleTypeEnum, Integer resourceId) {
         return roleDao.isRoleExist(roleTypeEnum,resourceId);
     }

@@ -210,6 +210,7 @@ export interface Permission {
     ownerId?:number;
     ownerType?:number;
     roleId?:number;
+    roleType?:number;
     extend?:any;
     createTime?:number;
     updateTime?:number;

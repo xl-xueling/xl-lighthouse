@@ -77,15 +77,6 @@ export function PermissionPanel({type = 2,resourceId,resourceType,onClose}){
         });
     }
 
-    const [pagination2, setPagination2] = useState<PaginationProps>({
-        sizeOptions: [10,20,30,50],
-        sizeCanChange: false,
-        showTotal: true,
-        pageSize: 5,
-        current: 1,
-        pageSizeChangeResetCurrent: false,
-    });
-
     const releasePermission = async (permissionId) => {
         let roleType;
         if(resourceType == ResourceTypeEnum.Project){
