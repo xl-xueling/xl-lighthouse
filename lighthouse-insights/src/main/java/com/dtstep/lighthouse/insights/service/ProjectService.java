@@ -33,7 +33,7 @@ public interface ProjectService {
 
     int countByDepartmentId(Integer departmentId);
 
-    void batchGrantPermissions(PermissionGrantParam grantParam) throws Exception;
+    ResultCode batchGrantPermissions(PermissionGrantParam grantParam) throws Exception;
 
     ResultCode releasePermission(PermissionReleaseParam releaseParam) throws Exception;
 }
