@@ -19,13 +19,13 @@ import {OwnerTypeEnum, RecordTypeEnum, ResourceTypeEnum, ResultData, RoleTypeEnu
 import {GlobalErrorCodes} from "@/utils/constants";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import {formatTimeStampBackUp} from "@/utils/util";
+import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import {LimitedRecord, translateRecord} from "@/pages/record/record";
 import {requestGrantProjectPermission, requestQueryList} from "@/api/permission";
 import {getDepartPermissionColumns} from "./constants";
 import './styles/index.module.less'
 import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
-import {IconPlus} from "@arco-design/web-react/icon";
+import {IconMoreVertical, IconPlus} from "@arco-design/web-react/icon";
 import UsersTransfer from "@/pages/components/transfer/user_transfer";
 const CollapseItem = Collapse.Item;
 const TabPane = Tabs.TabPane;
@@ -35,6 +35,7 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
     const t = useLocale(locale);
     const { Col, Row } = Grid;
     const [loading,setLoading] = useState<boolean>(true);
+    const [submitLoading,setSubmitLoading] = useState<boolean>(false);
 
     const [departListData,setDepartListData] = useState<Permission[]>([]);
 
@@ -47,7 +48,10 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
     const [userPermissionForms,setUserPermissionForms] = useState(null);
     const departmentTransferRef = useRef(null);
     const userTransferRef = useRef(null);
+    const [activeKeys,setActiveKeys] = useState([]);
     const formRef = useRef(null);
+
+    const [collapsed, setCollapsed] = useState(true);
 
     const tableCallback = async (record, type) => {
         console.log("tableCallBack,record:" + record + ",type:" + type);
@@ -55,21 +59,21 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
     const departPermissionColumns = useMemo(() => getDepartPermissionColumns(t,tableCallback), [t]);
 
     const [pagination1, setPagination1] = useState<PaginationProps>({
-        sizeOptions: [15,20,30,50],
-        sizeCanChange: true,
+        sizeOptions: [10,20,30,50],
+        sizeCanChange: false,
         showTotal: true,
-        pageSize: 15,
+        pageSize: 5,
         current: 1,
-        pageSizeChangeResetCurrent: true,
+        pageSizeChangeResetCurrent: false,
     });
 
     const [pagination2, setPagination2] = useState<PaginationProps>({
-        sizeOptions: [15,20,30,50],
-        sizeCanChange: true,
+        sizeOptions: [10,20,30,50],
+        sizeCanChange: false,
         showTotal: true,
-        pageSize: 15,
+        pageSize: 5,
         current: 1,
-        pageSizeChangeResetCurrent: true,
+        pageSizeChangeResetCurrent: false,
     });
 
 
@@ -137,6 +141,7 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
         }
         console.log("departmentPermission:" + JSON.stringify(departmentsPermissions));
         console.log("usersPermissions:" + JSON.stringify(usersPermissions));
+        setSubmitLoading(true);
         const requestParam = {
             resourceId:resourceId,
             roleType:RoleTypeEnum.PROJECT_ACCESS_PERMISSION,
@@ -148,7 +153,17 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
                 console.log("result is:" + JSON.stringify(result));
             }).catch((error) => {
                 console.log(error)
+            }).finally(()=> {
+                setSubmitLoading(false);
             })
+    }
+
+    const updateActiveKeys = (v) => {
+        if(activeKeys.includes("1")){
+            setActiveKeys([]);
+        }else{
+            setActiveKeys(["1"]);
+        }
     }
 
     return (
@@ -156,7 +171,6 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
             title= {t['permissionManage.modal.title']}
             style={{ width:'1180px',verticalAlign:'top', maxWidth:'90%', marginTop: '130px' }}
             visible={true}
-            className={"permission_table"}
             footer={null}
             onCancel={onClose}>
             <Form
@@ -167,15 +181,15 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
                 <TabPane key='1' title= {t['permissionManage.department.accessPermission']}>
                     <Space direction={"vertical"} style={{width:'100%'}}>
                         <Input.Search size={"small"} style={{width:'350px',marginLeft:'3px'}} allowClear={true} onSearch={fetchDepartListData}/>
-                        <Table loading={loading} style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1} columns={departPermissionColumns} data={departListData} />
-                        <Collapse style={{marginTop:'40px',borderLeft:"none",borderRight:"none"}}>
-                            <CollapseItem style={{borderLeft:"none",borderRight:"none"}} header={
-                                <div style={{display:"flex"}}>
-                                    <span>{t['permissionManage.user.grantPermission']}</span>
-                                    <Button style={{marginRight:'5px',marginLeft:"auto"}} type={"primary"} onClick={handleSubmit} size={"mini"}>{t['permissionManage.grant.submit']}</Button>
-                                </div>
-                            } name='3'>
-
+                        <Table loading={loading} style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1}  columns={departPermissionColumns} data={departListData} />
+                        <Collapse activeKey={activeKeys} style={{marginTop:'40px',borderLeft:"none",borderRight:"none"}} onChange={updateActiveKeys}>
+                            <CollapseItem style={{borderLeft:"none",borderRight:"none"}} header={<span>{t['permissionManage.user.grantPermission']}</span>}
+                                          extra={
+                                              activeKeys.includes("1")?
+                                              <Button key={getRandomString()} style={{marginRight:'5px',marginLeft:"auto"}} type={"secondary"} onClick={handleSubmit} loading={submitLoading} size={"mini"}>{t['permissionManage.grant.submit']}</Button>
+                                                  :null
+                                          }
+                                          name='1'>
                                 <Form.Item label={" "} field='title'>
                                     <DepartmentsTransfer ref={departmentTransferRef}/>
                                 </Form.Item>
@@ -183,7 +197,6 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
                         </Collapse>
                     </Space>
                 </TabPane>
-
 
                 <TabPane key='2' title={t['permissionManage.user.accessPermission']}>
                     <Space direction={"vertical"} style={{width:'100%'}}>
