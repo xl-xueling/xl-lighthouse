@@ -119,7 +119,7 @@ export function PermissionPanel({type,resourceId,resourceType,onClose}){
     }
 
 
-    const fetchDepartListData = async () => {
+    const fetchListData = async () => {
         const {current, pageSize} = pagination;
         let roleType;
         if(resourceType == ResourceTypeEnum.Project){
@@ -176,7 +176,7 @@ export function PermissionPanel({type,resourceId,resourceType,onClose}){
     }
 
     useEffect(() => {
-        fetchDepartListData().then();
+        fetchListData().then();
     },[reloadTime,pagination.current, pagination.pageSize,JSON.stringify(searchForms)])
 
     const handleSubmit = async (e) => {
@@ -222,7 +222,7 @@ export function PermissionPanel({type,resourceId,resourceType,onClose}){
         await request.then((response) => {
                 const {code, data ,message} = response;
                 if (code === '0') {
-                    Notification.warning({style: { width: 420 }, title: 'Warning', content: t['permissionManage.list.operation.grant.success']});
+                    Notification.success({style: { width: 420 }, title: 'Warning', content: t['permissionManage.list.operation.grant.success']});
                     setReloadTime(Date.now);
                 }else{
                     Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
