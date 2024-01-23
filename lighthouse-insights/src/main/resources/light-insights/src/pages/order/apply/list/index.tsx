@@ -9,7 +9,6 @@ import {
     Table,
 } from '@arco-design/web-react';
 import SearchForm from "./form";
-import FilterAddPanel from "@/pages/filter/add/filter_add";
 import {getColumns} from "./constants";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
@@ -159,7 +158,7 @@ export default function ApplyListPage() {
                 style={{ marginTop:12}}
                 pagination={pagination}
                 columns={columns} data={listData} />
-            {showAddPanel && <FilterAddPanel onClose={() => setShowsAddPanel(false)}/>}
+            {/*{showAddPanel && <FilterAddPanel onClose={() => setShowsAddPanel(false)}/>}*/}
             {showDetailPanel && <OrderDetailModal orderId={currentOrder.id} onClose={() => setShowDetailPanel(false)}/>}
         </Card>
         </>

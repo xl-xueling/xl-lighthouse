@@ -25,7 +25,6 @@ import {
 } from '@arco-design/web-react';
 
 import SearchForm from "@/pages/filter/list/form";
-import FilterAddPanel from "@/pages/filter/add/filter_add";
 import {IconHome, IconPlus} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
@@ -36,6 +35,7 @@ import {getColumns} from "./constants";
 import FilterUpdatePanel from "@/pages/filter/update/filter_update";
 import {requestDeleteById} from "@/api/component";
 import styles from "@/pages/filter/list/style/index.module.less";
+import ComponentCreateModal from "@/pages/filter/add/ComponentCreateModal";
 const { Row, Col } = Grid;
 const { useForm } = Form;
 export default function ComponentList() {
@@ -68,7 +68,7 @@ export default function ComponentList() {
         });
     }
 
-    const [showAddPanel, setShowsAddPanel] = useState(false);
+    const [showCreateModal, setShowCreateModal] = useState(false);
     const [showUpdatePanel, setShowsUpdatePanel] = useState(false);
 
     function handleSearch(params) {
@@ -90,31 +90,29 @@ export default function ComponentList() {
     const fetchData = async (): Promise<void> => {
         setLoading(true);
         const combineParam:any = {}
-        console.log("FormParams is:" + JSON.stringify(formParams));
         const {current, pageSize} = pagination;
-        const fetchComponentsInfo:Promise<{list:Array<Component>,total:number}> = new Promise<{list:Array<Component>,total:number}>((resolve) => {
-            const proc = async () => {
-                const result = await requestList({
-                        queryParams:formParams,
-                        pagination:{
-                            pageSize:pageSize,
-                            pageNum:current,
-                        }
-                    }
-                );
-                resolve(result.data);
+        await requestList({
+            queryParams:formParams,
+            pagination:{
+                pageSize:pageSize,
+                pageNum:current,
             }
-            proc().then();
+        }).then((response) => {
+            const {code,data,message} = response;
+            if(code == '0'){
+                setListData(data.list);
+                setPagination({
+                    ...pagination,
+                    current,
+                    pageSize,
+                    total: data.total});
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
         })
-        const result = await Promise.all([fetchComponentsInfo]);
-        const {list,total}:{list:Array<Project>,total:number} = result[0];
-        setListData(list);
-        setPagination({
-            ...pagination,
-            current,
-            pageSize,
-            total: total});
-        setLoading(false);
     }
 
     const handlerDeleteComponent = async (id: number) => {
@@ -149,17 +147,18 @@ export default function ComponentList() {
                     form={form}
                     className={styles['search-form']}
                     labelAlign="left"
+                    autoComplete={'off'}
                     wrapperCol={{ span: 24 }}
                 >
                     <Row gutter={24}>
-                        <Col span={9}>
+                        <Col span={7}>
                             <Form.Item field="Title">
                                 <Input.Search  placeholder={t['componentList.label.title']} allowClear onSearch={(v) => {handleSearch({title:v})}} />
                             </Form.Item>
                         </Col>
-                        <Grid.Col span={15} style={{ textAlign: 'right' }}>
+                        <Grid.Col span={17} style={{ textAlign: 'right' }}>
                             <Space>
-                                <Button size={"small"} type="primary" onClick={() => setShowsAddPanel(true)}>{t['componentList.button.create']}</Button>
+                                <Button size={"small"} type="primary" onClick={() => setShowCreateModal(true)}>{t['componentList.button.create']}</Button>
                             </Space>
                         </Grid.Col>
                     </Row>
@@ -170,7 +169,7 @@ export default function ComponentList() {
                     rowKey={'id'}
                     style={{ marginTop:12}}
                     columns={columns} data={listData} />
-                {showAddPanel && <FilterAddPanel onClose={() => setShowsAddPanel(false)}/>}
+                {showCreateModal && <ComponentCreateModal onClose={() => setShowCreateModal(false)}/>}
                 {showUpdatePanel && <FilterUpdatePanel componentInfo={currentComponent} onClose={() => setShowsUpdatePanel(false)} onReload={handlerReloadList}/>}
             </Card>
         </>

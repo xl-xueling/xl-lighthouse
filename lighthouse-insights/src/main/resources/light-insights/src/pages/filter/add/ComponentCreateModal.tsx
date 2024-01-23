@@ -61,7 +61,7 @@ import {requestVerify} from "@/api/component";
 import {translate, translateResponse} from "@/pages/department/common";
 
 
-export default function FilterAddPanel({onClose}) {
+export default function ComponentCreateModal({onClose}) {
 
     const t = useLocale(locale);
     const [editorTheme,setEditorTheme] = useState('textmate');
