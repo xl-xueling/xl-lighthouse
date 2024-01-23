@@ -121,16 +121,19 @@ public class ProjectServiceImpl implements ProjectService {
         }else {
             throw new Exception();
         }
+        if(roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION && project.getPrivateType() == PrivateTypeEnum.Public){
+            return ResultCode.grantPermissionPublicLimit;
+        }
         List<Integer> departmentIdList = grantParam.getDepartmentsPermissions();
         List<Integer> userIdList = grantParam.getUsersPermissions();
-        if(project.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(departmentIdList)){
+        if(CollectionUtils.isNotEmpty(departmentIdList)){
             for(int i=0;i<departmentIdList.size();i++){
                 Integer tempDepartmentId = departmentIdList.get(i);
                 Validate.isTrue(roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION);
                 permissionService.grantPermission(tempDepartmentId,OwnerTypeEnum.DEPARTMENT,roleId);
             }
         }
-        if(project.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(userIdList)){
+        if(CollectionUtils.isNotEmpty(userIdList)){
             if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
                 adminsSet.addAll(userIdList);
             }
