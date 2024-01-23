@@ -30,7 +30,7 @@ import UsersTransfer from "@/pages/components/transfer/user_transfer";
 const CollapseItem = Collapse.Item;
 const TabPane = Tabs.TabPane;
 
-export function PermissionPanel({type = 2,resourceId,resourceType,onClose}){
+export function PermissionPanel({type,resourceId,resourceType,onClose}){
 
     const t = useLocale(locale);
     const { Col, Row } = Grid;
@@ -251,7 +251,7 @@ export function PermissionPanel({type = 2,resourceId,resourceType,onClose}){
             <Form.Item field={'search'} style={{marginBottom:'0px'}}>
                 <Input.Search size={"small"} style={{width:'350px',marginLeft:'3px'}} allowClear={true} onSearch={handlerSearch}/>
             </Form.Item>
-            <Table rowKey={'id'} loading={loading} onChange={onChangeTable} style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination}  columns={columns} data={listData} />
+            <Table rowKey={'id'} loading={loading} onChange={onChangeTable} style={{height:'200px',padding:"3px 3px"}} size={"mini"} pagination={pagination}  columns={columns} data={listData} />
             <Collapse activeKey={activeKeys} style={{marginTop:'10px',borderLeft:"none",borderRight:"none"}} onChange={updateActiveKeys}>
                 <CollapseItem style={{borderLeft:"none",borderRight:"none"}} header={<span>{t['permissionManage.user.grantPermission']}</span>}
                               extra={
