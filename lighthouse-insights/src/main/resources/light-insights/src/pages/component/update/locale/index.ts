@@ -30,7 +30,7 @@ const i18n = {
     'componentUpdate.form.title.less.limit':'组件名称长度低于要求！',
     'componentUpdate.form.title.exceeds.limit':'组件名称长度超出限制！',
     'componentUpdate.form.button.verify':'校验',
-    'componentUpdate.form.create.submit.success':'组件修改成功！',
+    'componentUpdate.form.update.submit.success':'组件修改成功！',
     'componentUpdate.form.verify.submit.success':'组件配置检验成功！',
     'componentUpdate.form.label.privateType.private':'私有',
     'componentUpdate.form.label.privateType.public':'公开',
