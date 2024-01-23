@@ -12,6 +12,7 @@ import com.dtstep.lighthouse.insights.modal.Department;
 import com.dtstep.lighthouse.insights.modal.Permission;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,22 +159,21 @@ public class PermissionServiceImpl implements PermissionService {
         ListData<PermissionVO> listData = null;
         PageHelper.startPage(pageNum,pageSize);
         List<PermissionVO> dtoList = new ArrayList<>();
-        List<Permission> permissionList = null;
+        PageInfo<PermissionVO> pageInfo = null;
         try{
-            permissionList = permissionDao.queryList(queryParam);
+            List<Permission> permissionList = permissionDao.queryList(queryParam);
+            pageInfo = new PageInfo(permissionList);
         }finally {
             PageHelper.clearPage();
         }
-        if(CollectionUtils.isNotEmpty(permissionList)){
-            for(Permission permission : permissionList){
-                try{
-                    PermissionVO dto = translate(permission);
-                    dtoList.add(dto);
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                }
+        for(Permission permission : pageInfo.getList()){
+            try{
+                PermissionVO dto = translate(permission);
+                dtoList.add(dto);
+            }catch (Exception ex){
+                ex.printStackTrace();
             }
         }
-        return baseService.translateToListData(dtoList);
+        return ListData.newInstance(dtoList,pageInfo.getTotal(),pageNum,pageSize);
     }
 }

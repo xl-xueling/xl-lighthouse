@@ -4,6 +4,7 @@ import com.clearspring.analytics.util.Lists;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.modal.User;
 import com.dtstep.lighthouse.insights.service.BaseService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ public class BaseServiceImpl implements BaseService {
         return authentication == null ? -1 : (Integer) authentication.getPrincipal();
     }
 
+    @Deprecated
     @Override
     public <T> ListData<T> translateToListData(List<T> list) {
         if(CollectionUtils.isEmpty(list)){
@@ -41,4 +43,5 @@ public class BaseServiceImpl implements BaseService {
             return listData;
         }
     }
+
 }

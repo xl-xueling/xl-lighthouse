@@ -77,6 +77,14 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
         pageSizeChangeResetCurrent: false,
     });
 
+    function onChangeTable({ current, pageSize }) {
+        setPagination1({
+            ...pagination1,
+            current,
+            pageSize,
+        });
+    }
+
     const [pagination2, setPagination2] = useState<PaginationProps>({
         sizeOptions: [10,20,30,50],
         sizeCanChange: false,
@@ -154,7 +162,7 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
 
     useEffect(() => {
         fetchDepartListData().then();
-    },[reloadTime])
+    },[reloadTime,pagination1.current, pagination1.pageSize])
 
     const handleSubmit = async (e) => {
         e.stopPropagation();
@@ -214,7 +222,7 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
                 <TabPane key='1' title= {t['permissionManage.department.accessPermission']}>
                     <Space direction={"vertical"} style={{width:'100%'}}>
                         <Input.Search size={"small"} style={{width:'350px',marginLeft:'3px'}} allowClear={true} onSearch={fetchDepartListData}/>
-                        <Table rowKey={'id'} loading={loading} style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1}  columns={departPermissionColumns} data={departListData} />
+                        <Table rowKey={'id'} loading={loading} onChange={onChangeTable} style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1}  columns={departPermissionColumns} data={departListData} />
                         <Collapse activeKey={activeKeys} style={{marginTop:'40px',borderLeft:"none",borderRight:"none"}} onChange={updateActiveKeys}>
                             <CollapseItem style={{borderLeft:"none",borderRight:"none"}} header={<span>{t['permissionManage.user.grantPermission']}</span>}
                                           extra={
