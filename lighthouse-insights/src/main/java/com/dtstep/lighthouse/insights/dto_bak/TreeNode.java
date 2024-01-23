@@ -11,7 +11,7 @@ public class TreeNode implements Serializable {
 
     private String label;
 
-    public int value;
+    public Object value;
 
     private String type;
 
@@ -48,11 +48,11 @@ public class TreeNode implements Serializable {
         this.children = children;
     }
 
-    public int getValue() {
+    public Object getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 

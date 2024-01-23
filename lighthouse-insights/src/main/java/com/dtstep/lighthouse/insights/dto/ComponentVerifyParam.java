@@ -8,17 +8,17 @@ import java.io.Serializable;
 public class ComponentVerifyParam implements Serializable {
 
     @NotNull
-    private ComponentTypeEnum type;
+    private ComponentTypeEnum componentType;
 
     @NotNull
     private String configuration;
 
-    public ComponentTypeEnum getType() {
-        return type;
+    public ComponentTypeEnum getComponentType() {
+        return componentType;
     }
 
-    public void setType(ComponentTypeEnum type) {
-        this.type = type;
+    public void setComponentType(ComponentTypeEnum componentType) {
+        this.componentType = componentType;
     }
 
     public String getConfiguration() {
