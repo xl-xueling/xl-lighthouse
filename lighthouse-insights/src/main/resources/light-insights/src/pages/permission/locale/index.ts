@@ -15,7 +15,7 @@ const i18n = {
         'permissionManage.modal.title':'权限管理',
         'permissionManage.department.accessPermission':'部门访问权限',
         'permissionManage.user.accessPermission':'用户访问权限',
-        'permissionManage.user.managePermission':'用户访问权限',
+        'permissionManage.user.managePermission':'用户管理权限',
         'permissionManage.user.grantPermission':'添加权限',
         'permissionManage.grant.submit':'提交修改',
         'permissionManage.list.operation.remove.confirm':'是否确认移除该权限？',
