@@ -36,14 +36,20 @@
     </insert>
 
     <select id="queryList" resultMap="permissionResultMap">
-        SELECT `id`,`owner_id`,`owner_type`,`role_id`,`create_time`,`update_time`
-        FROM ldp_permissions
+        SELECT p.`id`,p.`owner_id`,p.`owner_type`,p.`role_id`,p.`create_time`,p.`update_time`
+        FROM ldp_permissions p
+        LEFT JOIN ldp_users u ON p.owner_type = '1' AND p.owner_id = u.id
+        LEFT JOIN ldp_departments d ON p.owner_type = '2' AND p.owner_id = d.id
         <where>
             <if test="queryParam.roleId != null">
-                AND role_id = #{queryParam.roleId}
+                AND p.role_id = #{queryParam.roleId}
             </if>
             <if test="queryParam.ownerType != null">
-                AND owner_type = #{queryParam.ownerType.ownerType}
+                AND p.owner_type = #{queryParam.ownerType.ownerType}
+            </if>
+            <if test="queryParam.search != null">
+               AND ((p.owner_type = '1' AND u.username LIKE CONCAT('%', #{queryParam.search}, '%'))
+                OR (p.owner_type = '2' AND d.name LIKE CONCAT('%', #{queryParam.search}, '%')))
             </if>
         </where>
     </select>
