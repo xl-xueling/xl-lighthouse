@@ -32,6 +32,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                 return <TreeSelect
                     placeholder={"Please Select"}
                     multiple={true}
+                    treeCheckable={true}
                     allowClear={true}
                     treeData={translateResponse(value)}
                 />;
