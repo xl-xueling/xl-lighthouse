@@ -123,7 +123,7 @@ export const routes: IRoute[] = [
       },
       {
         name: 'menu.system.filterComponents',
-        key: 'filter/list',
+        key: 'component/list',
         breadcrumb:false,
       },
       {

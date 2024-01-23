@@ -1,30 +1,17 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {
-    Radio,
     Button,
     Card,
     Grid,
     PaginationProps,
     Space,
     Table,
-    Tabs,
-    Typography,
-    Modal,
-    Divider,
-    Steps,
-    AutoComplete,
-    Select,
-    Cascader,
     Form,
     Input,
-    InputNumber,
-    TreeSelect,
-    Switch,
-    Message,
-    TableColumnProps, Breadcrumb, Notification,
+     Breadcrumb, Notification,
 } from '@arco-design/web-react';
 
-import SearchForm from "@/pages/filter/list/form";
+import SearchForm from "@/pages/component/list/form";
 import {IconHome, IconPlus} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
@@ -32,10 +19,10 @@ import {Component} from "@/types/insights-common";
 import {Project} from "@/types/insights-web";
 import {requestList} from "@/api/component";
 import {getColumns} from "./constants";
-import FilterUpdatePanel from "@/pages/filter/update/filter_update";
+import ComponentUpdateModal from "@/pages/component/update/ComponentUpdateModal";
 import {requestDeleteById} from "@/api/component";
-import styles from "@/pages/filter/list/style/index.module.less";
-import ComponentCreateModal from "@/pages/filter/add/ComponentCreateModal";
+import styles from "@/pages/component/list/style/index.module.less";
+import ComponentCreateModal from "@/pages/component/create/ComponentCreateModal";
 const { Row, Col } = Grid;
 const { useForm } = Form;
 export default function ComponentList() {
@@ -45,7 +32,7 @@ export default function ComponentList() {
     const [listData,setListData] = useState<Component[]>(null);
     const [loading,setLoading] = useState<boolean>(true);
     const [currentComponent,setCurrentComponent] = useState<Component>(null);
-    const [reloadSwitch,setReloadSwitch] = useState<number>(Date.now);
+    const [reloadTime,setReloadTime] = useState<number>(Date.now);
     const [form] = useForm();
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
@@ -55,10 +42,6 @@ export default function ComponentList() {
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
-
-    function handlerReloadList(){
-        setReloadSwitch(Date.now);
-    }
 
     function onChangeTable({ current, pageSize }) {
         setPagination({
@@ -120,7 +103,7 @@ export default function ComponentList() {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['componentList.operations.delete.submit.success']});
-                handlerReloadList();
+                setReloadTime(Date.now);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -131,7 +114,7 @@ export default function ComponentList() {
 
     useEffect(() => {
         fetchData().then();
-    },[reloadSwitch,pagination.current, pagination.pageSize, JSON.stringify(formParams)])
+    },[reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)])
 
     return (
         <>
@@ -167,10 +150,11 @@ export default function ComponentList() {
                 <Table
                     loading={loading}
                     rowKey={'id'}
+                    size={"small"}
                     style={{ marginTop:12}}
                     columns={columns} data={listData} />
-                {showCreateModal && <ComponentCreateModal onClose={() => setShowCreateModal(false)}/>}
-                {showUpdatePanel && <FilterUpdatePanel componentInfo={currentComponent} onClose={() => setShowsUpdatePanel(false)} onReload={handlerReloadList}/>}
+                {showCreateModal && <ComponentCreateModal onClose={() => setShowCreateModal(false)} onSuccess={() => {setReloadTime(Date.now)}} />}
+                {showUpdatePanel && <ComponentUpdateModal componentInfo={currentComponent} onClose={() => setShowsUpdatePanel(false)} onSuccess={() => {setReloadTime(Date.now)}}/>}
             </Card>
         </>
     );
