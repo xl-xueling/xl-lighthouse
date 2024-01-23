@@ -73,7 +73,8 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
     });
 
 
-    const fetchDepartListData = async () => {
+    const fetchDepartListData = async (search = null) => {
+        console.log("search:" + JSON.stringify(search));
         const {current, pageSize} = pagination1;
         let roleType;
         if(resourceType == ResourceTypeEnum.Project){
@@ -87,8 +88,10 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
             resourceId:resourceId,
             roleType:roleType,
             ownerType:OwnerTypeEnum.DEPARTMENT,
+            search:search,
         }
         console.log("requestParam is:" + JSON.stringify(requestParam))
+        setLoading(true);
         await requestQueryList({
             queryParams:requestParam,
             pagination:{
@@ -104,10 +107,10 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
                     current,
                     pageSize,
                     total: data.total});
-                setLoading(false);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
+            setLoading(false);
         }).catch((error) => {
             console.log(error)
         }).finally(() => {
@@ -163,8 +166,8 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
             <Tabs type={"card-gutter"} defaultActiveTab='1'>
                 <TabPane key='1' title= {t['permissionManage.department.accessPermission']}>
                     <Space direction={"vertical"} style={{width:'100%'}}>
-                        <Input.Search style={{width:'350px',marginLeft:'3px'}}/>
-                        <Table style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1} columns={departPermissionColumns} data={departListData} />
+                        <Input.Search size={"small"} style={{width:'350px',marginLeft:'3px'}} allowClear={true} onSearch={fetchDepartListData}/>
+                        <Table loading={loading} style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1} columns={departPermissionColumns} data={departListData} />
                         <Collapse style={{marginTop:'40px',borderLeft:"none",borderRight:"none"}}>
                             <CollapseItem style={{borderLeft:"none",borderRight:"none"}} header={
                                 <div style={{display:"flex"}}>
@@ -183,10 +186,42 @@ export function PermissionManageModal({resourceId,resourceType,onClose}){
 
 
                 <TabPane key='2' title={t['permissionManage.user.accessPermission']}>
-                    <Typography.Paragraph>Content of Tab Panel 2</Typography.Paragraph>
+                    <Space direction={"vertical"} style={{width:'100%'}}>
+                        <Input.Search style={{width:'350px',marginLeft:'3px'}}/>
+                        <Table style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1} columns={departPermissionColumns} data={departListData} />
+                        <Collapse style={{marginTop:'40px',borderLeft:"none",borderRight:"none"}}>
+                            <CollapseItem style={{borderLeft:"none",borderRight:"none"}} header={
+                                <div style={{display:"flex"}}>
+                                    <span>{t['permissionManage.user.grantPermission']}</span>
+                                    <Button style={{marginRight:'5px',marginLeft:"auto"}} type={"primary"} onClick={handleSubmit} size={"mini"}>{t['permissionManage.grant.submit']}</Button>
+                                </div>
+                            } name='3'>
+
+                                <Form.Item label={" "} field='title'>
+                                    <DepartmentsTransfer ref={departmentTransferRef}/>
+                                </Form.Item>
+                            </CollapseItem>
+                        </Collapse>
+                    </Space>
                 </TabPane>
                 <TabPane key='3' title={t['permissionManage.user.managePermission']}>
-                    <Typography.Paragraph>Content of Tab Panel 3</Typography.Paragraph>
+                    <Space direction={"vertical"} style={{width:'100%'}}>
+                        <Input.Search style={{width:'350px',marginLeft:'3px'}}/>
+                        <Table style={{maxHeight:'300px',padding:"3px 3px"}} size={"mini"} pagination={pagination1} columns={departPermissionColumns} data={departListData} />
+                        <Collapse style={{marginTop:'40px',borderLeft:"none",borderRight:"none"}}>
+                            <CollapseItem style={{borderLeft:"none",borderRight:"none"}} header={
+                                <div style={{display:"flex"}}>
+                                    <span>{t['permissionManage.user.grantPermission']}</span>
+                                    <Button style={{marginRight:'5px',marginLeft:"auto"}} type={"primary"} onClick={handleSubmit} size={"mini"}>{t['permissionManage.grant.submit']}</Button>
+                                </div>
+                            } name='3'>
+
+                                <Form.Item label={" "} field='title'>
+                                    <DepartmentsTransfer ref={departmentTransferRef}/>
+                                </Form.Item>
+                            </CollapseItem>
+                        </Collapse>
+                    </Space>
                 </TabPane>
             </Tabs>
             </Form>

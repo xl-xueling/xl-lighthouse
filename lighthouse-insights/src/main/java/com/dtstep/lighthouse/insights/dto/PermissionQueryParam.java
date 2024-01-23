@@ -10,6 +10,8 @@ public class PermissionQueryParam {
 
     private OwnerTypeEnum ownerType;
 
+    private String search;
+
     public Integer getRoleId() {
         return roleId;
     }
@@ -32,5 +34,13 @@ public class PermissionQueryParam {
 
     public void setOwnerType(OwnerTypeEnum ownerType) {
         this.ownerType = ownerType;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 }

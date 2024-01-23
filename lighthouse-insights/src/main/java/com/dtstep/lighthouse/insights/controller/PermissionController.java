@@ -41,6 +41,7 @@ public class PermissionController {
         PermissionQueryParam queryParam = new PermissionQueryParam();
         queryParam.setOwnerType(listQueryParam.getOwnerType());
         queryParam.setRoleId(role.getId());
+        queryParam.setSearch(listQueryParam.getSearch());
         ListData<PermissionVO> listData = permissionService.queryList(queryParam, pagination.getPageNum(), pagination.getPageSize());
         return ResultData.success(listData);
     }
