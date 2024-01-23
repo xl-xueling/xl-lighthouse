@@ -12,6 +12,55 @@ import { PiLockBold } from "react-icons/pi";
 import {RiAppsLine} from "react-icons/ri";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 
+export function getUserPermissionColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+
+    return [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+            headerCellStyle: { width:'20px' },
+        },
+        {
+            title: 'User',
+            dataIndex: 'extend',
+            headerCellStyle: { width:'20px' },
+            render: (value, record) => {
+                console.log("record:" + record);
+                return <UserGroup users={[value]}/>
+            }
+        },
+        {
+            title: 'CreateTime',
+            dataIndex: 'createTime',
+            headerCellStyle: { width:'20px' },
+            render: (value, record) => {
+                return formatTimeStamp(value,DateTimeFormat) ;
+            }
+        },
+        {
+            title: 'Operation',
+            dataIndex: 'operation',
+            headerCellStyle: { width:'20px' },
+            render: (value, record) => {
+                const button = <Popconfirm key={getRandomString()}
+                                           focusLock
+                                           position={"tr"}
+                                           title='Confirm'
+                                           content={t['permissionManage.list.operation.remove.confirm']}
+                                           onOk={() => callback(record, 'release')}
+                >
+                    <Button key={getRandomString()}
+                            type="text"
+                            size="mini">
+                        {t['permissionManage.list.operation.remove']}
+                    </Button>
+                </Popconfirm>
+                return  <Space size={0} direction="horizontal">{[button]}</Space>;
+            }
+        }
+    ]
+}
+
 export function getDepartPermissionColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
 
     return [
