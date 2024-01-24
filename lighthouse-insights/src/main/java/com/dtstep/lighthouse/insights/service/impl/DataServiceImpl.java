@@ -28,7 +28,7 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public List<StatDataObject> testDataQuery(Integer statId, LocalDateTime startTime, LocalDateTime endTime, List<String> dimens) {
+    public List<StatDataObject> testDataQuery(Integer statId, LocalDateTime startTime, LocalDateTime endTime, List<String> dimensList) {
         StatVO statVO = statService.queryById(statId);
         long startTimeStamp = DateUtil.translateToTimeStamp(startTime);
         long endTimeStamp = DateUtil.translateToTimeStamp(endTime);
@@ -40,16 +40,23 @@ public class DataServiceImpl implements DataService {
         }
         Validate.notNull(batchList);
         List<StatValue> statValues = new ArrayList<>();
-        for(long batchTime:batchList){
-            StatValue statValue = new StatValue();
-            statValue.setValue(ThreadLocalRandom.current().nextInt(10000));
-            statValue.setBatchTime(batchTime);
-            statValue.setDisplayBatchTime(DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
-            statValues.add(statValue);
+        List<StatDataObject> objectList = new ArrayList<>();
+        List<String> dimenslists = List.of("province");
+        for(String dimens:dimenslists){
+            for(long batchTime:batchList){
+                StatValue statValue = new StatValue();
+                statValue.setValue(ThreadLocalRandom.current().nextInt(10000));
+                statValue.setBatchTime(batchTime);
+                statValue.setDisplayBatchTime(DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
+                statValues.add(statValue);
+            }
+            StatDataObject statDataObject = new StatDataObject();
+            statDataObject.setStatId(statId);
+            statDataObject.setDimens(dimens);
+            statDataObject.setDimensValue(dimens + "-"+ThreadLocalRandom.current().nextInt(10));
+            statDataObject.setValuesList(statValues);
+            objectList.add(statDataObject);
         }
-        StatDataObject statDataObject = new StatDataObject();
-        statDataObject.setStatId(statId);
-        statDataObject.setValuesList(statValues);
-        return List.of(statDataObject);
+        return objectList;
     }
 }

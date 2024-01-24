@@ -98,22 +98,22 @@ export const getStatExpiredEnumDescription = (expired) => {
 
 export function getComponentTypeDescription(t:any,value:ComponentTypeEnum) {
     if(value == ComponentTypeEnum.DATEPICKER_DATE_SELECT){
-        return t['components.type.dateSelect'];
+        return t['basic.componentsType.dateSelect'];
     }else if(value == ComponentTypeEnum.DATEPICKER_DATE_RANGE_SELECT){
-        return t['components.type.dateRangeSelect'];
+        return t['basic.componentsType.dateRangeSelect'];
     }else if(value == ComponentTypeEnum.FILTER_INPUT){
-        return t['components.type.filterInput'];
+        return t['basic.componentsType.filterInput'];
     }else if(value == ComponentTypeEnum.FILTER_SELECT){
-        return t['components.type.filterSelect'];
+        return t['basic.componentsType.filterSelect'];
     }
 }
 
 
 export function getSystemComponentTypeDescription(t:any,value:ComponentTypeEnum) {
     if(value == ComponentTypeEnum.FILTER_INPUT){
-        return t['components.type.system.filterInput'];
+        return t['basic.componentsType.system.filterInput'];
     }else if(value == ComponentTypeEnum.FILTER_SELECT){
-        return t['components.type.system.filterSelect'];
+        return t['basic.componentsType.system.filterSelect'];
     }
 }
 

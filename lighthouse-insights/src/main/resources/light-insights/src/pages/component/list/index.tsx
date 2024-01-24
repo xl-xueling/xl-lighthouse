@@ -11,12 +11,10 @@ import {
      Breadcrumb, Notification,
 } from '@arco-design/web-react';
 
-import SearchForm from "@/pages/component/list/form";
 import {IconHome, IconPlus} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {Component} from "@/types/insights-common";
-import {Project} from "@/types/insights-web";
 import {requestList} from "@/api/component";
 import {getColumns} from "./constants";
 import ComponentUpdateModal from "@/pages/component/update/ComponentUpdateModal";
@@ -136,7 +134,7 @@ export default function ComponentList() {
                     <Row gutter={24}>
                         <Col span={7}>
                             <Form.Item field="Title">
-                                <Input.Search  placeholder={t['componentList.label.title']} allowClear onSearch={(v) => {handleSearch({title:v})}} />
+                                <Input.Search  placeholder={t['componentList.label.title']} allowClear onSearch={(v) => {handleSearch({search:v})}} />
                             </Form.Item>
                         </Col>
                         <Grid.Col span={17} style={{ textAlign: 'right' }}>
