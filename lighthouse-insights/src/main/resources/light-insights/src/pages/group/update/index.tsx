@@ -149,6 +149,7 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
             token:values.token,
             desc:values.desc,
             columns:columns,
+            createTime:groupInfo.createTime,
         }
         setConfirmLoading(true);
         requestUpdate(group).then((response) => {
@@ -202,7 +203,6 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
                 <Form.Item field="token"
                            rules={[
                                { required: true, message: t['groupUpdate.form.validate.token.notEmpty.errorMsg'], validateTrigger : ['onSubmit'] },
-                               { required: true, match: new RegExp(_TokenPattern,"g"),message: t['groupUpdate.form.validate.token.failed'] , validateTrigger : ['onSubmit']},
                            ]}>
                     <Input
                         allowClear
