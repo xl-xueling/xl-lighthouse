@@ -8,6 +8,8 @@ public class ComponentQueryParam {
 
     private PrivateTypeEnum privateType;
 
+    private Integer userId;
+
     private String title;
 
     public String getTitle() {
@@ -32,5 +34,13 @@ public class ComponentQueryParam {
 
     public void setPrivateType(PrivateTypeEnum privateType) {
         this.privateType = privateType;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }
