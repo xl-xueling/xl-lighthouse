@@ -140,6 +140,7 @@ public class StatServiceImpl implements StatService {
         Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,stat.getId());
         if(permissionService.checkUserPermission(userId, manageRole.getId())){
             statVO.addPermission(PermissionEnum.ManageAble);
+            statVO.addPermission(PermissionEnum.AccessAble);
         }else if(permissionService.checkUserPermission(userId,accessRole.getId())){
             statVO.addPermission(PermissionEnum.AccessAble);
         }
