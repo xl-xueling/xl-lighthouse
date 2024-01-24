@@ -8,6 +8,4 @@ import java.util.List;
 public interface BaseService {
 
     Integer getCurrentUserId();
-
-    <T> ListData<T> translateToListData(List<T> list);
 }
