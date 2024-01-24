@@ -1,9 +1,17 @@
 const i18n = {
     'en-US': {
-        'statDisplay.breadcrumbItem':'Statistic Display',
+        'filterConfig.modal.title':'Filter Configuration',
+        'filterConfig.componentType.systemComponent':'System Component',
+        'filterConfig.componentType.customComponent':'Custom Component',
+        'filterConfig.componentType.currentlyConfig':'Currently Configuration',
+        'filterConfig.form.submit.success':'Update filter configuration successfully!',
     },
     'zh-CN': {
-        'statDisplay.breadcrumbItem':'数据指标',
+        'filterConfig.modal.title':'修改筛选项',
+        'filterConfig.componentType.systemComponent':'系统组件',
+        'filterConfig.componentType.customComponent':'自定义组件',
+        'filterConfig.componentType.currentlyConfig':'当前配置',
+        'filterConfig.form.submit.success':'修改筛选项配置信息成功！',
     },
 };
 

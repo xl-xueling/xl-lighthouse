@@ -245,7 +245,9 @@ public class StatServiceImpl implements StatService {
     public ResultCode filterConfig(Stat stat, List<RenderFilterConfig> filterConfigs) {
         String[] dimensArray = stat.getTemplateEntity().getDimensArray();
         Validate.notNull(dimensArray);
-        Validate.isTrue(CollectionUtils.isNotEmpty(filterConfigs));
+        if(CollectionUtils.isEmpty(filterConfigs)){
+            return ResultCode.filterConfigConfigCannotBeEmpty;
+        }
         List<String> list = Arrays.asList(dimensArray);
         List<String> configList = new ArrayList<>();
         for(RenderFilterConfig filterConfig : filterConfigs){

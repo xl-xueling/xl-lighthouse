@@ -4,8 +4,12 @@ import {ComponentTypeEnum, RenderFilterConfig} from "@/types/insights-common";
 import {Input, Space, Table, TableColumnProps, TreeSelect} from "@arco-design/web-react";
 import {translateToTreeNodes} from "@/pages/department/common";
 import {IconPlus} from "@arco-design/web-react/icon";
+import useLocale from "@/utils/useLocale";
+import locale from "@/pages/stat/filter/locale";
 
 export default function SystemComponents({onSelect}) {
+
+    const t = useLocale(locale);
 
     const columns: TableColumnProps[] = [
         {
@@ -42,12 +46,14 @@ export default function SystemComponents({onSelect}) {
 
     const systemComponents:RenderFilterConfig[] = [
         {
-            title:"默认下拉选择框",
+            title:t['basic.componentsType.system.filterSelect'],
             componentType:ComponentTypeEnum.FILTER_SELECT,
+            componentId:0,
         },
         {
-            title:"默认输入框",
+            title:t['basic.componentsType.system.filterInput'],
             componentType:ComponentTypeEnum.FILTER_INPUT,
+            componentId:0,
         },
     ]
 
