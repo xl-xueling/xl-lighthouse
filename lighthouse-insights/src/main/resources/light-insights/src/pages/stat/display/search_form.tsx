@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Department, TreeNode, Stat} from "@/types/insights-web";
 import {ComponentTypeEnum, RenderDateConfig, RenderFilterConfig} from "@/types/insights-common";
-import {Button, DatePicker, Form, Grid, Select, TreeSelect} from "@arco-design/web-react";
+import {Button, DatePicker, Form, Grid, Input, Select, TreeSelect} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/project/list/locale";
@@ -57,6 +57,32 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
         form.resetFields();
     };
 
+    const getFilterRender = (renderFilterConfig:RenderFilterConfig) => {
+        if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_INPUT){
+            return (
+                <Input size={"small"} placeholder={size == 'mini' ? renderFilterConfig.label : "Search Value"}  autoComplete={'off'}/>
+            )
+        }if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_SELECT){
+            return (
+                <TreeSelect size={"small"}
+                            placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"}
+                            multiple={true}
+                            treeCheckable={true}
+                            treeCheckStrictly={false}
+                            treeData={translateToTreeNodes(renderFilterConfig.configData)} />
+            )
+        }else{
+            return (
+                <TreeSelect size={"small"}
+                            placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"}
+                            multiple={true}
+                            treeCheckable={true}
+                            treeCheckStrictly={false}
+                            treeData={translateToTreeNodes(renderFilterConfig.configData)} />
+            )
+        }
+    }
+
     return (
         <div className={styles['search-form-wrapper']}>
         <Form
@@ -79,14 +105,7 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
                         return (
                             <Col span={12} key={index}>
                                 <Form.Item label={option.label} field={option.dimens}>
-                                    <TreeSelect
-                                        placeholder={size == 'mini' ? option.label : "Please Select"}
-                                        multiple={true}
-                                        treeCheckable={true}
-                                        treeCheckStrictly={false}
-                                        allowClear={true}
-                                        treeData={translateToTreeNodes(option.configData)}
-                                    />
+                                    {getFilterRender(option)}
                                 </Form.Item>
                             </Col>
                         );
