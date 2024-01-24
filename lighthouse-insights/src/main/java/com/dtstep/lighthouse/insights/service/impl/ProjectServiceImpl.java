@@ -19,6 +19,7 @@ import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -212,22 +213,23 @@ public class ProjectServiceImpl implements ProjectService {
         Integer userId = baseService.getCurrentUserId();
         PageHelper.startPage(pageNum,pageSize);
         List<ProjectVO> dtoList = new ArrayList<>();
-        List<Project> projectList;
+        PageInfo<Project> pageInfo = null;
         try{
-            projectList = projectDao.queryList(queryParam,pageNum,pageSize);
+            List<Project> projectList = projectDao.queryList(queryParam,pageNum,pageSize);
+            pageInfo = new PageInfo<>(projectList);
         }finally {
             PageHelper.clearPage();
         }
-        for(Project project : projectList){
+        for(Project project : pageInfo.getList()){
             ProjectVO projectVO = null;
             try{
                 projectVO = translate(project);
                 dtoList.add(projectVO);
             }catch (Exception ex){
-                logger.error("translate to page display element error,projectId:{}!",project.getId(),ex);
+                logger.error("translate item info error,itemId:{}!",project.getId(),ex);
             }
         }
-        return baseService.translateToListData(dtoList);
+        return ListData.newInstance(dtoList,pageInfo.getTotal(),pageNum,pageSize);
     }
 
     @Override
