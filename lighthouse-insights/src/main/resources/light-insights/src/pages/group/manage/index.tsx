@@ -160,7 +160,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                                     {t['groupManage.operations.button.delete.group']}</Menu.Item>
                             </Menu>
                         }>
-                        <Button size={"mini"} type={"primary"}><IconDownCircle />More</Button>
+                        <Button size={"mini"} type={"primary"}><IconDownCircle />{t['groupManage.operations.more']}</Button>
                     </Dropdown>
                     </Space>
                 }>
