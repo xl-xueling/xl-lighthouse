@@ -74,7 +74,7 @@ export default function ProjectPreview() {
                     </Row>
                 </Space>
                 <Space className={styles.right} size={16} direction="vertical">
-                    {selectedStatId && <StatPreviewPanel id={selectedStatId}/>}
+                    {selectedStatId && <StatPreviewPanel id={selectedStatId} size={'small'}/>}
                 </Space>
             </div>
             </Space>
