@@ -92,7 +92,14 @@ public final class FormulaCalculate {
         double radix;
         int filterStartIndex = StatState.getFilterStartIndex(statState);
         Map<String, Object> envMap = null;
-        if(!StatState.isCountState(statState) && !StatState.isBitCountState(statState)){
+        if(StatState.isBitCountState(statState)){
+            envMap = new HashMap<>(paramMap);
+            String origin = list.get(0).getOrigin();
+            Object obj = AviatorHandler.execute(origin,envMap);
+            if(obj == null){
+                return false;
+            }
+        }else if(!StatState.isCountState(statState) && !StatState.isBitCountState(statState)){
             envMap = new HashMap<>(paramMap);
             String origin = list.get(0).getOrigin();
             combineVariableEnvMap(origin,envMap,batchTime);

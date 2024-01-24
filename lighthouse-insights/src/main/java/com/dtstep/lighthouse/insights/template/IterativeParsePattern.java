@@ -153,7 +153,6 @@ public final class IterativeParsePattern implements Parser {
             templateEntity.setLimitSize(Integer.parseInt(sizeStr));
         }
 
-//        FormulaTranslate.checkVariableExist(stat,columnList,variableEntityList);
         Pair<String,List<StatState>> statePair;
         try{
             statePair = FormulaTranslate.translate(stat);
