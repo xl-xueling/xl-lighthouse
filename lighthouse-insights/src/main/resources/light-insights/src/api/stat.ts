@@ -27,6 +27,14 @@ export async function requestFilterConfig(data):Promise<ResultData> {
     })
 }
 
+export async function requestFilterReset(data):Promise<ResultData> {
+    return request({
+        url:'/stat/filterReset',
+        method:'POST',
+        data,
+    })
+}
+
 export async function requestUpdate(data):Promise<ResultData> {
     return request({
         url:'/stat/update',

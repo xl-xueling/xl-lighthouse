@@ -15,7 +15,7 @@ import locale from './locale';
 import EditTable, {EditTableColumnProps, EditTableComponentEnum} from "@/pages/common/edittable/EditTable";
 import {IconMinus, IconMinusCircleFill, IconPlus} from "@arco-design/web-react/icon";
 import {formatString, getRandomString, getTextBlenLength, stringifyObj} from "@/utils/util";
-import {requestFilterConfig} from "@/api/stat";
+import {requestFilterConfig, requestFilterReset} from "@/api/stat";
 import {Group, Project, Stat} from "@/types/insights-web";
 import {GlobalErrorCodes} from "@/utils/constants";
 import {Component, ComponentTypeEnum, RenderFilterConfig} from "@/types/insights-common";
@@ -35,7 +35,8 @@ export default function StatFilterConfigModal({statInfo,onClose,onSuccess}:{stat
     const editTableRef = useRef(null);
     const t = useLocale(locale);
     const [initFilterConfig,setInitFilterConfig] = useState<Array<RenderFilterConfig>>([]);
-    const [loading,setLoading] = useState<boolean>(false);
+    const [submitLoading,setSubmitLoading] = useState<boolean>(false);
+    const [resetLoading,setResetLoading] = useState<boolean>(false);
 
     const targetColumns : EditTableColumnProps[] = [
         {
@@ -127,7 +128,7 @@ export default function StatFilterConfigModal({statInfo,onClose,onSuccess}:{stat
     }
 
     const onSubmit = () => {
-        setLoading(true);
+        setSubmitLoading(true);
         const dimensArray = statInfo?.templateEntity?.dimensArray;
         const configData = getConfigData();
         const filters = configData?.map(z => {
@@ -139,7 +140,7 @@ export default function StatFilterConfigModal({statInfo,onClose,onSuccess}:{stat
             }
         })
         const params = {filters,id:statInfo.id}
-        setLoading(true);
+        setSubmitLoading(true);
         requestFilterConfig(params).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -153,7 +154,27 @@ export default function StatFilterConfigModal({statInfo,onClose,onSuccess}:{stat
             console.log(error);
             Notification.error({style: { width: 420 }, title: 'Warning', content: t['system.error']});
         }).finally(() => {
-            setLoading(false);
+            setSubmitLoading(false);
+        })
+    }
+
+
+    const onReset = () => {
+        setResetLoading(true);
+        requestFilterReset({id:statInfo.id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['filterConfig.form.reset.submit.success']});
+                onClose();
+                onSuccess();
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error) => {
+            console.log(error);
+            Notification.error({style: { width: 420 }, title: 'Warning', content: t['system.error']});
+        }).finally(() => {
+            setResetLoading(false);
         })
     }
 
@@ -163,8 +184,12 @@ export default function StatFilterConfigModal({statInfo,onClose,onSuccess}:{stat
             title= {t['filterConfig.modal.title']}
             style={{ width:'1100px',top:'20px',maxWidth:'80%',height:'800px' }}
             visible={true}
-            confirmLoading={loading}
-            onOk={() => onSubmit()}
+            footer={
+                <div>
+                    <Button loading={resetLoading} type={"primary"} status={'danger'} onClick={onReset} style={{marginRight:'10px'}}>{t['basic.form.button.reset']}</Button>
+                    <Button loading={submitLoading} type={"primary"} onClick={onSubmit}>{t['basic.form.button.submit']}</Button>
+                </div>
+            }
             onCancel={() => onClose()}>
             <Space size={10} direction="vertical" style={{width:'100%'}}>
                 <Tabs type={"card-gutter"} defaultActiveTab='1' style={{height:'330px'}}>
