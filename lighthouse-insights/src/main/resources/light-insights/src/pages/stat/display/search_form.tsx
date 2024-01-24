@@ -60,7 +60,7 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
     const getFilterRender = (renderFilterConfig:RenderFilterConfig) => {
         if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_INPUT){
             return (
-                <Input size={"small"} placeholder={size == 'mini' ? renderFilterConfig.label : "Search Value"}  autoComplete={'off'}/>
+                <Input size={"small"} allowClear={true} placeholder={size == 'mini' ? renderFilterConfig.label : "Search Value"}  autoComplete={'off'}/>
             )
         }if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_SELECT){
             return (
@@ -69,6 +69,7 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
                             multiple={true}
                             treeCheckable={true}
                             treeCheckStrictly={false}
+                            allowClear={true}
                             treeData={translateToTreeNodes(renderFilterConfig.configData)} />
             )
         }else{
@@ -78,6 +79,7 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
                             multiple={true}
                             treeCheckable={true}
                             treeCheckStrictly={false}
+                            allowClear={true}
                             treeData={translateToTreeNodes(renderFilterConfig.configData)} />
             )
         }

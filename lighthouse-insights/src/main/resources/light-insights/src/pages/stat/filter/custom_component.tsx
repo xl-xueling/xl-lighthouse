@@ -17,7 +17,7 @@ export default function CustomComponents({onSelect}) {
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         showTotal: true,
-        pageSize: 15,
+        pageSize: 6,
         current: 1,
     });
 
@@ -37,7 +37,10 @@ export default function CustomComponents({onSelect}) {
             render: (value, record) => {
                 if(record.componentType == ComponentTypeEnum.FILTER_SELECT){
                     return (
-                        <TreeSelect size={"mini"} treeData={translateToTreeNodes(value)} />
+                        <TreeSelect size={"mini"} multiple={true}
+                                    treeCheckable={true}
+                                    treeCheckStrictly={false}
+                                    allowClear={true}  treeData={translateToTreeNodes(value)} />
                     )
                 }
             },
@@ -74,6 +77,7 @@ export default function CustomComponents({onSelect}) {
     }
 
     const fetchData = async () => {
+        setLoading(true);
         const {current, pageSize} = pagination;
         const combineParam = {};
         await requestList({
@@ -108,7 +112,7 @@ export default function CustomComponents({onSelect}) {
     return (
         <Space size={16} direction="vertical" style={{ width: '100%',height:'270px' }}>
             <Input.Search  placeholder={'Search'} allowClear style={{width:'320px',marginLeft:'3px'}}/>
-            <Table rowKey={'componentId'} size={"mini"} columns={columns} data={listData} pagination={pagination}/>
+            <Table rowKey={'componentId'} loading={loading} size={"mini"} columns={columns} data={listData} pagination={pagination} onChange={onChangeTable}/>
         </Space>
     );
 }
