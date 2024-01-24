@@ -10,15 +10,7 @@ public class ComponentQueryParam {
 
     private Integer userId;
 
-    private String title;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    private String search;
 
     public Integer getId() {
         return id;
@@ -42,5 +34,13 @@ public class ComponentQueryParam {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 }

@@ -31,7 +31,6 @@ public class ComponentController {
 
     @RequestMapping("/component/verify")
     public ResultData<List<CommonTreeNode>> verify(@Validated @RequestBody ComponentVerifyParam verifyParam) {
-        System.out.println("verifyParam:" + JsonUtil.toJSONString(verifyParam));
         ResultCode resultCode = componentService.verify(verifyParam.getConfiguration());
         return ResultData.result(resultCode);
     }
