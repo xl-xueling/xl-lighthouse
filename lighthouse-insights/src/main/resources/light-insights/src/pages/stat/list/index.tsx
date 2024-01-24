@@ -13,7 +13,6 @@ export default function Index() {
     const [formParams, setFormParams] = useState({});
 
     function handleSearch(params) {
-        console.log("---Params is:" + JSON.stringify(params));
         setFormParams(params);
     }
 
