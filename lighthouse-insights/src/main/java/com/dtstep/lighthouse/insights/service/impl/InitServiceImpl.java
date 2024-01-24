@@ -118,7 +118,7 @@ public class InitServiceImpl implements InitService {
             domain.setCreateTime(localDateTime);
             domain.setUpdateTime(localDateTime);
             domain.setName("Default-Domain-" + System.currentTimeMillis());
-            domain.setDefaultTokenPrefix(RandomID.id(4));
+            domain.setDefaultTokenPrefix(RandomID.id(3));
             int result = domainService.create(domain);
             Validate.isTrue(result > 0);
         }

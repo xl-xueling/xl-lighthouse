@@ -80,7 +80,7 @@ export default function StatPreviewPanel({size = 'default',id}) {
                         <Typography.Title
                             heading={6}
                         >
-                            {'Metric Information'}
+                            {t['statDisplay.label.statistic.information']}{'：'}
                         </Typography.Title>
                         <BasicInfo statInfo={statInfo} callback={tableCallback}/>
                     </Card>
