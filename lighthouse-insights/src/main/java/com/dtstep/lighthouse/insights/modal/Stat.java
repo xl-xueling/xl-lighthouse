@@ -24,7 +24,7 @@ public class Stat implements Serializable {
 
     private Integer groupId;
 
-    private RenderConfig renderConfig;
+    private RenderConfig renderConfig = new RenderConfig();
 
     private LocalDateTime createTime;
 
