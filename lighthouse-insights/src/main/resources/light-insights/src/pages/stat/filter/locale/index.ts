@@ -6,6 +6,7 @@ const i18n = {
         'filterConfig.componentType.currentlyConfig':'Currently Configuration',
         'filterConfig.form.submit.success':'Update filter configuration successfully!',
         'filterConfig.form.reset.submit.success':'Reset filter configuration successfully!',
+        'filterConfig.config.exceed.limit':'The current statistic supports a maximum of [%s] filter items!',
     },
     'zh-CN': {
         'filterConfig.modal.title':'修改筛选项',
@@ -14,6 +15,7 @@ const i18n = {
         'filterConfig.componentType.currentlyConfig':'当前配置',
         'filterConfig.form.submit.success':'修改筛选项配置信息成功！',
         'filterConfig.form.reset.submit.success':'重置筛选项配置信息成功！',
+        'filterConfig.config.exceed.limit':'当前统计任务最多支持配置[%s]个筛选项!',
     },
 };
 
