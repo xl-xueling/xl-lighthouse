@@ -36,8 +36,8 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 data:z.valuesList?.map(z => z.value),
             }
             eChartChartValues.push(seriesObject);
-            setEChartData(eChartChartValues);
         })
+        setEChartData(eChartChartValues);
     }
 
 
@@ -78,12 +78,14 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
     }
 
     const option = {
-        xAxis: {
-            type: 'category',
-            data: batchTimeList,
-        },
-        yAxis: {
-            type: 'value',
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'line',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
         },
         dataZoom: [
             {
@@ -92,13 +94,33 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 end: 100
             }
         ],
-        grid: {
-            left: '50px;',
-            right: '5px;',
-            bottom: '25px;',
-            top: '10px;'
+        legend: {
+            data: eChartData.map(z => z.name)
         },
-        series: eChartData,
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: batchTimeList
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: eChartData
     };
 
     useEffect(() => {
