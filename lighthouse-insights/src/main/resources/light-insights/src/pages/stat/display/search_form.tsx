@@ -116,12 +116,16 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
             </Row>
         </Form>
             <div className={styles['right-button']}>
-                <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>
-                    {'搜索'}
+                <Button size={"small"} type="primary" icon={<IconSearch />} onClick={handleSubmit}>
+                    {t['basic.form.button.search']}
                 </Button>
-                {/*<Button type="secondary" icon={<IconSearch />} onClick={handleReset}>*/}
-                {/*    {'重置'}*/}
-                {/*</Button>*/}
+                {
+                    statInfo?.renderConfig?.filters.length > 1 ?
+                        <Button size={"small"} type="secondary" icon={<IconSearch />} onClick={handleReset}>
+                            {t['basic.form.button.reset']}
+                        </Button>
+                        : null
+                }
             </div>
         </div>
     );
