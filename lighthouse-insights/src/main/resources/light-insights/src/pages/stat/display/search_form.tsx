@@ -50,6 +50,7 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
 
     const handleSubmit = () => {
         const values = form.getFieldsValue();
+        console.log("values is:" + JSON.stringify(values));
         onSearch(values);
     };
 
