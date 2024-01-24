@@ -126,6 +126,8 @@ public class ComponentServiceImpl implements ComponentService {
         PageHelper.startPage(pageNum,pageSize);
         ListData<ComponentVO> listData;
         PageInfo<Component> pageInfo = null;
+        int currentUserId = baseService.getCurrentUserId();
+        queryParam.setUserId(currentUserId);
         try{
             List<Component> components = componentDao.queryList(queryParam);
             pageInfo = new PageInfo<>(components);

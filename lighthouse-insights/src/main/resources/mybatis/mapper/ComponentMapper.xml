@@ -31,8 +31,11 @@
             <if test="queryParam.id!=null">
                 AND id = #{queryParam.id}
             </if>
-            <if test="queryParam.privateType!=null">
+            <if test="queryParam.privateType != null ">
                 AND private_type = #{queryParam.privateType.privateType}
+            </if>
+            <if test="queryParam.userId != null">
+                AND (user_id = #{queryParam.privateType.userId} or private_type = '1')
             </if>
             <if test="queryParam.title != null">
                 AND title LIKE CONCAT('%', #{queryParam.title}, '%')
