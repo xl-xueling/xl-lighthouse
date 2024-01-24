@@ -21,8 +21,11 @@ import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.OrderDetailVO;
 import com.dtstep.lighthouse.insights.vo.OrderVO;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +39,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Autowired
     private OrderDao orderDao;
@@ -76,32 +81,44 @@ public class OrderServiceImpl implements OrderService {
         queryParam.setApproveUserId(currentUserId);
         PageHelper.startPage(pageNum,pageSize,"create_time desc");
         List<OrderVO> orderDtoList = new ArrayList<>();
+        PageInfo<Order> pageInfo = null;
         try{
             List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
-            for(Order order : orders){
-                OrderVO orderDto = translateApproveEntity(order);
-                orderDtoList.add(orderDto);
-            }
+            pageInfo = new PageInfo<>(orders);
         }finally {
             PageHelper.clearPage();
         }
-        return baseService.translateToListData(orderDtoList);
+        for(Order order : pageInfo.getList()){
+            try{
+                OrderVO orderDto = translateApproveEntity(order);
+                orderDtoList.add(orderDto);
+            }catch (Exception ex){
+                logger.error("translate item info error,itemId:{}!",order.getId(),ex);
+            }
+        }
+        return ListData.newInstance(orderDtoList,pageInfo.getTotal(),pageNum,pageSize);
     }
 
     @Override
     public ListData<OrderVO> queryApplyList(ApplyOrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize,"create_time desc");
         List<OrderVO> orderDtoList = new ArrayList<>();
+        PageInfo<Order> pageInfo = null;
         try{
             List<Order> orders = orderDao.queryApplyList(queryParam,pageNum,pageSize);
-            for(Order order : orders){
-                OrderVO orderVO = translateApplyEntity(order);
-                orderDtoList.add(orderVO);
-            }
+            pageInfo = new PageInfo<>(orders);
         }finally {
             PageHelper.clearPage();
         }
-        return baseService.translateToListData(orderDtoList);
+        for(Order order : pageInfo.getList()){
+            try{
+                OrderVO orderVO = translateApplyEntity(order);
+                orderDtoList.add(orderVO);
+            }catch (Exception ex){
+                logger.error("translate item info error,itemId:{}!",order.getId(),ex);
+            }
+        }
+        return ListData.newInstance(orderDtoList,pageInfo.getTotal(),pageNum,pageSize);
     }
 
     @Override

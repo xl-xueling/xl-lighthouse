@@ -12,8 +12,10 @@ import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
+import com.dtstep.lighthouse.insights.vo.ProjectVO;
 import com.dtstep.lighthouse.insights.vo.UserVO;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -101,20 +103,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public ListData<UserVO> queryList(UserQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        ListData<UserVO> listData = null;
+        PageInfo<User> pageInfo = null;
+        List<UserVO> dtoList = new ArrayList<>();
         try{
             List<User> userList = userDao.queryList(queryParam);
-            List<UserVO> voList = new ArrayList<>();
-            for(User user : userList){
-                UserVO vo = new UserVO(user);
-                vo.addPermission(PermissionEnum.ManageAble);
-                voList.add(vo);
-            }
-            listData = baseService.translateToListData(voList);
+            pageInfo = new PageInfo<>(userList);
         }finally {
             PageHelper.clearPage();
         }
-        return listData;
+        for(User user : pageInfo.getList()){
+            UserVO vo = new UserVO(user);
+            vo.addPermission(PermissionEnum.ManageAble);
+            dtoList.add(vo);
+        }
+        return ListData.newInstance(dtoList,pageInfo.getTotal(),pageNum,pageSize);
     }
 
     @Override

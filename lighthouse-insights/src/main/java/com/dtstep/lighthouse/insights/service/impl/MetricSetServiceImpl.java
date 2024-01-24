@@ -14,6 +14,7 @@ import com.dtstep.lighthouse.insights.util.TreeUtil;
 import com.dtstep.lighthouse.insights.vo.MetricSetVO;
 import com.dtstep.lighthouse.insights.vo.RelationVO;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,13 +170,14 @@ public class MetricSetServiceImpl implements MetricSetService {
     public ListData<MetricSet> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         ListData<MetricSet> metricSetListData = null;
+        PageInfo<MetricSet> pageInfo = null;
         try{
             List<MetricSet> metricSetList = metricSetDao.queryList(queryParam);
-            metricSetListData = baseService.translateToListData(metricSetList);
+            pageInfo = new PageInfo<>(metricSetList);
         }finally {
             PageHelper.clearPage();
         }
-        return metricSetListData;
+        return ListData.newInstance(pageInfo.getList(),pageInfo.getTotal(),pageNum,pageSize);
     }
 
     @Override
