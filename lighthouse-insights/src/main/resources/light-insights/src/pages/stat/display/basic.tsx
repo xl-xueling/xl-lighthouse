@@ -7,18 +7,19 @@ import UserGroup from "@/pages/user/common/groups";
 import { TbFilterEdit } from "react-icons/tb";
 import {getStatExpiredEnumDescription} from "@/pages/common/desc/base";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
+import DepartmentLabel from "@/pages/department/common/depart";
 
 
 export default function BasicInfo({statInfo,callback}) {
 
     const descriptionData = [
         {
-            label: 'Title',
-            value: statInfo?.title,
+            label: 'ID',
+            value: statInfo?.id,
         },
         {
-            label: 'CreatedTime',
-            value: formatTimeStamp(statInfo?.createTime,DateTimeFormat),
+            label: 'Title',
+            value: statInfo?.title,
         },
         {
             label: 'Project',
@@ -29,6 +30,10 @@ export default function BasicInfo({statInfo,callback}) {
             value: <span>{statInfo?.group.token}</span>,
         },
         {
+            label: 'Department',
+            value: <DepartmentLabel departmentId={statInfo.project?.departmentId} />,
+        },
+        {
             label: 'Expired',
             value: <span>{getStatExpiredEnumDescription(statInfo?.expired)}</span>,
         },
@@ -36,10 +41,13 @@ export default function BasicInfo({statInfo,callback}) {
             label: 'Admins',
             value: <UserGroup users={statInfo?.admins}/>,
         },
-
         {
             label: 'TimeParam',
             value: statInfo?.timeparam,
+        },
+        {
+            label: 'CreateTime',
+            value: formatTimeStamp(statInfo?.createTime,DateTimeFormat),
         },
         {
             label: 'Operation',
@@ -64,7 +72,6 @@ export default function BasicInfo({statInfo,callback}) {
     return (
         <>
             <Descriptions
-                // title='Basic Information'
                 labelStyle={{ width:'10%' }}
                 valueStyle={{ width:'40%' }}
                 size={"small"} border data={descriptionData} column={2}/>
