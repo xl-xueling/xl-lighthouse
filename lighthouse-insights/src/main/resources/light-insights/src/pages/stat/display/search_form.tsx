@@ -12,7 +12,7 @@ import {translateToTreeNodes} from "@/pages/department/common";
 const { useForm } = Form;
 
 
-export default function SearchForm({statInfo,onSearch}:{statInfo:Stat,onSearch:(values: Record<string, any>) => void}) {
+export default function SearchForm({size,statInfo,onSearch}:{size:string,statInfo:Stat,onSearch:(values: Record<string, any>) => void}) {
 
     const t = useLocale(locale);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
@@ -50,7 +50,6 @@ export default function SearchForm({statInfo,onSearch}:{statInfo:Stat,onSearch:(
 
     const handleSubmit = () => {
         const values = form.getFieldsValue();
-        console.log("values is:" + JSON.stringify(values));
         onSearch(values);
     };
 
@@ -66,9 +65,8 @@ export default function SearchForm({statInfo,onSearch}:{statInfo:Stat,onSearch:(
             className={styles['search-form']}
             labelAlign="left"
             colon={": "}
-            // style={{minHeight:'90px'}}
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 19 }}
+            labelCol={{ span: size == 'mini' ? 0 : 5 }}
+            wrapperCol={{ span: size == 'mini' ? 24:19 }}
         >
             <Row gutter={24}>
                 <Col span={12}>
@@ -82,7 +80,7 @@ export default function SearchForm({statInfo,onSearch}:{statInfo:Stat,onSearch:(
                             <Col span={12} key={index}>
                                 <Form.Item label={option.label} field={option.dimens}>
                                     <TreeSelect
-                                        placeholder={"Please Select"}
+                                        placeholder={size == 'mini' ? option.label : "Please Select"}
                                         multiple={true}
                                         treeCheckable={true}
                                         treeCheckStrictly={false}

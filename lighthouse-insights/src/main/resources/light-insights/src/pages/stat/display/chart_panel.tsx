@@ -14,7 +14,7 @@ import {
  DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
 
-export default function ChartPanel({searchForm={},statInfo}:{searchForm:any,statInfo:Stat}) {
+export default function ChartPanel({size = 'default',searchForm={},statInfo}:{size:string,searchForm:any,statInfo:Stat}) {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const [batchTimeList,setBatchTimeList] = useState<string[]>([]);
@@ -105,9 +105,19 @@ export default function ChartPanel({searchForm={},statInfo}:{searchForm:any,stat
         fetchData().then();
     },[JSON.stringify(searchForm)])
 
+    const getReactChart = () => {
+        if(size == 'default'){
+            return <ReactECharts option={option} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} />
+        }else if(size == 'small'){
+            return <ReactECharts option={option} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} />
+        }else if(size == 'mini'){
+            return <ReactECharts option={option} style={{ height: '240px' ,width:'100%',marginLeft:'0px'}} />
+        }
+    }
+
     return (<>
         <Space size={16} direction="vertical" style={{ width: '100%' }}>
-            <ReactECharts option={option} style={{ height: '240px' ,width:'100%',marginLeft:'0px'}} />
+            {getReactChart()}
         </Space>
     </>);
 }
