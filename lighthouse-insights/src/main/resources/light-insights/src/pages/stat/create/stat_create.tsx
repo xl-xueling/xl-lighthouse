@@ -160,7 +160,7 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose,onSuccess}) 
                 wrapperCol={{ span: 20 }}
                 layout={"vertical"}
                 initialValues={{
-                    group:projectInfo?.title + ' : ' + groupInfo?.token,
+                    group:projectInfo?.title + ' > ' + groupInfo?.token,
                 }}
             >
                 <Typography.Title
