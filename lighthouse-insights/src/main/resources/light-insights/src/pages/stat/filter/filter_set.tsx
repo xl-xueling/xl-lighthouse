@@ -115,6 +115,7 @@ export default function StatFilterConfigModal({statInfo,onClose}) {
 
     const selectComponent = (component:RenderFilterConfig) => {
         component = {...component,label:'--',dimens:'--',key:getRandomString()}
+        console.log("add component:" + JSON.stringify(component));
         editTableRef.current.addRow(component);
     }
 
@@ -127,13 +128,10 @@ export default function StatFilterConfigModal({statInfo,onClose}) {
     }
 
     const onSubmit = () => {
+        setLoading(true);
         const dimensArray = statInfo?.templateEntity?.dimensArray;
         const configData = getConfigData();
         const filters = configData?.map(z => {
-            // const dimens = z.dimens;
-            // const label = z.label;
-            // const componentId = z.componentId;
-            // const componentType = z.componentType;
             return {
                 dimens:z.dimens,
                 label:z.label,
@@ -142,17 +140,15 @@ export default function StatFilterConfigModal({statInfo,onClose}) {
             }
         })
         const params = {filters,id:statInfo.id}
-        console.log("--data is:" + JSON.stringify(params));
         setLoading(true);
         requestFilterConfig(params).then((response) => {
-            console.log("Response is:" + JSON.stringify(response));
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['statCreate.form.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['filterConfig.form.submit.success']});
+                onClose();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
-            // onClose();
         }).catch((error) => {
             console.log(error);
             Notification.error({style: { width: 420 }, title: 'Warning', content: t['system.error']});
@@ -164,25 +160,25 @@ export default function StatFilterConfigModal({statInfo,onClose}) {
     return (
         <Modal
             className={styles['edit-cell']}
-            title= '修改筛选项'
+            title= {t['filterConfig.modal.title']}
             style={{ width:'1100px',top:'20px',maxWidth:'80%',height:'800px' }}
             visible={true}
+            confirmLoading={loading}
             onOk={() => onSubmit()}
             onCancel={() => onClose()}>
             <Space size={10} direction="vertical" style={{width:'100%'}}>
                 <Tabs type={"card-gutter"} defaultActiveTab='1' style={{height:'330px'}}>
-                    <Tabs.TabPane key='1' title='内置组件' style={{padding:'5px'}}>
+                    <Tabs.TabPane key='1' title={t['filterConfig.componentType.systemComponent']} style={{padding:'5px'}}>
                         <SystemComponents onSelect={selectComponent}/>
                     </Tabs.TabPane>
-                    <Tabs.TabPane key='2' title='自定义组件'>
+                    <Tabs.TabPane key='2' title={t['filterConfig.componentType.customComponent']}>
                         <CustomComponents onSelect={selectComponent}/>
                     </Tabs.TabPane>
                 </Tabs>
                 <Typography.Title style={{fontSize:'14px',marginTop:'20px'}}>
-                    {'当前配置：'}
+                    {t['filterConfig.componentType.currentlyConfig']}{'：'}
                 </Typography.Title>
                 <EditTableV2 ref={editTableRef} columns={targetColumns} initData={initFilterConfig}/>
-
             </Space>
         </Modal>
     );

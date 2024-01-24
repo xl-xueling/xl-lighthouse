@@ -174,7 +174,7 @@ function EditableCell(props) {
                     wrapperCol={{ span: 24 }}
                     initialValue={rowData[column.dataIndex] == '--'?'':rowData[column.dataIndex]}
                     field={column.dataIndex}>
-                    <Input size={"mini"} ref={refInput} onBlur={cellValueChangeHandler}/>
+                    <Input size={"mini"} ref={refInput} autoComplete={'off'} onBlur={cellValueChangeHandler}/>
                 </FormItem>
             </div>
         );
