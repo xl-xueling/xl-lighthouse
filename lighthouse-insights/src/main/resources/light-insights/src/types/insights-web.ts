@@ -120,6 +120,7 @@ export interface Stat {
     project?:Project;
     dimensArray?:Array<string>;
     desc?:string;
+    templateEntity?:any,
     state?:StatStateEnum;
     renderConfig?:{datepicker:RenderDateConfig,filters:Array<RenderFilterConfig>}
     permissions?:PermissionEnum[];
