@@ -225,6 +225,9 @@ public class StatServiceImpl implements StatService {
                     filterConfig.setConfigData(component.getConfiguration());
                     filtersConfigMap.put(filterConfig.getDimens(),filterConfig);
                 }else{
+                    List<String> dimensValueList = queryDimensValueList(filterConfig.getDimens());
+                    List<TreeNode> treeNodes = dimensValueList.stream().map(z -> new TreeNode(z,z)).collect(toList());
+                    filterConfig.setConfigData(treeNodes);
                     filtersConfigMap.put(filterConfig.getDimens(),filterConfig);
                 }
             }
