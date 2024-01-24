@@ -55,6 +55,7 @@ export default function StatPreviewPanel({size = 'default',id}) {
     }
 
     useEffect(() => {
+        console.log("id:" + id + ",reloadTime:" + reloadTime);
         fetchData().then();
     },[id,reloadTime])
 
