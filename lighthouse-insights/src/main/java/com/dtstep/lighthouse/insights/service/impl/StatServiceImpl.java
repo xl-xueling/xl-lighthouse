@@ -27,6 +27,7 @@ import com.dtstep.lighthouse.insights.template.TemplateContext;
 import com.dtstep.lighthouse.insights.template.TemplateParser;
 import com.dtstep.lighthouse.insights.util.TreeUtil;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -144,23 +145,22 @@ public class StatServiceImpl implements StatService {
     public ListData<StatVO> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<StatVO> dtoList = new ArrayList<>();
-        List<Stat> list;
+        PageInfo<Stat> pageInfo = null;
         try{
-            list = statDao.queryList(queryParam);
+            List<Stat> list = statDao.queryList(queryParam);
+            pageInfo = new PageInfo<>(list);
         }finally {
             PageHelper.clearPage();
         }
-        if(CollectionUtils.isNotEmpty(list)){
-            for(Stat stat : list){
-                try{
-                    StatVO statVO = translate(stat);
-                    dtoList.add(statVO);
-                }catch (Exception ex){
-                    logger.error("translate stat info error,statId:{}!",stat.getId(),ex);
-                }
+        for(Stat stat : pageInfo.getList()){
+            try{
+                StatVO statVo = translate(stat);
+                dtoList.add(statVo);
+            }catch (Exception ex){
+                logger.error("translate item info error,itemId:{}!",stat.getId(),ex);
             }
         }
-        return baseService.translateToListData(dtoList);
+        return ListData.newInstance(dtoList,pageInfo.getTotal(),pageNum,pageSize);
     }
 
 
