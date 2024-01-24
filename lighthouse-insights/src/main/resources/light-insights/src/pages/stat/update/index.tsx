@@ -106,7 +106,7 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
                         layout={"vertical"}
                         initialValues={{
                             title:statInfo?.title,
-                            group:projectInfo?.title + ' : ' + groupInfo?.token,
+                            group:projectInfo?.title + ' > ' + groupInfo?.token,
                             timeparam:statInfo?.timeparam,
                             template:statInfo?.template,
                             expired:statInfo?.expired,
