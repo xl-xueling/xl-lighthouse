@@ -115,6 +115,12 @@ export default function StatFilterConfigModal({statInfo,onClose,onSuccess}:{stat
     },[statInfo])
 
     const selectComponent = (component:RenderFilterConfig) => {
+        const configData = getConfigData();
+        if(configData.length >= statInfo.templateEntity.dimensArray.length){
+            const message = formatString(t['filterConfig.config.exceed.limit'],statInfo.templateEntity.dimensArray.length);
+            Notification.warning({style: { width: 420 }, title: 'Notification', content: message});
+            return;
+        }
         component = {...component,label:'--',dimens:'--',key:getRandomString()}
         editTableRef.current.addRow(component);
     }
