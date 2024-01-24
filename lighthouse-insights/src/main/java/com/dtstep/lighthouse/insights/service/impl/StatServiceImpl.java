@@ -105,13 +105,6 @@ public class StatServiceImpl implements StatService {
         Group group = groupDao.queryById(groupId);
         String template = stat.getTemplate();
         String timeParam = stat.getTimeparam();
-        ResultWrapper<TemplateEntity> resultWrapper = TemplateParser.parseConfig(new TemplateContext(template,timeParam, group.getColumns()));
-        ResultCode resultCode = resultWrapper.getResultCode();
-        if(resultCode != ResultCode.success){
-            return resultCode;
-        }
-        TemplateEntity templateEntity = resultWrapper.getData();
-        stat.setTitle(templateEntity.getTitle());
         LocalDateTime localDateTime = LocalDateTime.now();
         stat.setUpdateTime(localDateTime);
         int result = statDao.update(stat);
