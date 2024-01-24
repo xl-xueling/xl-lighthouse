@@ -1,16 +1,31 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {ArcoTreeNode, Department} from "@/types/insights-web";
-import {Button, Descriptions, Divider, Form, Grid, Select, Space, TreeSelect, Typography} from "@arco-design/web-react";
-import {IconEdit, IconList, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
+import {
+    Button,
+    Descriptions,
+    Divider,
+    Form,
+    Grid,
+    Link,
+    Select,
+    Space,
+    TreeSelect,
+    Typography
+} from "@arco-design/web-react";
+import {IconEdit, IconList, IconMan, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
 import UserGroup from "@/pages/user/common/groups";
 import { TbFilterEdit } from "react-icons/tb";
 import {getStatExpiredEnumDescription} from "@/pages/common/desc/base";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import DepartmentLabel from "@/pages/department/common/depart";
+import { MdOutlineManageAccounts } from "react-icons/md";
 
+import { MdManageAccounts } from "react-icons/md";
+import {CiViewTable} from "react-icons/ci";
 
 export default function BasicInfo({statInfo,callback}) {
+
 
     const descriptionData = [
         {
@@ -23,7 +38,9 @@ export default function BasicInfo({statInfo,callback}) {
         },
         {
             label: 'Project',
-            value: <span>{statInfo?.project.title}</span>,
+            value:
+            <span style={{display:"inline-flex",alignItems:"center"}}>{statInfo?.project.title}</span>
+            ,
         },
         {
             label: 'Group',
@@ -31,7 +48,7 @@ export default function BasicInfo({statInfo,callback}) {
         },
         {
             label: 'Department',
-            value: <DepartmentLabel departmentId={statInfo.project?.departmentId} />,
+            value: <DepartmentLabel departmentId={statInfo?.project?.departmentId} />,
         },
         {
             label: 'Expired',
@@ -54,6 +71,9 @@ export default function BasicInfo({statInfo,callback}) {
             value:
                 <div>
                     <Space size={6}>
+                        {statInfo?.permissions.includes('ManageAble')?
+                            <Button shape={"circle"} icon={<MdOutlineManageAccounts/>} size={"mini"} onClick={() => window.open('/project/manage/' + statInfo?.projectId)}/>
+                            :null}
                         <Button shape={"circle"} icon={<IconList/>} size={"mini"}/>
                         <Button shape={"circle"} icon={<IconEdit/>} size={"mini"}/>
                         <Button shape={"circle"} icon={<IconPushpin/>} size={"mini"}/>
