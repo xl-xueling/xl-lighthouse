@@ -103,4 +103,17 @@ public class StatController {
         ResultCode resultCode = statService.filterConfig(stat,configList);
         return ResultData.result(resultCode);
     }
+
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/stat/filterReset")
+    public ResultData<Integer> filterReset(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        Stat stat = statService.queryById(id);
+        Validate.notNull(stat);
+        RenderConfig renderConfig = stat.getRenderConfig();
+        renderConfig.setFilters(null);
+        ResultCode resultCode = statService.update(stat);
+        return ResultData.result(resultCode);
+    }
 }
