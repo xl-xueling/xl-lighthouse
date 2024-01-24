@@ -37,8 +37,8 @@
             <if test="queryParam.userId != null">
                 AND (user_id = #{queryParam.privateType.userId} or private_type = '1')
             </if>
-            <if test="queryParam.title != null">
-                AND title LIKE CONCAT('%', #{queryParam.title}, '%')
+            <if test="queryParam.search != null">
+                AND title LIKE CONCAT('%', #{queryParam.search}, '%')
             </if>
         </where>
     </select>

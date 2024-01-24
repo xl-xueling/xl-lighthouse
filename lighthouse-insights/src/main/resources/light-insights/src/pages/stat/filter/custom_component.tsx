@@ -1,6 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Component, ComponentTypeEnum, RenderFilterConfig} from "@/types/insights-common";
-import {Input, Notification, PaginationProps, Space, Table, TableColumnProps, TreeSelect} from "@arco-design/web-react";
+import {Component, ComponentTypeEnum, OwnerTypeEnum, RenderFilterConfig} from "@/types/insights-common";
+import {
+    Form,
+    Input,
+    Notification,
+    PaginationProps,
+    Space,
+    Table,
+    TableColumnProps,
+    TreeSelect
+} from "@arco-design/web-react";
 import {translateToTreeNodes} from "@/pages/department/common";
 import {IconPlus} from "@arco-design/web-react/icon";
 import {requestList} from "@/api/component";
@@ -13,6 +22,7 @@ export default function CustomComponents({onSelect}) {
     const t = useLocale(locale);
     const [listData,setListData] = useState<RenderFilterConfig[]>([]);
     const [loading,setLoading] = useState<boolean>(false);
+    const [searchForms,setSearchForms] = useState<any>({});
 
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
@@ -65,6 +75,11 @@ export default function CustomComponents({onSelect}) {
         });
     }
 
+    const handlerSearch = (search) => {
+        setPagination({ ...pagination, current: 1 });
+        setSearchForms({search});
+    }
+
     const dataFormat = (list:Component[]):RenderFilterConfig[] => {
         return list?.map(z => {
             const filter: RenderFilterConfig = {};
@@ -79,9 +94,11 @@ export default function CustomComponents({onSelect}) {
     const fetchData = async () => {
         setLoading(true);
         const {current, pageSize} = pagination;
-        const combineParam = {};
+        const requestParam = {
+            search:searchForms.search,
+        }
         await requestList({
-            queryParams:combineParam,
+            queryParams:requestParam,
             pagination:{
                 pageSize:pageSize,
                 pageNum:current,
@@ -107,11 +124,15 @@ export default function CustomComponents({onSelect}) {
 
     useEffect(() => {
         fetchData().then();
-    },[])
+    },[pagination.current, pagination.pageSize,JSON.stringify(searchForms)])
 
     return (
         <Space size={16} direction="vertical" style={{ width: '100%',height:'270px' }}>
-            <Input.Search  placeholder={'Search'} allowClear style={{width:'320px',marginLeft:'3px'}}/>
+            <Form>
+                <Form.Item field={'search'}>
+                    <Input.Search placeholder={'Search'} allowClear style={{width:'320px',marginLeft:'3px'}} onSearch={handlerSearch}/>
+                </Form.Item>
+            </Form>
             <Table rowKey={'componentId'} loading={loading} size={"mini"} columns={columns} data={listData} pagination={pagination} onChange={onChangeTable}/>
         </Space>
     );
