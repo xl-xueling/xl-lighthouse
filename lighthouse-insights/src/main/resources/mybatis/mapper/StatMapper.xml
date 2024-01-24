@@ -10,6 +10,7 @@
         <result property="template" column="template"/>
         <result property="timeparam" column="timeparam"/>
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.StatStateEnumTypeHandler"/>
+        <result property="renderConfig" column="render_config" typeHandler="com.dtstep.lighthouse.insights.types.RenderConfigTypeHandler"/>
         <result property="randomId" column="random_id"/>
         <result property="expired" column="expired"/>
         <result property="desc" column="desc"/>
@@ -35,7 +36,7 @@
     </insert>
 
     <select id="queryById" resultMap="statResultMap">
-        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`
+        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`render_config`,`random_id`,`expired`,`desc`,`create_time`,`update_time`
         FROM ldp_stats WHERE id = #{id}
     </select>
 
@@ -92,6 +93,9 @@
             </if>
             <if test="state != null">
                 `state` = #{state.state},
+            </if>
+            <if test="renderConfig != null">
+                `render_config` = #{renderConfig,typeHandler=com.dtstep.lighthouse.insights.types.RenderConfigTypeHandler},
             </if>
             <if test="desc != null">
                 `desc` = #{desc},

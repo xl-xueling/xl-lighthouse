@@ -19,13 +19,13 @@ public class TreeNode implements Serializable {
 
     private TreeNode(){}
 
-    public TreeNode(String label,int value){
+    public TreeNode(String label,Object value){
         this.label = label;
         this.value = value;
         this.key = String.valueOf(value);
     }
 
-    public TreeNode(String label,int value,String type){
+    public TreeNode(String label,Object value,String type){
         this.label = label;
         this.value = value;
         this.type = type;
