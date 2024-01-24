@@ -70,12 +70,20 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
             dataIndex: 'operate',
             headerCellStyle: {width:'200px' },
             render: (_, record) => {
+                let viewButton;
                 let updateButton;
                 let stopButton;
                 let startButton;
                 let deleteButton;
                 let activeButton;
                 if(record.permissions.includes('ManageAble')){
+                    viewButton = <Link key={getRandomString()} target={"_blank"} href={'/stat/display/' + record.id}>
+                        <Button
+                            type="text"
+                            size="mini">
+                            {t['statList.table.operations.view']}
+                        </Button>
+                    </Link>
                     updateButton = <Button key={getRandomString()}
                             onClick={() => callback(record, 'showUpdateModal')}
                             type="text"
@@ -125,7 +133,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
                         </Popconfirm>;
                     }
                 }
-                return <Space size={16} direction="horizontal">{[updateButton,stopButton,startButton,deleteButton]}</Space>
+                return <Space size={16} direction="horizontal">{[viewButton,updateButton,stopButton,startButton,deleteButton]}</Space>
             }
         },
     ];
