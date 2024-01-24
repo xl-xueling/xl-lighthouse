@@ -19,7 +19,7 @@ import StatDetailModal from "@/pages/stat/list/detail";
 import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
 
 
-export default function StatPreviewPanel({id}) {
+export default function StatPreviewPanel({size = 'default',id}) {
 
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const t = useLocale(locale);
@@ -50,7 +50,6 @@ export default function StatPreviewPanel({id}) {
     }
 
     function handleSearch(params) {
-        console.log("params is:" + JSON.stringify(params));
         setSearchForm(params);
     }
 
@@ -62,18 +61,20 @@ export default function StatPreviewPanel({id}) {
         <>
             <Spin loading={loading} size={20} style={{ display: 'block' }}>
                 <Space size={16} direction="vertical" style={{ width: '100%' }}>
-                    <Card>
-                        <Typography.Title
-                            heading={6}
-                            style={{marginBottom:'25px'}}
-                        >
-                            <IconTag style={{marginRight:'10px'}}/>
-                            {statInfo?.title}
-                            <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
-                        </Typography.Title>
-                        {statInfo && <SearchForm statInfo={statInfo} onSearch={handleSearch}/>}
-                        {statInfo && <ChartPanel statInfo={statInfo} searchForm={searchForm}/>}
-                    </Card>
+                    {statInfo &&
+                        <Card>
+                            <Typography.Title
+                                heading={6}
+                                style={{marginBottom:'25px'}}
+                            >
+                                <IconTag style={{marginRight:'10px'}}/>
+                                {statInfo?.title}
+                                <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
+                            </Typography.Title>
+                            {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch}/>}
+                            {<ChartPanel size={size} statInfo={statInfo} searchForm={searchForm}/>}
+                        </Card>
+                    }
                     <Card>
                         <Typography.Title
                             heading={6}
