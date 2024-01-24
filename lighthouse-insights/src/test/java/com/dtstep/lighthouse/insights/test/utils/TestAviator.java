@@ -16,7 +16,7 @@ public class TestAviator {
 
     @Test
     public void testFormula() throws Exception {
-        String formula = "userId";
+        String formula = "'userId'";
         Map<String,Object> envMap = new HashMap<>();
         envMap.put("userId", UUID.randomUUID().toString());
         Object obj = AviatorHandler.execute(formula,envMap);

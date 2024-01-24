@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.GroupCreateParam;
+import com.dtstep.lighthouse.insights.dto.GroupUpdateParam;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.IDParam;
 import com.dtstep.lighthouse.insights.dto_bak.ResultData;
@@ -70,8 +71,12 @@ public class GroupController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @RequestMapping("/group/update")
-    public ResultData<Integer> update(@Validated @RequestBody Group updateParam) {
-        int result = groupService.update(updateParam);
+    public ResultData<Integer> update(@Validated @RequestBody GroupUpdateParam updateParam) {
+        Integer id = updateParam.getId();
+        Group group = groupService.queryById(id);
+        group.setColumns(updateParam.getColumns());
+        group.setDesc(updateParam.getDesc());
+        int result = groupService.update(group);
         if(result > 0){
             return ResultData.success(result);
         }else{

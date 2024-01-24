@@ -13,20 +13,16 @@ public class Group implements Serializable {
 
     private Integer id;
 
-    @NotEmpty
     private String token;
 
-    @NotNull
     private Integer projectId;
 
-    @NotEmpty
     private List<Column> columns;
 
     private String secretKey;
 
     private GroupStateEnum state;
-
-    @NotEmpty
+    
     private String desc;
 
     private LocalDateTime createTime;
