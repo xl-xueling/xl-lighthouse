@@ -29,6 +29,7 @@ export default function ProjectPreview() {
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
 
     const handlerCallback = async (type,record) => {
+        console.log("type is:" + type + ",record:" + record)
         if(type == 'clickStatMenu'){
             setSelectedStatId(Number(record));
         }

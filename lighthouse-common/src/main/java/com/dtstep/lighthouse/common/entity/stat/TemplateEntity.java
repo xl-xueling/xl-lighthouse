@@ -38,7 +38,7 @@ public final class TemplateEntity implements Serializable {
 
     private String dimens;
 
-    private String[] dimensArray;
+    private String[] dimensArray = new String[]{};
 
     private boolean limitFlag = false;
 

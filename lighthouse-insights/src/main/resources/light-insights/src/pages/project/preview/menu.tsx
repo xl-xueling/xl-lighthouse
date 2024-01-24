@@ -47,7 +47,8 @@ export default function ProjectMenu({projectInfo,callback}:{projectInfo:Project,
             onClickMenuItem = {(key, event, keyPath) => {
                 const type = key.split("_")[0];
                 const id = key.split("_")[1];
-                if(type == '3'){
+                console.log("type is:" + type + ",id:" + id);
+                if(type == 'stat'){
                     callback("clickStatMenu",Number(id));
                 }
             }}
