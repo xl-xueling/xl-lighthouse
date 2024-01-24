@@ -16,7 +16,7 @@ import EditTable, {EditTableColumnProps, EditTableComponentEnum} from "@/pages/c
 import {IconMinus, IconMinusCircleFill, IconPlus} from "@arco-design/web-react/icon";
 import {formatString, getRandomString, getTextBlenLength, stringifyObj} from "@/utils/util";
 import {requestFilterConfig} from "@/api/stat";
-import {Group, Project} from "@/types/insights-web";
+import {Group, Project, Stat} from "@/types/insights-web";
 import {GlobalErrorCodes} from "@/utils/constants";
 import {Component, ComponentTypeEnum, RenderFilterConfig} from "@/types/insights-common";
 import {translateToTreeNodes} from "@/pages/department/common";
@@ -30,7 +30,7 @@ import EditTableV2 from "@/pages/common/editable_v2/EditTableV2";
 import CustomComponents from "@/pages/stat/filter/custom_component";
 import {getSystemComponentTypeDescription} from "@/pages/common/desc/base";
 
-export default function StatFilterConfigModal({statInfo,onClose}) {
+export default function StatFilterConfigModal({statInfo,onClose,onSuccess}:{statInfo:Stat,onClose:() => void,onSuccess:() => void}) {
 
     const editTableRef = useRef(null);
     const t = useLocale(locale);
@@ -115,7 +115,6 @@ export default function StatFilterConfigModal({statInfo,onClose}) {
 
     const selectComponent = (component:RenderFilterConfig) => {
         component = {...component,label:'--',dimens:'--',key:getRandomString()}
-        console.log("add component:" + JSON.stringify(component));
         editTableRef.current.addRow(component);
     }
 
@@ -146,6 +145,7 @@ export default function StatFilterConfigModal({statInfo,onClose}) {
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['filterConfig.form.submit.success']});
                 onClose();
+                onSuccess();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }

@@ -27,8 +27,9 @@ export default function StatPreviewPanel({size = 'default',id}) {
     const [loading,setLoading] = useState<boolean>(true);
     const [searchForm,setSearchForm] = useState(null);
     const [showFilterConfigModal,setShowFilterConfigModal] = useState<boolean>(false);
+    const [reloadTime,setReloadTime] = useState<number>(Date.now);
 
-    const tableCallback = async (type) => {
+    const tableCallback = async (type,data) => {
         if(type == 'showFilterConfigModal'){
             setShowFilterConfigModal(true);
         }
@@ -55,7 +56,7 @@ export default function StatPreviewPanel({size = 'default',id}) {
 
     useEffect(() => {
         fetchData().then();
-    },[id])
+    },[id,reloadTime])
 
     return(
         <>
@@ -84,7 +85,10 @@ export default function StatPreviewPanel({size = 'default',id}) {
                         <BasicInfo statInfo={statInfo} callback={tableCallback}/>
                     </Card>
                 </Space>
-                {showFilterConfigModal && <StatFilterConfigModal statInfo={statInfo} onClose={() => setShowFilterConfigModal(false)}/>}
+                {showFilterConfigModal && <StatFilterConfigModal statInfo={statInfo}
+                                                                 onClose={() => setShowFilterConfigModal(false)}
+                                                                 onSuccess={() => setReloadTime(Date.now)}
+                />}
             </Spin>
         </>
     );
