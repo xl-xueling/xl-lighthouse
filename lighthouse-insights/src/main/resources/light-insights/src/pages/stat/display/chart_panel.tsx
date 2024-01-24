@@ -109,9 +109,9 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
         if(size == 'default'){
             return <ReactECharts option={option} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} />
         }else if(size == 'small'){
-            return <ReactECharts option={option} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} />
+            return <ReactECharts option={option} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} />
         }else if(size == 'mini'){
-            return <ReactECharts option={option} style={{ height: '240px' ,width:'100%',marginLeft:'0px'}} />
+            return <ReactECharts option={option} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} />
         }
     }
 
