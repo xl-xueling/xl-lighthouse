@@ -25,7 +25,7 @@ import Detail from "@/pages/project/list/detail";
 import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
 import ProjectApplyModal from "@/pages/project/apply";
 import {IconHome} from "@arco-design/web-react/icon";
-import {BindElementType} from "@/types/insights-common";
+import {ResourceTypeEnum} from "@/types/insights-common";
 import {GlobalErrorCodes} from "@/utils/constants";
 import {getRandomString} from "@/utils/util";
 import {GlobalState} from "@/store";
@@ -224,7 +224,7 @@ export default function Index() {
       {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} onSuccess={handlerReloadList}/>}
       {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)} onSuccess={handlerReloadList}/>}
       {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
-      {bindedVisible && <ReverseBindedPanel bindElement={{id:selectedProject?.id,type:BindElementType.Project,title:selectedProject?.title}} onClose={() => setBindedVisible(false)}/>}
+      {bindedVisible && <ReverseBindedPanel bindElement={{resourceId:selectedProject?.id,resourceType:ResourceTypeEnum.Project,title:selectedProject?.title}} onClose={() => setBindedVisible(false)}/>}
       {applyVisible && <ProjectApplyModal projectInfo={selectedProject} onClose={() => setApplyVisible(false)}/>}
     </Card>
       </>

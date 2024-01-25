@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
+import com.dtstep.lighthouse.insights.dto_bak.MetricBindElement;
 import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
 import com.dtstep.lighthouse.insights.modal.User;
@@ -13,6 +14,8 @@ import java.util.Set;
 public class MetricSetVO extends MetricSet {
 
     private List<User> admins;
+
+    private List<MetricBindElement> bindElements;
 
     private Set<PermissionEnum> permissions = new HashSet<>();
 
@@ -41,5 +44,13 @@ public class MetricSetVO extends MetricSet {
 
     public void setAdmins(List<User> admins) {
         this.admins = admins;
+    }
+
+    public List<MetricBindElement> getBindElements() {
+        return bindElements;
+    }
+
+    public void setBindElements(List<MetricBindElement> bindElements) {
+        this.bindElements = bindElements;
     }
 }

@@ -73,7 +73,7 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
         setSelectedItems(values);
     }
 
-    const columns = useMemo(() => getColumns(t, selectedItems,tableCallback), [t,selectedItems]);
+    const columns = useMemo(() => getColumns(t, bindElement,selectedItems,tableCallback), [t,bindElement,selectedItems]);
 
     function translate(item, level = 1) {
         if (!item) {
@@ -93,13 +93,12 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
     }
 
     async function handlerSubmit(){
-        console.log("selectedItems size:"+ selectedItems.length);
         if(selectedItems.length == 0){
             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['reverseBinded.form.submit.selectAtLeastOne']});
             return;
         }
         const bindParams = {
-            bindElements:[{id:bindElement.id,type:bindElement.type}],
+            bindElements:[{resourceId:bindElement.resourceId,resourceType:bindElement.resourceType}],
             metricIds:selectedItems.map(z => z.id),
         }
         setConfirmLoading(true);

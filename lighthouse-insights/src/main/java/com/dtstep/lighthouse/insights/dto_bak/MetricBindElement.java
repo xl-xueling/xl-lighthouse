@@ -1,28 +1,30 @@
 package com.dtstep.lighthouse.insights.dto_bak;
 
+import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
+
 import javax.validation.constraints.NotNull;
 
 public class MetricBindElement {
 
     @NotNull
-    private Integer id;
+    private Integer resourceId;
 
     @NotNull
-    private MetricBindType type;
+    private ResourceTypeEnum resourceType;
 
-    public Integer getId() {
-        return id;
+    public Integer getResourceId() {
+        return resourceId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setResourceId(Integer resourceId) {
+        this.resourceId = resourceId;
     }
 
-    public MetricBindType getType() {
-        return type;
+    public ResourceTypeEnum getResourceType() {
+        return resourceType;
     }
 
-    public void setType(MetricBindType type) {
-        this.type = type;
+    public void setResourceType(ResourceTypeEnum resourceType) {
+        this.resourceType = resourceType;
     }
 }

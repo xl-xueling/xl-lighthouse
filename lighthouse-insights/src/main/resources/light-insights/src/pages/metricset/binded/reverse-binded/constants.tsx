@@ -11,8 +11,9 @@ import { LuLock } from "react-icons/lu";
 import { PiLockBold } from "react-icons/pi";
 import {RiAppsLine} from "react-icons/ri";
 import {MetricSet} from "@/types/insights-web";
+import {BindElement} from "@/types/insights-common";
 
-export function getColumns(t: any, selectedItems:MetricSet[],callback: (type: string,record: Record<string, any>) => Promise<void>) {
+export function getColumns(t: any, bindElement:BindElement,selectedItems:MetricSet[],callback: (type: string,record: Record<string, any>) => Promise<void>) {
 
     return [
         {
@@ -38,10 +39,17 @@ export function getColumns(t: any, selectedItems:MetricSet[],callback: (type: st
             title: t['reverseBinded.column.label.operation'],
             dataIndex: 'operation',
             render: (_, record) => {
+                const bindFlag = record.bindElements.map(x => x.resourceType + "_" + x.resourceId).includes(bindElement.resourceType + "_" + bindElement.resourceId);
                 const selectedKeys = selectedItems?.map(z => z.id);
-                if(selectedKeys.includes(record.id)){
+                if(bindFlag){
                     return <Button key={getRandomString()}
-                                   onClick={() => callback("select",record)}
+                                   type="secondary"
+                                   disabled={true}
+                                   size="mini">
+                        {t['reverseBinded.column.label.operation.binded']}
+                    </Button>;
+                } else if(selectedKeys.includes(record.id)){
+                    return <Button key={getRandomString()}
                                    type="secondary"
                                    disabled={true}
                                    size="mini">

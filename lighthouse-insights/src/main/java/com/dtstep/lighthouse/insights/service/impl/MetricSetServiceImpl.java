@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.MetricSetDao;
+import com.dtstep.lighthouse.insights.dao.RelationDao;
 import com.dtstep.lighthouse.insights.dto.MetricBindParam;
 import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
 import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
@@ -65,6 +66,9 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     @Autowired
     private DomainService domainService;
+
+    @Autowired
+    private RelationDao relationDao;
 
     @Transactional
     @Override
@@ -147,6 +151,15 @@ public class MetricSetServiceImpl implements MetricSetService {
             List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
             metricSetVO.setAdmins(admins);
         }
+        List<Relation> relationList = relationDao.queryList(metricSetVO.getId(),RelationTypeEnum.MetricSetBindRelation);
+        List<MetricBindElement> elements = new ArrayList<>();
+        for(Relation relation : relationList){
+            MetricBindElement bindElement = new MetricBindElement();
+            bindElement.setResourceId(relation.getResourceId());
+            bindElement.setResourceType(relation.getResourceType());
+            elements.add(bindElement);
+        }
+        metricSetVO.setBindElements(elements);
         return metricSetVO;
     }
 
@@ -162,7 +175,7 @@ public class MetricSetServiceImpl implements MetricSetService {
         List<MetricBindElement> bindElements = bindParam.getBindElements();
         List<Relation> relationList = new ArrayList<>();
         for(Integer metricId : metricIds){
-            List<Integer> projectIds = bindElements.stream().filter(x -> x.getType() == MetricBindType.Project).map(z -> z.getId()).collect(Collectors.toList());
+            List<Integer> projectIds = bindElements.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Project).map(z -> z.getResourceId()).collect(Collectors.toList());
             for(Integer projectId : projectIds){
                 Project project = projectService.queryById(projectId);
                 if(project == null){
@@ -181,7 +194,7 @@ public class MetricSetServiceImpl implements MetricSetService {
                     relationList.add(relation);
                 }
             }
-            List<Integer> statIds = bindElements.stream().filter(x -> x.getType() == MetricBindType.Stat).map(z -> z.getId()).collect(Collectors.toList());
+            List<Integer> statIds = bindElements.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Stat).map(z -> z.getResourceId()).collect(Collectors.toList());
             for(Integer statId : statIds){
                 Stat stat = statService.queryById(statId);
                 if(stat != null){
