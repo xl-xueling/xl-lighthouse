@@ -145,11 +145,19 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     private MetricSetVO translate(MetricSet metricSet){
         MetricSetVO metricSetVO = new MetricSetVO(metricSet);
-        Role role = roleService.cacheQueryRole(RoleTypeEnum.METRIC_MANAGE_PERMISSION,metricSet.getId());
-        List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(role.getId(),3);
+        Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.METRIC_MANAGE_PERMISSION,metricSet.getId());
+        Role accessRole = roleService.queryRole(RoleTypeEnum.METRIC_ACCESS_PERMISSION,metricSet.getId());
+        List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
         if(CollectionUtils.isNotEmpty(adminIds)){
             List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
             metricSetVO.setAdmins(admins);
+        }
+        int currentUserId = baseService.getCurrentUserId();
+        if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
+            metricSetVO.addPermission(PermissionEnum.ManageAble);
+            metricSetVO.addPermission(PermissionEnum.AccessAble);
+        }else if(permissionService.checkUserPermission(currentUserId,accessRole.getId())){
+            metricSetVO.addPermission(PermissionEnum.AccessAble);
         }
         List<Relation> relationList = relationDao.queryList(metricSetVO.getId(),RelationTypeEnum.MetricSetBindRelation);
         List<MetricBindElement> elements = new ArrayList<>();

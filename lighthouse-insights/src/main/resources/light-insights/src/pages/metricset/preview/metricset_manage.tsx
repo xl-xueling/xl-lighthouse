@@ -71,7 +71,7 @@ export default function MetricManagePanel({groupId}) {
                             Binded Items
                         </span>
                     }>
-                   <BindedList metricId={0}/>
+
                 </TabPane>
                 <TabPane key='3' title={
                     <span>

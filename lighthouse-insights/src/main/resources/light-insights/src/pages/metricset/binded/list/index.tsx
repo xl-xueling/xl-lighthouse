@@ -25,7 +25,7 @@ import {getRandomString} from "@/utils/util";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
-export default function MetricBindedList({metricId}) {
+export default function MetricBindedList({metricSetInfo}) {
 
     const t = useLocale(locale);
     const [listData, setListData] = useState<Relation[]>([]);
@@ -116,20 +116,23 @@ export default function MetricBindedList({metricId}) {
             dataIndex: 'operations',
             headerCellStyle: {width:'250px' },
             render: (_, record) => {
-                return (
-                <Space size={0} direction="horizontal">
-                <Button key={getRandomString()}
-                               type="text"
-                               size="mini">
-                    {t['bindedList.list.column.label.operations.remove']}
-                </Button>
-                    <Button key={getRandomString()}
-                            type="text"
-                            size="mini">
-                        {t['bindedList.list.column.label.operations.apply']}
-                    </Button>
-                </Space>
-                );
+                const itemPermission = record.extend?.permissions;
+                let removeButton;
+                let applyButton;
+                if(metricSetInfo.permissions.includes('ManageAble')){
+                    removeButton = <Button key={getRandomString()}
+                                           type="text"
+                                           size="mini">
+                        {t['bindedList.list.column.label.operations.remove']}
+                    </Button>;
+                }else if(itemPermission.length == 0){
+                    applyButton =  <Button key={getRandomString()}
+                                type="text"
+                                size="mini">
+                            {t['bindedList.list.column.label.operations.apply']}
+                        </Button>
+                }
+                return  <Space size={0} direction="horizontal">{[removeButton,applyButton]}</Space>;
             }
         }
     ];
@@ -138,7 +141,7 @@ export default function MetricBindedList({metricId}) {
         setLoading(true);
         const {current, pageSize} = pagination;
         const requestParam = {
-            id:metricId,
+            id:metricSetInfo?.id,
             search:searchForms.search
         }
         await requestBindList({
