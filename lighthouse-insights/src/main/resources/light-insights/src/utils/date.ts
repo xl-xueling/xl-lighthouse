@@ -27,6 +27,14 @@ export function getDailyEndTimestamp():number{
     return moment().tz(timezone).endOf('day').valueOf();
 }
 
+export function getYearStartTimestamp(timestamp):number{
+    return moment(timestamp).tz(timezone).startOf('year').valueOf();
+}
+
+export function getYearEndTimestamp(timestamp):number{
+    return moment(timestamp).tz(timezone).endOf('year').valueOf();
+}
+
 export function getDayStartTimestamp(timestamp):number{
     return moment(timestamp).tz(timezone).startOf('day').valueOf();
 }
@@ -41,6 +49,10 @@ export function convertDateToTimestamp(dateString, dateFormat) {
 
 export function getDayBefore(timestamp,beforeDays) {
     return moment(timestamp).tz(timezone).subtract(beforeDays, 'days');
+}
+
+export function getYearBefore(timestamp,beforeYears) {
+    return moment(timestamp).tz(timezone).subtract(beforeYears, 'years');
 }
 
 export function getDayAfter(timestamp,afterDays) {
