@@ -94,6 +94,7 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
             headerCellStyle: {width:'250px' },
             render: (_, record) => {
                 const itemPermission = record.extend?.permissions;
+                console.log("itemPermissions length:" + itemPermission.length);
                 let removeButton;
                 let applyButton;
                 if(metricSetInfo.permissions.includes(PermissionEnum.ManageAble)){
@@ -111,9 +112,11 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
                         {t['bindedList.list.column.label.operations.remove']}
                     </Button>
                         </Popconfirm>
-                }else if(itemPermission.length == 0){
+                }
+                if(itemPermission.length == 0){
                     applyButton =  <Button key={getRandomString()}
                                            type="text"
+                                           onClick={() => callback(record,'apply')}
                                            size="mini">
                         {t['bindedList.list.column.label.operations.apply']}
                     </Button>

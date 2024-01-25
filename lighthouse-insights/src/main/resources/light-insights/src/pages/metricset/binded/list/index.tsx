@@ -24,6 +24,8 @@ import DepartmentLabel from "@/pages/department/common/depart";
 import {getRandomString} from "@/utils/util";
 import {getColumns} from "./constants";
 import {requestDeleteById} from "@/api/project";
+import ProjectApplyModal from "@/pages/project/apply";
+import ApplyModal from "@/pages/order/apply/modal/ApplyModal";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
@@ -33,6 +35,8 @@ export default function MetricBindedList({metricSetInfo}) {
     const [listData, setListData] = useState<Relation[]>([]);
     const [loading,setLoading] = useState<boolean>(true);
     const [searchForms,setSearchForms] = useState<any>({});
+    const [showApplyModal,setShowApplyModal] = useState<boolean>(false);
+    const [currentRecord,setCurrentRecord] = useState<Relation>(null);
 
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [10,20,30,50],
@@ -46,8 +50,13 @@ export default function MetricBindedList({metricSetInfo}) {
     const tableCallback = async (record, type) => {
         if(type == 'remove'){
             await handleRemove(record.id);
+        }else if(type == 'apply'){
+            setCurrentRecord(record);
+            setShowApplyModal(true);
         }
     }
+
+
 
     const handleRemove = async (relationId) => {
         const removeParam = {
@@ -144,6 +153,7 @@ export default function MetricBindedList({metricSetInfo}) {
             </Form>
         <Table rowKey={'id'} size={"small"} onChange={onChangeTable} loading={loading} columns={columns} data={listData}/>
         {/*<AddBindedPanel metricId={0} />*/}
+        {showApplyModal && <ApplyModal itemInfo={currentRecord?.extend} resourceType={currentRecord.resourceType} onClose={() => setShowApplyModal(false)}/>}
         </Card>
     );
 }
