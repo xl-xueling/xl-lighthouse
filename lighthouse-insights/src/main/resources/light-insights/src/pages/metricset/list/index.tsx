@@ -131,7 +131,7 @@ export default function ListCard() {
         onChange={setActiveKey}
         extra={
           <Input.Search
-            style={{ width: '260px',paddingRight:'24px'}}
+            style={{ width: '300px',paddingRight:'24px'}}
             placeholder={t[`cardList.tab.${activeKey}.placeholder`]}
           />
         }

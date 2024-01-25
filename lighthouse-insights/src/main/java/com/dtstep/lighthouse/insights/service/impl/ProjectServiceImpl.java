@@ -69,7 +69,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public int create(ProjectCreateParam project){
+    public int create(Project project){
         LocalDateTime localDateTime = LocalDateTime.now();
         project.setUpdateTime(localDateTime);
         project.setCreateTime(localDateTime);
@@ -78,28 +78,9 @@ public class ProjectServiceImpl implements ProjectService {
         Integer departmentId = project.getDepartmentId();
         RolePair rolePair = resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Project,projectId,ResourceTypeEnum.Department,departmentId));
         Integer manageRoleId = rolePair.getManageRoleId();
-        Integer accessRoleId = rolePair.getAccessRoleId();
-        List<Integer> departmentIdList = project.getDepartmentsPermission();
-        List<Integer> userIdList = project.getUsersPermission();
-        List<Permission> permissionList = new ArrayList<>();
-        if(project.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(departmentIdList)){
-            for(int i=0;i<departmentIdList.size();i++){
-                Integer tempDepartmentId = departmentIdList.get(i);
-                Permission tempPermission = new Permission(tempDepartmentId,OwnerTypeEnum.DEPARTMENT,accessRoleId);
-                permissionList.add(tempPermission);
-            }
-        }
-        if(project.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(userIdList)){
-            for(int i=0;i<userIdList.size();i++){
-                Integer userId = userIdList.get(i);
-                Permission tempPermission = new Permission(userId,OwnerTypeEnum.USER,accessRoleId);
-                permissionList.add(tempPermission);
-            }
-        }
         int currentUserId = baseService.getCurrentUserId();
         Permission adminPermission = new Permission(currentUserId,OwnerTypeEnum.USER,manageRoleId);
-        permissionList.add(adminPermission);
-        permissionService.batchCreate(permissionList);
+        permissionService.create(adminPermission);
         return projectId;
     }
 

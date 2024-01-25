@@ -3,9 +3,11 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.MetricSetDao;
 import com.dtstep.lighthouse.insights.dto.MetricBindParam;
 import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
+import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.enums.*;
 import com.dtstep.lighthouse.insights.modal.*;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,27 +80,53 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
 
+    @Transactional
     @Override
-    public int grantAccessPermissions(Integer id, List<Integer> initUsersPermission,List<Integer> initDepartmentsPermission) {
-        MetricSet metricSet = metricSetDao.queryById(id);
-        Role role = roleService.cacheQueryRole(RoleTypeEnum.METRIC_ACCESS_PERMISSION,id);
-        List<Permission> permissionList = new ArrayList<>();
-        if(metricSet.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(initDepartmentsPermission)){
-            for(int i=0;i<initDepartmentsPermission.size();i++){
-                Integer tempDepartmentId = initDepartmentsPermission.get(i);
-                Permission tempPermission = new Permission(tempDepartmentId,OwnerTypeEnum.DEPARTMENT,role.getId());
-                permissionList.add(tempPermission);
+    public ResultCode batchGrantPermissions(PermissionGrantParam grantParam) throws Exception{
+        Integer resourceId = grantParam.getResourceId();
+        MetricSet metricSet = metricSetDao.queryById(resourceId);
+        RoleTypeEnum roleTypeEnum = grantParam.getRoleType();
+        Validate.notNull(metricSet);
+        Integer roleId;
+        HashSet<Integer> adminsSet = new HashSet<>();
+        if(roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION){
+            Role role = roleService.queryRole(RoleTypeEnum.METRIC_MANAGE_PERMISSION,resourceId);
+            roleId = role.getId();
+            List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(roleId,5);
+            adminsSet.addAll(adminIds);
+        }else if(roleTypeEnum == RoleTypeEnum.METRIC_ACCESS_PERMISSION){
+            Role role = roleService.queryRole(RoleTypeEnum.METRIC_ACCESS_PERMISSION,resourceId);
+            roleId = role.getId();
+        }else {
+            throw new Exception();
+        }
+        if(roleTypeEnum == RoleTypeEnum.METRIC_ACCESS_PERMISSION && metricSet.getPrivateType() == PrivateTypeEnum.Public){
+            return ResultCode.grantPermissionPublicLimit;
+        }
+        List<Integer> departmentIdList = grantParam.getDepartmentsPermissions();
+        List<Integer> userIdList = grantParam.getUsersPermissions();
+        if(CollectionUtils.isNotEmpty(departmentIdList)){
+            for(int i=0;i<departmentIdList.size();i++){
+                Integer tempDepartmentId = departmentIdList.get(i);
+                Validate.isTrue(roleTypeEnum == RoleTypeEnum.METRIC_ACCESS_PERMISSION);
+                permissionService.grantPermission(tempDepartmentId,OwnerTypeEnum.DEPARTMENT,roleId);
             }
         }
-        if(metricSet.getPrivateType() == PrivateTypeEnum.Private && CollectionUtils.isNotEmpty(initUsersPermission)){
-            for(int i=0;i<initUsersPermission.size();i++){
-                Integer userId = initUsersPermission.get(i);
-                Permission tempPermission = new Permission(userId,OwnerTypeEnum.USER, role.getId());
-                permissionList.add(tempPermission);
+        if(CollectionUtils.isNotEmpty(userIdList)){
+            if(roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION){
+                adminsSet.addAll(userIdList);
+            }
+            if(adminsSet.size() > 3){
+                return ResultCode.grantPermissionAdminExceedLimit;
+            }
+            for(int i=0;i<userIdList.size();i++){
+                Integer userId = userIdList.get(i);
+                permissionService.grantPermission(userId,OwnerTypeEnum.USER,roleId);
             }
         }
-        return permissionService.batchCreate(permissionList);
+        return ResultCode.success;
     }
+
 
     @Override
     public int update(MetricSet metricSet) {
