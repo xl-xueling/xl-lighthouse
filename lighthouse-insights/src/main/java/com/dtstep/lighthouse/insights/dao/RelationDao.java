@@ -18,4 +18,8 @@ public interface RelationDao {
     List<Relation> queryList(Integer relationId, RelationTypeEnum relationType);
 
     List<Relation> queryListByPage(@Param("queryParam")RelationQueryParam queryParam);
+
+    Relation queryById(Integer id);
+
+    int deleteById(Integer id);
 }

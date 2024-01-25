@@ -135,6 +135,7 @@ export interface MetricSet {
     desc?:string;
     createTime?:number;
     updateTime?:number;
+    permissions?:PermissionEnum[];
     initUsersPermission?:number[],
     initDepartmentsPermission?:number[],
 }

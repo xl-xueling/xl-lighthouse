@@ -81,7 +81,6 @@ public class MetricSetController {
 
     @RequestMapping("/metricset/binded")
     public ResultData<MetricSet> binded(@Validated @RequestBody MetricBindParam bindParam) {
-        System.out.println("metricSet:" + JsonUtil.toJSONString(bindParam));
         metricSetService.binded(bindParam);
         return ResultData.success();
     }
@@ -105,6 +104,13 @@ public class MetricSetController {
         Pagination pagination = searchObject.getPagination();
         ListData<MetricSetVO> listData = metricSetService.queryList(queryParam, pagination.getPageNum(), pagination.getPageSize());
         return ResultData.success(listData);
+    }
+
+    @RequestMapping("/metricset/bindRemove")
+    public ResultData<MetricSet> bindRemove(@Validated @RequestBody MetricBindRemoveParam removeParam) {
+        Integer id = removeParam.getId();
+        metricSetService.bindRemove(removeParam);
+        return ResultData.success();
     }
 
 }
