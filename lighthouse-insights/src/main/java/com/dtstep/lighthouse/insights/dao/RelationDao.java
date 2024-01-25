@@ -15,7 +15,7 @@ public interface RelationDao {
 
     boolean isExist(String hash);
 
-    List<Relation> queryList(Integer relationId, RelationTypeEnum relationType);
+    List<Relation> queryList(Integer subjectId, RelationTypeEnum relationType);
 
     List<Relation> queryListByPage(@Param("queryParam")RelationQueryParam queryParam);
 

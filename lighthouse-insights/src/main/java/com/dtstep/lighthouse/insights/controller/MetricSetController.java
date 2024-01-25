@@ -91,7 +91,7 @@ public class MetricSetController {
         Pagination pagination = searchObject.getPagination();
         RelationQueryParam relationQueryParam = new RelationQueryParam();
         relationQueryParam.setRelationType(RelationTypeEnum.MetricSetBindRelation);
-        relationQueryParam.setRelationId(bindQueryParam.getId());
+        relationQueryParam.setSubjectId(bindQueryParam.getId());
         relationQueryParam.setSearch(bindQueryParam.getSearch());
         ListData<RelationVO> listData = relationService.queryList(relationQueryParam, pagination.getPageNum(), pagination.getPageSize());
         return ResultData.success(listData);

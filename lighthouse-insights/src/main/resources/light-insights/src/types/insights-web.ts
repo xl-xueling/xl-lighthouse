@@ -73,7 +73,7 @@ export interface Project {
 
 export interface Relation {
     id?:number;
-    relationId?:number;
+    subjectId?:number;
     relationType?:RelationTypeEnum;
     resourceId?:number;
     resourceType?:ResourceTypeEnum;

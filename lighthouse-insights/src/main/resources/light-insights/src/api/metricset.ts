@@ -33,6 +33,14 @@ export async function requestBindList(data) :Promise<ResultData<{list:Array<Rela
         data,
     })
 }
+export async function requestBindRemove(data):Promise<ResultData> {
+    return request({
+        url:'/metricset/bindRemove',
+        method:'POST',
+        data,
+    })
+}
+
 
 export async function requestPinList() :Promise<ResultData<Array<MetricSet>>> {
     return request({

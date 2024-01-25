@@ -15,7 +15,7 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import useLocale from "@/utils/useLocale";
 import {Project, Relation} from "@/types/insights-web";
-import {requestBindList} from "@/api/metricset";
+import {requestBindList, requestBindRemove} from "@/api/metricset";
 import {CiLock} from "react-icons/ci";
 import {OwnerTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
@@ -23,6 +23,7 @@ import UserGroup from "@/pages/user/common/groups";
 import DepartmentLabel from "@/pages/department/common/depart";
 import {getRandomString} from "@/utils/util";
 import {getColumns} from "./constants";
+import {requestDeleteById} from "@/api/project";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
@@ -43,11 +44,29 @@ export default function MetricBindedList({metricSetInfo}) {
     });
 
     const tableCallback = async (record, type) => {
-
+        if(type == 'remove'){
+            await handleRemove(record.id);
+        }
     }
 
     const handleRemove = async (relationId) => {
-
+        const removeParam = {
+            id:metricSetInfo?.id,
+            relationId:relationId,
+        }
+        console.log("removeParam is:" + JSON.stringify(removeParam));
+        await requestBindRemove(removeParam).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
+                const updatedList = listData.filter(x => x.id != relationId);
+                setListData(updatedList);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
     const columns = useMemo(() => getColumns(t, metricSetInfo,tableCallback), [t,listData]);
