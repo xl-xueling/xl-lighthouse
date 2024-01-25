@@ -8,6 +8,15 @@ import locale from "@/pages/project/list/locale";
 import styles from "./style/index.module.less";
 import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
 import {translateToTreeNodes} from "@/pages/department/common";
+import {
+    DateTimeFormat,
+    formatTimeStamp,
+    getDayBefore,
+    getDayEndTimestamp,
+    getDayStartTimestamp, getYearBefore, getYearEndTimestamp,
+    getYearStartTimestamp, MonthFormat, YearFormat
+} from "@/utils/date";
+import {getRandomString} from "@/utils/util";
 
 const { useForm } = Form;
 
@@ -18,14 +27,7 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const { Row, Col } = Grid;
 
-    const [datePickerConfig,setDatePickerConfig] = useState<RenderDateConfig>(null);
-
     useEffect(() => {
-        const dateConfig = statInfo?.renderConfig?.datepicker;
-        setDatePickerConfig(dateConfig ? dateConfig : {
-            componentType: ComponentTypeEnum.DATEPICKER_DATE_RANGE_SELECT,
-            label: 'Date'
-        });
         setFiltersConfig(statInfo?.renderConfig?.filters);
     },[statInfo])
 
@@ -33,23 +35,11 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
 
     const [filtersConfig,setFiltersConfig] = useState<Array<RenderFilterConfig>>([]);
 
-    const getDatePicker = (datePickerConfig:RenderDateConfig) => {
-        switch (datePickerConfig?.componentType){
-            case ComponentTypeEnum.DATEPICKER_DATE_SELECT:
-                return <DatePicker style={{width:'100%'}}/>
-            case ComponentTypeEnum.DATEPICKER_DATE_RANGE_SELECT:
-                return <DatePicker.RangePicker style={{width:'100%'}}/>
-            case ComponentTypeEnum.DATEPICKER_DATE_TIME_RANGE_SELECT:
-                return <DatePicker.RangePicker showTime={true} style={{width:'100%'}}/>
-            default:
-                return null;
-        }
-    }
-
     const [form] = useForm();
 
     const handleSubmit = () => {
         const values = form.getFieldsValue();
+        console.log("values:" + JSON.stringify(values));
         onSearch(values);
     };
 
@@ -85,21 +75,69 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
         }
     }
 
+    const getInitDateParam = () => {
+        let startDate;
+        let endDate;
+        if(statInfo.timeparam.endsWith("second")){
+            startDate = endDate = formatTimeStamp(Date.now(),DateTimeFormat);
+        }else if(statInfo.timeparam.endsWith("minute")){
+            startDate = endDate = formatTimeStamp(Date.now(),DateTimeFormat);
+        }else if(statInfo.timeparam.endsWith("hour")){
+            startDate = endDate = formatTimeStamp(Date.now(),DateTimeFormat);
+        }else if(statInfo.timeparam.endsWith("day")){
+            const startTimestamp = getDayStartTimestamp(getDayBefore(Date.now(),14));
+            startDate = formatTimeStamp(startTimestamp,DateTimeFormat);
+            const endTimeStamp = getDayEndTimestamp(Date.now());
+            endDate = formatTimeStamp(endTimeStamp,DateTimeFormat);
+        }else if(statInfo.timeparam.endsWith("month")){
+            const startTimestamp = getYearStartTimestamp(Date.now());
+            const endTimeStamp = getYearEndTimestamp(Date.now());
+            startDate = formatTimeStamp(startTimestamp,MonthFormat);
+            endDate = formatTimeStamp(endTimeStamp,MonthFormat);
+        }else if(statInfo.timeparam.endsWith("year")){
+            const endTimeStamp = getYearStartTimestamp(Date.now());
+            const startTimeStamp = getYearBefore(endTimeStamp,3);
+            startDate = formatTimeStamp(startTimeStamp,YearFormat);
+            endDate = formatTimeStamp(endTimeStamp,YearFormat);
+        }
+        return [startDate,endDate];
+    }
+
+    const getDatePicker = () => {
+        if(statInfo.timeparam.endsWith("second")){
+            return <DatePicker.RangePicker style={{width:'100%'}}/>;
+        }else if(statInfo.timeparam.endsWith("minute")){
+            return <DatePicker.RangePicker style={{width:'100%'}}/>;
+        }else if(statInfo.timeparam.endsWith("hour")){
+            return <DatePicker.RangePicker style={{width:'100%'}}/>;
+        }else if(statInfo.timeparam.endsWith("day")){
+            return <DatePicker.RangePicker style={{width:'100%'}}/>;
+        }else if(statInfo.timeparam.endsWith("month")){
+            return <DatePicker.RangePicker mode={"month"} style={{width:'100%'}}/>;
+        }else if(statInfo.timeparam.endsWith("year")){
+            return <DatePicker.RangePicker mode={"year"} style={{width:'100%'}}/>;
+        }
+    }
+
     return (
         <div className={styles['search-form-wrapper']}>
         <Form
+            key={getRandomString()}
             form={form}
             size={"small"}
             className={styles['search-form']}
             labelAlign="left"
             colon={": "}
+            initialValues={{
+                date: getInitDateParam(),
+            }}
             labelCol={{ span: size == 'mini' ? 0 : 5 }}
             wrapperCol={{ span: size == 'mini' ? 24:19 }}
         >
             <Row gutter={24}>
                 <Col span={12}>
                     <Form.Item label={'Date'} field={"date"}>
-                        {getDatePicker(datePickerConfig)}
+                        {getDatePicker()}
                     </Form.Item>
                 </Col>
                 {
