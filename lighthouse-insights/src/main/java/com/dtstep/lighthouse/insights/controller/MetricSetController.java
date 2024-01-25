@@ -87,11 +87,14 @@ public class MetricSetController {
     }
 
     @RequestMapping("/metricset/bindlist")
-    public ResultData<ListData<RelationVO>> bindedList(@Validated @RequestBody ListSearchObject<RelationQueryParam> searchObject) {
-        RelationQueryParam queryParam = searchObject.getQueryParamOrDefault(new RelationQueryParam());
+    public ResultData<ListData<RelationVO>> bindedList(@Validated @RequestBody ListSearchObject<MetricBindQueryParam> searchObject) {
+        MetricBindQueryParam bindQueryParam = searchObject.getQueryParamOrDefault(new MetricBindQueryParam());
         Pagination pagination = searchObject.getPagination();
-        ListData<RelationVO> listData = relationService.queryList(queryParam, pagination.getPageNum(), pagination.getPageSize());
-        System.out.println("relationDtos is:" + JsonUtil.toJSONString(listData));
+        RelationQueryParam relationQueryParam = new RelationQueryParam();
+        relationQueryParam.setRelationType(RelationTypeEnum.MetricSetBindRelation);
+        relationQueryParam.setRelationId(bindQueryParam.getId());
+        relationQueryParam.setSearch(bindQueryParam.getSearch());
+        ListData<RelationVO> listData = relationService.queryList(relationQueryParam, pagination.getPageNum(), pagination.getPageSize());
         return ResultData.success(listData);
     }
 
