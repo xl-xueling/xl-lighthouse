@@ -1,6 +1,6 @@
 const i18n = {
     'en-US': {
-        'statDisplay.breadcrumbItem':'Statistic Display',
+        'statDisplay.breadcrumbItem':'Statistic Preview',
         'statDisplay.label.statistic.information':'Statistic Information',
     },
     'zh-CN': {

@@ -11,7 +11,7 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.MetricSet">
-        INSERT INTO ldp_metricset (`title`,`private_type`,`desc`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_metricsets (`title`,`private_type`,`desc`,`create_time`,`update_time`) VALUES
         (
             #{title,jdbcType=VARCHAR},
             #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
@@ -22,7 +22,7 @@
     </insert>
 
     <select id="queryList" resultMap="metricSetResultMap">
-        select `id`,`title`,`private_type`,`desc`,`create_time`,`update_time` from ldp_metricset
+        select `id`,`title`,`private_type`,`desc`,`create_time`,`update_time` from ldp_metricsets
         <if test="queryParam.ownerId != null">
             inner join
             (select resource_id from (select id,resource_id from ldp_roles where role_type = 11) a
@@ -40,7 +40,7 @@
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.MetricSet">
-        UPDATE ldp_metricset
+        UPDATE ldp_metricsets
         <set>
             <if test="title != null">
                 `title` = #{title},
@@ -59,10 +59,10 @@
     </update>
 
     <delete id="deleteById">
-        delete from ldp_metricset where id = #{id}
+        delete from ldp_metricsets where id = #{id}
     </delete>
 
     <select id="queryById" resultMap="metricSetResultMap">
-        SELECT `id`,`title`,`private_type`,`desc`,`create_time`,`update_time` FROM ldp_metricset WHERE id = #{id}
+        SELECT `id`,`title`,`private_type`,`desc`,`create_time`,`update_time` FROM ldp_metricsets WHERE id = #{id}
     </select>
 </mapper>

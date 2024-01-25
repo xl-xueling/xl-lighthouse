@@ -47,6 +47,10 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
         form.resetFields();
     };
 
+    const handleTreeSelectChange =  (key) => (selectedValue, selectedLabel) => {
+        console.log("key:" + key);
+    }
+
     const getFilterRender = (renderFilterConfig:RenderFilterConfig) => {
         if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_INPUT){
             return (
@@ -55,6 +59,7 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
         }if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_SELECT){
             return (
                 <TreeSelect size={"small"}
+                            onChange={handleTreeSelectChange}
                             placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"}
                             multiple={true}
                             treeCheckable={true}
