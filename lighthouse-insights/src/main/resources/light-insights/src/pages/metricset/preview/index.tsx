@@ -77,7 +77,7 @@ export default function MetricSetPreview() {
                             <span style={{display:"inline-flex",alignItems:"center"}}><PiLinkSimple style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.bindItems']}</span>
                         </span>
                     }>
-                    {metricSetInfo && <MetricBindedList metricId={metricSetInfo?.id}/>}
+                    {metricSetInfo && <MetricBindedList metricSetInfo={metricSetInfo}/>}
                 </TabPane>
                 <TabPane key='3' title={
                     <span>
