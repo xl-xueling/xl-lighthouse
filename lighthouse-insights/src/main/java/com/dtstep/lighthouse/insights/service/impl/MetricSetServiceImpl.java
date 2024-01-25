@@ -244,7 +244,7 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
-    public List<TreeNode> getStructure(MetricSet metricSet) throws Exception{
+    public List<TreeNode> getStructure(MetricSet metricSet) throws Exception {
         Validate.notNull(metricSet);
         List<TreeNode> structure = metricSet.getStructure();
         if(CollectionUtils.isEmpty(structure)){

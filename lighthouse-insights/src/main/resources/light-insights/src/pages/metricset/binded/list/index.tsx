@@ -136,15 +136,26 @@ export default function MetricBindedList({metricId}) {
 
     const fetchData = async () => {
         setLoading(true);
+        const {current, pageSize} = pagination;
         const requestParam = {
             id:metricId,
-            search:searchForms.search,
+            search:searchForms.search
         }
-        await requestBindList(requestParam)
-            .then((response) => {
+        await requestBindList({
+            queryParams:requestParam,
+            pagination:{
+                pageSize:pageSize,
+                pageNum:current,
+            }
+        }).then((response) => {
                 const {code, data ,message} = response;
                 if(code == '0'){
-                    setListData(data);
+                    setListData(data.list);
+                    setPagination({
+                        ...pagination,
+                        current,
+                        pageSize,
+                        total: data.total});
                 }else{
                     Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
                 }
