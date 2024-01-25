@@ -19,6 +19,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class MetricSetServiceImpl implements MetricSetService {
+
+    private static final Logger logger = LoggerFactory.getLogger(MetricSetServiceImpl.class);
 
     @Autowired
     private MetricSetDao metricSetDao;
@@ -196,9 +200,8 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
-    public ListData<MetricSet> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize) {
+    public ListData<MetricSetVO> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        ListData<MetricSet> metricSetListData = null;
         PageInfo<MetricSet> pageInfo = null;
         try{
             List<MetricSet> metricSetList = metricSetDao.queryList(queryParam);
@@ -206,7 +209,16 @@ public class MetricSetServiceImpl implements MetricSetService {
         }finally {
             PageHelper.clearPage();
         }
-        return ListData.newInstance(pageInfo.getList(),pageInfo.getTotal(),pageNum,pageSize);
+        List<MetricSetVO> voList = new ArrayList<>();
+        for(MetricSet metricSet : pageInfo.getList()){
+            try{
+                MetricSetVO metricSetVO = translate(metricSet);
+                voList.add(metricSetVO);
+            }catch (Exception ex){
+                logger.error("translate item info error,id:{}",metricSet.getId(),ex);
+            }
+        }
+        return ListData.newInstance(voList,pageInfo.getTotal(),pageNum,pageSize);
     }
 
     @Override
@@ -227,8 +239,10 @@ public class MetricSetServiceImpl implements MetricSetService {
                     }
                 }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
                     Stat stat = (Stat)relation.getExtend();
-                    TreeNode statNode = new TreeNode(stat.getTitle(), stat.getId(),"stat");
-                    rootNode.addChild(statNode);
+                    if(stat != null){
+                        TreeNode statNode = new TreeNode(stat.getTitle(), stat.getId(),"stat");
+                        rootNode.addChild(statNode);
+                    }
                 }
             }
         }else {

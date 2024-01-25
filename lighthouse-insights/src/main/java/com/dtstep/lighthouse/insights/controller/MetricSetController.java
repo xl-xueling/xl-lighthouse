@@ -72,11 +72,11 @@ public class MetricSetController {
     @RequestMapping("/metricset/queryById")
     public ResultData<MetricSet> queryById(@Validated @RequestBody IDParam idParam) throws Exception{
         Integer id = idParam.getId();
-        MetricSetVO metricSet = metricSetService.queryById(id);
-        List<TreeNode> structure = metricSetService.getStructure(metricSet);
-        System.out.println("metricSet structure:" + JsonUtil.toJSONString(structure));
-        metricSet.setStructure(structure);
-        return ResultData.success(metricSet);
+        MetricSetVO metricSetVO = metricSetService.queryById(id);
+        List<TreeNode> structure = metricSetService.getStructure(metricSetVO);
+        System.out.println("structure:" + JsonUtil.toJSONString(structure));
+        metricSetVO.setStructure(structure);
+        return ResultData.success(metricSetVO);
     }
 
     @RequestMapping("/metricset/binded")
@@ -96,10 +96,10 @@ public class MetricSetController {
 
 
     @RequestMapping("/metricset/list")
-    public ResultData<ListData<MetricSet>> list(@Validated @RequestBody ListSearchObject<MetricSetQueryParam> searchObject) {
-        MetricSetQueryParam queryParam = searchObject.getQueryParams();
+    public ResultData<ListData<MetricSetVO>> list(@Validated @RequestBody ListSearchObject<MetricSetQueryParam> searchObject) {
+        MetricSetQueryParam queryParam = searchObject.getQueryParamOrDefault(new MetricSetQueryParam());
         Pagination pagination = searchObject.getPagination();
-        ListData<MetricSet> listData = metricSetService.queryList(queryParam, pagination.getPageNum(), pagination.getPageSize());
+        ListData<MetricSetVO> listData = metricSetService.queryList(queryParam, pagination.getPageNum(), pagination.getPageSize());
         return ResultData.success(listData);
     }
 

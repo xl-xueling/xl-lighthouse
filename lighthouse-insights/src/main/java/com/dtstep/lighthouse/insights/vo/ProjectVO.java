@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
+import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.modal.User;
 
@@ -13,6 +14,8 @@ import java.util.Set;
 public class ProjectVO extends Project {
 
     private List<User> admins;
+
+    private TreeNode structure;
 
     private Set<PermissionEnum> permissions = new HashSet<>();
 
@@ -43,4 +46,11 @@ public class ProjectVO extends Project {
         this.admins = admins;
     }
 
+    public TreeNode getStructure() {
+        return structure;
+    }
+
+    public void setStructure(TreeNode structure) {
+        this.structure = structure;
+    }
 }

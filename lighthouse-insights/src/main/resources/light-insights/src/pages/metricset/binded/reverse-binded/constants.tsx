@@ -24,6 +24,13 @@ export function getColumns(t: any, selectedItems:MetricSet[],callback: (type: st
             dataIndex: 'title',
         },
         {
+            title: 'Admins',
+            dataIndex: 'admins',
+            render: (value, record) => {
+                return <UserGroup users={value}/>
+            }
+        },
+        {
             title: 'Description',
             dataIndex: 'desc',
         },
