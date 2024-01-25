@@ -21,7 +21,6 @@ import {MetricSet} from "@/types/insights-web";
 import MetricSetPreviewPanel from "@/pages/metricset/preview/panel_dashboard/dashboard";
 import MetricBindedList from "@/pages/metricset/binded/list";
 import styles from "./style/index.module.less";
-import DashboardMenu from "@/pages/metricset/preview/panel_dashboard/menu";
 import StatPreviewPanel from "@/pages/stat/display/preview";
 import StructurePanel from "@/pages/metricset/structure/structure";
 const { Title } = Typography;

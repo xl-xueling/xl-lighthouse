@@ -12,10 +12,11 @@ import MetricBindedList from "@/pages/metricset/binded/list";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
-import { PiTreeStructure } from "react-icons/pi";
+import {PiLinkSimple, PiTreeStructure} from "react-icons/pi";
 import MetricSetStructure from "@/pages/metricset/structure";
 import MetricSetPermissions from "@/pages/metricset/permissions";
 import {ResourceTypeEnum} from "@/types/insights-common";
+import {VscGistSecret} from "react-icons/vsc";
 
 
 export default function MetricSetPreview() {
@@ -64,7 +65,7 @@ export default function MetricSetPreview() {
                     key='1'
                     title={
                         <span>
-                            <span style={{display:"inline-flex",alignItems:"center"}}><IconDashboard style={{ marginRight: 6}} />Data View</span>
+                            <span style={{display:"inline-flex",alignItems:"center"}}><IconDashboard style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.dataView']}</span>
                         </span>
                     }>
                     <MetricSetPreviewPanel metricSetInfo={metricSetInfo}/>
@@ -73,20 +74,20 @@ export default function MetricSetPreview() {
                     key='2'
                     title={
                         <span>
-                            <span style={{display:"inline-flex",alignItems:"center"}}><IconThunderbolt style={{ marginRight: 6}} />Binded Items</span>
+                            <span style={{display:"inline-flex",alignItems:"center"}}><PiLinkSimple style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.bindItems']}</span>
                         </span>
                     }>
                     {metricSetInfo && <MetricBindedList metricId={metricSetInfo?.id}/>}
                 </TabPane>
                 <TabPane key='3' title={
                     <span>
-                        <span style={{display:"inline-flex",alignItems:"center"}}><IconTag style={{ marginRight: 6}} />Authority Info</span>
+                        <span style={{display:"inline-flex",alignItems:"center"}}><VscGistSecret style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.permissions']}</span>
                   </span>}>
                     <MetricSetPermissions resourceType={ResourceTypeEnum.Metric} resourceId={metricSetInfo?.id}/>
                 </TabPane>
                 <TabPane key='4' title={
                     <span>
-                        <span style={{display:"inline-flex",alignItems:"center"}}><PiTreeStructure style={{ marginRight: 6}} />Structure</span>
+                        <span style={{display:"inline-flex",alignItems:"center"}}><PiTreeStructure style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.structure']}</span>
                   </span>}>
                     {metricSetInfo && <MetricSetStructure metricSetInfo={metricSetInfo}/>}
                 </TabPane>
