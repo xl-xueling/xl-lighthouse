@@ -12,6 +12,7 @@ const i18n = {
     'reverseBinded.column.label.operation':'Operation',
     'reverseBinded.column.label.operation.select':'Select',
     'reverseBinded.column.label.operation.selected':'Selected',
+    'reverseBinded.column.label.operation.binded':'Binded',
   },
   'zh-CN': {
     'reverseBinded.modal.title':'添加到指标集',
@@ -26,6 +27,7 @@ const i18n = {
     'reverseBinded.column.label.operation':'操作',
     'reverseBinded.column.label.operation.select':'选择',
     'reverseBinded.column.label.operation.selected':'已选择',
+    'reverseBinded.column.label.operation.binded':'已绑定',
   },
 };
 

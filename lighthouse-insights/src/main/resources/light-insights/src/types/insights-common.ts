@@ -30,15 +30,11 @@ export enum PermissionEnum {
 }
 
 export interface BindElement {
-    id?:number,
-    type?:BindElementType,
+    resourceId?:number,
+    resourceType?:ResourceTypeEnum,
     title?:string,
 }
 
-export enum BindElementType {
-    Project=0,
-    Stat=1,
-}
 
 export enum RecordTypeEnum {
     CREATE_DEPARTMENT=1,
@@ -89,12 +85,13 @@ export enum ApproveStateEnum {
 
 export enum ResourceTypeEnum {
     System=1,
-    Department=2,
-    Project=3,
-    Group=4,
-    Stat=5,
-    Metric=6,
-    Order=7,
+    Domain=2,
+    Department=3,
+    Project=4,
+    Group=5,
+    Stat=6,
+    Metric=7,
+    View=8,
 }
 
 export enum RoleTypeEnum {
