@@ -50,6 +50,25 @@
         </where>
     </select>
 
+    <select id="queryListByPage" resultMap="relationResultMap">
+        SELECT r.`id`,r.`relation_id`, r.`relation_type`,r.`resource_id`, r.`resource_type`, r.`create_time`
+        FROM ldp_relations r
+        LEFT JOIN ldp_projects p ON r.resource_type = '4' AND r.resource_id = p.id
+        LEFT JOIN ldp_stats s ON r.resource_type = '6' AND r.resource_id = s.id
+        <where>
+            <if test="queryParam.relationId != null">
+                AND relation_id = #{queryParam.relationId}
+            </if>
+            <if test="queryParam.relationType != null">
+                AND relation_type = #{queryParam.relationType.relationType}
+            </if>
+            <if test="queryParam.search != null">
+                AND ((r.resource_type = '4' AND p.title LIKE CONCAT('%', #{queryParam.search}, '%'))
+                OR (r.resource_type = '6' AND s.title LIKE CONCAT('%', #{queryParam.search}, '%')))
+            </if>
+        </where>
+    </select>
+
     <select id="isExist" resultType="boolean">
         SELECT COUNT(1) > 0
         FROM ldp_relations
