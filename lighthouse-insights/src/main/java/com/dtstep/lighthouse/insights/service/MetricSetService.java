@@ -23,7 +23,7 @@ public interface MetricSetService {
 
     MetricSetVO queryById(Integer id);
 
-    ListData<MetricSet> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize);
+    ListData<MetricSetVO> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize);
 
     List<TreeNode> getStructure(MetricSet metricSet) throws Exception;
 }

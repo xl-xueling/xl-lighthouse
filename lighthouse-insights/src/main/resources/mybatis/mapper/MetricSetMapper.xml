@@ -25,7 +25,7 @@
         select `id`,`title`,`private_type`,`desc`,`create_time`,`update_time` from ldp_metricsets
         <if test="queryParam.ownerId != null">
             inner join
-            (select resource_id from (select id,resource_id from ldp_roles where role_type = 11) a
+            (select resource_id from (select id,resource_id from ldp_roles where role_type = '15') a
             inner join
             (select role_id from ldp_permissions where owner_type = 1 and owner_id = #{queryParam.ownerId}) b on a.id = b.role_id) d on id = d.resource_id
         </if>
@@ -33,8 +33,8 @@
             <if test="queryParam.id!=null">
                 AND id = #{queryParam.id}
             </if>
-            <if test="queryParam.title != null">
-                AND title LIKE CONCAT('%', #{queryParam.title}, '%')
+            <if test="queryParam.search != null">
+                AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})
             </if>
         </where>
     </select>

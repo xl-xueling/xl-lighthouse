@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.modal.Order;
+import com.dtstep.lighthouse.insights.modal.Project;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -45,9 +46,9 @@ public class TestUtil {
 
     @Test
     public void testRandom() throws Exception{
-        for(int i=0;i<10000;i++){
-            System.out.println(RandomID.id(3));
-        }
+        Object obj = null;
+        Project project = (Project) obj;
+        System.out.println("project:" + project);
     }
 
 }

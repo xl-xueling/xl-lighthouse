@@ -12,7 +12,6 @@ import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
-import com.dtstep.lighthouse.insights.vo.ProjectExtendVO;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,15 +59,14 @@ public class ProjectController {
     }
 
     @RequestMapping("/project/queryById")
-    public ResultData<ProjectExtendVO> queryById(@RequestBody QueryParam queryParam) throws Exception{
+    public ResultData<ProjectVO> queryById(@RequestBody QueryParam queryParam) throws Exception{
         ProjectVO projectVO = projectService.queryById(queryParam.getId());
         if(projectVO == null){
             return ResultData.result(ResultCode.elementNotFound);
         }
-        ProjectExtendVO projectExtendDto = new ProjectExtendVO(projectVO);
         TreeNode structure = projectService.getStructure(projectVO);
-        projectExtendDto.setStructure(structure);
-        return ResultData.success(projectExtendDto);
+        projectVO.setStructure(structure);
+        return ResultData.success(projectVO);
     }
 
     @PostMapping("/project/list")

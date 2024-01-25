@@ -4,7 +4,7 @@ public class MetricSetQueryParam {
 
     private Integer id;
 
-    private String title;
+    private String search;
 
     private Integer ownerId;
 
@@ -16,12 +16,12 @@ public class MetricSetQueryParam {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getSearch() {
+        return search;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSearch(String search) {
+        this.search = search;
     }
 
     public Integer getOwnerId() {

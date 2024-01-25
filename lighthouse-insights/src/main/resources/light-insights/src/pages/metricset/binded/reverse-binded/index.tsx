@@ -33,16 +33,17 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
     const [loading,setLoading] = useState(true);
     const [confirmLoading,setConfirmLoading] = useState(false);
     const formRef = useRef(null);
+    const [formParams, setFormParams] = useState<any>({});
     const [selectedItems,setSelectedItems] = useState<MetricSet[]>([]);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const pinMetricsInfo = useSelector((state: {pinMetricsInfo:Array<MetricSet>}) => state.pinMetricsInfo);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
-        sizeCanChange: true,
+        sizeCanChange: false,
         showTotal: true,
         pageSize: 10,
         current: 1,
-        pageSizeChangeResetCurrent: true,
+        pageSizeChangeResetCurrent: false,
     });
 
     const tableCallback = async (type,record) => {
@@ -53,6 +54,19 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
                 setSelectedItems(values);
             }
         }
+    }
+
+    const handlerSearch = (search) => {
+        setPagination({ ...pagination, current: 1 });
+        setFormParams({search});
+    }
+
+    function onChangeTable({ current, pageSize }) {
+        setPagination({
+            ...pagination,
+            current,
+            pageSize,
+        });
     }
 
     const removeSelected = (id) => {
@@ -102,12 +116,15 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
     }
 
     const fetchData = async (): Promise<void> => {
+        setLoading(true);
         const {current, pageSize} = pagination;
-        const combineParam = {
+        const requestParams = {
             ownerId:userInfo?.id,
+            search:formParams.search,
         }
+        console.log("requestParams is:" + JSON.stringify(requestParams));
         await requestList({
-            queryParams:combineParam,
+            queryParams:requestParams,
             pagination:{
                 pageSize:pageSize,
                 pageNum:current,
@@ -132,20 +149,21 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
 
     useEffect(() => {
         fetchData().then();
-    },[])
+    },[pagination.current, pagination.pageSize,JSON.stringify(formParams)])
 
 
     return (
         <Modal
             title={t['reverseBinded.modal.title']}
             visible={true}
-            style={{ width:'950px',minHeight:'450px',maxHeight:'800px'}}
+            style={{ width:'1200px',maxWidth:'90%',minHeight:'600px',maxHeight:'800px'}}
             onOk={handlerSubmit}
             onCancel={onClose}
         >
-            <Spin loading={loading} size={20} style={{ display: 'block' }}>
-                <Input.Search placeholder={'Search'} allowClear style={{width:'320px',marginLeft:'3px',marginBottom:'15px'}}/>
-                <Table size={"small"} rowKey={'id'} columns={columns} data={metricSetList} />
+                <Input.Search placeholder={'Search'} allowClear style={{width:'320px',marginLeft:'3px',marginBottom:'15px'}} onSearch={handlerSearch}/>
+                <Table size={"mini"} style={{height:'300px'}}
+                       loading={loading} rowKey={'id'}
+                       onChange={onChangeTable} columns={columns} data={metricSetList} pagination={pagination} />
                 已选择：<Space size='large'>
                 {
                     selectedItems?.map(z => {
@@ -155,7 +173,6 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
                     })
                 }
             </Space>
-            </Spin>
         </Modal>
     );
 }
