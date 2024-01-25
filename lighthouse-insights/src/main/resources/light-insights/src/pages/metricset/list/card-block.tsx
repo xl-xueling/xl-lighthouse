@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import cs from 'classnames';
 import {
-  Button,
-  Switch,
-  Tag,
-  Card,
-  Descriptions,
-  Typography,
-  Skeleton,
+    Button,
+    Switch,
+    Tag,
+    Card,
+    Descriptions,
+    Typography,
+    Skeleton, Popconfirm,
 } from '@arco-design/web-react';
 import {
     IconStarFill,
@@ -24,6 +24,7 @@ import {MetricSet} from "@/types/insights-web";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import {CiLock} from "react-icons/ci";
 import { useHistory } from 'react-router-dom';
+import {getRandomString} from "@/utils/util";
 
 interface CardBlockType {
   item: MetricSet;
@@ -97,12 +98,22 @@ function CardBlock(props: CardBlockType) {
       style={{cursor:'pointer'}}
       onClick={handleClick}
       actions={[
-          <span key={3} className='icon-hover' onClick={() => callback('update',item)}>
+          <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();callback('update',item)}}>
           <IconEdit />
         </span>,
-        <span key={4} className='icon-hover' onClick={() => callback('delete',item)}>
-          <IconDelete />
-        </span>,
+          <Popconfirm key={getRandomString()}
+                      focusLock
+                      position={"tr"}
+                      title='Confirm'
+                      content={t['metricSetList.operations.delete.confirm']}
+                      onCancel={(e) => {e.stopPropagation();}}
+                      onOk={(e) => {e.stopPropagation();callback('delete',item);}}>
+            <span key={4} className='icon-hover'
+                  onClick={(e) => {e.stopPropagation();}}>
+              <IconDelete/>
+            </span>
+          </Popconfirm>
+        ,
       ]}
 
       title={

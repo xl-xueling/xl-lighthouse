@@ -322,4 +322,9 @@ public class MetricSetServiceImpl implements MetricSetService {
         Validate.isTrue(relation.getSubjectId().intValue() == removeParam.getId().intValue());
         return relationDao.deleteById(relationId);
     }
+
+    @Override
+    public int delete(MetricSet metricSet) {
+        return metricSetDao.deleteById(metricSet.getId());
+    }
 }

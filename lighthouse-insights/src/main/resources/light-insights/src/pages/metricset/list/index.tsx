@@ -10,7 +10,7 @@ import {
     Avatar,
     PaginationProps,
     Pagination,
-    Breadcrumb, Notification, Divider
+    Breadcrumb, Notification, Divider, Spin
 } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -23,6 +23,7 @@ import {MetricSet, Project} from "@/types/insights-web";
 import {requestList} from "@/api/metricset";
 import {IconHome} from "@arco-design/web-react/icon";
 import MetricSetUpdateModal from "@/pages/metricset/update";
+import {requestDeleteById} from "@/api/metricset";
 
 const { Title } = Typography;
 const { Row, Col } = Grid;
@@ -51,10 +52,27 @@ export default function ListCard() {
 
     const tableCallback = async (type,record) => {
         if(type == 'update'){
-            console.log("---show update modal...")
             setCurrentItem(record);
             setShowUpdatePanel(true);
+        }else if(type == 'delete'){
+            await handlerDelete(record.id);
         }
+        console.log("type:" + type + ",record:" + record);
+    };
+
+    const handlerDelete = async (id: number) => {
+        await requestDeleteById({id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.delete.submit.success']});
+                const updatedList = listData.filter(x => x.id != id);
+                setListData(updatedList);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error) => {
+            console.log(error);
+        })
     };
 
   const fetchData = async () => {
@@ -121,35 +139,36 @@ export default function ListCard() {
           </Breadcrumb.Item>
           <Breadcrumb.Item style={{fontWeight:20}}>{t['metricSetList.breadcrumb.title']}</Breadcrumb.Item>
       </Breadcrumb>
-    <Card>
-      <Title heading={6}>{t['menu.list.card']}</Title>
-      <Tabs
-        activeTab={activeKey}
-        type="rounded"
-        size={"small"}
-        defaultActiveTab={'all'}
-        onChange={setActiveKey}
-        extra={
-          <Input.Search
-            style={{ width: '300px',paddingRight:'24px'}}
-            placeholder={t[`cardList.tab.${activeKey}.placeholder`]}
-          />
-        }
-      >
-        <Tabs.TabPane key="all" title={t['metricSetList.tab.title.all']} />
-        <Tabs.TabPane key="owner" title={t['metricSetList.tab.title.owner']} />
-      </Tabs>
-      <div className={styles.container}>
-          <div>
-              {getCardList()}
+      <Spin loading={loading} style={{ display: 'block' }}>
+        <Card>
+          <Title heading={6}>{t['menu.list.card']}</Title>
+          <Tabs
+            activeTab={activeKey}
+            type="rounded"
+            size={"small"}
+            defaultActiveTab={'all'}
+            onChange={setActiveKey}
+            extra={
+              <Input.Search
+                style={{ width: '300px',paddingRight:'24px'}}
+                placeholder={t[`cardList.tab.${activeKey}.placeholder`]}
+              />
+            }>
+            <Tabs.TabPane key="all" title={t['metricSetList.tab.title.all']} />
+            <Tabs.TabPane key="owner" title={t['metricSetList.tab.title.owner']} />
+          </Tabs>
+          <div className={styles.container}>
+              <div>
+                  {getCardList()}
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Pagination defaultCurrent={pagination.current} total={pagination.total} showTotal={true}/>
+              </div>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Pagination defaultCurrent={pagination.current} total={pagination.total} showTotal={true}/>
-          </div>
-      </div>
-        {showCreatePanel && <MetricSetAddPanel onClose={() => setShowCreatePanel(false)} onSuccess={handlerReloadList}/>}
-        {showUpdatePanel && <MetricSetUpdateModal metricInfo={currentItem} onClose={() => setShowUpdatePanel(false)} onSuccess={handlerReloadList}/>}
-    </Card>
+            {showCreatePanel && <MetricSetAddPanel onClose={() => setShowCreatePanel(false)} onSuccess={handlerReloadList}/>}
+            {showUpdatePanel && <MetricSetUpdateModal metricInfo={currentItem} onClose={() => setShowUpdatePanel(false)} onSuccess={handlerReloadList}/>}
+        </Card>
+      </Spin>
       </>
   );
 }

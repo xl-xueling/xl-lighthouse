@@ -4,10 +4,12 @@ import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
+import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.service.MetricSetService;
 import com.dtstep.lighthouse.insights.service.RelationService;
 import com.dtstep.lighthouse.insights.vo.MetricSetVO;
@@ -111,6 +113,20 @@ public class MetricSetController {
         Integer id = removeParam.getId();
         metricSetService.bindRemove(removeParam);
         return ResultData.success();
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/metricset/deleteById")
+    public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        MetricSet metricSet = metricSetService.queryById(id);
+        Validate.notNull(metricSet);
+        int result = metricSetService.delete(metricSet);
+        if(result > 0){
+            return ResultData.success(id);
+        }else{
+            return ResultData.result(ResultCode.systemError);
+        }
     }
 
 }
