@@ -17,7 +17,7 @@ import useLocale from "@/utils/useLocale";
 import {Project, Relation} from "@/types/insights-web";
 import {requestBindList} from "@/api/metricset";
 import {CiLock} from "react-icons/ci";
-import {ResourceTypeEnum} from "@/types/insights-common";
+import {OwnerTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
 import DepartmentLabel from "@/pages/department/common/depart";
@@ -29,31 +29,42 @@ export default function MetricBindedList({metricId}) {
 
     const t = useLocale(locale);
     const [listData, setListData] = useState<Relation[]>([]);
+    const [loading,setLoading] = useState<boolean>(true);
+    const [searchForms,setSearchForms] = useState<any>({});
+
+    const [pagination, setPagination] = useState<PaginationProps>({
+        sizeOptions: [10,20,30,50],
+        sizeCanChange: false,
+        showTotal: true,
+        pageSize: 5,
+        current: 1,
+        pageSizeChangeResetCurrent: false,
+    });
 
     const columns: TableColumnProps[] = [
         {
-            title: 'ID',
+            title: t['bindedList.list.column.label.id'],
             dataIndex: 'id',
         },
         {
-            title: 'ElementType',
+            title: t['bindedList.list.column.label.elementType'],
             dataIndex: 'relationType',
             render: (value,record) =>
             {
                 if(record.resourceType == ResourceTypeEnum.Project){
                     return (
-                        '统计工程'
+                        t['bindedList.list.elementType.project']
                     )
                 }else if(record.resourceType == ResourceTypeEnum.Stat){
                     return (
-                        '统计项'
+                        t['bindedList.list.elementType.stat']
                     )
                 }
 
             }
         },
         {
-            title: 'Title',
+            title:t['bindedList.list.column.label.title'],
             dataIndex: 'title',
             render: (value,record) =>
             {
@@ -69,7 +80,7 @@ export default function MetricBindedList({metricId}) {
             }
         },
         {
-            title: 'Department',
+            title: t['bindedList.list.column.label.department'],
             dataIndex: 'department',
             render: (value,record) =>
             {
@@ -85,7 +96,7 @@ export default function MetricBindedList({metricId}) {
             }
         },
         {
-            title: 'Admins',
+            title: t['bindedList.list.column.label.admins'],
             dataIndex: 'admins',
             render: (value,record) =>
             {
@@ -93,7 +104,7 @@ export default function MetricBindedList({metricId}) {
             }
         },
         {
-            title: 'BindTime',
+            title: t['bindedList.list.column.label.bindTime'],
             dataIndex: 'createTime',
             render: (value,record) =>
             {
@@ -101,7 +112,7 @@ export default function MetricBindedList({metricId}) {
             }
         },
         {
-            title: 'Operations',
+            title: t['bindedList.list.column.label.operations'],
             dataIndex: 'operations',
             headerCellStyle: {width:'250px' },
             render: (_, record) => {
@@ -110,12 +121,12 @@ export default function MetricBindedList({metricId}) {
                 <Button key={getRandomString()}
                                type="text"
                                size="mini">
-                    {'移除'}
+                    {t['bindedList.list.column.label.operations.remove']}
                 </Button>
                     <Button key={getRandomString()}
                             type="text"
                             size="mini">
-                        {'申请权限'}
+                        {t['bindedList.list.column.label.operations.apply']}
                     </Button>
                 </Space>
                 );
@@ -124,7 +135,12 @@ export default function MetricBindedList({metricId}) {
     ];
 
     const fetchData = async () => {
-        await requestBindList({id:metricId})
+        setLoading(true);
+        const requestParam = {
+            id:metricId,
+            search:searchForms.search,
+        }
+        await requestBindList(requestParam)
             .then((response) => {
                 const {code, data ,message} = response;
                 if(code == '0'){
@@ -134,18 +150,27 @@ export default function MetricBindedList({metricId}) {
                 }
         }).catch((error) => {
             console.log(error);
+        }).finally(() => {
+            setLoading(false);
         })
     }
 
+    function onChangeTable({ current, pageSize }) {
+        setPagination({
+            ...pagination,
+            current,
+            pageSize,
+        });
+    }
+
+    const handlerSearch = (search) => {
+        setPagination({ ...pagination, current: 1 });
+        setSearchForms({search});
+    }
 
     useEffect(() => {
-        console.log("----metricId is:" + metricId)
-    },[metricId])
-
-    useEffect(() => {
-        console.log("metricId is:" + metricId)
         fetchData().then();
-    },[])
+    },[pagination.current, pagination.pageSize,JSON.stringify(searchForms)])
 
     return (
         <Card>
@@ -159,7 +184,7 @@ export default function MetricBindedList({metricId}) {
                 <Row gutter={24}>
                     <Col span={8}>
                         <Form.Item field="Title">
-                            <Input.Search  placeholder={'Search Title'} allowClear />
+                            <Input.Search autoComplete={'off'} size={"small"} placeholder={'Search Title'} allowClear onSearch={handlerSearch}/>
                         </Form.Item>
                     </Col>
                     <Grid.Col span={16} style={{ textAlign: 'right' }}>
@@ -169,7 +194,7 @@ export default function MetricBindedList({metricId}) {
                     </Grid.Col>
                 </Row>
             </Form>
-        <Table rowKey={'id'} size={"small"} columns={columns} data={listData}/>
+        <Table rowKey={'id'} size={"small"} onChange={onChangeTable} loading={loading} columns={columns} data={listData}/>
         {/*<AddBindedPanel metricId={0} />*/}
         </Card>
     );
