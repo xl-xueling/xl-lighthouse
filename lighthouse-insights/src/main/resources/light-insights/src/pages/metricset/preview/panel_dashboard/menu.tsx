@@ -48,12 +48,11 @@ export default function DashboardMenu({metricSetInfo,callback}) {
         if(item.type == 'stat'){
             return <IconTag/>
         }else if(item.type == 'group'){
-            // return <CiViewTable style={{marginRight:'10px'}}/>
-            return <IconMindMapping style={{marginRight:'10px'}}/>
+            return <CiViewTable style={{marginRight:'10px'}}/>
+            // return <IconMindMapping style={{marginRight:'10px'}}/>
         }else if(item.type == 'project'){
-            // return <PiDiamondsFour style={{marginRight:'10px'}}/>
-            // return <IconFolder/>
-            return <RxCube style={{marginRight:'10px'}}/>
+             return <PiDiamondsFour style={{marginRight:'10px'}}/>
+            // return <RxCube style={{marginRight:'10px'}}/>
         }
     }
 
