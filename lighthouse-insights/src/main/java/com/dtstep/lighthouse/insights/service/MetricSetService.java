@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.service;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.MetricBindParam;
+import com.dtstep.lighthouse.insights.dto.MetricBindRemoveParam;
 import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
 import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
@@ -16,6 +17,8 @@ public interface MetricSetService {
     int create(MetricSet metricSet);
 
     int binded(MetricBindParam bindParam);
+
+    int bindRemove(MetricBindRemoveParam removeParam);
 
     ResultCode batchGrantPermissions(PermissionGrantParam grantParam) throws Exception;
 

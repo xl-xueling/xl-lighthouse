@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.MetricSetDao;
 import com.dtstep.lighthouse.insights.dao.RelationDao;
 import com.dtstep.lighthouse.insights.dto.MetricBindParam;
+import com.dtstep.lighthouse.insights.dto.MetricBindRemoveParam;
 import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
 import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
@@ -193,7 +194,7 @@ public class MetricSetServiceImpl implements MetricSetService {
                 String hash = Md5Util.getMD5(metricId + "_" + RelationTypeEnum.MetricSetBindRelation.getRelationType() + "_" + projectId + "_" + ResourceTypeEnum.Project.getResourceType());
                 boolean isExist = relationService.isExist(hash);
                 if(!isExist){
-                    relation.setRelationId(metricId);
+                    relation.setSubjectId(metricId);
                     relation.setRelationType(RelationTypeEnum.MetricSetBindRelation);
                     relation.setResourceId(projectId);
                     relation.setResourceType(ResourceTypeEnum.Project);
@@ -212,7 +213,7 @@ public class MetricSetServiceImpl implements MetricSetService {
                 boolean isExist = relationService.isExist(hash);
                 if(!isExist){
                     Relation relation = new Relation();
-                    relation.setRelationId(metricId);
+                    relation.setSubjectId(metricId);
                     relation.setRelationType(RelationTypeEnum.MetricSetBindRelation);
                     relation.setResourceId(statId);
                     relation.setResourceType(ResourceTypeEnum.Stat);
@@ -312,5 +313,13 @@ public class MetricSetServiceImpl implements MetricSetService {
             }
         }
         return structure;
+    }
+
+    @Override
+    public int bindRemove(MetricBindRemoveParam removeParam) {
+        Integer relationId = removeParam.getRelationId();
+        Relation relation = relationDao.queryById(relationId);
+        Validate.isTrue(relation.getSubjectId().intValue() == removeParam.getId().intValue());
+        return relationDao.deleteById(relationId);
     }
 }

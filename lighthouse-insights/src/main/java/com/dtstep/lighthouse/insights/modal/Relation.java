@@ -9,7 +9,7 @@ public class Relation {
 
     private Integer id;
 
-    private Integer relationId;
+    private Integer subjectId;
 
     private RelationTypeEnum relationType;
 
@@ -29,12 +29,12 @@ public class Relation {
         this.id = id;
     }
 
-    public Integer getRelationId() {
-        return relationId;
+    public Integer getSubjectId() {
+        return subjectId;
     }
 
-    public void setRelationId(Integer relationId) {
-        this.relationId = relationId;
+    public void setSubjectId(Integer subjectId) {
+        this.subjectId = subjectId;
     }
 
     public RelationTypeEnum getRelationType() {

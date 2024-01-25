@@ -4,7 +4,7 @@
 <mapper namespace="com.dtstep.lighthouse.insights.dao.RelationDao">
     <resultMap id="relationResultMap" type="com.dtstep.lighthouse.insights.modal.Relation">
         <result property="id" column="id"/>
-        <result property="relationId" column="relation_id"/>
+        <result property="subjectId" column="subject_id"/>
         <result property="relationType" column="relation_type" typeHandler="com.dtstep.lighthouse.insights.types.RelationTypeEnumTypeHandler"/>
         <result property="resourceId" column="resource_id"/>
         <result property="resourceType" column="resource_type" typeHandler="com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler"/>
@@ -12,9 +12,9 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Permission" >
-        INSERT INTO ldp_relations (`relation_id`, `relation_type`,`resource_id`, `resource_type`,`hash`, `create_time`) VALUES
+        INSERT INTO ldp_relations (`subject_id`, `relation_type`,`resource_id`, `resource_type`,`hash`, `create_time`) VALUES
         (
-            #{relationId,jdbcType=INTEGER},
+            #{subjectId,jdbcType=INTEGER},
             #{relationType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RelationTypeEnumTypeHandler},
             #{resourceId,jdbcType=INTEGER},
             #{resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
@@ -24,10 +24,10 @@
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO ldp_relations (`relation_id`, `relation_type`,`resource_id`, `resource_type`,`hash`,`create_time`) VALUES
+        INSERT INTO ldp_relations (`subject_id`, `relation_type`,`resource_id`, `resource_type`,`hash`,`create_time`) VALUES
         <foreach collection="list" item="item" separator=",">
             (
-            #{item.relationId,jdbcType=INTEGER},
+            #{item.subjectId,jdbcType=INTEGER},
             #{item.relationType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RelationTypeEnumTypeHandler},
             #{item.resourceId,jdbcType=INTEGER},
             #{item.resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
@@ -38,11 +38,11 @@
     </insert>
 
     <select id="queryList" resultMap="relationResultMap">
-        SELECT `id`,`relation_id`, `relation_type`,`resource_id`, `resource_type`, `create_time`
+        SELECT `id`,`subject_id`, `relation_type`,`resource_id`, `resource_type`, `create_time`
         FROM ldp_relations
         <where>
-            <if test="relationId != null">
-                AND relation_id = #{relationId}
+            <if test="subjectId != null">
+                AND subject_id = #{subjectId}
             </if>
             <if test="relationType != null">
                 AND relation_type = #{relationType.relationType}
@@ -50,14 +50,22 @@
         </where>
     </select>
 
+    <select id="queryById" resultMap="relationResultMap">
+        SELECT `id`,`subject_id`, `relation_type`,`resource_id`, `resource_type`, `create_time` FROM ldp_relations WHERE id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from ldp_relations where id = #{id}
+    </delete>
+
     <select id="queryListByPage" resultMap="relationResultMap">
-        SELECT r.`id`,r.`relation_id`, r.`relation_type`,r.`resource_id`, r.`resource_type`, r.`create_time`
+        SELECT r.`id`,r.`subject_id`, r.`relation_type`,r.`resource_id`, r.`resource_type`, r.`create_time`
         FROM ldp_relations r
         LEFT JOIN ldp_projects p ON r.resource_type = '4' AND r.resource_id = p.id
         LEFT JOIN ldp_stats s ON r.resource_type = '6' AND r.resource_id = s.id
         <where>
-            <if test="queryParam.relationId != null">
-                AND relation_id = #{queryParam.relationId}
+            <if test="queryParam.subjectId != null">
+                AND subject_id = #{queryParam.subjectId}
             </if>
             <if test="queryParam.relationType != null">
                 AND relation_type = #{queryParam.relationType.relationType}
@@ -79,8 +87,8 @@
         delete
         FROM ldp_relations
         <where>
-            <if test="queryParam.relationId != null">
-                AND relation_id = #{queryParam.relationId}
+            <if test="queryParam.subjectId != null">
+                AND subject_id = #{queryParam.subjectId}
             </if>
             <if test="queryParam.id != null">
                 AND id = #{queryParam.id}
