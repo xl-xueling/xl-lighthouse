@@ -26,6 +26,14 @@ export async function requestList(data) :Promise<ResultData<{list:Array<MetricSe
     })
 }
 
+export async function requestDeleteById(data):Promise<ResultData> {
+    return request({
+        url:'/metricset/deleteById',
+        method:'POST',
+        data,
+    })
+}
+
 export async function requestBindList(data) :Promise<ResultData<{list:Array<Relation>,total:number}>> {
     return request({
         url:'/metricset/bindlist',

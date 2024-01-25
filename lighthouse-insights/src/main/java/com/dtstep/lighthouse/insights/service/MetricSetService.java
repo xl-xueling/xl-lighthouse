@@ -16,6 +16,8 @@ public interface MetricSetService {
 
     int create(MetricSet metricSet);
 
+    int delete(MetricSet metricSet);
+
     int binded(MetricBindParam bindParam);
 
     int bindRemove(MetricBindRemoveParam removeParam);

@@ -16,5 +16,7 @@ public interface MetricSetDao {
 
     MetricSet queryById(Integer id);
 
+    int deleteById(Integer id);
+
     List<MetricSet> queryList(@Param("queryParam")MetricSetQueryParam queryParam);
 }
