@@ -158,7 +158,6 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     @Override
     public int binded(MetricBindParam bindParam) {
-        int result = 0;
         List<Integer> metricIds = bindParam.getMetricIds();
         List<MetricBindElement> bindElements = bindParam.getBindElements();
         List<Relation> relationList = new ArrayList<>();
@@ -166,10 +165,13 @@ public class MetricSetServiceImpl implements MetricSetService {
             List<Integer> projectIds = bindElements.stream().filter(x -> x.getType() == MetricBindType.Project).map(z -> z.getId()).collect(Collectors.toList());
             for(Integer projectId : projectIds){
                 Project project = projectService.queryById(projectId);
-                if(project != null){
-                    Relation relation = new Relation();
-                    String hash = Md5Util.getMD5(metricId + "_" + RelationTypeEnum.MetricSetBindRelation.getRelationType() + "_" + projectId + "_" + ResourceTypeEnum.Project.getResourceType());
-                    boolean isExist = relationService.isExist(hash);
+                if(project == null){
+                    continue;
+                }
+                Relation relation = new Relation();
+                String hash = Md5Util.getMD5(metricId + "_" + RelationTypeEnum.MetricSetBindRelation.getRelationType() + "_" + projectId + "_" + ResourceTypeEnum.Project.getResourceType());
+                boolean isExist = relationService.isExist(hash);
+                if(!isExist){
                     relation.setRelationId(metricId);
                     relation.setRelationType(RelationTypeEnum.MetricSetBindRelation);
                     relation.setResourceId(projectId);
@@ -183,8 +185,11 @@ public class MetricSetServiceImpl implements MetricSetService {
             for(Integer statId : statIds){
                 Stat stat = statService.queryById(statId);
                 if(stat != null){
-                    String hash = Md5Util.getMD5(metricId + "_" + RelationTypeEnum.MetricSetBindRelation.getRelationType() + "_" + statId + "_" + ResourceTypeEnum.Stat.getResourceType());
-                    boolean isExist = relationService.isExist(hash);
+                    continue;
+                }
+                String hash = Md5Util.getMD5(metricId + "_" + RelationTypeEnum.MetricSetBindRelation.getRelationType() + "_" + statId + "_" + ResourceTypeEnum.Stat.getResourceType());
+                boolean isExist = relationService.isExist(hash);
+                if(!isExist){
                     Relation relation = new Relation();
                     relation.setRelationId(metricId);
                     relation.setRelationType(RelationTypeEnum.MetricSetBindRelation);
@@ -196,7 +201,11 @@ public class MetricSetServiceImpl implements MetricSetService {
                 }
             }
         }
-        return relationService.batchCreate(relationList);
+        int result = 0;
+        if(CollectionUtils.isNotEmpty(relationList)){
+            result = relationService.batchCreate(relationList);
+        }
+        return result;
     }
 
     @Override
