@@ -146,7 +146,7 @@ export default function MetricBindedList({metricSetInfo}) {
                     </Col>
                     <Grid.Col span={16} style={{ textAlign: 'right' }}>
                         <Space>
-                            <Button size={"small"} type="primary" icon={<IconPlus />}>绑定</Button>
+                            <Button size={"small"} type="primary" icon={<IconPlus />}>{t['bindedList.list.button.bind']}</Button>
                         </Space>
                     </Grid.Col>
                 </Row>
