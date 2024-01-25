@@ -16,26 +16,26 @@ export function getColumns(t: any, selectedItems:MetricSet[],callback: (type: st
 
     return [
         {
-            title: 'ID',
+            title: t['reverseBinded.column.label.id'],
             dataIndex: 'id',
         },
         {
-            title: 'Title',
+            title: t['reverseBinded.column.label.title'],
             dataIndex: 'title',
         },
         {
-            title: 'Admins',
+            title: t['reverseBinded.column.label.admins'],
             dataIndex: 'admins',
             render: (value, record) => {
                 return <UserGroup users={value}/>
             }
         },
         {
-            title: 'Description',
+            title: t['reverseBinded.column.label.description'],
             dataIndex: 'desc',
         },
         {
-            title: 'Operation',
+            title: t['reverseBinded.column.label.operation'],
             dataIndex: 'operation',
             render: (_, record) => {
                 const selectedKeys = selectedItems?.map(z => z.id);
@@ -45,14 +45,14 @@ export function getColumns(t: any, selectedItems:MetricSet[],callback: (type: st
                                    type="secondary"
                                    disabled={true}
                                    size="mini">
-                        {'已选择'}
+                        {t['reverseBinded.column.label.operation.selected']}
                     </Button>;
                 }else{
                     return <Button key={getRandomString()}
                                    onClick={() => callback("select",record)}
                                    type="text"
                                    size="mini">
-                        {'选择'}
+                        {t['reverseBinded.column.label.operation.select']}
                     </Button>;
                 }
             }

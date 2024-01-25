@@ -36,7 +36,6 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
     const [formParams, setFormParams] = useState<any>({});
     const [selectedItems,setSelectedItems] = useState<MetricSet[]>([]);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
-    const pinMetricsInfo = useSelector((state: {pinMetricsInfo:Array<MetricSet>}) => state.pinMetricsInfo);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: false,
@@ -94,11 +93,16 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
     }
 
     async function handlerSubmit(){
+        console.log("selectedItems size:"+ selectedItems.length);
+        if(selectedItems.length == 0){
+            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['reverseBinded.form.submit.selectAtLeastOne']});
+            return;
+        }
         const bindParams = {
             bindElements:[{id:bindElement.id,type:bindElement.type}],
             metricIds:selectedItems.map(z => z.id),
         }
-        setLoading(true);
+        setConfirmLoading(true);
         requestBinded(bindParams).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -111,7 +115,7 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
             console.log(error);
             Message.error(t['system.error'])
         }).finally(() => {
-            setLoading(false);
+            setConfirmLoading(false);
         })
     }
 
@@ -122,7 +126,6 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
             ownerId:userInfo?.id,
             search:formParams.search,
         }
-        console.log("requestParams is:" + JSON.stringify(requestParams));
         await requestList({
             queryParams:requestParams,
             pagination:{
@@ -156,15 +159,15 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
         <Modal
             title={t['reverseBinded.modal.title']}
             visible={true}
+            confirmLoading={confirmLoading}
             style={{ width:'1200px',maxWidth:'90%',minHeight:'600px',maxHeight:'800px'}}
             onOk={handlerSubmit}
-            onCancel={onClose}
-        >
+            onCancel={onClose}>
                 <Input.Search placeholder={'Search'} allowClear style={{width:'320px',marginLeft:'3px',marginBottom:'15px'}} onSearch={handlerSearch}/>
                 <Table size={"mini"} style={{height:'300px'}}
                        loading={loading} rowKey={'id'}
                        onChange={onChangeTable} columns={columns} data={metricSetList} pagination={pagination} />
-                已选择：<Space size='large'>
+            {t['reverseBinded.currently.selected']}{'：'}<Space size='large'>
                 {
                     selectedItems?.map(z => {
                         return <Tag key={z.id} size='small' closable onClose={() => removeSelected(z.id)}>
