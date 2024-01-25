@@ -1,12 +1,10 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.insights.dto.MetricBindParam;
-import com.dtstep.lighthouse.insights.dto.MetricSetCreateParam;
-import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
-import com.dtstep.lighthouse.insights.dto.MetricSetUpdateParam;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
@@ -35,15 +33,19 @@ public class MetricSetController {
     private RelationService relationService;
 
     @RequestMapping("/metricset/create")
-    public ResultData<Integer> create(@Validated @RequestBody MetricSetCreateParam createParam) {
-        System.out.println("createParam is:" + JsonUtil.toJSONString(createParam));
+    public ResultData<Integer> create(@Validated @RequestBody MetricSetCreateParam createParam) throws Exception {
         MetricSet metricSet = new MetricSet();
         metricSet.setDesc(createParam.getDesc());
         metricSet.setTitle(createParam.getTitle());
         metricSet.setPrivateType(createParam.getPrivateType());
         int id = metricSetService.create(metricSet);
         if(id > 0){
-            metricSetService.grantAccessPermissions(id, createParam.getInitUsersPermission(),createParam.getInitDepartmentsPermission());
+            PermissionGrantParam grantParam = new PermissionGrantParam();
+            grantParam.setResourceId(id);
+            grantParam.setRoleType(RoleTypeEnum.METRIC_ACCESS_PERMISSION);
+            grantParam.setUsersPermissions(createParam.getInitUsersPermission());
+            grantParam.setDepartmentsPermissions(createParam.getInitDepartmentsPermission());
+            metricSetService.batchGrantPermissions(grantParam);
             return ResultData.success(id);
         }else{
             return ResultData.result(ResultCode.systemError);

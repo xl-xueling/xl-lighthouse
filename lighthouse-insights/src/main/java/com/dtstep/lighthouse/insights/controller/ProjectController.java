@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.dto_bak.ResultData;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.modal.MetricSet;
 import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
@@ -38,9 +39,24 @@ public class ProjectController {
     private GroupService groupService;
 
     @RequestMapping("/project/create")
-    public ResultData<Integer> create(@Validated @RequestBody ProjectCreateParam createParam) {
-        int result = projectService.create(createParam);
-        return ResultData.success(result);
+    public ResultData<Integer> create(@Validated @RequestBody ProjectCreateParam createParam) throws Exception {
+        Project project = new Project();
+        project.setTitle(createParam.getTitle());
+        project.setDepartmentId(createParam.getDepartmentId());
+        project.setPrivateType(createParam.getPrivateType());
+        project.setDesc(createParam.getDesc());
+        int id = projectService.create(project);
+        if(id > 0){
+            PermissionGrantParam grantParam = new PermissionGrantParam();
+            grantParam.setResourceId(id);
+            grantParam.setRoleType(RoleTypeEnum.METRIC_ACCESS_PERMISSION);
+            grantParam.setUsersPermissions(createParam.getUsersPermission());
+            grantParam.setDepartmentsPermissions(createParam.getDepartmentsPermission());
+            projectService.batchGrantPermissions(grantParam);
+            return ResultData.success(id);
+        }else{
+            return ResultData.result(ResultCode.systemError);
+        }
     }
 
     @RequestMapping("/project/queryById")

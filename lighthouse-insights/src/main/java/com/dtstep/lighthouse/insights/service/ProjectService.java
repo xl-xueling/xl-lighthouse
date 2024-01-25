@@ -17,7 +17,7 @@ import java.util.List;
 
 public interface ProjectService {
 
-    int create(ProjectCreateParam project);
+    int create(Project project);
 
     List<User> cacheQueryAdmins(Integer id);
 

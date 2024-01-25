@@ -2,10 +2,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.exception.RoleDefendException;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.insights.dao.DepartmentDao;
-import com.dtstep.lighthouse.insights.dao.GroupDao;
-import com.dtstep.lighthouse.insights.dao.ProjectDao;
-import com.dtstep.lighthouse.insights.dao.StatDao;
+import com.dtstep.lighthouse.insights.dao.*;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.RolePair;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
@@ -45,7 +42,7 @@ public class ResourceServiceImpl implements ResourceService {
     private PermissionService permissionService;
 
     @Autowired
-    private MetricSetService metricService;
+    private MetricSetDao metricSetDao;
 
     @Autowired
     private DomainService domainService;
@@ -101,12 +98,13 @@ public class ResourceServiceImpl implements ResourceService {
             accessRole = new Role(RoleTypeEnum.STAT_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
             name = statDao.queryById(resource.getResourceId()).getTitle();
         }else if(resource.getResourceType() == ResourceTypeEnum.MetricSet){
-            Role parentManageRole = roleService.cacheQueryRole(RoleTypeEnum.FULL_MANAGE_PERMISSION,resource.getResourcePid());
+            Role parentManageRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_MANAGE_PERMISSION,resource.getResourcePid());
             Integer manageRolePid = parentManageRole.getId();
-            Role parentAccessRole = roleService.cacheQueryRole(RoleTypeEnum.FULL_ACCESS_PERMISSION,resource.getResourcePid());
+            Role parentAccessRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_ACCESS_PERMISSION,resource.getResourcePid());
             Integer accessRolePid = parentAccessRole.getId();
             manageRole = new Role(RoleTypeEnum.METRIC_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
             accessRole = new Role(RoleTypeEnum.METRIC_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
+            name = metricSetDao.queryById(resource.getResourceId()).getTitle();
         }
         Validate.notNull(manageRole);
         Validate.notNull(accessRole);
@@ -257,7 +255,7 @@ public class ResourceServiceImpl implements ResourceService {
             Stat stat = statDao.queryById(resourceId);
             resource = new Resource(ResourceTypeEnum.Group,resourceId,stat);
         }else if(roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.METRIC_ACCESS_PERMISSION){
-            MetricSet metricSet = metricService.queryById(resourceId);
+            MetricSet metricSet = metricSetDao.queryById(resourceId);
             resource = new Resource(ResourceTypeEnum.MetricSet,resourceId,metricSet);
         }else if(roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){
             resource = new Resource(ResourceTypeEnum.System,0);
