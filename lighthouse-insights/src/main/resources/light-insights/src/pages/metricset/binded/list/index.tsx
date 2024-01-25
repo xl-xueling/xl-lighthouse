@@ -58,7 +58,7 @@ export default function MetricBindedList({metricSetInfo}) {
         await requestBindRemove(removeParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['bindedList.list.column.label.operations.remove.submit.success']});
                 const updatedList = listData.filter(x => x.id != relationId);
                 setListData(updatedList);
             }else{
