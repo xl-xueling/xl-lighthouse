@@ -83,8 +83,8 @@
                 select id from cte
                 )
             </if>
-            <if test="queryParam.title != null">
-                AND title LIKE CONCAT('%', #{queryParam.title}, '%')
+            <if test="queryParam.search != null">
+                AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})
             </if>
         </where>
         ) a

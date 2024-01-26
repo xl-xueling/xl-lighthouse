@@ -17,6 +17,9 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import {LuLayers} from "react-icons/lu";
 import BindedProjectListPanel from "./binded_project";
+import {getIcon} from "@/pages/common/desc/base";
+import BindedStatisticListPanel from "@/pages/metricset/binded/binded/binded_stat";
+import ProjectListPanel from "@/pages/project/list/ProjectListPanel";
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
@@ -27,30 +30,26 @@ export default function AddBindedPanel({metricSetInfo,onClose}) {
 
     return (
         <Modal
-            title={'绑定元素'}
+            title={t['bindedModal.title']}
             visible={true}
             style={{ width:'85%',height:'85%'}}
-            onCancel={onClose}
-        >
+            onCancel={onClose}>
             <Tabs defaultActiveTab='1' tabPosition={"right"}>
                 <TabPane
                     key='1'
                     title={
-                        <IconTag style={{marginRight:'8px'}}/>
-                    }
-                >
+                        getIcon('project')
+                    }>
                     <BindedProjectListPanel metricSetInfo={metricSetInfo} />
                 </TabPane>
                 <TabPane
                     key='2'
                     title={
-                        <LuLayers style={{marginRight:'8px'}}/>
-                    }
-                >
-                    <Typography.Paragraph >Content of Tab Panel 2</Typography.Paragraph>
+                        getIcon('stat')
+                    }>
+                    <BindedStatisticListPanel metricSetInfo={metricSetInfo} />
                 </TabPane>
             </Tabs>
-
         </Modal>
     );
 }
