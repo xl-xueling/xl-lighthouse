@@ -55,14 +55,6 @@ function CardBlock(props: CardBlockType) {
   const history = useHistory();
 
   const t = useLocale(locale);
-  const changeStatus = async () => {
-    setLoading(true);
-    await new Promise((resolve) =>
-      setTimeout(() => {
-        resolve(null);
-      }, 1000)
-    ).finally(() => setLoading(false));
-  };
 
   useEffect(() => {
     setLoading(props.loading);
@@ -70,15 +62,6 @@ function CardBlock(props: CardBlockType) {
 
 
   const getContent = () => {
-    if (loading) {
-      return (
-        <Skeleton
-          text={{ rows: 3 }}
-          animation
-          className={styles['card-block-skeleton']}
-        />
-      );
-    }
     return (
       <Descriptions
         column={2}
@@ -124,28 +107,19 @@ function CardBlock(props: CardBlockType) {
       ]:null}
 
       title={
-        loading ? (
-          <Skeleton
-            animation
-            text={{ rows: 1, width: ['100%'] }}
-            style={{ width: '120px', height: '24px' }}
-            className={styles['card-block-skeleton']}
-          />
-        ) : (
           <div  onClick={handleClick}>
               <div
-              className={cs(styles.title, {
-                [styles['title-more']]: visible,
-              })}
-            >
-              {item.title}{getLockIcon(t,item.privateType,item.permissions)}
-              <div className={styles.more} onClick={() => callback('fixed',item.id)}>
-                <IconPushpin />
+                  className={cs(styles.title, {
+                      [styles['title-more']]: visible,
+                  })}
+              >
+                  {item.title}{getLockIcon(t,item.privateType,item.permissions)}
+                  <div className={styles.more} onClick={() => callback('fixed',item.id)}>
+                      <IconPushpin />
+                  </div>
               </div>
-            </div>
-            <div className={styles.time}>{formatTimeStamp(item.createTime,DateTimeFormat)}</div>
+              <div className={styles.time}>{formatTimeStamp(item.createTime,DateTimeFormat)}</div>
           </div>
-        )
       }
     >
       <div className={styles.content} onClick={handleClick}>{getContent()}</div>
