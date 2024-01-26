@@ -194,7 +194,8 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
 
     return (
         <>
-        <Table border={false}
+        <Table
+            border={false}
                rowKey={'id'}
                size={"small"} columns={columns}
                data={listData}
