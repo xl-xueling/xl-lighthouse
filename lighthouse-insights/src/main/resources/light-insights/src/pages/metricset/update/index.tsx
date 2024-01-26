@@ -97,7 +97,7 @@ export default function MetricSetUpdateModal({metricInfo,onClose,onSuccess}) {
                 <Form.Item field="desc" label={t['updateMetricSet.form.label.description']} rules={[
                     { required: true, message: t['updateMetricSet.form.description.errMsg'], validateTrigger : ['onSubmit'] },
                 ]}>
-                    <Input.TextArea maxLength={200} rows={3}  showWordLimit={true}  placeholder={'Please Input Description'}/>
+                    <Input.TextArea maxLength={90} rows={3}  showWordLimit={true}  placeholder={'Please Input Description'}/>
                 </Form.Item>
 
                 <Form.Item style={{ marginBottom: 0 }} label={t['updateMetricSet.form.label.private.type']} rules={[{ required: true }]} >
