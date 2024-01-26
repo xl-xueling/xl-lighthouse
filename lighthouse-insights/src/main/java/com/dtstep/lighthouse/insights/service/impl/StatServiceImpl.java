@@ -57,6 +57,9 @@ public class StatServiceImpl implements StatService {
     private GroupDao groupDao;
 
     @Autowired
+    private GroupService groupService;
+
+    @Autowired
     private ProjectDao projectDao;
 
     @Autowired
@@ -133,8 +136,8 @@ public class StatServiceImpl implements StatService {
     private StatVO translate(Stat stat){
         int userId = baseService.getCurrentUserId();
         StatVO statVO = new StatVO(stat);
-        Group group = groupDao.queryById(stat.getGroupId());
-        Project project = projectDao.queryById(stat.getProjectId());
+        Group group = groupService.cacheQueryById(stat.getGroupId());
+        Project project = projectService.cacheQueryById(stat.getProjectId());
         Validate.notNull(project);
         Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,stat.getId());
         Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,stat.getId());

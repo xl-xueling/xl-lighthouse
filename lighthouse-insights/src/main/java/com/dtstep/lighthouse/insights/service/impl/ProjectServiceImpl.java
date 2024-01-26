@@ -25,6 +25,7 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -167,6 +168,12 @@ public class ProjectServiceImpl implements ProjectService {
             return null;
         }
         return translate(project);
+    }
+
+    @Override
+    @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    public ProjectVO cacheQueryById(Integer id) {
+        return queryById(id);
     }
 
     private ProjectVO translate(Project project){

@@ -17,6 +17,8 @@ public interface GroupService {
 
     Group queryById(Integer id);
 
+    Group cacheQueryById(Integer id);
+
     int count(GroupQueryParam queryParam);
 
     String getSecretKey(Integer id);
