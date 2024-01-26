@@ -48,7 +48,7 @@ public class ProjectController {
         if(id > 0){
             PermissionGrantParam grantParam = new PermissionGrantParam();
             grantParam.setResourceId(id);
-            grantParam.setRoleType(RoleTypeEnum.METRIC_ACCESS_PERMISSION);
+            grantParam.setRoleType(RoleTypeEnum.PROJECT_ACCESS_PERMISSION);
             grantParam.setUsersPermissions(createParam.getUsersPermission());
             grantParam.setDepartmentsPermissions(createParam.getDepartmentsPermission());
             projectService.batchGrantPermissions(grantParam);

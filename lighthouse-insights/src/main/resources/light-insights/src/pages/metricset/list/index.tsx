@@ -58,9 +58,8 @@ export default function ListCard() {
             setCurrentItem(record);
             setShowUpdatePanel(true);
         }else if(type == 'delete'){
-            await handlerDelete(record.id);
+            await handlerDelete(record.id).then();
         }
-        console.log("type:" + type + ",record:" + record);
     };
 
     const handlerDelete = async (id: number) => {
