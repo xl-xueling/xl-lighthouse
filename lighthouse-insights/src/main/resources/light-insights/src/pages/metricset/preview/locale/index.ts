@@ -6,7 +6,7 @@ const i18n = {
     'metricSetPreview.breadcrumb':'MetricSet Preview',
     'metricsetPreview.title.prefix':'MetricSet',
     'metricSetPreview.tab.title.dataView':'Data View',
-    'metricSetPreview.tab.title.bindItems':'Bind Items',
+    'metricSetPreview.tab.title.bindItems':'Bind Elements',
     'metricSetPreview.tab.title.permissions':'Permissions',
     'metricSetPreview.tab.title.structure':'Structure',
   },

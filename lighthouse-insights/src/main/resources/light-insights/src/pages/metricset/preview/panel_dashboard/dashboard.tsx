@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb, Spin} from '@arco-design/web-react';
 import styles from "@/pages/project/preview/style/index.module.less";
 import StatPreviewPanel from "@/pages/stat/display/preview";
-import DashboardMenu from "@/pages/metricset/preview/panel_dashboard/menu";
+import MetricSetPreviewMenu from "@/pages/metricset/preview/panel_dashboard/menu";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
@@ -24,7 +24,7 @@ export default function MetricSetPreviewPanel({metricSetInfo}) {
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
                         <Row>
-                            <DashboardMenu metricSetInfo={metricSetInfo} callback={handlerCallback}/>
+                            <MetricSetPreviewMenu metricSetInfo={metricSetInfo} callback={handlerCallback}/>
                         </Row>
                     </Space>
                     <Space className={styles.right} size={16} direction="vertical">

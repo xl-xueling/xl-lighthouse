@@ -75,6 +75,9 @@ public class MetricSetController {
     public ResultData<MetricSet> queryById(@Validated @RequestBody IDParam idParam) throws Exception{
         Integer id = idParam.getId();
         MetricSetVO metricSetVO = metricSetService.queryById(id);
+        if(metricSetVO == null){
+            return ResultData.result(ResultCode.elementNotFound);
+        }
         List<TreeNode> structure = metricSetService.getStructure(metricSetVO);
         System.out.println("structure:" + JsonUtil.toJSONString(structure));
         metricSetVO.setStructure(structure);
