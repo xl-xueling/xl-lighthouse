@@ -10,7 +10,7 @@ import {
     Notification,
     Breadcrumb,
     Spin,
-    Menu
+    Menu, Empty
 } from '@arco-design/web-react';
 import PreviewHeader from "@/pages/metricset/preview/header";
 import {
@@ -42,7 +42,7 @@ import { BiWalletAlt } from "react-icons/bi";
 import { RxCube } from "react-icons/rx";
 
 
-export default function DashboardMenu({metricSetInfo,callback}) {
+export default function MetricSetPreviewMenu({metricSetInfo,callback}) {
 
     const getIcon = (item) => {
         if(item.type == 'stat'){
@@ -83,7 +83,8 @@ export default function DashboardMenu({metricSetInfo,callback}) {
                     }
                 }}>
                 {
-                    renderMenuItems(metricSetInfo?.structure[0]?.children)
+                    (metricSetInfo && metricSetInfo?.structure[0]?.children) ? renderMenuItems(metricSetInfo?.structure[0]?.children)
+                        : <Empty style={{marginTop:'50px'}}/>
                 }
             </Menu>
         </>

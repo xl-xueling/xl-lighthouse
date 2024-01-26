@@ -54,12 +54,7 @@ export default function ProjectMenu({projectInfo,callback}:{projectInfo:Project,
         >
         {
             (projectInfo && projectInfo.structure.children) ? renderMenuItems(projectInfo.structure.children)
-                : <Empty style={{marginTop:'50px'}} description={
-                    <>
-                    <div>{t['projectPreview.nodata.tooltip1']}</div>
-                    <div>{t['projectPreview.nodata.tooltip2']}</div>
-                    </>
-                }/>
+                : <Empty style={{marginTop:'50px'}}/>
         }
         </Menu>
         </>

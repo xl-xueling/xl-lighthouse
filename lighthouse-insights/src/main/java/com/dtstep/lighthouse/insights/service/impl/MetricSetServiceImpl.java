@@ -145,6 +145,9 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     private MetricSetVO translate(MetricSet metricSet){
+        if(metricSet == null){
+            return null;
+        }
         MetricSetVO metricSetVO = new MetricSetVO(metricSet);
         Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.METRIC_MANAGE_PERMISSION,metricSet.getId());
         Role accessRole = roleService.queryRole(RoleTypeEnum.METRIC_ACCESS_PERMISSION,metricSet.getId());

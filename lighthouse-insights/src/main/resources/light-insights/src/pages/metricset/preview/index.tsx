@@ -17,6 +17,10 @@ import MetricSetStructure from "@/pages/metricset/structure";
 import MetricSetPermissions from "@/pages/metricset/permissions";
 import {ResourceTypeEnum} from "@/types/insights-common";
 import {VscGistSecret} from "react-icons/vsc";
+import {GlobalErrorCodes} from "@/utils/constants";
+import ErrorPage from "@/pages/common/error";
+import { FaRegChartBar } from "react-icons/fa";
+import { AiOutlineDashboard } from "react-icons/ai";
 
 
 export default function MetricSetPreview() {
@@ -25,14 +29,16 @@ export default function MetricSetPreview() {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const [metricSetInfo,setMetricSetInfo] = useState<MetricSet>(null);
+    const [errorCode,setErrorCode] = useState<string>(null);
 
-    const fetchMetricSetInfo = async (): Promise<void> => {
+    const fetchData = async (): Promise<void> => {
         setLoading(true);
-        console.log("fetchMetricInfo,id:" + id);
         await requestQueryById({id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
                 setMetricSetInfo(data);
+            }else if(GlobalErrorCodes.includes(String(code))){
+                setErrorCode(code);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -43,56 +49,61 @@ export default function MetricSetPreview() {
     }
 
     useEffect(() => {
-        console.log("fetch metric..")
-        fetchMetricSetInfo().then();
+        fetchData().then();
     },[])
 
     return (
         <>
-        <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
-            <Breadcrumb.Item>
-                <IconHome />
-            </Breadcrumb.Item>
-            <Breadcrumb.Item style={{fontWeight:20}}>{t['metricSetPreview.breadcrumb']}</Breadcrumb.Item>
-        </Breadcrumb>
-        <Space size={16} direction="vertical" style={{ width: '100%' }}>
-            <Card>
-                <PreviewHeader metricSetInfo={metricSetInfo}/>
-            </Card>
-            <Tabs
+            {
+                errorCode ? <ErrorPage errorCode={errorCode}/>
+                    :
+                <>
+                <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+                    <Breadcrumb.Item>
+                        <IconHome />
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item style={{fontWeight:20}}>{t['metricSetPreview.breadcrumb']}</Breadcrumb.Item>
+                </Breadcrumb>
+                <Space size={16} direction="vertical" style={{ width: '100%' }}>
+                <Card>
+                    <PreviewHeader metricSetInfo={metricSetInfo}/>
+                </Card>
+                <Tabs
                 type="line">
                 <TabPane
-                    key='1'
-                    title={
-                        <span>
-                            <span style={{display:"inline-flex",alignItems:"center"}}><IconDashboard style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.dataView']}</span>
-                        </span>
-                    }>
+                key='1'
+                title={
+                <span>
+                <span style={{display:"inline-flex",alignItems:"center"}}><IconDashboard style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.dataView']}</span>
+                </span>
+            }>
                     <MetricSetPreviewPanel metricSetInfo={metricSetInfo}/>
                 </TabPane>
                 <TabPane
-                    key='2'
-                    title={
-                        <span>
-                            <span style={{display:"inline-flex",alignItems:"center"}}><PiLinkSimple style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.bindItems']}</span>
-                        </span>
-                    }>
-                    {metricSetInfo && <MetricBindedList metricSetInfo={metricSetInfo}/>}
+                key='2'
+                title={
+                <span>
+                <span style={{display:"inline-flex",alignItems:"center"}}><PiLinkSimple style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.bindItems']}</span>
+                </span>
+            }>
+            {metricSetInfo && <MetricBindedList metricSetInfo={metricSetInfo}/>}
                 </TabPane>
                 <TabPane key='3' title={
-                    <span>
-                        <span style={{display:"inline-flex",alignItems:"center"}}><VscGistSecret style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.permissions']}</span>
-                  </span>}>
+                <span>
+                <span style={{display:"inline-flex",alignItems:"center"}}><VscGistSecret style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.permissions']}</span>
+                </span>}>
                     <MetricSetPermissions resourceType={ResourceTypeEnum.Metric} resourceId={metricSetInfo?.id}/>
                 </TabPane>
                 <TabPane key='4' title={
-                    <span>
-                        <span style={{display:"inline-flex",alignItems:"center"}}><PiTreeStructure style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.structure']}</span>
-                  </span>}>
-                    {metricSetInfo && <MetricSetStructure metricSetInfo={metricSetInfo}/>}
+                <span>
+                <span style={{display:"inline-flex",alignItems:"center"}}><PiTreeStructure style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.structure']}</span>
+                </span>}>
+            {metricSetInfo && <MetricSetStructure metricSetInfo={metricSetInfo}/>}
                 </TabPane>
-            </Tabs>
-        </Space>
+                </Tabs>
+                </Space>
+                </>
+            }
         </>
     );
 }
