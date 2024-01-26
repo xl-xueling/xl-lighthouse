@@ -7,7 +7,7 @@ import {
     Card,
     Descriptions,
     Typography,
-    Skeleton, Popconfirm,
+    Skeleton, Popconfirm, Space,
 } from '@arco-design/web-react';
 import {
     IconStarFill,
@@ -15,7 +15,7 @@ import {
     IconSunFill,
     IconFaceSmileFill,
     IconPenFill,
-    IconMore, IconThumbUp, IconShareInternal, IconPushpin, IconDelete, IconEdit,
+    IconMore, IconThumbUp, IconShareInternal, IconPushpin, IconDelete, IconEdit, IconCheckCircleFill,
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -25,6 +25,10 @@ import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import {CiLock} from "react-icons/ci";
 import { useHistory } from 'react-router-dom';
 import {getRandomString} from "@/utils/util";
+import {getLockIcon} from "@/pages/common/desc/base";
+import { Avatar } from '@arco-design/web-react';
+const { Meta } = Card;
+
 
 interface CardBlockType {
   item: MetricSet;
@@ -99,7 +103,7 @@ function CardBlock(props: CardBlockType) {
       onClick={handleClick}
       actions={[
           <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();callback('update',item)}}>
-          <IconEdit />
+           <Button type={"secondary"} size={"mini"}>Edit</Button>
         </span>,
           <Popconfirm key={getRandomString()}
                       focusLock
@@ -108,12 +112,11 @@ function CardBlock(props: CardBlockType) {
                       content={t['metricSetList.operations.delete.confirm']}
                       onCancel={(e) => {e.stopPropagation();}}
                       onOk={(e) => {e.stopPropagation();callback('delete',item);}}>
-            <span key={4} className='icon-hover'
-                  onClick={(e) => {e.stopPropagation();}}>
-              <IconDelete/>
+ <span key={4} className='icon-hover'
+       onClick={(e) => {e.stopPropagation();}}>
+                <Button type={"secondary"} size={"mini"}>Delete</Button>
             </span>
-          </Popconfirm>
-        ,
+          </Popconfirm>,
       ]}
 
       title={
@@ -126,12 +129,12 @@ function CardBlock(props: CardBlockType) {
           />
         ) : (
           <>
-            <div
+              <div
               className={cs(styles.title, {
                 [styles['title-more']]: visible,
               })}
             >
-              {item.title}{item.privateType == 0 ? <CiLock style={{marginLeft:'5px'}}/>:null}
+              {item.title}{getLockIcon(t,item.privateType,item.permissions)}
               <div className={styles.more} onClick={() => callback('fixed',item.id)}>
                 <IconPushpin />
               </div>
@@ -142,6 +145,13 @@ function CardBlock(props: CardBlockType) {
       }
     >
       <div className={styles.content}>{getContent()}</div>
+        <Meta
+            avatar={
+                <Space>
+                    <Button type={"primary"} size={"mini"}>Preview</Button>
+                </Space>
+            }
+        />
     </Card>
   );
 }
