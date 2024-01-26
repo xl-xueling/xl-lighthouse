@@ -20,6 +20,7 @@ import BindedProjectListPanel from "./binded_project";
 import {getIcon} from "@/pages/common/desc/base";
 import BindedStatisticListPanel from "@/pages/metricset/binded/binded/binded_stat";
 import ProjectListPanel from "@/pages/project/list/ProjectListPanel";
+import {getRandomString} from "@/utils/util";
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
@@ -32,9 +33,10 @@ export default function AddBindedPanel({metricSetInfo,onClose}) {
         <Modal
             title={t['bindedModal.title']}
             visible={true}
-            style={{ width:'85%',height:'85%'}}
-            onCancel={onClose}>
-            <Tabs defaultActiveTab='1' tabPosition={"right"}>
+            style={{ width:'1350px',maxWidth:'90%',top:'150px',display:"grid"}}
+            onCancel={onClose}
+        >
+            <Tabs defaultActiveTab='1' tabPosition={"right"} animation={true}>
                 <TabPane
                     key='1'
                     title={

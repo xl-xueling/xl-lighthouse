@@ -70,7 +70,7 @@ export default function SecretKeyModal({groupId,onClose}) {
             title={t['group.basic.secretKey']}
             visible={true}
             footer={null}
-            style={{ width:'750px',top:'300px',display:"grid"}}
+            style={{ width:'750px',top:'250px',display:"grid"}}
             onCancel={onClose}>
 
             <Spin loading={loading} style={{ width:'100%',display: 'block' }}>

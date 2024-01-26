@@ -208,7 +208,6 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
         <>
             <Table
                 rowKey={'id'}
-                style={{ marginTop:12}}
                 size={"small"}
                 loading={loading}
                 onChange={onChangeTable}
