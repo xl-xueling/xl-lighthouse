@@ -5,15 +5,21 @@ import {
     ComponentTypeEnum,
     OrderStateEnum,
     OrderTypeEnum,
+    PermissionEnum,
+    PrivateTypeEnum,
     RoleTypeEnum,
     StatExpiredEnum,
     StatStateEnum,
     UserStateEnum
 } from "@/types/insights-common";
 import {PiDiamondsFour} from "react-icons/pi";
-import {CiViewTable} from "react-icons/ci";
+import {CiLock, CiViewTable} from "react-icons/ci";
 import {IconTag} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
+import { CiUnlock } from "react-icons/ci";
+import { PiLockKeyThin } from "react-icons/pi";
+import { PiLockKeyOpenThin } from "react-icons/pi";
+
 
 export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
     if(value === StatStateEnum.PENDING){
@@ -217,5 +223,15 @@ export function getRoleTypeDescription(t:any,value:RoleTypeEnum){
         return t['basic.roleType.description.operationManage'];
     }else if(value == RoleTypeEnum.OPT_ACCESS_PERMISSION){
         return t['basic.roleType.description.operationAccess'];
+    }
+}
+
+export function getLockIcon(t:any,privateType:PrivateTypeEnum,permissions:PermissionEnum[]){
+    if(privateType == PrivateTypeEnum.Public){
+        return null;
+    }else if(permissions.includes(PermissionEnum.AccessAble) || permissions.includes(PermissionEnum.ManageAble)){
+        return <PiLockKeyOpenThin style={{marginLeft:'5px'}}/>;
+    }else{
+        return <PiLockKeyThin style={{marginLeft:'5px'}}/>;
     }
 }

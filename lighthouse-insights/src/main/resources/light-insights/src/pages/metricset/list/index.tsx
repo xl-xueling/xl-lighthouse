@@ -24,6 +24,8 @@ import {requestList} from "@/api/metricset";
 import {IconHome} from "@arco-design/web-react/icon";
 import MetricSetUpdateModal from "@/pages/metricset/update";
 import {requestDeleteById} from "@/api/metricset";
+import {useSelector} from "react-redux";
+import {GlobalState} from "@/store";
 
 const { Title } = Typography;
 const { Row, Col } = Grid;
@@ -37,8 +39,9 @@ export default function ListCard() {
   const [currentItem,setCurrentItem] = useState<MetricSet>(null);
   const [listData,setListData] = useState<MetricSet[]>([]);
   const [reloadTime,setReloadTime] = useState<number>(Date.now);
-  const [activeKey, setActiveKey] = useState('all');
+  const userInfo = useSelector((state: GlobalState) => state.userInfo);
   const { Meta } = Card;
+    const [activeKey, setActiveKey] = useState('1');
 
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
@@ -48,7 +51,7 @@ export default function ListCard() {
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
-    const [formParams, setFormParams] = useState({});
+    const [formParams, setFormParams] = useState<any>({});
 
     const tableCallback = async (type,record) => {
         if(type == 'update'){
@@ -78,8 +81,12 @@ export default function ListCard() {
   const fetchData = async () => {
       setLoading(true);
       const {current, pageSize} = pagination;
+      const combineParams = {
+          search:formParams.search,
+          ownerId:activeKey == '1'?userInfo?.id:null,
+      }
       await requestList({
-          queryParams:formParams,
+          queryParams:combineParams,
           pagination:{
               pageSize:pageSize,
               pageNum:current,
@@ -103,9 +110,13 @@ export default function ListCard() {
       })
   }
 
+    const handlerSearch = (search) => {
+        setFormParams({search});
+    }
+
     useEffect(() => {
         fetchData().then();
-    }, [reloadTime]);
+    }, [reloadTime,activeKey,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
   const handleShowCreatePanel = () => {
       setShowCreatePanel(true);
@@ -141,21 +152,18 @@ export default function ListCard() {
       </Breadcrumb>
       <Spin loading={loading} style={{ display: 'block' }}>
         <Card>
-          <Title heading={6}>{t['menu.list.card']}</Title>
           <Tabs
-            activeTab={activeKey}
             type="rounded"
             size={"small"}
-            defaultActiveTab={'all'}
+            activeTab={activeKey}
             onChange={setActiveKey}
             extra={
               <Input.Search
-                style={{ width: '300px',paddingRight:'24px'}}
-                placeholder={t[`cardList.tab.${activeKey}.placeholder`]}
+                style={{ width: '280px',paddingRight:'24px'}} allowClear={true} onSearch={handlerSearch}
               />
             }>
-            <Tabs.TabPane key="all" title={t['metricSetList.tab.title.all']} />
-            <Tabs.TabPane key="owner" title={t['metricSetList.tab.title.owner']} />
+              <Tabs.TabPane key={"1"} title={t['metricSetList.tab.title.owner']} />
+              <Tabs.TabPane key={"0"} title={t['metricSetList.tab.title.all']} />
           </Tabs>
           <div className={styles.container}>
               <div>
