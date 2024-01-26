@@ -237,6 +237,13 @@ export function getBindColumns(t: any, callback: (record: Record<string, any>, t
             }
         },
         {
+            title: 'Project',
+            dataIndex: 'project.title',
+            render:(value,record) => {
+                return value;
+            }
+        },
+        {
             title: 'Group',
             dataIndex: 'group.token',
         },
@@ -263,14 +270,20 @@ export function getBindColumns(t: any, callback: (record: Record<string, any>, t
             dataIndex: 'operation',
             headerCellStyle: {width:'200px' },
             render: (_, record) => {
-                const viewButton = <Link key={getRandomString()} target={"_blank"} href={'/stat/display/' + record.id}>
+                const bindButton = <Popconfirm key={getRandomString()}
+                                                             position={"tr"}
+                                                             focusLock
+                                                             onOk={() => callback(record, 'bind')}
+                                                             title='Confirm'
+                                                             content={t['statList.table.operations.bind.confirm']}
+                >
                     <Button
                         type="text"
                         size="mini">
-                        {'绑定'}
+                        {t['statList.table.operations.bind']}
                     </Button>
-                </Link>
-                return <Space size={16} direction="horizontal">{[viewButton]}</Space>
+                </Popconfirm>;
+                return <Space size={16} direction="horizontal">{[bindButton]}</Space>
             }
         },
     ];
