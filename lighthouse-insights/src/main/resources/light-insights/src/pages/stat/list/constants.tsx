@@ -222,7 +222,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
 
 
 
-export function getBindColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+export function getBindColumns(t: any,bindList:Array<number>,callback: (record: Record<string, any>, type: string) => Promise<void>) {
 
     return [
         {
@@ -269,20 +269,31 @@ export function getBindColumns(t: any, callback: (record: Record<string, any>, t
             title: 'Operation',
             dataIndex: 'operation',
             headerCellStyle: {width:'200px' },
-            render: (_, record) => {
-                const bindButton = <Popconfirm key={getRandomString()}
-                                                             position={"tr"}
-                                                             focusLock
-                                                             onOk={() => callback(record, 'bind')}
-                                                             title='Confirm'
-                                                             content={t['statList.table.operations.bind.confirm']}
-                >
-                    <Button
-                        type="text"
-                        size="mini">
-                        {t['statList.table.operations.bind']}
-                    </Button>
-                </Popconfirm>;
+            render: (value, record) => {
+                let bindButton = null;
+                console.log("bindList:" + JSON.stringify(bindList));
+                if(bindList.includes(record.id)){
+                    bindButton =
+                        <Button key={getRandomString()}
+                            type="text"
+                            size="mini">
+                            {t['statList.table.operations.binded']}
+                        </Button>;
+                }else{
+                    bindButton = <Popconfirm key={getRandomString()}
+                                                   position={"tr"}
+                                                   focusLock
+                                                   onOk={() => callback(record, 'bind')}
+                                                   title='Confirm'
+                                                   content={t['statList.table.operations.bind.confirm']}
+                    >
+                        <Button
+                            type="text"
+                            size="mini">
+                            {t['statList.table.operations.bind']}
+                        </Button>
+                    </Popconfirm>;
+                }
                 return <Space size={16} direction="horizontal">{[bindButton]}</Space>
             }
         },

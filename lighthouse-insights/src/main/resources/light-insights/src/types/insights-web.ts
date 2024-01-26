@@ -135,9 +135,15 @@ export interface MetricSet {
     desc?:string;
     createTime?:number;
     updateTime?:number;
+    bindElements?:Resource[];
     permissions?:PermissionEnum[];
     initUsersPermission?:number[],
     initDepartmentsPermission?:number[],
+}
+
+export interface Resource {
+    resourceId?:number;
+    resourceType?:ResourceTypeEnum;
 }
 
 
