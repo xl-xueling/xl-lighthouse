@@ -103,7 +103,7 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
                 <Form.Item field="desc" label={t['createMetricSet.form.label.description']} rules={[
                     { required: true, message: t['createMetricSet.form.description.errMsg'], validateTrigger : ['onSubmit'] },
                 ]}>
-                    <Input.TextArea maxLength={200} rows={3}  showWordLimit={true}  placeholder={'Please Input Description'}/>
+                    <Input.TextArea maxLength={90} rows={3}  showWordLimit={true}  placeholder={'Please Input Description'}/>
                 </Form.Item>
 
                 <Form.Item style={{ marginBottom: 0 }} label={t['createMetricSet.form.label.private.type']} rules={[{ required: true }]} >
