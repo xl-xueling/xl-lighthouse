@@ -26,6 +26,7 @@ import {getColumns} from "./constants";
 import {requestDeleteById} from "@/api/project";
 import ProjectApplyModal from "@/pages/project/apply";
 import ApplyModal from "@/pages/order/apply/modal/ApplyModal";
+import AddBindedPanel from "@/pages/metricset/binded/binded";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
@@ -36,6 +37,7 @@ export default function MetricBindedList({metricSetInfo}) {
     const [loading,setLoading] = useState<boolean>(true);
     const [searchForms,setSearchForms] = useState<any>({});
     const [showApplyModal,setShowApplyModal] = useState<boolean>(false);
+    const [showBindModal,setShowBindModal] = useState<boolean>(false);
     const [currentRecord,setCurrentRecord] = useState<Relation>(null);
 
     const [pagination, setPagination] = useState<PaginationProps>({
@@ -63,7 +65,6 @@ export default function MetricBindedList({metricSetInfo}) {
             id:metricSetInfo?.id,
             relationId:relationId,
         }
-        console.log("removeParam is:" + JSON.stringify(removeParam));
         await requestBindRemove(removeParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -76,6 +77,11 @@ export default function MetricBindedList({metricSetInfo}) {
         }).catch((error) => {
             console.log(error);
         })
+    }
+
+    const handlerShowBindModal = () => {
+        console.log("showbind modal")
+        setShowBindModal(true);
     }
 
     const columns = useMemo(() => getColumns(t, metricSetInfo,tableCallback), [t,listData]);
@@ -146,14 +152,14 @@ export default function MetricBindedList({metricSetInfo}) {
                     </Col>
                     <Grid.Col span={16} style={{ textAlign: 'right' }}>
                         <Space>
-                            <Button size={"small"} type="primary" icon={<IconPlus />}>{t['bindedList.list.button.bind']}</Button>
+                            <Button size={"small"} type="primary" onClick={handlerShowBindModal}>{t['bindedList.list.button.bind']}</Button>
                         </Space>
                     </Grid.Col>
                 </Row>
             </Form>
         <Table rowKey={'id'} size={"small"} onChange={onChangeTable} loading={loading} columns={columns} data={listData}/>
-        {/*<AddBindedPanel metricId={0} />*/}
         {showApplyModal && <ApplyModal itemInfo={currentRecord?.extend} resourceType={currentRecord.resourceType} onClose={() => setShowApplyModal(false)}/>}
+        {showBindModal && <AddBindedPanel metricId={metricSetInfo.id} onClose={() => setShowBindModal(false)}/>}
         </Card>
     );
 }

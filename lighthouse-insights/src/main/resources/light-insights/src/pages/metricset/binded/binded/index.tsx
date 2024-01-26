@@ -15,12 +15,13 @@ import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import BindedProject from "@/pages/metricset/binded/binded/binded_project";
+import BindedStatisticListPanel from "@/pages/metricset/binded/binded/binded_project";
+import StatisticalListPanel from "@/pages/stat/list/stat_list";
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
 
-export default function AddBindedPanel({metricId}) {
+export default function AddBindedPanel({metricId,onClose}) {
 
     const t = useLocale(locale);
 
@@ -29,6 +30,7 @@ export default function AddBindedPanel({metricId}) {
             title={'绑定数据项 - [统计工程]'}
             visible={true}
             style={{ width:'85%',height:'85%'}}
+            onCancel={onClose}
         >
             <Tabs defaultActiveTab='1' tabPosition={"right"}>
                 <TabPane
@@ -41,7 +43,7 @@ export default function AddBindedPanel({metricId}) {
                     }
                 >
                     {/*<Typography.Paragraph >Content of Tab Panel 1</Typography.Paragraph>*/}
-                    <BindedProject />
+                    <BindedStatisticListPanel />
                 </TabPane>
                 <TabPane
                     key='2'
