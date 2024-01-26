@@ -20,7 +20,7 @@ export default function BindedProjectListPanel({metricSetInfo,onClose = null}) {
                 <Input.Search size={"small"} style={{width:'350px'}} allowClear={true} onSearch={handlerSearch}/>
             </Form.Item>
         </Form>
-            <ProjectListPanel formParams={formParams}/>
+            <ProjectListPanel formParams={formParams} from={'bind'} extend={metricSetInfo}/>
         </>
     );
 }

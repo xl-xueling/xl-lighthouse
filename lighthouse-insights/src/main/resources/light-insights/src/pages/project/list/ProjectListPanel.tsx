@@ -14,7 +14,7 @@ import {
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
-import {getColumns} from './constants';
+import {getBindColumns, getColumns} from './constants';
 import {requestDeleteById, requestList} from "@/api/project";
 import {Department, Project, TreeNode} from "@/types/insights-web";
 import useForm from "@arco-design/web-react/es/Form/useForm";
@@ -29,6 +29,7 @@ import {ResourceTypeEnum} from "@/types/insights-common";
 import {GlobalErrorCodes} from "@/utils/constants";
 import {getRandomString} from "@/utils/util";
 import {GlobalState} from "@/store";
+import {requestBinded} from "@/api/metricset";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -52,6 +53,7 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
     const [applyVisible,setApplyVisible] = React.useState(false);
     const [reloadTime,setReloadTime] = useState<number>(Date.now);
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
+    const [bindList,setBindList] = useState<number[]>([]);
 
     const tableCallback = async (record, type) => {
         if(type == 'update'){
@@ -68,8 +70,29 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
         }else if(type == 'apply'){
             setSelectedProject(record);
             setApplyVisible(!applyVisible);
+        }else if(type == 'bind'){
+            await handlerBind(record.id).then();
         }
     };
+
+    async function handlerBind(id:number){
+        const bindParams = {
+            bindElements:[{resourceId:id,resourceType:ResourceTypeEnum.Project}],
+            metricIds:extend.id,
+        }
+        await requestBinded(bindParams).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.bind.success']});
+                setBindList([...bindList,id])
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error) => {
+            console.log(error);
+            Message.error(t['system.error'])
+        })
+    }
 
     const hideCreateModal = () => {
         setCreateVisible(false);
@@ -79,7 +102,15 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
         setUpdateVisible(false);
     };
 
-    const columns = useMemo(() => getColumns(t, tableCallback), [t,listData]);
+    const handleGetColumns = () => {
+        if(from == 'bind'){
+            return getBindColumns(t,bindList, tableCallback);
+        }else{
+            return getColumns(t, tableCallback);
+        }
+    }
+
+    const columns = useMemo(() => handleGetColumns(), [t,bindList,listData]);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: true,
@@ -130,6 +161,13 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
             console.log(error);
         })
     };
+
+    useEffect(() => {
+        if(extend != null){
+            const ids = extend.bindElements.filter(x => x.resourceType == ResourceTypeEnum.Project).map(x => x.resourceId);
+            setBindList(ids);
+        }
+    },[extend])
 
     useEffect(() => {
         fetchData().then().catch(error => {
