@@ -28,6 +28,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
     const [updateModalVisible,setUpdateModalVisible] = React.useState(false);
     const [currentItem,setCurrentItem] = useState<Stat>(null);
     const refFetchId = useRef<number>(null);
+    const [bindList,setBindList] = useState<number[]>([]);
     const [refreshTime,setRefreshTime] = useState<number>(null);
 
     const tableCallback = async (record, type) => {
@@ -48,7 +49,6 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
             setCurrentItem(record);
             await handlerDelete(record.id);
         }else if(type == 'bind'){
-            console.log("bind...item,metricSetInfo:" + JSON.stringify(extend));
             await handlerBind(record.id);
         }
     };
@@ -63,6 +63,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['statList.columns.bind.success']});
+                setBindList([...bindList,id])
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -121,12 +122,12 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
         }else if(from == 'group-manage'){
             return getColumnsOfManage(t, tableCallback);
         }else if(from == 'bind'){
-            return getBindColumns(t,tableCallback);
+            return getBindColumns(t,bindList,tableCallback);
         }
     }
 
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
-    const columns = useMemo(() => handleGetColumns(), [t,from,listData]);
+    const columns = useMemo(() => handleGetColumns(), [t,from,listData,bindList]);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: true,
@@ -176,6 +177,13 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
             setLoading(false);
         })
     }
+
+    useEffect(() => {
+        if(extend != null){
+            const ids = extend.bindElements.filter(x => x.resourceType == ResourceTypeEnum.Stat).map(x => x.resourceId);
+            setBindList(ids);
+        }
+    },[extend])
 
     useEffect(() => {
         setLoading(true);
