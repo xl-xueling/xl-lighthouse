@@ -1,32 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import cs from 'classnames';
 import {
     Button,
-    Switch,
-    Tag,
     Card,
     Descriptions,
+    Message,
+    Popconfirm,
+    Skeleton,
+    Space,
+    Tag,
     Typography,
-    Skeleton, Popconfirm, Space,
 } from '@arco-design/web-react';
 import {
-    IconStarFill,
-    IconThumbUpFill,
-    IconSunFill,
     IconFaceSmileFill,
     IconPenFill,
-    IconMore, IconThumbUp, IconShareInternal, IconPushpin, IconDelete, IconEdit, IconCheckCircleFill,
+    IconPushpin,
+    IconStarFill,
+    IconSunFill,
+    IconThumbUpFill,
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import {MetricSet} from "@/types/insights-web";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
-import {CiLock} from "react-icons/ci";
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {getRandomString} from "@/utils/util";
 import {getLockIcon} from "@/pages/common/desc/base";
-import { Avatar } from '@arco-design/web-react';
+import {PermissionEnum} from "@/types/insights-common";
+
 const { Meta } = Card;
 
 
@@ -100,24 +102,26 @@ function CardBlock(props: CardBlockType) {
       className={className}
       size="small"
       style={{cursor:'pointer'}}
-      onClick={handleClick}
-      actions={[
+      actions={
+          item.permissions.includes(PermissionEnum.ManageAble)?
+          [
           <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();callback('update',item)}}>
-           <Button type={"secondary"} size={"mini"}>Edit</Button>
-        </span>,
-          <Popconfirm key={getRandomString()}
+            <Button type={"secondary"} size={"mini"}>Edit</Button>
+          </span>,
+          <Popconfirm
+               key={getRandomString()}
                       focusLock
                       position={"tr"}
                       title='Confirm'
                       content={t['metricSetList.operations.delete.confirm']}
-                      onCancel={(e) => {e.stopPropagation();}}
-                      onOk={(e) => {e.stopPropagation();callback('delete',item);}}>
- <span key={4} className='icon-hover'
-       onClick={(e) => {e.stopPropagation();}}>
+                      onOk={async () => {
+                        await callback('delete',item);
+                      }}>
+            <span key={4} className='icon-hover'>
                 <Button type={"secondary"} size={"mini"}>Delete</Button>
             </span>
           </Popconfirm>,
-      ]}
+      ]:null}
 
       title={
         loading ? (
@@ -128,7 +132,7 @@ function CardBlock(props: CardBlockType) {
             className={styles['card-block-skeleton']}
           />
         ) : (
-          <>
+          <div  onClick={handleClick}>
               <div
               className={cs(styles.title, {
                 [styles['title-more']]: visible,
@@ -140,16 +144,17 @@ function CardBlock(props: CardBlockType) {
               </div>
             </div>
             <div className={styles.time}>{formatTimeStamp(item.createTime,DateTimeFormat)}</div>
-          </>
+          </div>
         )
       }
     >
-      <div className={styles.content}>{getContent()}</div>
+      <div className={styles.content} onClick={handleClick}>{getContent()}</div>
         <Meta
             avatar={
+                item.permissions.includes(PermissionEnum.AccessAble) ?
                 <Space>
-                    <Button type={"primary"} size={"mini"}>Preview</Button>
-                </Space>
+                    <Button type={"primary"} size={"mini"} onClick={handleClick}>Preview</Button>
+                </Space>:null
             }
         />
     </Card>
