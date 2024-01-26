@@ -159,7 +159,7 @@ export default function MetricBindedList({metricSetInfo}) {
             </Form>
         <Table rowKey={'id'} size={"small"} onChange={onChangeTable} loading={loading} columns={columns} data={listData}/>
         {showApplyModal && <ApplyModal itemInfo={currentRecord?.extend} resourceType={currentRecord.resourceType} onClose={() => setShowApplyModal(false)}/>}
-        {showBindModal && <AddBindedPanel metricId={metricSetInfo.id} onClose={() => setShowBindModal(false)}/>}
+        {showBindModal && <AddBindedPanel metricSetInfo={metricSetInfo} onClose={() => setShowBindModal(false)}/>}
         </Card>
     );
 }

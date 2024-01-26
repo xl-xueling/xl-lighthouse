@@ -206,7 +206,7 @@ public class MetricSetServiceImpl implements MetricSetService {
             List<Integer> statIds = bindElements.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Stat).map(z -> z.getResourceId()).collect(Collectors.toList());
             for(Integer statId : statIds){
                 Stat stat = statService.queryById(statId);
-                if(stat != null){
+                if(stat == null){
                     continue;
                 }
                 String hash = Md5Util.getMD5(metricId + "_" + RelationTypeEnum.MetricSetBindRelation.getRelationType() + "_" + statId + "_" + ResourceTypeEnum.Stat.getResourceType());

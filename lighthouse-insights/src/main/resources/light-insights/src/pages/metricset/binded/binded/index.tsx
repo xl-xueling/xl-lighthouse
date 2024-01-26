@@ -21,7 +21,7 @@ const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
 
-export default function AddBindedPanel({metricId,onClose}) {
+export default function AddBindedPanel({metricSetInfo,onClose}) {
 
     const t = useLocale(locale);
 
@@ -43,7 +43,7 @@ export default function AddBindedPanel({metricId,onClose}) {
                     }
                 >
                     {/*<Typography.Paragraph >Content of Tab Panel 1</Typography.Paragraph>*/}
-                    <BindedStatisticListPanel />
+                    <BindedStatisticListPanel metricSetInfo={metricSetInfo} />
                 </TabPane>
                 <TabPane
                     key='2'

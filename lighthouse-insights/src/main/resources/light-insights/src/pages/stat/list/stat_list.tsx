@@ -14,11 +14,12 @@ import StatUpdateModal from "@/pages/stat/update";
 import {getRandomString} from "@/utils/util";
 import {GlobalErrorCodes} from "@/utils/constants";
 import StatDetailModal from "@/pages/stat/list/detail";
-import {StatStateEnum} from "@/types/insights-common";
+import {ResourceTypeEnum, StatStateEnum} from "@/types/insights-common";
 import {requestResetPasswd} from "@/api/user";
 import SearchForm from "@/pages/stat/list/form";
+import {requestBinded} from "@/api/metricset";
 
-export default function StatisticalListPanel({formParams = {},from = null,parentLoading=false}) {
+export default function StatisticalListPanel({formParams = {},from = null,parentLoading=false,extend=null}) {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const [listData,setListData] = useState<Array<Stat>>([]);
@@ -46,8 +47,30 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
         }else if(type == 'delete'){
             setCurrentItem(record);
             await handlerDelete(record.id);
+        }else if(type == 'bind'){
+            console.log("bind...item,metricSetInfo:" + JSON.stringify(extend));
+            await handlerBind(record.id);
         }
     };
+
+    async function handlerBind(id:number){
+        const bindParams = {
+            bindElements:[{resourceId:id,resourceType:ResourceTypeEnum.Stat}],
+            metricIds:extend.id,
+        }
+        console.log("bindParams is:" + JSON.stringify(bindParams));
+        requestBinded(bindParams).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['statList.columns.bind.success']});
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error) => {
+            console.log(error);
+            Message.error(t['system.error'])
+        })
+    }
 
     const handlerChangeState = async (record:Stat,state:StatStateEnum) => {
         const changeParam = {
@@ -169,7 +192,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
                onChange={onChangeTable}
                pagination={pagination}
                loading={parentLoading ? false : loading}/>
-            {detailVisible && <StatDetailModal statInfo={currentItem} onClose={() => setDetailVisible(false)}/>}
+            {/*{detailVisible && <StatDetailModal statInfo={currentItem} onClose={() => setDetailVisible(false)}/>}*/}
             {updateModalVisible && <StatUpdateModal statInfo={currentItem} onClose={() => setUpdateModalVisible(false)} listCallback={tableCallback}/>}
         </>
         );

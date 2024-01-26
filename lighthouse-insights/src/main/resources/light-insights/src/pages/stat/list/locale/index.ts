@@ -13,6 +13,8 @@ const i18n = {
     'statList.table.operations.frozen':'Frozen',
     'statList.table.operations.delete':'Delete',
     'statList.table.operations.apply':'Apply',
+    'statList.table.operations.bind':'Bind',
+    'statList.table.operations.bind.confirm':'Are you sure to bind this item?',
     'statList.table.operations.stop.confirm':'Are you sure to stop this item?',
     'statList.table.operations.restart.confirm':'Are you sure to restart this item?',
     'statList.table.operations.frozen.confirm':'Are you sure to frozen this item?',
@@ -31,6 +33,7 @@ const i18n = {
     'statList.columns.restart.success':'The statistic has been restarted!',
     'statList.columns.stop.success':'The statistic has been stopped!',
     'statList.columns.delete.success':'The statistic has been deleted!',
+    'statList.columns.bind.success':'The element has been binded successfully!',
   },
   'zh-CN': {
     'statList.table.columns.name':'名称',
@@ -46,6 +49,8 @@ const i18n = {
     'statList.table.operations.frozen':'冻结',
     'statList.table.operations.delete':'删除',
     'statList.table.operations.apply':'申请',
+    'statList.table.operations.bind':'绑定',
+    'statList.table.operations.bind.confirm':'是否确认绑定该元素？',
     'statList.table.operations.stop.confirm':'是否确认停止该统计项？',
     'statList.table.operations.restart.confirm':'是否确认重启该统计项？',
     'statList.table.operations.frozen.confirm':'是否确认冻结该统计项？',
@@ -64,6 +69,7 @@ const i18n = {
     'statList.columns.restart.success':'统计任务已启动！',
     'statList.columns.stop.success':'统计任务已停止！',
     'statList.columns.delete.success':'统计任务已删除！',
+    'statList.columns.bind.success':'元素已被绑定！',
   },
 };
 
