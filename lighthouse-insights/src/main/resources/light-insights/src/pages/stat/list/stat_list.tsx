@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 import locale from './locale';
 import {Department, Stat, TreeNode} from "@/types/insights-web";
 import {requestChangeState, requestDeleteById, requestList} from "@/api/stat";
-import {getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
+import {getBindColumns, getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
 import Detail from "@/pages/stat/list/detail";
 import StatUpdateModal from "@/pages/stat/update";
 import {getRandomString} from "@/utils/util";
@@ -92,8 +92,18 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
         })
     }
 
+    const handleGetColumns = () => {
+        if(!from){
+            return getColumns(t,tableCallback);
+        }else if(from == 'group-manage'){
+            return getColumnsOfManage(t, tableCallback);
+        }else if(from == 'bind'){
+            return getBindColumns(t,tableCallback);
+        }
+    }
+
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
-    const columns = useMemo(() => (from && from == 'group-manage') ? getColumnsOfManage(t, tableCallback) : getColumns(t,tableCallback), [t,listData]);
+    const columns = useMemo(() => handleGetColumns(), [t,from,listData]);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: true,

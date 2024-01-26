@@ -219,3 +219,59 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
         },
     ];
 }
+
+
+
+export function getBindColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+
+    return [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+        },
+        {
+            title: 'Title',
+            dataIndex: 'title',
+            render:(value,record) => {
+                return (<div onClick={() => callback(record, 'showDetailModal')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
+            }
+        },
+        {
+            title: 'Group',
+            dataIndex: 'group.token',
+        },
+        {
+            title: 'TimeParam',
+            dataIndex: 'timeparam',
+        },
+        {
+            title: 'Expired',
+            dataIndex: 'expired',
+            render:(value,record) => {
+                return getStatExpiredEnumDescription(value);
+            }
+        },
+        {
+            title: 'State',
+            dataIndex: 'state',
+            render: (value) => {
+                return getStatStateDescriptionWithBadge(t,value)
+            },
+        },
+        {
+            title: 'Operation',
+            dataIndex: 'operation',
+            headerCellStyle: {width:'200px' },
+            render: (_, record) => {
+                const viewButton = <Link key={getRandomString()} target={"_blank"} href={'/stat/display/' + record.id}>
+                    <Button
+                        type="text"
+                        size="mini">
+                        {'绑定'}
+                    </Button>
+                </Link>
+                return <Space size={16} direction="horizontal">{[viewButton]}</Space>
+            }
+        },
+    ];
+}
