@@ -71,8 +71,9 @@ public class ProjectController {
 
     @PostMapping("/project/list")
     public ResultData<ListData<ProjectVO>> queryList(@Validated @RequestBody ListSearchObject<ProjectQueryParam> searchObject){
+        ProjectQueryParam queryParam = searchObject.getQueryParamOrDefault(new ProjectQueryParam());
         Pagination pagination = searchObject.getPagination();
-        ListData<ProjectVO> listData = projectService.queryList(searchObject.getQueryParams(),pagination.getPageNum(),pagination.getPageSize());
+        ListData<ProjectVO> listData = projectService.queryList(queryParam,pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
     }
 

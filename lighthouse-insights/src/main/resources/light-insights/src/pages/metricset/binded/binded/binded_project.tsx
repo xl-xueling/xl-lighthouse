@@ -1,13 +1,13 @@
 import {Form, Grid, Input} from "@arco-design/web-react";
 import React, {useState} from "react";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
+import ProjectListPanel from "@/pages/project/list/ProjectListPanel";
 
 export default function BindedProjectListPanel({metricSetInfo,onClose = null}) {
 
     const [formParams,setFormParams] = useState<any>({});
 
     const handlerSearch = (search) => {
-        console.log("search:" + search);
         setFormParams({search});
     }
 
@@ -20,7 +20,7 @@ export default function BindedProjectListPanel({metricSetInfo,onClose = null}) {
                 <Input.Search size={"small"} style={{width:'350px'}} allowClear={true} onSearch={handlerSearch}/>
             </Form.Item>
         </Form>
-        <StatisticalListPanel formParams={formParams} from={'bind'} extend={metricSetInfo}/>
+            <ProjectListPanel formParams={formParams}/>
         </>
     );
 }

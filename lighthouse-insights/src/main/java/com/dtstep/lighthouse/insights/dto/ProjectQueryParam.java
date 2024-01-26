@@ -8,7 +8,7 @@ public class ProjectQueryParam {
 
     private Integer id;
 
-    private String title;
+    private String search;
 
     private List<Integer> departmentIds;
 
@@ -28,12 +28,12 @@ public class ProjectQueryParam {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getSearch() {
+        return search;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSearch(String search) {
+        this.search = search;
     }
 
     public LocalDateTime getCreateStartTime() {

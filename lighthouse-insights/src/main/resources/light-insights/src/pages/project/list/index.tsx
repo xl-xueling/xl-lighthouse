@@ -29,6 +29,7 @@ import {ResourceTypeEnum} from "@/types/insights-common";
 import {GlobalErrorCodes} from "@/utils/constants";
 import {getRandomString} from "@/utils/util";
 import {GlobalState} from "@/store";
+import ProjectListPanel from "@/pages/project/list/ProjectListPanel";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -211,21 +212,7 @@ export default function Index() {
           <Button size={"small"} type="primary" onClick={() => setCreateVisible(true)}>{t['projectList.operations.create.project']}</Button>
         </Grid.Col>
       </Grid.Row>
-      <Table
-          rowKey={'id'}
-          style={{ marginTop:12}}
-          size={"small"}
-          loading={loading}
-          onChange={onChangeTable}
-          pagination={pagination}
-          columns={columns}
-          data={listData}
-      />
-      {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} onSuccess={handlerReloadList}/>}
-      {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)} onSuccess={handlerReloadList}/>}
-      {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
-      {bindedVisible && <ReverseBindedPanel bindElement={{resourceId:selectedProject?.id,resourceType:ResourceTypeEnum.Project,title:selectedProject?.title}} onClose={() => setBindedVisible(false)}/>}
-      {applyVisible && <ProjectApplyModal projectInfo={selectedProject} onClose={() => setApplyVisible(false)}/>}
+      <ProjectListPanel formParams={formParams}/>
     </Card>
       </>
   );
