@@ -47,8 +47,8 @@
             <if test="queryParam!= null and queryParam.id!=null">
                 AND id = #{queryParam.id}
             </if>
-            <if test="queryParam != null and queryParam.title != null">
-                AND (title LIKE CONCAT('%', #{queryParam.title}, '%') or id = #{queryParam.title})
+            <if test="queryParam != null and queryParam.search != null">
+                AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})
             </if>
             <if test="queryParam != null and queryParam.projectId != null">
                 AND project_id = #{queryParam.projectId}

@@ -186,6 +186,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
     },[extend])
 
     useEffect(() => {
+        console.log("search list:" + JSON.stringify(formParams));
         setLoading(true);
         fetchData().then();
     },[refreshTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)])

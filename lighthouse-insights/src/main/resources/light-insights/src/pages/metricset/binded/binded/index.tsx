@@ -15,8 +15,8 @@ import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import BindedStatisticListPanel from "@/pages/metricset/binded/binded/binded_project";
-import StatisticalListPanel from "@/pages/stat/list/stat_list";
+import {LuLayers} from "react-icons/lu";
+import BindedProjectListPanel from "./binded_project";
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
@@ -27,7 +27,7 @@ export default function AddBindedPanel({metricSetInfo,onClose}) {
 
     return (
         <Modal
-            title={'绑定数据项 - [统计工程]'}
+            title={'绑定元素'}
             visible={true}
             style={{ width:'85%',height:'85%'}}
             onCancel={onClose}
@@ -36,36 +36,18 @@ export default function AddBindedPanel({metricSetInfo,onClose}) {
                 <TabPane
                     key='1'
                     title={
-                        <span>
-            <IconCalendar style={{ marginRight: 6 }} />
-            Tab 1
-          </span>
+                        <IconTag style={{marginRight:'8px'}}/>
                     }
                 >
-                    {/*<Typography.Paragraph >Content of Tab Panel 1</Typography.Paragraph>*/}
-                    <BindedStatisticListPanel metricSetInfo={metricSetInfo} />
+                    <BindedProjectListPanel metricSetInfo={metricSetInfo} />
                 </TabPane>
                 <TabPane
                     key='2'
                     title={
-                        <span>
-            <IconClockCircle style={{ marginRight: 6 }} />
-            Tab 2
-          </span>
+                        <LuLayers style={{marginRight:'8px'}}/>
                     }
                 >
                     <Typography.Paragraph >Content of Tab Panel 2</Typography.Paragraph>
-                </TabPane>
-                <TabPane
-                    key='3'
-                    title={
-                        <span>
-            <IconUser style={{ marginRight: 6 }} />
-            Tab 3
-          </span>
-                    }
-                >
-                    <Typography.Paragraph>Content of Tab Panel 3</Typography.Paragraph>
                 </TabPane>
             </Tabs>
 

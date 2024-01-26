@@ -25,6 +25,8 @@ public interface ProjectService {
 
     ProjectVO queryById(Integer id);
 
+    ProjectVO cacheQueryById(Integer id);
+
     TreeNode getStructure(Project project) throws Exception;
 
     int delete(Project project);

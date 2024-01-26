@@ -1,13 +1,12 @@
-import {Form, Grid, Input} from "@arco-design/web-react";
+import {Form, Grid, Input, Message, Modal, Radio, Space, Tabs, Tree, Typography} from "@arco-design/web-react";
 import React, {useState} from "react";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
 
-export default function BindedProjectListPanel({metricSetInfo,onClose = null}) {
+export default function BindedStatisticListPanel({metricSetInfo,onClose = null}) {
 
     const [formParams,setFormParams] = useState<any>({});
 
     const handlerSearch = (search) => {
-        console.log("search:" + search);
         setFormParams({search});
     }
 

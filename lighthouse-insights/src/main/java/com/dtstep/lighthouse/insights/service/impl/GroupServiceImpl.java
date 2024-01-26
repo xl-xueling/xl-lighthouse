@@ -13,6 +13,7 @@ import com.dtstep.lighthouse.insights.service.ResourceService;
 import com.dtstep.lighthouse.insights.vo.ResultWrapper;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +69,13 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group queryById(Integer id) {
+        return groupDao.queryById(id);
+    }
+
+
+    @Override
+    @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    public Group cacheQueryById(Integer id) {
         return groupDao.queryById(id);
     }
 
