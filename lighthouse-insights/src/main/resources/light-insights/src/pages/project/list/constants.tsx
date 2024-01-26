@@ -123,3 +123,75 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
     },
   ]
 }
+
+
+export function getBindColumns(t: any,bindList:Array<number>, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+    return [
+        {
+            title: t['projectList.columns.id'],
+            dataIndex: 'id',
+            render: (value,record) =>
+                <Text>{value}</Text>
+            ,
+        },
+        {
+            title: <>{t['projectList.columns.name']}<IoInformationCircleOutline style={{fontSize:12}}/></>,
+            dataIndex: 'title',
+            render: (value,record) =>
+            {
+                return (
+                    <div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} >
+                        <span style={{display:"inline-flex",alignItems:"center"}}>{value}{record.privateType == 0 ?<CiLock style={{marginLeft:'5px'}}/>:null}</span>
+                    </div>)
+            }
+            ,
+        },
+        {
+            title: t['projectList.columns.department'],
+            dataIndex: 'departmentId',
+            render: (value,record) => <DepartmentLabel departmentId={value}/> ,
+        },
+        {
+            title: t['projectList.columns.admins'],
+            dataIndex: 'admins',
+            render: (value) => {
+                return (<UserGroup users={value}/>);
+            },
+        },
+        {
+            title: t['projectList.columns.createdTime'],
+            dataIndex: 'createTime',
+            render: (value) => {return formatTimeStampBackUp(value)},
+        },
+        {
+            title: t['projectList.columns.operations'],
+            dataIndex: 'operations',
+            headerCellStyle: {width:'250px' },
+            render: (_, record) => {
+                let bindButton = null;
+                if(bindList.includes(record.id)){
+                    bindButton =
+                        <Button key={getRandomString()}
+                                type="text"
+                                size="mini">
+                            {t['projectList.columns.operations.binded']}
+                        </Button>;
+                }else{
+                    bindButton = <Popconfirm key={getRandomString()}
+                                             position={"tr"}
+                                             focusLock
+                                             onOk={() => callback(record, 'bind')}
+                                             title='Confirm'
+                                             content={t['projectList.columns.operations.bind.confirm']}>
+                        <Button
+                            type="text"
+                            size="mini">
+                            {t['projectList.columns.operations.bind']}
+                        </Button>
+                    </Popconfirm>;
+                }
+                return <Space size={16} direction="horizontal">{[bindButton]}</Space>
+            }
+        },
+    ]
+}
