@@ -64,13 +64,9 @@ public class TreeNode implements Serializable {
         this.type = type;
     }
 
-    public void addChild(TreeNode treeNode) throws Exception {
+    public void addChild(TreeNode treeNode){
         if(this.children == null){
             this.children = new ArrayList<>();
-        }
-        List<String> childKeys = children.stream().map(z -> z.getKey()).collect(Collectors.toList());
-        if(childKeys.contains(treeNode.getKey())){
-            throw new Exception("Duplicate node error!");
         }
         this.children.add(treeNode);
     }
