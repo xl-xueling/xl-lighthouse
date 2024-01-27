@@ -23,7 +23,7 @@ import {
 } from "@arco-design/web-react/icon";
 import BindedList from "@/pages/metricset/binded/list";
 import GroupBasicPanel from "@/pages/group/basic";
-import ProjectPreview from "@/pages/project/preview";
+import ProjectPreviewPage from "@/pages/project/preview";
 import useLocale from "@/utils/useLocale";
 import locale from "../locale";
 import {requestQueryById} from "@/api/metricset";
