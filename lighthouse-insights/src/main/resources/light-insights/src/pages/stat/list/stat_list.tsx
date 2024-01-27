@@ -202,7 +202,6 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
                onChange={onChangeTable}
                pagination={pagination}
                loading={parentLoading ? false : loading}/>
-            {/*{detailVisible && <StatDetailModal statInfo={currentItem} onClose={() => setDetailVisible(false)}/>}*/}
             {updateModalVisible && <StatUpdateModal statInfo={currentItem} onClose={() => setUpdateModalVisible(false)} listCallback={tableCallback}/>}
         </>
         );

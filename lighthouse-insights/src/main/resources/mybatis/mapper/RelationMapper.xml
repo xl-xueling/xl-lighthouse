@@ -48,6 +48,7 @@
                 AND relation_type = #{relationType.relationType}
             </if>
         </where>
+        order by resource_type asc ,create_time desc
     </select>
 
     <select id="queryById" resultMap="relationResultMap">
