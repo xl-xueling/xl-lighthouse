@@ -26,6 +26,9 @@ import {RxCube} from "react-icons/rx";
 import styles from "@/pages/metricset/structure/style/index.module.less";
 import {MdOutlineDragIndicator} from "react-icons/md";
 const { Row, Col } = Grid;
+import { MdOutlineNewLabel } from "react-icons/md";
+import { RiDeleteBin3Line } from "react-icons/ri";
+
 export default function StructurePanel({structure,menuCallback}) {
     const t = useLocale(locale);
     const [loading, setLoading] = useState(false);
@@ -36,7 +39,7 @@ export default function StructurePanel({structure,menuCallback}) {
     const [expandedKeys, setExpandedKeys] = useState([]);
 
     const loadData = () => {
-        setTreeData(structure);
+        setTreeData([structure[0]]);
     }
 
     useEffect(() => {
@@ -44,84 +47,19 @@ export default function StructurePanel({structure,menuCallback}) {
     }, [structure]);
 
 
-    async function addNode(pid, title) {
-        setLoading(true);
-        let id = "-1";
-        try {
-            await requestCreate({'pid': pid, 'name': title}).then((response: ResultData) => {
-                const {code, message, data} = response;
-                if (code === '0') {
-                    id = data;
-                    sessionStorage.removeItem('cache_all_department');
-                } else {
-                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-                }
-            });
-        } catch (error) {
-            console.log(error);
-            Notification.error({style: { width: 420 }, title: 'Error', content: t['system.error']});
-        } finally {
-            setLoading(false);
-        }
-        return id;
-    }
-
-    async function updateNode(id,pid,title) {
-        setLoading(true);
-        let result = "-1";
-        try {
-            await requestUpdateById({'id': id, 'pid':pid,'name': title}).then((response: ResultData) => {
-                const {code, message, data} = response;
-                if (code === '0') {
-                    result = code;
-                    sessionStorage.removeItem('cache_all_department');
-                } else {
-                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-                }
-            });
-        } catch (error) {
-            console.log(error);
-            Notification.error({style: { width: 420 }, title: 'Error', content: t['system.error']});
-        } finally {
-            setLoading(false);
-        }
-        return result;
-    }
-
-
-    async function deleteNode(id) {
-        setLoading(true);
-        let result = "-1";
-        try {
-            await requestDeleteById({id}).then((response: ResultData) => {
-                const {code, message, data} = response;
-                if (code === '0') {
-                    result = code;
-                    sessionStorage.removeItem('cache_all_department');
-                } else {
-                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-                }
-            });
-        } catch (error) {
-            console.log(error);
-            Notification.error({style: { width: 420 }, title: 'Error', content: t['system.error']});
-        } finally {
-            setLoading(false);
-        }
-        return result;
-    }
-
     const getIcon= (type,level) => {
         if(type == 'stat'){
             return <IconTag style={{marginRight:'8px'}}/>
+        }else if(type == 'new'){
+            return <MdOutlineNewLabel style={{marginRight:'8px'}}/>
+        }else if(type == 'waste'){
+            return <RiDeleteBin3Line style={{marginRight:'8px'}}/>
         }else if(level == 0){
             return <LuLayers style={{marginRight:'8px'}}/>
         }else if(level == 1){
             return <RxCube style={{marginRight:'8px'}}/>
         } else if(level == 2){
             return <IconMindMapping  style={{marginRight:'8px'}}/>
-        } else if(level == 3){
-            return <IconFile />
         }
     }
 
@@ -130,7 +68,7 @@ export default function StructurePanel({structure,menuCallback}) {
             return <LuLayers style={{marginRight:'8px'}}/>
         }else if(level == 1){
             return <RxCube style={{marginRight:'8px'}}/>
-        } else{
+        }else if(level == 2){
             return <IconMindMapping  style={{marginRight:'8px'}}/>
         }
     }
@@ -148,7 +86,7 @@ export default function StructurePanel({structure,menuCallback}) {
                         key={item.key}
                         title={item.label}
                      {...ret} dataRef={item}>
-                    {children ? generatorTreeNodes(item.children,item.key,++level) : null}
+                    {children ? generatorTreeNodes(item.children,item.key,level + 1) : null}
                 </Tree.Node>
             );
         });
@@ -191,10 +129,8 @@ export default function StructurePanel({structure,menuCallback}) {
                         setExpandedKeys([...newArr, ...keys]);
                     }
                     const key = keys[0];
-                    console.log("key is:" + key)
                     const array = key.split("_");
                     if(array[0] == 'stat'){
-                        console.log("click stat,key is:" + array[0] + ",v:" + array[1]);
                         menuCallback("clickStatMenu",array[1]);
                     }
                 }}
@@ -255,46 +191,48 @@ export default function StructurePanel({structure,menuCallback}) {
                 renderExtra={(node) => {
                     return (
                         <div>
-                            <IconPlus
-                                style={{
-                                    position: 'absolute',
-                                    right: 41,
-                                    fontSize: 13,
-                                    top: 10,
-                                    color: 'rgb(132 160 224)',
-                                }}
-                                onClick={async (e) => {
-                                    const titleNode = e.currentTarget.parentElement.parentElement.querySelector(".arco-tree-node-title");
-                                    const event = new Event('click', {
-                                        bubbles: true,
-                                        cancelable: true,
-                                    });
-                                    titleNode.dispatchEvent(event);
-                                    const dataChildren = node.dataRef.children || [];
-                                    if(node._level >= 2){
-                                        Notification.warning({style: { width: 420 }, title: 'Warning', content: '超出最大层级限制！'});
-                                        return;
-                                    }
-                                    const nodeTitle = "New Node_" + getRandomString(8);
-                                    const currentId = getRandomString();
-                                    if(currentId == "-1"){
-                                        return;
-                                    }
-                                    dataChildren.push({
-                                        key: currentId,
-                                        parentKey:node.dataRef.id,
-                                        name: nodeTitle,
-                                        title:nodeTitle,
-                                        id: currentId,
-                                        pid: node.dataRef.id,
-                                        icon:getIconByLevel(node._level + 1),
-                                    });
-                                    node.dataRef.children = dataChildren;
-                                    setTreeData([...treeData]);
-                                    const newArr = [...expandedKeys].filter(item => item !== node.dataRef.id);
-                                    setExpandedKeys([...newArr, node.dataRef.id]);
-                                }}
-                            />
+                            {(
+                                <IconPlus
+                                    style={{
+                                        position: 'absolute',
+                                        right: 41,
+                                        fontSize: 13,
+                                        top: 10,
+                                        color: 'rgb(132 160 224)',
+                                    }}
+                                    onClick={async (e) => {
+                                        const titleNode = e.currentTarget.parentElement.parentElement.querySelector(".arco-tree-node-title");
+                                        const event = new Event('click', {
+                                            bubbles: true,
+                                            cancelable: true,
+                                        });
+                                        titleNode.dispatchEvent(event);
+                                        const dataChildren = node.dataRef.children || [];
+                                        if(node._level >= 2){
+                                            Notification.warning({style: { width: 420 }, title: 'Warning', content: '超出最大层级限制！'});
+                                            return;
+                                        }
+                                        const nodeTitle = "New Node_" + getRandomString(8);
+                                        const currentId = getRandomString();
+                                        if(currentId == "-1"){
+                                            return;
+                                        }
+                                        dataChildren.push({
+                                            key: currentId,
+                                            parentKey:node.dataRef.id,
+                                            name: nodeTitle,
+                                            title:nodeTitle,
+                                            id: currentId,
+                                            pid: node.dataRef.id,
+                                            icon:getIconByLevel(node._level + 1),
+                                        });
+                                        node.dataRef.children = dataChildren;
+                                        setTreeData([...treeData]);
+                                        const newArr = [...expandedKeys].filter(item => item !== node.dataRef.id);
+                                        setExpandedKeys([...newArr, node.dataRef.id]);
+                                    }}
+                                />
+                            )}
                             {node._level != 0  &&  (
                                 <IconPen
                                     style={{
@@ -363,10 +301,6 @@ export default function StructurePanel({structure,menuCallback}) {
                                         if (dataChildren.length > 0) {
                                             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['department.manage.deleteHasChild']});
                                         } else {
-                                            // const result = await deleteNode(node.dataRef.id);
-                                            // if (result == "-1") {
-                                            //     return;
-                                            // }
                                             const w = deleteNodeByKey([...treeData], node.dataRef.id)
                                             setTreeData([...w]);
                                         }
@@ -390,14 +324,6 @@ export default function StructurePanel({structure,menuCallback}) {
             >
                 {generatorTreeNodes(treeData)}
             </Tree>
-            {/*<Grid.Row justify="end" style={{marginTop:'50px'}}>*/}
-            {/*    <Grid.Col span={8}>*/}
-            {/*        <Space className={styles.right} size={16} direction="horizontal">*/}
-            {/*            <Button size={"small"} type="primary">确认</Button>*/}
-            {/*            <Button size={"small"}>取消</Button>*/}
-            {/*        </Space>*/}
-            {/*    </Grid.Col>*/}
-            {/*</Grid.Row>*/}
         </div>
   );
 

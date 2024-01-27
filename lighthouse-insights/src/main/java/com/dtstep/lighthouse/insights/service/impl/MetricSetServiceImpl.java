@@ -270,47 +270,51 @@ public class MetricSetServiceImpl implements MetricSetService {
         List<TreeNode> structure = metricSet.getStructure();
         if(CollectionUtils.isEmpty(structure)){
             structure = new ArrayList<>();
-            structure.add(getDefaultStructure(metricSet));
+            combineDefaultStructure(structure,metricSet);
         }else {
-            List<String> keys = TreeUtil.getAllKeys(structure);
-            TreeNode newElementNode = TreeUtil.findNodeByValue(structure,"-1");
-            if(newElementNode == null){
-                newElementNode = new TreeNode("",-1);
-                structure.add(newElementNode);
-            }
-            TreeNode wasteNode = TreeUtil.findNodeByValue(structure,"-2");
-            if(wasteNode == null){
-                wasteNode = new TreeNode("",-2);
-                structure.add(wasteNode);
-            }
-            List<RelationVO> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
-            for(RelationVO relation : relationList){
-                if(relation.getResourceType() == ResourceTypeEnum.Project){
-                    Project project = (Project) relation.getExtend();
-                    if(project != null){
-                        List<Stat> statList = statService.queryByProjectId(project.getId());
-                        for(Stat stat:statList){
-                            String tempKey = "stat" + "_" + stat.getId();
-                            if(!keys.contains(tempKey)){
-                                newElementNode.addChild(new TreeNode(stat.getTitle(),stat.getId(),"stat"));
-                            }
-                        }
-                    }
-                }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
-                    Stat stat = (Stat) relation.getExtend();
-                    if(stat != null){
+            combineCustomStructure(structure,metricSet);
+        }
+        return structure;
+    }
+
+    private void combineCustomStructure(List<TreeNode> structure, MetricSet metricSet){
+        List<String> keys = TreeUtil.getAllKeys(structure);
+        TreeNode newElementNode = TreeUtil.findNodeByValue(structure,"-1");
+        if(newElementNode == null){
+            newElementNode = new TreeNode("",-1,"new");
+            structure.add(newElementNode);
+        }
+        TreeNode wasteNode = TreeUtil.findNodeByValue(structure,"-2");
+        if(wasteNode == null){
+            wasteNode = new TreeNode("",-2,"waste");
+            structure.add(wasteNode);
+        }
+        List<RelationVO> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
+        for(RelationVO relation : relationList){
+            if(relation.getResourceType() == ResourceTypeEnum.Project){
+                Project project = (Project) relation.getExtend();
+                if(project != null){
+                    List<Stat> statList = statService.queryByProjectId(project.getId());
+                    for(Stat stat:statList){
                         String tempKey = "stat" + "_" + stat.getId();
                         if(!keys.contains(tempKey)){
                             newElementNode.addChild(new TreeNode(stat.getTitle(),stat.getId(),"stat"));
                         }
                     }
                 }
+            }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
+                Stat stat = (Stat) relation.getExtend();
+                if(stat != null){
+                    String tempKey = "stat" + "_" + stat.getId();
+                    if(!keys.contains(tempKey)){
+                        newElementNode.addChild(new TreeNode(stat.getTitle(),stat.getId(),"stat"));
+                    }
+                }
             }
         }
-        return structure;
     }
 
-    private TreeNode getDefaultStructure(MetricSet metricSet){
+    private void combineDefaultStructure(List<TreeNode> structure,MetricSet metricSet){
         List<String> keyList = new ArrayList<>();
         TreeNode rootNode = new TreeNode(metricSet.getTitle(),metricSet.getId(),"metric");
         List<RelationVO> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
@@ -355,7 +359,17 @@ public class MetricSetServiceImpl implements MetricSetService {
                 }
             }
         }
-        return rootNode;
+        structure.add(rootNode);
+        TreeNode newElementNode = TreeUtil.findNodeByValue(structure,"-1");
+        if(newElementNode == null){
+            newElementNode = new TreeNode("",-1,"new");
+            structure.add(newElementNode);
+        }
+        TreeNode wasteNode = TreeUtil.findNodeByValue(structure,"-2");
+        if(wasteNode == null){
+            wasteNode = new TreeNode("",-2,"waste");
+            structure.add(wasteNode);
+        }
     }
 
     @Override
