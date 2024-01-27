@@ -34,7 +34,7 @@ import {RiAppsLine} from "react-icons/ri";
 import {CiLock} from "react-icons/ci";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview/index";
 const { Row, Col } = Grid;
-export default function PreviewHeader() {
+export default function MetricSetPreviewHeader() {
 
     const t = useLocale(locale);
     const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);

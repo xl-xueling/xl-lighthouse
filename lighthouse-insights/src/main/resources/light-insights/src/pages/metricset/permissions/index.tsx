@@ -4,7 +4,7 @@ const TreeNode = Tree.Node;
 import styles from "./style/index.module.less";
 const CollapseItem = Collapse.Item;
 
-export default function MetricSetPermissions({resourceId,resourceType}) {
+export default function MetricSetPermissionsPanel({resourceId,resourceType}) {
 
     useEffect(() => {
         console.log("resourceId:" + resourceId + ",resourceType:" + resourceType)

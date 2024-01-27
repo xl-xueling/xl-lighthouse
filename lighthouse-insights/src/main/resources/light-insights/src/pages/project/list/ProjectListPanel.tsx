@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {
     Breadcrumb,
     Button,
@@ -30,6 +30,7 @@ import {GlobalErrorCodes} from "@/utils/constants";
 import {getRandomString} from "@/utils/util";
 import {GlobalState} from "@/store";
 import {requestBinded} from "@/api/metricset";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -39,6 +40,7 @@ export interface Props {
     parentLoading?:boolean,
     extend?:any,
 }
+
 
 export default function ProjectListPanel({formParams = {},parentLoading = false,extend = null,from = null}:Props) {
     const t = useLocale(locale);
@@ -75,11 +77,13 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
         }
     };
 
+
     async function handlerBind(id:number){
         const bindParams = {
             bindElements:[{resourceId:id,resourceType:ResourceTypeEnum.Project}],
             metricIds:extend.id,
         }
+
         await requestBinded(bindParams).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){

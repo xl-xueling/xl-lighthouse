@@ -12,7 +12,7 @@ import {
     Spin,
     Menu, Empty
 } from '@arco-design/web-react';
-import PreviewHeader from "@/pages/metricset/preview/header";
+import MetricSetPreviewHeader from "@/pages/metricset/preview/header";
 import {
     IconDashboard,
     IconFolder,
@@ -42,7 +42,7 @@ import { BiWalletAlt } from "react-icons/bi";
 import { RxCube } from "react-icons/rx";
 
 
-export default function MetricSetPreviewMenu({metricSetInfo,callback}) {
+export default function MetricSetDataViewMenu({metricSetInfo,callback}) {
 
     const getIcon = (item) => {
         if(item.type == 'stat'){

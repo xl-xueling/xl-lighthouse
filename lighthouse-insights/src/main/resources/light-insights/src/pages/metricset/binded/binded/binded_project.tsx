@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import ProjectListPanel from "@/pages/project/list/ProjectListPanel";
 
-export default function BindedProjectListPanel({metricSetInfo,onClose = null}) {
+export default function BindedProjectListPanel({metricSetInfo}) {
 
     const [formParams,setFormParams] = useState<any>({});
 
