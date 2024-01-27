@@ -23,19 +23,19 @@ import {ResourceTypeEnum} from "@/types/insights-common";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
-export default function ProjectManage() {
+export default function ProjectManagePage() {
 
-  const t = useLocale(locale);
-  const [groupId,setGroupId] = useState<number>(null);
-  const [showGroupCreatePanel, setShowGroupCreatePanel] = useState(false);
-  const [showManagePanel, setShowManagePanel] = useState(false);
-  const [showPermissionManageModal, setShowPermissionManageModal] = useState(false);
-  const [errorCode,setErrorCode] = useState<string>(null);
-  const [projectInfo,setProjectInfo] = useState<Project>(null);
-  const [loading,setLoading] = useState<boolean>(true);
-  const { id } = useParams();
+    const t = useLocale(locale);
+    const [groupId, setGroupId] = useState<number>(null);
+    const [showGroupCreatePanel, setShowGroupCreatePanel] = useState(false);
+    const [showManagePanel, setShowManagePanel] = useState(false);
+    const [showPermissionManageModal, setShowPermissionManageModal] = useState(false);
+    const [errorCode, setErrorCode] = useState<string>(null);
+    const [projectInfo, setProjectInfo] = useState<Project>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const {id} = useParams();
 
-    const menuCallback = async (id:number) => {
+    const menuCallback = async (id: number) => {
         setGroupId(id);
         setShowManagePanel(true);
     }
@@ -48,17 +48,17 @@ export default function ProjectManage() {
         setShowPermissionManageModal(true);
     }
 
-    const callback = async (operation,data) => {
-        switch (operation){
+    const callback = async (operation, data) => {
+        switch (operation) {
             case "create-group":
-                const newGroup:TreeNode = {
-                    key:'group_'+data.id,
-                    label:data.token,
-                    value:data.id,
-                    type:'group',
+                const newGroup: TreeNode = {
+                    key: 'group_' + data.id,
+                    label: data.token,
+                    value: data.id,
+                    type: 'group',
                 }
-                let groups = projectInfo.structure.children?projectInfo.structure.children:[];
-                groups = [...groups,newGroup];
+                let groups = projectInfo.structure.children ? projectInfo.structure.children : [];
+                groups = [...groups, newGroup];
                 projectInfo.structure.children = groups;
                 setProjectInfo(projectInfo);
                 break;
@@ -69,7 +69,7 @@ export default function ProjectManage() {
                 setTimeout(() => {
                     setLoading(false);
                     setShowManagePanel(false);
-                },0);
+                }, 0);
                 break;
             }
             default:
@@ -80,13 +80,13 @@ export default function ProjectManage() {
     const fetchData = async (): Promise<void> => {
         setLoading(true);
         await requestQueryById({id}).then((response) => {
-            const {code, data ,message} = response;
-            if(code == '0'){
+            const {code, data, message} = response;
+            if (code == '0') {
                 setProjectInfo(data);
-            }else if(GlobalErrorCodes.includes(String(code))){
+            } else if (GlobalErrorCodes.includes(String(code))) {
                 setErrorCode(code);
-            }else{
-                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            } else {
+                Notification.warning({style: {width: 420}, title: 'Warning', content: message || t['system.error']});
             }
             setLoading(false);
         }).catch((error) => {
@@ -96,13 +96,13 @@ export default function ProjectManage() {
 
     useEffect(() => {
         fetchData().then();
-    },[])
+    }, [])
 
 
     const descriptionData = [
         {
             label: <IconBook/>,
-            value: <span style={{ wordBreak: 'break-word' }}>{projectInfo?.desc}</span>
+            value: <span style={{wordBreak: 'break-word'}}>{projectInfo?.desc}</span>
         },
         {
             label: <IconUserGroup/>,
@@ -113,85 +113,89 @@ export default function ProjectManage() {
             value: <DepartmentLabel departmentId={projectInfo?.departmentId}/>,
         },
         {
-            label: <IconClockCircle />,
+            label: <IconClockCircle/>,
             value: formatTimeStampBackUp(projectInfo?.createTime),
         },
     ];
 
-  return (
-      <>
-      {
-          errorCode ? <ErrorPage errorCode={errorCode}/>
-              :
-              <>
-                  <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
-                      <BreadcrumbItem>
-                          <IconHome/>
-                      </BreadcrumbItem>
-                      <BreadcrumbItem style={{fontWeight: 20}}>{t['projectManage.breadcrumbItem']}</BreadcrumbItem>
-                  </Breadcrumb>
-                  <Spin loading={loading} style={{width: '100%'}}>
-                      <div className={styles.layout}>
-                          <div className={styles['layout-left-side']}>
-                              <Space size={15} direction="vertical" style={{width: '100%'}}>
-                                  <ProjectManageMenu structure={projectInfo?.structure} callback={menuCallback}/>
-                                  <Card>
-                                      <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                                          <Typography.Title heading={6}>
-                                              {t['projectManage.card.label.projectManage']}
-                                          </Typography.Title>
-                                      </div>
-                                      <div className={styles.shortcuts}>
-                                          <div className={styles.item} onClick={handlerCreateGroup}>
-                                              <div className={styles.icon}><CiViewTable/></div>
-                                              <div
-                                                  className={styles.title}>{t['projectManage.shortcuts.createGroup']}</div>
-                                          </div>
-                                          <div className={styles.item} onClick={handlerPermissionManage}>
-                                              <div className={styles.icon}><VscGistSecret/></div>
-                                              <div
-                                                  className={styles.title}>{t['projectManage.shortcuts.permissionsManage']}</div>
-                                          </div>
-                                      </div>
-                                  </Card>
-                                  <Card>
-                                      <Space size={10} direction="vertical" style={{width: '100%'}}>
-                                          <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                                              <Typography.Title heading={6}>
-                                                  {t['projectManage.card.label.description']}
-                                              </Typography.Title>
-                                          </div>
-                                          <div>
-                                              <Skeleton
-                                                  loading={loading}
-                                                  text={{
-                                                      rows: 3,
-                                                      width: ['100%'],
-                                                  }}
-                                                  animation
-                                              >
-                                                  <Descriptions colon=' :' layout='horizontal'
-                                                                labelStyle={{textAlign: 'left', width: '24px',}}
-                                                                style={{whiteSpace: "normal"}}
-                                                                data={descriptionData} column={1}/>
-                                              </Skeleton>
-                                          </div>
-                                      </Space>
-                                  </Card>
-                              </Space>
-                          </div>
-                          <div className={styles['layout-content']}>
-                              {showManagePanel && <Card><GroupManagePanel projectInfo={projectInfo} groupId={groupId}
-                                                                          deleteCallback={callback}/></Card>}
-                          </div>
-                          {showGroupCreatePanel && <GroupCreateModal projectId={id} callback={callback}
-                                                                     onClose={() => setShowGroupCreatePanel(false)}/>}
-                          {showPermissionManageModal && <PermissionManageModal resourceId={id} resourceType={ResourceTypeEnum.Project} onClose={() => setShowPermissionManageModal(false)} />}
-                      </div>
-                  </Spin>
-              </>
-      }
-      </>
-  );
+    return (
+        <>
+            {
+                errorCode ? <ErrorPage errorCode={errorCode}/>
+                    :
+                    <>
+                        <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
+                            <BreadcrumbItem>
+                                <IconHome/>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem
+                                style={{fontWeight: 20}}>{t['projectManage.breadcrumbItem']}</BreadcrumbItem>
+                        </Breadcrumb>
+                        <Spin loading={loading} style={{width: '100%'}}>
+                            <div className={styles.layout}>
+                                <div className={styles['layout-left-side']}>
+                                    <Space size={15} direction="vertical" style={{width: '100%'}}>
+                                        <ProjectManageMenu structure={projectInfo?.structure} callback={menuCallback}/>
+                                        <Card>
+                                            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                                <Typography.Title heading={6}>
+                                                    {t['projectManage.card.label.projectManage']}
+                                                </Typography.Title>
+                                            </div>
+                                            <div className={styles.shortcuts}>
+                                                <div className={styles.item} onClick={handlerCreateGroup}>
+                                                    <div className={styles.icon}><CiViewTable/></div>
+                                                    <div
+                                                        className={styles.title}>{t['projectManage.shortcuts.createGroup']}</div>
+                                                </div>
+                                                <div className={styles.item} onClick={handlerPermissionManage}>
+                                                    <div className={styles.icon}><VscGistSecret/></div>
+                                                    <div
+                                                        className={styles.title}>{t['projectManage.shortcuts.permissionsManage']}</div>
+                                                </div>
+                                            </div>
+                                        </Card>
+                                        <Card>
+                                            <Space size={10} direction="vertical" style={{width: '100%'}}>
+                                                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                                    <Typography.Title heading={6}>
+                                                        {t['projectManage.card.label.description']}
+                                                    </Typography.Title>
+                                                </div>
+                                                <div>
+                                                    <Skeleton
+                                                        loading={loading}
+                                                        text={{
+                                                            rows: 3,
+                                                            width: ['100%'],
+                                                        }}
+                                                        animation
+                                                    >
+                                                        <Descriptions colon=' :' layout='horizontal'
+                                                                      labelStyle={{textAlign: 'left', width: '24px',}}
+                                                                      style={{whiteSpace: "normal"}}
+                                                                      data={descriptionData} column={1}/>
+                                                    </Skeleton>
+                                                </div>
+                                            </Space>
+                                        </Card>
+                                    </Space>
+                                </div>
+                                <div className={styles['layout-content']}>
+                                    {showManagePanel &&
+                                    <Card><GroupManagePanel projectInfo={projectInfo} groupId={groupId}
+                                                            deleteCallback={callback}/></Card>}
+                                </div>
+                                {showGroupCreatePanel && <GroupCreateModal projectId={id} callback={callback}
+                                                                           onClose={() => setShowGroupCreatePanel(false)}/>}
+                                {showPermissionManageModal &&
+                                <PermissionManageModal resourceId={id} resourceType={ResourceTypeEnum.Project}
+                                                       onClose={() => setShowPermissionManageModal(false)}/>}
+                            </div>
+                        </Spin>
+                    </>
+            }
+        </>
+    );
 }
 
