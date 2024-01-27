@@ -252,13 +252,6 @@ export function getBindColumns(t: any,bindList:Array<number>,callback: (record: 
             dataIndex: 'timeparam',
         },
         {
-            title: 'Expired',
-            dataIndex: 'expired',
-            render:(value,record) => {
-                return getStatExpiredEnumDescription(value);
-            }
-        },
-        {
             title: 'State',
             dataIndex: 'state',
             render: (value) => {
@@ -268,7 +261,7 @@ export function getBindColumns(t: any,bindList:Array<number>,callback: (record: 
         {
             title: 'Operation',
             dataIndex: 'operation',
-            headerCellStyle: {width:'200px' },
+            headerCellStyle: {width:'130px' },
             render: (value, record) => {
                 let bindButton = null;
                 console.log("bindList:" + JSON.stringify(bindList));

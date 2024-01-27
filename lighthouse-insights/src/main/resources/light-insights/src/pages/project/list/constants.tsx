@@ -166,7 +166,7 @@ export function getBindColumns(t: any,bindList:Array<number>, callback: (record:
         {
             title: t['projectList.columns.operations'],
             dataIndex: 'operations',
-            headerCellStyle: {width:'250px' },
+            headerCellStyle: {width:'130px' },
             render: (_, record) => {
                 let bindButton = null;
                 if(bindList.includes(record.id)){
