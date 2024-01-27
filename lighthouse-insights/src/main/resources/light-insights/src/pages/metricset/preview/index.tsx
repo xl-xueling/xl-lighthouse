@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {createContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb} from '@arco-design/web-react';
 import PreviewHeader from "@/pages/metricset/preview/header";
@@ -9,6 +9,7 @@ import {requestQueryById} from "@/api/metricset";
 import {MetricSet} from "@/types/insights-web";
 import MetricSetPreviewPanel from "@/pages/metricset/preview/panel_dashboard/dashboard";
 import MetricBindedList from "@/pages/metricset/binded/list";
+
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
@@ -22,13 +23,15 @@ import ErrorPage from "@/pages/common/error";
 import { FaRegChartBar } from "react-icons/fa";
 import { AiOutlineDashboard } from "react-icons/ai";
 
-
+export const MetricSetPreviewContext = React.createContext(null)
 export default function MetricSetPreview() {
 
     const { id } = useParams();
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const [metricSetInfo,setMetricSetInfo] = useState<MetricSet>(null);
+    const [reloadTime,setReloadTime] = useState<number>(Date.now());
+
     const [errorCode,setErrorCode] = useState<string>(null);
 
     const fetchData = async (): Promise<void> => {
@@ -50,15 +53,17 @@ export default function MetricSetPreview() {
 
     useEffect(() => {
         fetchData().then();
-    },[])
+    },[reloadTime])
 
     return (
+        <MetricSetPreviewContext.Provider value={{ metricSetInfo,setMetricSetInfo, reloadTime,setReloadTime }}>
         <>
+
             {
                 errorCode ? <ErrorPage errorCode={errorCode}/>
                     :
-                <>
-                <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+                    <>
+                    <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
                     <Breadcrumb.Item>
                         <IconHome />
                     </Breadcrumb.Item>
@@ -66,44 +71,39 @@ export default function MetricSetPreview() {
                 </Breadcrumb>
                 <Space size={16} direction="vertical" style={{ width: '100%' }}>
                 <Card>
-                    <PreviewHeader metricSetInfo={metricSetInfo}/>
+                    <PreviewHeader/>
                 </Card>
-                <Tabs
-                type="line">
+                <Tabs type="line">
                 <TabPane
                 key='1'
                 title={
-                <span>
                 <span style={{display:"inline-flex",alignItems:"center"}}><IconDashboard style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.dataView']}</span>
-                </span>
             }>
-                    <MetricSetPreviewPanel metricSetInfo={metricSetInfo}/>
+                    <MetricSetPreviewPanel/>
                 </TabPane>
                 <TabPane
                 key='2'
                 title={
-                <span>
                 <span style={{display:"inline-flex",alignItems:"center"}}><PiLinkSimple style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.bindItems']}</span>
-                </span>
             }>
-            {metricSetInfo && <MetricBindedList metricSetInfo={metricSetInfo}/>}
+            {metricSetInfo && <MetricBindedList/>}
                 </TabPane>
                 <TabPane key='3' title={
-                <span>
                 <span style={{display:"inline-flex",alignItems:"center"}}><VscGistSecret style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.permissions']}</span>
-                </span>}>
+                }>
                     <MetricSetPermissions resourceType={ResourceTypeEnum.Metric} resourceId={metricSetInfo?.id}/>
                 </TabPane>
                 <TabPane key='4' title={
                 <span>
                 <span style={{display:"inline-flex",alignItems:"center"}}><PiTreeStructure style={{ marginRight: 6}} />{t['metricSetPreview.tab.title.structure']}</span>
                 </span>}>
-            {metricSetInfo && <MetricSetStructure metricSetInfo={metricSetInfo}/>}
+            {metricSetInfo && <MetricSetStructure/>}
                 </TabPane>
                 </Tabs>
                 </Space>
-                </>
+                    </>
             }
         </>
+        </MetricSetPreviewContext.Provider>
     );
 }

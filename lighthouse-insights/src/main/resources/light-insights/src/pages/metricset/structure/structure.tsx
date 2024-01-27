@@ -36,13 +36,12 @@ export default function StructurePanel({structure,menuCallback}) {
     const [expandedKeys, setExpandedKeys] = useState([]);
 
     const loadData = () => {
-        console.log("structure is：" + JSON.stringify(structure));
         setTreeData(structure);
     }
 
     useEffect(() => {
         loadData();
-    }, []);
+    }, [structure]);
 
 
     async function addNode(pid, title) {

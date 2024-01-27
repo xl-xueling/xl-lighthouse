@@ -10,7 +10,7 @@ import {
 import {
     IconDownCircle, IconPlus, IconTag, IconThunderbolt
 } from '@arco-design/web-react/icon';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import locale from './locale';
 import styles from './style/index.module.less';
 import useLocale from "@/utils/useLocale";
@@ -27,12 +27,15 @@ import {requestDeleteById} from "@/api/project";
 import ProjectApplyModal from "@/pages/project/apply";
 import ApplyModal from "@/pages/order/apply/modal/ApplyModal";
 import AddBindedPanel from "@/pages/metricset/binded/binded";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
-export default function MetricBindedList({metricSetInfo}) {
+export default function MetricBindedList() {
 
     const t = useLocale(locale);
+    const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
+    const { reloadTime, setReloadTime } = useContext(MetricSetPreviewContext);
     const [listData, setListData] = useState<Relation[]>([]);
     const [loading,setLoading] = useState<boolean>(true);
     const [searchForms,setSearchForms] = useState<any>({});
@@ -60,6 +63,7 @@ export default function MetricBindedList({metricSetInfo}) {
 
 
 
+
     const handleRemove = async (relationId) => {
         const removeParam = {
             id:metricSetInfo?.id,
@@ -71,6 +75,7 @@ export default function MetricBindedList({metricSetInfo}) {
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['bindedList.list.column.label.operations.remove.submit.success']});
                 const updatedList = listData.filter(x => x.id != relationId);
                 setListData(updatedList);
+                setReloadTime(Date.now());
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
