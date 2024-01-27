@@ -24,6 +24,22 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
             dataIndex: 'id',
         },
         {
+            title:t['bindedList.list.column.label.title'],
+            dataIndex: 'title',
+            render: (value,record) =>
+            {
+                if(record.resourceType == ResourceTypeEnum.Project){
+                    return (
+                        record.extend?.title
+                    )
+                }else if(record.resourceType == ResourceTypeEnum.Stat){
+                    return (
+                        record.extend?.title
+                    )
+                }
+            }
+        },
+        {
             title: t['bindedList.list.column.label.elementType'],
             dataIndex: 'relationType',
             render: (value,record) =>
@@ -38,22 +54,6 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
                     )
                 }
 
-            }
-        },
-        {
-            title:t['bindedList.list.column.label.title'],
-            dataIndex: 'title',
-            render: (value,record) =>
-            {
-                if(record.resourceType == ResourceTypeEnum.Project){
-                    return (
-                        record.extend?.title
-                    )
-                }else if(record.resourceType == ResourceTypeEnum.Stat){
-                    return (
-                        record.extend?.title
-                    )
-                }
             }
         },
         {

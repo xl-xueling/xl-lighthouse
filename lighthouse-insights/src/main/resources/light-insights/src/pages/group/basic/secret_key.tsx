@@ -70,6 +70,7 @@ export default function SecretKeyModal({groupId,onClose}) {
             title={t['group.basic.secretKey']}
             visible={true}
             footer={null}
+            alignCenter={false}
             style={{ width:'750px',top:'250px',display:"grid"}}
             onCancel={onClose}>
 

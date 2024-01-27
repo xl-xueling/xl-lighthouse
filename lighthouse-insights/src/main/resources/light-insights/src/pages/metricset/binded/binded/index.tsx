@@ -25,7 +25,7 @@ const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
 
-export default function AddBindedPanel({metricSetInfo,onClose}) {
+export default function NewMetricBindedModal({metricSetInfo,onClose}) {
 
     const t = useLocale(locale);
 
@@ -33,8 +33,12 @@ export default function AddBindedPanel({metricSetInfo,onClose}) {
         <Modal
             title={t['bindedModal.title']}
             visible={true}
-            style={{ width:'1350px',maxWidth:'90%',top:'150px',display:"grid"}}
+            alignCenter={false}
+            style={{ width:'1350px',maxWidth:'90%'
+                 ,top:'150px'
+            }}
             onCancel={onClose}
+            footer={null}
         >
             <Tabs defaultActiveTab='1' tabPosition={"right"} animation={true}>
                 <TabPane

@@ -1,13 +1,13 @@
 import React, {createContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb} from '@arco-design/web-react';
+import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb, Spin} from '@arco-design/web-react';
 import MetricSetPreviewHeader from "@/pages/metricset/preview/header";
 import {IconDashboard, IconHome, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {requestQueryById} from "@/api/metricset";
 import {MetricSet} from "@/types/insights-web";
-import MetricSetDataViewPanel from "@/pages/metricset/preview/panel_dashboard/dashboard";
+import MetricSetDataViewPanel from "@/pages/metricset/preview/dataview/MetricSetDataViewPanel";
 import MetricSetBindListPanel from "@/pages/metricset/binded/list";
 
 const {Title} = Typography;
@@ -25,7 +25,7 @@ import {AiOutlineDashboard} from "react-icons/ai";
 
 export const MetricSetPreviewContext = React.createContext(null)
 
-export default function MetricSetPreviewPage() {
+export default function Index() {
     const {id} = useParams();
     const t = useLocale(locale);
     const [loading, setLoading] = useState<boolean>(false);
@@ -79,7 +79,7 @@ export default function MetricSetPreviewPage() {
                                             <span style={{display: "inline-flex", alignItems: "center"}}><IconDashboard
                                                 style={{marginRight: 6}}/>{t['metricSetPreview.tab.title.dataView']}</span>
                                         }>
-                                        <MetricSetDataViewPanel/>
+                                        <MetricSetDataViewPanel parentLoading={loading}/>
                                     </TabPane>
                                     <TabPane
                                         key='2'
