@@ -59,7 +59,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
             metricIds:extend.id,
         }
         console.log("bindParams is:" + JSON.stringify(bindParams));
-        requestBinded(bindParams).then((response) => {
+        await requestBinded(bindParams).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['statList.columns.bind.success']});

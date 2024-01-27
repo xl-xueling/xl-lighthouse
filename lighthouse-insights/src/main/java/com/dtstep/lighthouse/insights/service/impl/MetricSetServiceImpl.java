@@ -4,8 +4,10 @@ import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.MetricSetDao;
 import com.dtstep.lighthouse.insights.dao.RelationDao;
+import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto.MetricBindParam;
 import com.dtstep.lighthouse.insights.dto.MetricBindRemoveParam;
 import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
@@ -29,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,6 +73,12 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     @Autowired
     private RelationDao relationDao;
+
+    @Autowired
+    private GroupDao groupDao;
+
+    @Autowired
+    private StatDao statDao;
 
     @Transactional
     @Override
@@ -261,24 +270,7 @@ public class MetricSetServiceImpl implements MetricSetService {
         List<TreeNode> structure = metricSet.getStructure();
         if(CollectionUtils.isEmpty(structure)){
             structure = new ArrayList<>();
-            TreeNode rootNode = new TreeNode(metricSet.getTitle(),metricSet.getId(),"metric");
-            structure.add(rootNode);
-            List<RelationVO> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
-            for(RelationVO relation : relationList){
-                if(relation.getResourceType() == ResourceTypeEnum.Project){
-                    Project project = (Project) relation.getExtend();
-                    if(project != null){
-                        TreeNode projectStructure = projectService.getStructure(project);
-                        rootNode.addChild(projectStructure);
-                    }
-                }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
-                    Stat stat = (Stat)relation.getExtend();
-                    if(stat != null){
-                        TreeNode statNode = new TreeNode(stat.getTitle(), stat.getId(),"stat");
-                        rootNode.addChild(statNode);
-                    }
-                }
-            }
+            structure.add(getDefaultStructure(metricSet));
         }else {
             List<String> keys = TreeUtil.getAllKeys(structure);
             TreeNode newElementNode = TreeUtil.findNodeByValue(structure,"-1");
@@ -316,6 +308,54 @@ public class MetricSetServiceImpl implements MetricSetService {
             }
         }
         return structure;
+    }
+
+    private TreeNode getDefaultStructure(MetricSet metricSet){
+        List<String> keyList = new ArrayList<>();
+        TreeNode rootNode = new TreeNode(metricSet.getTitle(),metricSet.getId(),"metric");
+        List<RelationVO> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
+        for(RelationVO relation : relationList){
+            if(relation.getResourceType() == ResourceTypeEnum.Project){
+                Project project = (Project) relation.getExtend();
+                if(project != null){
+                    TreeNode projectNode = new TreeNode(project.getTitle(),project.getId(),"project");
+                    HashMap<String,TreeNode> nodeMap = new HashMap<>();
+                    String key = "project_"+project.getId();
+                    keyList.add(key);
+                    nodeMap.put(key,projectNode);
+                    List<Group> groupList = groupDao.queryByProjectId(project.getId());
+                    for(Group group : groupList){
+                        TreeNode groupNode = new TreeNode(group.getToken(),group.getId(),"group");
+                        String groupKey = "group_"+group.getId();
+                        keyList.add(groupKey);
+                        nodeMap.put(groupKey,groupNode);
+                        projectNode.addChild(groupNode);
+                    }
+                    List<Stat> statList = statDao.queryByProjectId(project.getId());
+                    for(Stat stat : statList){
+                        String statKey = "stat_"+stat.getId();
+                        if(!keyList.contains(statKey)){
+                            TreeNode statNode = new TreeNode(stat.getTitle(),stat.getId(),"stat");
+                            TreeNode parentNode = nodeMap.get("group_"+stat.getGroupId());
+                            keyList.add(statKey);
+                            parentNode.addChild(statNode);
+                        }
+                    }
+                    rootNode.addChild(projectNode);
+                }
+            }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
+                Stat stat = (Stat)relation.getExtend();
+                if(stat != null){
+                    String statKey = "stat_"+stat.getId();
+                    if(!keyList.contains(statKey)){
+                        TreeNode statNode = new TreeNode(stat.getTitle(), stat.getId(),"stat");
+                        rootNode.addChild(statNode);
+                        keyList.add(statKey);
+                    }
+                }
+            }
+        }
+        return rootNode;
     }
 
     @Override

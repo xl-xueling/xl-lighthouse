@@ -44,12 +44,12 @@ export default function MetricSetBindListPanel() {
     const [currentRecord,setCurrentRecord] = useState<Relation>(null);
 
     const [pagination, setPagination] = useState<PaginationProps>({
-        sizeOptions: [10,20,30,50],
-        sizeCanChange: false,
+        sizeOptions: [15,30],
+        sizeCanChange: true,
         showTotal: true,
-        pageSize: 5,
+        pageSize: 15,
         current: 1,
-        pageSizeChangeResetCurrent: false,
+        pageSizeChangeResetCurrent: true,
     });
 
     const tableCallback = async (record, type) => {
@@ -159,7 +159,7 @@ export default function MetricSetBindListPanel() {
                     </Grid.Col>
                 </Row>
             </Form>
-        <Table rowKey={'id'} size={"small"} onChange={onChangeTable} loading={loading} columns={columns} data={listData}/>
+        <Table rowKey={'id'} size={"small"} onChange={onChangeTable} loading={loading} pagination={pagination} columns={columns} data={listData}/>
         {showApplyModal && <ApplyModal itemInfo={currentRecord?.extend} resourceType={currentRecord.resourceType} onClose={() => setShowApplyModal(false)}/>}
         {showBindModal && <NewMetricBindedModal metricSetInfo={metricSetInfo} onClose={() =>
         {
