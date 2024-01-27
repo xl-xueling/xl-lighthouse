@@ -13,6 +13,8 @@ import {RiAppsLine} from "react-icons/ri";
 import {PermissionEnum, ResourceTypeEnum} from "@/types/insights-common";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import {MetricSet} from "@/types/insights-web";
+import StatLabel from "@/pages/stat/common/StatLabel";
+import ProjectLabel from "@/pages/project/common/ProjectLabel";
 
 
 
@@ -30,11 +32,11 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
             {
                 if(record.resourceType == ResourceTypeEnum.Project){
                     return (
-                        record.extend?.title
+                        <ProjectLabel projectInfo={record?.extend} />
                     )
                 }else if(record.resourceType == ResourceTypeEnum.Stat){
                     return (
-                        record.extend?.title
+                        <StatLabel statInfo={record?.extend}/>
                     )
                 }
             }

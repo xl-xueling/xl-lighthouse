@@ -16,7 +16,8 @@ import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
-
+import { MdOutlineNewLabel } from "react-icons/md";
+import { RiDeleteBin3Line } from "react-icons/ri";
 export default function MetricSetStructure() {
 
     const [loading,setLoading] = useState<boolean>(false);
@@ -38,17 +39,23 @@ export default function MetricSetStructure() {
                         </Card>
                         <Card>
                             <Grid.Row justify="end">
+                                <Grid.Col span={16}>
+                                    <Space className={styles.right} size={16} direction="horizontal">
+                                        <Button size={"mini"} type="secondary" icon={<MdOutlineNewLabel/>}>待新增(16)</Button>
+                                        <Button size={"mini"} type={"secondary"} icon={<RiDeleteBin3Line/>}>已删除(30)</Button>
+                                    </Space>
+                                </Grid.Col>
                                 <Grid.Col span={8}>
                                     <Space className={styles.right} size={16} direction="horizontal">
+                                        <Button size={"small"} type={"primary"} status={"danger"}>重置</Button>
                                         <Button size={"small"} type="primary">确认</Button>
-                                        <Button size={"small"}>取消</Button>
                                     </Space>
                                 </Grid.Col>
                             </Grid.Row>
                         </Card>
                     </Space>
                     <Space className={styles.right} size={16} direction="vertical">
-                        {selectedStatId && <StatPreviewPanel id={selectedStatId}/>}
+                        {selectedStatId && <StatPreviewPanel size={'small'} id={selectedStatId}/>}
                     </Space>
                 </div>
             </Space>
