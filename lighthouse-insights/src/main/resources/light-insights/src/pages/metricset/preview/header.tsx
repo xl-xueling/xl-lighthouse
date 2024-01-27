@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
     Button,
     Card,
@@ -32,10 +32,12 @@ import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
 import {RiAppsLine} from "react-icons/ri";
 import {CiLock} from "react-icons/ci";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview/index";
 const { Row, Col } = Grid;
-export default function PreviewHeader({metricSetInfo}) {
+export default function PreviewHeader() {
 
     const t = useLocale(locale);
+    const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
 
     const metricDetail = [
         {

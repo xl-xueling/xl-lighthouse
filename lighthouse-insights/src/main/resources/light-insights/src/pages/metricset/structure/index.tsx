@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {
     Card,
@@ -23,13 +23,15 @@ import MetricBindedList from "@/pages/metricset/binded/list";
 import styles from "./style/index.module.less";
 import StatPreviewPanel from "@/pages/stat/display/preview";
 import StructurePanel from "@/pages/metricset/structure/structure";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
-export default function MetricSetStructure({metricSetInfo}) {
+export default function MetricSetStructure() {
 
     const [loading,setLoading] = useState<boolean>(false);
+    const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
     const handlerCallback = async (type,record) => {
         if(type == 'clickStatMenu'){
@@ -37,10 +39,6 @@ export default function MetricSetStructure({metricSetInfo}) {
         }
 
     }
-
-    useEffect(() => {
-        console.log("structure is:" + JSON.stringify(metricSetInfo.structure))
-    },[])
 
     return (
         <Spin loading={loading} style={{display:'block'}} className={styles['ss']}>

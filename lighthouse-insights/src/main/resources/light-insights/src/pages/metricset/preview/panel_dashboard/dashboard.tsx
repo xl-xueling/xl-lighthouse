@@ -1,14 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb, Spin} from '@arco-design/web-react';
 import styles from "@/pages/project/preview/style/index.module.less";
 import StatPreviewPanel from "@/pages/stat/display/preview";
 import MetricSetPreviewMenu from "@/pages/metricset/preview/panel_dashboard/menu";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
-export default function MetricSetPreviewPanel({metricSetInfo}) {
+export default function MetricSetPreviewPanel() {
+    const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
     const [loading,setLoading] = useState<boolean>(false);
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
 
