@@ -3,13 +3,13 @@ import {useParams} from "react-router-dom";
 import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb, Spin} from '@arco-design/web-react';
 import styles from "@/pages/project/preview/style/index.module.less";
 import StatPreviewPanel from "@/pages/stat/display/preview";
-import MetricSetPreviewMenu from "@/pages/metricset/preview/panel_dashboard/menu";
+import MetricSetDataViewMenu from "@/pages/metricset/preview/panel_dashboard/menu";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
-export default function MetricSetPreviewPanel() {
+export default function MetricSetDataViewPanel() {
     const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
     const [loading,setLoading] = useState<boolean>(false);
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
@@ -26,7 +26,7 @@ export default function MetricSetPreviewPanel() {
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
                         <Row>
-                            <MetricSetPreviewMenu metricSetInfo={metricSetInfo} callback={handlerCallback}/>
+                            <MetricSetDataViewMenu metricSetInfo={metricSetInfo} callback={handlerCallback}/>
                         </Row>
                     </Space>
                     <Space className={styles.right} size={16} direction="vertical">

@@ -12,14 +12,14 @@ import {
     Spin,
     Button
 } from '@arco-design/web-react';
-import PreviewHeader from "@/pages/metricset/preview/header";
+import MetricSetPreviewHeader from "@/pages/metricset/preview/header";
 import {IconDashboard, IconHome, IconRefresh, IconSearch, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {requestQueryById} from "@/api/metricset";
 import {MetricSet} from "@/types/insights-web";
-import MetricSetPreviewPanel from "@/pages/metricset/preview/panel_dashboard/dashboard";
-import MetricBindedList from "@/pages/metricset/binded/list";
+import MetricSetDataViewPanel from "@/pages/metricset/preview/panel_dashboard/dashboard";
+import MetricSetBindListPanel from "@/pages/metricset/binded/list";
 import styles from "./style/index.module.less";
 import StatPreviewPanel from "@/pages/stat/display/preview";
 import StructurePanel from "@/pages/metricset/structure/structure";
@@ -37,7 +37,6 @@ export default function MetricSetStructure() {
         if(type == 'clickStatMenu'){
             setSelectedStatId(Number(record));
         }
-
     }
 
     return (

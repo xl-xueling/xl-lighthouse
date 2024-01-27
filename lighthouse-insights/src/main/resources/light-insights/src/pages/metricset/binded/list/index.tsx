@@ -31,7 +31,7 @@ import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
-export default function MetricBindedList() {
+export default function MetricSetBindListPanel() {
 
     const t = useLocale(locale);
     const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
@@ -62,8 +62,6 @@ export default function MetricBindedList() {
     }
 
 
-
-
     const handleRemove = async (relationId) => {
         const removeParam = {
             id:metricSetInfo?.id,
@@ -85,7 +83,6 @@ export default function MetricBindedList() {
     }
 
     const handlerShowBindModal = () => {
-        console.log("showbind modal")
         setShowBindModal(true);
     }
 
@@ -138,7 +135,7 @@ export default function MetricBindedList() {
 
     useEffect(() => {
         fetchData().then();
-    },[pagination.current, pagination.pageSize,JSON.stringify(searchForms)])
+    },[reloadTime,pagination.current, pagination.pageSize,JSON.stringify(searchForms)])
 
     return (
         <Card>
@@ -164,7 +161,12 @@ export default function MetricBindedList() {
             </Form>
         <Table rowKey={'id'} size={"small"} onChange={onChangeTable} loading={loading} columns={columns} data={listData}/>
         {showApplyModal && <ApplyModal itemInfo={currentRecord?.extend} resourceType={currentRecord.resourceType} onClose={() => setShowApplyModal(false)}/>}
-        {showBindModal && <AddBindedPanel metricSetInfo={metricSetInfo} onClose={() => setShowBindModal(false)}/>}
+        {showBindModal && <AddBindedPanel metricSetInfo={metricSetInfo} onClose={() =>
+        {
+            setShowBindModal(false);
+            setReloadTime(Date.now());
+        }
+        }/>}
         </Card>
     );
 }
