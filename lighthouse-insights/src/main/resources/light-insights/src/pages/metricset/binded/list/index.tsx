@@ -26,7 +26,7 @@ import {getColumns} from "./constants";
 import {requestDeleteById} from "@/api/project";
 import ProjectApplyModal from "@/pages/project/apply";
 import ApplyModal from "@/pages/order/apply/modal/ApplyModal";
-import AddBindedPanel from "@/pages/metricset/binded/binded";
+import NewMetricBindedModal from "@/pages/metricset/binded/binded";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 const { Row, Col } = Grid;
 const { Text } = Typography;
@@ -161,7 +161,7 @@ export default function MetricSetBindListPanel() {
             </Form>
         <Table rowKey={'id'} size={"small"} onChange={onChangeTable} loading={loading} columns={columns} data={listData}/>
         {showApplyModal && <ApplyModal itemInfo={currentRecord?.extend} resourceType={currentRecord.resourceType} onClose={() => setShowApplyModal(false)}/>}
-        {showBindModal && <AddBindedPanel metricSetInfo={metricSetInfo} onClose={() =>
+        {showBindModal && <NewMetricBindedModal metricSetInfo={metricSetInfo} onClose={() =>
         {
             setShowBindModal(false);
             setReloadTime(Date.now());

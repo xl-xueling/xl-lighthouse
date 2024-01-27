@@ -40,7 +40,7 @@ import {MdOutlineInsights} from "react-icons/md";
 import {PiShareNetwork} from "react-icons/pi";
 import {GoTasklist} from "react-icons/go";
 import {RiAppsLine} from "react-icons/ri";
-import MetricSetPreviewPage from "@/pages/metricset/preview";
+import Index from "@/pages/metricset/preview";
 import {PiDiamondsFour} from "react-icons/pi";
 import StatPreviewPage from "@/pages/stat/display";
 
@@ -291,7 +291,7 @@ function PageLayout() {
                             <Content>
                                 <Switch>
                                     <Route path="/project/manage/:id" component={ProjectManagePage}/>
-                                    <Route path="/metricset/preview/:id" component={MetricSetPreviewPage}/>
+                                    <Route path="/metricset/preview/:id" component={Index}/>
                                     <Route path="/project/preview/:id" component={ProjectPreviewPage}/>
                                     <Route path="/stat/display/:id" component={StatPreviewPage}/>
                                     {flattenRoutes.map((route, index) => {
