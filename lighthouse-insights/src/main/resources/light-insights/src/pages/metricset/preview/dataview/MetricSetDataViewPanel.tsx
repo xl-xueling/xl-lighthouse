@@ -15,6 +15,7 @@ export default function MetricSetDataViewPanel({parentLoading}) {
 
     const handlerCallback = async (type,record) => {
         if(type == 'clickStatMenu'){
+            console.log("record is:" + record)
             setSelectedStatId(Number(record));
         }
     }

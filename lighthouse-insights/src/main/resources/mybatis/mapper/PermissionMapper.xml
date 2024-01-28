@@ -54,6 +54,8 @@
         </where>
     </select>
 
+
+
     <select id="existPermission" resultType="boolean">
         SELECT COUNT(1) > 0
         FROM ldp_permissions

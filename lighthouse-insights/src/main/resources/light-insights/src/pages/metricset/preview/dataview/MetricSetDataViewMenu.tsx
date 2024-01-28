@@ -60,14 +60,21 @@ export default function MetricSetDataViewMenu({metricSetInfo,callback}) {
         items?.map((item) => {
             if (Array.isArray(item.children) && item.children.length > 0) {
                 return (
-                    <Menu.SubMenu key={item.key} title={
+                    <Menu.SubMenu key={item.key} {...item}
+                                  onClick={(e)=>
+                    {
+                    callback("clickStatMenu",Number(item.value));e.stopPropagation();}}
+
+                                  title={
                         <span style={{display:"inline-flex",alignItems:"center"}}>{getIcon(item)}{item.label}</span>
                     }>
                         {renderMenuItems(item.children)}
                     </Menu.SubMenu>
                 );
             }
-            return <Menu.Item key={item.key}>{getIcon(item)}{item.label}</Menu.Item>;
+            return <Menu.Item  onClick={(e)=>
+            {
+                callback("clickStatMenu",Number(item.value));e.stopPropagation();}} {...item} key={item.key}>{getIcon(item)}{item.label}</Menu.Item>;
         });
 
     return (
@@ -78,9 +85,9 @@ export default function MetricSetDataViewMenu({metricSetInfo,callback}) {
                 onClickMenuItem = {(key, event, keyPath) => {
                     const type = key.split("_")[0];
                     const id = key.split("_")[1];
-                    if(type == 'stat'){
-                        callback("clickStatMenu",Number(id));
-                    }
+                    // if(type == 'stat'){
+                    //     callback("clickStatMenu",Number(id));
+                    // }
                 }}>
                 {
                     (metricSetInfo && metricSetInfo?.structure[0]?.children) ? renderMenuItems(metricSetInfo?.structure[0]?.children)

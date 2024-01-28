@@ -13,6 +13,13 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
+    <resultMap id="structureResultMap" type="com.dtstep.lighthouse.insights.dto_bak.FlatTreeNode">
+        <id property="id" column="id"/>
+        <id property="pid" column="pid"/>
+        <id property="type" column="type"/>
+        <id property="title" column="title"/>
+    </resultMap>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Project" >
         INSERT INTO ldp_projects (`title`,`department_id`,`private_type`,`desc`,`create_time`,`update_time`) VALUES
         (
@@ -114,4 +121,24 @@
     <delete id="deleteById">
         delete from ldp_projects where id = #{id}
     </delete>
+
+    <select id="queryNodeList" resultMap="structureResultMap">
+        WITH RECURSIVE tree AS (
+            SELECT id, 0 as pid,title, 'project' AS type
+            FROM ldp_projects
+            WHERE id IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            UNION ALL
+            SELECT g.id ,g.project_id as pid, g.token, 'group' AS type
+            FROM ldp_groups g
+                     INNER JOIN tree t ON g.project_id = t.id
+            UNION ALL
+            SELECT s.id, s.group_id, s.title, 'stat' AS type
+            FROM ldp_stats s
+                     INNER JOIN tree t ON s.group_id = t.id
+        )
+        SELECT id,pid,title,type FROM tree;
+    </select>
 </mapper>

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {
     Card,
@@ -23,10 +23,20 @@ export default function MetricSetStructure() {
     const [loading,setLoading] = useState<boolean>(false);
     const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
+    const structureRef = useRef(null);
     const handlerCallback = async (type,record) => {
+        console.log("data is:" + JSON.stringify(structureRef.current.getData()));
         if(type == 'clickStatMenu'){
             setSelectedStatId(Number(record));
         }
+    }
+
+    const handlerSubmit = () => {
+        console.log("handler submit..")
+    }
+
+    const handlerReset = () => {
+        console.log("handler reset..")
     }
 
     return (
@@ -35,7 +45,7 @@ export default function MetricSetStructure() {
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
                         <Card>
-                            <StructurePanel structure={metricSetInfo?.structure} menuCallback={handlerCallback}/>
+                            <StructurePanel ref={structureRef} structure={metricSetInfo?.structure} menuCallback={handlerCallback}/>
                         </Card>
                         <Card>
                             <Grid.Row justify="end">

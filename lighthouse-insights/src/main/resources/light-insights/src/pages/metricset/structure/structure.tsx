@@ -29,7 +29,8 @@ const { Row, Col } = Grid;
 import { MdOutlineNewLabel } from "react-icons/md";
 import { RiDeleteBin3Line } from "react-icons/ri";
 
-export default function StructurePanel({structure,menuCallback}) {
+const StructurePanel =  React.forwardRef((props:{structure,menuCallback},ref) => {
+    const {structure,menuCallback} = props;
     const t = useLocale(locale);
     const [loading, setLoading] = useState(false);
     const [treeData, setTreeData] = useState([]);
@@ -46,6 +47,13 @@ export default function StructurePanel({structure,menuCallback}) {
         loadData();
     }, [structure]);
 
+    React.useImperativeHandle(ref,() => ({
+        getData
+    }));
+
+    const getData = () => {
+        return treeData;
+    }
 
     const getIcon= (type,level) => {
         if(type == 'stat'){
@@ -326,5 +334,6 @@ export default function StructurePanel({structure,menuCallback}) {
             </Tree>
         </div>
   );
+})
 
-}
+export default StructurePanel;

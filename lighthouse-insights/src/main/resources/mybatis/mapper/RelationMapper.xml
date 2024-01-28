@@ -6,6 +6,7 @@
         <result property="id" column="id"/>
         <result property="subjectId" column="subject_id"/>
         <result property="relationType" column="relation_type" typeHandler="com.dtstep.lighthouse.insights.types.RelationTypeEnumTypeHandler"/>
+        <result property="resourceTitle" column="resource_title"/>
         <result property="resourceId" column="resource_id"/>
         <result property="resourceType" column="resource_type" typeHandler="com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler"/>
         <result property="createTime" column="create_time"/>
@@ -50,6 +51,32 @@
         </where>
         order by resource_type asc ,create_time desc
     </select>
+
+
+    <select id="queryJoinList" resultMap="relationResultMap">
+        SELECT a.`id`,a.`subject_id`, a.`relation_type`,a.`resource_id`, a.`resource_type`, a.`create_time`,
+        CASE
+        WHEN a.resource_type = '4' THEN b.title
+        WHEN a.resource_type = '6' THEN c.title
+        END AS resource_title
+        FROM ldp_relations a
+        left join ldp_projects b on a.resource_type = '4' and a.resource_id = b.id
+        left join ldp_stats c on a.resource_type = '6' and a.resource_id = c.id
+        <where>
+            <if test="queryParam.subjectId != null">
+                AND subject_id = #{queryParam.subjectId}
+            </if>
+            <if test="queryParam.relationType != null">
+                AND relation_type = #{queryParam.relationType.relationType}
+            </if>
+            <if test="queryParam.search != null">
+                AND ((a.resource_type = '4' AND p.title LIKE CONCAT('%', #{queryParam.search}, '%'))
+                OR (a.resource_type = '6' AND s.title LIKE CONCAT('%', #{queryParam.search}, '%')))
+            </if>
+        </where>
+        order by resource_type asc ,create_time desc
+    </select>
+
 
     <select id="queryById" resultMap="relationResultMap">
         SELECT `id`,`subject_id`, `relation_type`,`resource_id`, `resource_type`, `create_time` FROM ldp_relations WHERE id = #{id}
