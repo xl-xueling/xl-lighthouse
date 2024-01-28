@@ -9,6 +9,9 @@
         <result property="projectId" column="project_id"/>
         <result property="template" column="template"/>
         <result property="timeparam" column="timeparam"/>
+        <result property="projectTitle" column="project_title"/>
+        <result property="token" column="token"/>
+        <result property="departmentId" column="department_id"/>
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.StatStateEnumTypeHandler"/>
         <result property="renderConfig" column="render_config" typeHandler="com.dtstep.lighthouse.insights.types.RenderConfigTypeHandler"/>
         <result property="randomId" column="random_id"/>
@@ -58,6 +61,53 @@
             </if>
         </where>
     </select>
+
+    <select id="queryJoinList" resultMap="statResultMap">
+        WITH RECURSIVE cte AS (
+        SELECT d.id
+        FROM ldp_departments d
+        <where>
+            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
+                AND d.id IN
+                <foreach item="item" index="index" collection="queryParam.departmentIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        UNION ALL
+        SELECT d.id
+        FROM ldp_departments d
+        JOIN cte ON cte.id = d.pid
+        )
+        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`timeparam`,a.`state`,a.`random_id`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,b.title as project_title,b.department_id,c.token
+        FROM ldp_stats a
+                 inner join ldp_projects b on a.project_id = b.id
+                 inner join ldp_groups c on a.group_id = c.id
+        <where>
+            <if test="queryParam.ids!=null and queryParam.ids.size > 0">
+                AND a.id IN
+                <foreach item="item" index="index" collection="queryParam.ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="queryParam != null and queryParam.search != null">
+                AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})
+            </if>
+            <if test="queryParam.projectIds != null and queryParam.projectIds.size > 0">
+                AND a.project_id IN
+                <foreach item="item" index="index" collection="queryParam.projectIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
+                AND department_id IN(
+                select id from cte
+                )
+            </if>
+        </where>
+    </select>
+
+
 
     <select id="count" resultType="java.lang.Integer">
         SELECT count(1) from ldp_stats

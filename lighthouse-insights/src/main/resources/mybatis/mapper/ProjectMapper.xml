@@ -126,10 +126,14 @@
         WITH RECURSIVE tree AS (
             SELECT id, 0 as pid,title, 'project' AS type
             FROM ldp_projects
-            WHERE id IN
-            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
-                #{item}
-            </foreach>
+            <where>
+                <if test="ids != null">
+                    id IN
+                    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </where>
             UNION ALL
             SELECT g.id ,g.project_id as pid, g.token, 'group' AS type
             FROM ldp_groups g
@@ -139,6 +143,6 @@
             FROM ldp_stats s
                      INNER JOIN tree t ON s.group_id = t.id
         )
-        SELECT id,pid,title,type FROM tree;
+        SELECT id,pid,title,type FROM tree
     </select>
 </mapper>

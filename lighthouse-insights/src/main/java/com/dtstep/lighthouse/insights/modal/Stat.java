@@ -24,6 +24,12 @@ public class Stat implements Serializable {
 
     private Integer groupId;
 
+    private String projectTitle;
+
+    private String token;
+
+    private Integer departmentId;
+
     private RenderConfig renderConfig = new RenderConfig();
 
     private LocalDateTime createTime;
@@ -146,5 +152,29 @@ public class Stat implements Serializable {
 
     public void setTemplateEntity(TemplateEntity templateEntity) {
         this.templateEntity = templateEntity;
+    }
+
+    public String getProjectTitle() {
+        return projectTitle;
+    }
+
+    public void setProjectTitle(String projectTitle) {
+        this.projectTitle = projectTitle;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 }

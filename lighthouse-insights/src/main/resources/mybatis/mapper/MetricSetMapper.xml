@@ -6,6 +6,7 @@
         <result column="title" property="title"/>
         <result column="private_type" property="privateType" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
         <result column="desc" property="desc"/>
+        <result column="structure" property="structure" typeHandler="com.dtstep.lighthouse.insights.types.ListTreeNodeTypeHandler"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
@@ -51,6 +52,9 @@
             <if test="desc != null">
                 `desc` = #{desc},
             </if>
+            <if test="structure != null">
+                `structure` = #{structure,typeHandler=com.dtstep.lighthouse.insights.types.ListTreeNodeTypeHandler},
+            </if>
             <if test="updateTime != null">
                 `update_time` = #{updateTime},
             </if>
@@ -63,6 +67,6 @@
     </delete>
 
     <select id="queryById" resultMap="metricSetResultMap">
-        SELECT `id`,`title`,`private_type`,`desc`,`create_time`,`update_time` FROM ldp_metricsets WHERE id = #{id}
+        SELECT `id`,`title`,`private_type`,`desc`,`structure`,`create_time`,`update_time` FROM ldp_metricsets WHERE id = #{id}
     </select>
 </mapper>
