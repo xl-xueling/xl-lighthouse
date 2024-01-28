@@ -261,17 +261,16 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
-    public List<TreeNode> getStructure(MetricSet metricSet) throws Exception {
+    public TreeNode getStructure(MetricSet metricSet) throws Exception {
         Validate.notNull(metricSet);
-        List<TreeNode> structure = metricSet.getStructure();
-        if(CollectionUtils.isEmpty(structure)){
-            structure = new ArrayList<>();
-            combineDefaultStructure(structure,metricSet);
+        TreeNode structure = metricSet.getStructure();
+        if(structure == null || CollectionUtils.isEmpty(structure.getChildren())){
+            structure = combineDefaultStructure(metricSet);
         }
         return structure;
     }
 
-    private void combineDefaultStructure(List<TreeNode> structure,MetricSet metricSet){
+    private TreeNode combineDefaultStructure(MetricSet metricSet){
         List<String> keyList = new ArrayList<>();
         String rootKey = RandomID.id(8,keyList);
         TreeNode rootNode = new TreeNode(rootKey,metricSet.getTitle(),metricSet.getId(),"metric");
@@ -310,7 +309,7 @@ public class MetricSetServiceImpl implements MetricSetService {
                 rootNode.addChild(treeNode);
             }
         }
-        structure.add(rootNode);
+        return rootNode;
     }
 
     @Override
@@ -328,13 +327,13 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     @Override
     public void updateStructure(MetricUpdateStructureParam updateStructureParam){
-        List<TreeNode> nodeList = updateStructureParam.getStructure();
-        modifyStructure(nodeList);
+        TreeNode treeNode = updateStructureParam.getStructure();
+        modifyStructure(List.of(treeNode));
         MetricSet metricSet = new MetricSet();
         metricSet.setId(updateStructureParam.getId());
-        metricSet.setStructure(nodeList);
+        metricSet.setStructure(treeNode);
         metricSetDao.update(metricSet);
-        System.out.println("nodeList is:" + JsonUtil.toJSONString(nodeList));
+        System.out.println("nodeList is:" + JsonUtil.toJSONString(treeNode));
     }
 
     private void modifyStructure(List<TreeNode> nodeList){
@@ -354,8 +353,8 @@ public class MetricSetServiceImpl implements MetricSetService {
         Integer id = queryParam.getId();
         MetricSet metricSet = queryById(id);
         Validate.notNull(metricSet);
-        List<TreeNode> structure = metricSet.getStructure();
-        if(CollectionUtils.isEmpty(structure)){
+        TreeNode rootNode = metricSet.getStructure();
+        if(rootNode == null || CollectionUtils.isEmpty(rootNode.getChildren())){
             return ListData.newInstance(Lists.<ResourceVO>newArrayList(),0,pageNum,pageSize);
         }
         RelationQueryParam relationQueryParam = new RelationQueryParam();
@@ -376,7 +375,7 @@ public class MetricSetServiceImpl implements MetricSetService {
                 allStatIdList.add(flatNode.getId());
             }
         }
-        List<Integer> currentIds = getCurrentStatIds(structure);
+        List<Integer> currentIds = getCurrentStatIds(List.of(rootNode));
         List<Integer> pendStatIds = new ArrayList<>(allStatIdList);
         pendStatIds.removeAll(currentIds);
         StatQueryParamExtend statQueryParamExtend = new StatQueryParamExtend();

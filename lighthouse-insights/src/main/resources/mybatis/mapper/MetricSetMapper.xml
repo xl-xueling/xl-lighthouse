@@ -6,7 +6,7 @@
         <result column="title" property="title"/>
         <result column="private_type" property="privateType" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
         <result column="desc" property="desc"/>
-        <result column="structure" property="structure" typeHandler="com.dtstep.lighthouse.insights.types.ListTreeNodeTypeHandler"/>
+        <result column="structure" property="structure" typeHandler="com.dtstep.lighthouse.insights.types.TreeNodeTypeHandler"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
@@ -53,7 +53,7 @@
                 `desc` = #{desc},
             </if>
             <if test="structure != null">
-                `structure` = #{structure,typeHandler=com.dtstep.lighthouse.insights.types.ListTreeNodeTypeHandler},
+                `structure` = #{structure,typeHandler=com.dtstep.lighthouse.insights.types.TreeNodeTypeHandler},
             </if>
             <if test="updateTime != null">
                 `update_time` = #{updateTime},

@@ -21,7 +21,7 @@ public class MetricSet implements Serializable {
 
     private LocalDateTime updateTime;
 
-    private List<TreeNode> structure;
+    private TreeNode structure;
 
     public Integer getId() {
         return id;
@@ -71,11 +71,11 @@ public class MetricSet implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public List<TreeNode> getStructure() {
+    public TreeNode getStructure() {
         return structure;
     }
 
-    public void setStructure(List<TreeNode> structure) {
+    public void setStructure(TreeNode structure) {
         this.structure = structure;
     }
 }

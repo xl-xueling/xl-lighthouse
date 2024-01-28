@@ -9,7 +9,7 @@ public class MetricUpdateStructureParam implements Serializable {
 
     private Integer id;
 
-    private List<TreeNode> structure;
+    private TreeNode structure;
 
     public Integer getId() {
         return id;
@@ -19,11 +19,11 @@ public class MetricUpdateStructureParam implements Serializable {
         this.id = id;
     }
 
-    public List<TreeNode> getStructure() {
+    public TreeNode getStructure() {
         return structure;
     }
 
-    public void setStructure(List<TreeNode> structure) {
+    public void setStructure(TreeNode structure) {
         this.structure = structure;
     }
 }
