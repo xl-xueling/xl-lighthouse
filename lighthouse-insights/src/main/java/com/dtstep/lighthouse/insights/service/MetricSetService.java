@@ -2,13 +2,11 @@ package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.insights.dto.MetricBindParam;
-import com.dtstep.lighthouse.insights.dto.MetricBindRemoveParam;
-import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
-import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
 import com.dtstep.lighthouse.insights.vo.MetricSetVO;
+import com.dtstep.lighthouse.insights.vo.ResourceVO;
 
 import java.util.List;
 
@@ -31,4 +29,8 @@ public interface MetricSetService {
     ListData<MetricSetVO> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize);
 
     List<TreeNode> getStructure(MetricSet metricSet) throws Exception;
+
+    void updateStructure(MetricUpdateStructureParam updateStructureParam);
+
+    ListData<ResourceVO> queryPendList(MetricSet metricSet,Integer pageNum,Integer pageSize);
 }

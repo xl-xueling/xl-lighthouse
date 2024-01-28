@@ -49,6 +49,30 @@ export async function requestBindRemove(data):Promise<ResultData> {
     })
 }
 
+export async function requestUpdateStructure(data):Promise<ResultData> {
+    return request({
+        url:'/metricset/updateStructure',
+        method:'POST',
+        data,
+    })
+}
+
+export async function requestResetStructure(data):Promise<ResultData> {
+    return request({
+        url:'/metricset/resetStructure',
+        method:'POST',
+        data,
+    })
+}
+
+export async function requestStructurePendList(data):Promise<ResultData> {
+    return request({
+        url:'/metricset/structurePendList',
+        method:'POST',
+        data,
+    })
+}
+
 
 export async function requestPinList() :Promise<ResultData<Array<MetricSet>>> {
     return request({

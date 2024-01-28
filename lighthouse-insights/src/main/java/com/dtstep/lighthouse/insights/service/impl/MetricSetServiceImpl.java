@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.key.RandomID;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
@@ -11,11 +12,11 @@ import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.enums.*;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
-import com.dtstep.lighthouse.insights.util.TreeUtil;
 import com.dtstep.lighthouse.insights.vo.MetricSetVO;
-import com.dtstep.lighthouse.insights.vo.RelationVO;
+import com.dtstep.lighthouse.insights.vo.ResourceVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -266,47 +267,8 @@ public class MetricSetServiceImpl implements MetricSetService {
         if(CollectionUtils.isEmpty(structure)){
             structure = new ArrayList<>();
             combineDefaultStructure(structure,metricSet);
-        }else {
-            combineCustomStructure(structure,metricSet);
         }
         return structure;
-    }
-
-    private void combineCustomStructure(List<TreeNode> structure, MetricSet metricSet){
-        List<String> keys = TreeUtil.getAllKeys(structure);
-        TreeNode newElementNode = TreeUtil.findNodeByValue(structure,"-1");
-        if(newElementNode == null){
-            newElementNode = new TreeNode("",-1,"new");
-            structure.add(newElementNode);
-        }
-        TreeNode wasteNode = TreeUtil.findNodeByValue(structure,"-2");
-        if(wasteNode == null){
-            wasteNode = new TreeNode("",-2,"waste");
-            structure.add(wasteNode);
-        }
-        List<RelationVO> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
-        for(RelationVO relation : relationList){
-            if(relation.getResourceType() == ResourceTypeEnum.Project){
-                Project project = (Project) relation.getExtend();
-                if(project != null){
-                    List<Stat> statList = statService.queryByProjectId(project.getId());
-                    for(Stat stat:statList){
-                        String tempKey = "stat" + "_" + stat.getId();
-                        if(!keys.contains(tempKey)){
-                            newElementNode.addChild(new TreeNode(stat.getTitle(),stat.getId(),"stat"));
-                        }
-                    }
-                }
-            }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
-                Stat stat = (Stat) relation.getExtend();
-                if(stat != null){
-                    String tempKey = "stat" + "_" + stat.getId();
-                    if(!keys.contains(tempKey)){
-                        newElementNode.addChild(new TreeNode(stat.getTitle(),stat.getId(),"stat"));
-                    }
-                }
-            }
-        }
     }
 
     private void combineDefaultStructure(List<TreeNode> structure,MetricSet metricSet){
@@ -363,4 +325,74 @@ public class MetricSetServiceImpl implements MetricSetService {
     public int delete(MetricSet metricSet) {
         return metricSetDao.deleteById(metricSet.getId());
     }
+
+    @Override
+    public void updateStructure(MetricUpdateStructureParam updateStructureParam){
+        List<TreeNode> nodeList = updateStructureParam.getStructure();
+        modifyStructure(nodeList);
+        MetricSet metricSet = new MetricSet();
+        metricSet.setId(updateStructureParam.getId());
+        metricSet.setStructure(nodeList);
+        metricSetDao.update(metricSet);
+        System.out.println("nodeList is:" + JsonUtil.toJSONString(nodeList));
+    }
+
+    private void modifyStructure(List<TreeNode> nodeList){
+        for(TreeNode treeNode : nodeList){
+            if(treeNode.getType().equals("project") || treeNode.getType().equals("group")){
+                treeNode.setType("dir");
+                treeNode.setValue(null);
+            }
+            if(CollectionUtils.isNotEmpty(treeNode.getChildren())){
+                modifyStructure(treeNode.getChildren());
+            }
+        }
+    }
+
+    @Override
+    public ListData<ResourceVO> queryPendList(MetricSet metricSet, Integer pageNum, Integer pageSize) {
+        List<TreeNode> structure = metricSet.getStructure();
+        if(CollectionUtils.isEmpty(structure)){
+            return ListData.newInstance(Lists.<ResourceVO>newArrayList(),0,pageNum,pageSize);
+        }
+        RelationQueryParam queryParam = new RelationQueryParam();
+        queryParam.setSubjectId(metricSet.getId());
+        queryParam.setRelationType(RelationTypeEnum.MetricSetBindRelation);
+        List<Relation> relationList = relationDao.queryJoinList(queryParam);
+        List<Integer> projectIdList = relationList.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Project).map(Relation::getResourceId).collect(Collectors.toList());
+        HashMap<String,TreeNode> nodesMap = new HashMap<>();
+        List<Integer> allStatIdList = new ArrayList<>();
+        for(Relation relation : relationList){
+            if(relation.getResourceType() == ResourceTypeEnum.Stat){
+               allStatIdList.add(relation.getResourceId());
+            }
+        }
+        List<FlatTreeNode> flatTreeNodes = projectDao.queryNodeList(projectIdList);
+        for(FlatTreeNode flatNode:flatTreeNodes){
+            if(flatNode.getType().equals("stat")){
+                allStatIdList.add(flatNode.getId());
+            }
+        }
+        List<Integer> currentIds = getCurrentStatIds(structure);
+        List<Integer> pendStatIds = new ArrayList<>(allStatIdList);
+        pendStatIds.removeAll(currentIds);
+        StatQueryParamExtend statQueryParamExtend = new StatQueryParamExtend();
+        statQueryParamExtend.setIds(pendStatIds);
+        List<Stat> statList = statDao.queryJoinList(statQueryParamExtend);
+        return null;
+    }
+
+    private static List<Integer> getCurrentStatIds(List<TreeNode> nodes) {
+        List<Integer> values = new ArrayList<>();
+        for (TreeNode node : nodes) {
+            if(node.getType().equals("stat")){
+                values.add((Integer) node.getValue());
+            }
+            if (CollectionUtils.isNotEmpty(node.getChildren())) {
+                values.addAll(getCurrentStatIds(node.getChildren()));
+            }
+        }
+        return values;
+    }
+
 }

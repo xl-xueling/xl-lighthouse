@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.clearspring.analytics.util.Lists;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
@@ -14,6 +15,7 @@ import com.dtstep.lighthouse.insights.service.MetricSetService;
 import com.dtstep.lighthouse.insights.service.RelationService;
 import com.dtstep.lighthouse.insights.vo.MetricSetVO;
 import com.dtstep.lighthouse.insights.vo.RelationVO;
+import com.dtstep.lighthouse.insights.vo.ResourceVO;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -135,14 +137,28 @@ public class MetricSetController {
     @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/metricset/updateStructure")
     public ResultData<Integer> updateStructure(@Validated @RequestBody MetricUpdateStructureParam updateStructureParam) {
-
+        System.out.println("updateParam is:" + JsonUtil.toJSONString(updateStructureParam));
+        metricSetService.updateStructure(updateStructureParam);
         return null;
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/metricset/resetStructure")
     public ResultData<Integer> resetStructure(@Validated @RequestBody IDParam idParam) {
-        return null;
+        Integer id = idParam.getId();
+        MetricSet metricSet = metricSetService.queryById(id);
+        Validate.notNull(metricSet);
+        metricSet.setStructure(Lists.newArrayList());
+        metricSetService.update(metricSet);
+        return ResultData.result(ResultCode.success);
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/metricset/structurePendList")
+    public ResultData<ListData<ResourceVO>> structurePendList(@Validated @RequestBody IDParam idParam) {
+        MetricSet metricSet = metricSetService.queryById(idParam.getId());
+        metricSetService.queryPendList(metricSet,1,100);
+        return ResultData.result(ResultCode.success);
     }
 
 

@@ -60,8 +60,8 @@
         WHEN a.resource_type = '6' THEN c.title
         END AS resource_title
         FROM ldp_relations a
-        left join ldp_projects b on a.resource_type = '4' and a.resource_id = b.id
-        left join ldp_stats c on a.resource_type = '6' and a.resource_id = c.id
+        LEFT join ldp_projects b on a.resource_type = '4' and a.resource_id = b.id
+        LEFT join ldp_stats c on a.resource_type = '6' and a.resource_id = c.id
         <where>
             <if test="queryParam.subjectId != null">
                 AND subject_id = #{queryParam.subjectId}
