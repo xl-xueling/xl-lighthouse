@@ -63,7 +63,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             render: (value, record) => {
                 const viewButton = <Button key={getRandomString()}
                                      type="text"
-                                     onClick={() => window.open('/project/preview/' + record.id)}
+                                     onClick={() => callback(record,'add')}
                                      size="mini">
                     {t['pendAddModal.column.label.operations.add']}
                 </Button>;

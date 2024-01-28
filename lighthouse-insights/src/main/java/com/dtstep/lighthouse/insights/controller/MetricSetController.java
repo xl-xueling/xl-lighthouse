@@ -80,7 +80,7 @@ public class MetricSetController {
         if(metricSetVO == null){
             return ResultData.result(ResultCode.elementNotFound);
         }
-        List<TreeNode> structure = metricSetService.getStructure(metricSetVO);
+        TreeNode structure = metricSetService.getStructure(metricSetVO);
         System.out.println("structure:" + JsonUtil.toJSONString(structure));
         metricSetVO.setStructure(structure);
         return ResultData.success(metricSetVO);
@@ -148,7 +148,7 @@ public class MetricSetController {
         Integer id = idParam.getId();
         MetricSet metricSet = metricSetService.queryById(id);
         Validate.notNull(metricSet);
-        metricSet.setStructure(Lists.newArrayList());
+        metricSet.setStructure(new TreeNode(metricSet.getTitle(),metricSet.getId(),"metric"));
         metricSetService.update(metricSet);
         return ResultData.result(ResultCode.success);
     }

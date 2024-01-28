@@ -22,10 +22,11 @@ import {requestDeleteById} from "@/api/project";
 import {requestResetStructure, requestStructurePendList, requestUpdateStructure} from "@/api/metricset";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import {Resource} from "@/types/insights-web";
+import {Resource, TreeNode} from "@/types/insights-web";
 import {getColumns} from "./constants";
+import {getRandomString} from "@/utils/util";
 
-export default function MetricSetPendAddModal({id,onClose}) {
+export default function MetricSetPendAddModal({id,callback,onClose}) {
 
     const t = useLocale(locale);
 
@@ -33,7 +34,16 @@ export default function MetricSetPendAddModal({id,onClose}) {
     const [loading,setLoading] = useState<boolean>(false);
 
     const tableCallback = async (record, type) => {
-        console.log("record:" + record + ",type:" + type);
+        console.log("record:" + record + ",type:" + type + ",record:" + JSON.stringify(record));
+        if(type == 'add'){
+            const treeNode:TreeNode = {
+                key:getRandomString(8),
+                label:record.extend.title,
+                value:record.resourceId,
+                type:record.resourceType == 6?'stat':null,
+            }
+            callback(treeNode);
+        }
     }
 
     const columns = useMemo(() => getColumns(t, tableCallback), [t,listData]);

@@ -1,28 +1,18 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
-import {useParams} from "react-router-dom";
-import {
-    Card,
-    Typography,
-    Grid,
-    Space,
-    Tabs,
-    Spin,
-    Button, Notification
-} from '@arco-design/web-react';
+import React, {useContext, useRef, useState} from 'react';
+import {Button, Card, Grid, Notification, Space, Spin, Tabs, Typography} from '@arco-design/web-react';
 import styles from "./style/index.module.less";
-import StatPreviewPanel from "@/pages/stat/display/preview";
 import StructurePanel from "@/pages/metricset/structure/structure";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
-const { Title } = Typography;
-const { Row, Col } = Grid;
-const TabPane = Tabs.TabPane;
-import { MdOutlineNewLabel } from "react-icons/md";
-import { RiDeleteBin3Line } from "react-icons/ri";
-import {requestDeleteById} from "@/api/project";
+import {MdOutlineNewLabel} from "react-icons/md";
 import {requestResetStructure, requestUpdateStructure} from "@/api/metricset";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import MetricSetPendAddModal from "@/pages/metricset/structure/PendAddModal";
+import {TreeNode} from "@/types/insights-web";
+
+const { Title } = Typography;
+const { Row, Col } = Grid;
+const TabPane = Tabs.TabPane;
 export default function MetricSetStructure() {
 
     const t = useLocale(locale);
@@ -31,9 +21,9 @@ export default function MetricSetStructure() {
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
     const [showPendAddModal,setShowPendAddModal] = useState<boolean>(false);
     const structureRef = useRef(null);
+    const [listNodes,setListNodes] = useState<TreeNode[]>([metricSetInfo?.structure]);
 
     const handlerCallback = async (type,record) => {
-        console.log("data is:" + JSON.stringify(structureRef.current.getData()));
         if(type == 'clickStatMenu'){
             setSelectedStatId(Number(record));
         }
@@ -43,11 +33,17 @@ export default function MetricSetStructure() {
         setShowPendAddModal(true);
     }
 
+    const handleAddNode = (treeNode) => {
+        const children = listNodes[0].children;
+        listNodes[0].children = [...children, treeNode];
+        setListNodes(listNodes);
+    }
+
     const handlerSubmit = async () => {
-        console.log("handler submit..")
+        const treeData = structureRef.current.getData()[0];
         const updateParam = {
             id:metricSetInfo?.id,
-            structure:structureRef.current.getData(),
+            structure:treeData,
         }
         await requestUpdateStructure(updateParam).then((response) => {
             const {code, data ,message} = response;
@@ -62,7 +58,6 @@ export default function MetricSetStructure() {
     }
 
     const handlerReset = async () => {
-        console.log("handler reset..")
         const id = metricSetInfo?.id;
         await requestResetStructure({id}).then((response) => {
             const {code, data ,message} = response;
@@ -82,7 +77,7 @@ export default function MetricSetStructure() {
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
                         <Card>
-                            <StructurePanel ref={structureRef} structure={metricSetInfo?.structure} menuCallback={handlerCallback}/>
+                            {listNodes && <StructurePanel ref={structureRef} structure={listNodes} menuCallback={handlerCallback}/>}
                         </Card>
                         <Card>
                             <Grid.Row justify="end">
@@ -100,7 +95,7 @@ export default function MetricSetStructure() {
                             </Grid.Row>
                         </Card>
                     </Space>
-                    {showPendAddModal && <MetricSetPendAddModal id={metricSetInfo?.id} onClose={() => setShowPendAddModal(false)} />}
+                    {showPendAddModal && <MetricSetPendAddModal id={metricSetInfo?.id} callback={handleAddNode} onClose={() => setShowPendAddModal(false)} />}
                 </div>
             </Space>
         </Spin>

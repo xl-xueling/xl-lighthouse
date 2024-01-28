@@ -39,13 +39,9 @@ const StructurePanel =  React.forwardRef((props:{structure,menuCallback},ref) =>
     const [checkedKeys, setCheckedKeys] = useState([]);
     const [expandedKeys, setExpandedKeys] = useState([]);
 
-    const loadData = () => {
-        setTreeData([structure[0]]);
-    }
-
     useEffect(() => {
-        loadData();
-    }, [structure]);
+        setTreeData(structure);
+    }, []);
 
     React.useImperativeHandle(ref,() => ({
         getData
