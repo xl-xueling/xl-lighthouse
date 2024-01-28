@@ -144,6 +144,8 @@ export interface MetricSet {
 export interface Resource {
     resourceId?:number;
     resourceType?:ResourceTypeEnum;
+    title?:string;
+    extend?:any;
 }
 
 

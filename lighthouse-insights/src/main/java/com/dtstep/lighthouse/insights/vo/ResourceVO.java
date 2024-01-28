@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class ResourceVO implements Serializable {
 
-    private Integer id;
+    private Integer resourceId;
 
     private ResourceTypeEnum resourceType;
 
@@ -14,12 +14,12 @@ public class ResourceVO implements Serializable {
 
     private Object extend;
 
-    public Integer getId() {
-        return id;
+    public Integer getResourceId() {
+        return resourceId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setResourceId(Integer resourceId) {
+        this.resourceId = resourceId;
     }
 
     public ResourceTypeEnum getResourceType() {

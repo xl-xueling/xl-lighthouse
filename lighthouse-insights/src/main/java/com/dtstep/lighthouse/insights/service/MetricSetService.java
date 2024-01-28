@@ -32,5 +32,5 @@ public interface MetricSetService {
 
     void updateStructure(MetricUpdateStructureParam updateStructureParam);
 
-    ListData<ResourceVO> queryPendList(MetricSet metricSet,Integer pageNum,Integer pageSize);
+    ListData<ResourceVO> queryPendList(MetricPendQueryParam queryParam,Integer pageNum,Integer pageSize);
 }
