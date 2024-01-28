@@ -153,12 +153,12 @@ public class MetricSetController {
         return ResultData.result(ResultCode.success);
     }
 
-    @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/metricset/structurePendList")
-    public ResultData<ListData<ResourceVO>> structurePendList(@Validated @RequestBody IDParam idParam) {
-        MetricSet metricSet = metricSetService.queryById(idParam.getId());
-        metricSetService.queryPendList(metricSet,1,100);
-        return ResultData.result(ResultCode.success);
+    public ResultData<ListData<ResourceVO>> structurePendList(@Validated @RequestBody ListSearchObject<MetricPendQueryParam> searchObject) {
+        MetricPendQueryParam queryParam = searchObject.getQueryParamOrDefault(new MetricPendQueryParam());
+        Pagination pagination = searchObject.getPagination();
+        ListData<ResourceVO> listData = metricSetService.queryPendList(queryParam,pagination.getPageNum(),pagination.getPageSize());
+        return ResultData.success(listData);
     }
 
 

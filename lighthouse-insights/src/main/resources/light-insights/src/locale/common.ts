@@ -62,6 +62,12 @@ const vi18n = {
         'basic.componentsType.filterSelect':'Select Box',
         'basic.componentsType.system.filterSelect':'Default Selection Box',
         'basic.componentsType.system.filterInput':'Default Input Box',
+        'basic.resourceType.project':'Project',
+        'basic.resourceType.group':'Group',
+        'basic.resourceType.statistic':'Statistic',
+        'basic.resourceType.metricSet':'MetricSet',
+        'basic.resourceType.department':'Department',
+        'basic.resourceType.domain':'Domain',
     },
     'zh-CN': {
         'system.error':'系统异常!',
@@ -133,6 +139,12 @@ const vi18n = {
         'basic.componentsType.filterSelect':'下拉选择框',
         'basic.componentsType.system.filterSelect':'默认下拉选择框',
         'basic.componentsType.system.filterInput':'默认输入框',
+        'basic.resourceType.project':'统计工程',
+        'basic.resourceType.group':'统计组',
+        'basic.resourceType.statistic':'统计项',
+        'basic.resourceType.metricSet':'指标集',
+        'basic.resourceType.department':'部门',
+        'basic.resourceType.domain':'域',
     }
 }
 export default vi18n;

@@ -7,18 +7,16 @@ import {
     OrderTypeEnum,
     PermissionEnum,
     PrivateTypeEnum,
+    ResourceTypeEnum,
     RoleTypeEnum,
     StatExpiredEnum,
     StatStateEnum,
     UserStateEnum
 } from "@/types/insights-common";
-import {PiDiamondsFour} from "react-icons/pi";
-import {CiLock, CiViewTable} from "react-icons/ci";
+import {PiDiamondsFour, PiLockKeyOpenThin, PiLockKeyThin} from "react-icons/pi";
+import {CiViewTable} from "react-icons/ci";
 import {IconTag} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
-import { CiUnlock } from "react-icons/ci";
-import { PiLockKeyThin } from "react-icons/pi";
-import { PiLockKeyOpenThin } from "react-icons/pi";
 
 
 export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
@@ -233,5 +231,21 @@ export function getLockIcon(t:any,privateType:PrivateTypeEnum,permissions:Permis
         return <PiLockKeyOpenThin style={{marginLeft:'5px'}}/>;
     }else{
         return <PiLockKeyThin style={{marginLeft:'5px'}}/>;
+    }
+}
+
+export function getResourceTypeDescription(t:any,resourceType:ResourceTypeEnum){
+    if(resourceType == ResourceTypeEnum.Project){
+        return t['basic.resourceType.project'];
+    }else if(resourceType == ResourceTypeEnum.Stat){
+        return t['basic.resourceType.statistic'];
+    }else if(resourceType == ResourceTypeEnum.Metric){
+        return t['basic.resourceType.metricSet'];
+    }else if(resourceType == ResourceTypeEnum.Department){
+        return t['basic.resourceType.department'];
+    }else if(resourceType == ResourceTypeEnum.Group){
+        return t['basic.resourceType.group'];
+    }else if(resourceType == ResourceTypeEnum.Domain){
+        return t['basic.resourceType.domain'];
     }
 }

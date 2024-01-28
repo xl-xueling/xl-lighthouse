@@ -350,15 +350,18 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
-    public ListData<ResourceVO> queryPendList(MetricSet metricSet, Integer pageNum, Integer pageSize) {
+    public ListData<ResourceVO> queryPendList(MetricPendQueryParam queryParam, Integer pageNum, Integer pageSize) {
+        Integer id = queryParam.getId();
+        MetricSet metricSet = queryById(id);
+        Validate.notNull(metricSet);
         List<TreeNode> structure = metricSet.getStructure();
         if(CollectionUtils.isEmpty(structure)){
             return ListData.newInstance(Lists.<ResourceVO>newArrayList(),0,pageNum,pageSize);
         }
-        RelationQueryParam queryParam = new RelationQueryParam();
-        queryParam.setSubjectId(metricSet.getId());
-        queryParam.setRelationType(RelationTypeEnum.MetricSetBindRelation);
-        List<Relation> relationList = relationDao.queryJoinList(queryParam);
+        RelationQueryParam relationQueryParam = new RelationQueryParam();
+        relationQueryParam.setSubjectId(metricSet.getId());
+        relationQueryParam.setRelationType(RelationTypeEnum.MetricSetBindRelation);
+        List<Relation> relationList = relationDao.queryJoinList(relationQueryParam);
         List<Integer> projectIdList = relationList.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Project).map(Relation::getResourceId).collect(Collectors.toList());
         HashMap<String,TreeNode> nodesMap = new HashMap<>();
         List<Integer> allStatIdList = new ArrayList<>();
@@ -378,8 +381,23 @@ public class MetricSetServiceImpl implements MetricSetService {
         pendStatIds.removeAll(currentIds);
         StatQueryParamExtend statQueryParamExtend = new StatQueryParamExtend();
         statQueryParamExtend.setIds(pendStatIds);
-        List<Stat> statList = statDao.queryJoinList(statQueryParamExtend);
-        return null;
+        PageHelper.startPage(pageNum,pageSize);
+        PageInfo<Stat> pageInfo;
+        try{
+            List<Stat> statList = statDao.queryJoinList(statQueryParamExtend);
+            pageInfo = new PageInfo<>(statList);
+        }finally {
+            PageHelper.clearPage();
+        }
+        List<ResourceVO> voList = new ArrayList<>();
+        for(Stat stat:pageInfo.getList()){
+            ResourceVO resourceVO = new ResourceVO();
+            resourceVO.setResourceId(stat.getId());
+            resourceVO.setResourceType(ResourceTypeEnum.Stat);
+            resourceVO.setExtend(stat);
+            voList.add(resourceVO);
+        }
+        return ListData.newInstance(voList,pageInfo.getTotal(),pageNum,pageSize);
     }
 
     private static List<Integer> getCurrentStatIds(List<TreeNode> nodes) {

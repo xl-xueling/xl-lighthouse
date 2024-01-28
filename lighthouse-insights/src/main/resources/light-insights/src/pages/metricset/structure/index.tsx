@@ -31,6 +31,7 @@ export default function MetricSetStructure() {
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
     const [showPendAddModal,setShowPendAddModal] = useState<boolean>(false);
     const structureRef = useRef(null);
+
     const handlerCallback = async (type,record) => {
         console.log("data is:" + JSON.stringify(structureRef.current.getData()));
         if(type == 'clickStatMenu'){
@@ -85,12 +86,12 @@ export default function MetricSetStructure() {
                         </Card>
                         <Card>
                             <Grid.Row justify="end">
-                                <Grid.Col span={16}>
+                                <Grid.Col span={18}>
                                     <Space className={styles.right} size={16} direction="horizontal">
                                         <Button size={"mini"} type="secondary" icon={<MdOutlineNewLabel/>} onClick={handleShowPendAddModal}>待添加(16)</Button>
                                     </Space>
                                 </Grid.Col>
-                                <Grid.Col span={8}>
+                                <Grid.Col span={6}>
                                     <Space className={styles.right} size={16} direction="horizontal">
                                         <Button size={"small"} type={"primary"} status={"danger"}>重置</Button>
                                         <Button size={"small"} type="primary" onClick={handlerSubmit}>确认</Button>
@@ -98,9 +99,6 @@ export default function MetricSetStructure() {
                                 </Grid.Col>
                             </Grid.Row>
                         </Card>
-                    </Space>
-                    <Space className={styles.right} size={16} direction="vertical">
-                        {selectedStatId && <StatPreviewPanel size={'small'} id={selectedStatId}/>}
                     </Space>
                     {showPendAddModal && <MetricSetPendAddModal id={metricSetInfo?.id} onClose={() => setShowPendAddModal(false)} />}
                 </div>
