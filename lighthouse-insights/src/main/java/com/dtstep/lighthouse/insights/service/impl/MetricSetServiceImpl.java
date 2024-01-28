@@ -1,17 +1,12 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.insights.dao.GroupDao;
-import com.dtstep.lighthouse.insights.dao.MetricSetDao;
-import com.dtstep.lighthouse.insights.dao.RelationDao;
-import com.dtstep.lighthouse.insights.dao.StatDao;
-import com.dtstep.lighthouse.insights.dto.MetricBindParam;
-import com.dtstep.lighthouse.insights.dto.MetricBindRemoveParam;
-import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
-import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
+import com.dtstep.lighthouse.insights.dao.*;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.enums.*;
 import com.dtstep.lighthouse.insights.modal.*;
@@ -30,10 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,6 +71,9 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     @Autowired
     private StatDao statDao;
+
+    @Autowired
+    private ProjectDao projectDao;
 
     @Transactional
     @Override
@@ -316,60 +311,44 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     private void combineDefaultStructure(List<TreeNode> structure,MetricSet metricSet){
         List<String> keyList = new ArrayList<>();
-        TreeNode rootNode = new TreeNode(metricSet.getTitle(),metricSet.getId(),"metric");
-        List<RelationVO> relationList = relationService.queryList(metricSet.getId(),RelationTypeEnum.MetricSetBindRelation);
-        for(RelationVO relation : relationList){
-            if(relation.getResourceType() == ResourceTypeEnum.Project){
-                Project project = (Project) relation.getExtend();
-                if(project != null){
-                    TreeNode projectNode = new TreeNode(project.getTitle(),project.getId(),"project");
-                    HashMap<String,TreeNode> nodeMap = new HashMap<>();
-                    String key = "project_"+project.getId();
-                    keyList.add(key);
-                    nodeMap.put(key,projectNode);
-                    List<Group> groupList = groupDao.queryByProjectId(project.getId());
-                    for(Group group : groupList){
-                        TreeNode groupNode = new TreeNode(group.getToken(),group.getId(),"group");
-                        String groupKey = "group_"+group.getId();
-                        keyList.add(groupKey);
-                        nodeMap.put(groupKey,groupNode);
-                        projectNode.addChild(groupNode);
-                    }
-                    List<Stat> statList = statDao.queryByProjectId(project.getId());
-                    for(Stat stat : statList){
-                        String statKey = "stat_"+stat.getId();
-                        if(!keyList.contains(statKey)){
-                            TreeNode statNode = new TreeNode(stat.getTitle(),stat.getId(),"stat");
-                            TreeNode parentNode = nodeMap.get("group_"+stat.getGroupId());
-                            keyList.add(statKey);
-                            parentNode.addChild(statNode);
-                        }
-                    }
-                    rootNode.addChild(projectNode);
-                }
-            }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
-                Stat stat = (Stat)relation.getExtend();
-                if(stat != null){
-                    String statKey = "stat_"+stat.getId();
-                    if(!keyList.contains(statKey)){
-                        TreeNode statNode = new TreeNode(stat.getTitle(), stat.getId(),"stat");
-                        rootNode.addChild(statNode);
-                        keyList.add(statKey);
-                    }
-                }
+        String rootKey = RandomID.id(8,keyList);
+        TreeNode rootNode = new TreeNode(rootKey,metricSet.getTitle(),metricSet.getId(),"metric");
+        RelationQueryParam queryParam = new RelationQueryParam();
+        queryParam.setSubjectId(metricSet.getId());
+        queryParam.setRelationType(RelationTypeEnum.MetricSetBindRelation);
+        List<Relation> relationList = relationDao.queryJoinList(queryParam);
+        List<Integer> projectIdList = relationList.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Project).map(Relation::getResourceId).collect(Collectors.toList());
+        HashMap<String,TreeNode> nodesMap = new HashMap<>();
+        List<FlatTreeNode> flatTreeNodes = projectDao.queryNodeList(projectIdList);
+        for(FlatTreeNode flatNode:flatTreeNodes){
+            String key = RandomID.id(8,keyList);
+            TreeNode treeNode = new TreeNode(key,flatNode.getTitle(), flatNode.getId(),flatNode.getType());
+            nodesMap.put(flatNode.getType() + "_" + flatNode.getId(),treeNode);
+        }
+        for (FlatTreeNode flatNode:flatTreeNodes) {
+            TreeNode currentNode = nodesMap.get(flatNode.getType() + "_" + flatNode.getId());
+            String parentType = null;
+            if(flatNode.getType().equals("group")){
+                TreeNode parentNode = nodesMap.get("project" + "_" + flatNode.getPid());
+                parentNode.addChild(currentNode);
+            }else if(flatNode.getType().equals("stat")){
+                TreeNode parentNode = nodesMap.get("group" + "_" + flatNode.getPid());
+                parentNode.addChild(currentNode);
+            }
+        }
+        for(TreeNode treeNode : nodesMap.values()){
+            if(treeNode.getType().equals("project")){
+                rootNode.addChild(treeNode);
+            }
+        }
+        for(Relation relation : relationList){
+            if(relation.getResourceType() == ResourceTypeEnum.Stat){
+                String key = RandomID.id(8,keyList);
+                TreeNode treeNode = new TreeNode(key,relation.getResourceTitle(),relation.getResourceId(),"stat");
+                rootNode.addChild(treeNode);
             }
         }
         structure.add(rootNode);
-        TreeNode newElementNode = TreeUtil.findNodeByValue(structure,"-1");
-        if(newElementNode == null){
-            newElementNode = new TreeNode("",-1,"new");
-            structure.add(newElementNode);
-        }
-        TreeNode wasteNode = TreeUtil.findNodeByValue(structure,"-2");
-        if(wasteNode == null){
-            wasteNode = new TreeNode("",-2,"waste");
-            structure.add(wasteNode);
-        }
     }
 
     @Override

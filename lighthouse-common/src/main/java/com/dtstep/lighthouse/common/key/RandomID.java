@@ -16,6 +16,9 @@ package com.dtstep.lighthouse.common.key;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.apache.commons.collections.CollectionUtils;
+
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -44,6 +47,22 @@ public final class RandomID {
             cs[i] = DIGITS[THREAD_LOCAL_RANDOM.nextInt(DIGITS.length)];
         }
         return cs;
+    }
+
+    public static String id(int size, List<String> filterDuplicate){
+        String result;
+        if(CollectionUtils.isNotEmpty(filterDuplicate)){
+            while (true){
+                result = id(size);
+                if(!filterDuplicate.contains(result)){
+                    filterDuplicate.add(result);
+                    break;
+                }
+            }
+        }else {
+            result = id(size);
+        }
+        return result;
     }
 
 

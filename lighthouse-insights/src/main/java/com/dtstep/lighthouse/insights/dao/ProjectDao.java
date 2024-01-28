@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.dao;
 
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
+import com.dtstep.lighthouse.insights.dto_bak.FlatTreeNode;
 import com.dtstep.lighthouse.insights.modal.Project;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,6 @@ public interface ProjectDao {
     List<Project> queryList(ProjectQueryParam queryParam,Integer pageNum,Integer pageSize);
 
     int countByDepartmentId(Integer departmentId);
+
+    List<FlatTreeNode> queryNodeList(List<Integer> ids);
 }

@@ -32,6 +32,13 @@ public class TreeNode implements Serializable {
         this.key = type + "_" + value;
     }
 
+    public TreeNode(String key,String label,Object value,String type){
+        this.key = key;
+        this.type = type;
+        this.label = label;
+        this.value = value;
+    }
+
     public String getLabel() {
         return label;
     }

@@ -1,10 +1,12 @@
 package com.dtstep.lighthouse.insights.util;
 
 import com.dtstep.lighthouse.insights.dto_bak.CommonTreeNode;
+import com.dtstep.lighthouse.insights.dto_bak.FlatTreeNode;
 import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TreeUtil {
@@ -69,5 +71,7 @@ public class TreeUtil {
         }
         return null;
     }
+
+
 
 }

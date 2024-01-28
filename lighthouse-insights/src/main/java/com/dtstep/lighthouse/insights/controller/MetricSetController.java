@@ -132,4 +132,18 @@ public class MetricSetController {
         }
     }
 
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/metricset/updateStructure")
+    public ResultData<Integer> updateStructure(@Validated @RequestBody MetricUpdateStructureParam updateStructureParam) {
+
+        return null;
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/metricset/resetStructure")
+    public ResultData<Integer> resetStructure(@Validated @RequestBody IDParam idParam) {
+        return null;
+    }
+
+
 }
