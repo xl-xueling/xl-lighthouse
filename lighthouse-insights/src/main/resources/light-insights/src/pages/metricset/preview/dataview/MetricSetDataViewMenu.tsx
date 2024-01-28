@@ -49,10 +49,8 @@ export default function MetricSetDataViewMenu({metricSetInfo,callback}) {
             return <IconTag/>
         }else if(item.type == 'group'){
             return <CiViewTable style={{marginRight:'10px'}}/>
-            // return <IconMindMapping style={{marginRight:'10px'}}/>
         }else if(item.type == 'project'){
              return <PiDiamondsFour style={{marginRight:'10px'}}/>
-            // return <RxCube style={{marginRight:'10px'}}/>
         }
     }
 
@@ -60,10 +58,13 @@ export default function MetricSetDataViewMenu({metricSetInfo,callback}) {
         items?.map((item) => {
             if (Array.isArray(item.children) && item.children.length > 0) {
                 return (
-                    <Menu.SubMenu key={item.key} {...item}
+                    <Menu.SubMenu key={item.key}
                                   onClick={(e)=>
-                    {
-                    callback("clickStatMenu",Number(item.value));e.stopPropagation();}}
+                    {e.stopPropagation();
+                    if(item.type == 'stat'){
+                        callback("clickStatMenu",Number(item.value));
+                    }
+                    }}
 
                                   title={
                         <span style={{display:"inline-flex",alignItems:"center"}}>{getIcon(item)}{item.label}</span>
@@ -72,23 +73,19 @@ export default function MetricSetDataViewMenu({metricSetInfo,callback}) {
                     </Menu.SubMenu>
                 );
             }
-            return <Menu.Item  onClick={(e)=>
-            {
-                callback("clickStatMenu",Number(item.value));e.stopPropagation();}} {...item} key={item.key}>{getIcon(item)}{item.label}</Menu.Item>;
+            return <Menu.Item onClick={(e)=>
+            {e.stopPropagation();
+                if(item.type == 'stat'){
+                    callback("clickStatMenu",Number(item.value));
+                }
+            }} key={item.key}>{getIcon(item)}{item.label}</Menu.Item>;
         });
 
     return (
         <>
             <Menu
                 className={'disable-select'}
-                style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}
-                onClickMenuItem = {(key, event, keyPath) => {
-                    const type = key.split("_")[0];
-                    const id = key.split("_")[1];
-                    // if(type == 'stat'){
-                    //     callback("clickStatMenu",Number(id));
-                    // }
-                }}>
+                style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}>
                 {
                     (metricSetInfo && metricSetInfo?.structure[0]?.children) ? renderMenuItems(metricSetInfo?.structure[0]?.children)
                         : <Empty style={{marginTop:'50px'}}/>
