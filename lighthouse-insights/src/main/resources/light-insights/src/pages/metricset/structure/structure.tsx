@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Button, Card, Grid, Input, Notification, Popconfirm, Space, Spin, Tree} from '@arco-design/web-react';
 import {
     IconDragDotVertical,
@@ -28,20 +28,17 @@ import {MdOutlineDragIndicator} from "react-icons/md";
 const { Row, Col } = Grid;
 import { MdOutlineNewLabel } from "react-icons/md";
 import { RiDeleteBin3Line } from "react-icons/ri";
+import {MetricSetStructureContext} from "@/pages/metricset/structure/index";
 
-const StructurePanel =  React.forwardRef((props:{structure,menuCallback},ref) => {
-    const {structure,menuCallback} = props;
+const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
+    const {menuCallback} = props;
     const t = useLocale(locale);
     const [loading, setLoading] = useState(false);
-    const [treeData, setTreeData] = useState([]);
+    const {listNodes:treeData,setListNodes:setTreeData} = useContext(MetricSetStructureContext);
     const treeRef = useRef<Tree>(null);
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [checkedKeys, setCheckedKeys] = useState([]);
     const [expandedKeys, setExpandedKeys] = useState([]);
-
-    useEffect(() => {
-        setTreeData(structure);
-    }, []);
 
     React.useImperativeHandle(ref,() => ({
         getData

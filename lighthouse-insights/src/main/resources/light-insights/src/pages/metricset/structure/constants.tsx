@@ -19,9 +19,11 @@ const TabPane = Tabs.TabPane;
 import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import {getResourceTypeDescription} from "@/pages/common/desc/base";
 import {ResourceTypeEnum} from "@/types/insights-common";
+import {TreeNode} from "@/types/insights-web";
+import {treeCheckContainsNode} from "@/pages/department/common";
 const { Text } = Typography;
 
-export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+export function getColumns(t: any,listNodes:TreeNode[], callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
         {
             title: t['pendAddModal.column.label.id'],
@@ -37,6 +39,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                 <Text>{record?.extend?.title}</Text>
             ,
         },
+
         {
             title: t['pendAddModal.column.label.resourceType'],
             dataIndex: 'resourceType',
@@ -61,13 +64,29 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             title: t['pendAddModal.column.label.operations'],
             dataIndex: 'operations',
             render: (value, record) => {
-                const viewButton = <Button key={getRandomString()}
+                console.log("listNodes data is:" + JSON.stringify(listNodes));
+                let button;
+                let type;
+                if(record.resourceType == ResourceTypeEnum.Stat){
+                    type = 'stat';
+                }else if(record.resourceType == ResourceTypeEnum.Project){
+                    type = 'project';
+                }
+                if(!treeCheckContainsNode(listNodes,record.resourceId,type)){
+                    button = <Button key={getRandomString()}
                                      type="text"
                                      onClick={() => callback(record,'add')}
                                      size="mini">
-                    {t['pendAddModal.column.label.operations.add']}
-                </Button>;
-                return  <Space key={getRandomString()} size={0} direction="horizontal">{[viewButton]}</Space>;
+                        {t['pendAddModal.column.label.operations.add']}
+                    </Button>;
+                }else{
+                    button = <Button disabled={true} key={getRandomString()}
+                                     type="secondary"
+                                     size="mini">
+                        {t['pendAddModal.column.label.operations.added']}
+                    </Button>;
+                }
+                return  <Space key={getRandomString()} size={0} direction="horizontal">{[button]}</Space>;
             }
         }
     ];
