@@ -150,7 +150,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                     }
                     const destRef = treeRef.current.getCacheNode([destPid])[0].props.dataRef;
                     if(destRef.type == 'stat'){
-                        Notification.warning({style: { width: 420 }, title: 'Warning', content: '不支持移动元素到指标节点下'});
+                        Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.waring.unable.moveToIndicatorNode']});
                         return;
                     }
                     const loop = (data, key, callback) => {
@@ -210,7 +210,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                         titleNode.dispatchEvent(event);
                                         const dataChildren = node.dataRef.children || [];
                                         if(node._level >= 2){
-                                            Notification.warning({style: { width: 420 }, title: 'Warning', content: '超出最大层级限制！'});
+                                            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.level.exceedLimit']});
                                             return;
                                         }
                                         const nodeTitle = "New Node_" + getRandomString(8);
@@ -264,10 +264,10 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                                                     onBlur={async (ie) => {
                                                                         const len = getTextBlenLength(ie.target.value);
                                                                         if (len < 3 || len > 30) {
-                                                                            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['department.manage.invalidLength']});
+                                                                            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.invalidLength']});
                                                                             node.dataRef.title = originTitle;
                                                                         } else if(!validateWithRegex(TEXT_BASE_PATTERN_2,ie.target.value)) {
-                                                                            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['department.manage.hasInvalidChars']});
+                                                                            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.hasInvalidChars']});
                                                                             node.dataRef.title = originTitle;
                                                                         } else {
                                                                             const newTitle = ie.target.value;
@@ -296,11 +296,11 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                 <Popconfirm
                                     focusLock
                                     title='Confirm'
-                                    content= {t['department.manage.deletePrompt']}
+                                    content= {t['structure.manage.delete.confirm']}
                                     onOk={async () => {
                                         const dataChildren = node.dataRef.children || [];
                                         if (dataChildren.length > 0) {
-                                            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['department.manage.deleteHasChild']});
+                                            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.deleteHashChild']});
                                         } else {
                                             const w = deleteNodeByKey([...treeData], node.dataRef.id)
                                             setTreeData([...w]);
