@@ -126,3 +126,22 @@ export const translateToTreeNodes = (list):Array<ArcoTreeNode> => {
     return nodeArr;
 }
 
+
+export const countNodesByType = (list:Array<TreeNode>, targetType:string) => {
+    let count = 0;
+    function traverse(node) {
+        if (node.type === targetType) {
+            count++;
+        }
+        if (node.children && node.children.length > 0) {
+            for (const child of node.children) {
+                traverse(child);
+            }
+        }
+    }
+    for (const rootNode of list) {
+        traverse(rootNode);
+    }
+    return count;
+}
+

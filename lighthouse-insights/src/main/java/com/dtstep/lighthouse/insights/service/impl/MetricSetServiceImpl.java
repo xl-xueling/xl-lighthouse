@@ -272,7 +272,7 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     private TreeNode combineDefaultStructure(MetricSet metricSet){
         List<String> keyList = new ArrayList<>();
-        String rootKey = RandomID.id(8,keyList);
+        String rootKey = RandomID.id(10,keyList);
         TreeNode rootNode = new TreeNode(rootKey,metricSet.getTitle(),metricSet.getId(),"metric");
         RelationQueryParam queryParam = new RelationQueryParam();
         queryParam.setSubjectId(metricSet.getId());
@@ -283,7 +283,7 @@ public class MetricSetServiceImpl implements MetricSetService {
             HashMap<String,TreeNode> nodesMap = new HashMap<>();
             List<FlatTreeNode> flatTreeNodes = projectDao.queryNodeList(projectIdList);
             for(FlatTreeNode flatNode:flatTreeNodes){
-                String key = RandomID.id(8,keyList);
+                String key = RandomID.id(10,keyList);
                 TreeNode treeNode = new TreeNode(key,flatNode.getTitle(), flatNode.getId(),flatNode.getType());
                 nodesMap.put(flatNode.getType() + "_" + flatNode.getId(),treeNode);
             }
@@ -306,7 +306,7 @@ public class MetricSetServiceImpl implements MetricSetService {
         }
         for(Relation relation : relationList){
             if(relation.getResourceType() == ResourceTypeEnum.Stat){
-                String key = RandomID.id(8,keyList);
+                String key = RandomID.id(10,keyList);
                 TreeNode treeNode = new TreeNode(key,relation.getResourceTitle(),relation.getResourceId(),"stat");
                 rootNode.addChild(treeNode);
             }
@@ -330,24 +330,21 @@ public class MetricSetServiceImpl implements MetricSetService {
     @Override
     public void updateStructure(MetricUpdateStructureParam updateStructureParam){
         TreeNode treeNode = updateStructureParam.getStructure();
-        List<String> keyList = new ArrayList<>();
-        modifyStructure(List.of(treeNode),keyList);
+        modifyStructure(List.of(treeNode));
         MetricSet metricSet = new MetricSet();
         metricSet.setId(updateStructureParam.getId());
         metricSet.setStructure(treeNode);
         metricSetDao.update(metricSet);
     }
 
-    private void modifyStructure(List<TreeNode> nodeList,List<String> keyList){
+    private void modifyStructure(List<TreeNode> nodeList){
         for(TreeNode treeNode : nodeList){
-            String key = RandomID.id(8,keyList);
-            treeNode.setKey(key);
             if(treeNode.getType() == null || treeNode.getType().equals("project") || treeNode.getType().equals("group")){
                 treeNode.setType("dir");
                 treeNode.setValue(null);
             }
             if(CollectionUtils.isNotEmpty(treeNode.getChildren())){
-                modifyStructure(treeNode.getChildren(),keyList);
+                modifyStructure(treeNode.getChildren());
             }
         }
     }
