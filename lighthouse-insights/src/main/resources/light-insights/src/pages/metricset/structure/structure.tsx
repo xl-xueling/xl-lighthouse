@@ -1,34 +1,19 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Button, Card, Grid, Input, Notification, Popconfirm, Space, Spin, Tree} from '@arco-design/web-react';
-import {
-    IconDragDotVertical,
-    IconFile,
-    IconFolder, IconMindMapping,
-    IconMinus,
-    IconPen,
-    IconPlus, IconRefresh, IconSearch,
-    IconStorage,
-    IconTag,
-    IconTags
-} from '@arco-design/web-react/icon';
+import {Grid, Input, Notification, Popconfirm, Tree} from '@arco-design/web-react';
+import {IconDragDotVertical, IconMindMapping, IconMinus, IconPen, IconPlus, IconTag} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
-import {ResultData} from "@/types/insights-common";
-import {
-    requestCreate,
-    requestDeleteById,
-    requestUpdateById
-} from "@/api/department";
-import {getRandomString, getTextBlenLength, stringifyObj, validateWithRegex} from "@/utils/util";
+import {getRandomString, getTextBlenLength, validateWithRegex} from "@/utils/util";
 import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
-import styles from "@/pages/metricset/structure/style/index.module.less";
-import {MdOutlineDragIndicator} from "react-icons/md";
-const { Row, Col } = Grid;
-import { MdOutlineNewLabel } from "react-icons/md";
-import { RiDeleteBin3Line } from "react-icons/ri";
+import {MdOutlineNewLabel} from "react-icons/md";
+import {RiDeleteBin3Line} from "react-icons/ri";
 import {MetricSetStructureContext} from "@/pages/metricset/structure/index";
+import {TreeNode} from "@/types/insights-web";
+import {countNodesByType} from "@/pages/department/common";
+
+const { Row, Col } = Grid;
 
 const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
     const {menuCallback} = props;
@@ -45,7 +30,18 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
     }));
 
     const getData = () => {
-        return treeData;
+        const translateToTreeNodes = (list) => {
+            const nodeArr = new Array<TreeNode>();
+            list?.forEach(item => {
+                const nodeItem:TreeNode = {"key":String(item.key),"value":item.value,"label":item.title?item.title:item.label,"type":item.type};
+                if(item.children){
+                    nodeItem.children = translateToTreeNodes(item.children);
+                }
+                nodeArr.push(nodeItem)
+            })
+            return nodeArr;
+        }
+        return translateToTreeNodes(treeData);
     }
 
     useEffect(() => {
@@ -86,7 +82,6 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
             item.id = key;
             item.pid = parentKey;
             item.parentKey = parentKey;
-            console.log("id is:" + item.id + ",level:" + level + ",value:" + item.value);
             return (
                 <Tree.Node
                         draggable={item.type == 'stat'}
@@ -220,7 +215,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.level.exceedLimit']});
                                             return;
                                         }
-                                        const currentId = getRandomString(8);
+                                        const currentId = getRandomString(10);
                                         const nodeTitle = "New Node_" + currentId;
                                         if(currentId == "-1"){
                                             return;
@@ -230,7 +225,6 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                             parentKey:node.dataRef.id,
                                             name: nodeTitle,
                                             title:nodeTitle,
-                                            label:nodeTitle,
                                             id: currentId,
                                             pid: node.dataRef.id,
                                             icon:getIconByLevel(node._level + 1),
@@ -280,7 +274,6 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                                                         } else {
                                                                             const newTitle = ie.target.value;
                                                                             if(newTitle.length  > 0 && newTitle != originTitle){
-                                                                                // const result = await updateNode(node.dataRef.id,node.dataRef.pid, newTitle);
                                                                                 const result = '0';
                                                                                 if(result == '0'){
                                                                                     node.dataRef.title = newTitle;
@@ -309,7 +302,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                         const dataChildren = node.dataRef.children || [];
                                         if (dataChildren.length > 0) {
                                             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.deleteHashChild']});
-                                        } else if(treeData[0].children.length <= 1){
+                                        } else if(node.dataRef.type == 'stat' && countNodesByType(treeData,'stat') <= 1){
                                             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.requireAtLeastOneNode']});
                                         }else {
                                             const w = deleteNodeByKey([...treeData], node.dataRef.id)

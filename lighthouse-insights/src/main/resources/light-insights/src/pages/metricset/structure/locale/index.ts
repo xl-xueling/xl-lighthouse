@@ -18,7 +18,7 @@ const i18n = {
     'structure.warning.deleteHashChild':'Deletion is prohibited, there are child nodes exist!',
     'structure.warning.invalidLength':'Title length validation failed!',
     'structure.warning.hasInvalidChars':'Title contains invalid characters!',
-    'structure.warning.requireAtLeastOneNode':'Structure requires at least one child node!',
+    'structure.warning.requireAtLeastOneNode':'Structure requires at least one indicator node!',
   },
   'zh-CN': {
     'pendAddModal.column.label.id':'ID',
@@ -39,7 +39,7 @@ const i18n = {
     'structure.warning.deleteHashChild':'禁止删除，存在子节点！',
     'structure.warning.invalidLength':'名称长度验证失败！',
     'structure.warning.hasInvalidChars':'名称中含有无效字符！',
-    'structure.warning.requireAtLeastOneNode':'树结构应至少保留一个子节点！',
+    'structure.warning.requireAtLeastOneNode':'树结构应至少保留一个指标元素！',
   },
 };
 
