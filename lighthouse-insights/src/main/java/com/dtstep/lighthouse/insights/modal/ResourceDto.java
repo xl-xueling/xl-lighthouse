@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.modal;
 
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 
-public class Resource <T extends Object> {
+public class ResourceDto<T extends Object> {
 
     private ResourceTypeEnum resourceType;
 
@@ -14,25 +14,25 @@ public class Resource <T extends Object> {
 
     private T data;
 
-    public static Resource newResource(ResourceTypeEnum resourceType,Integer resourceId,ResourceTypeEnum parentResourceType,Integer parentResourceId){
-        return new Resource(resourceType,resourceId,parentResourceType,parentResourceId);
+    public static ResourceDto newResource(ResourceTypeEnum resourceType, Integer resourceId, ResourceTypeEnum parentResourceType, Integer parentResourceId){
+        return new ResourceDto(resourceType,resourceId,parentResourceType,parentResourceId);
     }
 
-    private Resource(){}
+    private ResourceDto(){}
 
-    public Resource(ResourceTypeEnum resourceType,Integer resourceId){
+    public ResourceDto(ResourceTypeEnum resourceType, Integer resourceId){
         this.resourceType = resourceType;
         this.resourceId = resourceId;
     }
 
-    public Resource(ResourceTypeEnum resourceType,Integer resourceId,ResourceTypeEnum parentResourceType,Integer resourcePid){
+    public ResourceDto(ResourceTypeEnum resourceType, Integer resourceId, ResourceTypeEnum parentResourceType, Integer resourcePid){
         this.resourceType = resourceType;
         this.resourceId = resourceId;
         this.parentResourceType = parentResourceType;
         this.resourcePid = resourcePid;
     }
 
-    public Resource(ResourceTypeEnum resourceType,Integer resourceId,T data){
+    public ResourceDto(ResourceTypeEnum resourceType, Integer resourceId, T data){
         this.resourceType = resourceType;
         this.resourceId = resourceId;
         this.data = data;

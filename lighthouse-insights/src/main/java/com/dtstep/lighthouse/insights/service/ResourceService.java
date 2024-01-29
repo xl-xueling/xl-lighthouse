@@ -4,20 +4,20 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto_bak.RolePair;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Resource;
+import com.dtstep.lighthouse.insights.modal.ResourceDto;
 
 public interface ResourceService {
 
-    RolePair addResourceCallback(Resource resource);
+    RolePair addResourceCallback(ResourceDto resource);
 
-    void updateResourcePidCallback(Resource resource);
+    void updateResourcePidCallback(ResourceDto resource);
 
-    ResultCode deleteResourceCallback(Resource resource);
+    ResultCode deleteResourceCallback(ResourceDto resource);
 
     int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer resourceId,RoleTypeEnum roleTypeEnum);
 
     int releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer resourceId,RoleTypeEnum roleTypeEnum);
 
-    Resource queryByRoleId(Integer roleId);
+    ResourceDto queryByRoleId(Integer roleId);
 
 }

@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.dto_bak.*;
+import com.dtstep.lighthouse.insights.modal.Indicator;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
 import com.dtstep.lighthouse.insights.vo.MetricSetVO;
 import com.dtstep.lighthouse.insights.vo.ResourceVO;
@@ -32,5 +33,5 @@ public interface MetricSetService {
 
     void updateStructure(MetricUpdateStructureParam updateStructureParam);
 
-    ListData<ResourceVO> queryPendList(MetricPendQueryParam queryParam,Integer pageNum,Integer pageSize);
+    ListData<Indicator> queryIndicatorList(MetricPendQueryParam queryParam, Integer pageNum, Integer pageSize);
 }

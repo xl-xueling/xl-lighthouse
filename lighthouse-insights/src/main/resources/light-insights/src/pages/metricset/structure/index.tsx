@@ -7,7 +7,7 @@ import {MdOutlineNewLabel} from "react-icons/md";
 import {requestResetStructure, requestUpdateStructure} from "@/api/metricset";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import MetricSetPendAddModal from "@/pages/metricset/structure/PendAddModal";
+import MetricSetRepositoryModal from "@/pages/metricset/structure/MetricRepositoryModal";
 import {TreeNode} from "@/types/insights-web";
 
 const { Title } = Typography;
@@ -15,6 +15,7 @@ const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
 export const MetricSetStructureContext = React.createContext(null)
+import { RiPlayListAddLine } from "react-icons/ri";
 
 export default function MetricSetStructure() {
 
@@ -23,7 +24,7 @@ export default function MetricSetStructure() {
     const {metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
     const {reloadTime, setReloadTime } = useContext(MetricSetPreviewContext);
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
-    const [showPendAddModal,setShowPendAddModal] = useState<boolean>(false);
+    const [showRepositoryModal,setShowRepositoryModal] = useState<boolean>(false);
     const structureRef = useRef(null);
     const [listNodes,setListNodes] = useState<TreeNode[]>([Object.assign({},metricSetInfo?.structure)]);
 
@@ -37,8 +38,8 @@ export default function MetricSetStructure() {
         setListNodes([Object.assign({},metricSetInfo?.structure)])
     },[metricSetInfo?.structure])
 
-    const handleShowPendAddModal = () => {
-        setShowPendAddModal(true);
+    const handleShowRepositoryModal = () => {
+        setShowRepositoryModal(true);
     }
 
     const handlerSubmit = async () => {
@@ -95,19 +96,19 @@ export default function MetricSetStructure() {
                             <Grid.Row justify="end">
                                 <Grid.Col span={18}>
                                     <Space className={styles.right} size={16} direction="horizontal">
-                                        <Button size={"mini"} type="secondary" icon={<MdOutlineNewLabel/>} onClick={handleShowPendAddModal}>{t['pendAddModal.button.label.pendAdd']}</Button>
+                                        <Button size={"mini"} type="secondary" icon={<RiPlayListAddLine/>} onClick={handleShowRepositoryModal}>{t['repositoryModal.button.label.repository']}</Button>
                                     </Space>
                                 </Grid.Col>
                                 <Grid.Col span={6}>
                                     <Space className={styles.right} size={16} direction="horizontal">
-                                        <Button size={"small"} type={"primary"} onClick={handlerReset} status={"danger"}>{t['pendAddModal.button.label.reset']}</Button>
-                                        <Button size={"small"} type="primary" onClick={handlerSubmit}>{t['pendAddModal.button.label.submit']}</Button>
+                                        <Button size={"small"} type={"primary"} onClick={handlerReset} status={"danger"}>{t['repositoryModal.button.label.reset']}</Button>
+                                        <Button size={"small"} type="primary" onClick={handlerSubmit}>{t['repositoryModal.button.label.submit']}</Button>
                                     </Space>
                                 </Grid.Col>
                             </Grid.Row>
                         </Card>
                     </Space>
-                    {showPendAddModal && <MetricSetPendAddModal id={metricSetInfo?.id} onClose={() => setShowPendAddModal(false)} />}
+                    {showRepositoryModal && <MetricSetRepositoryModal id={metricSetInfo?.id} onClose={() => setShowRepositoryModal(false)} />}
                 </div>
             </Space>
         </Spin>

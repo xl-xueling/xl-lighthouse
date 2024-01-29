@@ -26,42 +26,39 @@ const { Text } = Typography;
 export function getColumns(t: any,listNodes:TreeNode[], callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
         {
-            title: t['pendAddModal.column.label.id'],
+            title: t['repositoryModal.column.label.id'],
             dataIndex: 'resourceId',
             render: (value, record) =>
                 <Text>{value}</Text>
             ,
         },
         {
-            title: t['pendAddModal.column.label.title'],
+            title: t['repositoryModal.column.label.title'],
             dataIndex: 'title',
             render: (value, record) =>
-                <Text>{record?.extend?.title}</Text>
+                <Text>{value}</Text>
             ,
         },
 
         {
-            title: t['pendAddModal.column.label.resourceType'],
+            title: t['repositoryModal.column.label.resourceType'],
             dataIndex: 'resourceType',
             render: (value, record) => {
                 return getResourceTypeDescription(t,value);
             },
         },
         {
-            title: t['pendAddModal.column.label.relationShip'],
-            dataIndex: 'relationship',
+            title: t['repositoryModal.column.label.relationShip'],
+            dataIndex: 'fullTitle',
             render: (value, record) => {
-                let relationship;
                 if(record.resourceType == ResourceTypeEnum.Stat){
-                    const projectTitle = record?.extend.projectTitle;
-                    const token = record?.extend.token;
-                    relationship = projectTitle + " > " + token;
+                    const array = value.split(";");
+                    return array[0] +  '  >  ' + array[1];
                 }
-                return relationship;
             },
         },
         {
-            title: t['pendAddModal.column.label.operations'],
+            title: t['repositoryModal.column.label.operations'],
             dataIndex: 'operations',
             render: (value, record) => {
                 console.log("listNodes data is:" + JSON.stringify(listNodes));
@@ -77,13 +74,13 @@ export function getColumns(t: any,listNodes:TreeNode[], callback: (record: Recor
                                      type="text"
                                      onClick={() => callback(record,'add')}
                                      size="mini">
-                        {t['pendAddModal.column.label.operations.add']}
+                        {t['repositoryModal.column.label.operations.add']}
                     </Button>;
                 }else{
                     button = <Button disabled={true} key={getRandomString()}
                                      type="secondary"
                                      size="mini">
-                        {t['pendAddModal.column.label.operations.added']}
+                        {t['repositoryModal.column.label.operations.added']}
                     </Button>;
                 }
                 return  <Space key={getRandomString()} size={0} direction="horizontal">{[button]}</Space>;

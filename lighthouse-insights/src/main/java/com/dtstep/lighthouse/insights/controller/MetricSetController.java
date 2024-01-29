@@ -1,6 +1,5 @@
 package com.dtstep.lighthouse.insights.controller;
 
-import com.clearspring.analytics.util.Lists;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
@@ -9,8 +8,8 @@ import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
+import com.dtstep.lighthouse.insights.modal.Indicator;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
-import com.dtstep.lighthouse.insights.modal.Project;
 import com.dtstep.lighthouse.insights.service.MetricSetService;
 import com.dtstep.lighthouse.insights.service.RelationService;
 import com.dtstep.lighthouse.insights.vo.MetricSetVO;
@@ -23,8 +22,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @ControllerAdvice
@@ -153,11 +150,11 @@ public class MetricSetController {
         return ResultData.result(ResultCode.success);
     }
 
-    @RequestMapping("/metricset/structurePendList")
-    public ResultData<ListData<ResourceVO>> structurePendList(@Validated @RequestBody ListSearchObject<MetricPendQueryParam> searchObject) {
+    @RequestMapping("/metricset/indicatorList")
+    public ResultData<ListData<Indicator>> indicatorList(@Validated @RequestBody ListSearchObject<MetricPendQueryParam> searchObject) {
         MetricPendQueryParam queryParam = searchObject.getQueryParamOrDefault(new MetricPendQueryParam());
         Pagination pagination = searchObject.getPagination();
-        ListData<ResourceVO> listData = metricSetService.queryPendList(queryParam,pagination.getPageNum(),pagination.getPageSize());
+        ListData<Indicator> listData = metricSetService.queryIndicatorList(queryParam,pagination.getPageNum(),pagination.getPageSize());
         return ResultData.success(listData);
     }
 

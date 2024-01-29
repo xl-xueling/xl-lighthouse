@@ -1,6 +1,6 @@
 import {request} from "@/utils/request";
 import {ResultData} from "@/types/insights-common";
-import {ArcoTreeNode, MetricSet, Relation} from "@/types/insights-web";
+import {ArcoTreeNode, Indicator, MetricSet, Relation} from "@/types/insights-web";
 
 export async function requestCreate(data:MetricSet) :Promise<ResultData>{
     return request({
@@ -65,9 +65,9 @@ export async function requestResetStructure(data):Promise<ResultData> {
     })
 }
 
-export async function requestStructurePendList(data):Promise<ResultData> {
+export async function requestIndicatorList(data):Promise<ResultData<{list:Array<Indicator>,total:number}>> {
     return request({
-        url:'/metricset/structurePendList',
+        url:'/metricset/indicatorList',
         method:'POST',
         data,
     })

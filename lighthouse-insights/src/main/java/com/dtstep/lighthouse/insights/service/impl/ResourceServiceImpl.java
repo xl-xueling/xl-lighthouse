@@ -1,6 +1,5 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
-import com.dtstep.lighthouse.common.exception.RoleDefendException;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.*;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
@@ -10,7 +9,6 @@ import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -50,7 +47,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Transactional
     @Override
-    public RolePair addResourceCallback(Resource resource) {
+    public RolePair addResourceCallback(ResourceDto resource) {
         List<Role> roleList = new ArrayList<>();
         Role manageRole = null;
         Role accessRole = null;
@@ -117,7 +114,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Transactional
     @Override
-    public void updateResourcePidCallback(Resource resource) {
+    public void updateResourcePidCallback(ResourceDto resource) {
         List<Role> roleList = new ArrayList<>();
         Role manageRole = null;
         Role accessRole = null;
@@ -181,7 +178,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Transactional
     @Override
-    public ResultCode deleteResourceCallback(Resource resource){
+    public ResultCode deleteResourceCallback(ResourceDto resource){
         List<Role> roleList = new ArrayList<>();
         Role manageRole = null;
         Role accessRole = null;
@@ -231,36 +228,36 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Resource queryByRoleId(Integer roleId) {
+    public ResourceDto queryByRoleId(Integer roleId) {
         Role role = roleService.queryById(roleId);
         if(role == null){
             return null;
         }
-        Resource resource = null;
+        ResourceDto resource = null;
         RoleTypeEnum roleTypeEnum = role.getRoleType();
         Integer resourceId = role.getResourceId();
         if(roleTypeEnum == RoleTypeEnum.DOMAIN_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.DOMAIN_ACCESS_PERMISSION){
             Domain domain = domainService.queryById(resourceId);
-            resource = new Resource(ResourceTypeEnum.Domain,resourceId,domain);
+            resource = new ResourceDto(ResourceTypeEnum.Domain,resourceId,domain);
         }else if(roleTypeEnum == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION){
             Department department = departmentDao.queryById(resourceId);
-            resource = new Resource(ResourceTypeEnum.Department,resourceId,department);
+            resource = new ResourceDto(ResourceTypeEnum.Department,resourceId,department);
         }else if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION){
             Project project = projectDao.queryById(resourceId);
-            resource = new Resource(ResourceTypeEnum.Project,resourceId,project);
+            resource = new ResourceDto(ResourceTypeEnum.Project,resourceId,project);
         }else if(roleTypeEnum == RoleTypeEnum.GROUP_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.GROUP_ACCESS_PERMISSION){
             Group group = groupDao.queryById(resourceId);
-            resource = new Resource(ResourceTypeEnum.Group,resourceId,group);
+            resource = new ResourceDto(ResourceTypeEnum.Group,resourceId,group);
         }else if(roleTypeEnum == RoleTypeEnum.STAT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.STAT_ACCESS_PERMISSION){
             Stat stat = statDao.queryById(resourceId);
-            resource = new Resource(ResourceTypeEnum.Group,resourceId,stat);
+            resource = new ResourceDto(ResourceTypeEnum.Group,resourceId,stat);
         }else if(roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.METRIC_ACCESS_PERMISSION){
             MetricSet metricSet = metricSetDao.queryById(resourceId);
-            resource = new Resource(ResourceTypeEnum.MetricSet,resourceId,metricSet);
+            resource = new ResourceDto(ResourceTypeEnum.MetricSet,resourceId,metricSet);
         }else if(roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){
-            resource = new Resource(ResourceTypeEnum.System,0);
+            resource = new ResourceDto(ResourceTypeEnum.System,0);
         }else if (roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){
-            resource = new Resource(ResourceTypeEnum.System,0);
+            resource = new ResourceDto(ResourceTypeEnum.System,0);
         }
         return resource;
     }

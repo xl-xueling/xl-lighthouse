@@ -8,7 +8,6 @@ import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
 import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
-import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
@@ -77,7 +76,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectDao.insert(project);
         int projectId = project.getId();
         Integer departmentId = project.getDepartmentId();
-        RolePair rolePair = resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Project,projectId,ResourceTypeEnum.Department,departmentId));
+        RolePair rolePair = resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Project,projectId,ResourceTypeEnum.Department,departmentId));
         Integer manageRoleId = rolePair.getManageRoleId();
         int currentUserId = baseService.getCurrentUserId();
         Permission adminPermission = new Permission(currentUserId,OwnerTypeEnum.USER,manageRoleId);
@@ -157,7 +156,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public int update(Project project) {
-        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Project,project.getId(),ResourceTypeEnum.Department,project.getDepartmentId()));
+        resourceService.updateResourcePidCallback(ResourceDto.newResource(ResourceTypeEnum.Project,project.getId(),ResourceTypeEnum.Department,project.getDepartmentId()));
         return projectDao.update(project);
     }
 
@@ -228,7 +227,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public int delete(Project project) {
         int result = projectDao.deleteById(project.getId());
-        resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Project,project.getId(),ResourceTypeEnum.Department,project.getDepartmentId()));
+        resourceService.deleteResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Project,project.getId(),ResourceTypeEnum.Department,project.getDepartmentId()));
         return result;
     }
 

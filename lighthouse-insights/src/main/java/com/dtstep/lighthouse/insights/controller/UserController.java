@@ -179,7 +179,7 @@ public class UserController {
         String message;
         if(CollectionUtils.isNotEmpty(permissions)){
             Integer roleId = permissions.get(0).getRoleId();
-            Resource resource = resourceService.queryByRoleId(roleId);
+            ResourceDto resource = resourceService.queryByRoleId(roleId);
             if(resource != null){
                 ResourceTypeEnum resourceTypeEnum = resource.getResourceType();
                 if(resourceTypeEnum == ResourceTypeEnum.Department){
