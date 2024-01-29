@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.dao;
 
 import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
+import com.dtstep.lighthouse.insights.modal.Indicator;
 import com.dtstep.lighthouse.insights.modal.MetricSet;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,6 @@ public interface MetricSetDao {
     int deleteById(Integer id);
 
     List<MetricSet> queryList(@Param("queryParam")MetricSetQueryParam queryParam);
+
+    List<Indicator> queryIndicatorList(Integer id);
 }

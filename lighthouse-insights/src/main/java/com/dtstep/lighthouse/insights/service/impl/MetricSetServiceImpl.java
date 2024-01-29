@@ -2,7 +2,6 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.key.RandomID;
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
@@ -16,7 +15,6 @@ import com.dtstep.lighthouse.insights.vo.MetricSetVO;
 import com.dtstep.lighthouse.insights.vo.ResourceVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -85,7 +83,7 @@ public class MetricSetServiceImpl implements MetricSetService {
         metricSetDao.insert(metricSet);
         int id = metricSet.getId();
         Domain domain = domainService.queryDefault();
-        RolePair rolePair = resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.MetricSet,id,ResourceTypeEnum.Domain,domain.getId()));
+        RolePair rolePair = resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.MetricSet,id,ResourceTypeEnum.Domain,domain.getId()));
         Integer manageRoleId = rolePair.getManageRoleId();
         int currentUserId = baseService.getCurrentUserId();
         Permission adminPermission = new Permission(currentUserId,OwnerTypeEnum.USER,manageRoleId);
@@ -350,56 +348,16 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
-    public ListData<ResourceVO> queryPendList(MetricPendQueryParam queryParam, Integer pageNum, Integer pageSize) {
-        Integer id = queryParam.getId();
-        MetricSet metricSet = queryById(id);
-        Validate.notNull(metricSet);
-        TreeNode rootNode = metricSet.getStructure();
-        if(rootNode == null || CollectionUtils.isEmpty(rootNode.getChildren())){
-            return ListData.newInstance(Lists.<ResourceVO>newArrayList(),0,pageNum,pageSize);
-        }
-        RelationQueryParam relationQueryParam = new RelationQueryParam();
-        relationQueryParam.setSubjectId(metricSet.getId());
-        relationQueryParam.setRelationType(RelationTypeEnum.MetricSetBindRelation);
-        List<Relation> relationList = relationDao.queryJoinList(relationQueryParam);
-        List<Integer> projectIdList = relationList.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Project).map(Relation::getResourceId).collect(Collectors.toList());
-        HashMap<String,TreeNode> nodesMap = new HashMap<>();
-        List<Integer> allStatIdList = new ArrayList<>();
-        for(Relation relation : relationList){
-            if(relation.getResourceType() == ResourceTypeEnum.Stat){
-               allStatIdList.add(relation.getResourceId());
-            }
-        }
-        if(CollectionUtils.isNotEmpty(projectIdList)){
-            List<FlatTreeNode> flatTreeNodes = projectDao.queryNodeList(projectIdList);
-            for(FlatTreeNode flatNode:flatTreeNodes){
-                if(flatNode.getType().equals("stat")){
-                    allStatIdList.add(flatNode.getId());
-                }
-            }
-        }
-        List<Integer> currentIds = getCurrentStatIds(List.of(rootNode));
-        List<Integer> pendStatIds = new ArrayList<>(allStatIdList);
-        pendStatIds.removeAll(currentIds);
-        StatQueryParamExtend statQueryParamExtend = new StatQueryParamExtend();
-        statQueryParamExtend.setIds(pendStatIds);
+    public ListData<Indicator> queryIndicatorList(MetricPendQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        PageInfo<Stat> pageInfo;
+        PageInfo<Indicator> pageInfo = null;
         try{
-            List<Stat> statList = statDao.queryJoinList(statQueryParamExtend);
-            pageInfo = new PageInfo<>(statList);
+            List<Indicator> ids = metricSetDao.queryIndicatorList(queryParam.getId());
+            pageInfo = new PageInfo(ids);
         }finally {
             PageHelper.clearPage();
         }
-        List<ResourceVO> voList = new ArrayList<>();
-        for(Stat stat:pageInfo.getList()){
-            ResourceVO resourceVO = new ResourceVO();
-            resourceVO.setResourceId(stat.getId());
-            resourceVO.setResourceType(ResourceTypeEnum.Stat);
-            resourceVO.setExtend(stat);
-            voList.add(resourceVO);
-        }
-        return ListData.newInstance(voList,pageInfo.getTotal(),pageNum,pageSize);
+        return ListData.newInstance(pageInfo.getList(),pageInfo.getTotal(),pageNum,pageSize);
     }
 
     private static List<Integer> getCurrentStatIds(List<TreeNode> nodes) {

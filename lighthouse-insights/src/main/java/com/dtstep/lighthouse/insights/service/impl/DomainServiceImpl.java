@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.insights.dao.DomainDao;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Domain;
-import com.dtstep.lighthouse.insights.modal.Resource;
+import com.dtstep.lighthouse.insights.modal.ResourceDto;
 import com.dtstep.lighthouse.insights.service.DomainService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class DomainServiceImpl implements DomainService {
     public int create(Domain domain) {
         domainDao.insert(domain);
         int id = domain.getId();
-        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Domain,id,ResourceTypeEnum.System,0));
+        resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Domain,id,ResourceTypeEnum.System,0));
         return id;
     }
 

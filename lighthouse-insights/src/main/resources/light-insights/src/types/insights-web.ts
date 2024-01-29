@@ -141,6 +141,15 @@ export interface MetricSet {
     initDepartmentsPermission?:number[],
 }
 
+export interface Indicator{
+    resourceId?:number;
+    resourceType?:ResourceTypeEnum;
+    title?:string;
+    fullPath?:string;
+    fullTitle?:string;
+    createTime?;number;
+}
+
 export interface Resource {
     resourceId?:number;
     resourceType?:ResourceTypeEnum;

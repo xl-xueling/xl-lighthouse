@@ -7,8 +7,6 @@ import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.core.formula.TemplateUtil;
-import com.dtstep.lighthouse.insights.controller.StatController;
-import com.dtstep.lighthouse.insights.controller.annotation.RecordAnnotation;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
@@ -18,7 +16,6 @@ import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import com.dtstep.lighthouse.insights.enums.ComponentTypeEnum;
-import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.modal.*;
@@ -101,7 +98,7 @@ public class StatServiceImpl implements StatService {
         stat.setRandomId(UUID.randomUUID().toString());
         statDao.insert(stat);
         int id = stat.getId();
-        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Stat,id, ResourceTypeEnum.Group,stat.getGroupId()));
+        resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Stat,id, ResourceTypeEnum.Group,stat.getGroupId()));
         return ResultCode.success;
     }
 
@@ -121,7 +118,7 @@ public class StatServiceImpl implements StatService {
         LocalDateTime localDateTime = LocalDateTime.now();
         stat.setUpdateTime(localDateTime);
         int result = statDao.update(stat);
-        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Stat,stat.getId(),ResourceTypeEnum.Group,stat.getGroupId()));
+        resourceService.updateResourcePidCallback(ResourceDto.newResource(ResourceTypeEnum.Stat,stat.getId(),ResourceTypeEnum.Group,stat.getGroupId()));
         return ResultCode.success;
     }
 
@@ -129,7 +126,7 @@ public class StatServiceImpl implements StatService {
     @Override
     public int delete(Stat stat) {
         Integer id = stat.getId();
-        resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Stat,id,ResourceTypeEnum.Group,stat.getGroupId()));
+        resourceService.deleteResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Stat,id,ResourceTypeEnum.Group,stat.getGroupId()));
         return statDao.deleteById(id);
     }
 

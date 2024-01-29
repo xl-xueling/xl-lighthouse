@@ -19,7 +19,7 @@ const TabPane = Tabs.TabPane;
 import { MdOutlineNewLabel } from "react-icons/md";
 import { RiDeleteBin3Line } from "react-icons/ri";
 import {requestDeleteById} from "@/api/project";
-import {requestResetStructure, requestStructurePendList, requestUpdateStructure} from "@/api/metricset";
+import {requestResetStructure, requestIndicatorList, requestUpdateStructure} from "@/api/metricset";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {Resource, TreeNode} from "@/types/insights-web";
@@ -29,7 +29,7 @@ import {ResourceTypeEnum} from "@/types/insights-common";
 import {MetricSetStructureContext} from "@/pages/metricset/structure/index";
 import {treeCheckContainsNode} from "@/pages/department/common";
 
-export default function MetricSetPendAddModal({id,onClose}) {
+export default function MetricSetRepositoryModal({id,onClose}) {
 
     const t = useLocale(locale);
     const [listData,setListData] = useState<Resource[]>([]);
@@ -81,7 +81,7 @@ export default function MetricSetPendAddModal({id,onClose}) {
             }
         }
         setLoading(true);
-        await requestStructurePendList(requestParam).then((response) => {
+        await requestIndicatorList(requestParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
                 setListData(data.list);
@@ -106,7 +106,7 @@ export default function MetricSetPendAddModal({id,onClose}) {
 
     return (
         <Modal
-            title= {'待添加元素'}
+            title= {t['repositoryModal.modal.title']}
             style={{ width:'1200px',maxWidth:'90%'}}
             visible={true}
             footer={null}

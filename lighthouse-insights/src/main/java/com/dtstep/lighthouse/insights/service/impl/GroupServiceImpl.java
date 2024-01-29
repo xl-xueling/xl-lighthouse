@@ -1,16 +1,14 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.key.RandomID;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Group;
-import com.dtstep.lighthouse.insights.modal.Resource;
+import com.dtstep.lighthouse.insights.modal.ResourceDto;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
-import com.dtstep.lighthouse.insights.vo.ResultWrapper;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -42,7 +39,7 @@ public class GroupServiceImpl implements GroupService {
         group.setUpdateTime(localDateTime);
         group.setRefreshTime(localDateTime);
         groupDao.insert(group);
-        resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
+        resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
         return group.getId();
     }
 
@@ -53,7 +50,7 @@ public class GroupServiceImpl implements GroupService {
         group.setUpdateTime(localDateTime);
         group.setRefreshTime(localDateTime);
         int result = groupDao.update(group);
-        resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
+        resourceService.updateResourcePidCallback(ResourceDto.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
         return result;
     }
 
@@ -62,7 +59,7 @@ public class GroupServiceImpl implements GroupService {
     public int delete(Group group) {
         Validate.notNull(group);
         Integer id = group.getId();
-        resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
+        resourceService.deleteResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
         int result = groupDao.deleteById(id);
         return result;
     }

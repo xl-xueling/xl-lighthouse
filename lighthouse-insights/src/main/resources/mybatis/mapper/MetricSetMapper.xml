@@ -11,6 +11,15 @@
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
+    <resultMap id="indicatorResultMap" type="com.dtstep.lighthouse.insights.modal.Indicator">
+        <id column="resource_id" property="resourceId"/>
+        <result column="title" property="title"/>
+        <result column="resource_type" property="resourceType" typeHandler="com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler"/>
+        <result column="full_path" property="fullPath"/>
+        <result column="full_title" property="fullTitle"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.MetricSet">
         INSERT INTO ldp_metricsets (`title`,`private_type`,`desc`,`create_time`,`update_time`) VALUES
         (
@@ -38,6 +47,23 @@
                 AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})
             </if>
         </where>
+    </select>
+
+    <select id="queryIndicatorList" resultMap="indicatorResultMap">
+        select f.* from (SELECT a.`id` as resource_id,'6' as resource_type, a.title, CONCAT_WS(';', a.project_id, a.group_id,a.id) as full_path,CONCAT_WS(';', b.title, c.token,a.title) as full_title,a.create_time
+                         FROM ldp_stats a
+                                  inner join ldp_projects b on a.project_id = b.id
+                                  inner join ldp_groups c on a.group_id = c.id ) f
+                            inner join (
+            select resource_id from (
+                                        select a.resource_id as resource_id from ldp_relations a
+                                                                                     inner join ldp_stats b on a.resource_id = b.id
+                                        where a.resource_type = '6' and a.subject_id = #{id} and a.relation_type='1'
+                                        union all
+                                        select b.id as resource_id from ldp_stats b
+                                        where b.project_id in (select resource_id from ldp_relations a where a.resource_type = '4' and a.subject_id = #{id} and a.relation_type='1')
+                                    ) t group by resource_id
+        ) d on f.resource_id = d.resource_id
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.MetricSet">

@@ -1,13 +1,10 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
-import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
-import com.dtstep.lighthouse.insights.dto_bak.CommonTreeNode;
 import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
-import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Department;
-import com.dtstep.lighthouse.insights.modal.Resource;
+import com.dtstep.lighthouse.insights.modal.ResourceDto;
 import com.dtstep.lighthouse.insights.modal.Role;
 import com.dtstep.lighthouse.insights.modal.Domain;
 import com.dtstep.lighthouse.insights.service.*;
@@ -54,10 +51,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         Integer resourcePid;
         if(department.getPid() == 0){
             resourcePid = domainService.queryDefault().getId();
-            resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Department,departmentId,ResourceTypeEnum.Domain,resourcePid));
+            resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Department,departmentId,ResourceTypeEnum.Domain,resourcePid));
         }else{
             resourcePid = department.getPid();
-            resourceService.addResourceCallback(Resource.newResource(ResourceTypeEnum.Department,departmentId,ResourceTypeEnum.Department,resourcePid));
+            resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Department,departmentId,ResourceTypeEnum.Department,resourcePid));
         }
         return department.getId();
     }
@@ -69,10 +66,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         Integer resourcePid;
         if(department.getPid() == 0){
             resourcePid = domainService.queryDefault().getId();
-            resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Domain,resourcePid));
+            resourceService.updateResourcePidCallback(ResourceDto.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Domain,resourcePid));
         }else{
             resourcePid = department.getPid();
-            resourceService.updateResourcePidCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Department,resourcePid));
+            resourceService.updateResourcePidCallback(ResourceDto.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Department,resourcePid));
         }
         return result;
     }
@@ -87,10 +84,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         if(department.getPid() == 0){
             Domain domain = domainService.queryDefault();
             resourcePid = domain.getId();
-            resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Domain,resourcePid));
+            resourceService.deleteResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Domain,resourcePid));
         }else{
             resourcePid = department.getPid();
-            resourceService.deleteResourceCallback(Resource.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Department,resourcePid));
+            resourceService.deleteResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Department,department.getId(),ResourceTypeEnum.Department,resourcePid));
         }
         return result;
     }
