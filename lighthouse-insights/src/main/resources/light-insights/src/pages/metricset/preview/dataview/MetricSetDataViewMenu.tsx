@@ -57,10 +57,6 @@ export default function MetricSetDataViewMenu({callback}) {
         }
     }
 
-    useEffect(() => {
-        console.log("-----DataView update,metricInfo:" + JSON.stringify(metricSetInfo));
-    },[metricSetInfo?.structure])
-
     const renderMenuItems = (items) =>
         items?.map((item) => {
             if (Array.isArray(item.children) && item.children.length > 0) {

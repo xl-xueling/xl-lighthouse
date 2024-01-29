@@ -48,6 +48,12 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
         return treeData;
     }
 
+    useEffect(() => {
+        if(!expandedKeys.includes(treeData[0].key)){
+            setExpandedKeys([...expandedKeys,treeData[0].key]);
+        }
+    },[treeData])
+
     const getIcon= (type,level) => {
         if(type == 'stat'){
             return <IconTag style={{marginRight:'8px'}}/>
@@ -80,6 +86,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
             item.id = key;
             item.pid = parentKey;
             item.parentKey = parentKey;
+            console.log("id is:" + item.id + ",level:" + level + ",value:" + item.value);
             return (
                 <Tree.Node
                         draggable={item.type == 'stat'}
@@ -213,8 +220,8 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.level.exceedLimit']});
                                             return;
                                         }
-                                        const nodeTitle = "New Node_" + getRandomString(8);
-                                        const currentId = getRandomString();
+                                        const currentId = getRandomString(8);
+                                        const nodeTitle = "New Node_" + currentId;
                                         if(currentId == "-1"){
                                             return;
                                         }
@@ -223,6 +230,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                             parentKey:node.dataRef.id,
                                             name: nodeTitle,
                                             title:nodeTitle,
+                                            label:nodeTitle,
                                             id: currentId,
                                             pid: node.dataRef.id,
                                             icon:getIconByLevel(node._level + 1),
@@ -301,7 +309,9 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                         const dataChildren = node.dataRef.children || [];
                                         if (dataChildren.length > 0) {
                                             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.deleteHashChild']});
-                                        } else {
+                                        } else if(treeData[0].children.length <= 1){
+                                            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.requireAtLeastOneNode']});
+                                        }else {
                                             const w = deleteNodeByKey([...treeData], node.dataRef.id)
                                             setTreeData([...w]);
                                         }

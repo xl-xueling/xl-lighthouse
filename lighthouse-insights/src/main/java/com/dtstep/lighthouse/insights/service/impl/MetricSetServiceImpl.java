@@ -330,22 +330,24 @@ public class MetricSetServiceImpl implements MetricSetService {
     @Override
     public void updateStructure(MetricUpdateStructureParam updateStructureParam){
         TreeNode treeNode = updateStructureParam.getStructure();
-        modifyStructure(List.of(treeNode));
+        List<String> keyList = new ArrayList<>();
+        modifyStructure(List.of(treeNode),keyList);
         MetricSet metricSet = new MetricSet();
         metricSet.setId(updateStructureParam.getId());
         metricSet.setStructure(treeNode);
         metricSetDao.update(metricSet);
-        System.out.println("nodeList is:" + JsonUtil.toJSONString(treeNode));
     }
 
-    private void modifyStructure(List<TreeNode> nodeList){
+    private void modifyStructure(List<TreeNode> nodeList,List<String> keyList){
         for(TreeNode treeNode : nodeList){
-            if(treeNode.getType().equals("project") || treeNode.getType().equals("group")){
+            String key = RandomID.id(8,keyList);
+            treeNode.setKey(key);
+            if(treeNode.getType() == null || treeNode.getType().equals("project") || treeNode.getType().equals("group")){
                 treeNode.setType("dir");
                 treeNode.setValue(null);
             }
             if(CollectionUtils.isNotEmpty(treeNode.getChildren())){
-                modifyStructure(treeNode.getChildren());
+                modifyStructure(treeNode.getChildren(),keyList);
             }
         }
     }

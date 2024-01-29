@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Button, Card, Grid, Notification, Space, Spin, Tabs, Typography} from '@arco-design/web-react';
 import styles from "./style/index.module.less";
 import StructurePanel from "@/pages/metricset/structure/structure";
@@ -20,17 +20,22 @@ export default function MetricSetStructure() {
 
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
-    const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
-    const { reloadTime, setReloadTime } = useContext(MetricSetPreviewContext);
+    const {metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
+    const {reloadTime, setReloadTime } = useContext(MetricSetPreviewContext);
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
     const [showPendAddModal,setShowPendAddModal] = useState<boolean>(false);
     const structureRef = useRef(null);
     const [listNodes,setListNodes] = useState<TreeNode[]>([Object.assign({},metricSetInfo?.structure)]);
+
     const handlerCallback = async (type,record) => {
         if(type == 'clickStatMenu'){
             setSelectedStatId(Number(record));
         }
     }
+
+    useEffect(() => {
+        setListNodes([Object.assign({},metricSetInfo?.structure)])
+    },[metricSetInfo?.structure])
 
     const handleShowPendAddModal = () => {
         setShowPendAddModal(true);
@@ -65,12 +70,14 @@ export default function MetricSetStructure() {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['structure.operations.reset.success']});
+                setReloadTime(Date.now());
+                setLoading(false);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+                setLoading(false);
             }
         }).catch((error) => {
             console.log(error);
-        }).finally(() => {
             setLoading(false);
         })
     }
