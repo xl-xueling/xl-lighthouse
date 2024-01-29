@@ -41,23 +41,15 @@ import { BiExtension } from "react-icons/bi";
 import { BiWalletAlt } from "react-icons/bi";
 import { RxCube } from "react-icons/rx";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
+import {getTreeResourceIcon} from "@/pages/common/desc/base";
 
 
 export default function MetricSetDataViewMenu({callback}) {
 
     const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
 
-    const getIcon = (item) => {
-        if(item.type == 'stat'){
-            return <IconTag/>
-        }else if(item.type == 'group'){
-            return <CiViewTable style={{marginRight:'10px'}}/>
-        }else if(item.type == 'project'){
-             return <PiDiamondsFour style={{marginRight:'10px'}}/>
-        }
-    }
 
-    const renderMenuItems = (items) =>
+    const renderMenuItems = (items,level) =>
         items?.map((item) => {
             if (Array.isArray(item.children) && item.children.length > 0) {
                 return (
@@ -70,9 +62,9 @@ export default function MetricSetDataViewMenu({callback}) {
                     }}
 
                                   title={
-                        <span style={{display:"inline-flex",alignItems:"center"}}>{getIcon(item)}{item.label}</span>
+                        <span style={{display:"inline-flex",alignItems:"center"}}>{getTreeResourceIcon(item.type,level)}{item.label}</span>
                     }>
-                        {renderMenuItems(item.children)}
+                        {renderMenuItems(item.children,level + 1)}
                     </Menu.SubMenu>
                 );
             }
@@ -81,7 +73,7 @@ export default function MetricSetDataViewMenu({callback}) {
                 if(item.type == 'stat'){
                     callback("clickStatMenu",Number(item.value));
                 }
-            }} key={item.key}>{getIcon(item)}{item.label}</Menu.Item>;
+            }} key={item.key}>{getTreeResourceIcon(item.type,level)}{item.label}</Menu.Item>;
         });
 
     return (
@@ -90,7 +82,7 @@ export default function MetricSetDataViewMenu({callback}) {
                 className={'disable-select'}
                 style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}>
                 {
-                    (metricSetInfo && metricSetInfo?.structure?.children) ? renderMenuItems(metricSetInfo?.structure?.children)
+                    (metricSetInfo && metricSetInfo?.structure?.children) ? renderMenuItems(metricSetInfo?.structure?.children,1)
                         : <Empty style={{marginTop:'50px'}}/>
                 }
             </Menu>

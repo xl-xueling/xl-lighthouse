@@ -15,8 +15,9 @@ import {
 } from "@/types/insights-common";
 import {PiDiamondsFour, PiLockKeyOpenThin, PiLockKeyThin} from "react-icons/pi";
 import {CiViewTable} from "react-icons/ci";
-import {IconTag} from "@arco-design/web-react/icon";
+import {IconMindMapping, IconTag} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
+import {RxCube} from "react-icons/rx";
 
 
 export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
@@ -231,6 +232,22 @@ export function getLockIcon(t:any,privateType:PrivateTypeEnum,permissions:Permis
         return <PiLockKeyOpenThin style={{marginLeft:'5px'}}/>;
     }else{
         return <PiLockKeyThin style={{marginLeft:'5px'}}/>;
+    }
+}
+
+export const getTreeResourceIcon= (type,level) => {
+    if(type == 'stat'){
+        return <IconTag style={{marginRight:'8px'}}/>
+    }else if(type == 'metric'){
+        return <LuLayers style={{marginRight:'8px'}}/>
+    }else if(type == 'group'){
+        return <CiViewTable style={{marginRight:'8px'}}/>
+    }else if(type == 'project'){
+        return <PiDiamondsFour style={{marginRight:'8px'}}/>
+    }else if(type == 'dir' && level == 1){
+        return <RxCube style={{marginRight:'8px'}}/>
+    } else if(type == 'dir' && level == 2){
+        return <IconMindMapping  style={{marginRight:'8px'}}/>
     }
 }
 

@@ -12,6 +12,9 @@ import {RiDeleteBin3Line} from "react-icons/ri";
 import {MetricSetStructureContext} from "@/pages/metricset/structure/index";
 import {TreeNode} from "@/types/insights-web";
 import {countNodesByType} from "@/pages/department/common";
+import {CiViewTable} from "react-icons/ci";
+import {PiDiamondsFour} from "react-icons/pi";
+import {getTreeResourceIcon} from "@/pages/common/desc/base";
 
 const { Row, Col } = Grid;
 
@@ -50,21 +53,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
         }
     },[treeData])
 
-    const getIcon= (type,level) => {
-        if(type == 'stat'){
-            return <IconTag style={{marginRight:'8px'}}/>
-        }else if(type == 'new'){
-            return <MdOutlineNewLabel style={{marginRight:'8px'}}/>
-        }else if(type == 'waste'){
-            return <RiDeleteBin3Line style={{marginRight:'8px'}}/>
-        }else if(level == 0){
-            return <LuLayers style={{marginRight:'8px'}}/>
-        }else if(level == 1){
-            return <RxCube style={{marginRight:'8px'}}/>
-        } else if(level == 2){
-            return <IconMindMapping  style={{marginRight:'8px'}}/>
-        }
-    }
+
 
     const getIconByLevel = (level) => {
         if(level == 0){
@@ -85,7 +74,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
             return (
                 <Tree.Node
                         draggable={item.type == 'stat'}
-                        icon={<span>{getIcon(item.type,level)}{item.type == 'stat'?<IconDragDotVertical style={{marginRight:'10px'}} />:null}</span>}
+                        icon={<span>{getTreeResourceIcon(item.type,level)}{item.type == 'stat'?<IconDragDotVertical style={{marginRight:'10px'}} />:null}</span>}
                         key={item.key}
                         title={item.label}
                      {...ret} dataRef={item}>
