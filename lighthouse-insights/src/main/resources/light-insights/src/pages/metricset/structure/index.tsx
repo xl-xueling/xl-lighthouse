@@ -13,6 +13,9 @@ import {TreeNode} from "@/types/insights-web";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
+
+export const MetricSetStructureContext = React.createContext(null)
+
 export default function MetricSetStructure() {
 
     const t = useLocale(locale);
@@ -33,11 +36,11 @@ export default function MetricSetStructure() {
         setShowPendAddModal(true);
     }
 
-    const handleAddNode = (treeNode) => {
-        const children = listNodes[0].children;
-        listNodes[0].children = [...children, treeNode];
-        setListNodes(listNodes);
-    }
+    // const handleAddNode = (treeNode) => {
+    //     const children = listNodes[0].children;
+    //     listNodes[0].children = [...children, treeNode];
+    //     setListNodes(listNodes);
+    // }
 
     const handlerSubmit = async () => {
         const treeData = structureRef.current.getData()[0];
@@ -72,18 +75,19 @@ export default function MetricSetStructure() {
     }
 
     return (
+        <MetricSetStructureContext.Provider value={{listNodes,setListNodes}}>
         <Spin loading={loading} style={{display:'block'}} className={styles['ss']}>
             <Space size={16} direction="vertical" style={{ width: '100%'}}>
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
                         <Card>
-                            {listNodes && <StructurePanel ref={structureRef} structure={listNodes} menuCallback={handlerCallback}/>}
+                            {listNodes && <StructurePanel ref={structureRef}  menuCallback={handlerCallback}/>}
                         </Card>
                         <Card>
                             <Grid.Row justify="end">
                                 <Grid.Col span={18}>
                                     <Space className={styles.right} size={16} direction="horizontal">
-                                        <Button size={"mini"} type="secondary" icon={<MdOutlineNewLabel/>} onClick={handleShowPendAddModal}>待添加(16)</Button>
+                                        <Button size={"mini"} type="secondary" icon={<MdOutlineNewLabel/>} onClick={handleShowPendAddModal}>待添加</Button>
                                     </Space>
                                 </Grid.Col>
                                 <Grid.Col span={6}>
@@ -95,9 +99,10 @@ export default function MetricSetStructure() {
                             </Grid.Row>
                         </Card>
                     </Space>
-                    {showPendAddModal && <MetricSetPendAddModal id={metricSetInfo?.id} callback={handleAddNode} onClose={() => setShowPendAddModal(false)} />}
+                    {showPendAddModal && <MetricSetPendAddModal id={metricSetInfo?.id} onClose={() => setShowPendAddModal(false)} />}
                 </div>
             </Space>
         </Spin>
+        </MetricSetStructureContext.Provider>
     );
 }

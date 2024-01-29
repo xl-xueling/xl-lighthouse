@@ -25,28 +25,40 @@ import locale from "./locale";
 import {Resource, TreeNode} from "@/types/insights-web";
 import {getColumns} from "./constants";
 import {getRandomString} from "@/utils/util";
+import {ResourceTypeEnum} from "@/types/insights-common";
+import {MetricSetStructureContext} from "@/pages/metricset/structure/index";
+import {treeCheckContainsNode} from "@/pages/department/common";
 
-export default function MetricSetPendAddModal({id,callback,onClose}) {
+export default function MetricSetPendAddModal({id,onClose}) {
 
     const t = useLocale(locale);
-
     const [listData,setListData] = useState<Resource[]>([]);
     const [loading,setLoading] = useState<boolean>(false);
+    const {listNodes,setListNodes} = useContext(MetricSetStructureContext);
+    const [refreshTime,setRefreshTime] = useState<number>(Date.now);
 
     const tableCallback = async (record, type) => {
-        console.log("record:" + record + ",type:" + type + ",record:" + JSON.stringify(record));
         if(type == 'add'){
             const treeNode:TreeNode = {
                 key:getRandomString(8),
                 label:record.extend.title,
                 value:record.resourceId,
-                type:record.resourceType == 6?'stat':null,
+                type:record.resourceType == ResourceTypeEnum.Stat?'stat':null,
             }
-            callback(treeNode);
+            await addTreeNode(treeNode).then();
         }
     }
 
-    const columns = useMemo(() => getColumns(t, tableCallback), [t,listData]);
+    const addTreeNode = async (treeNode) => {
+        if(!treeCheckContainsNode(listNodes,treeNode.value,treeNode.type)){
+            const children = listNodes[0].children;
+            listNodes[0].children = [...children, treeNode];
+            await setListNodes(listNodes);
+            setRefreshTime(Date.now);
+        }
+    }
+
+    const columns = useMemo(() => getColumns(t,listNodes, tableCallback), [t,refreshTime]);
 
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
@@ -97,11 +109,12 @@ export default function MetricSetPendAddModal({id,callback,onClose}) {
             title= {'待添加元素'}
             style={{ width:'1200px',maxWidth:'90%'}}
             visible={true}
+            footer={null}
             onCancel={() => onClose()}
         >
             <Table
+                rowKey={'resourceId'}
                 style={{minHeight:'200px'}}
-                rowKey={'resourceId' + 'resourceType'}
                 size={"small"}
                 loading={loading}
                 pagination={pagination}

@@ -95,6 +95,25 @@ export const translateToFlatStruct = (list):Array<ArcoFlatNode> => {
 }
 
 
+export const treeCheckContainsNode = (list:Array<TreeNode>,targetValue:string,targetType:string) => {
+    let containsKey = false;
+    const checkContainsKey = (node: TreeNode) => {
+        if (node.value === targetValue && node.type === targetType) {
+            containsKey = true;
+            return;
+        }
+        if (node.children && node.children.length > 0) {
+            for (const childNode of node.children) {
+                checkContainsKey(childNode);
+            }
+        }
+    };
+    for (const rootNode of list) {
+        checkContainsKey(rootNode);
+    }
+    return containsKey;
+}
+
 export const translateToTreeNodes = (list):Array<ArcoTreeNode> => {
     const nodeArr = new Array<ArcoTreeNode>();
     list?.forEach(item => {

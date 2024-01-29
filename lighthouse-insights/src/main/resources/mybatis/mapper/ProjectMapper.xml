@@ -127,7 +127,7 @@
             SELECT id, 0 as pid,title, 'project' AS type
             FROM ldp_projects
             <where>
-                <if test="ids != null">
+                <if test="ids != null and ids.size > 0">
                     id IN
                     <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
                         #{item}

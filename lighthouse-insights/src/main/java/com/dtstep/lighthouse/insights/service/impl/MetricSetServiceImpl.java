@@ -369,10 +369,12 @@ public class MetricSetServiceImpl implements MetricSetService {
                allStatIdList.add(relation.getResourceId());
             }
         }
-        List<FlatTreeNode> flatTreeNodes = projectDao.queryNodeList(projectIdList);
-        for(FlatTreeNode flatNode:flatTreeNodes){
-            if(flatNode.getType().equals("stat")){
-                allStatIdList.add(flatNode.getId());
+        if(CollectionUtils.isNotEmpty(projectIdList)){
+            List<FlatTreeNode> flatTreeNodes = projectDao.queryNodeList(projectIdList);
+            for(FlatTreeNode flatNode:flatTreeNodes){
+                if(flatNode.getType().equals("stat")){
+                    allStatIdList.add(flatNode.getId());
+                }
             }
         }
         List<Integer> currentIds = getCurrentStatIds(List.of(rootNode));
