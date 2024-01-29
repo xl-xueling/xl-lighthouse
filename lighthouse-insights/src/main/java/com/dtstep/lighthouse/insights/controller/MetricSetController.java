@@ -139,7 +139,7 @@ public class MetricSetController {
     public ResultData<Integer> updateStructure(@Validated @RequestBody MetricUpdateStructureParam updateStructureParam) {
         System.out.println("updateParam is:" + JsonUtil.toJSONString(updateStructureParam));
         metricSetService.updateStructure(updateStructureParam);
-        return null;
+        return ResultData.success();
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")

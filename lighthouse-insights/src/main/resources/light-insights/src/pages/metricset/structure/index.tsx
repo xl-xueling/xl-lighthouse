@@ -21,11 +21,11 @@ export default function MetricSetStructure() {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
+    const { reloadTime, setReloadTime } = useContext(MetricSetPreviewContext);
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
     const [showPendAddModal,setShowPendAddModal] = useState<boolean>(false);
     const structureRef = useRef(null);
-    const [listNodes,setListNodes] = useState<TreeNode[]>([metricSetInfo?.structure]);
-
+    const [listNodes,setListNodes] = useState<TreeNode[]>([Object.assign({},metricSetInfo?.structure)]);
     const handlerCallback = async (type,record) => {
         if(type == 'clickStatMenu'){
             setSelectedStatId(Number(record));
@@ -36,13 +36,8 @@ export default function MetricSetStructure() {
         setShowPendAddModal(true);
     }
 
-    // const handleAddNode = (treeNode) => {
-    //     const children = listNodes[0].children;
-    //     listNodes[0].children = [...children, treeNode];
-    //     setListNodes(listNodes);
-    // }
-
     const handlerSubmit = async () => {
+        setLoading(true);
         const treeData = structureRef.current.getData()[0];
         const updateParam = {
             id:metricSetInfo?.id,
@@ -51,26 +46,32 @@ export default function MetricSetStructure() {
         await requestUpdateStructure(updateParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['structure.operations.update.success']});
+                setReloadTime(Date.now());
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
         }).catch((error) => {
             console.log(error);
+        }).finally(() => {
+            setLoading(false);
         })
     }
 
     const handlerReset = async () => {
+        setLoading(true);
         const id = metricSetInfo?.id;
         await requestResetStructure({id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['structure.operations.reset.success']});
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
         }).catch((error) => {
             console.log(error);
+        }).finally(() => {
+            setLoading(false);
         })
     }
 
@@ -87,13 +88,13 @@ export default function MetricSetStructure() {
                             <Grid.Row justify="end">
                                 <Grid.Col span={18}>
                                     <Space className={styles.right} size={16} direction="horizontal">
-                                        <Button size={"mini"} type="secondary" icon={<MdOutlineNewLabel/>} onClick={handleShowPendAddModal}>待添加</Button>
+                                        <Button size={"mini"} type="secondary" icon={<MdOutlineNewLabel/>} onClick={handleShowPendAddModal}>{t['pendAddModal.button.label.pendAdd']}</Button>
                                     </Space>
                                 </Grid.Col>
                                 <Grid.Col span={6}>
                                     <Space className={styles.right} size={16} direction="horizontal">
-                                        <Button size={"small"} type={"primary"} status={"danger"}>重置</Button>
-                                        <Button size={"small"} type="primary" onClick={handlerSubmit}>确认</Button>
+                                        <Button size={"small"} type={"primary"} onClick={handlerReset} status={"danger"}>{t['pendAddModal.button.label.reset']}</Button>
+                                        <Button size={"small"} type="primary" onClick={handlerSubmit}>{t['pendAddModal.button.label.submit']}</Button>
                                     </Space>
                                 </Grid.Col>
                             </Grid.Row>

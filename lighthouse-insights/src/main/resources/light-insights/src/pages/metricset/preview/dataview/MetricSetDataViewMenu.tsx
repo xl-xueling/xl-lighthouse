@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {
     Card,
@@ -40,9 +40,12 @@ const TabPane = Tabs.TabPane;
 import { BiExtension } from "react-icons/bi";
 import { BiWalletAlt } from "react-icons/bi";
 import { RxCube } from "react-icons/rx";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 
 
-export default function MetricSetDataViewMenu({metricSetInfo,callback}) {
+export default function MetricSetDataViewMenu({callback}) {
+
+    const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
 
     const getIcon = (item) => {
         if(item.type == 'stat'){
@@ -53,6 +56,10 @@ export default function MetricSetDataViewMenu({metricSetInfo,callback}) {
              return <PiDiamondsFour style={{marginRight:'10px'}}/>
         }
     }
+
+    useEffect(() => {
+        console.log("-----DataView update,metricInfo:" + JSON.stringify(metricSetInfo));
+    },[metricSetInfo?.structure])
 
     const renderMenuItems = (items) =>
         items?.map((item) => {
@@ -87,7 +94,7 @@ export default function MetricSetDataViewMenu({metricSetInfo,callback}) {
                 className={'disable-select'}
                 style={{height: 'calc(100% - 28px)' ,minHeight:'500px',overflow: "auto"}}>
                 {
-                    (metricSetInfo && metricSetInfo?.structure[0]?.children) ? renderMenuItems(metricSetInfo?.structure[0]?.children)
+                    (metricSetInfo && metricSetInfo?.structure?.children) ? renderMenuItems(metricSetInfo?.structure?.children)
                         : <Empty style={{marginTop:'50px'}}/>
                 }
             </Menu>

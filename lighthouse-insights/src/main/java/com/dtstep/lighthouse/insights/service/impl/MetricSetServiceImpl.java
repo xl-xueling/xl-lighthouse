@@ -279,27 +279,29 @@ public class MetricSetServiceImpl implements MetricSetService {
         queryParam.setRelationType(RelationTypeEnum.MetricSetBindRelation);
         List<Relation> relationList = relationDao.queryJoinList(queryParam);
         List<Integer> projectIdList = relationList.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Project).map(Relation::getResourceId).collect(Collectors.toList());
-        HashMap<String,TreeNode> nodesMap = new HashMap<>();
-        List<FlatTreeNode> flatTreeNodes = projectDao.queryNodeList(projectIdList);
-        for(FlatTreeNode flatNode:flatTreeNodes){
-            String key = RandomID.id(8,keyList);
-            TreeNode treeNode = new TreeNode(key,flatNode.getTitle(), flatNode.getId(),flatNode.getType());
-            nodesMap.put(flatNode.getType() + "_" + flatNode.getId(),treeNode);
-        }
-        for (FlatTreeNode flatNode:flatTreeNodes) {
-            TreeNode currentNode = nodesMap.get(flatNode.getType() + "_" + flatNode.getId());
-            String parentType = null;
-            if(flatNode.getType().equals("group")){
-                TreeNode parentNode = nodesMap.get("project" + "_" + flatNode.getPid());
-                parentNode.addChild(currentNode);
-            }else if(flatNode.getType().equals("stat")){
-                TreeNode parentNode = nodesMap.get("group" + "_" + flatNode.getPid());
-                parentNode.addChild(currentNode);
+        if(CollectionUtils.isNotEmpty(projectIdList)){
+            HashMap<String,TreeNode> nodesMap = new HashMap<>();
+            List<FlatTreeNode> flatTreeNodes = projectDao.queryNodeList(projectIdList);
+            for(FlatTreeNode flatNode:flatTreeNodes){
+                String key = RandomID.id(8,keyList);
+                TreeNode treeNode = new TreeNode(key,flatNode.getTitle(), flatNode.getId(),flatNode.getType());
+                nodesMap.put(flatNode.getType() + "_" + flatNode.getId(),treeNode);
             }
-        }
-        for(TreeNode treeNode : nodesMap.values()){
-            if(treeNode.getType().equals("project")){
-                rootNode.addChild(treeNode);
+            for (FlatTreeNode flatNode:flatTreeNodes) {
+                TreeNode currentNode = nodesMap.get(flatNode.getType() + "_" + flatNode.getId());
+                String parentType = null;
+                if(flatNode.getType().equals("group")){
+                    TreeNode parentNode = nodesMap.get("project" + "_" + flatNode.getPid());
+                    parentNode.addChild(currentNode);
+                }else if(flatNode.getType().equals("stat")){
+                    TreeNode parentNode = nodesMap.get("group" + "_" + flatNode.getPid());
+                    parentNode.addChild(currentNode);
+                }
+            }
+            for(TreeNode treeNode : nodesMap.values()){
+                if(treeNode.getType().equals("project")){
+                    rootNode.addChild(treeNode);
+                }
             }
         }
         for(Relation relation : relationList){

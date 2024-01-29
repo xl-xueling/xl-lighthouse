@@ -10,7 +10,7 @@ const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
 export default function MetricSetDataViewPanel({parentLoading}) {
-    const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
+
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
 
     const handlerCallback = async (type,record) => {
@@ -26,7 +26,7 @@ export default function MetricSetDataViewPanel({parentLoading}) {
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
                         <Row>
-                            <MetricSetDataViewMenu metricSetInfo={metricSetInfo} callback={handlerCallback}/>
+                            <MetricSetDataViewMenu callback={handlerCallback}/>
                         </Row>
                     </Space>
                     <Space className={styles.right} size={16} direction="vertical">
