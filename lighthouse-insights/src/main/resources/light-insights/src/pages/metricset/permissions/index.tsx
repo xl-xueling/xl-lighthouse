@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import {Card, Collapse, Divider, Table, TableColumnProps, Tree} from "@arco-design/web-react";
+import {Card, Collapse, Divider, Table, TableColumnProps, Tabs, Tree} from "@arco-design/web-react";
 const TreeNode = Tree.Node;
 import styles from "./style/index.module.less";
+import {PermissionPanel} from "@/pages/permission/PermissionPanel";
+import useLocale from "@/utils/useLocale";
+import locale from "@/pages/metricset/preview/locale";
 const CollapseItem = Collapse.Item;
+const TabPane = Tabs.TabPane;
 
 export default function MetricSetPermissionsPanel({resourceId,resourceType}) {
+
+    const t = useLocale(locale);
 
     useEffect(() => {
         console.log("resourceId:" + resourceId + ",resourceType:" + resourceType)
@@ -70,21 +76,17 @@ export default function MetricSetPermissionsPanel({resourceId,resourceType}) {
 
     return (
         <Card  style={{width:'100%'}}>
-            <Collapse
-                defaultActiveKey={['1', '2']}
-            >
-                <CollapseItem header='Beijing Toutiao Technology Co., Ltd.' name='1'>
-                    <Table data={data} columns={columns} />
-                </CollapseItem>
-
-                <CollapseItem header='Introduce' name='2'>
-                    <Table data={data} columns={columns} />
-                </CollapseItem>
-
-                <CollapseItem header='The Underlying AI Technology' name='3'>
-                    <Table data={data} columns={columns} />
-                </CollapseItem>
-            </Collapse>
+            <Tabs type={"card-gutter"} defaultActiveTab='1'>
+                <TabPane key='1' title= {'部门访问权限'}>
+                    <PermissionPanel type={1} resourceType={resourceType} resourceId={resourceId}/>
+                </TabPane>
+                <TabPane key='2' title={'用户访问权限'}>
+                    <PermissionPanel type={2} resourceType={resourceType} resourceId={resourceId}/>
+                </TabPane>
+                <TabPane key='3' title={'用户管理权限'}>
+                    <PermissionPanel type={3} resourceType={resourceType} resourceId={resourceId}/>
+                </TabPane>
+            </Tabs>
         </Card>
     );
 }

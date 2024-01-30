@@ -18,6 +18,7 @@ import {CiViewTable} from "react-icons/ci";
 import {IconMindMapping, IconTag} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
+import {VscGistSecret} from "react-icons/vsc";
 
 
 export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
@@ -119,20 +120,6 @@ export function getSystemComponentTypeDescription(t:any,value:ComponentTypeEnum)
         return t['basic.componentsType.system.filterInput'];
     }else if(value == ComponentTypeEnum.FILTER_SELECT){
         return t['basic.componentsType.system.filterSelect'];
-    }
-}
-
-export function getIcon(type:string){
-    if(type == 'project'){
-        return <PiDiamondsFour style={{marginRight:'10px'}}/>
-    }else if(type == 'group'){
-        return <CiViewTable style={{marginRight:'10px'}}/>
-    }else if(type == 'stat'){
-        return <IconTag/>
-    }else if(type == 'metric'){
-        return <LuLayers style={{marginRight:'10px'}}/>
-    }else if(type == 'permission'){
-        return <LuLayers style={{marginRight:'10px'}}/>
     }
 }
 
@@ -248,6 +235,20 @@ export const getTreeResourceIcon= (type,level) => {
         return <RxCube style={{marginRight:'8px'}}/>
     } else if(type == 'dir' && level == 2){
         return <IconMindMapping  style={{marginRight:'8px'}}/>
+    }
+}
+
+export function getIcon(type:string){
+    if(type == 'project'){
+        return <PiDiamondsFour/>
+    }else if(type == 'group'){
+        return <CiViewTable/>
+    }else if(type == 'stat'){
+        return <IconTag/>
+    }else if(type == 'metric'){
+        return <LuLayers/>
+    }else if(type == 'permission'){
+        return <VscGistSecret/>
     }
 }
 

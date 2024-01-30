@@ -17,7 +17,7 @@ import {
     IconPushpin,
     IconStarFill,
     IconSunFill,
-    IconThumbUpFill,
+    IconThumbUpFill, IconUser,
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -28,6 +28,8 @@ import {useHistory} from 'react-router-dom';
 import {getRandomString} from "@/utils/util";
 import {getLockIcon} from "@/pages/common/desc/base";
 import {PermissionEnum} from "@/types/insights-common";
+import { GoShareAndroid } from "react-icons/go";
+import { FiUser } from "react-icons/fi";
 
 const { Meta } = Card;
 
@@ -89,7 +91,8 @@ function CardBlock(props: CardBlockType) {
           item.permissions.includes(PermissionEnum.ManageAble)?
           [
           <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();callback('update',item)}}>
-            <Button type={"secondary"} size={"mini"}>Edit</Button>
+            {/*<Button type={"secondary"} size={"mini"}>Like</Button>*/}
+              <Button type={"primary"} size={"mini"} onClick={handleClick}>Preview</Button>
           </span>,
           <Popconfirm
                key={getRandomString()}
@@ -101,7 +104,7 @@ function CardBlock(props: CardBlockType) {
                         await callback('delete',item);
                       }}>
             <span key={4} className='icon-hover'>
-                <Button type={"secondary"} size={"mini"}>Delete</Button>
+                {/*<Button type={"secondary"} size={"mini"}>Share</Button>*/}
             </span>
           </Popconfirm>,
       ]:null}
@@ -127,7 +130,6 @@ function CardBlock(props: CardBlockType) {
             avatar={
                 item.permissions.includes(PermissionEnum.AccessAble) ?
                 <Space>
-                    <Button type={"primary"} size={"mini"} onClick={handleClick}>Preview</Button>
                 </Space>:null
             }
         />
