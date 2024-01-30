@@ -16,7 +16,7 @@ export default function BindedStatisticListPanel({metricSetInfo,onClose = null})
             autoComplete={'off'}
             labelCol={{span: 4, offset: 0}}>
             <Form.Item field={'search'} style={{marginBottom:'10px'}}>
-                <Input.Search size={"small"} style={{width:'350px'}} allowClear={true} onSearch={handlerSearch}/>
+                <Input.Search size={"small"} style={{width:'320px'}} allowClear={true} onSearch={handlerSearch}/>
             </Form.Item>
         </Form>
         <StatisticalListPanel formParams={formParams} from={'bind'} extend={metricSetInfo}/>

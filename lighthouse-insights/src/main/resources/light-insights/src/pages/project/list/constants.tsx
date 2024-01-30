@@ -34,7 +34,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
       render: (value,record) =>
       {
           return (
-              <div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} >
+              <div style={{ cursor: "pointer" }} >
                   <span style={{display:"inline-flex",alignItems:"center"}}>{value}{record.privateType == 0 ?<CiLock style={{marginLeft:'5px'}}/>:null}</span>
               </div>)
       }
@@ -140,9 +140,8 @@ export function getBindColumns(t: any,bindList:Array<number>, callback: (record:
             render: (value,record) =>
             {
                 return (
-                    <div onClick={() => callback(record, 'detail')} style={{ cursor: "pointer" }} >
                         <span style={{display:"inline-flex",alignItems:"center"}}>{value}{record.privateType == 0 ?<CiLock style={{marginLeft:'5px'}}/>:null}</span>
-                    </div>)
+                    )
             }
             ,
         },
@@ -171,8 +170,8 @@ export function getBindColumns(t: any,bindList:Array<number>, callback: (record:
                 let bindButton = null;
                 if(bindList.includes(record.id)){
                     bindButton =
-                        <Button key={getRandomString()}
-                                type="text"
+                        <Button key={getRandomString()} disabled={true}
+                                type="secondary"
                                 size="mini">
                             {t['projectList.columns.operations.binded']}
                         </Button>;
