@@ -19,6 +19,7 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +82,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'queryUserPermissionsByRoleId' + '_' + #roleId + '_' + #limit",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public List<Integer> queryUserPermissionsByRoleId(Integer roleId, Integer limit) {
         return permissionDao.queryUserPermissionsByRoleId(roleId,limit);
     }
