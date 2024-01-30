@@ -31,6 +31,8 @@ public interface MetricSetService {
 
     ListData<MetricSetVO> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize);
 
+    List<MetricSetVO> queryFixedList();
+
     TreeNode getStructure(MetricSet metricSet) throws Exception;
 
     void updateStructure(MetricUpdateStructureParam updateStructureParam);

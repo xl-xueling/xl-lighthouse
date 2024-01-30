@@ -154,11 +154,6 @@ public class MetricSetServiceImpl implements MetricSetService {
         MetricSetVO metricSetVO = new MetricSetVO(metricSet);
         Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.METRIC_MANAGE_PERMISSION,metricSet.getId());
         Role accessRole = roleService.queryRole(RoleTypeEnum.METRIC_ACCESS_PERMISSION,metricSet.getId());
-        List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
-        if(CollectionUtils.isNotEmpty(adminIds)){
-            List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
-            metricSetVO.setAdmins(admins);
-        }
         int currentUserId = baseService.getCurrentUserId();
         if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
             metricSetVO.addPermission(PermissionEnum.ManageAble);
@@ -166,15 +161,20 @@ public class MetricSetServiceImpl implements MetricSetService {
         }else if(permissionService.checkUserPermission(currentUserId,accessRole.getId())){
             metricSetVO.addPermission(PermissionEnum.AccessAble);
         }
-        List<Relation> relationList = relationDao.queryList(metricSetVO.getId(),RelationTypeEnum.MetricSetBindRelation);
-        List<MetricBindElement> elements = new ArrayList<>();
-        for(Relation relation : relationList){
-            MetricBindElement bindElement = new MetricBindElement();
-            bindElement.setResourceId(relation.getResourceId());
-            bindElement.setResourceType(relation.getResourceType());
-            elements.add(bindElement);
-        }
-        metricSetVO.setBindElements(elements);
+//        List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
+//        if(CollectionUtils.isNotEmpty(adminIds)){
+//            List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
+//            metricSetVO.setAdmins(admins);
+//        }
+//        List<Relation> relationList = relationDao.queryList(metricSetVO.getId(),RelationTypeEnum.MetricSetBindRelation);
+//        List<MetricBindElement> elements = new ArrayList<>();
+//        for(Relation relation : relationList){
+//            MetricBindElement bindElement = new MetricBindElement();
+//            bindElement.setResourceId(relation.getResourceId());
+//            bindElement.setResourceType(relation.getResourceType());
+//            elements.add(bindElement);
+//        }
+//        metricSetVO.setBindElements(elements);
         return metricSetVO;
     }
 
@@ -383,4 +383,25 @@ public class MetricSetServiceImpl implements MetricSetService {
         return values;
     }
 
+    @Override
+    public List<MetricSetVO> queryFixedList() {
+        int currentUserId = baseService.getCurrentUserId();
+        List<Relation> relationList = relationDao.queryList(currentUserId,RelationTypeEnum.UserPickUpMetricSetRelation);
+        List<Integer> ids = relationList.stream().map(z -> z.getResourceId()).collect(Collectors.toList());
+        List<MetricSetVO> voList = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(ids)){
+            MetricSetQueryParam queryParam = new MetricSetQueryParam();
+            queryParam.setIds(ids);
+            List<MetricSet> metricSetList = metricSetDao.queryList(queryParam);
+            for(MetricSet metricSet : metricSetList){
+                try{
+                    MetricSetVO metricSetVO = translate(metricSet);
+                    voList.add(metricSetVO);
+                }catch (Exception ex){
+                    logger.error("translate item info error,id:{}",metricSet.getId(),ex);
+                }
+            }
+        }
+        return voList;
+    }
 }

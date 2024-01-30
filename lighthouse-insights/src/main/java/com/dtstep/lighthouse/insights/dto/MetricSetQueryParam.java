@@ -1,19 +1,21 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import java.util.List;
+
 public class MetricSetQueryParam {
 
-    private Integer id;
+    private List<Integer> ids;
 
     private String search;
 
     private Integer ownerId;
 
-    public Integer getId() {
-        return id;
+    public List<Integer> getIds() {
+        return ids;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIds(List<Integer> ids) {
+        this.ids = ids;
     }
 
     public String getSearch() {

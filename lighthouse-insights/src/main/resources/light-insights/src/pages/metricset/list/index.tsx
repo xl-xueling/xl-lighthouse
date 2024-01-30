@@ -35,6 +35,7 @@ export default function ListCard() {
     const { Meta } = Card;
     const [activeKey, setActiveKey] = useState('1');
     const [formParams, setFormParams] = useState<any>({});
+    const [fixedIdList,setFixedIdList] = useState<Array<number>>([]);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,30],
         sizeCanChange: true,

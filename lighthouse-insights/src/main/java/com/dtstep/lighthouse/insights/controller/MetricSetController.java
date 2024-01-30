@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @ControllerAdvice
 public class MetricSetController {
@@ -167,5 +169,10 @@ public class MetricSetController {
         return ResultData.success(listData);
     }
 
+    @RequestMapping("/metricset/queryFixedList")
+    public ResultData<List<MetricSetVO>> queryFixedList(){
+        List<MetricSetVO> list = metricSetService.queryFixedList();
+        return ResultData.success(list);
+    }
 
 }
