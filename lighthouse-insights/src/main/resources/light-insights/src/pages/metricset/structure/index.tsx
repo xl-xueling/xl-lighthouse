@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Button, Card, Grid, Notification, Space, Spin, Tabs, Typography} from '@arco-design/web-react';
+import {Button, Card, Grid, Notification, Space, Spin, Tabs, Tag, Typography} from '@arco-design/web-react';
 import styles from "./style/index.module.less";
 import StructurePanel from "@/pages/metricset/structure/structure";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
@@ -14,19 +14,40 @@ const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
-export const MetricSetStructureContext = React.createContext(null)
 import { RiPlayListAddLine } from "react-icons/ri";
+import {IconCheckCircleFill} from "@arco-design/web-react/icon";
+import { VscSync } from "react-icons/vsc";
+import { FiRefreshCcw } from "react-icons/fi";
+import md5 from 'md5';
+import {areJsonObjectsEqual} from "@/utils/util";
+
+export const MetricSetStructureContext = React.createContext(null);
 
 export default function MetricSetStructure() {
+
+    function deepCopyObject(originalObject) {
+        if (typeof originalObject !== 'object' || originalObject === null) {
+            return originalObject;
+        }
+        const copiedObject = Array.isArray(originalObject) ? [] : {};
+        for (const key in originalObject) {
+            if (originalObject.hasOwnProperty(key)) {
+                copiedObject[key] = deepCopyObject(originalObject[key]);
+            }
+        }
+        return copiedObject;
+    }
 
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const {metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
+    const {activeKey, setActiveKey } = useContext(MetricSetPreviewContext);
     const {reloadTime, setReloadTime } = useContext(MetricSetPreviewContext);
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
     const [showRepositoryModal,setShowRepositoryModal] = useState<boolean>(false);
     const structureRef = useRef(null);
-    const [listNodes,setListNodes] = useState<TreeNode[]>([Object.assign({},metricSetInfo?.structure)]);
+    const [listNodes,setListNodes] = useState<TreeNode[]>([deepCopyObject(metricSetInfo?.structure)]);
+    const [needSync,setNeedSync] = useState<boolean>(false);
 
     const handlerCallback = async (type,record) => {
         if(type == 'clickStatMenu'){
@@ -35,12 +56,13 @@ export default function MetricSetStructure() {
     }
 
     useEffect(() => {
-        setListNodes([Object.assign({},metricSetInfo?.structure)])
+        setListNodes([deepCopyObject(metricSetInfo?.structure)])
     },[metricSetInfo?.structure])
 
     const handleShowRepositoryModal = () => {
         setShowRepositoryModal(true);
     }
+
 
     const handlerSubmit = async () => {
         setLoading(true);
@@ -84,7 +106,7 @@ export default function MetricSetStructure() {
     }
 
     return (
-        <MetricSetStructureContext.Provider value={{listNodes,setListNodes}}>
+        <MetricSetStructureContext.Provider value={{listNodes,setListNodes,needSync,setNeedSync}}>
         <Spin loading={loading} style={{display:'block'}} className={styles['ss']}>
             <Space size={16} direction="vertical" style={{ width: '100%'}}>
                 <div className={styles.wrapper}>
@@ -93,16 +115,17 @@ export default function MetricSetStructure() {
                             {listNodes && <StructurePanel ref={structureRef}  menuCallback={handlerCallback}/>}
                         </Card>
                         <Card>
-                            <Grid.Row justify="end">
-                                <Grid.Col span={18}>
-                                    <Space className={styles.right} size={16} direction="horizontal">
+                            <Grid.Row justify={"end"}>
+                                <Grid.Col span={14}>
+                                    <Space className={styles.right} size={10} direction="horizontal">
                                         <Button size={"mini"} type="secondary" icon={<RiPlayListAddLine/>} onClick={handleShowRepositoryModal}>{t['repositoryModal.button.label.repository']}</Button>
                                     </Space>
                                 </Grid.Col>
-                                <Grid.Col span={6}>
-                                    <Space className={styles.right} size={16} direction="horizontal">
-                                        <Button size={"small"} type={"primary"} onClick={handlerReset} status={"danger"}>{t['repositoryModal.button.label.reset']}</Button>
+                                <Grid.Col span={10} style={{textAlign:'right' }}>
+                                    <Space size={15} direction="horizontal">
+                                        {needSync && <Tag size={"small"}>[Pend Sync]</Tag>}
                                         <Button size={"small"} type="primary" onClick={handlerSubmit}>{t['repositoryModal.button.label.submit']}</Button>
+                                        <Button size={"small"} type={"primary"} onClick={handlerReset} status={"danger"}>{t['repositoryModal.button.label.reset']}</Button>
                                     </Space>
                                 </Grid.Col>
                             </Grid.Row>

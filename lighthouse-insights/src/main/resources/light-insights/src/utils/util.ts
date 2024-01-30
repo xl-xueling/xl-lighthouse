@@ -80,4 +80,41 @@ export function formatTimeStampBackUp(timestamp) {
 }
 
 
+export function areJsonObjectsEqual(obj1, obj2) {
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
+        console.log("------1")
+        return false;
+    }
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+    if (keys1.length !== keys2.length) {
+        console.log("------2,key1s is:" + JSON.stringify(keys1) + ",key2s is:" + JSON.stringify(keys2));
+        console.log("-----2,obj1 is:" + JSON.stringify(obj1) + ",obj2 is:" + JSON.stringify(obj2));
+        return false;
+    }
+    for (const key of keys1) {
+        if (!obj2.hasOwnProperty(key)) {
+            console.log("------3")
+            return false;
+        }
+        if (!areValuesEqual(obj1[key], obj2[key])) {
+            // console.log("------4,key1:" + JSON.stringify(obj1[key]) + ",key2:"+JSON.stringify(obj2[key]))
+            return false;
+        }
+    }
+    return true;
+}
+
+function areValuesEqual(value1, value2) {
+    if (typeof value1 !== typeof value2) {
+        return false;
+    }
+    if (typeof value1 === 'object' && value1 !== null) {
+        return areJsonObjectsEqual(value1, value2);
+    } else {
+        return value1 === value2;
+    }
+}
+
+
 

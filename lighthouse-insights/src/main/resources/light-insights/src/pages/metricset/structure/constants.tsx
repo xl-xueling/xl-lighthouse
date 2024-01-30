@@ -61,7 +61,6 @@ export function getColumns(t: any,listNodes:TreeNode[], callback: (record: Recor
             title: t['repositoryModal.column.label.operations'],
             dataIndex: 'operations',
             render: (value, record) => {
-                console.log("listNodes data is:" + JSON.stringify(listNodes));
                 let button;
                 let type;
                 if(record.resourceType == ResourceTypeEnum.Stat){
