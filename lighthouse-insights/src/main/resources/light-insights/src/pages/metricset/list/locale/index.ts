@@ -6,6 +6,7 @@ const i18n = {
     'metricSetList.button.createMetric':'Create MetricSet',
     'metricSetList.operations.delete.confirm':'Are you sure to delete this item?',
     'metricSetList.operations.delete.submit.success':'Delete MetricSet Successfully!',
+    'metricSetList.operations.fix.submit.success':'MetricSet has been pinned to the top!'
   },
   'zh-CN': {
     'metricSetList.breadcrumb.title':'指标集',
@@ -14,6 +15,7 @@ const i18n = {
     'metricSetList.button.createMetric':'创建指标集',
     'metricSetList.operations.delete.confirm':'是否确认删除该指标集？',
     'metricSetList.operations.delete.submit.success':'删除指标集成功！',
+    'metricSetList.operations.fix.submit.success':'指标集已被固定在首页展示！'
   },
 };
 

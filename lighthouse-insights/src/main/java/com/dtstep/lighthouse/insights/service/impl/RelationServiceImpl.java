@@ -1,6 +1,8 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.RelationDao;
 import com.dtstep.lighthouse.insights.dto.RelationQueryParam;
 import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +48,29 @@ public class RelationServiceImpl implements RelationService {
     @Override
     public int batchCreate(List<Relation> relationList) {
         return relationDao.batchInsert(relationList);
+    }
+
+    @Override
+    public ResultCode create(Relation relation) {
+        String message = relation.getSubjectId() + "_" + relation.getRelationType().getRelationType()
+                + "_" + relation.getResourceType().getResourceType() + "_" + relation.getResourceId();
+        String hash = Md5Util.getMD5(message);
+        relation.setHash(hash);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        int result;
+        if(isExist(hash)){
+            relation.setUpdateTime(localDateTime);
+            result = relationDao.update(relation);
+        }else{
+            relation.setHash(hash);
+            relation.setUpdateTime(localDateTime);
+            result = relationDao.insert(relation);
+        }
+        if(result > 0){
+            return ResultCode.success;
+        }else{
+            return ResultCode.systemError;
+        }
     }
 
     @Override

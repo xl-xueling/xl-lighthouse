@@ -10,22 +10,24 @@
         <result property="resourceId" column="resource_id"/>
         <result property="resourceType" column="resource_type" typeHandler="com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler"/>
         <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Permission" >
-        INSERT INTO ldp_relations (`subject_id`, `relation_type`,`resource_id`, `resource_type`,`hash`, `create_time`) VALUES
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Relation" >
+        INSERT INTO ldp_relations (`subject_id`, `relation_type`,`resource_id`, `resource_type`,`hash`, `create_time`,`update_time`) VALUES
         (
             #{subjectId,jdbcType=INTEGER},
             #{relationType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RelationTypeEnumTypeHandler},
             #{resourceId,jdbcType=INTEGER},
             #{resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
             #{hash,jdbcType=VARCHAR},
-            #{createTime,jdbcType=TIMESTAMP}
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO ldp_relations (`subject_id`, `relation_type`,`resource_id`, `resource_type`,`hash`,`create_time`) VALUES
+        INSERT INTO ldp_relations (`subject_id`, `relation_type`,`resource_id`, `resource_type`,`hash`,`create_time`,`update_time`) VALUES
         <foreach collection="list" item="item" separator=",">
             (
             #{item.subjectId,jdbcType=INTEGER},
@@ -33,10 +35,21 @@
             #{item.resourceId,jdbcType=INTEGER},
             #{item.resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
             #{item.hash,jdbcType=VARCHAR},
-            #{item.createTime,jdbcType=TIMESTAMP}
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP}
             )
         </foreach>
     </insert>
+
+    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Relation">
+        UPDATE ldp_relations
+        <set>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+        </set>
+        WHERE hash = #{hash}
+    </update>
 
     <select id="queryList" resultMap="relationResultMap">
         SELECT `id`,`subject_id`, `relation_type`,`resource_id`, `resource_type`, `create_time`

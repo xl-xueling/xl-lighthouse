@@ -131,6 +131,15 @@ public class MetricSetController {
         }
     }
 
+    @RequestMapping("/metricset/fixedById")
+    public ResultData<Integer> fixedById(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        MetricSet metricSet = metricSetService.queryById(id);
+        Validate.notNull(metricSet);
+        ResultCode resultCode = metricSetService.fix(metricSet);
+        return ResultData.result(resultCode);
+    }
+
     @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/metricset/updateStructure")
     public ResultData<Integer> updateStructure(@Validated @RequestBody MetricUpdateStructureParam updateStructureParam) {

@@ -134,6 +134,8 @@ public enum ResultCode {
 
     grantPermissionPublicLimit("2021","grantPermissionPublicLimit"),
 
+    createRelationAlreadyExist("2023","createRelationAlreadyExist"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

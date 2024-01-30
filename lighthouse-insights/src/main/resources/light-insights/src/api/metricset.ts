@@ -34,6 +34,14 @@ export async function requestDeleteById(data):Promise<ResultData> {
     })
 }
 
+export async function requestFixedById(data):Promise<ResultData> {
+    return request({
+        url:'/metricset/fixedById',
+        method:'POST',
+        data,
+    })
+}
+
 export async function requestBindList(data) :Promise<ResultData<{list:Array<Relation>,total:number}>> {
     return request({
         url:'/metricset/bindlist',
