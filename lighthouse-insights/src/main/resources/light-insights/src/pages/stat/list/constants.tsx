@@ -33,41 +33,44 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
             }
         },
         {
-            title: 'ID',
+            title: t['statList.label.id'],
             dataIndex: 'id',
         },
         {
-            title: 'Title',
+            title: t['statList.label.title'],
             dataIndex: 'title',
             render:(value,record) => {
                 return (<div onClick={() => callback(record, 'showDetailModal')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
             }
         },
         {
-            title: 'Group',
-            dataIndex: 'group.token',
+            title: t['statList.label.relationship'],
+            dataIndex: 'relationship',
+            render:(value,record) => {
+                return (record.projectTitle + ' > ' + record.token);
+            }
         },
         {
-            title: 'TimeParam',
+            title: t['statList.label.timeparam'],
             dataIndex: 'timeparam',
         },
         {
-            title: 'Expired',
+            title: t['statList.label.expired'],
             dataIndex: 'expired',
             render:(value,record) => {
                 return getStatExpiredEnumDescription(value);
             }
         },
         {
-            title: 'State',
+            title: t['statList.label.state'],
             dataIndex: 'state',
             render: (value) => {
                 return getStatStateDescriptionWithBadge(t,value)
             },
         },
         {
-            title: 'Operation',
-            dataIndex: 'operate',
+            title: t['statList.label.operations'],
+            dataIndex: 'operations',
             headerCellStyle: {width:'200px' },
             render: (_, record) => {
                 let viewButton;
@@ -152,41 +155,44 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             }
         },
         {
-            title: 'ID',
+            title: t['statList.label.id'],
             dataIndex: 'id',
         },
         {
-            title: 'Title',
+            title: t['statList.label.title'],
             dataIndex: 'title',
             render:(value,record) => {
                 return (<div onClick={() => callback(record, 'showDetailModal')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
             }
         },
         {
-            title: 'Group',
-            dataIndex: 'group.token',
+            title: t['statList.label.relationship'],
+            dataIndex: 'relationship',
+            render:(value,record) => {
+                return (record.projectTitle + ' > ' + record.token);
+            }
         },
         {
-            title: 'TimeParam',
+            title: t['statList.label.timeparam'],
             dataIndex: 'timeparam',
         },
         {
-            title: 'Expired',
+            title: t['statList.label.expired'],
             dataIndex: 'expired',
             render:(value,record) => {
                 return getStatExpiredEnumDescription(value);
             }
         },
         {
-            title: 'State',
+            title: t['statList.label.state'],
             dataIndex: 'state',
             render: (value) => {
                 return getStatStateDescriptionWithBadge(t,value)
             },
         },
         {
-            title: 'Operation',
-            dataIndex: 'operation',
+            title: t['statList.label.operations'],
+            dataIndex: 'operations',
             headerCellStyle: {width:'200px' },
             render: (_, record) => {
                 let viewButton;
@@ -237,35 +243,33 @@ export function getBindColumns(t: any,bindList:Array<number>,callback: (record: 
             }
         },
         {
-            title: 'Relationship',
-            dataIndex: 'group.token',
+            title: t['statList.label.relationship'],
+            dataIndex: 'relationship',
             render:(value,record) => {
-                console.log("record is:" + JSON.stringify(record));
                 return (record.projectTitle + ' > ' + record.token);
             }
         },
         {
-            title: 'TimeParam',
+            title: t['statList.label.timeparam'],
             dataIndex: 'timeparam',
         },
         {
-            title: 'State',
+            title: t['statList.label.state'],
             dataIndex: 'state',
             render: (value) => {
                 return getStatStateDescriptionWithBadge(t,value)
             },
         },
         {
-            title: 'Operation',
-            dataIndex: 'operation',
+            title: t['statList.label.operations'],
+            dataIndex: 'operations',
             headerCellStyle: {width:'130px' },
             render: (value, record) => {
                 let bindButton = null;
-                console.log("bindList:" + JSON.stringify(bindList));
                 if(bindList.includes(record.id)){
                     bindButton =
-                        <Button key={getRandomString()}
-                            type="text"
+                        <Button key={getRandomString()} disabled={true}
+                            type="secondary"
                             size="mini">
                             {t['statList.table.operations.binded']}
                         </Button>;

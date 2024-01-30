@@ -37,6 +37,11 @@ const i18n = {
     'statList.columns.bind.success':'The element has been binded successfully!',
     'statList.label.id':'ID',
     'statList.label.title':'Title',
+    'statList.label.relationship':'Relationship',
+    'statList.label.timeparam':'TimeParam',
+    'statList.label.state':'State',
+    'statList.label.expired':'Expired',
+    'statList.label.operations':'Operations',
   },
   'zh-CN': {
     'statList.table.columns.name':'名称',
@@ -76,6 +81,11 @@ const i18n = {
     'statList.columns.bind.success':'元素已被绑定！',
     'statList.label.id':'ID',
     'statList.label.title':'统计项名称',
+    'statList.label.relationship':'归属',
+    'statList.label.timeparam':'时间周期',
+    'statList.label.state':'状态',
+    'statList.label.expired':'过期时间',
+    'statList.label.operations':'操作',
   },
 };
 
