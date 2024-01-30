@@ -251,8 +251,8 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                         const originTitle = node.title;
                                         node.dataRef.title = <Input type={"text"} autoFocus={true}
                                                                     style={{
-                                                                        width: 200,
-                                                                        height: 19,
+                                                                        width: 280,
+                                                                        height: 22,
                                                                         paddingLeft:3,
                                                                         borderColor: 'rgb(132 160 224)',
                                                                         backgroundColor: "var(--color-fill-1)"
@@ -263,7 +263,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                                                     }}
                                                                     onBlur={async (ie) => {
                                                                         const len = getTextBlenLength(ie.target.value);
-                                                                        if (len < 3 || len > 30) {
+                                                                        if (len < 3 || len > 32) {
                                                                             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.invalidLength']});
                                                                             node.dataRef.title = originTitle;
                                                                         } else if(!validateWithRegex(TEXT_BASE_PATTERN_2,ie.target.value)) {
