@@ -278,13 +278,16 @@ export default function ManagePanel() {
                                       const originTitle = node.title;
                                       node.dataRef.title = <Input type={"text"} autoFocus={true}
                                                                   style={{
-                                                                      width: 200,
-                                                                      height: 19,
+                                                                      width: 300,
+                                                                      height: 30,
                                                                       paddingLeft:3,
                                                                       borderColor: 'rgb(132 160 224)',
                                                                       backgroundColor: "var(--color-fill-1)"
                                                                   }}
                                                                   defaultValue={originTitle + ""}
+                                                                  onClick={(e) => {
+                                                                      e.stopPropagation();
+                                                                  }}
                                                                   onBlur={async (ie) => {
                                                                       const len = getTextBlenLength(ie.target.value);
                                                                       if (len < 3 || len > 30) {

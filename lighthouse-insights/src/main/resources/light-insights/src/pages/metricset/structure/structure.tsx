@@ -258,6 +258,9 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                                                         backgroundColor: "var(--color-fill-1)"
                                                                     }}
                                                                     defaultValue={originTitle + ""}
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                    }}
                                                                     onBlur={async (ie) => {
                                                                         const len = getTextBlenLength(ie.target.value);
                                                                         if (len < 3 || len > 30) {
