@@ -63,15 +63,7 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
             dataIndex: 'department',
             render: (value,record) =>
             {
-                if(record.resourceType == ResourceTypeEnum.Project){
-                    return (
-                        <DepartmentLabel departmentId={record.extend?.departmentId} />
-                    )
-                }else if(record.resourceType == ResourceTypeEnum.Stat){
-                    return (
-                        <DepartmentLabel departmentId={record.extend?.project?.departmentId} />
-                    )
-                }
+                return <DepartmentLabel departmentId={record.extend?.departmentId} />
             }
         },
         {

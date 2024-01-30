@@ -148,7 +148,7 @@ public class StatServiceImpl implements StatService {
         }
         Role projectManageRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,statVO.getProjectId());
         Validate.notNull(manageRole);
-        List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
+        List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(projectManageRole.getId(),3);
         if(CollectionUtils.isNotEmpty(adminIds)){
             List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
             statVO.setAdmins(admins);
