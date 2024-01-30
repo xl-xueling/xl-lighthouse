@@ -174,16 +174,12 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
     },[extend])
 
     useEffect(() => {
-        fetchData().then().catch(error => {
-            console.log(error);
-            Message.error(t['system.error']);
-        })
+        fetchData().then();
     }, [reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
         const {current, pageSize} = pagination;
-        console.log("formParams is====:" + JSON.stringify(formParams));
         await requestList({
             queryParams:formParams,
             pagination:{

@@ -41,7 +41,7 @@ const i18n = {
     'projectList.columns.name': '工程名称',
     'projectList.columns.admins': '管理员',
     'projectList.columns.createdTime': '创建时间',
-    'projectList.columns.department':'部门',
+    'projectList.columns.department':'所属部门',
     'projectList.columns.desc':'描述',
     'projectList.columns.operations': '操作',
     'projectList.columns.operations.view': '查看',
