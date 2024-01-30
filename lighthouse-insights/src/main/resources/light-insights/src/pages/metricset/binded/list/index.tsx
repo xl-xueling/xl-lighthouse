@@ -31,6 +31,8 @@ import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
+export const MetricSetBindListContext = React.createContext(null)
+
 export default function MetricSetBindListPanel() {
 
     const t = useLocale(locale);
@@ -42,6 +44,7 @@ export default function MetricSetBindListPanel() {
     const [showApplyModal,setShowApplyModal] = useState<boolean>(false);
     const [showBindModal,setShowBindModal] = useState<boolean>(false);
     const [currentRecord,setCurrentRecord] = useState<Relation>(null);
+    const [needReload,setNeedReload] = useState<boolean>(false);
 
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,30],
@@ -51,6 +54,11 @@ export default function MetricSetBindListPanel() {
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
+
+    const handleMetricBindListReloadCallback = () => {
+        // setReloadTime(Date.now());
+        setNeedReload(true);
+    }
 
     const tableCallback = async (record, type) => {
         if(type == 'remove'){
@@ -138,6 +146,7 @@ export default function MetricSetBindListPanel() {
     },[reloadTime,pagination.current, pagination.pageSize,JSON.stringify(searchForms)])
 
     return (
+        <MetricSetBindListContext.Provider value={handleMetricBindListReloadCallback}>
         <Card>
             <Form
                 className={styles['search-form']}
@@ -164,9 +173,13 @@ export default function MetricSetBindListPanel() {
         {showBindModal && <NewMetricBindedModal metricSetInfo={metricSetInfo} onClose={() =>
         {
             setShowBindModal(false);
-            setReloadTime(Date.now());
+            if(needReload){
+                setReloadTime(Date.now());
+                setNeedReload(false);
+            }
         }
         }/>}
         </Card>
+        </MetricSetBindListContext.Provider>
     );
 }

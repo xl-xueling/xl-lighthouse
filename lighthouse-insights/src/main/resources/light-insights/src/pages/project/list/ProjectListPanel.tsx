@@ -31,6 +31,7 @@ import {getRandomString} from "@/utils/util";
 import {GlobalState} from "@/store";
 import {requestBinded} from "@/api/metricset";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
+import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -56,6 +57,7 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
     const [reloadTime,setReloadTime] = useState<number>(Date.now);
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
     const [bindList,setBindList] = useState<number[]>([]);
+    const handleMetricBindListReloadCallback = useContext(MetricSetBindListContext);
 
     const tableCallback = async (record, type) => {
         if(type == 'update'){
@@ -83,12 +85,12 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
             bindElements:[{resourceId:id,resourceType:ResourceTypeEnum.Project}],
             metricIds:extend.id,
         }
-
         await requestBinded(bindParams).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.bind.success']});
                 setBindList([...bindList,id])
+                handleMetricBindListReloadCallback();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
