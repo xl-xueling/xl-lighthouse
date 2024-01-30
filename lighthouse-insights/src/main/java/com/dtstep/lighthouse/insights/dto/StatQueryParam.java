@@ -1,37 +1,41 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import java.util.List;
+
 public class StatQueryParam {
-
-    private Integer id;
-
-    private Integer groupId;
-
-    private Integer projectId;
 
     private String search;
 
-    public Integer getId() {
-        return id;
+    private List<Integer> ids;
+
+    private List<Integer> projectIds;
+
+    private List<Integer> groupIds;
+
+    private List<Integer> departmentIds;
+
+    public List<Integer> getIds() {
+        return ids;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIds(List<Integer> ids) {
+        this.ids = ids;
     }
 
-    public Integer getGroupId() {
-        return groupId;
+    public List<Integer> getProjectIds() {
+        return projectIds;
     }
 
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
+    public void setProjectIds(List<Integer> projectIds) {
+        this.projectIds = projectIds;
     }
 
-    public Integer getProjectId() {
-        return projectId;
+    public List<Integer> getDepartmentIds() {
+        return departmentIds;
     }
 
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
+    public void setDepartmentIds(List<Integer> departmentIds) {
+        this.departmentIds = departmentIds;
     }
 
     public String getSearch() {
@@ -40,5 +44,13 @@ public class StatQueryParam {
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    public List<Integer> getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(List<Integer> groupIds) {
+        this.groupIds = groupIds;
     }
 }

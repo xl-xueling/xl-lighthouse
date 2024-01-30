@@ -226,26 +226,23 @@ export function getBindColumns(t: any,bindList:Array<number>,callback: (record: 
 
     return [
         {
-            title: 'ID',
+            title: t['statList.label.id'],
             dataIndex: 'id',
         },
         {
-            title: 'Title',
+            title: t['statList.label.title'],
             dataIndex: 'title',
             render:(value,record) => {
                 return (<div onClick={() => callback(record, 'showDetailModal')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
             }
         },
         {
-            title: 'Project',
-            dataIndex: 'project.title',
-            render:(value,record) => {
-                return value;
-            }
-        },
-        {
-            title: 'Group',
+            title: 'Relationship',
             dataIndex: 'group.token',
+            render:(value,record) => {
+                console.log("record is:" + JSON.stringify(record));
+                return (record.projectTitle + ' > ' + record.token);
+            }
         },
         {
             title: 'TimeParam',

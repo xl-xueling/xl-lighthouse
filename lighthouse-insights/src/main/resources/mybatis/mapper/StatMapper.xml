@@ -99,6 +99,12 @@
                     #{item}
                 </foreach>
             </if>
+            <if test="queryParam.groupIds != null and queryParam.groupIds.size > 0">
+                AND a.group_id IN
+                <foreach item="item" index="index" collection="queryParam.groupIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
             <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
                 AND department_id IN(
                 select id from cte

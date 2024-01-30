@@ -39,13 +39,6 @@ public class TestStatService {
         System.out.println("result:" + result);
     }
 
-    @Test
-    public void testQueryList(){
-        StatQueryParam queryParam = new StatQueryParam();
-        queryParam.setGroupId(100186);
-        ListData<StatVO> listData = statService.queryList(queryParam,1,100);
-        System.out.println("listData:" + JsonUtil.toJSONString(listData));
-    }
 
     @Test
     public void testFilterConfig(){
