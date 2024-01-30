@@ -35,13 +35,14 @@ export default function MetricSetRepositoryModal({id,onClose}) {
     const [listData,setListData] = useState<Resource[]>([]);
     const [loading,setLoading] = useState<boolean>(false);
     const {listNodes,setListNodes} = useContext(MetricSetStructureContext);
+    const {needSync,setNeedSync} = useContext(MetricSetStructureContext);
     const [refreshTime,setRefreshTime] = useState<number>(Date.now);
 
     const tableCallback = async (record, type) => {
         if(type == 'add'){
             const treeNode:TreeNode = {
                 key:getRandomString(8),
-                label:record.extend.title,
+                label:record.title,
                 value:record.resourceId,
                 type:record.resourceType == ResourceTypeEnum.Stat?'stat':null,
             }
@@ -53,7 +54,8 @@ export default function MetricSetRepositoryModal({id,onClose}) {
         if(!treeCheckContainsNode(listNodes,treeNode.value,treeNode.type)){
             const children = listNodes[0].children;
             listNodes[0].children = [...children, treeNode];
-            await setListNodes(listNodes);
+            setListNodes(listNodes);
+            setNeedSync(true);
             setRefreshTime(Date.now);
         }
     }

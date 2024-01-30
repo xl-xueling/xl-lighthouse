@@ -339,7 +339,6 @@ public class MetricSetServiceImpl implements MetricSetService {
         for(TreeNode treeNode : nodeList){
             if(treeNode.getType() == null || treeNode.getType().equals("project") || treeNode.getType().equals("group")){
                 treeNode.setType("dir");
-                treeNode.setValue(null);
             }
             if(CollectionUtils.isNotEmpty(treeNode.getChildren())){
                 modifyStructure(treeNode.getChildren());

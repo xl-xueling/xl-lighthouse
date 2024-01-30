@@ -72,7 +72,7 @@ export default function Index() {
                                 <Card>
                                     <MetricSetPreviewHeader/>
                                 </Card>
-                                <Tabs type="line">
+                                <Tabs type="line" defaultActiveTab={'1'}>
                                     <TabPane
                                         key='1'
                                         title={

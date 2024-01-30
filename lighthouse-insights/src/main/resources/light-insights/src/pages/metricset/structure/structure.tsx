@@ -3,7 +3,7 @@ import {Grid, Input, Notification, Popconfirm, Tree} from '@arco-design/web-reac
 import {IconDragDotVertical, IconMindMapping, IconMinus, IconPen, IconPlus, IconTag} from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
-import {getRandomString, getTextBlenLength, validateWithRegex} from "@/utils/util";
+import {areJsonObjectsEqual, getRandomString, getTextBlenLength, validateWithRegex} from "@/utils/util";
 import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
@@ -15,6 +15,7 @@ import {countNodesByType} from "@/pages/department/common";
 import {CiViewTable} from "react-icons/ci";
 import {PiDiamondsFour} from "react-icons/pi";
 import {getTreeResourceIcon} from "@/pages/common/desc/base";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 
 const { Row, Col } = Grid;
 
@@ -27,6 +28,8 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [checkedKeys, setCheckedKeys] = useState([]);
     const [expandedKeys, setExpandedKeys] = useState([]);
+    const {needSync,setNeedSync} = useContext(MetricSetStructureContext);
+    const {metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
 
     React.useImperativeHandle(ref,() => ({
         getData
@@ -36,7 +39,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
         const translateToTreeNodes = (list) => {
             const nodeArr = new Array<TreeNode>();
             list?.forEach(item => {
-                const nodeItem:TreeNode = {"key":String(item.key),"value":item.value,"label":item.title?item.title:item.label,"type":item.type};
+                const nodeItem:TreeNode = {"key":String(item.key),"value":item.value?item.value:item.key,"label":(item.title && typeof item.title == "string")?item.title:item.label,"type":item.type};
                 if(item.children){
                     nodeItem.children = translateToTreeNodes(item.children);
                 }
@@ -51,8 +54,11 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
         if(!expandedKeys.includes(treeData[0].key)){
             setExpandedKeys([...expandedKeys,treeData[0].key]);
         }
+        const originData = metricSetInfo?.structure;
+        const currentData = getData()[0];
+        const needSync = !areJsonObjectsEqual(originData,currentData);
+        setNeedSync(needSync);
     },[treeData])
-
 
 
     const getIconByLevel = (level) => {
