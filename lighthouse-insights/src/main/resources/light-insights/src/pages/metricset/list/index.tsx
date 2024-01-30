@@ -35,7 +35,6 @@ export default function ListCard() {
   const t = useLocale(locale);
   const [loading, setLoading] = useState(true);
   const [showCreatePanel,setShowCreatePanel] = useState<boolean>(false);
-  const [showUpdatePanel,setShowUpdatePanel] = useState<boolean>(false);
   const [currentItem,setCurrentItem] = useState<MetricSet>(null);
   const [listData,setListData] = useState<MetricSet[]>([]);
   const [reloadTime,setReloadTime] = useState<number>(Date.now);
@@ -54,10 +53,7 @@ export default function ListCard() {
     const [formParams, setFormParams] = useState<any>({});
 
     const tableCallback = async (type,record) => {
-        if(type == 'update'){
-            setCurrentItem(record);
-            setShowUpdatePanel(true);
-        }else if(type == 'delete'){
+       if(type == 'delete'){
             await handlerDelete(record.id).then();
         }
     };
@@ -173,7 +169,6 @@ export default function ListCard() {
               </div>
           </div>
             {showCreatePanel && <MetricSetAddPanel onClose={() => setShowCreatePanel(false)} onSuccess={handlerReloadList}/>}
-            {showUpdatePanel && <MetricSetUpdateModal metricInfo={currentItem} onClose={() => setShowUpdatePanel(false)} onSuccess={handlerReloadList}/>}
         </Card>
       </Spin>
       </>
