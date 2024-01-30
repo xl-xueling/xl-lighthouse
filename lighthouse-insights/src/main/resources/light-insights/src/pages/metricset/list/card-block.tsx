@@ -1,23 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import cs from 'classnames';
-import {
-    Button,
-    Card,
-    Descriptions,
-    Message,
-    Popconfirm,
-    Skeleton,
-    Space,
-    Tag,
-    Typography,
-} from '@arco-design/web-react';
+import {Button, Card, Descriptions, Popconfirm, Space, Tag, Typography,} from '@arco-design/web-react';
 import {
     IconFaceSmileFill,
     IconPenFill,
     IconPushpin,
     IconStarFill,
     IconSunFill,
-    IconThumbUpFill, IconUser,
+    IconThumbUpFill,
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -28,8 +18,6 @@ import {useHistory} from 'react-router-dom';
 import {getRandomString} from "@/utils/util";
 import {getLockIcon} from "@/pages/common/desc/base";
 import {PermissionEnum} from "@/types/insights-common";
-import { GoShareAndroid } from "react-icons/go";
-import { FiUser } from "react-icons/fi";
 
 const { Meta } = Card;
 
@@ -88,25 +76,11 @@ function CardBlock(props: CardBlockType) {
       size="small"
       style={{cursor:'pointer'}}
       actions={
-          item.permissions.includes(PermissionEnum.ManageAble)?
+          item.permissions.includes(PermissionEnum.AccessAble)?
           [
-          <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();callback('update',item)}}>
-            {/*<Button type={"secondary"} size={"mini"}>Like</Button>*/}
-              <Button type={"primary"} size={"mini"} onClick={handleClick}>Preview</Button>
+          <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();handleClick();}}>
+             <Button type={"primary"} size={"mini"}>Preview</Button>
           </span>,
-          <Popconfirm
-               key={getRandomString()}
-                      focusLock
-                      position={"tr"}
-                      title='Confirm'
-                      content={t['metricSetList.operations.delete.confirm']}
-                      onOk={async () => {
-                        await callback('delete',item);
-                      }}>
-            <span key={4} className='icon-hover'>
-                {/*<Button type={"secondary"} size={"mini"}>Share</Button>*/}
-            </span>
-          </Popconfirm>,
       ]:null}
 
       title={
@@ -117,7 +91,7 @@ function CardBlock(props: CardBlockType) {
                   })}
               >
                   {item.title}{getLockIcon(t,item.privateType,item.permissions)}
-                  <div className={styles.more} onClick={() => callback('fixed',item.id)}>
+                  <div className={styles.more} onClick={(e) => {e.stopPropagation();callback('fixed',item)}}>
                       <IconPushpin />
                   </div>
               </div>

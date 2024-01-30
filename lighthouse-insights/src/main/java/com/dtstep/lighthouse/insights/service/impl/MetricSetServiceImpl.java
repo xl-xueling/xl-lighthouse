@@ -326,6 +326,17 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
+    public ResultCode fix(MetricSet metricSet) {
+        int currentUserId = baseService.getCurrentUserId();
+        Relation relation = new Relation();
+        relation.setSubjectId(currentUserId);
+        relation.setRelationType(RelationTypeEnum.UserPickUpMetricSetRelation);
+        relation.setResourceId(metricSet.getId());
+        relation.setResourceType(ResourceTypeEnum.MetricSet);
+        return relationService.create(relation);
+    }
+
+    @Override
     public void updateStructure(MetricUpdateStructureParam updateStructureParam){
         TreeNode treeNode = updateStructureParam.getStructure();
         modifyStructure(List.of(treeNode));

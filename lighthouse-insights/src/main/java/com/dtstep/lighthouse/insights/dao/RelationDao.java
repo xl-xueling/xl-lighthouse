@@ -13,6 +13,10 @@ public interface RelationDao {
 
     int batchInsert(List<Relation> list);
 
+    int insert(Relation relation);
+
+    int update(Relation relation);
+
     boolean isExist(String hash);
 
     List<Relation> queryList(Integer subjectId, RelationTypeEnum relationType);
