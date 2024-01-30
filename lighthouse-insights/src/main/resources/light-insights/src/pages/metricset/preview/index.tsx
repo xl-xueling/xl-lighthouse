@@ -46,6 +46,7 @@ import {RiShieldKeyholeLine} from "react-icons/ri";
 import {getIcon} from "@/pages/common/desc/base";
 import { FiEdit } from "react-icons/fi";
 import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
+import MetricSetUpdateModal from "@/pages/metricset/update";
 
 export const MetricSetPreviewContext = React.createContext(null)
 
@@ -57,6 +58,7 @@ export default function Index() {
     const [reloadTime, setReloadTime] = useState<number>(Date.now());
     const [errorCode, setErrorCode] = useState<string>(null);
     const [showPermissionManageModal,setShowPermissionManageModal] = useState<boolean>(false);
+    const [showUpdatePanel,setShowUpdatePanel] = useState<boolean>(false);
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
@@ -101,7 +103,7 @@ export default function Index() {
                                 <Tabs type="line" defaultActiveTab={'1'}
                                       extra={
                                           <Space size={1}>
-                                              <Button type={"secondary"}  size={"mini"} icon={<FiEdit/>}>{'修改指标集'}</Button>
+                                              <Button type={"secondary"}  size={"mini"} onClick={() => setShowUpdatePanel(true)} icon={<FiEdit/>}>{'修改指标集'}</Button>
                                               <Button type={"secondary"}  size={"mini"} onClick={() => setShowPermissionManageModal(true)} icon={getIcon('permission')}>{'权限管理'}</Button>
                                               <Dropdown
                                                   position={"br"}
@@ -134,14 +136,7 @@ export default function Index() {
                                         }>
                                         {metricSetInfo && <MetricSetBindListPanel/>}
                                     </TabPane>
-                                    {/*<TabPane key='3' title={*/}
-                                    {/*    <span style={{display: "inline-flex", alignItems: "center"}}><VscGistSecret*/}
-                                    {/*        style={{marginRight: 6}}/>{t['metricSetPreview.tab.title.permissions']}</span>*/}
-                                    {/*}>*/}
-                                    {/*    <MetricSetPermissionsPanel resourceType={ResourceTypeEnum.Metric}*/}
-                                    {/*                               resourceId={metricSetInfo?.id}/>*/}
-                                    {/*</TabPane>*/}
-                                    <TabPane key='4' title={
+                                    <TabPane key='3' title={
                                         <span>
                 <span style={{display: "inline-flex", alignItems: "center"}}><PiTreeStructure
                     style={{marginRight: 6}}/>{t['metricSetPreview.tab.title.structure']}</span>
@@ -156,6 +151,7 @@ export default function Index() {
                 {showPermissionManageModal &&
                 <PermissionManageModal resourceId={id} resourceType={ResourceTypeEnum.Metric}
                                        onClose={() => setShowPermissionManageModal(false)}/>}
+                {showUpdatePanel && <MetricSetUpdateModal metricInfo={metricSetInfo} onClose={() => setShowUpdatePanel(false)} onSuccess={() => {console.log("-")}} />}
             </>
         </MetricSetPreviewContext.Provider>
     );
