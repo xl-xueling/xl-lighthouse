@@ -12,6 +12,8 @@ const i18n = {
     'repositoryModal.button.label.repository':'Repository',
     'repositoryModal.button.label.reset':'Reset',
     'repositoryModal.button.label.submit':'Submit',
+    'repositoryModal.button.label.reset.confirm':'Are you sure to reset MetricSet structure?',
+    'repositoryModal.button.label.submit.confirm':'Are you sure to update MetricSet structure?',
     'structure.operations.update.success':'Update MetricSet structure successfully!',
     'structure.operations.reset.success':'Reset MetricSet structure successfully!',
     'structure.warning.unable.moveToIndicatorNode':'Moving to the indicator node is not supported!',
@@ -21,6 +23,7 @@ const i18n = {
     'structure.warning.invalidLength':'Title length validation failed!',
     'structure.warning.hasInvalidChars':'Title contains invalid characters!',
     'structure.warning.requireAtLeastOneNode':'Structure requires at least one indicator node!',
+    'structure.label.pendSync':'Not synced',
   },
   'zh-CN': {
     'repositoryModal.modal.title':'指标库',
@@ -35,6 +38,8 @@ const i18n = {
     'repositoryModal.button.label.repository':'指标库',
     'repositoryModal.button.label.reset':'重置',
     'repositoryModal.button.label.submit':'确认',
+    'repositoryModal.button.label.reset.confirm':'是否确认重置指标集层级结构信息？',
+    'repositoryModal.button.label.submit.confirm':'是否确认修改指标集层级结构信息？',
     'structure.operations.update.success':'修改指标集层级结构信息成功！',
     'structure.operations.reset.success':'重置指标集层级结构信息成功！',
     'structure.warning.unable.moveToIndicatorNode':'不支持移动元素到指标节点下！',
@@ -44,6 +49,7 @@ const i18n = {
     'structure.warning.invalidLength':'名称长度验证失败！',
     'structure.warning.hasInvalidChars':'名称中含有无效字符！',
     'structure.warning.requireAtLeastOneNode':'树结构应至少保留一个指标元素！',
+    'structure.label.pendSync':'待同步',
   },
 };
 

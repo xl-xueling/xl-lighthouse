@@ -1,5 +1,17 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Button, Card, Grid, Notification, Space, Spin, Tabs, Tag, Typography} from '@arco-design/web-react';
+import {
+    Button,
+    Card,
+    Grid,
+    Modal,
+    Notification,
+    Popconfirm,
+    Space,
+    Spin,
+    Tabs,
+    Tag,
+    Typography
+} from '@arco-design/web-react';
 import styles from "./style/index.module.less";
 import StructurePanel from "@/pages/metricset/structure/structure";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
@@ -19,7 +31,7 @@ import {IconCheckCircleFill} from "@arco-design/web-react/icon";
 import { VscSync } from "react-icons/vsc";
 import { FiRefreshCcw } from "react-icons/fi";
 import md5 from 'md5';
-import {areJsonObjectsEqual} from "@/utils/util";
+import {areJsonObjectsEqual, getRandomString} from "@/utils/util";
 
 export const MetricSetStructureContext = React.createContext(null);
 
@@ -48,6 +60,7 @@ export default function MetricSetStructure() {
     const structureRef = useRef(null);
     const [listNodes,setListNodes] = useState<TreeNode[]>([deepCopyObject(metricSetInfo?.structure)]);
     const [needSync,setNeedSync] = useState<boolean>(false);
+    const [showDeleteConfirm,setShowDeleteConfirm] = useState(false);
 
     const handlerCallback = async (type,record) => {
         if(type == 'clickStatMenu'){
@@ -116,16 +129,34 @@ export default function MetricSetStructure() {
                         </Card>
                         <Card>
                             <Grid.Row justify={"end"}>
-                                <Grid.Col span={14}>
+                                <Grid.Col span={4}>
                                     <Space className={styles.right} size={10} direction="horizontal">
                                         <Button size={"mini"} type="secondary" icon={<RiPlayListAddLine/>} onClick={handleShowRepositoryModal}>{t['repositoryModal.button.label.repository']}</Button>
                                     </Space>
                                 </Grid.Col>
-                                <Grid.Col span={10} style={{textAlign:'right' }}>
-                                    <Space size={15} direction="horizontal">
-                                        {needSync && <Tag size={"small"}>[Pend Sync]</Tag>}
-                                        <Button size={"small"} type="primary" onClick={handlerSubmit}>{t['repositoryModal.button.label.submit']}</Button>
-                                        <Button size={"small"} type={"primary"} onClick={handlerReset} status={"danger"}>{t['repositoryModal.button.label.reset']}</Button>
+                                <Grid.Col span={20} style={{textAlign:'right' }}>
+                                    <Space size={18} direction="horizontal">
+                                        {needSync && <Tag size={"small"}>[{t['structure.label.pendSync']}]</Tag>}
+                                        <Popconfirm
+                                                    focusLock
+                                                    position={"tr"}
+                                                    title='Confirm'
+                                                    content={t['repositoryModal.button.label.submit.confirm']}
+                                                    onOk={handlerSubmit}
+                                        >
+                                            <Button size={"small"} type="primary">{t['repositoryModal.button.label.submit']}</Button>
+                                        </Popconfirm>
+                                        <Popconfirm
+                                            focusLock
+                                            position={"tr"}
+                                            title='Confirm'
+                                            content={t['repositoryModal.button.label.reset.confirm']}
+                                            okText={t['repositoryModal.button.label.reset']}
+                                            okButtonProps={{ status:"danger" }}
+                                            onOk={handlerReset}
+                                        >
+                                            <Button size={"small"} type={"primary"} status={"danger"}>{t['repositoryModal.button.label.reset']}</Button>
+                                        </Popconfirm>
                                     </Space>
                                 </Grid.Col>
                             </Grid.Row>
