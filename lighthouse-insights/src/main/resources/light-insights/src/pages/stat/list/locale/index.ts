@@ -35,6 +35,8 @@ const i18n = {
     'statList.columns.stop.success':'The statistic has been stopped!',
     'statList.columns.delete.success':'The statistic has been deleted!',
     'statList.columns.bind.success':'The element has been binded successfully!',
+    'statList.label.id':'ID',
+    'statList.label.title':'Title',
   },
   'zh-CN': {
     'statList.table.columns.name':'名称',
@@ -72,6 +74,8 @@ const i18n = {
     'statList.columns.stop.success':'统计任务已停止！',
     'statList.columns.delete.success':'统计任务已删除！',
     'statList.columns.bind.success':'元素已被绑定！',
+    'statList.label.id':'ID',
+    'statList.label.title':'统计项名称',
   },
 };
 

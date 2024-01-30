@@ -96,7 +96,7 @@ public class GroupController {
         Group group = groupService.queryById(idParam.getId());
         Validate.notNull(group);
         StatQueryParam queryParam = new StatQueryParam();
-        queryParam.setGroupId(group.getId());
+        queryParam.setGroupIds(List.of(group.getId()));
         int countStat = statService.count(queryParam);
         if(countStat > 0){
             return ResultData.result(ResultCode.groupDelExistSubStat);

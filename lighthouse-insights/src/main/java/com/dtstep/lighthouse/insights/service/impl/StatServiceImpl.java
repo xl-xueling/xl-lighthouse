@@ -10,11 +10,10 @@ import com.dtstep.lighthouse.core.formula.TemplateUtil;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
-import com.dtstep.lighthouse.insights.dto.StatQueryParamExtend;
+import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.vo.ResultWrapper;
 import com.dtstep.lighthouse.insights.vo.StatVO;
-import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
 import com.dtstep.lighthouse.insights.enums.ComponentTypeEnum;
 import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
@@ -158,7 +157,7 @@ public class StatServiceImpl implements StatService {
 
     @Override
     public List<StatVO> queryByIds(List<Integer> ids) {
-        StatQueryParamExtend queryParam = new StatQueryParamExtend();
+        StatQueryParam queryParam = new StatQueryParam();
         queryParam.setIds(ids);
         List<Stat> statList = statDao.queryJoinList(queryParam);
         List<StatVO> voList = new ArrayList<>();
@@ -175,7 +174,7 @@ public class StatServiceImpl implements StatService {
         List<StatVO> dtoList = new ArrayList<>();
         PageInfo<Stat> pageInfo = null;
         try{
-            List<Stat> list = statDao.queryList(queryParam);
+            List<Stat> list = statDao.queryJoinList(queryParam);
             pageInfo = new PageInfo<>(list);
         }finally {
             PageHelper.clearPage();

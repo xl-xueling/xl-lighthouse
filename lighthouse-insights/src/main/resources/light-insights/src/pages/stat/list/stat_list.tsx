@@ -58,7 +58,6 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
             bindElements:[{resourceId:id,resourceType:ResourceTypeEnum.Stat}],
             metricIds:extend.id,
         }
-        console.log("bindParams is:" + JSON.stringify(bindParams));
         await requestBinded(bindParams).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -186,7 +185,6 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
     },[extend])
 
     useEffect(() => {
-        console.log("search list:" + JSON.stringify(formParams));
         setLoading(true);
         fetchData().then();
     },[refreshTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)])
