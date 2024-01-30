@@ -1,8 +1,26 @@
 import React, {createContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb, Spin} from '@arco-design/web-react';
+import {
+    Card,
+    Typography,
+    Grid,
+    Space,
+    Tabs,
+    Divider,
+    Notification,
+    Breadcrumb,
+    Spin,
+    Button, Dropdown, Menu
+} from '@arco-design/web-react';
 import MetricSetPreviewHeader from "@/pages/metricset/preview/header";
-import {IconDashboard, IconHome, IconTag, IconThunderbolt} from "@arco-design/web-react/icon";
+import {
+    IconDashboard,
+    IconDelete,
+    IconDownCircle,
+    IconHome,
+    IconTag,
+    IconThunderbolt
+} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {requestQueryById} from "@/api/metricset";
@@ -22,6 +40,12 @@ import {GlobalErrorCodes} from "@/utils/constants";
 import ErrorPage from "@/pages/common/error";
 import {FaRegChartBar} from "react-icons/fa";
 import {AiOutlineDashboard} from "react-icons/ai";
+import {CiViewTable} from "react-icons/ci";
+import {HiMiniBoltSlash} from "react-icons/hi2";
+import {RiShieldKeyholeLine} from "react-icons/ri";
+import {getIcon} from "@/pages/common/desc/base";
+import { FiEdit } from "react-icons/fi";
+import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
 
 export const MetricSetPreviewContext = React.createContext(null)
 
@@ -32,6 +56,7 @@ export default function Index() {
     const [metricSetInfo, setMetricSetInfo] = useState<MetricSet>(null);
     const [reloadTime, setReloadTime] = useState<number>(Date.now());
     const [errorCode, setErrorCode] = useState<string>(null);
+    const [showPermissionManageModal,setShowPermissionManageModal] = useState<boolean>(false);
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
@@ -72,7 +97,27 @@ export default function Index() {
                                 <Card>
                                     <MetricSetPreviewHeader/>
                                 </Card>
-                                <Tabs type="line" defaultActiveTab={'1'}>
+
+                                <Tabs type="line" defaultActiveTab={'1'}
+                                      extra={
+                                          <Space size={1}>
+                                              <Button type={"secondary"}  size={"mini"} icon={<FiEdit/>}>{'修改指标集'}</Button>
+                                              <Button type={"secondary"}  size={"mini"} onClick={() => setShowPermissionManageModal(true)} icon={getIcon('permission')}>{'权限管理'}</Button>
+                                              <Dropdown
+                                                  position={"br"}
+                                                  trigger={"click"}
+                                                  droplist={
+                                                      <Menu style={{ maxHeight:'280px' }}>
+                                                          <Menu.Item key={'deleteGroup'}>
+                                                              <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<IconDelete/>} />&nbsp;&nbsp;
+                                                              {'删除指标集'}</Menu.Item>
+                                                      </Menu>
+                                                  }>
+                                                  <Button size={"mini"} type={"secondary"}><IconDownCircle />{'更多'}</Button>
+                                              </Dropdown>
+                                          </Space>
+                                      }
+                                >
                                     <TabPane
                                         key='1'
                                         title={
@@ -89,13 +134,13 @@ export default function Index() {
                                         }>
                                         {metricSetInfo && <MetricSetBindListPanel/>}
                                     </TabPane>
-                                    <TabPane key='3' title={
-                                        <span style={{display: "inline-flex", alignItems: "center"}}><VscGistSecret
-                                            style={{marginRight: 6}}/>{t['metricSetPreview.tab.title.permissions']}</span>
-                                    }>
-                                        <MetricSetPermissionsPanel resourceType={ResourceTypeEnum.Metric}
-                                                                   resourceId={metricSetInfo?.id}/>
-                                    </TabPane>
+                                    {/*<TabPane key='3' title={*/}
+                                    {/*    <span style={{display: "inline-flex", alignItems: "center"}}><VscGistSecret*/}
+                                    {/*        style={{marginRight: 6}}/>{t['metricSetPreview.tab.title.permissions']}</span>*/}
+                                    {/*}>*/}
+                                    {/*    <MetricSetPermissionsPanel resourceType={ResourceTypeEnum.Metric}*/}
+                                    {/*                               resourceId={metricSetInfo?.id}/>*/}
+                                    {/*</TabPane>*/}
                                     <TabPane key='4' title={
                                         <span>
                 <span style={{display: "inline-flex", alignItems: "center"}}><PiTreeStructure
@@ -107,6 +152,10 @@ export default function Index() {
                             </Space>
                         </>
                 }
+
+                {showPermissionManageModal &&
+                <PermissionManageModal resourceId={id} resourceType={ResourceTypeEnum.Metric}
+                                       onClose={() => setShowPermissionManageModal(false)}/>}
             </>
         </MetricSetPreviewContext.Provider>
     );

@@ -39,13 +39,13 @@ export function PermissionManageModal({type = 2,resourceId,resourceType,onClose}
             onCancel={onClose}>
             <Tabs type={"card-gutter"} defaultActiveTab='1'>
                 <TabPane key='1' title= {t['permissionManage.department.accessPermission']}>
-                    <PermissionPanel type={1} resourceType={resourceType} resourceId={resourceId} onClose={onClose}/>
+                    <PermissionPanel type={1} resourceType={resourceType} resourceId={resourceId}/>
                 </TabPane>
                 <TabPane key='2' title={t['permissionManage.user.accessPermission']}>
-                    <PermissionPanel type={2} resourceType={resourceType} resourceId={resourceId} onClose={onClose}/>
+                    <PermissionPanel type={2} resourceType={resourceType} resourceId={resourceId}/>
                 </TabPane>
                 <TabPane key='3' title={t['permissionManage.user.managePermission']}>
-                    <PermissionPanel type={3} resourceType={resourceType} resourceId={resourceId} onClose={onClose}/>
+                    <PermissionPanel type={3} resourceType={resourceType} resourceId={resourceId}/>
                 </TabPane>
             </Tabs>
         </Modal>

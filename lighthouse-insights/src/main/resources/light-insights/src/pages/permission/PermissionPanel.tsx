@@ -30,7 +30,7 @@ import UsersTransfer from "@/pages/components/transfer/user_transfer";
 const CollapseItem = Collapse.Item;
 const TabPane = Tabs.TabPane;
 
-export function PermissionPanel({type,resourceId,resourceType,onClose}){
+export function PermissionPanel({type,resourceId,resourceType}){
 
     const t = useLocale(locale);
     const { Col, Row } = Grid;
