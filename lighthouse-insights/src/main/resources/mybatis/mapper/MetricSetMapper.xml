@@ -40,8 +40,11 @@
             (select role_id from ldp_permissions where owner_type = 1 and owner_id = #{queryParam.ownerId}) b on a.id = b.role_id) d on id = d.resource_id
         </if>
         <where>
-            <if test="queryParam.id!=null">
-                AND id = #{queryParam.id}
+            <if test="queryParam.ids != null">
+                AND id IN
+                <foreach item="item" index="index" collection="queryParam.ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
             </if>
             <if test="queryParam.search != null">
                 AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})

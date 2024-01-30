@@ -19,11 +19,26 @@ import Register from "@/pages/register";
 import {requestFetchUserInfo} from "@/api/user";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import {MetricSet} from "@/types/insights-web";
-import {requestPinList} from "@/api/metricset";
+import {requestFixedList} from "@/api/metricset";
 import {fetchAllDepartmentData} from "@/pages/department/common";
 import {checkLogin} from "@/utils/checkLogin";
 
 const store = createStore(rootReducer);
+
+export const updateStoreUserInfo = (userInfo) => ({
+  type: 'update-userInfo',
+  payload: {userInfo: userInfo,userLoading:false},
+});
+
+export const updateStoreAllDepartInfo = (allDepartInfo) => ({
+  type: 'update-allDepartInfo',
+  payload: {allDepartInfo: allDepartInfo,departLoading:false},
+});
+
+export const updateStoreFixedMetricInfo = (fixedMetricInfo) => ({
+  type: 'update-fixedMetricInfo',
+  payload: {fixedMetricInfo: fixedMetricInfo,fixedMetricsLoading:false},
+});
 
 function Index() {
   const [lang, setLang] = useStorage('arco-lang', 'en-US');
@@ -47,13 +62,15 @@ function Index() {
 
   async function fetchPinMetricsData():Promise<Array<MetricSet>> {
     return new Promise<Array<MetricSet>>((resolve,reject) => {
-      requestPinList().then((response) => {
+      requestFixedList().then((response) => {
         resolve(response.data);
       }).catch((error) => {
         reject(error);
       })
     })
   }
+
+
 
   async function fetchBasicInfo() {
     const allDepartInfo = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
@@ -62,10 +79,10 @@ function Index() {
       payload: {allDepartInfo: allDepartInfo,departLoading:false},
     })
 
-    // const pinMetricsInfo = await getDataWithLocalCache('cache_pin_metrics',300,fetchPinMetricsData);
+    // const fixedMetricInfo = await getDataWithLocalCache('cache_fixed_metrics',600,fetchPinMetricsData);
     // store.dispatch({
-    //   type: 'update-pinMetricsInfo',
-    //   payload: {pinMetricsInfo: pinMetricsInfo,pinMetricsLoading:false},
+    //   type: 'update-fixedMetricInfo',
+    //   payload: {fixedMetricInfo: fixedMetricInfo,fixedMetricsLoading:false},
     // })
 
     requestFetchUserInfo().then((resultData) => {

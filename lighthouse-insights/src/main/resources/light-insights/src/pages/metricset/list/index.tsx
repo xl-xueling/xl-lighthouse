@@ -15,14 +15,16 @@ import styles from './style/index.module.less';
 import CardBlock from './card-block';
 import AddCard from './card-add';
 import MetricSetAddPanel from "@/pages/metricset/create";
-import {MetricSet, Project} from "@/types/insights-web";
+import {MetricSet, Project, TreeNode} from "@/types/insights-web";
 import {requestFixedById, requestList} from "@/api/metricset";
 import {IconHome} from "@arco-design/web-react/icon";
 import {requestDeleteById} from "@/api/metricset";
-import {useSelector} from "react-redux";
+import {useDispatch,useSelector} from "react-redux";
 import {GlobalState} from "@/store";
+import {updateStoreFixedMetricInfo} from "@/index";
 const { Title } = Typography;
 const { Row, Col } = Grid;
+
 
 export default function ListCard() {
     const t = useLocale(locale);
@@ -35,7 +37,7 @@ export default function ListCard() {
     const { Meta } = Card;
     const [activeKey, setActiveKey] = useState('1');
     const [formParams, setFormParams] = useState<any>({});
-    const [fixedIdList,setFixedIdList] = useState<Array<number>>([]);
+    const fixedMetricInfo = useSelector((state: {fixedMetricInfo:Array<MetricSet>}) => state.fixedMetricInfo);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,30],
         sizeCanChange: true,
@@ -44,21 +46,27 @@ export default function ListCard() {
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
+    const dispatch = useDispatch();
 
     const tableCallback = async (type,record) => {
        if(type == 'fixed'){
-            await handlerFixed(record.id).then();
+            await handlerFixed(record).then();
         }
     };
 
-    const handlerFixed = async (id:number) => {
+    const handlerFixed = async (record) => {
+        setLoading(true);
+        const id = record.id;
         await requestFixedById({id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.fix.submit.success']});
+                const currentFixedData = fixedMetricInfo.filter(x => x.id != record.id);
+                dispatch(updateStoreFixedMetricInfo([...currentFixedData,record]))
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
+            setLoading(false);
         }).catch((error) => {
             console.log(error);
         })

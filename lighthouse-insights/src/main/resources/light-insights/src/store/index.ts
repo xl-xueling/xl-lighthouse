@@ -6,7 +6,7 @@ export interface GlobalState {
   userInfo? : User;
   userLoading?: boolean;
   allDepartInfo? : Array<Department>;
-  pinMetricsInfo? :Array<MetricSet>;
+  fixedMetricInfo? :Array<MetricSet>;
 }
 
 const initialState = ():GlobalState => {
@@ -17,7 +17,7 @@ const initialState = ():GlobalState => {
     settings: defaultSettings,
     userInfo: initUser,
     allDepartInfo:[],
-    pinMetricsInfo:[],
+    fixedMetricInfo:[],
   }
 };
 
@@ -32,12 +32,12 @@ export default function processReducer(state = initialState(), action) {
         allDepartInfo,
       }
     }
-    case 'update-pinMetricsInfo':{
-      const { pinMetricsInfo = initialState().pinMetricsInfo,pinMetricsLoading = true } = action.payload;
+    case 'update-fixedMetricInfo':{
+      const { fixedMetricInfo = initialState().fixedMetricInfo,fixedMetricsLoading = true } = action.payload;
       return {
         ...state,
-        pinMetricsLoading,
-        pinMetricsInfo,
+        fixedMetricsLoading,
+        fixedMetricInfo,
       }
     }
 
