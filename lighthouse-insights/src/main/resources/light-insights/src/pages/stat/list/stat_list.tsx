@@ -2,7 +2,7 @@ import {
     Table,
     Message, PaginationProps, Notification,
 } from '@arco-design/web-react';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import {useSelector} from "react-redux";
 import locale from './locale';
@@ -18,6 +18,7 @@ import {ResourceTypeEnum, StatStateEnum} from "@/types/insights-common";
 import {requestResetPasswd} from "@/api/user";
 import SearchForm from "@/pages/stat/list/form";
 import {requestBinded} from "@/api/metricset";
+import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
 
 export default function StatisticalListPanel({formParams = {},from = null,parentLoading=false,extend=null}) {
     const t = useLocale(locale);
@@ -30,6 +31,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
     const refFetchId = useRef<number>(null);
     const [bindList,setBindList] = useState<number[]>([]);
     const [refreshTime,setRefreshTime] = useState<number>(null);
+    const handleMetricBindListReloadCallback = useContext(MetricSetBindListContext);
 
     const tableCallback = async (record, type) => {
         if(type == 'showUpdateModal'){
@@ -63,6 +65,8 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['statList.columns.bind.success']});
                 setBindList([...bindList,id])
+                console.log("------new bind ...");
+                handleMetricBindListReloadCallback();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
