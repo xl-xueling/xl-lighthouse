@@ -266,20 +266,4 @@ public class ProjectServiceImpl implements ProjectService {
         return rootNode;
     }
 
-
-    @Override
-    public List<User> cacheQueryAdmins(Integer id) {
-        Role manageRole = roleService.queryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,id);
-        Validate.notNull(manageRole);
-        List<Integer> userIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(), 3);
-        if(CollectionUtils.isEmpty(userIds)){
-            return null;
-        }
-        List<User> users = new ArrayList<>();
-        for(Integer userId:userIds){
-            User user = userService.queryById(userId);
-            users.add(user);
-        }
-        return users;
-    }
 }

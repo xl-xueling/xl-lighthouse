@@ -40,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -77,6 +78,9 @@ public class StatServiceImpl implements StatService {
 
     @Autowired
     private ComponentService componentService;
+
+    @Autowired
+    private UserService userService;
 
     @Transactional
     @Override
@@ -142,8 +146,13 @@ public class StatServiceImpl implements StatService {
         }else if(permissionService.checkUserPermission(userId,accessRole.getId())){
             statVO.addPermission(PermissionEnum.AccessAble);
         }
-//        List<User> admins = projectService.cacheQueryAdmins(project.getId());
-//        statVO.setAdmins(admins);
+        Role projectManageRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,statVO.getProjectId());
+        Validate.notNull(manageRole);
+        List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
+        if(CollectionUtils.isNotEmpty(adminIds)){
+            List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
+            statVO.setAdmins(admins);
+        }
         return statVO;
     }
 
