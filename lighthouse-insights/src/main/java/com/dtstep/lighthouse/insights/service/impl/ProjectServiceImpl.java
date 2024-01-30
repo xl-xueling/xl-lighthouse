@@ -196,13 +196,26 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public List<ProjectVO> queryByIds(List<Integer> ids) {
+        ProjectQueryParam queryParam = new ProjectQueryParam();
+        queryParam.setIds(ids);
+        List<Project> projectList = projectDao.queryList(queryParam);
+        List<ProjectVO> voList = new ArrayList<>();
+        for(Project project : projectList){
+            ProjectVO projectVO = translate(project);
+            voList.add(projectVO);
+        }
+        return voList;
+    }
+
+    @Override
     public ListData<ProjectVO> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize) {
         Integer userId = baseService.getCurrentUserId();
         PageHelper.startPage(pageNum,pageSize);
         List<ProjectVO> dtoList = new ArrayList<>();
         PageInfo<Project> pageInfo = null;
         try{
-            List<Project> projectList = projectDao.queryList(queryParam,pageNum,pageSize);
+            List<Project> projectList = projectDao.queryList(queryParam);
             pageInfo = new PageInfo<>(projectList);
         }finally {
             PageHelper.clearPage();

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ProjectQueryParam {
 
-    private Integer id;
+    private List<Integer> ids;
 
     private String search;
 
@@ -20,12 +20,12 @@ public class ProjectQueryParam {
 
     private Integer ownerId;
 
-    public Integer getId() {
-        return id;
+    public List<Integer> getIds() {
+        return ids;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIds(List<Integer> ids) {
+        this.ids = ids;
     }
 
     public String getSearch() {

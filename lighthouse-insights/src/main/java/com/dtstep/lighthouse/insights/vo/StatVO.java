@@ -14,10 +14,6 @@ import java.util.Set;
 
 public class StatVO extends Stat {
 
-    private Group group;
-
-    private Project project;
-
     private List<User> admins;
 
     private Set<PermissionEnum> permissions = new HashSet<>();
@@ -39,22 +35,6 @@ public class StatVO extends Stat {
     public StatVO(Stat stat){
         assert stat != null;
         BeanCopyUtil.copy(stat,this);
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
     }
 
     public List<User> getAdmins() {

@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.dao;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.insights.dto_bak.FlatTreeNode;
 import com.dtstep.lighthouse.insights.modal.Project;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface ProjectDao {
 
     int deleteById(Integer id);
 
-    List<Project> queryList(ProjectQueryParam queryParam,Integer pageNum,Integer pageSize);
+    List<Project> queryList(@Param("queryParam")ProjectQueryParam queryParam);
 
     int countByDepartmentId(Integer departmentId);
 

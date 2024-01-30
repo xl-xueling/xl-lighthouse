@@ -73,8 +73,11 @@
         )
         select * from (select `id`,`title`,`department_id`,`private_type`,`desc`,`create_time`,`update_time` from ldp_projects
         <where>
-            <if test="queryParam.id!=null">
-                AND id = #{queryParam.id}
+            <if test="queryParam.ids != null">
+                AND id IN
+                <foreach item="item" index="index" collection="queryParam.ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
             </if>
             <if test="queryParam.privateType!=null">
                 AND private_type = #{queryParam.privateType}

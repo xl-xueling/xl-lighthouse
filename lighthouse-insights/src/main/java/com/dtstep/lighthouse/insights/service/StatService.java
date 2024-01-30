@@ -24,6 +24,8 @@ public interface StatService {
 
     ListData<StatVO> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize);
 
+    List<StatVO> queryByIds(List<Integer> ids);
+
     int count(StatQueryParam queryParam);
 
     RenderConfig getStatRenderConfig(Stat stat);
