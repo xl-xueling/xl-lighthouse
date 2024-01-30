@@ -33,6 +33,8 @@ public interface ProjectService {
 
     ListData<ProjectVO> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize);
 
+    List<ProjectVO> queryByIds(List<Integer> ids);
+
     int countByDepartmentId(Integer departmentId);
 
     ResultCode batchGrantPermissions(PermissionGrantParam grantParam) throws Exception;

@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.RelationDao;
 import com.dtstep.lighthouse.insights.dto.RelationQueryParam;
 import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
+import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
 import com.dtstep.lighthouse.insights.vo.RelationVO;
 import com.dtstep.lighthouse.insights.vo.StatVO;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RelationServiceImpl implements RelationService {
@@ -64,15 +66,29 @@ public class RelationServiceImpl implements RelationService {
 
     @Override
     public List<RelationVO> queryList(Integer relationId, RelationTypeEnum relationTypeEnum) {
-        List<RelationVO> voList = new ArrayList<>();
         List<Relation> relationList = relationDao.queryList(relationId,relationTypeEnum);
+        List<Integer> statIdList = new ArrayList<>();
+        List<Integer> projectIdList = new ArrayList<>();
         for(Relation relation : relationList){
-            try{
-                RelationVO dto = translate(relation);
-                voList.add(dto);
-            }catch (Exception ex){
-                logger.error("translate item info error,itemId:{}!",relation.getId(),ex);
+            if(relation.getResourceType() == ResourceTypeEnum.Project){
+                projectIdList.add(relation.getResourceId());
+            }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
+                statIdList.add(relation.getResourceId());
             }
+        }
+        List<StatVO> statList = statService.queryByIds(statIdList);
+        List<ProjectVO> projectList = projectService.queryByIds(projectIdList);
+        List<RelationVO> voList = new ArrayList<>();
+        for(Relation relation : relationList){
+            RelationVO relationVO = new RelationVO(relation);
+            if(relation.getResourceType() == ResourceTypeEnum.Project){
+                ProjectVO project = projectList.stream().filter(x -> x.getId().intValue() == relation.getResourceId().intValue()).findFirst().orElse(null);
+                relationVO.setExtend(project);
+            }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
+                StatVO statVO = statList.stream().filter(x -> x.getId().intValue() == relation.getResourceId().intValue()).findFirst().orElse(null);
+                relationVO.setExtend(statVO);
+            }
+            voList.add(relationVO);
         }
         return voList;
     }
@@ -88,13 +104,27 @@ public class RelationServiceImpl implements RelationService {
             PageHelper.clearPage();
         }
         List<RelationVO> voList = new ArrayList<>();
-        for(Relation relation:pageInfo.getList()){
-            try{
-                RelationVO dto = translate(relation);
-                voList.add(dto);
-            }catch (Exception ex){
-                logger.error("translate item info error,itemId:{}!",relation.getId(),ex);
+        List<Integer> statIdList = new ArrayList<>();
+        List<Integer> projectIdList = new ArrayList<>();
+        for(Relation relation : pageInfo.getList()){
+            if(relation.getResourceType() == ResourceTypeEnum.Project){
+                projectIdList.add(relation.getResourceId());
+            }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
+                statIdList.add(relation.getResourceId());
             }
+        }
+        List<StatVO> statList = statService.queryByIds(statIdList);
+        List<ProjectVO> projectList = projectService.queryByIds(projectIdList);
+        for(Relation relation : pageInfo.getList()){
+            RelationVO relationVO = new RelationVO(relation);
+            if(relation.getResourceType() == ResourceTypeEnum.Project){
+                ProjectVO project = projectList.stream().filter(x -> x.getId().intValue() == relation.getResourceId().intValue()).findFirst().orElse(null);
+                relationVO.setExtend(project);
+            }else if(relation.getResourceType() == ResourceTypeEnum.Stat){
+                StatVO statVO = statList.stream().filter(x -> x.getId().intValue() == relation.getResourceId().intValue()).findFirst().orElse(null);
+                relationVO.setExtend(statVO);
+            }
+            voList.add(relationVO);
         }
         return ListData.newInstance(voList,pageInfo.getTotal(),pageNum,pageSize);
     }

@@ -10,6 +10,7 @@ import com.dtstep.lighthouse.core.formula.TemplateUtil;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
+import com.dtstep.lighthouse.insights.dto.StatQueryParamExtend;
 import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
 import com.dtstep.lighthouse.insights.vo.ResultWrapper;
 import com.dtstep.lighthouse.insights.vo.StatVO;
@@ -133,22 +134,30 @@ public class StatServiceImpl implements StatService {
     private StatVO translate(Stat stat){
         int userId = baseService.getCurrentUserId();
         StatVO statVO = new StatVO(stat);
-        Group group = groupService.cacheQueryById(stat.getGroupId());
-        Project project = projectService.cacheQueryById(stat.getProjectId());
-        Validate.notNull(project);
-        Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,stat.getId());
-        Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,stat.getId());
+        Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,stat.getId());
+        Role accessRole = roleService.cacheQueryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,stat.getId());
         if(permissionService.checkUserPermission(userId, manageRole.getId())){
             statVO.addPermission(PermissionEnum.ManageAble);
             statVO.addPermission(PermissionEnum.AccessAble);
         }else if(permissionService.checkUserPermission(userId,accessRole.getId())){
             statVO.addPermission(PermissionEnum.AccessAble);
         }
-        List<User> admins = projectService.cacheQueryAdmins(project.getId());
-        statVO.setAdmins(admins);
-        statVO.setGroup(group);
-        statVO.setProject(project);
+//        List<User> admins = projectService.cacheQueryAdmins(project.getId());
+//        statVO.setAdmins(admins);
         return statVO;
+    }
+
+    @Override
+    public List<StatVO> queryByIds(List<Integer> ids) {
+        StatQueryParamExtend queryParam = new StatQueryParamExtend();
+        queryParam.setIds(ids);
+        List<Stat> statList = statDao.queryJoinList(queryParam);
+        List<StatVO> voList = new ArrayList<>();
+        for(Stat stat : statList){
+            StatVO statVO = translate(stat);
+            voList.add(statVO);
+        }
+        return voList;
     }
 
     @Override

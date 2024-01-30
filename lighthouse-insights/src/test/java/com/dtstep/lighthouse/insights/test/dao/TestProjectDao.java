@@ -35,24 +35,6 @@ public class TestProjectDao {
         projectDao.insert(project);
     }
 
-    @Test
-    public void testQueryList() throws Exception {
-        ProjectQueryParam queryParam = new ProjectQueryParam();
-        queryParam.setDepartmentIds(List.of(10068));
-        List<Project> list = projectDao.queryList(queryParam,1,100);
-        System.out.println("list:" + JsonUtil.toJSONString(list));
-    }
-
-    @Test
-    public void testQueryOwnerList() throws Exception {
-        ProjectQueryParam queryParam = new ProjectQueryParam();
-//        queryParam.setOwner(110154);
-//        queryParam.setDepartmentIds(List.of(10079));
-        List<Project> list = projectDao.queryList(queryParam,1,100);
-        for(int i=0;i<list.size();i++){
-            System.out.println("project:" + list.get(i).getTitle());
-        }
-    }
 
     @Test
     public void testCount() throws Exception {
