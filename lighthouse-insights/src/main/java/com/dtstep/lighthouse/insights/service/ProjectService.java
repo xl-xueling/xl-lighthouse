@@ -19,8 +19,6 @@ public interface ProjectService {
 
     int create(Project project);
 
-    List<User> cacheQueryAdmins(Integer id);
-
     int update(Project project);
 
     ProjectVO queryById(Integer id);
