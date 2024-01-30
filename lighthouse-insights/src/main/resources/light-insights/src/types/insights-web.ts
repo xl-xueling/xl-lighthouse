@@ -116,9 +116,8 @@ export interface Stat {
     template?:string;
     expired?:number;
     createdTime?:number;
-    group?:Group;
-    project?:Project;
-    dimensArray?:Array<string>;
+    projectTitle?:string;
+    token?:string;
     desc?:string;
     templateEntity?:any,
     state?:StatStateEnum;
