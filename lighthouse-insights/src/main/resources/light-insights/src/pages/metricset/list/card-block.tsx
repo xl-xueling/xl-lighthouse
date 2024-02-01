@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import cs from 'classnames';
-import {Button, Card, Descriptions, Popconfirm, Space, Tag, Typography,} from '@arco-design/web-react';
+import {Button, Card, Descriptions, Popconfirm, Space, Tag, Typography} from '@arco-design/web-react';
 import {
     IconFaceSmileFill,
     IconPenFill,
@@ -89,21 +89,41 @@ function CardBlock(props: CardBlockType) {
       ]:null}
 
       title={
-          <div  onClick={handleClick}>
+          <div>
               <div
                   className={cs(styles.title, {
                       [styles['title-more']]: visible,
                   })}
               >
                   {
-                      fixedMetricInfo.map(z => z.id).includes(item.id)?<span onClick={(e) => {e.stopPropagation();callback('unfixed',item)}}>{getTitleIcon(0)}</span>:null
+                      fixedMetricInfo.map(z => z.id).includes(item.id)?
+                          <Popconfirm
+                                      focusLock
+                                      position={"tr"}
+                                      title='Confirm'
+                                      content={t['metricSetList.operations.unfix.confirm']}
+                                      onOk={async (e) => {e.stopPropagation();await callback('unfixed',item)}}
+                                      onCancel={(e) => {e.stopPropagation();}}
+                          >
+                          <span onClick={(e) => {e.stopPropagation();}}>{getTitleIcon(0)}</span>
+                          </Popconfirm>
+                          :null
                   }
-                  {item.title}{getLockIcon(t,item.privateType,item.permissions)}
+                  <span onClick={handleClick}>{item.title}{getLockIcon(t,item.privateType,item.permissions)}</span>
                   {
                       fixedMetricInfo.map(z => z.id).includes(item.id) ? null:
-                          <div className={styles.more} onClick={(e) => {e.stopPropagation();callback('fixed',item)}}>
+                          <Popconfirm
+                                      focusLock
+                                      position={"tr"}
+                                      title='Confirm'
+                                      content={t['metricSetList.operations.fix.confirm']}
+                                      onOk={async (e) => {e.stopPropagation();await callback('fixed',item)}}
+                                      onCancel={(e) => {e.stopPropagation();}}
+                          >
+                          <div className={styles.more} onClick={(e) => {e.stopPropagation();}}>
                             <IconPushpin />
                           </div>
+                          </Popconfirm>
                   }
               </div>
               <div className={styles.time}>{formatTimeStamp(item.createTime,DateTimeFormat)}</div>
