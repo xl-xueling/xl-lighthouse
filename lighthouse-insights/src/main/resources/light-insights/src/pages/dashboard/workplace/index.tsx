@@ -13,6 +13,7 @@ import {useSelector} from "react-redux";
 import {MetricSet} from "@/types/insights-web";
 import CardBlock from "@/pages/metricset/list/card-block";
 import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
+import {getRandomString} from "@/utils/util";
 const { Row, Col } = Grid;
 const gutter = 16;
 
@@ -26,11 +27,9 @@ function Workplace() {
         <Overview />
           <Row gutter={gutter}>
               {fixedMetricInfo.map((item, index) => (
-                  <>
                       <Col span={6} key={index}>
                           <MetricSetCardBox key={index} item={item}/>
                       </Col>
-                  </>
               ))}
           </Row>
       </Space>
