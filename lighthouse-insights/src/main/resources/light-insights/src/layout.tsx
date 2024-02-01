@@ -43,6 +43,7 @@ import {RiAppsLine} from "react-icons/ri";
 import Index from "@/pages/metricset/preview";
 import {PiDiamondsFour} from "react-icons/pi";
 import StatPreviewPage from "@/pages/stat/display";
+import PopMenuBox from "@/pages/common/popmenu/PopMenu";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -313,6 +314,7 @@ function PageLayout() {
                                 </Switch>
                             </Content>
                         </div>
+                        <PopMenuBox />
                         {showFooter && <Footer/>}
                     </Layout>
                 </Layout>
