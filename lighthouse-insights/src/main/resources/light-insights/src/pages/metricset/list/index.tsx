@@ -22,6 +22,7 @@ import {requestDeleteById} from "@/api/metricset";
 import {useDispatch,useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {updateStoreFixedMetricInfo} from "@/index";
+import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 
@@ -46,51 +47,6 @@ export default function ListCard() {
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
-    const dispatch = useDispatch();
-
-    const tableCallback = async (type,record) => {
-       if(type == 'fixed'){
-            await handlerFixed(record).then();
-        }else if(type == 'unfixed'){
-           await handlerUnFixed(record).then();
-       }
-    };
-
-    const handlerFixed = async (record) => {
-        setLoading(true);
-        const id = record.id;
-        await requestFixedById({id}).then((response) => {
-            const {code, data ,message} = response;
-            if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.fix.submit.success']});
-                const currentFixedData = fixedMetricInfo.filter(x => x.id != record.id);
-                dispatch(updateStoreFixedMetricInfo([...currentFixedData,record]))
-            }else{
-                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-            }
-            setLoading(false);
-        }).catch((error) => {
-            console.log(error);
-        })
-    }
-
-    const handlerUnFixed = async (record) => {
-        setLoading(true);
-        const id = record.id;
-        await requestUnFixedById({id}).then((response) => {
-            const {code, data ,message} = response;
-            if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.unfix.submit.success']});
-                const currentFixedData = fixedMetricInfo.filter(x => x.id != record.id);
-                dispatch(updateStoreFixedMetricInfo([...currentFixedData]))
-            }else{
-                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-            }
-            setLoading(false);
-        }).catch((error) => {
-            console.log(error);
-        })
-    }
 
     const handlerDelete = async (id: number) => {
         await requestDeleteById({id}).then((response) => {
@@ -162,9 +118,7 @@ export default function ListCard() {
                     <AddCard description={t['metricSetList.button.createMetric']} onShow={handleShowCreatePanel}/>
                 </Col>
                 {listData.map((item, index) => (
-                    <Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={6} key={index}>
-                        <CardBlock item={item} loading={loading} callback={tableCallback} />
-                    </Col>
+                    <MetricSetCardBox key={index} item={item}/>
                 ))}
             </Row>
         );

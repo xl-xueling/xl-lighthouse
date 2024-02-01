@@ -7,6 +7,8 @@ const i18n = {
     'metricSetList.operations.delete.confirm':'Are you sure to delete this item?',
     'metricSetList.operations.delete.submit.success':'Delete MetricSet Successfully!',
     'metricSetList.operations.fix.submit.success':'MetricSet has been fixed on the homepage!',
+    'metricSetList.operations.fix.confirm':'Are you sure to fix this item on the homepage?',
+    'metricSetList.operations.unfix.confirm':'Are you sure to remove this item from the homepage?',
     'metricSetList.operations.unfix.submit.success':'MetricSet has been unpinned!'
   },
   'zh-CN': {
@@ -17,6 +19,8 @@ const i18n = {
     'metricSetList.operations.delete.confirm':'是否确认删除该指标集？',
     'metricSetList.operations.delete.submit.success':'删除指标集成功！',
     'metricSetList.operations.fix.submit.success':'指标集已被固定在首页展示！',
+    'metricSetList.operations.fix.confirm':'是否确认将当前指标集固定在首页展示?',
+    'metricSetList.operations.unfix.confirm':'是否确认取消当前指标集的固定展示？',
     'metricSetList.operations.unfix.submit.success':'指标集已被取消固定！',
   },
 };
