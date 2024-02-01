@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { Grid, Space } from '@arco-design/web-react';
+import {Card, Grid, Space} from '@arco-design/web-react';
 import Overview from './overview';
 import PopularContents from './popular-contents';
 import ContentPercentage from './content-percentage';
@@ -13,31 +13,26 @@ import {useSelector} from "react-redux";
 import {MetricSet} from "@/types/insights-web";
 import CardBlock from "@/pages/metricset/list/card-block";
 import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
-
 const { Row, Col } = Grid;
 const gutter = 16;
 
 function Workplace() {
 
-    const fixedMetricInfo = useSelector((state: {fixedMetricInfo:Array<MetricSet>}) => state.fixedMetricInfo);
-
-    useEffect(() => {
-        console.log("fixedMetricInfo is:" + JSON.stringify(fixedMetricInfo));
-    },[])
+  const fixedMetricInfo = useSelector((state: {fixedMetricInfo:Array<MetricSet>}) => state.fixedMetricInfo);
 
   return (
     <div className={styles.wrapper}>
       <Space size={16} direction="vertical" className={styles.left}>
         <Overview />
-        <Row gutter={gutter}>
-            {fixedMetricInfo.map((item, index) => (
-                <>
-                    <Col span={6} key={index}>
-                        <MetricSetCardBox key={index} item={item}/>
-                    </Col>
-                </>
-            ))}
-        </Row>
+          <Row gutter={gutter}>
+              {fixedMetricInfo.map((item, index) => (
+                  <>
+                      <Col span={6} key={index}>
+                          <MetricSetCardBox key={index} item={item}/>
+                      </Col>
+                  </>
+              ))}
+          </Row>
       </Space>
 
       <Space className={styles.right} size={16} direction="vertical">
