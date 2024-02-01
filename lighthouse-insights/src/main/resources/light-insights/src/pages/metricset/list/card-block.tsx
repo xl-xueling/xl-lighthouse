@@ -99,9 +99,12 @@ function CardBlock(props: CardBlockType) {
                       fixedMetricInfo.map(z => z.id).includes(item.id)?<span onClick={(e) => {e.stopPropagation();callback('unfixed',item)}}>{getTitleIcon(0)}</span>:null
                   }
                   {item.title}{getLockIcon(t,item.privateType,item.permissions)}
-                  <div className={styles.more} onClick={(e) => {e.stopPropagation();callback('fixed',item)}}>
-                      <IconPushpin />
-                  </div>
+                  {
+                      fixedMetricInfo.map(z => z.id).includes(item.id) ? null:
+                          <div className={styles.more} onClick={(e) => {e.stopPropagation();callback('fixed',item)}}>
+                            <IconPushpin />
+                          </div>
+                  }
               </div>
               <div className={styles.time}>{formatTimeStamp(item.createTime,DateTimeFormat)}</div>
           </div>
