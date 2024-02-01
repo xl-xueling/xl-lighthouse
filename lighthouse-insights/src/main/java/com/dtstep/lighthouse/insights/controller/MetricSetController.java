@@ -142,6 +142,15 @@ public class MetricSetController {
         return ResultData.result(resultCode);
     }
 
+    @RequestMapping("/metricset/unfixedById")
+    public ResultData<Integer> unfixedById(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        MetricSet metricSet = metricSetService.queryById(id);
+        Validate.notNull(metricSet);
+        ResultCode resultCode = metricSetService.unfix(metricSet);
+        return ResultData.result(resultCode);
+    }
+
     @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/metricset/updateStructure")
     public ResultData<Integer> updateStructure(@Validated @RequestBody MetricUpdateStructureParam updateStructureParam) {

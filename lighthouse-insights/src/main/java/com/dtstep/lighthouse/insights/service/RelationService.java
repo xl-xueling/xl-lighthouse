@@ -13,6 +13,8 @@ public interface RelationService {
 
     int batchCreate(List<Relation> relationList);
 
+    int delete(Relation relation);
+
     ResultCode create(Relation relation);
 
     boolean isExist(String hash);

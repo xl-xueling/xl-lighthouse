@@ -28,4 +28,6 @@ public interface RelationDao {
     Relation queryById(Integer id);
 
     int deleteById(Integer id);
+
+    int delete(@Param("queryParam")Relation relation);
 }

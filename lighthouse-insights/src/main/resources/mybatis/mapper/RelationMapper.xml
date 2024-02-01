@@ -124,7 +124,7 @@
         WHERE hash = #{hash}
     </select>
 
-    <select id="delete" resultType="int">
+    <delete id="delete">
         delete
         FROM ldp_relations
         <where>
@@ -134,8 +134,11 @@
             <if test="queryParam.id != null">
                 AND id = #{queryParam.id}
             </if>
+            <if test="queryParam.hash != null">
+                AND hash = #{queryParam.hash}
+            </if>
         </where>
-    </select>
+    </delete>
 
 
 </mapper>

@@ -16,7 +16,7 @@ import CardBlock from './card-block';
 import AddCard from './card-add';
 import MetricSetAddPanel from "@/pages/metricset/create";
 import {MetricSet, Project, TreeNode} from "@/types/insights-web";
-import {requestFixedById, requestList} from "@/api/metricset";
+import {requestFixedById, requestList, requestUnFixedById} from "@/api/metricset";
 import {IconHome} from "@arco-design/web-react/icon";
 import {requestDeleteById} from "@/api/metricset";
 import {useDispatch,useSelector} from "react-redux";
@@ -51,13 +51,37 @@ export default function ListCard() {
     const tableCallback = async (type,record) => {
        if(type == 'fixed'){
             await handlerFixed(record).then();
-        }
+        }else if(type == 'unfixed'){
+           await handlerUnFixed(record).then();
+       }
     };
+
+    useEffect(() => {
+        console.log("fixedMetricInfo:" + JSON.stringify(fixedMetricInfo))
+    },[])
 
     const handlerFixed = async (record) => {
         setLoading(true);
         const id = record.id;
         await requestFixedById({id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.fix.submit.success']});
+                const currentFixedData = fixedMetricInfo.filter(x => x.id != record.id);
+                dispatch(updateStoreFixedMetricInfo([...currentFixedData,record]))
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
+    const handlerUnFixed = async (record) => {
+        setLoading(true);
+        const id = record.id;
+        await requestUnFixedById({id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.fix.submit.success']});

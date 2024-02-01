@@ -18,6 +18,7 @@ import {useHistory} from 'react-router-dom';
 import {getRandomString} from "@/utils/util";
 import {getLockIcon} from "@/pages/common/desc/base";
 import {PermissionEnum} from "@/types/insights-common";
+import {useSelector} from "react-redux";
 
 const { Meta } = Card;
 
@@ -29,11 +30,7 @@ interface CardBlockType {
 }
 
 const IconList = [
-  IconStarFill,
-  IconThumbUpFill,
-  IconSunFill,
-  IconFaceSmileFill,
-  IconPenFill,
+  IconPushpin,
 ].map((Tag, index) => <Tag key={index} />);
 
 const { Paragraph } = Typography;
@@ -45,6 +42,7 @@ function CardBlock(props: CardBlockType) {
   const history = useHistory();
 
   const t = useLocale(locale);
+  const fixedMetricInfo = useSelector((state: {fixedMetricInfo:Array<MetricSet>}) => state.fixedMetricInfo);
 
   useEffect(() => {
     setLoading(props.loading);
@@ -69,6 +67,13 @@ function CardBlock(props: CardBlockType) {
         window.open('/metricset/preview/' + item?.id, '_blank');
     };
 
+    const getTitleIcon = (index) => {
+        return (
+            <div className={styles.icon}>
+                {IconList[index]}
+            </div>
+        );
+    };
   return (
     <Card
       bordered={true}
@@ -90,6 +95,9 @@ function CardBlock(props: CardBlockType) {
                       [styles['title-more']]: visible,
                   })}
               >
+                  {
+                      fixedMetricInfo.map(z => z.id).includes(item.id)?<span onClick={(e) => {e.stopPropagation();callback('unfixed',item)}}>{getTitleIcon(0)}</span>:null
+                  }
                   {item.title}{getLockIcon(t,item.privateType,item.permissions)}
                   <div className={styles.more} onClick={(e) => {e.stopPropagation();callback('fixed',item)}}>
                       <IconPushpin />
