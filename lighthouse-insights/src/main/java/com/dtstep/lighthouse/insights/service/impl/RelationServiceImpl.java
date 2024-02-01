@@ -63,6 +63,7 @@ public class RelationServiceImpl implements RelationService {
             result = relationDao.update(relation);
         }else{
             relation.setHash(hash);
+            relation.setCreateTime(localDateTime);
             relation.setUpdateTime(localDateTime);
             result = relationDao.insert(relation);
         }
@@ -71,6 +72,11 @@ public class RelationServiceImpl implements RelationService {
         }else{
             return ResultCode.systemError;
         }
+    }
+
+    @Override
+    public int delete(Relation relation){
+        return relationDao.delete(relation);
     }
 
     @Override

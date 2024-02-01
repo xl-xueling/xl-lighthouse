@@ -70,8 +70,6 @@ function Index() {
     })
   }
 
-
-
   async function fetchBasicInfo() {
     const allDepartInfo = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
     store.dispatch({
@@ -79,11 +77,11 @@ function Index() {
       payload: {allDepartInfo: allDepartInfo,departLoading:false},
     })
 
-    // const fixedMetricInfo = await getDataWithLocalCache('cache_fixed_metrics',600,fetchPinMetricsData);
-    // store.dispatch({
-    //   type: 'update-fixedMetricInfo',
-    //   payload: {fixedMetricInfo: fixedMetricInfo,fixedMetricsLoading:false},
-    // })
+    const fixedMetricInfo = await getDataWithLocalCache('cache_fixed_metrics',600,fetchPinMetricsData);
+    store.dispatch({
+      type: 'update-fixedMetricInfo',
+      payload: {fixedMetricInfo: fixedMetricInfo,fixedMetricsLoading:false},
+    })
 
     requestFetchUserInfo().then((resultData) => {
       const userInfo = resultData.data;
