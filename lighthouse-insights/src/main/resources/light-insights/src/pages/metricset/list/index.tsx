@@ -56,10 +56,6 @@ export default function ListCard() {
        }
     };
 
-    useEffect(() => {
-        console.log("fixedMetricInfo:" + JSON.stringify(fixedMetricInfo))
-    },[])
-
     const handlerFixed = async (record) => {
         setLoading(true);
         const id = record.id;
@@ -84,9 +80,9 @@ export default function ListCard() {
         await requestUnFixedById({id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.fix.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.unfix.submit.success']});
                 const currentFixedData = fixedMetricInfo.filter(x => x.id != record.id);
-                dispatch(updateStoreFixedMetricInfo([...currentFixedData,record]))
+                dispatch(updateStoreFixedMetricInfo([...currentFixedData]))
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -173,7 +169,6 @@ export default function ListCard() {
             </Row>
         );
     };
-
 
   return (
       <>
