@@ -7,7 +7,7 @@ import {
     Grid,
     PaginationProps,
     Pagination,
-    Breadcrumb, Notification, Spin
+    Breadcrumb, Notification, Spin, Space, Modal
 } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -23,6 +23,7 @@ import {useDispatch,useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {updateStoreStaredMetricInfo} from "@/index";
 import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
+import {getRandomString} from "@/utils/util";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 
@@ -113,14 +114,18 @@ export default function ListCard() {
 
     const getCardList = () => {
         return (
-            <Row gutter={24} className={styles['card-content']}>
-                <Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={6}>
-                    <AddCard description={t['metricSetList.button.createMetric']} onShow={handleShowCreatePanel}/>
-                </Col>
-                {listData.map((item, index) => (
-                    <MetricSetCardBox key={index} item={item}/>
-                ))}
-            </Row>
+            <Space size={16} direction="vertical" style={{width:'100%'}}>
+                <Row gutter={16} className={styles['card-content']}>
+                    <Col span={6} key={getRandomString()}>
+                        <AddCard description={t['metricSetList.button.createMetric']} onShow={handleShowCreatePanel}/>
+                    </Col>
+                    {listData.map((item, index) => (
+                        <Col span={6} key={index}>
+                            <MetricSetCardBox key={index} item={item}/>
+                        </Col>
+                    ))}
+                </Row>
+            </Space>
         );
     };
 
