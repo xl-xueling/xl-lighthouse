@@ -90,6 +90,9 @@
                     #{item}
                 </foreach>
             </if>
+            <if test="queryParam.ids != null and queryParam.ids.size == 0">
+                1 != 1
+            </if>
             <if test="queryParam != null and queryParam.search != null">
                 AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})
             </if>
