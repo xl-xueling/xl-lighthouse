@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Card, Grid, Space} from '@arco-design/web-react';
 import Overview from './overview';
 import PopularContents from './popular-contents';
@@ -21,12 +21,18 @@ function Workplace() {
 
   const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
 
+  const [listData,setListData] = useState<MetricSet[]>(staredMetricInfo.slice(0,8));
+
+  useEffect(() => {
+      console.log("listData:" + JSON.stringify(listData));
+  },[])
+
   return (
     <div className={styles.wrapper}>
       <Space size={16} direction="vertical" className={styles.left}>
         <Overview />
           <Row gutter={gutter}>
-              {staredMetricInfo.map((item, index) => (
+              {listData.map((item, index) => (
                       <Col span={6} key={index}>
                           <MetricSetCardBox key={index} item={item}/>
                       </Col>

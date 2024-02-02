@@ -47,7 +47,7 @@ export default function MetricSetCardBox ({item,size = 'default'}){
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.star.submit.success']});
-                sessionStorage.removeItem('cache_stared_metrics');
+                localStorage.removeItem('cache_stared_metrics');
                 const currentFixedData = staredMetricInfo.filter(x => x.id != record.id);
                 dispatch(updateStoreStaredMetricInfo([...currentFixedData,record]))
             }else{
@@ -66,7 +66,7 @@ export default function MetricSetCardBox ({item,size = 'default'}){
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.unstar.submit.success']});
-                sessionStorage.removeItem('cache_stared_metrics');
+                localStorage.removeItem('cache_stared_metrics');
                 const currentFixedData = staredMetricInfo.filter(x => x.id != record.id);
                 dispatch(updateStoreStaredMetricInfo([...currentFixedData]))
             }else{
