@@ -16,7 +16,7 @@ import {MetricSet} from "@/types/insights-web";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import {useHistory} from 'react-router-dom';
 import {getRandomString} from "@/utils/util";
-import {getLockIcon} from "@/pages/common/desc/base";
+import {getLockIcon, getTreeResourceIcon} from "@/pages/common/desc/base";
 import {PermissionEnum} from "@/types/insights-common";
 import {useSelector} from "react-redux";
 import { HiMiniStar } from "react-icons/hi2";
@@ -114,7 +114,9 @@ function CardBlock(props: CardBlockType) {
                           :null
                   }
                       </span>
-                  <span onClick={handleClick}>{item.title}{getLockIcon(t,item.privateType,item.permissions)}</span>
+                  <span onClick={handleClick}>
+                      <span style={{display:"inline-flex",alignItems:"center"}}>{item.title}{getLockIcon(t,item.privateType,item.permissions)}</span>
+                  </span>
                   <div onClick={(e) => {e.stopPropagation();}} className={styles.more}>
                   {
                       staredMetricInfo.map(z => z.id).includes(item.id) ? null:
