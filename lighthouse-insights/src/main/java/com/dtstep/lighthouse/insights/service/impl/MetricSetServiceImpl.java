@@ -161,27 +161,29 @@ public class MetricSetServiceImpl implements MetricSetService {
         }else if(permissionService.checkUserPermission(currentUserId,accessRole.getId())){
             metricSetVO.addPermission(PermissionEnum.AccessAble);
         }
-//        List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
-//        if(CollectionUtils.isNotEmpty(adminIds)){
-//            List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
-//            metricSetVO.setAdmins(admins);
-//        }
-//        List<Relation> relationList = relationDao.queryList(metricSetVO.getId(),RelationTypeEnum.MetricSetBindRelation);
-//        List<MetricBindElement> elements = new ArrayList<>();
-//        for(Relation relation : relationList){
-//            MetricBindElement bindElement = new MetricBindElement();
-//            bindElement.setResourceId(relation.getResourceId());
-//            bindElement.setResourceType(relation.getResourceType());
-//            elements.add(bindElement);
-//        }
-//        metricSetVO.setBindElements(elements);
         return metricSetVO;
     }
 
     @Override
     public MetricSetVO queryById(Integer id) {
         MetricSet metricSet = metricSetDao.queryById(id);
-        return translate(metricSet);
+        MetricSetVO metricSetVO = translate(metricSet);
+        Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.METRIC_MANAGE_PERMISSION,metricSet.getId());
+        List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
+        if(CollectionUtils.isNotEmpty(adminIds)){
+            List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
+            metricSetVO.setAdmins(admins);
+        }
+        List<Relation> relationList = relationDao.queryList(metricSetVO.getId(),RelationTypeEnum.MetricSetBindRelation);
+        List<MetricBindElement> elements = new ArrayList<>();
+        for(Relation relation : relationList){
+            MetricBindElement bindElement = new MetricBindElement();
+            bindElement.setResourceId(relation.getResourceId());
+            bindElement.setResourceType(relation.getResourceType());
+            elements.add(bindElement);
+        }
+        metricSetVO.setBindElements(elements);
+        return metricSetVO;
     }
 
     @Override

@@ -79,7 +79,6 @@ public class MetricSetController {
             return ResultData.result(ResultCode.elementNotFound);
         }
         TreeNode structure = metricSetService.getStructure(metricSetVO);
-        System.out.println("structure:" + JsonUtil.toJSONString(structure));
         metricSetVO.setStructure(structure);
         return ResultData.success(metricSetVO);
     }
@@ -135,7 +134,6 @@ public class MetricSetController {
     @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/metricset/updateStructure")
     public ResultData<Integer> updateStructure(@Validated @RequestBody MetricUpdateStructureParam updateStructureParam) {
-        System.out.println("updateParam is:" + JsonUtil.toJSONString(updateStructureParam));
         metricSetService.updateStructure(updateStructureParam);
         return ResultData.success();
     }

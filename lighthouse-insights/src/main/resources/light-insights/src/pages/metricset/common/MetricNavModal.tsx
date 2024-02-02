@@ -72,7 +72,7 @@ export default function MetricNavModal ({onClose}){
             footer={(cancelBtn,okBtn) => {
                 return cancelBtn;
             }}
-            style={{ width:'1500px',maxWidth:'90%'
+            style={{ width:'1600px',maxWidth:'90%'
                 ,top:'30px',maxHeight:'95%',overflow:'auto',
             }}>
             <Space size={8} direction="vertical" style={{width:'100%'}}>
