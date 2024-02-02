@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.dao;
 
+import com.dtstep.lighthouse.insights.dto.RelationDeleteParam;
 import com.dtstep.lighthouse.insights.dto.RelationQueryParam;
 import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Relation;
@@ -31,5 +32,7 @@ public interface RelationDao {
 
     int deleteById(Integer id);
 
-    int delete(@Param("queryParam")Relation relation);
+    int deleteByHash();
+
+    int delete(@Param("deleteParam") RelationDeleteParam deleteParam);
 }

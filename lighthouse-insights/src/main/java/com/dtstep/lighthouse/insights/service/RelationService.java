@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.insights.dto.RelationDeleteParam;
 import com.dtstep.lighthouse.insights.dto.RelationQueryParam;
 import com.dtstep.lighthouse.insights.vo.RelationVO;
 import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
@@ -13,7 +14,7 @@ public interface RelationService {
 
     int batchCreate(List<Relation> relationList);
 
-    int delete(Relation relation);
+    int delete(RelationDeleteParam deleteParam);
 
     ResultCode create(Relation relation);
 

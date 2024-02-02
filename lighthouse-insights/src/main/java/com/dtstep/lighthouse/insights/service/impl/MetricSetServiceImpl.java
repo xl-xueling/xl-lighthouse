@@ -346,12 +346,12 @@ public class MetricSetServiceImpl implements MetricSetService {
     @Override
     public ResultCode unStar(MetricSet metricSet) {
         int currentUserId = baseService.getCurrentUserId();
-        Relation relation = new Relation();
-        relation.setSubjectId(currentUserId);
-        relation.setRelationType(RelationTypeEnum.UserStarMetricSetRelation);
-        relation.setResourceId(metricSet.getId());
-        relation.setResourceType(ResourceTypeEnum.MetricSet);
-        relationService.delete(relation);
+        RelationDeleteParam relationDeleteParam = new RelationDeleteParam();
+        relationDeleteParam.setSubjectId(currentUserId);
+        relationDeleteParam.setRelationType(RelationTypeEnum.UserStarMetricSetRelation);
+        relationDeleteParam.setResourceId(metricSet.getId());
+        relationDeleteParam.setResourceType(ResourceTypeEnum.MetricSet);
+        relationService.delete(relationDeleteParam);
         return ResultCode.success;
     }
 
