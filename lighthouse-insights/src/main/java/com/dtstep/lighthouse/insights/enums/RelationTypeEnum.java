@@ -9,15 +9,16 @@ public enum RelationTypeEnum {
 
     MetricSetBindRelation(1),
 
-    UserPickUpMetricSetRelation(2),
+    UserStarMetricSetRelation(2),
 
-    StatPrecedingIndicator(3),
+    UserStarProjectRelation(3),
 
-    StatParallelIndicator(4),
+    StatPrecedingIndicator(4),
 
-    StatSubsequentIndicator(5),
+    StatParallelIndicator(5),
 
-
+    StatSubsequentIndicator(6),
+    
     ;
 
     RelationTypeEnum(int relationType){

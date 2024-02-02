@@ -34,17 +34,17 @@ export async function requestDeleteById(data):Promise<ResultData> {
     })
 }
 
-export async function requestFixedById(data):Promise<ResultData> {
+export async function requestStarById(data):Promise<ResultData> {
     return request({
-        url:'/metricset/fixedById',
+        url:'/metricset/starById',
         method:'POST',
         data,
     })
 }
 
-export async function requestUnFixedById(data):Promise<ResultData> {
+export async function requestUnStarById(data):Promise<ResultData> {
     return request({
-        url:'/metricset/unfixedById',
+        url:'/metricset/unStarById',
         method:'POST',
         data,
     })

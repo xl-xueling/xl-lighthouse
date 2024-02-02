@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.common.util.Md5Util;
+import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.*;
@@ -12,7 +13,6 @@ import com.dtstep.lighthouse.insights.enums.*;
 import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.MetricSetVO;
-import com.dtstep.lighthouse.insights.vo.ResourceVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
@@ -326,22 +326,29 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
-    public ResultCode fix(MetricSet metricSet) {
+    public ResultCode star(MetricSet metricSet) {
         int currentUserId = baseService.getCurrentUserId();
+        RelationQueryParam countParam = new RelationQueryParam();
+        countParam.setSubjectId(currentUserId);
+        countParam.setRelationType(RelationTypeEnum.UserStarMetricSetRelation);
+        int count = relationService.count(countParam);
+        if(count > SystemConstant.USER_STAR_METRICSET_LIMIT){
+            return ResultCode.userStarMetricLimitExceed;
+        }
         Relation relation = new Relation();
         relation.setSubjectId(currentUserId);
-        relation.setRelationType(RelationTypeEnum.UserPickUpMetricSetRelation);
+        relation.setRelationType(RelationTypeEnum.UserStarMetricSetRelation);
         relation.setResourceId(metricSet.getId());
         relation.setResourceType(ResourceTypeEnum.MetricSet);
         return relationService.create(relation);
     }
 
     @Override
-    public ResultCode unfix(MetricSet metricSet) {
+    public ResultCode unStar(MetricSet metricSet) {
         int currentUserId = baseService.getCurrentUserId();
         Relation relation = new Relation();
         relation.setSubjectId(currentUserId);
-        relation.setRelationType(RelationTypeEnum.UserPickUpMetricSetRelation);
+        relation.setRelationType(RelationTypeEnum.UserStarMetricSetRelation);
         relation.setResourceId(metricSet.getId());
         relation.setResourceType(ResourceTypeEnum.MetricSet);
         relationService.delete(relation);
@@ -396,9 +403,9 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
-    public List<MetricSetVO> queryFixedList() {
+    public List<MetricSetVO> queryStarList() {
         int currentUserId = baseService.getCurrentUserId();
-        List<Relation> relationList = relationDao.queryList(currentUserId,RelationTypeEnum.UserPickUpMetricSetRelation);
+        List<Relation> relationList = relationDao.queryList(currentUserId,RelationTypeEnum.UserStarMetricSetRelation);
         List<Integer> ids = relationList.stream().map(z -> z.getResourceId()).collect(Collectors.toList());
         List<MetricSetVO> voList = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(ids)){

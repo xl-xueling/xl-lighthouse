@@ -19,14 +19,14 @@ const gutter = 16;
 
 function Workplace() {
 
-  const fixedMetricInfo = useSelector((state: {fixedMetricInfo:Array<MetricSet>}) => state.fixedMetricInfo);
+  const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
 
   return (
     <div className={styles.wrapper}>
       <Space size={16} direction="vertical" className={styles.left}>
         <Overview />
           <Row gutter={gutter}>
-              {fixedMetricInfo.map((item, index) => (
+              {staredMetricInfo.map((item, index) => (
                       <Col span={6} key={index}>
                           <MetricSetCardBox key={index} item={item}/>
                       </Col>

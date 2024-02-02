@@ -16,12 +16,12 @@ import CardBlock from './card-block';
 import AddCard from './card-add';
 import MetricSetAddPanel from "@/pages/metricset/create";
 import {MetricSet, Project, TreeNode} from "@/types/insights-web";
-import {requestFixedById, requestList, requestUnFixedById} from "@/api/metricset";
+import {requestStarById, requestList, requestUnStarById} from "@/api/metricset";
 import {IconHome} from "@arco-design/web-react/icon";
 import {requestDeleteById} from "@/api/metricset";
 import {useDispatch,useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import {updateStoreFixedMetricInfo} from "@/index";
+import {updateStoreStaredMetricInfo} from "@/index";
 import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
 const { Title } = Typography;
 const { Row, Col } = Grid;
@@ -38,7 +38,7 @@ export default function ListCard() {
     const { Meta } = Card;
     const [activeKey, setActiveKey] = useState('1');
     const [formParams, setFormParams] = useState<any>({});
-    const fixedMetricInfo = useSelector((state: {fixedMetricInfo:Array<MetricSet>}) => state.fixedMetricInfo);
+    const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,30],
         sizeCanChange: true,

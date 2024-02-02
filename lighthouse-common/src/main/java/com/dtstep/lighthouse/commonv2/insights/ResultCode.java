@@ -136,6 +136,8 @@ public enum ResultCode {
 
     createRelationAlreadyExist("2023","createRelationAlreadyExist"),
 
+    userStarMetricLimitExceed("3001","userStarMetricLimitExceed"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

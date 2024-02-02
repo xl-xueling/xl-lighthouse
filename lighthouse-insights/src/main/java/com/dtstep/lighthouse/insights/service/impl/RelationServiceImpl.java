@@ -160,4 +160,9 @@ public class RelationServiceImpl implements RelationService {
         }
         return ListData.newInstance(voList,pageInfo.getTotal(),pageNum,pageSize);
     }
+
+    @Override
+    public int count(RelationQueryParam queryParam) {
+        return relationDao.count(queryParam);
+    }
 }

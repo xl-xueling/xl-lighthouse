@@ -4,7 +4,7 @@ import {Button, Card, Descriptions, Popconfirm, Space, Tag, Typography} from '@a
 import {
     IconFaceSmileFill,
     IconPenFill,
-    IconPushpin,
+    IconPushpin, IconStar,
     IconStarFill,
     IconSunFill,
     IconThumbUpFill,
@@ -19,6 +19,7 @@ import {getRandomString} from "@/utils/util";
 import {getLockIcon} from "@/pages/common/desc/base";
 import {PermissionEnum} from "@/types/insights-common";
 import {useSelector} from "react-redux";
+import { HiMiniStar } from "react-icons/hi2";
 
 const { Meta } = Card;
 
@@ -31,7 +32,7 @@ interface CardBlockType {
 }
 
 const IconList = [
-  IconPushpin,
+    IconStarFill,
 ].map((Tag, index) => <Tag key={index} />);
 
 const { Paragraph } = Typography;
@@ -43,7 +44,7 @@ function CardBlock(props: CardBlockType) {
   const history = useHistory();
 
   const t = useLocale(locale);
-  const fixedMetricInfo = useSelector((state: {fixedMetricInfo:Array<MetricSet>}) => state.fixedMetricInfo);
+  const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
 
   useEffect(() => {
     setLoading(props.loading);
@@ -83,8 +84,7 @@ function CardBlock(props: CardBlockType) {
       className={className}
       size="small"
       style={{cursor:'pointer'}}
-        
-      actions={
+        actions={
           item.permissions.includes(PermissionEnum.AccessAble)?
           [
           <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();handleClick();}}>
@@ -101,13 +101,13 @@ function CardBlock(props: CardBlockType) {
               >
                   <span onClick={(e) => {e.stopPropagation();}}>
                   {
-                      fixedMetricInfo.map(z => z.id).includes(item.id)?
+                      staredMetricInfo.map(z => z.id).includes(item.id)?
                           <Popconfirm
 
                                       position={"bl"}
                                       title='Confirm'
-                                      content={t['metricSetList.operations.unfix.confirm']}
-                                      onOk={async (e) => {await callback('unfixed',item)}}
+                                      content={t['metricSetList.operations.unstar.confirm']}
+                                      onOk={async (e) => {await callback('unstar',item)}}
                           >
                           <span>{getTitleIcon(0)}</span>
                           </Popconfirm>
@@ -117,15 +117,15 @@ function CardBlock(props: CardBlockType) {
                   <span onClick={handleClick}>{item.title}{getLockIcon(t,item.privateType,item.permissions)}</span>
                   <div onClick={(e) => {e.stopPropagation();}} className={styles.more}>
                   {
-                      fixedMetricInfo.map(z => z.id).includes(item.id) ? null:
+                      staredMetricInfo.map(z => z.id).includes(item.id) ? null:
                           <Popconfirm
                                       focusLock
                                       position={"br"}
                                       title='Confirm'
-                                      content={t['metricSetList.operations.fix.confirm']}
-                                      onOk={async (e) => {await callback('fixed',item)}}
+                                      content={t['metricSetList.operations.star.confirm']}
+                                      onOk={async (e) => {await callback('star',item)}}
                           >
-                            <IconPushpin />
+                            <IconStar />
                           </Popconfirm>
                   }
                   </div>
