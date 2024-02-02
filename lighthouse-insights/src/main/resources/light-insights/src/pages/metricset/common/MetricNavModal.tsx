@@ -17,94 +17,59 @@ export default function MetricNavModal ({onClose}){
 
     const fixedMetricInfo = useSelector((state: {fixedMetricInfo:Array<MetricSet>}) => state.fixedMetricInfo);
 
-    const Content = ({ children }) => {
-        return (
-            <Space
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                }}
-            >
-                <Space>
-                    <Avatar
-                        style={{
-                            backgroundColor: '#165DFF',
-                        }}
-                        size={28}
-                    >
-                        A
-                    </Avatar>
-                    <Typography.Text>Username</Typography.Text>
-                </Space>
-                {children}
-            </Space>
-        );
-    };
-
-
     return (
         <Modal
             title={'指标集导航'}
             visible={true}
             onCancel={onClose}
             alignCenter={false}
-            style={{ width:'1950px',maxWidth:'90%'
-                ,top:'50px',maxHeight:'90%',overflow:'auto',
+            style={{ width:'1800px',maxWidth:'90%'
+                ,top:'30px',maxHeight:'90%',overflow:'auto',
             }}>
-
-            <Space size={16} direction="vertical">
+            <Space size={16} direction="vertical" style={{width:'100%'}}>
                 <Row gutter={16}>
                 {fixedMetricInfo.map((item, index) => (
                     <>
                     <Col span={6} key={index}>
-                        <MetricSetCardBox key={index} item={item}/>
+                        <MetricSetCardBox size={'small'} key={index} item={item}/>
                     </Col>
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
                         </Col>
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
                         </Col>
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
                         </Col>
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
                         </Col>
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
                         </Col>
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
                         </Col>
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
                         </Col>
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
                         </Col>
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
                         </Col>
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
                         </Col>
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
                         </Col>
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
                         </Col>
-                        <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
-                        </Col>
-                        <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
-                        </Col>
-                        <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
-                        </Col>
+
                     </>
                 ))}
                 </Row>
