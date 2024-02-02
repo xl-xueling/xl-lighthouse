@@ -40,7 +40,7 @@
             (select role_id from ldp_permissions where owner_type = 1 and owner_id = #{queryParam.ownerId}) b on a.id = b.role_id) d on id = d.resource_id
         </if>
         <where>
-            <if test="queryParam.ids != null">
+            <if test="queryParam.ids != null and queryParam.ids.size > 0">
                 AND id IN
                 <foreach item="item" index="index" collection="queryParam.ids" open="(" separator="," close=")">
                     #{item}

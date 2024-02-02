@@ -73,7 +73,7 @@
         )
         select * from (select `id`,`title`,`department_id`,`private_type`,`desc`,`create_time`,`update_time` from ldp_projects
         <where>
-            <if test="queryParam.ids != null">
+            <if test="queryParam.ids != null and queryParam.ids.size > 0">
                 AND id IN
                 <foreach item="item" index="index" collection="queryParam.ids" open="(" separator="," close=")">
                     #{item}
