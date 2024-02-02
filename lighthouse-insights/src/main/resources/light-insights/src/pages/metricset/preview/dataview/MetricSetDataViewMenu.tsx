@@ -48,7 +48,6 @@ export default function MetricSetDataViewMenu({callback}) {
 
     const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
 
-
     const renderMenuItems = (items,level) =>
         items?.map((item) => {
             if (Array.isArray(item.children) && item.children.length > 0) {
