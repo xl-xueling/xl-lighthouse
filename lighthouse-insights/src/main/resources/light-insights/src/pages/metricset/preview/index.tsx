@@ -48,6 +48,8 @@ import { FiEdit } from "react-icons/fi";
 import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
 import MetricSetUpdateModal from "@/pages/metricset/update";
 import {useSelector} from "react-redux";
+import {addMetricPreviewHistory} from "@/pages/metricset/preview/history";
+import {deepCopyObject} from "@/utils/util";
 
 export const MetricSetPreviewContext = React.createContext(null)
 
@@ -80,13 +82,14 @@ export default function Index() {
     }
 
     useEffect(() => {
-        const starFlag = staredMetricInfo.map(z => z.id).includes(Number(id));
-        if(starFlag){
-            const item = staredMetricInfo.filter(x => x.id == Number(id))[0];
-            item.lastVisitTime = Date.now();
-            console.log("staredMetricInfo:" + JSON.stringify(staredMetricInfo));
+        if(metricSetInfo){
+            console.log("metricInfo is:" + JSON.stringify(metricSetInfo));
+            const newObject = deepCopyObject(metricSetInfo);
+            delete newObject.structure;
+            addMetricPreviewHistory(newObject);
         }
-    })
+    },[metricSetInfo])
+
 
     useEffect(() => {
         fetchData().then();

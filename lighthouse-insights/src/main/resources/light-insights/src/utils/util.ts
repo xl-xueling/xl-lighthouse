@@ -113,3 +113,15 @@ function areValuesEqual(value1, value2) {
 
 
 
+export function deepCopyObject(originalObject) {
+    if (typeof originalObject !== 'object' || originalObject === null) {
+        return originalObject;
+    }
+    const copiedObject = Array.isArray(originalObject) ? [] : {};
+    for (const key in originalObject) {
+        if (originalObject.hasOwnProperty(key)) {
+            copiedObject[key] = deepCopyObject(originalObject[key]);
+        }
+    }
+    return copiedObject;
+}

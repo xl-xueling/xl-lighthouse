@@ -9,11 +9,19 @@ import {
     Modal,
     Pagination,
     Space,
-    Spin,
+    Spin, Tabs,
     Trigger,
     Typography
 } from '@arco-design/web-react';
-import {IconMessage, IconClose, IconBug, IconBulb, IconUser, IconArrowRight} from '@arco-design/web-react/icon';
+import {
+    IconMessage,
+    IconClose,
+    IconBug,
+    IconBulb,
+    IconUser,
+    IconArrowRight,
+    IconCalendar, IconClockCircle, IconPlus
+} from '@arco-design/web-react/icon';
 const MenuItem = Menu.Item;
 import { RiNavigationFill } from "react-icons/ri";
 import { TbNavigationPlus } from "react-icons/tb";
@@ -27,6 +35,11 @@ import {Avatar} from "@arco-design/web-react/lib";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 const { Row, Col } = Grid;
+const TabPane = Tabs.TabPane;
+import { PiSortAscending } from "react-icons/pi";
+import {getMetricPreviewHistory} from "@/pages/metricset/preview/history";
+import cs from "classnames";
+
 
 export default function MetricNavModal ({onClose}){
 
@@ -41,9 +54,13 @@ export default function MetricNavModal ({onClose}){
         setListData(staredMetricInfo.slice(startRow,endRow + 1));
     }
 
+    const getPreviewHistory = () => {
+        return getMetricPreviewHistory();
+    }
+
     useEffect(() => {
         handleChangePage(1);
-    },[])
+    },[staredMetricInfo])
 
     return (
         <Modal
@@ -60,11 +77,11 @@ export default function MetricNavModal ({onClose}){
             }}>
             <Space size={8} direction="vertical" style={{width:'100%'}}>
                 <Row gutter={12}>
-                {listData.map((item, index) => (
-                    <Col span={6} key={index}>
-                        <MetricSetCardBox size={'small'} key={index} item={item}/>
-                    </Col>
-                ))}
+                    {listData.map((item, index) => (
+                        <Col span={6} key={index}>
+                            <MetricSetCardBox size={'small'} key={index} item={item}/>
+                        </Col>
+                    ))}
                 </Row>
             </Space>
             <Space style={{justifyContent: 'center', padding:'0px',marginTop:'0px',width: '100%'}}>
