@@ -33,10 +33,10 @@ export default function processReducer(state = initialState(), action) {
       }
     }
     case 'update-staredMetricInfo':{
-      const { staredMetricInfo = initialState().staredMetricInfo,fixedMetricsLoading = true } = action.payload;
+      const { staredMetricInfo = initialState().staredMetricInfo,staredMetricsLoading = true } = action.payload;
       return {
         ...state,
-        fixedMetricsLoading,
+        staredMetricsLoading,
         staredMetricInfo,
       }
     }

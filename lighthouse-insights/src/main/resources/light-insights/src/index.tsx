@@ -37,7 +37,7 @@ export const updateStoreAllDepartInfo = (allDepartInfo) => ({
 
 export const updateStoreStaredMetricInfo = (staredMetricInfo) => ({
   type: 'update-staredMetricInfo',
-  payload: {staredMetricInfo: staredMetricInfo,fixedMetricsLoading:false},
+  payload: {staredMetricInfo: staredMetricInfo,staredMetricsLoading:false},
 });
 
 function Index() {
@@ -80,7 +80,7 @@ function Index() {
     const staredMetricInfo = await getDataWithLocalCache('cache_stared_metrics',600,fetchPinMetricsData);
     store.dispatch({
       type: 'update-staredMetricInfo',
-      payload: {staredMetricInfo: staredMetricInfo,fixedMetricsLoading:false},
+      payload: {staredMetricInfo: staredMetricInfo,staredMetricsLoading:false},
     })
 
     requestFetchUserInfo().then((resultData) => {
