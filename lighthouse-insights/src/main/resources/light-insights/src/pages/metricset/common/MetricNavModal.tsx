@@ -1,5 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import {Button, Card, Divider, Grid, Link, Menu, Modal, Space, Spin, Trigger, Typography} from '@arco-design/web-react';
+import {
+    Button,
+    Card,
+    Divider,
+    Grid,
+    Link,
+    Menu,
+    Modal,
+    Pagination,
+    Space,
+    Spin,
+    Trigger,
+    Typography
+} from '@arco-design/web-react';
 import {IconMessage, IconClose, IconBug, IconBulb, IconUser, IconArrowRight} from '@arco-design/web-react/icon';
 const MenuItem = Menu.Item;
 import { RiNavigationFill } from "react-icons/ri";
@@ -18,8 +31,21 @@ const { Row, Col } = Grid;
 export default function MetricNavModal ({onClose}){
 
     const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
+    const [listData,setListData] = useState<Array<MetricSet>>([]);
 
     const t = useLocale(locale);
+
+    const pageSize = 16;
+
+    const handleChangePage = (v) => {
+        const startRow = (v - 1) * pageSize;
+        const endRow = Math.min(v * pageSize - 1, staredMetricInfo.length - 1);
+        setListData(staredMetricInfo.slice(startRow,endRow + 1));
+    }
+
+    useEffect(() => {
+        handleChangePage(1);
+    },[])
 
     return (
         <Modal
@@ -31,17 +57,22 @@ export default function MetricNavModal ({onClose}){
             footer={(cancelBtn,okBtn) => {
                 return cancelBtn;
             }}
-            style={{ width:'1800px',maxWidth:'90%'
-                ,top:'30px',maxHeight:'90%',overflow:'auto',
+            style={{ width:'1500px',maxWidth:'90%'
+                ,top:'30px',maxHeight:'95%',overflow:'auto',
             }}>
-            <Space size={16} direction="vertical" style={{width:'100%'}}>
-                <Row gutter={16}>
-                {staredMetricInfo.map((item, index) => (
+            <Space size={8} direction="vertical" style={{width:'100%'}}>
+                <Row gutter={12}>
+                {listData.map((item, index) => (
                     <Col span={6} key={index}>
                         <MetricSetCardBox size={'small'} key={index} item={item}/>
                     </Col>
                 ))}
                 </Row>
+            </Space>
+            <Space style={{justifyContent: 'center', padding:'0px',marginTop:'0px',width: '100%'}}>
+                <Pagination
+                    hideOnSinglePage={true}
+                    total={staredMetricInfo.length} current={1} pageSize={pageSize} onChange={handleChangePage} />
             </Space>
         </Modal>
     );

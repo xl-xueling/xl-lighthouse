@@ -50,7 +50,6 @@ function CardBlock(props: CardBlockType) {
     setLoading(props.loading);
   }, [props.loading]);
 
-
   const getContent = () => {
     return (
       <Descriptions
@@ -136,7 +135,7 @@ function CardBlock(props: CardBlockType) {
           </div>
       }
     >
-      <div style={{height:size && size == 'small'?'30px':'60px'}} className={styles.content} onClick={handleClick}>{getContent()}</div>
+      <div style={{height: size == 'small'?'25px':'60px'}} className={styles.content} onClick={handleClick}>{getContent()}</div>
         <Meta
             avatar={
                 item.permissions.includes(PermissionEnum.AccessAble) ?
