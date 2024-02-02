@@ -83,7 +83,6 @@ export default function Index() {
 
     useEffect(() => {
         if(metricSetInfo){
-            console.log("metricInfo is:" + JSON.stringify(metricSetInfo));
             const newObject = deepCopyObject(metricSetInfo);
             delete newObject.structure;
             addMetricPreviewHistory(newObject);
