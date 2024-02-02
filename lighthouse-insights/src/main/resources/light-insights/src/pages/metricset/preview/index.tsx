@@ -47,6 +47,7 @@ import {getIcon} from "@/pages/common/desc/base";
 import { FiEdit } from "react-icons/fi";
 import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
 import MetricSetUpdateModal from "@/pages/metricset/update";
+import {useSelector} from "react-redux";
 
 export const MetricSetPreviewContext = React.createContext(null)
 
@@ -54,6 +55,7 @@ export default function Index() {
     const {id} = useParams();
     const t = useLocale(locale);
     const [loading, setLoading] = useState<boolean>(false);
+    const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
     const [metricSetInfo, setMetricSetInfo] = useState<MetricSet>(null);
     const [reloadTime, setReloadTime] = useState<number>(Date.now());
     const [errorCode, setErrorCode] = useState<string>(null);
@@ -76,6 +78,15 @@ export default function Index() {
             console.log(error);
         })
     }
+
+    useEffect(() => {
+        const starFlag = staredMetricInfo.map(z => z.id).includes(Number(id));
+        if(starFlag){
+            const item = staredMetricInfo.filter(x => x.id == Number(id))[0];
+            item.lastVisitTime = Date.now();
+            console.log("staredMetricInfo:" + JSON.stringify(staredMetricInfo));
+        }
+    })
 
     useEffect(() => {
         fetchData().then();

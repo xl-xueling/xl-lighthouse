@@ -30,11 +30,9 @@ const { Row, Col } = Grid;
 
 export default function MetricNavModal ({onClose}){
 
+    const t = useLocale(locale);
     const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
     const [listData,setListData] = useState<Array<MetricSet>>([]);
-
-    const t = useLocale(locale);
-
     const pageSize = 16;
 
     const handleChangePage = (v) => {

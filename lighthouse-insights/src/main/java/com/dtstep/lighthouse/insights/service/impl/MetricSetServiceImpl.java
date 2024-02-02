@@ -421,6 +421,7 @@ public class MetricSetServiceImpl implements MetricSetService {
                 }
             }
         }
+        Collections.sort(voList, Comparator.comparingInt(e -> ids.indexOf(e.getId())));
         return voList;
     }
 }

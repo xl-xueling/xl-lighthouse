@@ -1,10 +1,5 @@
 export const getDataWithLocalCache = async <T>(key: string, seconds: number, callback: () => Promise<T>, storageType = 'sessionStorage'): Promise<T> => {
-    let storage;
-    if(storageType == 'localStorage'){
-        storage = localStorage;
-    }else{
-        storage = sessionStorage;
-    }
+    const storage = localStorage;
     let result;
     const cachedData = storage.getItem(key);
     if (cachedData) {
@@ -28,6 +23,5 @@ export const getDataWithLocalCache = async <T>(key: string, seconds: number, cal
 }
 
 const clearLocalCache = (key:string):void => {
-    sessionStorage.removeItem(key);
     localStorage.removeItem(key);
 }
