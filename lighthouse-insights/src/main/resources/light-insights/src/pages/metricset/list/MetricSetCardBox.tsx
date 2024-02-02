@@ -49,7 +49,7 @@ export default function MetricSetCardBox ({item,size = 'default'}){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.star.submit.success']});
                 localStorage.removeItem('cache_stared_metrics');
                 const currentFixedData = staredMetricInfo.filter(x => x.id != record.id);
-                dispatch(updateStoreStaredMetricInfo([...currentFixedData,record]))
+                dispatch(updateStoreStaredMetricInfo([record,...currentFixedData]))
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
