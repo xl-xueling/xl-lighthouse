@@ -74,6 +74,7 @@ function CardBlock(props: CardBlockType) {
             </div>
         );
     };
+
   return (
     <Card
       bordered={true}
