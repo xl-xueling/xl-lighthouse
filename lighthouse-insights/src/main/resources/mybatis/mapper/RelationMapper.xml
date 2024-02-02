@@ -140,14 +140,17 @@
         delete
         FROM ldp_relations
         <where>
-            <if test="queryParam.subjectId != null">
-                AND subject_id = #{queryParam.subjectId}
+            <if test="deleteParam.subjectId != null">
+                AND subject_id = #{deleteParam.subjectId}
             </if>
-            <if test="queryParam.id != null">
-                AND id = #{queryParam.id}
+            <if test="deleteParam.relationType != null">
+                AND relation_type = #{deleteParam.relationType.relationType}
             </if>
-            <if test="queryParam.hash != null">
-                AND hash = #{queryParam.hash}
+            <if test="deleteParam.resourceId != null">
+                AND resource_id = #{deleteParam.resourceId}
+            </if>
+            <if test="deleteParam.resourceType != null">
+                AND resource_type = #{deleteParam.resourceType.resourceType}
             </if>
         </where>
     </delete>

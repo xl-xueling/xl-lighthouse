@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.RelationDao;
+import com.dtstep.lighthouse.insights.dto.RelationDeleteParam;
 import com.dtstep.lighthouse.insights.dto.RelationQueryParam;
 import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
 import com.dtstep.lighthouse.insights.modal.Stat;
@@ -75,8 +76,8 @@ public class RelationServiceImpl implements RelationService {
     }
 
     @Override
-    public int delete(Relation relation){
-        return relationDao.delete(relation);
+    public int delete(RelationDeleteParam deleteParam){
+        return relationDao.delete(deleteParam);
     }
 
     @Override

@@ -34,13 +34,13 @@ export default function MetricSetCardBox ({item,size = 'default'}){
 
     const tableCallback = async (type,record) => {
         if(type == 'star'){
-            await handlerFixed(record).then();
+            await handlerStar(record).then();
         }else if(type == 'unstar'){
-            await handlerUnFixed(record).then();
+            await handlerUnStar(record).then();
         }
     };
 
-    const handlerFixed = async (record) => {
+    const handlerStar = async (record) => {
         setLoading(true);
         const id = record.id;
         await requestStarById({id}).then((response) => {
@@ -59,7 +59,7 @@ export default function MetricSetCardBox ({item,size = 'default'}){
         })
     }
 
-    const handlerUnFixed = async (record) => {
+    const handlerUnStar = async (record) => {
         setLoading(true);
         const id = record.id;
         await requestUnStarById({id}).then((response) => {

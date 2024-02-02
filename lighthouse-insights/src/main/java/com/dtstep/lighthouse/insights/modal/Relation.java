@@ -15,9 +15,9 @@ public class Relation {
 
     private Integer resourceId;
 
-    private String resourceTitle;
-
     private ResourceTypeEnum resourceType;
+
+    private String resourceTitle;
 
     private String hash;
 
