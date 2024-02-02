@@ -24,8 +24,8 @@ function Workplace() {
   const [listData,setListData] = useState<MetricSet[]>(staredMetricInfo.slice(0,8));
 
   useEffect(() => {
-      console.log("listData:" + JSON.stringify(listData));
-  },[])
+      setListData(staredMetricInfo.slice(0,8))
+  },[staredMetricInfo])
 
   return (
     <div className={styles.wrapper}>
