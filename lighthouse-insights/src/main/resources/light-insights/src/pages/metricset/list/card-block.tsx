@@ -27,6 +27,7 @@ interface CardBlockType {
   item: MetricSet;
   loading?: boolean;
   callback;
+  size?:string;
 }
 
 const IconList = [
@@ -36,7 +37,7 @@ const IconList = [
 const { Paragraph } = Typography;
 
 function CardBlock(props: CardBlockType) {
-  const {item ,callback } = props;
+  const {item ,callback,size } = props;
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(props.loading);
   const history = useHistory();
@@ -77,10 +78,12 @@ function CardBlock(props: CardBlockType) {
 
   return (
     <Card
+        onClick={handleClick}
       bordered={true}
       className={className}
       size="small"
       style={{cursor:'pointer'}}
+        
       actions={
           item.permissions.includes(PermissionEnum.AccessAble)?
           [
@@ -96,42 +99,42 @@ function CardBlock(props: CardBlockType) {
                       [styles['title-more']]: visible,
                   })}
               >
+                  <span onClick={(e) => {e.stopPropagation();}}>
                   {
                       fixedMetricInfo.map(z => z.id).includes(item.id)?
                           <Popconfirm
-                                      focusLock
-                                      position={"tr"}
+
+                                      position={"bl"}
                                       title='Confirm'
                                       content={t['metricSetList.operations.unfix.confirm']}
-                                      onOk={async (e) => {e.stopPropagation();await callback('unfixed',item)}}
-                                      onCancel={(e) => {e.stopPropagation();}}
+                                      onOk={async (e) => {await callback('unfixed',item)}}
                           >
-                          <span onClick={(e) => {e.stopPropagation();}}>{getTitleIcon(0)}</span>
+                          <span>{getTitleIcon(0)}</span>
                           </Popconfirm>
                           :null
                   }
+                      </span>
                   <span onClick={handleClick}>{item.title}{getLockIcon(t,item.privateType,item.permissions)}</span>
+                  <div onClick={(e) => {e.stopPropagation();}} className={styles.more}>
                   {
                       fixedMetricInfo.map(z => z.id).includes(item.id) ? null:
                           <Popconfirm
                                       focusLock
-                                      position={"tr"}
+                                      position={"br"}
                                       title='Confirm'
                                       content={t['metricSetList.operations.fix.confirm']}
-                                      onOk={async (e) => {e.stopPropagation();await callback('fixed',item)}}
-                                      onCancel={(e) => {e.stopPropagation();}}
+                                      onOk={async (e) => {await callback('fixed',item)}}
                           >
-                          <div className={styles.more} onClick={(e) => {e.stopPropagation();}}>
                             <IconPushpin />
-                          </div>
                           </Popconfirm>
                   }
+                  </div>
               </div>
               <div className={styles.time}>{formatTimeStamp(item.createTime,DateTimeFormat)}</div>
           </div>
       }
     >
-      <div className={styles.content} onClick={handleClick}>{getContent()}</div>
+      <div style={{height:size && size == 'small'?'30px':'60px'}} className={styles.content} onClick={handleClick}>{getContent()}</div>
         <Meta
             avatar={
                 item.permissions.includes(PermissionEnum.AccessAble) ?

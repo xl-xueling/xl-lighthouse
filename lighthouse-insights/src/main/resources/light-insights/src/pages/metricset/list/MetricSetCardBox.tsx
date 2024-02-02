@@ -25,7 +25,7 @@ import {updateStoreFixedMetricInfo} from "@/index";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 
-export default function MetricSetCardBox ({item}){
+export default function MetricSetCardBox ({item,size = 'default'}){
 
     const t = useLocale(locale);
     const dispatch = useDispatch();
@@ -79,6 +79,6 @@ export default function MetricSetCardBox ({item}){
     }
 
     return (
-        <CardBlock item={item} callback={tableCallback} />
+        <CardBlock item={item} callback={tableCallback} size={size} />
     );
 }
