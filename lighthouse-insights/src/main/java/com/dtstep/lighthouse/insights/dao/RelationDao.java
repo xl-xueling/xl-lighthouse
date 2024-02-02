@@ -25,6 +25,8 @@ public interface RelationDao {
 
     List<Relation> queryJoinList(@Param("queryParam")RelationQueryParam queryParam);
 
+    int count(@Param("queryParam")RelationQueryParam queryParam);
+
     Relation queryById(Integer id);
 
     int deleteById(Integer id);

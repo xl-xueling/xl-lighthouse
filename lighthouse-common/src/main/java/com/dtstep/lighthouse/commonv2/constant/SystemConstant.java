@@ -22,4 +22,6 @@ public class SystemConstant {
     public final static int DEPARTMENT_MAX_LEVEL = 4;
 
     public final static int PROJECT_MAX_GROUP_SIZE = 10;
+
+    public final static int USER_STAR_METRICSET_LIMIT = 100;
 }

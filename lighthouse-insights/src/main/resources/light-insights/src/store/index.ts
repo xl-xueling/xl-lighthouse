@@ -6,7 +6,7 @@ export interface GlobalState {
   userInfo? : User;
   userLoading?: boolean;
   allDepartInfo? : Array<Department>;
-  fixedMetricInfo? :Array<MetricSet>;
+  staredMetricInfo? :Array<MetricSet>;
 }
 
 const initialState = ():GlobalState => {
@@ -17,7 +17,7 @@ const initialState = ():GlobalState => {
     settings: defaultSettings,
     userInfo: initUser,
     allDepartInfo:[],
-    fixedMetricInfo:[],
+    staredMetricInfo:[],
   }
 };
 
@@ -32,12 +32,12 @@ export default function processReducer(state = initialState(), action) {
         allDepartInfo,
       }
     }
-    case 'update-fixedMetricInfo':{
-      const { fixedMetricInfo = initialState().fixedMetricInfo,fixedMetricsLoading = true } = action.payload;
+    case 'update-staredMetricInfo':{
+      const { staredMetricInfo = initialState().staredMetricInfo,fixedMetricsLoading = true } = action.payload;
       return {
         ...state,
         fixedMetricsLoading,
-        fixedMetricInfo,
+        staredMetricInfo,
       }
     }
 

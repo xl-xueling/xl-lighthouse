@@ -22,4 +22,6 @@ public interface RelationService {
     List<RelationVO> queryList(Integer relationId, RelationTypeEnum relationTypeEnum);
 
     ListData<RelationVO> queryList(RelationQueryParam queryParam, Integer pageNum, Integer pageSize);
+
+    int count(RelationQueryParam queryParam);
 }

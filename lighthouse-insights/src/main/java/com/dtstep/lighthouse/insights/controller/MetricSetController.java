@@ -14,7 +14,6 @@ import com.dtstep.lighthouse.insights.service.MetricSetService;
 import com.dtstep.lighthouse.insights.service.RelationService;
 import com.dtstep.lighthouse.insights.vo.MetricSetVO;
 import com.dtstep.lighthouse.insights.vo.RelationVO;
-import com.dtstep.lighthouse.insights.vo.ResourceVO;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -133,24 +132,6 @@ public class MetricSetController {
         }
     }
 
-    @RequestMapping("/metricset/fixedById")
-    public ResultData<Integer> fixedById(@Validated @RequestBody IDParam idParam) {
-        Integer id = idParam.getId();
-        MetricSet metricSet = metricSetService.queryById(id);
-        Validate.notNull(metricSet);
-        ResultCode resultCode = metricSetService.fix(metricSet);
-        return ResultData.result(resultCode);
-    }
-
-    @RequestMapping("/metricset/unfixedById")
-    public ResultData<Integer> unfixedById(@Validated @RequestBody IDParam idParam) {
-        Integer id = idParam.getId();
-        MetricSet metricSet = metricSetService.queryById(id);
-        Validate.notNull(metricSet);
-        ResultCode resultCode = metricSetService.unfix(metricSet);
-        return ResultData.result(resultCode);
-    }
-
     @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/metricset/updateStructure")
     public ResultData<Integer> updateStructure(@Validated @RequestBody MetricUpdateStructureParam updateStructureParam) {
@@ -178,9 +159,27 @@ public class MetricSetController {
         return ResultData.success(listData);
     }
 
-    @RequestMapping("/metricset/queryFixedList")
-    public ResultData<List<MetricSetVO>> queryFixedList(){
-        List<MetricSetVO> list = metricSetService.queryFixedList();
+    @RequestMapping("/metricset/starById")
+    public ResultData<Integer> starById(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        MetricSet metricSet = metricSetService.queryById(id);
+        Validate.notNull(metricSet);
+        ResultCode resultCode = metricSetService.star(metricSet);
+        return ResultData.result(resultCode);
+    }
+
+    @RequestMapping("/metricset/unStarById")
+    public ResultData<Integer> unFocusById(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        MetricSet metricSet = metricSetService.queryById(id);
+        Validate.notNull(metricSet);
+        ResultCode resultCode = metricSetService.unStar(metricSet);
+        return ResultData.result(resultCode);
+    }
+
+    @RequestMapping("/metricset/queryStarList")
+    public ResultData<List<MetricSetVO>> queryStarList(){
+        List<MetricSetVO> list = metricSetService.queryStarList();
         return ResultData.success(list);
     }
 

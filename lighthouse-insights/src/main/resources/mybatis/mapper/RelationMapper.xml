@@ -124,6 +124,18 @@
         WHERE hash = #{hash}
     </select>
 
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(1) from ldp_relations
+        <where>
+            <if test="queryParam.subjectId != null">
+                AND subject_id = #{queryParam.subjectId}
+            </if>
+            <if test="queryParam.relationType != null ">
+                AND relation_type = #{queryParam.relationType.relationType}
+            </if>
+        </where>
+    </select>
+
     <delete id="delete">
         delete
         FROM ldp_relations

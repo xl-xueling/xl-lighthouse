@@ -17,9 +17,9 @@ public interface MetricSetService {
 
     int delete(MetricSet metricSet);
 
-    ResultCode fix(MetricSet metricSet);
+    ResultCode star(MetricSet metricSet);
 
-    ResultCode unfix(MetricSet metricSet);
+    ResultCode unStar(MetricSet metricSet);
 
     int binded(MetricBindParam bindParam);
 
@@ -33,7 +33,7 @@ public interface MetricSetService {
 
     ListData<MetricSetVO> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize);
 
-    List<MetricSetVO> queryFixedList();
+    List<MetricSetVO> queryStarList();
 
     TreeNode getStructure(MetricSet metricSet) throws Exception;
 
