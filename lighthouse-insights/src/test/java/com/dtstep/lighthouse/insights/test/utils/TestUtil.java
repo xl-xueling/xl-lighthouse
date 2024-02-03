@@ -1,15 +1,12 @@
 package com.dtstep.lighthouse.insights.test.utils;
 
-import IceInternal.Ex;
-import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
-import com.dtstep.lighthouse.insights.modal.Order;
-import com.dtstep.lighthouse.insights.modal.Project;
+import com.dtstep.lighthouse.common.modal.PermissionEnum;
+import com.dtstep.lighthouse.common.modal.Order;
+import com.dtstep.lighthouse.common.modal.Project;
 import org.junit.Test;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class TestUtil {

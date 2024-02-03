@@ -3,12 +3,12 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
-import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
+import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Department;
-import com.dtstep.lighthouse.insights.modal.Domain;
-import com.dtstep.lighthouse.insights.modal.Role;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.modal.Department;
+import com.dtstep.lighthouse.common.modal.Domain;
+import com.dtstep.lighthouse.common.modal.Role;
+import com.dtstep.lighthouse.common.modal.User;
 import com.dtstep.lighthouse.insights.service.*;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class InitServiceImpl implements InitService {

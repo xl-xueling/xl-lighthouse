@@ -2,8 +2,8 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.OrderDetailDao;
 import com.dtstep.lighthouse.insights.vo.OrderDetailVO;
-import com.dtstep.lighthouse.insights.modal.OrderDetail;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.modal.OrderDetail;
+import com.dtstep.lighthouse.common.modal.User;
 import com.dtstep.lighthouse.insights.service.OrderDetailService;
 import com.dtstep.lighthouse.insights.service.UserService;
 import org.apache.commons.collections.CollectionUtils;

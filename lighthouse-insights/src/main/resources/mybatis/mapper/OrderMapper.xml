@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dtstep.lighthouse.insights.dao.OrderDao">
-    <resultMap id="orderResultMap" type="com.dtstep.lighthouse.insights.modal.Order">
+    <resultMap id="orderResultMap" type="com.dtstep.lighthouse.common.modal.Order">
         <id property="id" column="id"/>
         <result property="userId" column="user_id"/>
         <result property="orderType" column="order_type" typeHandler="com.dtstep.lighthouse.insights.types.OrderTypeEnumTypeHandler"/>
@@ -15,7 +15,7 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Order" >
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Order" >
         INSERT INTO ldp_orders (`user_id`,`order_type`,`state`,`steps`,`extend_config`,
                                     `hash`,`current_node`,
                                     `reason`,`create_time`,`update_time`) VALUES
@@ -112,7 +112,7 @@
         </where>
     </select>
 
-    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Order">
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.Order">
         UPDATE ldp_orders
         <set>
             <if test="state != null">

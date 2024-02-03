@@ -1,9 +1,9 @@
 package com.dtstep.lighthouse.insights.test.utils;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.insights.dto_bak.ListSearchObject;
+import com.dtstep.lighthouse.common.modal.ListSearchObject;
 import com.dtstep.lighthouse.insights.dto.ApproveOrderQueryParam;
-import com.dtstep.lighthouse.insights.modal.Stat;
+import com.dtstep.lighthouse.common.modal.Stat;
 import org.junit.Test;
 
 import java.time.LocalDateTime;

@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.insights.test.utils;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
+import com.dtstep.lighthouse.common.modal.TreeNode;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Test;
 

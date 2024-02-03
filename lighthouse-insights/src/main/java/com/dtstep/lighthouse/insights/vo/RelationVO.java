@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
-import com.dtstep.lighthouse.insights.modal.Relation;
+import com.dtstep.lighthouse.common.modal.Relation;
 
 public class RelationVO extends Relation {
 

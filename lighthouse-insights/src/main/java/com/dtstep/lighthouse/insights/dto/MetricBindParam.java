@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.dto;
 
-import com.dtstep.lighthouse.insights.dto_bak.MetricBindElement;
+import com.dtstep.lighthouse.common.modal.MetricBindElement;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

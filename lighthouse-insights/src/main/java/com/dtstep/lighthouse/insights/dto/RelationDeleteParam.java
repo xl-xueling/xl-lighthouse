@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.dto;
 
-import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
-import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.enums.RelationTypeEnum;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 
 public class RelationDeleteParam {
 

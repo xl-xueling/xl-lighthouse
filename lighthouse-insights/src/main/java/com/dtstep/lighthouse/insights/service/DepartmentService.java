@@ -1,8 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
-import com.dtstep.lighthouse.insights.dto_bak.CommonTreeNode;
-import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
-import com.dtstep.lighthouse.insights.modal.Department;
+import com.dtstep.lighthouse.common.modal.TreeNode;
+import com.dtstep.lighthouse.common.modal.Department;
 
 import java.util.List;
 

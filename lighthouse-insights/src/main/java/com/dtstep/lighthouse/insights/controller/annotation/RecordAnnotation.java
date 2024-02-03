@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.controller.annotation;
 
-import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
+import com.dtstep.lighthouse.common.enums.RecordTypeEnum;
 
 import java.lang.annotation.*;
 

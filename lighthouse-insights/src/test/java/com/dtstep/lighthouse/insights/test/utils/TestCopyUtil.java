@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.insights.test.utils;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dto.UserCreateParam;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.modal.User;
 import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Test;
 

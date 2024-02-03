@@ -81,7 +81,7 @@
     <dependency>
       <groupId>com.dtstep.lighthouse</groupId>
       <artifactId>lighthouse-common</artifactId>
-      <version>1.1.2</version>
+      <version>1.1.6</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>

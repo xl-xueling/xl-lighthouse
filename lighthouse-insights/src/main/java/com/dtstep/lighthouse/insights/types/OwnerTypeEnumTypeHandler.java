@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.types;
 
-import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
+import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 public class OwnerTypeEnumTypeHandler extends BaseObjectTypeHandler<OwnerTypeEnum>{

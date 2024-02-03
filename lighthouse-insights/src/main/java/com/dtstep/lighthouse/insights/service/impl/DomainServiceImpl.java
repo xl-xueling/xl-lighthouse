@@ -1,9 +1,9 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.DomainDao;
-import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Domain;
-import com.dtstep.lighthouse.insights.modal.ResourceDto;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.modal.Domain;
+import com.dtstep.lighthouse.common.modal.ResourceDto;
 import com.dtstep.lighthouse.insights.service.DomainService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;

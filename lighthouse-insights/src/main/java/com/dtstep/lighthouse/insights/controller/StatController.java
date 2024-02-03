@@ -1,17 +1,15 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.ChangeStatStateParam;
 import com.dtstep.lighthouse.insights.dto.StatFilterConfigParam;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
-import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.RenderConfig;
-import com.dtstep.lighthouse.insights.modal.RenderFilterConfig;
-import com.dtstep.lighthouse.insights.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
+import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.vo.StatExtendVO;
 import org.apache.commons.lang3.Validate;

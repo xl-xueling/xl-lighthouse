@@ -7,8 +7,8 @@ import com.dtstep.lighthouse.insights.dto.OrderProcessParam;
 import com.dtstep.lighthouse.insights.vo.OrderVO;
 import com.dtstep.lighthouse.insights.dto.ApproveOrderQueryParam;
 import com.dtstep.lighthouse.common.enums.OrderTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Order;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.modal.Order;
+import com.dtstep.lighthouse.common.modal.User;
 
 import java.util.Map;
 

@@ -1,10 +1,8 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.entity.FlowNode;
-import com.dtstep.lighthouse.common.enums.OrderStateEnum;
-import com.dtstep.lighthouse.common.enums.OrderTypeEnum;
-import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.common.enums.UserStateEnum;
+import com.dtstep.lighthouse.common.enums.*;
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
@@ -14,9 +12,6 @@ import com.dtstep.lighthouse.insights.dao.PermissionDao;
 import com.dtstep.lighthouse.insights.dto.ApplyOrderQueryParam;
 import com.dtstep.lighthouse.insights.dto.OrderProcessParam;
 import com.dtstep.lighthouse.insights.dto.ApproveOrderQueryParam;
-import com.dtstep.lighthouse.insights.dto_bak.*;
-import com.dtstep.lighthouse.insights.enums.*;
-import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.OrderDetailVO;
 import com.dtstep.lighthouse.insights.vo.OrderVO;
@@ -145,7 +140,7 @@ public class OrderServiceImpl implements OrderService {
         return orderVO;
     }
 
-    private void checkAddRole(List<Role> list,Role role){
+    private void checkAddRole(List<Role> list, Role role){
         List<Integer> roleIds = list.stream().map(z -> z.getId()).collect(Collectors.toList());
         if(!roleIds.contains(role.getId())){
             list.add(role);
@@ -263,7 +258,7 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setRoleType(roleType);
             orderDetail.setUserId(applyUser.getId());
             orderDetail.setRoleId(role.getId());
-            orderDetail.setState(i == 0?ApproveStateEnum.PENDING:ApproveStateEnum.WAIT);
+            orderDetail.setState(i == 0? ApproveStateEnum.PENDING:ApproveStateEnum.WAIT);
             detailList.add(orderDetail);
         }
         orderDetailDao.batchInsert(detailList);

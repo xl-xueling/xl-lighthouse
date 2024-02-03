@@ -15,7 +15,6 @@
     <module>lighthouse-core</module>
     <module>lighthouse-ice</module>
     <module>lighthouse-tasks</module>
-    <module>lighthouse-web</module>
     <module>lighthouse-test</module>
     <module>lighthouse-assembly</module>
     <module>lighthouse-insights</module>
@@ -24,7 +23,7 @@
   <name>lighthouse-base</name>
   <url>http://maven.apache.org</url>
   <properties>
-    <revision>1.1.5</revision>
+    <revision>1.1.6</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <PermGen>64m</PermGen>
@@ -54,35 +53,35 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>11</source>
+          <target>11</target>
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.scala-tools</groupId>
-        <artifactId>maven-scala-plugin</artifactId>
-        <version>2.15.2</version>
-        <executions>
-          <execution>
-            <id>scala-compile-first</id>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <includes>
-                <include>**/*.scala</include>
-              </includes>
-            </configuration>
-          </execution>
-          <execution>
-            <id>scala-test-compile</id>
-            <goals>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.scala-tools</groupId>-->
+<!--        <artifactId>maven-scala-plugin</artifactId>-->
+<!--        <version>2.15.2</version>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>scala-compile-first</id>-->
+<!--            <goals>-->
+<!--              <goal>compile</goal>-->
+<!--            </goals>-->
+<!--            <configuration>-->
+<!--              <includes>-->
+<!--                <include>**/*.scala</include>-->
+<!--              </includes>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--          <execution>-->
+<!--            <id>scala-test-compile</id>-->
+<!--            <goals>-->
+<!--              <goal>testCompile</goal>-->
+<!--            </goals>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 </project>

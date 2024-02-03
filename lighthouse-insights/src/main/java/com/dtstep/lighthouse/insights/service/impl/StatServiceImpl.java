@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
@@ -11,14 +12,13 @@ import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
-import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
+import com.dtstep.lighthouse.common.modal.PermissionEnum;
 import com.dtstep.lighthouse.insights.vo.ResultWrapper;
 import com.dtstep.lighthouse.insights.vo.StatVO;
-import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
-import com.dtstep.lighthouse.insights.enums.ComponentTypeEnum;
-import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.modal.TreeNode;
+import com.dtstep.lighthouse.common.enums.ComponentTypeEnum;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.template.TemplateContext;
 import com.dtstep.lighthouse.insights.template.TemplateParser;
@@ -222,7 +222,7 @@ public class StatServiceImpl implements StatService {
     public RenderConfig getStatRenderConfig(Stat stat) {
         RenderConfig renderConfig = stat.getRenderConfig();
         List<String> defaultDimensList = new ArrayList<>();
-        HashMap<String,RenderFilterConfig> filtersConfigMap = new HashMap<>();
+        HashMap<String, RenderFilterConfig> filtersConfigMap = new HashMap<>();
         if(CollectionUtils.isEmpty(renderConfig.getFilters())){
             TemplateEntity templateEntity = stat.getTemplateEntity();
             String[] dimensArray = templateEntity.getDimensArray();

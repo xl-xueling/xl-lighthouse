@@ -1,10 +1,10 @@
 package com.dtstep.lighthouse.insights.controller;
 
-import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.common.modal.ListSearchObject;
+import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dto.RecordQueryParam;
-import com.dtstep.lighthouse.insights.dto_bak.*;
-import com.dtstep.lighthouse.insights.modal.Record;
+import com.dtstep.lighthouse.common.modal.Record;
 import com.dtstep.lighthouse.insights.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

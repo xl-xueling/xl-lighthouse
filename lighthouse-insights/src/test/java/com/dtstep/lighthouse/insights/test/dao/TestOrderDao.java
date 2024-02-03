@@ -6,7 +6,7 @@ import com.dtstep.lighthouse.insights.dao.OrderDao;
 import com.dtstep.lighthouse.insights.dto.ApproveOrderQueryParam;
 import com.dtstep.lighthouse.common.enums.OrderStateEnum;
 import com.dtstep.lighthouse.common.enums.OrderTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Order;
+import com.dtstep.lighthouse.common.modal.Order;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

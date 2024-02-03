@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.insights.test.dao;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.OrderDetailDao;
-import com.dtstep.lighthouse.insights.modal.OrderDetail;
+import com.dtstep.lighthouse.common.modal.OrderDetail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

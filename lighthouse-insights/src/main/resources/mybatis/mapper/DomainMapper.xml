@@ -3,7 +3,7 @@
 
 <mapper namespace="com.dtstep.lighthouse.insights.dao.DomainDao">
 
-    <resultMap id="domainResultMap" type="com.dtstep.lighthouse.insights.modal.Domain">
+    <resultMap id="domainResultMap" type="com.dtstep.lighthouse.common.modal.Domain">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="defaultTokenPrefix" column="default_token_prefix"/>
@@ -11,7 +11,7 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Domain" >
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Domain" >
         INSERT INTO ldp_domains (`name`,`create_time`,`update_time`) VALUES
         (
             #{name,jdbcType=VARCHAR},

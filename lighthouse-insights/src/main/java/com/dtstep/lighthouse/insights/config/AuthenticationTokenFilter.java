@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.insights.config;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.modal.User;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
 import com.dtstep.lighthouse.insights.service.UserService;
 import io.jsonwebtoken.Claims;

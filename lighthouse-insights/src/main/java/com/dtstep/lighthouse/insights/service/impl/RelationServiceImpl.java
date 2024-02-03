@@ -6,13 +6,12 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.RelationDao;
 import com.dtstep.lighthouse.insights.dto.RelationDeleteParam;
 import com.dtstep.lighthouse.insights.dto.RelationQueryParam;
-import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Stat;
+import com.dtstep.lighthouse.common.enums.RelationTypeEnum;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
 import com.dtstep.lighthouse.insights.vo.RelationVO;
 import com.dtstep.lighthouse.insights.vo.StatVO;
-import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Relation;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.modal.Relation;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
 import com.dtstep.lighthouse.insights.service.RelationService;
@@ -27,7 +26,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class RelationServiceImpl implements RelationService {

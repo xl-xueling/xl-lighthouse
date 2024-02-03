@@ -17,7 +17,7 @@ package com.dtstep.lighthouse.insights.template;
  * limitations under the License.
  */
 
-import com.dtstep.lighthouse.insights.modal.Column;
+import com.dtstep.lighthouse.common.modal.Column;
 
 import java.util.List;
 

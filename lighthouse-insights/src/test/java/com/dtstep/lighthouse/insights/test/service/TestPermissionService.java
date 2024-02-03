@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.insights.test.service;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
-import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
+import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.service.PermissionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

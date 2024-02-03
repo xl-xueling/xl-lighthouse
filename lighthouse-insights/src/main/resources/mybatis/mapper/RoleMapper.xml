@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dtstep.lighthouse.insights.dao.RoleDao">
 
-    <resultMap id="roleResultMap" type="com.dtstep.lighthouse.insights.modal.Role">
+    <resultMap id="roleResultMap" type="com.dtstep.lighthouse.common.modal.Role">
         <result property="id" column="id"/>
         <result property="roleType" column="role_type" typeHandler="com.dtstep.lighthouse.insights.types.RoleTypeEnumTypeHandler"/>
         <result property="resourceId" column="resource_id"/>
@@ -11,7 +11,7 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Role" >
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Role" >
         INSERT INTO ldp_roles (`role_type`, `resource_id`,`pid`, `create_time`, `update_time`,`desc`) VALUES
         (
                 #{roleType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RoleTypeEnumTypeHandler},
@@ -58,7 +58,7 @@
         WHERE pid=#{pid}
     </select>
 
-    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Role">
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.Role">
         UPDATE ldp_roles
         <set>
             <if test="pid != null">

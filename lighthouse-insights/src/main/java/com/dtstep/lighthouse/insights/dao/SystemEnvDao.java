@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.dao;
 
-import com.dtstep.lighthouse.insights.modal.SystemEnv;
+import com.dtstep.lighthouse.common.modal.SystemEnv;
 import org.springframework.stereotype.Repository;
 
 @Repository

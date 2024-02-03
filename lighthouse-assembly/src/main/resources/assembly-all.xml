@@ -49,20 +49,20 @@
             </includes>
             <outputDirectory>lighthouse-tasks</outputDirectory>
         </fileSet>
-        <fileSet>
-            <directory>${project.parent.basedir}/lighthouse-tasks/src/main/resources</directory>
-            <excludes>
-                <exclude>assembly.xml</exclude>
-            </excludes>
-            <outputDirectory>lighthouse-web</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>${project.parent.basedir}/lighthouse-web/target/lighthouse-web-${project.version}</directory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-            <outputDirectory>lighthouse-web</outputDirectory>
-        </fileSet>
+<!--        <fileSet>-->
+<!--            <directory>${project.parent.basedir}/lighthouse-tasks/src/main/resources</directory>-->
+<!--            <excludes>-->
+<!--                <exclude>assembly.xml</exclude>-->
+<!--            </excludes>-->
+<!--            <outputDirectory>lighthouse-web</outputDirectory>-->
+<!--        </fileSet>-->
+<!--        <fileSet>-->
+<!--            <directory>${project.parent.basedir}/lighthouse-web/target/lighthouse-web-${project.version}</directory>-->
+<!--            <includes>-->
+<!--                <include>**/*</include>-->
+<!--            </includes>-->
+<!--            <outputDirectory>lighthouse-web</outputDirectory>-->
+<!--        </fileSet>-->
     </fileSets>
 
 </assembly>

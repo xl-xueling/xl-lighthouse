@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
@@ -7,11 +8,10 @@ import com.dtstep.lighthouse.insights.dto.ComponentCreateParam;
 import com.dtstep.lighthouse.insights.dto.ComponentQueryParam;
 import com.dtstep.lighthouse.insights.dto.ComponentUpdateParam;
 import com.dtstep.lighthouse.insights.dto.ComponentVerifyParam;
-import com.dtstep.lighthouse.insights.dto_bak.*;
-import com.dtstep.lighthouse.insights.modal.Component;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.ComponentService;
 import com.dtstep.lighthouse.insights.vo.ComponentVO;
+import com.dtstep.lighthouse.insights.vo.ResultData;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

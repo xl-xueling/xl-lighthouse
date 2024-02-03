@@ -2,8 +2,8 @@ package com.dtstep.lighthouse.insights.dao;
 
 import com.dtstep.lighthouse.insights.dto.RelationDeleteParam;
 import com.dtstep.lighthouse.insights.dto.RelationQueryParam;
-import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Relation;
+import com.dtstep.lighthouse.common.enums.RelationTypeEnum;
+import com.dtstep.lighthouse.common.modal.Relation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

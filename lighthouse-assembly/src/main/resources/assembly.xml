@@ -26,12 +26,12 @@
             </includes>
             <outputDirectory>/lib</outputDirectory>
         </fileSet>
-        <fileSet>
-            <directory>${project.parent.basedir}/lighthouse-web/target/resources/</directory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-            <outputDirectory>/light-webapps</outputDirectory>
-        </fileSet>
+<!--        <fileSet>-->
+<!--            <directory>${project.parent.basedir}/lighthouse-web/target/resources/</directory>-->
+<!--            <includes>-->
+<!--                <include>**/*</include>-->
+<!--            </includes>-->
+<!--            <outputDirectory>/light-webapps</outputDirectory>-->
+<!--        </fileSet>-->
     </fileSets>
 </assembly>

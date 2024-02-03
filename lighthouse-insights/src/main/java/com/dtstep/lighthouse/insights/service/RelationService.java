@@ -5,8 +5,8 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.RelationDeleteParam;
 import com.dtstep.lighthouse.insights.dto.RelationQueryParam;
 import com.dtstep.lighthouse.insights.vo.RelationVO;
-import com.dtstep.lighthouse.insights.enums.RelationTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Relation;
+import com.dtstep.lighthouse.common.enums.RelationTypeEnum;
+import com.dtstep.lighthouse.common.modal.Relation;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.dtstep.lighthouse.insights.dao;
 
 import com.dtstep.lighthouse.insights.dto.MetricSetQueryParam;
-import com.dtstep.lighthouse.insights.modal.Indicator;
-import com.dtstep.lighthouse.insights.modal.MetricSet;
+import com.dtstep.lighthouse.common.modal.Indicator;
+import com.dtstep.lighthouse.common.modal.MetricSet;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

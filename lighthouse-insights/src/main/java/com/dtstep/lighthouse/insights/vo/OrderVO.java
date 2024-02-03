@@ -1,8 +1,9 @@
 package com.dtstep.lighthouse.insights.vo;
 
+import com.dtstep.lighthouse.common.modal.Order;
+import com.dtstep.lighthouse.common.modal.User;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
-import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
-import com.dtstep.lighthouse.insights.modal.*;
+import com.dtstep.lighthouse.common.modal.PermissionEnum;
 
 import java.util.HashMap;
 import java.util.HashSet;

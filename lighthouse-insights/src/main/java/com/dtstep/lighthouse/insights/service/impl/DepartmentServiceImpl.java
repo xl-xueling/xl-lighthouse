@@ -1,12 +1,12 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
-import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
-import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Department;
-import com.dtstep.lighthouse.insights.modal.ResourceDto;
-import com.dtstep.lighthouse.insights.modal.Role;
-import com.dtstep.lighthouse.insights.modal.Domain;
+import com.dtstep.lighthouse.common.modal.TreeNode;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.modal.Department;
+import com.dtstep.lighthouse.common.modal.ResourceDto;
+import com.dtstep.lighthouse.common.modal.Role;
+import com.dtstep.lighthouse.common.modal.Domain;
 import com.dtstep.lighthouse.insights.service.*;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
