@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import com.dtstep.lighthouse.common.annotation.BLengthValidation;
 import com.dtstep.lighthouse.common.enums.PrivateTypeEnum;
 import com.dtstep.lighthouse.common.modal.Project;
 
@@ -12,6 +13,7 @@ public class ProjectCreateParam {
 
     @NotEmpty
     @Pattern(regexp = "^[\\u3010\\u3011\\uFF08\\uFF09\\u4E00-\\u9FA5a-zA-Z0-9_\\-()\\[\\]#\\s]+$")
+    @BLengthValidation(min = 5,max = 30)
     private String title;
 
     @NotNull

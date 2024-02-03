@@ -115,7 +115,7 @@ function ProjectCreatePanel({onClose,allDepartInfo,onSuccess}){
                         validator: (v, cb) => {
                             if (getTextBlenLength(v) < 5) {
                                 return cb(t['projectCreate.form.name.less.limit'])
-                            }else if (getTextBlenLength(v) > 25) {
+                            }else if (getTextBlenLength(v) > 30) {
                                 return cb(t['projectCreate.form.name.exceeds.limit'])
                             }
                             cb(null);
@@ -135,7 +135,7 @@ function ProjectCreatePanel({onClose,allDepartInfo,onSuccess}){
                     <Form.Item label={t['projectCreate.form.label.desc']} field="desc" rules={[
                         {required: true ,message:t['projectCreate.form.description.errMsg'],validateTrigger : ['onSubmit']}
                         ]}>
-                        <Input.TextArea placeholder='Please enter ...' style={{ minHeight: 64}} maxLength={150} showWordLimit={true}/>
+                        <Input.TextArea placeholder='Please enter ...' style={{ minHeight: 64}} maxLength={90} showWordLimit={true}/>
                     </Form.Item>
                     <Form.Item style={{ marginBottom: 0 }} label={t['projectCreate.form.label.privateType']} rules={[{ required: true }]} >
                         <Grid.Row gutter={8}>

@@ -19,17 +19,4 @@ public class TestProjectService {
     @Autowired
     private ProjectService projectService;
 
-    @Test
-    public void testCreate() throws Exception {
-        ProjectCreateParam project = new ProjectCreateParam();
-        project.setTitle("首页用户数据统计");
-        LocalDateTime localDateTime = LocalDateTime.now();
-        project.setCreateTime(localDateTime);
-        project.setUpdateTime(localDateTime);
-        project.setDepartmentId(10067);
-        project.setPrivateType(PrivateTypeEnum.Private);
-        project.setDesc("测试数据");
-        int result = projectService.create(project);
-        System.out.println("result:" + result);
-    }
 }

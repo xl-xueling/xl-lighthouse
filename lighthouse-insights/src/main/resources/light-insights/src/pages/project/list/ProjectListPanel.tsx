@@ -217,7 +217,6 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
                 columns={columns}
                 data={listData}
             />
-            {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} onSuccess={handlerReloadList}/>}
             {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)} onSuccess={handlerReloadList}/>}
             {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
             {bindedVisible && <ReverseBindedPanel bindElement={{resourceId:selectedProject?.id,resourceType:ResourceTypeEnum.Project,title:selectedProject?.title}} onClose={() => setBindedVisible(false)}/>}
