@@ -116,19 +116,20 @@
         </where>
     </select>
 
-
-
     <select id="count" resultType="java.lang.Integer">
         SELECT count(1) from ldp_stats
         <where>
-            <if test="queryParam.id != null">
-                AND id = #{queryParam.id}
+            <if test="queryParam.projectIds != null and queryParam.projectIds.size > 0">
+                AND project_id IN
+                <foreach item="item" index="index" collection="queryParam.projectIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
             </if>
-            <if test="queryParam.projectId != null ">
-                AND project_id = #{queryParam.projectId}
-            </if>
-            <if test="queryParam.groupId != null">
-                AND group_id = #{queryParam.groupId}
+            <if test="queryParam.groupIds != null and queryParam.groupIds.size > 0">
+                AND group_id IN
+                <foreach item="item" index="index" collection="queryParam.groupIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
             </if>
         </where>
     </select>

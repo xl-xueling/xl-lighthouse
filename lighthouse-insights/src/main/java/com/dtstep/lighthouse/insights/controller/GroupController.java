@@ -52,7 +52,7 @@ public class GroupController {
         GroupQueryParam countByProjectParam = new GroupQueryParam();
         countByProjectParam.setProjectId(createParam.getProjectId());
         int groupCount = groupService.count(countByProjectParam);
-        if(groupCount > SystemConstant.PROJECT_MAX_GROUP_SIZE){
+        if(groupCount >= SystemConstant.PROJECT_MAX_GROUP_SIZE){
             return ResultData.result(ResultCode.createGroupUnderProjectExceedLimit);
         }
         Group group = new Group();
