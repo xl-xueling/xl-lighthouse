@@ -88,15 +88,7 @@ public class ProjectController {
     @RequestMapping("/project/deleteById")
     public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) {
         Integer id = idParam.getId();
-        Project project = projectService.queryById(id);
-        Validate.notNull(project);
-        GroupQueryParam queryParam = new GroupQueryParam();
-        queryParam.setProjectId(id);
-        int groupCount = groupService.count(queryParam);
-        if(groupCount > 0){
-            return ResultData.result(ResultCode.projectDelErrorGroupExist);
-        }
-        int result = projectService.delete(project);
+        int result = projectService.deleteById(id);
         if(result > 0){
             return ResultData.success(id);
         }else{
