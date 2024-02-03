@@ -25,14 +25,6 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
 
     return [
         {
-            title: '',
-            dataIndex: 'binded',
-            headerCellStyle: { width:'20px' },
-            render: (_, record) => {
-                return <Button icon={<PiLinkSimple/>} size={"mini"} shape={"round"} onClick={() => {callback(record, 'binded')}}/>
-            }
-        },
-        {
             title: t['statList.label.id'],
             dataIndex: 'id',
         },
