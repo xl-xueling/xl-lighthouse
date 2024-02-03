@@ -87,7 +87,7 @@ function CardBlock(props: CardBlockType) {
           item.permissions.includes(PermissionEnum.AccessAble)?
           [
           <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();handleClick();}}>
-             <Button type={"primary"} size={"mini"}>Preview</Button>
+             <Button type={"primary"} size={"mini"}>{t['basic.form.button.preview']}</Button>
           </span>,
       ]:null}
 
