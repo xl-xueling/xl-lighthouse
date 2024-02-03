@@ -42,7 +42,6 @@ export interface Props {
     extend?:any,
 }
 
-
 export default function ProjectListPanel({formParams = {},parentLoading = false,extend = null,from = null}:Props) {
     const t = useLocale(locale);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
@@ -54,7 +53,6 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
     const [detailVisible, setDetailVisible] = React.useState(false);
     const [bindedVisible,setBindedVisible] = React.useState(false);
     const [applyVisible,setApplyVisible] = React.useState(false);
-    const [reloadTime,setReloadTime] = useState<number>(Date.now);
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
     const [bindList,setBindList] = useState<number[]>([]);
     const handleMetricBindListReloadCallback = useContext(MetricSetBindListContext);
@@ -145,10 +143,6 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
         handleSearch({});
     }
 
-    const handlerReloadList = () => {
-        setReloadTime(Date.now);
-    }
-
     const handlerBindedProject = async () => {
         setBindedVisible(true);
     };
@@ -177,7 +171,7 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
 
     useEffect(() => {
         fetchData().then();
-    }, [reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+    }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
@@ -217,7 +211,7 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
                 columns={columns}
                 data={listData}
             />
-            {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)} onSuccess={handlerReloadList}/>}
+            {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)} onSuccess={null}/>}
             {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
             {bindedVisible && <ReverseBindedPanel bindElement={{resourceId:selectedProject?.id,resourceType:ResourceTypeEnum.Project,title:selectedProject?.title}} onClose={() => setBindedVisible(false)}/>}
             {applyVisible && <ProjectApplyModal projectInfo={selectedProject} onClose={() => setApplyVisible(false)}/>}
