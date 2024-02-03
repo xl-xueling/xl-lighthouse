@@ -44,10 +44,10 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
             }
         },
         {
-            title: t['statList.label.relationship'],
-            dataIndex: 'relationship',
+            title: t['statList.label.group'],
+            dataIndex: 'group',
             render:(value,record) => {
-                return (record.projectTitle + ' > ' + record.token);
+                return (record.token);
             }
         },
         {
@@ -71,7 +71,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
         {
             title: t['statList.label.operations'],
             dataIndex: 'operations',
-            headerCellStyle: {width:'200px' },
+            headerCellStyle: {width:'150px' },
             render: (_, record) => {
                 let viewButton;
                 let updateButton;
@@ -136,7 +136,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
                         </Popconfirm>;
                     }
                 }
-                return <Space size={16} direction="horizontal">{[viewButton,updateButton,stopButton,startButton,deleteButton]}</Space>
+                return <Space size={2} direction="horizontal">{[viewButton,updateButton,stopButton,startButton,deleteButton]}</Space>
             }
         },
     ];
@@ -146,14 +146,6 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
 
     return [
-        {
-            title: '',
-            dataIndex: 'binded',
-            headerCellStyle: { width:'20px' },
-            render: (_, record) => {
-                return <Button icon={<PiLinkSimple/>} size={"mini"} shape={"round"} onClick={() => {callback(record, 'binded')}}/>
-            }
-        },
         {
             title: t['statList.label.id'],
             dataIndex: 'id',
