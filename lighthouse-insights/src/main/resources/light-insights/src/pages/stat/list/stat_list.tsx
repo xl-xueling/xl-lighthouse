@@ -65,7 +65,6 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['statList.columns.bind.success']});
                 setBindList([...bindList,id])
-                console.log("------new bind ...");
                 handleMetricBindListReloadCallback();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});

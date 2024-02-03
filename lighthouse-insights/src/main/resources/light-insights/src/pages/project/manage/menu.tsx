@@ -34,7 +34,6 @@ export default function ProjectManageMenu({structure,callback}:{structure:TreeNo
             <Menu
                 autoOpen={true} style={{minHeight:'450px',userSelect:"none",overflow: "auto"}}
                 onClickMenuItem = {(key, event, keyPath) => {
-                    console.log("key is:" + key);
                     const keyArr = key.split("_");
                     if(keyArr[0] == 'group'){
                         callback(Number(keyArr[1]));
