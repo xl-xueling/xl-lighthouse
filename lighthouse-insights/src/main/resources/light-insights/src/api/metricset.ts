@@ -90,7 +90,7 @@ export async function requestIndicatorList(data):Promise<ResultData<{list:Array<
 }
 
 
-export async function requestFixedList() :Promise<ResultData<Array<MetricSet>>> {
+export async function requestStarList() :Promise<ResultData<Array<MetricSet>>> {
     return request({
         url:'/metricset/queryStarList',
         method:'POST',

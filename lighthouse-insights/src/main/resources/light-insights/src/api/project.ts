@@ -1,6 +1,6 @@
 import {request} from "@/utils/request";
 import {ResultData} from "@/types/insights-common";
-import {ArcoTreeNode, Project} from "@/types/insights-web";
+import {ArcoTreeNode, MetricSet, Project} from "@/types/insights-web";
 
 export async function requestList(data) :Promise<ResultData<{list:Array<Project>,total:number}>> {
     return request({
@@ -26,6 +26,28 @@ export async function requestQueryById(data):Promise<ResultData<Project>> {
     })
 }
 
+export async function requestStarList() :Promise<ResultData<Array<MetricSet>>> {
+    return request({
+        url:'/project/queryStarList',
+        method:'POST',
+    })
+}
+
+export async function requestStarById(data):Promise<ResultData> {
+    return request({
+        url:'/project/starById',
+        method:'POST',
+        data,
+    })
+}
+
+export async function requestUnStarById(data):Promise<ResultData> {
+    return request({
+        url:'/project/unStarById',
+        method:'POST',
+        data,
+    })
+}
 
 export async function requestCreate(data:Project):Promise<ResultData> {
     return request({

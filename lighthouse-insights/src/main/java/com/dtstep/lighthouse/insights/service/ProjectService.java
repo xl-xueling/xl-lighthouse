@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service;
 
+import com.dtstep.lighthouse.common.modal.MetricSet;
 import com.dtstep.lighthouse.common.modal.TreeNode;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
@@ -7,6 +8,7 @@ import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
 import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.common.modal.Project;
+import com.dtstep.lighthouse.insights.vo.MetricSetVO;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
 import com.dtstep.lighthouse.insights.vo.ServiceResult;
 
@@ -35,4 +37,10 @@ public interface ProjectService {
     ResultCode batchGrantPermissions(PermissionGrantParam grantParam) throws Exception;
 
     ResultCode releasePermission(PermissionReleaseParam releaseParam) throws Exception;
+
+    ResultCode star(Project project);
+
+    ResultCode unStar(Project project);
+
+    List<ProjectVO> queryStarList();
 }

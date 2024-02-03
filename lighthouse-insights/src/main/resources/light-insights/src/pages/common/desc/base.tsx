@@ -15,7 +15,7 @@ import {
 } from "@/types/insights-common";
 import {PiDiamondsFour, PiLockKeyOpenThin, PiLockKeyThin} from "react-icons/pi";
 import {CiViewTable} from "react-icons/ci";
-import {IconMindMapping, IconTag} from "@arco-design/web-react/icon";
+import {IconMindMapping, IconStar, IconStarFill, IconTag} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
 import {VscGistSecret} from "react-icons/vsc";
@@ -249,6 +249,10 @@ export function getIcon(type:string){
         return <LuLayers/>
     }else if(type == 'permission'){
         return <VscGistSecret/>
+    }else if(type == 'star'){
+        return <IconStar/>
+    }else if(type == 'stared'){
+        return <IconStarFill/>
     }
 }
 

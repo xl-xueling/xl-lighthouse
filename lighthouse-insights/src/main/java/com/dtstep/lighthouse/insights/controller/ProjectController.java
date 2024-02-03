@@ -8,6 +8,7 @@ import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
+import com.dtstep.lighthouse.insights.vo.MetricSetVO;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.insights.vo.ServiceResult;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @ControllerAdvice
@@ -109,5 +112,29 @@ public class ProjectController {
     public ResultData<Integer> release(@Validated @RequestBody PermissionReleaseParam releaseParam) throws Exception{
         ResultCode resultCode = projectService.releasePermission(releaseParam);
         return ResultData.result(resultCode);
+    }
+
+    @RequestMapping("/project/starById")
+    public ResultData<Integer> starById(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        Project project = projectService.queryById(id);
+        Validate.notNull(project);
+        ResultCode resultCode = projectService.star(project);
+        return ResultData.result(resultCode);
+    }
+
+    @RequestMapping("/project/unStarById")
+    public ResultData<Integer> unStarById(@Validated @RequestBody IDParam idParam) {
+        Integer id = idParam.getId();
+        Project project = projectService.queryById(id);
+        Validate.notNull(project);
+        ResultCode resultCode = projectService.unStar(project);
+        return ResultData.result(resultCode);
+    }
+
+    @RequestMapping("/project/queryStarList")
+    public ResultData<List<ProjectVO>> queryStarList(){
+        List<ProjectVO> list = projectService.queryStarList();
+        return ResultData.success(list);
     }
 }
