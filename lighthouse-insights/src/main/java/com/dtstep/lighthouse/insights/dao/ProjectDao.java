@@ -21,7 +21,7 @@ public interface ProjectDao {
 
     List<Project> queryList(@Param("queryParam")ProjectQueryParam queryParam);
 
-    int countByDepartmentId(Integer departmentId);
+    int count(@Param("queryParam")ProjectQueryParam queryParam);
 
     List<FlatTreeNode> queryNodeList(List<Integer> ids);
 }

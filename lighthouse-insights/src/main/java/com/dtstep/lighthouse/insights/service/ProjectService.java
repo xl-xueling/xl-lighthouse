@@ -19,17 +19,17 @@ public interface ProjectService {
 
     ProjectVO queryById(Integer id);
 
+    int deleteById(Integer id);
+
     ProjectVO cacheQueryById(Integer id);
 
     TreeNode getStructure(Project project) throws Exception;
-
-    int delete(Project project);
 
     ListData<ProjectVO> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize);
 
     List<ProjectVO> queryByIds(List<Integer> ids);
 
-    int countByDepartmentId(Integer departmentId);
+    int count(ProjectQueryParam queryParam);
 
     ResultCode batchGrantPermissions(PermissionGrantParam grantParam) throws Exception;
 

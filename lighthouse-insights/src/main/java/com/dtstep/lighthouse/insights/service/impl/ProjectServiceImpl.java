@@ -232,13 +232,14 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public int countByDepartmentId(Integer departmentId) {
-        return projectDao.countByDepartmentId(departmentId);
+    public int count(ProjectQueryParam queryParam) {
+        return projectDao.count(queryParam);
     }
 
     @Override
-    public int delete(Project project) {
-        int result = projectDao.deleteById(project.getId());
+    public int deleteById(Integer id) {
+        Project project = projectDao.queryById(id);
+        int result = projectDao.deleteById(id);
         resourceService.deleteResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Project,project.getId(),ResourceTypeEnum.Department,project.getDepartmentId()));
         return result;
     }
