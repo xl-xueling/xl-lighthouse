@@ -37,12 +37,13 @@ const BreadcrumbItem = Breadcrumb.Item;
 
 export interface Props {
     formParams?:any,
+    owner?:number,
     from?:string,
     parentLoading?:boolean,
     extend?:any,
 }
 
-export default function ProjectListPanel({formParams = {},parentLoading = false,extend = null,from = null}:Props) {
+export default function ProjectListPanel({formParams = {}, owner=0,parentLoading = false,extend = null,from = null}:Props) {
     const t = useLocale(locale);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const [listData, setListData] = useState<Project[]>([]);
@@ -56,6 +57,7 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
     const [bindList,setBindList] = useState<number[]>([]);
     const handleMetricBindListReloadCallback = useContext(MetricSetBindListContext);
+    const [reloadTime,setReloadTime] = useState<number>(Date.now());
 
     const tableCallback = async (record, type) => {
         if(type == 'update'){
@@ -77,6 +79,19 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
         }
     };
 
+    const handlerDeleteProject = async (id: number) => {
+        await requestDeleteById({id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
+                setReloadTime(Date.now());
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error) => {
+            console.log(error);
+        })
+    };
 
     async function handlerBind(id:number){
         const bindParams = {
@@ -147,21 +162,6 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
         setBindedVisible(true);
     };
 
-    const handlerDeleteProject = async (id: number) => {
-        await requestDeleteById({id}).then((response) => {
-            const {code, data ,message} = response;
-            if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
-                const updatedList = listData.filter(x => x.id != id);
-                setListData(updatedList);
-            }else{
-                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-            }
-        }).catch((error) => {
-            console.log(error);
-        })
-    };
-
     useEffect(() => {
         if(extend != null){
             const ids = extend.bindElements.filter(x => x.resourceType == ResourceTypeEnum.Project).map(x => x.resourceId);
@@ -171,13 +171,18 @@ export default function ProjectListPanel({formParams = {},parentLoading = false,
 
     useEffect(() => {
         fetchData().then();
-    }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+    }, [reloadTime,owner,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
         const {current, pageSize} = pagination;
+        const combineParams = {
+            ...formParams,
+            ownerId:owner == 1?userInfo?.id:null,
+        }
+        console.log("combineParams is:" + JSON.stringify(combineParams));
         await requestList({
-            queryParams:formParams,
+            queryParams:combineParams,
             pagination:{
                 pageSize:pageSize,
                 pageNum:current,

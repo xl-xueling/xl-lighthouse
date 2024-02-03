@@ -29,7 +29,6 @@ export default function Index() {
   const t = useLocale(locale);
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
   const [listData, setListData] = useState<Project[]>([]);
-  const [owner, setOwner] = useState<number>(1);
   const [selectedProject,setSelectedProject] = useState<Project>(null);
   const [form] = useForm();
   const [createVisible, setCreateVisible] = React.useState(false);
@@ -39,24 +38,8 @@ export default function Index() {
   const [applyVisible,setApplyVisible] = React.useState(false);
   const [reloadTime,setReloadTime] = useState<number>(Date.now);
   const userInfo = useSelector((state: GlobalState) => state.userInfo);
-
-  const tableCallback = async (record, type) => {
-    if(type == 'update'){
-      setSelectedProject(record);
-      setUpdateVisible(!updateVisible);
-    }else if(type == 'delete'){
-      await handlerDeleteProject(record.id).then();
-    }else if(type == 'binded'){
-      setSelectedProject(record);
-      await handlerBindedProject().then();
-    }else if(type == 'detail'){
-      setSelectedProject(record);
-      setDetailVisible(!detailVisible);
-    }else if(type == 'apply'){
-      setSelectedProject(record);
-      setApplyVisible(!applyVisible);
-    }
-  };
+  const [owner,setOwner] = useState(1);
+  const [formParams, setFormParams] = useState<any>({ownerId:userInfo.id});
 
   const hideCreateModal = () => {
     setCreateVisible(false);
@@ -66,27 +49,23 @@ export default function Index() {
     setUpdateVisible(false);
   };
 
-  const columns = useMemo(() => getColumns(t, tableCallback), [t,listData]);
-
   const [loading, setLoading] = useState(true);
-  const [formParams, setFormParams] = useState<any>({});
 
   function handleSearch(params) {
-    setFormParams(params);
+    setFormParams({...params,t:Date.now()});
   }
 
   function handleReset(){
     form.resetFields();
-    handleSearch({});
+    handleSearch({})
   }
 
-  function onClickRadio(p){
+  function handleChangeOwnerType(p){
     setOwner(p);
-    handleReset();
   }
 
   const handlerReloadList = () => {
-    setReloadTime(Date.now);
+    setFormParams({...formParams,t:Date.now()});
   }
 
   const handlerBindedProject = async () => {
@@ -98,8 +77,7 @@ export default function Index() {
       const {code, data ,message} = response;
       if(code == '0'){
         Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
-        const updatedList = listData.filter(x => x.id != id);
-        setListData(updatedList);
+        handleSearch(formParams);
       }else{
         Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
       }
@@ -121,7 +99,7 @@ export default function Index() {
       <Grid.Row justify="space-between" align="center" style={{marginBottom:'15px'}}>
         <Grid.Col span={16} style={{ textAlign: 'left' }}>
           <Space>
-            <Radio.Group defaultValue={"1"} name='button-radio-group' onChange={onClickRadio}>
+            <Radio.Group defaultValue={"1"} name='button-radio-group' onChange={handleChangeOwnerType}>
               {[{value:"1",label:t['projectList.operations.my.projects']},{value:"0",label:t['projectList.operations.all.projects']}].map((item) => {
                 return (
                     <Radio key={item.value} value={item.value}>
@@ -143,7 +121,7 @@ export default function Index() {
           <Button size={"small"} type="primary" onClick={() => setCreateVisible(true)}>{t['projectList.operations.create.project']}</Button>
         </Grid.Col>
       </Grid.Row>
-      <ProjectListPanel formParams={formParams}/>
+      <ProjectListPanel formParams={formParams} owner={owner}/>
       {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} onSuccess={handlerReloadList}/>}
     </Card>
       </>
