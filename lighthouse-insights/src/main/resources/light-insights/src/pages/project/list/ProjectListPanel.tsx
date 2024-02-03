@@ -149,6 +149,10 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
         });
     }
 
+    const handlerUpdateProject = async (record) => {
+        setListData([...(listData.filter(x => x.id != record.id)),record])
+    }
+
     function handleSearch(params) {
         setPagination({ ...pagination, current: 1 });
     }
@@ -216,8 +220,7 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
                 columns={columns}
                 data={listData}
             />
-            {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)} onSuccess={null}/>}
-            {detailVisible && <Detail projectInfo={selectedProject} onClose={() => setDetailVisible(false)}/>}
+            {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)} onSuccess={handlerUpdateProject}/>}
             {bindedVisible && <ReverseBindedPanel bindElement={{resourceId:selectedProject?.id,resourceType:ResourceTypeEnum.Project,title:selectedProject?.title}} onClose={() => setBindedVisible(false)}/>}
             {applyVisible && <ProjectApplyModal projectInfo={selectedProject} onClose={() => setApplyVisible(false)}/>}
         </>

@@ -49,7 +49,7 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectUpdate.form.submit.success']});
                 onClose();
-                onSuccess();
+                onSuccess({...projectInfo,...project});
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
