@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import useLocale from "@/utils/useLocale";
-import locale from "@/pages/metricset/preview/locale";
+import locale from "./locale";
 import {
     IconBook,
     IconClockCircle, IconLock,
@@ -14,6 +14,8 @@ import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import styles from "@/pages/metricset/preview/style/shortcuts.module.less";
 import {LuLayers} from "react-icons/lu";
 import {CiLock, CiViewTable} from "react-icons/ci";
+import {getIcon} from "@/pages/common/desc/base";
+import ProjectStar from "@/pages/project/common/ProjectStar";
 const { Row, Col } = Grid;
 export default function PreviewHeader({projectInfo}:{projectInfo:Project}) {
     const t = useLocale(locale);
@@ -46,14 +48,21 @@ export default function PreviewHeader({projectInfo}:{projectInfo:Project}) {
         projectInfo?
         <Space size={0} direction="vertical" style={{ width: '100%' }}>
             <Row>
-                <Button icon={<RiAppsLine/>} shape={"circle"} size={"small"} style={{marginRight:'10px',marginBottom:'15px'}}/>
-                <Typography.Title
-                    heading={6}
-                    style={{marginTop:'1px'}}
-                >
-                    统计工程：{projectInfo?.title}
-                    <CiLock style={{marginLeft:'5px',fontSize:14}}/>
-                </Typography.Title>
+                <Grid.Col span={20}>
+                    <span style={{display:"inline-flex",alignItems:"center"}}>
+                        <Button icon={<RiAppsLine/>} shape={"circle"} size={"small"} style={{marginRight:'10px',marginBottom:'7px'}}/>
+                        <Typography.Title
+                            heading={6}
+                            style={{marginTop:'0px'}}
+                        >
+                            {t['projectPreview.label.project']}：{projectInfo?.title}
+                            <CiLock style={{marginLeft:'5px',fontSize:14}}/>
+                        </Typography.Title>
+                    </span>
+                </Grid.Col>
+                <Grid.Col span={4} style={{textAlign:"right" }}>
+                    <ProjectStar projectInfo={projectInfo}/>
+                </Grid.Col>
             </Row>
             <Row>
                 <Descriptions

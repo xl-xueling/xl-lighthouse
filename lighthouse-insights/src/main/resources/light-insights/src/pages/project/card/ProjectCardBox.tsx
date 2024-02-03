@@ -15,6 +15,7 @@ import {MetricSet, Project, TreeNode} from "@/types/insights-web";
 import {requestStarById, requestUnStarById} from "@/api/project";
 import {useDispatch,useSelector} from "react-redux";
 import {updateStoreStaredMetricInfo, updateStoreStaredProjectInfo} from "@/index";
+import {IconStarFill} from "@arco-design/web-react/icon";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 
