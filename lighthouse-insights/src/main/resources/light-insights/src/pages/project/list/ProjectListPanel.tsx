@@ -16,9 +16,9 @@ import SearchForm from './form';
 import locale from './locale';
 import {getBindColumns, getColumns} from './constants';
 import {requestDeleteById, requestList, requestStarById, requestUnStarById} from "@/api/project";
-import {Department, Project, TreeNode} from "@/types/insights-web";
+import {Department, MetricSet, Project, TreeNode} from "@/types/insights-web";
 import useForm from "@arco-design/web-react/es/Form/useForm";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import ProjectCreatePanel from "@/pages/project/create";
 import ProjectUpdatePanel from "@/pages/project/update";
 import Detail from "@/pages/project/list/detail";
@@ -32,7 +32,7 @@ import {GlobalState} from "@/store";
 import {requestBinded} from "@/api/metricset";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
-import {updateStoreStaredMetricInfo} from "@/index";
+import {updateStoreStaredProjectInfo} from "@/index";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -50,6 +50,7 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
     const [listData, setListData] = useState<Project[]>([]);
     const [selectedProject,setSelectedProject] = useState<Project>(null);
     const [form] = useForm();
+    const dispatch = useDispatch();
     const [createVisible, setCreateVisible] = React.useState(false);
     const [updateVisible, setUpdateVisible] = React.useState(false);
     const [detailVisible, setDetailVisible] = React.useState(false);
@@ -59,6 +60,7 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
     const [bindList,setBindList] = useState<number[]>([]);
     const handleMetricBindListReloadCallback = useContext(MetricSetBindListContext);
     const [reloadTime,setReloadTime] = useState<number>(Date.now());
+    const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo);
 
     const tableCallback = async (record, type) => {
         if(type == 'update'){
@@ -68,7 +70,10 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
             await handlerDeleteProject(record.id).then();
         }else if(type == 'star'){
             setSelectedProject(record);
-
+            await handlerStar(record);
+        }else if(type == 'unstar'){
+            setSelectedProject(record);
+            await handlerUnStar(record);
         }else if(type == 'detail'){
             setSelectedProject(record);
             setDetailVisible(!detailVisible);
@@ -100,10 +105,10 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
         await requestStarById({id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.star.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.star.submit.success']});
                 localStorage.removeItem('cache_stared_projects');
                 const currentFixedData = staredProjectInfo.filter(x => x.id != record.id);
-                dispatch(updateStoreStaredMetricInfo([record,...currentFixedData]))
+                dispatch(updateStoreStaredProjectInfo([record,...currentFixedData]))
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -119,10 +124,10 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
         await requestUnStarById({id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.unstar.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.unstar.submit.success']});
                 localStorage.removeItem('cache_stared_projects');
                 const currentFixedData = staredProjectInfo.filter(x => x.id != record.id);
-                dispatch(updateStoreStaredMetricInfo([...currentFixedData]))
+                dispatch(updateStoreStaredProjectInfo([...currentFixedData]))
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
