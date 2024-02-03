@@ -163,7 +163,8 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
           title={t['groupCreate.modal.title']}
           onOk={onOk}
           visible={true}
-          style={{ width:'750px' }}
+          alignCenter={false}
+          style={{width:'1180px',maxWidth:'80%', top: '130px' }}
           confirmLoading={confirmLoading}
           onCancel={onClose}>
         <Form
