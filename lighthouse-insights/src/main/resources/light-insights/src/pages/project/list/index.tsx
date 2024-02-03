@@ -67,28 +67,11 @@ export default function Index() {
   };
 
   const columns = useMemo(() => getColumns(t, tableCallback), [t,listData]);
-  const [pagination, setPagination] = useState<PaginationProps>({
-    sizeOptions: [15,20,30,50],
-    sizeCanChange: true,
-    showTotal: true,
-    pageSize: 15,
-    current: 1,
-    pageSizeChangeResetCurrent: true,
-  });
 
   const [loading, setLoading] = useState(true);
   const [formParams, setFormParams] = useState<any>({});
 
-  function onChangeTable({ current, pageSize }) {
-    setPagination({
-      ...pagination,
-      current,
-      pageSize,
-    });
-  }
-
   function handleSearch(params) {
-    setPagination({ ...pagination, current: 1 });
     setFormParams(params);
   }
 
@@ -125,50 +108,6 @@ export default function Index() {
     })
   };
 
-  useEffect(() => {
-    fetchData().then().catch(error => {
-      console.log(error);
-      Message.error(t['system.error']);
-    })
-  }, [reloadTime,owner,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
-
-  const fetchData = async (): Promise<void> => {
-    setLoading(true);
-    const {current, pageSize} = pagination;
-    const createTime = formParams.createTime;
-    const combineParam:any = {}
-    combineParam.title = formParams.title;
-    combineParam.id = formParams.id;
-    combineParam.departmentIds = formParams.departmentIds;
-    if(createTime && Array.isArray(createTime)){
-      combineParam.createStartTime = createTime[0];
-      combineParam.createEndTime = createTime[1];
-    }
-    combineParam.ownerId = owner == 1?userInfo?.id:null;
-    await requestList({
-      queryParams:combineParam,
-      pagination:{
-        pageSize:pageSize,
-        pageNum:current,
-      }
-    }).then((response) => {
-      const {code, data ,message} = response;
-      if (code === '0') {
-        setListData(data.list);
-        setPagination({
-          ...pagination,
-          current,
-          pageSize,
-          total: data.total});
-        setLoading(false);
-      }else{
-        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-      }
-    }).catch((error) => {
-      console.log(error);
-    })
-  }
-
   return (
       <>
       <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
@@ -179,7 +118,7 @@ export default function Index() {
       </Breadcrumb>
     <Card>
       <SearchForm onSearch={handleSearch} onClear={handleReset} allDepartInfo={allDepartInfo} form={form}/>
-      <Grid.Row justify="space-between" align="center">
+      <Grid.Row justify="space-between" align="center" style={{marginBottom:'15px'}}>
         <Grid.Col span={16} style={{ textAlign: 'left' }}>
           <Space>
             <Radio.Group defaultValue={"1"} name='button-radio-group' onChange={onClickRadio}>
