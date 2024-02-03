@@ -8,21 +8,23 @@ import { TbNavigationPlus } from "react-icons/tb";
 import { MdOutlineNavigation } from "react-icons/md";
 import MetricNavModal from "@/pages/metricset/common/MetricNavModal";
 import {getIcon} from "@/pages/common/desc/base";
+import ProjectNavModal from "@/pages/project/common/ProjectNavModal";
 
 
 export default function PopMenuBox (){
     const [popupVisibleOne, setPopupVisibleOne] = useState(false);
     const [showMetricNavModal,setShowMetricNavModal] = useState(false);
+    const [showProjectNavModal,setShowProjectNavModal] = useState(false);
 
     const renderMenu = () => {
         return (<Menu
             tooltipProps={{ popupVisible:false}}
             mode={"popButton"}>
-            <MenuItem key='1'  onClick={() => setShowMetricNavModal(true)}>
+            <MenuItem key='1' onClick={() => setShowMetricNavModal(true)}>
                 {getIcon('metric')}
             </MenuItem>
-            <MenuItem key='2'>
-                <IconBulb />
+            <MenuItem key='2'onClick={() => setShowProjectNavModal(true)}>
+                {getIcon('project')}
             </MenuItem>
         </Menu>);
     }
@@ -42,8 +44,8 @@ export default function PopMenuBox (){
                     </div>
                 </Trigger>
             </div>
-
             {showMetricNavModal && <MetricNavModal onClose={() => setShowMetricNavModal(false)}/>}
+            {showProjectNavModal && <ProjectNavModal onClose={() => setShowProjectNavModal(false)}/>}
         </div>
     );
 }

@@ -240,7 +240,7 @@ export const getTreeResourceIcon= (type,level) => {
 
 export function getIcon(type:string){
     if(type == 'project'){
-        return <PiDiamondsFour/>
+        return <PiDiamondsFour size={14}/>
     }else if(type == 'group'){
         return <CiViewTable/>
     }else if(type == 'stat'){
