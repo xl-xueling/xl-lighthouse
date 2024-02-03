@@ -18,7 +18,7 @@ package com.dtstep.lighthouse.insights.template;
  */
 
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
-import com.dtstep.lighthouse.insights.vo.ResultWrapper;
+import com.dtstep.lighthouse.insights.vo.ServiceResult;
 
 public final class TemplateParser {
 
@@ -28,7 +28,7 @@ public final class TemplateParser {
         return parser.parse(context);
     }
 
-    public static ResultWrapper<TemplateEntity> parseConfig(TemplateContext context){
+    public static ServiceResult<TemplateEntity> parseConfig(TemplateContext context){
         return parser.parseConfig(context);
     }
 

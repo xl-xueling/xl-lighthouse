@@ -8,12 +8,13 @@ import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.common.modal.Project;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
+import com.dtstep.lighthouse.insights.vo.ServiceResult;
 
 import java.util.List;
 
 public interface ProjectService {
 
-    int create(Project project);
+    ServiceResult<Integer> create(Project project);
 
     int update(Project project);
 

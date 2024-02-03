@@ -10,6 +10,7 @@ import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
+import com.dtstep.lighthouse.insights.vo.ServiceResult;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,18 +41,18 @@ public class ProjectController {
         project.setDepartmentId(createParam.getDepartmentId());
         project.setPrivateType(createParam.getPrivateType());
         project.setDesc(createParam.getDesc());
-        int id = projectService.create(project);
-        if(id > 0){
-            PermissionGrantParam grantParam = new PermissionGrantParam();
-            grantParam.setResourceId(id);
-            grantParam.setRoleType(RoleTypeEnum.PROJECT_ACCESS_PERMISSION);
-            grantParam.setUsersPermissions(createParam.getUsersPermission());
-            grantParam.setDepartmentsPermissions(createParam.getDepartmentsPermission());
-            projectService.batchGrantPermissions(grantParam);
-            return ResultData.success(id);
-        }else{
-            return ResultData.result(ResultCode.systemError);
+        ServiceResult<Integer> createResult = projectService.create(project);
+        if(!createResult.isSuccess()){
+            return ResultData.result(createResult.getResultCode());
         }
+        int id = createResult.getData();
+        PermissionGrantParam grantParam = new PermissionGrantParam();
+        grantParam.setResourceId(id);
+        grantParam.setRoleType(RoleTypeEnum.PROJECT_ACCESS_PERMISSION);
+        grantParam.setUsersPermissions(createParam.getUsersPermission());
+        grantParam.setDepartmentsPermissions(createParam.getDepartmentsPermission());
+        projectService.batchGrantPermissions(grantParam);
+        return ResultData.success(id);
     }
 
     @RequestMapping("/project/queryById")
