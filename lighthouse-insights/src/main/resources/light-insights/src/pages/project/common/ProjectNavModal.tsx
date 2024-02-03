@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     Button,
     Card,
-    Divider,
+    Divider, Empty,
     Grid,
     Link,
     Menu,
@@ -76,13 +76,18 @@ export default function ProjectNavModal ({onClose}){
                 ,top:'30px',maxHeight:'95%',overflow:'auto',
             }}>
             <Space size={8} direction="vertical" style={{width:'100%'}}>
-                <Row gutter={12}>
-                    {listData.map((item, index) => (
-                        <Col span={6} key={index}>
-                            <ProjectCardBox size={'small'} key={index} item={item}/>
-                        </Col>
-                    ))}
-                </Row>
+                {
+                    listData.length > 0 ?
+                        <Row gutter={12}>
+                            {listData.map((item, index) => (
+                                <Col span={6} key={index}>
+                                    <ProjectCardBox size={'small'} key={index} item={item}/>
+                                </Col>
+                            ))}
+                        </Row>
+                        :
+                        <Empty />
+                }
             </Space>
             <Space style={{justifyContent: 'center', padding:'0px',marginTop:'0px',width: '100%'}}>
                 <Pagination
