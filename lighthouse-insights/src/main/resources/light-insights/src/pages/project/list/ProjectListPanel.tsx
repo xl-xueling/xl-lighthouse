@@ -169,11 +169,11 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
         if(from == 'bind'){
             return getBindColumns(t,bindList, tableCallback);
         }else{
-            return getColumns(t, tableCallback);
+            return getColumns(t,staredProjectInfo, tableCallback);
         }
     }
 
-    const columns = useMemo(() => handleGetColumns(), [t,bindList,listData]);
+    const columns = useMemo(() => handleGetColumns(), [t,bindList,staredProjectInfo,listData]);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,20,30,50],
         sizeCanChange: true,

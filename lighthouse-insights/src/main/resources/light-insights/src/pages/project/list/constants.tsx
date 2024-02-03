@@ -11,8 +11,9 @@ import { LuLock } from "react-icons/lu";
 import { PiLockBold } from "react-icons/pi";
 import {RiAppsLine} from "react-icons/ri";
 import {getIcon} from "@/pages/common/desc/base";
+import {Project} from "@/types/insights-web";
 
-export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+export function getColumns(t: any, staredProjectInfo:Array<Project>, callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
       {
           title: '',
@@ -20,12 +21,23 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
           headerCellStyle: { width:'20px' },
           render: (_, record) => {
               return(
+                  staredProjectInfo.map(z => z.id).includes(record.id)?
                   <Popconfirm
 
                       position={"bl"}
                       title='Confirm'
                       content={t['projectList.operations.unstar.confirm']}
                       onOk={async (e) => {await callback(record,"unstar")}}
+                  >
+                      <Button icon={getIcon('stared')} size={"mini"} shape={"round"} />
+                  </Popconfirm>
+                      :
+                  <Popconfirm
+
+                      position={"bl"}
+                      title='Confirm'
+                      content={t['projectList.operations.star.confirm']}
+                      onOk={async (e) => {await callback(record,"star")}}
                   >
                       <Button icon={getIcon('star')} size={"mini"} shape={"round"} />
                   </Popconfirm>
