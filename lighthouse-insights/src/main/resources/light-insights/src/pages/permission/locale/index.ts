@@ -10,6 +10,7 @@ const i18n = {
         'permissionManage.list.operation.remove':'Remove',
         'permissionManage.list.operation.remove.success':'Permission has been removed!',
         'permissionManage.list.operation.grant.success':'Granted permissions successfully!',
+        'permissionManage.grant.warning.needOwner':'Please select permission owner!',
     },
     'zh-CN': {
         'permissionManage.modal.title':'权限管理',
@@ -22,6 +23,7 @@ const i18n = {
         'permissionManage.list.operation.remove':'移除',
         'permissionManage.list.operation.remove.success':'权限移除成功！',
         'permissionManage.list.operation.grant.success':'添加权限成功！',
+        'permissionManage.grant.warning.needOwner':'请选择权限归属对象！',
     },
 };
 

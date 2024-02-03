@@ -190,6 +190,10 @@ export function PermissionPanel({type,resourceId,resourceType}){
         if(privateType == 0 && userTransferRef?.current){
             usersPermissions = userTransferRef.current.getData();
         }
+        if(departmentsPermissions.length == 0 && usersPermissions.length == 0){
+            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['permissionManage.grant.warning.needOwner']});
+            return;
+        }
         setSubmitLoading(true);
         let roleType;
         if(resourceType == ResourceTypeEnum.Project){
