@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.vo;
 
-import com.dtstep.lighthouse.insights.modal.RenderConfig;
+import com.dtstep.lighthouse.common.modal.RenderConfig;
 
 public class StatExtendVO extends StatVO {
 

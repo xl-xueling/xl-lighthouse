@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dtstep.lighthouse.insights.dao.ComponentDao">
-    <resultMap id="componentResultMap" type="com.dtstep.lighthouse.insights.modal.Component">
+    <resultMap id="componentResultMap" type="com.dtstep.lighthouse.common.modal.Component">
         <id column="id" property="id"/>
         <result column="title" property="title"/>
         <result column="component_type" property="componentType" typeHandler="com.dtstep.lighthouse.insights.types.ComponentTypeEnumTypeHandler"/>
@@ -12,7 +12,7 @@
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Component">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Component">
         INSERT INTO ldp_components (`title`,`component_type`,`private_type`,`configuration`,`user_id`,`create_time`,`update_time`) VALUES
         (
             #{title,jdbcType=VARCHAR},
@@ -43,7 +43,7 @@
         </where>
     </select>
 
-    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Component">
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.Component">
         UPDATE ldp_components
         <set>
             <if test="title != null">

@@ -4,7 +4,7 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.vo.ComponentVO;
 import com.dtstep.lighthouse.insights.dto.ComponentQueryParam;
-import com.dtstep.lighthouse.insights.modal.Component;
+import com.dtstep.lighthouse.common.modal.Component;
 
 public interface ComponentService {
 

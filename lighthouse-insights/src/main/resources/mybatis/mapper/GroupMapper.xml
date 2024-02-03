@@ -3,7 +3,7 @@
 
 <mapper namespace="com.dtstep.lighthouse.insights.dao.GroupDao">
 
-    <resultMap id="groupResultMap" type="com.dtstep.lighthouse.insights.modal.Group">
+    <resultMap id="groupResultMap" type="com.dtstep.lighthouse.common.modal.Group">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="columns" column="columns"
@@ -19,7 +19,7 @@
         <result property="extendConfig" column="extend_config" typeHandler="com.dtstep.lighthouse.insights.types.GroupExtendConfigTypeHandler"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Group" >
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Group" >
         INSERT INTO ldp_groups (`token`,`project_id`,`columns`,`secret_key`,
                                     `state`,`desc`,
                                     `extend_config`,`debug_mode`,`refresh_time`,`create_time`,`update_time`) VALUES
@@ -38,7 +38,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Group">
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.Group">
         UPDATE ldp_groups
         <set>
             <if test="columns != null">

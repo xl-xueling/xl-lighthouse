@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.dto;
 
-import com.dtstep.lighthouse.insights.modal.Column;
+import com.dtstep.lighthouse.common.modal.Column;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

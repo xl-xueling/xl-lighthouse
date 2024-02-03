@@ -1,10 +1,10 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.insights.dto_bak.RolePair;
-import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
+import com.dtstep.lighthouse.common.modal.RolePair;
+import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.ResourceDto;
+import com.dtstep.lighthouse.common.modal.ResourceDto;
 
 public interface ResourceService {
 

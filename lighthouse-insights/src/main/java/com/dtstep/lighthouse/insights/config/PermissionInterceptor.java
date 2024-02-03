@@ -5,7 +5,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Role;
+import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.insights.service.PermissionService;
 import com.dtstep.lighthouse.insights.service.RoleService;
 import com.fasterxml.jackson.databind.JsonNode;

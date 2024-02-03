@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.vo;
 
-import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 
 import java.io.Serializable;
 

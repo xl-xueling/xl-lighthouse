@@ -1,8 +1,9 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.insights.vo.ResultData;
+import com.dtstep.lighthouse.common.modal.StatDataObject;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dto.DataStatQueryParam;
-import com.dtstep.lighthouse.insights.dto_bak.*;
 import com.dtstep.lighthouse.insights.service.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

@@ -1,16 +1,14 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
-import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.*;
 import com.dtstep.lighthouse.common.key.RandomID;
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.*;
 import com.dtstep.lighthouse.insights.dto.*;
-import com.dtstep.lighthouse.insights.dto_bak.*;
-import com.dtstep.lighthouse.insights.enums.*;
-import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.MetricSetVO;
 import com.github.pagehelper.PageHelper;
@@ -86,7 +84,7 @@ public class MetricSetServiceImpl implements MetricSetService {
         RolePair rolePair = resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.MetricSet,id,ResourceTypeEnum.Domain,domain.getId()));
         Integer manageRoleId = rolePair.getManageRoleId();
         int currentUserId = baseService.getCurrentUserId();
-        Permission adminPermission = new Permission(currentUserId,OwnerTypeEnum.USER,manageRoleId);
+        Permission adminPermission = new Permission(currentUserId, OwnerTypeEnum.USER,manageRoleId);
         permissionService.create(adminPermission);
         return id;
     }
@@ -174,7 +172,7 @@ public class MetricSetServiceImpl implements MetricSetService {
             List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
             metricSetVO.setAdmins(admins);
         }
-        List<Relation> relationList = relationDao.queryList(metricSetVO.getId(),RelationTypeEnum.MetricSetBindRelation);
+        List<Relation> relationList = relationDao.queryList(metricSetVO.getId(), RelationTypeEnum.MetricSetBindRelation);
         List<MetricBindElement> elements = new ArrayList<>();
         for(Relation relation : relationList){
             MetricBindElement bindElement = new MetricBindElement();

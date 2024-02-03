@@ -4,7 +4,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.RoleDao;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Role;
+import com.dtstep.lighthouse.common.modal.Role;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

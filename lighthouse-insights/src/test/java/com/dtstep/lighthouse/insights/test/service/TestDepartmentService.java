@@ -2,8 +2,7 @@ package com.dtstep.lighthouse.insights.test.service;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
-import com.dtstep.lighthouse.insights.dto_bak.CommonTreeNode;
-import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
+import com.dtstep.lighthouse.common.modal.TreeNode;
 import com.dtstep.lighthouse.insights.service.DepartmentService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

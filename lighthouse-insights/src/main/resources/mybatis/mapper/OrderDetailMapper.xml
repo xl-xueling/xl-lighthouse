@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dtstep.lighthouse.insights.dao.OrderDetailDao">
-    <resultMap id="orderDetailMap" type="com.dtstep.lighthouse.insights.modal.OrderDetail">
+    <resultMap id="orderDetailMap" type="com.dtstep.lighthouse.common.modal.OrderDetail">
         <id property="id" column="id"/>
         <result property="orderId" column="order_id"/>
         <result property="userId" column="user_id"/>
@@ -13,7 +13,7 @@
         <result property="processTime" column="process_time"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.OrderDetail" >
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.OrderDetail" >
         INSERT INTO ldp_order_details (`order_id`,`user_id`,`state`,`role_id`,`role_type`,`reply`,`create_time`,`process_time`) VALUES
         (
             #{orderId,jdbcType=INTEGER},
@@ -48,7 +48,7 @@
         from ldp_order_details where order_id = #{orderId}
     </select>
 
-    <update id="updateDetail" parameterType="com.dtstep.lighthouse.insights.modal.OrderDetail">
+    <update id="updateDetail" parameterType="com.dtstep.lighthouse.common.modal.OrderDetail">
         UPDATE ldp_order_details
         <set>
             <if test="state != null">

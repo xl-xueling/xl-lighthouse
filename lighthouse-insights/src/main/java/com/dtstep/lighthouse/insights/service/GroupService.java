@@ -1,9 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
-import com.dtstep.lighthouse.insights.modal.Group;
-import com.dtstep.lighthouse.insights.vo.ResultWrapper;
+import com.dtstep.lighthouse.common.modal.Group;
 
 import java.util.List;
 

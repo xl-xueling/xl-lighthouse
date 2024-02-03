@@ -1,13 +1,13 @@
 package com.dtstep.lighthouse.insights.test.dao;
 
 import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
-import com.dtstep.lighthouse.insights.enums.ColumnTypeEnum;
-import com.dtstep.lighthouse.insights.enums.LimitedStrategyEnum;
-import com.dtstep.lighthouse.insights.modal.*;
+import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
+import com.dtstep.lighthouse.common.enums.LimitedStrategyEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

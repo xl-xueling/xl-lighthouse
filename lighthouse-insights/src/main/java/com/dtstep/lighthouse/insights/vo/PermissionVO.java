@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
-import com.dtstep.lighthouse.insights.modal.Permission;
+import com.dtstep.lighthouse.common.modal.Permission;
 
 public class PermissionVO extends Permission {
 

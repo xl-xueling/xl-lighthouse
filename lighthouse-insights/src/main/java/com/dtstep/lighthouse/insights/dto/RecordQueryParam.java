@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.dto;
 
-import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
-import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.enums.RecordTypeEnum;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 
 import java.util.List;
 

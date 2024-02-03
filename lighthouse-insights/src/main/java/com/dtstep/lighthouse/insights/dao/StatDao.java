@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.dao;
 
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
-import com.dtstep.lighthouse.insights.modal.Stat;
+import com.dtstep.lighthouse.common.modal.Stat;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

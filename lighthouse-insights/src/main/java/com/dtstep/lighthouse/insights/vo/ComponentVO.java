@@ -1,13 +1,11 @@
 package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
-import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
-import com.dtstep.lighthouse.insights.modal.Component;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.modal.PermissionEnum;
+import com.dtstep.lighthouse.common.modal.Component;
+import com.dtstep.lighthouse.common.modal.User;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class ComponentVO extends Component {

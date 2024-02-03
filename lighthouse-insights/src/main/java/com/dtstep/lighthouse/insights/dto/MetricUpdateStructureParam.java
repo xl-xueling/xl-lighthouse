@@ -1,9 +1,8 @@
 package com.dtstep.lighthouse.insights.dto;
 
-import com.dtstep.lighthouse.insights.dto_bak.TreeNode;
+import com.dtstep.lighthouse.common.modal.TreeNode;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class MetricUpdateStructureParam implements Serializable {
 

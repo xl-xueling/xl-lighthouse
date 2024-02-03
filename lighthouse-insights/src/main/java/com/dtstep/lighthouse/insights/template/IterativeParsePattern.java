@@ -27,7 +27,7 @@ import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.dtstep.lighthouse.core.formula.TemplateUtil;
-import com.dtstep.lighthouse.insights.modal.Column;
+import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.insights.vo.ResultWrapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;

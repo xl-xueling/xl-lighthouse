@@ -1,17 +1,16 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
-import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
-import com.dtstep.lighthouse.insights.modal.Role;
+import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.PermissionVO;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
-import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Department;
-import com.dtstep.lighthouse.insights.modal.Permission;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
+import com.dtstep.lighthouse.common.modal.Department;
+import com.dtstep.lighthouse.common.modal.Permission;
+import com.dtstep.lighthouse.common.modal.User;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;

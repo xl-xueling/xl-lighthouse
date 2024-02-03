@@ -1,8 +1,8 @@
 package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
-import com.dtstep.lighthouse.insights.modal.OrderDetail;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.modal.OrderDetail;
+import com.dtstep.lighthouse.common.modal.User;
 
 public class OrderDetailVO extends OrderDetail {
 

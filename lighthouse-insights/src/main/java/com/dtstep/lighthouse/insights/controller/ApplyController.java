@@ -1,11 +1,13 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.modal.ListSearchObject;
+import com.dtstep.lighthouse.common.modal.Pagination;
+import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.ApplyOrderQueryParam;
 import com.dtstep.lighthouse.insights.dto.OrderCreateParam;
-import com.dtstep.lighthouse.insights.dto_bak.*;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.modal.User;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.OrderService;
 import com.dtstep.lighthouse.insights.service.UserService;

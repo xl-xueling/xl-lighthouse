@@ -2,10 +2,10 @@ package com.dtstep.lighthouse.insights.aspect;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.controller.annotation.RecordAnnotation;
-import com.dtstep.lighthouse.insights.enums.RecordTypeEnum;
-import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Record;
-import com.dtstep.lighthouse.insights.modal.Stat;
+import com.dtstep.lighthouse.common.enums.RecordTypeEnum;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.modal.Record;
+import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.RecordService;
 import org.aspectj.lang.JoinPoint;
@@ -15,7 +15,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import javax.validation.ConstraintValidator;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 

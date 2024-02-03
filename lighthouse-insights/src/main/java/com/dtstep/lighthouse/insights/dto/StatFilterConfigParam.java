@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.dto;
 
-import com.dtstep.lighthouse.insights.modal.RenderFilterConfig;
+import com.dtstep.lighthouse.common.modal.RenderFilterConfig;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
@@ -9,12 +10,10 @@ import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
 import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
-import com.dtstep.lighthouse.insights.dto_bak.*;
-import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
-import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
-import com.dtstep.lighthouse.insights.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
+import com.dtstep.lighthouse.common.enums.PrivateTypeEnum;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
 import com.github.pagehelper.PageHelper;

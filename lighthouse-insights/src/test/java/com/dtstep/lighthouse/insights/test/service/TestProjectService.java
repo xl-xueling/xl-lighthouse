@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.test.service;
 
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
-import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
+import com.dtstep.lighthouse.common.enums.PrivateTypeEnum;
 import com.dtstep.lighthouse.insights.service.ProjectService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

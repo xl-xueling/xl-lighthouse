@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.dtstep.lighthouse.insights.dao.StatDao">
-    <resultMap id="statResultMap" type="com.dtstep.lighthouse.insights.modal.Stat">
+    <resultMap id="statResultMap" type="com.dtstep.lighthouse.common.modal.Stat">
         <result property="id" column="id"/>
         <result property="title" column="title"/>
         <result property="groupId" column="group_id"/>
@@ -21,7 +21,7 @@
         <result property="createTime" column="create_time"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.insights.modal.Stat" >
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Stat" >
         INSERT INTO ldp_stats (`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`) VALUES
         (
             #{title,jdbcType=VARCHAR},
@@ -138,7 +138,7 @@
         from ldp_stats where project_id = #{projectId}
     </select>
 
-    <update id="update" parameterType="com.dtstep.lighthouse.insights.modal.Stat">
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.Stat">
         UPDATE ldp_stats
         <set>
             <if test="title != null">

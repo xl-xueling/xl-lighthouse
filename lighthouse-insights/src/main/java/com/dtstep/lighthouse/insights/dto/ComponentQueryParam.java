@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.dto;
 
-import com.dtstep.lighthouse.insights.enums.PrivateTypeEnum;
+import com.dtstep.lighthouse.common.enums.PrivateTypeEnum;
 
 public class ComponentQueryParam {
 

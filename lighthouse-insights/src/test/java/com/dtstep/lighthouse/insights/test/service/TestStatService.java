@@ -1,15 +1,12 @@
 package com.dtstep.lighthouse.insights.test.service;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.core.formula.TemplateUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.StatDao;
-import com.dtstep.lighthouse.insights.vo.StatVO;
-import com.dtstep.lighthouse.insights.dto.StatQueryParam;
-import com.dtstep.lighthouse.insights.modal.RenderFilterConfig;
-import com.dtstep.lighthouse.insights.modal.Stat;
+import com.dtstep.lighthouse.common.modal.RenderFilterConfig;
+import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.insights.service.StatService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

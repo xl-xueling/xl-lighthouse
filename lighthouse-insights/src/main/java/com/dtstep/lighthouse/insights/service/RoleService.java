@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Role;
+import com.dtstep.lighthouse.common.modal.Role;
 
 import java.util.List;
 

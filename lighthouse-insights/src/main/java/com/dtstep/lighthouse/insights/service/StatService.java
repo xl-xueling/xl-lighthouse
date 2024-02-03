@@ -4,9 +4,9 @@ import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
-import com.dtstep.lighthouse.insights.modal.RenderConfig;
-import com.dtstep.lighthouse.insights.modal.RenderFilterConfig;
-import com.dtstep.lighthouse.insights.modal.Stat;
+import com.dtstep.lighthouse.common.modal.RenderConfig;
+import com.dtstep.lighthouse.common.modal.RenderFilterConfig;
+import com.dtstep.lighthouse.common.modal.Stat;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
 package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
-import com.dtstep.lighthouse.insights.dto_bak.MetricBindElement;
-import com.dtstep.lighthouse.insights.dto_bak.PermissionEnum;
-import com.dtstep.lighthouse.insights.modal.MetricSet;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.modal.MetricBindElement;
+import com.dtstep.lighthouse.common.modal.PermissionEnum;
+import com.dtstep.lighthouse.common.modal.MetricSet;
+import com.dtstep.lighthouse.common.modal.User;
 import org.apache.commons.lang3.Validate;
 
 import java.util.HashSet;

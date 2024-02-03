@@ -2,9 +2,9 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
-import com.dtstep.lighthouse.insights.dto_bak.StatDataObject;
+import com.dtstep.lighthouse.common.modal.StatDataObject;
 import com.dtstep.lighthouse.insights.vo.StatVO;
-import com.dtstep.lighthouse.insights.dto_bak.StatValue;
+import com.dtstep.lighthouse.common.modal.StatValue;
 import com.dtstep.lighthouse.insights.service.DataService;
 import com.dtstep.lighthouse.insights.service.StatService;
 import org.apache.commons.lang3.Validate;

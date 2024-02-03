@@ -1,8 +1,8 @@
 package com.dtstep.lighthouse.insights.dao;
 
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
-import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Permission;
+import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
+import com.dtstep.lighthouse.common.modal.Permission;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

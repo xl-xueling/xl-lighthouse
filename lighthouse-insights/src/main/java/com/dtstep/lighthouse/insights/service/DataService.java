@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.service;
 
-import com.dtstep.lighthouse.insights.dto_bak.StatDataObject;
+import com.dtstep.lighthouse.common.modal.StatDataObject;
 
 import java.time.LocalDateTime;
 import java.util.List;

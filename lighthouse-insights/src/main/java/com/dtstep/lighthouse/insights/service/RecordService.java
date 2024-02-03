@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.insights.dto.RecordQueryParam;
-import com.dtstep.lighthouse.insights.modal.Record;
+import com.dtstep.lighthouse.common.modal.Record;
 
 public interface RecordService {
 

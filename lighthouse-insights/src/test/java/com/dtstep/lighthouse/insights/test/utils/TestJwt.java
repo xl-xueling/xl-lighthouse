@@ -1,10 +1,8 @@
 package com.dtstep.lighthouse.insights.test.utils;
 
-import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.modal.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

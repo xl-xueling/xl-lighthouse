@@ -1,16 +1,12 @@
 package com.dtstep.lighthouse.insights.service;
 
-import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.modal.TreeNode;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
 import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
-import com.dtstep.lighthouse.insights.dto.ProjectCreateParam;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
-import com.dtstep.lighthouse.insights.dto_bak.*;
-import com.dtstep.lighthouse.insights.enums.OwnerTypeEnum;
-import com.dtstep.lighthouse.insights.modal.Project;
-import com.dtstep.lighthouse.insights.modal.User;
+import com.dtstep.lighthouse.common.modal.Project;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
 
 import java.util.List;
