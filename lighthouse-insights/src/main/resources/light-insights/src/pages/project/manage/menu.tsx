@@ -18,14 +18,14 @@ export default function ProjectManageMenu({structure,callback}:{structure:TreeNo
                 return (
                     <Menu.SubMenu key={item.key}
                                   title={
-                        <span style={{display:"inline-flex",alignItems:"center"}}>{getIcon(item.type)}{item.label}</span>
+                        <span style={{display:"inline-flex",alignItems:"center"}}>{getIcon(item.type,'8px')}{item.label}</span>
                     }>
                         {renderMenuItems(item.children)}
                     </Menu.SubMenu>
                 );
             }
             return <Menu.Item key={item.key}
-            ><span style={{display:"inline-flex",alignItems:"center"}}>{getIcon(item.type)}{item.label}</span></Menu.Item>;
+            ><span style={{display:"inline-flex",alignItems:"center"}}>{getIcon(item.type,'8px')}{item.label}</span></Menu.Item>;
         });
     }
 

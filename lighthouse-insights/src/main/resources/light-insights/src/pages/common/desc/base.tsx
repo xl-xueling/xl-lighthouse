@@ -238,21 +238,21 @@ export const getTreeResourceIcon= (type,level) => {
     }
 }
 
-export function getIcon(type:string){
+export function getIcon(type:string,marginRight:string = null){
     if(type == 'project'){
-        return <PiDiamondsFour size={14}/>
+        return <PiDiamondsFour style={{marginRight: marginRight}}/>
     }else if(type == 'group'){
-        return <CiViewTable/>
+        return <CiViewTable style={{marginRight: marginRight}}/>
     }else if(type == 'stat'){
-        return <IconTag/>
+        return <IconTag style={{marginRight: marginRight}}/>
     }else if(type == 'metric'){
-        return <LuLayers/>
+        return <LuLayers style={{marginRight: marginRight}}/>
     }else if(type == 'permission'){
-        return <VscGistSecret/>
+        return <VscGistSecret style={{marginRight: marginRight}}/>
     }else if(type == 'star'){
-        return <IconStar/>
+        return <IconStar style={{marginRight: marginRight}}/>
     }else if(type == 'stared'){
-        return <IconStarFill/>
+        return <IconStarFill style={{marginRight: marginRight}}/>
     }
 }
 

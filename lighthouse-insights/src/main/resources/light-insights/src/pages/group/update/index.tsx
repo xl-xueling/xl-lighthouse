@@ -187,7 +187,8 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
             title={t['groupUpdate.modal.title']}
             onOk={onOk}
             visible={true}
-            style={{ width:'750px' }}
+            alignCenter={false}
+            style={{width:'1180px',maxWidth:'80%', top: '130px' }}
             confirmLoading={confirmLoading}
             onCancel={onClose}>
             <Form
