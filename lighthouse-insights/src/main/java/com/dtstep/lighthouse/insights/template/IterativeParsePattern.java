@@ -28,7 +28,7 @@ import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.dtstep.lighthouse.core.formula.TemplateUtil;
 import com.dtstep.lighthouse.common.modal.Column;
-import com.dtstep.lighthouse.insights.vo.ResultWrapper;
+import com.dtstep.lighthouse.insights.vo.ServiceResult;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jsoup.Jsoup;
@@ -193,41 +193,41 @@ public final class IterativeParsePattern implements Parser {
 
 
     @Override
-    public ResultWrapper<TemplateEntity> parseConfig(TemplateContext context) {
+    public ServiceResult<TemplateEntity> parseConfig(TemplateContext context) {
         TemplateEntity templateEntity = new TemplateEntity();
         String template = context.getTemplate();
         Document document = Jsoup.parse(template,"", org.jsoup.parser.Parser.xmlParser());
         Elements elements = document.select("stat-item");
         if(elements == null || elements.size() == 0){
-            return ResultWrapper.result(ResultCode.templateParserNoValidItem);
+            return ServiceResult.result(ResultCode.templateParserNoValidItem);
         }
         if(elements.size() > 1){
-            return ResultWrapper.result(ResultCode.templateParserValidFailed);
+            return ServiceResult.result(ResultCode.templateParserValidFailed);
         }
         Element element = elements.get(0);
         Attributes attributes = element.attributes();
         List<String> fieldList = TemplateEntity.getTemplateAttrs();
         for (Attribute attribute : attributes) {
             if (!fieldList.contains(attribute.getKey())) {
-                return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserInValidAttrExist,attribute.getKey()));
+                return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserInValidAttrExist,attribute.getKey()));
             }else if(StringUtil.isEmpty(attribute.getValue())){
-                return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserAttrCannotBeEmpty,attribute.getKey()));
+                return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserAttrCannotBeEmpty,attribute.getKey()));
             }
         }
         String title = element.attr("title");
         if(StringUtil.isEmpty(title)){
-            return ResultWrapper.result(ResultCode.templateParserTitleCannotBeEmpty);
+            return ServiceResult.result(ResultCode.templateParserTitleCannotBeEmpty);
         }
         if(StringUtil.getBLen(title.trim()) < 5){
-            return ResultWrapper.result(ResultCode.templateParserTitleLengthValidFailed);
+            return ServiceResult.result(ResultCode.templateParserTitleLengthValidFailed);
         }
         if(StringUtil.getBLen(title.trim()) >= 40){
-            return ResultWrapper.result(ResultCode.templateParserTitleLengthValidFailed);
+            return ServiceResult.result(ResultCode.templateParserTitleLengthValidFailed);
         }
         templateEntity.setTitle(title);
         String stat = element.attr("stat");
         if(StringUtil.isEmpty(stat)){
-            return ResultWrapper.result(ResultCode.templateParserDimensCannotBeEmpty);
+            return ServiceResult.result(ResultCode.templateParserDimensCannotBeEmpty);
         }
         templateEntity.setStat(stat);
         List<Column> columnList = context.getColumnList();
@@ -237,11 +237,11 @@ public final class IterativeParsePattern implements Parser {
             String[] dimensArray = TemplateUtil.split(dimensFormula);
             for(String dimens:dimensArray){
                 if(StringUtil.isLetterNumOrUnderLine(dimens) && !groupColumnName.contains(dimens)){
-                    return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserDimensNotExist,dimens));
+                    return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserDimensNotExist,dimens));
                 }
                 boolean checkFlag = ImitateCompile.imitateDimensFormula(context.getStatId(),dimens,columnList);
                 if(!checkFlag){
-                    return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserDimensValidFailed,dimens));
+                    return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserDimensValidFailed,dimens));
                 }
             }
             templateEntity.setDimens(dimensFormula);
@@ -257,24 +257,24 @@ public final class IterativeParsePattern implements Parser {
                 sizeStr = limit.substring(4);
                 templateEntity.setLimitTypeEnum(LimitTypeEnum.LAST);
             }else{
-                return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserLimitValidFailed,limit));
+                return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserLimitValidFailed,limit));
             }
             if(StringUtil.isEmpty(sizeStr) || !StringUtil.isInt(sizeStr) || Integer.parseInt(sizeStr) < 0){
-                return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserLimitValidFailed,limit));
+                return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserLimitValidFailed,limit));
             }
             if(Integer.parseInt(sizeStr) > StatConst.LIMIT_MAX_SIZE){
-                return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserLimitValueExceed,sizeStr));
+                return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserLimitValueExceed,sizeStr));
             }
             String timeParam = context.getTimeParam();
             if(!StringUtil.isEmpty(timeParam) && timeParam.endsWith("minute")){
                 int duration = Integer.parseInt(timeParam.split("-")[0]);
                 if(duration < 5){
-                    return ResultWrapper.result(ResultCode.templateParserLimitMinuteNotSupport);
+                    return ServiceResult.result(ResultCode.templateParserLimitMinuteNotSupport);
                 }
             }
 
             if(StringUtil.isEmpty(dimensFormula)){
-                return ResultWrapper.result(ResultCode.templateParserLimitDimensExistTogether);
+                return ServiceResult.result(ResultCode.templateParserLimitDimensExistTogether);
             }
             templateEntity.setLimit(limit);
             templateEntity.setLimitSize(Integer.parseInt(sizeStr));
@@ -284,34 +284,34 @@ public final class IterativeParsePattern implements Parser {
         try{
             statePair = FormulaTranslate.translate(stat);
         }catch (Exception ex){
-            return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserStatValidFailed,stat));
+            return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserStatValidFailed,stat));
         }
 
         if(CollectionUtils.isEmpty(statePair.getRight())){
-            return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserStatValidFailed,stat));
+            return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserStatValidFailed,stat));
         }
         String completeStat = statePair.getLeft();
         boolean checkFlag = ImitateCompile.imitateStatFormula(context.getStatId(),completeStat,columnList);
         if(!checkFlag){
-            return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserStatValidFailed,stat));
+            return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserStatValidFailed,stat));
         }
         templateEntity.setCompleteStat(completeStat);
         List<StatState> stateList = statePair.getRight();
         for(StatState statState : stateList){
             if(!StatState.isCountState(statState) && CollectionUtils.isEmpty(statState.getUnitList())){
-                return ResultWrapper.result(ResultCode.getExtendResultCode(ResultCode.templateParserStatValidFailed,stat));
+                return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserStatValidFailed,stat));
             }
         }
 
         if(stateList.size() > 3){
-            return ResultWrapper.result(ResultCode.templateParserStateExceedLimit);
+            return ServiceResult.result(ResultCode.templateParserStateExceedLimit);
         }
 
         boolean isSequence = stateList.stream().anyMatch(x -> x.getFunctionEnum() == FunctionEnum.SEQ);
         if(isSequence && stateList.size() > 1){
-            return ResultWrapper.result(ResultCode.templateParserSeqTogether);
+            return ServiceResult.result(ResultCode.templateParserSeqTogether);
         }
         templateEntity.setStatStateList(stateList);
-        return ResultWrapper.result(ResultCode.success,templateEntity);
+        return ServiceResult.result(ResultCode.success,templateEntity);
     }
 }

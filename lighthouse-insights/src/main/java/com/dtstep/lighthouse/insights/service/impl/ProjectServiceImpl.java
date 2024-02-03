@@ -16,6 +16,7 @@ import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
+import com.dtstep.lighthouse.insights.vo.ServiceResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
@@ -68,19 +69,19 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public int create(Project project){
+    public ServiceResult<Integer> create(Project project){
         LocalDateTime localDateTime = LocalDateTime.now();
         project.setUpdateTime(localDateTime);
         project.setCreateTime(localDateTime);
         projectDao.insert(project);
-        int projectId = project.getId();
+        int id = project.getId();
         Integer departmentId = project.getDepartmentId();
-        RolePair rolePair = resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Project,projectId,ResourceTypeEnum.Department,departmentId));
+        RolePair rolePair = resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Project,id,ResourceTypeEnum.Department,departmentId));
         Integer manageRoleId = rolePair.getManageRoleId();
         int currentUserId = baseService.getCurrentUserId();
         Permission adminPermission = new Permission(currentUserId,OwnerTypeEnum.USER,manageRoleId);
         permissionService.create(adminPermission);
-        return projectId;
+        return ServiceResult.success(project.getId());
     }
 
     @Override

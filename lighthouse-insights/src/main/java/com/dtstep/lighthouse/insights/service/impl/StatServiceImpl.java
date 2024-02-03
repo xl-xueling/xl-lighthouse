@@ -13,7 +13,7 @@ import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.common.modal.PermissionEnum;
-import com.dtstep.lighthouse.insights.vo.ResultWrapper;
+import com.dtstep.lighthouse.insights.vo.ServiceResult;
 import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.common.modal.TreeNode;
 import com.dtstep.lighthouse.common.enums.ComponentTypeEnum;
@@ -88,12 +88,12 @@ public class StatServiceImpl implements StatService {
         Group group = groupDao.queryById(groupId);
         String template = stat.getTemplate();
         String timeParam = stat.getTimeparam();
-        ResultWrapper<TemplateEntity> resultWrapper = TemplateParser.parseConfig(new TemplateContext(template,timeParam, group.getColumns()));
-        ResultCode resultCode = resultWrapper.getResultCode();
+        ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(template,timeParam, group.getColumns()));
+        ResultCode resultCode = serviceResult.getResultCode();
         if(resultCode != ResultCode.success){
             return resultCode;
         }
-        TemplateEntity templateEntity = resultWrapper.getData();
+        TemplateEntity templateEntity = serviceResult.getData();
         stat.setTitle(templateEntity.getTitle());
         LocalDateTime localDateTime = LocalDateTime.now();
         stat.setUpdateTime(localDateTime);
@@ -198,8 +198,8 @@ public class StatServiceImpl implements StatService {
         String timeParam = stat.getTimeparam();
         Group group = groupDao.queryById(stat.getGroupId());
         List<Column> columnList = group.getColumns();
-        ResultWrapper<TemplateEntity> resultWrapper = TemplateParser.parseConfig(new TemplateContext(template,timeParam, group.getColumns()));
-        TemplateEntity templateEntity = resultWrapper.getData();
+        ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(template,timeParam, group.getColumns()));
+        TemplateEntity templateEntity = serviceResult.getData();
         stat.setTemplateEntity(templateEntity);
         stat.setTitle(templateEntity.getTitle());
         return translate(stat);

@@ -17,11 +17,11 @@ package com.dtstep.lighthouse.insights.template;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
-import com.dtstep.lighthouse.insights.vo.ResultWrapper;
+import com.dtstep.lighthouse.insights.vo.ServiceResult;
 
 interface Parser {
 
     TemplateEntity parse(TemplateContext context) throws Exception;
 
-    ResultWrapper<TemplateEntity> parseConfig(TemplateContext context);
+    ServiceResult<TemplateEntity> parseConfig(TemplateContext context);
 }
