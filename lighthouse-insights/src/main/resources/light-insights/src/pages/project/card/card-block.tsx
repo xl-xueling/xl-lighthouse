@@ -46,10 +46,6 @@ function CardBlock(props: CardBlockType) {
   const t = useLocale(locale);
     const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo);
 
-    useEffect(() => {
-        console.log("staredProjectInfo is:" + JSON.stringify(staredProjectInfo));
-    },[])
-
   useEffect(() => {
     setLoading(props.loading);
   }, [props.loading]);
@@ -68,8 +64,12 @@ function CardBlock(props: CardBlockType) {
 
   const className = cs(styles['card-block']);
 
-    const handleClick = () => {
+    const redirectPreview = () => {
         window.open('/project/preview/' + item?.id, '_blank');
+    };
+
+    const redirectManage = () => {
+        window.open('/project/manage/' + item?.id, '_blank');
     };
 
     const getTitleIcon = (index) => {
@@ -82,18 +82,22 @@ function CardBlock(props: CardBlockType) {
 
   return (
     <Card
-        onClick={handleClick}
+        onClick={redirectPreview}
       bordered={true}
       className={className}
       size="small"
       style={{cursor:'pointer'}}
         actions={
-          item.permissions.includes(PermissionEnum.AccessAble)?
           [
-          <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();handleClick();}}>
-             <Button type={"primary"} size={"mini"}>Preview</Button>
-          </span>,
-      ]:null}
+          item.permissions.includes(PermissionEnum.AccessAble)?
+              <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();redirectPreview();}}>
+                 <Button type={"secondary"} size={"mini"}>{t['basic.form.button.preview']}</Button>
+              </span>:null,
+              item.permissions.includes(PermissionEnum.ManageAble)?
+                  <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();redirectManage();}}>
+                 <Button type={"primary"} size={"mini"}>{t['basic.form.button.manage']}</Button>
+              </span>:null,
+        ]}
 
       title={
           <div>
@@ -117,7 +121,7 @@ function CardBlock(props: CardBlockType) {
                           :null
                   }
                       </span>
-                  <span onClick={handleClick}>
+                  <span onClick={redirectPreview}>
                       <span style={{display:"inline-flex",alignItems:"center"}}>{item.title}{getLockIcon(t,item.privateType,item.permissions)}</span>
                   </span>
                   <div onClick={(e) => {e.stopPropagation();}} className={styles.more}>
@@ -139,7 +143,7 @@ function CardBlock(props: CardBlockType) {
           </div>
       }
     >
-      <div style={{height: size == 'small'?'25px':'60px'}} className={styles.content} onClick={handleClick}>{getContent()}</div>
+      <div style={{height: size == 'small'?'25px':'60px'}} className={styles.content} onClick={redirectPreview}>{getContent()}</div>
         <Meta
             avatar={
                 item.permissions.includes(PermissionEnum.AccessAble) ?
