@@ -5,7 +5,7 @@ import {
     Form,
     Input,
     Tabs,
-    Dropdown, Menu, Message, Space, Divider, Notification, Spin, Skeleton,
+    Dropdown, Menu, Message, Space, Divider, Notification, Spin, Skeleton, Popconfirm, Modal,
 } from '@arco-design/web-react';
 import {
     IconDelete,
@@ -78,7 +78,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                 break;
             }
             case 'deleteGroup':{
-                await handlerDeleteGroup();
+                setShowDeleteGroupConfirm(true);
                 break;
             }
             default:{
@@ -118,6 +118,22 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
         })
     }
 
+    const [showDeleteGroupConfirm,setShowDeleteGroupConfirm] = useState<boolean>(false);
+
+    const deleteGroupConfirm = (
+        <Modal
+            title={t['basic.modal.confirm.delete.title']}
+            visible={showDeleteGroupConfirm}
+            onOk={() => {handlerDeleteGroup();setShowDeleteGroupConfirm(false)}}
+            alignCenter={false}
+            style={{top:'200px'}}
+            onCancel={() => setShowDeleteGroupConfirm(false)}
+            okText={t['basic.form.button.submit']}
+            cancelText={t['basic.form.button.cancel']}
+        >
+            {t['groupManage.operations.delete.confirm']}
+        </Modal>
+    );
 
     useEffect(() => {
         fetchData().then();
@@ -157,11 +173,13 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                                     {t['groupManage.operations.button.secret.key']}</Menu.Item>
                                 <Menu.Item key={'deleteGroup'}>
                                     <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<IconDelete/>} />&nbsp;&nbsp;
-                                    {t['groupManage.operations.button.delete.group']}</Menu.Item>
+                                    {t['groupManage.operations.button.delete.group']}
+                                </Menu.Item>
                             </Menu>
                         }>
                         <Button size={"mini"} type={"primary"}><IconDownCircle />{t['groupManage.operations.more']}</Button>
                     </Dropdown>
+                        {deleteGroupConfirm}
                     </Space>
                 }>
                 <TabPane
