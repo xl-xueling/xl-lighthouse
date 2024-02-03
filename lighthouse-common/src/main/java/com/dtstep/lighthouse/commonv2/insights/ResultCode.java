@@ -138,6 +138,8 @@ public enum ResultCode {
 
     userStarMetricLimitExceed("3001","userStarMetricLimitExceed"),
 
+    userStarProjectLimitExceed("3001","userStarProjectLimitExceed"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

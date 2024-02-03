@@ -24,4 +24,6 @@ public class SystemConstant {
     public final static int PROJECT_MAX_GROUP_SIZE = 10;
 
     public final static int USER_STAR_METRICSET_LIMIT = 100;
+
+    public final static int USER_STAR_PROJECT_LIMIT = 100;
 }

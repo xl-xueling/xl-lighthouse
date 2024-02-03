@@ -271,8 +271,8 @@ public class ProjectServiceImpl implements ProjectService {
         countParam.setSubjectId(currentUserId);
         countParam.setRelationType(RelationTypeEnum.UserStarProjectRelation);
         int count = relationService.count(countParam);
-        if(count > SystemConstant.USER_STAR_METRICSET_LIMIT){
-            return ResultCode.userStarMetricLimitExceed;
+        if(count > SystemConstant.USER_STAR_PROJECT_LIMIT){
+            return ResultCode.userStarProjectLimitExceed;
         }
         Relation relation = new Relation();
         relation.setSubjectId(currentUserId);
@@ -297,7 +297,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectVO> queryStarList() {
         int currentUserId = baseService.getCurrentUserId();
-        List<Relation> relationList = relationDao.queryList(currentUserId,RelationTypeEnum.UserStarMetricSetRelation);
+        List<Relation> relationList = relationDao.queryList(currentUserId,RelationTypeEnum.UserStarProjectRelation);
         List<Integer> ids = relationList.stream().map(z -> z.getResourceId()).collect(Collectors.toList());
         List<ProjectVO> voList = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(ids)){
