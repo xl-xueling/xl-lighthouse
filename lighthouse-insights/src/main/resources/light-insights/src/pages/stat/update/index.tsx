@@ -27,8 +27,6 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
 
     const [loading,setLoading] = useState<boolean>(false);
     const t = useLocale(locale);
-    const [groupInfo,setGroupInfo] = useState<Group>(null);
-    const [projectInfo,setProjectInfo] = useState<Project>(null);
     const formRef = useRef(null);
 
     async function handlerSubmit(){
@@ -37,8 +35,8 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
         const updateParam:Stat = {
             id:statInfo.id,
             template:values.template,
-            groupId:groupInfo.id,
-            projectId:groupInfo.projectId,
+            groupId:statInfo.groupId,
+            projectId:statInfo.projectId,
             expired:values.expired,
             title:values.title,
             timeparam:values.timeparam,
@@ -68,11 +66,6 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
         })
     }
 
-    useEffect(() => {
-        setGroupInfo(statInfo.group);
-        setProjectInfo(statInfo.project);
-    },[])
-
     const FormItem = Form.Item;
 
     return (
@@ -96,7 +89,8 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
                     onCancel={onClose}
                     onOk={handlerSubmit}
                     modalRender={(modal) => <Draggable bounds="parent" handle=".modal-draggable-handle" disabled={false}>{modal}</Draggable>}
-                    style={{ width:'50%',top:'20px' }}
+                    alignCenter={false}
+                    style={{width:'960px',maxWidth:'80%', top: '130px' }}
                 >
                     <Form
                         ref={formRef}
@@ -106,7 +100,7 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
                         layout={"vertical"}
                         initialValues={{
                             title:statInfo?.title,
-                            group:projectInfo?.title + ' > ' + groupInfo?.token,
+                            group:statInfo?.projectTitle + ' > ' + statInfo?.token,
                             timeparam:statInfo?.timeparam,
                             template:statInfo?.template,
                             expired:statInfo?.expired,
