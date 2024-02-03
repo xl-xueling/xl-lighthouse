@@ -81,7 +81,7 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
                             validator: (v, cb) => {
                                 if (getTextBlenLength(v) < 5) {
                                     return cb(t['projectUpdate.form.name.less.limit'])
-                                }else if (getTextBlenLength(v) > 26) {
+                                }else if (getTextBlenLength(v) > 30) {
                                     return cb(t['projectUpdate.form.name.exceeds.limit'])
                                 }
                                 cb(null);
@@ -100,7 +100,7 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
                     <Form.Item label={'Description'} field="desc" rules={[
                         {required: true ,message:t['projectUpdate.form.description.errMsg'],validateTrigger : ['onSubmit']}
                     ]}>
-                        <Input.TextArea placeholder='Please enter description' style={{ minHeight: 64}} maxLength={150} showWordLimit={true}/>
+                        <Input.TextArea placeholder='Please enter description' style={{ minHeight: 64}} maxLength={90} showWordLimit={true}/>
                     </Form.Item>
                     <Form.Item label={'PrivateType'} field="privateType" rules={[{required:true}]}>
                         <Radio.Group defaultValue={0}>

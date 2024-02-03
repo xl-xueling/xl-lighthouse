@@ -9,27 +9,19 @@ import {
   PaginationProps,
   Radio,
   Space,
-  Table,
 } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
 import {getColumns} from './constants';
 import {requestDeleteById, requestList} from "@/api/project";
-import {Department, Project, TreeNode} from "@/types/insights-web";
+import {Project, TreeNode} from "@/types/insights-web";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useSelector} from "react-redux";
-import ProjectCreatePanel from "@/pages/project/create";
-import ProjectUpdatePanel from "@/pages/project/update";
-import Detail from "@/pages/project/list/detail";
-import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
-import ProjectApplyModal from "@/pages/project/apply";
 import {IconHome} from "@arco-design/web-react/icon";
-import {ResourceTypeEnum} from "@/types/insights-common";
-import {GlobalErrorCodes} from "@/utils/constants";
-import {getRandomString} from "@/utils/util";
 import {GlobalState} from "@/store";
 import ProjectListPanel from "@/pages/project/list/ProjectListPanel";
+import ProjectCreatePanel from "@/pages/project/create";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -213,6 +205,7 @@ export default function Index() {
         </Grid.Col>
       </Grid.Row>
       <ProjectListPanel formParams={formParams}/>
+      {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} onSuccess={handlerReloadList}/>}
     </Card>
       </>
   );

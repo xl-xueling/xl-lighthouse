@@ -19,24 +19,5 @@ public class TestProjectDao {
     @Autowired
     private ProjectDao projectDao;
 
-    @Test
-    public void testCreateProject() throws Exception {
-        ProjectCreateParam project = new ProjectCreateParam();
-        project.setTitle("title");
-        project.setDepartmentId(1);
-        project.setPrivateType(PrivateTypeEnum.Private);
-        project.setDesc("desc");
-        project.setCreateTime(LocalDateTime.now());
-        project.setUpdateTime(LocalDateTime.now());
-        projectDao.insert(project);
-    }
-
-
-    @Test
-    public void testCount() throws Exception {
-        int count = projectDao.countByDepartmentId(1);
-        System.out.println("count:" + count);
-    }
-
 
 }
