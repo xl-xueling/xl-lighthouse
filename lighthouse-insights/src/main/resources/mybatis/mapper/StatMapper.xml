@@ -44,25 +44,6 @@
     </select>
 
     <select id="queryList" resultMap="statResultMap">
-        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`
-        from ldp_stats
-        <where>
-            <if test="queryParam!= null and queryParam.id!=null">
-                AND id = #{queryParam.id}
-            </if>
-            <if test="queryParam != null and queryParam.search != null">
-                AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})
-            </if>
-            <if test="queryParam != null and queryParam.projectId != null">
-                AND project_id = #{queryParam.projectId}
-            </if>
-            <if test="queryParam != null and queryParam.groupId != null">
-                AND group_id = #{queryParam.groupId}
-            </if>
-        </where>
-    </select>
-
-    <select id="queryJoinList" resultMap="statResultMap">
         WITH RECURSIVE cte AS (
         SELECT d.id
         FROM ldp_departments d
@@ -94,7 +75,7 @@
                 1 != 1
             </if>
             <if test="queryParam != null and queryParam.search != null">
-                AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})
+                AND (a.title LIKE CONCAT('%', #{queryParam.search}, '%') or a.id = #{queryParam.search})
             </if>
             <if test="queryParam.projectIds != null and queryParam.projectIds.size > 0">
                 AND a.project_id IN
@@ -102,11 +83,17 @@
                     #{item}
                 </foreach>
             </if>
+            <if test="queryParam.projectIds != null and queryParam.projectIds.size == 0">
+                1 != 1
+            </if>
             <if test="queryParam.groupIds != null and queryParam.groupIds.size > 0">
                 AND a.group_id IN
                 <foreach item="item" index="index" collection="queryParam.groupIds" open="(" separator="," close=")">
                     #{item}
                 </foreach>
+            </if>
+            <if test="queryParam.groupIds != null and queryParam.groupIds.size == 0">
+                1 != 1
             </if>
             <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
                 AND department_id IN(

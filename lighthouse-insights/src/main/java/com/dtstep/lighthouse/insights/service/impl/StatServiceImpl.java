@@ -159,7 +159,7 @@ public class StatServiceImpl implements StatService {
     public List<StatVO> queryByIds(List<Integer> ids) {
         StatQueryParam queryParam = new StatQueryParam();
         queryParam.setIds(ids);
-        List<Stat> statList = statDao.queryJoinList(queryParam);
+        List<Stat> statList = statDao.queryList(queryParam);
         List<StatVO> voList = new ArrayList<>();
         for(Stat stat : statList){
             StatVO statVO = translate(stat);
@@ -174,7 +174,7 @@ public class StatServiceImpl implements StatService {
         List<StatVO> dtoList = new ArrayList<>();
         PageInfo<Stat> pageInfo = null;
         try{
-            List<Stat> list = statDao.queryJoinList(queryParam);
+            List<Stat> list = statDao.queryList(queryParam);
             pageInfo = new PageInfo<>(list);
         }finally {
             PageHelper.clearPage();

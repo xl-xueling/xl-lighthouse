@@ -121,11 +121,11 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
 
     useEffect(() => {
         fetchData().then();
-        setFormParams({"groupId":groupId});
+        setFormParams({"groupIds":[groupId]});
     },[groupId])
 
     const handlerSubmit = (input) => {
-        setFormParams({"title":input,"groupId":groupId});
+        setFormParams({"search":input,"groupIds":[groupId]});
     }
 
     return (
@@ -169,7 +169,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                     title={
                         <span style={{display:"inline-flex",alignItems:"center"}}>
                             <IconTags style={{ marginRight: 6 }} />
-                            Statistic Items
+                            {t['groupManage.label.statisticList']}
                         </span>
                     }>
                     <Form
@@ -194,7 +194,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                 <TabPane key='3' title={
                     <span style={{display:"inline-flex",alignItems:"center"}}>
                         <CiViewTable style={{ marginRight: 6 }} />
-                        Group Information
+                        {t['groupManage.label.groupInformation']}
                   </span>}>
                     <GroupBasicPanel groupInfo={groupInfo}/>
                 </TabPane>
