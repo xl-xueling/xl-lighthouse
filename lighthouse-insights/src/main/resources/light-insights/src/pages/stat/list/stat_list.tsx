@@ -188,6 +188,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
     },[extend])
 
     useEffect(() => {
+        console.log("formParams isSSS:" + JSON.stringify(formParams))
         setLoading(true);
         fetchData().then();
     },[refreshTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)])

@@ -10,6 +10,8 @@ const i18n = {
     'groupManage.operations.button.delete.group':'Delete Group',
     'groupManage.form.submit.deleteSuccess':'Delete group successfully!',
     'groupManage.operations.more':'More',
+    'groupManage.label.statisticList':'Statistic Items',
+    'groupManage.label.groupInformation':'Group Information',
   },
   'zh-CN': {
     'groupManage.group':'统计组',
@@ -22,6 +24,8 @@ const i18n = {
     'groupManage.operations.button.delete.group':'删除统计组',
     'groupManage.form.submit.deleteSuccess':'删除统计组成功！',
     'groupManage.operations.more':'更多',
+    'groupManage.label.statisticList':'统计项列表',
+    'groupManage.label.groupInformation':'统计组信息',
   },
 };
 

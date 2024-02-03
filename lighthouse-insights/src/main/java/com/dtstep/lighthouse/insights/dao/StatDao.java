@@ -22,5 +22,5 @@ public interface StatDao {
 
     int update(Stat stat);
 
-    List<Stat> queryJoinList(@Param("queryParam") StatQueryParam queryParam);
+    List<Stat> queryList(@Param("queryParam") StatQueryParam queryParam);
 }
