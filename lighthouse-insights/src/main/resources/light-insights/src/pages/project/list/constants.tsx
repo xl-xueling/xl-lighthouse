@@ -19,7 +19,17 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
           dataIndex: 'star',
           headerCellStyle: { width:'20px' },
           render: (_, record) => {
-              return <Button icon={getIcon('star')} size={"mini"} shape={"round"} onClick={() => {callback(record, 'star')}}/>
+              return(
+                  <Popconfirm
+
+                      position={"bl"}
+                      title='Confirm'
+                      content={t['projectList.operations.unstar.confirm']}
+                      onOk={async (e) => {await callback(record,"unstar")}}
+                  >
+                      <Button icon={getIcon('star')} size={"mini"} shape={"round"} />
+                  </Popconfirm>
+              )
           }
       },
     {
