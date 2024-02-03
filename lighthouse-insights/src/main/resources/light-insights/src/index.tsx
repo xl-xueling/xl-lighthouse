@@ -18,8 +18,9 @@ import './mock';
 import Register from "@/pages/register";
 import {requestFetchUserInfo} from "@/api/user";
 import {getDataWithLocalCache} from "@/utils/localCache";
-import {MetricSet} from "@/types/insights-web";
-import {requestFixedList} from "@/api/metricset";
+import {MetricSet, Project} from "@/types/insights-web";
+import {requestStarList as requestMetricStarList} from "@/api/metricset";
+import {requestStarList as requestProjectStarList} from "@/api/project";
 import {fetchAllDepartmentData} from "@/pages/department/common";
 import {checkLogin} from "@/utils/checkLogin";
 
@@ -38,6 +39,11 @@ export const updateStoreAllDepartInfo = (allDepartInfo) => ({
 export const updateStoreStaredMetricInfo = (staredMetricInfo) => ({
   type: 'update-staredMetricInfo',
   payload: {staredMetricInfo: staredMetricInfo,staredMetricsLoading:false},
+});
+
+export const updateStoreStaredProjectInfo = (staredProjectInfo) => ({
+  type: 'update-staredProjectInfo',
+  payload: {staredProjectInfo: staredProjectInfo,staredProjectLoading:false},
 });
 
 function Index() {
@@ -62,7 +68,17 @@ function Index() {
 
   async function fetchPinMetricsData():Promise<Array<MetricSet>> {
     return new Promise<Array<MetricSet>>((resolve,reject) => {
-      requestFixedList().then((response) => {
+      requestMetricStarList().then((response) => {
+        resolve(response.data);
+      }).catch((error) => {
+        reject(error);
+      })
+    })
+  }
+
+  async function fetchPinProjectsData():Promise<Array<Project>> {
+    return new Promise<Array<Project>>((resolve,reject) => {
+      requestProjectStarList().then((response) => {
         resolve(response.data);
       }).catch((error) => {
         reject(error);
@@ -81,6 +97,12 @@ function Index() {
     store.dispatch({
       type: 'update-staredMetricInfo',
       payload: {staredMetricInfo: staredMetricInfo,staredMetricsLoading:false},
+    })
+
+    const staredProjectInfo = await getDataWithLocalCache('cache_stared_projects',600,fetchPinProjectsData);
+    store.dispatch({
+      type: 'update-staredProjectInfo',
+      payload: {staredProjectInfo: staredProjectInfo,staredProjectLoading:false},
     })
 
     requestFetchUserInfo().then((resultData) => {

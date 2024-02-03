@@ -1,20 +1,14 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.enums.*;
 import com.dtstep.lighthouse.common.modal.*;
+import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
-import com.dtstep.lighthouse.insights.dao.DepartmentDao;
-import com.dtstep.lighthouse.insights.dao.GroupDao;
-import com.dtstep.lighthouse.insights.dao.ProjectDao;
-import com.dtstep.lighthouse.insights.dao.StatDao;
-import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
-import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
-import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
-import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
-import com.dtstep.lighthouse.common.enums.PrivateTypeEnum;
-import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.dao.*;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.service.*;
+import com.dtstep.lighthouse.insights.vo.MetricSetVO;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
 import com.dtstep.lighthouse.insights.vo.ServiceResult;
 import com.github.pagehelper.PageHelper;
@@ -29,10 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,6 +57,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private StatDao statDao;
+
+    @Autowired
+    private RelationService relationService;
+
+    @Autowired
+    private RelationDao relationDao;
 
     @Transactional
     @Override
@@ -266,5 +263,59 @@ public class ProjectServiceImpl implements ProjectService {
         }
         return rootNode;
     }
+
+    @Override
+    public ResultCode star(Project project) {
+        int currentUserId = baseService.getCurrentUserId();
+        RelationQueryParam countParam = new RelationQueryParam();
+        countParam.setSubjectId(currentUserId);
+        countParam.setRelationType(RelationTypeEnum.UserStarProjectRelation);
+        int count = relationService.count(countParam);
+        if(count > SystemConstant.USER_STAR_METRICSET_LIMIT){
+            return ResultCode.userStarMetricLimitExceed;
+        }
+        Relation relation = new Relation();
+        relation.setSubjectId(currentUserId);
+        relation.setRelationType(RelationTypeEnum.UserStarProjectRelation);
+        relation.setResourceId(project.getId());
+        relation.setResourceType(ResourceTypeEnum.Project);
+        return relationService.create(relation);
+    }
+
+    @Override
+    public ResultCode unStar(Project project) {
+        int currentUserId = baseService.getCurrentUserId();
+        RelationDeleteParam relationDeleteParam = new RelationDeleteParam();
+        relationDeleteParam.setSubjectId(currentUserId);
+        relationDeleteParam.setRelationType(RelationTypeEnum.UserStarProjectRelation);
+        relationDeleteParam.setResourceId(project.getId());
+        relationDeleteParam.setResourceType(ResourceTypeEnum.Project);
+        relationService.delete(relationDeleteParam);
+        return ResultCode.success;
+    }
+
+    @Override
+    public List<ProjectVO> queryStarList() {
+        int currentUserId = baseService.getCurrentUserId();
+        List<Relation> relationList = relationDao.queryList(currentUserId,RelationTypeEnum.UserStarMetricSetRelation);
+        List<Integer> ids = relationList.stream().map(z -> z.getResourceId()).collect(Collectors.toList());
+        List<ProjectVO> voList = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(ids)){
+            ProjectQueryParam queryParam = new ProjectQueryParam();
+            queryParam.setIds(ids);
+            List<Project> projectList = projectDao.queryList(queryParam);
+            for(Project project : projectList){
+                try{
+                    ProjectVO projectVO = translate(project);
+                    voList.add(projectVO);
+                }catch (Exception ex){
+                    logger.error("translate item info error,id:{}",project.getId(),ex);
+                }
+            }
+        }
+        Collections.sort(voList, Comparator.comparingInt(e -> ids.indexOf(e.getId())));
+        return voList;
+    }
+
 
 }

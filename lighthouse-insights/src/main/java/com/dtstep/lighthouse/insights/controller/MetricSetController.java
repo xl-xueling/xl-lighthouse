@@ -165,7 +165,7 @@ public class MetricSetController {
     }
 
     @RequestMapping("/metricset/unStarById")
-    public ResultData<Integer> unFocusById(@Validated @RequestBody IDParam idParam) {
+    public ResultData<Integer> unStarById(@Validated @RequestBody IDParam idParam) {
         Integer id = idParam.getId();
         MetricSet metricSet = metricSetService.queryById(id);
         Validate.notNull(metricSet);

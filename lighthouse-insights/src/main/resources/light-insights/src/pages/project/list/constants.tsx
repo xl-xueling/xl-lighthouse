@@ -10,15 +10,16 @@ import { CiLock } from "react-icons/ci";
 import { LuLock } from "react-icons/lu";
 import { PiLockBold } from "react-icons/pi";
 import {RiAppsLine} from "react-icons/ri";
+import {getIcon} from "@/pages/common/desc/base";
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
       {
           title: '',
-          dataIndex: 'binded',
+          dataIndex: 'star',
           headerCellStyle: { width:'20px' },
           render: (_, record) => {
-              return <Button icon={<PiLinkSimple/>} size={"mini"} shape={"round"} onClick={() => {callback(record, 'binded')}}/>
+              return <Button icon={getIcon('star')} size={"mini"} shape={"round"} onClick={() => {callback(record, 'star')}}/>
           }
       },
     {

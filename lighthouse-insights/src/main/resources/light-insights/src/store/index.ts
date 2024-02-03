@@ -1,5 +1,5 @@
 import defaultSettings from '../settings.json';
-import {Department, MetricSet, User} from "@/types/insights-web";
+import {Department, MetricSet, Project, User} from "@/types/insights-web";
 
 export interface GlobalState {
   settings?: typeof defaultSettings;
@@ -7,6 +7,7 @@ export interface GlobalState {
   userLoading?: boolean;
   allDepartInfo? : Array<Department>;
   staredMetricInfo? :Array<MetricSet>;
+  staredProjectInfo?:Array<Project>;
 }
 
 const initialState = ():GlobalState => {
@@ -18,6 +19,7 @@ const initialState = ():GlobalState => {
     userInfo: initUser,
     allDepartInfo:[],
     staredMetricInfo:[],
+    staredProjectInfo:[],
   }
 };
 
@@ -38,6 +40,15 @@ export default function processReducer(state = initialState(), action) {
         ...state,
         staredMetricsLoading,
         staredMetricInfo,
+      }
+    }
+
+    case 'update-staredProjectInfo':{
+      const { staredProjectInfo = initialState().staredProjectInfo,staredProjectLoading = true } = action.payload;
+      return {
+        ...state,
+        staredProjectLoading,
+        staredProjectInfo,
       }
     }
 

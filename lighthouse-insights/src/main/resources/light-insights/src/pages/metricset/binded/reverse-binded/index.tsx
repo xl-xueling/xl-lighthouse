@@ -15,7 +15,7 @@ import useLocale from '@/utils/useLocale';
 import {GoGitMerge, GoStack} from "react-icons/go";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import {requestBinded, requestFixedList} from "@/api/metricset";
+import {requestBinded, requestStarList} from "@/api/metricset";
 import {ArcoTreeNode, Department, MetricSet, TreeNode} from "@/types/insights-web";
 import locale from "./locale";
 import {requestList} from "@/api/metricset";

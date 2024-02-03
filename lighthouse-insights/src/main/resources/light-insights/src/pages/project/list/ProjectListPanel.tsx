@@ -15,7 +15,7 @@ import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
 import {getBindColumns, getColumns} from './constants';
-import {requestDeleteById, requestList} from "@/api/project";
+import {requestDeleteById, requestList, requestStarById, requestUnStarById} from "@/api/project";
 import {Department, Project, TreeNode} from "@/types/insights-web";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useSelector} from "react-redux";
@@ -32,6 +32,7 @@ import {GlobalState} from "@/store";
 import {requestBinded} from "@/api/metricset";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
+import {updateStoreStaredMetricInfo} from "@/index";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -65,9 +66,9 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
             setUpdateVisible(!updateVisible);
         }else if(type == 'delete'){
             await handlerDeleteProject(record.id).then();
-        }else if(type == 'binded'){
+        }else if(type == 'star'){
             setSelectedProject(record);
-            await handlerBindedProject().then();
+
         }else if(type == 'detail'){
             setSelectedProject(record);
             setDetailVisible(!detailVisible);
@@ -92,6 +93,44 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
             console.log(error);
         })
     };
+
+    const handlerStar = async (record) => {
+        setLoading(true);
+        const id = record.id;
+        await requestStarById({id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.star.submit.success']});
+                localStorage.removeItem('cache_stared_projects');
+                const currentFixedData = staredProjectInfo.filter(x => x.id != record.id);
+                dispatch(updateStoreStaredMetricInfo([record,...currentFixedData]))
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
+    const handlerUnStar = async (record) => {
+        setLoading(true);
+        const id = record.id;
+        await requestUnStarById({id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetList.operations.unstar.submit.success']});
+                localStorage.removeItem('cache_stared_projects');
+                const currentFixedData = staredProjectInfo.filter(x => x.id != record.id);
+                dispatch(updateStoreStaredMetricInfo([...currentFixedData]))
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
 
     async function handlerBind(id:number){
         const bindParams = {
@@ -149,10 +188,6 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
         });
     }
 
-    const handlerUpdateProject = async (record) => {
-        setListData([...(listData.filter(x => x.id != record.id)),record])
-    }
-
     function handleSearch(params) {
         setPagination({ ...pagination, current: 1 });
     }
@@ -162,9 +197,6 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
         handleSearch({});
     }
 
-    const handlerBindedProject = async () => {
-        setBindedVisible(true);
-    };
 
     useEffect(() => {
         if(extend != null){
@@ -220,7 +252,7 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
                 columns={columns}
                 data={listData}
             />
-            {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)} onSuccess={handlerUpdateProject}/>}
+            {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)} onSuccess={() => setReloadTime(Date.now())}/>}
             {bindedVisible && <ReverseBindedPanel bindElement={{resourceId:selectedProject?.id,resourceType:ResourceTypeEnum.Project,title:selectedProject?.title}} onClose={() => setBindedVisible(false)}/>}
             {applyVisible && <ProjectApplyModal projectInfo={selectedProject} onClose={() => setApplyVisible(false)}/>}
         </>
