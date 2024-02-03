@@ -12,6 +12,7 @@ const i18n = {
     'groupManage.operations.more':'More',
     'groupManage.label.statisticList':'Statistic Items',
     'groupManage.label.groupInformation':'Group Information',
+    'groupManage.operations.delete.confirm':'Are you sure to delete this Group?',
   },
   'zh-CN': {
     'groupManage.group':'统计组',
@@ -26,6 +27,7 @@ const i18n = {
     'groupManage.operations.more':'更多',
     'groupManage.label.statisticList':'统计项列表',
     'groupManage.label.groupInformation':'统计组信息',
+    'groupManage.operations.delete.confirm':'是否确认删除当前统计组？',
   },
 };
 
