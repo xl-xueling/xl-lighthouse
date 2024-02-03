@@ -151,7 +151,8 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose,onSuccess}) 
             onCancel={onClose}
             onOk={handlerSubmit}
             modalRender={(modal) => <Draggable bounds="parent" handle=".modal-draggable-handle" disabled={false}>{modal}</Draggable>}
-            style={{ width:'50%',top:'20px' }}
+            alignCenter={false}
+            style={{width:'960px',maxWidth:'80%', top: '130px' }}
         >
             <Form
                 ref={formRef}
