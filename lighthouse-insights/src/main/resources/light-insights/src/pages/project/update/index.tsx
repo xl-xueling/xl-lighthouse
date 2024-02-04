@@ -8,9 +8,10 @@ import {requestCreate, requestQueryById, requestUpdateById} from "@/api/project"
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {getTextBlenLength} from "@/utils/util";
 import {ArcoFlatNode, Department, Project, User} from "@/types/insights-web";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {GlobalErrorCodes, TEXT_BASE_PATTERN_2} from "@/utils/constants";
+import {updateStoreStaredProjectInfo} from "@/index";
 
 export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,onSuccess}){
 
@@ -21,6 +22,8 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
     const [admins,setAdmins] = useState<Array<number>>([]);
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
     const [departmentListData,setDepartmentListData] = useState<ArcoFlatNode[]>();
+    const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setLoading(true);
@@ -48,6 +51,17 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectUpdate.form.submit.success']});
+                if(staredProjectInfo?.map(z => z.id).includes(projectInfo?.id)){
+                    const newArray = staredProjectInfo?.map(z => {
+                        if(z.id == projectInfo.id){
+                            return {...z,...project};
+                        }else{
+                            return z;
+                        }
+                    })
+                    localStorage.removeItem('cache_stared_projects');
+                    dispatch(updateStoreStaredProjectInfo(newArray));
+                }
                 onClose();
                 onSuccess({...projectInfo,...project});
             }else{

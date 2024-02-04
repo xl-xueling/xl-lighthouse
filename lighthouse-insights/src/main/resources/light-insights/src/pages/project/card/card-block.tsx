@@ -108,7 +108,7 @@ function CardBlock(props: CardBlockType) {
               >
                   <span onClick={(e) => {e.stopPropagation();}}>
                   {
-                      staredProjectInfo.map(z => z.id).includes(item.id)?
+                      staredProjectInfo?.map(z => z.id).includes(item.id)?
                           <Popconfirm
 
                                       position={"bl"}
@@ -126,7 +126,7 @@ function CardBlock(props: CardBlockType) {
                   </span>
                   <div onClick={(e) => {e.stopPropagation();}} className={styles.more}>
                   {
-                      staredProjectInfo.map(z => z.id).includes(item.id) ? null:
+                      staredProjectInfo?.map(z => z.id).includes(item.id) ? null:
                           <Popconfirm
                                       focusLock
                                       position={"br"}

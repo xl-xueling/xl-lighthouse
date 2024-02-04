@@ -21,7 +21,7 @@ export function getColumns(t: any, staredProjectInfo:Array<Project>, callback: (
           headerCellStyle: { width:'20px' },
           render: (_, record) => {
               return(
-                  staredProjectInfo.map(z => z.id).includes(record.id)?
+                  staredProjectInfo?.map(z => z.id).includes(record.id)?
                   <Popconfirm
 
                       position={"bl"}

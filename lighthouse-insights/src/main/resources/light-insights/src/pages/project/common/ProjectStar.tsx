@@ -45,7 +45,7 @@ export default function ProjectStar({projectInfo}) {
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectStar.operations.star.submit.success']});
                 localStorage.removeItem('cache_stared_projects');
-                const currentFixedData = staredProjectInfo.filter(x => x.id != record.id);
+                const currentFixedData = staredProjectInfo?.filter(x => x.id != record.id);
                 dispatch(updateStoreStaredProjectInfo([record,...currentFixedData]))
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -64,7 +64,7 @@ export default function ProjectStar({projectInfo}) {
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectStar.operations.unstar.submit.success']});
                 localStorage.removeItem('cache_stared_projects');
-                const currentFixedData = staredProjectInfo.filter(x => x.id != record.id);
+                const currentFixedData = staredProjectInfo?.filter(x => x.id != record.id);
                 dispatch(updateStoreStaredProjectInfo([...currentFixedData]))
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -81,7 +81,7 @@ export default function ProjectStar({projectInfo}) {
 
 
     return (
-        staredProjectInfo.map(z => z.id).includes(projectInfo?.id)?
+        staredProjectInfo?.map(z => z.id).includes(projectInfo?.id)?
             <Popconfirm
                 focusLock
                 position={"br"}

@@ -9,6 +9,8 @@ import {IconCaretDown, IconCaretRight} from "@arco-design/web-react/icon";
 import {GrantPrivileges, MetricSet} from "@/types/insights-web";
 import {ResultData} from "@/types/insights-common";
 import {requestCreate, requestUpdate} from "@/api/metricset";
+import {updateStoreStaredMetricInfo, updateStoreStaredProjectInfo} from "@/index";
+import {useDispatch, useSelector} from "react-redux";
 
 
 export default function MetricSetUpdateModal({metricInfo,onClose,onSuccess}) {
@@ -16,6 +18,7 @@ export default function MetricSetUpdateModal({metricInfo,onClose,onSuccess}) {
     const [form] = Form.useForm();
     const t = useLocale(locale);
     const FormItem = Form.Item;
+    const dispatch = useDispatch();
     const formRef = useRef(null);
     const { Col, Row } = Grid;
     const [showPickUpPanel,setShowPickUpPanel] = useState<boolean>(false);
@@ -23,6 +26,7 @@ export default function MetricSetUpdateModal({metricInfo,onClose,onSuccess}) {
     const departmentTransferRef = useRef(null);
     const userTransferRef = useRef(null);
     const [loading,setLoading] = useState<boolean>(false);
+    const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
 
     function changeVisibleType(value){
         if(value == '0'){
@@ -51,6 +55,17 @@ export default function MetricSetUpdateModal({metricInfo,onClose,onSuccess}) {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['updateMetricSet.form.submit.success']});
+                if(staredMetricInfo?.map(z => z.id).includes(metricInfo?.id)){
+                    const newArray = staredMetricInfo?.map(z => {
+                        if(z.id == metricInfo.id){
+                            return {...z,...updateParams};
+                        }else{
+                            return z;
+                        }
+                    })
+                    localStorage.removeItem('cache_stared_metrics');
+                    dispatch(updateStoreStaredMetricInfo(newArray));
+                }
                 setLoading(false);
                 onClose();
                 onSuccess();
