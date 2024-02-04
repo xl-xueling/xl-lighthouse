@@ -104,10 +104,14 @@ function Navbar({ show }: { show: boolean }) {
     </Menu>
   );
 
+  const handleClick = () => {
+    window.open('/', '_self');
+  };
+
   return (
     <div className={styles.navbar}>
       <div className={styles.left}>
-        <div className={styles.logo}>
+        <div className={styles.logo} onClick={handleClick}>
           <Logo />
           <div className={styles['logo-name']}>XL-LightHouse</div>
         </div>
