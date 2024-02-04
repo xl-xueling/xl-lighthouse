@@ -33,6 +33,7 @@ import {requestBinded} from "@/api/metricset";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
 import {updateStoreStaredProjectInfo} from "@/index";
+import {convertDateToTimestamp, DateFormat, getDayEndTimestamp, getDayStartTimestamp} from "@/utils/date";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -217,11 +218,15 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
     const fetchData = async (): Promise<void> => {
         setLoading(true);
         const {current, pageSize} = pagination;
-        const combineParams = {
-            ...formParams,
-            ownerId:owner == 1?userInfo?.id:null,
+        const combineParams:any = {}
+        combineParams.search = formParams.search;
+        combineParams.departmentIds = formParams.departmentIds && formParams.departmentIds.length > 0 ? formParams.departmentIds: null;
+        const createTime = formParams.createTime;
+        if(createTime && Array.isArray(createTime)){
+            combineParams.createStartTime = getDayStartTimestamp(convertDateToTimestamp(createTime[0],DateFormat));
+            combineParams.createEndTime = getDayEndTimestamp(convertDateToTimestamp(createTime[1],DateFormat));
         }
-        console.log("combineParams is:" + JSON.stringify(combineParams));
+        combineParams.ownerId = owner == 1?userInfo?.id:null;
         await requestList({
             queryParams:combineParams,
             pagination:{

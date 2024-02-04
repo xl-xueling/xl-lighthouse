@@ -41,15 +41,11 @@ function SearchForm({onSearch, form,onClear, allDepartInfo}) {
         labelAlign="left"
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 19 }}
+        colon={' :'}
       >
         <Row gutter={24}>
           <Col span={colSpan}>
-            <Form.Item label={t['projectList.columns.id']} field="id">
-              <Input placeholder={t['projectList.id.placeholder']} allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item label={t['projectList.columns.name']} field="title">
+            <Form.Item label={t['projectList.columns.name']} field="search">
               <Input
                 allowClear
                 placeholder={t['projectList.name.placeholder']}

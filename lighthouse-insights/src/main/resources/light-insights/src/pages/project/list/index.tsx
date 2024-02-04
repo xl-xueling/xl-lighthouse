@@ -52,6 +52,7 @@ export default function Index() {
   const [loading, setLoading] = useState(true);
 
   function handleSearch(params) {
+    console.log("params is:" + JSON.stringify(params));
     setFormParams({...params,t:Date.now()});
   }
 
