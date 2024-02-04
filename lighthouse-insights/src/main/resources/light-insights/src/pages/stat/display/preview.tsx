@@ -17,6 +17,10 @@ import { AiOutlineBarChart } from "react-icons/ai";
 import {getStatStateDescription, getStatStateDescriptionWithBadge} from "@/pages/common/desc/base";
 import StatDetailModal from "@/pages/stat/list/detail";
 import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
+import {LimitedRecordModal} from "@/pages/record/limited_records";
+import {RecordTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
+import StatUpdateModal from "@/pages/stat/update";
+import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
 
 
 export default function StatPreviewPanel({size = 'default',id}) {
@@ -28,10 +32,19 @@ export default function StatPreviewPanel({size = 'default',id}) {
     const [searchForm,setSearchForm] = useState(null);
     const [showFilterConfigModal,setShowFilterConfigModal] = useState<boolean>(false);
     const [reloadTime,setReloadTime] = useState<number>(Date.now);
+    const [showLimitedRecord,setShowLimitedRecord] = useState<boolean>(false);
+    const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
+    const [showBindModal,setShowBindModal] = useState<boolean>(false);
 
     const tableCallback = async (type,data) => {
         if(type == 'showFilterConfigModal'){
             setShowFilterConfigModal(true);
+        }else if(type == 'showLimitedRecord'){
+            setShowLimitedRecord(true);
+        }else if(type == 'showUpdateModal'){
+            setShowUpdateModal(true);
+        }else if(type == 'showBindModal'){
+            setShowBindModal(true);
         }
     }
 
@@ -89,6 +102,9 @@ export default function StatPreviewPanel({size = 'default',id}) {
                                                                  onClose={() => setShowFilterConfigModal(false)}
                                                                  onSuccess={() => setReloadTime(Date.now)}
                 />}
+                {showLimitedRecord && <LimitedRecordModal resourceId={statInfo?.id} recordTypes={[RecordTypeEnum.STAT_RESULT_LIMITED]} resourceType={ResourceTypeEnum.Stat} onClose={() => setShowLimitedRecord(false)}/>}
+                {showUpdateModal && <StatUpdateModal statInfo={statInfo} onClose={() => setShowUpdateModal(false)} listCallback={(r1,r2) => setStatInfo(r1)}/>}
+                {showBindModal && <ReverseBindedPanel bindElement={{resourceId:statInfo?.id,resourceType:ResourceTypeEnum.Stat,title:statInfo?.title}} onClose={() => setShowBindModal(false)}/>}
             </Spin>
         </>
     );
