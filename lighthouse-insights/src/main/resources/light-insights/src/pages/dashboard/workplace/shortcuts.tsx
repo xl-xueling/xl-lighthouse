@@ -4,7 +4,7 @@ import {
   Card,
   Divider,
   Message,
-  Typography,
+  Typography, Space, Avatar,
 } from '@arco-design/web-react';
 import {
   IconFile,
@@ -18,65 +18,59 @@ import locale from './locale';
 import styles from './style/shortcuts.module.less';
 import {getIcon} from "@/pages/common/desc/base";
 import { VscOutput } from "react-icons/vsc";
+import {useSelector} from "react-redux";
+import {Project} from "@/types/insights-web";
+import {getRandomString} from "@/utils/util";
 
 function Shortcuts() {
   const t = useLocale(locale);
-
+  const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo || []);
   const shortcuts = [
     {
       title: t['workplace.shortcuts.metricManage'],
-      key: 'Advanced Management',
+      key: 'metricManage',
       icon: getIcon('metric'),
     },
     {
       title: t['workplace.shortcuts.projectManage'],
-      key: 'Content Management',
+      key: 'projectManage',
       icon: getIcon('project'),
     },
     {
       title: t['workplace.shortcuts.statManage'],
-      key: 'Content Statistic',
+      key: 'statManage',
       icon: getIcon('stat'),
     },
     {
       title: t['workplace.shortcuts.pendApprove'],
-      key: 'Online Promotion',
+      key: 'pendApprove',
       icon: getIcon('approve'),
     },
     {
       title: t['workplace.shortcuts.myApply'],
-      key: 'Marketing',
+      key: 'myApply',
       icon: getIcon('apply'),
     },
   ];
 
-  const recentShortcuts = [
-    {
-      title: t['workplace.contentStatistic'],
-      key: 'Content Statistic',
-      icon: <IconStorage />,
-    },
-    {
-      title: t['workplace.contentMgmt'],
-      key: 'Content Management',
-      icon: <IconFile />,
-    },
-    {
-      title: t['workplace.advancedMgmt'],
-      key: 'Advanced Management',
-      icon: <IconSettings />,
-    },
-  ];
 
   function onClickShortcut(key) {
-    Message.info({
-      content: (
-        <span>
-          You clicked <b>{key}</b>
-        </span>
-      ),
-    });
+    if(key == 'metricManage'){
+      handleClick('/metricset/list')
+    }else if(key == 'projectManage'){
+      handleClick('/project/list')
+    }else if(key == 'statManage'){
+      handleClick('/stat/list')
+    }else if(key == 'pendApprove'){
+      handleClick('/order/approve/list')
+    }else if(key == 'myApply'){
+      handleClick('/order/apply/list')
+    }
   }
+
+  const handleClick = (href) => {
+    window.open(href, '_self');
+  };
 
   return (
     <Card>
@@ -84,7 +78,6 @@ function Shortcuts() {
         <Typography.Title heading={6}>
           {t['workplace.shortcuts']}
         </Typography.Title>
-        <Link>{t['workplace.seeMore']}</Link>
       </div>
       <div className={styles.shortcuts}>
         {shortcuts.map((shortcut) => (
@@ -99,18 +92,39 @@ function Shortcuts() {
         ))}
       </div>
       <Divider />
-      <div className={styles.recent}>{t['workplace.recent']}</div>
-      <div className={styles.shortcuts}>
-        {recentShortcuts.map((shortcut) => (
-          <div
-            className={styles.item}
-            key={shortcut.key}
-            onClick={() => onClickShortcut(shortcut.key)}
-          >
-            <div className={styles.icon}>{shortcut.icon}</div>
-            <div className={styles.title}>{shortcut.title}</div>
-          </div>
-        ))}
+      <div className={styles.recent}>{t['workplace.label.staredProject']}</div>
+      <div>
+        {
+          staredProjectInfo.slice(0,4).map(z => {
+            return <Card
+                onClick={() => handleClick('/project/manage/' + z.id)}
+                key={getRandomString()}
+                bordered={true}
+                hoverable
+                style={{marginBottom: 20,cursor:'pointer'}}
+            >
+              <Space
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+              >
+                <Space>
+                  <Avatar
+                      style={{
+                        backgroundColor: '#165DFF',
+                      }}
+                      size={25}
+                  >
+                    {getIcon('project')}
+                  </Avatar>
+                  <Typography.Text>{z.title}</Typography.Text>
+                </Space>
+              </Space>
+            </Card>
+          })
+        }
       </div>
     </Card>
   );

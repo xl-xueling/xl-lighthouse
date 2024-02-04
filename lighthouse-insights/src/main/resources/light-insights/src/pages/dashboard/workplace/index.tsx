@@ -28,23 +28,34 @@ function Workplace() {
   },[staredMetricInfo])
 
   return (
+      <>
     <div className={styles.wrapper}>
-      <Space size={16} direction="vertical" className={styles.left}>
-        <Overview />
-          <Row gutter={gutter}>
-              {listData.map((item, index) => (
-                      <Col span={6} key={index}>
-                          <MetricSetCardBox key={index} item={item}/>
-                      </Col>
-              ))}
-          </Row>
-      </Space>
+        <Space size={16} direction="vertical" className={styles.left}>
+            <Overview />
+            <Row gutter={gutter}>
+                {listData.map((item, index) => (
+                    <Col span={6} key={index}>
+                        <MetricSetCardBox key={index} item={item}/>
+                    </Col>
+                ))}
+            </Row>
+        </Space>
 
-      <Space className={styles.right} size={16} direction="vertical">
-        <Shortcuts />
-        <Docs />
-      </Space>
+        <Space className={styles.right} size={16} direction="vertical">
+            <Shortcuts />
+            <Docs />
+        </Space>
     </div>
+    {/*<div>*/}
+    {/*    <Row gutter={gutter}>*/}
+    {/*        {listData.map((item, index) => (*/}
+    {/*            <Col span={6} key={index}>*/}
+    {/*                <MetricSetCardBox key={index} item={item}/>*/}
+    {/*            </Col>*/}
+    {/*        ))}*/}
+    {/*    </Row>*/}
+    {/*</div>*/}
+      </>
   );
 }
 
