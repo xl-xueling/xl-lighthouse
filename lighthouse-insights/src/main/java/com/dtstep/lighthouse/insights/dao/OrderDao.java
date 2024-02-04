@@ -14,6 +14,8 @@ public interface OrderDao {
 
     int update(Order order);
 
+    int pendCount(int userId);
+
     Order queryById(Integer id);
 
     boolean isExist(String hash);

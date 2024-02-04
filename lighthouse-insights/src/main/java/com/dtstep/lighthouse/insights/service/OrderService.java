@@ -18,6 +18,8 @@ public interface OrderService {
 
     int process(OrderProcessParam processParam);
 
+    int pendCount();
+
     OrderVO queryById(Integer id);
 
     Object queryRelatedElement(Order order);

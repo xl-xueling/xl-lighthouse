@@ -443,4 +443,10 @@ public class OrderServiceImpl implements OrderService {
             userService.update(userUpdateParam);
         }
     }
+
+    @Override
+    public int pendCount() {
+        int currentUserId = baseService.getCurrentUserId();
+        return orderDao.pendCount(currentUserId);
+    }
 }
