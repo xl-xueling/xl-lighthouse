@@ -7,6 +7,15 @@ import {
     ResourceTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum, PrivateTypeEnum
 } from "@/types/insights-common";
 
+export interface HomeData {
+    projectCount?:number;
+    ytdProjectCount?:number;
+    statCount?:number;
+    ytdStatCount?:number;
+    metricCount?:number;
+    ytdMetricCount?:number;
+    userCount?:number;
+}
 
 export interface Department {
     id: number;

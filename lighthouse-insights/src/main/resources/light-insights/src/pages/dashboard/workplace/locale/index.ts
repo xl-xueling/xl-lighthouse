@@ -1,6 +1,13 @@
 const i18n = {
   'en-US': {
     'workplace.welcomeBack': 'Welcome Back,',
+    'workplace.label.ytdProjectCount':'YTD Created Size',
+    'workplace.label.projectCount':'Total Project Size',
+    'workplace.label.ytdStatCount':'YTD Created Size',
+    'workplace.label.statCount':'Total Stat Size',
+    'workplace.label.ytdMetricCount':'YTD Created Size',
+    'workplace.label.metricCount':'Total Metric Size',
+    'workplace.label.userCount':'Total User Size',
     'workplace.totalOnlyData': 'Total online data',
     'workplace.contentInMarket': 'Content in market',
     'workplace.comments': 'Comments',
@@ -38,6 +45,13 @@ const i18n = {
   },
   'zh-CN': {
     'workplace.welcomeBack': '欢迎回来，',
+    'workplace.label.ytdProjectCount':'昨日创建量',
+    'workplace.label.projectCount':'总工程数量',
+    'workplace.label.ytdStatCount':'昨日创建量',
+    'workplace.label.statCount':'总统计项数量',
+    'workplace.label.ytdMetricCount':'昨日创建量',
+    'workplace.label.metricCount':'总指标集数量',
+    'workplace.label.userCount':'总用户量',
     'workplace.totalOnlyData': '线上总数据',
     'workplace.contentInMarket': '投放中的内容',
     'workplace.comments': '日新增评论',

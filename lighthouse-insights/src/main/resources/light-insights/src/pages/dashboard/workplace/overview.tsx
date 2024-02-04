@@ -5,10 +5,10 @@ import {
   Typography,
   Divider,
   Skeleton,
-  Link,
+  Link, Notification,
 } from '@arco-design/web-react';
 import { useSelector } from 'react-redux';
-import { IconCaretUp } from '@arco-design/web-react/icon';
+import {IconCamera, IconCaretUp} from '@arco-design/web-react/icon';
 import OverviewAreaLine from '@/components/Chart/overview-area-line';
 import axios from 'axios';
 import locale from './locale';
@@ -22,6 +22,7 @@ import {GlobalState} from "@/store";
 import {requestStructure} from "@/api/department";
 import {ResultData} from "@/types/insights-common";
 import {requestOverView} from "@/api/home";
+import {HomeData} from "@/types/insights-web";
 
 const { Row, Col } = Grid;
 
@@ -51,17 +52,9 @@ function StatisticItem(props: StatisticItemType) {
   );
 }
 
-type DataType = {
-  allContents?: string;
-  liveContents?: string;
-  increaseComments?: string;
-  growthRate?: string;
-  chartData?: { count?: number; date?: string }[];
-  down?: boolean;
-};
 
 function Overview() {
-  const [data, setData] = useState<DataType>({});
+  const [data, setData] = useState<HomeData>({});
   const [loading, setLoading] = useState(true);
   const t = useLocale(locale);
   const userInfo = useSelector((state: GlobalState) => state.userInfo || {});
@@ -69,7 +62,12 @@ function Overview() {
   const fetchData = async () => {
     setLoading(true);
     await requestOverView().then((response:ResultData) => {
-      console.log("response:" + JSON.stringify(response));
+      const {code, data ,message} = response;
+      if(code == '0'){
+        setData(data)
+      }else{
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+      }
     }).catch((error) => {
       console.log(error)
     }).finally(() => {
@@ -92,8 +90,8 @@ function Overview() {
         <Col flex={1}>
           <StatisticItem
             icon={<IconCalendar />}
-            title={t['workplace.totalOnlyData']}
-            count={data.allContents}
+            title={t['workplace.label.projectCount']}
+            count={data?.projectCount}
             loading={loading}
             unit={t['workplace.pecs']}
           />
@@ -102,18 +100,8 @@ function Overview() {
         <Col flex={1}>
           <StatisticItem
             icon={<IconContent />}
-            title={t['workplace.contentInMarket']}
-            count={data.liveContents}
-            loading={loading}
-            unit={t['workplace.pecs']}
-          />
-        </Col>
-        <Divider type="vertical" className={styles.divider} />
-        <Col flex={1}>
-          <StatisticItem
-            icon={<IconComments />}
-            title={t['workplace.comments']}
-            count={data.increaseComments}
+            title={t['workplace.label.statCount']}
+            count={data?.statCount}
             loading={loading}
             unit={t['workplace.pecs']}
           />
@@ -122,16 +110,20 @@ function Overview() {
         <Col flex={1}>
           <StatisticItem
             icon={<IconIncrease />}
-            title={t['workplace.growth']}
-            count={
-              <span>
-                {data.growthRate}{' '}
-                <IconCaretUp
-                  style={{ fontSize: 18, color: 'rgb(var(--green-6))' }}
-                />
-              </span>
-            }
+            title={t['workplace.label.metricCount']}
+            count={data?.metricCount}
             loading={loading}
+            unit={t['workplace.pecs']}
+          />
+        </Col>
+        <Divider type="vertical" className={styles.divider} />
+        <Col flex={1}>
+          <StatisticItem
+              icon={<IconComments />}
+              title={t['workplace.label.userCount']}
+              count={data?.userCount}
+              loading={loading}
+              unit={t['workplace.pecs']}
           />
         </Col>
       </Row>
@@ -149,7 +141,7 @@ function Overview() {
           </Typography.Paragraph>
           <Link>{t['workplace.seeMore']}</Link>
         </div>
-        <OverviewAreaLine data={data.chartData} loading={loading} />
+        {/*<OverviewAreaLine data={data.chartData} loading={loading} />*/}
       </div>
     </Card>
   );
