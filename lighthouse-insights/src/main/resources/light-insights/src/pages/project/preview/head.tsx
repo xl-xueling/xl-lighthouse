@@ -61,7 +61,10 @@ export default function PreviewHeader({projectInfo}:{projectInfo:Project}) {
                     </span>
                 </Grid.Col>
                 <Grid.Col span={4} style={{textAlign:"right" }}>
-                    <ProjectStar projectInfo={projectInfo}/>
+                    <Space size={10}>
+                        <Button shape={"circle"} icon={getIcon('bind')} size={"mini"} />
+                        <ProjectStar projectInfo={projectInfo}/>
+                    </Space>
                 </Grid.Col>
             </Row>
             <Row>

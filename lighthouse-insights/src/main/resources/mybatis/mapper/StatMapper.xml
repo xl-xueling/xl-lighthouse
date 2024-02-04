@@ -39,8 +39,11 @@
     </insert>
 
     <select id="queryById" resultMap="statResultMap">
-        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`render_config`,`random_id`,`expired`,`desc`,`create_time`,`update_time`
-        FROM ldp_stats WHERE id = #{id}
+        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`timeparam`,a.`state`,a.`random_id`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,b.title as project_title,b.department_id,c.token
+        FROM ldp_stats a
+                 inner join ldp_projects b on a.project_id = b.id
+                 inner join ldp_groups c on a.group_id = c.id
+        WHERE a.id = #{id}
     </select>
 
     <select id="queryList" resultMap="statResultMap">

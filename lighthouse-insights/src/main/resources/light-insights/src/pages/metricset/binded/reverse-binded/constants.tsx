@@ -39,7 +39,7 @@ export function getColumns(t: any, bindElement:BindElement,selectedItems:MetricS
             title: t['reverseBinded.column.label.operation'],
             dataIndex: 'operation',
             render: (_, record) => {
-                const bindFlag = record.bindElements.map(x => x.resourceType + "_" + x.resourceId).includes(bindElement.resourceType + "_" + bindElement.resourceId);
+                const bindFlag = record.bindElements?.map(x => x.resourceType + "_" + x.resourceId).includes(bindElement.resourceType + "_" + bindElement.resourceId);
                 const selectedKeys = selectedItems?.map(z => z.id);
                 if(bindFlag){
                     return <Button key={getRandomString()}

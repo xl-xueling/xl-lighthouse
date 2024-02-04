@@ -16,7 +16,7 @@ import {
 import {IconEdit, IconList, IconMan, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
 import UserGroup from "@/pages/user/common/groups";
 import { TbFilterEdit } from "react-icons/tb";
-import {getStatExpiredEnumDescription} from "@/pages/common/desc/base";
+import {getIcon, getStatExpiredEnumDescription} from "@/pages/common/desc/base";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import DepartmentLabel from "@/pages/department/common/depart";
 import { MdOutlineManageAccounts } from "react-icons/md";
@@ -72,12 +72,13 @@ export default function BasicInfo({statInfo,callback}) {
                 <div>
                     <Space size={6}>
                         {statInfo?.permissions.includes('ManageAble')?
-                            <Button shape={"circle"} icon={<MdOutlineManageAccounts/>} size={"mini"} onClick={() => window.open('/project/manage/' + statInfo?.projectId)}/>
+                            <>
+                            <Button shape={"circle"} icon={<IconEdit/>} size={"mini"} onClick={() => callback('showUpdateModal')}/>
+                            <Button shape={"circle"} icon={<TbFilterEdit/>} size={"mini"} onClick={() => callback('showFilterConfigModal')}/>
+                            </>
                             :null}
-                        <Button shape={"circle"} icon={<IconList/>} size={"mini"}/>
-                        <Button shape={"circle"} icon={<IconEdit/>} size={"mini"}/>
-                        <Button shape={"circle"} icon={<IconPushpin/>} size={"mini"}/>
-                        <Button shape={"circle"} icon={<TbFilterEdit/>} size={"mini"} onClick={() => callback('showFilterConfigModal')}/>
+                        <Button shape={"circle"} icon={getIcon('bind')} size={"mini"} onClick={() => callback('showBindModal')}/>
+                        <Button shape={"circle"} icon={<IconList/>} size={"mini"} onClick={() => callback('showLimitedRecord')}/>
                     </Space>
                 </div>,
         },

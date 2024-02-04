@@ -13,7 +13,7 @@ import {
     StatStateEnum,
     UserStateEnum
 } from "@/types/insights-common";
-import {PiDiamondsFour, PiLockKeyOpenThin, PiLockKeyThin} from "react-icons/pi";
+import {PiDiamondsFour, PiLinkSimple, PiLockKeyOpenThin, PiLockKeyThin} from "react-icons/pi";
 import {CiViewTable} from "react-icons/ci";
 import {IconMindMapping, IconStar, IconStarFill, IconTag} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
@@ -253,6 +253,8 @@ export function getIcon(type:string,marginRight:string = null){
         return <IconStar style={{marginRight: marginRight}}/>
     }else if(type == 'stared'){
         return <IconStarFill style={{marginRight: marginRight}}/>
+    }else if(type == 'bind'){
+        return <PiLinkSimple style={{marginRight: marginRight}}/>
     }
 }
 
