@@ -77,7 +77,6 @@ export default function BasicInfo({statInfo,callback}) {
                             <Button shape={"circle"} icon={<TbFilterEdit/>} size={"mini"} onClick={() => callback('showFilterConfigModal')}/>
                             </>
                             :null}
-                        <Button shape={"circle"} icon={getIcon('bind')} size={"mini"} onClick={() => callback('showBindModal')}/>
                         <Button shape={"circle"} icon={<IconList/>} size={"mini"} onClick={() => callback('showLimitedRecord')}/>
                     </Space>
                 </div>,

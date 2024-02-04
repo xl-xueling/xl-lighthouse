@@ -21,6 +21,8 @@ import locale from "./locale";
 import {requestList} from "@/api/metricset";
 import {getColumns} from "./constants";
 import {BindElement} from "@/types/insights-common";
+import {getResourceTypeDescription} from "@/pages/common/desc/base";
+import {formatString} from "@/utils/util";
 
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
@@ -156,13 +158,29 @@ export default function ReverseBindedPanel({bindElement,onClose}) {
 
     return (
         <Modal
-            title={t['reverseBinded.modal.title']}
+            title={
+                t['reverseBinded.modal.title']
+            }
             visible={true}
             confirmLoading={confirmLoading}
-            style={{ width:'1200px',maxWidth:'90%',minHeight:'600px',maxHeight:'800px'}}
+            alignCenter={false}
+            style={{width:'1180px',maxWidth:'80%', top: '130px' }}
             onOk={handlerSubmit}
             onCancel={onClose}>
-                <Input.Search placeholder={'Search'} allowClear style={{width:'320px',marginLeft:'3px',marginBottom:'15px'}} onSearch={handlerSearch}/>
+                <Row>
+                    <Col
+                        span={17}
+                        style={{ marginBottom: 10 }}
+                    >
+                        <Input.Search placeholder={'Search'} allowClear style={{width:'320px',marginLeft:'3px'}} onSearch={handlerSearch}/>
+                    </Col>
+                    <Col
+                        span={7}
+                        style={{ marginBottom: 10 }}
+                    >
+                        {getResourceTypeDescription(t,bindElement.resourceType)}  {' :'} {bindElement?.title}
+                    </Col>
+                </Row>
                 <Table size={"mini"} style={{height:'300px'}}
                        loading={loading} rowKey={'id'}
                        onChange={onChangeTable} columns={columns} data={metricSetList} pagination={pagination} />
