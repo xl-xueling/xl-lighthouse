@@ -92,12 +92,8 @@ public class ProjectController {
     @RequestMapping("/project/deleteById")
     public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) {
         Integer id = idParam.getId();
-        int result = projectService.deleteById(id);
-        if(result > 0){
-            return ResultData.success(id);
-        }else{
-            return ResultData.result(ResultCode.systemError);
-        }
+        ServiceResult<Integer> result = projectService.deleteById(id);
+        return ResultData.result(result);
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "resourceId")

@@ -235,11 +235,17 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public int deleteById(Integer id) {
+    public ServiceResult<Integer> deleteById(Integer id) {
         Project project = projectDao.queryById(id);
+        GroupQueryParam queryParam = new GroupQueryParam();
+        queryParam.setProjectId(id);
+        int groupCount = groupDao.count(queryParam);
+        if(groupCount > 0){
+            return ServiceResult.result(ResultCode.projectDelErrorGroupExist);
+        }
         int result = projectDao.deleteById(id);
         resourceService.deleteResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Project,project.getId(),ResourceTypeEnum.Department,project.getDepartmentId()));
-        return result;
+        return ServiceResult.success(result);
     }
 
     @Override

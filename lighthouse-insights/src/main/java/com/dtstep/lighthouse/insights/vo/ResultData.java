@@ -49,6 +49,21 @@ public class ResultData<T> {
         return resultData;
     }
 
+    public static<T> ResultData<T> result(ServiceResult serviceResult){
+        ResultCode resultCode = serviceResult.getResultCode();
+        messageSource = SpringUtil.getBean(MessageSource.class);
+        String[] params = resultCode.getParams();
+        String message = messageSource.getMessage(resultCode.getI18nLabel(),null,LocaleContextHolder.getLocale());
+        if(params != null){
+            message = String.format(message,params);
+        }
+        ResultData resultData = new ResultData();
+        resultData.setCode(resultCode.getCode());
+        resultData.setMessage(message);
+        resultData.setData(serviceResult.getData());
+        return resultData;
+    }
+
 
     public static<T> ResultData<T> result(ResultCode resultCode, String ...params){
         messageSource = SpringUtil.getBean(MessageSource.class);

@@ -22,7 +22,7 @@ public interface ProjectService {
 
     ProjectVO queryById(Integer id);
 
-    int deleteById(Integer id);
+    ServiceResult<Integer> deleteById(Integer id);
 
     ProjectVO cacheQueryById(Integer id);
 
