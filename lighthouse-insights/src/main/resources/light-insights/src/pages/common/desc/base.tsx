@@ -262,8 +262,8 @@ export function getIcon(type:string,marginRight:string = null){
     }else if(type == 'apply'){
         return <VscOutput style={{marginRight: marginRight}}/>
     }else if(type == 'approve'){
-    return <IconCalendarClock style={{marginRight: marginRight}}/>
-}
+        return <IconCalendarClock style={{marginRight: marginRight}}/>
+    }
 }
 
 export function getResourceTypeDescription(t:any,resourceType:ResourceTypeEnum){
