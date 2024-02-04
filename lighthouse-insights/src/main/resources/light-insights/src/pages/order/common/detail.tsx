@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Form, Grid, Input, Steps, Table, Typography} from "@arco-design/web-react";
+import {Button, Form, Grid, Input, Space, Steps, Table, Typography} from "@arco-design/web-react";
 import UserGroup from "@/pages/user/common/groups";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale/index";
@@ -87,7 +87,6 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
         return [startNode,...steps,stopNode];
     }
 
-
     useEffect(() => {
         if(orderInfo){
             setListData([orderInfo]);
@@ -101,10 +100,14 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
             return (
                 <Table size={"small"} rowKey="id" pagination={false} columns={userApproveColumns} data={userListData} />
             )
-        }else if(orderInfo.orderType == OrderTypeEnum.PROJECT_ACCESS){
+        }else if(orderInfo.orderType == OrderTypeEnum.PROJECT_ACCESS && orderInfo.extend){
             return (
                 <Table size={"small"} rowKey="id" pagination={false} columns={projectAccessColumns} data={[orderInfo.extend]} />
             )
+        }else{
+            return  <Typography.Text type="secondary">
+                {t['detailModal.warning.relateElementDeleted']}
+            </Typography.Text>
         }
     }
 
