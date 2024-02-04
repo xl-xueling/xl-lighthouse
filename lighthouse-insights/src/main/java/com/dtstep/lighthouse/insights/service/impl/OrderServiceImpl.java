@@ -22,6 +22,7 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -445,8 +446,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int pendCount() {
-        int currentUserId = baseService.getCurrentUserId();
-        return orderDao.pendCount(currentUserId);
+    @Cacheable(value = "ShortPeriod",key = "#targetClass + '_' + 'pendCount' + '_' +  userId",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    public int pendCount(int userId) {
+        return orderDao.pendCount(userId);
     }
 }

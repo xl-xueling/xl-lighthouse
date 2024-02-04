@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.insights.dto.OrderProcessParam;
 import com.dtstep.lighthouse.insights.dto.QueryParam;
@@ -17,6 +18,9 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private BaseService baseService;
+
     @RequestMapping("/order/queryById")
     public ResultData<OrderVO> queryById(@Validated @RequestBody QueryParam queryParam) {
         OrderVO orderVO = orderService.queryById(queryParam.getId());
@@ -30,5 +34,12 @@ public class OrderController {
     public ResultData<Integer> process(@Validated @RequestBody OrderProcessParam approveParam){
         int result = orderService.process(approveParam);
         return ResultData.success(result);
+    }
+
+    @PostMapping("/order/pendCount")
+    public ResultData<Integer> pendCount(){
+        int currentUserId = baseService.getCurrentUserId();
+        int count = orderService.pendCount(currentUserId);
+        return ResultData.success(count);
     }
 }
