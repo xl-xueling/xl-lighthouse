@@ -16,6 +16,8 @@ public class HomeVO {
 
     private Integer userCount;
 
+    private Integer pendApproveCount;
+
     public Integer getProjectCount() {
         return projectCount;
     }
@@ -70,5 +72,13 @@ public class HomeVO {
 
     public void setUserCount(Integer userCount) {
         this.userCount = userCount;
+    }
+
+    public Integer getPendApproveCount() {
+        return pendApproveCount;
+    }
+
+    public void setPendApproveCount(Integer pendApproveCount) {
+        this.pendApproveCount = pendApproveCount;
     }
 }

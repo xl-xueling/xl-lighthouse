@@ -127,4 +127,8 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <select id="pendCount" resultType="java.lang.Integer">
+        SELECT count(1) from ldp_orders where `current_node` = #{userId} and state = '0'
+    </select>
 </mapper>
