@@ -127,13 +127,13 @@ export default function CustomComponents({onSelect}) {
     },[pagination.current, pagination.pageSize,JSON.stringify(searchForms)])
 
     return (
-        <Space size={16} direction="vertical" style={{ width: '100%',height:'270px' }}>
-            <Form>
-                <Form.Item field={'search'}>
-                    <Input.Search placeholder={'Search'} allowClear style={{width:'320px',marginLeft:'3px'}} onSearch={handlerSearch}/>
+        <Space direction="vertical" style={{ width: '100%',height:'270px' }}>
+            <Form autoComplete={'off'} style={{marginLeft:'3px'}}>
+                <Form.Item field={'search'} style={{marginBottom:'10px'}}>
+                    <Input.Search size={"small"} placeholder={'Search'} autoComplete={'off'} allowClear style={{width:'320px'}} onSearch={handlerSearch}/>
                 </Form.Item>
-            </Form>
             <Table rowKey={'componentId'} loading={loading} size={"mini"} columns={columns} data={listData} pagination={pagination} onChange={onChangeTable}/>
+            </Form>
         </Space>
     );
 }
