@@ -13,6 +13,7 @@ const i18n = {
     'workplace.shortcuts.statManage':'Statistics',
     'workplace.shortcuts.pendApprove':'Pend Orders',
     'workplace.shortcuts.myApply':'My Apply',
+    'workplace.label.staredProject':'Stared Project',
 
     'workplace.totalOnlyData': 'Total online data',
     'workplace.contentInMarket': 'Content in market',
@@ -63,6 +64,8 @@ const i18n = {
     'workplace.shortcuts.statManage':'统计项管理',
     'workplace.shortcuts.pendApprove':'待我审核',
     'workplace.shortcuts.myApply':'我的申请',
+    'workplace.label.staredProject':'统计工程',
+
     'workplace.totalOnlyData': '线上总数据',
     'workplace.contentInMarket': '投放中的内容',
     'workplace.comments': '日新增评论',
