@@ -32,6 +32,8 @@ public interface MetricSetService {
 
     ListData<MetricSetVO> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize);
 
+    int count(MetricSetQueryParam queryParam);
+
     List<MetricSetVO> queryStarList();
 
     TreeNode getStructure(MetricSet metricSet) throws Exception;

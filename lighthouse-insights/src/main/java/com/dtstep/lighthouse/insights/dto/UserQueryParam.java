@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.dto;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -10,27 +11,11 @@ public class UserQueryParam implements Serializable {
 
     private List<Integer> departmentIds;
 
-    private Date createStartTime;
+    private LocalDateTime createStartTime;
 
-    private Date createEndTime;
+    private LocalDateTime createEndTime;
 
     private List<Integer> states;
-
-    public Date getCreateStartTime() {
-        return createStartTime;
-    }
-
-    public void setCreateStartTime(Date createStartTime) {
-        this.createStartTime = createStartTime;
-    }
-
-    public Date getCreateEndTime() {
-        return createEndTime;
-    }
-
-    public void setCreateEndTime(Date createEndTime) {
-        this.createEndTime = createEndTime;
-    }
 
     public List<Integer> getStates() {
         return states;
@@ -54,5 +39,21 @@ public class UserQueryParam implements Serializable {
 
     public void setDepartmentIds(List<Integer> departmentIds) {
         this.departmentIds = departmentIds;
+    }
+
+    public LocalDateTime getCreateStartTime() {
+        return createStartTime;
+    }
+
+    public void setCreateStartTime(LocalDateTime createStartTime) {
+        this.createStartTime = createStartTime;
+    }
+
+    public LocalDateTime getCreateEndTime() {
+        return createEndTime;
+    }
+
+    public void setCreateEndTime(LocalDateTime createEndTime) {
+        this.createEndTime = createEndTime;
     }
 }

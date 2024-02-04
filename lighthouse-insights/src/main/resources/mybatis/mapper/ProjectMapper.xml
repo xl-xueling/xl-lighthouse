@@ -110,7 +110,15 @@
     <select id="count">
         WITH RECURSIVE cte AS (
             SELECT d.id
-            FROM ldp_departments d where id = #{id}
+            FROM ldp_departments d
+            <where>
+                <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
+                    AND d.id IN
+                    <foreach item="item" index="index" collection="queryParam.departmentIds" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </where>
             UNION ALL
             SELECT d.id
             FROM ldp_departments d
@@ -120,6 +128,12 @@
         <where>
             <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
                 AND department_id IN(select id from cte)
+            </if>
+            <if test="queryParam.createStartTime!=null">
+                AND create_time &gt;= #{queryParam.createStartTime}
+            </if>
+            <if test="queryParam.createEndTime!=null">
+                AND create_time &lt;= #{queryParam.createEndTime}
             </if>
         </where>
     </select>

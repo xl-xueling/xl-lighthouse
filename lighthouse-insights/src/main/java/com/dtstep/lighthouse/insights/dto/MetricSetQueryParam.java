@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class MetricSetQueryParam {
@@ -9,6 +10,10 @@ public class MetricSetQueryParam {
     private String search;
 
     private Integer ownerId;
+
+    private LocalDateTime createStartTime;
+
+    private LocalDateTime createEndTime;
 
     public List<Integer> getIds() {
         return ids;
@@ -32,5 +37,21 @@ public class MetricSetQueryParam {
 
     public void setOwnerId(Integer ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public LocalDateTime getCreateStartTime() {
+        return createStartTime;
+    }
+
+    public void setCreateStartTime(LocalDateTime createStartTime) {
+        this.createStartTime = createStartTime;
+    }
+
+    public LocalDateTime getCreateEndTime() {
+        return createEndTime;
+    }
+
+    public void setCreateEndTime(LocalDateTime createEndTime) {
+        this.createEndTime = createEndTime;
     }
 }

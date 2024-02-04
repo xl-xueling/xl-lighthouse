@@ -121,6 +121,12 @@
                     #{item}
                 </foreach>
             </if>
+            <if test="queryParam.createStartTime!=null">
+                AND create_time &gt;= #{queryParam.createStartTime}
+            </if>
+            <if test="queryParam.createEndTime!=null">
+                AND create_time &lt;= #{queryParam.createEndTime}
+            </if>
         </where>
     </select>
 

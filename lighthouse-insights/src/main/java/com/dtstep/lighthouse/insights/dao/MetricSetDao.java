@@ -21,5 +21,7 @@ public interface MetricSetDao {
 
     List<MetricSet> queryList(@Param("queryParam")MetricSetQueryParam queryParam);
 
+    int count(@Param("queryParam")MetricSetQueryParam queryParam);
+
     List<Indicator> queryIndicatorList(Integer id);
 }

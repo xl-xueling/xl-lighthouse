@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class StatQueryParam {
@@ -13,6 +14,10 @@ public class StatQueryParam {
     private List<Integer> groupIds;
 
     private List<Integer> departmentIds;
+
+    private LocalDateTime createStartTime;
+
+    private LocalDateTime createEndTime;
 
     public List<Integer> getIds() {
         return ids;
@@ -52,5 +57,21 @@ public class StatQueryParam {
 
     public void setGroupIds(List<Integer> groupIds) {
         this.groupIds = groupIds;
+    }
+
+    public LocalDateTime getCreateStartTime() {
+        return createStartTime;
+    }
+
+    public void setCreateStartTime(LocalDateTime createStartTime) {
+        this.createStartTime = createStartTime;
+    }
+
+    public LocalDateTime getCreateEndTime() {
+        return createEndTime;
+    }
+
+    public void setCreateEndTime(LocalDateTime createEndTime) {
+        this.createEndTime = createEndTime;
     }
 }

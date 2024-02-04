@@ -52,6 +52,18 @@
         </where>
     </select>
 
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(1) from ldp_metricsets
+        <where>
+            <if test="queryParam.createStartTime!=null">
+                AND create_time &gt;= #{queryParam.createStartTime}
+            </if>
+            <if test="queryParam.createEndTime!=null">
+                AND create_time &lt;= #{queryParam.createEndTime}
+            </if>
+        </where>
+    </select>
+
     <select id="queryIndicatorList" resultMap="indicatorResultMap">
         select f.* from (SELECT a.`id` as resource_id,'6' as resource_type, a.title, CONCAT_WS(';', a.project_id, a.group_id,a.id) as full_path,CONCAT_WS(';', b.title, c.token,a.title) as full_title,a.create_time
                          FROM ldp_stats a
