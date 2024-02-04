@@ -51,7 +51,7 @@ export default function ProjectNavModal ({onClose}){
     const handleChangePage = (v) => {
         const startRow = (v - 1) * pageSize;
         const endRow = Math.min(v * pageSize - 1, staredProjectInfo.length - 1);
-        setListData(staredProjectInfo.slice(startRow,endRow + 1));
+        setListData(staredProjectInfo?.slice(startRow,endRow + 1));
     }
 
     const getPreviewHistory = () => {

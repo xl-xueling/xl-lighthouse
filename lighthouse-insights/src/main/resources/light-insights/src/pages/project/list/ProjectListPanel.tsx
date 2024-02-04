@@ -108,7 +108,7 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.star.submit.success']});
                 localStorage.removeItem('cache_stared_projects');
-                const currentFixedData = staredProjectInfo.filter(x => x.id != record.id);
+                const currentFixedData = staredProjectInfo?.filter(x => x.id != record.id);
                 dispatch(updateStoreStaredProjectInfo([record,...currentFixedData]))
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -127,7 +127,7 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.unstar.submit.success']});
                 localStorage.removeItem('cache_stared_projects');
-                const currentFixedData = staredProjectInfo.filter(x => x.id != record.id);
+                const currentFixedData = staredProjectInfo?.filter(x => x.id != record.id);
                 dispatch(updateStoreStaredProjectInfo([...currentFixedData]))
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});

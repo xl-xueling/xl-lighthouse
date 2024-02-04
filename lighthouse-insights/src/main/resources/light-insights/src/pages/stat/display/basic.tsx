@@ -39,16 +39,16 @@ export default function BasicInfo({statInfo,callback}) {
         {
             label: 'Project',
             value:
-            <span style={{display:"inline-flex",alignItems:"center"}}>{statInfo?.project.title}</span>
+            <span style={{display:"inline-flex",alignItems:"center"}}>{statInfo?.projectTitle}</span>
             ,
         },
         {
             label: 'Group',
-            value: <span>{statInfo?.group.token}</span>,
+            value: <span>{statInfo?.token}</span>,
         },
         {
             label: 'Department',
-            value: <DepartmentLabel departmentId={statInfo?.project?.departmentId} />,
+            value: <DepartmentLabel departmentId={statInfo?.departmentId} />,
         },
         {
             label: 'Expired',
