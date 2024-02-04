@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Tooltip,
   Input,
@@ -8,7 +8,7 @@ import {
   Menu,
   Divider,
   Message,
-  Button,
+  Button, Notification, Badge,
 } from '@arco-design/web-react';
 import {
   IconLanguage,
@@ -22,7 +22,7 @@ import {
   IconDashboard,
   IconInteraction,
   IconTag,
-  IconLoading,
+  IconLoading, IconCalendarClock,
 } from '@arco-design/web-react/icon';
 import { useSelector, useDispatch } from 'react-redux';
 import { GlobalState } from '@/store';
@@ -38,6 +38,7 @@ import defaultLocale from '@/locale';
 import useStorage from '@/utils/useStorage';
 import { generatePermission } from '@/routes';
 import {removeLoginStatus} from "@/utils/checkLogin";
+import {requestPendCount} from "@/api/order";
 
 function Navbar({ show }: { show: boolean }) {
   const t = useLocale();
@@ -47,6 +48,7 @@ function Navbar({ show }: { show: boolean }) {
 
   const [_, setUserStatus] = useStorage('userStatus');
   const [role, setRole] = useStorage('userRole', 'admin');
+  const [pendCount,setPendCount] = useState<number>(0);
 
   const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
 
@@ -55,6 +57,31 @@ function Navbar({ show }: { show: boolean }) {
     removeLoginStatus();
     window.location.href = '/login';
   }
+
+  const fetchData = async () => {
+    await requestPendCount().then((response) => {
+      const {code, data ,message} = response;
+      if(code == '0'){
+        setPendCount(data)
+      }else{
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+      }
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
+  const intervalCallback = () => {
+    fetchData().then();
+  };
+
+  useEffect(() => {
+    intervalCallback();
+    const intervalId = setInterval(intervalCallback, 60 * 1000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  },[])
 
   function onMenuItemClick(key) {
     if (key === 'logout') {
@@ -106,14 +133,14 @@ function Navbar({ show }: { show: boolean }) {
     </Menu>
   );
 
-  const handleClick = () => {
-    history.push('/');
+  const handleClick = (href) => {
+    history.push(href);
   };
 
   return (
     <div className={styles.navbar}>
       <div className={styles.left}>
-        <div className={styles.logo} onClick={handleClick}>
+        <div className={styles.logo} onClick={() => handleClick('/')}>
           <Logo />
           <div className={styles['logo-name']}>XL-LightHouse</div>
         </div>
@@ -146,11 +173,18 @@ function Navbar({ show }: { show: boolean }) {
             }}
           />
         </li>
-        {/*<li>*/}
-        {/*  <MessageBox>*/}
-        {/*    <IconButton icon={<IconNotification />} />*/}
-        {/*  </MessageBox>*/}
-        {/*</li>*/}
+        <li>
+          <Badge count={pendCount} dot offset={[2, -2]}>
+            <IconButton icon={<IconNotification
+                onClick={() => handleClick('/order/approve/list')}
+                style={{
+                  color: '#888',
+                  fontSize: 18,
+                  verticalAlign: -3,
+                }}
+            />} />
+          </Badge>
+        </li>
         <li>
           <Tooltip
             content={

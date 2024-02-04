@@ -18,6 +18,13 @@ export async function requestProcess(data) :Promise<ResultData<{list:Array<Order
     })
 }
 
+export async function requestPendCount() :Promise<ResultData<number>> {
+    return request({
+        url:'/order/pendCount',
+        method:'POST',
+    })
+}
+
 export async function requestApproveList(data) :Promise<ResultData<{list:Array<Order>,total:number}>> {
     return request({
         url:'/approve/list',

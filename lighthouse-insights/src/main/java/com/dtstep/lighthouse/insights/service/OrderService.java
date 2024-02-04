@@ -18,7 +18,7 @@ public interface OrderService {
 
     int process(OrderProcessParam processParam);
 
-    int pendCount();
+    int pendCount(int userId);
 
     OrderVO queryById(Integer id);
 

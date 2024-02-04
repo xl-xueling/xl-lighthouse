@@ -59,7 +59,6 @@ public class HomePageServiceImpl implements HomePageService {
         UserQueryParam userQueryParam = new UserQueryParam();
         userQueryParam.setStates(List.of(UserStateEnum.USER_NORMAL.getState()));
         int userCount = userService.count(userQueryParam);
-        int pendCount = orderService.pendCount();
         HomeVO homeVO = new HomeVO();
         homeVO.setProjectCount(projectCount);
         homeVO.setYtdProjectCount(ytdProjectCount);
@@ -68,7 +67,6 @@ public class HomePageServiceImpl implements HomePageService {
         homeVO.setMetricCount(metricCount);
         homeVO.setYtdMetricCount(ytdMetricCount);
         homeVO.setUserCount(userCount);
-        homeVO.setPendApproveCount(pendCount);
         return homeVO;
     }
 }
