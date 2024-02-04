@@ -4,15 +4,16 @@ import {
   Card,
   Divider,
   Message,
-  Typography, Space, Avatar,
+  Typography, Space, Avatar, Badge,
 } from '@arco-design/web-react';
 import {
   IconFile,
   IconStorage,
   IconSettings,
   IconMobile,
-  IconFire,
+  IconFire, IconClockCircle, IconNotification, IconCalendarClock,
 } from '@arco-design/web-react/icon';
+import {Switch, Route, Redirect, useHistory} from 'react-router-dom';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/shortcuts.module.less';
@@ -25,6 +26,8 @@ import {getRandomString} from "@/utils/util";
 function Shortcuts() {
   const t = useLocale(locale);
   const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo || []);
+
+
   const shortcuts = [
     {
       title: t['workplace.shortcuts.metricManage'],
@@ -44,7 +47,15 @@ function Shortcuts() {
     {
       title: t['workplace.shortcuts.pendApprove'],
       key: 'pendApprove',
-      icon: getIcon('approve'),
+      icon : <Badge count={9} dot offset={[2, -2]}>
+        <IconCalendarClock
+            style={{
+              color: '#888',
+              fontSize: 18,
+              verticalAlign: -3,
+            }}
+        />
+      </Badge>
     },
     {
       title: t['workplace.shortcuts.myApply'],
@@ -53,6 +64,7 @@ function Shortcuts() {
     },
   ];
 
+  const history = useHistory();
 
   function onClickShortcut(key) {
     if(key == 'metricManage'){
@@ -69,7 +81,7 @@ function Shortcuts() {
   }
 
   const handleClick = (href) => {
-    window.open(href, '_self');
+    history.push(href);
   };
 
   return (

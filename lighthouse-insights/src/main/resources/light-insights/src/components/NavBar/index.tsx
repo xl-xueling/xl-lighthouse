@@ -29,6 +29,7 @@ import { GlobalState } from '@/store';
 import { GlobalContext } from '@/context';
 import useLocale from '@/utils/useLocale';
 import Logo from '@/assets/logo.svg';
+import {Switch, Route, Redirect, useHistory} from 'react-router-dom';
 import MessageBox from '@/components/MessageBox';
 import IconButton from './IconButton';
 import Settings from '../Settings';
@@ -42,6 +43,7 @@ function Navbar({ show }: { show: boolean }) {
   const t = useLocale();
   const { userInfo, userLoading } = useSelector((state: GlobalState) => state);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [_, setUserStatus] = useStorage('userStatus');
   const [role, setRole] = useStorage('userRole', 'admin');
@@ -105,7 +107,7 @@ function Navbar({ show }: { show: boolean }) {
   );
 
   const handleClick = () => {
-    window.open('/', '_self');
+    history.push('/');
   };
 
   return (
@@ -144,11 +146,11 @@ function Navbar({ show }: { show: boolean }) {
             }}
           />
         </li>
-        <li>
-          <MessageBox>
-            <IconButton icon={<IconNotification />} />
-          </MessageBox>
-        </li>
+        {/*<li>*/}
+        {/*  <MessageBox>*/}
+        {/*    <IconButton icon={<IconNotification />} />*/}
+        {/*  </MessageBox>*/}
+        {/*</li>*/}
         <li>
           <Tooltip
             content={
