@@ -16,35 +16,37 @@ import {
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/shortcuts.module.less';
+import {getIcon} from "@/pages/common/desc/base";
+import { VscOutput } from "react-icons/vsc";
 
 function Shortcuts() {
   const t = useLocale(locale);
 
   const shortcuts = [
     {
-      title: t['workplace.contentMgmt'],
-      key: 'Content Management',
-      icon: <IconFile />,
-    },
-    {
-      title: t['workplace.contentStatistic'],
-      key: 'Content Statistic',
-      icon: <IconStorage />,
-    },
-    {
-      title: t['workplace.advancedMgmt'],
+      title: t['workplace.shortcuts.metricManage'],
       key: 'Advanced Management',
-      icon: <IconSettings />,
+      icon: getIcon('metric'),
     },
     {
-      title: t['workplace.onlinePromotion'],
+      title: t['workplace.shortcuts.projectManage'],
+      key: 'Content Management',
+      icon: getIcon('project'),
+    },
+    {
+      title: t['workplace.shortcuts.statManage'],
+      key: 'Content Statistic',
+      icon: getIcon('stat'),
+    },
+    {
+      title: t['workplace.shortcuts.pendApprove'],
       key: 'Online Promotion',
-      icon: <IconMobile />,
+      icon: getIcon('approve'),
     },
     {
-      title: t['workplace.marketing'],
+      title: t['workplace.shortcuts.myApply'],
       key: 'Marketing',
-      icon: <IconFire />,
+      icon: getIcon('apply'),
     },
   ];
 
