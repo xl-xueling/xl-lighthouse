@@ -85,6 +85,10 @@ public final class DateUtil {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
+    public static LocalDateTime timestampToLocalDateTime(long t){
+        return Instant.ofEpochMilli(t).atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
     public static Date localDate2Date(LocalDate localDate){
         ZoneId zoneId = ZoneId.systemDefault();
         ZonedDateTime zdt = localDate.atStartOfDay().atZone(zoneId);

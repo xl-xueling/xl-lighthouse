@@ -18,6 +18,10 @@ import IconCalendar from './assets/calendar.svg';
 import IconComments from './assets/comments.svg';
 import IconContent from './assets/content.svg';
 import IconIncrease from './assets/increase.svg';
+import {GlobalState} from "@/store";
+import {requestStructure} from "@/api/department";
+import {ResultData} from "@/types/insights-common";
+import {requestOverView} from "@/api/home";
 
 const { Row, Col } = Grid;
 
@@ -60,30 +64,28 @@ function Overview() {
   const [data, setData] = useState<DataType>({});
   const [loading, setLoading] = useState(true);
   const t = useLocale(locale);
+  const userInfo = useSelector((state: GlobalState) => state.userInfo || {});
 
-  const userInfo = useSelector((state: any) => state.userInfo || {});
-
-  const fetchData = () => {
+  const fetchData = async () => {
     setLoading(true);
-    axios
-      .get('/api/workplace/overview-content')
-      .then((res) => {
-        setData(res.data);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    await requestOverView().then((response:ResultData) => {
+      console.log("response:" + JSON.stringify(response));
+    }).catch((error) => {
+      console.log(error)
+    }).finally(() => {
+      setLoading(false);
+    })
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData().then();
   }, []);
 
   return (
     <Card>
       <Typography.Title heading={5}>
         {t['workplace.welcomeBack']}
-        {userInfo.name}
+        {userInfo?.username}
       </Typography.Title>
       <Divider />
       <Row>

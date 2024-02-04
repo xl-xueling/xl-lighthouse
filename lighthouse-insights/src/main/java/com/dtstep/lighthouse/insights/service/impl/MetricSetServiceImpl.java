@@ -424,4 +424,9 @@ public class MetricSetServiceImpl implements MetricSetService {
         Collections.sort(voList, Comparator.comparingInt(e -> ids.indexOf(e.getId())));
         return voList;
     }
+
+    @Override
+    public int count(MetricSetQueryParam queryParam) {
+        return metricSetDao.count(queryParam);
+    }
 }

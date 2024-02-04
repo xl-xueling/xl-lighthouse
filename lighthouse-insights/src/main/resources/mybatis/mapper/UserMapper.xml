@@ -166,6 +166,12 @@
             <if test="queryParam.states==null or queryParam.states.size == 0">
                 AND state IN ('2','3')
             </if>
+            <if test="queryParam.createStartTime!=null">
+                AND create_time &gt;= #{queryParam.createStartTime}
+            </if>
+            <if test="queryParam.createEndTime!=null">
+                AND create_time &lt;= #{queryParam.createEndTime}
+            </if>
         </where>
     </select>
 
