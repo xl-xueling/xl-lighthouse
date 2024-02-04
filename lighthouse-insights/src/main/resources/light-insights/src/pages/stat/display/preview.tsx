@@ -34,7 +34,6 @@ export default function StatPreviewPanel({size = 'default',id}) {
     const [reloadTime,setReloadTime] = useState<number>(Date.now);
     const [showLimitedRecord,setShowLimitedRecord] = useState<boolean>(false);
     const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
-    const [showBindModal,setShowBindModal] = useState<boolean>(false);
 
     const tableCallback = async (type,data) => {
         if(type == 'showFilterConfigModal'){
@@ -43,8 +42,6 @@ export default function StatPreviewPanel({size = 'default',id}) {
             setShowLimitedRecord(true);
         }else if(type == 'showUpdateModal'){
             setShowUpdateModal(true);
-        }else if(type == 'showBindModal'){
-            setShowBindModal(true);
         }
     }
 
@@ -104,7 +101,6 @@ export default function StatPreviewPanel({size = 'default',id}) {
                 />}
                 {showLimitedRecord && <LimitedRecordModal resourceId={statInfo?.id} recordTypes={[RecordTypeEnum.STAT_RESULT_LIMITED]} resourceType={ResourceTypeEnum.Stat} onClose={() => setShowLimitedRecord(false)}/>}
                 {showUpdateModal && <StatUpdateModal statInfo={statInfo} onClose={() => setShowUpdateModal(false)} listCallback={(r1,r2) => setStatInfo(r1)}/>}
-                {showBindModal && <ReverseBindedPanel bindElement={{resourceId:statInfo?.id,resourceType:ResourceTypeEnum.Stat,title:statInfo?.title}} onClose={() => setShowBindModal(false)}/>}
             </Spin>
         </>
     );
