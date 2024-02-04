@@ -15,11 +15,13 @@ import {
 } from "@/types/insights-common";
 import {PiDiamondsFour, PiLinkSimple, PiLockKeyOpenThin, PiLockKeyThin} from "react-icons/pi";
 import {CiViewTable} from "react-icons/ci";
-import {IconMindMapping, IconStar, IconStarFill, IconTag} from "@arco-design/web-react/icon";
+import {IconCalendarClock, IconMindMapping, IconStar, IconStarFill, IconTag} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
 import {VscGistSecret} from "react-icons/vsc";
+import { VscOutput } from "react-icons/vsc";
 
+import { MdOutlinePendingActions } from "react-icons/md";
 
 export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
     if(value === StatStateEnum.PENDING){
@@ -255,7 +257,13 @@ export function getIcon(type:string,marginRight:string = null){
         return <IconStarFill style={{marginRight: marginRight}}/>
     }else if(type == 'bind'){
         return <PiLinkSimple style={{marginRight: marginRight}}/>
-    }
+    }else if(type == 'order'){
+        return <IconCalendarClock style={{marginRight: marginRight}}/>
+    }else if(type == 'apply'){
+        return <VscOutput style={{marginRight: marginRight}}/>
+    }else if(type == 'approve'){
+    return <IconCalendarClock style={{marginRight: marginRight}}/>
+}
 }
 
 export function getResourceTypeDescription(t:any,resourceType:ResourceTypeEnum){
