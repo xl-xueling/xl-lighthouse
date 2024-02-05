@@ -47,15 +47,7 @@ function Shortcuts() {
     {
       title: t['workplace.shortcuts.pendApprove'],
       key: 'pendApprove',
-      icon : <Badge count={9} dot offset={[2, -2]}>
-        <IconCalendarClock
-            style={{
-              color: '#888',
-              fontSize: 18,
-              verticalAlign: -3,
-            }}
-        />
-      </Badge>
+      icon : getIcon('approve'),
     },
     {
       title: t['workplace.shortcuts.myApply'],
