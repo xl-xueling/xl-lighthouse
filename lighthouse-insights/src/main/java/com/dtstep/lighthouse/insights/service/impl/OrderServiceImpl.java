@@ -446,7 +446,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Cacheable(value = "ShortPeriod",key = "#targetClass + '_' + 'pendCount' + '_' +  userId",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    @Cacheable(value = "ShortPeriod",key = "#targetClass + '_' + 'pendCount' + '_' +  #userId",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public int pendCount(int userId) {
         return orderDao.pendCount(userId);
     }
