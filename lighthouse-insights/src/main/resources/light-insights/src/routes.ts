@@ -225,41 +225,41 @@ export const routes: IRoute[] = [
   //   ],
   // },
 
-  {
-    name: 'menu.visualization',
-    key: 'visualization',
-    requiredPermissions: [
-      { resource: 'ldp.resource', actions: ['OperationManageAble'] },
-    ],
-    children: [
-      {
-        name: 'menu.visualization.dataAnalysis',
-        key: 'visualization/data-analysis',
-        requiredPermissions: [
-          { resource: 'menu.visualization.dataAnalysis', actions: ['read'] },
-        ],
-      },
-      {
-        name: 'menu.visualization.multiDimensionDataAnalysis',
-        key: 'visualization/multi-dimension-data-analysis',
-        requiredPermissions: [
-          {
-            resource: 'menu.visualization.dataAnalysis',
-            actions: ['read', 'write'],
-          },
-          {
-            resource: 'menu.visualization.multiDimensionDataAnalysis',
-            actions: ['write'],
-          },
-        ],
-        oneOfPerm: true,
-      },
-      {
-        name: 'monitor',
-        key: 'dashboard/monitor',
-      },
-    ],
-  },
+  // {
+  //   name: 'menu.visualization',
+  //   key: 'visualization',
+  //   requiredPermissions: [
+  //     { resource: 'ldp.resource', actions: ['OperationManageAble'] },
+  //   ],
+  //   children: [
+  //     {
+  //       name: 'menu.visualization.dataAnalysis',
+  //       key: 'visualization/data-analysis',
+  //       requiredPermissions: [
+  //         { resource: 'menu.visualization.dataAnalysis', actions: ['read'] },
+  //       ],
+  //     },
+  //     {
+  //       name: 'menu.visualization.multiDimensionDataAnalysis',
+  //       key: 'visualization/multi-dimension-data-analysis',
+  //       requiredPermissions: [
+  //         {
+  //           resource: 'menu.visualization.dataAnalysis',
+  //           actions: ['read', 'write'],
+  //         },
+  //         {
+  //           resource: 'menu.visualization.multiDimensionDataAnalysis',
+  //           actions: ['write'],
+  //         },
+  //       ],
+  //       oneOfPerm: true,
+  //     },
+  //     {
+  //       name: 'monitor',
+  //       key: 'dashboard/monitor',
+  //     },
+  //   ],
+  // },
 ];
 
 export const getName = (path: string, routes) => {
