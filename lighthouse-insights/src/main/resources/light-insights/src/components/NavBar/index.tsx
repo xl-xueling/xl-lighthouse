@@ -175,7 +175,7 @@ function Navbar({ show }: { show: boolean }) {
         </li>
         <li>
           <Badge count={pendCount} dot offset={[2, -2]}>
-            <IconButton icon={<IconNotification
+            <IconButton icon={<IconCalendarClock
                 onClick={() => handleClick('/order/approve/list')}
                 style={{
                   color: '#888',
