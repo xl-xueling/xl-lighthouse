@@ -124,6 +124,8 @@ const vi18n = {
         'basic.orderType.description.limitedThresholdAdjust':'修改限流阈值',
         'basic.orderType.description.statPendApprove':'审核统计项',
         'basic.orderType.description.userPendApprove':'审核新用户',
+
+
         'basic.roleType.description.projectManage':'工程管理权限',
         'basic.roleType.description.projectAccess':'工程访问权限',
         'basic.roleType.description.metricManage':'指标集管理权限',
