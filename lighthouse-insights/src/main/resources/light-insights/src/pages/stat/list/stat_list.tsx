@@ -55,6 +55,9 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
             await handlerDelete(record.id);
         }else if(type == 'bind'){
             await handlerBind(record.id);
+        }else if(type == 'apply'){
+            setSelectedStat(record);
+            setApplyVisible(true);
         }
     };
 
@@ -95,7 +98,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
                     tooltips = t['statList.columns.frozen.success'];
                 }
                 record.state = state;
-                setCurrentItem(record);
+                setSelectedStat(record);
                 setListData(listData.map(x => record.id == x.id ? record:x))
                 Notification.info({style: { width: 420 }, title: 'Notification', content: tooltips});
             }else{
