@@ -19,15 +19,18 @@ import {requestResetPasswd} from "@/api/user";
 import SearchForm from "@/pages/stat/list/form";
 import {requestBinded} from "@/api/metricset";
 import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
+import ProjectApplyModal from "@/pages/project/apply";
+import StatApplyModal from "@/pages/stat/apply";
 
 export default function StatisticalListPanel({formParams = {},from = null,parentLoading=false,extend=null}) {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const [listData,setListData] = useState<Array<Stat>>([]);
     const [detailVisible, setDetailVisible] = React.useState(false);
+    const [applyVisible,setApplyVisible] = React.useState(false);
     const [dataVersion,setDataVersion] = useState<number>();
     const [updateModalVisible,setUpdateModalVisible] = React.useState(false);
-    const [currentItem,setCurrentItem] = useState<Stat>(null);
+    const [selectedStat,setSelectedStat] = useState<Stat>(null);
     const refFetchId = useRef<number>(null);
     const [bindList,setBindList] = useState<number[]>([]);
     const [refreshTime,setRefreshTime] = useState<number>(null);
@@ -35,20 +38,20 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
 
     const tableCallback = async (record, type) => {
         if(type == 'showUpdateModal'){
-            setCurrentItem(record);
+            setSelectedStat(record);
             setUpdateModalVisible(true);
         }else if(type == 'showDetailModal'){
-            setCurrentItem(record);
+            setSelectedStat(record);
             setDetailVisible(!detailVisible);
         }else if(type == 'updateCallBack'){
-            setCurrentItem(record);
+            setSelectedStat(record);
             setListData(listData.map(x => record.id == x.id ? record:x))
         }else if(type == 'restart'){
             await handlerChangeState(record,StatStateEnum.RUNNING);
         }else if(type == 'stop'){
             await handlerChangeState(record,StatStateEnum.STOPPED);
         }else if(type == 'delete'){
-            setCurrentItem(record);
+            setSelectedStat(record);
             await handlerDelete(record.id);
         }else if(type == 'bind'){
             await handlerBind(record.id);
@@ -188,7 +191,6 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
     },[extend])
 
     useEffect(() => {
-        console.log("formParams isSSS:" + JSON.stringify(formParams))
         setLoading(true);
         fetchData().then();
     },[refreshTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)])
@@ -204,7 +206,9 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
                onChange={onChangeTable}
                pagination={pagination}
                loading={parentLoading ? false : loading}/>
-            {updateModalVisible && <StatUpdateModal statInfo={currentItem} onClose={() => setUpdateModalVisible(false)} listCallback={tableCallback}/>}
+            {updateModalVisible && <StatUpdateModal statInfo={selectedStat} onClose={() => setUpdateModalVisible(false)} listCallback={tableCallback}/>}
+
+            {applyVisible && <StatApplyModal statInfo={selectedStat} onClose={() => setApplyVisible(false)}/>}
         </>
         );
 }
