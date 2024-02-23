@@ -48,6 +48,11 @@ export default function StatApplyModal({statInfo,onClose}) {
     }
 
 
+    useEffect(() => {
+        console.log("statInfo is:" + JSON.stringify(statInfo));
+    },[])
+
+
     const data = [
         {
             label: t['statApply.column.title'],
@@ -55,11 +60,11 @@ export default function StatApplyModal({statInfo,onClose}) {
         },
         {
             label: t['statApply.column.department'],
-            value: <DepartmentLabel departmentId={statInfo?.project?.departmentId}/> ,
+            value: <DepartmentLabel departmentId={statInfo?.departmentId}/> ,
         },
         {
             label: t['statApply.column.admins'],
-            value: <UserGroup users={statInfo?.project?.admins} />,
+            value: <UserGroup users={statInfo?.admins} />,
         },
         {
             label: t['statApply.column.description'],

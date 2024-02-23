@@ -190,19 +190,11 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                         </Button>
                     </Link>
                 }else{
-                    applyButton = <Popconfirm key={getRandomString()}
-                                               position={"tr"}
-                                               focusLock
-                                               onOk={() => callback(record, 'apply')}
-                                               title='Confirm'
-                                               content={t['statList.table.operations.apply.confirm']}
-                    >
-                        <Button
-                            type="text"
-                            size="mini">
-                            {t['statList.table.operations.apply']}
-                        </Button>
-                    </Popconfirm>;
+                    applyButton = <Button key={getRandomString()}
+                        type="text"
+                        size="mini" onClick={() => callback(record, 'apply')}>
+                        {t['statList.table.operations.apply']}
+                    </Button>;
                 }
                 return <Space size={16} direction="horizontal">{[viewButton,applyButton]}</Space>
             }
