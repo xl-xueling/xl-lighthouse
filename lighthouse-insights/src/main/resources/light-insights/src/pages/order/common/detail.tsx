@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Form, Grid, Input, Space, Steps, Table, Typography} from "@arco-design/web-react";
+import {Button, Form, Grid, Input, Steps, Table, Typography} from "@arco-design/web-react";
 import UserGroup from "@/pages/user/common/groups";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale/index";
@@ -9,7 +9,7 @@ import {BiListUl} from "react-icons/bi";
 import {
     getOrderColumns,
     getOrderDetailColumns,
-    getProjectAccessColumns,
+    getProjectAccessColumns, getStatAccessColumns,
     getUserApproveColumns
 } from "@/pages/order/common/constants";
 import {getRandomString} from "@/utils/util";
@@ -28,6 +28,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
     const orderColumns = useMemo(() => getOrderColumns(t), [t]);
     const userApproveColumns = useMemo(() => getUserApproveColumns(t), [t]);
     const projectAccessColumns = useMemo(() => getProjectAccessColumns(t), [t]);
+    const statAccessColumns = useMemo(() => getStatAccessColumns(t), [t]);
     const orderDetailColumns = useMemo(() => getOrderDetailColumns(t,orderInfo), [t,orderInfo]);
 
     const toggleShowOrderDetail = () => {
@@ -103,6 +104,10 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
         }else if(orderInfo.orderType == OrderTypeEnum.PROJECT_ACCESS && orderInfo.extend){
             return (
                 <Table size={"small"} rowKey="id" pagination={false} columns={projectAccessColumns} data={[orderInfo.extend]} />
+            )
+        }else if(orderInfo.orderType == OrderTypeEnum.STAT_ACCESS && orderInfo.extend){
+            return (
+                <Table size={"small"} rowKey="id" pagination={false} columns={statAccessColumns} data={[orderInfo.extend]} />
             )
         }else{
             return  <Typography.Text type="secondary">
