@@ -317,7 +317,9 @@ public class OrderServiceImpl implements OrderService {
             Project project = projectService.queryById(projectId);
             return project;
         }else if(order.getOrderType() == OrderTypeEnum.STAT_ACCESS){
-
+            Integer statId = (Integer) configMap.get("statId");
+            Stat stat = statService.queryById(statId);
+            return stat;
         }
         return null;
     }

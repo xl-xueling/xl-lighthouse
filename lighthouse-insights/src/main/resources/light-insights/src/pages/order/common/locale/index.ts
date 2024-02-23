@@ -62,6 +62,11 @@ const i18n = {
     'detailModal.projectAccess.columns.department':'Department',
     'detailModal.projectAccess.columns.admins':"Admins",
     'detailModal.projectAccess.columns.desc':'Description',
+    'detailModal.statAccess.columns.id':'ID',
+    'detailModal.statAccess.columns.title':'Title',
+    'detailModal.statAccess.columns.department':'Department',
+    'detailModal.statAccess.columns.admins':"Admins",
+    'detailModal.statAccess.columns.desc':'Description',
     'detailModal.label.related.information':'Related Information',
   },
   'zh-CN': {
@@ -127,6 +132,11 @@ const i18n = {
     'detailModal.projectAccess.columns.department':'所属部门',
     'detailModal.projectAccess.columns.admins':"工程管理员",
     'detailModal.projectAccess.columns.desc':'工程描述',
+    'detailModal.statAccess.columns.id':'ID',
+    'detailModal.statAccess.columns.title':'统计项名称',
+    'detailModal.statAccess.columns.department':'所述部门',
+    'detailModal.statAccess.columns.admins':"管理员",
+    'detailModal.statAccess.columns.desc':'描述信息',
     'detailModal.label.related.information':'关联信息',
   },
 };
