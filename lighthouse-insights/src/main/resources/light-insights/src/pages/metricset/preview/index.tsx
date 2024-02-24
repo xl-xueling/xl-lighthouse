@@ -10,7 +10,7 @@ import {
     Notification,
     Breadcrumb,
     Spin,
-    Button, Dropdown, Menu
+    Button, Dropdown, Menu, Modal
 } from '@arco-design/web-react';
 import MetricSetPreviewHeader from "@/pages/metricset/preview/header";
 import {
@@ -50,6 +50,7 @@ import MetricSetUpdateModal from "@/pages/metricset/update";
 import {useSelector} from "react-redux";
 import {addMetricPreviewHistory} from "@/pages/metricset/preview/history";
 import {deepCopyObject} from "@/utils/util";
+import {requestDeleteById} from "@/api/group";
 
 export const MetricSetPreviewContext = React.createContext(null)
 
@@ -63,6 +64,42 @@ export default function Index() {
     const [errorCode, setErrorCode] = useState<string>(null);
     const [showPermissionManageModal,setShowPermissionManageModal] = useState<boolean>(false);
     const [showUpdatePanel,setShowUpdatePanel] = useState<boolean>(false);
+    const [showDeleteMetricConfirm,setShowDeleteMetricConfirm] = useState<boolean>(false);
+
+
+    const deleteGroupConfirm = (
+        <Modal
+            title={t['basic.modal.confirm.delete.title']}
+            visible={showDeleteMetricConfirm}
+            onOk={() => {
+                handlerDeleteMetric();
+                setShowDeleteMetricConfirm(false);
+            }}
+            alignCenter={false}
+            style={{top:'200px'}}
+            onCancel={() => setShowDeleteMetricConfirm(false)}
+            okText={t['basic.form.button.submit']}
+            cancelText={t['basic.form.button.cancel']}
+        >
+            {t['groupManage.operations.delete.confirm']}
+        </Modal>
+    );
+
+    const handlerDeleteMetric = async () => {
+        setLoading(true);
+        await requestDeleteById({id:id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Warning', content: t['groupManage.form.submit.deleteSuccess']});
+                deleteCallback('deleteGroup',groupId);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);
@@ -116,8 +153,8 @@ export default function Index() {
                                 <Tabs type="line" defaultActiveTab={'1'}
                                       extra={
                                           <Space size={1}>
-                                              <Button type={"secondary"}  size={"mini"} onClick={() => setShowUpdatePanel(true)} icon={<FiEdit/>}>{'修改指标集'}</Button>
-                                              <Button type={"secondary"}  size={"mini"} onClick={() => setShowPermissionManageModal(true)} icon={getIcon('permission')}>{'权限管理'}</Button>
+                                              <Button type={"secondary"}  size={"mini"} onClick={() => setShowUpdatePanel(true)} icon={<FiEdit/>}>{t['metricSetPreview.updateMetricSet']}</Button>
+                                              <Button type={"secondary"}  size={"mini"} onClick={() => setShowPermissionManageModal(true)} icon={getIcon('permission')}>{t['metricSetPreview.permissionsManage']}</Button>
                                               <Dropdown
                                                   position={"br"}
                                                   trigger={"click"}
@@ -125,10 +162,10 @@ export default function Index() {
                                                       <Menu style={{ maxHeight:'280px' }}>
                                                           <Menu.Item key={'deleteGroup'}>
                                                               <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<IconDelete/>} />&nbsp;&nbsp;
-                                                              {'删除指标集'}</Menu.Item>
+                                                              {t['metricSetPreview.dropMetricSet']}</Menu.Item>
                                                       </Menu>
                                                   }>
-                                                  <Button size={"mini"} type={"secondary"}><IconDownCircle />{'更多'}</Button>
+                                                  <Button size={"mini"} type={"secondary"}><IconDownCircle />{t['metricSetPreview.more']}</Button>
                                               </Dropdown>
                                           </Space>
                                       }
