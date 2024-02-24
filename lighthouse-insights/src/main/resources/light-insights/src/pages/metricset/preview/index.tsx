@@ -214,7 +214,7 @@ export default function Index() {
                 {showPermissionManageModal &&
                 <PermissionManageModal resourceId={id} resourceType={ResourceTypeEnum.Metric}
                                        onClose={() => setShowPermissionManageModal(false)}/>}
-                {showUpdatePanel && <MetricSetUpdateModal metricInfo={metricSetInfo} onClose={() => setShowUpdatePanel(false)} onSuccess={() => {console.log("-")}} />}
+                {showUpdatePanel && <MetricSetUpdateModal onClose={() => setShowUpdatePanel(false)} onSuccess={() => {console.log("-")}} />}
                 {deleteMetricConfirm}
             </>
         </MetricSetPreviewContext.Provider>
