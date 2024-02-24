@@ -27,7 +27,6 @@ import {requestQueryById} from "@/api/metricset";
 import {MetricSet} from "@/types/insights-web";
 import MetricSetDataViewPanel from "@/pages/metricset/preview/dataview/MetricSetDataViewPanel";
 import MetricSetBindListPanel from "@/pages/metricset/binded/list";
-
 const {Title} = Typography;
 const {Row, Col} = Grid;
 const TabPane = Tabs.TabPane;
@@ -50,7 +49,7 @@ import MetricSetUpdateModal from "@/pages/metricset/update";
 import {useSelector} from "react-redux";
 import {addMetricPreviewHistory} from "@/pages/metricset/preview/history";
 import {deepCopyObject} from "@/utils/util";
-import {requestDeleteById} from "@/api/group";
+import {requestDeleteById} from "@/api/metricset";
 
 export const MetricSetPreviewContext = React.createContext(null)
 
@@ -66,8 +65,19 @@ export default function Index() {
     const [showUpdatePanel,setShowUpdatePanel] = useState<boolean>(false);
     const [showDeleteMetricConfirm,setShowDeleteMetricConfirm] = useState<boolean>(false);
 
+    const handlerProcess = async (action):Promise<void> => {
+        switch (action){
+            case 'dropMetricSet':{
+                setShowDeleteMetricConfirm(true);
+                break;
+            }
+            default:{
+                return;
+            }
+        }
+    }
 
-    const deleteGroupConfirm = (
+    const deleteMetricConfirm = (
         <Modal
             title={t['basic.modal.confirm.delete.title']}
             visible={showDeleteMetricConfirm}
@@ -81,7 +91,7 @@ export default function Index() {
             okText={t['basic.form.button.submit']}
             cancelText={t['basic.form.button.cancel']}
         >
-            {t['groupManage.operations.delete.confirm']}
+            {t['metricSetPreview.operations.delete.confirm']}
         </Modal>
     );
 
@@ -90,8 +100,7 @@ export default function Index() {
         await requestDeleteById({id:id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Warning', content: t['groupManage.form.submit.deleteSuccess']});
-                deleteCallback('deleteGroup',groupId);
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetPreview.form.submit.dropSuccess']});
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -159,8 +168,8 @@ export default function Index() {
                                                   position={"br"}
                                                   trigger={"click"}
                                                   droplist={
-                                                      <Menu style={{ maxHeight:'280px' }}>
-                                                          <Menu.Item key={'deleteGroup'}>
+                                                      <Menu style={{ maxHeight:'280px' }} onClickMenuItem={handlerProcess}>
+                                                          <Menu.Item key={'dropMetricSet'}>
                                                               <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<IconDelete/>} />&nbsp;&nbsp;
                                                               {t['metricSetPreview.dropMetricSet']}</Menu.Item>
                                                       </Menu>
@@ -202,6 +211,7 @@ export default function Index() {
                 <PermissionManageModal resourceId={id} resourceType={ResourceTypeEnum.Metric}
                                        onClose={() => setShowPermissionManageModal(false)}/>}
                 {showUpdatePanel && <MetricSetUpdateModal metricInfo={metricSetInfo} onClose={() => setShowUpdatePanel(false)} onSuccess={() => {console.log("-")}} />}
+                {deleteMetricConfirm}
             </>
         </MetricSetPreviewContext.Provider>
     );

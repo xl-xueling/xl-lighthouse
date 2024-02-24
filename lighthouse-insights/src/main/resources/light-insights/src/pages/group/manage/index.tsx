@@ -92,7 +92,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
         await requestDeleteById({id:groupId}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Warning', content: t['groupManage.form.submit.deleteSuccess']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['groupManage.form.submit.deleteSuccess']});
                 deleteCallback('deleteGroup',groupId);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
