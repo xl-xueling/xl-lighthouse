@@ -1,5 +1,5 @@
 import React, {createContext, useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {Switch, Route, Redirect, useHistory,useParams} from 'react-router-dom';
 import {
     Card,
     Typography,
@@ -56,6 +56,7 @@ export const MetricSetPreviewContext = React.createContext(null)
 export default function Index() {
     const {id} = useParams();
     const t = useLocale(locale);
+    const history = useHistory();
     const [loading, setLoading] = useState<boolean>(false);
     const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
     const [metricSetInfo, setMetricSetInfo] = useState<MetricSet>(null);
@@ -67,7 +68,7 @@ export default function Index() {
 
     const handlerProcess = async (action):Promise<void> => {
         switch (action){
-            case 'dropMetricSet':{
+            case 'deleteMetricSet':{
                 setShowDeleteMetricConfirm(true);
                 break;
             }
@@ -88,8 +89,8 @@ export default function Index() {
             alignCenter={false}
             style={{top:'200px'}}
             onCancel={() => setShowDeleteMetricConfirm(false)}
-            okText={t['basic.form.button.submit']}
-            cancelText={t['basic.form.button.cancel']}
+            okText={t['basic.form.button.yes']}
+            cancelText={t['basic.form.button.no']}
         >
             {t['metricSetPreview.operations.delete.confirm']}
         </Modal>
@@ -100,7 +101,10 @@ export default function Index() {
         await requestDeleteById({id:id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetPreview.form.submit.dropSuccess']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetPreview.form.submit.deleteSuccess']});
+                setTimeout(() => {
+                    history.push('/metricset/list');
+                },2000)
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -169,9 +173,9 @@ export default function Index() {
                                                   trigger={"click"}
                                                   droplist={
                                                       <Menu style={{ maxHeight:'280px' }} onClickMenuItem={handlerProcess}>
-                                                          <Menu.Item key={'dropMetricSet'}>
+                                                          <Menu.Item key={'deleteMetricSet'}>
                                                               <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<IconDelete/>} />&nbsp;&nbsp;
-                                                              {t['metricSetPreview.dropMetricSet']}</Menu.Item>
+                                                              {t['metricSetPreview.deleteMetricSet']}</Menu.Item>
                                                       </Menu>
                                                   }>
                                                   <Button size={"mini"} type={"secondary"}><IconDownCircle />{t['metricSetPreview.more']}</Button>

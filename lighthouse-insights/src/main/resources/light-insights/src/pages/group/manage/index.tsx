@@ -128,8 +128,8 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
             alignCenter={false}
             style={{top:'200px'}}
             onCancel={() => setShowDeleteGroupConfirm(false)}
-            okText={t['basic.form.button.submit']}
-            cancelText={t['basic.form.button.cancel']}
+            okText={t['basic.form.button.yes']}
+            cancelText={t['basic.form.button.no']}
         >
             {t['groupManage.operations.delete.confirm']}
         </Modal>
