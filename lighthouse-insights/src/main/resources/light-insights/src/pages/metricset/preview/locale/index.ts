@@ -11,10 +11,10 @@ const i18n = {
     'metricSetPreview.tab.title.structure':'Structure',
     'metricSetPreview.updateMetricSet':'Update MetricSet',
     'metricSetPreview.permissionsManage':'Permissions',
-    'metricSetPreview.dropMetricSet':'Drop MetricSet',
+    'metricSetPreview.deleteMetricSet':'Delete MetricSet',
     'metricSetPreview.more':'More',
     'metricSetPreview.operations.delete.confirm':'Are you sure to delete the MetricSet?',
-    'metricSetPreview.form.submit.dropSuccess':'Drop MetricSet Successfully!',
+    'metricSetPreview.form.submit.deleteSuccess':'Delete MetricSet Successfully!',
   },
   'zh-CN': {
     'metricSetPreview.breadcrumb':'指标集视图',
@@ -25,10 +25,10 @@ const i18n = {
     'metricSetPreview.tab.title.structure':'树结构',
     'metricSetPreview.updateMetricSet':'修改指标集',
     'metricSetPreview.permissionsManage':'权限管理',
-    'metricSetPreview.dropMetricSet':'删除指标集',
+    'metricSetPreview.deleteMetricSet':'删除指标集',
     'metricSetPreview.more':'更多',
     'metricSetPreview.operations.delete.confirm':'是否确认删除指标集？',
-    'metricSetPreview.form.submit.dropSuccess':'删除指标集成功！',
+    'metricSetPreview.form.submit.deleteSuccess':'删除指标集成功！',
   },
 };
 
