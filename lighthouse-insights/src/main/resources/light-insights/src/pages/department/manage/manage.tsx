@@ -12,7 +12,7 @@ import {
     requestUpdateById
 } from "@/api/department";
 import {getRandomString, getTextBlenLength, validateWithRegex} from "@/utils/util";
-import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
+import {TEXT_BASE_PATTERN_2, TEXT_BASE_PATTERN_3} from "@/utils/constants";
 
 export default function ManagePanel() {
     const t = useLocale(locale);
@@ -293,7 +293,7 @@ export default function ManagePanel() {
                                                                       if (len < 3 || len > 30) {
                                                                           Notification.warning({style: { width: 420 }, title: 'Warning', content: t['department.manage.invalidLength']});
                                                                           node.dataRef.title = originTitle;
-                                                                      } else if(!validateWithRegex(TEXT_BASE_PATTERN_2,ie.target.value)) {
+                                                                      } else if(!validateWithRegex(TEXT_BASE_PATTERN_3,ie.target.value)) {
                                                                           Notification.warning({style: { width: 420 }, title: 'Warning', content: t['department.manage.hasInvalidChars']});
                                                                           node.dataRef.title = originTitle;
                                                                       } else {
