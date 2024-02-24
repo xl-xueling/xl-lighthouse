@@ -4,7 +4,7 @@ import {IconDragDotVertical, IconMindMapping, IconMinus, IconPen, IconPlus, Icon
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import {areJsonObjectsEqual, getRandomString, getTextBlenLength, validateWithRegex} from "@/utils/util";
-import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
+import {TEXT_BASE_PATTERN_2, TEXT_BASE_PATTERN_3} from "@/utils/constants";
 import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
 import {MdOutlineNewLabel} from "react-icons/md";
@@ -266,7 +266,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                                                         if (len < 3 || len > 32) {
                                                                             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.invalidLength']});
                                                                             node.dataRef.title = originTitle;
-                                                                        } else if(!validateWithRegex(TEXT_BASE_PATTERN_2,ie.target.value)) {
+                                                                        } else if(!validateWithRegex(TEXT_BASE_PATTERN_3,ie.target.value)) {
                                                                             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.hasInvalidChars']});
                                                                             node.dataRef.title = originTitle;
                                                                         } else {
