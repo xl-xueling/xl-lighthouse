@@ -74,7 +74,7 @@ const i18n = {
     'detailModal.columns.user':'申请人',
     'detailModal.columns.type':'工单类型',
     'detailModal.columns.type.project.access':'工程访问权限申请',
-    'detailModal.columns.type.stat.access':'统计访问权限申请',
+    'detailModal.columns.type.stat.access':'统计项访问权限申请',
     'detailModal.columns.type.metrics.access':'指标集访问权限申请',
     'detailModal.columns.type.adjust.limited.threshold':'修改限流阈值',
     'detailModal.columns.type.stat.pend.approve':'审核统计项',
