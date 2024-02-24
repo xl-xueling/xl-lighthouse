@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {Form, Grid, Input, Message, Modal, Notification, Radio, Tabs, Typography} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
@@ -11,9 +11,10 @@ import {ResultData} from "@/types/insights-common";
 import {requestCreate, requestUpdate} from "@/api/metricset";
 import {updateStoreStaredMetricInfo, updateStoreStaredProjectInfo} from "@/index";
 import {useDispatch, useSelector} from "react-redux";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 
 
-export default function MetricSetUpdateModal({metricInfo,onClose,onSuccess}) {
+export default function MetricSetUpdateModal({onClose,onSuccess}) {
 
     const [form] = Form.useForm();
     const t = useLocale(locale);
@@ -23,6 +24,7 @@ export default function MetricSetUpdateModal({metricInfo,onClose,onSuccess}) {
     const { Col, Row } = Grid;
     const [showPickUpPanel,setShowPickUpPanel] = useState<boolean>(false);
     const [showGrantPrivileges,setShowGrantPrivileges] = useState<boolean>(true);
+    const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
     const departmentTransferRef = useRef(null);
     const userTransferRef = useRef(null);
     const [loading,setLoading] = useState<boolean>(false);
@@ -46,7 +48,7 @@ export default function MetricSetUpdateModal({metricInfo,onClose,onSuccess}) {
         setLoading(true);
         const values = formRef.current.getFieldsValue();
         const updateParams:MetricSet = {
-            id:metricInfo?.id,
+            id:metricSetInfo?.id,
             title:values.title,
             desc:values.desc,
             privateType:values.privateType,
@@ -55,14 +57,16 @@ export default function MetricSetUpdateModal({metricInfo,onClose,onSuccess}) {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['updateMetricSet.form.submit.success']});
-                if(staredMetricInfo?.map(z => z.id).includes(metricInfo?.id)){
+                if(staredMetricInfo?.map(z => z.id).includes(metricSetInfo?.id)){
                     const newArray = staredMetricInfo?.map(z => {
-                        if(z.id == metricInfo.id){
+                        if(z.id == metricSetInfo.id){
                             return {...z,...updateParams};
                         }else{
                             return z;
                         }
                     })
+                    const newInfo = {...metricSetInfo,...updateParams};
+                    setMetricSetInfo(newInfo);
                     localStorage.removeItem('cache_stared_metrics');
                     dispatch(updateStoreStaredMetricInfo(newArray));
                 }
@@ -93,9 +97,9 @@ export default function MetricSetUpdateModal({metricInfo,onClose,onSuccess}) {
                 ref={formRef}
                 autoComplete={"off"}
                 initialValues={{
-                    title:metricInfo?.title,
-                    privateType: metricInfo?.privateType,
-                    desc:metricInfo?.desc,
+                    title:metricSetInfo?.title,
+                    privateType: metricSetInfo?.privateType,
+                    desc:metricSetInfo?.desc,
                 }}
                 style={{ minHeight:'300px' }}
                 labelCol={{span: 4, offset: 0}}
