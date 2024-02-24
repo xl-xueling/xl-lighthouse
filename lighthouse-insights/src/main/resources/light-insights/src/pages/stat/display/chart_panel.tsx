@@ -95,12 +95,19 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
             }
         ],
         legend: {
-            data: eChartData.map(z => z.name)
+            data: eChartData.map(z => z.name),
+            icon:'circle',
+            itemHeight:'10',
+            // itemWidth:'10',
+            // orient:'vertical',
+            // x:'right',
+            // y:'top',
+
         },
         toolbox: {
-            feature: {
-                saveAsImage: {}
-            }
+            // feature: {
+            //     saveAsImage: {}
+            // }
         },
         grid: {
             left: '3%',

@@ -39,7 +39,6 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
 
     const handleSubmit = () => {
         const values = form.getFieldsValue();
-        console.log("values:" + JSON.stringify(values));
         onSearch(values);
     };
 
@@ -110,13 +109,13 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
 
     const getDatePicker = () => {
         if(statInfo.timeparam.endsWith("second")){
-            return <DatePicker.RangePicker style={{width:'100%'}}/>;
+            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD"/>;
         }else if(statInfo.timeparam.endsWith("minute")){
-            return <DatePicker.RangePicker style={{width:'100%'}}/>;
+            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD"/>;
         }else if(statInfo.timeparam.endsWith("hour")){
-            return <DatePicker.RangePicker style={{width:'100%'}}/>;
+            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD"/>;
         }else if(statInfo.timeparam.endsWith("day")){
-            return <DatePicker.RangePicker style={{width:'100%'}}/>;
+            return <DatePicker.RangePicker style={{width:'100%'}} format="YYYY-MM-DD"/>;
         }else if(statInfo.timeparam.endsWith("month")){
             return <DatePicker.RangePicker mode={"month"} style={{width:'100%'}}/>;
         }else if(statInfo.timeparam.endsWith("year")){
@@ -127,7 +126,6 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
     return (
         <div className={styles['search-form-wrapper']}>
         <Form
-            key={getRandomString()}
             form={form}
             size={"small"}
             className={styles['search-form']}
