@@ -165,6 +165,9 @@ public class MetricSetServiceImpl implements MetricSetService {
     @Override
     public MetricSetVO queryById(Integer id) {
         MetricSet metricSet = metricSetDao.queryById(id);
+        if(metricSet == null){
+            return null;
+        }
         MetricSetVO metricSetVO = translate(metricSet);
         Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.METRIC_MANAGE_PERMISSION,metricSet.getId());
         List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
