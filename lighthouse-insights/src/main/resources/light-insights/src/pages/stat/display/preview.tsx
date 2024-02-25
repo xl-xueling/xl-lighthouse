@@ -61,7 +61,6 @@ export default function StatPreviewPanel({size = 'default',id}) {
     }
 
     function handleSearch(params) {
-        console.log("search params is:" + JSON.stringify(params));
         setSearchForm(params);
     }
 

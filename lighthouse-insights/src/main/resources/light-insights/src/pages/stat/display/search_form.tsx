@@ -157,12 +157,12 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
             </Row>
         </Form>
             <div className={styles['right-button']}>
-                <Button size={"small"} type="primary" icon={<IconSearch />} onClick={handleSubmit}>
+                <Button size={size == 'mini' ? "mini" :"small"} type="primary" icon={<IconSearch />} onClick={handleSubmit}>
                     {t['basic.form.button.search']}
                 </Button>
                 {
                     statInfo?.renderConfig?.filters.length > 1 ?
-                        <Button size={"small"} type="secondary" icon={<IconSearch />} onClick={handleReset}>
+                        <Button size={size == 'mini' ? "mini" :"small"} type="secondary" icon={<IconSearch />} onClick={handleReset}>
                             {t['basic.form.button.reset']}
                         </Button>
                         : null
