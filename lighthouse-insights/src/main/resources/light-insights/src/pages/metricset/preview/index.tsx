@@ -33,7 +33,7 @@ const TabPane = Tabs.TabPane;
 import {PiLinkSimple, PiTreeStructure} from "react-icons/pi";
 import MetricSetStructurePanel from "@/pages/metricset/structure";
 import MetricSetPermissionsPanel from "@/pages/metricset/permissions";
-import {ResourceTypeEnum} from "@/types/insights-common";
+import {PermissionEnum, ResourceTypeEnum} from "@/types/insights-common";
 import {VscGistSecret} from "react-icons/vsc";
 import {GlobalErrorCodes} from "@/utils/constants";
 import ErrorPage from "@/pages/common/error";
@@ -165,22 +165,24 @@ export default function Index() {
 
                                 <Tabs type="line" defaultActiveTab={'1'}
                                       extra={
-                                          <Space size={1}>
-                                              <Button type={"secondary"}  size={"mini"} onClick={() => setShowUpdatePanel(true)} icon={<FiEdit/>}>{t['metricSetPreview.updateMetricSet']}</Button>
-                                              <Button type={"secondary"}  size={"mini"} onClick={() => setShowPermissionManageModal(true)} icon={getIcon('permission')}>{t['metricSetPreview.permissionsManage']}</Button>
-                                              <Dropdown
-                                                  position={"br"}
-                                                  trigger={"click"}
-                                                  droplist={
-                                                      <Menu style={{ maxHeight:'280px' }} onClickMenuItem={handlerProcess}>
-                                                          <Menu.Item key={'deleteMetricSet'}>
-                                                              <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<IconDelete/>} />&nbsp;&nbsp;
-                                                              {t['metricSetPreview.deleteMetricSet']}</Menu.Item>
-                                                      </Menu>
-                                                  }>
-                                                  <Button size={"mini"} type={"secondary"}><IconDownCircle />{t['metricSetPreview.more']}</Button>
-                                              </Dropdown>
-                                          </Space>
+                                              metricSetInfo?.permissions.includes(PermissionEnum.ManageAble)?
+                                              <Space size={1}>
+                                                  <Button type={"secondary"}  size={"mini"} onClick={() => setShowUpdatePanel(true)} icon={<FiEdit/>}>{t['metricSetPreview.updateMetricSet']}</Button>
+                                                  <Button type={"secondary"}  size={"mini"} onClick={() => setShowPermissionManageModal(true)} icon={getIcon('permission')}>{t['metricSetPreview.permissionsManage']}</Button>
+                                                  <Dropdown
+                                                      position={"br"}
+                                                      trigger={"click"}
+                                                      droplist={
+                                                          <Menu style={{ maxHeight:'280px' }} onClickMenuItem={handlerProcess}>
+                                                              <Menu.Item key={'deleteMetricSet'}>
+                                                                  <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<IconDelete/>} />&nbsp;&nbsp;
+                                                                  {t['metricSetPreview.deleteMetricSet']}</Menu.Item>
+                                                          </Menu>
+                                                      }>
+                                                      <Button size={"mini"} type={"secondary"}><IconDownCircle />{t['metricSetPreview.more']}</Button>
+                                                  </Dropdown>
+                                              </Space>
+                                              :null
                                       }
                                 >
                                     <TabPane
@@ -199,13 +201,17 @@ export default function Index() {
                                         }>
                                         {metricSetInfo && <MetricSetBindListPanel/>}
                                     </TabPane>
-                                    <TabPane key='3' title={
-                                        <span>
+                                    {
+                                        metricSetInfo?.permissions.includes(PermissionEnum.ManageAble)?
+                                            <TabPane key='3' title={
+                                                <span>
                 <span style={{display: "inline-flex", alignItems: "center"}}><PiTreeStructure
                     style={{marginRight: 6}}/>{t['metricSetPreview.tab.title.structure']}</span>
                 </span>}>
-                                        {metricSetInfo && <MetricSetStructurePanel/>}
-                                    </TabPane>
+                                                {metricSetInfo && <MetricSetStructurePanel/>}
+                                            </TabPane>
+                                            : null
+                                    }
                                 </Tabs>
                             </Space>
                         </>
