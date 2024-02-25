@@ -23,6 +23,7 @@ import { MdOutlineManageAccounts } from "react-icons/md";
 
 import { MdManageAccounts } from "react-icons/md";
 import {CiViewTable} from "react-icons/ci";
+import {PermissionEnum} from "@/types/insights-common";
 
 export default function BasicInfo({statInfo,callback}) {
 
@@ -71,7 +72,7 @@ export default function BasicInfo({statInfo,callback}) {
             value:
                 <div>
                     <Space size={6}>
-                        {statInfo?.permissions.includes('ManageAble')?
+                        {statInfo?.permissions.includes(PermissionEnum.ManageAble)?
                             <>
                             <Button shape={"circle"} icon={<IconEdit/>} size={"mini"} onClick={() => callback('showUpdateModal')}/>
                             <Button shape={"circle"} icon={<TbFilterEdit/>} size={"mini"} onClick={() => callback('showFilterConfigModal')}/>
