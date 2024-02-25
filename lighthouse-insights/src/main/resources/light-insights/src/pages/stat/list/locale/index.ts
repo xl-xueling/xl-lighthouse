@@ -1,5 +1,6 @@
 const i18n = {
   'en-US': {
+    'statList.breadcrumb.title':'Statistic List',
     'statList.table.columns.name':'Name',
     'statList.table.columns.department':'Department',
     'statList.table.columns.project':'Project',
@@ -45,6 +46,7 @@ const i18n = {
     'statList.label.operations':'Operations',
   },
   'zh-CN': {
+    'statList.breadcrumb.title':'统计项列表',
     'statList.table.columns.name':'名称',
     'statList.table.columns.department':'部门',
     'statList.table.columns.project':'统计工程',
