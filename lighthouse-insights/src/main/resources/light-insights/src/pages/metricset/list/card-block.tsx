@@ -82,7 +82,7 @@ function CardBlock(props: CardBlockType) {
       bordered={true}
       className={className}
       size="small"
-      style={{cursor:'pointer'}}
+      style={{cursor:'pointer',height:size == 'small'?'150px':'190px'}}
         actions={
           item.permissions.includes(PermissionEnum.AccessAble)?
           [

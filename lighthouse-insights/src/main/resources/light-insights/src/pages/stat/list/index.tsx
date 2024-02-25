@@ -1,4 +1,5 @@
 import {
+    Breadcrumb,
     Card,
 } from '@arco-design/web-react';
 import React, {useState} from 'react';
@@ -6,6 +7,8 @@ import useLocale from '@/utils/useLocale';
 import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import locale from "./locale";
 import SearchForm from "@/pages/stat/list/form";
+import {IconHome} from "@arco-design/web-react/icon";
+const BreadcrumbItem = Breadcrumb.Item;
 
 export default function Index() {
 
@@ -17,9 +20,17 @@ export default function Index() {
     }
 
     return (
+        <>
+            <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+                <BreadcrumbItem>
+                    <IconHome />
+                </BreadcrumbItem>
+                <BreadcrumbItem style={{fontWeight:20}}>{t['statList.breadcrumb.title']}</BreadcrumbItem>
+            </Breadcrumb>
         <Card>
             <SearchForm onSearch={handleSearch}/>
             <StatisticalListPanel formParams={formParams}/>
         </Card>
+        </>
     );
 }
