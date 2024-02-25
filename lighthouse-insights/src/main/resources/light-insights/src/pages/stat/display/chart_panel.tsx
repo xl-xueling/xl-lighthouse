@@ -19,6 +19,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
     const [loading,setLoading] = useState<boolean>(false);
     const [batchTimeList,setBatchTimeList] = useState<string[]>([]);
     const [eChartData,setEChartData] = useState<Array<EChartChartValue>>([]);
+    const [errorMessage,setErrorMessage] = useState(null);
 
     const loadData = (data:Array<StatData>) => {
         const eChartChartValues:Array<EChartChartValue> = [];
@@ -69,7 +70,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
             if(code == '0'){
                 loadData(data);
             }else{
-                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+                setErrorMessage(message);
             }
             setLoading(false);
         }).catch((error) => {
@@ -104,11 +105,6 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
             // y:'top',
 
         },
-        toolbox: {
-            // feature: {
-            //     saveAsImage: {}
-            // }
-        },
         grid: {
             left: '3%',
             right: '4%',
@@ -127,7 +123,17 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 type: 'value'
             }
         ],
-        series: eChartData
+        series: eChartData,
+        graphic: errorMessage && [{
+            type: 'text',
+            left: 'center',
+            top: 'middle',
+            style: {
+                fill: '#000',
+                text: errorMessage,
+                fontSize: 12,
+            }
+        }]
     };
 
     useEffect(() => {

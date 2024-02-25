@@ -47,10 +47,14 @@ public class DataController {
     public ResultData<List<StatDataObject>> testDataQuery(@Validated @RequestBody DataStatQueryParam queryParam){
         int statId = queryParam.getStatId();
         int userId = baseService.getCurrentUserId();
-        Role role = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
-        boolean hasPermission = permissionService.checkUserPermission(userId,role.getId());
-        if(!hasPermission){
-            return ResultData.result(ResultCode.accessDenied);
+        Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
+        boolean hasManagePermission = permissionService.checkUserPermission(userId,manageRole.getId());
+        if(!hasManagePermission){
+            Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
+            boolean hasAccessPermission = permissionService.checkUserPermission(userId,accessRole.getId());
+            if(!hasAccessPermission){
+                return ResultData.result(ResultCode.accessDenied);
+            }
         }
         List<StatDataObject> objectList = dataService.testDataQuery(queryParam.getStatId(),queryParam.getStartTime(),queryParam.getEndTime(),null);
         System.out.println("objectList is:" + JsonUtil.toJSONString(objectList));
