@@ -33,6 +33,8 @@ import UserGroup from "@/pages/user/common/groups";
 import {RiAppsLine} from "react-icons/ri";
 import {CiLock} from "react-icons/ci";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview/index";
+import ProjectStar from "@/pages/project/common/ProjectStar";
+import MetricSetStar from "@/pages/metricset/common/MetricSetStar";
 const { Row, Col } = Grid;
 export default function MetricSetPreviewHeader() {
 
@@ -65,14 +67,23 @@ export default function MetricSetPreviewHeader() {
                 metricSetInfo?
                     <Space size={0} direction="vertical" style={{ width: '100%' }}>
                         <Row>
-                            <Button icon={<LuLayers/>} shape={"circle"} size={"small"} style={{marginRight:'10px',marginBottom:'15px'}}/>
-                            <Typography.Title
-                                heading={6}
-                                style={{marginTop:'1px'}}
-                            >
-                                {t['metricsetPreview.title.prefix']}：{metricSetInfo?.title}
-                                <CiLock style={{marginLeft:'5px',fontSize:14}}/>
-                            </Typography.Title>
+                            <Grid.Col span={20}>
+                                <span style={{display:"inline-flex",alignItems:"center"}}>
+                                    <Button icon={<LuLayers/>} shape={"circle"} size={"small"} style={{marginRight:'10px',marginBottom:'7px'}}/>
+                                    <Typography.Title
+                                        heading={6}
+                                        style={{marginTop:'0px'}}
+                                    >
+                                       {t['metricsetPreview.title.prefix']}：{metricSetInfo?.title}
+                                        <CiLock style={{marginLeft:'5px',fontSize:14}}/>
+                                    </Typography.Title>
+                                </span>
+                            </Grid.Col>
+                            <Grid.Col span={4} style={{textAlign:"right" }}>
+                                <Space size={10}>
+                                    <MetricSetStar metricInfo={metricSetInfo}/>
+                                </Space>
+                            </Grid.Col>
                         </Row>
                         <Row>
                             <Descriptions
