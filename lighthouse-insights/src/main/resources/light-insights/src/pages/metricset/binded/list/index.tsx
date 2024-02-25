@@ -17,7 +17,7 @@ import useLocale from "@/utils/useLocale";
 import {Project, Relation} from "@/types/insights-web";
 import {requestBindList, requestBindRemove} from "@/api/metricset";
 import {CiLock} from "react-icons/ci";
-import {OwnerTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
+import {OwnerTypeEnum, PermissionEnum, ResourceTypeEnum} from "@/types/insights-common";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
 import DepartmentLabel from "@/pages/department/common/depart";
@@ -162,9 +162,13 @@ export default function MetricSetBindListPanel() {
                         </Form.Item>
                     </Col>
                     <Grid.Col span={16} style={{ textAlign: 'right' }}>
-                        <Space>
-                            <Button size={"small"} type="primary" onClick={handlerShowBindModal}>{t['bindedList.list.button.bind']}</Button>
-                        </Space>
+                        {
+                            metricSetInfo?.permissions.includes(PermissionEnum.ManageAble)?
+                                <Space>
+                                    <Button size={"small"} type="primary" onClick={handlerShowBindModal}>{t['bindedList.list.button.bind']}</Button>
+                                </Space>
+                                :null
+                        }
                     </Grid.Col>
                 </Row>
             </Form>
