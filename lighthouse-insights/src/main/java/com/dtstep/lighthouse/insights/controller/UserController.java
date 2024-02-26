@@ -1,11 +1,11 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
-import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
@@ -58,7 +58,7 @@ public class UserController {
         }
         User user = new User();
         BeanCopyUtil.copy(createParam,user);
-        int result = userService.create(user,SystemConstant.REGISTER_NEED_APPROVE);
+        int result = userService.create(user,SysConst.REGISTER_NEED_APPROVE);
         if(result > 0){
             return ResultData.success(result);
         }else{
@@ -157,7 +157,7 @@ public class UserController {
         Validate.notNull(dbUser);
         User userInfo = new User();
         userInfo.setId(id);
-        userInfo.setPassword(passwordEncoder.encode(Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD)));
+        userInfo.setPassword(passwordEncoder.encode(Md5Util.getMD5(SysConst.DEFAULT_PASSWORD)));
         int result = userService.update(userInfo);
         if(result > 0){
             return ResultData.success(id);

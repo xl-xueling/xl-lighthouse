@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.dao.SystemEnvDao;
@@ -16,10 +17,10 @@ public class SystemEnvServiceImpl implements SystemEnvService {
 
     @Override
     public void generateSignKeyIfNotExist() {
-        boolean isExist = systemEnvDao.isParamExist(SystemConstant.PARAM_SIGN_KEY);
+        boolean isExist = systemEnvDao.isParamExist(SysConst.PARAM_SIGN_KEY);
         if(!isExist){
             SystemEnv systemEnv = new SystemEnv();
-            systemEnv.setParam(SystemConstant.PARAM_SIGN_KEY);
+            systemEnv.setParam(SysConst.PARAM_SIGN_KEY);
             systemEnv.setValue(RandomID.id(64));
             systemEnvDao.insert(systemEnv);
         }

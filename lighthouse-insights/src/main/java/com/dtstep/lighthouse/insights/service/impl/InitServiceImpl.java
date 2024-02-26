@@ -1,8 +1,8 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.common.util.Md5Util;
-import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.modal.Department;
@@ -82,21 +82,21 @@ public class InitServiceImpl implements InitService {
     @Transactional
     @Override
     public void initAdmin() throws Exception{
-        if(!userService.isUserNameExist(SystemConstant.DEFAULT_ADMIN_USER)){
+        if(!userService.isUserNameExist(SysConst.DEFAULT_ADMIN_USER)){
             List<Department> departmentList = departmentService.queryAll();
             Validate.notNull(departmentList);
             int adminId;
             User user = new User();
-            user.setUsername(SystemConstant.DEFAULT_ADMIN_USER);
+            user.setUsername(SysConst.DEFAULT_ADMIN_USER);
             user.setDepartmentId(departmentList.get(0).getId());
-            user.setPassword(Md5Util.getMD5(SystemConstant.DEFAULT_PASSWORD));
+            user.setPassword(Md5Util.getMD5(SysConst.DEFAULT_PASSWORD));
             userService.create(user,false);
             adminId = user.getId();
             Validate.isTrue(adminId != 0);
             int result = resourceService.grantPermission(adminId, OwnerTypeEnum.USER,0, RoleTypeEnum.OPT_MANAGE_PERMISSION);
             Validate.isTrue(result > 0);
         }else{
-            User user = userService.queryAllInfoByUserName(SystemConstant.DEFAULT_ADMIN_USER);
+            User user = userService.queryAllInfoByUserName(SysConst.DEFAULT_ADMIN_USER);
             Role role = roleService.cacheQueryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
             Validate.notNull(role);
             if(!permissionService.existPermission(user.getId(),OwnerTypeEnum.USER,role.getId())){

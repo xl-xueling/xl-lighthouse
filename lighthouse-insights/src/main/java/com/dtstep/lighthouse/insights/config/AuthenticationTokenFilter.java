@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.config;
 
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
@@ -30,12 +31,12 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authToken = request.getHeader(SystemConstant.AUTH_ACCESS_PARAM);
+        String authToken = request.getHeader(SysConst.AUTH_ACCESS_PARAM);
         if (StringUtil.isEmptyOrNullStr(authToken)){
             filterChain.doFilter(request,response);
             return;
         }
-        String secretKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
+        String secretKey = systemEnvService.getParam(SysConst.PARAM_SIGN_KEY);
         Jws<Claims> jws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(authToken);
         if(jws == null){
             filterChain.doFilter(request,response);
@@ -59,7 +60,6 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
         HttpServletRequest req = (HttpServletRequest)request;
         RepeatableRequestWrapper requestWrapper  = new RepeatableRequestWrapper(req);
         filterChain.doFilter(requestWrapper, response);
-
     }
 
 }

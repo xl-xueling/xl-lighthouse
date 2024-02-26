@@ -1,8 +1,8 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.enums.*;
 import com.dtstep.lighthouse.common.modal.*;
-import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.commonv2.insights.ListData;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.dao.*;
@@ -277,7 +277,7 @@ public class ProjectServiceImpl implements ProjectService {
         countParam.setSubjectId(currentUserId);
         countParam.setRelationType(RelationTypeEnum.UserStarProjectRelation);
         int count = relationService.count(countParam);
-        if(count > SystemConstant.USER_STAR_PROJECT_LIMIT){
+        if(count > SysConst.USER_STAR_PROJECT_LIMIT){
             return ResultCode.userStarProjectLimitExceed;
         }
         Relation relation = new Relation();

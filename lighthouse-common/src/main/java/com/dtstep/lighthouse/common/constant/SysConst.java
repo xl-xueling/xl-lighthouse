@@ -59,4 +59,24 @@ public final class SysConst {
     public static final int DEBUG_MODE_DURATION_TIME = 30;
 
     public static final String TEST_SCENE_BEHAVIOR_STAT = "_test_scene_behavior_stat";
+
+    public static final String PARAM_SIGN_KEY = "sign_key";
+
+    public final static String AUTH_ACCESS_PARAM = "accessKey";
+
+    public final static String AUTH_REFRESH_PARAM = "refreshKey";
+
+    public final static String DEFAULT_ADMIN_USER = "admin";
+
+    public final static String DEFAULT_PASSWORD = "123456";
+
+    public final static boolean REGISTER_NEED_APPROVE = true;
+
+    public final static int DEPARTMENT_MAX_LEVEL = 4;
+
+    public final static int PROJECT_MAX_GROUP_SIZE = 10;
+
+    public final static int USER_STAR_METRICSET_LIMIT = 100;
+
+    public final static int USER_STAR_PROJECT_LIMIT = 100;
 }

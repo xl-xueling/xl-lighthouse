@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
-import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.GroupCreateParam;
@@ -52,7 +52,7 @@ public class GroupController {
         GroupQueryParam countByProjectParam = new GroupQueryParam();
         countByProjectParam.setProjectId(createParam.getProjectId());
         int groupCount = groupService.count(countByProjectParam);
-        if(groupCount >= SystemConstant.PROJECT_MAX_GROUP_SIZE){
+        if(groupCount >= SysConst.PROJECT_MAX_GROUP_SIZE){
             return ResultData.result(ResultCode.createGroupUnderProjectExceedLimit);
         }
         Group group = new Group();
