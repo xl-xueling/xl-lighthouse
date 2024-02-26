@@ -110,7 +110,7 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
     val batchTime = BatchAdapter.getBatch(statEntity.getTimeParamInterval, statEntity.getTimeUnit, message.getTime)
     val envMap = new util.HashMap[String, AnyRef](message.getParamMap);
     if (!StringUtil.isEmpty(templateEntity.getDimens)) {
-      dimensValue = DimensDBWrapper.getDimensValue(envMap, templateEntity.getDimensArr,batchTime);
+      dimensValue = DimensDBWrapper.getDimensValue(envMap, templateEntity.getDimensArray,batchTime);
       val threshold = getThreshold(groupEntity,LimitingStrategyEnum.STAT_RESULT_SIZE_LIMIT);
       if (!LimitedContext.getInstance().tryAcquire(statEntity,threshold,1)) {
         logError(s"limited trigger strategy:STAT_RESULT_SIZE_LIMIT,token:${groupEntity.getToken},stat:${statEntity.getId},threshold:${threshold}")
