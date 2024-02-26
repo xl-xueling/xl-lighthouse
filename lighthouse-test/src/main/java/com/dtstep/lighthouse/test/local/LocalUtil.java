@@ -1,7 +1,5 @@
 package com.dtstep.lighthouse.test.local;
 
-import com.dtstep.lighthouse.client.SelectedConverter;
-import com.dtstep.lighthouse.common.entity.components.SelectedElement;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -1821,27 +1819,6 @@ public class LocalUtil {
 
     public static LocalEntity getRandomProvince() {
         return provinceList.get(ThreadLocalRandom.current().nextInt(provinceList.size()));
-    }
-
-    public static void main(String[] args) throws Exception {
-        List<SelectedElement> elementList = new ArrayList<>();
-        for (LocalEntity localEntity : provinceList) {
-            SelectedElement selectedElement = new SelectedElement();
-            selectedElement.setId(localEntity.id);
-            selectedElement.setName(localEntity.name);
-            elementList.add(selectedElement);
-        }
-        String str1 = SelectedConverter.convert(elementList);
-        System.out.println(str1);
-        for (LocalEntity localEntity : cityList) {
-            SelectedElement selectedElement = new SelectedElement();
-            selectedElement.setId(localEntity.id);
-            selectedElement.setName(localEntity.name);
-            selectedElement.setPid(localEntity.pid);
-            elementList.add(selectedElement);
-        }
-//        String str2 = SelectedConverter.convert(elementList);
-//        System.out.println(str2);
     }
 
     public static class LocalEntity {
