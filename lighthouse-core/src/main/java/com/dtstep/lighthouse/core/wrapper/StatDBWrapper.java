@@ -1,6 +1,5 @@
 package com.dtstep.lighthouse.core.wrapper;
 
-import com.dtstep.lighthouse.common.entity.meta.MetaColumn;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
@@ -8,6 +7,7 @@ import com.dtstep.lighthouse.common.entity.state.StatUnit;
 import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 import com.dtstep.lighthouse.common.exception.TemplateParseException;
+import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
@@ -66,7 +66,7 @@ public class StatDBWrapper {
     public static StatExtEntity combineExtInfo(Stat statEntity,boolean isBuiltIn) throws Exception {
         String groupColumns = statEntity.getGroupColumns();
         assert StringUtil.isNotEmpty(groupColumns);
-        List<MetaColumn> groupColumnList = JsonUtil.toJavaObjectList(groupColumns,MetaColumn.class);
+        List<Column> groupColumnList = JsonUtil.toJavaObjectList(groupColumns,Column.class);
         StatExtEntity statExtEntity = new StatExtEntity(statEntity);
         String timeParam = statExtEntity.getTimeparam();
         boolean isInterval = BatchAdapter.isIntervalBatchParam(timeParam);
@@ -99,20 +99,20 @@ public class StatDBWrapper {
         String template = statExtEntity.getTemplate();
         TemplateEntity templateEntity = TemplateParser.parse(new TemplateContext(statEntity.getId(),template,timeParam,groupColumnList));
         statExtEntity.setTemplateEntity(templateEntity);
-        List<MetaColumn> relatedColumns = new ArrayList<>();
+        List<Column> relatedColumns = new ArrayList<>();
         String stat = templateEntity.getStat();
-        List<MetaColumn> statRelatedColumns = FormulaTranslate.queryRelatedColumns(groupColumnList,stat);
+        List<Column> statRelatedColumns = FormulaTranslate.queryRelatedColumns(groupColumnList,stat);
         if(CollectionUtils.isNotEmpty(statRelatedColumns)){
             relatedColumns.addAll(statRelatedColumns);
         }
         for(StatState statState : templateEntity.getStatStateList()){
-            List<MetaColumn> stateRelatedColumns = new ArrayList<>();
+            List<Column> stateRelatedColumns = new ArrayList<>();
             List<StatUnit> unitList = statState.getUnitList();
             if(CollectionUtils.isNotEmpty(unitList)){
                 int index = StatState.isBitCountState(statState) ? 1 : 0;
                 for(int i = index;i<unitList.size(); i++){
                     StatUnit statUnit = unitList.get(i);
-                    List<MetaColumn> unitRelatedColumns = FormulaTranslate.queryRelatedColumns(groupColumnList,statUnit.getOrigin());
+                    List<Column> unitRelatedColumns = FormulaTranslate.queryRelatedColumns(groupColumnList,statUnit.getOrigin());
                     if(CollectionUtils.isNotEmpty(unitRelatedColumns)){
                         stateRelatedColumns.addAll(unitRelatedColumns);
                     }
@@ -121,16 +121,16 @@ public class StatDBWrapper {
             statState.setBuiltIn(isBuiltIn);
             statState.setStatId(statExtEntity.getId());
             statState.setGroupId(statExtEntity.getGroupId());
-            statState.setRelatedColumnSet(stateRelatedColumns.stream().map(MetaColumn::getColumnName).collect(Collectors.toSet()));
+            statState.setRelatedColumnSet(stateRelatedColumns.stream().map(Column::getName).collect(Collectors.toSet()));
         }
         String dimens = templateEntity.getDimens();
         if(!StringUtil.isEmpty(dimens)){
-            List<MetaColumn> dimensRelatedColumns = FormulaTranslate.queryRelatedColumns(groupColumnList,dimens);
+            List<Column> dimensRelatedColumns = FormulaTranslate.queryRelatedColumns(groupColumnList,dimens);
             if(!dimensRelatedColumns.isEmpty()){
                 relatedColumns.addAll(dimensRelatedColumns);
             }
         }
-        statExtEntity.setRelatedColumnSet(relatedColumns.stream().map(MetaColumn::getColumnName).collect(Collectors.toSet()));
+        statExtEntity.setRelatedColumnSet(relatedColumns.stream().map(Column::getName).collect(Collectors.toSet()));
         return statExtEntity;
     }
 }

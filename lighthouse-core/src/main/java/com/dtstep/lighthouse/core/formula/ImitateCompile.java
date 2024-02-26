@@ -16,10 +16,10 @@ package com.dtstep.lighthouse.core.formula;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
+import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
-import com.dtstep.lighthouse.common.entity.meta.MetaColumn;
 import com.dtstep.lighthouse.common.entity.state.StatState;
-import com.dtstep.lighthouse.common.enums.meta.ColumnTypeEnum;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,19 +31,17 @@ public final class ImitateCompile {
 
     private static final Logger logger = LoggerFactory.getLogger(ImitateCompile.class);
 
-    public static boolean imitateStatFormula(int statId, final String formula, List<MetaColumn> columnList){
+    public static boolean imitateStatFormula(int statId, final String formula, List<Column> columnList){
         try{
             String tempFormula = formula;
             Pair<String, List<StatState>> pair = FormulaTranslate.translate(formula);
             Map<String,Object> paramMap = new HashMap<>();
             if(columnList != null){
-                for (MetaColumn metaColumn : columnList) {
-                    if (metaColumn.getColumnTypeEnum() == ColumnTypeEnum.String) {
-                        paramMap.put(metaColumn.getColumnName(), UUID.randomUUID().toString());
-                    } else if (metaColumn.getColumnTypeEnum() == ColumnTypeEnum.Numeric) {
-                        paramMap.put(metaColumn.getColumnName(), new Random().nextInt(10000));
-                    } else if (metaColumn.getColumnTypeEnum() == ColumnTypeEnum.TimeStamp) {
-                        paramMap.put(metaColumn.getColumnName(), System.currentTimeMillis());
+                for (Column metaColumn : columnList) {
+                    if (metaColumn.getType() == ColumnTypeEnum.STRING) {
+                        paramMap.put(metaColumn.getName(), UUID.randomUUID().toString());
+                    } else if (metaColumn.getType() == ColumnTypeEnum.NUMBER) {
+                        paramMap.put(metaColumn.getName(), new Random().nextInt(10000));
                     }
                 }
             }
@@ -65,17 +63,15 @@ public final class ImitateCompile {
     }
 
 
-    public static boolean imitateDimensFormula(int statId, final String formula, List<MetaColumn> columnList){
+    public static boolean imitateDimensFormula(int statId, final String formula, List<Column> columnList){
         try{
             Map<String,Object> paramMap = new HashMap<>();
             if(columnList != null){
-                for (MetaColumn metaColumn : columnList) {
-                    if (metaColumn.getColumnTypeEnum() == ColumnTypeEnum.String) {
-                        paramMap.put(metaColumn.getColumnName(), UUID.randomUUID().toString());
-                    } else if (metaColumn.getColumnTypeEnum() == ColumnTypeEnum.Numeric) {
-                        paramMap.put(metaColumn.getColumnName(), new Random().nextInt(10000));
-                    } else if (metaColumn.getColumnTypeEnum() == ColumnTypeEnum.TimeStamp) {
-                        paramMap.put(metaColumn.getColumnName(), System.currentTimeMillis());
+                for (Column metaColumn : columnList) {
+                    if (metaColumn.getType() == ColumnTypeEnum.STRING) {
+                        paramMap.put(metaColumn.getName(), UUID.randomUUID().toString());
+                    } else if (metaColumn.getType() == ColumnTypeEnum.NUMBER) {
+                        paramMap.put(metaColumn.getName(), new Random().nextInt(10000));
                     }
                 }
             }

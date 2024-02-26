@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.common.entity.meta;
+package com.dtstep.lighthouse.common.modal;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,8 +16,6 @@ package com.dtstep.lighthouse.common.entity.meta;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 import com.dtstep.lighthouse.common.entity.annotation.DBColumnAnnotation;
 import com.dtstep.lighthouse.common.entity.annotation.DBNameAnnotation;
 import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
@@ -25,42 +23,30 @@ import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
 import java.io.Serializable;
 import java.util.Date;
 
-
-@DBNameAnnotation(name="ldp_meta_table")
-public class MetaTableEntity implements Serializable {
+public class MetaTable implements Serializable {
 
     private static final long serialVersionUID = -6046396594919532140L;
 
-    @DBColumnAnnotation(basic="id")
     private int id;
 
-    @DBColumnAnnotation(basic="meta_name")
     private String metaName;
 
-    @DBColumnAnnotation(basic="type")
     private int type;
 
-    @DBColumnAnnotation(basic="state")
     private int state;
 
-    @DBColumnAnnotation(basic="desc")
     private String desc;
 
     private MetaTableTypeEnum metaTableTypeEnum;
 
-    @DBColumnAnnotation(basic="template")
     private String template;
 
-    @DBColumnAnnotation(basic="record_size")
     private long recordSize;
 
-    @DBColumnAnnotation(basic="content_size")
     private long contentSize;
 
-    @DBColumnAnnotation(basic="create_time")
     private Date createTime;
 
-    @DBColumnAnnotation(basic="update_time")
     private Date updateTime;
 
     public int getId() {
