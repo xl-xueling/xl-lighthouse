@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
-import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.common.modal.IDParam;
@@ -42,7 +42,7 @@ public class DepartmentController {
     @RequestMapping("/department/create")
     public ResultData<Integer> create(@Validated @RequestBody Department createParam) {
         int level = departmentService.getLevel(createParam.getPid());
-        if(level >= SystemConstant.DEPARTMENT_MAX_LEVEL){
+        if(level >= SysConst.DEPARTMENT_MAX_LEVEL){
             return ResultData.result(ResultCode.departCreateErrorLevelLimit);
         }
         int result = departmentService.create(createParam);
@@ -54,7 +54,7 @@ public class DepartmentController {
     public ResultData<Integer> updateById(@Validated @RequestBody Department updateParam) {
         int pidLevel = departmentService.getLevel(updateParam.getPid());
         int childLevel = departmentService.getChildLevel(updateParam.getId());
-        if(pidLevel + childLevel >= SystemConstant.DEPARTMENT_MAX_LEVEL){
+        if(pidLevel + childLevel >= SysConst.DEPARTMENT_MAX_LEVEL){
             return ResultData.result(ResultCode.departCreateErrorLevelLimit);
         }
         int id = departmentService.update(updateParam);

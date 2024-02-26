@@ -1,9 +1,9 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
-import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.dto.LoginParam;
 import com.dtstep.lighthouse.commonv2.insights.ResultCode;
 import com.dtstep.lighthouse.insights.vo.ResultData;
@@ -61,7 +61,7 @@ public class LoginController {
         }else if(dbUser.getState() != UserStateEnum.USER_NORMAL){
             return ResultData.result(ResultCode.userStateUnAvailable);
         }
-        String signKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
+        String signKey = systemEnvService.getParam(SysConst.PARAM_SIGN_KEY);
         long now = System.currentTimeMillis();
         Map<String,Object> accessMap = new HashMap<>();
         accessMap.put("id",dbUser.getId());
@@ -84,11 +84,11 @@ public class LoginController {
 
     @RequestMapping("/refreshKey")
     public ResultData<Map<String,String>> refreshKey(HttpServletRequest request) {
-        String refreshKey = request.getHeader(SystemConstant.AUTH_REFRESH_PARAM);
+        String refreshKey = request.getHeader(SysConst.AUTH_REFRESH_PARAM);
         if(StringUtil.isEmpty(refreshKey)){
             return ResultData.result(ResultCode.authRenewalFailed);
         }
-        String signKey = systemEnvService.getParam(SystemConstant.PARAM_SIGN_KEY);
+        String signKey = systemEnvService.getParam(SysConst.PARAM_SIGN_KEY);
         Jws<Claims> jws;
         try{
             jws = Jwts.parser().setSigningKey(signKey).parseClaimsJws(refreshKey);

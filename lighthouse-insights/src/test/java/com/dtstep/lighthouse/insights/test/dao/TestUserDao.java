@@ -1,8 +1,8 @@
 package com.dtstep.lighthouse.insights.test.dao;
 
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
@@ -44,7 +44,7 @@ public class TestUserDao {
 
     @Test
     public void testIsUserNameExist() throws Exception {
-        boolean isExist = userDao.isUserNameExist(SystemConstant.DEFAULT_ADMIN_USER);
+        boolean isExist = userDao.isUserNameExist(SysConst.DEFAULT_ADMIN_USER);
         System.out.println("isExist:" + isExist);
     }
 
