@@ -123,7 +123,7 @@ final class DataQueryHandler {
         }
         long dayStartTime = DateUtil.getDayStartTime(batchTime);
         if((batchTime - dayStartTime) % statExtEntity.getTimeUnit().toMillis(statExtEntity.getTimeParamInterval()) != 0){
-            logger.error("the request parameter is wrong batch time,statId:{},timeParam:{},batchTime:{}",statId, statExtEntity.getTimeParam()
+            logger.error("the request parameter is wrong batch time,statId:{},timeParam:{},batchTime:{}",statId, statExtEntity.getTimeparam()
                     ,DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
             return null;
         }
@@ -179,7 +179,7 @@ final class DataQueryHandler {
 
         long dayStartTime = DateUtil.getDayStartTime(batchTime);
         if((batchTime - dayStartTime) % statExtEntity.getTimeUnit().toMillis(statExtEntity.getTimeParamInterval()) != 0){
-            logger.error("the request parameter is wrong batch time,statId:{},timeParam:{},batchTime:{}",statId, statExtEntity.getTimeParam()
+            logger.error("the request parameter is wrong batch time,statId:{},timeParam:{},batchTime:{}",statId, statExtEntity.getTimeparam()
                     ,DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
             return null;
         }

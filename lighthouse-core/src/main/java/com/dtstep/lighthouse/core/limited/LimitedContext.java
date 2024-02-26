@@ -55,7 +55,7 @@ public final class LimitedContext {
         if(!LDPConfig.limitedEnable()){
             return true;
         }
-        if(groupExtEntity.getState() == GroupStateEnum.LIMITING.getState()){
+        if(groupExtEntity.getState() == GroupStateEnum.LIMITING){
             return false;
         }
         if(permitsPerSecond == -1){
@@ -81,7 +81,7 @@ public final class LimitedContext {
         if(!LDPConfig.limitedEnable()){
             return true;
         }
-        if(statExtEntity.getState() == StatStateEnum.LIMITING.getState()){
+        if(statExtEntity.getState() == StatStateEnum.LIMITING){
             return false;
         }
         if(permitsPerSecond == -1){

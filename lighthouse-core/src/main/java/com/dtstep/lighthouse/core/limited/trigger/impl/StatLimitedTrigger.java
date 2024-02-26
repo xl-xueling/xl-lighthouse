@@ -25,7 +25,7 @@ import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 import com.dtstep.lighthouse.core.limited.trigger.Trigger;
 import com.dtstep.lighthouse.core.lock.RedLock;
 import com.dtstep.lighthouse.core.wrapper.LimitingWrapper;
-import com.dtstep.lighthouse.core.wrapper.StatDBWrapperBak;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,12 +42,12 @@ public class StatLimitedTrigger implements Trigger<StatExtEntity> {
             boolean isLock = RedLock.tryLock(lockKey,30,120, TimeUnit.SECONDS);
             if(isLock){
                 try{
-                    int result = StatDBWrapperBak.changeState(statExtEntity,StatStateEnum.LIMITING);
+                    int result = StatDBWrapper.changeState(statExtEntity,StatStateEnum.LIMITING);
                     if(result == 1){
                         logger.info("lighthouse limited,the statistics stat was changed to the current limiting state,statId:{}", statExtEntity.getId());
                         new DelaySchedule().delaySchedule(() -> {
                             try{
-                                StatDBWrapperBak.changeState(statExtEntity,StatStateEnum.RUNNING);
+                                StatDBWrapper.changeState(statExtEntity,StatStateEnum.RUNNING);
                             }catch (Exception ex){
                                 logger.error("change statistics state error!",ex);
                             }},StatConst.LIMITED_EXPIRE_MINUTES,TimeUnit.MINUTES);

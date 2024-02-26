@@ -22,7 +22,7 @@ import com.dtstep.lighthouse.common.entity.group.GroupExtEntity
 import com.dtstep.lighthouse.common.entity.message.LightMessage
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum
-import com.dtstep.lighthouse.core.wrapper.StatDBWrapperBak
+import com.dtstep.lighthouse.core.wrapper.{StatDBWrapper, StatDBWrapperBak}
 import org.apache.commons.collections.CollectionUtils
 import org.apache.spark.sql.Dataset
 
@@ -33,7 +33,7 @@ private[tasks] trait Partition[T] extends Serializable {
   def part(ds:Dataset[(Int,LightMessage)]) :Dataset[T]
 
   def getEffectiveStats(groupId:Int):List[StatExtEntity] = {
-    val list = StatDBWrapperBak.queryRunningListByGroupId(groupId);
+    val list = StatDBWrapper.queryRunningListByGroupId(groupId);
     if(CollectionUtils.isEmpty(list)) Nil else list.asScala.toList;
   }
 

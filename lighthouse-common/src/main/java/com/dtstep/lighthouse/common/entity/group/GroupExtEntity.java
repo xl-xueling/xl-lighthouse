@@ -18,6 +18,7 @@ package com.dtstep.lighthouse.common.entity.group;
  */
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
+import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
@@ -25,7 +26,6 @@ import com.dtstep.lighthouse.common.util.StringUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
-import com.dtstep.lighthouse.common.entity.meta.MetaColumn;
 
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ public class GroupExtEntity extends Group {
 
     private String verifyKey;
 
-    private List<MetaColumn> columnList;
+    private List<Column> columnList;
 
     private Map<String, ColumnTypeEnum> runningRelatedColumns;
 
@@ -62,11 +62,11 @@ public class GroupExtEntity extends Group {
         BeanCopyUtil.copy(groupEntity,this);
     }
 
-    public List<MetaColumn> getColumnList() {
+    public List<Column> getColumnList() {
         return columnList;
     }
 
-    public void setColumnList(List<MetaColumn> columnList) {
+    public void setColumnList(List<Column> columnList) {
         this.columnList = columnList;
     }
 

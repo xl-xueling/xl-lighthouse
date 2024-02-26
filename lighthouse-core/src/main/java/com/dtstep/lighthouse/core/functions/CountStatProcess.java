@@ -69,7 +69,7 @@ public final class CountStatProcess extends StatProcess<Pair<String,Long>> {
         this.rowKey = rowKey;
         this.delta = delta;
         this.dimensValue = dimensValue;
-        this.ttl = getTTL(statExtEntity.getDataExpire());
+        this.ttl = getTTL(statExtEntity.getExpired());
     }
 
     @Override

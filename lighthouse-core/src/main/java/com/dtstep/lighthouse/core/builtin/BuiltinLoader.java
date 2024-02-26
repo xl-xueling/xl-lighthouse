@@ -17,14 +17,14 @@ package com.dtstep.lighthouse.core.builtin;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
-import com.dtstep.lighthouse.common.entity.meta.MetaColumn;
 import com.dtstep.lighthouse.common.entity.project.ProjectEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
-import com.dtstep.lighthouse.common.enums.meta.ColumnTypeEnum;
+import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 import com.dtstep.lighthouse.common.enums.stat.StatTypeEnum;
+import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import org.jsoup.Jsoup;
@@ -133,15 +133,15 @@ public final class BuiltinLoader {
             groupExtEntity.setMinTimeParam(new TimeParam(1, TimeUnit.MINUTES));
             groupExtEntity.setVerifyKey(Md5Util.getMD5(secretKey));
             Elements columnElements = element.getElementsByTag("column");
-            List<MetaColumn> columnList = new ArrayList<>();
+            List<Column> columnList = new ArrayList<>();
             for(Element columnElement : columnElements){
                 String columnName = columnElement.attr("name");
-                MetaColumn metaColumn = new MetaColumn();
-                metaColumn.setColumnName(columnName);
-                metaColumn.setColumnTypeEnum(ColumnTypeEnum.String);
+                Column metaColumn = new Column();
+                metaColumn.setName(columnName);
+                metaColumn.setType(ColumnTypeEnum.STRING);
                 columnList.add(metaColumn);
             }
-            Map<String,ColumnTypeEnum> columnHashMap = columnList.stream().collect(Collectors.toMap(MetaColumn::getColumnName, MetaColumn::getColumnTypeEnum));
+            Map<String,ColumnTypeEnum> columnHashMap = columnList.stream().collect(Collectors.toMap(Column::getName, Column::getType));
             groupExtEntity.setAllRelatedColumns(columnHashMap);
             groupExtEntity.setRunningRelatedColumns(columnHashMap);
             groupExtEntity.setColumnList(columnList);

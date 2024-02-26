@@ -34,6 +34,8 @@ public class Stat implements Serializable {
 
     private LocalDateTime createTime;
 
+    private Integer metaId;
+
     private LocalDateTime updateTime;
 
     private TemplateEntity templateEntity;
@@ -41,6 +43,8 @@ public class Stat implements Serializable {
     private String desc;
 
     private String randomId;
+
+    private Integer dataVersion;
 
     public Integer getId() {
         return id;
@@ -176,5 +180,21 @@ public class Stat implements Serializable {
 
     public void setDepartmentId(Integer departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public Integer getMetaId() {
+        return metaId;
+    }
+
+    public void setMetaId(Integer metaId) {
+        this.metaId = metaId;
+    }
+
+    public Integer getDataVersion() {
+        return dataVersion;
+    }
+
+    public void setDataVersion(Integer dataVersion) {
+        this.dataVersion = dataVersion;
     }
 }
