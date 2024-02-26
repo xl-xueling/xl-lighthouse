@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.modal.*;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.insights.dao.*;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.common.modal.RolePair;

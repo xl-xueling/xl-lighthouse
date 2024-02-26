@@ -4,7 +4,7 @@ import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.modal.PermissionEnum;
 import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.common.modal.User;
-import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;

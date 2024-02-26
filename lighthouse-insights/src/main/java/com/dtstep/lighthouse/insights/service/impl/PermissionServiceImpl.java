@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
-import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
 import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.insights.service.*;

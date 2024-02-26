@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.common.modal.PermissionEnum;
-import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.common.modal.User;
 import com.dtstep.lighthouse.insights.vo.UserVO;

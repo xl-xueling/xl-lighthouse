@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.test.service;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.core.formula.TemplateUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.StatDao;

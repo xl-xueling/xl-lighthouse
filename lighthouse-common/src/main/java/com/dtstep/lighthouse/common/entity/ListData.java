@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.commonv2.insights;
+package com.dtstep.lighthouse.common.entity;
 
 import java.util.List;
 

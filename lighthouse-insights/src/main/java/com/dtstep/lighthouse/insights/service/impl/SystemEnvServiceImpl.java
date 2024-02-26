@@ -2,7 +2,6 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.key.RandomID;
-import com.dtstep.lighthouse.commonv2.constant.SystemConstant;
 import com.dtstep.lighthouse.insights.dao.SystemEnvDao;
 import com.dtstep.lighthouse.common.modal.SystemEnv;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;

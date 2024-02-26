@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.modal.Role;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.PermissionService;
 import com.dtstep.lighthouse.insights.service.RoleService;

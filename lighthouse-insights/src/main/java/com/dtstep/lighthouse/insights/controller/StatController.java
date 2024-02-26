@@ -1,8 +1,8 @@
 package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.modal.*;
-import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.ChangeStatStateParam;
 import com.dtstep.lighthouse.insights.dto.StatFilterConfigParam;

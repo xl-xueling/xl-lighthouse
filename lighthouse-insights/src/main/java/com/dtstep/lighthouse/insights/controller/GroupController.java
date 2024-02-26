@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.constant.SysConst;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.GroupCreateParam;
 import com.dtstep.lighthouse.insights.dto.GroupUpdateParam;

@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.service;
 
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.common.modal.RolePair;
 import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
