@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.core.wrapper;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
+import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.util.*;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.config.LDPConfig;
@@ -116,12 +117,12 @@ public final class GroupDBWrapper {
         groupExtEntity.setColumnList(columnList);
         if(GroupExtEntity.isLimitedExpired(groupExtEntity)){
             DaoHelper.sql.execute("update ldp_stat_group set state = ?,update_time = ? where id = ?", GroupStateEnum.RUNNING.getState(),new Date(), groupExtEntity.getId());
-            groupExtEntity.setState(GroupStateEnum.RUNNING.getState());
+            groupExtEntity.setState(GroupStateEnum.RUNNING);
         }
-        if(GroupExtEntity.isDebugModeExpired(groupExtEntity)){
-            DaoHelper.sql.execute("update ldp_stat_group set debug_mode = ?,update_time = ? where id = ?",0,new Date(), groupExtEntity.getId());
-            groupExtEntity.setDebugMode(0);
-        }
+//        if(GroupExtEntity.isDebugModeExpired(groupExtEntity)){
+//            DaoHelper.sql.execute("update ldp_stat_group set debug_mode = ?,update_time = ? where id = ?",0,new Date(), groupExtEntity.getId());
+//            groupExtEntity.setDebugMode(0);
+//        }
         int groupId = groupExtEntity.getId();
         List<StatExtEntity> statExtEntityList = StatDBWrapper.actualQueryListByGroupId(groupId).orElse(null);
         if(CollectionUtils.isNotEmpty(statExtEntityList)){
@@ -138,9 +139,9 @@ public final class GroupDBWrapper {
                     }else{
                         minDuration = CalculateUtil.getMaxDivisor(minDuration,currentDuration);
                     }
-                    if(maxDataExpire < statExtEntity.getDataExpire()){
-                        maxDataExpire = statExtEntity.getDataExpire();
-                    }
+//                    if(maxDataExpire < statExtEntity.getDataExpire()){
+//                        maxDataExpire = statExtEntity.getDataExpire();
+//                    }
                     Set<String> statRelatedColumnSet = statExtEntity.getRelatedColumnSet();
                     if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
                         for(String columnName : statRelatedColumnSet){
@@ -164,17 +165,8 @@ public final class GroupDBWrapper {
             groupExtEntity.setDataExpire(maxDataExpire);
         }
         groupExtEntity.setVerifyKey(Md5Util.getMD5(groupExtEntity.getSecretKey()));
-        String limitedThreshold = groupExtEntity.getLimitedThreshold();
         ObjectMapper objectMapper = new ObjectMapper();
         HashMap<String,Integer> limitedThresholdMap = groupExtEntity.getLimitedThresholdMap();
-        if(!StringUtil.isEmpty(limitedThreshold)) {
-            JsonNode jsonNode = objectMapper.readTree(limitedThreshold);
-            Iterator<String> it = jsonNode.fieldNames();
-            while (it.hasNext()){
-                String key = it.next();
-                limitedThresholdMap.put(key,jsonNode.get(key).asInt());
-            }
-        }
         if(!limitedThresholdMap.containsKey(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT.getStrategy())){
             int limit = LDPConfig.getOrDefault(LDPConfig.KEY_LIMITED_GROUP_MESSAGE_SIZE_PER_SEC,-1,Integer.class);
             limitedThresholdMap.put(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT.getStrategy(),limit);
@@ -256,10 +248,10 @@ public final class GroupDBWrapper {
                 List<Integer> ids = DaoHelper.sql.getList(Integer.class,"select id from ldp_stat_group where create_time != refresh_time and refresh_time > ?",new Date(time));
                 if(CollectionUtils.isNotEmpty(ids)){
                     for(int groupId:ids){
-                        GroupEntity groupEntity = GroupDBWrapper.queryById(groupId);
+                        GroupExtEntity groupEntity = GroupDBWrapper.queryById(groupId);
                         if(groupEntity != null){
                             clearLocalCache(groupId);
-                            StatDBWrapper.clearLocalCacheByGroupId(groupId);
+//                            StatDBWrapper.clearLocalCacheByGroupId(groupId);
                             logger.info("refresh group cache success,groupId:{}",groupId);
                         }
                     }
