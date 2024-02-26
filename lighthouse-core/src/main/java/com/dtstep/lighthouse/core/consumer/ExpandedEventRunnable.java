@@ -29,9 +29,8 @@ import com.dtstep.lighthouse.common.enums.function.FunctionEnum;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.common.aggregator.EventPool;
-import com.dtstep.lighthouse.core.functions.*;
 import com.dtstep.lighthouse.core.wrapper.MetaTableWrapper;
-import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapperBak;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.commons.lang3.tuple.Pair;
@@ -101,7 +100,7 @@ public final class ExpandedEventRunnable implements Runnable{
 
 
     private void consumer(final int statId,final String aggregateKey,final int functionIndex,final String dimensValue,final long batchTime,List<Pair<String,Long>> eventList) throws Exception{
-        StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
+        StatExtEntity statExtEntity = StatDBWrapperBak.queryById(statId);
         if(statExtEntity == null){
             return;
         }

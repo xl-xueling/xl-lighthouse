@@ -18,6 +18,7 @@ package com.dtstep.lighthouse.common.entity.group;
  */
 import com.dtstep.lighthouse.common.enums.meta.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
+import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
@@ -26,12 +27,13 @@ import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.entity.meta.MetaColumn;
 
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class GroupExtEntity extends GroupEntity {
+public class GroupExtEntity extends Group {
 
     private static final long serialVersionUID = -5705802803071692695L;
 
@@ -91,7 +93,7 @@ public class GroupExtEntity extends GroupEntity {
     public void setGroupStateEnum(GroupStateEnum groupStateEnum) {
         this.groupStateEnum = groupStateEnum;
         if(groupStateEnum != null){
-            this.setState(groupStateEnum.getState());
+            this.setState(groupStateEnum);
         }
     }
 
@@ -136,25 +138,25 @@ public class GroupExtEntity extends GroupEntity {
     }
 
     public static boolean isLimitedExpired(GroupExtEntity groupExtEntity){
-        return groupExtEntity.getState() == GroupStateEnum.LIMITING.getState()
-                && (System.currentTimeMillis() - groupExtEntity.getUpdateTime().getTime() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITED_EXPIRE_MINUTES));
+        return groupExtEntity.getState() == GroupStateEnum.LIMITING
+                && (System.currentTimeMillis() - groupExtEntity.getUpdateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITED_EXPIRE_MINUTES));
     }
 
-    public static boolean isDebugModeExpired(GroupExtEntity groupExtEntity){
-        boolean result = false;
-        if(groupExtEntity.getDebugMode() == 1 && StringUtil.isNotEmpty(groupExtEntity.getDebugParams())){
-            try{
-                JsonNode jsonNode = JsonUtil.readTree(groupExtEntity.getDebugParams());
-                if(jsonNode != null){
-                    long startTime = jsonNode.get("startTime").asLong();
-                    long endTime = jsonNode.get("endTime").asLong();
-                    long now = System.currentTimeMillis();
-                    result = (now > endTime || now < startTime);
-                }
-            }catch (Exception ex){
-                ex.printStackTrace();
-            }
-        }
-        return result;
-    }
+//    public static boolean isDebugModeExpired(GroupExtEntity groupExtEntity){
+//        boolean result = false;
+//        if(groupExtEntity.getDebugMode() == 1 && StringUtil.isNotEmpty(groupExtEntity.getDebugParams())){
+//            try{
+//                JsonNode jsonNode = JsonUtil.readTree(groupExtEntity.getDebugParams());
+//                if(jsonNode != null){
+//                    long startTime = jsonNode.get("startTime").asLong();
+//                    long endTime = jsonNode.get("endTime").asLong();
+//                    long now = System.currentTimeMillis();
+//                    result = (now > endTime || now < startTime);
+//                }
+//            }catch (Exception ex){
+//                ex.printStackTrace();
+//            }
+//        }
+//        return result;
+//    }
 }

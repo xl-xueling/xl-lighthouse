@@ -21,7 +21,7 @@ import com.dtstep.lighthouse.core.lock.RedLock;
 import com.dtstep.lighthouse.core.redis.RedisHandler;
 import com.dtstep.lighthouse.core.storage.proxy.ResultStorageProxy;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
-import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapperBak;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.dtstep.lighthouse.common.constant.RedisConst;
@@ -63,7 +63,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
             long batchTime = events.get(0).getBatchTime();
             int salt = Integer.parseInt(ignored.substring(ignored.lastIndexOf("_") + 1));
             Set<String> dimensSet = events.stream().map(LimitBucket::getDimensValue).collect(Collectors.toSet());
-            StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
+            StatExtEntity statExtEntity = StatDBWrapperBak.queryById(statId);
             if(statExtEntity == null){
                 continue;
             }

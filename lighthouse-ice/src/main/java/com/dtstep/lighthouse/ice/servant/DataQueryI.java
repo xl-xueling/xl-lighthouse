@@ -11,7 +11,7 @@ import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.storage.proxy.ResultStorageProxy;
 import com.dtstep.lighthouse.core.wrapper.DimensDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
-import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapperBak;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ final class DataQueryI extends _DataQueryInterfaceDisp {
     public String dataQuery(int statId, String dimens, long startTime, long endTime, Current __current) {
         String result = null;
         try{
-            StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
+            StatExtEntity statExtEntity = StatDBWrapperBak.queryById(statId);
             if(statExtEntity == null){
                 return null;
             }
@@ -65,7 +65,7 @@ final class DataQueryI extends _DataQueryInterfaceDisp {
     public String dataQueryWithBatchList(int statId, String dimens, List<Long> batchTimeList, Current __current) {
         String result = null;
         try{
-            StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
+            StatExtEntity statExtEntity = StatDBWrapperBak.queryById(statId);
             if(statExtEntity == null){
                 return null;
             }
@@ -95,7 +95,7 @@ final class DataQueryI extends _DataQueryInterfaceDisp {
 
     @Override
     public String dataQueryWithDimensList(int statId, List<String> dimensList, long batchTime, Current __current) {
-        StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
+        StatExtEntity statExtEntity = StatDBWrapperBak.queryById(statId);
         if(statExtEntity == null){
             return null;
         }

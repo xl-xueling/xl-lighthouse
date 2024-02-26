@@ -18,13 +18,18 @@ package com.dtstep.lighthouse.common.entity.stat;
  */
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
 import com.dtstep.lighthouse.common.enums.stat.StatTypeEnum;
+import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.common.constant.StatConst;
+import com.dtstep.lighthouse.common.util.DateUtil;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class StatExtEntity extends StatEntity {
+public class StatExtEntity extends Stat {
 
     private static final long serialVersionUID = 1082168950806722079L;
 
@@ -42,15 +47,13 @@ public class StatExtEntity extends StatEntity {
 
     private Set<String> relatedColumnSet;
 
-    private String templateOfHtml;
-
     private boolean isBuiltIn = false;
 
     public StatExtEntity(){}
 
-    public StatExtEntity(StatEntity statEntity){
-        assert statEntity != null;
-        BeanCopyUtil.copy(statEntity,this);
+    public StatExtEntity(Stat stat){
+        assert stat != null;
+        BeanCopyUtil.copy(stat,this);
     }
 
     public StatTypeEnum getStatTypeEnum() {
@@ -93,14 +96,6 @@ public class StatExtEntity extends StatEntity {
         this.relatedColumnSet = relatedColumnSet;
     }
 
-    public String getTemplateOfHtml() {
-        return templateOfHtml;
-    }
-
-    public void setTemplateOfHtml(String templateOfHtml) {
-        this.templateOfHtml = templateOfHtml;
-    }
-
     public StatStateEnum getStatStateEnum() {
         return statStateEnum;
     }
@@ -108,7 +103,7 @@ public class StatExtEntity extends StatEntity {
     public void setStatStateEnum(StatStateEnum statStateEnum) {
         this.statStateEnum = statStateEnum;
         if(statStateEnum != null){
-            this.setState(statStateEnum.getState());
+            this.setState(statStateEnum);
         }
     }
 
@@ -129,7 +124,7 @@ public class StatExtEntity extends StatEntity {
     }
 
     public static boolean isLimitedExpired(StatExtEntity statExtEntity){
-        return statExtEntity.getState() == StatStateEnum.LIMITING.getState()
-                && (System.currentTimeMillis() - statExtEntity.getUpdateTime().getTime() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITED_EXPIRE_MINUTES));
+        return statExtEntity.getState() == StatStateEnum.LIMITING
+                && (System.currentTimeMillis() - statExtEntity.getUpdateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITED_EXPIRE_MINUTES));
     }
 }
