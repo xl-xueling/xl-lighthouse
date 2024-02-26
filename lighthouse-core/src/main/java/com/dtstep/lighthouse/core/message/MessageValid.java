@@ -17,19 +17,19 @@ package com.dtstep.lighthouse.core.message;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.entity.message.LightMessage;
-import com.dtstep.lighthouse.common.entity.meta.MetaColumn;
-import com.dtstep.lighthouse.common.enums.meta.ColumnTypeEnum;
+import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
+import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
 import java.util.List;
 
 public final class MessageValid {
 
-    public static boolean valid(LightMessage message, List<MetaColumn> columnList) throws Exception {
+    public static boolean valid(LightMessage message, List<Column> columnList) throws Exception {
         if(CollectionUtils.isEmpty(columnList)){
             return true;
         }
-        for (MetaColumn metaColumn : columnList) {
+        for (Column metaColumn : columnList) {
             if (!valid(message, metaColumn)) {
                 return false;
             }
@@ -38,13 +38,13 @@ public final class MessageValid {
     }
 
 
-    public static boolean valid(LightMessage message,MetaColumn column) {
-        String columnName = column.getColumnName();
+    public static boolean valid(LightMessage message,Column column) {
+        String columnName = column.getName();
         String value = message.getParamMap().get(columnName);
         if(StringUtil.isEmptyOrNullStr(value)){
             return true;
         }
-        ColumnTypeEnum columnTypeEnum = column.getColumnTypeEnum();
-        return columnTypeEnum != ColumnTypeEnum.Numeric || StringUtil.isNumber(value);
+        ColumnTypeEnum columnTypeEnum = column.getType();
+        return columnTypeEnum != ColumnTypeEnum.NUMBER || StringUtil.isNumber(value);
     }
 }

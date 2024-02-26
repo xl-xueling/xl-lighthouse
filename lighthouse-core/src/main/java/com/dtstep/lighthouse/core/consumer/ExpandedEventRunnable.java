@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.core.consumer;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.core.functions.*;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.google.common.base.Splitter;
 import com.google.common.collect.*;
 import com.dtstep.lighthouse.common.aggregator.SlotsGroup;
@@ -30,7 +31,6 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.core.wrapper.MetaTableWrapper;
-import com.dtstep.lighthouse.core.wrapper.StatDBWrapperBak;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.commons.lang3.tuple.Pair;
@@ -100,7 +100,7 @@ public final class ExpandedEventRunnable implements Runnable{
 
 
     private void consumer(final int statId,final String aggregateKey,final int functionIndex,final String dimensValue,final long batchTime,List<Pair<String,Long>> eventList) throws Exception{
-        StatExtEntity statExtEntity = StatDBWrapperBak.queryById(statId);
+        StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
         if(statExtEntity == null){
             return;
         }
@@ -113,7 +113,7 @@ public final class ExpandedEventRunnable implements Runnable{
         }
         StatState statState = statExtEntity.getTemplateEntity().getStatStateList().get(functionIndex);
         FunctionEnum functionEnum = statState.getFunctionEnum();
-        int metaId = statExtEntity.getResMeta();
+        int metaId = statExtEntity.getMetaId();
         String metaName;
         if(metaId == -1){
             metaName = StatConst.SYSTEM_STAT_RESULT_TABLE;

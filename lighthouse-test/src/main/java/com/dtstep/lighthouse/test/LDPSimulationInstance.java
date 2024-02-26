@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.test;
 
 import com.dtstep.lighthouse.client.LightHouse;
-import com.dtstep.lighthouse.common.entity.group.GroupEntity;
+import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
@@ -32,11 +32,11 @@ public class LDPSimulationInstance {
     public static void main(String[] args) throws Exception {
         LDPConfig.loadConfiguration();
         LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
-        List<GroupEntity> groupEntityList = loadTokenList();
+        List<Group> groupEntityList = loadTokenList();
         Runnable runnable = () -> {
             try{
                 if(CollectionUtils.isNotEmpty(groupEntityList)){
-                    for(GroupEntity groupEntity:groupEntityList){
+                    for(Group groupEntity:groupEntityList){
                         long batch = DateUtil.batchTime(1,TimeUnit.MINUTES,System.currentTimeMillis());
                         TaskConfig taskConfig = new TaskConfig();
                         taskConfig.setToken(groupEntity.getToken());
@@ -59,7 +59,7 @@ public class LDPSimulationInstance {
 
         private long timestamp;
 
-        private GroupEntity groupEntity;
+        private Group groupEntity;
 
         public String getToken() {
             return token;
@@ -77,11 +77,11 @@ public class LDPSimulationInstance {
             this.timestamp = timestamp;
         }
 
-        public GroupEntity getGroupEntity() {
+        public Group getGroupEntity() {
             return groupEntity;
         }
 
-        public void setGroupEntity(GroupEntity groupEntity) {
+        public void setGroupEntity(Group groupEntity) {
             this.groupEntity = groupEntity;
         }
     }
@@ -153,9 +153,9 @@ public class LDPSimulationInstance {
         System.out.println("send success,batch:"+DateUtil.formatTimeStamp(task.getTimestamp(),"yyyy-MM-dd HH:mm:ss") + ",token: " + token + ",size:" + onceSize);
     }
 
-    public static List<GroupEntity> loadTokenList() throws Exception {
+    public static List<Group> loadTokenList() throws Exception {
         String clusterId = LDPConfig.getVal(LDPConfig.KEY_CLUSTER_ID);
-        List<GroupEntity> list = DaoHelper.sql.getList(GroupEntity.class,"SELECT token,secret_key FROM cluster_"+clusterId+"_ldp_mysqldb.ldp_stat_group");
+        List<Group> list = DaoHelper.sql.getList(Group.class,"SELECT token,secret_key FROM cluster_"+clusterId+"_ldp_mysqldb.ldp_stat_group");
         if(CollectionUtils.isEmpty(list)){
             return null;
         }

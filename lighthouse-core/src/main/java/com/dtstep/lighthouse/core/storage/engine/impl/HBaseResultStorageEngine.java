@@ -167,7 +167,7 @@ public class HBaseResultStorageEngine extends ResultStorageEngine<MicroBucket, S
     public List<StatValue> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
         List<StatValue> list = Lists.newArrayList();
         List<StatState> statStates = statExtEntity.getTemplateEntity().getStatStateList();
-        int resMeta = statExtEntity.getResMeta();
+        int resMeta = statExtEntity.getMetaId();
         String metaName;
         if(statExtEntity.isBuiltIn()){
             metaName = StatConst.SYSTEM_STAT_RESULT_TABLE;
@@ -251,7 +251,7 @@ public class HBaseResultStorageEngine extends ResultStorageEngine<MicroBucket, S
     @Override
     public List<StatValue> queryWithDimens(StatExtEntity statExtEntity, String dimensValue, List<Long> batchTimeList) throws Exception {
         List<StatState> statStates = statExtEntity.getTemplateEntity().getStatStateList();
-        int resMeta = statExtEntity.getResMeta();
+        int resMeta = statExtEntity.getMetaId();
         String metaName;
         if(statExtEntity.isBuiltIn()){
             metaName = StatConst.SYSTEM_STAT_RESULT_TABLE;
@@ -293,7 +293,7 @@ public class HBaseResultStorageEngine extends ResultStorageEngine<MicroBucket, S
     public LinkedHashMap<String,StatValue> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, long batchTime) throws Exception {
         LinkedHashMap<String,StatValue> map = Maps.newLinkedHashMap();
         List<StatState> statStates = statExtEntity.getTemplateEntity().getStatStateList();
-        int resMeta = statExtEntity.getResMeta();
+        int resMeta = statExtEntity.getMetaId();
         String metaName;
         if(statExtEntity.isBuiltIn()){
             metaName = StatConst.SYSTEM_STAT_RESULT_TABLE;

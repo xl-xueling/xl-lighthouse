@@ -19,13 +19,13 @@ package com.dtstep.lighthouse.core.limited.device.impl;
 import com.dtstep.lighthouse.core.callback.CaffeineExpiry;
 import com.dtstep.lighthouse.core.limited.device.CountingDevice;
 import com.dtstep.lighthouse.core.storage.proxy.ResultStorageProxy;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Scheduler;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.util.DateUtil;
-import com.dtstep.lighthouse.core.wrapper.StatDBWrapperBak;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.commons.lang3.tuple.Pair;
@@ -82,7 +82,7 @@ public class HBaseLimitedCountingDevice implements CountingDevice {
                 long batchTime = DateUtil.previousBatchTime(1, TimeUnit.MINUTES,System.currentTimeMillis());
                 for (Integer builtStatId : paramMap.keySet()){
                     List<Integer> list = paramMap.get(builtStatId);
-                    StatExtEntity statExtEntity = StatDBWrapperBak.queryById(builtStatId);
+                    StatExtEntity statExtEntity = StatDBWrapper.queryById(builtStatId);
                     if(statExtEntity != null){
                         List<String> dimensList = list.stream().map(Object::toString).collect(Collectors.toList());
                         LinkedHashMap<String, StatValue> data = ResultStorageProxy.queryWithDimensList(statExtEntity,dimensList,batchTime);

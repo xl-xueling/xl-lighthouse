@@ -17,8 +17,8 @@ package com.dtstep.lighthouse.common.entity.stat;
  * limitations under the License.
  */
 
-import com.dtstep.lighthouse.common.enums.meta.ColumnTypeEnum;
 
+import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 
 public final class StatVariableEntity implements java.io.Serializable{
 

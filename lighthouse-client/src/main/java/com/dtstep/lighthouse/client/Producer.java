@@ -69,7 +69,7 @@ final class Producer {
             logger.error("light client key validation failed,token:{},key:{}",token,secretKey);
             return;
         }
-        if(groupVerifyEntity.getState() != GroupStateEnum.RUNNING.getState()){
+        if(groupVerifyEntity.getState() != GroupStateEnum.RUNNING){
             logger.error("the status of the statistic group is abnormal,token:{}",token);
             return;
         }

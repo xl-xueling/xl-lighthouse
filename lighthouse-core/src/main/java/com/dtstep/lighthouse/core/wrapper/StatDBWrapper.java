@@ -15,19 +15,18 @@ import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
+import com.dtstep.lighthouse.core.redis.RedisHandler;
 import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -64,8 +63,9 @@ public class StatDBWrapper {
     }
 
     public static StatExtEntity combineExtInfo(Stat statEntity,boolean isBuiltIn) throws Exception {
-        String groupColumns = statEntity.getGroupColumns();
-        assert StringUtil.isNotEmpty(groupColumns);
+//        String groupColumns = statEntity.getGroupColumns();
+        String groupColumns = null;
+//        assert StringUtil.isNotEmpty(groupColumns);
         List<Column> groupColumnList = JsonUtil.toJavaObjectList(groupColumns,Column.class);
         StatExtEntity statExtEntity = new StatExtEntity(statEntity);
         String timeParam = statExtEntity.getTimeparam();
@@ -132,5 +132,27 @@ public class StatDBWrapper {
         }
         statExtEntity.setRelatedColumnSet(relatedColumns.stream().map(Column::getName).collect(Collectors.toSet()));
         return statExtEntity;
+    }
+
+    public static StatExtEntity queryById(int statId) {
+        return null;
+    }
+
+    public static int changeState(StatExtEntity statExtEntity, StatStateEnum stateEnum) throws Exception{
+        Validate.notNull(stateEnum);
+        Validate.notNull(statExtEntity);
+        int statId = statExtEntity.getId();
+        statExtEntity.setStatStateEnum(stateEnum);
+        int result;
+        if(stateEnum == StatStateEnum.LIMITING){
+            result = DaoHelper.sql.execute("update ldp_stat_item set state = ?,update_time = ? where id = ? and state = ?",stateEnum.getState(),new Date(), statId,StatStateEnum.RUNNING.getState());
+        }else{
+            result = DaoHelper.sql.execute("update ldp_stat_item set state = ?,update_time = ? where id = ?",stateEnum.getState(),new Date(), statId);
+        }
+        return result;
+    }
+
+    public static List<StatExtEntity> queryRunningListByGroupId(int groupId){
+       return null;
     }
 }
