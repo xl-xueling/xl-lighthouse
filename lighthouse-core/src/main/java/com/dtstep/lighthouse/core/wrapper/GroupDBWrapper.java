@@ -40,6 +40,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -199,34 +201,20 @@ public final class GroupDBWrapper {
          }else{
              result = DaoHelper.sql.execute("update ldp_stat_group set state = ?,update_time = ? where id = ?",state,new Date(), groupExtEntity.getId());
          }
-        try{
-            int groupId = groupExtEntity.getId();
-            String key = "GROUP::queryById_" + groupId;
-            RedisHandler.getInstance().del(key);
-            List<StatExtEntity> statExtEntities = StatDBWrapper.queryListByGroupId(groupId);
-            if(CollectionUtils.isNotEmpty(statExtEntities)){
-                for(StatExtEntity statExtEntity : statExtEntities){
-                    String statKey = "STAT::queryById_" + statExtEntity.getId();
-                    RedisHandler.getInstance().del(statKey);
-                }
-            }
-        }catch (Exception ex){
-            logger.error("clear group redis cache error!",ex);
-        }
          return result;
     }
 
     public static GroupStateEnum getState(int groupId) throws Exception {
-        GroupEntity groupEntity = DaoHelper.sql.getItem(GroupEntity.class,"select state,update_time from ldp_stat_group where id = ?",groupId);
+        Group groupEntity = DaoHelper.sql.getItem(Group.class,"select state,update_time from ldp_stat_group where id = ?",groupId);
         if(groupEntity == null){
             return null;
         }
-        boolean isLimited = groupEntity.getState() == GroupStateEnum.LIMITING.getState()
-                && (System.currentTimeMillis() - groupEntity.getUpdateTime().getTime() < TimeUnit.MINUTES.toMillis(StatConst.LIMITED_EXPIRE_MINUTES));
+        boolean isLimited = groupEntity.getState() == GroupStateEnum.LIMITING
+                && (System.currentTimeMillis() - groupEntity.getUpdateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < TimeUnit.MINUTES.toMillis(StatConst.LIMITED_EXPIRE_MINUTES));
         if(isLimited){
             return GroupStateEnum.LIMITING;
         }else{
-            return GroupStateEnum.forValue(groupEntity.getState());
+            return groupEntity.getState();
         }
     }
 
@@ -249,7 +237,6 @@ public final class GroupDBWrapper {
                         GroupExtEntity groupEntity = GroupDBWrapper.queryById(groupId);
                         if(groupEntity != null){
                             clearLocalCache(groupId);
-//                            StatDBWrapper.clearLocalCacheByGroupId(groupId);
                             logger.info("refresh group cache success,groupId:{}",groupId);
                         }
                     }
