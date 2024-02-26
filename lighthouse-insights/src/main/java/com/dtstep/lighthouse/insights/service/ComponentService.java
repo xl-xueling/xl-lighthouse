@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
-import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.insights.vo.ComponentVO;
 import com.dtstep.lighthouse.insights.dto.ComponentQueryParam;
 import com.dtstep.lighthouse.common.modal.Component;

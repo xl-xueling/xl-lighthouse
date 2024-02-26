@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.commonv2.enums;
+package com.dtstep.lighthouse.common.enums;
 
 public enum AuthRoleTypeEnum {
 

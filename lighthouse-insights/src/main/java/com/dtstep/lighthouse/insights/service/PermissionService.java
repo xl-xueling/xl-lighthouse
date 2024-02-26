@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.service;
 
-import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.insights.vo.PermissionVO;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;

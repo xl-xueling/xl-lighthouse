@@ -5,7 +5,7 @@ import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.insights.dto.LoginParam;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.common.modal.User;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;

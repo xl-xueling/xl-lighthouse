@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
-import com.dtstep.lighthouse.commonv2.insights.ListData;
+import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.insights.dao.RecordDao;
 import com.dtstep.lighthouse.insights.dto.RecordQueryParam;
 import com.dtstep.lighthouse.common.modal.Record;

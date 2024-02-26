@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.exception.PermissionException;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,14 +1,13 @@
 package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.modal.*;
-import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
-import com.dtstep.lighthouse.insights.vo.MetricSetVO;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.insights.vo.ServiceResult;

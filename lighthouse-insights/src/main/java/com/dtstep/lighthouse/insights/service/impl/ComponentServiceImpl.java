@@ -2,8 +2,8 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
-import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.insights.dao.ComponentDao;
 import com.dtstep.lighthouse.common.modal.TreeNode;
 import com.dtstep.lighthouse.insights.vo.ComponentVO;

@@ -1,8 +1,8 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.util.Md5Util;
-import com.dtstep.lighthouse.commonv2.insights.ListData;
-import com.dtstep.lighthouse.commonv2.insights.ResultCode;
+import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.insights.dao.RelationDao;
 import com.dtstep.lighthouse.insights.dto.RelationDeleteParam;
 import com.dtstep.lighthouse.insights.dto.RelationQueryParam;

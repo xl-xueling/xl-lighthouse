@@ -1,6 +1,6 @@
-package com.dtstep.lighthouse.commonv2.entity.user;
+package com.dtstep.lighthouse.common.entity;
 
-import com.dtstep.lighthouse.commonv2.enums.AuthRoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.AuthRoleTypeEnum;
 
 public class Role {
 
