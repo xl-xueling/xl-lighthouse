@@ -20,7 +20,7 @@ package com.dtstep.lighthouse.common.entity.meta;
 
 import com.dtstep.lighthouse.common.entity.annotation.DBColumnAnnotation;
 import com.dtstep.lighthouse.common.entity.annotation.DBNameAnnotation;
-import com.dtstep.lighthouse.common.enums.meta.MetaTableTypeEnum;
+import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
 
 import java.io.Serializable;
 import java.util.Date;

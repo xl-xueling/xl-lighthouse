@@ -16,7 +16,7 @@ package com.dtstep.lighthouse.common.entity.group;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.common.enums.meta.ColumnTypeEnum;
+import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
@@ -57,7 +57,7 @@ public class GroupExtEntity extends Group {
 
     public GroupExtEntity(){}
 
-    public GroupExtEntity(GroupEntity groupEntity){
+    public GroupExtEntity(Group groupEntity){
         assert groupEntity != null;
         BeanCopyUtil.copy(groupEntity,this);
     }

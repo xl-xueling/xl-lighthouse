@@ -16,7 +16,9 @@ package com.dtstep.lighthouse.core.wrapper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
+import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.util.*;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
@@ -27,13 +29,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.dtstep.lighthouse.common.constant.StatConst;
-import com.dtstep.lighthouse.common.entity.group.GroupEntity;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.meta.MetaColumn;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
-import com.dtstep.lighthouse.common.enums.meta.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
 import org.apache.commons.collections.CollectionUtils;
@@ -82,7 +82,7 @@ public final class GroupDBWrapper {
         }
         GroupExtEntity groupExtEntity = null;
         try{
-            GroupEntity groupEntity = DaoHelper.sql.getItem(GroupEntity.class, "select * from ldp_stat_group where token = ?", token);
+            Group groupEntity = DaoHelper.sql.getItem(Group.class, "select * from ldp_groups where token = ?", token);
             if(groupEntity != null){
                 groupExtEntity = combineExtInfo(groupEntity);
             }
@@ -99,7 +99,7 @@ public final class GroupDBWrapper {
         }
         GroupExtEntity groupExtEntity = null;
         try{
-            GroupEntity groupEntity = DaoHelper.sql.getItem(GroupEntity.class, "select * from ldp_stat_group where id = ?", groupId);
+            Group groupEntity = DaoHelper.sql.getItem(Group.class, "select * from ldp_stat_group where id = ?", groupId);
             if(groupEntity != null){
                 groupExtEntity = combineExtInfo(groupEntity);
             }
@@ -110,11 +110,8 @@ public final class GroupDBWrapper {
         }
     }
 
-    private static GroupExtEntity combineExtInfo(GroupEntity groupEntity) throws Exception{
+    private static GroupExtEntity combineExtInfo(Group groupEntity) throws Exception{
         GroupExtEntity groupExtEntity = new GroupExtEntity(groupEntity);
-        assert StringUtil.isNotEmpty(groupEntity.getColumns());
-        List<MetaColumn> columnList = JsonUtil.toJavaObjectList(groupExtEntity.getColumns(),MetaColumn.class);
-        groupExtEntity.setColumnList(columnList);
         if(GroupExtEntity.isLimitedExpired(groupExtEntity)){
             DaoHelper.sql.execute("update ldp_stat_group set state = ?,update_time = ? where id = ?", GroupStateEnum.RUNNING.getState(),new Date(), groupExtEntity.getId());
             groupExtEntity.setState(GroupStateEnum.RUNNING);
@@ -123,12 +120,13 @@ public final class GroupDBWrapper {
 //            DaoHelper.sql.execute("update ldp_stat_group set debug_mode = ?,update_time = ? where id = ?",0,new Date(), groupExtEntity.getId());
 //            groupExtEntity.setDebugMode(0);
 //        }
+        List<Column> columnList = groupEntity.getColumns();
         int groupId = groupExtEntity.getId();
         List<StatExtEntity> statExtEntityList = StatDBWrapper.actualQueryListByGroupId(groupId).orElse(null);
         if(CollectionUtils.isNotEmpty(statExtEntityList)){
             HashMap<String, ColumnTypeEnum> groupRunningRelatedColumns = new HashMap<>();
             HashMap<String, ColumnTypeEnum> groupAllRelatedColumns = new HashMap<>();
-            Map<String,ColumnTypeEnum> groupColumnsMap = columnList.stream().collect(Collectors.toMap(MetaColumn::getColumnName, MetaColumn::getColumnTypeEnum));
+            Map<String,ColumnTypeEnum> groupColumnsMap = columnList.stream().collect(Collectors.toMap(Column::getName, Column::getType));
             long minDuration = 0L;
             long maxDataExpire = 0L;
             for (StatExtEntity statExtEntity : statExtEntityList) {

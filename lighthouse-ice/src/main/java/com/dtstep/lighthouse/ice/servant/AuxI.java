@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.ice.servant;
  * limitations under the License.
  */
 import Ice.Current;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
@@ -24,7 +25,6 @@ import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.ice._AuxInterfaceDisp;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
-import com.dtstep.lighthouse.core.wrapper.StatDBWrapperBak;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +66,7 @@ final class AuxI extends _AuxInterfaceDisp {
     public String queryStatById(int statId, Current __current) {
         String result = null;
         try{
-            StatExtEntity statExtEntity = StatDBWrapperBak.queryById(statId);
+            StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
             if(statExtEntity != null){
                 ObjectMapper mapper = new ObjectMapper();
                 result = mapper.writeValueAsString(statExtEntity);
