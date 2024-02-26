@@ -16,7 +16,8 @@ package com.dtstep.lighthouse.common.entity.group;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.common.enums.meta.ColumnTypeEnum;
+import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
+import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 
@@ -35,7 +36,7 @@ public final class GroupVerifyEntity implements Serializable {
 
     private String verifyKey;
 
-    private int state;
+    private GroupStateEnum state;
 
     private TimeParam minTimeParam;
 
@@ -65,14 +66,6 @@ public final class GroupVerifyEntity implements Serializable {
         this.verifyKey = verifyKey;
     }
 
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
     public Map<String, ColumnTypeEnum> getRelationColumns() {
         return relationColumns;
     }
@@ -87,5 +80,13 @@ public final class GroupVerifyEntity implements Serializable {
 
     public void setMinTimeParam(TimeParam minTimeParam) {
         this.minTimeParam = minTimeParam;
+    }
+
+    public GroupStateEnum getState() {
+        return state;
+    }
+
+    public void setState(GroupStateEnum state) {
+        this.state = state;
     }
 }

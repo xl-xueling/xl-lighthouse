@@ -21,7 +21,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.entity.meta.MetaTableEntity;
-import com.dtstep.lighthouse.common.enums.meta.MetaTableTypeEnum;
+import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
