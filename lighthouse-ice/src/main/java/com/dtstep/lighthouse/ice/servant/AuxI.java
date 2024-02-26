@@ -66,11 +66,11 @@ final class AuxI extends _AuxInterfaceDisp {
     public String queryStatById(int statId, Current __current) {
         String result = null;
         try{
-            StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
-            if(statExtEntity != null){
-                ObjectMapper mapper = new ObjectMapper();
-                result = mapper.writeValueAsString(statExtEntity);
-            }
+//            StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
+//            if(statExtEntity != null){
+//                ObjectMapper mapper = new ObjectMapper();
+//                result = mapper.writeValueAsString(statExtEntity);
+//            }
         }catch (Exception ex){
             logger.error("lighthouse ice,query stat by id error,statId:{}",statId,ex);
         }

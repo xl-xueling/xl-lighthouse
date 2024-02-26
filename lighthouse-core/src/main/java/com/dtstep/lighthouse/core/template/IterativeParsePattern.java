@@ -17,13 +17,13 @@ package com.dtstep.lighthouse.core.template;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.constant.StatConst;
-import com.dtstep.lighthouse.common.entity.meta.MetaColumn;
 import com.dtstep.lighthouse.common.entity.stat.StatVariableEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.enums.function.FunctionEnum;
 import com.dtstep.lighthouse.common.enums.stat.LimitTypeEnum;
 import com.dtstep.lighthouse.common.exception.TemplateParseException;
+import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.dtstep.lighthouse.core.formula.ImitateCompile;
@@ -103,7 +103,7 @@ public final class IterativeParsePattern implements Parser {
             }
             templateEntity.setVariableEntityList(variableEntityList);
         }
-        List<MetaColumn> columnList = context.getColumnList();
+        List<Column> columnList = context.getColumnList();
         String dimensFormula = element.attr("dimens");
         if(!StringUtil.isEmpty(dimensFormula)){
             String[] dimensArray = dimensFormula.split(StatConst.DIMENS_SEPARATOR);

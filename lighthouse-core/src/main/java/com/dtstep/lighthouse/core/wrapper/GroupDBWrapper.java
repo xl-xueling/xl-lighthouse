@@ -30,7 +30,6 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
-import com.dtstep.lighthouse.common.entity.meta.MetaColumn;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
@@ -101,7 +100,7 @@ public final class GroupDBWrapper {
         }
         GroupExtEntity groupExtEntity = null;
         try{
-            Group groupEntity = DaoHelper.sql.getItem(Group.class, "select * from ldp_stat_group where id = ?", groupId);
+            Group groupEntity = DaoHelper.sql.getItem(Group.class, "select * from ldp_groups where id = ?", groupId);
             if(groupEntity != null){
                 groupExtEntity = combineExtInfo(groupEntity);
             }
@@ -115,13 +114,9 @@ public final class GroupDBWrapper {
     private static GroupExtEntity combineExtInfo(Group groupEntity) throws Exception{
         GroupExtEntity groupExtEntity = new GroupExtEntity(groupEntity);
         if(GroupExtEntity.isLimitedExpired(groupExtEntity)){
-            DaoHelper.sql.execute("update ldp_stat_group set state = ?,update_time = ? where id = ?", GroupStateEnum.RUNNING.getState(),new Date(), groupExtEntity.getId());
+            DaoHelper.sql.execute("update ldp_groups set state = ?,update_time = ? where id = ?", GroupStateEnum.RUNNING.getState(),new Date(), groupExtEntity.getId());
             groupExtEntity.setState(GroupStateEnum.RUNNING);
         }
-//        if(GroupExtEntity.isDebugModeExpired(groupExtEntity)){
-//            DaoHelper.sql.execute("update ldp_stat_group set debug_mode = ?,update_time = ? where id = ?",0,new Date(), groupExtEntity.getId());
-//            groupExtEntity.setDebugMode(0);
-//        }
         List<Column> columnList = groupEntity.getColumns();
         int groupId = groupExtEntity.getId();
         List<StatExtEntity> statExtEntityList = StatDBWrapper.actualQueryListByGroupId(groupId).orElse(null);
@@ -139,9 +134,9 @@ public final class GroupDBWrapper {
                     }else{
                         minDuration = CalculateUtil.getMaxDivisor(minDuration,currentDuration);
                     }
-//                    if(maxDataExpire < statExtEntity.getDataExpire()){
-//                        maxDataExpire = statExtEntity.getDataExpire();
-//                    }
+                    if(maxDataExpire < statExtEntity.getExpired()){
+                        maxDataExpire = statExtEntity.getExpired();
+                    }
                     Set<String> statRelatedColumnSet = statExtEntity.getRelatedColumnSet();
                     if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
                         for(String columnName : statRelatedColumnSet){
@@ -186,6 +181,8 @@ public final class GroupDBWrapper {
             timeParam = new TimeParam((int)(duration / TimeUnit.HOURS.toMillis(1)),TimeUnit.HOURS);
         }else if(duration % TimeUnit.MINUTES.toMillis(1) == 0){
             timeParam = new TimeParam((int)(duration / TimeUnit.MINUTES.toMillis(1)),TimeUnit.MINUTES);
+        }else if(duration % TimeUnit.SECONDS.toMillis(1) == 0){
+            timeParam = new TimeParam((int)(duration / TimeUnit.SECONDS.toMillis(1)),TimeUnit.SECONDS);
         }else{
             throw new Exception();
         }
@@ -197,15 +194,15 @@ public final class GroupDBWrapper {
          groupExtEntity.setGroupStateEnum(groupStateEnum);
          int result;
          if(groupStateEnum == GroupStateEnum.LIMITING){
-             result = DaoHelper.sql.execute("update ldp_stat_group set state = ?,update_time = ? where id = ? and state = ?",state,new Date(), groupExtEntity.getId(),GroupStateEnum.RUNNING.getState());
+             result = DaoHelper.sql.execute("update ldp_groups set state = ?,update_time = ? where id = ? and state = ?",state,new Date(), groupExtEntity.getId(),GroupStateEnum.RUNNING.getState());
          }else{
-             result = DaoHelper.sql.execute("update ldp_stat_group set state = ?,update_time = ? where id = ?",state,new Date(), groupExtEntity.getId());
+             result = DaoHelper.sql.execute("update ldp_groups set state = ?,update_time = ? where id = ?",state,new Date(), groupExtEntity.getId());
          }
          return result;
     }
 
     public static GroupStateEnum getState(int groupId) throws Exception {
-        Group groupEntity = DaoHelper.sql.getItem(Group.class,"select state,update_time from ldp_stat_group where id = ?",groupId);
+        Group groupEntity = DaoHelper.sql.getItem(Group.class,"select state,update_time from ldp_groups where id = ?",groupId);
         if(groupEntity == null){
             return null;
         }
@@ -231,7 +228,7 @@ public final class GroupDBWrapper {
         public void run() {
             long time = DateUtil.getSecondBefore(System.currentTimeMillis(),20);
             try{
-                List<Integer> ids = DaoHelper.sql.getList(Integer.class,"select id from ldp_stat_group where create_time != refresh_time and refresh_time > ?",new Date(time));
+                List<Integer> ids = DaoHelper.sql.getList(Integer.class,"select id from ldp_groups where create_time != refresh_time and refresh_time > ?",new Date(time));
                 if(CollectionUtils.isNotEmpty(ids)){
                     for(int groupId:ids){
                         GroupExtEntity groupEntity = GroupDBWrapper.queryById(groupId);

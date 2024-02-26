@@ -16,11 +16,11 @@ package com.dtstep.lighthouse.core.formula;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.modal.Column;
 import com.google.common.collect.Lists;
 import com.dtstep.lighthouse.common.constant.FormulaConst;
 import com.dtstep.lighthouse.common.entity.state.StatUnit;
 import com.dtstep.lighthouse.common.entity.state.StatState;
-import com.dtstep.lighthouse.common.entity.meta.MetaColumn;
 import com.dtstep.lighthouse.common.entity.stat.StatVariableEntity;
 import com.dtstep.lighthouse.common.enums.formula.CharTypeEnum;
 import com.dtstep.lighthouse.common.enums.function.EmbedFunctionEnum;
@@ -230,11 +230,11 @@ public final class FormulaTranslate {
         return null;
     }
 
-    public static List<MetaColumn> queryRelatedColumns(List<MetaColumn> columnList, String formula) throws Exception {
-        List<MetaColumn> resultColumnList = new ArrayList<>();
+    public static List<Column> queryRelatedColumns(List<Column> columnList, String formula) throws Exception {
+        List<Column> resultColumnList = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(columnList)){
-            for (MetaColumn metaColumn : columnList) {
-                String columnName = metaColumn.getColumnName();
+            for (Column metaColumn : columnList) {
+                String columnName = metaColumn.getName();
                 if (columnName.equals(formula)) {
                     resultColumnList.add(metaColumn);
                 } else {
@@ -257,7 +257,7 @@ public final class FormulaTranslate {
     private static final Pattern pattern_3 = Pattern.compile("[a-z_0-9A-Z]+");
 
 
-    public static void checkVariableExist(String strInfo,List<MetaColumn> columnList,List<StatVariableEntity> variableEntityList) throws Exception {
+    public static void checkVariableExist(String strInfo,List<Column> columnList,List<StatVariableEntity> variableEntityList) throws Exception {
         StringBuffer sbr1 = new StringBuffer();
         Matcher m1 = pattern_1.matcher(strInfo);
         while (m1.find()){
@@ -277,7 +277,7 @@ public final class FormulaTranslate {
         m2.appendTail(sbr2);
         String removeEmbed = sbr2.toString();
         Matcher m3 = pattern_3.matcher(removeEmbed);
-        List<String> columnNameList = columnList.stream().map(MetaColumn::getColumnName).collect(Collectors.toList());
+        List<String> columnNameList = columnList.stream().map(Column::getName).collect(Collectors.toList());
         List<String> variableNameList = variableEntityList.stream().map(StatVariableEntity::getVariableName).collect(Collectors.toList());
         while (m3.find()){
             String group = m3.group();

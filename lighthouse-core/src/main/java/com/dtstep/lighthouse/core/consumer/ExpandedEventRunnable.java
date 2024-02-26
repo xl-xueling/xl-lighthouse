@@ -22,7 +22,7 @@ import com.google.common.collect.*;
 import com.dtstep.lighthouse.common.aggregator.SlotsGroup;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.event.SimpleSlotEvent;
-import com.dtstep.lighthouse.common.entity.meta.MetaTableEntity;
+import com.dtstep.lighthouse.common.modal.MetaTable;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.enums.function.FunctionEnum;
@@ -118,9 +118,9 @@ public final class ExpandedEventRunnable implements Runnable{
         if(metaId == -1){
             metaName = StatConst.SYSTEM_STAT_RESULT_TABLE;
         }else{
-            MetaTableEntity metaTableEntity = MetaTableWrapper.queryById(metaId);
-            if(metaTableEntity != null){
-                metaName = metaTableEntity.getMetaName();
+            MetaTable metaTable = MetaTableWrapper.queryById(metaId);
+            if(metaTable != null){
+                metaName = metaTable.getMetaName();
             }else{
                 logger.error("get meta info error,statId:{},metaId:{}",statId,metaId);
                 return;

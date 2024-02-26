@@ -24,7 +24,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.calculate.MicroBucket;
-import com.dtstep.lighthouse.common.entity.meta.MetaTableEntity;
+import com.dtstep.lighthouse.common.modal.MetaTable;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
@@ -172,8 +172,8 @@ public class HBaseResultStorageEngine extends ResultStorageEngine<MicroBucket, S
         if(statExtEntity.isBuiltIn()){
             metaName = StatConst.SYSTEM_STAT_RESULT_TABLE;
         }else{
-            MetaTableEntity metaTableEntity = MetaTableWrapper.queryById(resMeta);
-            metaName = metaTableEntity.getMetaName();
+            MetaTable metaTable = MetaTableWrapper.queryById(resMeta);
+            metaName = metaTable.getMetaName();
         }
         List<String> aggregateKeyList = Lists.newArrayList();
         for (long batchTime : batchTimeList) {
@@ -256,12 +256,12 @@ public class HBaseResultStorageEngine extends ResultStorageEngine<MicroBucket, S
         if(statExtEntity.isBuiltIn()){
             metaName = StatConst.SYSTEM_STAT_RESULT_TABLE;
         }else{
-            MetaTableEntity metaTableEntity = MetaTableWrapper.queryById(resMeta);
-            if(metaTableEntity == null){
+            MetaTable metaTable = MetaTableWrapper.queryById(resMeta);
+            if(metaTable == null){
                 logger.error("queryWithDimens error,statId:[{}],meta table[{}] not exit!",statExtEntity.getId(),resMeta);
                 throw new TableNotExistException(String.format("meta table[%s] not exit!",resMeta));
             }
-            metaName = metaTableEntity.getMetaName();
+            metaName = metaTable.getMetaName();
         }
         List<String> aggregateKeyList = Lists.newArrayList();
         for (long batchTime : batchTimeList) {
@@ -298,8 +298,8 @@ public class HBaseResultStorageEngine extends ResultStorageEngine<MicroBucket, S
         if(statExtEntity.isBuiltIn()){
             metaName = StatConst.SYSTEM_STAT_RESULT_TABLE;
         }else{
-            MetaTableEntity metaTableEntity = MetaTableWrapper.queryById(resMeta);
-            metaName = metaTableEntity.getMetaName();
+            MetaTable metaTable = MetaTableWrapper.queryById(resMeta);
+            metaName = metaTable.getMetaName();
         }
         List<String> aggregateKeyList = Lists.newArrayList();
         for (String dimensValue : dimensValueList) {

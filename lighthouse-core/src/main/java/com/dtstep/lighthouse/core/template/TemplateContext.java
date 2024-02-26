@@ -16,7 +16,7 @@ package com.dtstep.lighthouse.core.template;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.common.entity.meta.MetaColumn;
+import com.dtstep.lighthouse.common.modal.Column;
 
 import java.util.List;
 
@@ -28,15 +28,15 @@ public final class TemplateContext {
 
     private String timeParam;
 
-    private List<MetaColumn> columnList;
+    private List<Column> columnList;
 
-    public TemplateContext(String template,String timeParam,List<MetaColumn> columnList){
+    public TemplateContext(String template,String timeParam,List<Column> columnList){
         this.template = template;
         this.timeParam = timeParam;
         this.columnList = columnList;
     }
 
-    public TemplateContext(int statId,String template,String timeParam,List<MetaColumn> columnList){
+    public TemplateContext(int statId,String template,String timeParam,List<Column> columnList){
         this.statId = statId;
         this.template = template;
         this.timeParam = timeParam;
@@ -59,11 +59,11 @@ public final class TemplateContext {
         this.timeParam = timeParam;
     }
 
-    public List<MetaColumn> getColumnList() {
+    public List<Column> getColumnList() {
         return columnList;
     }
 
-    public void setColumnList(List<MetaColumn> columnList) {
+    public void setColumnList(List<Column> columnList) {
         this.columnList = columnList;
     }
 
