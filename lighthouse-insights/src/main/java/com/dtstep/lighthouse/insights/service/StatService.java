@@ -28,7 +28,7 @@ public interface StatService {
 
     int count(StatQueryParam queryParam);
 
-    RenderConfig getStatRenderConfig(Stat stat);
+    RenderConfig getStatRenderConfig(StatVO stat);
 
-    ResultCode filterConfig(Stat stat, List<RenderFilterConfig> filterConfigs);
+    ResultCode filterConfig(StatVO stat, List<RenderFilterConfig> filterConfigs);
 }

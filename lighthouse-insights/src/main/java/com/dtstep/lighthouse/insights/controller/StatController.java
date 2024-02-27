@@ -95,7 +95,7 @@ public class StatController {
     @RequestMapping("/stat/filterConfig")
     public ResultData<Integer> filterConfig(@Validated @RequestBody StatFilterConfigParam filterConfigParam) {
         Integer id = filterConfigParam.getId();
-        Stat stat = statService.queryById(id);
+        StatVO stat = statService.queryById(id);
         Validate.notNull(stat);
         List<RenderFilterConfig> configList = filterConfigParam.getFilters();
         ResultCode resultCode = statService.filterConfig(stat,configList);

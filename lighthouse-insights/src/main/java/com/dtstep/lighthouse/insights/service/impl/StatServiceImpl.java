@@ -152,6 +152,13 @@ public class StatServiceImpl implements StatService {
             List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
             statVO.setAdmins(admins);
         }
+        String template = stat.getTemplate();
+        String timeParam = stat.getTimeparam();
+        Group group = groupDao.queryById(stat.getGroupId());
+        ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(template,timeParam, group.getColumns()));
+        TemplateEntity templateEntity = serviceResult.getData();
+        statVO.setTemplateEntity(templateEntity);
+        statVO.setTitle(templateEntity.getTitle());
         return statVO;
     }
 
@@ -194,14 +201,6 @@ public class StatServiceImpl implements StatService {
     @Override
     public StatVO queryById(Integer id) {
         Stat stat = statDao.queryById(id);
-        String template = stat.getTemplate();
-        String timeParam = stat.getTimeparam();
-        Group group = groupDao.queryById(stat.getGroupId());
-        List<Column> columnList = group.getColumns();
-        ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(template,timeParam, group.getColumns()));
-        TemplateEntity templateEntity = serviceResult.getData();
-        stat.setTemplateEntity(templateEntity);
-        stat.setTitle(templateEntity.getTitle());
         return translate(stat);
     }
 
@@ -219,7 +218,7 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public RenderConfig getStatRenderConfig(Stat stat) {
+    public RenderConfig getStatRenderConfig(StatVO stat) {
         RenderConfig renderConfig = stat.getRenderConfig();
         List<String> defaultDimensList = new ArrayList<>();
         HashMap<String, RenderFilterConfig> filtersConfigMap = new HashMap<>();
@@ -268,7 +267,7 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public ResultCode filterConfig(Stat stat, List<RenderFilterConfig> filterConfigs) {
+    public ResultCode filterConfig(StatVO stat, List<RenderFilterConfig> filterConfigs) {
         String[] dimensArray = stat.getTemplateEntity().getDimensArray();
         Validate.notNull(dimensArray);
         if(CollectionUtils.isEmpty(filterConfigs)){

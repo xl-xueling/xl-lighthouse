@@ -36,20 +36,6 @@ public class TestStatService {
         System.out.println("result:" + result);
     }
 
-
-    @Test
-    public void testFilterConfig(){
-        String [] dimensArrayUnit = TemplateUtil.split("province;city");
-        System.out.println("dimen length" + dimensArrayUnit.length);
-        System.out.println("dimensArrayUnit:" + JsonUtil.toJSONString(dimensArrayUnit));
-        Integer id = 1100488;
-        Stat stat = statService.queryById(id);
-        RenderFilterConfig renderFilterConfig = new RenderFilterConfig();
-        renderFilterConfig.setDimens("province;city");
-        ResultCode resultCode = statService.filterConfig(stat, List.of(renderFilterConfig));
-        System.out.println("resultCode:" + JsonUtil.toJSONString(resultCode));
-    }
-
     @Test
     public void testQueryList2() {
         Integer projectId = 23;
