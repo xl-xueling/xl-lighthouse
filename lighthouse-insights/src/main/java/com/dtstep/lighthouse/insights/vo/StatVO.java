@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.vo;
 
+import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.common.modal.PermissionEnum;
 import com.dtstep.lighthouse.common.modal.Stat;
@@ -12,6 +13,8 @@ import java.util.Set;
 public class StatVO extends Stat {
 
     private List<User> admins;
+
+    private TemplateEntity templateEntity;
 
     private Set<PermissionEnum> permissions = new HashSet<>();
 
@@ -40,5 +43,13 @@ public class StatVO extends Stat {
 
     public void setAdmins(List<User> admins) {
         this.admins = admins;
+    }
+
+    public TemplateEntity getTemplateEntity() {
+        return templateEntity;
+    }
+
+    public void setTemplateEntity(TemplateEntity templateEntity) {
+        this.templateEntity = templateEntity;
     }
 }
