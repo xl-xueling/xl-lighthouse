@@ -231,8 +231,7 @@ public class StatDBWrapper {
             if(groupStateEnum == GroupStateEnum.LIMITING && stateEnum == StatStateEnum.RUNNING){
                 statExtEntity.setStatStateEnum(StatStateEnum.LIMITING);
             }else if(StatExtEntity.isLimitedExpired(statExtEntity)){
-                DaoHelper.sql.execute("update ldp_stat_item set state = ?,update_time = ? where id = ?", StatStateEnum.RUNNING.getState(),new Date(), statExtEntity.getId());
-                statExtEntity.setStatStateEnum(StatStateEnum.RUNNING);
+                changeState(statEntity.getId(),StatStateEnum.RUNNING);
             }
         }
         String template = statExtEntity.getTemplate();
@@ -273,16 +272,19 @@ public class StatDBWrapper {
         return statExtEntity;
     }
 
-    public static int changeState(StatExtEntity statExtEntity, StatStateEnum stateEnum) throws Exception{
-        Validate.notNull(stateEnum);
-        Validate.notNull(statExtEntity);
-        int statId = statExtEntity.getId();
-        statExtEntity.setStatStateEnum(stateEnum);
+    public static int changeState(int statId,StatStateEnum statStateEnum) throws Exception {
+        DBConnection dbConnection = ConnectionManager.getConnection();
+        Connection conn = dbConnection.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
         int result;
-        if(stateEnum == StatStateEnum.LIMITING){
-            result = DaoHelper.sql.execute("update ldp_stat_item set state = ?,update_time = ? where id = ? and state = ?",stateEnum.getState(),new Date(), statId,StatStateEnum.RUNNING.getState());
-        }else{
-            result = DaoHelper.sql.execute("update ldp_stat_item set state = ?,update_time = ? where id = ?",stateEnum.getState(),new Date(), statId);
+        try{
+            if(statStateEnum == StatStateEnum.LIMITING){
+                result = queryRunner.update(conn, "update ldp_stats set state = ?,update_time = ? where id = ? adn state = ?", StatStateEnum.RUNNING.getState(),new Date(), statId,StatStateEnum.RUNNING.getState());
+            }else{
+                result = queryRunner.update(conn, "update ldp_stats set state = ?,update_time = ? where id = ?", StatStateEnum.RUNNING.getState(),new Date(), statId);
+            }
+        }finally {
+            ConnectionManager.close(dbConnection);
         }
         return result;
     }

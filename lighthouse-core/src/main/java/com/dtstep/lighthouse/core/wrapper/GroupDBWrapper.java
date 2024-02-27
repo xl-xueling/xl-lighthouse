@@ -277,7 +277,7 @@ public final class GroupDBWrapper {
     }
 
     public static GroupStateEnum getState(int groupId) throws Exception {
-        Group groupEntity = DaoHelper.sql.getItem(Group.class,"select state,update_time from ldp_groups where id = ?",groupId);
+        Group groupEntity = queryGroupByIdFromDB(groupId);
         if(groupEntity == null){
             return null;
         }
