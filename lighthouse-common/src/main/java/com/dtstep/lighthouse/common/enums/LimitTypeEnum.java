@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.common.enums.stat;
+package com.dtstep.lighthouse.common.enums;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -18,32 +18,24 @@ package com.dtstep.lighthouse.common.enums.stat;
  */
 
 
-public enum StatTypeEnum {
+public enum LimitTypeEnum {
 
-    RT(1),
+    TOP(1),
 
-    LT(2);
+    LAST(2),
+    ;
 
-    private int type;
+    private int limitType;
 
-    StatTypeEnum(int type){
-        this.type = type;
+    public int getLimitType() {
+        return limitType;
     }
 
-    public int getType() {
-        return type;
+    public void setLimitType(int limitType) {
+        this.limitType = limitType;
     }
 
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public static StatTypeEnum getStatTypeEnum(int type){
-        for(StatTypeEnum statTypeEnum:StatTypeEnum.values()){
-            if(statTypeEnum.getType() == type){
-                return statTypeEnum;
-            }
-        }
-        return null;
+    LimitTypeEnum(int limitType){
+        this.limitType = limitType;
     }
 }

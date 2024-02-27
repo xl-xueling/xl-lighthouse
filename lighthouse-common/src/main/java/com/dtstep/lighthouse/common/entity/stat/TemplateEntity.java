@@ -17,13 +17,11 @@ package com.dtstep.lighthouse.common.entity.stat;
  * limitations under the License.
  */
 
-import com.dtstep.lighthouse.common.entity.annotation.TemplateAttrAnnotation;
 import com.dtstep.lighthouse.common.entity.state.StatState;
-import com.dtstep.lighthouse.common.enums.stat.LimitTypeEnum;
+import com.dtstep.lighthouse.common.enums.LimitTypeEnum;
 import com.dtstep.lighthouse.common.util.StringUtil;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.*;
 
 public final class TemplateEntity implements Serializable {

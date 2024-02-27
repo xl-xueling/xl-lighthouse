@@ -34,7 +34,7 @@ import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.enums.function.FunctionEnum;
-import com.dtstep.lighthouse.common.enums.stat.LimitTypeEnum;
+import com.dtstep.lighthouse.common.enums.LimitTypeEnum;
 import com.dtstep.lighthouse.common.hash.HashUtil;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;

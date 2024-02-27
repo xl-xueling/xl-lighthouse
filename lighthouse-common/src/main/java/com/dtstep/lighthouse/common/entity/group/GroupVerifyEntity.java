@@ -17,7 +17,7 @@ package com.dtstep.lighthouse.common.entity.group;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
-import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
+import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 

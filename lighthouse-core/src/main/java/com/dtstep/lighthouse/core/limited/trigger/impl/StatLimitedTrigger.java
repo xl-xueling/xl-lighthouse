@@ -21,7 +21,7 @@ import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.limiting.LimitingEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
-import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
+import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.core.limited.trigger.Trigger;
 import com.dtstep.lighthouse.core.lock.RedLock;
 import com.dtstep.lighthouse.core.wrapper.LimitingWrapper;

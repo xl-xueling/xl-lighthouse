@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.common.enums.stat;
+package com.dtstep.lighthouse.common.enums;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,28 +16,26 @@ package com.dtstep.lighthouse.common.enums.stat;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum  StatStateEnum {
+public enum StatStateEnum {
 
-    PENDING_APPROVE(0,"i18n(ldp_i18n_display_1066)"),
+    PENDING_APPROVE(0,"待审核"),
 
-    RUNNING(1,"i18n(ldp_i18n_display_1067)"),
+    RUNNING(1,"运行中"),
 
-    STOPPED(2,"i18n(ldp_i18n_display_1068)"),
+    STOPPED(2,"已停止"),
 
-    LIMITING(3,"i18n(ldp_i18n_display_1069)"),
+    LIMITING(3,"已限流"),
 
     @Deprecated
-    DELETED(4,"i18n(ldp_i18n_display_1070)"),
+    DELETED(4,"已删除"),
 
-    REJECTED(5,"i18n(ldp_i18n_display_1071)"),
+    REJECTED(5,"审核拒绝"),
 
-    FROZEN(6,"i18n(ldp_i18n_display_1072)"),
+    FROZEN(6,"已冻结"),
 
-    INVALID(7,"i18n(ldp_i18n_display_1077)")
+    INVALID(7,"无效")
 
     ;
 
