@@ -21,6 +21,7 @@ import com.dtstep.lighthouse.common.entity.annotation.DBNameAnnotation;
 import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class MetaTable implements Serializable {
@@ -39,15 +40,13 @@ public class MetaTable implements Serializable {
 
     private MetaTableTypeEnum metaTableTypeEnum;
 
-    private String template;
-
     private long recordSize;
 
     private long contentSize;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     public int getId() {
         return id;
@@ -83,16 +82,6 @@ public class MetaTable implements Serializable {
         this.metaTableTypeEnum = metaTableTypeEnum;
     }
 
-    public String getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(String template) {
-        this.template = template.replace("'","\'");
-        this.template = template.replace("\"","\"");
-        this.template = template;
-    }
-
     public int getState() {
         return state;
     }
@@ -101,28 +90,12 @@ public class MetaTable implements Serializable {
         this.state = state;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
     public String getDesc() {
         return desc;
     }
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
     public long getRecordSize() {
@@ -139,5 +112,21 @@ public class MetaTable implements Serializable {
 
     public void setContentSize(long contentSize) {
         this.contentSize = contentSize;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 }
