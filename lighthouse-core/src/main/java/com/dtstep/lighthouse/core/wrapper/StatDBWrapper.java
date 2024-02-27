@@ -8,6 +8,7 @@ import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.exception.TemplateParseException;
 import com.dtstep.lighthouse.common.modal.Column;
+import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
@@ -74,6 +75,44 @@ public class StatDBWrapper {
         }
     }
 
+    private static class StatResultSetHandler implements ResultSetHandler<Stat> {
+
+        @Override
+        public Stat handle(ResultSet rs) throws SQLException {
+            Stat stat = null;
+            if(rs.next()){
+                stat = new Stat();
+                Integer id = rs.getInt("id");
+                String title = rs.getString("title");
+                Integer groupId = rs.getInt("group_id");
+                Integer projectId = rs.getInt("project_id");
+                String template = rs.getString("template");
+                String timeparam = rs.getString("timeparam");
+                Long expired = rs.getLong("expired");
+                Integer state = rs.getInt("state");
+                String renderConfig = rs.getString("render_config");
+                Integer metaId = rs.getInt("meta_id");
+                Long createTime = rs.getTimestamp("create_time").getTime();
+                Long updateTime = rs.getTimestamp("update_time").getTime();
+                String randomId = rs.getString("random_id");
+                stat.setId(id);
+                stat.setTitle(title);
+                stat.setGroupId(groupId);
+                stat.setProjectId(projectId);
+                stat.setTemplate(template);
+                stat.setTimeparam(timeparam);
+                stat.setExpired(expired);
+                StatStateEnum statStateEnum = StatStateEnum.getByState(state);
+                stat.setState(statStateEnum);
+                stat.setMetaId(metaId);
+                stat.setCreateTime(DateUtil.timestampToLocalDateTime(createTime));
+                stat.setUpdateTime(DateUtil.timestampToLocalDateTime(updateTime));
+                stat.setRandomId(randomId);
+            }
+            return stat;
+        }
+    }
+
     private static Stat queryStatByIdFromDB(int statId) throws Exception {
         DBConnection dbConnection = ConnectionManager.getConnection();
         Connection conn = dbConnection.getConnection();
@@ -81,42 +120,7 @@ public class StatDBWrapper {
         ResultSetHandler<Stat> handler = new BeanHandler<Stat>(Stat.class);
         Stat stat = null;
         try{
-            stat = queryRunner.query(conn, String.format("select * from ldp_stats where id = '%s'",statId), new ResultSetHandler<Stat>() {
-                @Override
-                public Stat handle(ResultSet rs) throws SQLException {
-                    Stat stat = null;
-                    if(rs.next()){
-                        stat = new Stat();
-                        Integer id = rs.getInt("id");
-                        String title = rs.getString("title");
-                        Integer groupId = rs.getInt("group_id");
-                        Integer projectId = rs.getInt("project_id");
-                        String template = rs.getString("template");
-                        String timeparam = rs.getString("timeparam");
-                        Long expired = rs.getLong("expired");
-                        Integer state = rs.getInt("state");
-                        String renderConfig = rs.getString("render_config");
-                        Integer metaId = rs.getInt("meta_id");
-                        Long createTime = rs.getTimestamp("create_time").getTime();
-                        Long updateTime = rs.getTimestamp("update_time").getTime();
-                        String randomId = rs.getString("random_id");
-                        stat.setId(id);
-                        stat.setTitle(title);
-                        stat.setGroupId(groupId);
-                        stat.setProjectId(projectId);
-                        stat.setTemplate(template);
-                        stat.setTimeparam(timeparam);
-                        stat.setExpired(expired);
-                        StatStateEnum statStateEnum = StatStateEnum.getByState(state);
-                        stat.setState(statStateEnum);
-                        stat.setMetaId(metaId);
-                        stat.setCreateTime(DateUtil.timestampToLocalDateTime(createTime));
-                        stat.setUpdateTime(DateUtil.timestampToLocalDateTime(updateTime));
-                        stat.setRandomId(randomId);
-                    }
-                    return stat;
-                }
-            });
+            stat = queryRunner.query(conn, String.format("select * from ldp_stats where id = '%s'",statId), new StatResultSetHandler());
         }finally {
             ConnectionManager.close(dbConnection);
         }

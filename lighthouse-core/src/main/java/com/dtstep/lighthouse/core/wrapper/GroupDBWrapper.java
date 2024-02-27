@@ -20,9 +20,12 @@ import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Group;
+import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.*;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.config.LDPConfig;
+import com.dtstep.lighthouse.core.dao.ConnectionManager;
+import com.dtstep.lighthouse.core.dao.DBConnection;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -34,10 +37,15 @@ import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -107,6 +115,67 @@ public final class GroupDBWrapper {
             logger.error("query group info error!",ex);
             return Optional.empty();
         }
+    }
+
+    private static class GroupResultSetHandler implements ResultSetHandler<Group> {
+        @Override
+        public Group handle(ResultSet rs) throws SQLException {
+            Group group = null;
+            if(rs.next()){
+                group = new Group();
+                Integer id = rs.getInt("id");
+                String token = rs.getString("token");
+                Integer projectId = rs.getInt("project_id");
+                Integer debugMode = rs.getInt("debug_mode");
+                String columns = rs.getString("columns");
+                String desc = rs.getString("desc");
+                String secretKey = rs.getString("secret_key");
+                Long createTime = rs.getTimestamp("create_time").getTime();
+                Long updateTime = rs.getTimestamp("update_time").getTime();
+                Integer state = rs.getInt("state");
+                Long refreshTime = rs.getTimestamp("refresh_time").getTime();
+                group.setId(id);
+                group.setToken(token);
+                group.setProjectId(projectId);
+                group.setDebugMode(debugMode);
+                group.setDesc(desc);
+                group.setSecretKey(secretKey);
+                group.setCreateTime(DateUtil.timestampToLocalDateTime(createTime));
+                group.setUpdateTime(DateUtil.timestampToLocalDateTime(updateTime));
+                GroupStateEnum statStateEnum = GroupStateEnum.forValue(state);
+                group.setState(statStateEnum);
+                List<Column> columnList = JsonUtil.toJavaObjectList(columns,Column.class);
+                group.setColumns(columnList);
+                group.setRefreshTime(DateUtil.timestampToLocalDateTime(refreshTime));
+            }
+            return group;
+        }
+    }
+
+    private static Group queryGroupByIdFromDB(int groupId) throws Exception {
+        DBConnection dbConnection = ConnectionManager.getConnection();
+        Connection conn = dbConnection.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+        Group group = null;
+        try{
+            group = queryRunner.query(conn, String.format("select * from ldp_groups where id = '%s'",groupId), new GroupResultSetHandler());
+        }finally {
+            ConnectionManager.close(dbConnection);
+        }
+        return group;
+    }
+
+    private static Group queryGroupByTokenFromDB(String token) throws Exception {
+        DBConnection dbConnection = ConnectionManager.getConnection();
+        Connection conn = dbConnection.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+        Group group = null;
+        try{
+            group = queryRunner.query(conn, String.format("select * from ldp_groups where token = '%s'",token), new GroupResultSetHandler());
+        }finally {
+            ConnectionManager.close(dbConnection);
+        }
+        return group;
     }
 
     private static GroupExtEntity combineExtInfo(Group groupEntity) throws Exception{
