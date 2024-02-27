@@ -11,7 +11,7 @@ public class StatDBWrapperTest {
     @Test
     public void testQueryId() throws Exception {
         LDPConfig.initWithHomePath("/Users/xueling/lighthouse");
-        int statId = 1100507;
+        int statId = 1100517;
         StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
         System.out.println("statExtEntity:" + JsonUtil.toJSONString(statExtEntity));
     }

@@ -17,7 +17,6 @@ import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
-import com.dtstep.lighthouse.core.dao.DaoHelper;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
@@ -43,17 +42,17 @@ public class StatDBWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(StatDBWrapper.class);
 
-    private final static LoadingCache<Integer, Optional<List<StatExtEntity>>> groupStatListCache = Caffeine.newBuilder()
-            .expireAfterWrite(3, TimeUnit.MINUTES)
-            .maximumSize(100000)
-            .softValues()
-            .build(StatDBWrapper::actualQueryListByGroupId);
-
     private static final LoadingCache<Integer, Optional<StatExtEntity>> statCache = Caffeine.newBuilder()
             .expireAfterWrite(3, TimeUnit.MINUTES)
             .softValues()
             .maximumSize(100000)
             .build(StatDBWrapper::actualQueryById);
+
+    private final static LoadingCache<Integer, Optional<List<StatExtEntity>>> groupStatListCache = Caffeine.newBuilder()
+            .expireAfterWrite(3, TimeUnit.MINUTES)
+            .maximumSize(100000)
+            .softValues()
+            .build(StatDBWrapper::actualQueryListByGroupId);
 
     public static StatExtEntity queryById(int statId) {
         return Objects.requireNonNull(statCache.get(statId)).orElse(null);
@@ -208,21 +207,16 @@ public class StatDBWrapper {
         List<Column> groupColumnList = JsonUtil.toJavaObjectList(groupColumns,Column.class);
         StatExtEntity statExtEntity = new StatExtEntity(statEntity);
         String timeParam = statExtEntity.getTimeparam();
-        boolean isInterval = BatchAdapter.isIntervalBatchParam(timeParam);
-        if(isInterval){
-            String[] timeParamArr = timeParam.split("-");
-            statExtEntity.setTimeParamInterval(Integer.parseInt(timeParamArr[0]));
-            if("minute".equals(timeParamArr[1])){
-                statExtEntity.setTimeUnit(TimeUnit.MINUTES);
-            }else if("hour".equals(timeParamArr[1])){
-                statExtEntity.setTimeUnit(TimeUnit.HOURS);
-            }else if("day".equals(timeParamArr[1])){
-                statExtEntity.setTimeUnit(TimeUnit.DAYS);
-            }else if("second".equals(timeParamArr[1])){
-                statExtEntity.setTimeUnit(TimeUnit.SECONDS);
-            }
-        }else{
-            throw new TemplateParseException();
+        String[] timeParamArr = timeParam.split("-");
+        statExtEntity.setTimeParamInterval(Integer.parseInt(timeParamArr[0]));
+        if("minute".equals(timeParamArr[1])){
+            statExtEntity.setTimeUnit(TimeUnit.MINUTES);
+        }else if("hour".equals(timeParamArr[1])){
+            statExtEntity.setTimeUnit(TimeUnit.HOURS);
+        }else if("day".equals(timeParamArr[1])){
+            statExtEntity.setTimeUnit(TimeUnit.DAYS);
+        }else if("second".equals(timeParamArr[1])){
+            statExtEntity.setTimeUnit(TimeUnit.SECONDS);
         }
         StatStateEnum stateEnum = statExtEntity.getStatStateEnum();
         statExtEntity.setStatStateEnum(stateEnum);
@@ -289,7 +283,15 @@ public class StatDBWrapper {
         return result;
     }
 
+    public static List<StatExtEntity> queryListByGroupId(int groupId) {
+        return Objects.requireNonNull(groupStatListCache.get(groupId)).orElse(null);
+    }
+
     public static List<StatExtEntity> queryRunningListByGroupId(int groupId){
-       return null;
+        List<StatExtEntity> entityList = queryListByGroupId(groupId);
+        if(CollectionUtils.isEmpty(entityList)){
+            return null;
+        }
+        return entityList.stream().filter(x -> x.getState() == StatStateEnum.RUNNING).collect(Collectors.toList());
     }
 }

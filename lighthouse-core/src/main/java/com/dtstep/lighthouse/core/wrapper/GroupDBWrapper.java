@@ -36,7 +36,6 @@ import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
-import com.dtstep.lighthouse.core.dao.DaoHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -78,19 +77,13 @@ public final class GroupDBWrapper {
         return optional.orElse(null);
     }
 
-    static {
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(1,
-                new BasicThreadFactory.Builder().namingPattern("group-cache-refresh-schedule-pool-%d").daemon(true).build());
-        service.scheduleWithFixedDelay(new RefreshThread(),0,20, TimeUnit.SECONDS);
-    }
-
     public static Optional<GroupExtEntity> actualQueryGroupByToken(String token){
         if(BuiltinLoader.isBuiltinGroup(token)){
             return Optional.ofNullable(BuiltinLoader.getBuiltinGroup(token));
         }
         GroupExtEntity groupExtEntity = null;
         try{
-            Group groupEntity = DaoHelper.sql.getItem(Group.class, "select * from ldp_groups where token = ?", token);
+            Group groupEntity = queryGroupByTokenFromDB(token);
             if(groupEntity != null){
                 groupExtEntity = combineExtInfo(groupEntity);
             }
@@ -103,11 +96,11 @@ public final class GroupDBWrapper {
 
     public static Optional<GroupExtEntity> actualQueryGroupById(int groupId){
         if(BuiltinLoader.isBuiltinGroup(groupId)){
-            return Optional.of(BuiltinLoader.getBuiltinGroup(groupId));
+            return Optional.ofNullable(BuiltinLoader.getBuiltinGroup(groupId));
         }
         GroupExtEntity groupExtEntity = null;
         try{
-            Group groupEntity = DaoHelper.sql.getItem(Group.class, "select * from ldp_groups where id = ?", groupId);
+            Group groupEntity = queryGroupByIdFromDB(groupId);
             if(groupEntity != null){
                 groupExtEntity = combineExtInfo(groupEntity);
             }
@@ -117,6 +110,7 @@ public final class GroupDBWrapper {
             return Optional.empty();
         }
     }
+
 
     private static class GroupResultSetHandler implements ResultSetHandler<Group> {
         @Override
@@ -296,28 +290,5 @@ public final class GroupDBWrapper {
         groupCache.invalidate(groupId);
         groupCache.invalidate(groupExtEntity.getToken());
     }
-
-    static class RefreshThread implements Runnable {
-
-        @Override
-        public void run() {
-            long time = DateUtil.getSecondBefore(System.currentTimeMillis(),20);
-            try{
-                List<Integer> ids = DaoHelper.sql.getList(Integer.class,"select id from ldp_groups where create_time != refresh_time and refresh_time > ?",new Date(time));
-                if(CollectionUtils.isNotEmpty(ids)){
-                    for(int groupId:ids){
-                        GroupExtEntity groupEntity = GroupDBWrapper.queryById(groupId);
-                        if(groupEntity != null){
-                            clearLocalCache(groupId);
-                            logger.info("refresh group cache success,groupId:{}",groupId);
-                        }
-                    }
-                }
-            }catch (Exception ex){
-                logger.error("statistic group cache refresh error!",ex);
-            }
-        }
-    }
-
 }
 
