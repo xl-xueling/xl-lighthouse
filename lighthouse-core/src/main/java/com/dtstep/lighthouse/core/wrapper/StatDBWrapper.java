@@ -9,9 +9,13 @@ import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.exception.TemplateParseException;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Stat;
+import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
+import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
+import com.dtstep.lighthouse.core.dao.ConnectionManager;
+import com.dtstep.lighthouse.core.dao.DBConnection;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.dtstep.lighthouse.core.template.TemplateContext;
@@ -19,10 +23,16 @@ import com.dtstep.lighthouse.core.template.TemplateParser;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -37,6 +47,81 @@ public class StatDBWrapper {
             .softValues()
             .build(StatDBWrapper::actualQueryListByGroupId);
 
+    private static final LoadingCache<Integer, Optional<StatExtEntity>> statCache = Caffeine.newBuilder()
+            .expireAfterWrite(3, TimeUnit.MINUTES)
+            .softValues()
+            .maximumSize(100000)
+            .build(StatDBWrapper::actualQueryById);
+
+    public static StatExtEntity queryById(int statId) {
+        return Objects.requireNonNull(statCache.get(statId)).orElse(null);
+    }
+
+    public static Optional<StatExtEntity> actualQueryById(int statId) {
+        if(BuiltinLoader.isBuiltinStat(statId)){
+            return Optional.ofNullable(BuiltinLoader.getBuiltinStat(statId));
+        }
+        StatExtEntity statExtEntity = null;
+        try{
+            Stat statEntity = queryStatByIdFromDB(statId);
+            if(statEntity != null){
+                statExtEntity = combineExtInfo(statEntity,false);
+            }
+            return Optional.ofNullable(statExtEntity);
+        }catch (Exception ex){
+            logger.error("query stat info error,id:{}",statId,ex);
+            return Optional.empty();
+        }
+    }
+
+    private static Stat queryStatByIdFromDB(int statId) throws Exception {
+        DBConnection dbConnection = ConnectionManager.getConnection();
+        Connection conn = dbConnection.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+        ResultSetHandler<Stat> handler = new BeanHandler<Stat>(Stat.class);
+        Stat stat = null;
+        try{
+            stat = queryRunner.query(conn, String.format("select * from ldp_stats where id = '%s'",statId), new ResultSetHandler<Stat>() {
+                @Override
+                public Stat handle(ResultSet rs) throws SQLException {
+                    Stat stat = null;
+                    if(rs.next()){
+                        stat = new Stat();
+                        Integer id = rs.getInt("id");
+                        String title = rs.getString("title");
+                        Integer groupId = rs.getInt("group_id");
+                        Integer projectId = rs.getInt("project_id");
+                        String template = rs.getString("template");
+                        String timeparam = rs.getString("timeparam");
+                        Long expired = rs.getLong("expired");
+                        Integer state = rs.getInt("state");
+                        String renderConfig = rs.getString("render_config");
+                        Integer metaId = rs.getInt("meta_id");
+                        Long createTime = rs.getTimestamp("create_time").getTime();
+                        Long updateTime = rs.getTimestamp("update_time").getTime();
+                        String randomId = rs.getString("random_id");
+                        stat.setId(id);
+                        stat.setTitle(title);
+                        stat.setGroupId(groupId);
+                        stat.setProjectId(projectId);
+                        stat.setTemplate(template);
+                        stat.setTimeparam(timeparam);
+                        stat.setExpired(expired);
+                        StatStateEnum statStateEnum = StatStateEnum.getByState(state);
+                        stat.setState(statStateEnum);
+                        stat.setMetaId(metaId);
+                        stat.setCreateTime(DateUtil.timestampToLocalDateTime(createTime));
+                        stat.setUpdateTime(DateUtil.timestampToLocalDateTime(updateTime));
+                        stat.setRandomId(randomId);
+                    }
+                    return stat;
+                }
+            });
+        }finally {
+            ConnectionManager.close(dbConnection);
+        }
+        return stat;
+    }
 
     public static Optional<List<StatExtEntity>> actualQueryListByGroupId(int groupId) throws Exception {
         List<Stat> entityList = queryStatByGroupIDFromDB(groupId);
@@ -129,10 +214,6 @@ public class StatDBWrapper {
         }
         statExtEntity.setRelatedColumnSet(relatedColumns.stream().map(Column::getName).collect(Collectors.toSet()));
         return statExtEntity;
-    }
-
-    public static StatExtEntity queryById(int statId) {
-        return null;
     }
 
     public static int changeState(StatExtEntity statExtEntity, StatStateEnum stateEnum) throws Exception{

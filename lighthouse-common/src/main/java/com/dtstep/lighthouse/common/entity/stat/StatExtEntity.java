@@ -17,7 +17,6 @@ package com.dtstep.lighthouse.common.entity.stat;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
-import com.dtstep.lighthouse.common.enums.stat.StatTypeEnum;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.common.constant.StatConst;
@@ -40,8 +39,6 @@ public class StatExtEntity extends Stat {
 
     private TemplateEntity templateEntity;
 
-    private StatTypeEnum statTypeEnum;
-
     private Set<String> relatedColumnSet;
 
     private boolean isBuiltIn = false;
@@ -51,14 +48,6 @@ public class StatExtEntity extends Stat {
     public StatExtEntity(Stat stat){
         assert stat != null;
         BeanCopyUtil.copy(stat,this);
-    }
-
-    public StatTypeEnum getStatTypeEnum() {
-        return statTypeEnum;
-    }
-
-    public void setStatTypeEnum(StatTypeEnum statTypeEnum) {
-        this.statTypeEnum = statTypeEnum;
     }
 
     public TemplateEntity getTemplateEntity() {
