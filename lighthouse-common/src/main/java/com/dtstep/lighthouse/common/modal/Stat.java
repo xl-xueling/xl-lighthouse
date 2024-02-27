@@ -1,21 +1,29 @@
 package com.dtstep.lighthouse.common.modal;
 
+import com.dtstep.lighthouse.common.entity.annotation.DBColumnAnnotation;
+import com.dtstep.lighthouse.common.entity.annotation.DBNameAnnotation;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
-import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
+import com.dtstep.lighthouse.common.enums.StatStateEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@DBNameAnnotation(name="ldp_stats")
 public class Stat implements Serializable {
 
+    @DBColumnAnnotation(basic="id")
     private Integer id;
 
+    @DBColumnAnnotation(basic="title")
     private String title;
 
+    @DBColumnAnnotation(basic="template")
     private String template;
 
+    @DBColumnAnnotation(basic="timeparam")
     private String timeparam;
 
+    @DBColumnAnnotation(basic="expired")
     private Long expired;
 
     private StatStateEnum state;

@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.test.dao;
 
-import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
+import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;

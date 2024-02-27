@@ -1,9 +1,7 @@
 package com.dtstep.lighthouse.common.modal;
 
-import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
+import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;

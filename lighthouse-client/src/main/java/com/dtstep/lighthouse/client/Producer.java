@@ -22,7 +22,7 @@ import com.dtstep.lighthouse.common.entity.event.SimpleSlotEvent;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
-import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
+import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.hash.HashUtil;
 import com.dtstep.lighthouse.common.ice.AuxInterfacePrx;
 import com.dtstep.lighthouse.common.ice.AuxInterfacePrxHelper;

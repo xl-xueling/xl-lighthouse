@@ -17,14 +17,12 @@ package com.dtstep.lighthouse.core.wrapper;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
-import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
+import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.util.*;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.redis.RedisHandler;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -33,7 +31,7 @@ import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
-import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
+import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;

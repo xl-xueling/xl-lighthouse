@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.dto;
 
-import com.dtstep.lighthouse.common.enums.stat.StatStateEnum;
+import com.dtstep.lighthouse.common.enums.StatStateEnum;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;

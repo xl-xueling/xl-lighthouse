@@ -21,7 +21,7 @@ import com.dtstep.lighthouse.common.entity.stat.StatVariableEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.enums.function.FunctionEnum;
-import com.dtstep.lighthouse.common.enums.stat.LimitTypeEnum;
+import com.dtstep.lighthouse.common.enums.LimitTypeEnum;
 import com.dtstep.lighthouse.common.exception.TemplateParseException;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.util.StringUtil;

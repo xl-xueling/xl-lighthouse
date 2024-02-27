@@ -17,13 +17,10 @@ package com.dtstep.lighthouse.common.entity.group;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
-import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum;
+import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
-import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.common.util.StringUtil;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 

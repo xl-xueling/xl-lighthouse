@@ -25,7 +25,6 @@ import com.dtstep.lighthouse.common.entity.stat.StatExtEntity
 import com.dtstep.lighthouse.common.entity.state.StatState
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum
 import com.dtstep.lighthouse.common.enums.result.MessageCaptchaEnum
-import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum
 import com.dtstep.lighthouse.common.exception.LimitingException
 import com.dtstep.lighthouse.common.hash.HashUtil
 import com.dtstep.lighthouse.common.sbr.StringBuilderHolder
@@ -42,6 +41,7 @@ import com.google.common.collect.ImmutableMap
 import java.util
 import com.google.common.hash_snp.Hashing
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity
+import com.dtstep.lighthouse.common.enums.GroupStateEnum
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper
 import org.apache.spark.sql.{Dataset, Encoder, Encoders, SparkSession}
 import org.slf4j.LoggerFactory

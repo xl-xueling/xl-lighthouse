@@ -20,9 +20,9 @@ package com.dtstep.lighthouse.tasks.valid
 
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity
 import com.dtstep.lighthouse.common.entity.message.LightMessage
+import com.dtstep.lighthouse.common.enums.GroupStateEnum
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum
 import com.dtstep.lighthouse.common.enums.result.MessageCaptchaEnum
-import com.dtstep.lighthouse.common.enums.stat.GroupStateEnum
 import com.dtstep.lighthouse.core.limited.LimitedContext
 import com.dtstep.lighthouse.core.message.MessageTrack
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper
