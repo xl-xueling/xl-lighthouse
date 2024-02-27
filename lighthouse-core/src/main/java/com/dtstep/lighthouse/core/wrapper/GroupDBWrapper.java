@@ -26,6 +26,7 @@ import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
+import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -178,46 +179,65 @@ public final class GroupDBWrapper {
         return group;
     }
 
+    public static int changeState(int groupId,GroupStateEnum groupStateEnum) throws Exception {
+        DBConnection dbConnection = ConnectionManager.getConnection();
+        Connection conn = dbConnection.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+        int result;
+        try{
+            if(groupStateEnum == GroupStateEnum.LIMITING){
+                result = queryRunner.update(conn, "update ldp_groups set state = ?,update_time = ? where id = ? adn state = ?", GroupStateEnum.RUNNING.getState(),new Date(), groupId,GroupStateEnum.RUNNING.getState());
+            }else{
+                result = queryRunner.update(conn, "update ldp_groups set state = ?,update_time = ? where id = ?", GroupStateEnum.RUNNING.getState(),new Date(), groupId);
+            }
+        }finally {
+            ConnectionManager.close(dbConnection);
+        }
+        return result;
+    }
+
     private static GroupExtEntity combineExtInfo(Group groupEntity) throws Exception{
         GroupExtEntity groupExtEntity = new GroupExtEntity(groupEntity);
         if(GroupExtEntity.isLimitedExpired(groupExtEntity)){
-            DaoHelper.sql.execute("update ldp_groups set state = ?,update_time = ? where id = ?", GroupStateEnum.RUNNING.getState(),new Date(), groupExtEntity.getId());
+            changeState(groupEntity.getId(),GroupStateEnum.RUNNING);
             groupExtEntity.setState(GroupStateEnum.RUNNING);
         }
         List<Column> columnList = groupEntity.getColumns();
         int groupId = groupExtEntity.getId();
-        List<StatExtEntity> statExtEntityList = StatDBWrapper.actualQueryListByGroupId(groupId).orElse(null);
-        if(CollectionUtils.isNotEmpty(statExtEntityList)){
+        List<Stat> statList = StatDBWrapper.queryStatByGroupIDFromDB(groupId);
+        if(CollectionUtils.isNotEmpty(statList)){
             HashMap<String, ColumnTypeEnum> groupRunningRelatedColumns = new HashMap<>();
             HashMap<String, ColumnTypeEnum> groupAllRelatedColumns = new HashMap<>();
             Map<String,ColumnTypeEnum> groupColumnsMap = columnList.stream().collect(Collectors.toMap(Column::getName, Column::getType));
             long minDuration = 0L;
             long maxDataExpire = 0L;
-            for (StatExtEntity statExtEntity : statExtEntityList) {
-                if(statExtEntity.getStatStateEnum() == StatStateEnum.RUNNING){
-                    long currentDuration = TimeParam.calculateDuration(statExtEntity.getTimeParamInterval(), statExtEntity.getTimeUnit());
+            for (Stat stat : statList) {
+//                String template =
+//                List<Column> statRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,stat);
+                if(stat.getState() == StatStateEnum.RUNNING){
+                    long currentDuration = TimeParam.calculateDuration(stat.getTimeparam());
                     if(minDuration == 0L){
                         minDuration = currentDuration;
                     }else{
                         minDuration = CalculateUtil.getMaxDivisor(minDuration,currentDuration);
                     }
-                    if(maxDataExpire < statExtEntity.getExpired()){
-                        maxDataExpire = statExtEntity.getExpired();
+                    if(maxDataExpire < stat.getExpired()){
+                        maxDataExpire = stat.getExpired();
                     }
-                    Set<String> statRelatedColumnSet = statExtEntity.getRelatedColumnSet();
-                    if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
-                        for(String columnName : statRelatedColumnSet){
-                            groupRunningRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
-                            groupAllRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
-                        }
-                    }
+//                    Set<String> statRelatedColumnSet = stat.getRelatedColumnSet();
+//                    if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
+//                        for(String columnName : statRelatedColumnSet){
+//                            groupRunningRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
+//                            groupAllRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
+//                        }
+//                    }
                 }else{
-                    Set<String> statRelatedColumnSet = statExtEntity.getRelatedColumnSet();
-                    if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
-                        for(String columnName : statRelatedColumnSet){
-                            groupAllRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
-                        }
-                    }
+//                    Set<String> statRelatedColumnSet = stat.getRelatedColumnSet();
+//                    if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
+//                        for(String columnName : statRelatedColumnSet){
+//                            groupAllRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
+//                        }
+//                    }
                 }
             }
             groupExtEntity.setAllRelatedColumns(groupAllRelatedColumns);
@@ -254,18 +274,6 @@ public final class GroupDBWrapper {
             throw new Exception();
         }
         return timeParam;
-    }
-
-    public static int changeState(GroupExtEntity groupExtEntity, int state) throws Exception {
-         GroupStateEnum groupStateEnum = GroupStateEnum.forValue(state);
-         groupExtEntity.setGroupStateEnum(groupStateEnum);
-         int result;
-         if(groupStateEnum == GroupStateEnum.LIMITING){
-             result = DaoHelper.sql.execute("update ldp_groups set state = ?,update_time = ? where id = ? and state = ?",state,new Date(), groupExtEntity.getId(),GroupStateEnum.RUNNING.getState());
-         }else{
-             result = DaoHelper.sql.execute("update ldp_groups set state = ?,update_time = ? where id = ?",state,new Date(), groupExtEntity.getId());
-         }
-         return result;
     }
 
     public static GroupStateEnum getState(int groupId) throws Exception {

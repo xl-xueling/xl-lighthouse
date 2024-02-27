@@ -32,6 +32,8 @@ public class Stat implements Serializable {
 
     private Integer departmentId;
 
+    private String groupColumns;
+
     private RenderConfig renderConfig = new RenderConfig();
 
     private LocalDateTime createTime;
@@ -39,8 +41,6 @@ public class Stat implements Serializable {
     private Integer metaId;
 
     private LocalDateTime updateTime;
-
-    private TemplateEntity templateEntity;
 
     private String desc;
 
@@ -152,14 +152,6 @@ public class Stat implements Serializable {
         this.renderConfig = renderConfig;
     }
 
-    public TemplateEntity getTemplateEntity() {
-        return templateEntity;
-    }
-
-    public void setTemplateEntity(TemplateEntity templateEntity) {
-        this.templateEntity = templateEntity;
-    }
-
     public String getProjectTitle() {
         return projectTitle;
     }
@@ -198,5 +190,13 @@ public class Stat implements Serializable {
 
     public void setDataVersion(Integer dataVersion) {
         this.dataVersion = dataVersion;
+    }
+
+    public String getGroupColumns() {
+        return groupColumns;
+    }
+
+    public void setGroupColumns(String groupColumns) {
+        this.groupColumns = groupColumns;
     }
 }

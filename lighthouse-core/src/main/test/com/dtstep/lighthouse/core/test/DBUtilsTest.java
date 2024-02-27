@@ -11,6 +11,7 @@ import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -72,6 +73,13 @@ public class DBUtilsTest {
         }finally {
             ConnectionManager.close(dbConnection);
         }
+    }
+
+    @Test
+    public void testQueryStatByGroupId() throws Exception {
+        LDPConfig.initWithHomePath("/Users/xueling/lighthouse");
+        List<Stat> statList = StatDBWrapper.queryStatByGroupIDFromDB(100264);
+        System.out.println("statList is:" + JsonUtil.toJSONString(statList));
     }
 
     @Test
