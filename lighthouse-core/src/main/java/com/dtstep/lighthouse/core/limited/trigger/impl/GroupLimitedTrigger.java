@@ -42,12 +42,12 @@ public class GroupLimitedTrigger implements Trigger<GroupExtEntity> {
         boolean isLock = RedLock.tryLock(lockKey,30,120, TimeUnit.SECONDS);
         if(isLock){
             try{
-                int result = GroupDBWrapper.changeState(groupExtEntity,GroupStateEnum.LIMITING.getState());
+                int result = GroupDBWrapper.changeState(groupExtEntity.getId(),GroupStateEnum.LIMITING);
                 if(result == 1){
                     logger.info("lighthouse limited,the statistics group was changed to the current limiting state,groupId:{}", groupExtEntity.getId());
                     new DelaySchedule().delaySchedule(() -> {
                         try{
-                            GroupDBWrapper.changeState(groupExtEntity,GroupStateEnum.RUNNING.getState());
+                            GroupDBWrapper.changeState(groupExtEntity.getId(),GroupStateEnum.RUNNING);
                         }catch (Exception ex){
                             logger.error("change statistics group state error!",ex);
                         }},StatConst.LIMITED_EXPIRE_MINUTES,TimeUnit.MINUTES);

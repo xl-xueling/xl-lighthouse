@@ -73,4 +73,19 @@ public final class TimeParam implements Serializable {
     public static long calculateDuration(int interval, TimeUnit timeUnit){
         return timeUnit.toMillis(interval);
     }
+
+    public static long calculateDuration(String timeparam){
+        String[] arr = timeparam.split("-");
+        int interval = Integer.parseInt(arr[0]);
+        String timeunit = arr[1];
+        if(timeunit.equals("second")){
+            return TimeUnit.SECONDS.toMillis(interval);
+        }else if(timeunit.equals("minute")){
+            return TimeUnit.MINUTES.toMillis(interval);
+        }else if(timeunit.equals("hour")){
+            return TimeUnit.HOURS.toMillis(interval);
+        }else {
+            return TimeUnit.DAYS.toMillis(interval);
+        }
+    }
 }

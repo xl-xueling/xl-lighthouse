@@ -27,6 +27,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,6 +76,47 @@ public class StatDBWrapper {
         }
     }
 
+    private static class StatResultListHandler implements ResultSetHandler<List<Stat>> {
+
+        @Override
+        public List<Stat> handle(ResultSet rs) throws SQLException {
+            List<Stat> statList = new ArrayList<>();
+            while (rs.next()){
+                Stat stat = new Stat();
+                Integer id = rs.getInt("id");
+                String title = rs.getString("title");
+                Integer groupId = rs.getInt("group_id");
+                Integer projectId = rs.getInt("project_id");
+                String template = rs.getString("template");
+                String timeparam = rs.getString("timeparam");
+                Long expired = rs.getLong("expired");
+                Integer state = rs.getInt("state");
+                String renderConfig = rs.getString("render_config");
+                Integer metaId = rs.getInt("meta_id");
+                Long createTime = rs.getTimestamp("create_time").getTime();
+                Long updateTime = rs.getTimestamp("update_time").getTime();
+                String randomId = rs.getString("random_id");
+                String columns = rs.getString("columns");
+                stat.setId(id);
+                stat.setTitle(title);
+                stat.setGroupId(groupId);
+                stat.setProjectId(projectId);
+                stat.setTemplate(template);
+                stat.setTimeparam(timeparam);
+                stat.setExpired(expired);
+                StatStateEnum statStateEnum = StatStateEnum.getByState(state);
+                stat.setState(statStateEnum);
+                stat.setMetaId(metaId);
+                stat.setCreateTime(DateUtil.timestampToLocalDateTime(createTime));
+                stat.setUpdateTime(DateUtil.timestampToLocalDateTime(updateTime));
+                stat.setRandomId(randomId);
+                stat.setGroupColumns(columns);
+                statList.add(stat);
+            }
+            return statList;
+        }
+    }
+
     private static class StatResultSetHandler implements ResultSetHandler<Stat> {
 
         @Override
@@ -95,6 +137,7 @@ public class StatDBWrapper {
                 Long createTime = rs.getTimestamp("create_time").getTime();
                 Long updateTime = rs.getTimestamp("update_time").getTime();
                 String randomId = rs.getString("random_id");
+                String columns = rs.getString("columns");
                 stat.setId(id);
                 stat.setTitle(title);
                 stat.setGroupId(groupId);
@@ -108,6 +151,7 @@ public class StatDBWrapper {
                 stat.setCreateTime(DateUtil.timestampToLocalDateTime(createTime));
                 stat.setUpdateTime(DateUtil.timestampToLocalDateTime(updateTime));
                 stat.setRandomId(randomId);
+                stat.setGroupColumns(columns);
             }
             return stat;
         }
@@ -120,11 +164,25 @@ public class StatDBWrapper {
         ResultSetHandler<Stat> handler = new BeanHandler<Stat>(Stat.class);
         Stat stat = null;
         try{
-            stat = queryRunner.query(conn, String.format("select * from ldp_stats where id = '%s'",statId), new StatResultSetHandler());
+            stat = queryRunner.query(conn, String.format("select a.*,b.columns from ldp_stats a left join ldp_groups b on a.group_id = b.id where a.id = '%s'",statId), new StatResultSetHandler());
         }finally {
             ConnectionManager.close(dbConnection);
         }
         return stat;
+    }
+
+    public static List<Stat> queryStatByGroupIDFromDB(int groupId) throws Exception {
+        DBConnection dbConnection = ConnectionManager.getConnection();
+        Connection conn = dbConnection.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+        ResultSetHandler<Stat> handler = new BeanHandler<Stat>(Stat.class);
+        List<Stat> statList = null;
+        try{
+            statList = queryRunner.query(conn, String.format("select a.*,b.columns from ldp_stats a left join ldp_groups b on a.group_id = b.id where a.group_id = '%s'",groupId), new StatResultListHandler());
+        }finally {
+            ConnectionManager.close(dbConnection);
+        }
+        return statList;
     }
 
     public static Optional<List<StatExtEntity>> actualQueryListByGroupId(int groupId) throws Exception {
@@ -144,14 +202,9 @@ public class StatDBWrapper {
         return Optional.of(extEntityList);
     }
 
-    public static List<Stat> queryStatByGroupIDFromDB(int groupId) throws Exception {
-        return DaoHelper.sql.getList(Stat.class, "SELECT * FROM ldp_stats where group_id = ?", groupId);
-    }
-
     public static StatExtEntity combineExtInfo(Stat statEntity,boolean isBuiltIn) throws Exception {
-//        String groupColumns = statEntity.getGroupColumns();
-        String groupColumns = null;
-//        assert StringUtil.isNotEmpty(groupColumns);
+        String groupColumns = statEntity.getGroupColumns();
+        assert StringUtil.isNotEmpty(groupColumns);
         List<Column> groupColumnList = JsonUtil.toJavaObjectList(groupColumns,Column.class);
         StatExtEntity statExtEntity = new StatExtEntity(statEntity);
         String timeParam = statExtEntity.getTimeparam();
