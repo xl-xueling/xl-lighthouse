@@ -105,7 +105,6 @@ public final class MetaTableWrapper {
         return Optional.ofNullable(metaTable);
     }
 
-
     private static MetaTable queryMetaByIdFromDB(int metaId) throws Exception {
         DBConnection dbConnection = ConnectionManager.getConnection();
         Connection conn = dbConnection.getConnection();
