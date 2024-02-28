@@ -176,6 +176,17 @@
         </dependency>
         <dependency>
             <groupId>com.dtstep.lighthouse</groupId>
+            <artifactId>lighthouse-insights</artifactId>
+            <version>${revision}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.dtstep.lighthouse</groupId>
             <artifactId>lighthouse-ice</artifactId>
             <version>${revision}</version>
             <exclusions>
