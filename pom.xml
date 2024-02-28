@@ -16,8 +16,8 @@
     <module>lighthouse-ice</module>
     <module>lighthouse-tasks</module>
     <module>lighthouse-test</module>
-    <module>lighthouse-assembly</module>
     <module>lighthouse-insights</module>
+    <module>lighthouse-assembly</module>
   </modules>
   <packaging>pom</packaging>
   <name>lighthouse-base</name>
