@@ -2,7 +2,6 @@ import React, {useRef, useState} from 'react';
 import {Form, Grid, Input, Message, Modal, Notification, Radio, Tabs, Typography} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import {Col} from "antd";
 import UsersTransfer from "@/pages/components/transfer/user_transfer";
 import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
 import {IconCaretDown, IconCaretRight} from "@arco-design/web-react/icon";
