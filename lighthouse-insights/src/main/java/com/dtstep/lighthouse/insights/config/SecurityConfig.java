@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -38,6 +39,9 @@ public class SecurityConfig {
     @Autowired
     private DefaultAccessDeniedHandler defaultAccessDeniedHandler;
 
+    @Autowired
+    private AuthenticationTokenFilter authenticationTokenFilter;
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
@@ -48,10 +52,10 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationTokenFilter authenticationTokenFilter() {
-        return new AuthenticationTokenFilter();
-    }
+//    @Bean
+//    public AuthenticationTokenFilter authenticationTokenFilter() {
+//        return new AuthenticationTokenFilter();
+//    }
 
     @Bean
     public DefaultAuthenticationProvider authenticationProvider(){
@@ -73,7 +77,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated();
         httpSecurity.headers().cacheControl();
         httpSecurity.authenticationProvider(authenticationProvider());
-        httpSecurity.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.exceptionHandling()
                 .accessDeniedHandler(defaultAccessDeniedHandler)
                 .authenticationEntryPoint(defaultUnauthorizedHandler);
