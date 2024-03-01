@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.storage.engine;
+package com.dtstep.lighthouse.core.storage.engine_bak;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,14 +16,6 @@ package com.dtstep.lighthouse.core.storage.engine;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
-
-import java.util.List;
-
-public abstract class LimitStorageEngine <W,R> implements StorageEngine<W,R>{
-
-    public abstract void limit(List<W> list) throws Exception;
-
-    public abstract List<R> queryLimitDimens(StatExtEntity statExtEntity,long batchTime) throws Exception;
+public interface StorageEngine<W,R> {
 
 }

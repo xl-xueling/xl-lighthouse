@@ -24,7 +24,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import java.util.HashMap;
 import java.util.Map;
 
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@SpringBootApplication(scanBasePackages = {"com.dtstep.lighthouse.insights"})
 public class LightHouseInsightsApplication {
 
     public static void main(String[] args) throws Exception {
