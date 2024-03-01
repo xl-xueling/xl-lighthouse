@@ -1,8 +1,8 @@
 package com.dtstep.lighthouse.core.rowkey.impl;
 
 import com.dtstep.lighthouse.common.constant.SysConst;
-import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.hash.HashUtil;
+import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.sbr.StringBuilderHolder;
 import com.dtstep.lighthouse.common.util.DateUtil;
@@ -34,7 +34,7 @@ public class DefaultKeyGenerator implements KeyGenerator {
         return Objects.requireNonNull(rowKey);
     }
 
-    public static String generateBatchKey(Stat stat, int functionIndex, String dimens, long batchTime) {
+    public static String generateBatchKey(Stat stat, int functionIndex, String dimensValue, long batchTime) {
         String key = null;
         try{
             long baseTime;
@@ -65,7 +65,7 @@ public class DefaultKeyGenerator implements KeyGenerator {
                     throw new Exception();
             }
             long duration = timeUnit.toMillis(interval);
-            String baseKey = generateBatchBaseKey(stat.getRandomId(), stat.getDataVersion(), dimens, baseTime,functionIndex);
+            String baseKey = generateBatchBaseKey(stat.getRandomId(), stat.getDataVersion(), baseTime,dimensValue,functionIndex);
             delta = Long.toHexString((batchTime - baseTime) / duration);
             key = StringBuilderHolder.Smaller.getStringBuilder().append(baseKey).append(";").append(delta).toString();
         }catch (Exception ex){
@@ -74,25 +74,23 @@ public class DefaultKeyGenerator implements KeyGenerator {
         return key;
     }
 
-    public static String generateBatchBaseKey(String randomId,int dataVersion,String dimens,long baseTime,int functionIndex) {
-        String time = DateUtil.formatTimeStamp(baseTime, "yyyyMMddHHmmss");
-        String origin = Md5Util.getMD5(randomId + "_" + dataVersion + "_" + time + "_" + dimens + "_" + functionIndex);
-        String prefix = getPrePartitionPrefix(origin,dimens);
+    public static String generateBatchBaseKey(String randomId,int dataVersion,long baseTime,String dimensValue,int functionIndex) {
+        String origin = Md5Util.getMD5(randomId + "_" + dataVersion + "_" + baseTime + "_" + dimensValue + "_" + functionIndex);
+        int index = Math.abs((int) (HashUtil.BKDRHash(origin) % SysConst._DBKeyPrefixArray.length));
+        String prefix = SysConst._DBKeyPrefixArray[index];
         return prefix + origin;
     }
 
-    private static String getPrePartitionPrefix(String origin, String dimens){
-        int index;
-        if(StringUtil.isEmpty(dimens)){
-            index = Math.abs((int) (HashUtil.BKDRHash(origin) % SysConst._DATA_STORAGE_PRE_PARTITIONS_SIZE));
-        }else{
-            index = Math.abs((int) (HashUtil.BKDRHash(origin + "_" + dimens) % SysConst._DATA_STORAGE_PRE_PARTITIONS_SIZE));
-        }
-        return SysConst._DBKeyPrefixArray[index];
-    }
-
     @Override
-    public String dimensKey(GroupExtEntity groupExtEntity, String dimens, String dimensValue) {
-        return null;
+    public String dimensKey(Group group, String dimens, String dimensValue) {
+        int startIndex = Math.abs((int) (HashUtil.BKDRHash(group.getRandomId() + "_" + dimens) % SysConst._DBKeyPrefixArray.length));
+        int position = Math.abs((int) (HashUtil.BKDRHash(group.getRandomId() + "_" + dimens + "_" + dimensValue) % SysConst._DIMENS_STORAGE_PRE_PARTITIONS_SIZE));
+        int index = startIndex + position;
+        while (index > SysConst._DBKeyPrefixArray.length){
+            index = index - SysConst._DBKeyPrefixArray.length;
+        }
+        String prefix = SysConst._DBKeyPrefixArray[index];
+        String origin = Md5Util.getMD5(group.getRandomId() + "_" + dimens);
+        return prefix + origin + "_" + Md5Util.getMD5(dimensValue);
     }
 }

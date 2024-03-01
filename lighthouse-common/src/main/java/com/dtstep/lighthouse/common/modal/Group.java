@@ -32,6 +32,8 @@ public class Group implements Serializable {
 
     private Integer debugMode;
 
+    private String randomId;
+
     public Integer getId() {
         return id;
     }
@@ -126,5 +128,13 @@ public class Group implements Serializable {
 
     public void setRefreshTime(LocalDateTime refreshTime) {
         this.refreshTime = refreshTime;
+    }
+
+    public String getRandomId() {
+        return randomId;
+    }
+
+    public void setRandomId(String randomId) {
+        this.randomId = randomId;
     }
 }

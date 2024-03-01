@@ -32,7 +32,8 @@ public final class SysConst {
 
     public static final int _LIST_PAGE_SIZE = 25;
 
-    public static final int _DATA_STORAGE_PRE_PARTITIONS_SIZE = 8;
+    @Deprecated
+    public static final int _RESULT_STORAGE_PRE_PARTITIONS_SIZE = 8;
 
     public static final int _DIMENS_STORAGE_PRE_PARTITIONS_SIZE = 4;
 

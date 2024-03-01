@@ -16,7 +16,6 @@ package com.dtstep.lighthouse.core.wrapper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
@@ -29,7 +28,6 @@ import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
-import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +35,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -96,7 +93,7 @@ public final class MetaTableWrapper {
             if(metaTable != null){
                 String metaName = metaTable.getMetaName();
                 if(!HBaseTableOperator.isTableExist(metaName)){
-                    HBaseTableOperator.createTableIfNotExist(metaName,SysConst._DATA_STORAGE_PRE_PARTITIONS_SIZE);
+                    HBaseTableOperator.createTableIfNotExist(metaName,SysConst._RESULT_STORAGE_PRE_PARTITIONS_SIZE);
                 }
             }
         }catch (Exception ex){
@@ -128,7 +125,7 @@ public final class MetaTableWrapper {
         metaTable.setUpdateTime(date);
         metaTable.setType(MetaTableTypeEnum.STAT_RESULT_TABLE.getType());
         try{
-            HBaseTableOperator.createTable(metaName, SysConst._DATA_STORAGE_PRE_PARTITIONS_SIZE);
+            HBaseTableOperator.createTable(metaName, SysConst._RESULT_STORAGE_PRE_PARTITIONS_SIZE);
             logger.info("create stat result table,create hbase table success,metaName:{}",metaName);
         }catch (Exception ex){
             logger.error("create stat result table,create hbase table error,metaName:{}",metaName,ex);
@@ -156,7 +153,7 @@ public final class MetaTableWrapper {
         metaTable.setUpdateTime(date);
         metaTable.setType(MetaTableTypeEnum.SEQ_RESULT_TABLE.getType());
         try{
-            HBaseTableOperator.createTable(metaName, SysConst._DATA_STORAGE_PRE_PARTITIONS_SIZE);
+            HBaseTableOperator.createTable(metaName, SysConst._RESULT_STORAGE_PRE_PARTITIONS_SIZE);
             logger.info("create seq result table,create hbase table success,metaName:{}",metaName);
         }catch (Exception ex){
             logger.error("create seq result table,create hbase table error,metaName:{}",metaName,ex);
