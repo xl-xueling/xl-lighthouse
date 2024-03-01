@@ -3,10 +3,8 @@ package com.dtstep.lighthouse.core.storage.engine.hbase;
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.hbase.HBaseClient;
-import com.dtstep.lighthouse.core.hbase.HBaseTableOperator;
-import com.dtstep.lighthouse.core.storage.Get;
-import com.dtstep.lighthouse.core.storage.Put;
+import com.dtstep.lighthouse.core.storage.LdpGet;
+import com.dtstep.lighthouse.core.storage.LdpPut;
 import com.dtstep.lighthouse.core.storage.Result;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngine;
 import org.apache.commons.lang3.time.StopWatch;
@@ -180,7 +178,7 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
-    public void put(String tableName, Put put) throws Exception {
+    public void put(String tableName, LdpPut put) throws Exception {
         Object value = put.getData();
         String rowKey = put.getKey();
         String column = put.getColumn();
@@ -202,17 +200,17 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
-    public void puts(String tableName, List<Put> putList) throws Exception {
+    public void puts(String tableName, List<LdpPut> putList) throws Exception {
 
     }
 
     @Override
-    public Result get(String tableName, Get get) throws Exception {
+    public Result get(String tableName, LdpGet get) throws Exception {
         return null;
     }
 
     @Override
-    public List<Result> gets(String tableName, List<Get> gets) throws Exception {
+    public List<Result> gets(String tableName, List<LdpGet> gets) throws Exception {
         return null;
     }
 
@@ -226,10 +224,10 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
-    public void maxPuts(String tableName, List<Put> putList) throws Exception {
+    public void maxPuts(String tableName, List<LdpPut> putList) throws Exception {
     }
 
     @Override
-    public void minPuts(String tableName, List<Put> putList) throws Exception {
+    public void minPuts(String tableName, List<LdpPut> putList) throws Exception {
     }
 }
