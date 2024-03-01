@@ -1,15 +1,10 @@
 package com.dtstep.lighthouse.core.storage;
 
-
-public class Put {
+public class LdpGet {
 
     private String key;
 
     private String column;
-
-    private Object data;
-
-    private long expire;
 
     public String getKey() {
         return key;
@@ -25,21 +20,5 @@ public class Put {
 
     public void setColumn(String column) {
         this.column = column;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    public long getExpire() {
-        return expire;
-    }
-
-    public void setExpire(long expire) {
-        this.expire = expire;
     }
 }
