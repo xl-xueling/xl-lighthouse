@@ -86,7 +86,7 @@ public class DefaultKeyGenerator implements KeyGenerator {
         int startIndex = Math.abs((int) (HashUtil.BKDRHash(group.getRandomId() + "_" + dimens) % SysConst._DBKeyPrefixArray.length));
         int position = Math.abs((int) (HashUtil.BKDRHash(group.getRandomId() + "_" + dimens + "_" + dimensValue) % SysConst._DIMENS_STORAGE_PRE_PARTITIONS_SIZE));
         int index = startIndex + position;
-        while (index > SysConst._DBKeyPrefixArray.length){
+        while (index >= SysConst._DBKeyPrefixArray.length){
             index = index - SysConst._DBKeyPrefixArray.length;
         }
         String prefix = SysConst._DBKeyPrefixArray[index];
