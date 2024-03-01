@@ -35,7 +35,7 @@ public class KeyGeneratorTest {
         Group group = GroupDBWrapper.queryById(100282);
         DefaultKeyGenerator keyGenerator = new DefaultKeyGenerator();
         for(int i=0;i<100;i++){
-            String key = keyGenerator.dimensKey(group,"province","ss_"+i);
+            String key = keyGenerator.dimensKey(group,"province233","ss_"+i);
             System.out.println("key:" + key);
         }
     }
