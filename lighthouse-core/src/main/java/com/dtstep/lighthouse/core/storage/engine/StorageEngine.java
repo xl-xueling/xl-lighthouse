@@ -1,5 +1,9 @@
 package com.dtstep.lighthouse.core.storage.engine;
 
+import com.dtstep.lighthouse.core.storage.Get;
+import com.dtstep.lighthouse.core.storage.Put;
+import com.dtstep.lighthouse.core.storage.Result;
+
 import java.util.List;
 
 public interface StorageEngine {

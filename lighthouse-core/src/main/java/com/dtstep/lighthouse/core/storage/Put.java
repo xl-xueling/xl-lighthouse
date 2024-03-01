@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.storage.engine;
+package com.dtstep.lighthouse.core.storage;
 
 
 public class Put {
