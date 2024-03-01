@@ -101,9 +101,9 @@ public final class BatchAdapter {
     private static String getPrePartitionPrefix(String origin, String dimens){
         int index;
         if(StringUtil.isEmpty(dimens)){
-            index = Math.abs((int) (HashUtil.BKDRHash(origin) % SysConst._DATA_STORAGE_PRE_PARTITIONS_SIZE));
+            index = Math.abs((int) (HashUtil.BKDRHash(origin) % SysConst._RESULT_STORAGE_PRE_PARTITIONS_SIZE));
         }else{
-            index = Math.abs((int) (HashUtil.BKDRHash(origin + "_" + dimens) % SysConst._DATA_STORAGE_PRE_PARTITIONS_SIZE));
+            index = Math.abs((int) (HashUtil.BKDRHash(origin + "_" + dimens) % SysConst._RESULT_STORAGE_PRE_PARTITIONS_SIZE));
         }
         return SysConst._DBKeyPrefixArray[index];
     }
