@@ -37,7 +37,7 @@ import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-
+@Deprecated
 public class HBaseTableOperator {
 
     private static final Logger logger = LoggerFactory.getLogger(HBaseTableOperator.class);
