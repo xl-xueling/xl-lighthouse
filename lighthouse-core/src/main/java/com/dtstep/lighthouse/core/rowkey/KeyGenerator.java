@@ -1,8 +1,12 @@
 package com.dtstep.lighthouse.core.rowkey;
 
+import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
+import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
+import com.dtstep.lighthouse.common.modal.Stat;
+
 public interface KeyGenerator {
 
-    String resultKey(String statMapperId, int dataVersion, int functionIndex, String dimens, long batchTime);
+    String resultKey(Stat stat, int functionIndex, String dimens, long batchTime);
 
-    String dimensKey(String groupMapperId,String dimens,String dimensValue);
+    String dimensKey(GroupExtEntity groupExtEntity, String dimens, String dimensValue);
 }
