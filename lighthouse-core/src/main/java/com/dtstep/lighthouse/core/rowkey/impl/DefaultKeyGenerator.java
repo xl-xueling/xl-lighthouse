@@ -7,7 +7,6 @@ import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.sbr.StringBuilderHolder;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
-import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
