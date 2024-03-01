@@ -8,15 +8,19 @@ import java.util.List;
 
 public interface StorageEngine {
 
-    int createNamespace(String namespace) throws Exception;
+    void createNamespace(String namespace) throws Exception;
 
-    int createTable(String tableName) throws Exception;
+    void createTable(String tableName) throws Exception;
 
-    int dropTable(String tableName) throws Exception;
+    void dropTable(String tableName) throws Exception;
 
-    int put(String tableName, Put put) throws Exception;
+    void put(String tableName, Put put) throws Exception;
 
-    int puts(String tableName, List<Put> putList) throws Exception;
+    void puts(String tableName, List<Put> putList) throws Exception;
+
+    void maxPuts(String tableName,List<Put> putList) throws Exception;
+
+    void minPuts(String tableName,List<Put> putList) throws Exception;
 
     Result get(String tableName, Get get) throws Exception;
 
@@ -24,6 +28,6 @@ public interface StorageEngine {
 
     List<Result> scan(String tableName,String startRow,String endRow,int limit) throws Exception;
 
-    int delete(String tableName,String key) throws Exception;
+    void delete(String tableName,String key) throws Exception;
 
 }

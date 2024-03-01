@@ -41,6 +41,7 @@ import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 
+@Deprecated
 public final class HBaseClient {
 
     private static final Logger logger = LoggerFactory.getLogger(HBaseClient.class);

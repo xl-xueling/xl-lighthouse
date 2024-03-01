@@ -7,7 +7,7 @@ public class Put {
 
     private String column;
 
-    private byte[] data;
+    private Object data;
 
     private long expire;
 
@@ -27,11 +27,11 @@ public class Put {
         this.column = column;
     }
 
-    public byte[] getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(byte[] data) {
+    public void setData(Object data) {
         this.data = data;
     }
 

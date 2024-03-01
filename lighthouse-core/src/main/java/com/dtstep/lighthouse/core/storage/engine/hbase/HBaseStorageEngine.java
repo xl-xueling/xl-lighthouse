@@ -9,13 +9,13 @@ import com.dtstep.lighthouse.core.storage.Get;
 import com.dtstep.lighthouse.core.storage.Put;
 import com.dtstep.lighthouse.core.storage.Result;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngine;
+import org.apache.commons.lang3.time.StopWatch;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.MemoryCompactionPolicy;
 import org.apache.hadoop.hbase.NamespaceDescriptor;
 import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.Admin;
-import org.apache.hadoop.hbase.client.ColumnFamilyDescriptor;
-import org.apache.hadoop.hbase.client.ColumnFamilyDescriptorBuilder;
-import org.apache.hadoop.hbase.client.TableDescriptorBuilder;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.io.compress.Compression;
 import org.apache.hadoop.hbase.io.encoding.DataBlockEncoding;
 import org.apache.hadoop.hbase.regionserver.BloomType;
@@ -38,7 +38,7 @@ public class HBaseStorageEngine implements StorageEngine {
 
     static {
         try{
-            hBaseAdmin = HBaseClient.getConnection().getAdmin();
+            hBaseAdmin = getConnection().getAdmin();
         }catch (Exception ex){
             logger.error("hbase get admin error!",ex);
         }
@@ -70,6 +70,31 @@ public class HBaseStorageEngine implements StorageEngine {
         }
     }
 
+    private static volatile Connection connection = null;
+
+    public static Connection getConnection() throws Exception{
+        if(connection == null || connection.isClosed()){
+            synchronized (HBaseStorageEngine.class){
+                if(connection == null || connection.isClosed()){
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    String zooQuorum = LDPConfig.getVal(LDPConfig.KEY_ZOOKEEPER_QUORUM);
+                    String port = LDPConfig.getVal(LDPConfig.KEY_ZOOKEEPER_QUORUM_PORT);
+                    Configuration hBaseConfiguration = HBaseConfiguration.create();
+                    hBaseConfiguration.set("hbase.zookeeper.quorum",zooQuorum);
+                    hBaseConfiguration.set("hbase.zookeeper.property.clientPort",port);
+                    hBaseConfiguration.setInt("hbase.client.ipc.pool.size",10);
+                    hBaseConfiguration.setInt("hbase.rpc.timeout",180000);
+                    hBaseConfiguration.setInt("hbase.client.operation.timeout",240000);
+                    hBaseConfiguration.setInt("hbase.client.scanner.timeout.period",180000);
+                    connection = ConnectionFactory.createConnection(hBaseConfiguration);
+                    logger.info("create hbase connection,thread:{},cost:{}",Thread.currentThread().getName(),stopWatch.getTime());
+                }
+            }
+        }
+        return connection;
+    }
+
     public boolean isNameSpaceExist(String namespace) throws Exception {
         String [] namespaceArr = hBaseAdmin.listNamespaces();
         for(String dbNamespace : namespaceArr){
@@ -81,18 +106,17 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
-    public int createNamespace(String namespace) throws Exception {
+    public void createNamespace(String namespace) throws Exception {
         if(isNameSpaceExist(namespace)){
-            return 0;
+            return;
         }
         NamespaceDescriptor namespaceDescriptor = NamespaceDescriptor.create(namespace).build();
         hBaseAdmin.createNamespace(namespaceDescriptor);
         logger.info("create namespace {} success!",namespace);
-        return 1;
     }
 
     @Override
-    public int createTable(String tableName) throws Exception {
+    public void createTable(String tableName) throws Exception {
         int prePartitionsSize = SysConst._DBKeyPrefixArray.length;
         String [] keys = SysConst._DBKeyPrefixArray;
         byte[][] splitKeys = new byte[prePartitionsSize][];
@@ -137,7 +161,6 @@ public class HBaseStorageEngine implements StorageEngine {
             logger.info("create hbase table error,table not created.metaName:{}",tableName);
             throw new Exception("create hbase table error!");
         }
-        return 0;
     }
 
 
@@ -147,24 +170,40 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
-    public int dropTable(String tableName) throws Exception {
+    public void dropTable(String tableName) throws Exception {
         if(!isTableExist(tableName)){
-            return 0;
+            return;
         }
         TableName table = TableName.valueOf(tableName);
         hBaseAdmin.disableTable(table);
         hBaseAdmin.deleteTable(table);
-        return 1;
     }
 
     @Override
-    public int put(String tableName, Put put) throws Exception {
-        return 0;
+    public void put(String tableName, Put put) throws Exception {
+        Object value = put.getData();
+        String rowKey = put.getKey();
+        String column = put.getColumn();
+        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+            org.apache.hadoop.hbase.client.Put dbPut = new org.apache.hadoop.hbase.client.Put(Bytes.toBytes(rowKey));
+            if (value.getClass() == String.class) {
+                dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
+            } else if (value.getClass() == Long.class) {
+                dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((long) value));
+            } else if (value.getClass() == Integer.class) {
+                dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(Long.parseLong(value.toString())));
+            }
+            dbPut.setDurability(Durability.SYNC_WAL);
+            table.put(dbPut);
+        }catch (Exception ex){
+            logger.error("hbase put error,metaName:{}!",tableName,ex);
+            throw ex;
+        }
     }
 
     @Override
-    public int puts(String tableName, List<Put> putList) throws Exception {
-        return 0;
+    public void puts(String tableName, List<Put> putList) throws Exception {
+
     }
 
     @Override
@@ -183,7 +222,14 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
-    public int delete(String tableName, String key) throws Exception {
-        return 0;
+    public void delete(String tableName, String key) throws Exception {
+    }
+
+    @Override
+    public void maxPuts(String tableName, List<Put> putList) throws Exception {
+    }
+
+    @Override
+    public void minPuts(String tableName, List<Put> putList) throws Exception {
     }
 }
