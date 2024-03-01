@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.storage.proxy;
+package com.dtstep.lighthouse.core.storage.engine_bak;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,22 +16,14 @@ package com.dtstep.lighthouse.core.storage.proxy;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.core.storage.engine_bak.impl.HBaseDimensStorageEngine;
-import com.dtstep.lighthouse.common.entity.event.DimensBucket;
-import com.dtstep.lighthouse.core.storage.engine_bak.DimensStorageEngine;
+import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 
 import java.util.List;
 
-public class DimensStorageProxy {
+public abstract class LimitStorageEngine <W,R> implements StorageEngine<W,R>{
 
-    private static final DimensStorageEngine<DimensBucket, String> dimensStorageEngine = new HBaseDimensStorageEngine();
+    public abstract void limit(List<W> list) throws Exception;
 
-    public static void put(List<DimensBucket> list) throws Exception {
-        dimensStorageEngine.put(list);
-    }
-
-    public static List<String> queryDimensList(String token, String dimens, String lastDimensValue, int limitSize) throws Exception {
-        return dimensStorageEngine.queryDimensList(token,dimens,lastDimensValue,limitSize);
-    }
+    public abstract List<R> queryLimitDimens(StatExtEntity statExtEntity,long batchTime) throws Exception;
 
 }
