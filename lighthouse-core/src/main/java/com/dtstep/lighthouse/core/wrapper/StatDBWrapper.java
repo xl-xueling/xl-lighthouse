@@ -9,6 +9,7 @@ import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.exception.TemplateParseException;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Group;
+import com.dtstep.lighthouse.common.modal.RenderConfig;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
@@ -86,14 +87,15 @@ public class StatDBWrapper {
                 String title = rs.getString("title");
                 Integer groupId = rs.getInt("group_id");
                 Integer projectId = rs.getInt("project_id");
+                Integer dataVersion = rs.getInt("data_version");
                 String template = rs.getString("template");
                 String timeparam = rs.getString("timeparam");
                 Long expired = rs.getLong("expired");
-                Integer state = rs.getInt("state");
+                int state = rs.getInt("state");
                 String renderConfig = rs.getString("render_config");
                 Integer metaId = rs.getInt("meta_id");
-                Long createTime = rs.getTimestamp("create_time").getTime();
-                Long updateTime = rs.getTimestamp("update_time").getTime();
+                long createTime = rs.getTimestamp("create_time").getTime();
+                long updateTime = rs.getTimestamp("update_time").getTime();
                 String randomId = rs.getString("random_id");
                 String columns = rs.getString("columns");
                 stat.setId(id);
@@ -102,7 +104,11 @@ public class StatDBWrapper {
                 stat.setProjectId(projectId);
                 stat.setTemplate(template);
                 stat.setTimeparam(timeparam);
+                stat.setDataVersion(dataVersion);
                 stat.setExpired(expired);
+                if(StringUtil.isNotEmpty(renderConfig)){
+                    stat.setRenderConfig(JsonUtil.toJavaObject(renderConfig, RenderConfig.class));
+                }
                 StatStateEnum statStateEnum = StatStateEnum.getByState(state);
                 stat.setState(statStateEnum);
                 stat.setMetaId(metaId);
@@ -129,12 +135,13 @@ public class StatDBWrapper {
                 Integer projectId = rs.getInt("project_id");
                 String template = rs.getString("template");
                 String timeparam = rs.getString("timeparam");
+                Integer dataVersion = rs.getInt("data_version");
                 Long expired = rs.getLong("expired");
-                Integer state = rs.getInt("state");
+                int state = rs.getInt("state");
                 String renderConfig = rs.getString("render_config");
                 Integer metaId = rs.getInt("meta_id");
-                Long createTime = rs.getTimestamp("create_time").getTime();
-                Long updateTime = rs.getTimestamp("update_time").getTime();
+                long createTime = rs.getTimestamp("create_time").getTime();
+                long updateTime = rs.getTimestamp("update_time").getTime();
                 String randomId = rs.getString("random_id");
                 String columns = rs.getString("columns");
                 stat.setId(id);
@@ -151,6 +158,10 @@ public class StatDBWrapper {
                 stat.setUpdateTime(DateUtil.timestampToLocalDateTime(updateTime));
                 stat.setRandomId(randomId);
                 stat.setGroupColumns(columns);
+                stat.setDataVersion(dataVersion);
+                if(StringUtil.isNotEmpty(renderConfig)){
+                    stat.setRenderConfig(JsonUtil.toJavaObject(renderConfig, RenderConfig.class));
+                }
             }
             return stat;
         }

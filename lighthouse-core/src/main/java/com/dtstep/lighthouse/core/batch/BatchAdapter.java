@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-
+@Deprecated
 public final class BatchAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(BatchAdapter.class);
@@ -91,6 +91,22 @@ public final class BatchAdapter {
         return key;
     }
 
+    public static String generateBatchBaseKey(String token,int statId,int dataVersion,String dimens,long baseTime,int functionIndex) {
+        String time = DateUtil.formatTimeStamp(baseTime, "yyyyMMddHHmmss");
+        String origin = Md5Util.getMD5(token + "_" + statId + "_" + dataVersion + "_" + time + "_" + dimens + "_" + functionIndex);
+        String prefix = getPrePartitionPrefix(origin,dimens);
+        return prefix + origin;
+    }
+
+    private static String getPrePartitionPrefix(String origin, String dimens){
+        int index;
+        if(StringUtil.isEmpty(dimens)){
+            index = Math.abs((int) (HashUtil.BKDRHash(origin) % SysConst._DATA_STORAGE_PRE_PARTITIONS_SIZE));
+        }else{
+            index = Math.abs((int) (HashUtil.BKDRHash(origin + "_" + dimens) % SysConst._DATA_STORAGE_PRE_PARTITIONS_SIZE));
+        }
+        return SysConst._DBKeyPrefixArray[index];
+    }
 
     public static List<Long> queryBatchTimeList(String timeParam,long startTime,long endTime) throws Exception {
         return queryBatchTimeList(timeParam,startTime,endTime,-1);
@@ -104,22 +120,6 @@ public final class BatchAdapter {
         return Objects.requireNonNull(getBatchInterface(timeParam)).getDisplayFormat(timeParam,startTime,endTime);
     }
 
-    private static String getPrePartitionPrefix(String origin, String dimens){
-         int index;
-         if(StringUtil.isEmpty(dimens)){
-            index = Math.abs((int) (HashUtil.BKDRHash(origin) % SysConst._DATA_STORAGE_PRE_PARTITIONS_SIZE));
-         }else{
-            index = Math.abs((int) (HashUtil.BKDRHash(origin + "_" + dimens) % SysConst._DATA_STORAGE_PRE_PARTITIONS_SIZE));
-         }
-        return SysConst._DBKeyPrefixArray[index];
-    }
-
-    public static String generateBatchBaseKey(String token,int statId,int dataVersion,String dimens,long baseTime,int functionIndex) {
-        String time = DateUtil.formatTimeStamp(baseTime, "yyyyMMddHHmmss");
-        String origin = Md5Util.getMD5(token + "_" + statId + "_" + dataVersion + "_" + time + "_" + dimens + "_" + functionIndex);
-        String prefix = getPrePartitionPrefix(origin,dimens);
-        return prefix + origin;
-    }
 
     static BatchInterface getBatchInterface(String timeParam){
         if(isIntervalBatchParam(timeParam)){
