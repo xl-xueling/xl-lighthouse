@@ -20,7 +20,7 @@ import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.common.aggregator.SlotsGroup;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.event.LimitBucket;
-import com.dtstep.lighthouse.core.storage.proxy.LimitStorageProxy;
+import com.dtstep.lighthouse.core.storage.engine_bak.proxy.LimitStorageProxy;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;

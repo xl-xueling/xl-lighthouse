@@ -20,6 +20,7 @@ import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
 import com.dtstep.lighthouse.core.hbase.HBaseTableOperator;
+import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.dtstep.lighthouse.common.constant.SysConst;
@@ -62,16 +63,15 @@ public final class MetaTableWrapper {
             MetaTable metaTable = null;
             if(rs.next()){
                 metaTable = new MetaTable();
-                Integer id = rs.getInt("id");
+                int id = rs.getInt("id");
                 String metaName = rs.getString("meta_name");
-                Integer type = rs.getInt("type");
-                Integer state = rs.getInt("state");
-                String template = rs.getString("template");
-                Integer recordSize = rs.getInt("record_size");
-                Integer contentSize = rs.getInt("content_size");
+                int type = rs.getInt("type");
+                int state = rs.getInt("state");
+                int recordSize = rs.getInt("record_size");
+                int contentSize = rs.getInt("content_size");
                 String desc = rs.getString("desc");
-                Long createTime = rs.getTimestamp("create_time").getTime();
-                Long updateTime = rs.getTimestamp("update_time").getTime();
+                long createTime = rs.getTimestamp("create_time").getTime();
+                long updateTime = rs.getTimestamp("update_time").getTime();
                 metaTable.setId(id);
                 metaTable.setMetaName(metaName);
                 metaTable.setMetaTableTypeEnum(MetaTableTypeEnum.getMetaTableTypeEnum(type));
@@ -92,8 +92,8 @@ public final class MetaTableWrapper {
             metaTable = queryMetaByIdFromDB(metaId);
             if(metaTable != null){
                 String metaName = metaTable.getMetaName();
-                if(!HBaseTableOperator.isTableExist(metaName)){
-                    HBaseTableOperator.createTableIfNotExist(metaName,SysConst._RESULT_STORAGE_PRE_PARTITIONS_SIZE);
+                if(!StorageEngineProxy.getInstance().isTableExist(metaName)){
+                    StorageEngineProxy.getInstance().createTable(metaName);
                 }
             }
         }catch (Exception ex){
@@ -106,7 +106,7 @@ public final class MetaTableWrapper {
         DBConnection dbConnection = ConnectionManager.getConnection();
         Connection conn = dbConnection.getConnection();
         QueryRunner queryRunner = new QueryRunner();
-        MetaTable metaTable = null;
+        MetaTable metaTable;
         try{
             metaTable = queryRunner.query(conn, String.format("select * from ldp_metas where id = '%s'",metaId), new MetaResultSetHandler());
         }finally {
@@ -125,7 +125,7 @@ public final class MetaTableWrapper {
         metaTable.setUpdateTime(date);
         metaTable.setType(MetaTableTypeEnum.STAT_RESULT_TABLE.getType());
         try{
-            HBaseTableOperator.createTable(metaName, SysConst._RESULT_STORAGE_PRE_PARTITIONS_SIZE);
+            StorageEngineProxy.getInstance().createTable(metaName);
             logger.info("create stat result table,create hbase table success,metaName:{}",metaName);
         }catch (Exception ex){
             logger.error("create stat result table,create hbase table error,metaName:{}",metaName,ex);
@@ -136,7 +136,7 @@ public final class MetaTableWrapper {
             tableId = DaoHelper.sql.insert(metaTable);
             logger.info("create stat result table,save table info success,metaName;{}",metaName);
         }catch (Exception ex){
-            HBaseTableOperator.deleteTable(metaName);
+            StorageEngineProxy.getInstance().dropTable(metaName);
             logger.error("create stat result table,save table info error,metaName:{}",metaName,ex);
             throw ex;
         }
@@ -153,7 +153,7 @@ public final class MetaTableWrapper {
         metaTable.setUpdateTime(date);
         metaTable.setType(MetaTableTypeEnum.SEQ_RESULT_TABLE.getType());
         try{
-            HBaseTableOperator.createTable(metaName, SysConst._RESULT_STORAGE_PRE_PARTITIONS_SIZE);
+            StorageEngineProxy.getInstance().createTable(metaName);
             logger.info("create seq result table,create hbase table success,metaName:{}",metaName);
         }catch (Exception ex){
             logger.error("create seq result table,create hbase table error,metaName:{}",metaName,ex);
@@ -164,7 +164,7 @@ public final class MetaTableWrapper {
             tableId = DaoHelper.sql.insert(metaTable);
             logger.info("create seq result table,save table info success,metaName;{}",metaName);
         }catch (Exception ex){
-            HBaseTableOperator.deleteTable(metaName);
+            StorageEngineProxy.getInstance().dropTable(metaName);
             logger.error("create seq result table,save table info error,metaName:{}",metaName,ex);
             throw ex;
         }

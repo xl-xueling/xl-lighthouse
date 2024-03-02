@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.storage.proxy;
+package com.dtstep.lighthouse.core.storage.engine_bak.proxy;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,24 +16,22 @@ package com.dtstep.lighthouse.core.storage.proxy;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.core.storage.engine_bak.impl.RedisLimitStorageEngine;
-import com.dtstep.lighthouse.common.entity.event.LimitBucket;
-import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
-import com.dtstep.lighthouse.common.entity.view.LimitValue;
-import com.dtstep.lighthouse.core.storage.engine_bak.LimitStorageEngine;
+import com.dtstep.lighthouse.core.storage.engine_bak.impl.HBaseDimensStorageEngine;
+import com.dtstep.lighthouse.common.entity.event.DimensBucket;
+import com.dtstep.lighthouse.core.storage.engine_bak.DimensStorageEngine;
 
 import java.util.List;
 
-public class LimitStorageProxy {
+public class DimensStorageProxy {
 
-    private static final LimitStorageEngine<LimitBucket, LimitValue> limitStorageEngine = new RedisLimitStorageEngine();
+    private static final DimensStorageEngine<DimensBucket, String> dimensStorageEngine = new HBaseDimensStorageEngine();
 
-    public static void limit(List<LimitBucket> eventList) throws Exception{
-        limitStorageEngine.limit(eventList);
+    public static void put(List<DimensBucket> list) throws Exception {
+        dimensStorageEngine.put(list);
     }
 
-    public static List<LimitValue> queryLimitDimens(StatExtEntity statExtEntity, long batchTime) throws Exception {
-        return limitStorageEngine.queryLimitDimens(statExtEntity, batchTime);
+    public static List<String> queryDimensList(String token, String dimens, String lastDimensValue, int limitSize) throws Exception {
+        return dimensStorageEngine.queryDimensList(token,dimens,lastDimensValue,limitSize);
     }
 
 }

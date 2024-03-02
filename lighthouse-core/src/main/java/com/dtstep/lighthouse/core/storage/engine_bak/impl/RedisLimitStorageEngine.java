@@ -19,7 +19,7 @@ package com.dtstep.lighthouse.core.storage.engine_bak.impl;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.lock.RedLock;
 import com.dtstep.lighthouse.core.redis.RedisHandler;
-import com.dtstep.lighthouse.core.storage.proxy.ResultStorageProxy;
+import com.dtstep.lighthouse.core.storage.engine_bak.proxy.ResultStorageProxy;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.google.common.collect.Lists;

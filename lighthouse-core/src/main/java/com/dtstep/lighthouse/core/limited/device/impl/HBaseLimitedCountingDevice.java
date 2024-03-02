@@ -18,7 +18,7 @@ package com.dtstep.lighthouse.core.limited.device.impl;
  */
 import com.dtstep.lighthouse.core.callback.CaffeineExpiry;
 import com.dtstep.lighthouse.core.limited.device.CountingDevice;
-import com.dtstep.lighthouse.core.storage.proxy.ResultStorageProxy;
+import com.dtstep.lighthouse.core.storage.engine_bak.proxy.ResultStorageProxy;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;

@@ -29,7 +29,7 @@ import com.dtstep.lighthouse.common.hash.HashUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.formula.FormulaCalculate;
-import com.dtstep.lighthouse.core.storage.proxy.DimensStorageProxy;
+import com.dtstep.lighthouse.core.storage.engine_bak.proxy.DimensStorageProxy;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

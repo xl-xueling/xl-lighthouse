@@ -96,26 +96,6 @@ public class HBaseTableOperator {
         return false;
     }
 
-    public static void createNamespaceIfNotExist(String namespace) throws Exception {
-        Validate.notNull(namespace);
-        String lockKey = "lock_create_namespace_" + namespace;
-        boolean isLock = RedLock.tryLock(lockKey,2,3, TimeUnit.MINUTES);
-        if(isLock){
-            try{
-                if(isNameSpaceExist(namespace)){
-                    return;
-                }
-                NamespaceDescriptor namespaceDescriptor = NamespaceDescriptor.create(namespace).build();
-                hBaseAdmin.createNamespace(namespaceDescriptor);
-                logger.info("create namespace {} success!",namespace);
-            }catch (Exception ex){
-                logger.error("create namespace error,namespace:{}",namespace,ex);
-                throw ex;
-            }finally {
-                RedLock.unLock(lockKey);
-            }
-        }
-    }
 
     public static void createTableIfNotExist(String tableName,int prePartitionsSize) throws Exception {
         Validate.notNull(tableName);

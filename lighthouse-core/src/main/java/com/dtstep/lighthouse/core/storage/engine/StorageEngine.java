@@ -12,6 +12,8 @@ public interface StorageEngine {
 
     void createTable(String tableName) throws Exception;
 
+    boolean isTableExist(String tableName) throws Exception;
+
     void dropTable(String tableName) throws Exception;
 
     void put(String tableName, LdpPut put) throws Exception;

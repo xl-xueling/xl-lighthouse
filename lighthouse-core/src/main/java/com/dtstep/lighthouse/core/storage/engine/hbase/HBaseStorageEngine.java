@@ -161,7 +161,7 @@ public class HBaseStorageEngine implements StorageEngine {
         }
     }
 
-
+    @Override
     public boolean isTableExist(String tableName) throws Exception {
         TableName tableNameObj = TableName.valueOf(tableName);
         return hBaseAdmin.tableExists(tableNameObj);

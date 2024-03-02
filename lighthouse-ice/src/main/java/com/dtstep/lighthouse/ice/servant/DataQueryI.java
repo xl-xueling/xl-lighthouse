@@ -8,7 +8,7 @@ import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.ice._DataQueryInterfaceDisp;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
-import com.dtstep.lighthouse.core.storage.proxy.ResultStorageProxy;
+import com.dtstep.lighthouse.core.storage.engine_bak.proxy.ResultStorageProxy;
 import com.dtstep.lighthouse.core.wrapper.DimensDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
