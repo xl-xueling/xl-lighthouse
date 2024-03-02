@@ -31,7 +31,7 @@ public interface StorageEngine {
 
     <R> LdpResult<R> get(String tableName, LdpGet ldpGet, Class<R> clazz) throws Exception;
 
-    <R> List<LdpResult<R>> gets(String tableName, List<LdpGet> ldpGets) throws Exception;
+    <R> List<LdpResult<R>> gets(String tableName, List<LdpGet> ldpGets, Class<R> clazz) throws Exception;
 
     <R> List<LdpResult<R>> scan(String tableName, String startRow, String endRow, int limit) throws Exception;
 
