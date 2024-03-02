@@ -79,52 +79,6 @@ public final class HBaseClient {
             .maximumSize(50000)
             .build();
 
-    public static void batchIncrement(String metaName, List<Quartet<String,String,Long,Long>> list) throws Exception{
-        if(CollectionUtils.isEmpty(list)){
-            return;
-        }
-        try (Table table = getConnection().getTable(getHBaseTableName(metaName))) {
-            List<Row> rows = Lists.newArrayListWithCapacity(list.size());
-            for (Quartet<String, String, Long, Long> quartet : list) {
-                String rowKey = quartet.getValue0();
-                long step = quartet.getValue2();
-                Increment increment = new Increment(Bytes.toBytes(rowKey));
-                increment.addColumn(Bytes.toBytes("f"), Bytes.toBytes(quartet.getValue1()), step);
-                increment.setTTL(quartet.getValue3());
-                increment.setReturnResults(false);
-                increment.setDurability(Durability.SYNC_WAL);
-                rows.add(increment);
-            }
-            table.batch(rows,null);
-        } catch (Exception ex) {
-            logger.error("batch increment error,metaName:{}!",metaName,ex);
-            throw ex;
-        }
-    }
-
-    @Deprecated
-    public static void batchIncrement_2(String metaName, List<Quartet<String,String,Long,Long>> list) throws Exception{
-        if(CollectionUtils.isEmpty(list)){
-            return;
-        }
-        BufferedMutatorParams params = new BufferedMutatorParams(getHBaseTableName(metaName)).writeBufferSize(1024 * 1024 * 5);
-        params.setWriteBufferPeriodicFlushTimeoutMs(TimeUnit.SECONDS.toMillis(2));
-        params.setWriteBufferPeriodicFlushTimerTickMs(100);
-        BufferedMutator mutator = connection.getBufferedMutator(params);
-        List<Increment> increments = Lists.newArrayListWithCapacity(list.size());
-        for (Quartet<String, String, Long, Long> triple : list) {
-            String rowKey = triple.getValue0();
-            long step = triple.getValue2();
-            Increment increment = new Increment(Bytes.toBytes(rowKey));
-            increment.addColumn(Bytes.toBytes("f"), Bytes.toBytes(triple.getValue1()), step);
-            increment.setTTL(triple.getValue3());
-            increment.setReturnResults(false);
-            increment.setDurability(Durability.SYNC_WAL);
-            increments.add(increment);
-        }
-        mutator.mutate(increments);
-        mutator.close();
-    }
 
     public static boolean existColumn(String metaName,String rowKey,String column) throws Exception{
         String cacheKey = String.format("%s_%s_%s",metaName,rowKey,column);

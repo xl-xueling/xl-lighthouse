@@ -1,23 +1,22 @@
 package com.dtstep.lighthouse.core.storage;
 
-
-public class LdpPut {
+public class LdpIncrement {
 
     private String key;
 
     private String column;
 
-    private Object data;
+    private long step;
 
     private long ttl;
 
-    public static LdpPut with(String key,String column,Object data,long ttl){
-        LdpPut ldpPut = new LdpPut();
-        ldpPut.setKey(key);
-        ldpPut.setColumn(column);
-        ldpPut.setData(data);
-        ldpPut.setTtl(ttl);
-        return ldpPut;
+    public static LdpIncrement with(String key,String column,long step,long ttl){
+        LdpIncrement ldpIncrement = new LdpIncrement();
+        ldpIncrement.setKey(key);
+        ldpIncrement.setColumn(column);
+        ldpIncrement.setStep(step);
+        ldpIncrement.setTtl(ttl);
+        return ldpIncrement;
     }
 
     public String getKey() {
@@ -36,12 +35,12 @@ public class LdpPut {
         this.column = column;
     }
 
-    public Object getData() {
-        return data;
+    public long getStep() {
+        return step;
     }
 
-    public void setData(Object data) {
-        this.data = data;
+    public void setStep(long step) {
+        this.step = step;
     }
 
     public long getTtl() {

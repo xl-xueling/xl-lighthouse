@@ -4,9 +4,12 @@ import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.storage.LdpGet;
+import com.dtstep.lighthouse.core.storage.LdpIncrement;
 import com.dtstep.lighthouse.core.storage.LdpPut;
 import com.dtstep.lighthouse.core.storage.Result;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngine;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -18,6 +21,7 @@ import org.apache.hadoop.hbase.io.compress.Compression;
 import org.apache.hadoop.hbase.io.encoding.DataBlockEncoding;
 import org.apache.hadoop.hbase.regionserver.BloomType;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.javatuples.Quartet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -178,10 +182,54 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
-    public void put(String tableName, LdpPut put) throws Exception {
-        Object value = put.getData();
-        String rowKey = put.getKey();
-        String column = put.getColumn();
+    public void increment(String tableName, LdpIncrement ldpIncrement) throws Exception {
+        String rowKey = ldpIncrement.getKey();
+        String column = ldpIncrement.getColumn();
+        long step = ldpIncrement.getStep();
+        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+            Increment increment = new Increment(Bytes.toBytes(rowKey));
+            increment.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), step);
+            increment.setTTL(ldpIncrement.getTtl());
+            increment.setReturnResults(false);
+            increment.setDurability(Durability.SYNC_WAL);
+            table.increment(increment);
+        }catch (Exception ex){
+            logger.error("hbase put error,tableName:{}!",tableName,ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public void increments(String tableName, List<LdpIncrement> ldpIncrements) throws Exception {
+        if(CollectionUtils.isEmpty(ldpIncrements)){
+            return;
+        }
+        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+            List<Row> rows = Lists.newArrayListWithCapacity(ldpIncrements.size());
+            for (LdpIncrement ldpIncrement : ldpIncrements) {
+                String rowKey = ldpIncrement.getKey();
+                String column = ldpIncrement.getColumn();
+                long step = ldpIncrement.getStep();
+                long ttl = ldpIncrement.getTtl();
+                Increment increment = new Increment(Bytes.toBytes(rowKey));
+                increment.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), step);
+                increment.setTTL(ttl);
+                increment.setReturnResults(false);
+                increment.setDurability(Durability.SYNC_WAL);
+                rows.add(increment);
+            }
+            table.batch(rows,null);
+        } catch (Exception ex) {
+            logger.error("batch increment error,tableName:{}!",tableName,ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public void put(String tableName, LdpPut ldpPut) throws Exception {
+        Object value = ldpPut.getData();
+        String rowKey = ldpPut.getKey();
+        String column = ldpPut.getColumn();
         try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
             org.apache.hadoop.hbase.client.Put dbPut = new org.apache.hadoop.hbase.client.Put(Bytes.toBytes(rowKey));
             if (value.getClass() == String.class) {
@@ -200,17 +248,17 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
-    public void puts(String tableName, List<LdpPut> putList) throws Exception {
+    public void puts(String tableName, List<LdpPut> ldpPuts) throws Exception {
 
     }
 
     @Override
-    public Result get(String tableName, LdpGet get) throws Exception {
+    public Result get(String tableName, LdpGet ldpGet) throws Exception {
         return null;
     }
 
     @Override
-    public List<Result> gets(String tableName, List<LdpGet> gets) throws Exception {
+    public List<Result> gets(String tableName, List<LdpGet> ldpGets) throws Exception {
         return null;
     }
 
@@ -224,10 +272,10 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
-    public void maxPuts(String tableName, List<LdpPut> putList) throws Exception {
+    public void maxPuts(String tableName, List<LdpPut> ldpPuts) throws Exception {
     }
 
     @Override
-    public void minPuts(String tableName, List<LdpPut> putList) throws Exception {
+    public void minPuts(String tableName, List<LdpPut> ldpPuts) throws Exception {
     }
 }
