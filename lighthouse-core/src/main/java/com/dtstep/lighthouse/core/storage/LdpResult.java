@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.core.storage;
 
-public class Result<R> {
+public class LdpResult<R> {
 
     private String key;
 

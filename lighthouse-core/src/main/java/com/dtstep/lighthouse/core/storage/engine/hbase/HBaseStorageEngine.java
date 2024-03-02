@@ -7,7 +7,7 @@ import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.storage.LdpGet;
 import com.dtstep.lighthouse.core.storage.LdpIncrement;
 import com.dtstep.lighthouse.core.storage.LdpPut;
-import com.dtstep.lighthouse.core.storage.Result;
+import com.dtstep.lighthouse.core.storage.LdpResult;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngine;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -22,7 +22,6 @@ import org.apache.hadoop.hbase.io.compress.Compression;
 import org.apache.hadoop.hbase.io.encoding.DataBlockEncoding;
 import org.apache.hadoop.hbase.regionserver.BloomType;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.javatuples.Quartet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -280,13 +279,14 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
-    public <R> Result<R> get(String tableName, LdpGet ldpGet) throws Exception {
+    public <R> LdpResult<R> get(String tableName, LdpGet ldpGet, Class<R> clazz) throws Exception {
         byte[] b;
         String rowKey = ldpGet.getKey();
         String column = ldpGet.getColumn();
+        long timestamp;
         try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
             Get get = new Get(Bytes.toBytes(rowKey));
-            org.apache.hadoop.hbase.client.Result result = table.get(get);
+            Result result = table.get(get);
             if (result == null) {
                 return null;
             }
@@ -298,34 +298,39 @@ public class HBaseStorageEngine implements StorageEngine {
             if (b == null) {
                 return null;
             }
+            timestamp = result.current().getTimestamp();
         } catch (Exception ex) {
             logger.error("hbase get error!",ex);
             throw ex;
         }
-        if(R == Long.class || clazz == long.class){
-            return clazz.cast(Bytes.toLong(b));
+        LdpResult<R> result = new LdpResult<>();
+        R data = null;
+        if(clazz == Long.class || clazz == long.class){
+            data = clazz.cast(Bytes.toLong(b));
         }else if(clazz == String.class){
-            return clazz.cast(Bytes.toString(b));
+            data = clazz.cast(Bytes.toString(b));
         }else if(clazz == Integer.class || clazz == int.class){
-            return clazz.cast(Bytes.toInt(b));
+            data = clazz.cast(Bytes.toInt(b));
         }else if(clazz == Double.class || clazz == double.class){
-            return clazz.cast(Bytes.toDouble(b));
+            data = clazz.cast(Bytes.toDouble(b));
         }else if(clazz == Float.class || clazz == float.class){
-            return clazz.cast(Bytes.toFloat(b));
+            data = clazz.cast(Bytes.toFloat(b));
         }else if(clazz == Boolean.class || clazz == boolean.class){
-            return clazz.cast(Bytes.toBoolean(b));
+            data = clazz.cast(Bytes.toBoolean(b));
         }
-        return null;
+        result.setData(data);
+        result.setKey(rowKey);
+        result.setTimestamp(timestamp);
+        return result;
+    }
+
+    @Override
+    public <R> List<LdpResult<R>> gets(String tableName, List<LdpGet> ldpGets) throws Exception {
         return null;
     }
 
     @Override
-    public <R> List<Result<R>> gets(String tableName, List<LdpGet> ldpGets) throws Exception {
-        return null;
-    }
-
-    @Override
-    public List<Result> scan(String tableName, String startRow, String endRow, int limit) throws Exception {
+    public List<LdpResult> scan(String tableName, String startRow, String endRow, int limit) throws Exception {
         return null;
     }
 

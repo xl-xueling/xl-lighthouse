@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.core.storage.engine;
 import com.dtstep.lighthouse.core.storage.LdpGet;
 import com.dtstep.lighthouse.core.storage.LdpIncrement;
 import com.dtstep.lighthouse.core.storage.LdpPut;
-import com.dtstep.lighthouse.core.storage.Result;
+import com.dtstep.lighthouse.core.storage.LdpResult;
 
 import java.util.List;
 
@@ -29,11 +29,11 @@ public interface StorageEngine {
 
     void minPuts(String tableName,List<LdpPut> ldpPuts) throws Exception;
 
-    <R> Result<R> get(String tableName, LdpGet ldpGet,Class<R> clazz) throws Exception;
+    <R> LdpResult<R> get(String tableName, LdpGet ldpGet, Class<R> clazz) throws Exception;
 
-    <R> List<Result<R>> gets(String tableName, List<LdpGet> ldpGets) throws Exception;
+    <R> List<LdpResult<R>> gets(String tableName, List<LdpGet> ldpGets) throws Exception;
 
-    <R> List<Result<R>> scan(String tableName,String startRow,String endRow,int limit) throws Exception;
+    <R> List<LdpResult<R>> scan(String tableName, String startRow, String endRow, int limit) throws Exception;
 
     void delete(String tableName,String key) throws Exception;
 
