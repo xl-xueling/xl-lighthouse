@@ -2,8 +2,11 @@ package com.dtstep.lighthouse.core.storage.engine.hbase;
 
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.constant.SysConst;
+import com.dtstep.lighthouse.common.entity.view.StateValue;
+import com.dtstep.lighthouse.common.hash.HashUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
+import com.dtstep.lighthouse.core.lock.RedLock;
 import com.dtstep.lighthouse.core.storage.LdpGet;
 import com.dtstep.lighthouse.core.storage.LdpIncrement;
 import com.dtstep.lighthouse.core.storage.LdpPut;
@@ -11,25 +14,22 @@ import com.dtstep.lighthouse.core.storage.LdpResult;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngine;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.MemoryCompactionPolicy;
-import org.apache.hadoop.hbase.NamespaceDescriptor;
-import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.io.compress.Compression;
 import org.apache.hadoop.hbase.io.encoding.DataBlockEncoding;
 import org.apache.hadoop.hbase.regionserver.BloomType;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.javatuples.Quartet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class HBaseStorageEngine implements StorageEngine {
 
@@ -375,16 +375,111 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
-    public List<LdpResult> scan(String tableName, String startRow, String endRow, int limit) throws Exception {
-        return null;
+    public <R> List<LdpResult<R>> scan(String tableName, String startRow, String endRow,String column, int limit,Class<R> clazz) throws Exception {
+        List<LdpResult<R>> resultList = new ArrayList<>();
+        try(Table table = getConnection().getTable(TableName.valueOf(tableName))){
+            Scan scan = new Scan();
+            scan.setStartRow(Bytes.toBytes(startRow + "."));
+            scan.setStopRow(Bytes.toBytes(endRow));
+            scan.setMaxResultSize(limit);
+            scan.setCaching(20);
+            scan.setBatch(100);
+            try (ResultScanner scanner = table.getScanner(scan)) {
+                int count = 0;
+                for (Result dbResult = scanner.next(); dbResult != null; dbResult = scanner.next()) {
+                    String rowKey = Bytes.toString(dbResult.getRow());
+                    LdpResult<R> ldpResult = new LdpResult<R>();
+                    byte[] b = dbResult.getValue(Bytes.toBytes("f"), Bytes.toBytes(column));
+                    R data = null;
+                    if(clazz == Long.class || clazz == long.class){
+                        data = clazz.cast(Bytes.toLong(b));
+                    }else if(clazz == String.class){
+                        data = clazz.cast(Bytes.toString(b));
+                    }else if(clazz == Integer.class || clazz == int.class){
+                        data = clazz.cast(Bytes.toInt(b));
+                    }else if(clazz == Double.class || clazz == double.class){
+                        data = clazz.cast(Bytes.toDouble(b));
+                    }else if(clazz == Float.class || clazz == float.class){
+                        data = clazz.cast(Bytes.toFloat(b));
+                    }else if(clazz == Boolean.class || clazz == boolean.class){
+                        data = clazz.cast(Bytes.toBoolean(b));
+                    }
+                    ldpResult.setData(data);
+                    ldpResult.setKey(rowKey);
+                    ldpResult.setTimestamp(dbResult.current().getTimestamp());
+                    count++;
+                    if (limit != -1 && count >= limit) {
+                        break;
+                    }
+                    resultList.add(ldpResult);
+                }
+            } catch (Exception ex) {
+                logger.error("hbase scan error!",ex);
+            }
+        }catch (Exception ex){
+            logger.error("hbase scan error!",ex);
+            throw ex;
+        }
+        return resultList;
     }
 
     @Override
     public void delete(String tableName, String key) throws Exception {
+        try(Table table = getConnection().getTable(TableName.valueOf(tableName))){
+            Delete delete = new Delete(Bytes.toBytes(key));
+            table.delete(delete);
+        }catch (Exception ex){
+            logger.error("delete table {} data error!",tableName,ex);
+            throw ex;
+        }
     }
+
+    private static final int batchSalt = 4;
+
+    private static final String LOCK_PREFIX = "PUT_LOCK";
 
     @Override
     public void maxPuts(String tableName, List<LdpPut> ldpPuts) throws Exception {
+        if(CollectionUtils.isEmpty(ldpPuts)){
+            return;
+        }
+        Map<Long,List<LdpPut>> map = ldpPuts.stream().collect(Collectors.groupingBy(x -> HashUtil.BKDRHash(x.getKey() + "_" + x.getColumn()) % batchSalt));
+        for(Long object : map.keySet()){
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            String lockKey = LOCK_PREFIX + "_" + "max" + "_" + object;
+            boolean isLock = RedLock.tryLock(lockKey,8,3, TimeUnit.MINUTES);
+            if(isLock){
+                try{
+                    List<LdpPut> subList = map.get(object);
+                    List<String> aggregateKeyList = subList.stream().map(x -> x.getKey() + ";" + x.getColumn()).collect(Collectors.toList());
+//                    Map<String, StateValue> dbValueMap = multiGetByAggregateKey(metaName,aggregateKeyList);
+//                    List<Put> puts = Lists.newArrayList();
+//                    for(Quartet<String,String,Long,Long> quartet : subList){
+//                        String aggregate = quartet.getValue0() + ";" + quartet.getValue1();
+//                        if(MapUtils.isEmpty(dbValueMap) || !dbValueMap.containsKey(aggregate) || quartet.getValue2() > Long.parseLong(String.valueOf(dbValueMap.get(aggregate).getValue()))){
+//                            Put put = new Put(Bytes.toBytes(quartet.getValue0()));
+//                            put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(quartet.getValue1()), Bytes.toBytes(quartet.getValue2()));
+//                            put.setTTL(quartet.getValue3());
+//                            put.setDurability(Durability.SYNC_WAL);
+//                            puts.add(put);
+//                        }
+//                    }
+//                    try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+//                        table.put(puts);
+//                    }catch (Exception ex) {
+//                        logger.error("execute batch put error,tableName:{}!",tableName,ex);
+//                        throw ex;
+//                    }
+                }catch (Exception ex){
+                    logger.error("batch put error!",ex);
+                }finally {
+                    RedLock.unLock(lockKey);
+                }
+            }else{
+                logger.error("try lock failed,thread unable to acquire lock,this batch data may be lost,cost:{}ms!",stopWatch.getTime());
+            }
+        }
     }
 
     @Override

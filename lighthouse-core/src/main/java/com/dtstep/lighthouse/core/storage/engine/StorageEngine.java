@@ -33,7 +33,7 @@ public interface StorageEngine {
 
     <R> List<LdpResult<R>> gets(String tableName, List<LdpGet> ldpGets, Class<R> clazz) throws Exception;
 
-    <R> List<LdpResult<R>> scan(String tableName, String startRow, String endRow, int limit) throws Exception;
+    <R> List<LdpResult<R>> scan(String tableName, String startRow, String endRow,String column, int limit,Class<R> clazz) throws Exception;
 
     void delete(String tableName,String key) throws Exception;
 
