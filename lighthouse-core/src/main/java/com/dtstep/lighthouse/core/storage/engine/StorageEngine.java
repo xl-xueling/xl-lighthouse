@@ -29,11 +29,11 @@ public interface StorageEngine {
 
     void minPuts(String tableName,List<LdpPut> ldpPuts) throws Exception;
 
-    Result get(String tableName, LdpGet ldpGet) throws Exception;
+    <R> Result<R> get(String tableName, LdpGet ldpGet,Class<R> clazz) throws Exception;
 
-    List<Result> gets(String tableName, List<LdpGet> ldpGets) throws Exception;
+    <R> List<Result<R>> gets(String tableName, List<LdpGet> ldpGets) throws Exception;
 
-    List<Result> scan(String tableName,String startRow,String endRow,int limit) throws Exception;
+    <R> List<Result<R>> scan(String tableName,String startRow,String endRow,int limit) throws Exception;
 
     void delete(String tableName,String key) throws Exception;
 

@@ -17,6 +17,8 @@ package com.dtstep.lighthouse.core.storage.engine_bak.impl;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.core.hbase.HBaseClient;
+import com.dtstep.lighthouse.core.storage.LdpPut;
+import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
 import com.dtstep.lighthouse.core.wrapper.DimensDBWrapper;
 import com.google.common.collect.Lists;
 import com.dtstep.lighthouse.common.constant.StatConst;
@@ -33,6 +35,7 @@ import org.javatuples.Quartet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -42,16 +45,17 @@ public class HBaseDimensStorageEngine extends DimensStorageEngine<DimensBucket, 
 
     @Override
     public void put(List<DimensBucket> events) throws Exception {
-        List<Quartet<String,String,Object,Long>> list = Lists.newArrayListWithCapacity(events.size());
+        List<LdpPut> putList = new ArrayList<>();
         for(DimensBucket quartet : events){
             String rowKey = DimensDBWrapper.generateKey(quartet.getToken(),quartet.getDimens(),quartet.getDimensValue());
             if(logger.isTraceEnabled()){
                 logger.trace("save dimens,token:{},dimens:{},dimensValue:{},rowKey:{}",quartet.getToken(),quartet.getDimens(),quartet.getDimensValue(),rowKey);
             }
             Quartet<String,String,Object,Long> result = Quartet.with(rowKey,"d",quartet.getDimensValue(),quartet.getTtl());
-            list.add(result);
+            LdpPut ldpPut = LdpPut.with(rowKey,"d",quartet.getDimensValue(),quartet.getTtl());
+            putList.add(ldpPut);
         }
-        HBaseClient.batchPut(StatConst.DIMENS_STORAGE_TABLE,list);
+        StorageEngineProxy.getInstance().puts(StatConst.DIMENS_STORAGE_TABLE,putList);
     }
 
     @Override
