@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.core.storage.engine.hbase;
 
+import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
@@ -249,16 +250,77 @@ public class HBaseStorageEngine implements StorageEngine {
 
     @Override
     public void puts(String tableName, List<LdpPut> ldpPuts) throws Exception {
-
+        if(CollectionUtils.isEmpty(ldpPuts)){
+            return;
+        }
+        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+            List<Put> puts = Lists.newArrayListWithCapacity(ldpPuts.size());
+            for (LdpPut ldpPut : ldpPuts) {
+                String rowKey = ldpPut.getKey();
+                String column = ldpPut.getColumn();
+                Object value = ldpPut.getData();
+                long ttl = ldpPut.getTtl();
+                Put put = new Put(Bytes.toBytes(rowKey));
+                put.setDurability(Durability.SYNC_WAL);
+                if (value.getClass() == String.class) {
+                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
+                } else if (value.getClass() == Long.class) {
+                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(Long.parseLong(value.toString())));
+                } else if (value.getClass() == Integer.class) {
+                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(Integer.parseInt(value.toString())));
+                }
+                put.setTTL(ttl);
+                puts.add(put);
+            }
+            table.put(puts);
+        } catch (Exception ex) {
+            logger.error("hbase batch put error,tableName:{}!",tableName,ex);
+            throw ex;
+        }
     }
 
     @Override
-    public Result get(String tableName, LdpGet ldpGet) throws Exception {
+    public <R> Result<R> get(String tableName, LdpGet ldpGet) throws Exception {
+        byte[] b;
+        String rowKey = ldpGet.getKey();
+        String column = ldpGet.getColumn();
+        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+            Get get = new Get(Bytes.toBytes(rowKey));
+            org.apache.hadoop.hbase.client.Result result = table.get(get);
+            if (result == null) {
+                return null;
+            }
+            if (result.containsColumn(Bytes.toBytes("f"), Bytes.toBytes(column + StatConst.DB_RESULT_STORAGE_EXTEND_COLUMN))) {
+                b = result.getValue(Bytes.toBytes("f"), Bytes.toBytes(column + StatConst.DB_RESULT_STORAGE_EXTEND_COLUMN));
+            } else {
+                b = result.getValue(Bytes.toBytes("f"), Bytes.toBytes(column));
+            }
+            if (b == null) {
+                return null;
+            }
+        } catch (Exception ex) {
+            logger.error("hbase get error!",ex);
+            throw ex;
+        }
+        if(R == Long.class || clazz == long.class){
+            return clazz.cast(Bytes.toLong(b));
+        }else if(clazz == String.class){
+            return clazz.cast(Bytes.toString(b));
+        }else if(clazz == Integer.class || clazz == int.class){
+            return clazz.cast(Bytes.toInt(b));
+        }else if(clazz == Double.class || clazz == double.class){
+            return clazz.cast(Bytes.toDouble(b));
+        }else if(clazz == Float.class || clazz == float.class){
+            return clazz.cast(Bytes.toFloat(b));
+        }else if(clazz == Boolean.class || clazz == boolean.class){
+            return clazz.cast(Bytes.toBoolean(b));
+        }
+        return null;
         return null;
     }
 
     @Override
-    public List<Result> gets(String tableName, List<LdpGet> ldpGets) throws Exception {
+    public <R> List<Result<R>> gets(String tableName, List<LdpGet> ldpGets) throws Exception {
         return null;
     }
 

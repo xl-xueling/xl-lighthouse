@@ -1,12 +1,12 @@
 package com.dtstep.lighthouse.core.storage;
 
-public class Result {
+public class Result<R> {
 
     private String key;
 
     private String column;
 
-    private byte[] data;
+    private R data;
 
     private long timestamp;
 
@@ -26,11 +26,11 @@ public class Result {
         this.column = column;
     }
 
-    public byte[] getData() {
+    public R getData() {
         return data;
     }
 
-    public void setData(byte[] data) {
+    public void setData(R data) {
         this.data = data;
     }
 

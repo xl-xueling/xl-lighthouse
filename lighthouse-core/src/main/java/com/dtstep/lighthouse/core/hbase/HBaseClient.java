@@ -184,53 +184,6 @@ public final class HBaseClient {
     }
 
 
-    public static void batchPut(String metaName, List<Quartet<String,String,Object,Long>> list) throws Exception{
-        if(CollectionUtils.isEmpty(list)){
-            return;
-        }
-        try (Table table = getConnection().getTable(getHBaseTableName(metaName))) {
-            List<Put> puts = Lists.newArrayListWithCapacity(list.size());
-            for (Quartet<String, String, Object, Long> pair : list) {
-                String rowKey = pair.getValue0();
-                String column = pair.getValue1();
-                Object value = pair.getValue2();
-                Put put = new Put(Bytes.toBytes(rowKey));
-                put.setDurability(Durability.SYNC_WAL);
-                if (value.getClass() == String.class) {
-                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
-                } else if (value.getClass() == Long.class) {
-                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(Long.parseLong(value.toString())));
-                } else if (value.getClass() == Integer.class) {
-                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(Integer.parseInt(value.toString())));
-                }
-                put.setTTL(pair.getValue3());
-                puts.add(put);
-            }
-            table.put(puts);
-        } catch (Exception ex) {
-            logger.error("hbase batch put error,metaName:{}!",metaName,ex);
-            throw ex;
-        }
-    }
-
-    public static void put(String metaName,String rowKey,String column,Object value) throws Exception{
-        try (Table table = getConnection().getTable(getHBaseTableName(metaName))) {
-            Put put = new Put(Bytes.toBytes(rowKey));
-            if (value.getClass() == String.class) {
-                put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
-            } else if (value.getClass() == Long.class) {
-                put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((long) value));
-            } else if (value.getClass() == Integer.class) {
-                put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(Long.parseLong(value.toString())));
-            }
-            put.setDurability(Durability.SYNC_WAL);
-            table.put(put);
-        }catch (Exception ex){
-            logger.error("hbase put error,metaName:{}!",metaName,ex);
-            throw ex;
-        }
-    }
-
     public static <T> T get(String metaName,String rowKey,String column,Class<T> clazz) throws Exception{
         byte[] b;
         try (Table table = getConnection().getTable(getHBaseTableName(metaName))) {
