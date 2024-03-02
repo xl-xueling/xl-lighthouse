@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.core.storage.engine;
 
 import com.dtstep.lighthouse.core.storage.LdpGet;
+import com.dtstep.lighthouse.core.storage.LdpIncrement;
 import com.dtstep.lighthouse.core.storage.LdpPut;
 import com.dtstep.lighthouse.core.storage.Result;
 
@@ -16,17 +17,21 @@ public interface StorageEngine {
 
     void dropTable(String tableName) throws Exception;
 
-    void put(String tableName, LdpPut put) throws Exception;
+    void put(String tableName, LdpPut ldpPut) throws Exception;
 
-    void puts(String tableName, List<LdpPut> putList) throws Exception;
+    void puts(String tableName, List<LdpPut> ldpPuts) throws Exception;
 
-    void maxPuts(String tableName,List<LdpPut> putList) throws Exception;
+    void increment(String tableName, LdpIncrement ldpIncrement) throws Exception;
 
-    void minPuts(String tableName,List<LdpPut> putList) throws Exception;
+    void increments(String tableName,List<LdpIncrement> ldpIncrements) throws Exception;
 
-    Result get(String tableName, LdpGet get) throws Exception;
+    void maxPuts(String tableName,List<LdpPut> ldpPuts) throws Exception;
 
-    List<Result> gets(String tableName, List<LdpGet> gets) throws Exception;
+    void minPuts(String tableName,List<LdpPut> ldpPuts) throws Exception;
+
+    Result get(String tableName, LdpGet ldpGet) throws Exception;
+
+    List<Result> gets(String tableName, List<LdpGet> ldpGets) throws Exception;
 
     List<Result> scan(String tableName,String startRow,String endRow,int limit) throws Exception;
 

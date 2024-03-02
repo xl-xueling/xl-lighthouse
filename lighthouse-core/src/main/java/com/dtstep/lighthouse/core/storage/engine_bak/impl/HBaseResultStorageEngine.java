@@ -19,6 +19,9 @@ package com.dtstep.lighthouse.core.storage.engine_bak.impl;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
 import com.dtstep.lighthouse.core.hbase.HBaseClient;
+import com.dtstep.lighthouse.core.storage.LdpIncrement;
+import com.dtstep.lighthouse.core.storage.LdpPut;
+import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
 import com.dtstep.lighthouse.core.wrapper.MetaTableWrapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -111,7 +114,7 @@ public class HBaseResultStorageEngine extends ResultStorageEngine<MicroBucket, S
         for (String metaName : resultMap.keySet()) {
             List<MicroBucket> list = resultMap.get(metaName);
             Map<String, List<MicroBucket>> subMap = list.stream().collect(Collectors.groupingBy(x -> x.getRowKey() + "_" + x.getColumn()));
-            List<Quartet<String, String, Long, Long>> batchList = Lists.newArrayList();
+            List<LdpIncrement> ldpIncrements = Lists.newArrayList();
             for (String key : subMap.keySet()) {
                 List<MicroBucket> subList = subMap.get(key);
                 MicroBucket bucket = subList.get(0);
@@ -123,11 +126,11 @@ public class HBaseResultStorageEngine extends ResultStorageEngine<MicroBucket, S
                     logger.trace("lighthouse trace,batch increment,statId:{},batchTime:{},meta:{},rowKey:{},dimens:{},column:{},functionIndex:{},value:{},ttl:{}",
                             bucket.getStatId(), DateUtil.formatTimeStamp(bucket.getBatchTime(),"yyyy-MM-dd HH:mm:ss"),bucket.getMetaName(),bucket.getRowKey(),bucket.getDimensValue(),bucket.getColumn(),bucket.getFunctionIndex(),value,bucket.getTTL());
                 }
-                Quartet<String,String,Long,Long> quartet = Quartet.with(rowKey, column, value, ttl);
-                batchList.add(quartet);
+                LdpIncrement ldpIncrement = LdpIncrement.with(rowKey,column,value,ttl);
+                ldpIncrements.add(ldpIncrement);
             }
             try {
-                HBaseClient.batchIncrement(metaName, batchList);
+                StorageEngineProxy.getInstance().increments(metaName,ldpIncrements);
             } catch (Exception ex) {
                 logger.error("data increment exception!", ex);
             }
@@ -141,6 +144,7 @@ public class HBaseResultStorageEngine extends ResultStorageEngine<MicroBucket, S
             List<MicroBucket> events = putMap.get(metaName);
             Map<String, List<MicroBucket>> tempMap = events.stream().collect(Collectors.groupingBy(x -> x.getRowKey() + "_" + x.getColumn()));
             List<Quartet<String, String, Object, Long>> batchList = Lists.newArrayList();
+            List<LdpPut> ldpPuts = Lists.newArrayList();
             for (String key : tempMap.keySet()) {
                 List<MicroBucket> subList = tempMap.get(key);
                 MicroBucket bucket = subList.get(0);
@@ -152,11 +156,11 @@ public class HBaseResultStorageEngine extends ResultStorageEngine<MicroBucket, S
                     logger.trace("lighthouse trace,batch put,statId:{},batchTime:{},meta:{},rowKey:{},dimens:{},column:{},functionIndex:{},value:{},ttl:{}",
                             bucket.getStatId(),DateUtil.formatTimeStamp(bucket.getBatchTime(),"yyyy-MM-dd HH:mm:ss"),bucket.getMetaName(),bucket.getRowKey(),bucket.getDimensValue(),bucket.getColumn(),bucket.getFunctionIndex(),value,bucket.getTTL());
                 }
-                Quartet<String,String,Object,Long> quartet = Quartet.with(rowKey, column, value, ttl);
-                batchList.add(quartet);
+                LdpPut ldpPut = LdpPut.with(rowKey,column,value,ttl);
+                ldpPuts.add(ldpPut);
             }
             try {
-                HBaseClient.batchPut(metaName,batchList);
+                StorageEngineProxy.getInstance().puts(metaName,ldpPuts);
             } catch (Exception ex) {
                 logger.error("data put exception!", ex);
             }
