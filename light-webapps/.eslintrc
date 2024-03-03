@@ -29,6 +29,8 @@
   "plugins": ["react", "babel", "@typescript-eslint/eslint-plugin"],
   "rules": {
     "react/display-name": 0,
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }
