@@ -2,8 +2,12 @@
   "name": "arco-design-pro",
   "version": "1.0.0",
   "description": "Arco Design Pro",
+  "license":"ISC",
   "prettier": {
     "singleQuote": true
+  },
+  "config": {
+    "network-timeout": 300000
   },
   "scripts": {
     "start": "cross-env REACT_APP_ENV=production react-app-rewired start",
