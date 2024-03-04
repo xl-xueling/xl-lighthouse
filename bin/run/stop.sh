@@ -80,9 +80,9 @@ function stopMysql(){
 	log_info "Program progress,stop mysql complete!"
 }
 
-function stopLightHouseWeb(){
-	killService 'lighthouse-web';
-	log_info "Program progress,stop lighthouse-web complete!"
+function stopLightHouseInsights(){
+	killService 'lighthouse-insights';
+	log_info "Program progress,stop lighthouse-insights complete!"
 }
 
 function stopLightHouseTasks() {
@@ -117,13 +117,13 @@ stop_all(){
 	if [[ "${SERVICES[@]}" =~ "zookeeper" ]];then
                 stopZookeeper;
         fi
-	stopLightHouseWeb;
+	stopLightHouseInsights;
   stopLightHouseICE;
   stopLightHouseTasks;
 }
 
 stop_lighthouse(){
-	stopLightHouseWeb;
+	stopLightHouseInsights;
   stopLightHouseICE;
   stopLightHouseTasks;
 }
