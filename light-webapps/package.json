@@ -7,12 +7,12 @@
     "singleQuote": true
   },
   "config": {
-    "network-timeout": 300000
+    "network-timeout": 600000
   },
   "scripts": {
     "start": "cross-env REACT_APP_ENV=production react-app-rewired start",
     "dev": "cross-env REACT_APP_ENV=development react-app-rewired start",
-    "build": "NODE_OPTIONS=--max-old-space-size=4096 react-app-rewired build",
+    "build": "cross-env REACT_APP_ENV=production NODE_OPTIONS=--max-old-space-size=4096 react-app-rewired build",
     "eject": "react-scripts eject",
     "format": "eslint --fix \"src/**/*.tsx\"",
     "eslint": "eslint src/ --ext .ts,.tsx,.js,.jsx --fix --cache",
