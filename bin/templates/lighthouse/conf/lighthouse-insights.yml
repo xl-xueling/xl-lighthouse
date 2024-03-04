@@ -9,11 +9,6 @@ server:
 spring:
   messages:
     basename: i18n/messages
-  datasource:
-    url: jdbc:mysql://10.206.6.17:3906/ldp_mysqldb?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useCursorFetch=true&defaultFetchSize=100&serverTimezone=Asia/Shanghai
-    driverClassName: com.mysql.cj.jdbc.Driver
-    username: lighthouse
-    password: 123456
   mvc:
     locale-resolver: fixed
     locale: en_US

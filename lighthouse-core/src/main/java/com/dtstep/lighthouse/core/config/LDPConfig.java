@@ -50,6 +50,8 @@ public final class LDPConfig {
 
     public static final String KEY_DB_ConnectionPassword = "javax.jdo.option.ConnectionPassword";
 
+    public static final String KEY_DB_DriverClassName = "javax.jdo.option.driverClassName";
+
     public static final String KEY_KAFKA_TOPIC_NAME = "kafka.topic.name";
 
     public static final String KEY_REDIS_CLUSTER = "redis.cluster";

@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.insights;
  * limitations under the License.
  */
 
+import com.dtstep.lighthouse.core.config.LDPConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -31,6 +32,11 @@ public class LightHouseInsightsApplication {
         SpringApplication springApplication = new SpringApplication(LightHouseInsightsApplication.class);
         Map<String,Object> defaultProperties = new HashMap<>();
         defaultProperties.put("spring.config.name","lighthouse-insights");
+        defaultProperties.put("spring.redis.cluster.nodes", LDPConfig.getVal(LDPConfig.KEY_REDIS_CLUSTER));
+        defaultProperties.put("spring.datasource.url", LDPConfig.getVal(LDPConfig.KEY_DB_ConnectionURL));
+        defaultProperties.put("spring.datasource.driverClassName", LDPConfig.getVal(LDPConfig.KEY_DB_DriverClassName));
+        defaultProperties.put("spring.datasource.username", LDPConfig.getVal(LDPConfig.KEY_DB_ConnectionUserName));
+        defaultProperties.put("spring.datasource.password", LDPConfig.getVal(LDPConfig.KEY_DB_ConnectionPassword));
         springApplication.setDefaultProperties(defaultProperties);
         springApplication.run(args);
     }
