@@ -133,7 +133,9 @@ function loadIPS() {
                 fi
 		ATTRS_MAP['ldp_lighthouse_web_nodes_ips']=${web_ips}
 		local webNodesArray=($(echo $web_ips | tr ',' ' '))
-		ATTRS_MAP['ldp_lighthouse_web_nodes_size']=${#webNodesArray[@]}	              
+		ATTRS_MAP['ldp_lighthouse_web_nodes_size']=${#webNodesArray[@]}
+		ATTRS_MAP['ldp_nginx_nodes_ips']=${web_ips}
+    ATTRS_MAP['ldp_nginx_nodes_size']=${#webNodesArray[@]}
 	fi
 }
 
