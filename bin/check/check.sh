@@ -13,7 +13,9 @@ function checkInstall() {
     if [[ "${SERVICES[@]}" =~ "scala" ]];then
       checkScalaCommand;
     fi
-    checkICECommand;
+    if [[ ${_DEPLOY_ICE_RPC_SERVICE} == "true" ]];then
+      checkICECommand;
+    fi
     if [[ "${SERVICES[@]}" =~ "mysql" ]];then
     	checkMysqlCommand;
     fi		    
