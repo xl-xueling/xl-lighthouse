@@ -90,7 +90,7 @@ function startLightHouseWeb(){
 			local cmd="nohup java -Xms${web_xms_memory} -Xmx${web_xmx_memory} -XX:+UseG1GC -Dloader.path=${LDP_HOME}/lib,${LDP_HOME}/light-webapps -Dlogging.config=file:${LDP_HOME}/conf/log4j2-web.xml -Dspring.config.location=${LDP_HOME}/conf/lighthouse-web.yml -jar ${jar_path} >/dev/null 2>&1 &"
 			remoteExecute ${CUR_DIR}/common/exec.exp ${DEPLOY_USER} ${ip} ${DEPLOY_PASSWD} "$cmd"
 		done
-	checkLightHouseWeb;
+	checkLightHouseInsights;
 }
 
 function startMysql(){
