@@ -332,15 +332,15 @@ function checkLightHouseICE(){
 	log_info "lighthouse-ice startup status verification completed!"
 }
 
-function checkLightHouseWeb(){
-	log_info "start to verify lighthouse-web startup status."
-	local IPArray=($(getServiceIPS 'lighthouse_web'))
+function checkLightHouseInsights(){
+	log_info "start to verify lighthouse-insights startup status."
+	local IPArray=($(getServiceIPS 'lighthouse_insights'))
         local index=0;
         for ip in "${IPArray[@]}"
                 do
-			existByJPS ${ip} 'lighthouse-web'
+			existByJPS ${ip} 'lighthouse-insights'
                        	if [ $? != '0' ];then
-                        	log_error "[${ip}]process(lighthouse-web) does not exist,web service startup failed!";
+                        	log_error "[${ip}]process(lighthouse-insights) does not exist,web service startup failed!";
                         	exit -1;
                         fi
 		done
@@ -517,7 +517,7 @@ function checkLightHouseICEExist(){
 		done
 }
 
-function checkLightHouseWebExist(){
+function checkLightHouseInsightsExist(){
 	local IPArray=($(getServiceIPS 'lighthouse_web'))
         local index=0;
         for ip in "${IPArray[@]}"
@@ -574,13 +574,13 @@ function checkProcessExist(){
 	checkRedisExist;
 	checkMysqlExist;
 	checkSparkExist;
-	checkLightHouseWebExist;
+	checkLightHouseInsightsExist;
 	checkLightHouseICEExist;
 	checkLightHouseTasksExist;
 }
 
 function checkLightProcessExist(){
-	checkLightHouseWebExist;
+	checkLightHouseInsightsExist;
   checkLightHouseICEExist;
   checkLightHouseTasksExist;
 }
