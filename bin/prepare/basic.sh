@@ -121,9 +121,9 @@ function loadIPS() {
                 	ATTRS_MAP["ldp_lighthouse_ice_locators"]=${iceNodesArray[0]}:4061,${iceNodesArray[1]}:4061
 			ATTRS_MAP["ldp_lighthouse_ice_locators_config"]="LightHouseIceGrid/Locator:tcp -h ${iceNodesArray[0]} -p 4061:tcp -h ${iceNodesArray[1]} -p 4061"
 		fi	
-		local web_ips=${ATTRS_MAP['ldp_lighthouse_web_nodes_ips']}
+		local web_ips=${ATTRS_MAP['ldp_lighthouse_insights_nodes_ips']}
 		if [ ! -n "$web_ips" ]; then
-                        local nodes_size=${ATTRS_MAP['ldp_lighthouse_web_nodes_size']}
+                        local nodes_size=${ATTRS_MAP['ldp_lighthouse_insights_nodes_size']}
                         local sliceArray=${NODES[@]:0:${nodes_size}}
                         local nodesArray=($(echo ${sliceArray[*]} | tr ' ' ' '))
                         web_ips=$(
@@ -362,7 +362,7 @@ function validClusterConfig(){
 				  log_error "The mysql component currently does not support multi-node deployment!"
 					exit -1;
 				fi
-				if [ $var == "ldp_lighthouse_web_nodes_size"  -a   ${ATTRS_MAP[$var]} -gt 1 ];then
+				if [ $var == "ldp_lighthouse_insights_nodes_size"  -a   ${ATTRS_MAP[$var]} -gt 1 ];then
 				  log_error "The lighthouse-web component currently does not support multi-node deployment!"
 					exit -1;
 				fi
