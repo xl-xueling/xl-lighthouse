@@ -363,7 +363,7 @@ function validClusterConfig(){
 					exit -1;
 				fi
 				if [ $var == "ldp_lighthouse_insights_nodes_size"  -a   ${ATTRS_MAP[$var]} -gt 1 ];then
-				  log_error "The lighthouse-web component currently does not support multi-node deployment!"
+				  log_error "The lighthouse-insights component currently does not support multi-node deployment!"
 					exit -1;
 				fi
 				if [ $var == "ldp_spark_nodes_size"  -a   ${ATTRS_MAP[$var]} -lt 3 ];then
