@@ -53,6 +53,10 @@ function localCompileWebapps(){
 	yarn install;
 	yarn install;
 	yarn run build;
+	if [ ! -d "${path}/build/static" ]; then
+      echo "Compile webapps failed,process exit!"
+      exit -1;
+  fi
 }
 
 function compile(){
