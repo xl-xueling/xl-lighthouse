@@ -1,6 +1,7 @@
 cmake=https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/cmake-3.25.3-linux-x86_64.tar.gz
 jdk=https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/OpenJDK11U-jdk_x64_linux_hotspot_11.0.20_8.tar.gz
 scala=https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/scala-2.13.10.tgz
+nginx=https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/nginx-1.25.4.tar.gz
 zookeeper=https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/apache-zookeeper-3.5.8-bin.tar.gz
 kafka=https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/kafka_2.12-2.8.2.tgz
 hadoop=https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/hadoop-3.3.5.tar.gz
