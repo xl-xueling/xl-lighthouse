@@ -5,7 +5,7 @@
 # Email:better_xueling@126.com
 #-----------------------------------------
 
-_DEPLOY_ICE_RPC_SERVICE=true
+_USE_CUSTOM_RPC_SERVICE=false
 _REDIS_NUM_PIDS_PER_NODE=2
 _KAFKA_NUM_PARTITIONS=64
 _KAFKA_REPLICATION_FACTOR=2
