@@ -3,7 +3,7 @@
     "deploy_user": "work",
     "deploy_user_passwd": "test123456",
     "ice_nodes_size": 1,
-    "web_nodes_size": 1
+    "insights_nodes_size": 1
   },
   "zookeeper": {
     "nodes_size": 1
