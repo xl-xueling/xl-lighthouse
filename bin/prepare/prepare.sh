@@ -6,6 +6,7 @@
 #-----------------------------------------
 
 source "${LDP_HOME}/bin/prepare/basic.sh"
+source "${LDP_HOME}/bin/compile/compile.sh"
 
 
 pre(){
@@ -126,6 +127,7 @@ prepare_for_deploy(){
   	checkOSVersion $lsb $major;
   fi
   pre;
+  localCompileWebapps;
 	syncPackage;
 	baseInit;
 	sshInit;
