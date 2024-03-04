@@ -96,6 +96,10 @@ function dependencyInstall() {
          		local path=${source_dir}/${service}/${dirname}
          		localCompileRedis $path;
     fi
+    if [ "$service" == "nginx" ];then
+         		local path=${source_dir}/${service}/${dirname}
+         		localCompileNginx $path;
+    fi
 		local IPArray=($(getServiceIPS ${service}))
 		for ip in ${IPArray[@]}; do
 			syncComponents ${service} ${ip} ${source_dir} ${dirname} "${LDP_HOME}/dependency"
