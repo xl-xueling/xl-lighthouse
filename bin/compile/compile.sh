@@ -34,6 +34,14 @@ function localCompileRedis() {
     make PREFIX=${path} install
 }
 
+function localCompileNginx() {
+  local path=${1};
+  cd ${path};
+  ./configure --prefix=${path} --with-http_ssl_module --conf-path=${path}/conf.online/nginx.conf
+  make
+  make install
+}
+
 
 function compile(){
   source ~/.bashrc;

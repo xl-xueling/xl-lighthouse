@@ -29,6 +29,8 @@ baseCentOSInstall(){
         sudo yum install -y libzstd*
         sudo yum install -y sysstat iotop
         sudo yum install -y wget
+        sudo yum install -y pcre pcre-devel
+
 }
 
 baseRockeyInstall(){
@@ -51,6 +53,7 @@ baseRockeyInstall(){
         sudo yum install -y libzstd*
         sudo yum install -y sysstat iotop
         sudo yum install -y wget
+        sudo yum install -y pcre pcre-devel
 }
 
 baseAlmaInstall(){
@@ -73,6 +76,7 @@ baseAlmaInstall(){
         sudo yum install -y libzstd*
         sudo yum install -y sysstat iotop
         sudo yum install -y wget
+        sudo yum install -y pcre pcre-devel
 }
 
 
