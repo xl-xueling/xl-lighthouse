@@ -7,8 +7,12 @@ source "${CUR_DIR}/check/check_process.sh"
 source "${CUR_DIR}/check/check_command.sh"
 
 function checkInstall() {
-    checkJavaCommand;
-    checkScalaCommand;
+    if [[ "${SERVICES[@]}" =~ "jdk" ]];then
+      checkJavaCommand;
+    fi
+    if [[ "${SERVICES[@]}" =~ "scala" ]];then
+      checkScalaCommand;
+    fi
     checkICECommand;
     if [[ "${SERVICES[@]}" =~ "mysql" ]];then
     	checkMysqlCommand;
