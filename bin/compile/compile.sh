@@ -50,6 +50,8 @@ function localCompileWebapps(){
   cd ${path};
 	rm -rf node_modules yarn.lock package-lock.json
 	yarn install;
+	yarn install;
+	yarn install;
 	yarn run build;
 }
 
