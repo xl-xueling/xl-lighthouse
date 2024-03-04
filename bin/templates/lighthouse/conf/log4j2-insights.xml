@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN" monitorInterval="600">
     <Properties>
-        <Property name="LOG_HOME">${ldp_lighthouse_home}/logs/lighthouse-web/</Property>
+        <Property name="LOG_HOME">${ldp_lighthouse_home}/logs/lighthouse-insights/</Property>
     </Properties>
     <Appenders>
         <Console name="ConsoleAppender" target="SYSTEM_OUT">
@@ -9,8 +9,8 @@
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%p]  (%F:%L) %m%n"/>
         </Console>
         <RollingRandomAccessFile name="TraceAppender"
-                                 immediateFlush="true" fileName="${LOG_HOME}/web_trace.log"
-                                 filePattern="${LOG_HOME}/web_trace/web_trace-%d{yyyyMMddHHmm}.log.gz">
+                                 immediateFlush="true" fileName="${LOG_HOME}/insights_trace.log"
+                                 filePattern="${LOG_HOME}/insights_trace/insights_trace-%d{yyyyMMddHHmm}.log.gz">
             <PatternLayout>
                 <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] (%F:%L) %m%n</pattern>
             </PatternLayout>
@@ -23,8 +23,8 @@
             </Filters>
         </RollingRandomAccessFile>
         <RollingRandomAccessFile name="DebugAppender"
-                                 immediateFlush="true" fileName="${LOG_HOME}/web_debug.log"
-                                 filePattern="${LOG_HOME}/web_debug/web_debug-%d{yyyyMMddHHmm}.log.gz">
+                                 immediateFlush="true" fileName="${LOG_HOME}/insights_debug.log"
+                                 filePattern="${LOG_HOME}/insights_debug/insights_debug-%d{yyyyMMddHHmm}.log.gz">
             <PatternLayout>
                 <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] (%F:%L) %m%n</pattern>
             </PatternLayout>
@@ -37,8 +37,8 @@
             </Filters>
         </RollingRandomAccessFile>
         <RollingRandomAccessFile name="InfoAppender"
-                                 immediateFlush="true" fileName="${LOG_HOME}/web_info.log"
-                                 filePattern="${LOG_HOME}/web_info/web_info-%d{yyyyMMddHHmm}.log.gz">
+                                 immediateFlush="true" fileName="${LOG_HOME}/insights_info.log"
+                                 filePattern="${LOG_HOME}/insights_info/insights_info-%d{yyyyMMddHHmm}.log.gz">
             <PatternLayout>
                 <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] (%F:%L) %m%n</pattern>
             </PatternLayout>
@@ -51,8 +51,8 @@
             </Filters>
         </RollingRandomAccessFile>
         <RollingRandomAccessFile name="WarnAppender"
-                                 immediateFlush="true" fileName="${LOG_HOME}/web_warn.log"
-                                 filePattern="${LOG_HOME}/web_warn/web_warn-%d{yyyyMMddHHmm}.log.gz">
+                                 immediateFlush="true" fileName="${LOG_HOME}/insights_warn.log"
+                                 filePattern="${LOG_HOME}/insights_warn/insights_warn-%d{yyyyMMddHHmm}.log.gz">
             <PatternLayout>
                 <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] (%F:%L) %m%n</pattern>
             </PatternLayout>
@@ -65,8 +65,8 @@
             </Filters>
         </RollingRandomAccessFile>
         <RollingRandomAccessFile name="ErrorAppender"
-                                 immediateFlush="true" fileName="${LOG_HOME}/web_error.log"
-                                 filePattern="${LOG_HOME}/web_error/web_error-%d{yyyyMMddHHmm}.log.gz">
+                                 immediateFlush="true" fileName="${LOG_HOME}/insights_error.log"
+                                 filePattern="${LOG_HOME}/insights_error/insights_error-%d{yyyyMMddHHmm}.log.gz">
             <PatternLayout>
                 <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] (%F:%L) %m%n</pattern>
             </PatternLayout>
