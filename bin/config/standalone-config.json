@@ -8,8 +8,8 @@
     "tasks_direct_memory": "256M",
     "tasks_num_executors": 2,
     "tasks_executor_cores": 2,
-    "web_xmx_memory": "300M",
-    "web_xms_memory": "300M"
+    "insights_xmx_memory": "300M",
+    "insights_xms_memory": "300M"
   },
   "zookeeper": {
     "xmx_memory": "260M",
