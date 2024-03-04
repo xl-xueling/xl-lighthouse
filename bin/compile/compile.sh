@@ -42,6 +42,16 @@ function localCompileNginx() {
   make install
 }
 
+function localCompileWebapps(){
+  curl -sL https://rpm.nodesource.com/setup_18.x | sudo bash -
+  sudo yum install -y nodejs
+  npm install -g yarn;
+  local path=${1};
+  cd ${path};
+	rm -rf node_modules yarn.lock package-lock.json
+	yarn install;
+	yarn run build;
+}
 
 function compile(){
   source ~/.bashrc;
