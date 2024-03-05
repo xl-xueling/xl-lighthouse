@@ -39,6 +39,7 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
         result = response.data;
     }catch (error) {
         if(error.message == 'Network Error'){
+            console.log("remote baseUrl:" + (baseURL + '/api/v1'));
             console.log(error);
             Notification.error({style: { width: 420 }, title: 'Warning', content:'Unable to connect to remote server!'});
             result = {
