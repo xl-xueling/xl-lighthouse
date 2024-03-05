@@ -18,6 +18,8 @@ package com.dtstep.lighthouse.insights;
  */
 
 import com.dtstep.lighthouse.core.config.LDPConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -30,6 +32,7 @@ public class LightHouseInsightsApplication {
 
     public static void main(String[] args) throws Exception {
         SpringApplication springApplication = new SpringApplication(LightHouseInsightsApplication.class);
+        LDPConfig.loadConfiguration();
         Map<String,Object> defaultProperties = new HashMap<>();
         defaultProperties.put("spring.config.name","lighthouse-insights");
         defaultProperties.put("spring.redis.cluster.nodes", LDPConfig.getVal(LDPConfig.KEY_REDIS_CLUSTER));
