@@ -55,6 +55,7 @@ if { $service == "all" } {
 	send "ps -ef|grep 'icegridnode'|grep '\\\-\\\-Ice.Config'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
 	send "jps -l|grep 'IceBox.Server'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
 } elseif  { $service == "lighthouse-insights" } {
+    send "ps -ef|grep 'nginx'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
 	send "jps -l|grep 'lighthouse-insights' | grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
 } elseif { $service == "lighthouse-tasks" } {
 	send "jps -l|grep 'org.apache.spark.deploy.SparkSubmit' | grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
