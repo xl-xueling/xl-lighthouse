@@ -27,6 +27,7 @@ if { $service == "all" } {
 	send "ps -ef|grep 'redis'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
 	send "ps -ef|grep 'mysql'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
 	send "ps -ef|grep 'nginx'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+	send "ps -ef|grep 'node'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
 } elseif { $service == "zookeeper" } {
 	send "jps -l|grep 'org.apache.zookeeper.server.quorum.QuorumPeerMain'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
 } elseif { $service == "hadoop" } {
