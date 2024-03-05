@@ -53,7 +53,9 @@ function reloadLightConfig(){
                 done
 		local index=$(getArrayIndex "${NODES[*]}" "${ip}")
 		find ${reload_dir}/${service}/ -type f | xargs --no-run-if-empty sed -i -e 's]${ldp_lighthouse_nodeid}]'$(($index + 1))']g'
+		find ${reload_dir}/${service}/ -type f | xargs --no-run-if-empty sed -i -e 's]${ldp_lighthouse_nodeip}]'${ip}']g'
 		expect ${CUR_DIR}/common/sync.exp ${DEPLOY_USER} ${reload_dir}/${service}/conf/ ${ip} ${DEPLOY_PASSWD} ${LDP_HOME}
+		expect ${CUR_DIR}/common/sync.exp ${DEPLOY_USER} ${reload_dir}/${service}/light-webapps/ ${ip} ${DEPLOY_PASSWD} ${LDP_HOME}
         done            
 }
 
