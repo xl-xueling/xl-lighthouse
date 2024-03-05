@@ -92,6 +92,7 @@ function startLightHouseInsights(){
 		done
 	sleep 10;
 	checkLightHouseInsights;
+
 }
 
 function startMysql(){
