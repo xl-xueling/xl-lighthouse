@@ -82,7 +82,6 @@ function stopMysql(){
 
 function stopLightHouseInsights(){
 	killService 'lighthouse-insights';
-	killService 'nginx';
 	log_info "Program progress,stop lighthouse-insights complete!"
 }
 

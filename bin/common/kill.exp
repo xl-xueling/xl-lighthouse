@@ -47,7 +47,7 @@ if { $service == "all" } {
 	send "ps -ef|grep '/bin/redis-server'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"	
 } elseif { $service == "mysql" } {
 	send "ps -ef|grep '/bin/mysqld_safe' | grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
-        send "ps -ef|grep '/bin/mysqld' | grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
+    send "ps -ef|grep '/bin/mysqld' | grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
 } elseif  { $service == "nginx" } {
   	send "ps -ef|grep 'nginx'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
 } elseif { $service == "lighthouse-ice" } {
