@@ -130,23 +130,23 @@ function track() {
 }
 
 start_all(){
-  log_info "Waiting to start MySQL ..."
 	if [[ "${SERVICES[@]}" =~ "mysql" ]];then
+	  log_info "Waiting to start MySQL ..."
 		startMysql;
 	fi
-  log_info "Waiting to start Zookeeper ..."
   sleep 10;
 	if [[ "${SERVICES[@]}" =~ "zookeeper" ]];then
+	  log_info "Waiting to start Zookeeper ..."
 		startZookeeper;
 	fi
-	log_info "Waiting to start Redis ..."
 	sleep 10;
 	if [[ "${SERVICES[@]}" =~ "redis" ]];then
+	  log_info "Waiting to start Redis ..."
 		startRedis;
 	fi
-	log_info "Waiting to start Hadoop ..."
 	sleep 10;
 	if [[ "${SERVICES[@]}" =~ "hadoop" ]];then
+	  log_info "Waiting to start Hadoop ..."
 		startHadoop;
 	fi
 	log_info "Waiting to start HBase ..."
@@ -154,14 +154,14 @@ start_all(){
 	if [[ "${SERVICES[@]}" =~ "hbase" ]];then
 		startHBase;
 	fi
-	log_info "Waiting to start Kafka ..."
 	sleep 10;
 	if [[ "${SERVICES[@]}" =~ "kafka" ]];then
+	  log_info "Waiting to start Kafka ..."
 		startKafka;
 	fi
-	log_info "Waiting to start Spark ..."
 	sleep 10;
 	if [[ "${SERVICES[@]}" =~ "spark" ]];then
+	  log_info "Waiting to start Spark ..."
 		startSpark;
 	fi
 	log_info "Waiting to start LightHouse ..."
