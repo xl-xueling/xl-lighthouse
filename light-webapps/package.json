@@ -19,7 +19,8 @@
     "stylelint": "stylelint 'src/**/*.less' 'src/**/*.css' --fix --cache",
     "pre-commit": "pretty-quick --staged && npm run eslint && npm run stylelint",
     "build:prod": "cross-env REACT_APP_ENV=production NODE_OPTIONS=--max-old-space-size=4096 react-app-rewired build",
-    "build:dev": "cross-env REACT_APP_ENV=development NODE_OPTIONS=--max-old-space-size=4096 react-app-rewired build"
+    "build:dev": "cross-env REACT_APP_ENV=development NODE_OPTIONS=--max-old-space-size=4096 react-app-rewired build",
+    "build:simu": "cross-env REACT_APP_ENV=simulation NODE_OPTIONS=--max-old-space-size=4096 react-app-rewired build"
   },
   "dependencies": {
     "@arco-design/color": "^0.4.0",
