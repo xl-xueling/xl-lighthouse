@@ -87,8 +87,10 @@ function startLightHouseInsights(){
 	for ip in "${IPArray[@]}"
 		do
 			local jar_path=$(find ${LDP_HOME}/lib -type f -name 'lighthouse-insights-*.jar'|head -n 1)
-			local cmd="nohup java -Xms${web_xms_memory} -Xmx${web_xmx_memory} -XX:+UseG1GC -Dloader.path=${LDP_HOME}/lib,${LDP_HOME}/light-webapps -Dlogging.config=file:${LDP_HOME}/conf/log4j2-insights.xml -Dspring.config.location=${LDP_HOME}/conf/lighthouse-insights.yml -jar ${jar_path} >/dev/null 2>&1 &"
-			remoteExecute ${CUR_DIR}/common/exec.exp ${DEPLOY_USER} ${ip} ${DEPLOY_PASSWD} "$cmd"
+			local serverCmd="nohup java -Xms${web_xms_memory} -Xmx${web_xmx_memory} -XX:+UseG1GC -Dloader.path=${LDP_HOME}/lib,${LDP_HOME}/light-webapps -Dlogging.config=file:${LDP_HOME}/conf/log4j2-insights.xml -Dspring.config.location=${LDP_HOME}/conf/lighthouse-insights.yml -jar ${jar_path} >/dev/null 2>&1 &"
+			remoteExecute ${CUR_DIR}/common/exec.exp ${DEPLOY_USER} ${ip} ${DEPLOY_PASSWD} "$serverCmd"
+			local webappCmd="${LDP_HOME}/dependency/nginx/sbin/nginx -c ${LDP_HOME}/dependency/nginx/conf/nginx.conf"
+			remoteExecute ${CUR_DIR}/common/exec.exp ${DEPLOY_USER} ${ip} ${DEPLOY_PASSWD} "$webappCmd"
 		done
 	sleep 10;
 	checkLightHouseInsights;
