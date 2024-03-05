@@ -107,7 +107,7 @@ function dependencyInstall() {
 		log_info "Program progress,dependency[$service] install complete!"
 	done
 	
-	local webIPArray=($(getServiceIPS 'lighthouse_web'))
+	local webIPArray=($(getServiceIPS 'lighthouse_insights'))
 	for service in "mysql" "hadoop";do
     if [[ "${SERVICES[@]}" =~ "${service}" ]];then
             local path=$(find ${source_dir}/${service} -maxdepth 1 -mindepth 1 -type d | grep ${service} | head -n 1)

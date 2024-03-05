@@ -344,7 +344,7 @@ function checkLightHouseInsights(){
                         	exit -1;
                         fi
 		done
-	log_info "lighthouse-web startup status verification completed!"
+	log_info "lighthouse-insights startup status verification completed!"
 }
 
 function checkLightHouseTasks(){
@@ -518,13 +518,13 @@ function checkLightHouseICEExist(){
 }
 
 function checkLightHouseInsightsExist(){
-	local IPArray=($(getServiceIPS 'lighthouse_web'))
+	local IPArray=($(getServiceIPS 'lighthouse_insights'))
         local index=0;
         for ip in "${IPArray[@]}"
                 do
-			existByJPS ${ip} 'lighthouse-web'
+			existByJPS ${ip} 'lighthouse-insights'
                       if [ $? == '0' ];then
-                        log_error "The lighthouse-web(ip:${ip}) process is running, please stop it and execute again!";
+                        log_error "The lighthouse-insights(ip:${ip}) process is running, please stop it and execute again!";
                         exit -1;
                       fi
 		done

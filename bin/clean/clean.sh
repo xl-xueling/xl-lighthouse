@@ -19,8 +19,8 @@ function clearLogFiles(){
           expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-tasks/.*.sw*"
           expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-ice/*"
           expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-ice/.*.sw*"
-          expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-web/*"
-          expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-web/.*.sw*"
+          expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-insights/*"
+          expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-insights/.*.sw*"
           expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/bin/log/track_pid.*"
           expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf /tmp/lighthouse_gc*"
 		    done
@@ -33,8 +33,8 @@ function clearLightLogFiles(){
           expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-tasks/.*.sw*"
           expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-ice/*"
           expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-ice/.*.sw*"
-          expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-web/*"
-          expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-web/.*.sw*"
+          expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-insights/*"
+          expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-insights/.*.sw*"
           expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/bin/log/track_pid.*"
           expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf /tmp/lighthouse_gc*"
                     done
