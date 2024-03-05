@@ -38,6 +38,11 @@
             <version>${scala.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        <dependency>
             <groupId>com.zeroc</groupId>
             <artifactId>ice</artifactId>
             <version>3.6.5</version>
