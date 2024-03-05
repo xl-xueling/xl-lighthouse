@@ -133,36 +133,37 @@ start_all(){
 	if [[ "${SERVICES[@]}" =~ "mysql" ]];then
 	  log_info "Waiting to start MySQL ..."
 		startMysql;
+		sleep 10;
 	fi
-  sleep 10;
 	if [[ "${SERVICES[@]}" =~ "zookeeper" ]];then
 	  log_info "Waiting to start Zookeeper ..."
 		startZookeeper;
+		sleep 10;
 	fi
-	sleep 10;
 	if [[ "${SERVICES[@]}" =~ "redis" ]];then
 	  log_info "Waiting to start Redis ..."
 		startRedis;
+		sleep 10;
 	fi
-	sleep 10;
 	if [[ "${SERVICES[@]}" =~ "hadoop" ]];then
 	  log_info "Waiting to start Hadoop ..."
 		startHadoop;
+		sleep 10;
 	fi
 	log_info "Waiting to start HBase ..."
-	sleep 10;
 	if [[ "${SERVICES[@]}" =~ "hbase" ]];then
 		startHBase;
+		sleep 10;
 	fi
-	sleep 10;
 	if [[ "${SERVICES[@]}" =~ "kafka" ]];then
 	  log_info "Waiting to start Kafka ..."
 		startKafka;
+		sleep 10;
 	fi
-	sleep 10;
 	if [[ "${SERVICES[@]}" =~ "spark" ]];then
 	  log_info "Waiting to start Spark ..."
 		startSpark;
+		sleep 10;
 	fi
 	log_info "Waiting to start LightHouse ..."
 	sleep 20;
