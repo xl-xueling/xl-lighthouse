@@ -22,7 +22,7 @@ import com.dtstep.lighthouse.common.entity.group.GroupExtEntity
 import com.dtstep.lighthouse.common.entity.message.LightMessage
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum
-import com.dtstep.lighthouse.core.wrapper.{StatDBWrapper, StatDBWrapperBak}
+import com.dtstep.lighthouse.core.wrapper.{StatDBWrapper}
 import org.apache.commons.collections.CollectionUtils
 import org.apache.spark.sql.Dataset
 
