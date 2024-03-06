@@ -5,10 +5,8 @@ import com.dtstep.lighthouse.common.hash.HashUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.lock.RedLock;
-import com.dtstep.lighthouse.core.storage.LdpGet;
-import com.dtstep.lighthouse.core.storage.LdpIncrement;
-import com.dtstep.lighthouse.core.storage.LdpPut;
-import com.dtstep.lighthouse.core.storage.LdpResult;
+import com.dtstep.lighthouse.core.storage.*;
+import com.dtstep.lighthouse.core.storage.CompareOperator;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngine;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -235,8 +233,8 @@ public class HBaseStorageEngine implements StorageEngine {
                 dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
             } else if (value.getClass() == Long.class) {
                 dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Long) value));
-            } else if (value.getClass() == Integer.class) {
-                dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Integer)value));
+            } else {
+                throw new IllegalArgumentException(String.format("Current type(%s) not supported!",value.getClass()));
             }
             long ttl = ldpPut.getTtl();
             Validate.isTrue(ttl != 0);
@@ -268,8 +266,8 @@ public class HBaseStorageEngine implements StorageEngine {
                     put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
                 } else if (value.getClass() == Long.class) {
                     put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Long) value));
-                } else if (value.getClass() == Integer.class) {
-                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Integer)value));
+                } else {
+                    throw new IllegalArgumentException(String.format("Current type(%s) not supported!",value.getClass()));
                 }
                 put.setTTL(ttl);
                 puts.add(put);
@@ -440,10 +438,10 @@ public class HBaseStorageEngine implements StorageEngine {
 
     private static final int batchSalt = 4;
 
-    private static final String MAX_PUT_LOCK_PREFIX = "MAX_PUT_LOCK";
+    private static final String COMPARE_PUT_LOCK_PREFIX = "COMPARE_PUT_LOCK";
 
     @Override
-    public void maxPuts(String tableName, List<LdpPut> ldpPuts) throws Exception {
+    public void putsWithCompare(String tableName, CompareOperator compareOperator, List<LdpPut> ldpPuts) throws Exception {
         if(CollectionUtils.isEmpty(ldpPuts)){
             return;
         }
@@ -451,7 +449,7 @@ public class HBaseStorageEngine implements StorageEngine {
         for(Long object : map.keySet()){
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
-            String lockKey = MAX_PUT_LOCK_PREFIX + "_" + object;
+            String lockKey = COMPARE_PUT_LOCK_PREFIX + "_" + compareOperator + "_" + object;
             boolean isLock = RedLock.tryLock(lockKey,8,3, TimeUnit.MINUTES);
             if(isLock){
                 try{
@@ -476,18 +474,34 @@ public class HBaseStorageEngine implements StorageEngine {
                         long ttl = ldpPut.getTtl();
                         Validate.isTrue(ttl != 0);
                         String aggregateKey = rowKey + ";" + column;
-                        if(MapUtils.isEmpty(dbValueMap) || !dbValueMap.containsKey(aggregateKey) || (Long)ldpPut.getData() > dbValueMap.get(aggregateKey)){
-                            Put put = new Put(Bytes.toBytes(rowKey));
-                            if (value.getClass() == String.class) {
-                                put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
-                            } else if (value.getClass() == Long.class) {
-                                put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Long) value));
-                            } else if (value.getClass() == Integer.class) {
-                                put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Integer)value));
+                        if(compareOperator == CompareOperator.GREATER){
+                            if(MapUtils.isEmpty(dbValueMap) || !dbValueMap.containsKey(aggregateKey) || (Long)ldpPut.getData() > dbValueMap.get(aggregateKey)){
+                                Put put = new Put(Bytes.toBytes(rowKey));
+                                if (value.getClass() == String.class) {
+                                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
+                                } else if (value.getClass() == Long.class) {
+                                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Long) value));
+                                } else {
+                                    throw new IllegalArgumentException(String.format("Current type(%s) not supported!",value.getClass()));
+                                }
+                                put.setTTL(ttl);
+                                put.setDurability(Durability.SYNC_WAL);
+                                puts.add(put);
                             }
-                            put.setTTL(ttl);
-                            put.setDurability(Durability.SYNC_WAL);
-                            puts.add(put);
+                        }else{
+                            if(MapUtils.isEmpty(dbValueMap) || !dbValueMap.containsKey(aggregateKey) || (Long)ldpPut.getData() < dbValueMap.get(aggregateKey)){
+                                Put put = new Put(Bytes.toBytes(rowKey));
+                                if (value.getClass() == String.class) {
+                                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
+                                } else if (value.getClass() == Long.class) {
+                                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Long) value));
+                                } else {
+                                    throw new IllegalArgumentException(String.format("Current type(%s) not supported!",value.getClass()));
+                                }
+                                put.setTTL(ttl);
+                                put.setDurability(Durability.SYNC_WAL);
+                                puts.add(put);
+                            }
                         }
                     }
                     try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
@@ -505,9 +519,5 @@ public class HBaseStorageEngine implements StorageEngine {
                 logger.error("try lock failed,thread unable to acquire lock,this batch data may be lost,cost:{}ms!",stopWatch.getTime());
             }
         }
-    }
-
-    @Override
-    public void minPuts(String tableName, List<LdpPut> ldpPuts) throws Exception {
     }
 }
