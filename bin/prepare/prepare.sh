@@ -127,7 +127,9 @@ prepare_for_deploy(){
   	checkOSVersion $lsb $major;
   fi
   pre;
-  localCompileWebapps ${LDP_HOME}/light-webapps;
+  if [[ ${_DEPLOY_LIGHTHOUSE_INSIGHTS} == "true" ]];then
+    localCompileWebapps ${LDP_HOME}/light-webapps;
+  fi
 	syncPackage;
 	baseInit;
 	sshInit;
