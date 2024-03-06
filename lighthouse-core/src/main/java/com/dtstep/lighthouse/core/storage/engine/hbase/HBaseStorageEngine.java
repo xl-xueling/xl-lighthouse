@@ -1,8 +1,6 @@
 package com.dtstep.lighthouse.core.storage.engine.hbase;
 
-import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.constant.SysConst;
-import com.dtstep.lighthouse.common.entity.view.StateValue;
 import com.dtstep.lighthouse.common.hash.HashUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
@@ -24,7 +22,6 @@ import org.apache.hadoop.hbase.io.compress.Compression;
 import org.apache.hadoop.hbase.io.encoding.DataBlockEncoding;
 import org.apache.hadoop.hbase.regionserver.BloomType;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.javatuples.Quartet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -237,9 +234,9 @@ public class HBaseStorageEngine implements StorageEngine {
             if (value.getClass() == String.class) {
                 dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
             } else if (value.getClass() == Long.class) {
-                dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((long) value));
+                dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Long) value));
             } else if (value.getClass() == Integer.class) {
-                dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(Long.parseLong(value.toString())));
+                dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Integer)value));
             }
             long ttl = ldpPut.getTtl();
             Validate.isTrue(ttl != 0);
@@ -270,9 +267,9 @@ public class HBaseStorageEngine implements StorageEngine {
                 if (value.getClass() == String.class) {
                     put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
                 } else if (value.getClass() == Long.class) {
-                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(Long.parseLong(value.toString())));
+                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Long) value));
                 } else if (value.getClass() == Integer.class) {
-                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(Integer.parseInt(value.toString())));
+                    put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Integer)value));
                 }
                 put.setTTL(ttl);
                 puts.add(put);
@@ -286,42 +283,41 @@ public class HBaseStorageEngine implements StorageEngine {
 
     @Override
     public <R> LdpResult<R> get(String tableName, LdpGet ldpGet, Class<R> clazz) throws Exception {
-        byte[] b;
         String rowKey = ldpGet.getKey();
         String column = ldpGet.getColumn();
-        long timestamp;
+        Result dbResult;
         try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
             Get get = new Get(Bytes.toBytes(rowKey));
-            Result result = table.get(get);
-            if (result == null) {
-                return null;
-            }
-            Cell cell = result.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes(column));
-            b = CellUtil.cloneValue(cell);
-            timestamp = cell.getTimestamp();
+            dbResult = table.get(get);
         } catch (Exception ex) {
             logger.error("hbase get error!",ex);
             throw ex;
         }
-        LdpResult<R> result = new LdpResult<>();
-        R data = null;
-        if(clazz == Long.class || clazz == long.class){
-            data = clazz.cast(Bytes.toLong(b));
-        }else if(clazz == String.class){
-            data = clazz.cast(Bytes.toString(b));
-        }else if(clazz == Integer.class || clazz == int.class){
-            data = clazz.cast(Bytes.toInt(b));
-        }else if(clazz == Double.class || clazz == double.class){
-            data = clazz.cast(Bytes.toDouble(b));
-        }else if(clazz == Float.class || clazz == float.class){
-            data = clazz.cast(Bytes.toFloat(b));
-        }else if(clazz == Boolean.class || clazz == boolean.class){
-            data = clazz.cast(Bytes.toBoolean(b));
+        Cell cell = dbResult.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes(column));
+        LdpResult<R> ldpResult = new LdpResult<>();
+        if(cell != null){
+            byte[] b = CellUtil.cloneValue(cell);
+            long timestamp = cell.getTimestamp();
+            R data = null;
+            if(clazz == Long.class || clazz == long.class){
+                data = clazz.cast(Bytes.toLong(b));
+            }else if(clazz == String.class){
+                data = clazz.cast(Bytes.toString(b));
+            }else if(clazz == Integer.class || clazz == int.class){
+                data = clazz.cast(Bytes.toInt(b));
+            }else if(clazz == Double.class || clazz == double.class){
+                data = clazz.cast(Bytes.toDouble(b));
+            }else if(clazz == Float.class || clazz == float.class){
+                data = clazz.cast(Bytes.toFloat(b));
+            }else if(clazz == Boolean.class || clazz == boolean.class){
+                data = clazz.cast(Bytes.toBoolean(b));
+            }
+            ldpResult.setData(data);
+            ldpResult.setTimestamp(timestamp);
         }
-        result.setData(data);
-        result.setKey(rowKey);
-        result.setTimestamp(timestamp);
-        return result;
+        ldpResult.setKey(rowKey);
+        ldpResult.setColumn(column);
+        return ldpResult;
     }
 
     @Override
@@ -350,25 +346,28 @@ public class HBaseStorageEngine implements StorageEngine {
             if(dbResult != null){
                 ldpResult = new LdpResult<>();
                 Cell cell = dbResult.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes(column));
-                byte[] b = CellUtil.cloneValue(cell);
-                long timestamp = cell.getTimestamp();
-                R data = null;
-                if(clazz == Long.class || clazz == long.class){
-                    data = clazz.cast(Bytes.toLong(b));
-                }else if(clazz == String.class){
-                    data = clazz.cast(Bytes.toString(b));
-                }else if(clazz == Integer.class || clazz == int.class){
-                    data = clazz.cast(Bytes.toInt(b));
-                }else if(clazz == Double.class || clazz == double.class){
-                    data = clazz.cast(Bytes.toDouble(b));
-                }else if(clazz == Float.class || clazz == float.class){
-                    data = clazz.cast(Bytes.toFloat(b));
-                }else if(clazz == Boolean.class || clazz == boolean.class){
-                    data = clazz.cast(Bytes.toBoolean(b));
+                if(cell != null){
+                    byte[] b = CellUtil.cloneValue(cell);
+                    long timestamp = cell.getTimestamp();
+                    R data = null;
+                    if(clazz == Long.class || clazz == long.class){
+                        data = clazz.cast(Bytes.toLong(b));
+                    }else if(clazz == String.class){
+                        data = clazz.cast(Bytes.toString(b));
+                    }else if(clazz == Integer.class || clazz == int.class){
+                        data = clazz.cast(Bytes.toInt(b));
+                    }else if(clazz == Double.class || clazz == double.class){
+                        data = clazz.cast(Bytes.toDouble(b));
+                    }else if(clazz == Float.class || clazz == float.class){
+                        data = clazz.cast(Bytes.toFloat(b));
+                    }else if(clazz == Boolean.class || clazz == boolean.class){
+                        data = clazz.cast(Bytes.toBoolean(b));
+                    }
+                    ldpResult.setData(data);
+                    ldpResult.setTimestamp(timestamp);
                 }
-                ldpResult.setData(data);
                 ldpResult.setKey(key);
-                ldpResult.setTimestamp(timestamp);
+                ldpResult.setColumn(column);
                 resultList.add(ldpResult);
             }
         }
@@ -391,25 +390,27 @@ public class HBaseStorageEngine implements StorageEngine {
                     String rowKey = Bytes.toString(dbResult.getRow());
                     LdpResult<R> ldpResult = new LdpResult<>();
                     Cell cell = dbResult.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes(column));
-                    byte[] b = CellUtil.cloneValue(cell);
-                    long timestamp = cell.getTimestamp();
-                    R data = null;
-                    if(clazz == Long.class || clazz == long.class){
-                        data = clazz.cast(Bytes.toLong(b));
-                    }else if(clazz == String.class){
-                        data = clazz.cast(Bytes.toString(b));
-                    }else if(clazz == Integer.class || clazz == int.class){
-                        data = clazz.cast(Bytes.toInt(b));
-                    }else if(clazz == Double.class || clazz == double.class){
-                        data = clazz.cast(Bytes.toDouble(b));
-                    }else if(clazz == Float.class || clazz == float.class){
-                        data = clazz.cast(Bytes.toFloat(b));
-                    }else if(clazz == Boolean.class || clazz == boolean.class){
-                        data = clazz.cast(Bytes.toBoolean(b));
+                    if(cell != null){
+                        byte[] b = CellUtil.cloneValue(cell);
+                        long timestamp = cell.getTimestamp();
+                        R data = null;
+                        if(clazz == Long.class || clazz == long.class){
+                            data = clazz.cast(Bytes.toLong(b));
+                        }else if(clazz == String.class){
+                            data = clazz.cast(Bytes.toString(b));
+                        }else if(clazz == Integer.class || clazz == int.class){
+                            data = clazz.cast(Bytes.toInt(b));
+                        }else if(clazz == Double.class || clazz == double.class){
+                            data = clazz.cast(Bytes.toDouble(b));
+                        }else if(clazz == Float.class || clazz == float.class){
+                            data = clazz.cast(Bytes.toFloat(b));
+                        }else if(clazz == Boolean.class || clazz == boolean.class){
+                            data = clazz.cast(Bytes.toBoolean(b));
+                        }
+                        ldpResult.setData(data);
+                        ldpResult.setTimestamp(timestamp);
                     }
-                    ldpResult.setData(data);
                     ldpResult.setKey(rowKey);
-                    ldpResult.setTimestamp(timestamp);
                     count++;
                     if (limit != -1 && count > limit) {
                         break;
@@ -439,7 +440,7 @@ public class HBaseStorageEngine implements StorageEngine {
 
     private static final int batchSalt = 4;
 
-    private static final String LOCK_PREFIX = "PUT_LOCK";
+    private static final String MAX_PUT_LOCK_PREFIX = "MAX_PUT_LOCK";
 
     @Override
     public void maxPuts(String tableName, List<LdpPut> ldpPuts) throws Exception {
@@ -450,30 +451,50 @@ public class HBaseStorageEngine implements StorageEngine {
         for(Long object : map.keySet()){
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
-            String lockKey = LOCK_PREFIX + "_" + "max" + "_" + object;
+            String lockKey = MAX_PUT_LOCK_PREFIX + "_" + object;
             boolean isLock = RedLock.tryLock(lockKey,8,3, TimeUnit.MINUTES);
             if(isLock){
                 try{
                     List<LdpPut> subList = map.get(object);
-                    List<String> aggregateKeyList = subList.stream().map(x -> x.getKey() + ";" + x.getColumn()).collect(Collectors.toList());
-//                    Map<String, StateValue> dbValueMap = multiGetByAggregateKey(metaName,aggregateKeyList);
-//                    List<Put> puts = Lists.newArrayList();
-//                    for(Quartet<String,String,Long,Long> quartet : subList){
-//                        String aggregate = quartet.getValue0() + ";" + quartet.getValue1();
-//                        if(MapUtils.isEmpty(dbValueMap) || !dbValueMap.containsKey(aggregate) || quartet.getValue2() > Long.parseLong(String.valueOf(dbValueMap.get(aggregate).getValue()))){
-//                            Put put = new Put(Bytes.toBytes(quartet.getValue0()));
-//                            put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(quartet.getValue1()), Bytes.toBytes(quartet.getValue2()));
-//                            put.setTTL(quartet.getValue3());
-//                            put.setDurability(Durability.SYNC_WAL);
-//                            puts.add(put);
-//                        }
-//                    }
-//                    try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
-//                        table.put(puts);
-//                    }catch (Exception ex) {
-//                        logger.error("execute batch put error,tableName:{}!",tableName,ex);
-//                        throw ex;
-//                    }
+                    List<LdpGet> getList = new ArrayList<>();
+                    for(LdpPut ldpPut:subList){
+                        LdpGet ldpGet = new LdpGet();
+                        ldpGet.setKey(ldpPut.getKey());
+                        ldpGet.setColumn(ldpPut.getColumn());
+                        getList.add(ldpGet);
+                    }
+                    List<LdpResult<Long>> dbResults = gets(tableName,getList,Long.class);
+                    Map<String,Long> dbValueMap = null;
+                    if(CollectionUtils.isNotEmpty(dbResults)){
+                        dbValueMap = dbResults.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), LdpResult::getData));
+                    }
+                    List<Put> puts = Lists.newArrayList();
+                    for(LdpPut ldpPut : subList){
+                        String rowKey = ldpPut.getKey();
+                        String column = ldpPut.getColumn();
+                        Object value = ldpPut.getData();
+                        long ttl = ldpPut.getTtl();
+                        String aggregateKey = rowKey + ";" + column;
+                        if(MapUtils.isEmpty(dbValueMap) || !dbValueMap.containsKey(aggregateKey) || (Long)ldpPut.getData() > dbValueMap.get(aggregateKey)){
+                            Put put = new Put(Bytes.toBytes(rowKey));
+                            if (value.getClass() == String.class) {
+                                put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
+                            } else if (value.getClass() == Long.class) {
+                                put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Long) value));
+                            } else if (value.getClass() == Integer.class) {
+                                put.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes((Integer)value));
+                            }
+                            put.setTTL(ttl);
+                            put.setDurability(Durability.SYNC_WAL);
+                            puts.add(put);
+                        }
+                    }
+                    try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+                        table.put(puts);
+                    }catch (Exception ex) {
+                        logger.error("execute batch put error,tableName:{}!",tableName,ex);
+                        throw ex;
+                    }
                 }catch (Exception ex){
                     logger.error("batch put error!",ex);
                 }finally {

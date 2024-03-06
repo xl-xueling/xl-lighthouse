@@ -140,5 +140,26 @@ public class HBaseStorageEngineTest {
         }
     }
 
+    @Test
+    public void testMaxPut() throws Exception {
+        String tableName = "ssvs:table_abc";
+        List<LdpPut> ldpPuts = new ArrayList<>();
+        LdpPut put1 = new LdpPut();
+        put1.setTtl(TimeUnit.DAYS.toMillis(10));
+        put1.setColumn("v");
+        put1.setData(1);
+        put1.setKey("101");
+        ldpPuts.add(put1);
 
+        LdpPut put2 = new LdpPut();
+        put2.setTtl(TimeUnit.DAYS.toMillis(10));
+        put2.setColumn("v");
+        put2.setData(1);
+        put2.setKey("102");
+        ldpPuts.add(put2);
+        StorageEngineProxy.getInstance().maxPuts(tableName,ldpPuts);
+
+
+
+    }
 }
