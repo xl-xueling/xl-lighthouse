@@ -15,6 +15,7 @@ import com.dtstep.lighthouse.core.storage.engine.StorageEngine;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
@@ -187,7 +188,9 @@ public class HBaseStorageEngine implements StorageEngine {
         try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
             Increment increment = new Increment(Bytes.toBytes(rowKey));
             increment.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), step);
-            increment.setTTL(ldpIncrement.getTtl());
+            long ttl = ldpIncrement.getTtl();
+            Validate.isTrue(ttl != 0);
+            increment.setTTL(ttl);
             increment.setReturnResults(false);
             increment.setDurability(Durability.SYNC_WAL);
             table.increment(increment);
@@ -209,6 +212,7 @@ public class HBaseStorageEngine implements StorageEngine {
                 String column = ldpIncrement.getColumn();
                 long step = ldpIncrement.getStep();
                 long ttl = ldpIncrement.getTtl();
+                Validate.isTrue(ttl != 0);
                 Increment increment = new Increment(Bytes.toBytes(rowKey));
                 increment.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), step);
                 increment.setTTL(ttl);
@@ -237,6 +241,9 @@ public class HBaseStorageEngine implements StorageEngine {
             } else if (value.getClass() == Integer.class) {
                 dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(Long.parseLong(value.toString())));
             }
+            long ttl = ldpPut.getTtl();
+            Validate.isTrue(ttl != 0);
+            dbPut.setTTL(ttl);
             dbPut.setDurability(Durability.SYNC_WAL);
             table.put(dbPut);
         }catch (Exception ex){
@@ -257,6 +264,7 @@ public class HBaseStorageEngine implements StorageEngine {
                 String column = ldpPut.getColumn();
                 Object value = ldpPut.getData();
                 long ttl = ldpPut.getTtl();
+                Validate.isTrue(ttl != 0);
                 Put put = new Put(Bytes.toBytes(rowKey));
                 put.setDurability(Durability.SYNC_WAL);
                 if (value.getClass() == String.class) {
@@ -373,7 +381,7 @@ public class HBaseStorageEngine implements StorageEngine {
         try(Table table = getConnection().getTable(TableName.valueOf(tableName))){
             Scan scan = new Scan();
             scan.setStartRow(Bytes.toBytes(startRow + "."));
-            scan.setStopRow(Bytes.toBytes(endRow));
+            scan.setStopRow(Bytes.toBytes(endRow  + "|"));
             scan.setMaxResultSize(limit);
             scan.setCaching(20);
             scan.setBatch(100);
@@ -381,8 +389,10 @@ public class HBaseStorageEngine implements StorageEngine {
                 int count = 0;
                 for (Result dbResult = scanner.next(); dbResult != null; dbResult = scanner.next()) {
                     String rowKey = Bytes.toString(dbResult.getRow());
-                    LdpResult<R> ldpResult = new LdpResult<R>();
-                    byte[] b = dbResult.getValue(Bytes.toBytes("f"), Bytes.toBytes(column));
+                    LdpResult<R> ldpResult = new LdpResult<>();
+                    Cell cell = dbResult.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes(column));
+                    byte[] b = CellUtil.cloneValue(cell);
+                    long timestamp = cell.getTimestamp();
                     R data = null;
                     if(clazz == Long.class || clazz == long.class){
                         data = clazz.cast(Bytes.toLong(b));
@@ -399,9 +409,9 @@ public class HBaseStorageEngine implements StorageEngine {
                     }
                     ldpResult.setData(data);
                     ldpResult.setKey(rowKey);
-                    ldpResult.setTimestamp(dbResult.current().getTimestamp());
+                    ldpResult.setTimestamp(timestamp);
                     count++;
-                    if (limit != -1 && count >= limit) {
+                    if (limit != -1 && count > limit) {
                         break;
                     }
                     resultList.add(ldpResult);
