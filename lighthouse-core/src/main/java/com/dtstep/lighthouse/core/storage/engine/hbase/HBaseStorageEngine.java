@@ -288,15 +288,9 @@ public class HBaseStorageEngine implements StorageEngine {
             if (result == null) {
                 return null;
             }
-            if (result.containsColumn(Bytes.toBytes("f"), Bytes.toBytes(column + StatConst.DB_RESULT_STORAGE_EXTEND_COLUMN))) {
-                b = result.getValue(Bytes.toBytes("f"), Bytes.toBytes(column + StatConst.DB_RESULT_STORAGE_EXTEND_COLUMN));
-            } else {
-                b = result.getValue(Bytes.toBytes("f"), Bytes.toBytes(column));
-            }
-            if (b == null) {
-                return null;
-            }
-            timestamp = result.current().getTimestamp();
+            Cell cell = result.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes(column));
+            b = CellUtil.cloneValue(cell);
+            timestamp = cell.getTimestamp();
         } catch (Exception ex) {
             logger.error("hbase get error!",ex);
             throw ex;
@@ -346,8 +340,10 @@ public class HBaseStorageEngine implements StorageEngine {
             Result dbResult = dbResults[i];
             LdpResult<R> ldpResult;
             if(dbResult != null){
-                ldpResult = new LdpResult<R>();
-                byte[] b = dbResult.getValue(Bytes.toBytes("f"), Bytes.toBytes(column));
+                ldpResult = new LdpResult<>();
+                Cell cell = dbResult.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes(column));
+                byte[] b = CellUtil.cloneValue(cell);
+                long timestamp = cell.getTimestamp();
                 R data = null;
                 if(clazz == Long.class || clazz == long.class){
                     data = clazz.cast(Bytes.toLong(b));
@@ -364,7 +360,7 @@ public class HBaseStorageEngine implements StorageEngine {
                 }
                 ldpResult.setData(data);
                 ldpResult.setKey(key);
-                ldpResult.setTimestamp(dbResult.current().getTimestamp());
+                ldpResult.setTimestamp(timestamp);
                 resultList.add(ldpResult);
             }
         }
