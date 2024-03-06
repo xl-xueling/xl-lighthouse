@@ -117,13 +117,25 @@ stop_all(){
 	if [[ "${SERVICES[@]}" =~ "zookeeper" ]];then
                 stopZookeeper;
         fi
-	stopLightHouseInsights;
-  stopLightHouseICE;
-  stopLightHouseTasks;
+        if [[ ${_DEPLOY_LIGHTHOUSE_INSIGHTS} == "true" ]];then
+	        stopLightHouseInsights;
+	      fi
+	      if [[ ${_DEPLOY_LIGHTHOUSE_ICE} == "true" ]];then
+	        stopLightHouseICE;
+	      fi
+	      if [[ ${_DEPLOY_LIGHTHOUSE_TASKS} == "true" ]];then
+	        stopLightHouseTasks;
+	      fi
 }
 
 stop_lighthouse(){
-	stopLightHouseInsights;
-  stopLightHouseICE;
-  stopLightHouseTasks;
+	  if [[ ${_DEPLOY_LIGHTHOUSE_INSIGHTS} == "true" ]];then
+	        stopLightHouseInsights;
+	      fi
+	      if [[ ${_DEPLOY_LIGHTHOUSE_ICE} == "true" ]];then
+	        stopLightHouseICE;
+	      fi
+	      if [[ ${_DEPLOY_LIGHTHOUSE_TASKS} == "true" ]];then
+	        stopLightHouseTasks;
+	      fi
 }

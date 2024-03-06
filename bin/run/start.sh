@@ -171,9 +171,15 @@ start_all(){
 	fi
 	log_info "Waiting to start LightHouse ..."
 	sleep 20;
-	startLightHouseICE;
-	startLightHouseInsights;
-  startLightHouseTasks;
+	if [[ ${_DEPLOY_LIGHTHOUSE_ICE} == "true" ]];then
+	  startLightHouseICE;
+	fi
+	if [[ ${_DEPLOY_LIGHTHOUSE_INSIGHTS} == "true" ]];then
+	  startLightHouseInsights;
+	fi
+	if [[ ${_DEPLOY_LIGHTHOUSE_TASKS} == "true" ]];then
+    startLightHouseTasks;
+  fi
   track;
 }
 

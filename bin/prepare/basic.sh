@@ -46,7 +46,7 @@ function loadDowns() {
 			local array=($(echo $rows | tr '=' ' '))
 			[[ ${array[0]} =~ ^#.* ]] && continue
 			DOWNS_MAP["${array[0]}"]=${array[1]}
-			if [ "$service" == "kafka" -a ${_USE_CUSTOM_RPC_SERVICE} == "true" ];then
+			if [ "$service" == "kafka" -a ${_DEPLOY_LIGHTHOUSE_ICE} == "false" ];then
         continue;
       fi
 			SERVICES+=(${array[0]})

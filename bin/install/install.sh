@@ -41,7 +41,9 @@ install(){
 	dependencyInstall;
 	pluginsInstall;
 	reloadClusterConfig;
-	installICE;
+	if [[ ${_DEPLOY_LIGHTHOUSE_ICE} == "true" ]];then
+	  installICE;
+	fi
 	authorization;
 }
 
