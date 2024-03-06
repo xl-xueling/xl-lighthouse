@@ -58,23 +58,25 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
             startRow = keyGenerator.dimensKey(group,dimens,lastDimensValue);
         }
         String finalStartRow = startRow;
-        for(int i=0;i<SysConst._DIMENS_STORAGE_PRE_PARTITIONS_SIZE;i++){
-            int index = startIndex + i;
-            while (index >= SysConst._DBKeyPrefixArray.length){
-                index = index - SysConst._DBKeyPrefixArray.length;
+        for(int part = 0;part <SysConst._DIMENS_STORAGE_PRE_PARTITIONS_SIZE;part ++){
+            int current = startIndex + part ;
+            while (current >= SysConst._DBKeyPrefixArray.length){
+                current = current - SysConst._DBKeyPrefixArray.length;
             }
             if(dimensList.size() >= limit){
                 break;
             }
-            String prefix = SysConst._DBKeyPrefixArray[i];
-            String partStartRow = prefix + Md5Util.getMD5(group.getRandomId() + "_" + dimens);
-            if(finalStartRow != null && finalStartRow.compareTo(partStartRow) > 0){
+            String prefix = SysConst._DBKeyPrefixArray[current];
+            String partStartRow = prefix + Md5Util.getMD5(group.getRandomId() + "_" + dimens) + ".";
+            String partEndRow = prefix + Md5Util.getMD5(group.getRandomId() + "_" + dimens) + "|";
+            if(finalStartRow != null && finalStartRow.compareTo(partEndRow) < 0){
+                continue;
+            }else if(finalStartRow != null && finalStartRow.compareTo(partStartRow) > 0){
                 partStartRow = finalStartRow;
             }
-            String partEnd = prefix + Md5Util.getMD5(group.getRandomId() + "_" + dimens) + "|";
             try{
                 while (true){
-                    List<LdpResult<String>> dbResults = StorageEngineProxy.getInstance().scan(StatConst.DIMENS_STORAGE_TABLE,partStartRow,partEnd,(limit - dimensList.size()),String.class);
+                    List<LdpResult<String>> dbResults = StorageEngineProxy.getInstance().scan(StatConst.DIMENS_STORAGE_TABLE,partStartRow,partEndRow,(limit - dimensList.size()),String.class);
                     if(CollectionUtils.isEmpty(dbResults)){
                         break;
                     }
@@ -93,6 +95,6 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
                 logger.error("load dimens error!",ex);
             }
         }
-        return null;
+        return dimensList;
     }
 }
