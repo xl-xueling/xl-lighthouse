@@ -45,17 +45,7 @@ public class HBaseDimensStorageEngine extends DimensStorageEngine<DimensBucket, 
 
     @Override
     public void put(List<DimensBucket> events) throws Exception {
-        List<LdpPut> putList = new ArrayList<>();
-        for(DimensBucket quartet : events){
-            String rowKey = DimensDBWrapper.generateKey(quartet.getToken(),quartet.getDimens(),quartet.getDimensValue());
-            if(logger.isTraceEnabled()){
-                logger.trace("save dimens,token:{},dimens:{},dimensValue:{},rowKey:{}",quartet.getToken(),quartet.getDimens(),quartet.getDimensValue(),rowKey);
-            }
-            Quartet<String,String,Object,Long> result = Quartet.with(rowKey,"d",quartet.getDimensValue(),quartet.getTtl());
-            LdpPut ldpPut = LdpPut.with(rowKey,"d",quartet.getDimensValue(),quartet.getTtl());
-            putList.add(ldpPut);
-        }
-        StorageEngineProxy.getInstance().puts(StatConst.DIMENS_STORAGE_TABLE,putList);
+
     }
 
     @Override
