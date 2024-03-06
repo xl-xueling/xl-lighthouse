@@ -13,17 +13,10 @@ import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
 import com.dtstep.lighthouse.core.storage.LdpPut;
 import com.dtstep.lighthouse.core.storage.LdpResult;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
-import com.dtstep.lighthouse.core.wrapper.DimensDBWrapper;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.util.Bytes;
-import org.javatuples.Quartet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensBucket, String> {
@@ -31,6 +24,8 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
     private static final Logger logger = LoggerFactory.getLogger(DefaultDimensStorageHandler.class);
 
     private final KeyGenerator keyGenerator = new DefaultKeyGenerator();
+
+    private static final String dimensColumnName = "v";
 
     @Override
     public void put(List<DimensBucket> list) throws Exception {
@@ -43,14 +38,14 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
             if(logger.isTraceEnabled()){
                 logger.trace("save dimens,token:{},dimens:{},dimensValue:{},rowKey:{}",quartet.getGroup().getToken(),quartet.getDimens(),quartet.getDimensValue(),rowKey);
             }
-            LdpPut ldpPut = LdpPut.with(rowKey,"d",quartet.getDimensValue(),quartet.getTtl());
+            LdpPut ldpPut = LdpPut.with(rowKey,dimensColumnName,quartet.getDimensValue(),quartet.getTtl());
             putList.add(ldpPut);
         }
         StorageEngineProxy.getInstance().puts(StatConst.DIMENS_STORAGE_TABLE,putList);
     }
 
     @Override
-    public List<String> queryDimensList(Group group, String dimens, String lastDimensValue, int limit) throws Exception {
+    public List<String> query(Group group, String dimens, String lastDimensValue, int limit) throws Exception {
         int startIndex = Math.abs((int) (HashUtil.BKDRHash(group.getRandomId() + "_" + dimens) % SysConst._DBKeyPrefixArray.length));
         List<String> dimensList = new ArrayList<>();
         String startRow = null;
@@ -76,7 +71,8 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
             }
             try{
                 while (true){
-                    List<LdpResult<String>> dbResults = StorageEngineProxy.getInstance().scan(StatConst.DIMENS_STORAGE_TABLE,partStartRow,partEndRow,(limit - dimensList.size()),String.class);
+                    int requireSize = limit - dimensList.size();
+                    List<LdpResult<String>> dbResults = StorageEngineProxy.getInstance().scan(StatConst.DIMENS_STORAGE_TABLE,partStartRow,partEndRow,requireSize,String.class);
                     if(CollectionUtils.isEmpty(dbResults)){
                         break;
                     }
@@ -87,7 +83,7 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
                             dimensList.add(dimensValue);
                         }
                     }
-                    if(dimensList.size() >= limit){
+                    if(dimensList.size() >= limit || dbResults.size() < requireSize){
                         break;
                     }
                 }

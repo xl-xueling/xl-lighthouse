@@ -8,5 +8,5 @@ public interface DimensStorageHandler<W,R> {
 
     void put(List<W> list) throws Exception;
 
-    List<R> queryDimensList(Group group, String dimens, String lastDimensValue, int limit) throws Exception;
+    List<R> query(Group group, String dimens, String lastDimensValue, int limit) throws Exception;
 }
