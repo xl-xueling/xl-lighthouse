@@ -48,13 +48,15 @@ function localCompileWebapps(){
   npm install -g yarn;
   local path=${1};
   cd ${path};
-	rm -rf node_modules yarn.lock package-lock.json
+	rm -rf yarn.lock package-lock.json
+	yarn config set network-timeout 600000 -g
+	yarn config set strict-ssl false
 	yarn install;
 	yarn install;
 	yarn install;
 	yarn run build;
 	if [ ! -d "${path}/build/static" ]; then
-      echo "Compile webapps failed,process exit!"
+      echo "Compile lighthouse-insights failed,process exit!"
       exit -1;
   fi
 }
