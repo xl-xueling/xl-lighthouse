@@ -110,9 +110,6 @@ public class HBaseStorageEngine implements StorageEngine {
 
     @Override
     public void createNamespace(String namespace) throws Exception {
-        if(isNameSpaceExist(namespace)){
-            return;
-        }
         NamespaceDescriptor namespaceDescriptor = NamespaceDescriptor.create(namespace).build();
         hBaseAdmin.createNamespace(namespaceDescriptor);
         logger.info("create namespace {} success!",namespace);
