@@ -51,11 +51,17 @@ function localCompileWebapps(){
 	rm -rf yarn.lock package-lock.json
 	yarn config set network-timeout 600000 -g
 	yarn config set strict-ssl false
+	yarn config set registry https://registry.npmjs.org/
 	yarn install;
 	yarn install;
 	yarn install;
 	yarn run build;
 	if [ ! -d "${path}/build/static" ]; then
+      yarn config set registry https://registry.npm.taobao.org/
+      yarn install;
+	    yarn run build;
+  fi
+  if [ ! -d "${path}/build/static" ]; then
       echo "Compile lighthouse-insights failed,process exit!"
       exit -1;
   fi
