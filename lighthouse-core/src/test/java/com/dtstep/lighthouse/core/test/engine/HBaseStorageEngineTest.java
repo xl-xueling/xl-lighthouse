@@ -130,7 +130,7 @@ public class HBaseStorageEngineTest {
         String tableName = "ssvs:table_abc";
         String startRow = " 00.";
         String endRow = "00|";
-        List<LdpResult<String>> results = StorageEngineProxy.getInstance().scan(tableName,startRow,endRow,"v",10,String.class);
+        List<LdpResult<String>> results = StorageEngineProxy.getInstance().scan(tableName,startRow,endRow,10,String.class);
         for(int i=0;i<results.size();i++){
             LdpResult<String> result = results.get(i);
             System.out.println("result is:" + JsonUtil.toJSONString(result));
