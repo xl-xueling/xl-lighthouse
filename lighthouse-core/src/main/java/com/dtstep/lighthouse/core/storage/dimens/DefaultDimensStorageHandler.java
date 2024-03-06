@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensBucket, String> {
 
@@ -53,42 +54,49 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
             startRow = keyGenerator.dimensKey(group,dimens,lastDimensValue);
         }
         String finalStartRow = startRow;
+        List<Integer> indexList = new ArrayList<>();
         for(int part = 0;part <SysConst._DIMENS_STORAGE_PRE_PARTITIONS_SIZE;part ++){
             int current = startIndex + part ;
             while (current >= SysConst._DBKeyPrefixArray.length){
                 current = current - SysConst._DBKeyPrefixArray.length;
             }
-            if(dimensList.size() >= limit){
+            indexList.add(current);
+        }
+        List<Integer> sortedIndexList = indexList.stream()
+                .sorted()
+                .collect(Collectors.toList());
+        for (int current : sortedIndexList) {
+            if (dimensList.size() >= limit) {
                 break;
             }
             String prefix = SysConst._DBKeyPrefixArray[current];
             String partStartRow = prefix + Md5Util.getMD5(group.getRandomId() + "_" + dimens) + ".";
             String partEndRow = prefix + Md5Util.getMD5(group.getRandomId() + "_" + dimens) + "|";
-            if(finalStartRow != null && finalStartRow.compareTo(partEndRow) < 0){
+            if (finalStartRow != null && finalStartRow.compareTo(partEndRow) > 0) {
                 continue;
-            }else if(finalStartRow != null && finalStartRow.compareTo(partStartRow) > 0){
+            } else if (finalStartRow != null && finalStartRow.compareTo(partStartRow) > 0) {
                 partStartRow = finalStartRow;
             }
-            try{
-                while (true){
+            try {
+                while (true) {
                     int requireSize = limit - dimensList.size();
-                    List<LdpResult<String>> dbResults = StorageEngineProxy.getInstance().scan(StatConst.DIMENS_STORAGE_TABLE,partStartRow,partEndRow,requireSize,String.class);
-                    if(CollectionUtils.isEmpty(dbResults)){
+                    List<LdpResult<String>> dbResults = StorageEngineProxy.getInstance().scan(StatConst.DIMENS_STORAGE_TABLE, partStartRow, partEndRow, requireSize, String.class);
+                    if (CollectionUtils.isEmpty(dbResults)) {
                         break;
                     }
-                    for(LdpResult<String> ldpResult : dbResults){
+                    for (LdpResult<String> ldpResult : dbResults) {
                         String dimensValue = ldpResult.getData();
-                        if(StringUtil.isNotEmpty(dimensValue) && dimensList.size() < limit){
+                        if (StringUtil.isNotEmpty(dimensValue) && dimensList.size() < limit) {
                             partStartRow = ldpResult.getKey();
                             dimensList.add(dimensValue);
                         }
                     }
-                    if(dimensList.size() >= limit || dbResults.size() < requireSize){
+                    if (dimensList.size() >= limit || dbResults.size() < requireSize) {
                         break;
                     }
                 }
-            }catch (Exception ex){
-                logger.error("load dimens error!",ex);
+            } catch (Exception ex) {
+                logger.error("load dimens error!", ex);
             }
         }
         return dimensList;

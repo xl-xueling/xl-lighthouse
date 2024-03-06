@@ -50,11 +50,18 @@ public class DimensStorageHandlerTest {
     }
 
     @Test
+    public void test1() throws Exception{
+        String a = "abc1";
+        String b = "abc2";
+        System.out.println(b.compareTo(a));
+    }
+
+    @Test
     public void testQuery() throws Exception {
         Group group = new Group();
         String randomId = "test";
         group.setRandomId(randomId);
-        List<String> dimensList = new DefaultDimensStorageHandler().query(group,"province","p_9",10);
+        List<String> dimensList = new DefaultDimensStorageHandler().query(group,"province",null,10);
         for(int i=0;i<dimensList.size();i++){
             System.out.println("dimens:" + dimensList.get(i));
         }
