@@ -40,7 +40,6 @@ public class HBaseStorageEngine implements StorageEngine {
     private static Compression.Algorithm algorithm = null;
 
     static {
-        logger.info("------start...");
         try{
             hBaseAdmin = getConnection().getAdmin();
         }catch (Exception ex){
@@ -92,7 +91,6 @@ public class HBaseStorageEngine implements StorageEngine {
                     hBaseConfiguration.setInt("hbase.client.operation.timeout",240000);
                     hBaseConfiguration.setInt("hbase.client.scanner.timeout.period",180000);
                     connection = ConnectionFactory.createConnection(hBaseConfiguration);
-                    System.out.println("connection:"+ connection);
                     logger.info("create hbase connection,thread:{},cost:{}",Thread.currentThread().getName(),stopWatch.getTime());
                 }
             }
