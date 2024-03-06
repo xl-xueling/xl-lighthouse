@@ -373,7 +373,7 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
-    public <R> List<LdpResult<R>> scan(String tableName, String startRow, String endRow,String column, int limit,Class<R> clazz) throws Exception {
+    public <R> List<LdpResult<R>> scan(String tableName, String startRow, String endRow, int limit,Class<R> clazz) throws Exception {
         List<LdpResult<R>> resultList = new ArrayList<>();
         try(Table table = getConnection().getTable(TableName.valueOf(tableName))){
             Scan scan = new Scan();
@@ -387,7 +387,7 @@ public class HBaseStorageEngine implements StorageEngine {
                 for (Result dbResult = scanner.next(); dbResult != null; dbResult = scanner.next()) {
                     String rowKey = Bytes.toString(dbResult.getRow());
                     LdpResult<R> ldpResult = new LdpResult<>();
-                    Cell cell = dbResult.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes(column));
+                    Cell cell = dbResult.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes("d"));
                     if(cell != null){
                         byte[] b = CellUtil.cloneValue(cell);
                         long timestamp = cell.getTimestamp();
