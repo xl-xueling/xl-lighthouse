@@ -83,8 +83,8 @@ public final class DimensStatProcess extends Process {
                 if(logger.isTraceEnabled()){
                     logger.trace("lighthouse trace,save dimens,token:{},dimens:{},dimensValue:{},ttl:{}", groupExtEntity.getToken(),dimensArr[i],value,ttl);
                 }
-                DimensBucket dimensBucket = new DimensBucket(groupExtEntity.getToken(),dimensArr[i],value,ttl);
-                int slot = HashUtil.getHashIndex(dimensBucket.getToken() + "_" + dimensBucket.getDimens() + "_" + dimensBucket.getDimensValue(),eventPool.slotSize());
+                DimensBucket dimensBucket = new DimensBucket(groupExtEntity,dimensArr[i],value,ttl);
+                int slot = HashUtil.getHashIndex(dimensBucket.getGroup().getRandomId() + "_" + dimensBucket.getDimens() + "_" + dimensBucket.getDimensValue(),eventPool.slotSize());
                 eventPool.put(slot, dimensBucket);
             }
             i++;

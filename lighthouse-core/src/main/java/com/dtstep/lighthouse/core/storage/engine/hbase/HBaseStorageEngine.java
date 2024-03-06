@@ -377,8 +377,8 @@ public class HBaseStorageEngine implements StorageEngine {
         List<LdpResult<R>> resultList = new ArrayList<>();
         try(Table table = getConnection().getTable(TableName.valueOf(tableName))){
             Scan scan = new Scan();
-            scan.setStartRow(Bytes.toBytes(startRow + "."));
-            scan.setStopRow(Bytes.toBytes(endRow  + "|"));
+            scan.setStartRow(Bytes.toBytes(startRow));
+            scan.setStopRow(Bytes.toBytes(endRow));
             scan.setMaxResultSize(limit);
             scan.setCaching(20);
             scan.setBatch(100);

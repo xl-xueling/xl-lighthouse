@@ -1,4 +1,7 @@
 package com.dtstep.lighthouse.common.entity.event;
+
+import com.dtstep.lighthouse.common.modal.Group;
+
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -20,7 +23,7 @@ public class DimensBucket extends SlotEvent<DimensBucket> {
 
     private static final long serialVersionUID = -6361051338612407945L;
 
-    private String token;
+    private Group group;
 
     private String dimens;
 
@@ -28,22 +31,14 @@ public class DimensBucket extends SlotEvent<DimensBucket> {
 
     private long ttl;
 
-    public DimensBucket(String token, String dimens, String dimensValue, long ttl){
-        this.token = token;
+    public DimensBucket(Group group, String dimens, String dimensValue, long ttl){
+        this.group = group;
         this.dimens = dimens;
         this.dimensValue = dimensValue;
         this.ttl = ttl;
     }
 
     public DimensBucket(){}
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public String getDimens() {
         return dimens;
@@ -69,9 +64,17 @@ public class DimensBucket extends SlotEvent<DimensBucket> {
         this.ttl = ttl;
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
     @Override
     public String toString() {
-        return this.getToken() + "_" + this.getDimens() + "_" + this.getDimensValue();
+        return this.getGroup().getRandomId() + "_" + this.getDimens() + "_" + this.getDimensValue();
     }
 
     @Override
