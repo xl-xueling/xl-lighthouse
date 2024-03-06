@@ -158,8 +158,21 @@ public class HBaseStorageEngineTest {
         put2.setKey("102");
         ldpPuts.add(put2);
         StorageEngineProxy.getInstance().maxPuts(tableName,ldpPuts);
+    }
 
-
-
+    @Test
+    public void testPutInteger() throws Exception {
+        String tableName = "ssvs:table_abc";
+        LdpPut ldpPut = new LdpPut();
+        ldpPut.setColumn("v");
+        ldpPut.setData(1L);
+        ldpPut.setKey("103");
+        ldpPut.setTtl(TimeUnit.HOURS.toMillis(111));
+        StorageEngineProxy.getInstance().put(tableName,ldpPut);
+        LdpGet get = new LdpGet();
+        get.setKey("103");
+        get.setColumn("v");
+        LdpResult<Long> result = StorageEngineProxy.getInstance().get(tableName,get,Long.class);
+        System.out.println("result is:" + JsonUtil.toJSONString(result));
     }
 }
