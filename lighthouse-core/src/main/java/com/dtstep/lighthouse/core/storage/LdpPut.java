@@ -41,7 +41,11 @@ public class LdpPut {
     }
 
     public void setData(Object data) {
-        this.data = data;
+        if (data instanceof String || data instanceof Long) {
+            this.data = data;
+        } else {
+            throw new IllegalArgumentException("LdpPut data attribute must be of type String or Long!");
+        }
     }
 
     public long getTtl() {

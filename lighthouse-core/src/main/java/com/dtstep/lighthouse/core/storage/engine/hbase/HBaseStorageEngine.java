@@ -474,6 +474,7 @@ public class HBaseStorageEngine implements StorageEngine {
                         String column = ldpPut.getColumn();
                         Object value = ldpPut.getData();
                         long ttl = ldpPut.getTtl();
+                        Validate.isTrue(ttl != 0);
                         String aggregateKey = rowKey + ";" + column;
                         if(MapUtils.isEmpty(dbValueMap) || !dbValueMap.containsKey(aggregateKey) || (Long)ldpPut.getData() > dbValueMap.get(aggregateKey)){
                             Put put = new Put(Bytes.toBytes(rowKey));
