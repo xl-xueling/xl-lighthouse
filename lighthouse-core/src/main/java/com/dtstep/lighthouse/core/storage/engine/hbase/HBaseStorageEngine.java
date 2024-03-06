@@ -377,7 +377,7 @@ public class HBaseStorageEngine implements StorageEngine {
         List<LdpResult<R>> resultList = new ArrayList<>();
         try(Table table = getConnection().getTable(TableName.valueOf(tableName))){
             Scan scan = new Scan();
-            scan.setStartRow(Bytes.toBytes(startRow));
+            scan.setStartRow(Bytes.toBytes(startRow+"."));
             scan.setStopRow(Bytes.toBytes(endRow));
             scan.setMaxResultSize(limit);
             scan.setCaching(20);
@@ -387,7 +387,7 @@ public class HBaseStorageEngine implements StorageEngine {
                 for (Result dbResult = scanner.next(); dbResult != null; dbResult = scanner.next()) {
                     String rowKey = Bytes.toString(dbResult.getRow());
                     LdpResult<R> ldpResult = new LdpResult<>();
-                    Cell cell = dbResult.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes("d"));
+                    Cell cell = dbResult.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes("v"));
                     if(cell != null){
                         byte[] b = CellUtil.cloneValue(cell);
                         long timestamp = cell.getTimestamp();
