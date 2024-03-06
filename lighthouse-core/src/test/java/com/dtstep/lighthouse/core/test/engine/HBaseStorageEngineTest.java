@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.storage.LdpGet;
 import com.dtstep.lighthouse.core.storage.LdpIncrement;
+import com.dtstep.lighthouse.core.storage.LdpPut;
 import com.dtstep.lighthouse.core.storage.LdpResult;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
 import org.junit.Test;
@@ -87,5 +88,57 @@ public class HBaseStorageEngineTest {
         List<LdpResult<Long>> results = StorageEngineProxy.getInstance().gets(tableName,getList,Long.class);
         System.out.println("results is:" + JsonUtil.toJSONString(results));
     }
+
+    @Test
+    public void testDelete() throws Exception {
+        String tableName = "ssvs:table_abc";
+        String key = "abc";
+        StorageEngineProxy.getInstance().delete(tableName,key);
+    }
+
+    @Test
+    public void testPut() throws Exception {
+        String tableName = "ssvs:table_abc";
+        String key = "001";
+        LdpPut ldpPut = new LdpPut();
+        ldpPut.setKey(key);
+        ldpPut.setColumn("v");
+        ldpPut.setKey(key);
+        ldpPut.setData("aaaaa");
+        StorageEngineProxy.getInstance().put(tableName,ldpPut);
+        LdpGet ldpGet = new LdpGet();
+        ldpGet.setKey(key);
+        ldpGet.setColumn("v");
+        LdpResult<String> ldpResult = StorageEngineProxy.getInstance().get(tableName,ldpGet,String.class);
+        System.out.println("ldpResult is:" + JsonUtil.toJSONString(ldpResult));
+    }
+
+    @Test
+    public void testPuts() throws Exception {
+        String tableName = "ssvs:table_abc";
+        List<LdpPut> putList = new ArrayList<>();
+        for(int i=0;i<10;i++){
+            LdpPut ldpPut = new LdpPut();
+            ldpPut.setKey("00"+i);
+            ldpPut.setColumn("v");
+            ldpPut.setData("aaaaa_"+i);
+            ldpPut.setTtl(TimeUnit.DAYS.toMillis(10));
+            putList.add(ldpPut);
+        }
+        StorageEngineProxy.getInstance().puts(tableName,putList);
+    }
+
+    @Test
+    public void testScan() throws Exception {
+        String tableName = "ssvs:table_abc";
+        String startRow = " 00.";
+        String endRow = "00|";
+        List<LdpResult<String>> results = StorageEngineProxy.getInstance().scan(tableName,startRow,endRow,"v",10,String.class);
+        for(int i=0;i<results.size();i++){
+            LdpResult<String> result = results.get(i);
+            System.out.println("result is:" + JsonUtil.toJSONString(result));
+        }
+    }
+
 
 }
