@@ -1,9 +1,6 @@
 package com.dtstep.lighthouse.core.storage.engine;
 
-import com.dtstep.lighthouse.core.storage.LdpGet;
-import com.dtstep.lighthouse.core.storage.LdpIncrement;
-import com.dtstep.lighthouse.core.storage.LdpPut;
-import com.dtstep.lighthouse.core.storage.LdpResult;
+import com.dtstep.lighthouse.core.storage.*;
 
 import java.util.List;
 
@@ -25,9 +22,7 @@ public interface StorageEngine {
 
     void increments(String tableName,List<LdpIncrement> ldpIncrements) throws Exception;
 
-    void maxPuts(String tableName,List<LdpPut> ldpPuts) throws Exception;
-
-    void minPuts(String tableName,List<LdpPut> ldpPuts) throws Exception;
+    void putsWithCompare(String tableName, CompareOperator compareOperator,List<LdpPut> ldpPuts) throws Exception;
 
     <R> LdpResult<R> get(String tableName, LdpGet ldpGet, Class<R> clazz) throws Exception;
 

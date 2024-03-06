@@ -2,10 +2,7 @@ package com.dtstep.lighthouse.core.test.engine;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.storage.LdpGet;
-import com.dtstep.lighthouse.core.storage.LdpIncrement;
-import com.dtstep.lighthouse.core.storage.LdpPut;
-import com.dtstep.lighthouse.core.storage.LdpResult;
+import com.dtstep.lighthouse.core.storage.*;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
 import org.junit.Test;
 
@@ -141,26 +138,6 @@ public class HBaseStorageEngineTest {
     }
 
     @Test
-    public void testMaxPut() throws Exception {
-        String tableName = "ssvs:table_abc";
-        List<LdpPut> ldpPuts = new ArrayList<>();
-        LdpPut put1 = new LdpPut();
-        put1.setTtl(TimeUnit.DAYS.toMillis(10));
-        put1.setColumn("v");
-        put1.setData(1);
-        put1.setKey("101");
-        ldpPuts.add(put1);
-
-        LdpPut put2 = new LdpPut();
-        put2.setTtl(TimeUnit.DAYS.toMillis(10));
-        put2.setColumn("v");
-        put2.setData(1);
-        put2.setKey("102");
-        ldpPuts.add(put2);
-        StorageEngineProxy.getInstance().maxPuts(tableName,ldpPuts);
-    }
-
-    @Test
     public void testPutInteger() throws Exception {
         String tableName = "ssvs:table_abc";
         LdpPut ldpPut = new LdpPut();
@@ -174,5 +151,26 @@ public class HBaseStorageEngineTest {
         get.setColumn("v");
         LdpResult<Long> result = StorageEngineProxy.getInstance().get(tableName,get,Long.class);
         System.out.println("result is:" + JsonUtil.toJSONString(result));
+    }
+
+
+    @Test
+    public void testMaxPut() throws Exception {
+        String tableName = "ssvs:table_abc";
+        List<LdpPut> ldpPuts = new ArrayList<>();
+        LdpPut put1 = new LdpPut();
+        put1.setTtl(TimeUnit.DAYS.toMillis(10));
+        put1.setColumn("v");
+        put1.setData(3L);
+        put1.setKey("101");
+        ldpPuts.add(put1);
+
+        LdpPut put2 = new LdpPut();
+        put2.setTtl(TimeUnit.DAYS.toMillis(10));
+        put2.setColumn("v");
+        put2.setData(5L);
+        put2.setKey("102");
+        ldpPuts.add(put2);
+        StorageEngineProxy.getInstance().putsWithCompare(tableName, CompareOperator.GREATER,ldpPuts);
     }
 }
