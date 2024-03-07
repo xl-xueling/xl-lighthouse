@@ -6,6 +6,13 @@ public class LdpGet {
 
     private String column;
 
+    public static LdpGet with(String key,String column){
+        LdpGet ldpGet = new LdpGet();
+        ldpGet.setKey(key);
+        ldpGet.setColumn(column);
+        return ldpGet;
+    }
+
     public String getKey() {
         return key;
     }
