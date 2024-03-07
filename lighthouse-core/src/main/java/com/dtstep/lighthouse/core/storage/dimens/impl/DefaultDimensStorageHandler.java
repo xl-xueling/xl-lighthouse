@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.storage.dimens;
+package com.dtstep.lighthouse.core.storage.dimens.impl;
 
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.constant.SysConst;
@@ -7,11 +7,11 @@ import com.dtstep.lighthouse.common.hash.HashUtil;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
-import com.dtstep.lighthouse.core.hbase.HBaseClient;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
 import com.dtstep.lighthouse.core.storage.LdpPut;
 import com.dtstep.lighthouse.core.storage.LdpResult;
+import com.dtstep.lighthouse.core.storage.dimens.DimensStorageHandler;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;

@@ -1,18 +1,15 @@
 package com.dtstep.lighthouse.core.test.engine.dimens;
 
 import com.dtstep.lighthouse.common.constant.StatConst;
-import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.entity.event.DimensBucket;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.storage.LdpPut;
-import com.dtstep.lighthouse.core.storage.dimens.DefaultDimensStorageHandler;
+import com.dtstep.lighthouse.core.storage.dimens.impl.DefaultDimensStorageHandler;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class DimensStorageHandlerTest {
