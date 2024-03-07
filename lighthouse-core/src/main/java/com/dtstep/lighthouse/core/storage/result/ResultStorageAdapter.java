@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.storage.engine_bak.proxy;
+package com.dtstep.lighthouse.core.storage.result;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -19,45 +19,33 @@ package com.dtstep.lighthouse.core.storage.engine_bak.proxy;
 import com.dtstep.lighthouse.common.entity.calculate.MicroBucket;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
-import com.dtstep.lighthouse.core.storage.engine_bak.ResultStorageEngine;
-import com.dtstep.lighthouse.core.storage.engine_bak.impl.HBaseResultStorageEngine;
+import com.dtstep.lighthouse.core.storage.result.impl.DefaultResultStorageHandler;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class ResultStorageProxy {
+public class ResultStorageAdapter {
 
-    private static final ResultStorageEngine<MicroBucket,StatValue> resultStorageEngine = new HBaseResultStorageEngine();
+    private static final ResultStorageHandler<MicroBucket,StatValue> resultStorageHandler = new DefaultResultStorageHandler();
 
     public static void increment(List<MicroBucket> bucketList) throws Exception{
-        resultStorageEngine.increment(bucketList);
+        resultStorageHandler.increment(bucketList);
     }
 
     public static void maxPut(List<MicroBucket> bucketList) throws Exception{
-        resultStorageEngine.maxPut(bucketList);
+        resultStorageHandler.maxPut(bucketList);
     }
 
     public static void minPut(List<MicroBucket> bucketList) throws Exception{
-        resultStorageEngine.minPut(bucketList);
+        resultStorageHandler.minPut(bucketList);
     }
 
     public static void put(List<MicroBucket> bucketList) throws Exception {
-        resultStorageEngine.put(bucketList);
-    }
-
-    public static List<StatValue> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensList, List<Long> batchTimeList) throws Exception {
-        return resultStorageEngine.queryWithDimensList(statExtEntity, dimensList, batchTimeList);
-    }
-
-    public static List<StatValue> queryWithDimens(StatExtEntity statExtEntity,String dimensValue, List<Long> batchTimeList) throws Exception{
-        return resultStorageEngine.queryWithDimens(statExtEntity, dimensValue, batchTimeList);
-    }
-
-    public static StatValue queryWithDimens(StatExtEntity statExtEntity, String dimensValue, long batchTime) throws Exception {
-        return resultStorageEngine.queryWithDimens(statExtEntity, dimensValue, batchTime);
+        resultStorageHandler.put(bucketList);
     }
 
     public static LinkedHashMap<String,StatValue> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, long batchTime) throws Exception{
-        return resultStorageEngine.queryWithDimensList(statExtEntity,dimensValueList,batchTime);
+//        return resultStorageEngine.queryWithDimensList(statExtEntity,dimensValueList,batchTime);
+        return null;
     }
 }

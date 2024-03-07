@@ -18,7 +18,7 @@ package com.dtstep.lighthouse.core.limited.device.impl;
  */
 import com.dtstep.lighthouse.core.callback.CaffeineExpiry;
 import com.dtstep.lighthouse.core.limited.device.CountingDevice;
-import com.dtstep.lighthouse.core.storage.engine_bak.proxy.ResultStorageProxy;
+import com.dtstep.lighthouse.core.storage.result.ResultStorageAdapter;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -85,7 +85,7 @@ public class HBaseLimitedCountingDevice implements CountingDevice {
                     StatExtEntity statExtEntity = StatDBWrapper.queryById(builtStatId);
                     if(statExtEntity != null){
                         List<String> dimensList = list.stream().map(Object::toString).collect(Collectors.toList());
-                        LinkedHashMap<String, StatValue> data = ResultStorageProxy.queryWithDimensList(statExtEntity,dimensList,batchTime);
+                        LinkedHashMap<String, StatValue> data = ResultStorageAdapter.queryWithDimensList(statExtEntity,dimensList,batchTime);
                         if(MapUtils.isNotEmpty(data)){
                             data.forEach((k, v) -> {
                                 Value value = valueCache.getIfPresent(Pair.of(builtStatId,Integer.parseInt(k)));
