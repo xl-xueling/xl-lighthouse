@@ -62,9 +62,7 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
             }
             indexList.add(current);
         }
-        List<Integer> sortedIndexList = indexList.stream()
-                .sorted()
-                .collect(Collectors.toList());
+        List<Integer> sortedIndexList = indexList.stream().sorted().collect(Collectors.toList());
         for (int current : sortedIndexList) {
             if (dimensList.size() >= limit) {
                 break;
