@@ -233,8 +233,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                 invalidFlag = true;
                 statesValue.add(0d);
             } else {
-                BigDecimal value = StatState.isCountState(statState) || StatState.isBitCountState(statState)
-                        ? BigDecimal.valueOf(ldpResult.getData()) : BigDecimal.valueOf(ldpResult.getData()).divide(BigDecimal.valueOf(1000D),3, RoundingMode.HALF_UP);
+                BigDecimal value = BigDecimal.valueOf(ldpResult.getData()).divide(BigDecimal.valueOf(1000D),3, RoundingMode.HALF_UP);
                 String replaceId = String.valueOf((char)variableIndex);
                 variableIndex++;
                 envMap.put(replaceId,value);

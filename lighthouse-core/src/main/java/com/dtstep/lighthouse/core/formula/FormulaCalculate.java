@@ -81,9 +81,9 @@ public final class FormulaCalculate {
             }
         }
         if(radix % 1 == 0){
-            return StatState.isCountState(statState) || StatState.isBitCountState(statState) ? (long)radix:(long)(radix * 1000);
+            return (long)(radix * 1000);
         }else{
-            return StatState.isCountState(statState) || StatState.isBitCountState(statState) ? (long)radix:BigDecimal.valueOf(radix).multiply(BigDecimal.valueOf(1000)).longValue();
+            return BigDecimal.valueOf(radix).multiply(BigDecimal.valueOf(1000)).longValue();
         }
     }
 
