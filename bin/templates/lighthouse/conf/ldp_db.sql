@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `cluster_${ldp_lighthouse_cluster_id}_ldp_mysqldb
 USE `cluster_${ldp_lighthouse_cluster_id}_ldp_mysqldb`;
 -- MySQL dump 10.13  Distrib 8.0.30, for macos12 (x86_64)
 --
--- Host: 10.206.6.17    Database: ldp_mysqldb
+-- Host: 10.206.6.19    Database: cluster_de77743c_ldp_mysqldb
 -- ------------------------------------------------------
 -- Server version	8.0.30
 
@@ -55,7 +55,7 @@ CREATE TABLE `ldp_departments` (
                                    PRIMARY KEY (`id`),
                                    KEY `index_pid` (`pid`),
                                    KEY `index_create_time` (`create_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=10218 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=10219 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `ldp_domains` (
                                `create_time` timestamp NULL DEFAULT NULL,
                                `update_time` timestamp NULL DEFAULT NULL,
                                PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,25 +99,25 @@ DROP TABLE IF EXISTS `ldp_groups`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ldp_groups` (
                               `id` int NOT NULL AUTO_INCREMENT,
-                              `token` varchar(30) DEFAULT NULL,
-                              `project_id` int DEFAULT NULL,
-                              `debug_mode` int DEFAULT NULL,
-                              `columns` varchar(3000) DEFAULT NULL,
-                              `desc` varchar(800) DEFAULT NULL,
+                              `token` varchar(30) NOT NULL,
+                              `project_id` int NOT NULL,
+                              `debug_mode` int DEFAULT '0',
+                              `columns` varchar(3000) NOT NULL,
+                              `desc` varchar(800) NOT NULL,
                               `random_id` varchar(45) NOT NULL,
-                              `secret_key` varchar(60) DEFAULT NULL,
-                              `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-                              `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-                              `state` int DEFAULT NULL,
+                              `secret_key` varchar(60) NOT NULL,
+                              `state` int NOT NULL,
                               `extend_config` varchar(2000) DEFAULT NULL,
-                              `refresh_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                              `refresh_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                              `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                              `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                               PRIMARY KEY (`id`),
                               KEY `index_token` (`token`),
                               KEY `index_project_id` (`project_id`),
                               KEY `index_create_time` (`create_time`),
                               KEY `index_refresh_time` (`refresh_time`),
                               KEY `index_state` (`state`)
-) ENGINE=InnoDB AUTO_INCREMENT=100283 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=100285 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +161,7 @@ CREATE TABLE `ldp_metricsets` (
                                   `create_time` timestamp NULL DEFAULT NULL,
                                   `update_time` timestamp NULL DEFAULT NULL,
                                   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -234,7 +234,7 @@ CREATE TABLE `ldp_permissions` (
                                    KEY `index_owner` (`owner_type`,`owner_id`),
                                    KEY `index_role_id` (`role_id`),
                                    KEY `index_createtime` (`create_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=100533 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=100536 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -256,7 +256,7 @@ CREATE TABLE `ldp_projects` (
                                 KEY `index_department_id` (`department_id`),
                                 KEY `index_title` (`title`),
                                 KEY `index_createtime` (`create_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=11106 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=11107 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -320,7 +320,7 @@ CREATE TABLE `ldp_roles` (
                              PRIMARY KEY (`id`),
                              KEY `index_pid` (`pid`),
                              KEY `index_roletype_resourceId` (`role_type`,`resource_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=699 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=715 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -380,7 +380,7 @@ CREATE TABLE `ldp_users` (
                              KEY `index_state` (`state`),
                              KEY `index_third_id` (`third_id`),
                              KEY `index_create_time` (`create_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=110220 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=110221 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -392,4 +392,4 @@ CREATE TABLE `ldp_users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-04 23:15:27
+-- Dump completed on 2024-03-07 21:43:47
