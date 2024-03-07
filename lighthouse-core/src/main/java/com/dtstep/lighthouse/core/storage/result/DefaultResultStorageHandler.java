@@ -10,9 +10,7 @@ import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
-import com.dtstep.lighthouse.core.storage.CompareOperator;
-import com.dtstep.lighthouse.core.storage.LdpIncrement;
-import com.dtstep.lighthouse.core.storage.LdpPut;
+import com.dtstep.lighthouse.core.storage.*;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
 import com.dtstep.lighthouse.core.wrapper.MetaTableWrapper;
 import com.google.common.collect.Lists;
@@ -21,6 +19,7 @@ import org.javatuples.Quartet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -167,14 +166,20 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
             metaName = metaTable.getMetaName();
         }
         List<String> aggregateKeyList = Lists.newArrayList();
+        List<LdpGet> getList = new ArrayList<>();
         for (long batchTime : batchTimeList) {
             for(String dimensValue : dimensValueList) {
                 for (StatState statState : statStates) {
                     String aggregateKey = keyGenerator.resultKey(statExtEntity,statState.getFunctionIndex(),dimensValue,batchTime);
                     aggregateKeyList.add(aggregateKey);
+                    String [] keyArr = aggregateKey.split(";");
+                    LdpGet ldpGet = LdpGet.with(keyArr[0],keyArr[1]);
+                    getList.add(ldpGet);
                 }
             }
         }
+        Validate.isTrue(getList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
+        List<LdpResult<Long>> results = StorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
 
         return null;
     }

@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 public class HBaseStorageEngine implements StorageEngine {
@@ -320,57 +320,30 @@ public class HBaseStorageEngine implements StorageEngine {
 
     @Override
     public <R> List<LdpResult<R>> gets(String tableName, List<LdpGet> ldpGets, Class<R> clazz) throws Exception {
-        List<Get> getList = new ArrayList<>();
-        for(LdpGet ldpGet : ldpGets){
-            String rowKey = ldpGet.getKey();
-            String column = ldpGet.getColumn();
-            Get get = new Get(Bytes.toBytes(rowKey));
-            get.addColumn(Bytes.toBytes("f"),Bytes.toBytes(column));
-            getList.add(get);
-        }
-        Result[] dbResults;
-        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
-            dbResults = table.get(getList);
-        } catch (Exception ex) {
-            logger.error("hbase get error!",ex);
-            throw ex;
-        }
-        List<LdpResult<R>> resultList = new ArrayList<>();
-        for(int i=0;i<dbResults.length;i++){
-            String column = ldpGets.get(i).getColumn();
-            String key = ldpGets.get(i).getKey();
-            Result dbResult = dbResults[i];
-            LdpResult<R> ldpResult;
-            if(dbResult != null){
-                ldpResult = new LdpResult<>();
-                Cell cell = dbResult.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes(column));
-                if(cell != null){
-                    byte[] b = CellUtil.cloneValue(cell);
-                    long timestamp = cell.getTimestamp();
-                    R data = null;
-                    if(clazz == Long.class || clazz == long.class){
-                        data = clazz.cast(Bytes.toLong(b));
-                    }else if(clazz == String.class){
-                        data = clazz.cast(Bytes.toString(b));
-                    }else if(clazz == Integer.class || clazz == int.class){
-                        data = clazz.cast(Bytes.toInt(b));
-                    }else if(clazz == Double.class || clazz == double.class){
-                        data = clazz.cast(Bytes.toDouble(b));
-                    }else if(clazz == Float.class || clazz == float.class){
-                        data = clazz.cast(Bytes.toFloat(b));
-                    }else if(clazz == Boolean.class || clazz == boolean.class){
-                        data = clazz.cast(Bytes.toBoolean(b));
-                    }
-                    ldpResult.setData(data);
-                    ldpResult.setTimestamp(timestamp);
-                }
-                ldpResult.setKey(key);
-                ldpResult.setColumn(column);
-                resultList.add(ldpResult);
+        int totalSize = ldpGets.size();
+        int loopSize = totalSize % BATCH_GET_SIZE == 0 ? totalSize / BATCH_GET_SIZE : totalSize / BATCH_GET_SIZE + 1;
+        ArrayList<Future<List<LdpResult<R>>>> results = new ArrayList<>();
+        for (int loop = 0; loop < loopSize; loop++)
+        {
+            int end = Math.min((loop + 1) * BATCH_GET_SIZE, totalSize);
+            List<LdpGet> partGets = ldpGets.subList(loop * BATCH_GET_SIZE, end);
+            HBaseGetterThread<R> hBaseGetterThread = new HBaseGetterThread<>(tableName,partGets,clazz);
+            synchronized (pool)
+            {
+                Future<List<LdpResult<R>>> result = pool.submit(hBaseGetterThread);
+                results.add(result);
             }
         }
-        return resultList;
+        List<LdpResult<R>> totalResult = new ArrayList<>();
+        for (Future<List<LdpResult<R>>> subResults : results){
+            List<LdpResult<R>> ldpResults = subResults.get();
+            if(CollectionUtils.isNotEmpty(ldpResults)){
+               totalResult.addAll(ldpResults);
+            }
+        }
+        return totalResult;
     }
+
 
     @Override
     public <R> List<LdpResult<R>> scan(String tableName, String startRow, String endRow, int limit,Class<R> clazz) throws Exception {
@@ -518,6 +491,83 @@ public class HBaseStorageEngine implements StorageEngine {
             }else{
                 logger.error("try lock failed,thread unable to acquire lock,this batch data may be lost,cost:{}ms!",stopWatch.getTime());
             }
+        }
+    }
+
+    private  static final ExecutorService pool = Executors.newFixedThreadPool(5);
+
+    private static final int BATCH_GET_SIZE = 200;
+
+    private static <R> List<LdpResult<R>> partGets(String tableName, List<LdpGet> ldpGets, Class<R> clazz) throws Exception {
+        List<Get> getList = new ArrayList<>();
+        for(LdpGet ldpGet : ldpGets){
+            String rowKey = ldpGet.getKey();
+            String column = ldpGet.getColumn();
+            Get get = new Get(Bytes.toBytes(rowKey));
+            get.addColumn(Bytes.toBytes("f"),Bytes.toBytes(column));
+            getList.add(get);
+        }
+        Result[] dbResults;
+        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+            dbResults = table.get(getList);
+        } catch (Exception ex) {
+            logger.error("hbase get error!",ex);
+            throw ex;
+        }
+        List<LdpResult<R>> resultList = new ArrayList<>();
+        for(int i=0;i<dbResults.length;i++){
+            String column = ldpGets.get(i).getColumn();
+            String key = ldpGets.get(i).getKey();
+            Result dbResult = dbResults[i];
+            LdpResult<R> ldpResult;
+            if(dbResult != null){
+                ldpResult = new LdpResult<>();
+                Cell cell = dbResult.getColumnLatestCell(Bytes.toBytes("f"),Bytes.toBytes(column));
+                if(cell != null){
+                    byte[] b = CellUtil.cloneValue(cell);
+                    long timestamp = cell.getTimestamp();
+                    R data = null;
+                    if(clazz == Long.class || clazz == long.class){
+                        data = clazz.cast(Bytes.toLong(b));
+                    }else if(clazz == String.class){
+                        data = clazz.cast(Bytes.toString(b));
+                    }else if(clazz == Integer.class || clazz == int.class){
+                        data = clazz.cast(Bytes.toInt(b));
+                    }else if(clazz == Double.class || clazz == double.class){
+                        data = clazz.cast(Bytes.toDouble(b));
+                    }else if(clazz == Float.class || clazz == float.class){
+                        data = clazz.cast(Bytes.toFloat(b));
+                    }else if(clazz == Boolean.class || clazz == boolean.class){
+                        data = clazz.cast(Bytes.toBoolean(b));
+                    }
+                    ldpResult.setData(data);
+                    ldpResult.setTimestamp(timestamp);
+                }
+                ldpResult.setKey(key);
+                ldpResult.setColumn(column);
+                resultList.add(ldpResult);
+            }
+        }
+        return resultList;
+    }
+
+    private static class HBaseGetterThread<R> implements Callable<List<LdpResult<R>>> {
+
+        private final String metaName;
+
+        private final List<LdpGet> getList;
+
+        private final Class<R> clazz;
+
+        public HBaseGetterThread(String metaName,List<LdpGet> getList,Class<R> clazz){
+            this.getList = getList;
+            this.metaName = metaName;
+            this.clazz = clazz;
+        }
+
+        @Override
+        public List<LdpResult<R>> call() throws Exception {
+            return partGets(metaName,getList,clazz);
         }
     }
 }
