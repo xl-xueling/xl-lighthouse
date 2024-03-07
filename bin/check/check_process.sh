@@ -325,7 +325,7 @@ function checkLightHouseICE(){
                 do
 			existByPS ${ip} 'icegridnode'
                        	if [ $? != '0' ];then
-                        	log_error "[${ip}]process(zeroc-ice) does not exist,ice service startup failed!";
+                        	log_error "[${ip}]process(zeroc-ice) does not exist,lighthouse-ice startup failed!";
                         	exit -1;
                         fi
 		done
