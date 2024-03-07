@@ -93,7 +93,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
         if(isLock){
             try{
                 long t1 = System.currentTimeMillis();
-                LinkedHashMap<String, StatValue> dbMap = ResultStorageSelector.queryWithDimensList(statExtEntity, Lists.newArrayList(dimensSet),batchTime);
+                Map<String, StatValue> dbMap = ResultStorageSelector.queryWithDimensList(statExtEntity, Lists.newArrayList(dimensSet),batchTime);
                 long t2 = System.currentTimeMillis();
                 if(logger.isTraceEnabled()){
                     logger.trace("limit data query,stat:{},formula:{},dimens:{},dimens size:{},dimens value:{},cost:{}"

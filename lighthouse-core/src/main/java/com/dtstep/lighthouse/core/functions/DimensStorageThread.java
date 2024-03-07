@@ -20,7 +20,7 @@ import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.common.aggregator.SlotsGroup;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.event.DimensBucket;
-import com.dtstep.lighthouse.core.storage.engine_bak.proxy.DimensStorageProxy;
+import com.dtstep.lighthouse.core.storage.dimens.DimensStorageSelector;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ public final class DimensStorageThread extends Thread {
                 if(CollectionUtils.isEmpty(events)){
                     break;
                 }
-                DimensStorageProxy.put(events);
+                DimensStorageSelector.put(events);
                 logger.info("process dimens events,thread:{},slot:{},process size:{},remaining size:{},capacity:{},accessTime:{},cost:{}ms",
                         Thread.currentThread().getName(),slot,events.size(),slotWrapper.size(),slotWrapper.getCapacity(),slotWrapper.getLastAccessTime(),stopWatch.getTime());
             }

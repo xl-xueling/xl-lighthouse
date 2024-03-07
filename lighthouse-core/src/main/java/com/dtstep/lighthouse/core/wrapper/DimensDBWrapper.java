@@ -16,6 +16,8 @@ package com.dtstep.lighthouse.core.wrapper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
+import com.dtstep.lighthouse.core.storage.dimens.DimensStorageSelector;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.base.Joiner;
@@ -29,7 +31,6 @@ import com.dtstep.lighthouse.common.hash.HashUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.formula.FormulaCalculate;
-import com.dtstep.lighthouse.core.storage.engine_bak.proxy.DimensStorageProxy;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,20 +49,17 @@ public final class DimensDBWrapper {
             .softValues()
             .build();
 
-    public static String generateKey(String token,String dimens,String dimensValue){
-        int index = Math.abs((int) (HashUtil.BKDRHash(dimensValue) % SysConst._DIMENS_STORAGE_PRE_PARTITIONS_SIZE));
-        String prefix = SysConst._DBKeyPrefixArray[index];
-        String origin = Md5Util.getMD5(token + "_" + dimens);
-        return prefix + origin + "_" + Md5Util.getMD5(dimensValue);
-    }
 
-
-    public static List<String> loadDimension(String token, String dimens,String last, int limitSize) {
-        String cacheKey = token + "_" + dimens + "_" + last + "_" + limitSize;
+    public static List<String> loadDimension(String token, String dimens,String lastDimensValue, int limit) {
+        String cacheKey = token + "_" + dimens + "_" + lastDimensValue + "_" + limit;
+        GroupExtEntity groupExtEntity = GroupDBWrapper.queryByToken(token);
+        if(groupExtEntity == null){
+            return null;
+        }
         Optional<List<String>> optional = DIMENS_CACHE.get(cacheKey,k -> {
             List<String> result = null;
             try{
-                result = DimensStorageProxy.queryDimensList(token, dimens, last, limitSize);
+                result = DimensStorageSelector.query(groupExtEntity,dimens,lastDimensValue,limit);
             }catch (Exception ex){
                 logger.error("load dimens error!",ex);
             }

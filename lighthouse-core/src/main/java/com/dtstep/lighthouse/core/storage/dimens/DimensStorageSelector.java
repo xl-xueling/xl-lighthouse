@@ -10,11 +10,11 @@ public class DimensStorageSelector {
 
     private static final DimensStorageHandler<DimensBucket,String> dimensStorageHandler = new DefaultDimensStorageHandler();
 
-    public static void increment(List<DimensBucket> bucketList) throws Exception{
+    public static void put(List<DimensBucket> bucketList) throws Exception{
         dimensStorageHandler.put(bucketList);
     }
 
-    List<String> query(Group group, String dimens, String lastDimensValue, int limit) throws Exception {
+    public static List<String> query(Group group, String dimens, String lastDimensValue, int limit) throws Exception {
         return dimensStorageHandler.query(group,dimens,lastDimensValue,limit);
     }
 }

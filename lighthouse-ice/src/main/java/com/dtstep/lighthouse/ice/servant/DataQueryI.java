@@ -8,7 +8,7 @@ import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.ice._DataQueryInterfaceDisp;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
-import com.dtstep.lighthouse.core.storage.result.ResultStorageAdapter;
+import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.core.wrapper.DimensDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
@@ -48,7 +48,7 @@ final class DataQueryI extends _DataQueryInterfaceDisp {
             if(batchTimeList.size() > 10000){
                 batchTimeList = batchTimeList.subList(0,10000);
             }
-            List<StatValue> values = ResultStorageAdapter.queryWithDimens(statExtEntity,dimens,batchTimeList);
+            List<StatValue> values = ResultStorageSelector.query(statExtEntity,dimens,batchTimeList);
             if(CollectionUtils.isNotEmpty(values)){
                 result = JsonUtil.toJSONString(values);
             }
@@ -79,7 +79,7 @@ final class DataQueryI extends _DataQueryInterfaceDisp {
             if(batchTimeList.size() > 10000){
                 batchTimeList = batchTimeList.subList(0,10000);
             }
-            List<StatValue> values = ResultStorageAdapter.queryWithDimens(statExtEntity, dimens,batchTimeList);
+            List<StatValue> values = ResultStorageSelector.query(statExtEntity, dimens,batchTimeList);
             if(CollectionUtils.isNotEmpty(values)){
                 result = JsonUtil.toJSONString(values);
             }
@@ -111,7 +111,7 @@ final class DataQueryI extends _DataQueryInterfaceDisp {
         }
         Map<String, StatValue> values;
         try{
-            values = ResultStorageAdapter.queryWithDimensList(statExtEntity, dimensList,batchTime);
+            values = ResultStorageSelector.queryWithDimensList(statExtEntity, dimensList,batchTime);
         }catch (Exception ex){
             logger.error("dataQueryWithDimensList error!",ex);
             return "System Error!";
