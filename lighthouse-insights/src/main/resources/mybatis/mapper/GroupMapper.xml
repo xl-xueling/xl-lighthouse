@@ -9,20 +9,21 @@
         <result property="columns" column="columns"
                 jdbcType="VARCHAR"
                 typeHandler="com.dtstep.lighthouse.insights.types.GroupColumnArrayTypeHandler"/>
-        <result property="refreshTime" column="refresh_time"/>
-        <result property="updateTime" column="update_time"/>
-        <result property="createTime" column="create_time"/>
         <result property="secretKey" column="secret_key"/>
         <result property="debugMode" column="debug_mode"/>
         <result property="projectId" column="project_id"/>
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.GroupStateEnumTypeHandler"/>
         <result property="extendConfig" column="extend_config" typeHandler="com.dtstep.lighthouse.insights.types.GroupExtendConfigTypeHandler"/>
+        <result property="randomId" column="random_id"/>
+        <result property="refreshTime" column="refresh_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Group" >
         INSERT INTO ldp_groups (`token`,`project_id`,`columns`,`secret_key`,
                                     `state`,`desc`,
-                                    `extend_config`,`debug_mode`,`refresh_time`,`create_time`,`update_time`) VALUES
+                                    `extend_config`,`debug_mode`,`random_id`,`refresh_time`,`create_time`,`update_time`) VALUES
         (
             #{token,jdbcType=VARCHAR},
             #{projectId,jdbcType=INTEGER},
@@ -32,6 +33,7 @@
             #{desc,jdbcType=VARCHAR},
             #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.GroupExtendConfigTypeHandler},
             #{debugMode,jdbcType=INTEGER},
+            #{randomId,jdbcType=VARCHAR},
             #{refreshTime,jdbcType=TIMESTAMP},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}

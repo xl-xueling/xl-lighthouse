@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
+import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
@@ -99,7 +100,7 @@ public class StatServiceImpl implements StatService {
         stat.setUpdateTime(localDateTime);
         stat.setCreateTime(localDateTime);
         stat.setState(StatStateEnum.RUNNING);
-        stat.setRandomId(UUID.randomUUID().toString());
+        stat.setRandomId(RandomID.id(32));
         statDao.insert(stat);
         int id = stat.getId();
         resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Stat,id, ResourceTypeEnum.Group,stat.getGroupId()));

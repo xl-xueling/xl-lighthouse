@@ -30,7 +30,7 @@
             #{template,jdbcType=VARCHAR},
             #{timeparam,jdbcType=VARCHAR},
             #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.StatStateEnumTypeHandler},
-            #{randomId,jdbcType=BIGINT},
+            #{randomId,jdbcType=VARCHAR},
             #{expired,jdbcType=BIGINT},
             #{desc,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP},

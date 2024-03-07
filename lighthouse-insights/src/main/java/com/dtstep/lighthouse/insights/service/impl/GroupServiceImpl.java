@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -38,6 +39,7 @@ public class GroupServiceImpl implements GroupService {
         group.setCreateTime(localDateTime);
         group.setUpdateTime(localDateTime);
         group.setRefreshTime(localDateTime);
+        group.setRandomId(RandomID.id(32));
         groupDao.insert(group);
         resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
         return group.getId();
