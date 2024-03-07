@@ -24,7 +24,7 @@ import com.dtstep.lighthouse.core.storage.result.impl.DefaultResultStorageHandle
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class ResultStorageAdapter {
+public class ResultStorageSelector {
 
     private static final ResultStorageHandler<MicroBucket,StatValue> resultStorageHandler = new DefaultResultStorageHandler();
 

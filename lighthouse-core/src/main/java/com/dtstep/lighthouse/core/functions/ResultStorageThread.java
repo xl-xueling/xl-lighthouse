@@ -16,7 +16,7 @@ package com.dtstep.lighthouse.core.functions;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.core.storage.result.ResultStorageAdapter;
+import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.calculate.MicroCalculateEnum;
 import com.dtstep.lighthouse.common.entity.calculate.MicroBucket;
@@ -62,19 +62,19 @@ public class ResultStorageThread extends Thread {
                 }
                 List<MicroBucket> incrementList = events.stream().filter(x -> x.getCalculateEnum() == MicroCalculateEnum.IncCalculate).collect(Collectors.toList());
                 if(!incrementList.isEmpty()){
-                    ResultStorageAdapter.increment(incrementList);
+                    ResultStorageSelector.increment(incrementList);
                 }
                 List<MicroBucket> maxPutList = events.stream().filter(x -> x.getCalculateEnum() == MicroCalculateEnum.MaxCalculate).collect(Collectors.toList());
                 if(!maxPutList.isEmpty()){
-                    ResultStorageAdapter.maxPut(maxPutList);
+                    ResultStorageSelector.maxPut(maxPutList);
                 }
                 List<MicroBucket> minPutList = events.stream().filter(x -> x.getCalculateEnum() == MicroCalculateEnum.MinCalculate).collect(Collectors.toList());
                 if(!minPutList.isEmpty()){
-                    ResultStorageAdapter.minPut(minPutList);
+                    ResultStorageSelector.minPut(minPutList);
                 }
                 List<MicroBucket> seqPutList = events.stream().filter(x -> x.getCalculateEnum() == MicroCalculateEnum.SeqCalculate).collect(Collectors.toList());
                 if(!seqPutList.isEmpty()){
-                    ResultStorageAdapter.put(seqPutList);
+                    ResultStorageSelector.put(seqPutList);
                 }
                 List<MicroBucket> limitList = events.stream().filter(MicroBucket::isLimit).collect(Collectors.toList());
                 if(!limitList.isEmpty()){
