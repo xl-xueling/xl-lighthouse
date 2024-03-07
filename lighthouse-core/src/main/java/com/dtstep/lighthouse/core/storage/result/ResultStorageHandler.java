@@ -10,17 +10,14 @@ public interface ResultStorageHandler<W,R> {
 
     void increment(List<W> list) throws Exception;
 
+    void put(List<W> list) throws Exception;
+
     void maxPut(List<W> list) throws Exception;
 
     void minPut(List<W> list) throws Exception;
 
-    void put(List<W> list) throws Exception;
+    R query(StatExtEntity statExtEntity, String dimensValue, long batchTime) throws Exception;
 
-    R queryWithDimens(StatExtEntity statExtEntity, String dimensValue, long batchTime) throws Exception;
+    List<R> query(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception;
 
-    List<R> queryWithDimens(StatExtEntity statExtEntity, String dimensValue, List<Long> batchTimeList) throws Exception;
-
-    List<R> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception;
-
-    LinkedHashMap<String, StatValue> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, long batchTime) throws Exception;
 }
