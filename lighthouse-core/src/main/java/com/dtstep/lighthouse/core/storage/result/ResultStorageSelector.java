@@ -23,6 +23,7 @@ import com.dtstep.lighthouse.core.storage.result.impl.DefaultResultStorageHandle
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ResultStorageSelector {
 
@@ -44,8 +45,19 @@ public class ResultStorageSelector {
         resultStorageHandler.put(bucketList);
     }
 
-    public static LinkedHashMap<String,StatValue> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, long batchTime) throws Exception{
-//        return resultStorageEngine.queryWithDimensList(statExtEntity,dimensValueList,batchTime);
-        return null;
+    public static StatValue query(StatExtEntity statExtEntity, String dimensValue, long batchTime) throws Exception{
+        return resultStorageHandler.query(statExtEntity,dimensValue,batchTime);
+    }
+
+    public static List<StatValue> query(StatExtEntity statExtEntity, String dimensValue, List<Long> batchTimeList) throws Exception {
+        return resultStorageHandler.query(statExtEntity, dimensValue, batchTimeList);
+    }
+
+    public static Map<String,StatValue> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, long batchTime) throws Exception {
+        return resultStorageHandler.queryWithDimensList(statExtEntity, dimensValueList, batchTime);
+    }
+
+    public static Map<String,List<StatValue>> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
+        return resultStorageHandler.queryWithDimensList(statExtEntity, dimensValueList, batchTimeList);
     }
 }

@@ -85,7 +85,7 @@ public class HBaseLimitedCountingDevice implements CountingDevice {
                     StatExtEntity statExtEntity = StatDBWrapper.queryById(builtStatId);
                     if(statExtEntity != null){
                         List<String> dimensList = list.stream().map(Object::toString).collect(Collectors.toList());
-                        LinkedHashMap<String, StatValue> data = ResultStorageSelector.queryWithDimensList(statExtEntity,dimensList,batchTime);
+                        Map<String, StatValue> data = ResultStorageSelector.queryWithDimensList(statExtEntity,dimensList,batchTime);
                         if(MapUtils.isNotEmpty(data)){
                             data.forEach((k, v) -> {
                                 Value value = valueCache.getIfPresent(Pair.of(builtStatId,Integer.parseInt(k)));

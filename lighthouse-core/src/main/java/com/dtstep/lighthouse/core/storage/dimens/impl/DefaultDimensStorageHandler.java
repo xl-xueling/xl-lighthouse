@@ -24,7 +24,7 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultDimensStorageHandler.class);
 
-    private final KeyGenerator keyGenerator = new DefaultKeyGenerator();
+    private static final KeyGenerator keyGenerator = new DefaultKeyGenerator();
 
     private static final String dimensColumnName = "v";
 
