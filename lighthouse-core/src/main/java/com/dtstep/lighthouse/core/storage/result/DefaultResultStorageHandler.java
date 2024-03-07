@@ -5,21 +5,29 @@ import com.dtstep.lighthouse.common.entity.calculate.MicroBucket;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
+import com.dtstep.lighthouse.common.entity.view.StateValue;
 import com.dtstep.lighthouse.common.modal.MetaTable;
 import com.dtstep.lighthouse.common.util.DateUtil;
+import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
+import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
 import com.dtstep.lighthouse.core.storage.*;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
 import com.dtstep.lighthouse.core.wrapper.MetaTableWrapper;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.Validate;
 import org.javatuples.Quartet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -148,14 +156,18 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
 
     @Override
     public StatValue query(StatExtEntity statExtEntity, String dimensValue, long batchTime) throws Exception {
-        List<StatValue> valueList = query(statExtEntity,List.of(dimensValue),List.of(batchTime));
-        Validate.isTrue(valueList.size() == 1);
-        return valueList.get(0);
+        Map<String,List<StatValue>> resultMap = queryWithDimensList(statExtEntity,List.of(dimensValue),List.of(batchTime));
+        return MapUtils.isEmpty(resultMap) || CollectionUtils.isEmpty(resultMap.get(dimensValue)) ? null : resultMap.get(dimensValue).get(0);
     }
 
     @Override
-    public List<StatValue> query(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
-        List<StatValue> list = Lists.newArrayList();
+    public List<StatValue> query(StatExtEntity statExtEntity, String dimensValue, List<Long> batchTimeList) throws Exception {
+        Map<String,List<StatValue>> resultMap = queryWithDimensList(statExtEntity,List.of(dimensValue),batchTimeList);
+        return MapUtils.isEmpty(resultMap) || CollectionUtils.isEmpty(resultMap.get(dimensValue)) ? null : resultMap.get(dimensValue);
+    }
+
+    @Override
+    public Map<String,List<StatValue>> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
         List<StatState> statStates = statExtEntity.getTemplateEntity().getStatStateList();
         int resMeta = statExtEntity.getMetaId();
         String metaName;
@@ -165,13 +177,11 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
             MetaTable metaTable = MetaTableWrapper.queryById(resMeta);
             metaName = metaTable.getMetaName();
         }
-        List<String> aggregateKeyList = Lists.newArrayList();
         List<LdpGet> getList = new ArrayList<>();
         for (long batchTime : batchTimeList) {
             for(String dimensValue : dimensValueList) {
                 for (StatState statState : statStates) {
                     String aggregateKey = keyGenerator.resultKey(statExtEntity,statState.getFunctionIndex(),dimensValue,batchTime);
-                    aggregateKeyList.add(aggregateKey);
                     String [] keyArr = aggregateKey.split(";");
                     LdpGet ldpGet = LdpGet.with(keyArr[0],keyArr[1]);
                     getList.add(ldpGet);
@@ -180,7 +190,64 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         }
         Validate.isTrue(getList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
         List<LdpResult<Long>> results = StorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
+        Map<String,LdpResult<Long>> dbResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
+        Map<String,List<StatValue>> resultMap = new HashMap<>();
+        for(String dimensValue : dimensValueList){
+            List<StatValue> valueList = new ArrayList<>();
+            for(long batchTime : batchTimeList){
+                StatValue statValue = calculate(statExtEntity,dimensValue,batchTime,dbResultMap);
+                valueList.add(statValue);
+            }
+            resultMap.put(dimensValue,valueList);
+        }
+        return resultMap;
+    }
 
-        return null;
+    private StatValue calculate(StatExtEntity statExtEntity, String dimensValue, long batchTime,Map<String, LdpResult<Long>> resultMap) {
+        boolean invalidFlag = false;
+        String formula = statExtEntity.getTemplateEntity().getCompleteStat();
+        StatValue statValue = new StatValue();
+        statValue.setBatchTime(batchTime);
+        statValue.setDimens(dimensValue);
+        statValue.setDisplayName(DateUtil.formatTimeStamp(batchTime, "yyyy-MM-dd HH:mm:ss"));
+        long lastUpdateTime = 0;
+        HashMap<String,Object> envMap = new HashMap<>();
+        int variableIndex = 97;
+        List<StatState> statStates = statExtEntity.getTemplateEntity().getStatStateList();
+        List<Object> statesValue = new ArrayList<>();
+        for (StatState statState : statStates) {
+            String stateBody = statState.getStateBody();
+            String aggregateKey = keyGenerator.resultKey(statExtEntity, statState.getFunctionIndex(), dimensValue, batchTime);
+            LdpResult<Long> ldpResult = (resultMap == null || resultMap.get(aggregateKey) == null ? null:resultMap.get(aggregateKey));
+            if (ldpResult == null) {
+                invalidFlag = true;
+                statesValue.add(0d);
+            } else {
+                BigDecimal value = StatState.isCountState(statState) || StatState.isBitCountState(statState)
+                        ? BigDecimal.valueOf(ldpResult.getData()) : BigDecimal.valueOf(ldpResult.getData()).divide(BigDecimal.valueOf(1000D),3, RoundingMode.HALF_UP);
+                String replaceId = String.valueOf((char)variableIndex);
+                variableIndex++;
+                envMap.put(replaceId,value);
+                statesValue.add(value.toString());
+                formula = formula.replace(stateBody, replaceId);
+                if(lastUpdateTime  < ldpResult.getTimestamp()){
+                    lastUpdateTime = ldpResult.getTimestamp();
+                }
+            }
+        }
+        statValue.setStatesValue(statesValue);
+        if (!invalidFlag) {
+            Object object = AviatorHandler.execute(formula,envMap);
+            if (object != null) {
+                if(object.getClass() == BigDecimal.class){
+                    BigDecimal bigDecimal = (BigDecimal) object;
+                    statValue.setValue(bigDecimal.toString());
+                }else {
+                    statValue.setValue(StringUtil.displayFormat(new BigDecimal(object.toString()).doubleValue()));
+                }
+            }
+        }
+        statValue.setLastUpdateTime(lastUpdateTime);
+        return statValue;
     }
 }
