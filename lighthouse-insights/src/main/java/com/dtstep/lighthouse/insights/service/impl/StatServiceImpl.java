@@ -109,7 +109,6 @@ public class StatServiceImpl implements StatService {
 
     @Transactional
     @Override
-//    @RecordAnnotation(recordType = RecordTypeEnum.UPDATE_STAT)
     public ResultCode update(Stat stat) {
         int groupId = stat.getGroupId();
         Group group = groupDao.queryById(groupId);
