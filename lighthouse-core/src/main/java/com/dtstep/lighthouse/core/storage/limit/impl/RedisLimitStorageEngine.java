@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.storage.limit;
+package com.dtstep.lighthouse.core.storage.limit.impl;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -19,7 +19,8 @@ package com.dtstep.lighthouse.core.storage.limit;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.lock.RedLock;
 import com.dtstep.lighthouse.core.redis.RedisHandler;
-import com.dtstep.lighthouse.core.storage.result.ResultStorageAdapter;
+import com.dtstep.lighthouse.core.storage.limit.LimitStorageEngine;
+import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.google.common.collect.Lists;
@@ -92,7 +93,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
         if(isLock){
             try{
                 long t1 = System.currentTimeMillis();
-                LinkedHashMap<String, StatValue> dbMap = ResultStorageAdapter.queryWithDimensList(statExtEntity, Lists.newArrayList(dimensSet),batchTime);
+                LinkedHashMap<String, StatValue> dbMap = ResultStorageSelector.queryWithDimensList(statExtEntity, Lists.newArrayList(dimensSet),batchTime);
                 long t2 = System.currentTimeMillis();
                 if(logger.isTraceEnabled()){
                     logger.trace("limit data query,stat:{},formula:{},dimens:{},dimens size:{},dimens value:{},cost:{}"

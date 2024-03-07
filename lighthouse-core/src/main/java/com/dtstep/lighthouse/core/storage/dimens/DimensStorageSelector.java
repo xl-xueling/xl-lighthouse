@@ -6,7 +6,7 @@ import com.dtstep.lighthouse.core.storage.dimens.impl.DefaultDimensStorageHandle
 
 import java.util.List;
 
-public class DimensStorageAdapter {
+public class DimensStorageSelector {
 
     private static final DimensStorageHandler<DimensBucket,String> dimensStorageHandler = new DefaultDimensStorageHandler();
 

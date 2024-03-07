@@ -20,7 +20,7 @@ import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.common.aggregator.SlotsGroup;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.event.LimitBucket;
-import com.dtstep.lighthouse.core.storage.limit.LimitStorageProxy;
+import com.dtstep.lighthouse.core.storage.limit.LimitStorageSelector;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -57,7 +57,7 @@ public class LimitStorageThread extends Thread {
                 if(CollectionUtils.isEmpty(events)){
                     break;
                 }
-                LimitStorageProxy.limit(events);
+                LimitStorageSelector.limit(events);
                 logger.info("process limit events,thread:{},slot:{},process size:{},remaining size:{},capacity:{},accessTime:{},cost:{}ms",
                         Thread.currentThread().getName(),slot,events.size(),slotWrapper.size(),slotWrapper.getCapacity(),slotWrapper.getLastAccessTime(),stopWatch.getTime());
             }

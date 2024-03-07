@@ -17,14 +17,12 @@ package com.dtstep.lighthouse.core.storage.limit;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
-import com.dtstep.lighthouse.core.storage.engine_bak.StorageEngine;
 
 import java.util.List;
 
-public abstract class LimitStorageEngine <W,R> implements StorageEngine<W,R> {
+public abstract class LimitStorageEngine <W,R>{
 
     public abstract void limit(List<W> list) throws Exception;
 
     public abstract List<R> queryLimitDimens(StatExtEntity statExtEntity,long batchTime) throws Exception;
-
 }
