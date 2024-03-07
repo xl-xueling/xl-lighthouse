@@ -338,9 +338,14 @@ function checkLightHouseInsights(){
         local index=0;
         for ip in "${IPArray[@]}"
                 do
+                  checkPort ${ip} '8181'
+                        if [ $? != '0' ];then
+                        	log_error "[${ip}]port(8181) listener does not exist,lighthouse-insights startup failed!";
+                        	exit -1;
+                       	fi
 			existByJPS ${ip} 'lighthouse-insights'
                        	if [ $? != '0' ];then
-                        	log_error "[${ip}]process(lighthouse-insights) does not exist,web service startup failed!";
+                        	log_error "[${ip}]process(lighthouse-insights) does not exist,lighthouse-insights startup failed!";
                         	exit -1;
                         fi
 		done
