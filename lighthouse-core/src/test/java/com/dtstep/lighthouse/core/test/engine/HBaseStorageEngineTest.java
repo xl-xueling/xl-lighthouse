@@ -173,4 +173,13 @@ public class HBaseStorageEngineTest {
         ldpPuts.add(put2);
         StorageEngineProxy.getInstance().putsWithCompare(tableName, CompareOperator.GREATER,ldpPuts);
     }
+
+    @Test
+    public void testQueryGet() throws Exception {
+        String tableName = "ssvs:table_abc";
+        for(int i = 0;i<10;i++){
+            LdpGet ldpGet = new LdpGet();
+
+        }
+    }
 }

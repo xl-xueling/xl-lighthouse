@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.common.entity.view.StatValue;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface ResultStorageHandler<W,R> {
 
@@ -18,6 +19,8 @@ public interface ResultStorageHandler<W,R> {
 
     R query(StatExtEntity statExtEntity, String dimensValue, long batchTime) throws Exception;
 
-    List<R> query(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception;
+    List<R> query(StatExtEntity statExtEntity, String dimensValue, List<Long> batchTimeList) throws Exception;
+
+    Map<String,List<R>> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception;
 
 }
