@@ -18,17 +18,23 @@ package com.dtstep.lighthouse.tasks.valid
  * limitations under the License.
  */
 
+import com.dtstep.lighthouse.common.constant.{RedisConst, StatConst}
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity
 import com.dtstep.lighthouse.common.entity.message.LightMessage
 import com.dtstep.lighthouse.common.enums.GroupStateEnum
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum
 import com.dtstep.lighthouse.common.enums.result.MessageCaptchaEnum
-import com.dtstep.lighthouse.core.limited.LimitedContext
-import com.dtstep.lighthouse.core.message.MessageTrack
+import com.dtstep.lighthouse.common.util.JsonUtil.toJSONString
+import com.dtstep.lighthouse.core.batch.BatchAdapter
+import com.dtstep.lighthouse.core.limited.{LimitedContext, RedisLimitedAspect}
+import com.dtstep.lighthouse.core.message.MessageValid
+import com.dtstep.lighthouse.core.redis.RedisHandler
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper
 import org.apache.spark.SparkEnv
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.slf4j.LoggerFactory
+
+import java.util.concurrent.TimeUnit
 
 private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandler[Int,LightMessage] {
 
@@ -49,11 +55,12 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
         s"group id:${groupEntity.getId},threshold:${threshold}")
       return null;
     }
-    val resultCodeEnum = MessageTrack.validMessage(message,groupEntity);
+    val resultCodeEnum = validMessage(message,groupEntity);
     if(groupEntity.getDebugMode == 1){
-      MessageTrack.capture(groupEntity.getId,resultCodeEnum.getCaptcha,message);
+      capture(groupEntity.getId,resultCodeEnum.getCaptcha,message);
     }
     (resultCodeEnum.getCaptcha,message)
+    null
   }catch {
       case ex:Exception => logger.error("valid message error!",ex);
         null;
@@ -61,6 +68,26 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
 
   def getThreshold(group:GroupExtEntity, strategy:LimitingStrategyEnum):Int = {
     group.getLimitedThresholdMap.getOrDefault(strategy.getStrategy,-1);
+  }
+
+  private final val limiter = RedisLimitedAspect.getInstance()
+
+  def capture(groupId:Int, captcha:Int, message:LightMessage): Unit = {
+    val batchTime = BatchAdapter.getBatch(1, TimeUnit.MINUTES, System.currentTimeMillis)
+    val lockTrackKey = RedisConst.LOCK_TRACK_PREFIX + "_" + groupId  + "_" + batchTime
+    if(limiter.tryAcquire(lockTrackKey,5,50,TimeUnit.MINUTES.toSeconds(5),1)){
+      val trackKey = RedisConst.TRACK_PREFIX + "_" + groupId;
+      message.setSystemTime(System.currentTimeMillis());
+      RedisHandler.getInstance().limitSet(trackKey,toJSONString(message),StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE,3 * 3600)
+    }
+  }
+
+  import scala.collection.JavaConverters._
+
+  def validMessage(message:LightMessage, statGroup: GroupExtEntity):MessageCaptchaEnum = {
+    val columnList = statGroup.getColumnList
+    if(!MessageValid.valid(message,columnList)) return MessageCaptchaEnum.PARAM_CHECK_FAILED
+    MessageCaptchaEnum.SUCCESS
   }
 
   import org.apache.spark.sql.{Encoder,Encoders}
