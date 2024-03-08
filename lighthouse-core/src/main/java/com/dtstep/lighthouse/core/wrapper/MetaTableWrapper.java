@@ -25,13 +25,14 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.dtstep.lighthouse.common.modal.MetaTable;
 import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
-import com.dtstep.lighthouse.core.dao.DaoHelper;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -115,13 +116,13 @@ public final class MetaTableWrapper {
         return metaTable;
     }
 
-    private static int insertIntoDB(MetaTable metaTable) throws Exception {
+    private static int insertIntoMySQL(MetaTable metaTable) throws Exception {
         DBConnection dbConnection = ConnectionManager.getConnection();
         Connection conn = dbConnection.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         String sql = "INSERT INTO ldp_metas (`meta_name`, `type`, `state`,`record_size`,`content_size`,`desc`,`create_time`,`update_time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         LocalDateTime localDateTime = LocalDateTime.now();
-        Long id;
+        BigInteger id;
         try{
              id = queryRunner.insert(conn,sql,new ScalarHandler<>(),metaTable.getMetaName(),metaTable.getMetaTableType().getType(),metaTable.getState().getState(),0,0,null,localDateTime,localDateTime);
         }finally {
@@ -130,7 +131,32 @@ public final class MetaTableWrapper {
         return id.intValue();
     }
 
-    public static int createStatResultMetaTable() throws Exception {
+    private static void deleteTable(String tableName){
+        try{
+            DBConnection dbConnection = ConnectionManager.getConnection();
+            Connection conn = dbConnection.getConnection();
+            QueryRunner queryRunner = new QueryRunner();
+            String sql = "DELETE from ldp_metas where meta_name = ?";
+            try{
+                queryRunner.update(conn,sql,tableName);
+            }finally {
+                ConnectionManager.close(dbConnection);
+            }
+            logger.info("drop meta table success,metaName:{}",tableName);
+        }catch (Exception ex){
+            logger.error("drop meta table failed,metaName:{}",tableName,ex);
+        }
+
+        try{
+            StorageEngineProxy.getInstance().dropTable(tableName);
+            logger.info("drop storage table success,metaName:{}",tableName);
+        }catch (Exception ex){
+            logger.error("drop storage table failed,metaName:{}",tableName,ex);
+        }
+
+    }
+
+    public static int createStatStorageAndMetaTable() throws Exception {
         MetaTable metaTable = new MetaTable();
         String metaName = "ldp_stat_" + System.currentTimeMillis();
         metaTable.setMetaName(metaName);
@@ -141,24 +167,24 @@ public final class MetaTableWrapper {
         metaTable.setMetaTableType(MetaTableTypeEnum.STAT_RESULT_TABLE);
         try{
             StorageEngineProxy.getInstance().createTable(metaName);
-            logger.info("create stat result table,create hbase table success,metaName:{}",metaName);
+            logger.info("create stat storage table,create hbase table success,metaName:{}",metaName);
         }catch (Exception ex){
-            logger.error("create stat result table,create hbase table error,metaName:{}",metaName,ex);
+            logger.error("create stat storage table,create hbase table error,metaName:{}",metaName,ex);
             throw ex;
         }
         int tableId;
         try{
-            tableId = insertIntoDB(metaTable);
-            logger.info("create stat result table,save table info success,metaName;{}",metaName);
+            tableId = insertIntoMySQL(metaTable);
+            logger.info("create stat meta table,save table info success,metaName;{}",metaName);
         }catch (Exception ex){
-            StorageEngineProxy.getInstance().dropTable(metaName);
-            logger.error("create stat result table,save table info error,metaName:{}",metaName,ex);
+            logger.error("create stat meta table,save table info error,metaName:{}",metaName,ex);
+            deleteTable(metaName);
             throw ex;
         }
         return tableId;
     }
 
-    public static int createSeqResultMetaTable() throws Exception {
+    public static int createSeqStorageAndMetaTable() throws Exception {
         MetaTable metaTable = new MetaTable();
         String metaName = "ldp_seq_" + System.currentTimeMillis();
         metaTable.setMetaName(metaName);
@@ -169,18 +195,18 @@ public final class MetaTableWrapper {
         metaTable.setMetaTableType(MetaTableTypeEnum.SEQ_RESULT_TABLE);
         try{
             StorageEngineProxy.getInstance().createTable(metaName);
-            logger.info("create seq result table,create hbase table success,metaName:{}",metaName);
+            logger.info("create seq storage table,create hbase table success,metaName:{}",metaName);
         }catch (Exception ex){
-            logger.error("create seq result table,create hbase table error,metaName:{}",metaName,ex);
+            logger.error("create seq storage table,create hbase table error,metaName:{}",metaName,ex);
             throw ex;
         }
         int tableId;
         try{
-            tableId = insertIntoDB(metaTable);
-            logger.info("create seq result table,save table info success,metaName;{}",metaName);
+            tableId = insertIntoMySQL(metaTable);
+            logger.info("create seq meta table,save table info success,metaName;{}",metaName);
         }catch (Exception ex){
-            StorageEngineProxy.getInstance().dropTable(metaName);
-            logger.error("create seq result table,save table info error,metaName:{}",metaName,ex);
+            logger.error("create seq meta table,save table info error,metaName:{}",metaName,ex);
+            deleteTable(metaName);
             throw ex;
         }
         return tableId;

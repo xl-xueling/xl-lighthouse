@@ -16,16 +16,6 @@ public interface StorageEngine {
 
     void dropTable(String tableName) throws Exception;
 
-    long getMaxRecordSize();
-
-    long getMaxContentSize();
-
-    long getMaxTimeInterval();
-
-    long getRecordSize(String tableName);
-
-    long getContentSize(String tableName);
-
     void put(String tableName, LdpPut ldpPut) throws Exception;
 
     void puts(String tableName, List<LdpPut> ldpPuts) throws Exception;
@@ -43,5 +33,15 @@ public interface StorageEngine {
     <R> List<LdpResult<R>> scan(String tableName, String startRow, String endRow, int limit,Class<R> clazz) throws Exception;
 
     void delete(String tableName,String key) throws Exception;
+
+    long getMaxRecordSize();
+
+    long getMaxContentSize();
+
+    long getMaxTimeInterval();
+
+    long getRecordSize(String tableName);
+
+    long getContentSize(String tableName);
 
 }

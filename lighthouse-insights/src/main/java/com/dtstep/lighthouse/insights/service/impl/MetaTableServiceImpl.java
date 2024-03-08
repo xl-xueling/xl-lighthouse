@@ -20,7 +20,6 @@ public class MetaTableServiceImpl implements MetaTableService {
     @Autowired
     private MetaTableDao metaTableDao;
 
-    @Transactional
     @Override
     public int getCurrentStatResultTable() throws Exception {
         MetaTableQueryParam metaTableQueryParam = new MetaTableQueryParam();
@@ -36,9 +35,10 @@ public class MetaTableServiceImpl implements MetaTableService {
         MetaTable metaTable = metaTableDao.getCurrentStorageTable(metaTableQueryParam);
         int metaId;
         if(metaTable == null){
-            metaId = MetaTableWrapper.createStatResultMetaTable();
+            metaId = MetaTableWrapper.createStatStorageAndMetaTable();
         }else{
             metaId = metaTable.getId();
+
         }
         return metaId;
     }
@@ -60,7 +60,7 @@ public class MetaTableServiceImpl implements MetaTableService {
         MetaTable metaTable = metaTableDao.getCurrentStorageTable(metaTableQueryParam);
         int metaId;
         if(metaTable == null){
-            metaId = MetaTableWrapper.createSeqResultMetaTable();
+            metaId = MetaTableWrapper.createSeqStorageAndMetaTable();
         }else{
             metaId = metaTable.getId();
         }
