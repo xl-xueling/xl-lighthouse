@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.common.modal.Group;
+import com.dtstep.lighthouse.insights.vo.GroupVO;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface GroupService {
 
     int delete(Group group);
 
-    Group queryById(Integer id);
+    GroupVO queryById(Integer id) throws Exception;
 
     Group cacheQueryById(Integer id);
 
