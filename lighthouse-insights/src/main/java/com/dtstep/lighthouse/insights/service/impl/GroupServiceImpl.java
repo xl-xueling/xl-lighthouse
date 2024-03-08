@@ -2,6 +2,9 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.key.RandomID;
+import com.dtstep.lighthouse.common.modal.Column;
+import com.dtstep.lighthouse.common.modal.Stat;
+import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
@@ -70,7 +73,8 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group queryById(Integer id) {
-        return groupDao.queryById(id);
+        Group group = groupDao.queryById(id);
+        return group;
     }
 
     @Override

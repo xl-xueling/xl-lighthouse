@@ -1,8 +1,5 @@
 package com.dtstep.lighthouse.common.modal;
 
-import com.dtstep.lighthouse.common.entity.annotation.DBColumnAnnotation;
-import com.dtstep.lighthouse.common.entity.annotation.DBNameAnnotation;
-import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 
 import java.io.Serializable;

@@ -208,8 +208,8 @@ public final class GroupDBWrapper {
             long minDuration = 0L;
             long maxDataExpire = 0L;
             for (Stat stat : statList) {
-//                String template =
-//                List<Column> statRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,stat);
+                String template =
+                List<Column> statRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,stat);
                 if(stat.getState() == StatStateEnum.RUNNING){
                     long currentDuration = TimeParam.calculateDuration(stat.getTimeparam());
                     if(minDuration == 0L){
@@ -220,20 +220,20 @@ public final class GroupDBWrapper {
                     if(maxDataExpire < stat.getExpired()){
                         maxDataExpire = stat.getExpired();
                     }
-//                    Set<String> statRelatedColumnSet = stat.getRelatedColumnSet();
-//                    if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
-//                        for(String columnName : statRelatedColumnSet){
-//                            groupRunningRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
-//                            groupAllRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
-//                        }
-//                    }
+                    Set<String> statRelatedColumnSet = stat.getRelatedColumnSet();
+                    if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
+                        for(String columnName : statRelatedColumnSet){
+                            groupRunningRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
+                            groupAllRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
+                        }
+                    }
                 }else{
-//                    Set<String> statRelatedColumnSet = stat.getRelatedColumnSet();
-//                    if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
-//                        for(String columnName : statRelatedColumnSet){
-//                            groupAllRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
-//                        }
-//                    }
+                    Set<String> statRelatedColumnSet = stat.getRelatedColumnSet();
+                    if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
+                        for(String columnName : statRelatedColumnSet){
+                            groupAllRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
+                        }
+                    }
                 }
             }
             groupExtEntity.setAllRelatedColumns(groupAllRelatedColumns);
