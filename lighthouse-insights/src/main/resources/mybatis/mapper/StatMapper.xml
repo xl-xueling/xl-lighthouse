@@ -14,6 +14,7 @@
         <result property="departmentId" column="department_id"/>
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.StatStateEnumTypeHandler"/>
         <result property="renderConfig" column="render_config" typeHandler="com.dtstep.lighthouse.insights.types.RenderConfigTypeHandler"/>
+        <result property="metaId" column="meta_id"/>
         <result property="randomId" column="random_id"/>
         <result property="expired" column="expired"/>
         <result property="desc" column="desc"/>
@@ -22,7 +23,7 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Stat" >
-        INSERT INTO ldp_stats (`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_stats (`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`meta_id`,`random_id`,`expired`,`desc`,`create_time`,`update_time`) VALUES
         (
             #{title,jdbcType=VARCHAR},
             #{groupId,jdbcType=INTEGER},
@@ -30,6 +31,7 @@
             #{template,jdbcType=VARCHAR},
             #{timeparam,jdbcType=VARCHAR},
             #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.StatStateEnumTypeHandler},
+            #{metaId,jdbcType=INTEGER},
             #{randomId,jdbcType=VARCHAR},
             #{expired,jdbcType=BIGINT},
             #{desc,jdbcType=VARCHAR},

@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface StatService {
 
-    ResultCode create(Stat stat);
+    ResultCode create(Stat stat) throws Exception;
 
     ResultCode update(Stat stat);
 

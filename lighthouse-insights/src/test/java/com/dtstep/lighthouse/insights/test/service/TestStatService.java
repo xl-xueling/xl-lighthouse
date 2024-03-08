@@ -27,7 +27,7 @@ public class TestStatService {
     private StatDao statDao;
 
     @Test
-    public void testCreate(){
+    public void testCreate() throws Exception{
         Stat stat = new Stat();
         String template = "<stat-item title=\"每分钟_uv统计\" stat=\"count()\"  dimens=\"province\"/>";
         stat.setTemplate(template);
