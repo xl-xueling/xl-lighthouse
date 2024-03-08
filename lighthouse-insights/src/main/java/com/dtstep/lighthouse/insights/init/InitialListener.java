@@ -56,6 +56,13 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
         }
 
         try{
+
+        }catch (Exception ex){
+            logger.error("failed to generate sign key!",ex);
+            System.exit(-1);
+        }
+
+        try{
             initService.initRole();
         }catch (Exception ex){
             logger.error("Exception in initializing system roles!",ex);
