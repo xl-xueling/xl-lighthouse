@@ -565,6 +565,32 @@ public class HBaseStorageEngine implements StorageEngine {
         return resultList;
     }
 
+
+    @Override
+    public long getMaxRecordSize() {
+        return Long.MAX_VALUE;
+    }
+
+    @Override
+    public long getMaxContentSize() {
+        return Long.MAX_VALUE;
+    }
+
+    @Override
+    public long getMaxTimeInterval() {
+        return TimeUnit.DAYS.toMillis(90);
+    }
+
+    @Override
+    public long getRecordSize(String tableName) {
+        return 0;
+    }
+
+    @Override
+    public long getContentSize(String tableName) {
+        return 0;
+    }
+
     private static class HBaseGetterThread<R> implements Callable<List<LdpResult<R>>> {
 
         private final TableName tableName;

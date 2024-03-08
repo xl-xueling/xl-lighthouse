@@ -14,8 +14,6 @@ public interface UserDao {
 
     int insert(User user);
 
-    String getUserPassword(String username);
-
     int update(User user);
     
     User queryById(Integer id);

@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.wrapper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.MetaTableStateEnum;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
@@ -72,8 +73,8 @@ public final class MetaTableWrapper {
                 long updateTime = rs.getTimestamp("update_time").getTime();
                 metaTable.setId(id);
                 metaTable.setMetaName(metaName);
-                metaTable.setMetaTableTypeEnum(MetaTableTypeEnum.getMetaTableTypeEnum(type));
-                metaTable.setState(state);
+                metaTable.setMetaTableType(MetaTableTypeEnum.getMetaTableTypeEnum(type));
+                metaTable.setState(MetaTableStateEnum.forValue(state));
                 metaTable.setRecordSize(recordSize);
                 metaTable.setContentSize(contentSize);
                 metaTable.setDesc(desc);
@@ -117,11 +118,11 @@ public final class MetaTableWrapper {
         MetaTable metaTable = new MetaTable();
         String metaName = "ldp_stat_" + System.currentTimeMillis();
         metaTable.setMetaName(metaName);
-        metaTable.setState(1);
+        metaTable.setState(MetaTableStateEnum.VALID);
         LocalDateTime date = LocalDateTime.now();
         metaTable.setCreateTime(date);
         metaTable.setUpdateTime(date);
-        metaTable.setType(MetaTableTypeEnum.STAT_RESULT_TABLE.getType());
+        metaTable.setMetaTableType(MetaTableTypeEnum.STAT_RESULT_TABLE);
         try{
             StorageEngineProxy.getInstance().createTable(metaName);
             logger.info("create stat result table,create hbase table success,metaName:{}",metaName);
@@ -145,11 +146,11 @@ public final class MetaTableWrapper {
         MetaTable metaTable = new MetaTable();
         String metaName = "ldp_seq_" + System.currentTimeMillis();
         metaTable.setMetaName(metaName);
-        metaTable.setState(1);
+        metaTable.setState(MetaTableStateEnum.VALID);
         LocalDateTime date = LocalDateTime.now();
         metaTable.setCreateTime(date);
         metaTable.setUpdateTime(date);
-        metaTable.setType(MetaTableTypeEnum.SEQ_RESULT_TABLE.getType());
+        metaTable.setMetaTableType(MetaTableTypeEnum.SEQ_RESULT_TABLE);
         try{
             StorageEngineProxy.getInstance().createTable(metaName);
             logger.info("create seq result table,create hbase table success,metaName:{}",metaName);
