@@ -86,7 +86,7 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
 
   private def expand(captcha: Int,message: LightMessage):List[(Int,String, Int)] = {
     val groupEntity = GroupDBWrapper.queryById(message.getGroupId);
-    if(groupEntity == null || groupEntity.getState != GroupStateEnum.RUNNING.getState){
+    if(groupEntity == null || groupEntity.getState != GroupStateEnum.RUNNING){
       return null;
     }
     if(!groupEntity.isBuiltIn){

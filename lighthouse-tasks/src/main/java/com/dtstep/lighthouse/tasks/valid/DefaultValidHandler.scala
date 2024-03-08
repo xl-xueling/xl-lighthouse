@@ -48,7 +48,7 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
 
   override def valid(message: LightMessage): (Int,LightMessage) = try{
     val groupEntity = GroupDBWrapper.queryById(message.getGroupId);
-    if(groupEntity == null || groupEntity.getState != GroupStateEnum.RUNNING.getState) return null
+    if(groupEntity == null || groupEntity.getState != GroupStateEnum.RUNNING) return null
     val threshold = getThreshold(groupEntity,LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT);
     if (!LimitedContext.getInstance().tryAcquire(groupEntity,threshold,message.getRepeat)) {
       logger.error(s"limited trigger strategy:GROUP_MESSAGE_SIZE_LIMIT," +
@@ -57,7 +57,7 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
     }
     val resultCodeEnum = validMessage(message,groupEntity);
     if(groupEntity.getDebugMode == 1){
-      capture(groupEntity.getId,resultCodeEnum.getCaptcha,message);
+      capture(groupEntity.getId,message);
     }
     (resultCodeEnum.getCaptcha,message)
     null
@@ -70,12 +70,10 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
     group.getLimitedThresholdMap.getOrDefault(strategy.getStrategy,-1);
   }
 
-  private final val limiter = RedisLimitedAspect.getInstance()
-
-  def capture(groupId:Int, captcha:Int, message:LightMessage): Unit = {
+  def capture(groupId:Int, message:LightMessage): Unit = {
     val batchTime = BatchAdapter.getBatch(1, TimeUnit.MINUTES, System.currentTimeMillis)
     val lockTrackKey = RedisConst.LOCK_TRACK_PREFIX + "_" + groupId  + "_" + batchTime
-    if(limiter.tryAcquire(lockTrackKey,5,50,TimeUnit.MINUTES.toSeconds(5),1)){
+    if(RedisLimitedAspect.getInstance().tryAcquire(lockTrackKey,5,50,TimeUnit.MINUTES.toSeconds(5),1)){
       val trackKey = RedisConst.TRACK_PREFIX + "_" + groupId;
       message.setSystemTime(System.currentTimeMillis());
       RedisHandler.getInstance().limitSet(trackKey,toJSONString(message),StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE,3 * 3600)
