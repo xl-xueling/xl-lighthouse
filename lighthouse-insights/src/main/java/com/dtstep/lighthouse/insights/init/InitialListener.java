@@ -56,13 +56,6 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
         }
 
         try{
-
-        }catch (Exception ex){
-            logger.error("failed to generate sign key!",ex);
-            System.exit(-1);
-        }
-
-        try{
             initService.initRole();
         }catch (Exception ex){
             logger.error("Exception in initializing system roles!",ex);
@@ -87,6 +80,13 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
             initService.initAdmin();
         }catch (Exception ex){
             logger.error("Admin account initialization failed!",ex);
+            System.exit(-1);
+        }
+
+        try{
+            initService.initDBNameSpace();
+        }catch (Exception ex){
+            logger.error("DBNamespace initialization failed!",ex);
             System.exit(-1);
         }
     }

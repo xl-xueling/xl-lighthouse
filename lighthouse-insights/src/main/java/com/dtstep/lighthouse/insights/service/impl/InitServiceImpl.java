@@ -124,7 +124,8 @@ public class InitServiceImpl implements InitService {
         }
     }
 
-    public void initNameSpace() throws Exception {
+    @Override
+    public void initDBNameSpace() throws Exception {
         String namespace = StorageEngineProxy.getInstance().getDefaultNamespace();
         StorageEngineProxy.getInstance().createNamespaceIfNotExist(namespace);
     }

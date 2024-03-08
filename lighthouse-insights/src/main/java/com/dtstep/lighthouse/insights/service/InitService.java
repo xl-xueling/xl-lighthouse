@@ -9,4 +9,6 @@ public interface InitService {
     void initAdmin() throws Exception;
 
     void initDefaultDomain() throws Exception;
+
+    void initDBNameSpace() throws Exception;
 }
