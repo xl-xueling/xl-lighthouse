@@ -63,7 +63,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
         {
             title: t['statList.label.operations'],
             dataIndex: 'operations',
-            headerCellStyle: {width:'150px' },
+            headerCellStyle: {width:'300px' },
             render: (_, record) => {
                 let viewButton;
                 let updateButton;
