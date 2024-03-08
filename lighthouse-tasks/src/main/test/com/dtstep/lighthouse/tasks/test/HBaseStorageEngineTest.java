@@ -10,7 +10,7 @@ public class HBaseStorageEngineTest {
     public void testCreateNamespace() throws Exception {
         LDPConfig.loadConfiguration();
         System.out.println("---11");
-        StorageEngineProxy.getInstance().createNamespace("sss");
+        StorageEngineProxy.getInstance().createNamespaceIfNotExist("sss");
         System.out.println("ss");
     }
 }

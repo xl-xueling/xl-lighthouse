@@ -8,7 +8,7 @@ public interface StorageEngine {
 
     String getDefaultNamespace();
 
-    void createNamespace(String namespace) throws Exception;
+    void createNamespaceIfNotExist(String namespace) throws Exception;
 
     void createTable(String tableName) throws Exception;
 

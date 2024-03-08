@@ -9,6 +9,7 @@ import com.dtstep.lighthouse.common.modal.Department;
 import com.dtstep.lighthouse.common.modal.Domain;
 import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.common.modal.User;
+import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
 import com.dtstep.lighthouse.insights.service.*;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,5 +122,10 @@ public class InitServiceImpl implements InitService {
             int result = domainService.create(domain);
             Validate.isTrue(result > 0);
         }
+    }
+
+    public void initNameSpace() throws Exception {
+        String namespace = StorageEngineProxy.getInstance().getDefaultNamespace();
+        StorageEngineProxy.getInstance().createNamespaceIfNotExist(namespace);
     }
 }

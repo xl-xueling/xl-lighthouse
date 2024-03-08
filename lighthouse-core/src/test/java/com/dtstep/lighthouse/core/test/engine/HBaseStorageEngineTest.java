@@ -22,7 +22,7 @@ public class HBaseStorageEngineTest {
 
     @Test
     public void testCreateNamespace() throws Exception {
-        StorageEngineProxy.getInstance().createNamespace("ssvs");
+        StorageEngineProxy.getInstance().createNamespaceIfNotExist("ssvs");
     }
 
     @Test
