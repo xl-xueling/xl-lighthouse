@@ -98,6 +98,8 @@ public enum ResultCode {
 
     templateParserTitleCannotBeEmpty("2010","templateParserTitleCannotBeEmpty"),
 
+    templateParserStatCannotBeEmpty("2010","templateParserStatCannotBeEmpty"),
+
     templateParserDimensCannotBeEmpty("2010","templateParserDimensCannotBeEmpty"),
 
     templateParserTitleLengthValidFailed("2011","templateParserTitleLengthValidFailed"),

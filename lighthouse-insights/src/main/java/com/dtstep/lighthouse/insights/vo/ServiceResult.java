@@ -17,16 +17,16 @@ public class ServiceResult<T> {
         this.data = data;
     }
 
-    public static <T> ServiceResult result(ResultCode resultCode){
-        return new ServiceResult(resultCode);
+    public static <T> ServiceResult<T> result(ResultCode resultCode){
+        return new ServiceResult<>(resultCode);
     }
 
-    public static <T> ServiceResult result(ResultCode resultCode, T data){
-        return new ServiceResult(resultCode,data);
+    public static <T> ServiceResult<T> result(ResultCode resultCode, T data){
+        return new ServiceResult<T>(resultCode,data);
     }
 
-    public static <T> ServiceResult success(T data){
-        return new ServiceResult(ResultCode.success,data);
+    public static <T> ServiceResult<T> success(T data){
+        return new ServiceResult<>(ResultCode.success,data);
     }
 
     public T getData() {
