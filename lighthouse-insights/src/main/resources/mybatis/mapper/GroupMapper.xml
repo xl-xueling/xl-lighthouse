@@ -5,7 +5,7 @@
 
     <resultMap id="groupResultMap" type="com.dtstep.lighthouse.common.modal.Group">
         <id property="id" column="id"/>
-        <result property="name" column="name"/>
+        <result property="token" column="token"/>
         <result property="columns" column="columns"
                 jdbcType="VARCHAR"
                 typeHandler="com.dtstep.lighthouse.insights.types.GroupColumnArrayTypeHandler"/>
@@ -69,7 +69,7 @@
     </update>
 
     <select id="queryById" resultMap="groupResultMap">
-        SELECT `id`,`token`,`project_id`,`columns`,`random_id`
+        SELECT `id`,`token`,`project_id`,`columns`,`random_id`,
                `state`,`desc`,
                `extend_config`,`debug_mode`,`refresh_time`,`create_time`,`update_time`
         FROM ldp_groups WHERE id = #{id}

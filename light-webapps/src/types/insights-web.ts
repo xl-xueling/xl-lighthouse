@@ -114,6 +114,7 @@ export interface Group {
     desc?:string;
     createTime?:number;
     columns?:Array<Column>;
+    relatedColumns?:Array<String>;
 }
 
 export interface Stat {
