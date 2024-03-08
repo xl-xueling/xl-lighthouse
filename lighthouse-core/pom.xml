@@ -191,6 +191,12 @@
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
             <version>${hadoop.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.hbase</groupId>
@@ -390,6 +396,10 @@
                     <groupId>javax.servlet</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
                 <exclusion>
                     <groupId>jackson-jaxrs</groupId>
                     <artifactId>*</artifactId>
