@@ -149,6 +149,7 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
             token:values.token,
             desc:values.desc,
             columns:columns,
+            relatedColumns:groupInfo?.relatedColumns,
             createTime:groupInfo.createTime,
         }
         setConfirmLoading(true);
@@ -157,7 +158,9 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['groupUpdate.form.submit.success']});
                 callback('update-group',group);
-                onClose();
+                setTimeout(() => {
+                    onClose();
+                },0)
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -171,7 +174,6 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
     useEffect(() => {
         const columnArr: Array<EditTableColumn> = [];
         const relatedColumns = groupInfo?.relatedColumns;
-        console.log("relatedColumns is:" + JSON.stringify(relatedColumns));
         for (let i = 0; i < groupInfo?.columns.length; i++) {
             const columnInfo = groupInfo?.columns[i];
             columnArr.push({...columnInfo, "key": getRandomString(),lockColumns:relatedColumns?.includes(columnInfo.name)?['name','type','operation']:[]})
