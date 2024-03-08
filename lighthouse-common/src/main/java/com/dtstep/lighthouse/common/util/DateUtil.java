@@ -217,7 +217,7 @@ public final class DateUtil {
         return localDateTime.minusMinutes(n).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
-    public static long getSecondBefore(long t,int n){
+    public static long getSecondBefore(long t,long n){
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(t), ZoneId.systemDefault());
         return localDateTime.minusSeconds(n).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }

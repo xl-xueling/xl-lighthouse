@@ -114,6 +114,21 @@ public final class MetaTableWrapper {
         return metaTable;
     }
 
+    private static int insertIntoDB(MetaTable metaTable) throws Exception {
+        DBConnection dbConnection = ConnectionManager.getConnection();
+        Connection conn = dbConnection.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+        String sql = "INSERT INTO ldp_metas (`meta_name`, `type`, `state`,`record_size`,`content_size`,`desc`,`create_time`,`update_time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        LocalDateTime localDateTime = LocalDateTime.now();
+        int id;
+        try{
+             id = queryRunner.update(conn,sql,metaTable.getMetaTableType().getType(),metaTable.getState().getState(),0,0,null,localDateTime,localDateTime);
+        }finally {
+            ConnectionManager.close(dbConnection);
+        }
+        return id;
+    }
+
     public static int createStatResultMetaTable() throws Exception {
         MetaTable metaTable = new MetaTable();
         String metaName = "ldp_stat_" + System.currentTimeMillis();
@@ -132,7 +147,7 @@ public final class MetaTableWrapper {
         }
         int tableId;
         try{
-            tableId = DaoHelper.sql.insert(metaTable);
+            tableId = insertIntoDB(metaTable);
             logger.info("create stat result table,save table info success,metaName;{}",metaName);
         }catch (Exception ex){
             StorageEngineProxy.getInstance().dropTable(metaName);
@@ -160,7 +175,7 @@ public final class MetaTableWrapper {
         }
         int tableId;
         try{
-            tableId = DaoHelper.sql.insert(metaTable);
+            tableId = insertIntoDB(metaTable);
             logger.info("create seq result table,save table info success,metaName;{}",metaName);
         }catch (Exception ex){
             StorageEngineProxy.getInstance().dropTable(metaName);
