@@ -227,13 +227,13 @@ public final class IterativeParsePattern implements Parser {
         templateEntity.setTitle(title);
         String stat = element.attr("stat");
         if(StringUtil.isEmpty(stat)){
-            return ServiceResult.result(ResultCode.templateParserDimensCannotBeEmpty);
+            return ServiceResult.result(ResultCode.templateParserStatCannotBeEmpty);
         }
         templateEntity.setStat(stat);
         List<Column> columnList = context.getColumnList();
         String dimensFormula = element.attr("dimens");
         if(!StringUtil.isEmpty(dimensFormula)){
-            List<String> groupColumnName = columnList.stream().map(z -> z.getName()).collect(Collectors.toList());
+            List<String> groupColumnName = columnList.stream().map(Column::getName).collect(Collectors.toList());
             String[] dimensArray = TemplateUtil.split(dimensFormula);
             for(String dimens:dimensArray){
                 if(StringUtil.isLetterNumOrUnderLine(dimens) && !groupColumnName.contains(dimens)){
