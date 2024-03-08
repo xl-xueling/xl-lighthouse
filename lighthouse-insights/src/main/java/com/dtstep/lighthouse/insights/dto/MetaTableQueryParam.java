@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
+
 import java.time.LocalDateTime;
 
 public class MetaTableQueryParam {
@@ -7,6 +9,8 @@ public class MetaTableQueryParam {
     private Long maxRecordSize;
 
     private Long maxContentSize;
+
+    private MetaTableTypeEnum metaTableTypeEnum;
 
     private LocalDateTime startDate;
 
@@ -32,5 +36,13 @@ public class MetaTableQueryParam {
 
     public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
+    }
+
+    public MetaTableTypeEnum getMetaTableTypeEnum() {
+        return metaTableTypeEnum;
+    }
+
+    public void setMetaTableTypeEnum(MetaTableTypeEnum metaTableTypeEnum) {
+        this.metaTableTypeEnum = metaTableTypeEnum;
     }
 }

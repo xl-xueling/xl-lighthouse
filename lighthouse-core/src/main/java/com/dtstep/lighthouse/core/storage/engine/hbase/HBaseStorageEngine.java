@@ -578,7 +578,7 @@ public class HBaseStorageEngine implements StorageEngine {
 
     @Override
     public long getMaxTimeInterval() {
-        return TimeUnit.DAYS.toMillis(90);
+        return TimeUnit.DAYS.toSeconds(90);
     }
 
     @Override
