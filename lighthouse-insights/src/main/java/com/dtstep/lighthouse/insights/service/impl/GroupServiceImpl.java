@@ -65,15 +65,13 @@ public class GroupServiceImpl implements GroupService {
         Validate.notNull(group);
         Integer id = group.getId();
         resourceService.deleteResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
-        int result = groupDao.deleteById(id);
-        return result;
+        return groupDao.deleteById(id);
     }
 
     @Override
     public Group queryById(Integer id) {
         return groupDao.queryById(id);
     }
-
 
     @Override
     @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
