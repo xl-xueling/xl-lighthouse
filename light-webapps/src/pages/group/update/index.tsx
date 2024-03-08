@@ -170,9 +170,11 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
 
     useEffect(() => {
         const columnArr: Array<EditTableColumn> = [];
+        const relatedColumns = groupInfo?.relatedColumns;
+        console.log("relatedColumns is:" + JSON.stringify(relatedColumns));
         for (let i = 0; i < groupInfo?.columns.length; i++) {
             const columnInfo = groupInfo?.columns[i];
-            columnArr.push({...columnInfo, "key": getRandomString(),lockColumns:['name','type','operation']})
+            columnArr.push({...columnInfo, "key": getRandomString(),lockColumns:relatedColumns?.includes(columnInfo.name)?['name','type','operation']:[]})
         }
         setInitData(columnArr);
         const formData = {

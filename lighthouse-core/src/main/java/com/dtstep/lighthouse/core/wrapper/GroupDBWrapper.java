@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.wrapper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.modal.Column;
@@ -27,6 +28,8 @@ import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
+import com.dtstep.lighthouse.core.template.TemplateContext;
+import com.dtstep.lighthouse.core.template.TemplateParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -210,6 +213,12 @@ public final class GroupDBWrapper {
             for (Stat stat : statList) {
                 String template = stat.getTemplate();
                 List<Column> statRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,template);
+                TemplateEntity templateEntity = TemplateParser.parse(new TemplateContext(stat.getId(),template,stat.getTimeparam(),columnList));
+                String dimens = templateEntity.getDimens();
+                List<Column> dimensRelatedColumns = null;
+                if(!StringUtil.isEmpty(dimens)){
+                    dimensRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,dimens);
+                }
                 if(stat.getState() == StatStateEnum.RUNNING){
                     long currentDuration = TimeParam.calculateDuration(stat.getTimeparam());
                     if(minDuration == 0L){
@@ -226,9 +235,20 @@ public final class GroupDBWrapper {
                             groupAllRelatedColumns.put(column.getName(),groupColumnsMap.get(column.getName()));
                         }
                     }
+                    if(CollectionUtils.isNotEmpty(dimensRelatedColumns)){
+                        for(Column column : dimensRelatedColumns){
+                            groupRunningRelatedColumns.put(column.getName(),groupColumnsMap.get(column.getName()));
+                            groupAllRelatedColumns.put(column.getName(),groupColumnsMap.get(column.getName()));
+                        }
+                    }
                 }else{
                     if (CollectionUtils.isNotEmpty(statRelatedColumns)) {
                         for(Column column : statRelatedColumns){
+                            groupAllRelatedColumns.put(column.getName(),groupColumnsMap.get(column.getName()));
+                        }
+                    }
+                    if(CollectionUtils.isNotEmpty(dimensRelatedColumns)){
+                        for(Column column : dimensRelatedColumns){
                             groupAllRelatedColumns.put(column.getName(),groupColumnsMap.get(column.getName()));
                         }
                     }
