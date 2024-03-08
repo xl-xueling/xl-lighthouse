@@ -28,6 +28,7 @@ import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
 import com.dtstep.lighthouse.core.dao.DaoHelper;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -120,13 +121,13 @@ public final class MetaTableWrapper {
         QueryRunner queryRunner = new QueryRunner();
         String sql = "INSERT INTO ldp_metas (`meta_name`, `type`, `state`,`record_size`,`content_size`,`desc`,`create_time`,`update_time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         LocalDateTime localDateTime = LocalDateTime.now();
-        int id;
+        Long id;
         try{
-             id = queryRunner.update(conn,sql,metaTable.getMetaName(),metaTable.getMetaTableType().getType(),metaTable.getState().getState(),0,0,null,localDateTime,localDateTime);
+             id = queryRunner.insert(conn,sql,new ScalarHandler<>(),metaTable.getMetaName(),metaTable.getMetaTableType().getType(),metaTable.getState().getState(),0,0,null,localDateTime,localDateTime);
         }finally {
             ConnectionManager.close(dbConnection);
         }
-        return id;
+        return id.intValue();
     }
 
     public static int createStatResultMetaTable() throws Exception {
