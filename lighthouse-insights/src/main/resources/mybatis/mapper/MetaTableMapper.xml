@@ -28,5 +28,23 @@
         )
     </insert>
 
+    <select id="queryById" resultMap="metaTableResultMap">
+        SELECT `id`,`meta_name`,`type`,`state`,`record_size`,`content_size`,`desc`,`create_time`,`update_time` FROM ldp_metas WHERE id = #{id}
+    </select>
+
+    <select id="getCurrentStorageTable" resultMap="metaTableResultMap">
+        SELECT `id`,`meta_name`,`type`,`state`,`record_size`,`content_size`,`desc`,`create_time`,`update_time` FROM ldp_metas
+        <where>
+            <if test="queryParam.maxRecordSize!=null">
+                AND record_size &lt; #{queryParam.maxRecordSize}
+            </if>
+            <if test="queryParam.maxContentSize!=null">
+                AND content_size &lt; #{queryParam.maxContentSize}
+            </if>
+            <if test="queryParam.startDate!=null">
+                AND create_time > #{queryParam.startDate}
+            </if>
+        </where>
+    </select>
 
 </mapper>
