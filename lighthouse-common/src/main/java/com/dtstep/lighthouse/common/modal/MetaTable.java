@@ -16,13 +16,11 @@ package com.dtstep.lighthouse.common.modal;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.common.entity.annotation.DBColumnAnnotation;
-import com.dtstep.lighthouse.common.entity.annotation.DBNameAnnotation;
+import com.dtstep.lighthouse.common.enums.MetaTableStateEnum;
 import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class MetaTable implements Serializable {
 
@@ -32,13 +30,11 @@ public class MetaTable implements Serializable {
 
     private String metaName;
 
-    private int type;
+    private MetaTableTypeEnum metaTableType;
 
-    private int state;
+    private MetaTableStateEnum state;
 
     private String desc;
-
-    private MetaTableTypeEnum metaTableTypeEnum;
 
     private long recordSize;
 
@@ -62,32 +58,6 @@ public class MetaTable implements Serializable {
 
     public void setMetaName(String metaName) {
         this.metaName = metaName;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.metaTableTypeEnum = MetaTableTypeEnum.getMetaTableTypeEnum(type);
-        this.type = type;
-    }
-
-    public MetaTableTypeEnum getMetaTableTypeEnum() {
-        return metaTableTypeEnum;
-    }
-
-    public void setMetaTableTypeEnum(MetaTableTypeEnum metaTableTypeEnum) {
-        this.type = metaTableTypeEnum.getType();
-        this.metaTableTypeEnum = metaTableTypeEnum;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
     }
 
     public String getDesc() {
@@ -128,5 +98,21 @@ public class MetaTable implements Serializable {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public MetaTableStateEnum getState() {
+        return state;
+    }
+
+    public void setState(MetaTableStateEnum state) {
+        this.state = state;
+    }
+
+    public MetaTableTypeEnum getMetaTableType() {
+        return metaTableType;
+    }
+
+    public void setMetaTableType(MetaTableTypeEnum metaTableType) {
+        this.metaTableType = metaTableType;
     }
 }

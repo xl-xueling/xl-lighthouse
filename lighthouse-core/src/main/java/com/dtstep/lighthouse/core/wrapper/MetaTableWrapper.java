@@ -168,9 +168,4 @@ public final class MetaTableWrapper {
         }
         return tableId;
     }
-
-
-    public static void removeMetaTableCache(int metaId){
-        META_CACHE.invalidate(metaId);
-    }
 }

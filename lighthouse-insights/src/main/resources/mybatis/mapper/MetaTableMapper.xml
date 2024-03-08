@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dtstep.lighthouse.insights.dao.MetaTableDao">
+
+    <resultMap id="metaTableResultMap" type="com.dtstep.lighthouse.common.modal.MetaTable">
+        <result column="id" property="id"/>
+        <result column="meta_name" property="metaName"/>
+        <result column="type" property="metaTableType" typeHandler="com.dtstep.lighthouse.insights.types.MetaTableTypeEnumTypeHandler"/>
+        <result column="state" property="state" typeHandler="com.dtstep.lighthouse.insights.types.MetaTableStateEnumTypeHandler"/>
+        <result column="record_size" property="recordSize"/>
+        <result column="content_size" property="contentSize"/>
+        <result column="desc" property="desc"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.MetaTable" >
+        INSERT INTO ldp_metas (`meta_name`,`type`,`state`,`record_size`,`content_size`,`desc`,`create_time`,`update_time`) VALUES
+        (
+            #{metaName,jdbcType=VARCHAR},
+            #{metaTableType,jdbcType=INTEGER},
+            #{state,jdbcType=INTEGER},
+            #{recordSize,jdbcType=INTEGER},
+            #{contentSize,jdbcType=INTEGER},
+            #{desc,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+
+</mapper>
