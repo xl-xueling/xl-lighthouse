@@ -56,12 +56,6 @@ public class StatServiceImpl implements StatService {
     private GroupDao groupDao;
 
     @Autowired
-    private GroupService groupService;
-
-    @Autowired
-    private ProjectDao projectDao;
-
-    @Autowired
     private ResourceService resourceService;
 
     @Autowired
@@ -69,9 +63,6 @@ public class StatServiceImpl implements StatService {
 
     @Autowired
     private RoleService roleService;
-
-    @Autowired
-    private ProjectService projectService;
 
     @Autowired
     private PermissionService permissionService;
@@ -82,9 +73,12 @@ public class StatServiceImpl implements StatService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MetaTableService metaTableService;
+
     @Transactional
     @Override
-    public ResultCode create(Stat stat) {
+    public ResultCode create(Stat stat) throws Exception{
         int groupId = stat.getGroupId();
         Group group = groupDao.queryById(groupId);
         String template = stat.getTemplate();
@@ -101,6 +95,8 @@ public class StatServiceImpl implements StatService {
         stat.setCreateTime(localDateTime);
         stat.setState(StatStateEnum.RUNNING);
         stat.setRandomId(RandomID.id(32));
+        int metaId = metaTableService.getCurrentStatResultTable();
+        stat.setMetaId(metaId);
         statDao.insert(stat);
         int id = stat.getId();
         resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Stat,id, ResourceTypeEnum.Group,stat.getGroupId()));
@@ -110,18 +106,15 @@ public class StatServiceImpl implements StatService {
     @Transactional
     @Override
     public ResultCode update(Stat stat) {
-        int groupId = stat.getGroupId();
-        Group group = groupDao.queryById(groupId);
         String template = stat.getTemplate();
         Document document = Jsoup.parse(template, "", Parser.xmlParser());
         Element node = document.select("stat-item").first();
         node.attr("title", stat.getTitle());
         String newTemplate = document.toString();
         stat.setTemplate(newTemplate);
-        String timeParam = stat.getTimeparam();
         LocalDateTime localDateTime = LocalDateTime.now();
         stat.setUpdateTime(localDateTime);
-        int result = statDao.update(stat);
+        statDao.update(stat);
         resourceService.updateResourcePidCallback(ResourceDto.newResource(ResourceTypeEnum.Stat,stat.getId(),ResourceTypeEnum.Group,stat.getGroupId()));
         return ResultCode.success;
     }

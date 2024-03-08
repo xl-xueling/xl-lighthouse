@@ -122,7 +122,7 @@ public final class MetaTableWrapper {
         LocalDateTime localDateTime = LocalDateTime.now();
         int id;
         try{
-             id = queryRunner.update(conn,sql,metaTable.getMetaTableType().getType(),metaTable.getState().getState(),0,0,null,localDateTime,localDateTime);
+             id = queryRunner.update(conn,sql,metaTable.getMetaName(),metaTable.getMetaTableType().getType(),metaTable.getState().getState(),0,0,null,localDateTime,localDateTime);
         }finally {
             ConnectionManager.close(dbConnection);
         }

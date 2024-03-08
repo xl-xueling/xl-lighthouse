@@ -42,7 +42,7 @@ public class StatController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @RequestMapping("/stat/create")
-    public ResultData<Integer> create(@Validated @RequestBody Stat createParam) {
+    public ResultData<Integer> create(@Validated @RequestBody Stat createParam) throws Exception {
         ResultCode resultCode = statService.create(createParam);
         return ResultData.result(resultCode);
     }
