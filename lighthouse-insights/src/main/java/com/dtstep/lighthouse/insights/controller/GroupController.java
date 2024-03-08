@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.insights.dto.GroupCreateParam;
 import com.dtstep.lighthouse.insights.dto.GroupUpdateParam;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.common.modal.IDParam;
+import com.dtstep.lighthouse.insights.vo.GroupVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
@@ -70,7 +71,7 @@ public class GroupController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @RequestMapping("/group/update")
-    public ResultData<Integer> update(@Validated @RequestBody GroupUpdateParam updateParam) {
+    public ResultData<Integer> update(@Validated @RequestBody GroupUpdateParam updateParam) throws Exception{
         Integer id = updateParam.getId();
         Group group = groupService.queryById(id);
         group.setColumns(updateParam.getColumns());
@@ -85,13 +86,13 @@ public class GroupController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/group/queryById")
-    public ResultData<Group> queryById(@Validated @RequestBody GroupQueryParam queryParam) {
-        Group group = groupService.queryById(queryParam.getId());
+    public ResultData<GroupVO> queryById(@Validated @RequestBody GroupQueryParam queryParam) throws Exception {
+        GroupVO group = groupService.queryById(queryParam.getId());
         return ResultData.success(group);
     }
 
     @RequestMapping("/group/deleteById")
-    public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) {
+    public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) throws Exception{
         Group group = groupService.queryById(idParam.getId());
         Validate.notNull(group);
         StatQueryParam queryParam = new StatQueryParam();

@@ -208,8 +208,8 @@ public final class GroupDBWrapper {
             long minDuration = 0L;
             long maxDataExpire = 0L;
             for (Stat stat : statList) {
-                String template =
-                List<Column> statRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,stat);
+                String template = stat.getTemplate();
+                List<Column> statRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,template);
                 if(stat.getState() == StatStateEnum.RUNNING){
                     long currentDuration = TimeParam.calculateDuration(stat.getTimeparam());
                     if(minDuration == 0L){
@@ -220,18 +220,16 @@ public final class GroupDBWrapper {
                     if(maxDataExpire < stat.getExpired()){
                         maxDataExpire = stat.getExpired();
                     }
-                    Set<String> statRelatedColumnSet = stat.getRelatedColumnSet();
-                    if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
-                        for(String columnName : statRelatedColumnSet){
-                            groupRunningRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
-                            groupAllRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
+                    if (CollectionUtils.isNotEmpty(statRelatedColumns)) {
+                        for(Column column : statRelatedColumns){
+                            groupRunningRelatedColumns.put(column.getName(),groupColumnsMap.get(column.getName()));
+                            groupAllRelatedColumns.put(column.getName(),groupColumnsMap.get(column.getName()));
                         }
                     }
                 }else{
-                    Set<String> statRelatedColumnSet = stat.getRelatedColumnSet();
-                    if (CollectionUtils.isNotEmpty(statRelatedColumnSet)) {
-                        for(String columnName : statRelatedColumnSet){
-                            groupAllRelatedColumns.put(columnName,groupColumnsMap.get(columnName));
+                    if (CollectionUtils.isNotEmpty(statRelatedColumns)) {
+                        for(Column column : statRelatedColumns){
+                            groupAllRelatedColumns.put(column.getName(),groupColumnsMap.get(column.getName()));
                         }
                     }
                 }
@@ -243,7 +241,6 @@ public final class GroupDBWrapper {
             groupExtEntity.setDataExpire(maxDataExpire);
         }
         groupExtEntity.setVerifyKey(Md5Util.getMD5(groupExtEntity.getSecretKey()));
-        ObjectMapper objectMapper = new ObjectMapper();
         HashMap<String,Integer> limitedThresholdMap = groupExtEntity.getLimitedThresholdMap();
         if(!limitedThresholdMap.containsKey(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT.getStrategy())){
             int limit = LDPConfig.getOrDefault(LDPConfig.KEY_LIMITED_GROUP_MESSAGE_SIZE_PER_SEC,-1,Integer.class);

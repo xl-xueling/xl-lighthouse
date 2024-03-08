@@ -1,10 +1,16 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.entity.stat.TimeParam;
+import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
+import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.key.RandomID;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Stat;
+import com.dtstep.lighthouse.common.util.CalculateUtil;
+import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
@@ -13,6 +19,8 @@ import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.modal.ResourceDto;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
+import com.dtstep.lighthouse.insights.vo.GroupVO;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,8 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -72,9 +80,30 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Group queryById(Integer id) {
+    public GroupVO queryById(Integer id) throws Exception {
         Group group = groupDao.queryById(id);
-        return group;
+        Set<String> relatedColumns = getRelatedColumns(group);
+        GroupVO groupVO = new GroupVO(group);
+        groupVO.setRelatedColumns(relatedColumns);
+        return groupVO;
+    }
+
+    public Set<String> getRelatedColumns(Group group) throws Exception {
+        Set<String> relatedColumnSet = new HashSet<>();
+        List<Column> columnList = group.getColumns();
+        List<Stat> statList = StatDBWrapper.queryStatByGroupIDFromDB(group.getId());
+        if (CollectionUtils.isNotEmpty(statList)) {
+            for (Stat stat : statList) {
+                String template = stat.getTemplate();
+                List<Column> statRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList, template);
+                if (CollectionUtils.isNotEmpty(statRelatedColumns)) {
+                    for (Column column : statRelatedColumns) {
+                        relatedColumnSet.add(column.getName());
+                    }
+                }
+            }
+        }
+        return relatedColumnSet;
     }
 
     @Override
