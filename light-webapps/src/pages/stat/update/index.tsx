@@ -57,7 +57,9 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
-            onClose();
+            setTimeout(() => {
+                onClose();
+            },0)
         }).catch((error) => {
             console.log(error);
             Notification.error({style: { width: 420 }, title: 'Warning', content: t['system.error']});
