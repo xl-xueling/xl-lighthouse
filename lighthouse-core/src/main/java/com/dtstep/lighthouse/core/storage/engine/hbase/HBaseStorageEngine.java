@@ -105,10 +105,21 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     @Override
+    public String getDefaultNamespace() {
+        String clusterName = LDPConfig.getVal(LDPConfig.KEY_CLUSTER_ID);
+        Validate.notNull(clusterName);
+        return String.format("cluster_%s_ldp_hbasedb",clusterName);
+    }
+
+    @Override
     public void createNamespace(String namespace) throws Exception {
         NamespaceDescriptor namespaceDescriptor = NamespaceDescriptor.create(namespace).build();
         hBaseAdmin.createNamespace(namespaceDescriptor);
         logger.info("create namespace {} success!",namespace);
+    }
+
+    private TableName getTableName(String tableName){
+        return TableName.valueOf(String.format("%s:%s",getDefaultNamespace(),tableName));
     }
 
     @Override
@@ -128,7 +139,7 @@ public class HBaseStorageEngine implements StorageEngine {
             splitKeys[i] = tempRow;
             i++;
         }
-        TableDescriptorBuilder tableDescriptor = TableDescriptorBuilder.newBuilder(TableName.valueOf(tableName));
+        TableDescriptorBuilder tableDescriptor = TableDescriptorBuilder.newBuilder(getTableName(tableName));
         ColumnFamilyDescriptor family = ColumnFamilyDescriptorBuilder.newBuilder(Bytes.toBytes("f")).setMaxVersions(1)
                 .setInMemory(false)
                 .setBloomFilterType(BloomType.ROW)
@@ -161,7 +172,7 @@ public class HBaseStorageEngine implements StorageEngine {
 
     @Override
     public boolean isTableExist(String tableName) throws Exception {
-        TableName tableNameObj = TableName.valueOf(tableName);
+        TableName tableNameObj = getTableName(tableName);
         return hBaseAdmin.tableExists(tableNameObj);
     }
 
@@ -170,7 +181,7 @@ public class HBaseStorageEngine implements StorageEngine {
         if(!isTableExist(tableName)){
             return;
         }
-        TableName table = TableName.valueOf(tableName);
+        TableName table = getTableName(tableName);
         hBaseAdmin.disableTable(table);
         hBaseAdmin.deleteTable(table);
     }
@@ -180,7 +191,7 @@ public class HBaseStorageEngine implements StorageEngine {
         String rowKey = ldpIncrement.getKey();
         String column = ldpIncrement.getColumn();
         long step = ldpIncrement.getStep();
-        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+        try (Table table = getConnection().getTable(getTableName(tableName))) {
             Increment increment = new Increment(Bytes.toBytes(rowKey));
             increment.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), step);
             long ttl = ldpIncrement.getTtl();
@@ -200,7 +211,7 @@ public class HBaseStorageEngine implements StorageEngine {
         if(CollectionUtils.isEmpty(ldpIncrements)){
             return;
         }
-        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+        try (Table table = getConnection().getTable(getTableName(tableName))) {
             List<Row> rows = Lists.newArrayListWithCapacity(ldpIncrements.size());
             for (LdpIncrement ldpIncrement : ldpIncrements) {
                 String rowKey = ldpIncrement.getKey();
@@ -227,7 +238,7 @@ public class HBaseStorageEngine implements StorageEngine {
         Object value = ldpPut.getData();
         String rowKey = ldpPut.getKey();
         String column = ldpPut.getColumn();
-        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+        try (Table table = getConnection().getTable(getTableName(tableName))) {
             org.apache.hadoop.hbase.client.Put dbPut = new org.apache.hadoop.hbase.client.Put(Bytes.toBytes(rowKey));
             if (value.getClass() == String.class) {
                 dbPut.addColumn(Bytes.toBytes("f"), Bytes.toBytes(column), Bytes.toBytes(value.toString()));
@@ -252,7 +263,7 @@ public class HBaseStorageEngine implements StorageEngine {
         if(CollectionUtils.isEmpty(ldpPuts)){
             return;
         }
-        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+        try (Table table = getConnection().getTable(getTableName(tableName))) {
             List<Put> puts = Lists.newArrayListWithCapacity(ldpPuts.size());
             for (LdpPut ldpPut : ldpPuts) {
                 String rowKey = ldpPut.getKey();
@@ -284,7 +295,7 @@ public class HBaseStorageEngine implements StorageEngine {
         String rowKey = ldpGet.getKey();
         String column = ldpGet.getColumn();
         Result dbResult;
-        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+        try (Table table = getConnection().getTable(getTableName(tableName))) {
             Get get = new Get(Bytes.toBytes(rowKey));
             dbResult = table.get(get);
         } catch (Exception ex) {
@@ -327,7 +338,7 @@ public class HBaseStorageEngine implements StorageEngine {
         {
             int end = Math.min((loop + 1) * BATCH_GET_SIZE, totalSize);
             List<LdpGet> partGets = ldpGets.subList(loop * BATCH_GET_SIZE, end);
-            HBaseGetterThread<R> hBaseGetterThread = new HBaseGetterThread<>(tableName,partGets,clazz);
+            HBaseGetterThread<R> hBaseGetterThread = new HBaseGetterThread<>(getTableName(tableName),partGets,clazz);
             synchronized (pool)
             {
                 Future<List<LdpResult<R>>> result = pool.submit(hBaseGetterThread);
@@ -348,7 +359,7 @@ public class HBaseStorageEngine implements StorageEngine {
     @Override
     public <R> List<LdpResult<R>> scan(String tableName, String startRow, String endRow, int limit,Class<R> clazz) throws Exception {
         List<LdpResult<R>> resultList = new ArrayList<>();
-        try(Table table = getConnection().getTable(TableName.valueOf(tableName))){
+        try(Table table = getConnection().getTable(getTableName(tableName))){
             Scan scan = new Scan();
             scan.setStartRow(Bytes.toBytes(startRow+"."));
             scan.setStopRow(Bytes.toBytes(endRow));
@@ -400,7 +411,7 @@ public class HBaseStorageEngine implements StorageEngine {
 
     @Override
     public void delete(String tableName, String key) throws Exception {
-        try(Table table = getConnection().getTable(TableName.valueOf(tableName))){
+        try(Table table = getConnection().getTable(getTableName(tableName))){
             Delete delete = new Delete(Bytes.toBytes(key));
             table.delete(delete);
         }catch (Exception ex){
@@ -477,7 +488,7 @@ public class HBaseStorageEngine implements StorageEngine {
                             }
                         }
                     }
-                    try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+                    try (Table table = getConnection().getTable(getTableName(tableName))) {
                         table.put(puts);
                     }catch (Exception ex) {
                         logger.error("execute batch put error,tableName:{}!",tableName,ex);
@@ -498,7 +509,7 @@ public class HBaseStorageEngine implements StorageEngine {
 
     private static final int BATCH_GET_SIZE = 200;
 
-    private static <R> List<LdpResult<R>> partGets(String tableName, List<LdpGet> ldpGets, Class<R> clazz) throws Exception {
+    private static <R> List<LdpResult<R>> partGets(TableName tableName, List<LdpGet> ldpGets, Class<R> clazz) throws Exception {
         List<Get> getList = new ArrayList<>();
         for(LdpGet ldpGet : ldpGets){
             String rowKey = ldpGet.getKey();
@@ -508,7 +519,7 @@ public class HBaseStorageEngine implements StorageEngine {
             getList.add(get);
         }
         Result[] dbResults;
-        try (Table table = getConnection().getTable(TableName.valueOf(tableName))) {
+        try (Table table = getConnection().getTable(tableName)) {
             dbResults = table.get(getList);
         } catch (Exception ex) {
             logger.error("hbase get error!",ex);
@@ -553,21 +564,21 @@ public class HBaseStorageEngine implements StorageEngine {
 
     private static class HBaseGetterThread<R> implements Callable<List<LdpResult<R>>> {
 
-        private final String metaName;
+        private final TableName tableName;
 
         private final List<LdpGet> getList;
 
         private final Class<R> clazz;
 
-        public HBaseGetterThread(String metaName,List<LdpGet> getList,Class<R> clazz){
+        public HBaseGetterThread(TableName tableName,List<LdpGet> getList,Class<R> clazz){
             this.getList = getList;
-            this.metaName = metaName;
+            this.tableName = tableName;
             this.clazz = clazz;
         }
 
         @Override
         public List<LdpResult<R>> call() throws Exception {
-            return partGets(metaName,getList,clazz);
+            return partGets(tableName,getList,clazz);
         }
     }
 }

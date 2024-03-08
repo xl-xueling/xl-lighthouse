@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface StorageEngine {
 
+    String getDefaultNamespace();
+
     void createNamespace(String namespace) throws Exception;
 
     void createTable(String tableName) throws Exception;
