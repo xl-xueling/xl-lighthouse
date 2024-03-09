@@ -20,7 +20,7 @@ const i18n = {
     'metricSetList.operations.delete.submit.success':'删除指标集成功！',
     'metricSetList.operations.star.submit.success':'已关注当前指标集！',
     'metricSetList.operations.star.confirm':'是否确认关注当前指标集?',
-    'metricSetList.operations.unstar.confirm':'是否确认取消关注当前指标集？',
+    'metricSetList.operations.unstar.confirm':'是否确认取消关注指标集？',
     'metricSetList.operations.unstar.submit.success':'指标集已被取消关注！',
   },
 };

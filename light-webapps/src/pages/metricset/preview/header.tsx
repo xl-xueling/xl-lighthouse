@@ -67,7 +67,7 @@ export default function MetricSetPreviewHeader() {
                 metricSetInfo?
                     <Space size={0} direction="vertical" style={{ width: '100%' }}>
                         <Row>
-                            <Grid.Col span={20}>
+                            <Grid.Col span={15}>
                                 <span style={{display:"inline-flex",alignItems:"center"}}>
                                     <Button icon={<LuLayers/>} shape={"circle"} size={"small"} style={{marginRight:'10px',marginBottom:'7px'}}/>
                                     <Typography.Title
@@ -79,10 +79,8 @@ export default function MetricSetPreviewHeader() {
                                     </Typography.Title>
                                 </span>
                             </Grid.Col>
-                            <Grid.Col span={4} style={{textAlign:"right" }}>
-                                <Space size={10}>
-                                    <MetricSetStar metricInfo={metricSetInfo}/>
-                                </Space>
+                            <Grid.Col span={9} style={{textAlign:"right" }}>
+                                <MetricSetStar metricInfo={metricSetInfo}/>
                             </Grid.Col>
                         </Row>
                         <Row>

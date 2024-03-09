@@ -45,8 +45,10 @@ export default function MetricSetStar({metricInfo}) {
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricStar.operations.star.submit.success']});
                 localStorage.removeItem('cache_stared_metrics');
-                const currentFixedData = staredMetricInfo?.filter(x => x.id != record.id);
-                dispatch(updateStoreStaredMetricInfo([record,...currentFixedData]))
+                setTimeout(() => {
+                    const currentFixedData = staredMetricInfo?.filter(x => x.id != record.id);
+                    dispatch(updateStoreStaredMetricInfo([record,...currentFixedData]))
+                },0)
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -78,7 +80,6 @@ export default function MetricSetStar({metricInfo}) {
     const IconList = [
         IconStarFill,
     ].map((Tag, index) => <Tag key={index} />);
-
 
     return (
         staredMetricInfo?.map(z => z.id).includes(metricInfo?.id)?
