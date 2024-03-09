@@ -185,7 +185,7 @@ public final class GroupDBWrapper {
         int result;
         try{
             if(groupStateEnum == GroupStateEnum.LIMITING){
-                result = queryRunner.update(conn, "update ldp_groups set state = ?,update_time = ? where id = ? adn state = ?", GroupStateEnum.RUNNING.getState(),new Date(), groupId,GroupStateEnum.RUNNING.getState());
+                result = queryRunner.update(conn, "update ldp_groups set state = ?,update_time = ? where id = ? and state = ?", GroupStateEnum.RUNNING.getState(),new Date(), groupId,GroupStateEnum.RUNNING.getState());
             }else{
                 result = queryRunner.update(conn, "update ldp_groups set state = ?,update_time = ? where id = ?", GroupStateEnum.RUNNING.getState(),new Date(), groupId);
             }
