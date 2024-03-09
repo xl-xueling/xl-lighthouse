@@ -284,7 +284,7 @@ public class StatDBWrapper {
         int result;
         try{
             if(statStateEnum == StatStateEnum.LIMITING){
-                result = queryRunner.update(conn, "update ldp_stats set state = ?,update_time = ? where id = ? and state = ?", StatStateEnum.RUNNING.getState(),new Date(), statId,StatStateEnum.RUNNING.getState());
+                result = queryRunner.update(conn, "update ldp_stats set state = ?,update_time = ? where id = ? and state = ?", statStateEnum.getState(),new Date(), statId,StatStateEnum.RUNNING.getState());
             }else{
                 result = queryRunner.update(conn, "update ldp_stats set state = ?,update_time = ? where id = ?", statStateEnum.getState(),new Date(), statId);
             }
