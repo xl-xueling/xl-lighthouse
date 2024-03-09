@@ -33,7 +33,7 @@ public class DefaultKeyGenerator implements KeyGenerator {
         return Objects.requireNonNull(rowKey);
     }
 
-    public static String generateBatchKey(Stat stat, int functionIndex, String dimensValue, long batchTime) {
+    public String generateBatchKey(Stat stat, int functionIndex, String dimensValue, long batchTime) {
         String key = null;
         try{
             long baseTime;
@@ -73,7 +73,7 @@ public class DefaultKeyGenerator implements KeyGenerator {
         return key;
     }
 
-    public static String generateBatchBaseKey(String randomId,int dataVersion,long baseTime,String dimensValue,int functionIndex) {
+    public String generateBatchBaseKey(String randomId,int dataVersion,long baseTime,String dimensValue,int functionIndex) {
         String origin = Md5Util.getMD5(randomId + "_" + dataVersion + "_" + baseTime + "_" + dimensValue + "_" + functionIndex);
         int index = Math.abs((int) (HashUtil.BKDRHash(origin) % SysConst._DBKeyPrefixArray.length));
         String prefix = SysConst._DBKeyPrefixArray[index];

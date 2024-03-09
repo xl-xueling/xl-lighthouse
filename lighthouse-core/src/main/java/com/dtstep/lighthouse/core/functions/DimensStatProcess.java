@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.functions;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.util.DateUtil;
 import com.google.common.hash_snp.Hashing;
 import com.dtstep.lighthouse.common.aggregator.BlockingEventPool;
 import com.dtstep.lighthouse.common.aggregator.EventPool;
@@ -74,7 +75,7 @@ public final class DimensStatProcess extends Process {
             String existKey = groupExtEntity.getToken() + "_" + dimensArr[i] + "_" + value;
             long hash = Math.abs(Hashing.murmur3_128().hashBytes(existKey.getBytes(StandardCharsets.UTF_8)).asLong());
             if(!roaringBitMap.check("dimens_filter_keys",hash)){
-                long winTime = BatchAdapter.getBatch(1,TimeUnit.MINUTES,System.currentTimeMillis());
+                long winTime = DateUtil.batchTime(1,TimeUnit.MINUTES,System.currentTimeMillis());
                 String symbol = "dimens_storage_limit" + "_"  + groupExtEntity.getToken() + "_" + dimensArr[i];
                 if(CycleCounterAdvisor.incrementAndGet(symbol,winTime) > StatConst.DIMENS_VALUE_STORAGE_DURATION_MAX_SIZE){
                     continue;

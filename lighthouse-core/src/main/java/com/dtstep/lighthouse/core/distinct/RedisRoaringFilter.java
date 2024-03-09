@@ -22,6 +22,8 @@ import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.redis.RedisHandler;
+import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
+import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
 import com.google.common.collect.Lists;
 import com.dtstep.lighthouse.common.constant.RedisConst;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
@@ -42,6 +44,8 @@ import java.util.stream.IntStream;
 public final class RedisRoaringFilter<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisRoaringFilter.class);
+
+    private static final KeyGenerator keyGenerator = new DefaultKeyGenerator();
 
     public static final String BLOOM_LUA_SCRIPT_LOCAL_HASH =
             "local function split(fullStr, separator)\n" +
@@ -170,11 +174,11 @@ public final class RedisRoaringFilter<T> {
     public String getBloomFilterKey(StatExtEntity statExtEntity, String dimensValue, int functionIndex, long batchTime){
         if(StringUtil.isEmpty(statExtEntity.getTemplateEntity().getDimens())){
             long aggregateTime = DateUtil.batchTime(10, TimeUnit.MINUTES,batchTime);
-            String aggregateKey = BatchAdapter.generateBatchKey(statExtEntity,functionIndex,null,aggregateTime);
+            String aggregateKey = keyGenerator.resultKey(statExtEntity,functionIndex,null,aggregateTime);
             return RedisConst.RT_BLOOM_DISTINCT_PREFIX + aggregateKey;
         }else{
             long aggregateTime = DateUtil.batchTime(10, TimeUnit.MINUTES,batchTime);
-            String aggregateKey = BatchAdapter.generateBatchKey(statExtEntity,functionIndex,null,aggregateTime);
+            String aggregateKey = keyGenerator.resultKey(statExtEntity,functionIndex,null,aggregateTime);
             return RedisConst.RT_BLOOM_DISTINCT_PREFIX + aggregateKey + "_" + Math.abs(dimensValue.hashCode()) % 3;
         }
     }

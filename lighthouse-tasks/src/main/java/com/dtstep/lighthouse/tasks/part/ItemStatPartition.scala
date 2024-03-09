@@ -101,7 +101,7 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
     }
     val statList = getEffectiveStats(groupEntity.getId);
     if(logger.isTraceEnabled()){
-      logger.trace(s"The number of valid statistical items in the current group is:${statList.size}");
+      logger.trace(s"Group:${groupEntity.getId},valid statistical items size:${statList.size}");
     }
     for(statEntity <- statList) {
       list.++=(append(statEntity, groupEntity, message))
