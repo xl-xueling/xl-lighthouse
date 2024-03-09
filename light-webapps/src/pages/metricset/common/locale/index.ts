@@ -9,8 +9,8 @@ const i18n = {
   'zh-CN': {
     'MetricNavModal.modal.title':'指标集导航',
     'metricStar.operations.star.submit.success':'已关注当前指标集！',
-    'metricStar.operations.star.confirm':'是否确认关注当前指标集',
-    'metricStar.operations.unstar.confirm':'是否确认取消关注当前指标集？',
+    'metricStar.operations.star.confirm':'是否确认关注当前指标集？',
+    'metricStar.operations.unstar.confirm':'是否确认取消关注指标集？',
     'metricStar.operations.unstar.submit.success':'指标集已被取消关注！',
   },
 };
