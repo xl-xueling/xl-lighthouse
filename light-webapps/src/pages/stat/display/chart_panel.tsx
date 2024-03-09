@@ -31,14 +31,15 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
             const dimensValue = z.dimensValue;
             const displayDimensValue = z.displayDimensValue;
             const statId = z.statId;
-            const seriesObject:EChartChartValue = {
+            const seriesObject = {
                 name:dimensValue,
                 type:'line',
                 data:z.valuesList?.map(z => z.value),
+                animation: true,
+                animationEasing: 'cubicInOut',
             }
             eChartChartValues.push(seriesObject);
         })
-        console.log("eChartChartValues is:" + JSON.stringify(eChartChartValues));
         setEChartData(eChartChartValues);
     }
 
@@ -116,12 +117,18 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
             {
                 type: 'category',
                 boundaryGap: false,
-                data: batchTimeList
+                data: batchTimeList,
+                axisLabel: {
+                    animation: false // 关闭x轴标签的动画效果
+                }
             }
         ],
         yAxis: [
             {
-                type: 'value'
+                type: 'value',
+                axisLabel: {
+                    animation: false // 关闭x轴标签的动画效果
+                },
             }
         ],
 
@@ -139,6 +146,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
     };
 
     const loadingOption = {
+        animation: false,
         icon: 'none',
         text: 'Loading...',
         color: '#c23531',
@@ -157,13 +165,13 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts option={option} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={true}
+            return <ReactECharts option={option} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts option={option} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={true}
+            return <ReactECharts option={option} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts option={option} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={true}
+            return <ReactECharts option={option} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
                                  loadingOption={loadingOption}/>
         }
     }
