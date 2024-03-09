@@ -8,6 +8,7 @@ import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.modal.MetaTable;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
@@ -237,7 +238,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         StatValue statValue = new StatValue();
         statValue.setBatchTime(batchTime);
         statValue.setDimensValue(dimensValue);
-        statValue.setDisplayBatchTime(DateUtil.formatTimeStamp(batchTime, "yyyy-MM-dd HH:mm:ss"));
+        statValue.setDisplayBatchTime(BatchAdapter.dateTimeFormat(statExtEntity.getTimeparam(),batchTime));
         long lastUpdateTime = 0;
         HashMap<String,Object> envMap = new HashMap<>();
         int variableIndex = 97;

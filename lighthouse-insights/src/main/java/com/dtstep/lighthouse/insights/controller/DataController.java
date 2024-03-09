@@ -38,7 +38,6 @@ public class DataController {
 
     @PostMapping("/data/stat")
     public ResultData<List<StatDataObject>> dataQuery(@Validated @RequestBody DataStatQueryParam queryParam) throws Exception{
-        System.out.println("query param is:" + JsonUtil.toJSONString(queryParam));
         int statId = queryParam.getStatId();
         int userId = baseService.getCurrentUserId();
         Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
@@ -51,7 +50,6 @@ public class DataController {
             }
         }
         List<StatDataObject> objectList = dataService.dataQuery(queryParam.getStatId(),queryParam.getStartTime(),queryParam.getEndTime(),null);
-        System.out.println("objectList is:" + JsonUtil.toJSONString(objectList));
         return ResultData.success(objectList);
     }
 

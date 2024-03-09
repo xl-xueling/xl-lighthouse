@@ -16,18 +16,13 @@ package com.dtstep.lighthouse.core.batch;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.core.sort.SortOperator;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.dtstep.lighthouse.common.constant.SysConst;
-import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.hash.HashUtil;
-import com.dtstep.lighthouse.common.sbr.StringBuilderHolder;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
-import com.google.common.collect.Lists;
-import org.quartz.CronExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,8 +70,8 @@ public final class BatchAdapter {
         return Objects.requireNonNull(getBatchInterface(timeParam)).queryBatchTimeList(timeParam,startTime,endTime,limitSize);
     }
 
-    public static String getDisplayFormat(String timeParam,Date startTime,Date endTime) throws Exception {
-        return Objects.requireNonNull(getBatchInterface(timeParam)).getDisplayFormat(timeParam,startTime,endTime);
+    public static String dateTimeFormat(String timeParam, long batchTime){
+        return Objects.requireNonNull(getBatchInterface(timeParam)).dateTimeFormat(timeParam,batchTime);
     }
 
     static BatchInterface getBatchInterface(String timeParam){
