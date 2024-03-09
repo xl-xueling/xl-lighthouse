@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.test.mode;
 
-import com.dtstep.lighthouse.common.key.RandomID;
+import com.dtstep.lighthouse.common.random.RandomID;
 
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;

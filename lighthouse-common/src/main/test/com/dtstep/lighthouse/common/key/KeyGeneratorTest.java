@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.common.key;
+package com.dtstep.lighthouse.common.random;
 
 import org.junit.Assert;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.common.key;
+package com.dtstep.lighthouse.common.random;
 
 import com.dtstep.lighthouse.common.util.Md5Util;
 import org.junit.Test;

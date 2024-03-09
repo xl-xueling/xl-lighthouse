@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.common.key;
+package com.dtstep.lighthouse.common.random;
 
 
 public class SnowFlake {
@@ -11,11 +11,11 @@ public class SnowFlake {
 
     private final static long DATACENTER_BIT = 5;
 
-    private final static long MAX_DATACENTER_NUM = -1L ^ (-1L << DATACENTER_BIT);
+    private final static long MAX_DATACENTER_NUM = ~(-1L << DATACENTER_BIT);
 
-    private final static long MAX_MACHINE_NUM = -1L ^ (-1L << MACHINE_BIT);
+    private final static long MAX_MACHINE_NUM = ~(-1L << MACHINE_BIT);
 
-    private final static long MAX_SEQUENCE = -1L ^ (-1L << SEQUENCE_BIT);
+    private final static long MAX_SEQUENCE = ~(-1L << SEQUENCE_BIT);
 
     private final static long MACHINE_LEFT = SEQUENCE_BIT;
 

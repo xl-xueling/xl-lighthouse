@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.common.util;
 
-import com.dtstep.lighthouse.common.key.RandomID;
+import com.dtstep.lighthouse.common.random.RandomID;
 import org.junit.Test;
 
 import java.util.Random;
