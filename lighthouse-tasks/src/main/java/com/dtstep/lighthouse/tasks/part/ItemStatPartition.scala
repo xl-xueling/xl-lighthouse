@@ -46,6 +46,7 @@ import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper
 import org.apache.spark.sql.{Dataset, Encoder, Encoders, SparkSession}
 import org.slf4j.LoggerFactory
 import com.dtstep.lighthouse.common.util.StringUtil
+import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator
 import org.apache.spark.internal.Logging
 
 import java.nio.charset.StandardCharsets
@@ -72,6 +73,8 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
 
   import scala.util.control.Breaks._
 
+  val keyGenerator = new DefaultKeyGenerator();
+
   override def part(ds: Dataset[(Int, LightMessage)]): Dataset[(Int,String, Int)] = {
     ds.map(x => issueMessage(x._1,x._2)).filter(x => x != null && x.nonEmpty).flatMap(x => x)
   }
@@ -97,6 +100,9 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
       return list.toList
     }
     val statList = getEffectiveStats(groupEntity.getId);
+    if(logger.isTraceEnabled()){
+      logger.trace(s"The number of valid statistical items in the current group is:${statList.size}");
+    }
     for(statEntity <- statList) {
       list.++=(append(statEntity, groupEntity, message))
     }
@@ -107,7 +113,7 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
     val list = new ListBuffer[(Int,String, Int)]
     val templateEntity = statEntity.getTemplateEntity
     var dimensValue: String = null
-    val batchTime = BatchAdapter.getBatch(statEntity.getTimeParamInterval, statEntity.getTimeUnit, message.getTime)
+    val batchTime = DateUtil.batchTime(statEntity.getTimeParamInterval, statEntity.getTimeUnit, message.getTime)
     val envMap = new util.HashMap[String, AnyRef](message.getParamMap);
     if (!StringUtil.isEmpty(templateEntity.getDimens)) {
       dimensValue = DimensDBWrapper.getDimensValue(envMap, templateEntity.getDimensArray,batchTime);
@@ -131,7 +137,7 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
           distinctValue = java.lang.Long.toString(Math.abs(hash), 36);
           envMap.put(StatConst.DISTINCT_COLUMN_NAME,distinctValue);
         }
-        val aggregateKey = BatchAdapter.generateBatchKey(statEntity, statState.getFunctionIndex, dimensValue, batchTime)
+        val aggregateKey = keyGenerator.resultKey(statEntity, statState.getFunctionIndex, dimensValue, batchTime)
         if(!groupEntity.isBuiltIn){
           BuiltinMonitor.getInstance().monitor(StatConst.BUILTIN_RESULT_STAT,ImmutableMap.of("resultKey",aggregateKey,"statId",statEntity.getId.toString),message.getRepeat);
         }

@@ -3,7 +3,9 @@ package com.dtstep.lighthouse.core.rowkey;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.modal.Stat;
 
-public interface KeyGenerator {
+import java.io.Serializable;
+
+public interface KeyGenerator extends Serializable {
 
     String resultKey(Stat stat, int functionIndex, String dimensValue, long batchTime);
 
