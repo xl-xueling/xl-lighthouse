@@ -20,13 +20,12 @@ package com.dtstep.lighthouse.tasks.extract
 
 import com.dtstep.lighthouse.common.constant.StatConst
 import com.dtstep.lighthouse.common.entity.message.LightMessage
-import com.dtstep.lighthouse.common.util.{MessageHelper, StringUtil}
+import com.dtstep.lighthouse.common.util.{JsonUtil, MessageHelper, StringUtil}
 import com.dtstep.lighthouse.tasks.init.InitialServant
 
 import java.util.StringTokenizer
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.slf4j.LoggerFactory
-import com.dtstep.lighthouse.common.util.StringUtil
 
 import scala.collection.mutable.ListBuffer;
 
@@ -53,6 +52,9 @@ private[tasks] class DefaultMessageExtract(spark:SparkSession) extends MessageEx
         try{
           val entity = MessageHelper.parseText(messageStr);
           if(entity != null){
+            if(logger.isTraceEnabled()){
+              logger.trace(s"translate message:${JsonUtil.toJSONString(entity)}");
+            }
             list += entity
           }
         }catch {

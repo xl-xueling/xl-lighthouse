@@ -24,6 +24,7 @@ import com.dtstep.lighthouse.common.entity.message.LightMessage
 import com.dtstep.lighthouse.common.enums.GroupStateEnum
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum
 import com.dtstep.lighthouse.common.enums.result.MessageCaptchaEnum
+import com.dtstep.lighthouse.common.util.JsonUtil
 import com.dtstep.lighthouse.common.util.JsonUtil.toJSONString
 import com.dtstep.lighthouse.core.batch.BatchAdapter
 import com.dtstep.lighthouse.core.limited.{LimitedContext, RedisLimitedAspect}
@@ -58,6 +59,9 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
     val resultCodeEnum = validMessage(message,groupEntity);
     if(groupEntity.getDebugMode == 1){
       capture(groupEntity.getId,message);
+    }
+    if(logger.isTraceEnabled()){
+      logger.trace(s"The group of message matching is:${groupEntity.getId},valid result:${resultCodeEnum}");
     }
     (resultCodeEnum.getCaptcha,message)
     null
