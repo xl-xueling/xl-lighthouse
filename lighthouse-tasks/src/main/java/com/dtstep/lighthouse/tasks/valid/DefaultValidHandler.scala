@@ -64,7 +64,6 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
       logger.trace(s"The group of message matching is:${groupEntity.getId},valid result:${resultCodeEnum}");
     }
     (resultCodeEnum.getCaptcha,message)
-    null
   }catch {
       case ex:Exception => logger.error("valid message error!",ex);
         null;
@@ -104,3 +103,4 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
     ds.map(x => valid(x)).filter(x => x != null)
   }
 }
+
