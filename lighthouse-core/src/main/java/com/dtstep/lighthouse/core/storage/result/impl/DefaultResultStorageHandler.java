@@ -218,8 +218,8 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         String formula = statExtEntity.getTemplateEntity().getCompleteStat();
         StatValue statValue = new StatValue();
         statValue.setBatchTime(batchTime);
-        statValue.setDimens(dimensValue);
-        statValue.setDisplayName(DateUtil.formatTimeStamp(batchTime, "yyyy-MM-dd HH:mm:ss"));
+        statValue.setDimensValue(dimensValue);
+        statValue.setDisplayBatchTime(DateUtil.formatTimeStamp(batchTime, "yyyy-MM-dd HH:mm:ss"));
         long lastUpdateTime = 0;
         HashMap<String,Object> envMap = new HashMap<>();
         int variableIndex = 97;

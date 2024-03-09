@@ -48,11 +48,11 @@ export function convertDateToTimestamp(dateString, dateFormat) {
 }
 
 export function getDayBefore(timestamp,beforeDays) {
-    return moment(timestamp).tz(timezone).subtract(beforeDays, 'days');
+    return moment(timestamp).tz(timezone).subtract(beforeDays, 'days').valueOf();
 }
 
 export function getYearBefore(timestamp,beforeYears) {
-    return moment(timestamp).tz(timezone).subtract(beforeYears, 'years');
+    return moment(timestamp).tz(timezone).subtract(beforeYears, 'years').valueOf();
 }
 
 export function getDayAfter(timestamp,afterDays) {

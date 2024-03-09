@@ -10,7 +10,7 @@ import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ProjectService;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
-import com.dtstep.lighthouse.insights.vo.ServiceResult;
+import com.dtstep.lighthouse.common.entity.ServiceResult;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

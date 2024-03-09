@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.random.RandomID;
@@ -7,8 +8,8 @@ import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
-import com.dtstep.lighthouse.core.template.TemplateContext;
-import com.dtstep.lighthouse.core.template.TemplateParser;
+import com.dtstep.lighthouse.core.template2.TemplateContext;
+import com.dtstep.lighthouse.core.template2.TemplateParser;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
@@ -93,14 +94,14 @@ public class GroupServiceImpl implements GroupService {
         if (CollectionUtils.isNotEmpty(statList)) {
             for (Stat stat : statList) {
                 String template = stat.getTemplate();
-                TemplateEntity templateEntity = TemplateParser.parse(new TemplateContext(stat.getId(),template,stat.getTimeparam(),columnList));
+                ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(stat.getId(),template,stat.getTimeparam(),columnList));
                 List<Column> statRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList, template);
                 if (CollectionUtils.isNotEmpty(statRelatedColumns)) {
                     for (Column column : statRelatedColumns) {
                         relatedColumnSet.add(column.getName());
                     }
                 }
-                String dimens = templateEntity.getDimens();
+                String dimens = serviceResult.getData().getDimens();
                 if(!StringUtil.isEmpty(dimens)){
                     List<Column> dimensRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,dimens);
                     if (CollectionUtils.isNotEmpty(dimensRelatedColumns)) {

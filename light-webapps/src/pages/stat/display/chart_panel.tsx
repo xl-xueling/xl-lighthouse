@@ -46,6 +46,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
         setLoading(true);
         const combineParam:any = {}
         combineParam.statId = statInfo?.id;
+        console.log("searchForm is:" + searchForm);
         if(searchForm != null){
             const date = searchForm.date;
             if(date && Array.isArray(date)){
@@ -58,14 +59,15 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 combineParam.startTime = getDailyStartTimestamp();
                 combineParam.endTime = getDailyEndTimestamp();
             }else if(timeParam.endsWith('day')){
-                combineParam.startTime = getDayBefore(getDailyStartTimestamp(),14);
+                combineParam.startTime = getDayBefore(getDailyStartTimestamp(),13);
                 combineParam.endTime = getDailyEndTimestamp();
             }else if(timeParam.endsWith('month')){
                 combineParam.startTime = getDayBefore(getDailyStartTimestamp(),365);
                 combineParam.endTime = getDailyEndTimestamp();
             }
         }
-        await requestTestData(combineParam).then((response) => {
+        console.log("combineParam is:" + JSON.stringify(combineParam));
+        await requestData(combineParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
                 loadData(data);

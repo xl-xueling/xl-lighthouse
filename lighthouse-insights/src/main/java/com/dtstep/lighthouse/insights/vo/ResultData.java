@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.vo;
 
 import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.insights.util.SpringUtil;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

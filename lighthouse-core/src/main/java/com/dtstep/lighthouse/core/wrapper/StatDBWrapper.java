@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.core.wrapper;
 
+import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
@@ -14,21 +15,18 @@ import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
-import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
-import com.dtstep.lighthouse.core.template.TemplateContext;
-import com.dtstep.lighthouse.core.template.TemplateParser;
+import com.dtstep.lighthouse.core.template2.TemplateContext;
+import com.dtstep.lighthouse.core.template2.TemplateParser;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
-import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -240,7 +238,8 @@ public class StatDBWrapper {
             }
         }
         String template = statExtEntity.getTemplate();
-        TemplateEntity templateEntity = TemplateParser.parse(new TemplateContext(statEntity.getId(),template,timeParam,groupColumnList));
+        ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(statEntity.getId(),template,timeParam,groupColumnList));
+        TemplateEntity templateEntity = serviceResult.getData();
         statExtEntity.setTemplateEntity(templateEntity);
         List<Column> relatedColumns = new ArrayList<>();
         String stat = templateEntity.getStat();

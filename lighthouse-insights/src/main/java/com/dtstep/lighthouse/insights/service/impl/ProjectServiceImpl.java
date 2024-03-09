@@ -9,7 +9,7 @@ import com.dtstep.lighthouse.insights.dao.*;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
-import com.dtstep.lighthouse.insights.vo.ServiceResult;
+import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;

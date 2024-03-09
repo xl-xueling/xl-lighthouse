@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.batch;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.core.sort.SortOperator;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.dtstep.lighthouse.common.constant.SysConst;
@@ -25,6 +26,7 @@ import com.dtstep.lighthouse.common.sbr.StringBuilderHolder;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import com.google.common.collect.Lists;
 import org.quartz.CronExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +34,6 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-@Deprecated
 public final class BatchAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(BatchAdapter.class);
@@ -43,52 +44,10 @@ public final class BatchAdapter {
             .softValues()
             .build();
 
-    private static final CronBatchHandler cronBatchHandler = new CronBatchHandler();
-
     private static final IntervalBatchHandler intervalBatchHandler = new IntervalBatchHandler();
-
-    @Deprecated
-    public static long getBatch(final String timeParam,final long t){
-        return getBatchInterface(timeParam).getBatch(timeParam,t);
-    }
 
     public static long getBatch(final int interval, final TimeUnit timeUnit, final long t){
         return intervalBatchHandler.getBatch(interval,timeUnit,t);
-    }
-
-    public static String generateBatchKey(StatExtEntity statExtEntity, int functionIndex, String dimens, long batchTime) {
-        String cacheKey;
-        if(StringUtil.isEmpty(dimens)){
-            cacheKey = statExtEntity.getId() + "_" + functionIndex + "_" + batchTime;
-        }else{
-            cacheKey = statExtEntity.getId() + "_" + functionIndex + "_" + dimens + "_" + batchTime;
-        }
-        String rowKey = intervalBatchKeyCache.get(cacheKey, k -> actualGenerateBatchKey(statExtEntity,functionIndex,dimens,batchTime));
-        return Objects.requireNonNull(rowKey);
-    }
-
-    public static String actualGenerateBatchKey(StatExtEntity statExtEntity, int functionIndex, String dimens, long batchTime) {
-        String key = null;
-        try{
-            long baseTime = 0L;
-            String delta;
-            long duration = statExtEntity.getTimeUnit().toMillis(statExtEntity.getTimeParamInterval());
-            if(statExtEntity.getTimeUnit() == TimeUnit.MINUTES){
-                baseTime = DateUtil.getHourStartTime(batchTime);
-            }else if(statExtEntity.getTimeUnit() == TimeUnit.HOURS){
-                baseTime = DateUtil.getDayStartTime(batchTime);
-            }else if(statExtEntity.getTimeUnit() == TimeUnit.DAYS){
-                baseTime = DateUtil.getMonthStartTime(batchTime);
-            }else if(statExtEntity.getTimeUnit() == TimeUnit.SECONDS){
-                baseTime = DateUtil.getHourStartTime(batchTime);
-            }
-            String baseKey = generateBatchBaseKey(statExtEntity.getToken(), statExtEntity.getId(), statExtEntity.getDataVersion(), dimens, baseTime,functionIndex);
-            delta = Long.toHexString((batchTime - baseTime) / duration);
-            key = StringBuilderHolder.Smaller.getStringBuilder().append(baseKey).append(";").append(delta).toString();
-        }catch (Exception ex){
-            logger.error("generate batch key error!",ex);
-        }
-        return key;
     }
 
     public static String generateBatchBaseKey(String token,int statId,int dataVersion,String dimens,long baseTime,int functionIndex) {
@@ -120,28 +79,8 @@ public final class BatchAdapter {
         return Objects.requireNonNull(getBatchInterface(timeParam)).getDisplayFormat(timeParam,startTime,endTime);
     }
 
-
     static BatchInterface getBatchInterface(String timeParam){
-        if(isIntervalBatchParam(timeParam)){
-            return intervalBatchHandler;
-        }else{
-            return cronBatchHandler;
-        }
-    }
-
-    public static boolean isIntervalBatchParam(String timeParam){
-        String [] array = timeParam.split("-");
-        if(array.length != 2){
-            return false;
-        }
-        return StringUtil.isNumber(array[0]) && ("second".equals(array[1])
-                ||"minute".equals(array[1])
-                || "hour".equals(array[1])
-                || "day".equals(array[1]));
-    }
-
-    public static boolean isCronBatchParam(String timeParam){
-        return CronExpression.isValidExpression(timeParam);
+        return intervalBatchHandler;
     }
 
     @Deprecated

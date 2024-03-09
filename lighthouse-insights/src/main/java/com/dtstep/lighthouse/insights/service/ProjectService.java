@@ -8,7 +8,7 @@ import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
 import com.dtstep.lighthouse.insights.dto.ProjectQueryParam;
 import com.dtstep.lighthouse.common.modal.Project;
 import com.dtstep.lighthouse.insights.vo.ProjectVO;
-import com.dtstep.lighthouse.insights.vo.ServiceResult;
+import com.dtstep.lighthouse.common.entity.ServiceResult;
 
 import java.util.List;
 
