@@ -158,7 +158,7 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
         </Form>
             <div className={styles['right-button']}>
                 <Button size={size == 'mini' ? "mini" :"small"} type="primary" onClick={handleSubmit}>
-                    {t['basic.form.button.search']}
+                    {t['basic.form.button.preview']}
                 </Button>
                 {
                     statInfo?.renderConfig?.filters.length > 1 ?
