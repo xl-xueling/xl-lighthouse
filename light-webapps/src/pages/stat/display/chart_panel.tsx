@@ -156,7 +156,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
         fontWeight: 'normal',
         lineWidth: 2,
         fontSize: 13,
-        maskColor: 'rgba(255, 255, 255, 0.9)',
+        maskColor: 'rgba(255, 255, 255, 1)',
     };
 
     useEffect(() => {
@@ -164,6 +164,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
     },[JSON.stringify(searchForm),statInfo.id])
 
     const getReactChart = () => {
+        setEChartData([]);
         if(size == 'default'){
             return <ReactECharts option={option} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
                                  loadingOption={loadingOption}/>

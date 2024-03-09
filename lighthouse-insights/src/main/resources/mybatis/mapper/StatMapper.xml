@@ -16,6 +16,7 @@
         <result property="renderConfig" column="render_config" typeHandler="com.dtstep.lighthouse.insights.types.RenderConfigTypeHandler"/>
         <result property="metaId" column="meta_id"/>
         <result property="randomId" column="random_id"/>
+        <result property="groupColumns" column="columns"/>
         <result property="expired" column="expired"/>
         <result property="dataVersion" column="data_version"/>
         <result property="desc" column="desc"/>
@@ -42,7 +43,8 @@
     </insert>
 
     <select id="queryById" resultMap="statResultMap">
-        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`meta_id`,a.`timeparam`,a.`state`,a.`random_id`,a.`data_version`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,b.title as project_title,b.department_id,c.token
+        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`meta_id`,a.`timeparam`,a.`state`,a.`random_id`,a.`data_version`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,b.title as project_title,
+               b.department_id,c.token,c.columns
         FROM ldp_stats a
                  inner join ldp_projects b on a.project_id = b.id
                  inner join ldp_groups c on a.group_id = c.id
