@@ -41,16 +41,14 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
         {
             title: 'Type',
             dataIndex: 'type',
+            editable: true,
             initValue:"string",
             componentType:EditTableComponentEnum.SELECT,
             headerCellStyle: { width:'130px'},
-            render:(value, record) => {
-                const isLock = record.lockColumns && record.lockColumns.includes('type');
+            render:(text, record) => {
                 return (
                     <Select size={"mini"}
-                            disabled={isLock}
                             popupVisible={expandedKeys.includes(record.key)}
-                            value={value}
                             onChange={(value) => {record['type'] = value}}
                             onFocus={(e) => {
                                 setExpandedKeys((keys) => [...keys, record.key]);
@@ -63,7 +61,7 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
                             onBlur={() => {
                                 setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
                             }}
-                            defaultValue={"string"}>
+                            defaultValue={text}>
                         <Select.Option key={"string"}  value={"string"} onClick={() => {
                             setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
                         }}>
