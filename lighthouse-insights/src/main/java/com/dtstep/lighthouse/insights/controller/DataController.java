@@ -52,7 +52,7 @@ public class DataController {
         }
         List<StatDataObject> objectList = dataService.dataQuery(queryParam.getStatId(),queryParam.getStartTime(),queryParam.getEndTime(),null);
         System.out.println("objectList is:" + JsonUtil.toJSONString(objectList));
-        return null;
+        return ResultData.success(objectList);
     }
 
     @PostMapping("/test-data/stat")

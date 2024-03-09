@@ -189,12 +189,21 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         }
         List<LdpGet> getList = new ArrayList<>();
         for (long batchTime : batchTimeList) {
-            for(String dimensValue : dimensValueList) {
+            if(CollectionUtils.isEmpty(dimensValueList)){
                 for (StatState statState : statStates) {
-                    String aggregateKey = keyGenerator.resultKey(statExtEntity,statState.getFunctionIndex(),dimensValue,batchTime);
+                    String aggregateKey = keyGenerator.resultKey(statExtEntity,statState.getFunctionIndex(),null,batchTime);
                     String [] keyArr = aggregateKey.split(";");
                     LdpGet ldpGet = LdpGet.with(keyArr[0],keyArr[1]);
                     getList.add(ldpGet);
+                }
+            }else{
+                for(String dimensValue : dimensValueList) {
+                    for (StatState statState : statStates) {
+                        String aggregateKey = keyGenerator.resultKey(statExtEntity,statState.getFunctionIndex(),dimensValue,batchTime);
+                        String [] keyArr = aggregateKey.split(";");
+                        LdpGet ldpGet = LdpGet.with(keyArr[0],keyArr[1]);
+                        getList.add(ldpGet);
+                    }
                 }
             }
         }
@@ -202,13 +211,22 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         List<LdpResult<Long>> results = StorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
         Map<String,LdpResult<Long>> dbResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
         Map<String,List<StatValue>> resultMap = new HashMap<>();
-        for(String dimensValue : dimensValueList){
+        if(CollectionUtils.isEmpty(dimensValueList)){
             List<StatValue> valueList = new ArrayList<>();
             for(long batchTime : batchTimeList){
-                StatValue statValue = calculate(statExtEntity,dimensValue,batchTime,dbResultMap);
+                StatValue statValue = calculate(statExtEntity,null,batchTime,dbResultMap);
                 valueList.add(statValue);
             }
-            resultMap.put(dimensValue,valueList);
+            resultMap.put(null,valueList);
+        }else{
+            for(String dimensValue : dimensValueList){
+                List<StatValue> valueList = new ArrayList<>();
+                for(long batchTime : batchTimeList){
+                    StatValue statValue = calculate(statExtEntity,dimensValue,batchTime,dbResultMap);
+                    valueList.add(statValue);
+                }
+                resultMap.put(dimensValue,valueList);
+            }
         }
         return resultMap;
     }
