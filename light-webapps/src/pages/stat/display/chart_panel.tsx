@@ -38,6 +38,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
             }
             eChartChartValues.push(seriesObject);
         })
+        console.log("eChartChartValues is:" + JSON.stringify(eChartChartValues));
         setEChartData(eChartChartValues);
     }
 
@@ -46,7 +47,6 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
         setLoading(true);
         const combineParam:any = {}
         combineParam.statId = statInfo?.id;
-        console.log("searchForm is:" + searchForm);
         if(searchForm != null){
             const date = searchForm.date;
             if(date && Array.isArray(date)){
@@ -98,7 +98,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
             }
         ],
         legend: {
-            data: eChartData.map(z => z.name),
+            data: eChartData.map(z => z.name?z.name:""),
             icon:'circle',
             itemHeight:'10',
             // itemWidth:'10',
