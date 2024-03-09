@@ -161,7 +161,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
 
     useEffect(() => {
         fetchData().then();
-    },[JSON.stringify(searchForm)])
+    },[JSON.stringify(searchForm),statInfo.id])
 
     const getReactChart = () => {
         if(size == 'default'){
