@@ -26,22 +26,13 @@ import java.util.concurrent.TimeUnit;
 public class IntervalBatchHandler implements BatchInterface{
 
     @Override
-    public String getDisplayFormat(String timeParam,Date startTime,Date endTime) {
-        long interval =  DateUtil.daysBetween(startTime.getTime(),endTime.getTime());
+    public String dateTimeFormat(String timeParam, long batchTime) {
         if(timeParam.endsWith("hour")){
-            if(interval >= 1){
-                return "MMddhh";
-            }else{
-                return "hh:mm";
-            }
+            return DateUtil.formatTimeStamp(batchTime,"MMdd-HH");
         }else if(timeParam.endsWith("minute")){
-            if(interval >= 1){
-                return "MMddhhmm";
-            }else{
-                return "hh:mm";
-            }
+            return DateUtil.formatTimeStamp(batchTime,"MMdd HH:mm");
         }else if(timeParam.endsWith("day")){
-            return "yyyyMMdd";
+            return DateUtil.formatTimeStamp(batchTime,"yyyyMMdd");
         }
         return null;
     }

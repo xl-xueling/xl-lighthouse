@@ -30,6 +30,6 @@ public interface BatchInterface {
 
     List<Long> queryBatchTimeList(String timeParam,long startTime,long endTime,int size) throws Exception;
 
-    String getDisplayFormat(String timeParam,Date startTime,Date endTime) throws Exception;
+    String dateTimeFormat(String timeParam, long batchTime);
 
 }
