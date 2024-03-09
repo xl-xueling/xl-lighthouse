@@ -64,11 +64,11 @@ export default function MetricSetUpdateModal({onClose,onSuccess}) {
                             return z;
                         }
                     })
-                    const newInfo = {...metricSetInfo,...updateParams};
-                    setMetricSetInfo(newInfo);
                     localStorage.removeItem('cache_stared_metrics');
                     dispatch(updateStoreStaredMetricInfo(newArray));
                 }
+                const newInfo = {...metricSetInfo,...updateParams};
+                setMetricSetInfo(newInfo);
                 setLoading(false);
                 onClose();
                 onSuccess();
