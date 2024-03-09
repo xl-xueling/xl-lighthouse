@@ -17,7 +17,7 @@ package com.dtstep.lighthouse.core.kafka;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.common.key.RandomID;
+import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;

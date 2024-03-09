@@ -20,7 +20,7 @@ import com.apifan.common.random.source.AreaSource;
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.test.entity.BehaviorSampleEntity;
 import com.github.javafaker.Faker;
-import com.dtstep.lighthouse.common.key.RandomID;
+import com.dtstep.lighthouse.common.random.RandomID;
 
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;

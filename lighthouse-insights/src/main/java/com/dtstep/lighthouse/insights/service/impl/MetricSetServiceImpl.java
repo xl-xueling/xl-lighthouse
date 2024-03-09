@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.enums.*;
-import com.dtstep.lighthouse.common.key.RandomID;
+import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.entity.ListData;
