@@ -25,24 +25,24 @@ public class StatValue implements Serializable {
 
     private static final long serialVersionUID = 3438579311994460321L;
 
-    private String displayName;
-
     private long batchTime;
+
+    private String displayBatchTime;
 
     private Object value = 0;
 
     private List<Object> statesValue;
 
-    private String dimens;
+    private String dimensValue;
 
     private long lastUpdateTime;
 
-    public String getDisplayName() {
-        return displayName;
+    public String getDisplayBatchTime() {
+        return displayBatchTime;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setDisplayBatchTime(String displayBatchTime) {
+        this.displayBatchTime = displayBatchTime;
     }
 
     public Object getValue() {
@@ -53,12 +53,12 @@ public class StatValue implements Serializable {
         this.value = value;
     }
 
-    public String getDimens() {
-        return dimens;
+    public String getDimensValue() {
+        return dimensValue;
     }
 
-    public void setDimens(String dimens) {
-        this.dimens = dimens;
+    public void setDimensValue(String dimensValue) {
+        this.dimensValue = dimensValue;
     }
 
     public long getBatchTime() {

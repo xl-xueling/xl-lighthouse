@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.wrapper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
@@ -28,21 +29,18 @@ import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
-import com.dtstep.lighthouse.core.template.TemplateContext;
-import com.dtstep.lighthouse.core.template.TemplateParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.dtstep.lighthouse.core.template2.TemplateContext;
+import com.dtstep.lighthouse.core.template2.TemplateParser;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
-import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -213,8 +211,8 @@ public final class GroupDBWrapper {
             for (Stat stat : statList) {
                 String template = stat.getTemplate();
                 List<Column> statRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,template);
-                TemplateEntity templateEntity = TemplateParser.parse(new TemplateContext(stat.getId(),template,stat.getTimeparam(),columnList));
-                String dimens = templateEntity.getDimens();
+                ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(stat.getId(),template,stat.getTimeparam(),columnList));
+                String dimens = serviceResult.getData().getDimens();
                 List<Column> dimensRelatedColumns = null;
                 if(!StringUtil.isEmpty(dimens)){
                     dimensRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,dimens);

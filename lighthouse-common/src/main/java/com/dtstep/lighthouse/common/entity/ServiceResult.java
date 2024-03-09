@@ -1,6 +1,4 @@
-package com.dtstep.lighthouse.insights.vo;
-
-import com.dtstep.lighthouse.common.entity.ResultCode;
+package com.dtstep.lighthouse.common.entity;
 
 public class ServiceResult<T> {
 

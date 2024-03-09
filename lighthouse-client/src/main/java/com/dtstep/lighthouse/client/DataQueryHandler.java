@@ -201,7 +201,7 @@ final class DataQueryHandler {
         if(!StringUtil.isEmpty(result)){
             List<StatValue> valueList = JsonUtil.toJavaObjectList(result,StatValue.class);
             assert valueList != null;
-            valueMap = valueList.stream().collect(Collectors.toMap(StatValue::getDimens, x -> x));
+            valueMap = valueList.stream().collect(Collectors.toMap(StatValue::getDimensValue, x -> x));
         }
         return valueMap;
     }

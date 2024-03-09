@@ -37,14 +37,26 @@ public class DataController {
     private BaseService baseService;
 
     @PostMapping("/data/stat")
-    public ResultData<List<StatDataObject>> dataQuery(@Validated @RequestBody DataStatQueryParam queryParam){
+    public ResultData<List<StatDataObject>> dataQuery(@Validated @RequestBody DataStatQueryParam queryParam) throws Exception{
         System.out.println("query param is:" + JsonUtil.toJSONString(queryParam));
-        Integer statId = queryParam.getStatId();
+        int statId = queryParam.getStatId();
+        int userId = baseService.getCurrentUserId();
+        Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
+        boolean hasManagePermission = permissionService.checkUserPermission(userId,manageRole.getId());
+        if(!hasManagePermission){
+            Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
+            boolean hasAccessPermission = permissionService.checkUserPermission(userId,accessRole.getId());
+            if(!hasAccessPermission){
+                return ResultData.result(ResultCode.accessDenied);
+            }
+        }
+        List<StatDataObject> objectList = dataService.dataQuery(queryParam.getStatId(),queryParam.getStartTime(),queryParam.getEndTime(),null);
+        System.out.println("objectList is:" + JsonUtil.toJSONString(objectList));
         return null;
     }
 
     @PostMapping("/test-data/stat")
-    public ResultData<List<StatDataObject>> testDataQuery(@Validated @RequestBody DataStatQueryParam queryParam){
+    public ResultData<List<StatDataObject>> testDataQuery(@Validated @RequestBody DataStatQueryParam queryParam) throws Exception{
         int statId = queryParam.getStatId();
         int userId = baseService.getCurrentUserId();
         Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
