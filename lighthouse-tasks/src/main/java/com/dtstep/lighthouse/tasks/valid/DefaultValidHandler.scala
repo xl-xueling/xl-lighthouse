@@ -24,7 +24,7 @@ import com.dtstep.lighthouse.common.entity.message.LightMessage
 import com.dtstep.lighthouse.common.enums.GroupStateEnum
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum
 import com.dtstep.lighthouse.common.enums.result.MessageCaptchaEnum
-import com.dtstep.lighthouse.common.util.JsonUtil
+import com.dtstep.lighthouse.common.util.{DateUtil, JsonUtil}
 import com.dtstep.lighthouse.common.util.JsonUtil.toJSONString
 import com.dtstep.lighthouse.core.batch.BatchAdapter
 import com.dtstep.lighthouse.core.limited.{LimitedContext, RedisLimitedAspect}
@@ -74,7 +74,7 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
   }
 
   def capture(groupId:Int, message:LightMessage): Unit = {
-    val batchTime = BatchAdapter.getBatch(1, TimeUnit.MINUTES, System.currentTimeMillis)
+    val batchTime = DateUtil.batchTime(1, TimeUnit.MINUTES, System.currentTimeMillis)
     val lockTrackKey = RedisConst.LOCK_TRACK_PREFIX + "_" + groupId  + "_" + batchTime
     if(RedisLimitedAspect.getInstance().tryAcquire(lockTrackKey,5,50,TimeUnit.MINUTES.toSeconds(5),1)){
       val trackKey = RedisConst.TRACK_PREFIX + "_" + groupId;
