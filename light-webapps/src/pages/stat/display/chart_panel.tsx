@@ -66,7 +66,6 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 combineParam.endTime = getDailyEndTimestamp();
             }
         }
-        console.log("combineParam is:" + JSON.stringify(combineParam));
         await requestData(combineParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -125,6 +124,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 type: 'value'
             }
         ],
+
         series: eChartData,
         graphic: errorMessage && [{
             type: 'text',
@@ -138,17 +138,33 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
         }]
     };
 
+    const loadingOption = {
+        icon: 'none',
+        text: 'Loading...',
+        color: '#c23531',
+        showSpinner: true,
+        spinnerRadius: 7,
+        textColor: '#000',
+        fontWeight: 'normal',
+        lineWidth: 2,
+        fontSize: 13,
+        maskColor: 'rgba(255, 255, 255, 0.9)',
+    };
+
     useEffect(() => {
         fetchData().then();
     },[JSON.stringify(searchForm)])
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts option={option} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} />
+            return <ReactECharts option={option} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={true}
+                                 loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts option={option} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} />
+            return <ReactECharts option={option} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={true}
+                                 loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts option={option} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} />
+            return <ReactECharts option={option} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={true}
+                                 loadingOption={loadingOption}/>
         }
     }
 
