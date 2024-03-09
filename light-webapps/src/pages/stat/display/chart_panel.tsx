@@ -36,7 +36,8 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 type:'line',
                 data:z.valuesList?.map(z => z.value),
                 animation: true,
-                animationEasing: 'cubicInOut',
+                animationEasing: 'quadraticInOut',
+                animationDurationUpdate:200,
             }
             eChartChartValues.push(seriesObject);
         })
@@ -164,7 +165,6 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
     },[JSON.stringify(searchForm),statInfo.id])
 
     const getReactChart = () => {
-        setEChartData([]);
         if(size == 'default'){
             return <ReactECharts option={option} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
                                  loadingOption={loadingOption}/>
