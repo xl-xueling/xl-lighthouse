@@ -43,14 +43,14 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['statDisplay.filterConfig.warning.dateParam']});
             return;
         }
-        filtersConfig.forEach(z => {
-            const dimens = z.dimens;
+        for (let i = 0; i < filtersConfig.length; i++) {
+            const dimens = filtersConfig[i].dimens;
             const dimensParam = values[dimens];
             if(!dimensParam || dimensParam.length == 0){
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['statDisplay.filterConfig.warning.otherParam'],dimens)});
                 return;
             }
-        })
+        }
         onSearch(values);
     };
 
@@ -121,17 +121,17 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
 
     const getDatePicker = () => {
         if(statInfo.timeparam.endsWith("second")){
-            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD"/>;
+            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false}/>;
         }else if(statInfo.timeparam.endsWith("minute")){
-            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD"/>;
+            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false}/>;
         }else if(statInfo.timeparam.endsWith("hour")){
-            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD"/>;
+            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false}/>;
         }else if(statInfo.timeparam.endsWith("day")){
-            return <DatePicker.RangePicker style={{width:'100%'}} format="YYYY-MM-DD"/>;
+            return <DatePicker.RangePicker style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false}/>;
         }else if(statInfo.timeparam.endsWith("month")){
-            return <DatePicker.RangePicker mode={"month"} style={{width:'100%'}}/>;
+            return <DatePicker.RangePicker mode={"month"} style={{width:'100%'}} allowClear={false}/>;
         }else if(statInfo.timeparam.endsWith("year")){
-            return <DatePicker.RangePicker mode={"year"} style={{width:'100%'}}/>;
+            return <DatePicker.RangePicker mode={"year"} style={{width:'100%'}} allowClear={false}/>;
         }
     }
 
