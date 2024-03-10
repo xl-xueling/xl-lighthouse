@@ -61,7 +61,7 @@ public final class StatConst {
 
     public static final String DIMENS_STORAGE_TABLE = "ldp_dimens_records";
 
-    public static final int DIMENS_THRESHOLD_LIMIT_COUNT = 500;
+    public static final int DIMENS_THRESHOLD_LIMIT_COUNT = 1000;
 
     public static final int DIMENS_VALUE_STORAGE_DURATION_MAX_SIZE = 600;
 
