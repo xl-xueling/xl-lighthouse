@@ -11,8 +11,8 @@ const i18n = {
     'bindedList.list.column.label.operations.remove.confirm':'Are you sure to remove this item?',
     'bindedList.list.column.label.operations.remove.submit.success':'Element removed successfully!',
     'bindedList.list.column.label.operations.apply':'Apply',
-    'bindedList.list.elementType.project':'Project',
-    'bindedList.list.elementType.stat':'Statistic',
+    'bindedList.list.elementType.project':'Statistic Project',
+    'bindedList.list.elementType.stat':'Statistic Item',
     'bindedList.list.button.bind':'New Bind',
   },
   'zh-CN': {
