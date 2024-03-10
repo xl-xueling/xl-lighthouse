@@ -132,11 +132,11 @@ public class InitServiceImpl implements InitService {
         String namespace = dbEngine.getDefaultNamespace();
         dbEngine.createNamespaceIfNotExist(namespace);
         String dimensTableName = StatConst.DIMENS_STORAGE_TABLE;
-        if(dbEngine.isTableExist(dimensTableName)){
+        if(!dbEngine.isTableExist(dimensTableName)){
             dbEngine.createTable(dimensTableName);
         }
         String sysStatTableName = StatConst.SYSTEM_STAT_RESULT_TABLE;
-        if(dbEngine.isTableExist(sysStatTableName)){
+        if(!dbEngine.isTableExist(sysStatTableName)){
             dbEngine.createTable(sysStatTableName);
         }
     }
