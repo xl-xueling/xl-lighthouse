@@ -21,7 +21,8 @@ import {LimitedRecordModal} from "@/pages/record/limited_records";
 import {RecordTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
 import StatUpdateModal from "@/pages/stat/update";
 import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
-
+import {getRandomString} from "@/utils/util";
+import 'default-passive-events'
 
 export default function StatPreviewPanel({size = 'default',id}) {
 
@@ -84,7 +85,7 @@ export default function StatPreviewPanel({size = 'default',id}) {
                                 <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
                             </Typography.Title>
                             {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch}/>}
-                            {<ChartPanel size={size} statInfo={statInfo} searchForm={searchForm} parentLoading={loading}/>}
+                            {<ChartPanel key={getRandomString(32)} size={size} statInfo={statInfo} searchForm={searchForm} parentLoading={loading}/>}
                         </Card>
                     }
                     <Card>
