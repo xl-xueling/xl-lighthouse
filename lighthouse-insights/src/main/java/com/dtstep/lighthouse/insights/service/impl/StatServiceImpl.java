@@ -27,6 +27,7 @@ import com.dtstep.lighthouse.core.template2.TemplateParser;
 import com.dtstep.lighthouse.insights.util.TreeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.jsoup.Jsoup;
@@ -212,7 +213,8 @@ public class StatServiceImpl implements StatService {
             TemplateEntity templateEntity = stat.getTemplateEntity();
             String[] dimensArray = templateEntity.getDimensArray();
             for(String dimens:dimensArray){
-                List<String> dimensValueList = DimensStorageSelector.query(group,dimens, null,StatConst.DIMENS_THRESHOLD_LIMIT_COUNT);
+//                List<String> dimensValueList = DimensStorageSelector.query(group,dimens, null,StatConst.DIMENS_THRESHOLD_LIMIT_COUNT);
+                List<String> dimensValueList = Lists.newArrayList("p1","p2","p3");
                 List<TreeNode> treeNodes = dimensValueList.stream().map(z -> new TreeNode(z,z)).collect(toList());
                 RenderFilterConfig renderFilterConfig = new RenderFilterConfig();
                 renderFilterConfig.setComponentType(ComponentTypeEnum.FILTER_SELECT);

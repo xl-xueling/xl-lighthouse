@@ -161,6 +161,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
     };
 
     useEffect(() => {
+        console.log("searchForm is:" + JSON.stringify(searchForm));
         fetchData().then();
     },[JSON.stringify(searchForm),statInfo.id])
 

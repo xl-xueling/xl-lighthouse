@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Department, TreeNode, Stat} from "@/types/insights-web";
 import {ComponentTypeEnum, RenderDateConfig, RenderFilterConfig} from "@/types/insights-common";
-import {Button, DatePicker, Form, Grid, Input, Select, TreeSelect} from "@arco-design/web-react";
+import {Button, DatePicker, Form, Grid, Input, Notification, Select, TreeSelect} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
 import useLocale from "@/utils/useLocale";
-import locale from "@/pages/project/list/locale";
+import locale from "./locale";
 import styles from "./style/index.module.less";
-import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
 import {translateToTreeNodes} from "@/pages/department/common";
 import {
     DateTimeFormat,
@@ -16,7 +15,7 @@ import {
     getDayStartTimestamp, getYearBefore, getYearEndTimestamp,
     getYearStartTimestamp, MonthFormat, YearFormat
 } from "@/utils/date";
-import {getRandomString} from "@/utils/util";
+import {formatString, getRandomString} from "@/utils/util";
 
 const { useForm } = Form;
 
@@ -39,6 +38,19 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
 
     const handleSubmit = () => {
         const values = form.getFieldsValue();
+        const dateValue = values.date;
+        if(!values.date){
+            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['statDisplay.filterConfig.warning.dateParam']});
+            return;
+        }
+        filtersConfig.forEach(z => {
+            const dimens = z.dimens;
+            const dimensParam = values[dimens];
+            if(!dimensParam || dimensParam.length == 0){
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['statDisplay.filterConfig.warning.otherParam'],dimens)});
+                return;
+            }
+        })
         onSearch(values);
     };
 
