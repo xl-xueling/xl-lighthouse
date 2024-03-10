@@ -38,27 +38,27 @@ public class ResultData<T> {
 
     public static<T> ResultData<T> result(ResultCode resultCode){
         messageSource = SpringUtil.getBean(MessageSource.class);
-        String[] params = resultCode.getParams();
+        Object[] params = resultCode.getParams();
         String message = messageSource.getMessage(resultCode.getI18nLabel(),null,LocaleContextHolder.getLocale());
         if(params != null){
             message = String.format(message,params);
         }
-        ResultData resultData = new ResultData();
+        ResultData<T> resultData = new ResultData<>();
         resultData.setCode(resultCode.getCode());
         resultData.setMessage(message);
         resultData.setData(null);
         return resultData;
     }
 
-    public static<T> ResultData<T> result(ServiceResult serviceResult){
+    public static<T> ResultData<T> result(ServiceResult<T> serviceResult){
         ResultCode resultCode = serviceResult.getResultCode();
         messageSource = SpringUtil.getBean(MessageSource.class);
-        String[] params = resultCode.getParams();
+        Object[] params = resultCode.getParams();
         String message = messageSource.getMessage(resultCode.getI18nLabel(),null,LocaleContextHolder.getLocale());
         if(params != null){
             message = String.format(message,params);
         }
-        ResultData resultData = new ResultData();
+        ResultData<T> resultData = new ResultData<>();
         resultData.setCode(resultCode.getCode());
         resultData.setMessage(message);
         resultData.setData(serviceResult.getData());
@@ -66,11 +66,11 @@ public class ResultData<T> {
     }
 
 
-    public static<T> ResultData<T> result(ResultCode resultCode, String ...params){
+    public static<T> ResultData<T> result(ResultCode resultCode, Object ...params){
         messageSource = SpringUtil.getBean(MessageSource.class);
         String message = messageSource.getMessage(resultCode.getI18nLabel(),null,LocaleContextHolder.getLocale());
         message = String.format(message,params);
-        ResultData resultData = new ResultData();
+        ResultData<T> resultData = new ResultData<>();
         resultData.setCode("-1");
         resultData.setMessage(message);
         return resultData;

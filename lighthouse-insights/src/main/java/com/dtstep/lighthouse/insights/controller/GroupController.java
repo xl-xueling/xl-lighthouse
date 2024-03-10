@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.GroupCreateParam;
 import com.dtstep.lighthouse.insights.dto.GroupUpdateParam;
@@ -16,6 +17,7 @@ import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.insights.service.DomainService;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.StatService;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -41,14 +43,14 @@ public class GroupController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @RequestMapping("/group/create")
-    public ResultData<Integer> create(@Validated @RequestBody GroupCreateParam createParam) {
+    public ResultData<ObjectNode> create(@Validated @RequestBody GroupCreateParam createParam) {
         GroupQueryParam countByTokenParam = new GroupQueryParam();
         Domain domain = domainService.queryDefault();
         String token = String.format("%s:%s",domain.getDefaultTokenPrefix(),createParam.getToken());
         countByTokenParam.setToken(token);
         int tokenCount = groupService.count(countByTokenParam);
         if(tokenCount > 0){
-            return ResultData.result(ResultCode.createGroupTokenExist);
+            return ResultData.result(ResultCode.createGroupTokenExist,createParam.getToken());
         }
         GroupQueryParam countByProjectParam = new GroupQueryParam();
         countByProjectParam.setProjectId(createParam.getProjectId());
@@ -62,8 +64,11 @@ public class GroupController {
         group.setDesc(createParam.getDesc());
         group.setProjectId(createParam.getProjectId());
         int id = groupService.create(group);
+        ObjectNode objectNode = JsonUtil.createObjectNode();
+        objectNode.put("id",id);
+        objectNode.put("token",token);
         if(id > 0){
-            return ResultData.success(id);
+            return ResultData.success(objectNode);
         }else{
             return ResultData.result(ResultCode.systemError);
         }
