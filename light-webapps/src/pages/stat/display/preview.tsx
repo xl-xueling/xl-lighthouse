@@ -61,11 +61,11 @@ export default function StatPreviewPanel({size = 'default',id}) {
     }
 
     function handleSearch(params) {
-        console.log("--Params is:" + JSON.stringify(params));
         setSearchForm({...params,t:Date.now()});
     }
 
     useEffect(() => {
+        setSearchForm(null);
         fetchData().then();
     },[id,reloadTime])
 
