@@ -40,6 +40,7 @@
     "classnames": "^2.3.1",
     "copy-to-clipboard": "^3.3.1",
     "cross-env": "^7.0.3",
+    "default-passive-events": "^2.0.0",
     "echarts": "^5.4.3",
     "echarts-for-react": "^3.0.2",
     "jsoneditor-react": "^3.1.2",

@@ -6,7 +6,6 @@ import {requestData, requestTestData} from "@/api/data";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import ReactECharts from 'echarts-for-react';
-import echarts from "echarts";
 import {
     convertDateToTimestamp,
     getDailyEndTimestamp,
@@ -166,6 +165,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
     };
 
     useEffect(() => {
+        console.log("searchForm is:" + JSON.stringify(searchForm));
         if(statInfo?.templateEntity?.dimensArray?.length == 0){
             setErrorMessage(null);
             fetchData().then();
@@ -188,7 +188,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
     }
 
     return (<>
-        <Space size={16} direction="vertical" style={{ width: '100%' }} key={getRandomString(32)}>
+        <Space size={16} direction="vertical" style={{ width: '100%' }} key={getRandomString()}>
             {getReactChart()}
         </Space>
     </>);
