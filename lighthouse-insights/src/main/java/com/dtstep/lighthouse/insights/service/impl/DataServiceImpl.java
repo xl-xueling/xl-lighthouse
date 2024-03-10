@@ -94,6 +94,7 @@ public class DataServiceImpl implements DataService {
                 StatDataObject dataObject = new StatDataObject();
                 List<StatValue> valueList = valuesMap.get(dimensValue);
                 dataObject.setDimensValue(dimensValue);
+                dataObject.setDisplayDimensValue(dimensValue);
                 dataObject.setValuesList(valueList);
                 dataObject.setStatId(statExtEntity.getId());
                 dataObjects.add(dataObject);

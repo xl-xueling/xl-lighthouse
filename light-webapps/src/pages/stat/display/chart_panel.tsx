@@ -13,7 +13,7 @@ import {
  DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
 import {formatString, getRandomString} from "@/utils/util";
-import 'default-passive-events'
+// import 'default-passive-events'
 
 export default function ChartPanel({size = 'default',searchForm={},statInfo,parentLoading}:{size:string,searchForm:any,statInfo:Stat,parentLoading:boolean}) {
     const t = useLocale(locale);
@@ -21,6 +21,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo,pare
     const [batchTimeList,setBatchTimeList] = useState<string[]>([]);
     const [eChartData,setEChartData] = useState<Array<EChartChartValue>>([]);
     const [errorMessage,setErrorMessage] = useState(null);
+    const chartRef = useRef(null);
 
     const loadData = (data:Array<StatData>) => {
         const eChartChartValues:Array<EChartChartValue> = [];
@@ -78,7 +79,6 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo,pare
                 combineParam.endTime = getDailyEndTimestamp();
             }
         }
-        console.log("combineParam is:" + JSON.stringify(combineParam));
         await requestData(combineParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -111,6 +111,11 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo,pare
                     end: 100
                 }
             ],
+            legend: {
+                data: eChartData.map(z => z.name?z.name:""),
+                icon:'circle',
+                itemHeight:'10',
+            },
             grid: {
                 left: '3%',
                 right: '4%',
@@ -187,23 +192,24 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo,pare
         }
     },[JSON.stringify(searchForm),statInfo.id])
 
-
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts option={getOption()} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
+            return <ReactECharts ref={chartRef} option={getOption()} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts option={getOption()} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
+            return <ReactECharts ref={chartRef} option={getOption()} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts option={getOption()} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
+            return <ReactECharts ref={chartRef} option={getOption()} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }
     }
 
     return (<>
         <Space size={16} direction="vertical" style={{ width: '100%' }}>
-            {getReactChart()}
+            <div onWheel={(e) => {e.stopPropagation();}}>
+                {getReactChart()}
+            </div>
         </Space>
     </>);
 }

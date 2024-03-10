@@ -22,7 +22,6 @@ import {RecordTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
 import StatUpdateModal from "@/pages/stat/update";
 import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
 import {getRandomString} from "@/utils/util";
-import 'default-passive-events'
 
 export default function StatPreviewPanel({size = 'default',id}) {
 
