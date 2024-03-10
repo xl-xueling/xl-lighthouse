@@ -80,7 +80,9 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
       const {code, data ,message} = response;
       if(code == '0'){
         Notification.info({style: { width: 420 }, title: 'Notification', content: t['groupCreate.form.submit.success']});
-        group.id = data;
+        group.id = data.id;
+        group.token = data.token;
+        console.log("response group info is:" + JSON.stringify(group));
         callback('create-group',group);
         onClose();
       }else{
