@@ -38,19 +38,6 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
 
     const handleSubmit = () => {
         const values = form.getFieldsValue();
-        const dateValue = values.date;
-        if(!values.date){
-            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['statDisplay.filterConfig.warning.dateParam']});
-            return;
-        }
-        for (let i = 0; i < filtersConfig.length; i++) {
-            const dimens = filtersConfig[i].dimens;
-            const dimensParam = values[dimens];
-            if(!dimensParam || dimensParam.length == 0){
-                Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['statDisplay.filterConfig.warning.otherParam'],dimens)});
-                return;
-            }
-        }
         onSearch(values);
     };
 
