@@ -37,7 +37,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 data:z.valuesList?.map(z => z.value),
                 animation: true,
                 animationEasing: 'quadraticInOut',
-                animationDurationUpdate:200,
+                animationDurationUpdate:50,
             }
             eChartChartValues.push(seriesObject);
         })
@@ -178,7 +178,6 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 const dimens = statInfo?.templateEntity?.dimensArray[i];
                 const dimensParam = searchForm[dimens];
                 if(!dimensParam || dimensParam.length == 0){
-                    Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['statDisplay.filterConfig.warning.otherParam'],dimens)});
                     setErrorMessage(t['statDisplay.filterConfig.warning']);
                     return;
                 }
