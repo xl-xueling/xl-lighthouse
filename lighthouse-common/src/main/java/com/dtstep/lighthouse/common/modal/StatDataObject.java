@@ -10,6 +10,8 @@ public class StatDataObject {
 
     private String dimensValue;
 
+    private String displayDimensValue;
+
     private List<StatValue> valuesList;
 
     public String getDimensValue() {
@@ -36,4 +38,11 @@ public class StatDataObject {
         this.valuesList = valuesList;
     }
 
+    public String getDisplayDimensValue() {
+        return displayDimensValue;
+    }
+
+    public void setDisplayDimensValue(String displayDimensValue) {
+        this.displayDimensValue = displayDimensValue;
+    }
 }
