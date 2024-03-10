@@ -79,7 +79,7 @@
         </RollingRandomAccessFile>
     </Appenders>
     <Loggers>
-        <root level="info">
+        <root level="trace">
             <appender-ref ref="ConsoleAppender"/>
             <appender-ref ref="TraceAppender"/>
             <appender-ref ref="DebugAppender"/>
