@@ -68,6 +68,14 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 combineParam.endTime = getDailyEndTimestamp();
             }
         }
+        const dimensParams = {};
+        for (const [key, value] of Object.entries(searchForm)) {
+            if(key == 'date' || key == 't'){
+                continue;
+            }
+            dimensParams[key] = value;
+        }
+        combineParam.dimensParams = dimensParams;
         await requestData(combineParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
