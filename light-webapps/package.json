@@ -2,7 +2,7 @@
   "name": "arco-design-pro",
   "version": "1.0.0",
   "description": "Arco Design Pro",
-  "license":"ISC",
+  "license": "ISC",
   "prettier": {
     "singleQuote": true
   },
@@ -63,6 +63,7 @@
   },
   "devDependencies": {
     "@arco-plugins/webpack-react": "^1.1.1",
+    "@babel/core": "^7.24.0",
     "@svgr/webpack": "^5.5.0",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",

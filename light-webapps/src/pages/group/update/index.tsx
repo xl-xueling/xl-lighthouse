@@ -46,8 +46,10 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
             componentType:EditTableComponentEnum.SELECT,
             headerCellStyle: { width:'130px'},
             render:(text, record) => {
+                const isLock = record.lockColumns && record.lockColumns.includes('type');
                 return (
                     <Select size={"mini"}
+                            disabled={isLock}
                             popupVisible={expandedKeys.includes(record.key)}
                             onChange={(value) => {record['type'] = value}}
                             onFocus={(e) => {
