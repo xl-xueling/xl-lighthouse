@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.common.util.Md5Util;
@@ -9,6 +10,7 @@ import com.dtstep.lighthouse.common.modal.Department;
 import com.dtstep.lighthouse.common.modal.Domain;
 import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.common.modal.User;
+import com.dtstep.lighthouse.core.storage.engine.StorageEngine;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
 import com.dtstep.lighthouse.insights.service.*;
 import org.apache.commons.lang3.Validate;
@@ -125,8 +127,17 @@ public class InitServiceImpl implements InitService {
     }
 
     @Override
-    public void initDBNameSpace() throws Exception {
-        String namespace = StorageEngineProxy.getInstance().getDefaultNamespace();
-        StorageEngineProxy.getInstance().createNamespaceIfNotExist(namespace);
+    public void initStorageEngine() throws Exception {
+        StorageEngine dbEngine = StorageEngineProxy.getInstance();
+        String namespace = dbEngine.getDefaultNamespace();
+        dbEngine.createNamespaceIfNotExist(namespace);
+        String dimensTableName = StatConst.DIMENS_STORAGE_TABLE;
+        if(dbEngine.isTableExist(dimensTableName)){
+            dbEngine.createTable(dimensTableName);
+        }
+        String sysStatTableName = StatConst.SYSTEM_STAT_RESULT_TABLE;
+        if(dbEngine.isTableExist(sysStatTableName)){
+            dbEngine.createTable(sysStatTableName);
+        }
     }
 }

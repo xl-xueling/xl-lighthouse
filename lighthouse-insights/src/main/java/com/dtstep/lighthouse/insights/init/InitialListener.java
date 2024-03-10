@@ -84,10 +84,11 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
         }
 
         try{
-            initService.initDBNameSpace();
+            initService.initStorageEngine();
         }catch (Exception ex){
-            logger.error("DBNamespace initialization failed!",ex);
+            logger.error("Storage database initialization failed!",ex);
             System.exit(-1);
         }
+
     }
 }
