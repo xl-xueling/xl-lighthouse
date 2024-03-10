@@ -34,7 +34,9 @@ import GroupUpdatePanel from "@/pages/group/update";
 import SecretKeyModal from "@/pages/group/basic/secret_key";
 import {RecordTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
 import {LimitedRecordModal} from "@/pages/record/limited_records";
+import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
 
+export const GroupManageContext = React.createContext(null)
 
 export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
     const TabPane = Tabs.TabPane;
@@ -85,6 +87,10 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                 return;
             }
         }
+    }
+
+    const handlerStatDeleteCallback = (statId) => {
+        fetchData().then();
     }
 
     const handlerDeleteGroup = async () => {
@@ -151,6 +157,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
 
     return (
         <>
+            <GroupManageContext.Provider value={handlerStatDeleteCallback}>
             <Spin loading={loading} style={{width: '100%'}}>
                 <Row style={{marginBottom:'15px'}}>
                     <Typography.Text style={{fontSize:'14px',fontWeight:500}}>
@@ -229,6 +236,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
             {showLimitedRecordPanel && <LimitedRecordModal resourceId={groupInfo?.id} recordTypes={[RecordTypeEnum.GROUP_MESSAGE_LIMITED]} resourceType={ResourceTypeEnum.Group} onClose={() => setShowLimitedRecordPanel(false)}/>}
             {showSecretKeyModal && <SecretKeyModal groupId={groupInfo?.id} onClose={() => setShowSecretKeyModal(false)}/>}
             </Spin>
+            </GroupManageContext.Provider>
         </>);
 
 }

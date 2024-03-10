@@ -21,6 +21,7 @@ import {requestBinded} from "@/api/metricset";
 import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
 import ProjectApplyModal from "@/pages/project/apply";
 import StatApplyModal from "@/pages/stat/apply";
+import {GroupManageContext} from "@/pages/group/manage";
 
 export default function StatisticalListPanel({formParams = {},from = null,parentLoading=false,extend=null}) {
     const t = useLocale(locale);
@@ -35,6 +36,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
     const [bindList,setBindList] = useState<number[]>([]);
     const [refreshTime,setRefreshTime] = useState<number>(null);
     const handleMetricBindListReloadCallback = useContext(MetricSetBindListContext);
+    const handlerStatDeleteCallback = useContext(GroupManageContext);
 
     const tableCallback = async (record, type) => {
         if(type == 'showUpdateModal'){
@@ -116,6 +118,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['statList.columns.delete.success']});
                 const updatedList = listData.filter(x => x.id != id);
                 setListData(updatedList);
+                handlerStatDeleteCallback(id);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
