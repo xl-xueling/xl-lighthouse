@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.template2;
+package com.dtstep.lighthouse.core.template;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,10 +16,16 @@ package com.dtstep.lighthouse.core.template2;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 
-interface Parser {
+public final class TemplateParser {
 
-    ServiceResult<TemplateEntity> parseConfig(TemplateContext context);
+    private static final Parser parser = new IterativeParsePattern();
+
+    public static ServiceResult<TemplateEntity> parseConfig(TemplateContext context){
+        return parser.parseConfig(context);
+    }
+
 }
