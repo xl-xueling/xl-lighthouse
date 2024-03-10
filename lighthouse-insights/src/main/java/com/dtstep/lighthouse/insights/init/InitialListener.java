@@ -38,12 +38,6 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
     private SystemEnvService systemEnvService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
     private InitService initService;
 
     @Override
@@ -89,6 +83,6 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
             logger.error("Storage database initialization failed!",ex);
             System.exit(-1);
         }
-
+        logger.info("service init success!");
     }
 }

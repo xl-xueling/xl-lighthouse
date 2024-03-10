@@ -13,6 +13,7 @@ import {
     getDailyStartTimestamp,
  DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
+import {getRandomString} from "@/utils/util";
 
 export default function ChartPanel({size = 'default',searchForm={},statInfo}:{size:string,searchForm:any,statInfo:Stat}) {
     const t = useLocale(locale);
@@ -55,6 +56,14 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 combineParam.startTime = getDayStartTimestamp(convertDateToTimestamp(date[0],DateFormat));
                 combineParam.endTime = getDayEndTimestamp(convertDateToTimestamp(date[1],DateFormat));
             }
+            const dimensParams = {};
+            for (const [key, value] of Object.entries(searchForm)) {
+                if(key == 'date' || key == 't'){
+                    continue;
+                }
+                dimensParams[key] = value;
+            }
+            combineParam.dimensParams = dimensParams;
         }else{
             const timeParam = statInfo?.timeparam;
             if(timeParam.endsWith('minute') || timeParam.endsWith('second') || timeParam.endsWith('hour')){
@@ -68,17 +77,10 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 combineParam.endTime = getDailyEndTimestamp();
             }
         }
-        const dimensParams = {};
-        for (const [key, value] of Object.entries(searchForm)) {
-            if(key == 'date' || key == 't'){
-                continue;
-            }
-            dimensParams[key] = value;
-        }
-        combineParam.dimensParams = dimensParams;
         await requestData(combineParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
+                setErrorMessage(null);
                 loadData(data);
             }else{
                 setErrorMessage(message);
@@ -110,11 +112,6 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
             data: eChartData.map(z => z.name?z.name:""),
             icon:'circle',
             itemHeight:'10',
-            // itemWidth:'10',
-            // orient:'vertical',
-            // x:'right',
-            // y:'top',
-
         },
         grid: {
             left: '3%',
@@ -128,7 +125,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 boundaryGap: false,
                 data: batchTimeList,
                 axisLabel: {
-                    animation: false // 关闭x轴标签的动画效果
+                    animation: false
                 }
             }
         ],
@@ -136,12 +133,12 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
             {
                 type: 'value',
                 axisLabel: {
-                    animation: false // 关闭x轴标签的动画效果
+                    animation: false
                 },
             }
         ],
 
-        series: eChartData,
+        series: errorMessage ? [] : eChartData,
         graphic: errorMessage && [{
             type: 'text',
             left: 'center',
@@ -169,8 +166,12 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
     };
 
     useEffect(() => {
-        console.log("searchForm is:" + JSON.stringify(searchForm));
-        fetchData().then();
+        if(statInfo?.templateEntity?.dimensArray?.length == 0){
+            setErrorMessage(null);
+            fetchData().then();
+        }else{
+            setErrorMessage(t['statDisplay.filterConfig.warning']);
+        }
     },[JSON.stringify(searchForm),statInfo.id])
 
     const getReactChart = () => {
@@ -187,7 +188,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
     }
 
     return (<>
-        <Space size={16} direction="vertical" style={{ width: '100%' }}>
+        <Space size={16} direction="vertical" style={{ width: '100%' }} key={getRandomString(32)}>
             {getReactChart()}
         </Space>
     </>);
