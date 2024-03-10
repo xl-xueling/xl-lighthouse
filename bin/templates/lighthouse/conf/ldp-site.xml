@@ -62,7 +62,7 @@
     </property>
     <property>
         <name>lighthouse.limited.enabled</name>
-        <value>true</value>
+        <value>false</value>
     </property>
     <property>
         <name>limited.group.message.size.approve.threshold</name>
