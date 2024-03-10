@@ -294,7 +294,8 @@ public class StatServiceImpl implements StatService {
         }
         List<String> missList = list.stream().filter(item -> !configList.contains(item)).collect(toList());
         if(CollectionUtils.isNotEmpty(missList)){
-            return ResultCode.getExtendResultCode(ResultCode.filterConfigDimensMissing,JsonUtil.toJSONString(missList));
+            String commaSeparatedString = String.join(",", missList);
+            return ResultCode.getExtendResultCode(ResultCode.filterConfigDimensMissing,commaSeparatedString);
         }
         RenderConfig renderConfig = stat.getRenderConfig();
         renderConfig.setFilters(filterConfigs);
