@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 public class DataStatQueryParam implements Serializable {
 
