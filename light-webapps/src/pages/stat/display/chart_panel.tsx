@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {Stat, StatData, EChartChartValue} from "@/types/insights-web";
+import {Stat, StatData, EChartChartValue, StatValue} from "@/types/insights-web";
 import {Notification, Space} from "@arco-design/web-react";
 import {requestData, requestTestData} from "@/api/data";
 import useLocale from "@/utils/useLocale";
@@ -12,7 +12,7 @@ import {
     getDailyStartTimestamp,
  DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
-import {getRandomString} from "@/utils/util";
+import {formatString, getRandomString} from "@/utils/util";
 
 export default function ChartPanel({size = 'default',searchForm={},statInfo}:{size:string,searchForm:any,statInfo:Stat}) {
     const t = useLocale(locale);
@@ -42,6 +42,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
             eChartChartValues.push(seriesObject);
         })
         setEChartData(eChartChartValues);
+        setErrorMessage(null);
     }
 
 
@@ -76,6 +77,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 combineParam.endTime = getDailyEndTimestamp();
             }
         }
+        console.log("combineParam is:" + JSON.stringify(combineParam));
         await requestData(combineParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -90,66 +92,62 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
         })
     }
 
-    const option = {
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'line',
-                label: {
-                    backgroundColor: '#6a7985'
+    const getOption = () => {
+        return {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'line',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
                 }
-            }
-        },
-        dataZoom: [
-            {
-                type: 'inside',
-                start: 0,
-                end: 100
-            }
-        ],
-        legend: {
-            data: eChartData.map(z => z.name?z.name:""),
-            icon:'circle',
-            itemHeight:'10',
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis: [
-            {
-                type: 'category',
-                boundaryGap: false,
-                data: batchTimeList,
-                axisLabel: {
-                    animation: false
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 0,
+                    end: 100
                 }
-            }
-        ],
-        yAxis: [
-            {
-                type: 'value',
-                axisLabel: {
-                    animation: false
-                },
-            }
-        ],
+            ],
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: errorMessage ? [] : batchTimeList,
+                    axisLabel: {
+                        animation: false
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        animation: false
+                    },
+                }
+            ],
 
-        series: errorMessage ? [] : eChartData,
-        graphic: errorMessage && [{
-            type: 'text',
-            left: 'center',
-            top: 'middle',
-            style: {
-                fill: '#000',
-                text: errorMessage,
-                fontSize: 12,
-            }
-        }]
-    };
-
+            series: errorMessage ? [] : eChartData,
+            graphic: errorMessage && [{
+                type: 'text',
+                left: 'center',
+                top: 'middle',
+                style: {
+                    fill: '#000',
+                    text: errorMessage,
+                    fontSize: 12,
+                }
+            }]
+        };
+    }
     const loadingOption = {
         animation: false,
         icon: 'none',
@@ -167,28 +165,44 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
     useEffect(() => {
         console.log("searchForm is:" + JSON.stringify(searchForm));
         if(statInfo?.templateEntity?.dimensArray?.length == 0){
-            setErrorMessage(null);
             fetchData().then();
-        }else{
+        }else if(searchForm == null){
             setErrorMessage(t['statDisplay.filterConfig.warning']);
+        }else{
+            const dateValue = searchForm.date;
+            if(!searchForm.date){
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: t['statDisplay.filterConfig.warning.dateParam']});
+                return;
+            }
+            for (let i = 0; i < statInfo?.templateEntity?.dimensArray?.length; i++) {
+                const dimens = statInfo?.templateEntity?.dimensArray[i];
+                const dimensParam = searchForm[dimens];
+                if(!dimensParam || dimensParam.length == 0){
+                    Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['statDisplay.filterConfig.warning.otherParam'],dimens)});
+                    setErrorMessage(t['statDisplay.filterConfig.warning']);
+                    return;
+                }
+            }
+            fetchData().then();
         }
     },[JSON.stringify(searchForm),statInfo.id])
 
+
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts option={option} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
+            return <ReactECharts key={getRandomString()} option={getOption()} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts option={option} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
+            return <ReactECharts key={getRandomString()} option={getOption()} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts option={option} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
+            return <ReactECharts key={getRandomString()} option={getOption()} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
                                  loadingOption={loadingOption}/>
         }
     }
 
     return (<>
-        <Space size={16} direction="vertical" style={{ width: '100%' }} key={getRandomString()}>
+        <Space size={16} direction="vertical" style={{ width: '100%' }}>
             {getReactChart()}
         </Space>
     </>);
