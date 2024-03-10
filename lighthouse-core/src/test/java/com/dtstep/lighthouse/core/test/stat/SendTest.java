@@ -5,16 +5,18 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class SendTest {
 
     @Test
     public void testCount() throws Exception{
-        LightHouse.init("10.206.6.25:4061");
-        for(int i=0;i<10000;i++){
+        LightHouse.init("10.206.6.15:4061");
+        long t = System.currentTimeMillis();
+        for(int i=0;i<39891;i++){
             Map<String,Object> map = new HashMap<>();
-            LightHouse.stat("YQr:test_stat","1Ys3tlvkG8vL8uLPHslwRZcJfe8Z0tdUpRgQcfD6",map,System.currentTimeMillis());
-            Thread.sleep(300);
+            map.put("randomId", UUID.randomUUID().toString());
+            LightHouse.stat("AaZ:test_stat","yPqIatFePKiyYnMZ8UpPQpQuigiWfR3JjaWjSehN",map,t);
         }
         System.out.println("send success!");
         Thread.sleep(100000);

@@ -1,16 +1,16 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.common.entity.ResultCode;
-import com.dtstep.lighthouse.insights.service.BaseService;
-import com.dtstep.lighthouse.insights.service.PermissionService;
-import com.dtstep.lighthouse.insights.service.RoleService;
+import com.dtstep.lighthouse.common.modal.Stat;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
+import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.common.modal.StatDataObject;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dto.DataStatQueryParam;
-import com.dtstep.lighthouse.insights.service.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,6 +36,9 @@ public class DataController {
     @Autowired
     private BaseService baseService;
 
+    @Autowired
+    private StatService statService;
+
     @PostMapping("/data/stat")
     public ResultData<List<StatDataObject>> dataQuery(@Validated @RequestBody DataStatQueryParam queryParam) throws Exception{
         int statId = queryParam.getStatId();
@@ -49,7 +52,15 @@ public class DataController {
                 return ResultData.result(ResultCode.accessDenied);
             }
         }
-        List<StatDataObject> objectList = dataService.dataQuery(queryParam.getStatId(),queryParam.getStartTime(),queryParam.getEndTime(),null);
+        Stat stat = statService.queryById(statId);
+        StatExtEntity statExtEntity = null;
+        try{
+            statExtEntity = StatDBWrapper.combineExtInfo(stat,false);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        List<String> dimensList = dataService.dimensArrangement(statExtEntity,queryParam.getDimensParams());
+        List<StatDataObject> objectList = dataService.dataQuery(statExtEntity,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
         return ResultData.success(objectList);
     }
 
@@ -66,7 +77,15 @@ public class DataController {
                 return ResultData.result(ResultCode.accessDenied);
             }
         }
-        List<StatDataObject> objectList = dataService.testDataQuery(queryParam.getStatId(),queryParam.getStartTime(),queryParam.getEndTime(),null);
+        Stat stat = statService.queryById(statId);
+        StatExtEntity statExtEntity = null;
+        try{
+            statExtEntity = StatDBWrapper.combineExtInfo(stat,false);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        List<String> dimensList = dataService.dimensArrangement(statExtEntity,queryParam.getDimensParams());
+        List<StatDataObject> objectList = dataService.testDataQuery(statExtEntity,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
         System.out.println("objectList is:" + JsonUtil.toJSONString(objectList));
         return ResultData.success(objectList);
     }
