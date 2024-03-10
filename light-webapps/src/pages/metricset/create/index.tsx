@@ -76,7 +76,8 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
         <Modal
             title={t['createMetricSet.modal.title']}
             visible={true}
-            style={{ width:'960px',verticalAlign:'top', marginTop: '130px' }}
+            alignCenter={false}
+            style={{ width:'960px',verticalAlign:'top', top: '130px' }}
             confirmLoading={loading}
             onCancel={onClose}
             onOk={handlerSubmit}

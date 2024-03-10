@@ -109,7 +109,8 @@ export default function MetricSetRepositoryModal({id,onClose}) {
     return (
         <Modal
             title= {t['repositoryModal.modal.title']}
-            style={{ width:'1200px',maxWidth:'90%'}}
+            alignCenter={false}
+            style={{ width:'1200px',maxWidth:'90%',top:'150px'}}
             visible={true}
             footer={null}
             onCancel={() => onClose()}
