@@ -3,11 +3,15 @@ package com.dtstep.lighthouse.insights.dto;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 public class DataStatQueryParam implements Serializable {
 
     @NotNull
     private Integer statId;
+
+    private Map<String, List<String>> dimensParams;
 
     @NotNull
     private LocalDateTime startTime;
@@ -37,5 +41,13 @@ public class DataStatQueryParam implements Serializable {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public Map<String, List<String>> getDimensParams() {
+        return dimensParams;
+    }
+
+    public void setDimensParams(Map<String, List<String>> dimensParams) {
+        this.dimensParams = dimensParams;
     }
 }
