@@ -144,6 +144,11 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
         setFormParams({"search":input,"groupIds":[groupId]});
     }
 
+    const createStatSuccess = () => {
+        setFormParams({"groupId":groupId,t:new Date().getTime()});
+        fetchData().then();
+    }
+
     return (
         <>
             <Spin loading={loading} style={{width: '100%'}}>
@@ -219,7 +224,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
             </Tabs>
             {showStatAddPanel && <StatCreatePanel projectInfo={projectInfo} groupInfo={groupInfo} onClose={() => {
                 setShowsStatAddPanel(false);
-            }} onSuccess={() => {setFormParams({"groupId":groupId,t:new Date().getTime()});}}/>}
+            }} onSuccess={() => {createStatSuccess()}}/>}
             {showGroupEditPanel && <GroupUpdatePanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)} callback={callback}/>}
             {showLimitedRecordPanel && <LimitedRecordModal resourceId={groupInfo?.id} recordTypes={[RecordTypeEnum.GROUP_MESSAGE_LIMITED]} resourceType={ResourceTypeEnum.Group} onClose={() => setShowLimitedRecordPanel(false)}/>}
             {showSecretKeyModal && <SecretKeyModal groupId={groupInfo?.id} onClose={() => setShowSecretKeyModal(false)}/>}
