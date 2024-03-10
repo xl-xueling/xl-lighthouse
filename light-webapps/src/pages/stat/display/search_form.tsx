@@ -28,6 +28,7 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
 
     useEffect(() => {
         setFiltersConfig(statInfo?.renderConfig?.filters);
+        handleReset();
     },[statInfo])
 
     const Option = Select.Option;
