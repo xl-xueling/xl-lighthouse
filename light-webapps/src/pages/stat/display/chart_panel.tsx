@@ -13,6 +13,7 @@ import {
  DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
 import {formatString, getRandomString} from "@/utils/util";
+import 'default-passive-events'
 
 export default function ChartPanel({size = 'default',searchForm={},statInfo,parentLoading}:{size:string,searchForm:any,statInfo:Stat,parentLoading:boolean}) {
     const t = useLocale(locale);
@@ -189,13 +190,13 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo,pare
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts key={getRandomString()} option={getOption()} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
+            return <ReactECharts option={getOption()} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts key={getRandomString()} option={getOption()} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
+            return <ReactECharts option={getOption()} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts key={getRandomString()} option={getOption()} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
+            return <ReactECharts option={getOption()} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }
     }
