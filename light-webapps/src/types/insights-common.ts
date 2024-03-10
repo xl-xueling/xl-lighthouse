@@ -156,39 +156,15 @@ export enum StatTimeParamEnum {
 
 
 export enum StatExpiredEnum {
-    Week_1=604800,
+    // Week_1=604800,
     Week_2=1209600,
     MONTH_1=2592000,
-    MONTH_2=5184000,
+    // MONTH_2=5184000,
     MONTH_3=7776000,
     MONTH_6=15552000,
     MONTH_12=31104000,
     MONTH_24=62208000,
     MONTH_36=93312000,
-}
-
-export const getStatExpiredEnumDescription = (expired) => {
-    if(expired == StatExpiredEnum.Week_1){
-        return "1 Week";
-    }else if(expired == StatExpiredEnum.Week_2){
-        return "2 Week";
-    }else if(expired == StatExpiredEnum.MONTH_1){
-        return "1 Month";
-    }else if(expired == StatExpiredEnum.MONTH_2){
-        return "2 Month";
-    }else if(expired == StatExpiredEnum.MONTH_3){
-        return "3 Month";
-    }else if(expired == StatExpiredEnum.MONTH_6){
-        return "6 Month";
-    }else if(expired == StatExpiredEnum.MONTH_12){
-        return "1 Year";
-    }else if(expired == StatExpiredEnum.MONTH_24){
-        return "2 Year";
-    }else if(expired == StatExpiredEnum.MONTH_36){
-        return "3 Year";
-    }else{
-        return "--";
-    }
 }
 
 export enum StatStateEnum {

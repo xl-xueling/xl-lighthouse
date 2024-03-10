@@ -22,8 +22,9 @@ import Draggable from 'react-draggable';
 import { MdOutlineDragIndicator } from "react-icons/md";
 import {Project, Stat} from "@/types/insights-web";
 import {requestCreate} from "@/api/stat";
-import {getStatExpiredEnumDescription, StatExpiredEnum, StatTimeParamEnum} from "@/types/insights-common";
+import {StatExpiredEnum, StatTimeParamEnum} from "@/types/insights-common";
 import useStorage from "@/utils/useStorage";
+import {getStatExpiredEnumDescription} from "@/pages/common/desc/base";
 
 export default function StatAddPanel({projectInfo,groupInfo,onClose,onSuccess}) {
 

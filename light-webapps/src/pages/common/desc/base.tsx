@@ -80,14 +80,10 @@ export function getOrderApproveRoleTypeDescription(t:any,value:RoleTypeEnum){
 
 
 export const getStatExpiredEnumDescription = (expired) => {
-    if(expired == StatExpiredEnum.Week_1){
-        return "1 Week";
-    }else if(expired == StatExpiredEnum.Week_2){
+    if(expired == StatExpiredEnum.Week_2){
         return "2 Week";
     }else if(expired == StatExpiredEnum.MONTH_1){
         return "1 Month";
-    }else if(expired == StatExpiredEnum.MONTH_2){
-        return "2 Month";
     }else if(expired == StatExpiredEnum.MONTH_3){
         return "3 Month";
     }else if(expired == StatExpiredEnum.MONTH_6){

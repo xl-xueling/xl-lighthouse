@@ -19,7 +19,8 @@ import Draggable from 'react-draggable';
 import {MdOutlineDragIndicator} from "react-icons/md";
 import {Group, Project, Stat} from "@/types/insights-web";
 import {requestUpdate} from "@/api/stat";
-import {getStatExpiredEnumDescription, StatExpiredEnum, StatTimeParamEnum} from "@/types/insights-common";
+import {StatExpiredEnum, StatTimeParamEnum} from "@/types/insights-common";
+import {getStatExpiredEnumDescription} from "@/pages/common/desc/base";
 
 const { Row, Col } = Grid;
 

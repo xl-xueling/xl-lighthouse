@@ -12,9 +12,9 @@ import {
 import React from "react";
 import {IconEdit, IconStar, IconStarFill} from "@arco-design/web-react/icon";
 import {PiLinkSimple} from "react-icons/pi";
-import {getStatExpiredEnumDescription, StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
+import {StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
 import {getRandomString} from "@/utils/util";
-import {getStatStateDescriptionWithBadge} from "@/pages/common/desc/base";
+import {getStatExpiredEnumDescription, getStatStateDescriptionWithBadge} from "@/pages/common/desc/base";
 import {Link} from "@arco-design/web-react/lib";
 const TabPane = Tabs.TabPane;
 const { Text } = Typography;
