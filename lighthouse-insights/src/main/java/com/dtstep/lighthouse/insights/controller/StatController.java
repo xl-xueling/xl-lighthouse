@@ -81,7 +81,7 @@ public class StatController {
     }
 
     @RequestMapping("/stat/queryById")
-    public ResultData<StatExtendVO> queryById(@Validated @RequestBody IDParam idParam){
+    public ResultData<StatExtendVO> queryById(@Validated @RequestBody IDParam idParam) throws Exception {
         Integer id = idParam.getId();
         StatVO stat = statService.queryById(id);
         RenderConfig renderConfig = statService.getStatRenderConfig(stat);

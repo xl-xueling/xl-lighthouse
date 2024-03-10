@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.random.RandomID;
@@ -9,6 +10,7 @@ import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.core.formula.TemplateUtil;
+import com.dtstep.lighthouse.core.storage.dimens.DimensStorageSelector;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
@@ -201,24 +203,16 @@ public class StatServiceImpl implements StatService {
         return statDao.queryByProjectId(projectId);
     }
 
-    private List<String> queryDimensValueList(String dimens) {
-        List<String> dimensValueList = new ArrayList<>();
-        for(int i=0;i<3;i++){
-            dimensValueList.add("dimens_" + i);
-        }
-        return dimensValueList;
-    }
-
     @Override
-    public RenderConfig getStatRenderConfig(StatVO stat) {
+    public RenderConfig getStatRenderConfig(StatVO stat) throws Exception{
         RenderConfig renderConfig = stat.getRenderConfig();
-        List<String> defaultDimensList = new ArrayList<>();
+        Group group = groupDao.queryById(stat.getGroupId());
         HashMap<String, RenderFilterConfig> filtersConfigMap = new HashMap<>();
         if(CollectionUtils.isEmpty(renderConfig.getFilters())){
             TemplateEntity templateEntity = stat.getTemplateEntity();
             String[] dimensArray = templateEntity.getDimensArray();
             for(String dimens:dimensArray){
-                List<String> dimensValueList = queryDimensValueList(dimens);
+                List<String> dimensValueList = DimensStorageSelector.query(group,dimens, null,StatConst.DIMENS_THRESHOLD_LIMIT_COUNT);
                 List<TreeNode> treeNodes = dimensValueList.stream().map(z -> new TreeNode(z,z)).collect(toList());
                 RenderFilterConfig renderFilterConfig = new RenderFilterConfig();
                 renderFilterConfig.setComponentType(ComponentTypeEnum.FILTER_SELECT);
@@ -243,7 +237,7 @@ public class StatServiceImpl implements StatService {
                     filterConfig.setConfigData(component.getConfiguration());
                     filtersConfigMap.put(filterConfig.getDimens(),filterConfig);
                 }else{
-                    List<String> dimensValueList = queryDimensValueList(filterConfig.getDimens());
+                    List<String> dimensValueList = DimensStorageSelector.query(group,filterConfig.getDimens(), null,StatConst.DIMENS_THRESHOLD_LIMIT_COUNT);
                     List<TreeNode> treeNodes = dimensValueList.stream().map(z -> new TreeNode(z,z)).collect(toList());
                     filterConfig.setConfigData(treeNodes);
                     filtersConfigMap.put(filterConfig.getDimens(),filterConfig);
