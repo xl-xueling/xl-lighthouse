@@ -14,7 +14,7 @@ import {
 } from "@/utils/date";
 import {formatString, getRandomString} from "@/utils/util";
 
-export default function ChartPanel({size = 'default',searchForm={},statInfo}:{size:string,searchForm:any,statInfo:Stat}) {
+export default function ChartPanel({size = 'default',searchForm={},statInfo,parentLoading}:{size:string,searchForm:any,statInfo:Stat,parentLoading:boolean}) {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const [batchTimeList,setBatchTimeList] = useState<string[]>([]);
@@ -37,7 +37,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
                 data:z.valuesList?.map(z => z.value),
                 animation: true,
                 animationEasing: 'quadraticInOut',
-                animationDurationUpdate:50,
+                animationDurationUpdate:30,
             }
             eChartChartValues.push(seriesObject);
         })
@@ -189,13 +189,13 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo}:{si
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts key={getRandomString()} option={getOption()} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
+            return <ReactECharts key={getRandomString()} option={getOption()} style={{ height: '350px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts key={getRandomString()} option={getOption()} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
+            return <ReactECharts key={getRandomString()} option={getOption()} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts key={getRandomString()} option={getOption()} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
+            return <ReactECharts key={getRandomString()} option={getOption()} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }
     }

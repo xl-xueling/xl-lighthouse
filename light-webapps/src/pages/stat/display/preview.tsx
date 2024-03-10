@@ -84,7 +84,7 @@ export default function StatPreviewPanel({size = 'default',id}) {
                                 <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
                             </Typography.Title>
                             {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch}/>}
-                            {<ChartPanel size={size} statInfo={statInfo} searchForm={searchForm}/>}
+                            {<ChartPanel size={size} statInfo={statInfo} searchForm={searchForm} parentLoading={loading}/>}
                         </Card>
                     }
                     <Card>
