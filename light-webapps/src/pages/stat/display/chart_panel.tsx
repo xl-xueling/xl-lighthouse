@@ -15,7 +15,7 @@ import {
 import {formatString, getRandomString} from "@/utils/util";
 // import 'default-passive-events'
 
-export default function ChartPanel({size = 'default',searchForm={},statInfo,parentLoading = false}:{size:string,searchForm:any,statInfo:Stat,parentLoading:boolean}) {
+export default function ChartPanel({size = 'default',searchForm = null,statInfo,parentLoading = false}) {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const [batchTimeList,setBatchTimeList] = useState<string[]>([]);
@@ -46,7 +46,6 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo,pare
         setEChartData(eChartChartValues);
         setErrorMessage(null);
     }
-
 
     const fetchData = async () => {
         setLoading(true);

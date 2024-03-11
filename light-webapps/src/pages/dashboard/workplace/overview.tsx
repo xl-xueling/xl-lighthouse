@@ -161,8 +161,7 @@ function Overview() {
           </Typography.Paragraph>
           <Link>{t['workplace.seeMore']}</Link>
         </div>
-        {/*<OverviewAreaLine data={data.chartData} loading={loading} />*/}
-        {statInfo && <ChartPanel parentLoading={false} statInfo={statInfo}  searchForm={null} size={'mini'}/>}
+        {statInfo && <ChartPanel parentLoading={false} statInfo={statInfo} size={'default'}/>}
       </div>
     </Card>
   );
