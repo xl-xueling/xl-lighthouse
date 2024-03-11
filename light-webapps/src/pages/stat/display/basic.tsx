@@ -49,7 +49,7 @@ export default function BasicInfo({statInfo,callback}) {
         },
         {
             label: 'Department',
-            value: <DepartmentLabel departmentId={statInfo?.departmentId} />,
+            value: statInfo?.departmentId?<DepartmentLabel departmentId={statInfo?.departmentId} />:'--',
         },
         {
             label: 'Expired',
@@ -57,7 +57,7 @@ export default function BasicInfo({statInfo,callback}) {
         },
         {
             label: 'Admins',
-            value: <UserGroup users={statInfo?.admins}/>,
+            value: statInfo?.admins?<UserGroup users={statInfo?.admins}/>:'--',
         },
         {
             label: 'TimeParam',

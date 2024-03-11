@@ -183,6 +183,7 @@ public final class BuiltinLoader {
                 statEntity.setUpdateTime(localDateTime);
                 statEntity.setGroupColumns(groupColumns);
                 statEntity.setRandomId(randomId);
+                statEntity.setProjectTitle(builtinProject.getTitle());
                 if(StringUtil.isNotEmpty(renderConfig)){
                     statEntity.setRenderConfig(JsonUtil.toJavaObject(renderConfig, RenderConfig.class));
                 }
