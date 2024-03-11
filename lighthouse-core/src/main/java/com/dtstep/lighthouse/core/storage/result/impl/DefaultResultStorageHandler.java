@@ -162,7 +162,12 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
     @Override
     public List<StatValue> query(StatExtEntity statExtEntity, String dimensValue, List<Long> batchTimeList) throws Exception {
         Validate.isTrue(CollectionUtils.isNotEmpty(batchTimeList));
-        Map<String,List<StatValue>> resultMap = queryWithDimensList(statExtEntity,List.of(dimensValue),batchTimeList);
+        Map<String,List<StatValue>> resultMap;
+        if(StringUtil.isEmpty(dimensValue)){
+            resultMap = queryWithDimensList(statExtEntity,null,batchTimeList);
+        }else{
+            resultMap = queryWithDimensList(statExtEntity,List.of(dimensValue),batchTimeList);
+        }
         return MapUtils.isEmpty(resultMap) || CollectionUtils.isEmpty(resultMap.get(dimensValue)) ? null : resultMap.get(dimensValue);
     }
 
