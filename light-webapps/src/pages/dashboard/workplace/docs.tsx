@@ -17,7 +17,6 @@ function QuickOperation() {
     <Card>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography.Title heading={6}>{t['workplace.docs']}</Typography.Title>
-        <Link>{t['workplace.seeMore']}</Link>
       </div>
       <div className={styles.docs}>
         {Object.entries(links).map(([key, value]) => (

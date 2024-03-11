@@ -27,7 +27,6 @@ function Shortcuts() {
   const t = useLocale(locale);
   const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo || []);
 
-
   const shortcuts = [
     {
       title: t['workplace.shortcuts.metricManage'],
@@ -96,40 +95,40 @@ function Shortcuts() {
         ))}
       </div>
       <Divider />
-      <div className={styles.recent}>{t['workplace.label.staredProject']}</div>
-      <div>
-        {
-          staredProjectInfo.slice(0,4).map(z => {
-            return <Card
-                onClick={() => handleClick('/project/manage/' + z.id)}
-                key={getRandomString()}
-                bordered={true}
-                hoverable
-                style={{marginBottom: 20,cursor:'pointer'}}
-            >
-              <Space
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-              >
-                <Space>
-                  <Avatar
-                      style={{
-                        backgroundColor: '#165DFF',
-                      }}
-                      size={25}
-                  >
-                    {getIcon('project')}
-                  </Avatar>
-                  <Typography.Text>{z.title}</Typography.Text>
-                </Space>
-              </Space>
-            </Card>
-          })
-        }
-      </div>
+      {/*<div className={styles.recent}>{t['workplace.label.staredProject']}</div>*/}
+      {/*<div>*/}
+      {/*  {*/}
+      {/*    staredProjectInfo.slice(0,4).map(z => {*/}
+      {/*      return <Card*/}
+      {/*          onClick={() => handleClick('/project/manage/' + z.id)}*/}
+      {/*          key={getRandomString()}*/}
+      {/*          bordered={true}*/}
+      {/*          hoverable*/}
+      {/*          style={{marginBottom: 20,cursor:'pointer'}}*/}
+      {/*      >*/}
+      {/*        <Space*/}
+      {/*            style={{*/}
+      {/*              display: 'flex',*/}
+      {/*              alignItems: 'center',*/}
+      {/*              justifyContent: 'space-between',*/}
+      {/*            }}*/}
+      {/*        >*/}
+      {/*          <Space>*/}
+      {/*            <Avatar*/}
+      {/*                style={{*/}
+      {/*                  backgroundColor: '#165DFF',*/}
+      {/*                }}*/}
+      {/*                size={25}*/}
+      {/*            >*/}
+      {/*              {getIcon('project')}*/}
+      {/*            </Avatar>*/}
+      {/*            <Typography.Text>{z.title}</Typography.Text>*/}
+      {/*          </Space>*/}
+      {/*        </Space>*/}
+      {/*      </Card>*/}
+      {/*    })*/}
+      {/*  }*/}
+      {/*</div>*/}
     </Card>
   );
 }
