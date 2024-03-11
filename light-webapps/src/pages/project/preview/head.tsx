@@ -30,13 +30,13 @@ export default function PreviewHeader({projectInfo}:{projectInfo:Project}) {
             },
             {
                 label: <IconUserGroup/>,
-                value: <UserGroup users={projectInfo?.admins}/>,
+                value: projectInfo?.admins?<UserGroup users={projectInfo?.admins}/>:'--',
                 span: 1,
             },
             {
                 label: <div style={{ marginTop: 0 }}><IconBook/></div>,
                 value: <div style={{ wordBreak: 'break-word' }}>
-                    <span>{projectInfo?.desc}</span>
+                    <span>{projectInfo?.desc?projectInfo?.desc:'--'}</span>
                 </div>,
                 span :2,
             },
