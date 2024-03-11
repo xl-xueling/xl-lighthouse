@@ -43,7 +43,7 @@ public class Stat implements Serializable {
 
     private String randomId;
 
-    private Integer dataVersion;
+    private Integer dataVersion = 0;
 
     public Integer getId() {
         return id;

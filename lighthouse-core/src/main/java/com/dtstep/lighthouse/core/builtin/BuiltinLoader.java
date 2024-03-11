@@ -55,6 +55,8 @@ public final class BuiltinLoader {
 
     private static final String secretKey = "2l2ipBHOssTzsHsdErKDcarxjU6rKZwo";
 
+    private static final String randomId = "XjElwfhjXKB7dNzcIHsQ767fPXkTLKsB";
+
     static  {
         builtinProject = new Project();
         builtinProject.setTitle("Cluster Monitor");
@@ -134,6 +136,7 @@ public final class BuiltinLoader {
             groupExtEntity.setBuiltIn(true);
             groupExtEntity.setMinTimeParam(new TimeParam(1, TimeUnit.MINUTES));
             groupExtEntity.setVerifyKey(Md5Util.getMD5(secretKey));
+            groupExtEntity.setRandomId(randomId);
             Elements columnElements = element.getElementsByTag("column");
             List<Column> columnList = new ArrayList<>();
             for(Element columnElement : columnElements){
@@ -172,6 +175,7 @@ public final class BuiltinLoader {
                 statEntity.setCreateTime(localDateTime);
                 statEntity.setUpdateTime(localDateTime);
                 statEntity.setGroupColumns(groupColumns);
+                statEntity.setRandomId(randomId);
                 StatExtEntity statExtEntity = StatDBWrapper.combineExtInfo(statEntity,true);
                 statExtEntity.setBuiltIn(true);
                 statExtEntity.setToken(token);
