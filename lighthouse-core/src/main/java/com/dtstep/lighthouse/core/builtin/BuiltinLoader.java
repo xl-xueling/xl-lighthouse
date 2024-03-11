@@ -153,8 +153,8 @@ public final class BuiltinLoader {
             Map<String,ColumnTypeEnum> columnHashMap = columnList.stream().collect(Collectors.toMap(Column::getName, Column::getType));
             groupExtEntity.setAllRelatedColumns(columnHashMap);
             groupExtEntity.setRunningRelatedColumns(columnHashMap);
-            groupExtEntity.setColumnList(columnList);
             groupExtEntity.setState(GroupStateEnum.RUNNING);
+            groupExtEntity.setColumns(columnList);
             builtinGroups.put(groupId, groupExtEntity);
             Elements statList = element.getElementsByTag("monitor-item");
             if(statList == null || statList.isEmpty()){

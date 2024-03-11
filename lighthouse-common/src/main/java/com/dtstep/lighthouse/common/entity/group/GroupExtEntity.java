@@ -36,8 +36,6 @@ public class GroupExtEntity extends Group {
 
     private String verifyKey;
 
-    private List<Column> columnList;
-
     private Map<String, ColumnTypeEnum> runningRelatedColumns;
 
     private Map<String, ColumnTypeEnum> allRelatedColumns;
@@ -57,14 +55,6 @@ public class GroupExtEntity extends Group {
     public GroupExtEntity(Group groupEntity){
         assert groupEntity != null;
         BeanCopyUtil.copy(groupEntity,this);
-    }
-
-    public List<Column> getColumnList() {
-        return columnList;
-    }
-
-    public void setColumnList(List<Column> columnList) {
-        this.columnList = columnList;
     }
 
     public Map<String, ColumnTypeEnum> getRunningRelatedColumns() {
