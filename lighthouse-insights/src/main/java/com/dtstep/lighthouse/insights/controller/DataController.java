@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.common.modal.Stat;
+import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.ResultData;
@@ -42,48 +43,40 @@ public class DataController {
     @PostMapping("/data/stat")
     public ResultData<List<StatDataObject>> dataQuery(@Validated @RequestBody DataStatQueryParam queryParam) throws Exception{
         int statId = queryParam.getStatId();
-        int userId = baseService.getCurrentUserId();
-        Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
-        boolean hasManagePermission = permissionService.checkUserPermission(userId,manageRole.getId());
-        if(!hasManagePermission){
-            Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
-            boolean hasAccessPermission = permissionService.checkUserPermission(userId,accessRole.getId());
-            if(!hasAccessPermission){
-                return ResultData.result(ResultCode.accessDenied);
+        if(!BuiltinLoader.isBuiltinStat(statId)){
+            int userId = baseService.getCurrentUserId();
+            Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
+            boolean hasManagePermission = permissionService.checkUserPermission(userId,manageRole.getId());
+            if(!hasManagePermission){
+                Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
+                boolean hasAccessPermission = permissionService.checkUserPermission(userId,accessRole.getId());
+                if(!hasAccessPermission){
+                    return ResultData.result(ResultCode.accessDenied);
+                }
             }
         }
-        Stat stat = statService.queryById(statId);
-        StatExtEntity statExtEntity = null;
-        try{
-            statExtEntity = StatDBWrapper.combineExtInfo(stat,false);
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-        List<String> dimensList = dataService.dimensArrangement(statExtEntity,queryParam.getDimensParams());
-        List<StatDataObject> objectList = dataService.dataQuery(statExtEntity,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
+        StatExtEntity stat = statService.queryById(statId);
+        List<String> dimensList = dataService.dimensArrangement(stat,queryParam.getDimensParams());
+        List<StatDataObject> objectList = dataService.dataQuery(stat,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
         return ResultData.success(objectList);
     }
 
     @PostMapping("/test-data/stat")
     public ResultData<List<StatDataObject>> testDataQuery(@Validated @RequestBody DataStatQueryParam queryParam) throws Exception{
         int statId = queryParam.getStatId();
-        int userId = baseService.getCurrentUserId();
-        Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
-        boolean hasManagePermission = permissionService.checkUserPermission(userId,manageRole.getId());
-        if(!hasManagePermission){
-            Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
-            boolean hasAccessPermission = permissionService.checkUserPermission(userId,accessRole.getId());
-            if(!hasAccessPermission){
-                return ResultData.result(ResultCode.accessDenied);
+        if(!BuiltinLoader.isBuiltinStat(statId)){
+            int userId = baseService.getCurrentUserId();
+            Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
+            boolean hasManagePermission = permissionService.checkUserPermission(userId,manageRole.getId());
+            if(!hasManagePermission){
+                Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
+                boolean hasAccessPermission = permissionService.checkUserPermission(userId,accessRole.getId());
+                if(!hasAccessPermission){
+                    return ResultData.result(ResultCode.accessDenied);
+                }
             }
         }
-        Stat stat = statService.queryById(statId);
-        StatExtEntity statExtEntity = null;
-        try{
-            statExtEntity = StatDBWrapper.combineExtInfo(stat,false);
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
+        StatExtEntity statExtEntity = statService.queryById(statId);
         List<String> dimensList = dataService.dimensArrangement(statExtEntity,queryParam.getDimensParams());
         List<StatDataObject> objectList = dataService.testDataQuery(statExtEntity,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
         System.out.println("objectList is:" + JsonUtil.toJSONString(objectList));
