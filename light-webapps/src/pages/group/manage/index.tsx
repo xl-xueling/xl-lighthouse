@@ -151,7 +151,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
     }
 
     const createStatSuccess = () => {
-        setFormParams({"groupId":groupId,t:new Date().getTime()});
+        setFormParams({"groupIds":[groupId],t:new Date().getTime()});
         fetchData().then();
     }
 
