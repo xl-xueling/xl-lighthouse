@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {Stat, StatData, EChartChartValue, StatValue} from "@/types/insights-web";
 import {Notification, Space} from "@arco-design/web-react";
@@ -13,9 +13,14 @@ import {
     DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
 import {formatString, getRandomString} from "@/utils/util";
+import {HomePageContext} from "@/pages/dashboard/workplace/index";
 // import 'default-passive-events'
 
 export default function StatPieChart() {
+
+    const { homeData, statInfo } = useContext(HomePageContext);
+    const [chartData,setChartData] = useState(null);
+    const t = useLocale(locale);
 
     const option = {
         tooltip: {
@@ -24,16 +29,10 @@ export default function StatPieChart() {
 
         series: [
             {
-                name: 'Access From',
+                name: t['workplace.department.statistic.size'],
                 type: 'pie',
                 radius: '50%',
-                data: [
-                    { value: 1048, name: 'Search Engine' },
-                    { value: 735, name: 'Direct' },
-                    { value: 580, name: 'Email' },
-                    { value: 484, name: 'Union Ads' },
-                    { value: 300, name: 'Video Ads' }
-                ],
+                data:chartData,
                 emphasis: {
                     itemStyle: {
                         shadowBlur: 10,
@@ -44,6 +43,16 @@ export default function StatPieChart() {
             }
         ]
     };
+
+    useEffect(() => {
+        console.log(JSON.stringify(homeData.departmentStatCount));
+        if(homeData?.departmentStatCount){
+            const chartData = homeData?.departmentStatCount.map(z => {
+                return { value: z.value, name: z.dimensValue };
+            })
+            setChartData(chartData);
+        }
+    },[JSON.stringify(homeData)])
 
     const chartStyle = {
         height: '240px' ,width:'100%',marginLeft:'0px'
