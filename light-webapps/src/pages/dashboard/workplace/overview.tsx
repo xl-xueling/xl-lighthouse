@@ -27,6 +27,7 @@ import ChartPanel from "@/pages/stat/display/chart_panel";
 import {requestQueryById} from "@/api/stat";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 import {HomePageContext} from "@/pages/dashboard/workplace/index";
+import {getRandomString} from "@/utils/util";
 
 const { Row, Col } = Grid;
 
@@ -122,7 +123,7 @@ export default function Overview({loading = false}) {
               ({t['workplace.1minute.message.size']})
             </span>
           </Typography.Paragraph>
-          <Link>{t['workplace.seeMore']}</Link>
+          <Link href={'/project/preview/1'}>{t['workplace.seeMore']}</Link>
         </div>
         {statInfo && <ChartPanel parentLoading={false} statInfo={statInfo} size={'default'}/>}
       </div>

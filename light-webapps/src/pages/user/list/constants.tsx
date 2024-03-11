@@ -62,7 +62,7 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
               onOk={() => callback(record, 'resetPasswd')}
           >
             <Button
-                type="secondary"
+                type="text"
                 size="mini">
               {t['userList.columns.operations.resetpasswd']}
             </Button>
@@ -77,7 +77,7 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
               onOk={() => callback(record, 'activation')}
           >
             <Button
-                type="secondary"
+                type="text"
                 size="mini">
               {t['userList.columns.operations.activation']}
             </Button>
@@ -90,7 +90,7 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
               onOk={() => callback(record, 'frozen')}
           >
             <Button
-                type="secondary"
+                type="text"
                 size="mini">
               {t['userList.columns.operations.frozen']}
             </Button>
@@ -105,7 +105,7 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
               onOk={() => callback(record, 'delete')}
           >
             <Button
-                type="secondary"
+                type="text"
                 size="mini">
               {t['userList.columns.operations.delete']}
             </Button>
