@@ -1,17 +1,23 @@
 package com.dtstep.lighthouse.core.test.data;
 
+import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
+import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.core.batch.BatchAdapter;
+import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
+import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class DataQuery {
+public class DataQueryTest {
 
     private static final KeyGenerator keyGenerator = new DefaultKeyGenerator();
 
@@ -32,5 +38,15 @@ public class DataQuery {
         System.out.println("stat:" + JsonUtil.toJSONString(stat));
         String aggregateKey = keyGenerator.resultKey(stat,0,null,batchTime);
         System.out.println("aggregateKey is:" + aggregateKey);
+    }
+
+    @Test
+    public void constGroupMessageMonitor() throws Exception {
+        List<Long> batchTimeList = BatchAdapter.queryBatchTimeList("1-minute",DateUtil.getDayStartTime(System.currentTimeMillis()),DateUtil.getDayEndTime(System.currentTimeMillis()));
+        StatExtEntity statExtEntity = BuiltinLoader.getBuiltinStat(1011);
+        List<StatValue> values = ResultStorageSelector.query(statExtEntity,null,batchTimeList);
+        for(StatValue statValue : values){
+            System.out.println("statValue:" + JsonUtil.toJSONString(statValue));
+        }
     }
 }
