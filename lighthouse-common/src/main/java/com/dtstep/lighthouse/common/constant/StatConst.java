@@ -95,7 +95,7 @@ public final class StatConst {
 
     public static final int LIMIT_SALT = 3;
 
-    public static final int DEFAULT_POOL_SLOT_SIZE = 12;
+    public static final int DEFAULT_POOL_SLOT_SIZE = 10;
 
     public static final int QUERY_RESULT_DIMENS_SIZE = 50;
 
