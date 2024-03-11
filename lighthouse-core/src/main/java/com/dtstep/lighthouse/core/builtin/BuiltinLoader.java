@@ -114,6 +114,10 @@ public final class BuiltinLoader {
         return new ArrayList<>(builtinGroups.values());
     }
 
+    public static List<StatExtEntity> getAllStats(){
+        return new ArrayList<>(builtinStats.values());
+    }
+
     public static List<StatExtEntity> getBuiltinStatByGroupId(int groupId){
         return groupStatsMapping.get(groupId);
     }
