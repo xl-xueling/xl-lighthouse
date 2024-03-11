@@ -20,7 +20,7 @@ public class HomeVO {
 
     private Integer userCount;
 
-    private List<StatValue> valueList;
+    private List<StatValue> departmentStatCount;
 
     public Integer getProjectCount() {
         return projectCount;
@@ -78,11 +78,11 @@ public class HomeVO {
         this.userCount = userCount;
     }
 
-    public List<StatValue> getValueList() {
-        return valueList;
+    public List<StatValue> getDepartmentStatCount() {
+        return departmentStatCount;
     }
 
-    public void setValueList(List<StatValue> valueList) {
-        this.valueList = valueList;
+    public void setDepartmentStatCount(List<StatValue> departmentStatCount) {
+        this.departmentStatCount = departmentStatCount;
     }
 }

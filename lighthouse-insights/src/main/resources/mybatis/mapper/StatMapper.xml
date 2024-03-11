@@ -24,6 +24,11 @@
         <result property="createTime" column="create_time"/>
     </resultMap>
 
+    <resultMap id="statisticsResultMap" type="com.dtstep.lighthouse.common.modal.DBStatistics">
+        <result property="k" column="k"/>
+        <result property="v" column="v"/>
+    </resultMap>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Stat" >
         INSERT INTO ldp_stats (`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`meta_id`,`random_id`,`expired`,`desc`,`create_time`,`update_time`) VALUES
         (
@@ -175,4 +180,19 @@
     <delete id="deleteById">
         delete from ldp_stats where id = #{id}
     </delete>
+
+    <select id="getTopDepartmentStatSize" resultMap="statisticsResultMap">
+        WITH RECURSIVE DepartmentHierarchy AS (
+            SELECT id, pid, id AS top_department_id
+            FROM ldp_departments
+            WHERE pid = '0'
+            UNION ALL
+            SELECT d.id, d.pid, dh.top_department_id
+            FROM ldp_departments d
+                     JOIN DepartmentHierarchy dh ON d.pid = dh.id
+        )
+        select top_department_id as k,count(*) as v from (select s.id,p.department_id from ldp_stats s left join ldp_projects p on s.project_id = p.id) a
+                                                   left join DepartmentHierarchy dh on a.department_id = dh.id
+        group by top_department_id limit 20
+    </select>
 </mapper>

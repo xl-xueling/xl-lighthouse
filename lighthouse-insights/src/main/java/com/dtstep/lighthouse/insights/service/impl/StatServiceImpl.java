@@ -320,4 +320,9 @@ public class StatServiceImpl implements StatService {
     public int count(StatQueryParam queryParam) {
         return statDao.count(queryParam);
     }
+
+    @Override
+    public List<DBStatistics> getTopDepartmentStatSize() {
+        return statDao.getTopDepartmentStatSize();
+    }
 }

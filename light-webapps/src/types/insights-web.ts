@@ -15,6 +15,7 @@ export interface HomeData {
     metricCount?:number;
     ytdMetricCount?:number;
     userCount?:number;
+    departmentStatCount?:Array<StatData>;
 }
 
 export interface Department {

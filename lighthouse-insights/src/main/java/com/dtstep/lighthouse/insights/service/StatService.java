@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.common.modal.DBStatistics;
 import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.common.modal.RenderConfig;
@@ -31,4 +32,6 @@ public interface StatService {
     RenderConfig getStatRenderConfig(StatVO stat) throws Exception;
 
     ResultCode filterConfig(StatVO stat, List<RenderFilterConfig> filterConfigs);
+
+    List<DBStatistics> getTopDepartmentStatSize();
 }
