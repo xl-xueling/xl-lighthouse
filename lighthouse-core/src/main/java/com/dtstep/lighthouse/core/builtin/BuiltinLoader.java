@@ -17,14 +17,17 @@ package com.dtstep.lighthouse.core.builtin;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
-import com.dtstep.lighthouse.common.entity.project.ProjectEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
+import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.modal.Column;
+import com.dtstep.lighthouse.common.modal.Project;
+import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -33,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -47,13 +51,13 @@ public final class BuiltinLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(BuiltinLoader.class);
 
-    private static final ProjectEntity builtinProject;
+    private static final Project builtinProject;
 
     private static final String secretKey = "2l2ipBHOssTzsHsdErKDcarxjU6rKZwo";
 
     static  {
-        builtinProject = new ProjectEntity();
-        builtinProject.setName("Cluster Monitor");
+        builtinProject = new Project();
+        builtinProject.setTitle("Cluster Monitor");
         builtinProject.setId(1);
         try{
             loadBuiltInStats();
@@ -87,7 +91,7 @@ public final class BuiltinLoader {
         return projectId == builtinProject.getId();
     }
 
-    public static ProjectEntity getBuiltinProject(){
+    public static Project getBuiltinProject(){
         return builtinProject;
     }
 
@@ -150,33 +154,33 @@ public final class BuiltinLoader {
                 continue;
             }
             String groupColumns = JsonUtil.toJSONString(columnList);
-            Date date = new Date();
+            LocalDateTime localDateTime = LocalDateTime.now();
             for(Element statElement : statList){
                 int statId = Integer.parseInt(statElement.attr("id"));
                 String timeParam = statElement.attr("timeparam");
                 Elements templateElements = statElement.getElementsByTag("template");
                 Element templateElement = templateElements.get(0);
                 String template = templateElement.html();
-//                StatEntity statEntity = new StatEntity();
-//                statEntity.setTemplate(template);
-//                statEntity.setTimeParam(timeParam);
-//                statEntity.setId(statId);
-//                statEntity.setProjectId(builtinProject.getId());
-//                statEntity.setGroupId(groupId);
-//                statEntity.setResMeta(-1);
-//                statEntity.setDataExpire(2592000);
-//                statEntity.setCreateTime(date);
-//                statEntity.setUpdateTime(date);
-//                statEntity.setGroupColumns(groupColumns);
-//                StatExtEntity statExtEntity = StatDBWrapperBak.combineExtInfo(statEntity,true);
-//                statExtEntity.setBuiltIn(true);
-//                statExtEntity.setToken(token);
-//                statExtEntity.setTitle(statExtEntity.getTemplateEntity().getTitle());
-//                statExtEntity.setStatStateEnum(StatStateEnum.RUNNING);
-//                List<StatExtEntity> groupStats = groupStatsMapping.getOrDefault(groupId, new ArrayList<>());
-//                groupStats.add(statExtEntity);
-//                groupStatsMapping.put(groupId,groupStats);
-//                builtinStats.put(statId, statExtEntity);
+                Stat statEntity = new Stat();
+                statEntity.setTemplate(template);
+                statEntity.setTimeparam(timeParam);
+                statEntity.setId(statId);
+                statEntity.setProjectId(builtinProject.getId());
+                statEntity.setGroupId(groupId);
+                statEntity.setMetaId(-1);
+                statEntity.setExpired(2592000L);
+                statEntity.setCreateTime(localDateTime);
+                statEntity.setUpdateTime(localDateTime);
+                statEntity.setGroupColumns(groupColumns);
+                StatExtEntity statExtEntity = StatDBWrapper.combineExtInfo(statEntity,true);
+                statExtEntity.setBuiltIn(true);
+                statExtEntity.setToken(token);
+                statExtEntity.setTitle(statExtEntity.getTemplateEntity().getTitle());
+                statExtEntity.setStatStateEnum(StatStateEnum.RUNNING);
+                List<StatExtEntity> groupStats = groupStatsMapping.getOrDefault(groupId, new ArrayList<>());
+                groupStats.add(statExtEntity);
+                groupStatsMapping.put(groupId,groupStats);
+                builtinStats.put(statId, statExtEntity);
             }
         }
     }
