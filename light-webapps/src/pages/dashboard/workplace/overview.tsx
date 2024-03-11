@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode } from 'react';
+import React, {useState, useEffect, ReactNode, useContext} from 'react';
 import {
   Grid,
   Card,
@@ -25,6 +25,8 @@ import {requestOverView} from "@/api/home";
 import {HomeData, Stat} from "@/types/insights-web";
 import ChartPanel from "@/pages/stat/display/chart_panel";
 import {requestQueryById} from "@/api/stat";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview";
+import {HomePageContext} from "@/pages/dashboard/workplace/index";
 
 const { Row, Col } = Grid;
 
@@ -55,49 +57,10 @@ function StatisticItem(props: StatisticItemType) {
 }
 
 
-function Overview() {
-  const [data, setData] = useState<HomeData>({});
-  const [loading, setLoading] = useState(true);
+export default function Overview({loading = false}) {
   const t = useLocale(locale);
   const userInfo = useSelector((state: GlobalState) => state.userInfo || {});
-  const [statInfo,setStatInfo] = useState<Stat>(null);
-
-  const fetchStatData = async () => {
-    setLoading(true);
-    await requestQueryById({id:1011}).then((response) => {
-      const {code, data ,message} = response;
-      if(code == '0'){
-        setStatInfo(data)
-      }else{
-        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-      }
-      setLoading(false);
-    }).catch((error) => {
-      console.log(error);
-    })
-  }
-
-  const fetchData = async () => {
-    setLoading(true);
-    await requestOverView().then((response:ResultData) => {
-      const {code, data ,message} = response;
-      if(code == '0'){
-        console.log("data is:" + JSON.stringify(response));
-        setData(data)
-      }else{
-        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-      }
-    }).catch((error) => {
-      console.log(error)
-    }).finally(() => {
-      setLoading(false);
-    })
-  };
-
-  useEffect(() => {
-    fetchData().then();
-    fetchStatData().then();
-  }, []);
+  const { homeData, statInfo } = useContext(HomePageContext);
 
   return (
     <Card>
@@ -111,7 +74,7 @@ function Overview() {
           <StatisticItem
             icon={<IconCalendar />}
             title={t['workplace.label.projectCount']}
-            count={data?.projectCount}
+            count={homeData?.projectCount}
             loading={loading}
             unit={t['workplace.pecs']}
           />
@@ -121,7 +84,7 @@ function Overview() {
           <StatisticItem
             icon={<IconContent />}
             title={t['workplace.label.statCount']}
-            count={data?.statCount}
+            count={homeData?.statCount}
             loading={loading}
             unit={t['workplace.pecs']}
           />
@@ -131,7 +94,7 @@ function Overview() {
           <StatisticItem
             icon={<IconIncrease />}
             title={t['workplace.label.metricCount']}
-            count={data?.metricCount}
+            count={homeData?.metricCount}
             loading={loading}
             unit={t['workplace.pecs']}
           />
@@ -141,7 +104,7 @@ function Overview() {
           <StatisticItem
               icon={<IconComments />}
               title={t['workplace.label.userCount']}
-              count={data?.userCount}
+              count={homeData?.userCount}
               loading={loading}
               unit={t['workplace.pecs']}
           />
@@ -166,5 +129,3 @@ function Overview() {
     </Card>
   );
 }
-
-export default Overview;
