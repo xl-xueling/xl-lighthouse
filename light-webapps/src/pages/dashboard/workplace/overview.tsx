@@ -22,7 +22,9 @@ import {GlobalState} from "@/store";
 import {requestStructure} from "@/api/department";
 import {ResultData} from "@/types/insights-common";
 import {requestOverView} from "@/api/home";
-import {HomeData} from "@/types/insights-web";
+import {HomeData, Stat} from "@/types/insights-web";
+import ChartPanel from "@/pages/stat/display/chart_panel";
+import {requestQueryById} from "@/api/stat";
 
 const { Row, Col } = Grid;
 
@@ -58,6 +60,23 @@ function Overview() {
   const [loading, setLoading] = useState(true);
   const t = useLocale(locale);
   const userInfo = useSelector((state: GlobalState) => state.userInfo || {});
+  const [statInfo,setStatInfo] = useState<Stat>(null);
+
+  const fetchStatData = async () => {
+    setLoading(true);
+    await requestQueryById({id:1011}).then((response) => {
+      const {code, data ,message} = response;
+      if(code == '0'){
+        console.log("data is:" + JSON.stringify(response));
+        setStatInfo(data)
+      }else{
+        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+      }
+      setLoading(false);
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
 
   const fetchData = async () => {
     setLoading(true);
@@ -77,6 +96,7 @@ function Overview() {
 
   useEffect(() => {
     fetchData().then();
+    fetchStatData().then();
   }, []);
 
   return (
@@ -142,6 +162,7 @@ function Overview() {
           <Link>{t['workplace.seeMore']}</Link>
         </div>
         {/*<OverviewAreaLine data={data.chartData} loading={loading} />*/}
+        <ChartPanel parentLoading={false} statInfo={statInfo}  searchForm={null} size={'mini'}/>
       </div>
     </Card>
   );

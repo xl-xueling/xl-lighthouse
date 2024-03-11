@@ -18,13 +18,13 @@ public interface StatService {
 
     int delete(Stat stat);
 
-    StatVO queryById(Integer id);
+    StatVO queryById(Integer id) throws Exception;
 
     List<Stat> queryByProjectId(Integer projectId);
 
     ListData<StatVO> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize);
 
-    List<StatVO> queryByIds(List<Integer> ids);
+    List<StatVO> queryByIds(List<Integer> ids) throws Exception;
 
     int count(StatQueryParam queryParam);
 

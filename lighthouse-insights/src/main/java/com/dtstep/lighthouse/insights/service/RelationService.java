@@ -20,9 +20,9 @@ public interface RelationService {
 
     boolean isExist(String hash);
 
-    List<RelationVO> queryList(Integer relationId, RelationTypeEnum relationTypeEnum);
+    List<RelationVO> queryList(Integer relationId, RelationTypeEnum relationTypeEnum) throws Exception;
 
-    ListData<RelationVO> queryList(RelationQueryParam queryParam, Integer pageNum, Integer pageSize);
+    ListData<RelationVO> queryList(RelationQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception;
 
     int count(RelationQueryParam queryParam);
 }

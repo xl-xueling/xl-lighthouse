@@ -83,7 +83,7 @@ public class RelationServiceImpl implements RelationService {
         return relationDao.isExist(hash);
     }
 
-    private RelationVO translate(Relation relation){
+    private RelationVO translate(Relation relation) throws Exception{
         RelationVO relationVO = new RelationVO(relation);
         if(relation.getResourceType() == ResourceTypeEnum.Project){
             ProjectVO projectVO = projectService.queryById(relation.getResourceId());
@@ -96,7 +96,7 @@ public class RelationServiceImpl implements RelationService {
     }
 
     @Override
-    public List<RelationVO> queryList(Integer relationId, RelationTypeEnum relationTypeEnum) {
+    public List<RelationVO> queryList(Integer relationId, RelationTypeEnum relationTypeEnum) throws Exception{
         List<Relation> relationList = relationDao.queryList(relationId,relationTypeEnum);
         List<Integer> statIdList = new ArrayList<>();
         List<Integer> projectIdList = new ArrayList<>();
@@ -125,7 +125,7 @@ public class RelationServiceImpl implements RelationService {
     }
 
     @Override
-    public ListData<RelationVO> queryList(RelationQueryParam queryParam, Integer pageNum, Integer pageSize) {
+    public ListData<RelationVO> queryList(RelationQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception{
         PageHelper.startPage(pageNum,pageSize);
         PageInfo<Relation> pageInfo = null;
         try{

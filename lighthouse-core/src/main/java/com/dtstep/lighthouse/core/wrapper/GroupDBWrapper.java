@@ -191,7 +191,7 @@ public final class GroupDBWrapper {
         return result;
     }
 
-    private static GroupExtEntity combineExtInfo(Group groupEntity) throws Exception{
+    public static GroupExtEntity combineExtInfo(Group groupEntity) throws Exception{
         GroupExtEntity groupExtEntity = new GroupExtEntity(groupEntity);
         if(GroupExtEntity.isLimitedExpired(groupExtEntity)){
             changeState(groupEntity.getId(),GroupStateEnum.RUNNING);

@@ -82,13 +82,13 @@ public class MetricSetController {
     }
 
     @RequestMapping("/metricset/binded")
-    public ResultData<MetricSet> binded(@Validated @RequestBody MetricBindParam bindParam) {
+    public ResultData<MetricSet> binded(@Validated @RequestBody MetricBindParam bindParam) throws Exception{
         metricSetService.binded(bindParam);
         return ResultData.success();
     }
 
     @RequestMapping("/metricset/bindlist")
-    public ResultData<ListData<RelationVO>> bindedList(@Validated @RequestBody ListSearchObject<MetricBindQueryParam> searchObject) {
+    public ResultData<ListData<RelationVO>> bindedList(@Validated @RequestBody ListSearchObject<MetricBindQueryParam> searchObject) throws Exception {
         MetricBindQueryParam bindQueryParam = searchObject.getQueryParamOrDefault(new MetricBindQueryParam());
         Pagination pagination = searchObject.getPagination();
         RelationQueryParam relationQueryParam = new RelationQueryParam();

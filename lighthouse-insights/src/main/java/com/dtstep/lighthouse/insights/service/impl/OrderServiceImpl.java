@@ -118,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderVO queryById(Integer id) {
+    public OrderVO queryById(Integer id) throws Exception{
         Order order = orderDao.queryById(id);
         Validate.notNull(order);
         OrderVO orderVO = translateApproveEntity(order);
@@ -276,7 +276,7 @@ public class OrderServiceImpl implements OrderService {
         return ResultCode.success;
     }
 
-    private OrderVO translateApproveEntity(Order order){
+    private OrderVO translateApproveEntity(Order order) throws Exception{
         Integer currentUserId = baseService.getCurrentUserId();
         OrderVO orderDto = new OrderVO(order);
         int applyUserId = orderDto.getUserId();
@@ -293,8 +293,7 @@ public class OrderServiceImpl implements OrderService {
         return orderDto;
     }
 
-    private OrderVO translateApplyEntity(Order order){
-        Integer currentUserId = baseService.getCurrentUserId();
+    private OrderVO translateApplyEntity(Order order) throws Exception {
         OrderVO orderDto = new OrderVO(order);
         int applyUserId = orderDto.getUserId();
         if(orderDto.getState() == OrderStateEnum.PROCESSING){
@@ -310,7 +309,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Object queryRelatedElement(Order order) {
+    public Object queryRelatedElement(Order order) throws Exception {
         Map<String,Object> configMap = order.getExtendConfig();
         if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
             Integer projectId = (Integer) configMap.get("projectId");
@@ -343,7 +342,7 @@ public class OrderServiceImpl implements OrderService {
             Validate.isTrue(permissionService.checkUserPermission(currentUserId,currentNode));
             result = rejectOrder(currentUserId,processParam,order);
         }else if(state == 3){
-            Validate.isTrue(currentUserId == order.getUserId().intValue());
+            Validate.isTrue(currentUserId == order.getUserId());
             result = retractOrder(currentUserId,processParam,order);
         }
         return result;

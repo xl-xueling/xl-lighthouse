@@ -188,7 +188,7 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
-    public int binded(MetricBindParam bindParam) {
+    public int binded(MetricBindParam bindParam) throws Exception {
         List<Integer> metricIds = bindParam.getMetricIds();
         List<MetricBindElement> bindElements = bindParam.getBindElements();
         List<Relation> relationList = new ArrayList<>();
