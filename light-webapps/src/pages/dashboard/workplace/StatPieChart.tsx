@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {Stat, StatData, EChartChartValue, StatValue} from "@/types/insights-web";
-import {Notification, Space} from "@arco-design/web-react";
+import {Link, Notification, Space, Typography} from "@arco-design/web-react";
 import {requestData, requestTestData} from "@/api/data";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
@@ -14,6 +14,7 @@ import {
 } from "@/utils/date";
 import {formatString, getRandomString} from "@/utils/util";
 import {HomePageContext} from "@/pages/dashboard/workplace/index";
+import styles from "@/pages/dashboard/workplace/style/overview.module.less";
 // import 'default-passive-events'
 
 export default function StatPieChart() {
@@ -59,6 +60,8 @@ export default function StatPieChart() {
     };
 
     return (
-        <ReactECharts option={option} style={chartStyle } />
+        <>
+            <ReactECharts option={option} style={chartStyle } />
+        </>
     );
 }
