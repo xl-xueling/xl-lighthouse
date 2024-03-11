@@ -6,7 +6,6 @@ import ContentPercentage from './content-percentage';
 import Shortcuts from './shortcuts';
 import Announcement from './announcement';
 import Carousel from './carousel';
-import Docs from './docs';
 import styles from './style/index.module.less';
 import './mock';
 import {useSelector} from "react-redux";
@@ -20,6 +19,7 @@ import {requestOverView} from "@/api/home";
 import {ResultData} from "@/types/insights-common";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/dashboard/workplace/locale";
+import StatPieChart from "@/pages/dashboard/workplace/StatPieChart";
 const { Row, Col } = Grid;
 const gutter = 16;
 
@@ -55,7 +55,6 @@ function Workplace() {
         await requestOverView().then((response:ResultData) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                console.log("data is:" + JSON.stringify(response));
                 setHomeData(data)
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -85,7 +84,9 @@ function Workplace() {
 
         <Space size={16} direction="vertical" className={styles.right}>
             <Shortcuts />
-            <Docs />
+            <Card style={{padding:0}}>
+                <StatPieChart />
+            </Card>
         </Space>
     </div>
       <Row gutter={gutter}>
