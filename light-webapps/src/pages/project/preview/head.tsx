@@ -62,7 +62,7 @@ export default function PreviewHeader({projectInfo}:{projectInfo:Project}) {
                 </Grid.Col>
                 <Grid.Col span={4} style={{textAlign:"right" }}>
                     <Space size={10}>
-                        <ProjectStar projectInfo={projectInfo}/>
+                        {!projectInfo?.builtIn && <ProjectStar projectInfo={projectInfo}/>}
                     </Space>
                 </Grid.Col>
             </Row>

@@ -77,8 +77,9 @@ export interface Project {
     structure?:TreeNode;
     createTime?:number;
     permissions?:PermissionEnum[];
-    usersPermission?:number[],
-    departmentsPermission?:number[],
+    usersPermission?:number[];
+    departmentsPermission?:number[];
+    builtIn?:boolean;
 }
 
 export interface Relation {
@@ -116,6 +117,7 @@ export interface Group {
     createTime?:number;
     columns?:Array<Column>;
     relatedColumns?:Array<String>;
+    builtIn?:boolean;
 }
 
 export interface Stat {
@@ -134,6 +136,7 @@ export interface Stat {
     state?:StatStateEnum;
     renderConfig?:{datepicker:RenderDateConfig,filters:Array<RenderFilterConfig>}
     permissions?:PermissionEnum[];
+    builtIn?:boolean;
 }
 
 export interface MetricSet {

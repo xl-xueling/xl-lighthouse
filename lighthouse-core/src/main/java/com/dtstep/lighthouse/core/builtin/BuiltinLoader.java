@@ -63,6 +63,7 @@ public final class BuiltinLoader {
         builtinProject = new Project();
         builtinProject.setTitle("Cluster Monitor");
         builtinProject.setId(1);
+        builtinProject.setBuiltIn(true);
         try{
             loadBuiltInStats();
         }catch (Exception ex){

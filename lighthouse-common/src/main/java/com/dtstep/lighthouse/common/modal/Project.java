@@ -17,6 +17,8 @@ public class Project implements Serializable {
 
     private String desc;
 
+    private boolean isBuiltIn = false;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
@@ -75,5 +77,13 @@ public class Project implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public boolean isBuiltIn() {
+        return isBuiltIn;
+    }
+
+    public void setBuiltIn(boolean builtIn) {
+        isBuiltIn = builtIn;
     }
 }
