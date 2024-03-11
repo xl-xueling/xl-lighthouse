@@ -33,7 +33,7 @@ interface CardBlockType {
 
 const IconList = [
     IconStarFill,
-].map((Tag, index) => <Tag key={index} />);
+].map((Tag, index) => <Tag style={{marginBottom:'1px'}} key={index} />);
 
 const { Paragraph } = Typography;
 
