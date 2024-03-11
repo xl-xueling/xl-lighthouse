@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.constant.StatConst;
+import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.random.RandomID;
@@ -8,8 +9,10 @@ import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.formula.TemplateUtil;
 import com.dtstep.lighthouse.core.storage.dimens.DimensStorageSelector;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
@@ -53,7 +56,7 @@ public class StatServiceImpl implements StatService {
     private StatDao statDao;
 
     @Autowired
-    private GroupDao groupDao;
+    private GroupService groupService;
 
     @Autowired
     private ResourceService resourceService;
@@ -80,7 +83,7 @@ public class StatServiceImpl implements StatService {
     @Override
     public ResultCode create(Stat stat) throws Exception{
         int groupId = stat.getGroupId();
-        Group group = groupDao.queryById(groupId);
+        Group group = groupService.queryById(groupId);
         String template = stat.getTemplate();
         String timeParam = stat.getTimeparam();
         ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(template,timeParam, group.getColumns()));
@@ -127,27 +130,31 @@ public class StatServiceImpl implements StatService {
         return statDao.deleteById(id);
     }
 
-    private StatVO translate(Stat stat){
+    private StatVO translate(StatExtEntity stat) throws Exception {
         int userId = baseService.getCurrentUserId();
         StatVO statVO = new StatVO(stat);
-        Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,stat.getId());
-        Role accessRole = roleService.cacheQueryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,stat.getId());
-        if(permissionService.checkUserPermission(userId, manageRole.getId())){
-            statVO.addPermission(PermissionEnum.ManageAble);
+        if(stat.isBuiltIn()){
             statVO.addPermission(PermissionEnum.AccessAble);
-        }else if(permissionService.checkUserPermission(userId,accessRole.getId())){
-            statVO.addPermission(PermissionEnum.AccessAble);
-        }
-        Role projectManageRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,statVO.getProjectId());
-        Validate.notNull(manageRole);
-        List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(projectManageRole.getId(),3);
-        if(CollectionUtils.isNotEmpty(adminIds)){
-            List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
-            statVO.setAdmins(admins);
+        }else{
+            Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,stat.getId());
+            Role accessRole = roleService.cacheQueryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,stat.getId());
+            if(permissionService.checkUserPermission(userId, manageRole.getId())){
+                statVO.addPermission(PermissionEnum.ManageAble);
+                statVO.addPermission(PermissionEnum.AccessAble);
+            }else if(permissionService.checkUserPermission(userId,accessRole.getId())){
+                statVO.addPermission(PermissionEnum.AccessAble);
+            }
+            Role projectManageRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,statVO.getProjectId());
+            Validate.notNull(manageRole);
+            List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(projectManageRole.getId(),3);
+            if(CollectionUtils.isNotEmpty(adminIds)){
+                List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
+                statVO.setAdmins(admins);
+            }
         }
         String template = stat.getTemplate();
         String timeParam = stat.getTimeparam();
-        Group group = groupDao.queryById(stat.getGroupId());
+        Group group = groupService.queryById(stat.getGroupId());
         ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(template,timeParam, group.getColumns()));
         TemplateEntity templateEntity = serviceResult.getData();
         statVO.setTemplateEntity(templateEntity);
@@ -156,13 +163,14 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public List<StatVO> queryByIds(List<Integer> ids) {
+    public List<StatVO> queryByIds(List<Integer> ids) throws Exception{
         StatQueryParam queryParam = new StatQueryParam();
         queryParam.setIds(ids);
         List<Stat> statList = statDao.queryList(queryParam);
         List<StatVO> voList = new ArrayList<>();
         for(Stat stat : statList){
-            StatVO statVO = translate(stat);
+            StatExtEntity statExtEntity = StatDBWrapper.combineExtInfo(stat,false);
+            StatVO statVO = translate(statExtEntity);
             voList.add(statVO);
         }
         return voList;
@@ -172,7 +180,7 @@ public class StatServiceImpl implements StatService {
     public ListData<StatVO> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<StatVO> dtoList = new ArrayList<>();
-        PageInfo<Stat> pageInfo = null;
+        PageInfo<Stat> pageInfo;
         try{
             List<Stat> list = statDao.queryList(queryParam);
             pageInfo = new PageInfo<>(list);
@@ -181,7 +189,8 @@ public class StatServiceImpl implements StatService {
         }
         for(Stat stat : pageInfo.getList()){
             try{
-                StatVO statVo = translate(stat);
+                StatExtEntity statExtEntity = StatDBWrapper.combineExtInfo(stat,false);
+                StatVO statVo = translate(statExtEntity);
                 dtoList.add(statVo);
             }catch (Exception ex){
                 logger.error("translate item info error,itemId:{}!",stat.getId(),ex);
@@ -192,9 +201,15 @@ public class StatServiceImpl implements StatService {
 
 
     @Override
-    public StatVO queryById(Integer id) {
-        Stat stat = statDao.queryById(id);
-        return translate(stat);
+    public StatVO queryById(Integer id) throws Exception {
+        StatExtEntity statExtEntity;
+        if(BuiltinLoader.isBuiltinStat(id)){
+            statExtEntity = BuiltinLoader.getBuiltinStat(id);
+        }else{
+            Stat stat = statDao.queryById(id);
+            statExtEntity =  StatDBWrapper.combineExtInfo(stat,false);
+        }
+        return translate(statExtEntity);
     }
 
     @Override
@@ -205,7 +220,7 @@ public class StatServiceImpl implements StatService {
     @Override
     public RenderConfig getStatRenderConfig(StatVO stat) throws Exception{
         RenderConfig renderConfig = stat.getRenderConfig();
-        Group group = groupDao.queryById(stat.getGroupId());
+        Group group = groupService.queryById(stat.getGroupId());
         HashMap<String, RenderFilterConfig> filtersConfigMap = new HashMap<>();
         if(CollectionUtils.isEmpty(renderConfig.getFilters())){
             TemplateEntity templateEntity = stat.getTemplateEntity();

@@ -20,7 +20,7 @@ public interface MetricSetService {
 
     ResultCode unStar(MetricSet metricSet);
 
-    int binded(MetricBindParam bindParam);
+    int binded(MetricBindParam bindParam) throws Exception;
 
     int bindRemove(MetricBindRemoveParam removeParam);
 

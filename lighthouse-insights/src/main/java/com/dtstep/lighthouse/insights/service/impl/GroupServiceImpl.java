@@ -1,15 +1,18 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.entity.ServiceResult;
+import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
+import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
@@ -80,9 +83,15 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupVO queryById(Integer id) throws Exception {
-        Group group = groupDao.queryById(id);
-        Set<String> relatedColumns = getRelatedColumns(group);
-        GroupVO groupVO = new GroupVO(group);
+        GroupExtEntity groupExtEntity;
+        if(BuiltinLoader.isBuiltinGroup(id)){
+            groupExtEntity = BuiltinLoader.getBuiltinGroup(id);
+        }else{
+            Group group = groupDao.queryById(id);
+            groupExtEntity = GroupDBWrapper.combineExtInfo(group);
+        }
+        GroupVO groupVO = new GroupVO(groupExtEntity);
+        Set<String> relatedColumns = getRelatedColumns(groupExtEntity);
         groupVO.setRelatedColumns(relatedColumns);
         return groupVO;
     }

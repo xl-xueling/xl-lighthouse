@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.vo;
 
+import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.common.modal.PermissionEnum;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class StatVO extends Stat {
+public class StatVO extends StatExtEntity {
 
     private List<User> admins;
 
@@ -33,9 +34,9 @@ public class StatVO extends Stat {
         }
     }
 
-    public StatVO(Stat stat){
-        assert stat != null;
-        BeanCopyUtil.copy(stat,this);
+    public StatVO(StatExtEntity statExtEntity){
+        assert statExtEntity != null;
+        BeanCopyUtil.copy(statExtEntity,this);
     }
 
     public List<User> getAdmins() {

@@ -20,9 +20,9 @@ public interface OrderService {
 
     int pendCount(int userId);
 
-    OrderVO queryById(Integer id);
+    OrderVO queryById(Integer id) throws Exception;
 
-    Object queryRelatedElement(Order order);
+    Object queryRelatedElement(Order order) throws Exception;
 
     ListData<OrderVO> queryApplyList(ApplyOrderQueryParam queryParam, Integer pageNum, Integer pageSize);
 

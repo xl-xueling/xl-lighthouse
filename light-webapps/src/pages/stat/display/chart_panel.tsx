@@ -15,7 +15,7 @@ import {
 import {formatString, getRandomString} from "@/utils/util";
 // import 'default-passive-events'
 
-export default function ChartPanel({size = 'default',searchForm={},statInfo,parentLoading}:{size:string,searchForm:any,statInfo:Stat,parentLoading:boolean}) {
+export default function ChartPanel({size = 'default',searchForm={},statInfo,parentLoading = false}:{size:string,searchForm:any,statInfo:Stat,parentLoading:boolean}) {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const [batchTimeList,setBatchTimeList] = useState<string[]>([]);
@@ -190,7 +190,7 @@ export default function ChartPanel({size = 'default',searchForm={},statInfo,pare
             }
             fetchData().then();
         }
-    },[JSON.stringify(searchForm),statInfo.id])
+    },[JSON.stringify(searchForm),statInfo?.id])
 
     const getReactChart = () => {
         if(size == 'default'){

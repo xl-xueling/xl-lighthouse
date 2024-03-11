@@ -22,7 +22,7 @@ public class OrderController {
     private BaseService baseService;
 
     @RequestMapping("/order/queryById")
-    public ResultData<OrderVO> queryById(@Validated @RequestBody QueryParam queryParam) {
+    public ResultData<OrderVO> queryById(@Validated @RequestBody QueryParam queryParam) throws Exception{
         OrderVO orderVO = orderService.queryById(queryParam.getId());
         Validate.notNull(orderVO);
         Object extend = orderService.queryRelatedElement(orderVO);

@@ -57,7 +57,7 @@ public class StatController {
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @RequestMapping("/stat/changeState")
-    public ResultData<Integer> changeState(@Validated @RequestBody ChangeStatStateParam changeParam) {
+    public ResultData<Integer> changeState(@Validated @RequestBody ChangeStatStateParam changeParam) throws Exception {
         Integer id = changeParam.getId();
         Stat stat = statService.queryById(id);
         Validate.notNull(stat);
@@ -68,7 +68,7 @@ public class StatController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/stat/deleteById")
-    public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) {
+    public ResultData<Integer> deleteById(@Validated @RequestBody IDParam idParam) throws Exception {
         Integer id = idParam.getId();
         Stat stat = statService.queryById(id);
         Validate.notNull(stat);
@@ -93,7 +93,7 @@ public class StatController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/stat/filterConfig")
-    public ResultData<Integer> filterConfig(@Validated @RequestBody StatFilterConfigParam filterConfigParam) {
+    public ResultData<Integer> filterConfig(@Validated @RequestBody StatFilterConfigParam filterConfigParam) throws Exception{
         Integer id = filterConfigParam.getId();
         StatVO stat = statService.queryById(id);
         Validate.notNull(stat);
@@ -105,7 +105,7 @@ public class StatController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/stat/filterReset")
-    public ResultData<Integer> filterReset(@Validated @RequestBody IDParam idParam) {
+    public ResultData<Integer> filterReset(@Validated @RequestBody IDParam idParam) throws Exception{
         Integer id = idParam.getId();
         Stat stat = statService.queryById(id);
         Validate.notNull(stat);
