@@ -278,8 +278,8 @@ export default function ManagePanel() {
                                       const originTitle = node.title;
                                       node.dataRef.title = <Input type={"text"} autoFocus={true}
                                                                   style={{
-                                                                      width: 300,
-                                                                      height: 30,
+                                                                      width: 230,
+                                                                      height: 22,
                                                                       paddingLeft:3,
                                                                       borderColor: 'rgb(132 160 224)',
                                                                       backgroundColor: "var(--color-fill-1)"
@@ -299,7 +299,6 @@ export default function ManagePanel() {
                                                                       } else {
                                                                           const newTitle = ie.target.value;
                                                                           if(newTitle.length  > 0 && newTitle != originTitle){
-                                                                              console.log("update node,key:" + node.dataRef.key + ",parentKey:" + node.dataRef.parentKey + ",newTitle:" + newTitle);
                                                                               const result = await updateNode(node.dataRef.key,node.dataRef.parentKey, newTitle);
                                                                               if(result == '0'){
                                                                                   node.dataRef.title = newTitle;
