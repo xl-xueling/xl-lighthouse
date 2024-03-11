@@ -67,7 +67,6 @@ function Overview() {
     await requestQueryById({id:1011}).then((response) => {
       const {code, data ,message} = response;
       if(code == '0'){
-        console.log("data is:" + JSON.stringify(response));
         setStatInfo(data)
       }else{
         Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -83,6 +82,7 @@ function Overview() {
     await requestOverView().then((response:ResultData) => {
       const {code, data ,message} = response;
       if(code == '0'){
+        console.log("data is:" + JSON.stringify(response));
         setData(data)
       }else{
         Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
