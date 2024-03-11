@@ -1,25 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {Card, Grid, Notification, Space} from '@arco-design/web-react';
 import Overview from './overview';
-import PopularContents from './popular-contents';
-import ContentPercentage from './content-percentage';
 import Shortcuts from './shortcuts';
-import Announcement from './announcement';
-import Carousel from './carousel';
 import styles from './style/index.module.less';
 import './mock';
 import {useSelector} from "react-redux";
 import {HomeData, MetricSet, Stat} from "@/types/insights-web";
-import CardBlock from "@/pages/metricset/list/card-block";
 import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
-import {getRandomString} from "@/utils/util";
-import {GroupManageContext} from "@/pages/group/manage";
 import {requestQueryById} from "@/api/stat";
 import {requestOverView} from "@/api/home";
 import {ResultData} from "@/types/insights-common";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/dashboard/workplace/locale";
 import StatPieChart from "@/pages/dashboard/workplace/StatPieChart";
+import {getDataWithLocalCache} from "@/utils/localCache";
 const { Row, Col } = Grid;
 const gutter = 16;
 
@@ -35,19 +29,19 @@ function Workplace() {
     const [statInfo,setStatInfo] = useState<Stat>(null);
     const [loading, setLoading] = useState(true);
 
-    const fetchStatInfo = async () => {
-        setLoading(true);
-        await requestQueryById({id:1011}).then((response) => {
-            const {code, data ,message} = response;
-            if(code == '0'){
-                setStatInfo(data)
-            }else{
-                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-            }
-            setLoading(false);
-        }).catch((error) => {
-            console.log(error);
+    async function actualFetchStatInfo():Promise<Stat> {
+        return new Promise<Stat>((resolve,reject) => {
+            requestQueryById({id:1011}).then((response) => {
+                resolve(response.data);
+            }).catch((error) => {
+                reject(error);
+            })
         })
+    }
+
+    async function fetchStatInfo() {
+        const statInfo = await getDataWithLocalCache('cache_cluster_monitor_1011',300,actualFetchStatInfo);
+        setStatInfo(statInfo);
     }
 
     const fetchHomeData = async () => {
