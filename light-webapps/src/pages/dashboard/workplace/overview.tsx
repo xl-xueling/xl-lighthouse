@@ -154,9 +154,9 @@ function Overview() {
             className={styles['chart-title']}
             style={{ marginBottom: 0 }}
           >
-            {t['workplace.contentData']}
+            {t['workplace.systemMonitor']}
             <span className={styles['chart-sub-title']}>
-              ({t['workplace.1year']})
+              ({t['workplace.1minute.message.size']})
             </span>
           </Typography.Paragraph>
           <Link>{t['workplace.seeMore']}</Link>
