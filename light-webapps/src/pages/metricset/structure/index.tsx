@@ -15,7 +15,6 @@ import {
 import styles from "./style/index.module.less";
 import StructurePanel from "@/pages/metricset/structure/structure";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
-import {MdOutlineNewLabel} from "react-icons/md";
 import {requestResetStructure, requestUpdateStructure} from "@/api/metricset";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
