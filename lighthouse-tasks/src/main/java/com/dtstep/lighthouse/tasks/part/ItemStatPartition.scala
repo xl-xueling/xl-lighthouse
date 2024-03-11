@@ -43,6 +43,7 @@ import org.apache.spark.sql.{Dataset, Encoder, Encoders, SparkSession}
 import org.slf4j.LoggerFactory
 import com.dtstep.lighthouse.common.util.StringUtil
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator
+import org.apache.commons.lang3.Validate
 import org.apache.spark.internal.Logging
 
 import java.nio.charset.StandardCharsets
@@ -100,16 +101,8 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
       list.++=(append(statEntity, groupEntity, message))
     }
     if(!groupEntity.isBuiltIn){
-      val monitorGroup = BuiltinLoader.getBuiltinGroup(StatConst.BUILTIN_MSG_STAT);
-      val monitorMessage = new LightMessage();
-      monitorMessage.setTime(System.currentTimeMillis());
-      monitorMessage.setParamMap(ImmutableMap.of("groupId",groupEntity.getId.toString,"captcha",captcha.toString));
-      monitorMessage.setGroupId(monitorGroup.getId);
-      monitorMessage.setRepeat(message.getRepeat);
-      val monitorStats = BuiltinLoader.getBuiltinStatByGroupId(monitorGroup.getId);
-      for(monitorStat <- monitorStats.asScala){
-        list.++=(append(monitorStat,monitorGroup,monitorMessage)) ;
-      }
+      val paramMap = ImmutableMap.of("groupId",groupEntity.getId.toString,"captcha",captcha.toString)
+      list.++=(appendGroupMessageMonitor(paramMap, message.getRepeat));
     }
     list.toList
   }
@@ -144,16 +137,8 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
         }
         val aggregateKey = keyGenerator.resultKey(statEntity, statState.getFunctionIndex, dimensValue, batchTime)
         if(!groupEntity.isBuiltIn){
-          val monitorGroup = BuiltinLoader.getBuiltinGroup(StatConst.BUILTIN_RESULT_STAT);
-          val monitorMessage = new LightMessage();
-          monitorMessage.setTime(System.currentTimeMillis());
-          monitorMessage.setParamMap(ImmutableMap.of("statId",statEntity.getId.toString,"resultKey",aggregateKey));
-          monitorMessage.setGroupId(monitorGroup.getId);
-          monitorMessage.setRepeat(message.getRepeat);
-          val monitorStats = BuiltinLoader.getBuiltinStatByGroupId(monitorGroup.getId);
-          for(monitorStat <- monitorStats.asScala){
-            list.++=(append(monitorStat,monitorGroup,monitorMessage)) ;
-          }
+          val paramMap = ImmutableMap.of("statId",statEntity.getId.toString,"resultKey",aggregateKey)
+          list.++=(appendStatResultMonitor(paramMap, message.getRepeat));
         }
         val data = envMap.asScala.filter(x => statState.getRelatedColumnSet.contains(x._1) || x._1.equals(StatConst.DISTINCT_COLUMN_NAME))
           .map(x => {x._1 + StatConst.SEPARATOR_LEVEL_3 + x._2}).mkString(StatConst.SEPARATOR_LEVEL_2);
@@ -170,6 +155,36 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
       } catch {
         case ex: Exception => logger.error(s"deliver message error,group:${message.getGroupId}", ex);
       }
+    }
+    list;
+  }
+
+  def appendGroupMessageMonitor(paramMap:ImmutableMap[String,String],repeat:Int): ListBuffer[(Int,String,Int)] ={
+    val list = new ListBuffer[(Int,String, Int)]
+    val monitorGroup = BuiltinLoader.getBuiltinGroup(StatConst.BUILTIN_MSG_STAT);
+    val monitorMessage = new LightMessage();
+    monitorMessage.setParamMap(paramMap);
+    monitorMessage.setGroupId(monitorGroup.getId);
+    monitorMessage.setRepeat(repeat);
+    monitorMessage.setTime(System.currentTimeMillis());
+    val monitorStats = BuiltinLoader.getBuiltinStatByGroupId(monitorGroup.getId);
+    for(monitorStat <- monitorStats.asScala){
+      list.++=(append(monitorStat,monitorGroup,monitorMessage)) ;
+    }
+    list;
+  }
+
+  def appendStatResultMonitor(paramMap:ImmutableMap[String,String],repeat:Int): ListBuffer[(Int,String,Int)] ={
+    val list = new ListBuffer[(Int,String, Int)]
+    val monitorGroup = BuiltinLoader.getBuiltinGroup(StatConst.BUILTIN_RESULT_STAT);
+    val monitorMessage = new LightMessage();
+    monitorMessage.setParamMap(paramMap);
+    monitorMessage.setGroupId(monitorGroup.getId);
+    monitorMessage.setRepeat(repeat);
+    monitorMessage.setTime(System.currentTimeMillis());
+    val monitorStats = BuiltinLoader.getBuiltinStatByGroupId(monitorGroup.getId);
+    for(monitorStat <- monitorStats.asScala){
+      list.++=(append(monitorStat,monitorGroup,monitorMessage)) ;
     }
     list;
   }
