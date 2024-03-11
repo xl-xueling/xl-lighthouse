@@ -21,21 +21,17 @@ package com.dtstep.lighthouse.tasks.part
 import com.dtstep.lighthouse.common.constant.StatConst
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity
 import com.dtstep.lighthouse.common.entity.message.LightMessage
-import com.dtstep.lighthouse.common.entity.stat.StatExtEntity
 import com.dtstep.lighthouse.common.entity.state.StatState
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum
 import com.dtstep.lighthouse.common.enums.result.MessageCaptchaEnum
-import com.dtstep.lighthouse.common.exception.LimitingException
 import com.dtstep.lighthouse.common.hash.HashUtil
 import com.dtstep.lighthouse.common.sbr.StringBuilderHolder
-import com.dtstep.lighthouse.common.util.{DateUtil, JsonUtil, StringUtil}
-import com.dtstep.lighthouse.core.batch.BatchAdapter
+import com.dtstep.lighthouse.common.util.{DateUtil, JsonUtil}
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader
 import com.dtstep.lighthouse.core.distinct.RedisRoaringFilter
 import com.dtstep.lighthouse.core.formula.FormulaCalculate
 import com.dtstep.lighthouse.core.limited.LimitedContext
-import com.dtstep.lighthouse.core.wrapper.{DimensDBWrapper, GroupDBWrapper}
-import com.dtstep.lighthouse.tasks.monitor.BuiltinMonitor
+import com.dtstep.lighthouse.core.wrapper.DimensDBWrapper
 import com.google.common.collect.ImmutableMap
 
 import java.util
@@ -92,9 +88,6 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
     if(groupEntity == null || groupEntity.getState != GroupStateEnum.RUNNING){
       return null;
     }
-    if(!groupEntity.isBuiltIn){
-      BuiltinMonitor.getInstance().monitor(StatConst.BUILTIN_MSG_STAT,ImmutableMap.of("groupId",groupEntity.getId.toString,"captcha",captcha.toString),message.getRepeat);
-    }
     val list = new ListBuffer[(Int,String, Int)]
     if(captcha != MessageCaptchaEnum.SUCCESS.getCaptcha){
       return list.toList
@@ -105,6 +98,18 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
     }
     for(statEntity <- statList) {
       list.++=(append(statEntity, groupEntity, message))
+    }
+    if(!groupEntity.isBuiltIn){
+      val monitorGroup = BuiltinLoader.getBuiltinGroup(StatConst.BUILTIN_MSG_STAT);
+      val monitorMessage = new LightMessage();
+      monitorMessage.setTime(System.currentTimeMillis());
+      monitorMessage.setParamMap(ImmutableMap.of("groupId",groupEntity.getId.toString,"captcha",captcha.toString));
+      monitorMessage.setGroupId(monitorGroup.getId);
+      monitorMessage.setRepeat(message.getRepeat);
+      val monitorStats = BuiltinLoader.getBuiltinStatByGroupId(monitorGroup.getId);
+      for(monitorStat <- monitorStats.asScala){
+        list.++=(append(monitorStat,monitorGroup,monitorMessage)) ;
+      }
     }
     list.toList
   }
@@ -139,7 +144,16 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
         }
         val aggregateKey = keyGenerator.resultKey(statEntity, statState.getFunctionIndex, dimensValue, batchTime)
         if(!groupEntity.isBuiltIn){
-          BuiltinMonitor.getInstance().monitor(StatConst.BUILTIN_RESULT_STAT,ImmutableMap.of("resultKey",aggregateKey,"statId",statEntity.getId.toString),message.getRepeat);
+          val monitorGroup = BuiltinLoader.getBuiltinGroup(StatConst.BUILTIN_RESULT_STAT);
+          val monitorMessage = new LightMessage();
+          monitorMessage.setTime(System.currentTimeMillis());
+          monitorMessage.setParamMap(ImmutableMap.of("statId",statEntity.getId.toString,"resultKey",aggregateKey));
+          monitorMessage.setGroupId(monitorGroup.getId);
+          monitorMessage.setRepeat(message.getRepeat);
+          val monitorStats = BuiltinLoader.getBuiltinStatByGroupId(monitorGroup.getId);
+          for(monitorStat <- monitorStats.asScala){
+            list.++=(append(monitorStat,monitorGroup,monitorMessage)) ;
+          }
         }
         val data = envMap.asScala.filter(x => statState.getRelatedColumnSet.contains(x._1) || x._1.equals(StatConst.DISTINCT_COLUMN_NAME))
           .map(x => {x._1 + StatConst.SEPARATOR_LEVEL_3 + x._2}).mkString(StatConst.SEPARATOR_LEVEL_2);
