@@ -1,10 +1,13 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.constant.SysConst;
+import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
+import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.enums.*;
 import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.insights.dao.*;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.service.*;
@@ -158,7 +161,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectVO queryById(Integer id) {
-        Project project = projectDao.queryById(id);
+        Project project;
+        if(BuiltinLoader.isBuiltinProject(id)){
+            project = BuiltinLoader.getBuiltinProject();
+        }else{
+            project = projectDao.queryById(id);
+        }
         if(project == null){
             return null;
         }
@@ -172,21 +180,25 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     private ProjectVO translate(Project project){
-        int currentUserId = baseService.getCurrentUserId();
         ProjectVO projectVO = new ProjectVO(project);
-        Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION, project.getId());
-        Role accessRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION, project.getId());
-        List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
-        if(CollectionUtils.isNotEmpty(adminIds)){
-            List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
-            projectVO.setAdmins(admins);
-        }
-        if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
-            projectVO.addPermission(PermissionEnum.ManageAble);
+        if(BuiltinLoader.isBuiltinProject(project.getId())){
             projectVO.addPermission(PermissionEnum.AccessAble);
-        }else if(project.getPrivateType() == PrivateTypeEnum.Public
-                || permissionService.checkUserPermission(currentUserId, accessRole.getId())){
-            projectVO.addPermission(PermissionEnum.AccessAble);
+        }else{
+            int currentUserId = baseService.getCurrentUserId();
+            Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION, project.getId());
+            Role accessRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION, project.getId());
+            List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
+            if(CollectionUtils.isNotEmpty(adminIds)){
+                List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
+                projectVO.setAdmins(admins);
+            }
+            if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
+                projectVO.addPermission(PermissionEnum.ManageAble);
+                projectVO.addPermission(PermissionEnum.AccessAble);
+            }else if(project.getPrivateType() == PrivateTypeEnum.Public
+                    || permissionService.checkUserPermission(currentUserId, accessRole.getId())){
+                projectVO.addPermission(PermissionEnum.AccessAble);
+            }
         }
         return projectVO;
     }
@@ -206,10 +218,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ListData<ProjectVO> queryList(ProjectQueryParam queryParam, Integer pageNum, Integer pageSize) {
-        Integer userId = baseService.getCurrentUserId();
         PageHelper.startPage(pageNum,pageSize);
         List<ProjectVO> dtoList = new ArrayList<>();
-        PageInfo<Project> pageInfo = null;
+        PageInfo<Project> pageInfo;
         try{
             List<Project> projectList = projectDao.queryList(queryParam);
             pageInfo = new PageInfo<>(projectList);
@@ -217,7 +228,7 @@ public class ProjectServiceImpl implements ProjectService {
             PageHelper.clearPage();
         }
         for(Project project : pageInfo.getList()){
-            ProjectVO projectVO = null;
+            ProjectVO projectVO;
             try{
                 projectVO = translate(project);
                 dtoList.add(projectVO);
@@ -250,17 +261,28 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public TreeNode getStructure(Project project) throws Exception{
         Integer id = project.getId();
-        List<TreeNode> nodeList = new ArrayList<>();
         TreeNode rootNode = new TreeNode(project.getTitle(),project.getId(),"project");
         HashMap<String,TreeNode> nodeMap = new HashMap<>();
         nodeMap.put("project_"+project.getId(),rootNode);
-        List<Group> groupList = groupDao.queryByProjectId(id);
+        List<Group> groupList;
+        if(BuiltinLoader.isBuiltinProject(project.getId())){
+            List<GroupExtEntity> groupExtEntities = BuiltinLoader.getAllGroups();
+            groupList = groupExtEntities.stream().map(z -> (Group)z).collect(Collectors.toList());
+        }else{
+            groupList = groupDao.queryByProjectId(id);
+        }
         for(Group group : groupList){
             TreeNode groupNode = new TreeNode(group.getToken(),group.getId(),"group");
             nodeMap.put("group_"+group.getId(),groupNode);
             rootNode.addChild(groupNode);
         }
-        List<Stat> statList = statDao.queryByProjectId(id);
+        List<Stat> statList;
+        if(BuiltinLoader.isBuiltinProject(project.getId())){
+            List<StatExtEntity> statExtEntities = BuiltinLoader.getAllStats();
+            statList = statExtEntities.stream().map(z -> (Stat)z).collect(Collectors.toList());
+        }else{
+            statList = statDao.queryByProjectId(id);
+        }
         for(Stat stat : statList){
             TreeNode statNode = new TreeNode(stat.getTitle(),stat.getId(),"stat");
             TreeNode parentNode = nodeMap.get("group_"+stat.getGroupId());
