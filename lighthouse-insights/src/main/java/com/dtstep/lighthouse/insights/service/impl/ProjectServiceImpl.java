@@ -325,7 +325,7 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectVO> queryStarList() {
         int currentUserId = baseService.getCurrentUserId();
         List<Relation> relationList = relationDao.queryList(currentUserId,RelationTypeEnum.UserStarProjectRelation);
-        List<Integer> ids = relationList.stream().map(z -> z.getResourceId()).collect(Collectors.toList());
+        List<Integer> ids = relationList.stream().map(Relation::getResourceId).collect(Collectors.toList());
         List<ProjectVO> voList = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(ids)){
             ProjectQueryParam queryParam = new ProjectQueryParam();
@@ -340,7 +340,7 @@ public class ProjectServiceImpl implements ProjectService {
                 }
             }
         }
-        Collections.sort(voList, Comparator.comparingInt(e -> ids.indexOf(e.getId())));
+        voList.sort(Comparator.comparingInt(e -> ids.indexOf(e.getId())));
         return voList;
     }
 
