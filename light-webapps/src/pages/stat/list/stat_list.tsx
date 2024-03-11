@@ -22,6 +22,8 @@ import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
 import ProjectApplyModal from "@/pages/project/apply";
 import StatApplyModal from "@/pages/stat/apply";
 import {GroupManageContext} from "@/pages/group/manage";
+import {Simulate} from "react-dom/test-utils";
+import keyDown = Simulate.keyDown;
 
 export default function StatisticalListPanel({formParams = {},from = null,parentLoading=false,extend=null}) {
     const t = useLocale(locale);
