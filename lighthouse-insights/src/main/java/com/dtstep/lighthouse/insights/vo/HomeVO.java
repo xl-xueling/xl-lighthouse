@@ -1,5 +1,9 @@
 package com.dtstep.lighthouse.insights.vo;
 
+import com.dtstep.lighthouse.common.entity.view.StatValue;
+
+import java.util.List;
+
 public class HomeVO {
 
     private Integer projectCount;
@@ -15,6 +19,8 @@ public class HomeVO {
     private Integer ytdMetricCount;
 
     private Integer userCount;
+
+    private List<StatValue> valueList;
 
     public Integer getProjectCount() {
         return projectCount;
@@ -70,5 +76,13 @@ public class HomeVO {
 
     public void setUserCount(Integer userCount) {
         this.userCount = userCount;
+    }
+
+    public List<StatValue> getValueList() {
+        return valueList;
+    }
+
+    public void setValueList(List<StatValue> valueList) {
+        this.valueList = valueList;
     }
 }

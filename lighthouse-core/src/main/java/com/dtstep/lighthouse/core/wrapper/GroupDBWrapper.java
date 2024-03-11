@@ -256,7 +256,9 @@ public final class GroupDBWrapper {
             groupExtEntity.setMinTimeParam(minTimeParam);
             groupExtEntity.setDataExpire(maxDataExpire);
         }
-        groupExtEntity.setVerifyKey(Md5Util.getMD5(groupExtEntity.getSecretKey()));
+        if(StringUtil.isNotEmpty(groupExtEntity.getSecretKey())){
+            groupExtEntity.setVerifyKey(Md5Util.getMD5(groupExtEntity.getSecretKey()));
+        }
         HashMap<String,Integer> limitedThresholdMap = groupExtEntity.getLimitedThresholdMap();
         if(!limitedThresholdMap.containsKey(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT.getStrategy())){
             int limit = LDPConfig.getOrDefault(LDPConfig.KEY_LIMITED_GROUP_MESSAGE_SIZE_PER_SEC,-1,Integer.class);

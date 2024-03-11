@@ -68,7 +68,8 @@
         FROM ldp_departments d
         JOIN cte ON cte.id = d.pid
         )
-        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`timeparam`,a.`state`,a.`random_id`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,b.title as project_title,b.department_id,c.token
+        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`timeparam`,a.`state`,a.`random_id`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,b.title as project_title,
+               b.department_id,c.token,c.columns
         FROM ldp_stats a
                  inner join ldp_projects b on a.project_id = b.id
                  inner join ldp_groups c on a.group_id = c.id
