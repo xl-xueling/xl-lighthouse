@@ -24,9 +24,11 @@ import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Project;
+import com.dtstep.lighthouse.common.modal.RenderConfig;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
+import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -165,6 +167,7 @@ public final class BuiltinLoader {
             for(Element statElement : statList){
                 int statId = Integer.parseInt(statElement.attr("id"));
                 String timeParam = statElement.attr("timeparam");
+                String renderConfig = statElement.attr("renderConfig");
                 Elements templateElements = statElement.getElementsByTag("template");
                 Element templateElement = templateElements.get(0);
                 String template = templateElement.html();
@@ -180,6 +183,9 @@ public final class BuiltinLoader {
                 statEntity.setUpdateTime(localDateTime);
                 statEntity.setGroupColumns(groupColumns);
                 statEntity.setRandomId(randomId);
+                if(StringUtil.isNotEmpty(renderConfig)){
+                    statEntity.setRenderConfig(JsonUtil.toJavaObject(renderConfig, RenderConfig.class));
+                }
                 StatExtEntity statExtEntity = StatDBWrapper.combineExtInfo(statEntity,true);
                 statExtEntity.setBuiltIn(true);
                 statExtEntity.setToken(token);
