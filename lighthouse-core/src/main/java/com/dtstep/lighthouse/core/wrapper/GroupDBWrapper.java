@@ -267,11 +267,11 @@ public final class GroupDBWrapper {
         }
         GroupExtendConfig groupExtendConfig = groupExtEntity.getExtendConfig();
         HashMap<LimitingStrategyEnum, Integer> limitingMap = groupExtendConfig.getLimitingConfig();
-        if(limitingMap.containsKey(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING)){
+        if(!limitingMap.containsKey(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING)){
             int limit = LDPConfig.getOrDefault(LDPConfig.KEY_LIMITING_GROUP_MESSAGE_SIZE_PER_SEC,-1,Integer.class);
             limitingMap.put(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING,limit);
         }
-        if(limitingMap.containsKey(LimitingStrategyEnum.STAT_RESULT_SIZE_LIMITING)){
+        if(!limitingMap.containsKey(LimitingStrategyEnum.STAT_RESULT_SIZE_LIMITING)){
             int limit = LDPConfig.getOrDefault(LDPConfig.KEY_LIMITING_STAT_RESULT_SIZE_PER_SEC,-1,Integer.class);
             limitingMap.put(LimitingStrategyEnum.STAT_RESULT_SIZE_LIMITING,limit);
         }
