@@ -129,6 +129,7 @@ const TreeTransfer = ({ dataSource, targetKeys, changeCurrentDataSource,...restP
                                         marginTop: 0,
                                         marginBottom:5,
                                     }}
+                                    allowClear={true}
                                     placeholder={"Search Users"}
                                     onChange={setInputValue}
                                 />
