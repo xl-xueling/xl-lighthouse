@@ -1,29 +1,36 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
+    Button, Card, Collapse,
     Form,
     Grid,
-    Input,
+    Input, InputNumber,
     Message,
     Modal,
     Notification, PaginationProps,
-    Radio, Table, TableColumnProps,
+    Radio, Select, Space, Table, TableColumnProps,
     Tabs,
     TreeSelect,
     Typography
 } from "@arco-design/web-react";
 import {Record, User} from "@/types/insights-web";
 import {requestList} from "@/api/record";
-import {RecordTypeEnum, ResultData} from "@/types/insights-common";
+import {RecordTypeEnum, ResourceTypeEnum, ResultData} from "@/types/insights-common";
 import {GlobalErrorCodes} from "@/utils/constants";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import {formatTimeStampBackUp} from "@/utils/util";
+import "./style/index.module.less"
+import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import {LimitedRecord, translateRecord} from "@/pages/record/record";
+import {LimitedRecordModal} from "@/pages/record/limited_records";
+import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
+import UsersTransfer from "@/pages/components/transfer/user_transfer";
 
 
 export function LimitingSettingsModal({groupInfo,onClose}){
 
     const t = useLocale(locale);
+    const CollapseItem = Collapse.Item;
+    const FormItem = Form.Item;
 
     return (
         <Modal
@@ -33,7 +40,73 @@ export function LimitingSettingsModal({groupInfo,onClose}){
             visible={true}
             onCancel={onClose}
             footer={null}>
-            sss
+
+            <Space direction={"vertical"} style={{width:'100%',border:'1px solid var(--color-border)'}}>
+                <LimitedRecordModal resourceId={groupInfo?.id} recordTypes={[RecordTypeEnum.GROUP_MESSAGE_LIMITED]} resourceType={ResourceTypeEnum.Group} />
+                <Collapse style={{marginTop:'10px',borderLeft:"none",borderRight:"none"}}>
+                    <CollapseItem style={{borderLeft:"none",borderRight:"none",textAlign:'center'}} header={<span>限流阈值修改</span>}
+                                  name='1'>
+                        <Form
+                            autoComplete='off'
+                            labelCol={{ span: 8 }}
+                            wrapperCol={{ span: 16 }}
+                            style={{ width: '70%',textAlign:'center',marginTop:'20px'}}
+                            initialValues={{ name: 'admin',currentValue:'2300' }}
+                            onValuesChange={(v, vs) => {
+                                console.log(v, vs);
+                            }}
+                            onSubmit={(v) => {
+                                return new Promise((resolve) => {
+                                    setTimeout(() => {
+                                        resolve(1)
+                                    }, 3000)
+                                })
+                            }}
+                        >
+                            <FormItem label='Strategy' field='strategy' rules={[{ required: true }]}>
+                                <Select
+                                    placeholder='Please select'
+                                >
+                                    <Select.Option key={1} value={'1'}>
+                                        GROUP_MESSAGE_LIMITING_STRATEGY
+                                    </Select.Option>
+                                    <Select.Option key={2} value={'2'}>
+                                        STAT_RESULT_LIMITING_STRATEGY
+                                    </Select.Option>
+                                </Select>
+                            </FormItem>
+                            <FormItem
+                                label='Current Value'
+                                field='currentValue'
+                                rules={[{ required: true, type: 'number', min: 0, max: 99 }]}
+                            >
+                                <Input placeholder='please enter' defaultValue={'222323'} value={'2300'} disabled={true} />
+                            </FormItem>
+                            <FormItem
+                                label='Value'
+                                field='changeValue'
+                                rules={[{ required: true, type: 'number', min: 0, max: 99 }]}
+                            >
+                                <InputNumber placeholder='please enter' />
+                            </FormItem>
+                            <FormItem wrapperCol={{ offset: 4 }}>
+                                <Button
+                                    type='primary'
+                                    htmlType='submit'
+                                    style={{ marginRight: 24 }}
+                                >
+                                    Submit
+                                </Button>
+                                <Button
+                                    style={{ marginRight: 24 }}
+                                >
+                                    Reset
+                                </Button>
+                            </FormItem>
+                        </Form>
+                    </CollapseItem>
+                </Collapse>
+            </Space>
         </Modal>
     )
 }

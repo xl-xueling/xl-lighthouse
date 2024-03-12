@@ -21,7 +21,7 @@ import {formatTimeStampBackUp} from "@/utils/util";
 import {LimitedRecord, translateRecord} from "@/pages/record/record";
 
 
-export function LimitedRecordModal({resourceId,resourceType,recordTypes,onClose}){
+export function LimitedRecordModal({resourceId,resourceType,recordTypes}){
 
     const t = useLocale(locale);
     const [loading, setLoading] = useState(true);
@@ -106,14 +106,8 @@ export function LimitedRecordModal({resourceId,resourceType,recordTypes,onClose}
     },[pagination.current, pagination.pageSize, JSON.stringify(formParams)])
 
     return (
-        <Modal
-            title= {t['recordType.limited.title']}
-            style={{ width:'960px',verticalAlign:'top', marginTop: '130px' }}
-            visible={true}
-            onCancel={onClose}>
-            <Table rowKey={'id'}
-                   loading={loading}
-                   size={"small"} pagination={pagination} columns={columns} data={recordData} onChange={onChangeTable} />
-        </Modal>
+        <Table rowKey={'id'}
+               loading={loading}
+               size={"small"} pagination={pagination} columns={columns} data={recordData} onChange={onChangeTable} />
     );
 }
