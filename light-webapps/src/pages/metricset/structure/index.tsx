@@ -131,7 +131,7 @@ export default function MetricSetStructure() {
                                     <Space className={styles.right} size={10} direction="horizontal">
                                         <Button size={"mini"} type="secondary" icon={<RiPlayListAddLine/>} onClick={handleShowRepositoryModal}>{t['repositoryModal.button.label.repository']}</Button>
                                         {
-                                            metricSetInfo.customStructure?'[Custom]':'[Default]'
+                                            metricSetInfo.customStructure?<span style={{fontSize:'12px'}}>[Custom]</span>:<span style={{fontSize:'12px'}}>[Default]</span>
                                         }
                                     </Space>
                                 </Grid.Col>
