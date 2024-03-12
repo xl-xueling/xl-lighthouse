@@ -19,9 +19,11 @@ package com.dtstep.lighthouse.core.wrapper;
 import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
+import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Group;
+import com.dtstep.lighthouse.common.modal.GroupExtendConfig;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.*;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
@@ -36,7 +38,6 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
-import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -124,6 +125,11 @@ public final class GroupDBWrapper {
                 String columns = rs.getString("columns");
                 String randomId = rs.getString("random_id");
                 String desc = rs.getString("desc");
+                String extendConfig = rs.getString("extend_config");
+                if(StringUtil.isNotEmpty(extendConfig)){
+                    GroupExtendConfig groupExtendConfig = JsonUtil.toJavaObject(extendConfig,GroupExtendConfig.class);
+                    group.setExtendConfig(groupExtendConfig);
+                }
                 String secretKey = rs.getString("secret_key");
                 long createTime = rs.getTimestamp("create_time").getTime();
                 long updateTime = rs.getTimestamp("update_time").getTime();
@@ -259,14 +265,15 @@ public final class GroupDBWrapper {
         if(StringUtil.isNotEmpty(groupExtEntity.getSecretKey())){
             groupExtEntity.setVerifyKey(Md5Util.getMD5(groupExtEntity.getSecretKey()));
         }
-        HashMap<String,Integer> limitedThresholdMap = groupExtEntity.getLimitedThresholdMap();
-        if(!limitedThresholdMap.containsKey(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT.getStrategy())){
-            int limit = LDPConfig.getOrDefault(LDPConfig.KEY_LIMITED_GROUP_MESSAGE_SIZE_PER_SEC,-1,Integer.class);
-            limitedThresholdMap.put(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT.getStrategy(),limit);
+        GroupExtendConfig groupExtendConfig = groupExtEntity.getExtendConfig();
+        HashMap<LimitingStrategyEnum, Integer> limitingMap = groupExtendConfig.getLimitingConfig();
+        if(limitingMap.containsKey(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING)){
+            int limit = LDPConfig.getOrDefault(LDPConfig.KEY_LIMITING_GROUP_MESSAGE_SIZE_PER_SEC,-1,Integer.class);
+            limitingMap.put(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING,limit);
         }
-        if(!limitedThresholdMap.containsKey(LimitingStrategyEnum.STAT_RESULT_SIZE_LIMIT.getStrategy())){
-            int limit = LDPConfig.getOrDefault(LDPConfig.KEY_LIMITED_STAT_RESULT_SIZE_PER_SEC,-1,Integer.class);
-            limitedThresholdMap.put(LimitingStrategyEnum.STAT_RESULT_SIZE_LIMIT.getStrategy(),limit);
+        if(limitingMap.containsKey(LimitingStrategyEnum.STAT_RESULT_SIZE_LIMITING)){
+            int limit = LDPConfig.getOrDefault(LDPConfig.KEY_LIMITING_STAT_RESULT_SIZE_PER_SEC,-1,Integer.class);
+            limitingMap.put(LimitingStrategyEnum.STAT_RESULT_SIZE_LIMITING,limit);
         }
         return groupExtEntity;
     }

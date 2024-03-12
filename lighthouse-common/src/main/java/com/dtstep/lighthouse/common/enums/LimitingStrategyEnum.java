@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.common.enums.limiting;
+package com.dtstep.lighthouse.common.enums;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -22,9 +22,10 @@ import com.dtstep.lighthouse.common.util.StringUtil;
 
 public enum LimitingStrategyEnum {
 
-    GROUP_MESSAGE_SIZE_LIMIT("GROUP_MESSAGE_SIZE_LIMIT"),
+    GROUP_MESSAGE_SIZE_LIMITING("GROUP_MESSAGE_SIZE_LIMITING"),
 
-    STAT_RESULT_SIZE_LIMIT("STAT_RESULT_SIZE_LIMIT"),
+    STAT_RESULT_SIZE_LIMITING("STAT_RESULT_SIZE_LIMITING"),
+
     ;
 
     private String strategy;

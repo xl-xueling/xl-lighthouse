@@ -19,7 +19,7 @@ package com.dtstep.lighthouse.core.limited.strategy.impl;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.limited.device.CountingDevice;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
-import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
+import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
 import com.dtstep.lighthouse.core.limited.strategy.AbstractStrategy;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -27,13 +27,13 @@ import java.util.List;
 
 public class StatResultStrategyService extends AbstractStrategy<StatExtEntity> {
 
-    private static final List<CountingDevice> list = getDeviceList(LimitingStrategyEnum.STAT_RESULT_SIZE_LIMIT);
+    private static final List<CountingDevice> list = getDeviceList(LimitingStrategyEnum.STAT_RESULT_SIZE_LIMITING);
 
     private static final StatExtEntity builtInStat = BuiltinLoader.getBuiltinStat(1021);
 
     @Override
     public boolean process(StatExtEntity statExtEntity, int permitsPerSecond, int step) throws Exception {
-        CountingDevice.Params params = new CountingDevice.Params(LimitingStrategyEnum.STAT_RESULT_SIZE_LIMIT, builtInStat, statExtEntity.getId(),permitsPerSecond,step);
+        CountingDevice.Params params = new CountingDevice.Params(LimitingStrategyEnum.STAT_RESULT_SIZE_LIMITING, builtInStat, statExtEntity.getId(),permitsPerSecond,step);
         if(CollectionUtils.isEmpty(list)){
             return true;
         }

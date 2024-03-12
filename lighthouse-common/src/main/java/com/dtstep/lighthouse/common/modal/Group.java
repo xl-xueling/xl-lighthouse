@@ -28,7 +28,7 @@ public class Group implements Serializable {
 
     private LocalDateTime refreshTime;
 
-    private GroupExtendConfig extendConfig;
+    private GroupExtendConfig extendConfig = new GroupExtendConfig();
 
     private Integer debugMode;
 

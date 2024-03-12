@@ -20,7 +20,7 @@ import com.dtstep.lighthouse.core.schedule.DelaySchedule;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.limiting.LimitingEntity;
-import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
+import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.core.limited.trigger.Trigger;
 import com.dtstep.lighthouse.core.lock.RedLock;
@@ -53,7 +53,7 @@ public class GroupLimitedTrigger implements Trigger<GroupExtEntity> {
                         }},StatConst.LIMITED_EXPIRE_MINUTES,TimeUnit.MINUTES);
                     Date date = new Date();
                     LimitingEntity limitingEntity = new LimitingEntity();
-                    limitingEntity.setStrategy(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT.getStrategy());
+                    limitingEntity.setStrategy(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING.getStrategy());
                     limitingEntity.setCreateTime(date);
                     limitingEntity.setStartTime(date);
                     limitingEntity.setEndTime(new Date(date.getTime() + TimeUnit.MINUTES.toMillis(StatConst.LIMITED_EXPIRE_MINUTES)));

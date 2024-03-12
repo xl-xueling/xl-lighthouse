@@ -19,16 +19,16 @@ package com.dtstep.lighthouse.core.limited.strategy;
 import com.dtstep.lighthouse.core.limited.device.CountingDevice;
 import com.dtstep.lighthouse.core.limited.device.impl.DefaultLimitedCountingDevice;
 import com.google.common.collect.Lists;
-import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
+import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
 
 import java.util.List;
 
 public abstract class AbstractStrategy<T> implements Strategy<T> {
 
     public static List<CountingDevice> getDeviceList(LimitingStrategyEnum limitingStrategyEnum) {
-        if(limitingStrategyEnum == LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT){
+        if(limitingStrategyEnum == LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING){
             return Lists.newArrayList(new DefaultLimitedCountingDevice());
-        }else if(limitingStrategyEnum == LimitingStrategyEnum.STAT_RESULT_SIZE_LIMIT){
+        }else if(limitingStrategyEnum == LimitingStrategyEnum.STAT_RESULT_SIZE_LIMITING){
             return Lists.newArrayList(new DefaultLimitedCountingDevice());
         }
         return null;

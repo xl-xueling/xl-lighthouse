@@ -18,7 +18,7 @@ package com.dtstep.lighthouse.core.limited.device;
  */
 import com.dtstep.lighthouse.core.callback.CacheValue;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
-import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
+import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
 
 public interface CountingDevice {
 

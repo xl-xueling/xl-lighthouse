@@ -42,11 +42,7 @@ public class GroupExtEntity extends Group {
 
     private boolean isBuiltIn = false;
 
-    private HashMap<String,Integer> limitedThresholdMap = new HashMap<>();
-
     private TimeParam minTimeParam;
-
-    private GroupStateEnum groupStateEnum;
 
     private long dataExpire = TimeUnit.DAYS.toMillis(3);
 
@@ -63,25 +59,6 @@ public class GroupExtEntity extends Group {
 
     public void setRunningRelatedColumns(Map<String, ColumnTypeEnum> runningRelatedColumns) {
         this.runningRelatedColumns = runningRelatedColumns;
-    }
-
-    public HashMap<String, Integer> getLimitedThresholdMap() {
-        return limitedThresholdMap;
-    }
-
-    public void setLimitedThresholdMap(HashMap<String, Integer> limitedThresholdMap) {
-        this.limitedThresholdMap = limitedThresholdMap;
-    }
-
-    public GroupStateEnum getGroupStateEnum() {
-        return groupStateEnum;
-    }
-
-    public void setGroupStateEnum(GroupStateEnum groupStateEnum) {
-        this.groupStateEnum = groupStateEnum;
-        if(groupStateEnum != null){
-            this.setState(groupStateEnum);
-        }
     }
 
     public TimeParam getMinTimeParam() {

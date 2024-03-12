@@ -26,7 +26,7 @@ import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.entity.calculate.MicroBucket;
 import com.dtstep.lighthouse.common.entity.calculate.MicroCalculateEnum;
-import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
+import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
@@ -125,7 +125,7 @@ public final class BitCountStatProcess extends StatProcess<Pair<String,Long>> {
         if(distinctList.isEmpty()){
             return;
         }
-        int limit = groupExtEntity.getLimitedThresholdMap().getOrDefault(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT.getStrategy(),-1);
+        int limit = groupExtEntity.getExtendConfig().getLimitingConfig().get(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING);
         int part = (limit > RedisConst.DISTINCT_LIMIT_THRESHOLD)? 5 : 1;
         long expireSeconds = statExtEntity.getTimeUnit() == TimeUnit.DAYS ? TimeUnit.DAYS.toSeconds(2) : TimeUnit.HOURS.toSeconds(3);
         long result = RedisRoaringFilter.getInstance().filterWithRoaringMap(distinctKey,distinctList,expireSeconds,part);

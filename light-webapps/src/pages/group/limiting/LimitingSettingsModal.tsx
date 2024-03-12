@@ -50,7 +50,7 @@ export function LimitingSettingsModal({groupInfo,onClose}){
                             autoComplete='off'
                             labelCol={{ span: 8 }}
                             wrapperCol={{ span: 16 }}
-                            style={{ width: '70%',textAlign:'center',marginTop:'20px'}}
+                            style={{ width: '75%',textAlign:'center',marginTop:'25px'}}
                             initialValues={{ name: 'admin',currentValue:'2300' }}
                             onValuesChange={(v, vs) => {
                                 console.log(v, vs);
@@ -63,31 +63,31 @@ export function LimitingSettingsModal({groupInfo,onClose}){
                                 })
                             }}
                         >
-                            <FormItem label='Strategy' field='strategy' rules={[{ required: true }]}>
+                            <FormItem label={t['limitingConfig.form.label.strategy']} field='strategy' rules={[{ required: true }]}>
                                 <Select
                                     placeholder='Please select'
                                 >
                                     <Select.Option key={1} value={'1'}>
-                                        GROUP_MESSAGE_LIMITING_STRATEGY
+                                        {t['basic.limitingStrategy.messageSizeLimiting']}
                                     </Select.Option>
                                     <Select.Option key={2} value={'2'}>
-                                        STAT_RESULT_LIMITING_STRATEGY
+                                        {t['basic.limitingStrategy.resultSizeLimiting']}
                                     </Select.Option>
                                 </Select>
                             </FormItem>
                             <FormItem
-                                label='Current Value'
+                                label={t['limitingConfig.form.label.currentValue']}
                                 field='currentValue'
                                 rules={[{ required: true, type: 'number', min: 0, max: 99 }]}
                             >
-                                <Input placeholder='please enter' defaultValue={'222323'} value={'2300'} disabled={true} />
+                                <Input disabled={true} />
                             </FormItem>
                             <FormItem
-                                label='Value'
-                                field='changeValue'
+                                label={t['limitingConfig.form.label.updateValue']}
+                                field='updateValue'
                                 rules={[{ required: true, type: 'number', min: 0, max: 99 }]}
                             >
-                                <InputNumber placeholder='please enter' />
+                                <InputNumber placeholder='Please Enter...' />
                             </FormItem>
                             <FormItem wrapperCol={{ offset: 4 }}>
                                 <Button
