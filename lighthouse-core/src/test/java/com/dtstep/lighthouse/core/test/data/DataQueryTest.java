@@ -8,13 +8,17 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.config.LDPConfig;
+import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class DataQueryTest {
@@ -43,10 +47,22 @@ public class DataQueryTest {
     @Test
     public void constGroupMessageMonitor() throws Exception {
         List<Long> batchTimeList = BatchAdapter.queryBatchTimeList("1-minute",DateUtil.getDayStartTime(System.currentTimeMillis()),DateUtil.getDayEndTime(System.currentTimeMillis()));
-        StatExtEntity statExtEntity = BuiltinLoader.getBuiltinStat(1011);
-        List<StatValue> values = ResultStorageSelector.query(statExtEntity,null,batchTimeList);
+        StatExtEntity statExtEntity = BuiltinLoader.getBuiltinStat(1014);
+        List<Long> batchTimeList2 = List.of(1710227760000L);
+        List<StatValue> values = ResultStorageSelector.query(statExtEntity,"100285",batchTimeList);
         for(StatValue statValue : values){
             System.out.println("statValue:" + JsonUtil.toJSONString(statValue));
         }
+    }
+
+    @Test
+    public void testDecimal() throws Exception {
+        BigDecimal bigDecimal = BigDecimal.valueOf(5070.000).stripTrailingZeros();
+        Map<String,Object> map = new HashMap<>();
+        map.put("a",bigDecimal.toPlainString());
+        map.put("b",2);
+        Object o = AviatorHandler.execute("a+b",map);
+        System.out.println("o is:" + o);
+        System.out.println("bigDecimal:" + bigDecimal.toPlainString());
     }
 }

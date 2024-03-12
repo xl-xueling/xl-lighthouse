@@ -29,7 +29,7 @@ public class StatValue implements Serializable {
 
     private String displayBatchTime;
 
-    private Object value = 0;
+    private Object value = "0";
 
     private List<Object> statesValue;
 
