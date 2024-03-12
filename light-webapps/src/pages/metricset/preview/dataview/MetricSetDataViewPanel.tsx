@@ -12,10 +12,12 @@ const TabPane = Tabs.TabPane;
 export default function MetricSetDataViewPanel({parentLoading}) {
 
     const [selectedStatId,setSelectedStatId] = useState<number>(null);
+    const [specifyTitle,setSpecifyTitle] = useState<number>(null);
 
-    const handlerCallback = async (type,record) => {
+    const handlerCallback = async (type,p1,p2) => {
         if(type == 'clickStatMenu'){
-            setSelectedStatId(Number(record));
+            setSelectedStatId(Number(p1));
+            setSpecifyTitle(p2);
         }
     }
 
@@ -29,7 +31,7 @@ export default function MetricSetDataViewPanel({parentLoading}) {
                         </Row>
                     </Space>
                     <Space className={styles.right} size={16} direction="vertical">
-                        {selectedStatId && <StatPreviewPanel size={'small'} id={selectedStatId}/>}
+                        {selectedStatId && <StatPreviewPanel size={'small'} id={selectedStatId} specifyTitle={specifyTitle}/>}
                     </Space>
                 </div>
             </Space>

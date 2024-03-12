@@ -56,7 +56,7 @@ export default function MetricSetDataViewMenu({callback}) {
                                   onClick={(e)=>
                     {e.stopPropagation();
                     if(item.type == 'stat'){
-                        callback("clickStatMenu",Number(item.value));
+                        callback("clickStatMenu",Number(item.value),item.label);
                     }
                     }}
 
@@ -70,7 +70,7 @@ export default function MetricSetDataViewMenu({callback}) {
             return <Menu.Item onClick={(e)=>
             {e.stopPropagation();
                 if(item.type == 'stat'){
-                    callback("clickStatMenu",Number(item.value));
+                    callback("clickStatMenu",Number(item.value),item.label);
                 }
             }} key={item.key}>{getTreeResourceIcon(item.type,level)}{item.label}</Menu.Item>;
         });
