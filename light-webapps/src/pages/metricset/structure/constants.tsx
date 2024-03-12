@@ -10,7 +10,7 @@ import {
     Button, Notification, Modal, PaginationProps
 } from '@arco-design/web-react';
 import styles from "./style/index.module.less";
-import StatPreviewPanel from "@/pages/stat/display/preview";
+import StatPreviewPanel from "@/pages/stat/preview/preview";
 import StructurePanel from "@/pages/metricset/structure/structure";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 const { Title } = Typography;

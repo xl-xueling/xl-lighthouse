@@ -30,7 +30,7 @@ import {requestQueryById} from "@/api/metricset";
 import {MetricSet} from "@/types/insights-web";
 import styles from "@/pages/project/preview/style/index.module.less";
 import ProjectMenu from "@/pages/project/preview/menu";
-import StatPreviewPanel from "@/pages/stat/display/preview";
+import StatPreviewPanel from "@/pages/stat/preview/preview";
 import {CiViewTable} from "react-icons/ci";
 import get = Reflect.get;
 import {PiDiamondsFour} from "react-icons/pi";

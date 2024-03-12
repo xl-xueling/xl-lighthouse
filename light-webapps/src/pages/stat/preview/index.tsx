@@ -7,9 +7,9 @@ import {useSelector} from "react-redux";
 import {Department, Stat} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import ChartPanel from "@/pages/stat/display/chart_panel";
+import ChartPanel from "@/pages/stat/preview/chart_panel";
 import {IconDashboard, IconHome, IconTag, IconTags} from "@arco-design/web-react/icon";
-import BasicInfo from "@/pages/stat/display/basic";
+import BasicInfo from "@/pages/stat/preview/basic";
 import {requestQueryById} from "@/api/stat";
 
 const {Row, Col} = Grid;
@@ -18,7 +18,7 @@ import {AiOutlineBarChart} from "react-icons/ai";
 import {getStatStateDescription, getStatStateDescriptionWithBadge} from "@/pages/common/desc/base";
 import StatDetailModal from "@/pages/stat/list/detail";
 import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
-import StatPreviewPanel from "@/pages/stat/display/preview";
+import StatPreviewPanel from "@/pages/stat/preview/preview";
 
 export default function StatPreviewPage() {
 

@@ -72,7 +72,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
                 let deleteButton;
                 let activeButton;
                 if(record.permissions.includes('ManageAble')){
-                    viewButton = <Link key={getRandomString()} target={"_blank"} href={'/stat/display/' + record.id}>
+                    viewButton = <Link key={getRandomString()} target={"_blank"} href={'/stat/preview/' + record.id}>
                         <Button
                             type="text"
                             size="mini">
@@ -182,7 +182,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                 let viewButton;
                 let applyButton;
                 if(record.permissions.includes('ManageAble') || record.permissions.includes('AccessAble')){
-                    viewButton = <Link key={getRandomString()} target={"_blank"} href={'/stat/display/' + record.id}>
+                    viewButton = <Link key={getRandomString()} target={"_blank"} href={'/stat/preview/' + record.id}>
                         <Button
                             type="text"
                             size="mini">
