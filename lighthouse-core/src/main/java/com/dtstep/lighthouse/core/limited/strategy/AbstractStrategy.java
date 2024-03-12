@@ -17,7 +17,7 @@ package com.dtstep.lighthouse.core.limited.strategy;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.core.limited.device.CountingDevice;
-import com.dtstep.lighthouse.core.limited.device.impl.HBaseLimitedCountingDevice;
+import com.dtstep.lighthouse.core.limited.device.impl.DefaultLimitedCountingDevice;
 import com.google.common.collect.Lists;
 import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
 
@@ -27,9 +27,9 @@ public abstract class AbstractStrategy<T> implements Strategy<T> {
 
     public static List<CountingDevice> getDeviceList(LimitingStrategyEnum limitingStrategyEnum) {
         if(limitingStrategyEnum == LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT){
-            return Lists.newArrayList(new HBaseLimitedCountingDevice());
+            return Lists.newArrayList(new DefaultLimitedCountingDevice());
         }else if(limitingStrategyEnum == LimitingStrategyEnum.STAT_RESULT_SIZE_LIMIT){
-            return Lists.newArrayList(new HBaseLimitedCountingDevice());
+            return Lists.newArrayList(new DefaultLimitedCountingDevice());
         }
         return null;
     }
