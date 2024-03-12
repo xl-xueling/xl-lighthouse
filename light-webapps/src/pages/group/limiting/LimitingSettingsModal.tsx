@@ -21,7 +21,7 @@ import {formatTimeStampBackUp} from "@/utils/util";
 import {LimitedRecord, translateRecord} from "@/pages/record/record";
 
 
-export function LimitingSettingsModal(){
+export function LimitingSettingsModal({groupInfo,onClose}){
 
     const t = useLocale(locale);
 
@@ -29,8 +29,9 @@ export function LimitingSettingsModal(){
         <Modal
             title= {t['limitingConfig.modal.title']}
             alignCenter={false}
-            style={{width:'1180px',maxWidth:'80%', top: '130px' }}
+            style={{width:'1180px',maxWidth:'80%', top: '150px' }}
             visible={true}
+            onCancel={onClose}
             footer={null}>
             sss
         </Modal>

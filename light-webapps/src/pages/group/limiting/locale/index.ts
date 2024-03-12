@@ -3,7 +3,7 @@ const i18n = {
         'limitingConfig.modal.title':'Limiting Settings',
     },
     'zh-CN': {
-        'limitingConfig.modal.title':'限流设置',
+        'limitingConfig.modal.title':'限流管理',
     },
 };
 
