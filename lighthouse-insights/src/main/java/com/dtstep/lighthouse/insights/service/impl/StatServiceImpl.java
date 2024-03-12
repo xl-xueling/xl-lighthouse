@@ -207,6 +207,9 @@ public class StatServiceImpl implements StatService {
             statExtEntity = BuiltinLoader.getBuiltinStat(id);
         }else{
             Stat stat = statDao.queryById(id);
+            if(stat == null){
+                return null;
+            }
             statExtEntity =  StatDBWrapper.combineExtInfo(stat,false);
         }
         return translate(statExtEntity);
