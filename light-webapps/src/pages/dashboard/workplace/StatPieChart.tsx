@@ -27,13 +27,12 @@ export default function StatPieChart() {
         tooltip: {
             trigger: 'item'
         },
-
-        series: [
+        series:  [
             {
                 name: t['workplace.department.statistic.size'],
                 type: 'pie',
-                radius: '50%',
-                data:chartData,
+                radius: '65%',
+                data:chartData?.length ? chartData : [{name:'No Data',value:0}],
                 emphasis: {
                     itemStyle: {
                         shadowBlur: 10,
@@ -46,11 +45,11 @@ export default function StatPieChart() {
     };
 
     useEffect(() => {
-        console.log(JSON.stringify(homeData.departmentStatCount));
         if(homeData?.departmentStatCount){
             const chartData = homeData?.departmentStatCount.map(z => {
                 return { value: z.value, name: z.dimensValue };
             })
+            console.log(JSON.stringify(chartData));
             setChartData(chartData);
         }
     },[JSON.stringify(homeData)])
