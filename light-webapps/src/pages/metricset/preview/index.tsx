@@ -158,6 +158,7 @@ export default function Index() {
                                 <Breadcrumb.Item
                                     style={{fontWeight: 20}}>{t['metricSetPreview.breadcrumb']}</Breadcrumb.Item>
                             </Breadcrumb>
+                            <Spin loading={loading} style={{ width: '100%',minHeight:'800px' }}>
                             <Space size={16} direction="vertical" style={{width: '100%'}}>
                                 <Card>
                                     <MetricSetPreviewHeader/>
@@ -185,22 +186,32 @@ export default function Index() {
                                               :null
                                       }
                                 >
-                                    <TabPane
-                                        key='1'
-                                        title={
-                                            <span style={{display: "inline-flex", alignItems: "center"}}><IconDashboard
-                                                style={{marginRight: 6}}/>{t['metricSetPreview.tab.title.dataView']}</span>
-                                        }>
-                                        <MetricSetDataViewPanel parentLoading={loading}/>
-                                    </TabPane>
-                                    <TabPane
-                                        key='2'
-                                        title={
-                                            <span style={{display: "inline-flex", alignItems: "center"}}><PiLinkSimple
-                                                style={{marginRight: 6}}/>{t['metricSetPreview.tab.title.bindItems']}</span>
-                                        }>
-                                        {metricSetInfo && <MetricSetBindListPanel/>}
-                                    </TabPane>
+                                    {
+                                        metricSetInfo?.permissions.includes(PermissionEnum.AccessAble)?
+                                            <TabPane
+                                                key='1'
+                                                title={
+                                                    <span style={{display: "inline-flex", alignItems: "center"}}><IconDashboard
+                                                        style={{marginRight: 6}}/>{t['metricSetPreview.tab.title.dataView']}</span>
+                                                }>
+                                                <MetricSetDataViewPanel parentLoading={loading}/>
+                                            </TabPane>
+                                            :null
+                                    }
+
+                                    {
+                                        metricSetInfo?.permissions.includes(PermissionEnum.AccessAble)?
+                                            <TabPane
+                                                key='2'
+                                                title={
+                                                    <span style={{display: "inline-flex", alignItems: "center"}}><PiLinkSimple
+                                                        style={{marginRight: 6}}/>{t['metricSetPreview.tab.title.bindItems']}</span>
+                                                }>
+                                                {metricSetInfo && <MetricSetBindListPanel/>}
+                                            </TabPane>
+                                            :null
+                                    }
+
                                     {
                                         metricSetInfo?.permissions.includes(PermissionEnum.ManageAble)?
                                             <TabPane key='3' title={
@@ -214,6 +225,7 @@ export default function Index() {
                                     }
                                 </Tabs>
                             </Space>
+                            </Spin>
                         </>
                 }
 
