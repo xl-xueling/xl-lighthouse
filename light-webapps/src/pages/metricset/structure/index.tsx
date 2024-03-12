@@ -119,7 +119,6 @@ export default function MetricSetStructure() {
 
     return (
         <MetricSetStructureContext.Provider value={{listNodes,setListNodes,needSync,setNeedSync}}>
-        <Spin loading={loading} style={{display:'block'}} className={styles['ss']}>
             <Space size={16} direction="vertical" style={{ width: '100%'}}>
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
@@ -164,7 +163,6 @@ export default function MetricSetStructure() {
                     {showRepositoryModal && <MetricSetRepositoryModal id={metricSetInfo?.id} onClose={() => setShowRepositoryModal(false)} />}
                 </div>
             </Space>
-        </Spin>
         </MetricSetStructureContext.Provider>
     );
 }
