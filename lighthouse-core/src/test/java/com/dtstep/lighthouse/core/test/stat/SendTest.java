@@ -12,9 +12,9 @@ public class SendTest {
 
     @Test
     public void testCount() throws Exception{
-        LightHouse.init("10.206.6.15:4061");
+        LightHouse.init("10.206.6.28:4061");
         long t = System.currentTimeMillis();
-        for(int i=0;i<39891;i++){
+        for(int i=0;i<10;i++){
             Map<String,Object> map = new HashMap<>();
             map.put("randomId", UUID.randomUUID().toString());
             map.put("province", ThreadLocalRandom.current().nextInt(3));
