@@ -36,9 +36,9 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
-public class HBaseLimitedCountingDevice implements CountingDevice {
+public class DefaultLimitedCountingDevice implements CountingDevice {
 
-    private static final Logger logger = LoggerFactory.getLogger(HBaseLimitedCountingDevice.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultLimitedCountingDevice.class);
 
     private final static Cache<Pair<Integer,Integer>, Value> valueCache = Caffeine.newBuilder()
             .expireAfter(new CaffeineExpiry.ExpiryAfterLastAccess<Pair<Integer,Integer>, Value>(TimeUnit.MINUTES.toMillis(2)))
@@ -58,7 +58,7 @@ public class HBaseLimitedCountingDevice implements CountingDevice {
 
     static {
         ScheduledExecutorService service = Executors.newScheduledThreadPool(1,
-                new BasicThreadFactory.Builder().namingPattern("limited-hbase-counting-schedule-pool-%d").daemon(true).build());
+                new BasicThreadFactory.Builder().namingPattern("limited-counting-schedule-pool-%d").daemon(true).build());
         service.scheduleWithFixedDelay(new RefreshThread(valueCache),0,1, TimeUnit.MINUTES);
     }
 
