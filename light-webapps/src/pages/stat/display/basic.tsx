@@ -45,7 +45,7 @@ export default function BasicInfo({statInfo,callback}) {
         },
         {
             label: 'Group',
-            value: <span>{statInfo?.token}</span>,
+            value: <span>{statInfo?.token} [{statInfo?.groupId}]</span>,
         },
         {
             label: 'Department',
