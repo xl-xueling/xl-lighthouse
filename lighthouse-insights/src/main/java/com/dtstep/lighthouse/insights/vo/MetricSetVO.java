@@ -17,6 +17,8 @@ public class MetricSetVO extends MetricSet {
 
     private List<MetricBindElement> bindElements;
 
+    private boolean isCustomStructure = true;
+
     private Set<PermissionEnum> permissions = new HashSet<>();
 
     public Set<PermissionEnum> getPermissions() {
@@ -52,5 +54,13 @@ public class MetricSetVO extends MetricSet {
 
     public void setBindElements(List<MetricBindElement> bindElements) {
         this.bindElements = bindElements;
+    }
+
+    public boolean isCustomStructure() {
+        return isCustomStructure;
+    }
+
+    public void setCustomStructure(boolean customStructure) {
+        isCustomStructure = customStructure;
     }
 }

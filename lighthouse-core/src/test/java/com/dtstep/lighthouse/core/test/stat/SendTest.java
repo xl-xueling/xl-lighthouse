@@ -24,7 +24,7 @@ public class SendTest {
                 map.put("city","b");
             }
             map.put("score",ThreadLocalRandom.current().nextDouble(100));
-            LightHouse.stat("AaZ:test_stat","yPqIatFePKiyYnMZ8UpPQpQuigiWfR3JjaWjSehN",map,t);
+            LightHouse.stat("zO7:test_stat","yPdXcLdt1oBK2AuGhP9JaP4HoAuvudIterrri2kT",map,t);
         }
         System.out.println("send success!");
         Thread.sleep(100000);

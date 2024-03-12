@@ -193,7 +193,7 @@ public class MetricSetServiceImpl implements MetricSetService {
         List<MetricBindElement> bindElements = bindParam.getBindElements();
         List<Relation> relationList = new ArrayList<>();
         for(Integer metricId : metricIds){
-            List<Integer> projectIds = bindElements.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Project).map(z -> z.getResourceId()).collect(Collectors.toList());
+            List<Integer> projectIds = bindElements.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Project).map(MetricBindElement::getResourceId).collect(Collectors.toList());
             for(Integer projectId : projectIds){
                 Project project = projectService.queryById(projectId);
                 if(project == null){
@@ -212,7 +212,7 @@ public class MetricSetServiceImpl implements MetricSetService {
                     relationList.add(relation);
                 }
             }
-            List<Integer> statIds = bindElements.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Stat).map(z -> z.getResourceId()).collect(Collectors.toList());
+            List<Integer> statIds = bindElements.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Stat).map(MetricBindElement::getResourceId).collect(Collectors.toList());
             for(Integer statId : statIds){
                 Stat stat = statService.queryById(statId);
                 if(stat == null){
@@ -262,7 +262,7 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
-    public TreeNode getStructure(MetricSet metricSet) throws Exception {
+    public TreeNode getStructure(MetricSetVO metricSet) throws Exception {
         Validate.notNull(metricSet);
         TreeNode structure = metricSet.getStructure();
         if(structure == null || CollectionUtils.isEmpty(structure.getChildren())){
@@ -271,7 +271,7 @@ public class MetricSetServiceImpl implements MetricSetService {
         return structure;
     }
 
-    private TreeNode combineDefaultStructure(MetricSet metricSet){
+    private TreeNode combineDefaultStructure(MetricSetVO metricSet){
         List<String> keyList = new ArrayList<>();
         String rootKey = RandomID.id(10,keyList);
         TreeNode rootNode = new TreeNode(rootKey,metricSet.getTitle(),metricSet.getId(),"metric");
@@ -290,7 +290,6 @@ public class MetricSetServiceImpl implements MetricSetService {
             }
             for (FlatTreeNode flatNode:flatTreeNodes) {
                 TreeNode currentNode = nodesMap.get(flatNode.getType() + "_" + flatNode.getId());
-                String parentType = null;
                 if(flatNode.getType().equals("group")){
                     TreeNode parentNode = nodesMap.get("project" + "_" + flatNode.getPid());
                     parentNode.addChild(currentNode);
@@ -382,10 +381,10 @@ public class MetricSetServiceImpl implements MetricSetService {
     @Override
     public ListData<Indicator> queryIndicatorList(MetricPendQueryParam queryParam, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        PageInfo<Indicator> pageInfo = null;
+        PageInfo<Indicator> pageInfo;
         try{
             List<Indicator> ids = metricSetDao.queryIndicatorList(queryParam.getId());
-            pageInfo = new PageInfo(ids);
+            pageInfo = new PageInfo<>(ids);
         }finally {
             PageHelper.clearPage();
         }

@@ -36,7 +36,7 @@ public interface MetricSetService {
 
     List<MetricSetVO> queryStarList();
 
-    TreeNode getStructure(MetricSet metricSet) throws Exception;
+    TreeNode getStructure(MetricSetVO metricSet) throws Exception;
 
     void updateStructure(MetricUpdateStructureParam updateStructureParam);
 
