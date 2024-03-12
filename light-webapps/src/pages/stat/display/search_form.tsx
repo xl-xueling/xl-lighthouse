@@ -77,6 +77,7 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
                             treeCheckable={true}
                             treeCheckStrictly={false}
                             allowClear={true}
+                            showSearch={true}
                             treeData={translateToTreeNodes(renderFilterConfig.configData)} />
             )
         }else{
@@ -87,6 +88,7 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
                             treeCheckable={true}
                             treeCheckStrictly={false}
                             allowClear={true}
+                            showSearch={true}
                             treeData={translateToTreeNodes(renderFilterConfig.configData)} />
             )
         }
