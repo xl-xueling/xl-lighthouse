@@ -16,13 +16,9 @@ import {
 import {IconEdit, IconList, IconMan, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
 import UserGroup from "@/pages/user/common/groups";
 import { TbFilterEdit } from "react-icons/tb";
-import {getIcon, getStatExpiredEnumDescription} from "@/pages/common/desc/base";
+import {getStatExpiredEnumDescription} from "@/pages/common/desc/base";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import DepartmentLabel from "@/pages/department/common/depart";
-import { MdOutlineManageAccounts } from "react-icons/md";
-
-import { MdManageAccounts } from "react-icons/md";
-import {CiViewTable} from "react-icons/ci";
 import {PermissionEnum} from "@/types/insights-common";
 
 export default function BasicInfo({statInfo,callback}) {
@@ -40,7 +36,9 @@ export default function BasicInfo({statInfo,callback}) {
         {
             label: 'Project',
             value:
-            <span style={{display:"inline-flex",alignItems:"center"}}>{statInfo?.projectTitle}</span>
+            <span style={{display:"inline-flex",alignItems:"center"}}>
+                {statInfo?.projectTitle} [{statInfo?.projectId}]
+            </span>
             ,
         },
         {
