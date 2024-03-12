@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class DataServiceImpl implements DataService {
@@ -34,18 +35,52 @@ public class DataServiceImpl implements DataService {
         if(ArrayUtils.isEmpty(dimensArray)){
             return null;
         }
-        List<String> dimensSortList = Arrays.asList(dimensArray);
-        List<Map.Entry<String, String[]>> list = new ArrayList<>(dimensParams.entrySet());
-        list.sort(new CustomComparator(dimensSortList));
-        LinkedHashMap<String, String[]> sortedMap = new LinkedHashMap<>();
-        for (Map.Entry<String, String[]> entry : list) {
-            sortedMap.put(entry.getKey(), entry.getValue());
+        List<String> destSortedList = Arrays.asList(dimensArray);
+        List<String> originSortedList = new ArrayList<>();
+        for(String dimens : dimensParams.keySet()){
+            if(!dimens.contains(";")){
+                originSortedList.add(dimens);
+            }else{
+                String [] arr = dimens.split(";");
+                originSortedList.addAll(Arrays.asList(arr));
+            }
         }
-        String[][] array = sortedMap.values().toArray(new String[0][0]);
-        return arrangement(array);
+        String[][] valuesArray = dimensParams.values().toArray(new String[0][0]);
+        List<String> unSortedList = arrangement(valuesArray);
+        return unSortedList.stream().map(z -> {
+            String[] arr = z.split(";");
+            DimensEntity[] entity = new DimensEntity[arr.length];
+            for(int i=0;i<arr.length;i++){
+                DimensEntity pair = new DimensEntity(originSortedList.get(i), arr[i]);
+                entity[i] = pair;
+            }
+            List<DimensEntity> sortedList = Arrays.stream(entity).sorted(new CustomComparator(destSortedList)).collect(Collectors.toList());
+            return sortedList.stream()
+                    .map(DimensEntity::getValue)
+                    .collect(Collectors.joining(";"));
+        }).collect(Collectors.toList());
     }
 
-    private static class CustomComparator implements Comparator<Map.Entry<String, String[]>> {
+    private static class DimensEntity {
+
+        private final String dimens;
+
+        private final String value;
+
+        public DimensEntity(String dimens, String value){
+            this.dimens = dimens;
+            this.value = value;
+        }
+        public String getDimens() {
+            return dimens;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
+    private static class CustomComparator implements Comparator<DimensEntity> {
 
         private final List<String> dimensSortList;
 
@@ -54,8 +89,8 @@ public class DataServiceImpl implements DataService {
         }
 
         @Override
-        public int compare(Map.Entry<String, String[]> o1, Map.Entry<String, String[]> o2) {
-            return dimensSortList.indexOf(o1.getKey()) - dimensSortList.indexOf(o2.getKey());
+        public int compare(DimensEntity o1, DimensEntity o2) {
+            return dimensSortList.indexOf(o1.getDimens()) - dimensSortList.indexOf(o2.getDimens());
         }
     }
 
