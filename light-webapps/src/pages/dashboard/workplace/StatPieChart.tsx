@@ -49,7 +49,6 @@ export default function StatPieChart() {
             const chartData = homeData?.departmentStatCount.map(z => {
                 return { value: z.value, name: z.dimensValue };
             })
-            console.log(JSON.stringify(chartData));
             setChartData(chartData);
         }
     },[JSON.stringify(homeData)])
