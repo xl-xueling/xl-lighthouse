@@ -86,7 +86,7 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
   import scala.collection.JavaConverters._
 
   def validMessage(message:LightMessage, statGroup: GroupExtEntity):MessageCaptchaEnum = {
-    val columnList = statGroup.getColumnList
+    val columnList = statGroup.getColumns
     if(!MessageValid.valid(message,columnList)) return MessageCaptchaEnum.PARAM_CHECK_FAILED
     MessageCaptchaEnum.SUCCESS
   }
