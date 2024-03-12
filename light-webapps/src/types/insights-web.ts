@@ -151,8 +151,9 @@ export interface MetricSet {
     lastVisitTime?:number;
     bindElements?:Resource[];
     permissions?:PermissionEnum[];
-    initUsersPermission?:number[],
-    initDepartmentsPermission?:number[],
+    initUsersPermission?:number[];
+    initDepartmentsPermission?:number[];
+    customStructure?:boolean;
 }
 
 export interface Indicator{

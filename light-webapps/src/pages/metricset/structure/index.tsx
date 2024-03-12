@@ -130,8 +130,12 @@ export default function MetricSetStructure() {
                                 <Grid.Col span={4}>
                                     <Space className={styles.right} size={10} direction="horizontal">
                                         <Button size={"mini"} type="secondary" icon={<RiPlayListAddLine/>} onClick={handleShowRepositoryModal}>{t['repositoryModal.button.label.repository']}</Button>
+                                        {
+                                            metricSetInfo.customStructure?'[Custom]':'[Default]'
+                                        }
                                     </Space>
                                 </Grid.Col>
+
                                 <Grid.Col span={20} style={{textAlign:'right' }}>
                                     <Space size={18} direction="horizontal">
                                         {needSync && <Tag size={"small"}>[{t['structure.label.pendSync']}]</Tag>}
