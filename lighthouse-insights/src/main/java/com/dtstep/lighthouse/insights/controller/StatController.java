@@ -84,6 +84,9 @@ public class StatController {
     public ResultData<StatExtendVO> queryById(@Validated @RequestBody IDParam idParam) throws Exception {
         Integer id = idParam.getId();
         StatVO stat = statService.queryById(id);
+        if(stat == null){
+            return ResultData.result(ResultCode.elementNotFound);
+        }
         RenderConfig renderConfig = statService.getStatRenderConfig(stat);
         StatExtendVO statExtendDto = new StatExtendVO(stat);
         statExtendDto.setRenderConfig(renderConfig);
