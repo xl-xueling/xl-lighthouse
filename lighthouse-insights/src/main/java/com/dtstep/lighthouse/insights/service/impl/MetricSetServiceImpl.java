@@ -267,6 +267,9 @@ public class MetricSetServiceImpl implements MetricSetService {
         TreeNode structure = metricSet.getStructure();
         if(structure == null || CollectionUtils.isEmpty(structure.getChildren())){
             structure = combineDefaultStructure(metricSet);
+            metricSet.setCustomStructure(false);
+        }else{
+            metricSet.setCustomStructure(true);
         }
         return structure;
     }
