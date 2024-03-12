@@ -35,6 +35,7 @@ import SecretKeyModal from "@/pages/group/basic/secret_key";
 import {RecordTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
 import {LimitedRecordModal} from "@/pages/record/limited_records";
 import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
+import {LimitingSettingsModal} from "@/pages/group/limiting/LimitingSettingsModal";
 
 export const GroupManageContext = React.createContext(null)
 
@@ -43,7 +44,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
     const { Text } = Typography;
     const [showStatAddPanel, setShowsStatAddPanel] = useState(false);
     const [showGroupEditPanel, setShowGroupEditPanel] = useState(false);
-    const [showLimitedRecordPanel, setShowLimitedRecordPanel] = useState(false);
+    const [showLimitingManagerPanel, setShowLimitingManagerPanel] = useState(false);
     const [showSecretKeyModal, setShowSecretKeyModal] = useState(false);
     const [formParams,setFormParams] = useState(null);
     const [loading,setLoading] = useState<boolean>(true);
@@ -72,7 +73,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                 break;
             }
             case 'limitedRecord':{
-                setShowLimitedRecordPanel(true);
+                setShowLimitingManagerPanel(true);
                 break;
             }
             case 'secretKey': {
@@ -179,7 +180,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                             <Menu onClickMenuItem={handlerProcess} style={{ maxHeight:'280px' }}>
                                 <Menu.Item key={'limitedRecord'}>
                                     <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<HiMiniBoltSlash/>} />&nbsp;&nbsp;
-                                    {t['groupManage.operations.button.limited.records']}</Menu.Item>
+                                    {t['groupManage.operations.button.limiting.settings']}</Menu.Item>
                                 <Menu.Item key={'secretKey'}>
                                     <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<RiShieldKeyholeLine/>} />&nbsp;&nbsp;
                                     {t['groupManage.operations.button.secret.key']}</Menu.Item>
@@ -233,7 +234,8 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                 setShowsStatAddPanel(false);
             }} onSuccess={() => {createStatSuccess()}}/>}
             {showGroupEditPanel && <GroupUpdatePanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)} callback={callback}/>}
-            {showLimitedRecordPanel && <LimitedRecordModal resourceId={groupInfo?.id} recordTypes={[RecordTypeEnum.GROUP_MESSAGE_LIMITED]} resourceType={ResourceTypeEnum.Group} onClose={() => setShowLimitedRecordPanel(false)}/>}
+            {/*{showLimitedRecordPanel && <LimitedRecordModal resourceId={groupInfo?.id} recordTypes={[RecordTypeEnum.GROUP_MESSAGE_LIMITED]} resourceType={ResourceTypeEnum.Group} onClose={() => setShowLimitingManagerPanel(false)}/>}*/}
+            {showLimitingManagerPanel && <LimitingSettingsModal groupInfo={groupInfo} onClose={() => setShowLimitingManagerPanel(false)}/>}
             {showSecretKeyModal && <SecretKeyModal groupId={groupInfo?.id} onClose={() => setShowSecretKeyModal(false)}/>}
             </Spin>
             </GroupManageContext.Provider>
