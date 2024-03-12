@@ -147,7 +147,7 @@ public final class BitCountStatProcess extends StatProcess<Pair<String,Long>> {
                 .setFunctionIndex(statState.getFunctionIndex())
                 .setColumn(delta)
                 .setTTL(ttl)
-                .setValue(result).create();
+                .setValue(result * 1000L).create();
         produce(eventPool,microBucket);
         if(logger.isTraceEnabled()){
             logger.trace("lighthouse trace,bit count evaluate,stat:{},formula:{},dimens:{},message size:{},cost:{}"
