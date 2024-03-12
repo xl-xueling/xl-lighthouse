@@ -21,8 +21,7 @@ package com.dtstep.lighthouse.tasks.valid
 import com.dtstep.lighthouse.common.constant.{RedisConst, StatConst}
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity
 import com.dtstep.lighthouse.common.entity.message.LightMessage
-import com.dtstep.lighthouse.common.enums.GroupStateEnum
-import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum
+import com.dtstep.lighthouse.common.enums.{GroupStateEnum, LimitingStrategyEnum}
 import com.dtstep.lighthouse.common.enums.result.MessageCaptchaEnum
 import com.dtstep.lighthouse.common.util.{DateUtil, JsonUtil}
 import com.dtstep.lighthouse.common.util.JsonUtil.toJSONString
@@ -50,7 +49,7 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
   override def valid(message: LightMessage): (Int,LightMessage) = try{
     val groupEntity = GroupDBWrapper.queryById(message.getGroupId);
     if(groupEntity == null || groupEntity.getState != GroupStateEnum.RUNNING) return null
-    val threshold = getThreshold(groupEntity,LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT);
+    val threshold = getThreshold(groupEntity,LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING);
     if (!LimitedContext.getInstance().tryAcquire(groupEntity,threshold,message.getRepeat)) {
       logger.error(s"limited trigger strategy:GROUP_MESSAGE_SIZE_LIMIT," +
         s"group id:${groupEntity.getId},threshold:${threshold}")

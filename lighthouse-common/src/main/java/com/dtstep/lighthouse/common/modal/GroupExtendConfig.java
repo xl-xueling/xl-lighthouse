@@ -1,14 +1,15 @@
 package com.dtstep.lighthouse.common.modal;
 
+import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashMap;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GroupExtendConfig implements Serializable {
 
-    private List<LimitedConfig> limitedConfig;
+    private HashMap<LimitingStrategyEnum,Integer> limitingConfig = new HashMap<>();
 
     private DebugConfig debugConfig;
 
@@ -20,11 +21,11 @@ public class GroupExtendConfig implements Serializable {
         this.debugConfig = debugConfig;
     }
 
-    public List<LimitedConfig> getLimitedConfig() {
-        return limitedConfig;
+    public HashMap<LimitingStrategyEnum, Integer> getLimitingConfig() {
+        return limitingConfig;
     }
 
-    public void setLimitedConfig(List<LimitedConfig> limitedConfig) {
-        this.limitedConfig = limitedConfig;
+    public void setLimitingConfig(HashMap<LimitingStrategyEnum, Integer> limitingConfig) {
+        this.limitingConfig = limitingConfig;
     }
 }

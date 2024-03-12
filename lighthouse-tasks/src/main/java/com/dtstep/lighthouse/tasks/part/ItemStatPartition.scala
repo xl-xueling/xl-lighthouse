@@ -22,7 +22,6 @@ import com.dtstep.lighthouse.common.constant.StatConst
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity
 import com.dtstep.lighthouse.common.entity.message.LightMessage
 import com.dtstep.lighthouse.common.entity.state.StatState
-import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum
 import com.dtstep.lighthouse.common.enums.result.MessageCaptchaEnum
 import com.dtstep.lighthouse.common.hash.HashUtil
 import com.dtstep.lighthouse.common.sbr.StringBuilderHolder
@@ -37,7 +36,7 @@ import com.google.common.collect.ImmutableMap
 import java.util
 import com.google.common.hash_snp.Hashing
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity
-import com.dtstep.lighthouse.common.enums.GroupStateEnum
+import com.dtstep.lighthouse.common.enums.{GroupStateEnum, LimitingStrategyEnum}
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper
 import org.apache.spark.sql.{Dataset, Encoder, Encoders, SparkSession}
 import org.slf4j.LoggerFactory
@@ -115,7 +114,7 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
     val envMap = new util.HashMap[String, AnyRef](message.getParamMap);
     if (!StringUtil.isEmpty(templateEntity.getDimens)) {
       dimensValue = DimensDBWrapper.getDimensValue(envMap, templateEntity.getDimensArray,batchTime);
-      val threshold = getThreshold(groupEntity,LimitingStrategyEnum.STAT_RESULT_SIZE_LIMIT);
+      val threshold = getThreshold(groupEntity,LimitingStrategyEnum.STAT_RESULT_SIZE_LIMITING);
       if (!LimitedContext.getInstance().tryAcquire(statEntity,threshold,1)) {
         logError(s"limited trigger strategy:STAT_RESULT_SIZE_LIMIT,token:${groupEntity.getToken},stat:${statEntity.getId},threshold:${threshold}")
         return list;

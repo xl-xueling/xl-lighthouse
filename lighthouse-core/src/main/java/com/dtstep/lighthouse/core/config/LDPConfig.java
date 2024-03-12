@@ -62,9 +62,9 @@ public final class LDPConfig {
 
     public static final String KEY_ZOOKEEPER_QUORUM_PORT = "zookeeper.quorum.port";
 
-    public static final String KEY_LIMITED_GROUP_MESSAGE_SIZE_PER_SEC = "limited.group.message.size.per.sec";
+    public static final String KEY_LIMITING_GROUP_MESSAGE_SIZE_PER_SEC = "limited.group.message.size.per.sec";
 
-    public static final String KEY_LIMITED_STAT_RESULT_SIZE_PER_SEC = "limited.stat.result.size.per.sec";
+    public static final String KEY_LIMITING_STAT_RESULT_SIZE_PER_SEC = "limited.stat.result.size.per.sec";
 
     public static final String KEY_LIMITED_GROUP_MESSAGE_SIZE_APPROVE_THRESHOLD = "limited.group.message.size.approve.threshold";
 

@@ -73,6 +73,8 @@ const vi18n = {
         'basic.resourceType.metricSet':'MetricSet',
         'basic.resourceType.department':'Department',
         'basic.resourceType.domain':'Domain',
+        'basic.limitingStrategy.messageSizeLimiting':'Group Message Size Limiting',
+        'basic.limitingStrategy.resultSizeLimiting':'Statistic Result Size Limiting',
     },
     'zh-CN': {
         'system.error':'系统异常!',
@@ -157,6 +159,8 @@ const vi18n = {
         'basic.resourceType.metricSet':'指标集',
         'basic.resourceType.department':'部门',
         'basic.resourceType.domain':'域',
+        'basic.limitingStrategy.messageSizeLimiting':'统计组消息量限流',
+        'basic.limitingStrategy.resultSizeLimiting':'统计项结果量限流',
     }
 }
 export default vi18n;

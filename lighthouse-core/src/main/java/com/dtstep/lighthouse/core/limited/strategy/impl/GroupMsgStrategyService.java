@@ -19,7 +19,7 @@ package com.dtstep.lighthouse.core.limited.strategy.impl;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
-import com.dtstep.lighthouse.common.enums.limiting.LimitingStrategyEnum;
+import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
 import com.dtstep.lighthouse.core.limited.device.CountingDevice;
 import com.dtstep.lighthouse.core.limited.strategy.AbstractStrategy;
 import org.apache.commons.collections.CollectionUtils;
@@ -28,13 +28,13 @@ import java.util.List;
 
 public class GroupMsgStrategyService extends AbstractStrategy<GroupExtEntity> {
 
-    private static final List<CountingDevice> countingDeviceList = getDeviceList(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT);
+    private static final List<CountingDevice> countingDeviceList = getDeviceList(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING);
 
     private static final StatExtEntity builtInStat = BuiltinLoader.getBuiltinStat(1014);
 
     @Override
     public boolean process(GroupExtEntity groupExtEntity, int permitsPerSecond, int step) throws Exception {
-        CountingDevice.Params params = new CountingDevice.Params(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMIT, builtInStat, groupExtEntity.getId(),permitsPerSecond,step);
+        CountingDevice.Params params = new CountingDevice.Params(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING, builtInStat, groupExtEntity.getId(),permitsPerSecond,step);
         if(CollectionUtils.isEmpty(countingDeviceList)){
             return true;
         }
