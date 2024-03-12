@@ -58,6 +58,7 @@ export default function Index() {
     const t = useLocale(locale);
     const history = useHistory();
     const [loading, setLoading] = useState<boolean>(false);
+    const [initLoading, setInitLoading] = useState<boolean>(false);
     const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
     const [metricSetInfo, setMetricSetInfo] = useState<MetricSet>(null);
     const [reloadTime, setReloadTime] = useState<number>(Date.now());
@@ -126,6 +127,7 @@ export default function Index() {
                 Notification.warning({style: {width: 420}, title: 'Warning', content: message || t['system.error']});
             }
             setLoading(false);
+            setInitLoading(false);
         }).catch((error) => {
             console.log(error);
         })
@@ -158,7 +160,7 @@ export default function Index() {
                                 <Breadcrumb.Item
                                     style={{fontWeight: 20}}>{t['metricSetPreview.breadcrumb']}</Breadcrumb.Item>
                             </Breadcrumb>
-                            <Spin loading={loading} style={{ width: '100%',minHeight:'800px' }}>
+                            <Spin loading={initLoading} style={{ width: '100%',minHeight:'800px' }}>
                             <Space size={16} direction="vertical" style={{width: '100%'}}>
                                 <Card>
                                     <MetricSetPreviewHeader/>
