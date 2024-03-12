@@ -53,6 +53,10 @@ public class DefaultLimitedCountingDevice implements CountingDevice {
         Value value = valueCache.get(Pair.of(params.getBuiltinStat().getId(), params.getRelationId()), k -> Value.newVar());
         assert value != null;
         value.setAccessTime(System.currentTimeMillis());
+        if(logger.isTraceEnabled()){
+            logger.info("default limited counting device check,builtInStatId:{},relationId:{},value:{},threshold:{}"
+                    ,params.getBuiltinStat().getId(),params.getRelationId(),value.getV(),threshold * 60);
+        }
         return threshold * 60L > value.getV();
     }
 
@@ -92,6 +96,10 @@ public class DefaultLimitedCountingDevice implements CountingDevice {
                                 assert value != null;
                                 value.setV(Long.parseLong(v.getValue().toString()));
                                 value.setUpdateTime(System.currentTimeMillis());
+                                if(logger.isTraceEnabled()){
+                                    logger.info("default limited counting device refresh,builtInStatId:{},relationId:{},value:{}"
+                                            ,builtStatId,k,value.getV());
+                                }
                             });
                         }
                     }
