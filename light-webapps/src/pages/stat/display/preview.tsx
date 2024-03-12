@@ -23,7 +23,7 @@ import StatUpdateModal from "@/pages/stat/update";
 import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
 import {getRandomString} from "@/utils/util";
 
-export default function StatPreviewPanel({size = 'default',id}) {
+export default function StatPreviewPanel({specifyTitle = null,size = 'default',id}) {
 
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const t = useLocale(locale);
@@ -80,7 +80,7 @@ export default function StatPreviewPanel({size = 'default',id}) {
                                 style={{marginBottom:'25px'}}
                             >
                                 <IconTag style={{marginRight:'10px'}}/>
-                                {statInfo?.title}
+                                {specifyTitle?specifyTitle:statInfo?.title}
                                 <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
                             </Typography.Title>
                             {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch}/>}
