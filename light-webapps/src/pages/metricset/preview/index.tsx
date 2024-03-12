@@ -58,7 +58,7 @@ export default function Index() {
     const t = useLocale(locale);
     const history = useHistory();
     const [loading, setLoading] = useState<boolean>(false);
-    const [initLoading, setInitLoading] = useState<boolean>(false);
+    const [initLoading, setInitLoading] = useState<boolean>(true);
     const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
     const [metricSetInfo, setMetricSetInfo] = useState<MetricSet>(null);
     const [reloadTime, setReloadTime] = useState<number>(Date.now());
