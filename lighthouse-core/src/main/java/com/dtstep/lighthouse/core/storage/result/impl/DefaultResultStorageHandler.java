@@ -255,13 +255,13 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
             LdpResult<Long> ldpResult = (resultMap == null || resultMap.get(aggregateKey) == null ? null:resultMap.get(aggregateKey));
             if (ldpResult == null) {
                 invalidFlag = true;
-                statesValue.add(0d);
+                statesValue.add("0");
             } else {
-                BigDecimal value = BigDecimal.valueOf(ldpResult.getData()).divide(BigDecimal.valueOf(1000D),3, RoundingMode.HALF_UP);
+                BigDecimal value = BigDecimal.valueOf(ldpResult.getData()).divide(BigDecimal.valueOf(1000D),3, RoundingMode.HALF_UP).stripTrailingZeros();
                 String replaceId = String.valueOf((char)variableIndex);
                 variableIndex++;
-                envMap.put(replaceId,value);
-                statesValue.add(value.toString());
+                envMap.put(replaceId,value.toPlainString());
+                statesValue.add(value.toPlainString());
                 formula = formula.replace(stateBody, replaceId);
                 if(lastUpdateTime  < ldpResult.getTimestamp()){
                     lastUpdateTime = ldpResult.getTimestamp();
@@ -273,8 +273,8 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
             Object object = AviatorHandler.execute(formula,envMap);
             if (object != null) {
                 if(object.getClass() == BigDecimal.class){
-                    BigDecimal bigDecimal = (BigDecimal) object;
-                    statValue.setValue(bigDecimal.toString());
+                    BigDecimal bigDecimal = ((BigDecimal) object).stripTrailingZeros();
+                    statValue.setValue(bigDecimal.toPlainString());
                 }else {
                     statValue.setValue(StringUtil.displayFormat(new BigDecimal(object.toString()).doubleValue()));
                 }
