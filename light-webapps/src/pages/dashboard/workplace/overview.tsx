@@ -23,7 +23,7 @@ import {requestStructure} from "@/api/department";
 import {ResultData} from "@/types/insights-common";
 import {requestOverView} from "@/api/home";
 import {HomeData, Stat} from "@/types/insights-web";
-import ChartPanel from "@/pages/stat/display/chart_panel";
+import ChartPanel from "@/pages/stat/preview/chart_panel";
 import {requestQueryById} from "@/api/stat";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 import {HomePageContext} from "@/pages/dashboard/workplace/index";

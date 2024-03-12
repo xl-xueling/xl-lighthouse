@@ -35,14 +35,14 @@ import {GlobalState} from './store';
 import styles from './style/layout.module.less';
 import ProjectManagePage from "@/pages/project/manage";
 import ProjectPreviewPage from "@/pages/project/preview";
-import StatDisplay from "@/pages/stat/display";
+import StatDisplay from "@/pages/stat/preview";
 import {MdOutlineInsights} from "react-icons/md";
 import {PiShareNetwork} from "react-icons/pi";
 import {GoTasklist} from "react-icons/go";
 import {RiAppsLine} from "react-icons/ri";
 import Index from "@/pages/metricset/preview";
 import {PiDiamondsFour} from "react-icons/pi";
-import StatPreviewPage from "@/pages/stat/display";
+import StatPreviewPage from "@/pages/stat/preview";
 import PopMenuBox from "@/pages/common/popmenu/PopMenu";
 
 const MenuItem = Menu.Item;
@@ -294,7 +294,7 @@ function PageLayout() {
                                     <Route path="/project/manage/:id" component={ProjectManagePage}/>
                                     <Route path="/metricset/preview/:id" component={Index}/>
                                     <Route path="/project/preview/:id" component={ProjectPreviewPage}/>
-                                    <Route path="/stat/display/:id" component={StatPreviewPage}/>
+                                    <Route path="/stat/preview/:id" component={StatPreviewPage}/>
                                     {flattenRoutes.map((route, index) => {
                                         return (
                                             <Route

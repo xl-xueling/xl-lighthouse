@@ -18,7 +18,7 @@ import {requestQueryById} from "@/api/project";
 import {IconHome} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import StatPreviewPanel from "@/pages/stat/display/preview";
+import StatPreviewPanel from "@/pages/stat/preview/preview";
 
 
 export default function ProjectPreviewPage() {

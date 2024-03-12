@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb, Spin} from '@arco-design/web-react';
 import styles from "@/pages/project/preview/style/index.module.less";
-import StatPreviewPanel from "@/pages/stat/display/preview";
+import StatPreviewPanel from "@/pages/stat/preview/preview";
 import MetricSetDataViewMenu from "@/pages/metricset/preview/dataview/MetricSetDataViewMenu";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 const { Title } = Typography;
