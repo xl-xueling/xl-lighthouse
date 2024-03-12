@@ -2,15 +2,14 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
+import com.dtstep.lighthouse.common.modal.GroupExtendConfig;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
-import com.dtstep.lighthouse.insights.dto.GroupCreateParam;
-import com.dtstep.lighthouse.insights.dto.GroupUpdateParam;
-import com.dtstep.lighthouse.insights.dto.StatQueryParam;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.common.modal.IDParam;
 import com.dtstep.lighthouse.insights.vo.GroupVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
-import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.modal.Domain;
 import com.dtstep.lighthouse.common.modal.Group;
@@ -88,6 +87,23 @@ public class GroupController {
             return ResultData.result(ResultCode.systemError);
         }
     }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/group/updateLimitingSettings")
+    public ResultData<Integer> update(@Validated @RequestBody GroupUpdateLimitingParam updateParam) throws Exception{
+        Integer id = updateParam.getId();
+        Group group = groupService.queryById(id);
+        LimitingStrategyEnum limitingStrategyEnum = updateParam.getStrategy();
+        GroupExtendConfig groupExtendConfig = group.getExtendConfig();
+        groupExtendConfig.getLimitingConfig().put(limitingStrategyEnum,updateParam.getValue());
+        int result = groupService.update(group);
+        if(result > 0){
+            return ResultData.success(result);
+        }else{
+            return ResultData.result(ResultCode.systemError);
+        }
+    }
+
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/group/queryById")
