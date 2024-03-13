@@ -172,7 +172,7 @@ public final class GroupDBWrapper {
         DBConnection dbConnection = ConnectionManager.getConnection();
         Connection conn = dbConnection.getConnection();
         QueryRunner queryRunner = new QueryRunner();
-        Group group = null;
+        Group group;
         try{
             group = queryRunner.query(conn, String.format("select * from ldp_groups where token = '%s'",token), new GroupResultSetHandler());
         }finally {
