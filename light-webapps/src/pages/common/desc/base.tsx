@@ -177,7 +177,7 @@ export function getOrderTypeDescription(t:any,value:OrderTypeEnum){
         return t['basic.orderType.description.metricAccess']
     }else if(value == OrderTypeEnum.STAT_ACCESS){
         return t['basic.orderType.description.statAccess'];
-    }else if(value == OrderTypeEnum.GROUP_THRESHOLD_ADJUST){
+    }else if(value == OrderTypeEnum.LIMITING_SETTINGS){
         return t['basic.orderType.description.limitedThresholdAdjust'];
     }
 }

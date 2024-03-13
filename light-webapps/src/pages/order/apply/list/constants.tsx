@@ -15,7 +15,7 @@ const getApplyDescription = (t: any, orderInfo) => {
         return formatString(t['applyList.description.statAccess'],orderInfo?.extend?.title)
     } else if(orderInfo.orderType == OrderTypeEnum.METRIC_ACCESS){
         return formatString(t['applyList.description.metricAccess'],orderInfo?.extend?.title)
-    } else if(orderInfo.orderType == OrderTypeEnum.GROUP_THRESHOLD_ADJUST){
+    } else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS){
         return formatString(t['applyList.description.adjustLimitedThreshold'],orderInfo?.extend?.token)
     } else if(orderInfo.orderType == OrderTypeEnum.USER_PEND_APPROVE){
         return formatString(t['applyList.description.userPendApprove'],orderInfo?.extend?.name)

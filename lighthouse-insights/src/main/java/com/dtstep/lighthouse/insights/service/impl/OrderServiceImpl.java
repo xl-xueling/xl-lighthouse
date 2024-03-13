@@ -71,6 +71,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private PermissionService permissionService;
 
+    @Autowired
+    private GroupService groupService;
+
     @Override
     public ListData<OrderVO> queryApproveList(ApproveOrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
         Integer currentUserId = baseService.getCurrentUserId();
@@ -142,7 +145,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void checkAddRole(List<Role> list, Role role){
-        List<Integer> roleIds = list.stream().map(z -> z.getId()).collect(Collectors.toList());
+        List<Integer> roleIds = list.stream().map(Role::getId).collect(Collectors.toList());
         if(!roleIds.contains(role.getId())){
             list.add(role);
         }
@@ -247,14 +250,24 @@ public class OrderServiceImpl implements OrderService {
         }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING;
             hash = Md5Util.getMD5(message);
-            roleList = getApproveRoleList(applyUser,orderTypeEnum,applyUser);
+            roleList = getApproveRoleList(applyUser,orderTypeEnum,null);
+        }else if(order.getOrderType() == OrderTypeEnum.LIMITING_SETTINGS){
+            if(!extendConfig.containsKey("groupId")){
+                return ResultCode.paramValidateFailed;
+            }
+            Integer groupId = (Integer) extendConfig.get("groupId");
+            String strategy = (String) extendConfig.get("strategy");
+            String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + groupId + "_" + strategy;
+            hash = Md5Util.getMD5(message);
+            roleList = getApproveRoleList(applyUser,orderTypeEnum,null);
         }
         boolean isExist = orderDao.isExist(hash);
         if(isExist){
             return ResultCode.orderCreateRepeatSubmit;
         }
         order.setHash(hash);
-        order.setSteps(roleList.stream().map(z -> z.getId()).collect(Collectors.toList()));
+        Validate.isTrue(CollectionUtils.isNotEmpty(roleList));
+        order.setSteps(roleList.stream().map(Role::getId).collect(Collectors.toList()));
         order.setCurrentNode(CollectionUtils.isNotEmpty(roleList)?roleList.get(0).getId():null);
         order.setUserId(applyUser.getId());
         orderDao.insert(order);
@@ -313,12 +326,13 @@ public class OrderServiceImpl implements OrderService {
         Map<String,Object> configMap = order.getExtendConfig();
         if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
             Integer projectId = (Integer) configMap.get("projectId");
-            Project project = projectService.queryById(projectId);
-            return project;
+            return projectService.queryById(projectId);
         }else if(order.getOrderType() == OrderTypeEnum.STAT_ACCESS){
             Integer statId = (Integer) configMap.get("statId");
-            Stat stat = statService.queryById(statId);
-            return stat;
+            return statService.queryById(statId);
+        }else if(order.getOrderType() == OrderTypeEnum.LIMITING_SETTINGS){
+            Integer groupId = (Integer) configMap.get("groupId");
+            return groupService.queryById(groupId);
         }
         return null;
     }

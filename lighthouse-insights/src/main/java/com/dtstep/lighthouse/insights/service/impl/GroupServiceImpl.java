@@ -88,6 +88,9 @@ public class GroupServiceImpl implements GroupService {
             groupExtEntity = BuiltinLoader.getBuiltinGroup(id);
         }else{
             Group group = groupDao.queryById(id);
+            if(group == null){
+                return null;
+            }
             groupExtEntity = GroupDBWrapper.combineExtInfo(group);
         }
         GroupVO groupVO = new GroupVO(groupExtEntity);

@@ -15,7 +15,7 @@ public enum OrderTypeEnum {
 
     METRIC_ACCESS(3,List.of(FlowNode.newBuilder(RoleTypeEnum.METRIC_MANAGE_PERMISSION))),
 
-    LimitingSettings(4,List.of(FlowNode.newBuilder(RoleTypeEnum.OPT_MANAGE_PERMISSION))),
+    LIMITING_SETTINGS(4,List.of(FlowNode.newBuilder(RoleTypeEnum.OPT_MANAGE_PERMISSION))),
 
     STAT_PEND_APPROVE(5,List.of(FlowNode.newBuilder(RoleTypeEnum.OPT_MANAGE_PERMISSION))),
 
