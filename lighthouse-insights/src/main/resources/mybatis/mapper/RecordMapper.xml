@@ -8,24 +8,24 @@
         <result column="resource_id" property="resourceId"/>
         <result column="resource_type" property="resourceType" typeHandler="com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler"/>
         <result column="record_type" property="recordType" typeHandler="com.dtstep.lighthouse.insights.types.RecordTypeEnumTypeHandler"/>
-        <result column="desc" property="desc"/>
-        <result column="record_time" property="recordTime"/>
+        <result column="extend" property="extend"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Record" >
-        INSERT INTO ldp_records (`user_id`,`resource_id`,`resource_type`,`record_type`,`desc`,`record_time`) VALUES
+        INSERT INTO ldp_records (`user_id`,`resource_id`,`resource_type`,`record_type`,`extend`,`create_time`) VALUES
         (
             #{userId,jdbcType=INTEGER},
             #{resourceId,jdbcType=INTEGER},
             #{resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
             #{recordType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RecordTypeEnumTypeHandler},
-            #{desc,jdbcType=VARCHAR},
+            #{extend,jdbcType=VARCHAR},
             #{recordTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
     <select id="queryList" resultMap="recordResultMap">
-        SELECT `id`,`user_id`,`resource_id`,`resource_type`,`record_type`,`desc`,`record_time` FROM ldp_records
+        SELECT `id`,`user_id`,`resource_id`,`resource_type`,`record_type`,`extend`,`create_time` FROM ldp_records
         <where>
             <if test="queryParam.resourceId != null">
                 AND `resource_id`  = #{queryParam.resourceId}

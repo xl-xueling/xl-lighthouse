@@ -213,7 +213,7 @@ export interface Record {
     resourceId?:number;
     resourceType?:ResourceTypeEnum;
     recordType?:RecordTypeEnum;
-    desc?:string;
+    extend?:string;
     recordTime?:number;
 }
 

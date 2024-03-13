@@ -48,7 +48,7 @@ public class RecordAspect {
                 record.setUserId(userId);
                 record.setRecordType(recordTypeEnum);
                 record.setRecordTime(LocalDateTime.now());
-                record.setDesc(JsonUtil.toJSONString(param));
+                record.setExtend(JsonUtil.toJSONString(param));
                 record.setResourceId(param.getId());
                 record.setResourceType(ResourceTypeEnum.Stat);
             }
@@ -56,10 +56,5 @@ public class RecordAspect {
         if(record != null){
             recordService.create(record);
         }
-        System.out.println("args is:" + JsonUtil.toJSONString(args));
-        System.out.println("result is:" + JsonUtil.toJSONString(result));
-        System.out.println("recordTypeEnum is:" + recordTypeEnum);
     }
-
-
 }

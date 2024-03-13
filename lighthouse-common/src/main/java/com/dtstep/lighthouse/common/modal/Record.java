@@ -18,7 +18,7 @@ public class Record implements Serializable {
 
     private RecordTypeEnum recordType;
 
-    private String desc;
+    private String extend;
 
     private LocalDateTime recordTime;
 
@@ -54,12 +54,12 @@ public class Record implements Serializable {
         this.resourceType = resourceType;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getExtend() {
+        return extend;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setExtend(String extend) {
+        this.extend = extend;
     }
 
     public LocalDateTime getRecordTime() {
