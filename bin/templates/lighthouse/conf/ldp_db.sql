@@ -274,8 +274,11 @@ CREATE TABLE `ldp_records` (
                                `record_type` int NOT NULL,
                                `extend` varchar(5000) DEFAULT NULL,
                                `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                               PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100484 DEFAULT CHARSET=utf8mb3;
+                               PRIMARY KEY (`id`),
+                               KEY `index_create_time` (`create_time` DESC),
+                               KEY `index_record_type` (`record_type`),
+                               KEY `index_resource` (`resource_type`,`resource_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=100508 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -393,4 +396,4 @@ CREATE TABLE `ldp_users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-13 17:42:14
+-- Dump completed on 2024-03-13 22:29:40
