@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.ice.servant;
  * limitations under the License.
  */
 import Ice.Current;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
@@ -55,6 +56,9 @@ final class AuxI extends _AuxInterfaceDisp {
                 groupVerifyEntity.setMinTimeParam(groupExtEntity.getMinTimeParam());
                 ObjectMapper mapper = new ObjectMapper();
                 result = mapper.writeValueAsString(groupVerifyEntity);
+                if(logger.isTraceEnabled()){
+                    logger.trace("query groupInfo by token,token:{},groupInfo:{}",token, JsonUtil.toJSONString(groupVerifyEntity));
+                }
             }
         }catch (Exception ex){
             logger.error("lighthouse ice,query group by token error,token:{}",token,ex);
