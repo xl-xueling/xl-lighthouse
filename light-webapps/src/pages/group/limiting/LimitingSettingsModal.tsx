@@ -2,10 +2,10 @@ import React, {useEffect, useRef, useState} from 'react';
 import {
     Button, Card, Collapse,
     Form,
-    Input, InputNumber,
+    Input, InputNumber, Message,
     Modal, Notification, Select, Space,
 } from "@arco-design/web-react";
-import {RecordTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
+import {OrderTypeEnum, RecordTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import "./style/index.module.less"
@@ -13,6 +13,9 @@ import {LimitedRecordModal} from "@/pages/record/limited_records";
 import {MetricSet} from "@/types/insights-web";
 import {requestUpdate, requestUpdateLimitingSettings} from "@/api/group";
 import {updateStoreStaredMetricInfo} from "@/index";
+import {requestCreateApply} from "@/api/order";
+import {useSelector} from "react-redux";
+import {GlobalState} from "@/store";
 
 export function LimitingSettingsModal({groupInfo,onClose}){
 
@@ -21,6 +24,7 @@ export function LimitingSettingsModal({groupInfo,onClose}){
     const FormItem = Form.Item;
     const formRef = useRef(null);
     const [loading,setLoading] = useState(false);
+    const userInfo = useSelector((state: GlobalState) => state.userInfo);
 
     const changeSelect = (v) => {
         if(v == 1){
@@ -37,22 +41,30 @@ export function LimitingSettingsModal({groupInfo,onClose}){
     async function submit(){
         setLoading(true);
         const values = formRef.current.getFieldsValue();
-        const updateParams = {
-            id:groupInfo?.id,
-            strategy:values.strategy == 1?'GROUP_MESSAGE_SIZE_LIMITING':'STAT_RESULT_SIZE_LIMITING',
-            value:values.updateValue,
+        const applyParam = {
+            orderType:OrderTypeEnum.LIMITING_SETTINGS,
+            userId:userInfo?.id,
+            reason:values?.reason,
+            extendConfig:{
+                groupId:groupInfo?.id,
+                strategy:values.strategy == 1?'GROUP_MESSAGE_SIZE_LIMITING':'STAT_RESULT_SIZE_LIMITING',
+                value:values.updateValue,
+            }
         }
-        console.log("updateParams is:" + JSON.stringify(updateParams));
-        await requestUpdateLimitingSettings(updateParams).then((response) => {
+        await requestCreateApply(applyParam).then((response) => {
             const {code, data ,message} = response;
+            console.log("response is:" + JSON.stringify(response));
             if(code == '0'){
-                console.log("--success")
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectApply.form.submit.success']});
+                onClose();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-                setLoading(false);
             }
         }).catch((error) => {
             console.log(error);
+            Message.error(t['system.error'])
+        }).finally(() => {
+            setLoading(false);
         })
     }
 
@@ -85,7 +97,7 @@ export function LimitingSettingsModal({groupInfo,onClose}){
                             colon={'：'}
                             labelCol={{ span: 8 }}
                             wrapperCol={{ span: 16 }}
-                            style={{ width: '75%',marginTop:'25px'}}
+                            style={{ width: '80%',marginTop:'25px'}}
                             initialValues={{ strategy: '1',currentValue:groupInfo?.extendConfig?.limitingConfig.GROUP_MESSAGE_SIZE_LIMITING }}
                             onValuesChange={(v, vs) => {
                                 console.log(v, vs);
@@ -131,7 +143,16 @@ export function LimitingSettingsModal({groupInfo,onClose}){
                             >
                                 <Input placeholder='Please Enter...' />
                             </FormItem>
-                            <FormItem wrapperCol={{ offset: 13 }}>
+                            <FormItem
+                                label={t['limitingConfig.form.label.reason']}
+                                field='reason'
+                                rules={[
+                                    { required: true, validateTrigger : ['onSubmit'] },
+                                ]}
+                            >
+                                <Input.TextArea maxLength={200} rows={2}  showWordLimit={true}/>
+                            </FormItem>
+                            <FormItem wrapperCol={{ offset: 14 }}>
                                 <Button
                                     type='primary'
                                     onClick={handleSubmit}

@@ -15,7 +15,7 @@ const getApproveDescription = (t: any, orderInfo) => {
         return formatString(t['approveList.description.statAccess'],orderInfo?.extend?.title)
     } else if(orderInfo.orderType == OrderTypeEnum.METRIC_ACCESS){
         return formatString(t['approveList.description.metricAccess'],orderInfo?.extend?.title)
-    } else if(orderInfo.orderType == OrderTypeEnum.GROUP_THRESHOLD_ADJUST){
+    } else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS){
         return formatString(t['approveList.description.adjustLimitedThreshold'],orderInfo?.extend?.token)
     } else if(orderInfo.orderType == OrderTypeEnum.USER_PEND_APPROVE){
         return formatString(t['approveList.description.userPendApprove'],orderInfo?.extend?.name)

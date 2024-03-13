@@ -36,7 +36,7 @@ public class ApplyController {
     @RequestMapping("/apply/create")
     public ResultData<Integer> create(@Validated @RequestBody OrderCreateParam createParam) throws Exception {
         int currentUserId = baseService.getCurrentUserId();
-        Validate.isTrue(currentUserId == createParam.getUserId().intValue());
+        Validate.isTrue(currentUserId == createParam.getUserId());
         User user = userService.queryById(currentUserId);
         ResultCode resultCode = orderService.submit(user,createParam.getOrderType(),createParam.getReason(),createParam.getExtendConfig());
         return ResultData.result(resultCode);
