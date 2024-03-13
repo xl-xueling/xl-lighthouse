@@ -89,23 +89,6 @@ public class GroupController {
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
-    @RequestMapping("/group/updateLimitingSettings")
-    public ResultData<Integer> update(@Validated @RequestBody GroupUpdateLimitingParam updateParam) throws Exception{
-        Integer id = updateParam.getId();
-        Group group = groupService.queryById(id);
-        LimitingStrategyEnum limitingStrategyEnum = updateParam.getStrategy();
-        GroupExtendConfig groupExtendConfig = group.getExtendConfig();
-        groupExtendConfig.getLimitingConfig().put(limitingStrategyEnum,updateParam.getValue());
-        int result = groupService.update(group);
-        if(result > 0){
-            return ResultData.success(result);
-        }else{
-            return ResultData.result(ResultCode.systemError);
-        }
-    }
-
-
-    @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/group/queryById")
     public ResultData<GroupVO> queryById(@Validated @RequestBody GroupQueryParam queryParam) throws Exception {
         GroupVO group = groupService.queryById(queryParam.getId());

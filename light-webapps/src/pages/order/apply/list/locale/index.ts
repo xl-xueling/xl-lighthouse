@@ -17,7 +17,7 @@ const i18n = {
     'applyList.description.projectAccess':'Request Project[%s] Access',
     'applyList.description.statAccess':'Request Stat[%s] Access',
     'applyList.description.metricAccess':'Request Metrics[%s] Access',
-    'applyList.description.updateLimitingThreshold':'Adjust Group[%s] Limited Threshold',
+    'applyList.description.updateLimitingThreshold':'Update Group[%s] Limiting Threshold.',
     'applyList.description.statPendApprove':'Stat[%s] Pend Approve',
     'applyList.description.userPendApprove':'User[%s] Pend Approve',
     'applyList.columns.operations.retracted':'Retract',

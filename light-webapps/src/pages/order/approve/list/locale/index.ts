@@ -61,7 +61,7 @@ const i18n = {
     'approveList.columns.state':'工单状态',
     'approveList.columns.state.pending':'待审核',
     'approveList.columns.state.approved':'已通过',
-    'approveList.columns.state.rejected':'已拒绝',
+    'approveList.columns.state.rejected':'已驳回',
     'approveList.columns.state.retracted':'已撤回',
     'approveList.columns.createTime':'创建时间',
     'approveList.columns.operations':'操作',
@@ -87,7 +87,7 @@ const i18n = {
     'approveModal.button.reject':'驳回',
     'approveModal.form.submit.success':'工单处理成功！',
     'approveModal.button.agree.confirm':'是否确认同意该申请？',
-    'approveModal.button.reject.confirm':'是否确认拒绝该申请？',
+    'approveModal.button.reject.confirm':'是否确认驳回该申请？',
   },
 };
 

@@ -45,13 +45,6 @@ export async function requestUpdate(data) :Promise<ResultData> {
     })
 }
 
-export async function requestUpdateLimitingSettings(data) :Promise<ResultData> {
-    return request({
-        url:'/group/updateLimitingSettings',
-        method:'POST',
-        data,
-    })
-}
 
 export async function requestGetSecretKey(data) :Promise<ResultData<string>> {
     return request({

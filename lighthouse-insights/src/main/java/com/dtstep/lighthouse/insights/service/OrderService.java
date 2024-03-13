@@ -16,7 +16,7 @@ public interface OrderService {
 
     ResultCode submit(User applyUser, OrderTypeEnum orderTypeEnum, String reason, Map<String,Object> extendConfig) throws Exception;
 
-    int process(OrderProcessParam processParam);
+    int process(OrderProcessParam processParam) throws Exception;
 
     int pendCount(int userId);
 

@@ -31,7 +31,7 @@ public class OrderController {
     }
 
     @PostMapping("/order/process")
-    public ResultData<Integer> process(@Validated @RequestBody OrderProcessParam approveParam){
+    public ResultData<Integer> process(@Validated @RequestBody OrderProcessParam approveParam) throws Exception{
         int result = orderService.process(approveParam);
         return ResultData.success(result);
     }
