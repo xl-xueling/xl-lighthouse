@@ -304,6 +304,8 @@ public final class GroupDBWrapper {
                 && (System.currentTimeMillis() - groupEntity.getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < TimeUnit.MINUTES.toMillis(StatConst.LIMITING_EXPIRE_MINUTES));
         if(isLimited){
             return GroupStateEnum.LIMITING;
+        }else if(groupEntity.getState() == GroupStateEnum.LIMITING){
+            return GroupStateEnum.RUNNING;
         }else {
             return groupEntity.getState();
         }
