@@ -48,7 +48,8 @@ export function LimitingSettingsModal({groupInfo,onClose}){
             extendConfig:{
                 groupId:groupInfo?.id,
                 strategy:values.strategy == 1?'GROUP_MESSAGE_SIZE_LIMITING':'STAT_RESULT_SIZE_LIMITING',
-                value:values.updateValue,
+                currentValue:values.currentValue,
+                updateValue:values.updateValue,
             }
         }
         await requestCreateApply(applyParam).then((response) => {
