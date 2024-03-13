@@ -5,7 +5,11 @@ import {formatTimeStampBackUp} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
 import {OrderStateEnum, RoleTypeEnum} from "@/types/insights-common";
 import {Order} from "@/types/insights-web";
-import {getOrderDetailStateDescription, getOrderStateDescription} from "@/pages/common/desc/base";
+import {
+    getLimitingStrategyDescription,
+    getOrderDetailStateDescription,
+    getOrderStateDescription
+} from "@/pages/common/desc/base";
 const { Text } = Typography;
 
 export function getOrderColumns(t: any) {
@@ -209,7 +213,7 @@ export function getLimitingSettingsColumns(t: any) {
             title: t['detailModal.limitingSettings.columns.project'],
             dataIndex: 'projectTitle',
             render: (value,record) => {
-                return <DepartmentLabel departmentId={value}/>
+                return <Text>{value}</Text>
             }
             ,
         },
@@ -217,7 +221,7 @@ export function getLimitingSettingsColumns(t: any) {
             title: t['detailModal.limitingSettings.columns.strategy'],
             dataIndex: 'strategy',
             render: (value,record) => {
-                return <UserGroup users={value}/>
+                return <Text>{getLimitingStrategyDescription(t,value)}</Text>
             }
         },
 

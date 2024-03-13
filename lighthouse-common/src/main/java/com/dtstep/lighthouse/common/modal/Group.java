@@ -19,6 +19,8 @@ public class Group implements Serializable {
     private String secretKey;
 
     private GroupStateEnum state;
+
+    private String projectTitle;
     
     private String desc;
 
@@ -136,5 +138,13 @@ public class Group implements Serializable {
 
     public void setRandomId(String randomId) {
         this.randomId = randomId;
+    }
+
+    public String getProjectTitle() {
+        return projectTitle;
+    }
+
+    public void setProjectTitle(String projectTitle) {
+        this.projectTitle = projectTitle;
     }
 }

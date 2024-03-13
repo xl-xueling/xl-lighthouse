@@ -112,8 +112,10 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
                 <Table size={"small"} rowKey="id" pagination={false} columns={statAccessColumns} data={[orderInfo.extend]} />
             )
         }else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS && orderInfo.extend){
+            const extendElement = {...orderInfo.extend,strategy:orderInfo.extendConfig.strategy,currentValue:orderInfo.extendConfig.currentValue,updateValue:orderInfo.extendConfig.updateValue}
+            console.log("bindElements is:" + JSON.stringify(extendElement));
             return (
-                <Table size={"small"} rowKey="id" pagination={false} columns={limitingSettingsColumns} data={[orderInfo.extend]} />
+                <Table size={"small"} rowKey="id" pagination={false} columns={limitingSettingsColumns} data={[extendElement]} />
             )
         }else{
             return  <Typography.Text type="secondary">

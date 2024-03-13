@@ -15,6 +15,7 @@
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.GroupStateEnumTypeHandler"/>
         <result property="extendConfig" column="extend_config" typeHandler="com.dtstep.lighthouse.insights.types.GroupExtendConfigTypeHandler"/>
         <result property="randomId" column="random_id"/>
+        <result property="projectTitle" column="project_title"/>
         <result property="refreshTime" column="refresh_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="createTime" column="create_time"/>
@@ -69,10 +70,10 @@
     </update>
 
     <select id="queryById" resultMap="groupResultMap">
-        SELECT `id`,`token`,`project_id`,`columns`,`random_id`,
-               `state`,`desc`,
-               `extend_config`,`debug_mode`,`refresh_time`,`create_time`,`update_time`
-        FROM ldp_groups WHERE id = #{id}
+        SELECT a.`id`,`token`,`project_id`,`columns`,`random_id`,
+               a.`state`,a.`desc`,
+               a.`extend_config`,a.`debug_mode`,a.`refresh_time`,a.`create_time`,a.`update_time`,b.title as project_title
+        FROM ldp_groups a left join ldp_projects b on a.project_id = b.id  WHERE a.id = #{id}
     </select>
 
     <select id="queryByProjectId" resultMap="groupResultMap">
