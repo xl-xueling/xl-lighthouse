@@ -26,8 +26,8 @@ import com.dtstep.lighthouse.core.callback.CallBackMain;
 import com.dtstep.lighthouse.core.limited.strategy.Strategy;
 import com.dtstep.lighthouse.core.limited.strategy.impl.StatResultStrategyService;
 import com.dtstep.lighthouse.core.limited.trigger.Trigger;
-import com.dtstep.lighthouse.core.limited.trigger.impl.GroupLimitedTrigger;
-import com.dtstep.lighthouse.core.limited.trigger.impl.StatLimitedTrigger;
+import com.dtstep.lighthouse.core.limited.trigger.impl.GroupLimitingTrigger;
+import com.dtstep.lighthouse.core.limited.trigger.impl.StatLimitingTrigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,9 +47,9 @@ public final class LimitedContext {
 
     private static final Strategy<StatExtEntity> statLimitedService = new StatResultStrategyService();
 
-    private static final Trigger<GroupExtEntity> groupTrigger = new GroupLimitedTrigger();
+    private static final Trigger<GroupExtEntity> groupTrigger = new GroupLimitingTrigger();
 
-    private static final Trigger<StatExtEntity> statTrigger = new StatLimitedTrigger();
+    private static final Trigger<StatExtEntity> statTrigger = new StatLimitingTrigger();
 
     public boolean tryAcquire(GroupExtEntity groupExtEntity, int permitsPerSecond, int step){
         if(!LDPConfig.limitedEnable()){

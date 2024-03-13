@@ -159,7 +159,7 @@ public final class GroupDBWrapper {
         DBConnection dbConnection = ConnectionManager.getConnection();
         Connection conn = dbConnection.getConnection();
         QueryRunner queryRunner = new QueryRunner();
-        Group group = null;
+        Group group;
         try{
             group = queryRunner.query(conn, String.format("select * from ldp_groups where id = '%s'",groupId), new GroupResultSetHandler());
         }finally {
@@ -301,10 +301,10 @@ public final class GroupDBWrapper {
             return null;
         }
         boolean isLimited = groupEntity.getState() == GroupStateEnum.LIMITING
-                && (System.currentTimeMillis() - groupEntity.getUpdateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < TimeUnit.MINUTES.toMillis(StatConst.LIMITING_EXPIRE_MINUTES));
+                && (System.currentTimeMillis() - groupEntity.getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < TimeUnit.MINUTES.toMillis(StatConst.LIMITING_EXPIRE_MINUTES));
         if(isLimited){
             return GroupStateEnum.LIMITING;
-        }else{
+        }else {
             return groupEntity.getState();
         }
     }
