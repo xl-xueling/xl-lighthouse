@@ -123,6 +123,12 @@ public class StatServiceImpl implements StatService {
         return ResultCode.success;
     }
 
+    @Override
+    public void changeState(Stat stat, StatStateEnum statStateEnum) throws Exception{
+        LocalDateTime localDateTime = LocalDateTime.now();
+        StatDBWrapper.changeState(stat.getId(),statStateEnum,localDateTime);
+    }
+
     @Transactional
     @Override
     public int delete(Stat stat) {
