@@ -52,7 +52,7 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
     val threshold = getThreshold(groupEntity,LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING);
     if (!LimitedContext.getInstance().tryAcquire(groupEntity,threshold,message.getRepeat)) {
       logger.error(s"limited trigger strategy:GROUP_MESSAGE_SIZE_LIMIT," +
-        s"group id:${groupEntity.getId},threshold:${threshold}")
+        s"group id:${groupEntity.getId},threshold:${threshold * 60L}")
       return null;
     }
     val resultCodeEnum = validMessage(message,groupEntity);
