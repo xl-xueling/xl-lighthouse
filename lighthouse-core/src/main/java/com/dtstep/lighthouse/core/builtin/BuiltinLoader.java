@@ -184,6 +184,7 @@ public final class BuiltinLoader {
                 statEntity.setUpdateTime(localDateTime);
                 statEntity.setGroupColumns(groupColumns);
                 statEntity.setRandomId(randomId);
+                statEntity.setState(StatStateEnum.RUNNING);
                 statEntity.setProjectTitle(builtinProject.getTitle());
                 if(StringUtil.isNotEmpty(renderConfig)){
                     statEntity.setRenderConfig(JsonUtil.toJavaObject(renderConfig, RenderConfig.class));
@@ -192,7 +193,6 @@ public final class BuiltinLoader {
                 statExtEntity.setBuiltIn(true);
                 statExtEntity.setToken(token);
                 statExtEntity.setTitle(statExtEntity.getTemplateEntity().getTitle());
-                statExtEntity.setStatStateEnum(StatStateEnum.RUNNING);
                 List<StatExtEntity> groupStats = groupStatsMapping.getOrDefault(groupId, new ArrayList<>());
                 groupStats.add(statExtEntity);
                 groupStatsMapping.put(groupId,groupStats);
