@@ -25,7 +25,7 @@ public class SendTest {
             }
             map.put("score",ThreadLocalRandom.current().nextDouble(100));
             LightHouse.stat("fIR:test_stat","DNem02v3BSiJW1PILaC3jhB10W8spibjGRICnVtL",map,t);
-            Thread.sleep(10);
+            Thread.sleep(5);
         }
         System.out.println("send success!");
         Thread.sleep(100000);

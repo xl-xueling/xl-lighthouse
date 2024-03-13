@@ -18,15 +18,12 @@ package com.dtstep.lighthouse.common.entity.group;
  */
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
-import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 
 import java.time.ZoneId;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -103,7 +100,7 @@ public class GroupExtEntity extends Group {
 
     public static boolean isLimitedExpired(GroupExtEntity groupExtEntity){
         return groupExtEntity.getState() == GroupStateEnum.LIMITING
-                && (System.currentTimeMillis() - groupExtEntity.getUpdateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITED_EXPIRE_MINUTES));
+                && (System.currentTimeMillis() - groupExtEntity.getUpdateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITING_EXPIRE_MINUTES));
     }
 
 //    public static boolean isDebugModeExpired(GroupExtEntity groupExtEntity){
