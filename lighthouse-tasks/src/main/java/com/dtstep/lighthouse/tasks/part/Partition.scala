@@ -38,6 +38,6 @@ private[tasks] trait Partition[T] extends Serializable {
   }
 
   def getThreshold(group:GroupExtEntity, strategy:LimitingStrategyEnum):Int = {
-    group.getLimitedThresholdMap.getOrDefault(strategy.getStrategy,-1);
+    group.getExtendConfig.getLimitingConfig.getOrDefault(strategy.getStrategy,-1);
   }
 }
