@@ -234,7 +234,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                 setShowsStatAddPanel(false);
             }} onSuccess={() => {createStatSuccess()}}/>}
             {showGroupEditPanel && <GroupUpdatePanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)} callback={callback}/>}
-            {/*{showLimitedRecordPanel && <LimitedRecordModal resourceId={groupInfo?.id} recordTypes={[RecordTypeEnum.GROUP_MESSAGE_LIMITED]} resourceType={ResourceTypeEnum.Group} onClose={() => setShowLimitingManagerPanel(false)}/>}*/}
+            {/*{showLimitedRecordPanel && <LimitedRecordModal resourceId={groupInfo?.id} recordTypes={[RecordTypeEnum.GROUP_MESSAGE_LIMITING]} resourceType={ResourceTypeEnum.Group} onClose={() => setShowLimitingManagerPanel(false)}/>}*/}
             {showLimitingManagerPanel && <LimitingSettingsModal groupInfo={groupInfo} onClose={() => setShowLimitingManagerPanel(false)}/>}
             {showSecretKeyModal && <SecretKeyModal groupId={groupInfo?.id} onClose={() => setShowSecretKeyModal(false)}/>}
             </Spin>

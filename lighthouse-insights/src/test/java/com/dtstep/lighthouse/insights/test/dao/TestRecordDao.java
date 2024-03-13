@@ -42,7 +42,7 @@ public class TestRecordDao {
             record.setRecordType(RecordTypeEnum.GROUP_MESSAGE_LIMITING);
             record.setResourceId(100215);
             record.setResourceType(ResourceTypeEnum.Group);
-            record.setDesc(JsonUtil.toJSONString(record));
+            record.setExtend(JsonUtil.toJSONString(record));
             recordDao.insert(record);
         }
     }
