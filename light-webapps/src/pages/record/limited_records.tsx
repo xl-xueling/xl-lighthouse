@@ -27,10 +27,10 @@ export function LimitedRecordModal({resourceId,resourceType,recordTypes}){
     const [loading, setLoading] = useState(true);
     const [recordData, setRecordData] = useState<Array<Record>>([]);
     const [pagination, setPagination] = useState<PaginationProps>({
-        sizeOptions: [10,20],
+        sizeOptions: [8,15],
         sizeCanChange: false,
         showTotal: true,
-        pageSize: 10,
+        pageSize: 8,
         current: 1,
         pageSizeChangeResetCurrent: false,
     });
