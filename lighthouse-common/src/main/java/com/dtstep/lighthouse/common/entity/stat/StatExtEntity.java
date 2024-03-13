@@ -111,6 +111,6 @@ public class StatExtEntity extends Stat {
 
     public static boolean isLimitedExpired(StatExtEntity statExtEntity){
         return statExtEntity.getState() == StatStateEnum.LIMITING
-                && (System.currentTimeMillis() - statExtEntity.getUpdateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITING_EXPIRE_MINUTES));
+                && (System.currentTimeMillis() - statExtEntity.getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITING_EXPIRE_MINUTES));
     }
 }

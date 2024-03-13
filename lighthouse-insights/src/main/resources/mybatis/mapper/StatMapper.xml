@@ -20,6 +20,7 @@
         <result property="expired" column="expired"/>
         <result property="dataVersion" column="data_version"/>
         <result property="desc" column="desc"/>
+        <result property="refreshTime" column="refresh_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
@@ -48,7 +49,7 @@
     </insert>
 
     <select id="queryById" resultMap="statResultMap">
-        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`meta_id`,a.`timeparam`,a.`state`,a.`random_id`,a.`data_version`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,b.title as project_title,
+        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`meta_id`,a.`timeparam`,a.`state`,a.`random_id`,a.`data_version`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title,
                b.department_id,c.token,c.columns
         FROM ldp_stats a
                  inner join ldp_projects b on a.project_id = b.id
@@ -73,7 +74,7 @@
         FROM ldp_departments d
         JOIN cte ON cte.id = d.pid
         )
-        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`timeparam`,a.`state`,a.`random_id`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,b.title as project_title,
+        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`timeparam`,a.`state`,a.`random_id`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title,
                b.department_id,c.token,c.columns
         FROM ldp_stats a
                  inner join ldp_projects b on a.project_id = b.id
@@ -142,7 +143,7 @@
     </select>
 
     <select id="queryByProjectId" resultMap="statResultMap">
-        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`
+        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`expired`,`desc`,`create_time`,`update_time`,`refresh_time`
         from ldp_stats where project_id = #{projectId}
     </select>
 

@@ -48,6 +48,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -144,11 +145,11 @@ public final class GroupDBWrapper {
                 group.setRandomId(randomId);
                 group.setCreateTime(DateUtil.timestampToLocalDateTime(createTime));
                 group.setUpdateTime(DateUtil.timestampToLocalDateTime(updateTime));
+                group.setRefreshTime(DateUtil.timestampToLocalDateTime(refreshTime));
                 GroupStateEnum statStateEnum = GroupStateEnum.forValue(state);
                 group.setState(statStateEnum);
                 List<Column> columnList = JsonUtil.toJavaObjectList(columns,Column.class);
                 group.setColumns(columnList);
-                group.setRefreshTime(DateUtil.timestampToLocalDateTime(refreshTime));
             }
             return group;
         }
@@ -180,13 +181,12 @@ public final class GroupDBWrapper {
         return group;
     }
 
-    public static int changeState(int groupId,GroupStateEnum groupStateEnum) throws Exception {
+    public static int changeState(int groupId, GroupStateEnum groupStateEnum, LocalDateTime date) throws Exception {
         DBConnection dbConnection = ConnectionManager.getConnection();
         Connection conn = dbConnection.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         int result;
         try{
-            Date date = new Date();
             if(groupStateEnum == GroupStateEnum.LIMITING){
                 result = queryRunner.update(conn, "update ldp_groups set state = ?,refresh_time = ? where id = ? and state = ?", groupStateEnum.getState(),date, groupId,GroupStateEnum.RUNNING.getState());
             }else{
@@ -201,7 +201,7 @@ public final class GroupDBWrapper {
     public static GroupExtEntity combineExtInfo(Group groupEntity) throws Exception{
         GroupExtEntity groupExtEntity = new GroupExtEntity(groupEntity);
         if(GroupExtEntity.isLimitedExpired(groupExtEntity)){
-            changeState(groupEntity.getId(),GroupStateEnum.RUNNING);
+            changeState(groupEntity.getId(),GroupStateEnum.RUNNING,LocalDateTime.now());
             groupExtEntity.setState(GroupStateEnum.RUNNING);
         }
         List<Column> columnList = groupEntity.getColumns();

@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -138,6 +139,7 @@ public class StatDBWrapper {
                 Integer metaId = rs.getInt("meta_id");
                 long createTime = rs.getTimestamp("create_time").getTime();
                 long updateTime = rs.getTimestamp("update_time").getTime();
+                long refreshTime = rs.getTimestamp("refresh_time").getTime();
                 String randomId = rs.getString("random_id");
                 String columns = rs.getString("columns");
                 stat.setId(id);
@@ -152,6 +154,7 @@ public class StatDBWrapper {
                 stat.setMetaId(metaId);
                 stat.setCreateTime(DateUtil.timestampToLocalDateTime(createTime));
                 stat.setUpdateTime(DateUtil.timestampToLocalDateTime(updateTime));
+                stat.setRefreshTime(DateUtil.timestampToLocalDateTime(refreshTime));
                 stat.setRandomId(randomId);
                 stat.setGroupColumns(columns);
                 stat.setDataVersion(dataVersion);
@@ -232,7 +235,7 @@ public class StatDBWrapper {
             if(groupStateEnum == GroupStateEnum.LIMITING && stateEnum == StatStateEnum.RUNNING){
                 statExtEntity.setStatStateEnum(StatStateEnum.LIMITING);
             }else if(StatExtEntity.isLimitedExpired(statExtEntity)){
-                changeState(statEntity.getId(),StatStateEnum.RUNNING);
+                changeState(statEntity.getId(),StatStateEnum.RUNNING,LocalDateTime.now());
             }
         }
         String template = statExtEntity.getTemplate();
@@ -274,16 +277,16 @@ public class StatDBWrapper {
         return statExtEntity;
     }
 
-    public static int changeState(int statId,StatStateEnum statStateEnum) throws Exception {
+    public static int changeState(int statId, StatStateEnum statStateEnum, LocalDateTime date) throws Exception {
         DBConnection dbConnection = ConnectionManager.getConnection();
         Connection conn = dbConnection.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         int result;
         try{
             if(statStateEnum == StatStateEnum.LIMITING){
-                result = queryRunner.update(conn, "update ldp_stats set state = ?,update_time = ? where id = ? and state = ?", statStateEnum.getState(),new Date(), statId,StatStateEnum.RUNNING.getState());
+                result = queryRunner.update(conn, "update ldp_stats set state = ?,refresh_time = ? where id = ? and state = ?", statStateEnum.getState(),date, statId,StatStateEnum.RUNNING.getState());
             }else{
-                result = queryRunner.update(conn, "update ldp_stats set state = ?,update_time = ? where id = ?", statStateEnum.getState(),new Date(), statId);
+                result = queryRunner.update(conn, "update ldp_stats set state = ?,refresh_time = ? where id = ?", statStateEnum.getState(),date, statId);
             }
         }finally {
             ConnectionManager.close(dbConnection);

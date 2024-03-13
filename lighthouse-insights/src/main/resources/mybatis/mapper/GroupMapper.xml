@@ -72,7 +72,7 @@
     <select id="queryById" resultMap="groupResultMap">
         SELECT a.`id`,`token`,`project_id`,`columns`,`random_id`,
                a.`state`,a.`desc`,
-               a.`extend_config`,a.`debug_mode`,a.`refresh_time`,a.`create_time`,a.`update_time`,b.title as project_title
+               a.`extend_config`,a.`debug_mode`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title
         FROM ldp_groups a left join ldp_projects b on a.project_id = b.id  WHERE a.id = #{id}
     </select>
 
