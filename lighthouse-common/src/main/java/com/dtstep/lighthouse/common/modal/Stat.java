@@ -35,6 +35,8 @@ public class Stat implements Serializable {
 
     private LocalDateTime createTime;
 
+    private LocalDateTime refreshTime;
+
     private Integer metaId;
 
     private LocalDateTime updateTime;
@@ -195,5 +197,13 @@ public class Stat implements Serializable {
 
     public void setGroupColumns(String groupColumns) {
         this.groupColumns = groupColumns;
+    }
+
+    public LocalDateTime getRefreshTime() {
+        return refreshTime;
+    }
+
+    public void setRefreshTime(LocalDateTime refreshTime) {
+        this.refreshTime = refreshTime;
     }
 }

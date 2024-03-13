@@ -100,7 +100,7 @@ public class GroupExtEntity extends Group {
 
     public static boolean isLimitedExpired(GroupExtEntity groupExtEntity){
         return groupExtEntity.getState() == GroupStateEnum.LIMITING
-                && (System.currentTimeMillis() - groupExtEntity.getUpdateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITING_EXPIRE_MINUTES));
+                && (System.currentTimeMillis() - groupExtEntity.getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITING_EXPIRE_MINUTES));
     }
 
 //    public static boolean isDebugModeExpired(GroupExtEntity groupExtEntity){

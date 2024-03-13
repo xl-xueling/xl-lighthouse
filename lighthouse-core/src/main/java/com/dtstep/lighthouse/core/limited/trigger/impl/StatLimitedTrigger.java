@@ -47,17 +47,17 @@ public class StatLimitedTrigger implements Trigger<StatExtEntity> {
             boolean isLock = RedLock.tryLock(lockKey,30,120, TimeUnit.SECONDS);
             if(isLock){
                 try{
-                    int result = StatDBWrapper.changeState(statExtEntity.getId(),StatStateEnum.LIMITING);
+                    LocalDateTime localDateTime = LocalDateTime.now();
+                    int result = StatDBWrapper.changeState(statExtEntity.getId(),StatStateEnum.LIMITING,localDateTime);
                     if(result == 1){
                         logger.info("lighthouse limited,the statistics stat was changed to the current limiting state,statId:{}", statExtEntity.getId());
                         new DelaySchedule().delaySchedule(() -> {
                             try{
-                                StatDBWrapper.changeState(statExtEntity.getId(),StatStateEnum.RUNNING);
+                                StatDBWrapper.changeState(statExtEntity.getId(),StatStateEnum.RUNNING,LocalDateTime.now());
                             }catch (Exception ex){
                                 logger.error("change statistics state error!",ex);
                             }},StatConst.LIMITING_EXPIRE_MINUTES,TimeUnit.MINUTES);
                         Record limitingRecord = new Record();
-                        LocalDateTime localDateTime = LocalDateTime.now();
                         long startTime = DateUtil.translateToTimeStamp(localDateTime);
                         limitingRecord.setRecordType(RecordTypeEnum.STAT_RESULT_LIMITING);
                         limitingRecord.setResourceId(statExtEntity.getId());
