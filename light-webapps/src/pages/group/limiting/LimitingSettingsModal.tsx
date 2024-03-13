@@ -10,13 +10,9 @@ import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import "./style/index.module.less"
 import {LimitedRecordModal} from "@/pages/record/limited_records";
-import {MetricSet} from "@/types/insights-web";
-import {requestUpdate, requestUpdateLimitingSettings} from "@/api/group";
-import {updateStoreStaredMetricInfo} from "@/index";
 import {requestCreateApply} from "@/api/order";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import {getRandomString} from "@/utils/util";
 
 export function LimitingSettingsModal({groupInfo,onClose}){
 
@@ -57,15 +53,14 @@ export function LimitingSettingsModal({groupInfo,onClose}){
             extendConfig:{
                 groupId:groupInfo?.id,
                 strategy:values.strategy == 1?'GROUP_MESSAGE_SIZE_LIMITING':'STAT_RESULT_SIZE_LIMITING',
-                currentValue:values.currentValue,
-                updateValue:values.updateValue,
+                currentValue:Number(values.currentValue),
+                updateValue:Number(values.updateValue),
             }
         }
         await requestCreateApply(applyParam).then((response) => {
             const {code, data ,message} = response;
-            console.log("response is:" + JSON.stringify(response));
             if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectApply.form.submit.success']});
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['limitingConfig.form.submit.success']});
                 onClose();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -128,7 +123,7 @@ export function LimitingSettingsModal({groupInfo,onClose}){
                                 </Select>
                             </FormItem>
                             <FormItem
-                                label={t['limitingConfig.form.label.currentValue']}
+                                label={t['limitingConfig.form.label.currentValue'] + " [" + t['limitingConfig.form.label.unit'] + "]"}
                                 field='currentValue'
                                 rules={[
                                     { required: true, type: 'number', validateTrigger : ['onSubmit'] },
@@ -137,7 +132,7 @@ export function LimitingSettingsModal({groupInfo,onClose}){
                                 <Input disabled={true} />
                             </FormItem>
                             <FormItem
-                                label={t['limitingConfig.form.label.updateValue']}
+                                label={t['limitingConfig.form.label.updateValue'] + " [" + t['limitingConfig.form.label.unit'] + "]"}
                                 field='updateValue'
                                 rules={[
                                     { required: true, type: 'number', validateTrigger : ['onSubmit'] },

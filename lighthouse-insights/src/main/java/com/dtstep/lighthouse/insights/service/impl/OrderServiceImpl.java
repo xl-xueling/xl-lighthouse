@@ -339,13 +339,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public int process(OrderProcessParam processParam) {
+    public int process(OrderProcessParam processParam) throws Exception{
         int currentUserId = baseService.getCurrentUserId();
         int state = processParam.getState();
         Order order = orderDao.queryById(processParam.getId());
         Validate.notNull(order);
         Validate.isTrue(order.getState() == OrderStateEnum.PROCESSING);
-        List<OrderDetail> orderDetails = new ArrayList<>();
         int result = 0;
         if(state == 1){
             int currentNode = order.getCurrentNode();
@@ -362,7 +361,7 @@ public class OrderServiceImpl implements OrderService {
         return result;
     }
 
-    private int agreeOrder(Integer currentUserId, OrderProcessParam processParam, Order order){
+    private int agreeOrder(Integer currentUserId, OrderProcessParam processParam, Order order) throws Exception{
         LocalDateTime localDateTime = LocalDateTime.now();
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setRoleId(order.getCurrentNode());
@@ -382,8 +381,7 @@ public class OrderServiceImpl implements OrderService {
             orderAgreeCallback(order);
         }
         order.setUpdateTime(localDateTime);
-        int result = orderDao.update(order);
-        return result;
+        return orderDao.update(order);
     }
 
     private int retractOrder(Integer currentUserId,OrderProcessParam processParam,Order order){
@@ -403,8 +401,8 @@ public class OrderServiceImpl implements OrderService {
         order.setUpdateTime(LocalDateTime.now());
         order.setState(OrderStateEnum.RETRACTED);
         order.setCurrentNode(0);
-        for(int i=0;i<orderDetails.size();i++){
-            orderDetailDao.updateDetail(orderDetails.get(i));
+        for (OrderDetail orderDetail : orderDetails) {
+            orderDetailDao.updateDetail(orderDetail);
         }
         return orderDao.update(order);
     }
@@ -436,15 +434,15 @@ public class OrderServiceImpl implements OrderService {
         order.setUpdateTime(LocalDateTime.now());
         order.setState(OrderStateEnum.REJECTED);
         order.setCurrentNode(0);
-        for(int i=0;i<orderDetails.size();i++){
-            orderDetailDao.updateDetail(orderDetails.get(i));
+        for (OrderDetail detail : orderDetails) {
+            orderDetailDao.updateDetail(detail);
         }
         int result = orderDao.update(order);
         orderRejectCallback(order);
         return result;
     }
 
-    private void orderAgreeCallback(Order order){
+    private void orderAgreeCallback(Order order) throws Exception {
         Integer userId = order.getUserId();
         if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
             User userUpdateParam = new User();
@@ -457,6 +455,21 @@ public class OrderServiceImpl implements OrderService {
             Role role = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,projectId);
             Validate.notNull(role);
             permissionService.grantPermission(userId,OwnerTypeEnum.USER,role.getId());
+        }else if(order.getOrderType() == OrderTypeEnum.STAT_ACCESS){
+            Integer statId = (Integer) order.getExtendConfig().get("statId");
+            Role role = roleService.cacheQueryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
+            Validate.notNull(role);
+            permissionService.grantPermission(userId,OwnerTypeEnum.USER,role.getId());
+        }else if(order.getOrderType() == OrderTypeEnum.LIMITING_SETTINGS){
+            Integer groupId = (Integer) order.getExtendConfig().get("groupId");
+            String strategy = (String) order.getExtendConfig().get("strategy");
+            Integer updateValue = (Integer) order.getExtendConfig().get("updateValue");
+            Validate.isTrue(updateValue > 0);
+            LimitingStrategyEnum limitingStrategyEnum = LimitingStrategyEnum.getEnum(strategy);
+            Group group = groupService.queryById(groupId);
+            GroupExtendConfig groupExtendConfig = group.getExtendConfig();
+            groupExtendConfig.getLimitingConfig().put(limitingStrategyEnum,updateValue);
+            groupService.update(group);
         }
     }
 
