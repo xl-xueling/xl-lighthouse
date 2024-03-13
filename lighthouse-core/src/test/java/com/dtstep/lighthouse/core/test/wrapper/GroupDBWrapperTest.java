@@ -22,7 +22,7 @@ public class GroupDBWrapperTest {
 
     @Test
     public void testQueryGroup() throws Exception {
-        int groupId = 100285;
+        int groupId = 100286;
         GroupExtEntity groupExtEntity = GroupDBWrapper.queryById(groupId);
         System.out.println("groupExtEntity:" + JsonUtil.toJSONString(groupExtEntity));
     }

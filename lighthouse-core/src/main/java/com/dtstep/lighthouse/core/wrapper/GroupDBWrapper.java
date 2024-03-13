@@ -30,6 +30,7 @@ import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
+import com.dtstep.lighthouse.core.dao.DaoHelper;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
@@ -42,6 +43,7 @@ import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +53,8 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -76,6 +80,12 @@ public final class GroupDBWrapper {
         Optional<GroupExtEntity> optional = groupCache.get(groupId, (k) -> actualQueryGroupById(groupId));
         assert optional != null;
         return optional.orElse(null);
+    }
+
+    static {
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(1,
+                new BasicThreadFactory.Builder().namingPattern("group-cache-refresh-schedule-pool-%d").daemon(true).build());
+        service.scheduleWithFixedDelay(new RefreshThread(),0,20, TimeUnit.SECONDS);
     }
 
     public static Optional<GroupExtEntity> actualQueryGroupByToken(String token){
@@ -311,11 +321,81 @@ public final class GroupDBWrapper {
         }
     }
 
-    public static void clearLocalCache(int groupId){
-        GroupExtEntity groupExtEntity = GroupDBWrapper.queryById(groupId);
-        assert groupExtEntity != null;
-        groupCache.invalidate(groupId);
-        groupCache.invalidate(groupExtEntity.getToken());
+    private static class RefreshListSetHandler implements ResultSetHandler<List<RefreshEntity>> {
+
+        @Override
+        public List<RefreshEntity> handle(ResultSet resultSet) throws SQLException {
+            List<RefreshEntity> list = new ArrayList<>();
+            while (resultSet.next()){
+                Integer id = resultSet.getInt("id");
+                String token = resultSet.getString("token");
+                list.add(new RefreshEntity(id,token));
+            }
+            return list;
+        }
+    }
+
+    private static List<RefreshEntity> queryRefreshIdList() throws Exception {
+        DBConnection dbConnection = ConnectionManager.getConnection();
+        Connection conn = dbConnection.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+        List<RefreshEntity> ids;
+        try{
+            long time = DateUtil.getSecondBefore(System.currentTimeMillis(),20);
+            ids = queryRunner.query(conn, "select id,token from ldp_groups where create_time != refresh_time and refresh_time > ?", new RefreshListSetHandler(),new Date(time));
+        }finally {
+            ConnectionManager.close(dbConnection);
+        }
+        return ids;
+    }
+
+    private static class RefreshEntity {
+
+        private Integer id;
+
+        private String token;
+
+        public RefreshEntity(Integer id,String token){
+            this.id = id;
+            this.token = token;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+    }
+
+    static class RefreshThread implements Runnable {
+
+        @Override
+        public void run() {
+            try{
+                List<RefreshEntity> entities = queryRefreshIdList();
+                if(CollectionUtils.isNotEmpty(entities)){
+                    for(RefreshEntity refreshEntity:entities){
+                        if(logger.isTraceEnabled()){
+                            logger.trace("clear group local cache,id:{},token:{}",refreshEntity.getId(),refreshEntity.getToken());
+                        }
+                        groupCache.invalidate(refreshEntity.getId());
+                        groupCache.invalidate(refreshEntity.getToken());
+                    }
+                }
+            }catch (Exception ex){
+                logger.error("statistic group cache refresh error!",ex);
+            }
+        }
     }
 }
 
