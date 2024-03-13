@@ -344,7 +344,7 @@ CREATE TABLE `ldp_stats` (
                              `data_version` int DEFAULT '0',
                              `desc` varchar(300) DEFAULT NULL,
                              `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                             `refresh_time` timestamp NOT NULL,
+                             `refresh_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                              `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                              `random_id` varchar(45) NOT NULL,
                              PRIMARY KEY (`id`),
