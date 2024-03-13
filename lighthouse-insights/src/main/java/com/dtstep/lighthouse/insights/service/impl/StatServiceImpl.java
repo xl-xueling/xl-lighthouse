@@ -96,6 +96,7 @@ public class StatServiceImpl implements StatService {
         LocalDateTime localDateTime = LocalDateTime.now();
         stat.setUpdateTime(localDateTime);
         stat.setCreateTime(localDateTime);
+        stat.setRefreshTime(localDateTime);
         stat.setState(StatStateEnum.RUNNING);
         stat.setRandomId(RandomID.id(32));
         int metaId = metaTableService.getCurrentStatResultTable();
