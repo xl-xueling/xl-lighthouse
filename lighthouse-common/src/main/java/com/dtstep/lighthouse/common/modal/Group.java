@@ -147,4 +147,5 @@ public class Group implements Serializable {
     public void setProjectTitle(String projectTitle) {
         this.projectTitle = projectTitle;
     }
+
 }

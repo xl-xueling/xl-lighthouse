@@ -184,8 +184,7 @@ public class StatDBWrapper {
         DBConnection dbConnection = ConnectionManager.getConnection();
         Connection conn = dbConnection.getConnection();
         QueryRunner queryRunner = new QueryRunner();
-        ResultSetHandler<Stat> handler = new BeanHandler<Stat>(Stat.class);
-        List<Stat> statList = null;
+        List<Stat> statList;
         try{
             statList = queryRunner.query(conn, String.format("select a.*,b.columns from ldp_stats a left join ldp_groups b on a.group_id = b.id where a.group_id = '%s'",groupId), new StatResultListHandler());
         }finally {
