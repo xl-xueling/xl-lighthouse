@@ -41,7 +41,13 @@ export function LimitingSettingsModal({groupInfo,onClose}){
         }
     }
 
-    async function submit(){
+    async function handleSubmit(){
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         setLoading(true);
         const values = formRef.current.getFieldsValue();
         const applyParam = {
@@ -71,15 +77,6 @@ export function LimitingSettingsModal({groupInfo,onClose}){
             setLoading(false);
         })
     }
-
-    const handleSubmit = () => {
-        formRef.current.validate().then(() => {
-            submit().then();
-        }).catch((error) =>{
-            console.log(error);
-        })
-    };
-
 
     return (
         <Modal
