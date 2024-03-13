@@ -30,6 +30,7 @@ import { GlobalContext } from '@/context';
 import useLocale from '@/utils/useLocale';
 import Logo from '@/assets/logo.svg';
 import {Switch, Route, Redirect, useHistory} from 'react-router-dom';
+
 import MessageBox from '@/components/MessageBox';
 import IconButton from './IconButton';
 import Settings from '../Settings';

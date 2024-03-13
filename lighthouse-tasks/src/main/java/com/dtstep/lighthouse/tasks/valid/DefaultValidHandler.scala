@@ -69,7 +69,7 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
   }
 
   def getThreshold(group:GroupExtEntity, strategy:LimitingStrategyEnum):Int = {
-    group.getLimitedThresholdMap.getOrDefault(strategy.getStrategy,-1);
+    group.getExtendConfig.getLimitingConfig.getOrDefault(strategy,-1);
   }
 
   def capture(groupId:Int, message:LightMessage): Unit = {
