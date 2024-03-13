@@ -38,7 +38,7 @@ public class TestRecordDao {
             limitedRecord.setStartTime(LocalDateTime.now());
             limitedRecord.setEndTime(localDateTime);
             Record record = new Record();
-            record.setRecordTime(LocalDateTime.now());
+            record.setCreateTime(LocalDateTime.now());
             record.setRecordType(RecordTypeEnum.GROUP_MESSAGE_LIMITING);
             record.setResourceId(100215);
             record.setResourceType(ResourceTypeEnum.Group);

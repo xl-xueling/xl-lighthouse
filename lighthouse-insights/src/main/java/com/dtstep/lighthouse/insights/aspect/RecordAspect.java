@@ -47,7 +47,7 @@ public class RecordAspect {
                 record = new Record();
                 record.setUserId(userId);
                 record.setRecordType(recordTypeEnum);
-                record.setRecordTime(LocalDateTime.now());
+                record.setCreateTime(LocalDateTime.now());
                 record.setExtend(JsonUtil.toJSONString(param));
                 record.setResourceId(param.getId());
                 record.setResourceType(ResourceTypeEnum.Stat);
