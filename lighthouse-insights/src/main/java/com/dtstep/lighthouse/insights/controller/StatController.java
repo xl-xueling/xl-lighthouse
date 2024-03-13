@@ -61,9 +61,8 @@ public class StatController {
         Integer id = changeParam.getId();
         Stat stat = statService.queryById(id);
         Validate.notNull(stat);
-        stat.setState(changeParam.getState());
-        ResultCode resultCode = statService.update(stat);
-        return ResultData.result(resultCode);
+        statService.changeState(stat,changeParam.getState());
+        return ResultData.success();
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")

@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.modal.DBStatistics;
 import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
@@ -16,6 +17,8 @@ public interface StatService {
     ResultCode create(Stat stat) throws Exception;
 
     ResultCode update(Stat stat);
+
+    void changeState(Stat stat, StatStateEnum statStateEnum) throws Exception;
 
     int delete(Stat stat);
 
