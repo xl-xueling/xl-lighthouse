@@ -3,6 +3,7 @@ import {Badge} from "@arco-design/web-react";
 import {
     ApproveStateEnum,
     ComponentTypeEnum,
+    LimitingStrategyEnum,
     OrderStateEnum,
     OrderTypeEnum,
     PermissionEnum,
@@ -18,10 +19,7 @@ import {CiViewTable} from "react-icons/ci";
 import {IconCalendarClock, IconMindMapping, IconStar, IconStarFill, IconTag} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
-import {VscGistSecret} from "react-icons/vsc";
-import { VscOutput } from "react-icons/vsc";
-
-import { MdOutlinePendingActions } from "react-icons/md";
+import {VscGistSecret, VscOutput} from "react-icons/vsc";
 
 export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
     if(value === StatStateEnum.PENDING){
@@ -149,6 +147,16 @@ export function getOrderDetailStateDescription(t:any,value:ApproveStateEnum){
         return <Badge status="error" text={t['basic.orderDetail.approveState.description.retracted']}/>;
     }else if(value === ApproveStateEnum.Suspend){
         return <Badge status="error" text={t['basic.orderDetail.approveState.description.suspend']}/>;
+    }
+}
+
+export function getLimitingStrategyDescription(t:any,value:LimitingStrategyEnum){
+    if(value == LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING){
+        return t['basic.limitingStrategy.messageSizeLimiting'];
+    }else if(value == LimitingStrategyEnum.STAT_RESULT_SIZE_LIMITING){
+        return t['basic.limitingStrategy.resultSizeLimiting'];
+    }else{
+        return null;
     }
 }
 
