@@ -81,7 +81,7 @@ public final class StatConst {
 
     public static final long NEGATIVE_INFINITY = -999999999999999999L;
 
-    public static final int LIMITED_EXPIRE_MINUTES = 15;
+    public static final int LIMITING_EXPIRE_MINUTES = 15;
 
     public static final int EVENT_POOL_PUT_COST_THRESHOLD = 10000;
 
