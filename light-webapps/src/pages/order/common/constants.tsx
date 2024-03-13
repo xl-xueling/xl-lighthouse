@@ -189,6 +189,56 @@ export function getProjectAccessColumns(t: any) {
     ];
 }
 
+export function getLimitingSettingsColumns(t: any) {
+    return [
+        {
+            title: t['detailModal.limitingSettings.columns.id'],
+            dataIndex: 'id',
+            render: (value,record) =>
+                <Text>{value}</Text>
+            ,
+        },
+        {
+            title: t['detailModal.limitingSettings.columns.token'],
+            dataIndex: 'token',
+            render: (value,record) =>
+                <Text>{value}</Text>
+            ,
+        },
+        {
+            title: t['detailModal.limitingSettings.columns.project'],
+            dataIndex: 'projectTitle',
+            render: (value,record) => {
+                return <DepartmentLabel departmentId={value}/>
+            }
+            ,
+        },
+        {
+            title: t['detailModal.limitingSettings.columns.strategy'],
+            dataIndex: 'strategy',
+            render: (value,record) => {
+                return <UserGroup users={value}/>
+            }
+        },
+
+        {
+            title: t['detailModal.limitingSettings.columns.currentValue'],
+            dataIndex: 'currentValue',
+            render: (value,record) => {
+                return <Text>{value}</Text>
+            }
+            ,
+        },
+        {
+            title: t['detailModal.limitingSettings.columns.updateValue'],
+            dataIndex: 'updateValue',
+            render: (value,record) => {
+                return <Text>{value}</Text>
+            }
+            ,
+        },
+    ];
+}
 
 
 
