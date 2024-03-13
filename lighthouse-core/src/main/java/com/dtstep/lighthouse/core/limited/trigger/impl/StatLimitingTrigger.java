@@ -22,7 +22,6 @@ import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.modal.Record;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.core.schedule.DelaySchedule;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
@@ -37,9 +36,9 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
-public class StatLimitedTrigger implements Trigger<StatExtEntity> {
+public class StatLimitingTrigger implements Trigger<StatExtEntity> {
 
-    private static final Logger logger = LoggerFactory.getLogger(StatLimitedTrigger.class);
+    private static final Logger logger = LoggerFactory.getLogger(StatLimitingTrigger.class);
 
     @Override
     public void execute(StatExtEntity statExtEntity) throws Exception {
@@ -51,12 +50,6 @@ public class StatLimitedTrigger implements Trigger<StatExtEntity> {
                     int result = StatDBWrapper.changeState(statExtEntity.getId(),StatStateEnum.LIMITING,localDateTime);
                     if(result == 1){
                         logger.info("lighthouse limited,the statistics stat was changed to the current limiting state,statId:{}", statExtEntity.getId());
-                        new DelaySchedule().delaySchedule(() -> {
-                            try{
-                                StatDBWrapper.changeState(statExtEntity.getId(),StatStateEnum.RUNNING,LocalDateTime.now());
-                            }catch (Exception ex){
-                                logger.error("change statistics state error!",ex);
-                            }},StatConst.LIMITING_EXPIRE_MINUTES,TimeUnit.MINUTES);
                         Record limitingRecord = new Record();
                         long startTime = DateUtil.translateToTimeStamp(localDateTime);
                         limitingRecord.setRecordType(RecordTypeEnum.STAT_RESULT_LIMITING);
@@ -71,7 +64,7 @@ public class StatLimitedTrigger implements Trigger<StatExtEntity> {
                         LimitingWrapper.record(limitingRecord);
                     }
                 }catch (Exception ex){
-                    logger.error("change stat state error",ex);
+                    logger.error("stat limiting trigger process error!",ex);
                 }finally {
                     RedLock.unLock(lockKey);
                 }

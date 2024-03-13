@@ -22,7 +22,6 @@ import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.modal.Record;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.core.schedule.DelaySchedule;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
@@ -36,9 +35,9 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
-public class GroupLimitedTrigger implements Trigger<GroupExtEntity> {
+public class GroupLimitingTrigger implements Trigger<GroupExtEntity> {
 
-    private static final Logger logger = LoggerFactory.getLogger(GroupLimitedTrigger.class);
+    private static final Logger logger = LoggerFactory.getLogger(GroupLimitingTrigger.class);
 
     @Override
     public void execute(GroupExtEntity groupExtEntity) throws Exception{
@@ -50,12 +49,6 @@ public class GroupLimitedTrigger implements Trigger<GroupExtEntity> {
                 int result = GroupDBWrapper.changeState(groupExtEntity.getId(),GroupStateEnum.LIMITING,localDateTime);
                 if(result == 1){
                     logger.info("lighthouse limited,the statistics group was changed to the current limiting state,groupId:{}", groupExtEntity.getId());
-                    new DelaySchedule().delaySchedule(() -> {
-                        try{
-                            GroupDBWrapper.changeState(groupExtEntity.getId(),GroupStateEnum.RUNNING,LocalDateTime.now());
-                        }catch (Exception ex){
-                            logger.error("change statistics group state error!",ex);
-                        }},StatConst.LIMITING_EXPIRE_MINUTES,TimeUnit.MINUTES);
                     Record limitingRecord = new Record();
                     long startTime = DateUtil.translateToTimeStamp(localDateTime);
                     limitingRecord.setRecordType(RecordTypeEnum.GROUP_MESSAGE_LIMITING);
@@ -70,7 +63,7 @@ public class GroupLimitedTrigger implements Trigger<GroupExtEntity> {
                     LimitingWrapper.record(limitingRecord);
                 }
             }catch (Exception ex){
-                logger.error("change group state error",ex);
+                logger.error("group limiting trigger process error!",ex);
             }finally {
                 RedLock.unLock(lockKey);
             }
