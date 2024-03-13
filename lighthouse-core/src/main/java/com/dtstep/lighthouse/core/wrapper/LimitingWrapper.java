@@ -33,11 +33,13 @@ public final class LimitingWrapper {
         DBConnection dbConnection = ConnectionManager.getConnection();
         Connection conn = dbConnection.getConnection();
         QueryRunner queryRunner = new QueryRunner();
-        String sql = "INSERT INTO ldp_records (`resource_id`, `resource_type`,`record_type`,`create_time`) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO ldp_records (`resource_id`, `resource_type`,`record_type`,`extend`,`create_time`) VALUES (?, ?, ?, ?)";
         LocalDateTime localDateTime = LocalDateTime.now();
         try{
             queryRunner.insert(conn,sql,new ScalarHandler<>(),limitingRecord.getResourceId(),limitingRecord.getResourceType().getResourceType()
-                    ,limitingRecord.getRecordType().getRecordType(),localDateTime);
+                    ,limitingRecord.getRecordType().getRecordType()
+                    ,limitingRecord.getExtend()
+                    ,localDateTime);
         }finally {
             ConnectionManager.close(dbConnection);
         }

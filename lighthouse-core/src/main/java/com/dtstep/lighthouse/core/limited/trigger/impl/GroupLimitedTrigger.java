@@ -16,9 +16,12 @@ package com.dtstep.lighthouse.core.limited.trigger.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
 import com.dtstep.lighthouse.common.enums.RecordTypeEnum;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.modal.Record;
+import com.dtstep.lighthouse.common.util.DateUtil;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.schedule.DelaySchedule;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
@@ -27,6 +30,7 @@ import com.dtstep.lighthouse.core.limited.trigger.Trigger;
 import com.dtstep.lighthouse.core.lock.RedLock;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.LimitingWrapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
@@ -50,12 +54,19 @@ public class GroupLimitedTrigger implements Trigger<GroupExtEntity> {
                             GroupDBWrapper.changeState(groupExtEntity.getId(),GroupStateEnum.RUNNING);
                         }catch (Exception ex){
                             logger.error("change statistics group state error!",ex);
-                        }},StatConst.LIMITED_EXPIRE_MINUTES,TimeUnit.MINUTES);
+                        }},StatConst.LIMITING_EXPIRE_MINUTES,TimeUnit.MINUTES);
                     Record limitingRecord = new Record();
+                    LocalDateTime localDateTime = LocalDateTime.now();
+                    long startTime = DateUtil.translateToTimeStamp(localDateTime);
                     limitingRecord.setRecordType(RecordTypeEnum.GROUP_MESSAGE_LIMITING);
                     limitingRecord.setResourceId(groupExtEntity.getId());
                     limitingRecord.setResourceType(ResourceTypeEnum.Group);
-                    limitingRecord.setRecordTime(LocalDateTime.now());
+                    ObjectNode extendNode = JsonUtil.createObjectNode();
+                    extendNode.put("strategy", LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING.getStrategy());
+                    extendNode.put("startTime", startTime);
+                    extendNode.put("endTime",DateUtil.getMinuteAfter(startTime,StatConst.LIMITING_EXPIRE_MINUTES));
+                    limitingRecord.setExtend(extendNode.toString());
+                    limitingRecord.setCreateTime(localDateTime);
                     LimitingWrapper.record(limitingRecord);
                 }
             }catch (Exception ex){

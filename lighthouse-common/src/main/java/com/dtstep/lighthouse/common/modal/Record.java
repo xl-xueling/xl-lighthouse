@@ -20,7 +20,7 @@ public class Record implements Serializable {
 
     private String extend;
 
-    private LocalDateTime recordTime;
+    private LocalDateTime createTime;
 
     public Integer getId() {
         return id;
@@ -62,12 +62,12 @@ public class Record implements Serializable {
         this.extend = extend;
     }
 
-    public LocalDateTime getRecordTime() {
-        return recordTime;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public void setRecordTime(LocalDateTime recordTime) {
-        this.recordTime = recordTime;
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     public RecordTypeEnum getRecordType() {
