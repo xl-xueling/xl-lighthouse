@@ -16,11 +16,12 @@ package com.dtstep.lighthouse.core.limited.trigger.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.RecordTypeEnum;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.modal.Record;
 import com.dtstep.lighthouse.core.schedule.DelaySchedule;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
-import com.dtstep.lighthouse.common.entity.limiting.LimitingEntity;
-import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.core.limited.trigger.Trigger;
 import com.dtstep.lighthouse.core.lock.RedLock;
@@ -28,8 +29,7 @@ import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.LimitingWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 public class GroupLimitedTrigger implements Trigger<GroupExtEntity> {
@@ -51,15 +51,12 @@ public class GroupLimitedTrigger implements Trigger<GroupExtEntity> {
                         }catch (Exception ex){
                             logger.error("change statistics group state error!",ex);
                         }},StatConst.LIMITED_EXPIRE_MINUTES,TimeUnit.MINUTES);
-                    Date date = new Date();
-                    LimitingEntity limitingEntity = new LimitingEntity();
-                    limitingEntity.setStrategy(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING.getStrategy());
-                    limitingEntity.setCreateTime(date);
-                    limitingEntity.setStartTime(date);
-                    limitingEntity.setEndTime(new Date(date.getTime() + TimeUnit.MINUTES.toMillis(StatConst.LIMITED_EXPIRE_MINUTES)));
-                    limitingEntity.setRelationId(groupExtEntity.getId());
-                    limitingEntity.setRelationType(1);
-                    LimitingWrapper.record(limitingEntity);
+                    Record limitingRecord = new Record();
+                    limitingRecord.setRecordType(RecordTypeEnum.GROUP_MESSAGE_LIMITING);
+                    limitingRecord.setResourceId(groupExtEntity.getId());
+                    limitingRecord.setResourceType(ResourceTypeEnum.Group);
+                    limitingRecord.setRecordTime(LocalDateTime.now());
+                    LimitingWrapper.record(limitingRecord);
                 }
             }catch (Exception ex){
                 logger.error("change group state error",ex);
