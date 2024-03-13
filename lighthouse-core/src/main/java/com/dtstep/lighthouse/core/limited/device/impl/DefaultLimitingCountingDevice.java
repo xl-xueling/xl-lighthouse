@@ -36,9 +36,9 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
-public class DefaultLimitedCountingDevice implements CountingDevice {
+public class DefaultLimitingCountingDevice implements CountingDevice {
 
-    private static final Logger logger = LoggerFactory.getLogger(DefaultLimitedCountingDevice.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultLimitingCountingDevice.class);
 
     private final static Cache<Pair<Integer,Integer>, Value> valueCache = Caffeine.newBuilder()
             .expireAfter(new CaffeineExpiry.ExpiryAfterLastAccess<Pair<Integer,Integer>, Value>(TimeUnit.MINUTES.toMillis(2)))
@@ -47,14 +47,13 @@ public class DefaultLimitedCountingDevice implements CountingDevice {
             .softValues()
             .build();
 
-
     public boolean tryRequire(Params params) throws Exception {
         int threshold = params.getPermitsPerSecond();
         Value value = valueCache.get(Pair.of(params.getBuiltinStat().getId(), params.getRelationId()), k -> Value.newVar());
         assert value != null;
         value.setAccessTime(System.currentTimeMillis());
         if(logger.isTraceEnabled()){
-            logger.trace("default limited counting device check,builtInStatId:{},relationId:{},value:{},threshold:{}"
+            logger.trace("default limiting counting device check,builtInStatId:{},relationId:{},value:{},threshold:{}"
                     ,params.getBuiltinStat().getId(),params.getRelationId(),value.getV(),threshold * 60);
         }
         return threshold * 60L > value.getV();
@@ -62,7 +61,7 @@ public class DefaultLimitedCountingDevice implements CountingDevice {
 
     static {
         ScheduledExecutorService service = Executors.newScheduledThreadPool(1,
-                new BasicThreadFactory.Builder().namingPattern("limited-counting-schedule-pool-%d").daemon(true).build());
+                new BasicThreadFactory.Builder().namingPattern("limiting-counting-schedule-pool-%d").daemon(true).build());
         service.scheduleWithFixedDelay(new RefreshThread(valueCache),0,1, TimeUnit.MINUTES);
     }
 
@@ -97,7 +96,7 @@ public class DefaultLimitedCountingDevice implements CountingDevice {
                                 value.setV(Long.parseLong(v.getValue().toString()));
                                 value.setUpdateTime(System.currentTimeMillis());
                                 if(logger.isTraceEnabled()){
-                                    logger.trace("default limited counting device refresh,builtInStatId:{},relationId:{},value:{}"
+                                    logger.trace("default limiting counting device refresh,builtInStatId:{},relationId:{},value:{}"
                                             ,builtStatId,k,value.getV());
                                 }
                             });
@@ -105,7 +104,7 @@ public class DefaultLimitedCountingDevice implements CountingDevice {
                     }
                 }
             }catch (Exception ex){
-                logger.error("refresh limited counting data error!",ex);
+                logger.error("refresh limiting counting data error!",ex);
             }
         }
     }
