@@ -7,6 +7,7 @@ import {Order} from "@/types/insights-web";
 import {ApproveStateEnum, OrderStateEnum, OrderTypeEnum} from "@/types/insights-common";
 import {BiListUl} from "react-icons/bi";
 import {
+    getLimitingSettingsColumns,
     getOrderColumns,
     getOrderDetailColumns,
     getProjectAccessColumns, getStatAccessColumns,
@@ -30,6 +31,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
     const projectAccessColumns = useMemo(() => getProjectAccessColumns(t), [t]);
     const statAccessColumns = useMemo(() => getStatAccessColumns(t), [t]);
     const orderDetailColumns = useMemo(() => getOrderDetailColumns(t,orderInfo), [t,orderInfo]);
+    const limitingSettingsColumns = useMemo(() => getLimitingSettingsColumns(t), [t]);
 
     const toggleShowOrderDetail = () => {
         setShowOrderDetail(!showOrderDetail);
@@ -108,6 +110,10 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
         }else if(orderInfo.orderType == OrderTypeEnum.STAT_ACCESS && orderInfo.extend){
             return (
                 <Table size={"small"} rowKey="id" pagination={false} columns={statAccessColumns} data={[orderInfo.extend]} />
+            )
+        }else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS && orderInfo.extend){
+            return (
+                <Table size={"small"} rowKey="id" pagination={false} columns={limitingSettingsColumns} data={[orderInfo.extend]} />
             )
         }else{
             return  <Typography.Text type="secondary">
