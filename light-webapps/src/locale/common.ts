@@ -90,7 +90,7 @@ const vi18n = {
         'basic.modal.confirm.delete.title':'删除确认',
         'basic.columns.state.pending':'待审核',
         'basic.columns.state.running':'运行中',
-        'basic.columns.state.limiting':'限流',
+        'basic.columns.state.limiting':'已限流',
         'basic.columns.state.frozen':'已冻结',
         'basic.columns.state.deleted':'已删除',
         'basic.columns.state.rejected':'已拒绝',

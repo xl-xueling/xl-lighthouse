@@ -227,12 +227,11 @@ public class StatDBWrapper {
         }else if("second".equals(timeParamArr[1])){
             statExtEntity.setTimeUnit(TimeUnit.SECONDS);
         }
-        StatStateEnum stateEnum = statExtEntity.getStatStateEnum();
-        statExtEntity.setStatStateEnum(stateEnum);
+        StatStateEnum stateEnum = statExtEntity.getState();
         if(!isBuiltIn){
             GroupStateEnum groupStateEnum = GroupDBWrapper.getState(statEntity.getGroupId());
             if(groupStateEnum == GroupStateEnum.LIMITING && stateEnum == StatStateEnum.RUNNING){
-                statExtEntity.setStatStateEnum(StatStateEnum.LIMITING);
+                statExtEntity.setState(StatStateEnum.LIMITING);
             }else if(StatExtEntity.isLimitedExpired(statExtEntity)){
                 changeState(statEntity.getId(),StatStateEnum.RUNNING,LocalDateTime.now());
             }

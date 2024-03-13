@@ -35,8 +35,6 @@ public class StatExtEntity extends Stat {
 
     private TimeUnit timeUnit;
 
-    private StatStateEnum statStateEnum;
-
     private TemplateEntity templateEntity;
 
     private Set<String> relatedColumnSet;
@@ -80,17 +78,6 @@ public class StatExtEntity extends Stat {
 
     public void setRelatedColumnSet(Set<String> relatedColumnSet) {
         this.relatedColumnSet = relatedColumnSet;
-    }
-
-    public StatStateEnum getStatStateEnum() {
-        return statStateEnum;
-    }
-
-    public void setStatStateEnum(StatStateEnum statStateEnum) {
-        this.statStateEnum = statStateEnum;
-        if(statStateEnum != null){
-            this.setState(statStateEnum);
-        }
     }
 
     public boolean isSequence() {
