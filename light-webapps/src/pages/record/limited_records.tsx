@@ -67,7 +67,6 @@ export function LimitedRecordModal({resourceId,resourceType,recordTypes}){
             resourceType:resourceType,
             recordTypes:recordTypes,
         }
-        console.log("queryParams is:" + JSON.stringify(queryParams));
         setLoading(true);
         await requestList({
             queryParams:queryParams,
