@@ -29,7 +29,7 @@ export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
     }else if(value === StatStateEnum.STOPPED){
         return <Badge color={'gray'} text={t['basic.columns.state.stopped']}/>;
     }else if(value === StatStateEnum.LIMITING){
-        return <Badge color={'pinkpurple'} text={t['basic.columns.state.limiting']}/>;
+        return <Badge status={'warning'} text={t['basic.columns.state.limiting']}/>;
     }else if(value === StatStateEnum.DELETED){
         return <Badge color={'cyan'} text={t['basic.columns.state.deleted']}/>;
     }else if(value === StatStateEnum.REJECTED){
