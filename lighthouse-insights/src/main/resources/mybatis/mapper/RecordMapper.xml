@@ -20,7 +20,7 @@
             #{resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
             #{recordType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RecordTypeEnumTypeHandler},
             #{extend,jdbcType=VARCHAR},
-            #{recordTime,jdbcType=TIMESTAMP}
+            #{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
