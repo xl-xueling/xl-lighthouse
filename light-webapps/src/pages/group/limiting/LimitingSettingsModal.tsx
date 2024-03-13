@@ -3,7 +3,7 @@ import {
     Button, Card, Collapse,
     Form,
     Input, InputNumber, Message,
-    Modal, Notification, Select, Space,
+    Modal, Notification, Popconfirm, Select, Space,
 } from "@arco-design/web-react";
 import {OrderTypeEnum, RecordTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
 import useLocale from "@/utils/useLocale";
@@ -16,12 +16,15 @@ import {updateStoreStaredMetricInfo} from "@/index";
 import {requestCreateApply} from "@/api/order";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
+import {getRandomString} from "@/utils/util";
 
 export function LimitingSettingsModal({groupInfo,onClose}){
 
     const t = useLocale(locale);
     const CollapseItem = Collapse.Item;
     const FormItem = Form.Item;
+    const [form] = Form.useForm();
+
     const formRef = useRef(null);
     const [loading,setLoading] = useState(false);
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
@@ -69,14 +72,14 @@ export function LimitingSettingsModal({groupInfo,onClose}){
         })
     }
 
-    const handleSubmit = async () => {
-        try{
-            await formRef.current.validate();
+    const handleSubmit = () => {
+        formRef.current.validate().then(() => {
             submit().then();
-        }catch (error){
+        }).catch((error) =>{
             console.log(error);
-        }
+        })
     };
+
 
     return (
         <Modal
@@ -93,6 +96,7 @@ export function LimitingSettingsModal({groupInfo,onClose}){
                     <CollapseItem style={{borderLeft:"none",borderRight:"none"}} header={<span>{t['limitingConfig.collapse.title']}</span>}
                                   name='1'>
                         <Form
+                            form={form}
                             ref={formRef}
                             autoComplete='off'
                             colon={'：'}
@@ -153,18 +157,26 @@ export function LimitingSettingsModal({groupInfo,onClose}){
                             >
                                 <Input.TextArea maxLength={200} rows={2}  showWordLimit={true}/>
                             </FormItem>
-                            <FormItem wrapperCol={{ offset: 14 }}>
+                            <FormItem wrapperCol={{ offset: 13 }}>
+                                <Popconfirm
+                                    focusLock
+                                    position={"tr"}
+                                    title='Confirm'
+                                    content={t['limitingConfig.form.submit.confirm']}
+                                    onOk={() => handleSubmit()}
+                                >
+                                    <Button
+                                        type='primary'
+                                        style={{ marginRight: 24 }}
+                                    >
+                                        {t['basic.form.button.submit']}
+                                    </Button>
+                                </Popconfirm>
                                 <Button
-                                    type='primary'
-                                    onClick={handleSubmit}
+                                    onClick={onClose}
                                     style={{ marginRight: 24 }}
                                 >
-                                    {t['basic.form.button.submit']}
-                                </Button>
-                                <Button
-                                    style={{ marginRight: 24 }}
-                                >
-                                    {t['basic.form.button.reset']}
+                                    {t['basic.form.button.cancel']}
                                 </Button>
                             </FormItem>
                         </Form>
