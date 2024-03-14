@@ -12,7 +12,7 @@ public class SendTest {
 
     @Test
     public void testCount() throws Exception{
-        LightHouse.init("10.206.6.14:4061");
+        LightHouse.init("10.206.6.33:4061");
         long t = System.currentTimeMillis();
         for(int i=0;i<1000000;i++){
             Map<String,Object> map = new HashMap<>();
@@ -24,7 +24,7 @@ public class SendTest {
                 map.put("city","b");
             }
             map.put("score",ThreadLocalRandom.current().nextDouble(100));
-            LightHouse.stat("fIR:test_stat","DNem02v3BSiJW1PILaC3jhB10W8spibjGRICnVtL",map,t);
+            LightHouse.stat("whf:test_stat","XBzmv56AzzYWi7PsHDTF924ahAWRMK1jxElNrPTx",map,t);
             Thread.sleep(2);
         }
         System.out.println("send success!");

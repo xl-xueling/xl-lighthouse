@@ -27,7 +27,7 @@
             </monitor-item>
             <monitor-item id="1015" timeparam="10-minute" renderConfig='{"filters":[{"componentType":4,"label":"groupId","dimens":"groupId","componentId":0},{"componentType":5,"label":"captcha","dimens":"captcha","componentId":0}]}'>
                 <template>
-                    <stat-item title="10_minute_group_messages_size" stat="count()" dimens="groupId;captcha" limit="top50"/>
+                    <stat-item title="10_minute_group_captcha_messages_size" stat="count()" dimens="groupId;captcha" limit="top50"/>
                 </template>
             </monitor-item>
         </monitor-items>
