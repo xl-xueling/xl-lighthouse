@@ -44,6 +44,8 @@ export default function TrackStatPage() {
         setStatInfo(statInfo);
     }
 
+
+
     useEffect(() => {
         console.log("id:" + id);
         fetchStatInfo().then()

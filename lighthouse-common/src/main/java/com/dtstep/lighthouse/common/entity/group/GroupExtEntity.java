@@ -18,10 +18,15 @@ package com.dtstep.lighthouse.common.entity.group;
  */
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
+import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
 import com.dtstep.lighthouse.common.modal.Group;
+import com.dtstep.lighthouse.common.modal.GroupExtendConfig;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
+import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.common.util.StringUtil;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.ZoneId;
 import java.util.Map;
@@ -103,21 +108,8 @@ public class GroupExtEntity extends Group {
                 && (System.currentTimeMillis() - groupExtEntity.getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITING_EXPIRE_MINUTES));
     }
 
-//    public static boolean isDebugModeExpired(GroupExtEntity groupExtEntity){
-//        boolean result = false;
-//        if(groupExtEntity.getDebugMode() == 1 && StringUtil.isNotEmpty(groupExtEntity.getDebugParams())){
-//            try{
-//                JsonNode jsonNode = JsonUtil.readTree(groupExtEntity.getDebugParams());
-//                if(jsonNode != null){
-//                    long startTime = jsonNode.get("startTime").asLong();
-//                    long endTime = jsonNode.get("endTime").asLong();
-//                    long now = System.currentTimeMillis();
-//                    result = (now > endTime || now < startTime);
-//                }
-//            }catch (Exception ex){
-//                ex.printStackTrace();
-//            }
-//        }
-//        return result;
-//    }
+    public static boolean isDebugModeExpired(GroupExtEntity groupExtEntity){
+        GroupExtendConfig extendConfig = groupExtEntity.getExtendConfig();
+        return groupExtEntity.getDebugMode() == SwitchStateEnum.OPEN && extendConfig.getDebugConfig().getEndTime() < System.currentTimeMillis();
+    }
 }
