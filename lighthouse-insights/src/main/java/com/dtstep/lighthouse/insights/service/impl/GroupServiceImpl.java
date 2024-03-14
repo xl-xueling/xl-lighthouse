@@ -67,7 +67,6 @@ public class GroupServiceImpl implements GroupService {
     public int update(Group group) {
         LocalDateTime localDateTime = LocalDateTime.now();
         group.setUpdateTime(localDateTime);
-        group.setRefreshTime(localDateTime);
         int result = groupDao.update(group);
         resourceService.updateResourcePidCallback(ResourceDto.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
         return result;

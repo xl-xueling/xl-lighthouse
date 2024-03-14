@@ -1,34 +1,34 @@
 import {
     Breadcrumb,
-    Card, Checkbox, Grid, Input, Space, Switch, Table, TableColumnProps,
+    Card, Checkbox, Grid, Input, Notification, Space, Switch, Table, TableColumnProps,
 } from '@arco-design/web-react';
 import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
-import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import locale from "./locale";
-import SearchForm from "@/pages/stat/list/form";
 import {IconCheck, IconClose, IconHome, IconPlus} from "@arco-design/web-react/icon";
 import styles from "./style/index.module.less";
-import Overview from "@/pages/dashboard/workplace/overview";
-import Shortcuts from "@/pages/dashboard/workplace/shortcuts";
-import StatPieChart from "@/pages/dashboard/workplace/StatPieChart";
 import {Stat} from "@/types/insights-web";
-import {requestQueryById} from "@/api/stat";
+import {requestChangeState, requestQueryById} from "@/api/stat";
+import {requestEnableDebugMode, requestDisableDebugMode} from "@/api/track";
 import {useParams} from "react-router-dom";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import ChartPanel from "@/pages/stat/preview/chart_panel";
+import {DebugModeEnum} from "@/types/insights-common";
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function TrackStatPage() {
 
     const t = useLocale(locale);
     const [formParams, setFormParams] = useState({});
+    const [loading,setLoading] = useState<boolean>(false);
     const TextArea = Input.TextArea;
+    const [monitorStatInfo,setMonitorStatInfo] = useState(null);
     const [statInfo,setStatInfo] = useState(null);
+    const [groupId,setGroupId] = useState<number>(null);
     const [searchForm,setSearchForm] = useState({"date":["2024-03-14 14:31:35","2024-03-14 14:31:35"],"captcha":["0","1","2"],"groupId":"100288","t":1710398201616});
     const {id} = useParams();
 
-    async function actualFetchStatInfo():Promise<Stat> {
+    async function actualFetchMonitorStatInfo():Promise<Stat> {
         return new Promise<Stat>((resolve,reject) => {
             requestQueryById({id:1013}).then((response) => {
                 resolve(response.data);
@@ -38,17 +38,77 @@ export default function TrackStatPage() {
         })
     }
 
-    async function fetchStatInfo() {
-        const statInfo = await getDataWithLocalCache('cache_cluster_monitor_1013',300,actualFetchStatInfo);
-        console.log("statInfo:" + JSON.stringify(statInfo));
-        setStatInfo(statInfo);
+    async function fetchMonitorStatInfo() {
+        const monitorStatInfo = await getDataWithLocalCache('cache_cluster_monitor_1013',300,actualFetchMonitorStatInfo);
+        setMonitorStatInfo(monitorStatInfo);
+    }
+
+    const fetchData = async () => {
+        setLoading(true);
+        await requestQueryById({id:id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                console.log("data:" + JSON.stringify(data));
+                setStatInfo(data)
+                setGroupId(data.groupId);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
 
 
     useEffect(() => {
+        console.log("groupId is:" + groupId);
+        if(groupId){
+            enableDebugMode(groupId).then();
+        }
+    },[groupId])
+
+
+    const enableDebugMode = async (groupId:number) => {
+        console.log("start enable group,groupId:" + groupId);
+        const changeParam = {
+            id:groupId,
+        }
+        await requestEnableDebugMode(changeParam).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+
+                Notification.info({style: { width: 420 }, title: 'Notification', content: ""});
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }
+
+    const disableDebugMode = async (groupId:number) => {
+        const changeParam = {
+            id:groupId,
+        }
+        await requestDisableDebugMode(changeParam).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                Notification.info({style: { width: 420 }, title: 'Notification', content: ""});
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }
+
+
+    useEffect(() => {
         console.log("id:" + id);
-        fetchStatInfo().then()
+        fetchMonitorStatInfo().then()
+        fetchData().then();
     },[id])
 
     function handleSearch(params) {
@@ -125,7 +185,7 @@ export default function TrackStatPage() {
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
                         <Card style={{height:'340px'}}>
-                            {statInfo && <ChartPanel parentLoading={false} statInfo={statInfo} size={'default'} searchForm={searchForm}/>}
+                            {monitorStatInfo && <ChartPanel parentLoading={false} statInfo={monitorStatInfo} size={'default'} searchForm={searchForm}/>}
                         </Card>
                     </Space>
                     <Space size={16} direction="vertical" className={styles.right}>
@@ -158,13 +218,10 @@ export default function TrackStatPage() {
                         </Grid.Col>
                     </Grid.Row>
                 </Card>
-
                 <Card>
                     <Table columns={columns} data={data} />
                 </Card>
             </Space>
-
-
         </>
     );
 }

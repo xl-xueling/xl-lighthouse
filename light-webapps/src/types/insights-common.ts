@@ -178,6 +178,11 @@ export enum StatStateEnum {
     INVALID=7,
 }
 
+export enum DebugModeEnum {
+    CLOSE=0,
+    OPEN=1,
+}
+
 export enum ComponentTypeEnum {
     DATEPICKER_DATE_SELECT=1,
     DATEPICKER_DATE_RANGE_SELECT=2,

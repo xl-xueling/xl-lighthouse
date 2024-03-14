@@ -469,6 +469,7 @@ public class OrderServiceImpl implements OrderService {
             Group group = groupService.queryById(groupId);
             GroupExtendConfig groupExtendConfig = group.getExtendConfig();
             groupExtendConfig.getLimitingConfig().put(limitingStrategyEnum,updateValue);
+            group.setRefreshTime(LocalDateTime.now());
             groupService.update(group);
         }
     }
