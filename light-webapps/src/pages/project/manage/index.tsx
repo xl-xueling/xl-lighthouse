@@ -20,6 +20,7 @@ import {GlobalErrorCodes} from "@/utils/constants";
 import ErrorPage from "@/pages/common/error";
 import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
 import {ResourceTypeEnum} from "@/types/insights-common";
+import {getIcon} from "@/pages/common/desc/base";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -100,6 +101,11 @@ export default function ProjectManagePage() {
 
 
     const descriptionData = [
+        {
+
+            label: <span style={{marginTop:'2px'}}>{getIcon('project')}</span>,
+            value: <span style={{wordBreak: 'break-word'}}>{projectInfo?.title + " ["+projectInfo?.id+"]"}</span>
+        },
         {
             label: <IconBook/>,
             value: <span style={{wordBreak: 'break-word'}}>{projectInfo?.desc}</span>
