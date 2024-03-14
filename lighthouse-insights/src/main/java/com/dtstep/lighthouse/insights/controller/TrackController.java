@@ -1,12 +1,17 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
-import com.dtstep.lighthouse.common.modal.Group;
+import com.dtstep.lighthouse.common.modal.DebugConfig;
+import com.dtstep.lighthouse.common.modal.GroupExtendConfig;
+import com.dtstep.lighthouse.common.modal.IDParam;
+import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.TrackParam;
 import com.dtstep.lighthouse.insights.service.GroupService;
+import com.dtstep.lighthouse.insights.vo.DebugModeSwitchVO;
 import com.dtstep.lighthouse.insights.vo.GroupVO;
 import com.dtstep.lighthouse.insights.vo.OrderVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
@@ -24,10 +29,33 @@ public class TrackController {
     @Autowired
     private GroupService groupService;
 
-    @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "groupId")
-    @PostMapping("/track")
-    public ResultData<ListData<OrderVO>> track(@Validated @RequestBody TrackParam trackStatParam) throws Exception {
-        Integer id = trackStatParam.getGroupId();
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
+    @PostMapping("/enableDebugMode")
+    public ResultData<DebugConfig> enableDebugMode(@Validated @RequestBody IDParam idParam) throws Exception {
+        Integer id = idParam.getId();
+        GroupVO groupVO = groupService.queryById(id);
+        DebugConfig debugConfig;
+        if(groupVO.getDebugMode() == SwitchStateEnum.OPEN){
+            debugConfig = groupVO.getExtendConfig().getDebugConfig();
+        }else{
+            GroupExtendConfig extendConfig = groupVO.getExtendConfig();
+            debugConfig = extendConfig.getDebugConfig();
+            if(debugConfig == null){
+                debugConfig = new DebugConfig();
+                extendConfig.setDebugConfig(debugConfig);
+            }
+            long now = System.currentTimeMillis();
+            debugConfig.setStartTime(now);
+            debugConfig.setEndTime(DateUtil.getMinuteAfter(now, StatConst.DEBUG_MODEL_EXPIRE_MINUTES));
+            groupService.update(groupVO);
+        }
+        return ResultData.success(debugConfig);
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
+    @PostMapping("/disableDebugMode")
+    public ResultData<Integer> disableDebugMode(@Validated @RequestBody IDParam idParam) throws Exception {
+        Integer id = idParam.getId();
         System.out.println("track success,id:" + id);
         GroupVO groupVO = groupService.queryById(id);
         if(groupVO.getDebugMode() == SwitchStateEnum.OPEN){

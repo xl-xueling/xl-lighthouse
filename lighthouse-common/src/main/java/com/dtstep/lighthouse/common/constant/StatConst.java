@@ -85,7 +85,7 @@ public final class StatConst {
 
     public static final int EVENT_POOL_PUT_COST_THRESHOLD = 10000;
 
-    public static final int DEBUG_MODEL_EXPIRE_MINUTES = 60;
+    public static final int DEBUG_MODEL_EXPIRE_MINUTES = 30;
 
     public static final String DB_RESULT_STORAGE_COLUMN = "v";
 

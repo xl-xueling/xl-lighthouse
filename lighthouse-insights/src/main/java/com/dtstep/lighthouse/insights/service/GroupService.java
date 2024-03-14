@@ -15,9 +15,7 @@ public interface GroupService {
     int update(Group group);
 
     int delete(Group group);
-
-    void changeDebugMode(Group group, SwitchStateEnum switchEnum);
-
+    
     GroupVO queryById(Integer id) throws Exception;
 
     Group cacheQueryById(Integer id);
