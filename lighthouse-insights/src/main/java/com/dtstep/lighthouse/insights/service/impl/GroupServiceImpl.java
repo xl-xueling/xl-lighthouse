@@ -56,7 +56,7 @@ public class GroupServiceImpl implements GroupService {
         group.setRefreshTime(localDateTime);
         group.setRandomId(RandomID.id(32));
         group.setState(GroupStateEnum.RUNNING);
-        group.setDebugMode(0);
+        group.setDebugMode(SwitchStateEnum.CLOSE);
         groupDao.insert(group);
         resourceService.addResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Group,group.getId(),ResourceTypeEnum.Project,group.getProjectId()));
         return group.getId();
@@ -147,10 +147,5 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public String getSecretKey(Integer id) {
         return groupDao.getSecretKey(id);
-    }
-
-    @Override
-    public void changeDebugMode(Group group, SwitchStateEnum switchEnum) {
-
     }
 }
