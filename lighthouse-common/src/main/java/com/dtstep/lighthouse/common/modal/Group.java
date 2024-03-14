@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.common.modal;
 
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
+import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ public class Group implements Serializable {
 
     private GroupExtendConfig extendConfig = new GroupExtendConfig();
 
-    private Integer debugMode;
+    private SwitchStateEnum debugMode;
 
     private String randomId;
 
@@ -116,11 +117,11 @@ public class Group implements Serializable {
         this.extendConfig = extendConfig;
     }
 
-    public Integer getDebugMode() {
+    public SwitchStateEnum getDebugMode() {
         return debugMode;
     }
 
-    public void setDebugMode(Integer debugMode) {
+    public void setDebugMode(SwitchStateEnum debugMode) {
         this.debugMode = debugMode;
     }
 

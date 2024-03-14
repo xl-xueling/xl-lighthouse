@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
+import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
 import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Stat;
@@ -146,5 +147,10 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public String getSecretKey(Integer id) {
         return groupDao.getSecretKey(id);
+    }
+
+    @Override
+    public void changeDebugMode(Group group, SwitchStateEnum switchEnum) {
+
     }
 }

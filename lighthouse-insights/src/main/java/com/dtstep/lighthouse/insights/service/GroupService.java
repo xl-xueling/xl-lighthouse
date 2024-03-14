@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
+import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
+import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.insights.vo.GroupVO;
@@ -13,6 +15,8 @@ public interface GroupService {
     int update(Group group);
 
     int delete(Group group);
+
+    void changeDebugMode(Group group, SwitchStateEnum switchEnum);
 
     GroupVO queryById(Integer id) throws Exception;
 

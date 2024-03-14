@@ -18,9 +18,7 @@ package com.dtstep.lighthouse.core.wrapper;
  */
 import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
-import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
-import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
-import com.dtstep.lighthouse.common.enums.StatStateEnum;
+import com.dtstep.lighthouse.common.enums.*;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.modal.GroupExtendConfig;
@@ -39,7 +37,6 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
-import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -208,11 +205,32 @@ public final class GroupDBWrapper {
         return result;
     }
 
+    public static int changeDebugMode(int groupId,SwitchStateEnum switchStateEnum,LocalDateTime date) throws Exception {
+        DBConnection dbConnection = ConnectionManager.getConnection();
+        Connection conn = dbConnection.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+        int result;
+        try{
+            if(switchStateEnum == SwitchStateEnum.OPEN){
+                result = queryRunner.update(conn, "update ldp_groups set debug_mode = ?,refresh_time = ? where id = ? and debug_mode = ?", switchStateEnum.getState(),date, groupId,SwitchStateEnum.CLOSE.getState());
+            }else{
+                result = queryRunner.update(conn, "update ldp_groups set debug_mode = ?,refresh_time = ? where id = ? and debug_mode = ?", switchStateEnum.getState(),date, groupId,SwitchStateEnum.OPEN.getState());
+            }
+        }finally {
+            ConnectionManager.close(dbConnection);
+        }
+        return result;
+    }
+
     public static GroupExtEntity combineExtInfo(Group groupEntity) throws Exception{
         GroupExtEntity groupExtEntity = new GroupExtEntity(groupEntity);
         if(GroupExtEntity.isLimitedExpired(groupExtEntity)){
             changeState(groupEntity.getId(),GroupStateEnum.RUNNING,LocalDateTime.now());
             groupExtEntity.setState(GroupStateEnum.RUNNING);
+        }
+        if(GroupExtEntity.isDebugModeExpired(groupExtEntity)){
+            changeDebugMode(groupEntity.getId(),SwitchStateEnum.CLOSE,LocalDateTime.now());
+            groupExtEntity.setDebugMode(SwitchStateEnum.CLOSE.getState());
         }
         List<Column> columnList = groupEntity.getColumns();
         int groupId = groupExtEntity.getId();
