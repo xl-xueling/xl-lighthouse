@@ -135,7 +135,6 @@ public class DataServiceImpl implements DataService {
                 dataObjects.add(dataObject);
             }
         }
-        System.out.println("dataObjects is:" + JsonUtil.toJSONString(dataObjects));
         return dataObjects;
     }
 
