@@ -30,7 +30,7 @@ public class TrackController {
     private GroupService groupService;
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
-    @PostMapping("/enableDebugMode")
+    @PostMapping("/track/enableDebugMode")
     public ResultData<DebugConfig> enableDebugMode(@Validated @RequestBody IDParam idParam) throws Exception {
         Integer id = idParam.getId();
         GroupVO groupVO = groupService.queryById(id);
@@ -47,13 +47,15 @@ public class TrackController {
             long now = System.currentTimeMillis();
             debugConfig.setStartTime(now);
             debugConfig.setEndTime(DateUtil.getMinuteAfter(now, StatConst.DEBUG_MODEL_EXPIRE_MINUTES));
+            groupVO.setDebugMode(SwitchStateEnum.OPEN);
+            groupVO.setRefreshTime(DateUtil.timestampToLocalDateTime(now));
             groupService.update(groupVO);
         }
         return ResultData.success(debugConfig);
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
-    @PostMapping("/disableDebugMode")
+    @PostMapping("/track/disableDebugMode")
     public ResultData<Integer> disableDebugMode(@Validated @RequestBody IDParam idParam) throws Exception {
         Integer id = idParam.getId();
         System.out.println("track success,id:" + id);
