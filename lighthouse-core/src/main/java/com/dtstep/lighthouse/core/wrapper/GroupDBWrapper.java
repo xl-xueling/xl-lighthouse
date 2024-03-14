@@ -129,7 +129,7 @@ public final class GroupDBWrapper {
                 Integer id = rs.getInt("id");
                 String token = rs.getString("token");
                 Integer projectId = rs.getInt("project_id");
-                Integer debugMode = rs.getInt("debug_mode");
+                int debugMode = rs.getInt("debug_mode");
                 String columns = rs.getString("columns");
                 String randomId = rs.getString("random_id");
                 String desc = rs.getString("desc");
@@ -146,7 +146,8 @@ public final class GroupDBWrapper {
                 group.setId(id);
                 group.setToken(token);
                 group.setProjectId(projectId);
-                group.setDebugMode(debugMode);
+                SwitchStateEnum debugModeState = SwitchStateEnum.forValue(debugMode);
+                group.setDebugMode(debugModeState);
                 group.setDesc(desc);
                 group.setSecretKey(secretKey);
                 group.setRandomId(randomId);
@@ -230,7 +231,7 @@ public final class GroupDBWrapper {
         }
         if(GroupExtEntity.isDebugModeExpired(groupExtEntity)){
             changeDebugMode(groupEntity.getId(),SwitchStateEnum.CLOSE,LocalDateTime.now());
-            groupExtEntity.setDebugMode(SwitchStateEnum.CLOSE.getState());
+            groupExtEntity.setDebugMode(SwitchStateEnum.CLOSE);
         }
         List<Column> columnList = groupEntity.getColumns();
         int groupId = groupExtEntity.getId();
