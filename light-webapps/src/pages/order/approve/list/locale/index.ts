@@ -7,7 +7,7 @@ const i18n = {
     'approveList.columns.type.project.access':'Request Project Access',
     'approveList.columns.type.stat.access':'Request Stat Access',
     'approveList.columns.type.metrics.access':'Request Metrics Access',
-    'approveList.columns.type.adjust.limited.threshold':'Adjust Limited Threshold',
+    'approveList.columns.type.adjust.limited.threshold':'Update Limiting Threshold',
     'approveList.columns.type.stat.pend.approve':'Stat Pend Approve',
     'approveList.columns.type.user.pend.approve':'User Pend Approve',
     'approveList.columns.desc':'Description',
