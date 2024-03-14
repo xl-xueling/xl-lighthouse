@@ -52,14 +52,14 @@ export default function GroupBasicPanel({groupInfo}) {
     useEffect(() => {
         if(groupInfo) {
             const columnArr: Array<EditTableColumn> = [];
-            for (let i = 0; i < groupInfo.columns.length; i++) {
-                const columnInfo = groupInfo.columns[i];
+            for (let i = 0; i < groupInfo?.columns.length; i++) {
+                const columnInfo = groupInfo?.columns[i];
                 columnArr.push({...columnInfo, "key": i})
             }
             setColumnsData(columnArr);
-            formInstance.setFieldValue("token", groupInfo.token);
-            formInstance.setFieldValue("createTime", formatTimeStampBackUp(groupInfo.createTime));
-            formInstance.setFieldValue("desc", groupInfo.desc);
+            formInstance.setFieldValue("token", groupInfo?.token+" ["+groupInfo?.id+"]");
+            formInstance.setFieldValue("createTime", formatTimeStampBackUp(groupInfo?.createTime));
+            formInstance.setFieldValue("desc", groupInfo?.desc);
             setLoading(false);
         }
     },[groupInfo])
