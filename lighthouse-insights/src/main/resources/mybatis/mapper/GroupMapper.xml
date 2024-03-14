@@ -10,8 +10,8 @@
                 jdbcType="VARCHAR"
                 typeHandler="com.dtstep.lighthouse.insights.types.GroupColumnArrayTypeHandler"/>
         <result property="secretKey" column="secret_key"/>
-        <result property="debugMode" column="debug_mode"/>
         <result property="projectId" column="project_id"/>
+        <result property="debugMode" column="debug_mode" typeHandler="com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler"/>
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.GroupStateEnumTypeHandler"/>
         <result property="extendConfig" column="extend_config" typeHandler="com.dtstep.lighthouse.insights.types.GroupExtendConfigTypeHandler"/>
         <result property="randomId" column="random_id"/>
@@ -33,7 +33,7 @@
             #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.GroupStateEnumTypeHandler},
             #{desc,jdbcType=VARCHAR},
             #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.GroupExtendConfigTypeHandler},
-            #{debugMode,jdbcType=INTEGER},
+            #{debugMode,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler},
             #{randomId,jdbcType=VARCHAR},
             #{refreshTime,jdbcType=TIMESTAMP},
             #{createTime,jdbcType=TIMESTAMP},
@@ -54,7 +54,7 @@
                 `extend_config` = #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.GroupExtendConfigTypeHandler},
             </if>
             <if test="debugMode != null">
-                `debug_mode` = #{debugMode},
+                `debug_mode` = #{debugMode,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler},
             </if>
             <if test="desc != null">
                 `desc` = #{desc},
