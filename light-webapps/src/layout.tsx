@@ -44,6 +44,7 @@ import Index from "@/pages/metricset/preview";
 import {PiDiamondsFour} from "react-icons/pi";
 import StatPreviewPage from "@/pages/stat/preview";
 import PopMenuBox from "@/pages/common/popmenu/PopMenu";
+import TrackStatPage from "@/pages/track";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -295,6 +296,7 @@ function PageLayout() {
                                     <Route path="/metricset/preview/:id" component={Index}/>
                                     <Route path="/project/preview/:id" component={ProjectPreviewPage}/>
                                     <Route path="/stat/preview/:id" component={StatPreviewPage}/>
+                                    <Route path="/track/stat/:id" component={TrackStatPage}/>
                                     {flattenRoutes.map((route, index) => {
                                         return (
                                             <Route
