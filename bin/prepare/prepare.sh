@@ -105,6 +105,10 @@ hostsInit(){
                         if [ ${hostName} != ${lowerHostName} ];then
                                 echo -e "${ip} ${lowerHostName}" >> ${CUR_DIR}/hosts
                         fi
+                        local upperHostName=`echo ${hostName}|tr a-z A-Z`
+                        if [ ${hostName} != ${upperHostName} ];then
+                                echo -e "${ip} ${upperHostName}" >> ${CUR_DIR}/hosts
+                        fi
                         echo -e "${ip} ${hostName}" >> ${CUR_DIR}/hosts
                 done
         for ip in "${NODES[@]:1}"
