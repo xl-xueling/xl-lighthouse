@@ -39,7 +39,7 @@ export function getOrderColumns(t: any) {
                 }else if(value == '3'){
                     return <Text>{t['detailModal.columns.type.metrics.access']}</Text>;
                 }else if(value == '4'){
-                    return <Text>{t['detailModal.columns.type.adjust.limited.threshold']}</Text>;
+                    return <Text>{t['detailModal.columns.type.update.limiting.threshold']}</Text>;
                 }else if(value == '5'){
                     return <Text>{t['detailModal.columns.type.stat.pend.approve']}</Text>;
                 }else if(value == '6'){
