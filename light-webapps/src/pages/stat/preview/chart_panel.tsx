@@ -12,8 +12,6 @@ import {
     getDailyStartTimestamp,
  DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
-import {formatString, getRandomString} from "@/utils/util";
-// import 'default-passive-events'
 
 export default function ChartPanel({size = 'default',searchForm = null,statInfo,parentLoading = false}) {
     const t = useLocale(locale);
