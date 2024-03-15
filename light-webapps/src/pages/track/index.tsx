@@ -89,7 +89,6 @@ export default function TrackStatPage() {
         setSearchForm({"date":[getDateFormat('YYYY-MM-DD'),getDateFormat('YYYY-MM-DD')],"captcha":["0","1","2"],"groupId":[groupId],t:Date.now()})
     }
 
-
     const fetchTrackMessages = async () => {
         if(!statInfo){
             return;
@@ -134,9 +133,9 @@ export default function TrackStatPage() {
     },[groupId])
 
     useEffect(() => {
-        fetchMonitorStatInfo().then()
         fetchStatData().then();
-    },[id])
+        fetchMonitorStatInfo().then()
+    },[])
 
     const enableDebugMode = async (groupId:number) => {
         const changeParam = {
@@ -215,7 +214,7 @@ export default function TrackStatPage() {
         return () => {
             clearInterval(intervalId);
         };
-    },[autoRefreshSwitch])
+    },[autoRefreshSwitch,JSON.stringify(statInfo)])
 
     useEffect(() => {
         formInstance.setFieldValue("notifyArea",notifyMessages.join('\n'));
@@ -239,68 +238,67 @@ export default function TrackStatPage() {
                 <BreadcrumbItem style={{fontWeight:20}}>{t['statTrack.breadcrumb.title']}</BreadcrumbItem>
             </Breadcrumb>
             <Spin block={true} loading={loading}>
-                <Space size={16} style={{width:'100%'}} direction="vertical">
-                <div className={styles.wrapper}>
-                    <Space size={16} direction="vertical" className={styles.left}>
-                        <Card style={{height:'340px'}}>
-                            {monitorStatInfo && searchForm && <ChartPanel parentLoading={false} statInfo={monitorStatInfo} size={'default'} searchForm={searchForm}/>}
-                        </Card>
-                    </Space>
-                    <Space size={16} direction="vertical" className={styles.right}>
-                        <Form form={formInstance} wrapperCol={{ span: 24 }}>
-                            <Form.Item field={"notifyArea"}>
-                                <TextArea
-                                    readOnly={true}
-                                    style={{ width: '100%',height:'340px',fontSize:'13px',backgroundColor:'#373434',color:'white' }}
-                                />
-                            </Form.Item>
-                        </Form>
-                    </Space>
-                </div>
+                <Space size={8} style={{width:'100%'}} direction="vertical">
+                    <div className={styles.wrapper}>
+                        <Space size={16} direction="vertical" className={styles.left}>
+                            <Card style={{height:'280px'}}>
+                                {monitorStatInfo && searchForm && <ChartPanel parentLoading={false} statInfo={monitorStatInfo} size={'small'} searchForm={searchForm}/>}
+                            </Card>
+                        </Space>
+                        <Space size={16} direction="vertical" className={styles.right}>
+                            <Form form={formInstance} wrapperCol={{ span: 24 }}>
+                                <Form.Item field={"notifyArea"}>
+                                    <TextArea
+                                        readOnly={true}
+                                        style={{ width: '100%',height:'280px',fontSize:'13px',backgroundColor:'#373434',color:'white' }}
+                                    />
+                                </Form.Item>
+                            </Form>
+                        </Space>
+                    </div>
 
-                <Card style={{height:'50px'}}>
-                    <Grid.Row gutter={8}>
-                        <Grid.Col span={14}>
-                            {t['statTrack.label1']}
-                            <Popconfirm
-                                focusLock
-                                title='Confirm'
-                                content={debugMode?t['statTrack.stop.debugMode.confirm']:t['statTrack.start.debugMode.confirm']}
-                                onOk={async () => {
-                                    await handlerSwitchDebugMode();
-                                }}
-                                onCancel={() => {
-                                    Message.error({
-                                        content: 'cancel',
-                                    });
-                                }}
-                            >
-                                <Switch checked={debugMode} checkedIcon={<IconCheck />} uncheckedIcon={<IconClose />} disabled={false} defaultChecked size={"small"} onClick={null} />
-                            </Popconfirm>
-                            {statInfo && <span style={{marginLeft:'30px'}}>
-                            {t['statTrack.label2']}{statInfo?.token}，{t['statTrack.label3']}{statInfo?.title}
-                            </span>}
-                        </Grid.Col>
-                        <Grid.Col span={10} style={{textAlign:"right"}}>
-                            {debugMode && <Checkbox checked={autoRefreshSwitch} onClick={changeCheckBox}>{t['statTrack.fresh.label']}</Checkbox>}
-                        </Grid.Col>
-                    </Grid.Row>
-                </Card>
-                {
-                    debugMode &&
-                    <Card>
-                        <Spin loading={listLoading} style={{display:'block',width:'100%'}}>
-                            { (messagesColumns && messageData && messageData.length > 0 )?
-                                <Space size={16} direction="vertical" style={{minHeight:'150px'}}>
-                                    <Table size={"small"} pagination={false} rowKey={'Seq'} columns={messagesColumns} data={messageData} />
-                                </Space>
-                                :
-                                <Empty style={{width:'100%'}} description={t['statTrack.list.empty.message']}/>
-                            }
-                        </Spin>
+                    <Card style={{height:'50px'}}>
+                        <Grid.Row gutter={8}>
+                            <Grid.Col span={14}>
+                                {t['statTrack.label1']}
+                                <Popconfirm
+                                    focusLock
+                                    title='Confirm'
+                                    content={debugMode?t['statTrack.stop.debugMode.confirm']:t['statTrack.start.debugMode.confirm']}
+                                    onOk={async () => {
+                                        await handlerSwitchDebugMode();
+                                    }}
+                                    onCancel={() => {
+                                        Message.error({
+                                            content: 'cancel',
+                                        });
+                                    }}
+                                >
+                                    <Switch checked={debugMode} checkedIcon={<IconCheck />} uncheckedIcon={<IconClose />} disabled={false} defaultChecked size={"small"} onClick={null} />
+                                </Popconfirm>
+                                {statInfo && <span style={{marginLeft:'30px'}}>
+                                {t['statTrack.label2']}{statInfo?.token}，{t['statTrack.label3']}{statInfo?.title}
+                                </span>}
+                            </Grid.Col>
+                            <Grid.Col span={10} style={{textAlign:"right"}}>
+                                {debugMode && <Checkbox checked={autoRefreshSwitch} onClick={changeCheckBox}>{t['statTrack.fresh.label']}</Checkbox>}
+                            </Grid.Col>
+                        </Grid.Row>
                     </Card>
-                }
-
+                    {
+                        debugMode &&
+                        <Card>
+                            <Spin loading={listLoading} style={{display:'block',width:'100%'}}>
+                                { (messagesColumns && messageData && messageData.length > 0 )?
+                                    <Space size={16} direction="vertical" style={{minHeight:'150px'}}>
+                                        <Table size={"small"} pagination={false} rowKey={'Seq'} columns={messagesColumns} data={messageData} />
+                                    </Space>
+                                    :
+                                    <Empty style={{width:'100%'}} description={t['statTrack.list.empty.message']}/>
+                                }
+                            </Spin>
+                        </Card>
+                    }
             </Space>
             </Spin>
         </>
