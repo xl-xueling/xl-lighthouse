@@ -15,6 +15,10 @@ export function getSystemTimeZone() : string {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
+export function getDateFormat(format):string {
+    return moment().tz(timezone).format(format);
+}
+
 export function formatTimeStamp(timestamp, format):string {
     return moment(timestamp).tz(timezone).format(format)
 }

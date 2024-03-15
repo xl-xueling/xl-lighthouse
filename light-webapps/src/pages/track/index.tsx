@@ -16,6 +16,7 @@ import ChartPanel from "@/pages/stat/preview/chart_panel";
 import {DebugModeEnum} from "@/types/insights-common";
 import {getRandomString} from "@/utils/util";
 import get = Reflect.get;
+import {formatTimeStamp, getDateFormat} from "@/utils/date";
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function TrackStatPage() {
@@ -29,7 +30,8 @@ export default function TrackStatPage() {
     const [groupId,setGroupId] = useState<number>(null);
     const [messagesColumns,setMessagesColumns] = useState([]);
     const [messageData,setMessageData] = useState([]);
-    const [searchForm,setSearchForm] = useState({"date":["2024-03-14 14:31:35","2024-03-14 14:31:35"],"captcha":["0","1","2"],"groupId":"100288","t":1710398201616});
+    const [searchForm,setSearchForm] = useState(null);
+    const [notifyMessages,setNotifyMessages] = useState([]);
     const {id} = useParams();
 
     async function actualFetchMonitorStatInfo():Promise<Stat> {
@@ -47,12 +49,11 @@ export default function TrackStatPage() {
         setMonitorStatInfo(monitorStatInfo);
     }
 
-    const fetchData = async () => {
+    const fetchStatData = async () => {
         setLoading(true);
         await requestQueryById({id:id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                console.log("data:" + JSON.stringify(data));
                 setStatInfo(data)
                 setGroupId(data.groupId);
             }else{
@@ -64,6 +65,9 @@ export default function TrackStatPage() {
         })
     }
 
+    const handlerRefreshChart = () => {
+        setSearchForm({"date":[getDateFormat('YYYY-MM-DD'),getDateFormat('YYYY-MM-DD')],"captcha":["0","1","2"],"groupId":[groupId],t:Date.now()})
+    }
 
 
     const fetchTrackMessages = async () => {
@@ -91,11 +95,16 @@ export default function TrackStatPage() {
 
     useEffect(() => {
         if(groupId){
+            handlerRefreshChart();
             enableDebugMode(groupId).then();
             fetchTrackMessages().then();
         }
     },[groupId])
 
+    useEffect(() => {
+        fetchMonitorStatInfo().then()
+        fetchStatData().then();
+    },[id])
 
     const enableDebugMode = async (groupId:number) => {
         const changeParam = {
@@ -130,13 +139,6 @@ export default function TrackStatPage() {
         })
     }
 
-
-    useEffect(() => {
-        fetchMonitorStatInfo().then()
-        fetchData().then();
-    },[id])
-
-
     return (
         <>
             <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
@@ -150,7 +152,7 @@ export default function TrackStatPage() {
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
                         <Card style={{height:'340px'}}>
-                            {monitorStatInfo && <ChartPanel parentLoading={false} statInfo={monitorStatInfo} size={'default'} searchForm={searchForm}/>}
+                            {monitorStatInfo && searchForm && <ChartPanel parentLoading={false} statInfo={monitorStatInfo} size={'default'} searchForm={searchForm}/>}
                         </Card>
                     </Space>
                     <Space size={16} direction="vertical" className={styles.right}>
