@@ -1,6 +1,6 @@
 import {
     Breadcrumb,
-    Card, Checkbox, Grid, Input, Notification, Space, Switch, Table, TableColumnProps,
+    Card, Checkbox, Form, Grid, Input, Notification, Space, Switch, Table, TableColumnProps,
 } from '@arco-design/web-react';
 import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -24,6 +24,7 @@ export default function TrackStatPage() {
     const t = useLocale(locale);
     const [formParams, setFormParams] = useState({});
     const [loading,setLoading] = useState<boolean>(false);
+    const [listLoading,setListLoading] = useState<boolean>(false);
     const TextArea = Input.TextArea;
     const [monitorStatInfo,setMonitorStatInfo] = useState(null);
     const [statInfo,setStatInfo] = useState(null);
@@ -33,6 +34,7 @@ export default function TrackStatPage() {
     const [searchForm,setSearchForm] = useState(null);
     const [notifyMessages,setNotifyMessages] = useState([]);
     const {id} = useParams();
+    const [formInstance] = Form.useForm();
 
     async function actualFetchMonitorStatInfo():Promise<Stat> {
         return new Promise<Stat>((resolve,reject) => {
@@ -113,8 +115,9 @@ export default function TrackStatPage() {
         await requestEnableDebugMode(changeParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-
-                Notification.info({style: { width: 420 }, title: 'Notification', content: ""});
+                setNotifyMessages([...notifyMessages,'调试模式已打开！'])
+            }else if(code == '5001'){
+                setNotifyMessages([...notifyMessages,'调试模式已处于开启状态！']);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -122,6 +125,10 @@ export default function TrackStatPage() {
             console.log(error);
         })
     }
+
+    useEffect(() => {
+        formInstance.setFieldValue("notifyArea",notifyMessages);
+    },[notifyMessages])
 
     const disableDebugMode = async (groupId:number) => {
         const changeParam = {
@@ -156,12 +163,16 @@ export default function TrackStatPage() {
                         </Card>
                     </Space>
                     <Space size={16} direction="vertical" className={styles.right}>
-                        <TextArea
-                            placeholder='Please enter ...'
-                            readOnly={true}
-                            style={{ width: '100%',height:'340px',backgroundColor:'#373434',color:'white' }}
-                            defaultValue='This is the contents of the textarea. This is the contents of the textarea. This is the contents of the textarea. '
-                        />
+                        <Form form={formInstance} wrapperCol={{ span: 24 }}>
+                            <Form.Item field={"notifyArea"}>
+                                <TextArea
+                                    placeholder='Please enter ...'
+                                    readOnly={true}
+                                    style={{ width: '100%',height:'340px',backgroundColor:'#373434',color:'white' }}
+                                    defaultValue='This is the contents of the textarea. This is the contents of the textarea. This is the contents of the textarea. '
+                                />
+                            </Form.Item>
+                        </Form>
                     </Space>
                 </div>
 
