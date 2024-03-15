@@ -94,7 +94,6 @@ public class TrackController {
         Integer statId = trackParam.getStatId();
         String key = RedisConst.TRACK_PREFIX + "_" + groupId;
         List<String> list = RedisHandler.getInstance().lrange(key,0,1000);
-        ArrayNode arrayNode = JsonUtil.createArrayNode();
         List<LinkedHashMap<String,Object>> resultList = new ArrayList<>();
         StatExtEntity statExtEntity = statService.queryById(statId);
         Validate.notNull(statExtEntity);
@@ -105,24 +104,18 @@ public class TrackController {
             assert message != null;
             long messageTime = message.getTime();
             System.out.println("message:" + JsonUtil.toJSONString(message));
-            ObjectNode objectNode = JsonUtil.createObjectNode();
-            objectNode.put("Seq",i + 1);
-            objectNode.put("batchTime",message.getTime());
-            objectNode.put("processTime",message.getSystemTime());
-            objectNode.put("repeat",message.getRepeat());
-            objectNode.putPOJO("params",message.getParamMap());
-            linkedHashMap.put("batchTime",message.getTime());
-            linkedHashMap.put("Seq",i + 1);
-            List<StatState> statStates = templateEntity.getStatStateList();
+            linkedHashMap.put("seq",i + 1);
+            linkedHashMap.put("messageTime",messageTime);
+            linkedHashMap.put("processTime",message.getSystemTime());
             long batchTime = DateUtil.batchTime(statExtEntity.getTimeParamInterval(),statExtEntity.getTimeUnit(),messageTime);
+            linkedHashMap.put("batchTime",batchTime);
+            linkedHashMap.put("repeat",message.getRepeat());
+            List<StatState> statStates = templateEntity.getStatStateList();
             Map<String,Object> envMap = new HashMap<>(message.getParamMap());
             for(StatState statState : statStates){
-                System.out.println("stateBody:" + statState.getStateBody());
                 long result = FormulaCalculate.calculate(statState,envMap,batchTime);
-                objectNode.put(statState.getStateBody(),result);
+                linkedHashMap.put(statState.getStateBody(),result);
             }
-            System.out.println("objectNode:" + objectNode);
-            arrayNode.add(objectNode);
             resultList.add(linkedHashMap);
         }
         return ResultData.success(resultList);
