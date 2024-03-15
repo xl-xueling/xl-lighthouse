@@ -8,7 +8,7 @@ public class TrackParam implements Serializable {
 
     private Integer groupId;
 
-    private SwitchStateEnum switchState;
+    private Integer statId;
 
     public Integer getGroupId() {
         return groupId;
@@ -18,11 +18,11 @@ public class TrackParam implements Serializable {
         this.groupId = groupId;
     }
 
-    public SwitchStateEnum getSwitchState() {
-        return switchState;
+    public Integer getStatId() {
+        return statId;
     }
 
-    public void setSwitchState(SwitchStateEnum switchState) {
-        this.switchState = switchState;
+    public void setStatId(Integer statId) {
+        this.statId = statId;
     }
 }

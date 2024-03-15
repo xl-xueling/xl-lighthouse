@@ -9,11 +9,13 @@ import {IconCheck, IconClose, IconHome, IconPlus} from "@arco-design/web-react/i
 import styles from "./style/index.module.less";
 import {Stat} from "@/types/insights-web";
 import {requestChangeState, requestQueryById} from "@/api/stat";
-import {requestEnableDebugMode, requestDisableDebugMode} from "@/api/track";
+import {requestEnableDebugMode, requestDisableDebugMode, requestFetchTrackMessages} from "@/api/track";
 import {useParams} from "react-router-dom";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import ChartPanel from "@/pages/stat/preview/chart_panel";
 import {DebugModeEnum} from "@/types/insights-common";
+import {getRandomString} from "@/utils/util";
+import get = Reflect.get;
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function TrackStatPage() {
@@ -25,6 +27,8 @@ export default function TrackStatPage() {
     const [monitorStatInfo,setMonitorStatInfo] = useState(null);
     const [statInfo,setStatInfo] = useState(null);
     const [groupId,setGroupId] = useState<number>(null);
+    const [messagesColumns,setMessagesColumns] = useState([]);
+    const [messageData,setMessageData] = useState([]);
     const [searchForm,setSearchForm] = useState({"date":["2024-03-14 14:31:35","2024-03-14 14:31:35"],"captcha":["0","1","2"],"groupId":"100288","t":1710398201616});
     const {id} = useParams();
 
@@ -62,16 +66,38 @@ export default function TrackStatPage() {
 
 
 
+    const fetchTrackMessages = async () => {
+        await requestFetchTrackMessages({groupId:statInfo?.groupId,statId:statInfo?.id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                const keysArray = [];
+                for(const key in data[0]){
+                    if(data[0].hasOwnProperty(key)){
+                        const col = {
+                            title: key,
+                            dataIndex: key,
+                            key: key,
+                        }
+                        keysArray.push(col);
+                    }
+                }
+                setMessagesColumns(keysArray);
+                setMessageData(data);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        })
+    }
+
     useEffect(() => {
-        console.log("groupId is:" + groupId);
         if(groupId){
             enableDebugMode(groupId).then();
+            fetchTrackMessages().then();
         }
     },[groupId])
 
 
     const enableDebugMode = async (groupId:number) => {
-        console.log("start enable group,groupId:" + groupId);
         const changeParam = {
             id:groupId,
         }
@@ -106,70 +132,9 @@ export default function TrackStatPage() {
 
 
     useEffect(() => {
-        console.log("id:" + id);
         fetchMonitorStatInfo().then()
         fetchData().then();
     },[id])
-
-    function handleSearch(params) {
-        setFormParams(params);
-    }
-
-    const columns: TableColumnProps[] = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-        },
-        {
-            title: 'Salary',
-            dataIndex: 'salary',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-        },
-    ];
-    const data = [
-        {
-            key: '1',
-            name: 'Jane Doe',
-            salary: 23000,
-            address: '32 Park Road, London',
-            email: 'jane.doe@example.com',
-        },
-        {
-            key: '2',
-            name: 'Alisa Ross',
-            salary: 25000,
-            address: '35 Park Road, London',
-            email: 'alisa.ross@example.com',
-        },
-        {
-            key: '3',
-            name: 'Kevin Sandra',
-            salary: 22000,
-            address: '31 Park Road, London',
-            email: 'kevin.sandra@example.com',
-        },
-        {
-            key: '4',
-            name: 'Ed Hellen',
-            salary: 17000,
-            address: '42 Park Road, London',
-            email: 'ed.hellen@example.com',
-        },
-        {
-            key: '5',
-            name: 'William Smith',
-            salary: 27000,
-            address: '62 Park Road, London',
-            email: 'william.smith@example.com',
-        },
-    ];
 
 
     return (
@@ -219,7 +184,7 @@ export default function TrackStatPage() {
                     </Grid.Row>
                 </Card>
                 <Card>
-                    <Table columns={columns} data={data} />
+                    {messagesColumns && messageData && messageData.length > 0 && <Table columns={messagesColumns} data={messageData} />}
                 </Card>
             </Space>
         </>

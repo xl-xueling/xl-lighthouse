@@ -1,20 +1,31 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.constant.RedisConst;
 import com.dtstep.lighthouse.common.constant.StatConst;
-import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.entity.message.LightMessage;
+import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
+import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
+import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
 import com.dtstep.lighthouse.common.modal.DebugConfig;
 import com.dtstep.lighthouse.common.modal.GroupExtendConfig;
 import com.dtstep.lighthouse.common.modal.IDParam;
 import com.dtstep.lighthouse.common.util.DateUtil;
+import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.core.formula.FormulaCalculate;
+import com.dtstep.lighthouse.core.redis.RedisHandler;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.TrackParam;
 import com.dtstep.lighthouse.insights.service.GroupService;
-import com.dtstep.lighthouse.insights.vo.DebugModeSwitchVO;
+import com.dtstep.lighthouse.insights.service.StatService;
 import com.dtstep.lighthouse.insights.vo.GroupVO;
-import com.dtstep.lighthouse.insights.vo.OrderVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
+import com.dtstep.lighthouse.insights.vo.TrackMessageVO;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,12 +33,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.*;
+
 @RestController
 @ControllerAdvice
 public class TrackController {
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private StatService statService;
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
     @PostMapping("/track/enableDebugMode")
@@ -67,4 +83,46 @@ public class TrackController {
         }
         return ResultData.success();
     }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "groupId")
+    @PostMapping("/track/messages")
+    public ResultData<List<LinkedHashMap<String,Object>>> messages(@Validated @RequestBody TrackParam trackParam) throws Exception {
+        Integer groupId = trackParam.getGroupId();
+        Integer statId = trackParam.getStatId();
+        String key = RedisConst.TRACK_PREFIX + "_" + groupId;
+        List<String> list = RedisHandler.getInstance().lrange(key,0,1000);
+        ArrayNode arrayNode = JsonUtil.createArrayNode();
+        List<LinkedHashMap<String,Object>> resultList = new ArrayList<>();
+        StatExtEntity statExtEntity = statService.queryById(statId);
+        Validate.notNull(statExtEntity);
+        TemplateEntity templateEntity = statExtEntity.getTemplateEntity();
+        for(int i=0;i<list.size();i++){
+            LinkedHashMap<String,Object> linkedHashMap = new LinkedHashMap<>();
+            LightMessage message = JsonUtil.toJavaObject(list.get(i),LightMessage.class);
+            assert message != null;
+            long messageTime = message.getTime();
+            System.out.println("message:" + JsonUtil.toJSONString(message));
+            ObjectNode objectNode = JsonUtil.createObjectNode();
+            objectNode.put("Seq",i + 1);
+            objectNode.put("batchTime",message.getTime());
+            objectNode.put("processTime",message.getSystemTime());
+            objectNode.put("repeat",message.getRepeat());
+            objectNode.putPOJO("params",message.getParamMap());
+            linkedHashMap.put("batchTime",message.getTime());
+            linkedHashMap.put("Seq",i + 1);
+            List<StatState> statStates = templateEntity.getStatStateList();
+            long batchTime = DateUtil.batchTime(statExtEntity.getTimeParamInterval(),statExtEntity.getTimeUnit(),messageTime);
+            Map<String,Object> envMap = new HashMap<>(message.getParamMap());
+            for(StatState statState : statStates){
+                System.out.println("stateBody:" + statState.getStateBody());
+                long result = FormulaCalculate.calculate(statState,envMap,batchTime);
+                objectNode.put(statState.getStateBody(),result);
+            }
+            System.out.println("objectNode:" + objectNode);
+            arrayNode.add(objectNode);
+            resultList.add(linkedHashMap);
+        }
+        return ResultData.success(resultList);
+    }
+
 }

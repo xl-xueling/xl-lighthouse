@@ -14,7 +14,7 @@ public class SendTest {
     public void testCount() throws Exception{
         LightHouse.init("10.206.6.33:4061");
         long t = System.currentTimeMillis();
-        for(int i=0;i<1000000;i++){
+        for(int i=0;i<10000;i++){
             Map<String,Object> map = new HashMap<>();
             map.put("randomId", UUID.randomUUID().toString());
             map.put("province", ThreadLocalRandom.current().nextInt(3));
@@ -25,7 +25,7 @@ public class SendTest {
             }
             map.put("score",ThreadLocalRandom.current().nextDouble(100));
             LightHouse.stat("whf:test_stat","XBzmv56AzzYWi7PsHDTF924ahAWRMK1jxElNrPTx",map,t);
-            Thread.sleep(2);
+            Thread.sleep(10);
         }
         System.out.println("send success!");
         Thread.sleep(100000);
