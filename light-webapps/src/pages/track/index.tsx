@@ -47,8 +47,8 @@ export default function TrackStatPage() {
     const [messageData,setMessageData] = useState([]);
     const [searchForm,setSearchForm] = useState(null);
     const [notifyMessages,setNotifyMessages] = useState([]);
-    const [autoRefreshSwitch,setAutoRefreshSwitch] = useState<boolean>(false);
-    const [debugMode,setDebugMode] = useState(false);
+    const [autoRefreshSwitch,setAutoRefreshSwitch] = useState<boolean>(true);
+    const [debugMode,setDebugMode] = useState(true);
     const [intervalId,setIntervalId] = useState<any>(null);
     const {id} = useParams();
     const [formInstance] = Form.useForm();
@@ -91,9 +91,11 @@ export default function TrackStatPage() {
 
 
     const fetchTrackMessages = async () => {
+        if(!statInfo){
+            return;
+        }
         setListLoading(true);
         await requestFetchTrackMessages({groupId:statInfo?.groupId,statId:statInfo?.id}).then((response) => {
-            console.log("refresh message list...");
             setListLoading(false);
             const {code, data ,message} = response;
             if(code == '0'){
@@ -143,12 +145,12 @@ export default function TrackStatPage() {
         await requestEnableDebugMode(changeParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                const msg = formatString('%s[%s ~ %s].',t['statTrack.notify.turnedON'],data.startTime,data.endTime);
+                const msg = formatString('%s ' + t['statTrack.notify.turnedON'],formatTimeStamp(Date.now(),'YYYY-MM-DD hh:mm:ss'),formatTimeStamp(data.startTime,'YYYY-MM-DD hh:mm:ss'),formatTimeStamp(data.endTime,'YYYY-MM-DD hh:mm:ss'));
                 setNotifyMessages([msg])
                 setDebugMode(true);
                 setAutoRefreshSwitch(true);
             }else if(code == '5001'){
-                const msg = formatString('%s[%s ~ %s].',t['statTrack.notify.already.turnedON'],formatTimeStamp(data.startTime,'YYYY-MM-DD hh:mm:ss'),formatTimeStamp(data.endTime,'YYYY-MM-DD hh:mm:ss'));
+                const msg = formatString('%s ' + t['statTrack.notify.already.turnedON'],formatTimeStamp(Date.now(),'YYYY-MM-DD hh:mm:ss'),formatTimeStamp(data.startTime,'YYYY-MM-DD hh:mm:ss'),formatTimeStamp(data.endTime,'YYYY-MM-DD hh:mm:ss'));
                 setNotifyMessages([msg]);
                 setDebugMode(true);
                 setAutoRefreshSwitch(true);
@@ -167,6 +169,8 @@ export default function TrackStatPage() {
         await requestDisableDebugMode(changeParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
+                const msg = formatString('%s ' + t['statTrack.notify.turnedOFF'],formatTimeStamp(Date.now(),'YYYY-MM-DD hh:mm:ss'));
+                setNotifyMessages([...notifyMessages,msg])
                 setDebugMode(false);
                 setAutoRefreshSwitch(false);
                 Notification.info({style: { width: 420 }, title: 'Notification', content: ""});
@@ -194,12 +198,15 @@ export default function TrackStatPage() {
         }
     }
 
-    const changeCheckBox = (v) => {
-        if(v){
+    const changeCheckBox = () => {
+        if(!autoRefreshSwitch){
+            console.log("---start interval...")
             startInterval();
         }else{
+            console.log("---stop interval...")
             stopInterval();
         }
+        setAutoRefreshSwitch(!autoRefreshSwitch)
     }
 
     useEffect(() => {
@@ -214,7 +221,7 @@ export default function TrackStatPage() {
     },[autoRefreshSwitch])
 
     useEffect(() => {
-        formInstance.setFieldValue("notifyArea",notifyMessages);
+        formInstance.setFieldValue("notifyArea",notifyMessages.join('\n'));
     },[notifyMessages])
 
 
@@ -234,7 +241,8 @@ export default function TrackStatPage() {
                 </BreadcrumbItem>
                 <BreadcrumbItem style={{fontWeight:20}}>{t['statTrack.breadcrumb.title']}</BreadcrumbItem>
             </Breadcrumb>
-            <Space size={16} style={{width:'100%'}} direction="vertical">
+            <Spin block={true} loading={loading}>
+                <Space size={16} style={{width:'100%'}} direction="vertical">
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
                         <Card style={{height:'340px'}}>
@@ -246,7 +254,7 @@ export default function TrackStatPage() {
                             <Form.Item field={"notifyArea"}>
                                 <TextArea
                                     readOnly={true}
-                                    style={{ width: '100%',height:'340px',backgroundColor:'#373434',color:'white' }}
+                                    style={{ width: '100%',height:'340px',fontSize:'13px',backgroundColor:'#373434',color:'white' }}
                                 />
                             </Form.Item>
                         </Form>
@@ -270,14 +278,14 @@ export default function TrackStatPage() {
                                     });
                                 }}
                             >
-                            <Switch checked={debugMode} checkedIcon={<IconCheck />} uncheckedIcon={<IconClose />} disabled={false} defaultChecked size={"small"} onClick={null} />
+                                <Switch checked={debugMode} checkedIcon={<IconCheck />} uncheckedIcon={<IconClose />} disabled={false} defaultChecked size={"small"} onClick={null} />
                             </Popconfirm>
-                            <span style={{marginLeft:'30px'}}>
+                            {statInfo && <span style={{marginLeft:'30px'}}>
                             {t['statTrack.label2']}{statInfo?.token}，{t['statTrack.label3']}{statInfo?.title}
-                            </span>
+                            </span>}
                         </Grid.Col>
                         <Grid.Col span={10} style={{textAlign:"right"}}>
-                            <Checkbox onChange={changeCheckBox}>{t['statTrack.fresh.label']}</Checkbox>
+                            {debugMode && <Checkbox checked={autoRefreshSwitch} onClick={changeCheckBox}>{t['statTrack.fresh.label']}</Checkbox>}
                         </Grid.Col>
                     </Grid.Row>
                 </Card>
@@ -297,6 +305,7 @@ export default function TrackStatPage() {
                 }
 
             </Space>
+            </Spin>
         </>
     );
 }
