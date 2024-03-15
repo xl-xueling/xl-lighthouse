@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import SearchForm from "./search_form";
 import {Card, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
@@ -18,7 +18,7 @@ import {
     translateResponseDataToLineChartData,
 } from "@/pages/stat/preview/common";
 import BasicLinePanel from "@/pages/stat/preview/line_chart";
-
+import * as echarts from "echarts";
 const { Row, Col } = Grid;
 
 export default function StatPreviewPanel({specifyTitle = null,size = 'default',id}) {
@@ -36,6 +36,13 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [statChartData,setStatChartData] = useState<Array<StatData>>(null);
     const [statChartErrorMessage,setStatChartErrorMessage] = useState(null);
     const [option,setOption] = useState({});
+    const chartRefs = useRef([]);
+    const chartRef:any = useRef(null);
+    const chartRef1:any = useRef(null);
+    const chartRef2:any = useRef(null);
+
+    // const refs:any = useRef(Array.from({ length: 3 }).map(() => React.createRef()));
+    const refs = useRef<any[]>([]);
 
     const tableCallback = async (type,data) => {
         if(type == 'showFilterConfigModal'){
@@ -83,7 +90,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         return (
                 <Col span={24}>
                     <Card>
-                        <BasicLinePanel loading={statChartLoading} size={size} option={option}/>
+                        <BasicLinePanel loading={statChartLoading} size={size} option={option} cref={(ref) => (refs.current[0] = ref)}/>
                     </Card>
                 </Col>
         )
@@ -91,16 +98,29 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
 
     const getStateCharts = () => {
         const stateList = statInfo.templateEntity.statStateList;
-        return stateList.map(z => {
-            const lineData = translateResponseDataToLineChartData(statChartData,z.functionIndex);
-            const option = getLineOption(lineData, null);
-            return (
-                <Col span={12} key={getRandomString(32)}>
-                    <Card title={z.stateBody}>
-                        <BasicLinePanel loading={statChartLoading} size={'mini'} option={option}/>
-                    </Card>
-                </Col>
-            );
+        return stateList.map((z,index) => {
+            if(z.functionIndex == 0){
+                const lineData = translateResponseDataToLineChartData(statChartData,z.functionIndex);
+                const option = getLineOption(lineData, null);
+                return (
+                    <Col span={12} key={getRandomString(32)}>
+                        <Card title={z.stateBody}>
+                            <BasicLinePanel loading={statChartLoading} size={size} option={option} cref={(ref) => (refs.current[1] = ref)}/>
+                        </Card>
+                    </Col>
+                );
+            }else{
+                const lineData = translateResponseDataToLineChartData(statChartData,z.functionIndex);
+                const option = getLineOption(lineData, null);
+                return (
+                    <Col span={12} key={getRandomString(32)}>
+                        <Card title={z.stateBody}>
+                            <BasicLinePanel loading={statChartLoading} size={size} option={option} cref={(ref) => (refs.current[2] = ref)}/>
+                        </Card>
+                    </Col>
+                );
+            }
+
         })
     }
 
@@ -116,6 +136,16 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         setSearchForm(null);
         fetchData().then();
     },[id,reloadTime])
+
+
+    useEffect(() => {
+        setTimeout(() => {
+            refs.current.forEach((ref:any, index) => {
+                ref.getEchartsInstance().group = 'sameGroup'
+            });
+            echarts.connect('sameGroup');
+        },5000)
+    },[])
 
     return(
         <>

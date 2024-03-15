@@ -13,13 +13,13 @@ import {
  DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
 
-export default function ChartPanel({size = 'default',searchForm = null,statInfo,parentLoading = false}) {
+export default function ChartPanel({size = 'default',searchForm = null,statInfo,parentLoading = false,ref=null}) {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const [batchTimeList,setBatchTimeList] = useState<string[]>([]);
     const [eChartData,setEChartData] = useState<Array<EChartChartValue>>([]);
     const [errorMessage,setErrorMessage] = useState(null);
-    const chartRef = useRef(null);
+    const chartRef = ref == null ? useRef(null) : ref;
 
     const loadData = (data:Array<StatData>) => {
         const eChartChartValues:Array<EChartChartValue> = [];
