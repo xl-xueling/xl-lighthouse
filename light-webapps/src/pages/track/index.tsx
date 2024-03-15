@@ -173,7 +173,6 @@ export default function TrackStatPage() {
                 setNotifyMessages([...notifyMessages,msg])
                 setDebugMode(false);
                 setAutoRefreshSwitch(false);
-                Notification.info({style: { width: 420 }, title: 'Notification', content: ""});
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -200,10 +199,8 @@ export default function TrackStatPage() {
 
     const changeCheckBox = () => {
         if(!autoRefreshSwitch){
-            console.log("---start interval...")
             startInterval();
         }else{
-            console.log("---stop interval...")
             stopInterval();
         }
         setAutoRefreshSwitch(!autoRefreshSwitch)
