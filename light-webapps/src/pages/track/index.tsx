@@ -1,6 +1,6 @@
 import {
     Breadcrumb,
-    Card, Checkbox, Form, Grid, Input, Notification, Space, Switch, Table, TableColumnProps,
+    Card, Checkbox, Form, Grid, Input, Notification, Space, Switch, Table, TableColumnProps, Typography,
 } from '@arco-design/web-react';
 import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -14,9 +14,10 @@ import {useParams} from "react-router-dom";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import ChartPanel from "@/pages/stat/preview/chart_panel";
 import {DebugModeEnum} from "@/types/insights-common";
-import {getRandomString} from "@/utils/util";
+import {formatString, getRandomString} from "@/utils/util";
 import get = Reflect.get;
 import {formatTimeStamp, getDateFormat} from "@/utils/date";
+import {getOrderTypeDescription} from "@/pages/common/desc/base";
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function TrackStatPage() {
@@ -33,8 +34,11 @@ export default function TrackStatPage() {
     const [messageData,setMessageData] = useState([]);
     const [searchForm,setSearchForm] = useState(null);
     const [notifyMessages,setNotifyMessages] = useState([]);
+    const [autoRefreshSwitch,setAutoRefreshSwitch] = useState<boolean>(false);
+    const [intervalId,setIntervalId] = useState<any>(null);
     const {id} = useParams();
     const [formInstance] = Form.useForm();
+    const { Text } = Typography;
 
     async function actualFetchMonitorStatInfo():Promise<Stat> {
         return new Promise<Stat>((resolve,reject) => {
@@ -83,6 +87,13 @@ export default function TrackStatPage() {
                             title: key,
                             dataIndex: key,
                             key: key,
+                            render: (value,record) => {
+                                if(key == 'batchTime' || key == 'processTime' || key == 'messageTime'){
+                                    return <Text>{formatTimeStamp(value,'YYYY-MM-DD hh:mm:ss')}</Text>
+                                }else{
+                                    return <Text>{value}</Text>
+                                }
+                            },
                         }
                         keysArray.push(col);
                     }
@@ -115,9 +126,13 @@ export default function TrackStatPage() {
         await requestEnableDebugMode(changeParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                setNotifyMessages([...notifyMessages,'调试模式已打开！'])
+                const msg = formatString('调试模式已打开，调试周期：[%s ~ %s].',data.startTime,data.endTime);
+                setNotifyMessages([msg])
+                setAutoRefreshSwitch(true);
             }else if(code == '5001'){
-                setNotifyMessages([...notifyMessages,'调试模式已处于开启状态！']);
+                const msg = formatString('调试模式已处于开启状态，调试周期：[%s ~ %s].',formatTimeStamp(data.startTime,'YYYY-MM-DD hh:mm:ss'),formatTimeStamp(data.endTime,'YYYY-MM-DD hh:mm:ss'));
+                setNotifyMessages([msg]);
+                setAutoRefreshSwitch(true);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -125,6 +140,41 @@ export default function TrackStatPage() {
             console.log(error);
         })
     }
+
+    function startInterval(){
+        if(intervalId){
+            clearInterval(intervalId);
+        }
+        const id = setInterval(() => {
+            }, 30000);
+        setIntervalId(id);
+    }
+
+    function stopInterval(){
+        if(intervalId){
+            clearInterval(intervalId);
+        }
+    }
+
+    const changeCheckBox = (v) => {
+        if(v){
+            startInterval();
+        }else{
+            stopInterval();
+        }
+    }
+
+    useEffect(() => {
+        if(autoRefreshSwitch){
+            startInterval();
+        }else{
+            stopInterval();
+        }
+        return () => {
+            clearInterval(intervalId);
+            console.log('定时任务已关闭');
+        };
+    },[autoRefreshSwitch])
 
     useEffect(() => {
         formInstance.setFieldValue("notifyArea",notifyMessages);
@@ -190,14 +240,14 @@ export default function TrackStatPage() {
 
                                 </Grid.Col>
                                 <Grid.Col span={6}>
-                                    <Checkbox/>自动刷新
+                                    <Checkbox onChange={changeCheckBox}/>自动刷新
                                 </Grid.Col>
                             </Grid.Row>
                         </Grid.Col>
                     </Grid.Row>
                 </Card>
                 <Card>
-                    {messagesColumns && messageData && messageData.length > 0 && <Table columns={messagesColumns} data={messageData} />}
+                    {messagesColumns && messageData && messageData.length > 0 && <Table size={"small"} pagination={false} rowKey={'Seq'} columns={messagesColumns} data={messageData} />}
                 </Card>
             </Space>
         </>
