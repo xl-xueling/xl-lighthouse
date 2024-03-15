@@ -142,6 +142,8 @@ public enum ResultCode {
 
     userStarProjectLimitExceed("3001","userStarProjectLimitExceed"),
 
+    debugModeSwitchAlreadyTurnON("5001","debugModeSwitchAlreadyTurnON"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

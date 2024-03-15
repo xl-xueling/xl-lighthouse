@@ -2,6 +2,8 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.constant.RedisConst;
 import com.dtstep.lighthouse.common.constant.StatConst;
+import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.message.LightMessage;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
@@ -53,6 +55,7 @@ public class TrackController {
         DebugConfig debugConfig;
         if(groupVO.getDebugMode() == SwitchStateEnum.OPEN){
             debugConfig = groupVO.getExtendConfig().getDebugConfig();
+            return ResultData.result(ServiceResult.result(ResultCode.debugModeSwitchAlreadyTurnON,debugConfig));
         }else{
             GroupExtendConfig extendConfig = groupVO.getExtendConfig();
             debugConfig = extendConfig.getDebugConfig();
@@ -66,8 +69,8 @@ public class TrackController {
             groupVO.setDebugMode(SwitchStateEnum.OPEN);
             groupVO.setRefreshTime(DateUtil.timestampToLocalDateTime(now));
             groupService.update(groupVO);
+            return ResultData.success(debugConfig);
         }
-        return ResultData.success(debugConfig);
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
