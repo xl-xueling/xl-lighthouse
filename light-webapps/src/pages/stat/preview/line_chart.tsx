@@ -15,9 +15,7 @@ import {
 import {formatString, getRandomString} from "@/utils/util";
 // import 'default-passive-events'
 
-export default function BasicLinePanel({option = null,size="default", loading = false,cref = null}) {
-
-    // const chartRef = cref == null ? useRef(null) : cref;
+export default function BasicLinePanel({option = null,size="default", loading = false,group=null}) {
 
     const loadingOption = {
         animation: false,
@@ -33,16 +31,20 @@ export default function BasicLinePanel({option = null,size="default", loading = 
         maskColor: 'rgba(255, 255, 255, 1)',
     };
 
+    // const onChartReady = () => {
+    //     cref.getEchartsInstance().group = 'sameGroup'
+    // }
+
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts ref={cref} option={option} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
-                                 loadingOption={loadingOption}/>
+            return <ReactECharts option={option} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
+                                 loadingOption={loadingOption} onChartReady={(v) => {v.group = group}}/>
         }else if(size == 'small'){
-            return <ReactECharts ref={cref} option={option} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
-                                 loadingOption={loadingOption}/>
+            return <ReactECharts option={option} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
+                                 loadingOption={loadingOption} onChartReady={(v) => {v.group = group}}/>
         }else if(size == 'mini'){
-            return <ReactECharts ref={cref} option={option} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
-                                 loadingOption={loadingOption}/>
+            return <ReactECharts option={option} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
+                                 loadingOption={loadingOption} onChartReady={(v) => {v.group = group}}/>
         }
     }
 
