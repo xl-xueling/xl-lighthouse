@@ -15,7 +15,9 @@ import {
 import {formatString, getRandomString} from "@/utils/util";
 // import 'default-passive-events'
 
-export default function BasicLinePanel({option = null,size="default", loading = false}) {
+export default function BasicLinePanel({option = null,size="default", loading = false,cref = null}) {
+
+    // const chartRef = cref == null ? useRef(null) : cref;
 
     const loadingOption = {
         animation: false,
@@ -33,13 +35,13 @@ export default function BasicLinePanel({option = null,size="default", loading = 
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts option={option} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
+            return <ReactECharts ref={cref} option={option} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts option={option} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
+            return <ReactECharts ref={cref} option={option} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts option={option} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
+            return <ReactECharts ref={cref} option={option} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
                                  loadingOption={loadingOption}/>
         }
     }
