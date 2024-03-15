@@ -21,7 +21,7 @@ package com.dtstep.lighthouse.tasks.valid
 import com.dtstep.lighthouse.common.constant.{RedisConst, StatConst}
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity
 import com.dtstep.lighthouse.common.entity.message.LightMessage
-import com.dtstep.lighthouse.common.enums.{GroupStateEnum, LimitingStrategyEnum}
+import com.dtstep.lighthouse.common.enums.{GroupStateEnum, LimitingStrategyEnum, SwitchStateEnum}
 import com.dtstep.lighthouse.common.enums.result.MessageCaptchaEnum
 import com.dtstep.lighthouse.common.util.{DateUtil, JsonUtil}
 import com.dtstep.lighthouse.common.util.JsonUtil.toJSONString
@@ -56,7 +56,7 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
       return null;
     }
     val resultCodeEnum = validMessage(message,groupEntity);
-    if(groupEntity.getDebugMode == 1){
+    if(groupEntity.getDebugMode == SwitchStateEnum.OPEN){
       capture(groupEntity.getId,message);
     }
     if(logger.isTraceEnabled()){
@@ -78,6 +78,9 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
     if(RedisLimitedAspect.getInstance().tryAcquire(lockTrackKey,5,50,TimeUnit.MINUTES.toSeconds(5),1)){
       val trackKey = RedisConst.TRACK_PREFIX + "_" + groupId;
       message.setSystemTime(System.currentTimeMillis());
+      if(logger.isTraceEnabled()){
+        logger.trace(s"group[${groupId}] enable debug mode,capture message:${JsonUtil.toJSONString(message)}")
+      }
       RedisHandler.getInstance().limitSet(trackKey,toJSONString(message),StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE,3 * 3600)
     }
   }

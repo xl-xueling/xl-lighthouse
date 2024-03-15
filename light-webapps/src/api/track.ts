@@ -17,3 +17,11 @@ export async function requestDisableDebugMode(data):Promise<ResultData> {
         data,
     })
 }
+
+export async function requestFetchTrackMessages(data):Promise<ResultData<Array<Map<string,object>>>> {
+    return request({
+        url:'/track/messages',
+        method:'POST',
+        data,
+    })
+}
