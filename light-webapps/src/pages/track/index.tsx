@@ -1,6 +1,19 @@
 import {
     Breadcrumb,
-    Card, Checkbox, Form, Grid, Input, Notification, Space, Switch, Table, TableColumnProps, Typography,
+    Card,
+    Checkbox,
+    Empty,
+    Form,
+    Grid,
+    Input,
+    Message,
+    Notification, Popconfirm,
+    Space,
+    Spin,
+    Switch,
+    Table,
+    TableColumnProps,
+    Typography,
 } from '@arco-design/web-react';
 import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
@@ -35,6 +48,7 @@ export default function TrackStatPage() {
     const [searchForm,setSearchForm] = useState(null);
     const [notifyMessages,setNotifyMessages] = useState([]);
     const [autoRefreshSwitch,setAutoRefreshSwitch] = useState<boolean>(false);
+    const [debugMode,setDebugMode] = useState(false);
     const [intervalId,setIntervalId] = useState<any>(null);
     const {id} = useParams();
     const [formInstance] = Form.useForm();
@@ -77,7 +91,10 @@ export default function TrackStatPage() {
 
 
     const fetchTrackMessages = async () => {
+        setListLoading(true);
         await requestFetchTrackMessages({groupId:statInfo?.groupId,statId:statInfo?.id}).then((response) => {
+            console.log("refresh message list...");
+            setListLoading(false);
             const {code, data ,message} = response;
             if(code == '0'){
                 const keysArray = [];
@@ -126,13 +143,33 @@ export default function TrackStatPage() {
         await requestEnableDebugMode(changeParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                const msg = formatString('调试模式已打开，调试周期：[%s ~ %s].',data.startTime,data.endTime);
+                const msg = formatString('%s[%s ~ %s].',t['statTrack.notify.turnedON'],data.startTime,data.endTime);
                 setNotifyMessages([msg])
+                setDebugMode(true);
                 setAutoRefreshSwitch(true);
             }else if(code == '5001'){
-                const msg = formatString('调试模式已处于开启状态，调试周期：[%s ~ %s].',formatTimeStamp(data.startTime,'YYYY-MM-DD hh:mm:ss'),formatTimeStamp(data.endTime,'YYYY-MM-DD hh:mm:ss'));
+                const msg = formatString('%s[%s ~ %s].',t['statTrack.notify.already.turnedON'],formatTimeStamp(data.startTime,'YYYY-MM-DD hh:mm:ss'),formatTimeStamp(data.endTime,'YYYY-MM-DD hh:mm:ss'));
                 setNotifyMessages([msg]);
+                setDebugMode(true);
                 setAutoRefreshSwitch(true);
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }
+
+    const disableDebugMode = async (groupId:number) => {
+        const changeParam = {
+            id:groupId,
+        }
+        await requestDisableDebugMode(changeParam).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                setDebugMode(false);
+                setAutoRefreshSwitch(false);
+                Notification.info({style: { width: 420 }, title: 'Notification', content: ""});
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -146,7 +183,8 @@ export default function TrackStatPage() {
             clearInterval(intervalId);
         }
         const id = setInterval(() => {
-            }, 30000);
+            fetchTrackMessages().then();
+            }, 10000);
         setIntervalId(id);
     }
 
@@ -172,7 +210,6 @@ export default function TrackStatPage() {
         }
         return () => {
             clearInterval(intervalId);
-            console.log('定时任务已关闭');
         };
     },[autoRefreshSwitch])
 
@@ -180,20 +217,13 @@ export default function TrackStatPage() {
         formInstance.setFieldValue("notifyArea",notifyMessages);
     },[notifyMessages])
 
-    const disableDebugMode = async (groupId:number) => {
-        const changeParam = {
-            id:groupId,
+
+    const handlerSwitchDebugMode = async () => {
+        if(debugMode){
+            await disableDebugMode(groupId).then();
+        }else{
+            await enableDebugMode(groupId).then();
         }
-        await requestDisableDebugMode(changeParam).then((response) => {
-            const {code, data ,message} = response;
-            if(code == '0'){
-                Notification.info({style: { width: 420 }, title: 'Notification', content: ""});
-            }else{
-                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-            }
-        }).catch((error)=>{
-            console.log(error);
-        })
     }
 
     return (
@@ -205,7 +235,6 @@ export default function TrackStatPage() {
                 <BreadcrumbItem style={{fontWeight:20}}>{t['statTrack.breadcrumb.title']}</BreadcrumbItem>
             </Breadcrumb>
             <Space size={16} style={{width:'100%'}} direction="vertical">
-
                 <div className={styles.wrapper}>
                     <Space size={16} direction="vertical" className={styles.left}>
                         <Card style={{height:'340px'}}>
@@ -216,10 +245,8 @@ export default function TrackStatPage() {
                         <Form form={formInstance} wrapperCol={{ span: 24 }}>
                             <Form.Item field={"notifyArea"}>
                                 <TextArea
-                                    placeholder='Please enter ...'
                                     readOnly={true}
                                     style={{ width: '100%',height:'340px',backgroundColor:'#373434',color:'white' }}
-                                    defaultValue='This is the contents of the textarea. This is the contents of the textarea. This is the contents of the textarea. '
                                 />
                             </Form.Item>
                         </Form>
@@ -229,26 +256,46 @@ export default function TrackStatPage() {
                 <Card style={{height:'50px'}}>
                     <Grid.Row gutter={8}>
                         <Grid.Col span={14}>
-                            调试模式： <Switch checkedIcon={<IconCheck />} uncheckedIcon={<IconClose />} defaultChecked size={"small"} />
+                            {t['statTrack.label1']}
+                            <Popconfirm
+                                focusLock
+                                title='Confirm'
+                                content={debugMode?t['statTrack.stop.debugMode.confirm']:t['statTrack.start.debugMode.confirm']}
+                                onOk={async () => {
+                                    await handlerSwitchDebugMode();
+                                }}
+                                onCancel={() => {
+                                    Message.error({
+                                        content: 'cancel',
+                                    });
+                                }}
+                            >
+                            <Switch checked={debugMode} checkedIcon={<IconCheck />} uncheckedIcon={<IconClose />} disabled={false} defaultChecked size={"small"} onClick={null} />
+                            </Popconfirm>
                             <span style={{marginLeft:'30px'}}>
-                            当前统计组：behavior_stat，统计项：每分钟_uv数据统计
+                            {t['statTrack.label2']}{statInfo?.token}，{t['statTrack.label3']}{statInfo?.title}
                             </span>
                         </Grid.Col>
                         <Grid.Col span={10} style={{textAlign:"right"}}>
-                            <Grid.Row gutter={8}>
-                                <Grid.Col span={18}>
-
-                                </Grid.Col>
-                                <Grid.Col span={6}>
-                                    <Checkbox onChange={changeCheckBox}/>自动刷新
-                                </Grid.Col>
-                            </Grid.Row>
+                            <Checkbox onChange={changeCheckBox}>{t['statTrack.fresh.label']}</Checkbox>
                         </Grid.Col>
                     </Grid.Row>
                 </Card>
-                <Card>
-                    {messagesColumns && messageData && messageData.length > 0 && <Table size={"small"} pagination={false} rowKey={'Seq'} columns={messagesColumns} data={messageData} />}
-                </Card>
+                {
+                    debugMode &&
+                    <Card>
+                        <Spin loading={listLoading} style={{display:'block',width:'100%'}}>
+                            { (messagesColumns && messageData && messageData.length > 0 )?
+                                <Space size={16} direction="vertical" style={{minHeight:'150px'}}>
+                                    <Table size={"small"} pagination={false} rowKey={'Seq'} columns={messagesColumns} data={messageData} />
+                                </Space>
+                                :
+                                <Empty style={{width:'100%'}} description={t['statTrack.list.empty.message']}/>
+                            }
+                        </Spin>
+                    </Card>
+                }
+
             </Space>
         </>
     );

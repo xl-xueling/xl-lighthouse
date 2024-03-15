@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -77,13 +78,10 @@ public class TrackController {
     @PostMapping("/track/disableDebugMode")
     public ResultData<Integer> disableDebugMode(@Validated @RequestBody IDParam idParam) throws Exception {
         Integer id = idParam.getId();
-        System.out.println("track success,id:" + id);
         GroupVO groupVO = groupService.queryById(id);
-        if(groupVO.getDebugMode() == SwitchStateEnum.OPEN){
-
-        }else{
-
-        }
+        groupVO.setDebugMode(SwitchStateEnum.CLOSE);
+        groupVO.setRefreshTime(LocalDateTime.now());
+        groupService.update(groupVO);
         return ResultData.success();
     }
 
