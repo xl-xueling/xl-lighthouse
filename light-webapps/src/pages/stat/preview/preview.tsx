@@ -36,12 +36,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [statChartData,setStatChartData] = useState<Array<StatData>>(null);
     const [statChartErrorMessage,setStatChartErrorMessage] = useState(null);
     const [option,setOption] = useState({});
-    const chartRefs = useRef([]);
-    const chartRef:any = useRef(null);
-    const chartRef1:any = useRef(null);
-    const chartRef2:any = useRef(null);
-
-    // const refs:any = useRef(Array.from({ length: 3 }).map(() => React.createRef()));
     const refs = useRef<any[]>([]);
 
     const tableCallback = async (type,data) => {
@@ -90,7 +84,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         return (
                 <Col span={24}>
                     <Card>
-                        <BasicLinePanel loading={statChartLoading} size={size} option={option} cref={(ref) => (refs.current[0] = ref)}/>
+                        <BasicLinePanel loading={statChartLoading} size={size} option={option} group={'sameGroup'}/>
                     </Card>
                 </Col>
         )
@@ -99,27 +93,15 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const getStateCharts = () => {
         const stateList = statInfo.templateEntity.statStateList;
         return stateList.map((z,index) => {
-            if(z.functionIndex == 0){
-                const lineData = translateResponseDataToLineChartData(statChartData,z.functionIndex);
-                const option = getLineOption(lineData, null);
-                return (
-                    <Col span={12} key={getRandomString(32)}>
-                        <Card title={z.stateBody}>
-                            <BasicLinePanel loading={statChartLoading} size={size} option={option} cref={(ref) => (refs.current[1] = ref)}/>
-                        </Card>
-                    </Col>
-                );
-            }else{
-                const lineData = translateResponseDataToLineChartData(statChartData,z.functionIndex);
-                const option = getLineOption(lineData, null);
-                return (
-                    <Col span={12} key={getRandomString(32)}>
-                        <Card title={z.stateBody}>
-                            <BasicLinePanel loading={statChartLoading} size={size} option={option} cref={(ref) => (refs.current[2] = ref)}/>
-                        </Card>
-                    </Col>
-                );
-            }
+            const lineData = translateResponseDataToLineChartData(statChartData,z.functionIndex);
+            const option = getLineOption(lineData, null);
+            return (
+                <Col span={12} key={getRandomString(32)}>
+                    <Card title={z.stateBody}>
+                        <BasicLinePanel loading={statChartLoading} size={'mini'} option={option} group={'sameGroup'}/>
+                    </Card>
+                </Col>
+            );
 
         })
     }
@@ -133,19 +115,12 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     }
 
     useEffect(() => {
+        echarts.connect('sameGroup');
         setSearchForm(null);
         fetchData().then();
     },[id,reloadTime])
 
 
-    useEffect(() => {
-        setTimeout(() => {
-            refs.current.forEach((ref:any, index) => {
-                ref.getEchartsInstance().group = 'sameGroup'
-            });
-            echarts.connect('sameGroup');
-        },5000)
-    },[])
 
     return(
         <>
