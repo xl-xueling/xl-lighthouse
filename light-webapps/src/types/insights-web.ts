@@ -225,6 +225,11 @@ export interface StatData{
     valuesList?:StatValue[];
 }
 
+export interface LineChartData {
+    dataMap:Map<string,(number|string)[]>;
+    xAxis?:Array<string>;
+}
+
 export interface EChartChartValue {
     name?:string;
     type?:string;

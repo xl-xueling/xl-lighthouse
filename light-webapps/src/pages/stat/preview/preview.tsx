@@ -1,27 +1,25 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
 import SearchForm from "./search_form";
-import {Breadcrumb, Button, Card, Divider, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
-import styles from "./style/index.module.less";
+import {Card, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
-import {Department, Stat, TreeNode} from "@/types/insights-web";
+import {Stat, StatData, TreeNode} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import ChartPanel from "@/pages/stat/preview/chart_panel";
-import {IconDashboard, IconHome, IconTag, IconTags} from "@arco-design/web-react/icon";
+import {IconTag} from "@arco-design/web-react/icon";
 import BasicInfo from "@/pages/stat/preview/basic";
 import {requestQueryById} from "@/api/stat";
-const { Row, Col } = Grid;
-import { RiGlobalLine } from "react-icons/ri";
-import { AiOutlineBarChart } from "react-icons/ai";
-import {getStatStateDescription, getStatStateDescriptionWithBadge} from "@/pages/common/desc/base";
-import StatDetailModal from "@/pages/stat/list/detail";
+import {getStatStateDescription} from "@/pages/common/desc/base";
 import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
-import {LimitedRecordModal} from "@/pages/record/limited_records";
-import {RecordTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
 import StatUpdateModal from "@/pages/stat/update";
-import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
 import {getRandomString} from "@/utils/util";
+import {
+    getLineOption,
+    handlerFetchStatData,
+    translateResponseDataToLineChartData,
+} from "@/pages/stat/preview/common";
+import BasicLinePanel from "@/pages/stat/preview/line_chart";
+
+const { Row, Col } = Grid;
 
 export default function StatPreviewPanel({specifyTitle = null,size = 'default',id}) {
 
@@ -29,11 +27,15 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const t = useLocale(locale);
     const [statInfo,setStatInfo] = useState<Stat>(null);
     const [loading,setLoading] = useState<boolean>(true);
+    const [statChartLoading,setStatChartLoading] = useState<boolean>(false);
     const [searchForm,setSearchForm] = useState(null);
     const [showFilterConfigModal,setShowFilterConfigModal] = useState<boolean>(false);
     const [reloadTime,setReloadTime] = useState<number>(Date.now);
     const [showLimitedRecord,setShowLimitedRecord] = useState<boolean>(false);
     const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
+    const [statChartData,setStatChartData] = useState<Array<StatData>>(null);
+    const [statChartErrorMessage,setStatChartErrorMessage] = useState(null);
+    const [option,setOption] = useState({});
 
     const tableCallback = async (type,data) => {
         if(type == 'showFilterConfigModal'){
@@ -60,6 +62,52 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         })
     }
 
+    const fetchStatData = async () => {
+        setStatChartLoading(true);
+        if(statInfo){
+            const statChartData = await handlerFetchStatData(statInfo,searchForm);
+            if(statChartData.code == '0'){
+                setStatChartLoading(false);
+                setStatChartData(statChartData.data);
+                setStatChartErrorMessage(null);
+            }else{
+                setStatChartData(null);
+                setStatChartErrorMessage(statChartData.message);
+            }
+        }
+    }
+
+    const getStatChart = () => {
+        const lineData = translateResponseDataToLineChartData(statChartData,-1);
+        const option = getLineOption(lineData, null);
+        return (
+                <Col span={24}>
+                    <Card>
+                        <BasicLinePanel loading={statChartLoading} size={size} option={option}/>
+                    </Card>
+                </Col>
+        )
+    }
+
+    const getStateCharts = () => {
+        const stateList = statInfo.templateEntity.statStateList;
+        return stateList.map(z => {
+            const lineData = translateResponseDataToLineChartData(statChartData,z.functionIndex);
+            const option = getLineOption(lineData, null);
+            return (
+                <Col span={12} key={getRandomString(32)}>
+                    <Card title={z.stateBody}>
+                        <BasicLinePanel loading={statChartLoading} size={'mini'} option={option}/>
+                    </Card>
+                </Col>
+            );
+        })
+    }
+
+    useEffect(() => {
+        fetchStatData().then();
+    },[statInfo,JSON.stringify(searchForm)])
+
     function handleSearch(params) {
         setSearchForm({...params,t:Date.now()});
     }
@@ -72,21 +120,24 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     return(
         <>
             <Spin loading={loading} size={20} style={{ display: 'block' }}>
-                <Space size={16} direction="vertical" style={{ width: '100%' }}>
+                <Space size={16} direction="vertical" style={{ width: '100%',minHeight:'500px' }}>
                     {statInfo &&
-                        <Card>
-                            <Typography.Title
-                                heading={6}
-                                style={{marginBottom:'25px'}}
-                            >
-                                <IconTag style={{marginRight:'10px'}}/>
-                                {specifyTitle?specifyTitle:statInfo?.title}
-                                <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
-                            </Typography.Title>
-                            {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch}/>}
-                            {<ChartPanel key={getRandomString(32)} size={size} statInfo={statInfo} searchForm={searchForm} parentLoading={loading}/>}
-                        </Card>
-                    }
+                        <>
+                    <Card>
+                        <Typography.Title
+                            heading={6}
+                            style={{marginBottom:'25px'}}
+                        >
+                            <IconTag style={{marginRight:'10px'}}/>
+                            {specifyTitle?specifyTitle:statInfo?.title}
+                            <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
+                        </Typography.Title>
+                        {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch}/>}
+                        {getStatChart()}
+                    </Card>
+                    <Row gutter={16}>
+                        {getStateCharts()}
+                    </Row>
                     <Card>
                         <Typography.Title
                             heading={6}
@@ -95,6 +146,8 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                         </Typography.Title>
                         <BasicInfo statInfo={statInfo} callback={tableCallback}/>
                     </Card>
+                        </>
+                    }
                 </Space>
                 {showFilterConfigModal && <StatFilterConfigModal statInfo={statInfo}
                                                                  onClose={() => setShowFilterConfigModal(false)}
