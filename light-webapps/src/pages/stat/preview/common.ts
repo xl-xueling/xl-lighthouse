@@ -73,20 +73,18 @@ export const translateResponseDataToLineChartData = (statData:Array<StatData>,st
     };
 }
 
-export const getChartLoadingOption = () => {
-    return {
-        animation: false,
-        icon: 'none',
-        text: 'Loading...',
-        color: '#c23531',
-        showSpinner: true,
-        spinnerRadius: 7,
-        textColor: '#000',
-        fontWeight: 'normal',
-        lineWidth: 2,
-        fontSize: 13,
-        maskColor: 'rgba(255, 255, 255, 1)',
-    }
+export const loadingOption = {
+    animation: false,
+    icon: 'none',
+    text: 'Loading...',
+    color: '#c23531',
+    showSpinner: true,
+    spinnerRadius: 7,
+    textColor: '#000',
+    fontWeight: 'normal',
+    lineWidth: 2,
+    fontSize: 13,
+    maskColor: 'rgba(255, 255, 255, 1)',
 };
 
 export const getTimeLineBarOption = (seriesArray,data:Array<LimitData>,errorMessage:string,timeIndex) => {
