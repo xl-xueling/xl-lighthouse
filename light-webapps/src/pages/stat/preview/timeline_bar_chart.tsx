@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
-import {getChartLoadingOption, getTimeLineBarOption} from "@/pages/stat/preview/common";
+import {loadingOption} from "@/pages/stat/preview/common";
+import {stringifyObj} from "@/utils/util";
 
 export default function TimeLineBarPanel({data = null,size="default", loading = false,group=null}) {
 
@@ -29,7 +30,7 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
                         type: 'bar',
                         data: seriesData,
                         animation: true,
-                        animationDuration: 2000,
+                        animationDuration: 1000,
                     }
                 ]
             };
@@ -55,20 +56,20 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
                 data: dimensList,
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
             },
             series: [{
                 type: 'bar',
-                animation: true
             }]
         },
         options: seriesArray,
     };
 
     const onclick={
-        click:(params)=>{
-            setTimeIndex(params.dataIndex);
-        }
+        // click:(params)=>{
+        //     console.log("params 1 is:" + stringifyObj(params));
+        //     // setTimeIndex(params.dataIndex);
+        // },
     }
 
     useEffect(() => {
@@ -82,11 +83,11 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts option={defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} onEvents={onclick} loadingOption={getChartLoadingOption}/>
+            return <ReactECharts option={defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts option={defaultOption} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} onEvents={onclick} loadingOption={getChartLoadingOption}/>
+            return <ReactECharts option={defaultOption} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts option={defaultOption} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} onEvents={onclick} loadingOption={getChartLoadingOption}/>
+            return <ReactECharts option={defaultOption} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }
     }
 
