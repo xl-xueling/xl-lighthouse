@@ -122,6 +122,9 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const getLimitChart = () => {
+        if(!limitChartData){
+            return;
+        }
         return (
             <Col span={24} key={getRandomString(32)}>
                 <Card title={'sss'}>
