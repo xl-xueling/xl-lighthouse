@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {Stat, StatData, EChartChartValue, StatValue} from "@/types/insights-web";
 import {Notification, Space} from "@arco-design/web-react";
-import {requestData, requestTestData} from "@/api/data";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import ReactECharts from 'echarts-for-react';

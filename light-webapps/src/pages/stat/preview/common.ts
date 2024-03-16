@@ -7,8 +7,8 @@ import {
     getDayEndTimestamp,
     getDayStartTimestamp
 } from "@/utils/date";
-import {requestData} from "@/api/data";
-import {LineChartData, Stat, StatData} from "@/types/insights-web";
+import {requestLimitData, requestStatData} from "@/api/data";
+import {LimitData, LineChartData, Stat, StatData} from "@/types/insights-web";
 import {ResultData} from "@/types/insights-common";
 
 export const handlerFetchStatData = async (statInfo:Stat,search:any):Promise<ResultData<Array<StatData>>> => {
@@ -41,7 +41,15 @@ export const handlerFetchStatData = async (statInfo:Stat,search:any):Promise<Res
             combineParam.endTime = getDailyEndTimestamp();
         }
     }
-    return await requestData(combineParam);
+    return await requestStatData(combineParam);
+}
+
+export const handlerFetchLimitData = async ():Promise<ResultData<Array<LimitData>>> => {
+    const statId = 1100522;
+    const combineParam = {
+        statId:statId,
+    }
+    return await requestLimitData(combineParam);
 }
 
 export const translateResponseDataToLineChartData = (statData:Array<StatData>,stateIndex:number):LineChartData => {
