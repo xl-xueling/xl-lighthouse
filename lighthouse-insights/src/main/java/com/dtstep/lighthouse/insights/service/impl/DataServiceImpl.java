@@ -184,6 +184,7 @@ public class DataServiceImpl implements DataService {
             LimitDataObject dataObject = new LimitDataObject();
             dataObject.setValues(valueList);
             dataObject.setBatchTime(batchTime);
+            dataObject.setDisplayBatchTime(BatchAdapter.dateTimeFormat(statExtEntity.getTimeparam(),batchTime));
             resultList.add(dataObject);
         }
         return resultList;
