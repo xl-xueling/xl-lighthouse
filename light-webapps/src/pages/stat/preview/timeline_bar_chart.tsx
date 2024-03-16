@@ -41,11 +41,16 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
 
     const defaultOption = {
         baseOption: {
+            grid: {
+              top:'25px',
+              left:'50px',
+              right:'50px',
+            },
             timeline: {
                 axisType: 'category',
                 autoPlay: false,
-                currentIndex:timeIndex,
                 playInterval: 1000,
+                currentIndex:timeIndex,
                 data: batchList,
                 label: {
                     formatter: '{value}'
@@ -65,11 +70,16 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
         options: seriesArray,
     };
 
+    useEffect(() => {
+        console.log("timeindex is:" + timeIndex);
+    },[timeIndex])
+
     const onclick={
-        // click:(params)=>{
-        //     console.log("params 1 is:" + stringifyObj(params));
-        //     // setTimeIndex(params.dataIndex);
-        // },
+        click:(params)=>{
+            const index = params.dataIndex;
+            setDimensList(data[index].values.map(z => z.dimensValue));
+            setTimeIndex(index);
+        },
     }
 
     useEffect(() => {
@@ -83,7 +93,7 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts option={defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts option={defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} onEvents={onclick} showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'small'){
             return <ReactECharts option={defaultOption} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'mini'){
