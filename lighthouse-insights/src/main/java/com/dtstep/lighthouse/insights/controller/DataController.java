@@ -6,6 +6,7 @@ import com.dtstep.lighthouse.common.modal.LimitDataObject;
 import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.common.modal.Stat;
+import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.dtstep.lighthouse.insights.dto.LimitStatQueryParam;
@@ -14,6 +15,8 @@ import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.common.modal.StatDataObject;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dto.DataStatQueryParam;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -58,6 +61,7 @@ public class DataController {
             }
         }
         StatExtEntity stat = statService.queryById(statId);
+        Validate.notNull(stat);
         List<String> dimensList = dataService.dimensArrangement(stat,queryParam.getDimensParams());
         List<StatDataObject> objectList = dataService.dataQuery(stat,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
         return ResultData.success(objectList);
@@ -66,8 +70,14 @@ public class DataController {
     @PostMapping("/limit/stat")
     public ResultData<List<LimitDataObject>> limitQuery(@Validated @RequestBody LimitStatQueryParam queryParam) throws Exception {
         int statId = queryParam.getStatId();
-
-        return null;
+        StatExtEntity stat = statService.queryById(statId);
+        Validate.notNull(stat);
+        List<Long> batchTimeList = queryParam.getBatchTimeList();
+        if(CollectionUtils.isEmpty(batchTimeList)){
+            batchTimeList = BatchAdapter.queryBatchTimeList(stat.getTimeparam(),0,System.currentTimeMillis(),10);
+        }
+        List<LimitDataObject> objectList = dataService.limitQuery(stat,batchTimeList);
+        return ResultData.success(objectList);
     }
 
     @PostMapping("/test-data/stat")
