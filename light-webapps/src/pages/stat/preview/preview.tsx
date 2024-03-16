@@ -19,6 +19,7 @@ import {
 } from "@/pages/stat/preview/common";
 import BasicLinePanel from "@/pages/stat/preview/line_chart";
 import * as echarts from "echarts";
+import TimeLineBarPanel from "@/pages/stat/preview/timeline_bar_chart";
 const { Row, Col } = Grid;
 
 export default function StatPreviewPanel({specifyTitle = null,size = 'default',id}) {
@@ -121,13 +122,10 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const getLimitChart = () => {
-
-        const option = getTimeLineBarOption(limitChartData,null);
-        console.log("option is:" + option)
         return (
             <Col span={24} key={getRandomString(32)}>
                 <Card title={'sss'}>
-                    <BasicLinePanel loading={limitChartLoading} size={'default'} option={option} />
+                    <TimeLineBarPanel loading={limitChartLoading} size={'default'} data={limitChartData} />
                 </Card>
             </Col>
         );

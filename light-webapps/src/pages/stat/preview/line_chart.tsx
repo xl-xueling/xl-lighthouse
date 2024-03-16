@@ -30,20 +30,16 @@ export default function BasicLinePanel({option = null,size="default", loading = 
         maskColor: 'rgba(255, 255, 255, 1)',
     };
 
-    // const onChartReady = () => {
-    //     cref.getEchartsInstance().group = 'sameGroup'
-    // }
-
     const getReactChart = () => {
         if(size == 'default'){
             return <ReactECharts option={option} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
-                                 loadingOption={loadingOption} onChartReady={(v) => {v.group = group}}/>
+                                 loadingOption={loadingOption} onChartReady={(v) => {v.group = group}} />
         }else if(size == 'small'){
             return <ReactECharts option={option} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
-                                 loadingOption={loadingOption} onChartReady={(v) => {v.group = group}}/>
+                                 loadingOption={loadingOption} onChartReady={(v) => {v.group = group}} />
         }else if(size == 'mini'){
             return <ReactECharts option={option} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading}
-                                 loadingOption={loadingOption} onChartReady={(v) => {v.group = group}}/>
+                                 loadingOption={loadingOption} onChartReady={(v) => {v.group = group}} />
         }
     }
 
