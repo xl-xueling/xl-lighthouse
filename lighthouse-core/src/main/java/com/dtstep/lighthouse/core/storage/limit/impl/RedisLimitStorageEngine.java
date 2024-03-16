@@ -84,7 +84,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
         if(CollectionUtils.isEmpty(dimensSet) || groupExtEntity == null){
             return;
         }
-        String baseKey = BatchAdapter.generateBatchBaseKey(groupExtEntity.getToken(), statExtEntity.getId(), statExtEntity.getDataVersion(),null,batchTime,0);
+        String baseKey = BatchAdapter.generateLimitKey(statExtEntity.getRandomId(),statExtEntity.getDataVersion(),batchTime);
         String lockKey = RedisConst.LOCK_LIMIT_PREFIX + "_" + baseKey + "_" + salt + "_" + DateUtil.formatTimeStamp(batchTime,"yyyyMMddHHmmss");
         String redisKey = RedisConst.LIMIT_N_PREFIX + "_" + baseKey + "_" + salt;
         boolean isLock = RedLock.tryLock(lockKey,5,3, TimeUnit.MINUTES);
@@ -119,7 +119,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
                     RedisHandler.getInstance().batchPutLastN(redisKey,keyValueMap,cacheSize,expireSeconds * 10);
                     long t5 = System.currentTimeMillis();
                     if(logger.isDebugEnabled()) {
-                        logger.debug("limit topN put,stat:{},batchTime:{},redis key:{},dimensSet size:{},keyValueMap size:{},cost1:{},cost2:{},cost3:{}"
+                        logger.debug("limit lastN put,stat:{},batchTime:{},redis key:{},dimensSet size:{},keyValueMap size:{},cost1:{},cost2:{},cost3:{}"
                                 ,statExtEntity.getId(), DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"),redisKey, dimensSet.size(),keyValueMap.size(),(t2 - t1),(t4 - t3),(t5 - t4));
                     }
                 }
@@ -150,11 +150,9 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
     }
 
     @Override
-    public List<LimitValue> queryLimitDimens(StatExtEntity statExtEntity, long batchTime) throws Exception {
+    public List<LimitValue> query(StatExtEntity statExtEntity, long batchTime) throws Exception {
         List<LimitValue> resultList = new ArrayList<>();
-        int groupId = statExtEntity.getGroupId();
-        GroupExtEntity groupExtEntity = GroupDBWrapper.queryById(groupId);
-        String baseKey = BatchAdapter.generateBatchBaseKey(groupExtEntity.getToken(), statExtEntity.getId(), statExtEntity.getDataVersion(),null,batchTime,0);
+        String baseKey = BatchAdapter.generateLimitKey(statExtEntity.getRandomId(),statExtEntity.getDataVersion(),batchTime);
         Set<Tuple> limitSet = new HashSet<>();
         int limitSize = statExtEntity.getTemplateEntity().getLimitSize();
         if(statExtEntity.getTemplateEntity().getLimitTypeEnum() == LimitTypeEnum.TOP){

@@ -31,8 +31,8 @@ public class LimitStorageSelector {
         limitStorageEngine.limit(eventList);
     }
 
-    public static List<LimitValue> queryLimitDimens(StatExtEntity statExtEntity, long batchTime) throws Exception {
-        return limitStorageEngine.queryLimitDimens(statExtEntity, batchTime);
+    public static List<LimitValue> query(StatExtEntity statExtEntity, long batchTime) throws Exception {
+        return limitStorageEngine.query(statExtEntity, batchTime);
     }
 
 }

@@ -1,14 +1,19 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.clearspring.analytics.util.Lists;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
+import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
+import com.dtstep.lighthouse.common.modal.LimitDataObject;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.common.modal.StatDataObject;
+import com.dtstep.lighthouse.core.storage.limit.LimitStorageSelector;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.insights.service.DataService;
 import com.dtstep.lighthouse.insights.service.StatService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -121,7 +126,6 @@ public class DataServiceImpl implements DataService {
             logger.error("query batch time list error!",ex);
         }
         Validate.notNull(batchList);
-
         Map<String,List<StatValue>> valuesMap = ResultStorageSelector.queryWithDimensList(statExtEntity,dimensList,batchList);
         List<StatDataObject> dataObjects = new ArrayList<>();
         if(MapUtils.isNotEmpty(valuesMap)){
@@ -151,8 +155,8 @@ public class DataServiceImpl implements DataService {
         Validate.notNull(batchList);
         List<StatValue> statValues = new ArrayList<>();
         List<StatDataObject> objectList = new ArrayList<>();
-        List<String> dimenslists = List.of("province");
-        for(String dimens:dimenslists){
+        List<String> dimensLists = List.of("province");
+        for(String dimens:dimensLists){
             for(long batchTime:batchList){
                 StatValue statValue = new StatValue();
                 statValue.setValue(ThreadLocalRandom.current().nextInt(10000));
@@ -167,5 +171,18 @@ public class DataServiceImpl implements DataService {
             objectList.add(statDataObject);
         }
         return objectList;
+    }
+
+    @Override
+    public List<LimitDataObject> limitQuery(StatExtEntity statExtEntity, List<Long> batchTimeList) throws Exception {
+        List<LimitDataObject> resultList = Lists.newArrayList();
+        if(CollectionUtils.isEmpty(batchTimeList)){
+            return resultList;
+        }
+        for(Long batchTime : batchTimeList){
+            List<LimitValue> valueList = LimitStorageSelector.query(statExtEntity,batchTime);
+
+        }
+        return resultList;
     }
 }

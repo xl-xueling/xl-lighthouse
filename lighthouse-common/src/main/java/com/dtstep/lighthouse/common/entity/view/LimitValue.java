@@ -22,8 +22,6 @@ public class LimitValue{
 
     private double score;
 
-    public LimitValue(){}
-
     public LimitValue(String dimensValue,double score){
         this.dimensValue = dimensValue;
         this.score = score;
