@@ -181,7 +181,10 @@ public class DataServiceImpl implements DataService {
         }
         for(Long batchTime : batchTimeList){
             List<LimitValue> valueList = LimitStorageSelector.query(statExtEntity,batchTime);
-
+            LimitDataObject dataObject = new LimitDataObject();
+            dataObject.setValues(valueList);
+            dataObject.setBatchTime(batchTime);
+            resultList.add(dataObject);
         }
         return resultList;
     }
