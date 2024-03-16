@@ -227,6 +227,7 @@ export interface StatData{
 
 export interface LimitData {
     batchTime?:string;
+    displayBatchTime?:string;
     values?:Array<LimitDataElement>;
 }
 

@@ -8,6 +8,8 @@ public class LimitDataObject {
 
     private Long batchTime;
 
+    private String displayBatchTime;
+
     private List<LimitValue> values;
 
     public Long getBatchTime() {
@@ -24,5 +26,13 @@ public class LimitDataObject {
 
     public void setValues(List<LimitValue> values) {
         this.values = values;
+    }
+
+    public String getDisplayBatchTime() {
+        return displayBatchTime;
+    }
+
+    public void setDisplayBatchTime(String displayBatchTime) {
+        this.displayBatchTime = displayBatchTime;
     }
 }
