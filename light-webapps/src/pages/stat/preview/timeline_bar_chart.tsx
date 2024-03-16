@@ -28,6 +28,8 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
                         name: 'Series',
                         type: 'bar',
                         data: seriesData,
+                        animation: true,
+                        animationDuration: 2000,
                     }
                 ]
             };
@@ -55,6 +57,10 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
             yAxis: {
                 type: 'value'
             },
+            series: [{
+                type: 'bar',
+                animation: true
+            }]
         },
         options: seriesArray,
     };
