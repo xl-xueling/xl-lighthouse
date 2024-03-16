@@ -73,43 +73,27 @@ export const translateResponseDataToLineChartData = (statData:Array<StatData>,st
     };
 }
 
-export const getTimeLineBarOption = (data:Array<LimitData>,errorMessage:string,timeIndex) => {
+export const getChartLoadingOption = () => {
+    return {
+        animation: false,
+        icon: 'none',
+        text: 'Loading...',
+        color: '#c23531',
+        showSpinner: true,
+        spinnerRadius: 7,
+        textColor: '#000',
+        fontWeight: 'normal',
+        lineWidth: 2,
+        fontSize: 13,
+        maskColor: 'rgba(255, 255, 255, 1)',
+    }
+};
+
+export const getTimeLineBarOption = (seriesArray,data:Array<LimitData>,errorMessage:string,timeIndex) => {
     if(!data){
         return {};
     }
     const batchList = data.map(z => z.displayBatchTime);
-    const seriesArray = new Array<any>();
-    for(let i=0;i<data.length;i++){
-        const dimensList = data[i].values;
-        const keys = dimensList.map(z => z.dimensValue);
-        const values = dimensList.map(z => Number(z.score));
-        // const seriesObj =  {
-        //         series: [
-        //             {
-        //                 name: 'Series',
-        //                 type: 'bar',
-        //                 data: values,
-        //             }
-        //         ]
-        //     };
-
-        console.log("values is:" + JSON.stringify(values));
-        const brr = [];
-        for(let k=0;k < dimensList.length;k++){
-            const v = dimensList[k].score;
-            brr[k] = v;
-        }
-        const seriesObj = {
-                series: [
-                    {
-                        name: 'Series',
-                        type: 'bar',
-                        data: brr,
-                    }
-                ]
-            };
-        seriesArray.push(seriesObj);
-    }
     const option = {
         baseOption: {
             timeline: {

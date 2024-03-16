@@ -13,7 +13,7 @@ import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
 import StatUpdateModal from "@/pages/stat/update";
 import {getRandomString} from "@/utils/util";
 import {
-    getLineOption, getTimeLineBarOption, handlerFetchLimitData,
+    getLineOption, handlerFetchLimitData,
     handlerFetchStatData,
     translateResponseDataToLineChartData,
 } from "@/pages/stat/preview/common";
@@ -86,7 +86,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         setLimitChartLoading(true);
         if(statInfo){
             const limitChartData = await handlerFetchLimitData();
-            console.log("limitChartData is:" + JSON.stringify(limitChartData));
             setLimitChartData(limitChartData.data);
         }
         setLimitChartLoading(false);
@@ -122,9 +121,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const getLimitChart = () => {
-        if(!limitChartData){
-            return;
-        }
         return (
             <Col span={24} key={getRandomString(32)}>
                 <Card title={'sss'}>
