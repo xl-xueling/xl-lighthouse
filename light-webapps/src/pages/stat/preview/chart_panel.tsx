@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {Stat, StatData, EChartChartValue, StatValue} from "@/types/insights-web";
 import {Notification, Space} from "@arco-design/web-react";
-import {requestData, requestTestData} from "@/api/data";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import ReactECharts from 'echarts-for-react';
@@ -12,6 +11,7 @@ import {
     getDailyStartTimestamp,
  DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
+import {requestStatData} from "@/api/data";
 
 export default function ChartPanel({size = 'default',searchForm = null,statInfo,parentLoading = false,ref=null}) {
     const t = useLocale(locale);
@@ -76,7 +76,7 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
                 combineParam.endTime = getDailyEndTimestamp();
             }
         }
-        await requestData(combineParam).then((response) => {
+        await requestStatData(combineParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
                 setErrorMessage(null);

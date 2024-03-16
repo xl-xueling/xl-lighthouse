@@ -225,9 +225,18 @@ export interface StatData{
     valuesList?:StatValue[];
 }
 
+export interface LimitData {
+    batchTime?:string;
+    values?:Array<Map<string,number>>;
+}
+
 export interface LineChartData {
     dataMap:Map<string,(number|string)[]>;
     xAxis?:Array<string>;
+}
+
+export interface TimeLineBarChartData {
+    data?:Map<number,Map<string,number>>;
 }
 
 export interface EChartChartValue {

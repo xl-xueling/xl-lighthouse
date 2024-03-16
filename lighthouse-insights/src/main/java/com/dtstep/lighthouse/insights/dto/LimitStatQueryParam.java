@@ -9,7 +9,6 @@ public class LimitStatQueryParam implements Serializable {
     @NotNull
     private Integer statId;
 
-    @NotNull
     private List<Long> batchTimeList;
 
     public Integer getStatId() {

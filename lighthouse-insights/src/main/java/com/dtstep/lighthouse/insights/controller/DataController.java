@@ -67,7 +67,7 @@ public class DataController {
         return ResultData.success(objectList);
     }
 
-    @PostMapping("/limit/stat")
+    @PostMapping("/data/limit")
     public ResultData<List<LimitDataObject>> limitQuery(@Validated @RequestBody LimitStatQueryParam queryParam) throws Exception {
         int statId = queryParam.getStatId();
         StatExtEntity stat = statService.queryById(statId);
