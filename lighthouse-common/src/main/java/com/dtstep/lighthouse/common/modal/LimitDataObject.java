@@ -1,12 +1,14 @@
 package com.dtstep.lighthouse.common.modal;
 
+import com.dtstep.lighthouse.common.entity.view.LimitValue;
+
 import java.util.List;
 
 public class LimitDataObject {
 
     private Long batchTime;
 
-    private List<KV<String,Object>> values;
+    private List<LimitValue> values;
 
     public Long getBatchTime() {
         return batchTime;
@@ -16,11 +18,11 @@ public class LimitDataObject {
         this.batchTime = batchTime;
     }
 
-    public List<KV<String, Object>> getValues() {
+    public List<LimitValue> getValues() {
         return values;
     }
 
-    public void setValues(List<KV<String, Object>> values) {
+    public void setValues(List<LimitValue> values) {
         this.values = values;
     }
 }
