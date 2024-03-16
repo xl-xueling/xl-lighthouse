@@ -1,15 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
 import {loadingOption} from "@/pages/stat/preview/common";
 import {stringifyObj} from "@/utils/util";
+import * as echarts from "echarts";
 
 export default function TimeLineBarPanel({data = null,size="default", loading = false,group=null}) {
 
-    const [timeIndex,setTimeIndex] = useState<number>(1);
+    const [timeIndex,setTimeIndex] = useState<number>(0);
     const [seriesArray,setSeriesArray] = useState([]);
     const [batchList,setBatchList] = useState([]);
     const [dimensList,setDimensList] = useState([]);
+    const chartRef = useRef(null);
 
     const handleTimelineClick = (e) => {
         console.log("e is:" + e);
@@ -71,7 +73,9 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
     };
 
     useEffect(() => {
-        console.log("timeindex is:" + timeIndex);
+        if(data){
+            setDimensList(data[timeIndex].values.map(z => z.dimensValue));
+        }
     },[timeIndex])
 
     const onclick={
@@ -91,13 +95,21 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
         }
     },[data])
 
+    useEffect(() => {
+        const chart = chartRef.current.getEchartsInstance();
+        chart.on('timelinechanged', (e:any) => {
+            const index = e.currentIndex;
+            setTimeIndex(index);
+        });
+    },[])
+
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts option={defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} onEvents={onclick} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} option={defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}}  showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts option={defaultOption} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} option={defaultOption} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts option={defaultOption} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} option={defaultOption} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }
     }
 
