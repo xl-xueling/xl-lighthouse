@@ -52,6 +52,10 @@ public final class BatchAdapter {
         return prefix + origin;
     }
 
+    public static String generateLimitKey(String mapperStatId,int dataVersion,long batchTime){
+        return Md5Util.getMD5(mapperStatId + "_" + dataVersion + "_" + batchTime);
+    }
+
     private static String getPrePartitionPrefix(String origin, String dimens){
         int index;
         if(StringUtil.isEmpty(dimens)){

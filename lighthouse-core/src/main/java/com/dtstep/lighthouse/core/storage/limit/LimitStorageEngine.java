@@ -24,5 +24,5 @@ public abstract class LimitStorageEngine <W,R>{
 
     public abstract void limit(List<W> list) throws Exception;
 
-    public abstract List<R> queryLimitDimens(StatExtEntity statExtEntity,long batchTime) throws Exception;
+    public abstract List<R> query(StatExtEntity statExtEntity, long batchTime) throws Exception;
 }

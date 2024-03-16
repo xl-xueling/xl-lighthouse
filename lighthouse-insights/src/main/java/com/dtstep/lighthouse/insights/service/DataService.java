@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
 
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
+import com.dtstep.lighthouse.common.modal.LimitDataObject;
 import com.dtstep.lighthouse.common.modal.StatDataObject;
 
 import java.time.LocalDateTime;
@@ -15,4 +16,6 @@ public interface DataService {
     List<StatDataObject> dataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimens) throws Exception;
 
     List<StatDataObject> testDataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimens) throws Exception;
+
+    List<LimitDataObject> limitQuery(StatExtEntity statExtEntity,List<Long> batchTimeList) throws Exception;
 }

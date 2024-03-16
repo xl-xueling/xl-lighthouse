@@ -2,11 +2,13 @@ package com.dtstep.lighthouse.insights.controller;
 
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.modal.LimitDataObject;
 import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
+import com.dtstep.lighthouse.insights.dto.LimitStatQueryParam;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.common.modal.StatDataObject;
@@ -59,6 +61,13 @@ public class DataController {
         List<String> dimensList = dataService.dimensArrangement(stat,queryParam.getDimensParams());
         List<StatDataObject> objectList = dataService.dataQuery(stat,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
         return ResultData.success(objectList);
+    }
+
+    @PostMapping("/limit/stat")
+    public ResultData<List<LimitDataObject>> limitQuery(@Validated @RequestBody LimitStatQueryParam queryParam) throws Exception {
+        int statId = queryParam.getStatId();
+
+        return null;
     }
 
     @PostMapping("/test-data/stat")
