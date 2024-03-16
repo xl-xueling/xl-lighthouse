@@ -74,12 +74,28 @@ export const translateResponseDataToLineChartData = (statData:Array<StatData>,st
 }
 
 export const getTimeLineBarOption = (data:Array<LimitData>,errorMessage:string) => {
-    console.log("----data is:" + data);
     if(!data){
         return {};
     }
     const batchList = data.map(z => z.batchTime);
-    console.log("batchList is:" + JSON.stringify(batchList));
+    const currentIndex = 1;
+    const seriesArray = new Array<any>();
+    for(let i=0;i<data.length;i++){
+        const dimensList = data[i].values;
+        const keys = dimensList.map(z => z.dimensValue);
+        const values = dimensList.map(z => z.score);
+        const seriesObj =  {
+                series: [
+                    {
+                        name: 'Series',
+                        type: 'bar',
+                        data: values,
+                    }
+                ]
+            };
+        seriesArray.push(seriesObj);
+    }
+
     const option = {
         baseOption: {
             timeline: {
@@ -87,14 +103,14 @@ export const getTimeLineBarOption = (data:Array<LimitData>,errorMessage:string) 
                 autoPlay: false,
                 playInterval: 1000,
                 data: batchList,
-                currentIndex : 1,
+                currentIndex : currentIndex,
                 label: {
                     formatter: '{value}'
                 }
             },
             xAxis: {
                 type: 'category',
-                data: ['Category1', 'Category2', 'Category3']
+                data: data[currentIndex].values.map(z => z.dimensValue)
             },
             yAxis: {
                 type: 'value'
@@ -107,35 +123,7 @@ export const getTimeLineBarOption = (data:Array<LimitData>,errorMessage:string) 
                 }
             ]
         },
-        options: [
-            {
-                series: [
-                    {
-                        name: 'Series',
-                        type: 'bar',
-                        data: [100, 200, 300]
-                    }
-                ]
-            },
-            {
-                series: [
-                    {
-                        name: 'Series',
-                        type: 'bar',
-                        data: [150, 250, 350]
-                    }
-                ]
-            },
-            {
-                series: [
-                    {
-                        name: 'Series',
-                        type: 'bar',
-                        data: [200, 300, 400]
-                    }
-                ]
-            }
-        ]
+        options: seriesArray,
     };
     return option;
 }

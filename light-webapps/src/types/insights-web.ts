@@ -227,7 +227,12 @@ export interface StatData{
 
 export interface LimitData {
     batchTime?:string;
-    values?:Array<Map<string,number>>;
+    values?:Array<LimitDataElement>;
+}
+
+export interface LimitDataElement{
+    dimensValue?:string|number;
+    score?:string|number;
 }
 
 export interface LineChartData {
