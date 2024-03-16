@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import SearchForm from "./search_form";
 import {Card, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
-import {Stat, StatData, TreeNode} from "@/types/insights-web";
+import {LimitData, Stat, StatData, TreeNode} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {IconTag} from "@arco-design/web-react/icon";
@@ -13,7 +13,7 @@ import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
 import StatUpdateModal from "@/pages/stat/update";
 import {getRandomString} from "@/utils/util";
 import {
-    getLineOption, handlerFetchLimitData,
+    getLineOption, getTimeLineBarOption, handlerFetchLimitData,
     handlerFetchStatData,
     translateResponseDataToLineChartData,
 } from "@/pages/stat/preview/common";
@@ -35,7 +35,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
     const [statChartData,setStatChartData] = useState<Array<StatData>>(null);
     const [statChartErrorMessage,setStatChartErrorMessage] = useState(null);
-    const [limitChartData,setLimitChartData] = useState<Array<StatData>>(null);
+    const [limitChartData,setLimitChartData] = useState<Array<LimitData>>(null);
     const [limitChartLoading,setLimitChartLoading] = useState<boolean>(false);
     const [option,setOption] = useState({});
     const refs = useRef<any[]>([]);
@@ -86,6 +86,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         if(statInfo){
             const limitChartData = await handlerFetchLimitData();
             console.log("limitChartData is:" + JSON.stringify(limitChartData));
+            setLimitChartData(limitChartData.data);
         }
         setLimitChartLoading(false);
     }
@@ -120,63 +121,9 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const getLimitChart = () => {
-        const option = {
-            baseOption: {
-                timeline: {
-                    axisType: 'category',
-                    autoPlay: true,
-                    playInterval: 1000,
-                    data: ['2022-01-01', '2022-01-02', '2022-01-03'],
-                    currentIndex,
-                    label: {
-                        formatter: '{value}'
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    data: ['Category1', 'Category2', 'Category3']
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [
-                    {
-                        name: 'Series',
-                        type: 'bar',
-                        data: [100, 200, 300]
-                    }
-                ]
-            },
-            options: [
-                {
-                    series: [
-                        {
-                            name: 'Series',
-                            type: 'bar',
-                            data: [100, 200, 300]
-                        }
-                    ]
-                },
-                {
-                    series: [
-                        {
-                            name: 'Series',
-                            type: 'bar',
-                            data: [150, 250, 350]
-                        }
-                    ]
-                },
-                {
-                    series: [
-                        {
-                            name: 'Series',
-                            type: 'bar',
-                            data: [200, 300, 400]
-                        }
-                    ]
-                }
-            ]
-        };
+
+        const option = getTimeLineBarOption(limitChartData,null);
+        console.log("option is:" + option)
         return (
             <Col span={24} key={getRandomString(32)}>
                 <Card title={'sss'}>

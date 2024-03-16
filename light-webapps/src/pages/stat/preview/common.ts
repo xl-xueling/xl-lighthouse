@@ -73,6 +73,73 @@ export const translateResponseDataToLineChartData = (statData:Array<StatData>,st
     };
 }
 
+export const getTimeLineBarOption = (data:Array<LimitData>,errorMessage:string) => {
+    console.log("----data is:" + data);
+    if(!data){
+        return {};
+    }
+    const batchList = data.map(z => z.batchTime);
+    console.log("batchList is:" + JSON.stringify(batchList));
+    const option = {
+        baseOption: {
+            timeline: {
+                axisType: 'category',
+                autoPlay: false,
+                playInterval: 1000,
+                data: batchList,
+                currentIndex : 1,
+                label: {
+                    formatter: '{value}'
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: ['Category1', 'Category2', 'Category3']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: 'Series',
+                    type: 'bar',
+                    data: [100, 200, 300]
+                }
+            ]
+        },
+        options: [
+            {
+                series: [
+                    {
+                        name: 'Series',
+                        type: 'bar',
+                        data: [100, 200, 300]
+                    }
+                ]
+            },
+            {
+                series: [
+                    {
+                        name: 'Series',
+                        type: 'bar',
+                        data: [150, 250, 350]
+                    }
+                ]
+            },
+            {
+                series: [
+                    {
+                        name: 'Series',
+                        type: 'bar',
+                        data: [200, 300, 400]
+                    }
+                ]
+            }
+        ]
+    };
+    return option;
+}
+
 
 export const getLineOption = (lineChartData:LineChartData,errorMessage:string) => {
     if(!lineChartData){
