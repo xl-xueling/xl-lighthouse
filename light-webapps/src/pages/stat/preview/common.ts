@@ -73,12 +73,11 @@ export const translateResponseDataToLineChartData = (statData:Array<StatData>,st
     };
 }
 
-export const getTimeLineBarOption = (data:Array<LimitData>,errorMessage:string) => {
+export const getTimeLineBarOption = (data:Array<LimitData>,errorMessage:string,timeIndex) => {
     if(!data){
         return {};
     }
     const batchList = data.map(z => z.batchTime);
-    const currentIndex = 1;
     const seriesArray = new Array<any>();
     for(let i=0;i<data.length;i++){
         const dimensList = data[i].values;
@@ -95,7 +94,6 @@ export const getTimeLineBarOption = (data:Array<LimitData>,errorMessage:string) 
             };
         seriesArray.push(seriesObj);
     }
-
     const option = {
         baseOption: {
             timeline: {
@@ -103,25 +101,17 @@ export const getTimeLineBarOption = (data:Array<LimitData>,errorMessage:string) 
                 autoPlay: false,
                 playInterval: 1000,
                 data: batchList,
-                currentIndex : currentIndex,
                 label: {
                     formatter: '{value}'
                 }
             },
             xAxis: {
                 type: 'category',
-                data: data[currentIndex].values.map(z => z.dimensValue)
+                data: data[timeIndex].values.map(z => z.dimensValue)
             },
             yAxis: {
                 type: 'value'
             },
-            series: [
-                {
-                    name: 'Series',
-                    type: 'bar',
-                    data: [100, 200, 300]
-                }
-            ]
         },
         options: seriesArray,
     };
