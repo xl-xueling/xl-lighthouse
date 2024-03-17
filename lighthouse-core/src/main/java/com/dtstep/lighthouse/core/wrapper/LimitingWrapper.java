@@ -22,6 +22,7 @@ import com.dtstep.lighthouse.core.dao.DBConnection;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.lang3.Validate;
+
 import java.sql.Connection;
 import java.time.LocalDateTime;
 

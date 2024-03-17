@@ -17,9 +17,9 @@ package com.dtstep.lighthouse.common.ice;
 
 public interface RemoteLightServer extends com.zeroc.Ice.Object
 {
-    String process(byte[] message, com.zeroc.Ice.Current current);
+    byte[] process(byte[] message, com.zeroc.Ice.Current current);
 
-    String queryGroupInfo(String token, com.zeroc.Ice.Current current);
+    byte[] queryGroupInfo(String token, com.zeroc.Ice.Current current);
 
     /** @hidden */
     static final String[] _iceIds =
@@ -59,9 +59,9 @@ public interface RemoteLightServer extends com.zeroc.Ice.Object
         byte[] iceP_message;
         iceP_message = istr.readByteSeq();
         inS.endReadParams();
-        String ret = obj.process(iceP_message, current);
+        byte[] ret = obj.process(iceP_message, current);
         com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
-        ostr.writeString(ret);
+        ostr.writeByteSeq(ret);
         inS.endWriteParams(ostr);
         return inS.setResult(ostr);
     }
@@ -80,9 +80,9 @@ public interface RemoteLightServer extends com.zeroc.Ice.Object
         String iceP_token;
         iceP_token = istr.readString();
         inS.endReadParams();
-        String ret = obj.queryGroupInfo(iceP_token, current);
+        byte[] ret = obj.queryGroupInfo(iceP_token, current);
         com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
-        ostr.writeString(ret);
+        ostr.writeByteSeq(ret);
         inS.endWriteParams(ostr);
         return inS.setResult(ostr);
     }

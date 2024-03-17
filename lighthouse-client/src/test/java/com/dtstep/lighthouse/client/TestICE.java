@@ -28,7 +28,7 @@ public class TestICE {
         },1,TimeUnit.MINUTES);
         for(int i=0;i<10000;i++){
             try{
-                GroupVerifyEntity groupVerifyEntity = client.queryGroup("Dd0:test_stat");
+                GroupVerifyEntity groupVerifyEntity = client.queryGroup("RrY:test_stat");
                 System.out.println("groupVerifyEntity:" + JsonUtil.toJSONString(groupVerifyEntity));
             }catch (Exception ex){
                 ex.printStackTrace();
@@ -38,4 +38,5 @@ public class TestICE {
         System.out.println("---ssvvv");
         Thread.sleep(10000000000L);
     }
+
 }

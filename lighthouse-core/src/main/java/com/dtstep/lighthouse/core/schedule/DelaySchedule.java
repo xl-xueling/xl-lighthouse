@@ -16,7 +16,6 @@ package com.dtstep.lighthouse.core.schedule;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,8 +26,12 @@ public final class DelaySchedule {
 
     private static final int threadSize = 2;
 
-    private static final ScheduledExecutorService service = Executors.newScheduledThreadPool(threadSize,
-            new BasicThreadFactory.Builder().namingPattern("delay-consumer-schedule-pool-%d").daemon(true).build());
+    private static final ScheduledExecutorService service = Executors.newScheduledThreadPool(threadSize,runnable -> {
+        Thread thread = new Thread(runnable);
+        thread.setName("delay-schedule-"+thread.getId());
+        thread.setDaemon(true);
+        return thread;
+    });
 
     public void delaySchedule(Runnable runnable, long interval, TimeUnit timeUnit){
         service.schedule(runnable,interval,timeUnit);
