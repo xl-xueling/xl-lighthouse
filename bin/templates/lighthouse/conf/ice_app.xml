@@ -29,7 +29,7 @@
                 <option>-XX:-UseBiasedLocking</option>
                 <option>-XX:G1HeapRegionSize=4M</option>
                 <option>-Dlog4j.configurationFile=${ldp_lighthouse_home}/conf/log4j2-ice.xml</option>
-                <option>IceBox.Server</option>
+                <option>com.zeroc.IceBox.Server</option>
                 <env>CLASSPATH=.:${ldp_lighthouse_home}/lib/*</env>
                 <service name="LightHouseService" entry="com.dtstep.lighthouse.ice.servant.rpc.ice.ICELightHouseService">
                     <adapter name="LightHouseService" id="LightHouseService${index}" endpoints="default" replica-group="LightHouseServiceRep" />
