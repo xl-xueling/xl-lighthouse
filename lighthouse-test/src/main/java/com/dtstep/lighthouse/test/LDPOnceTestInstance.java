@@ -21,8 +21,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
+
 public class LDPOnceTestInstance {
 
+    /**
+     * java -Xmx512m -Xms512m -cp /opt/soft/lighthouse-2.1.0/lib/*:/opt/soft/lighthouse-2.1.0/lib/lighthouse-test-*.jar com.dtstep.lighthouse.test.LDPOnceTestInstance 195973
+     */
     private static final TestConfigContext testConfigContext = new TestConfigContext();
 
     private static final long now = System.currentTimeMillis();
