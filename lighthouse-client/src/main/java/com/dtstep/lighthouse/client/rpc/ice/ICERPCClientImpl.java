@@ -46,8 +46,7 @@ public class ICERPCClientImpl implements RPCClient {
             initParams = new String[]{cfg};
             Ice.Properties iceProperties = Ice.Util.createProperties();
             iceProperties.setProperty("Ice.Override.ConnectTimeout", "5000");
-            iceProperties.setProperty("Ice.RetryIntervals", "10");
-            iceProperties.setProperty("Ice.RetryOnConnectTimeout", "1");
+            iceProperties.setProperty("Ice.RetryIntervals", "20");
             iceProperties.setProperty("Ice.ThreadPool.Client.Size", "50");
             iceProperties.setProperty("Ice.ThreadPool.Client.SizeMax", "300");
             iceProperties.setProperty("Ice.MessageSizeMax", "1409600");

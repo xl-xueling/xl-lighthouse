@@ -36,10 +36,6 @@ final class AuxHandler {
 
     private static final Cache<String,Optional<GroupVerifyEntity>> groupHolder = LRU.newBuilder().maximumSize(5000).expireAfterWrite(2,TimeUnit.MINUTES).softValues().build();
 
-    private static final Cache<Integer,Optional<StatExtEntity>> statHolder = LRU.newBuilder().maximumSize(5000).expireAfterWrite(2,TimeUnit.MINUTES).softValues().build();
-
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
     public static GroupVerifyEntity queryStatGroup(String token) {
         return groupHolder.get(token,k -> {
             GroupVerifyEntity groupVerifyEntity;
@@ -53,32 +49,4 @@ final class AuxHandler {
         }).orElse(null);
     }
 
-
-    public static StatExtEntity queryStatEntity(AuxInterfacePrx auxInterfacePrx, int statId) throws Exception{
-        return statHolder.get(statId,k -> {
-            StatExtEntity statExtEntity = null;
-            try{
-                Lock lock = new ReentrantLock();
-                Condition condition = lock.newCondition();
-                lock.lock();
-                Ice.AsyncResult asyncResult = auxInterfacePrx.begin_queryStatById(statId,new NotifyThread(lock,condition));
-                try {
-                    condition.await(5000, TimeUnit.MILLISECONDS);
-                    if(!asyncResult.isCompleted()){
-                        throw new LightTimeOutException();
-                    }
-                } finally {
-                    lock.unlock();
-                }
-                String str = auxInterfacePrx.end_queryStatById(asyncResult);
-                if(!StringUtil.isEmpty(str)){
-                    statExtEntity = objectMapper.readValue(str, StatExtEntity.class);
-                }
-            }catch (Exception ex){
-                ex.printStackTrace();
-                throw new LightSendException();
-            }
-            return Optional.ofNullable(statExtEntity);
-        }).orElse(null);
-    }
 }
