@@ -26,6 +26,7 @@ import com.dtstep.lighthouse.common.enums.fusing.FusingRules;
 import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.common.exception.LightSendException;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import com.zeroc.Ice.NotRegisteredException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,7 +100,7 @@ public final class LightHouse {
                 return;
             }
             _producer.send(token,secretKey,paramMap,repeat,timestamp);
-        }catch (Ice.NotRegisteredException ex){
+        }catch (NotRegisteredException ex){
             LightHouse._InitFlag.set(false);
             logger.error("lighthouse client failed to send message!",ex);
             FusingSwitch.track(fusingToken);

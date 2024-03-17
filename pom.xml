@@ -34,7 +34,7 @@
     <kafka.version>2.8.2</kafka.version>
     <hadoop.version>3.3.4</hadoop.version>
     <zookeeper.version>3.7.1</zookeeper.version>
-    <ice.version>3.6.5</ice.version>
+    <ice.version>3.7.9</ice.version>
     <scope>compile</scope>
   </properties>
 

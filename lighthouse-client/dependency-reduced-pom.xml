@@ -81,7 +81,7 @@
     <dependency>
       <groupId>com.dtstep.lighthouse</groupId>
       <artifactId>lighthouse-common</artifactId>
-      <version>1.1.6</version>
+      <version>2.1.0</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -105,7 +105,7 @@
     <dependency>
       <groupId>com.zeroc</groupId>
       <artifactId>ice</artifactId>
-      <version>3.6.5</version>
+      <version>3.7.9</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

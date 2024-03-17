@@ -17,15 +17,12 @@ package com.dtstep.lighthouse.client;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.aggregator.EventPool;
-import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.event.SimpleSlotEvent;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.hash.HashUtil;
-import com.dtstep.lighthouse.common.ice.AuxInterfacePrx;
-import com.dtstep.lighthouse.common.ice.AuxInterfacePrxHelper;
 import com.dtstep.lighthouse.common.lru.Cache;
 import com.dtstep.lighthouse.common.lru.LRU;
 import com.dtstep.lighthouse.common.util.DateUtil;
@@ -33,8 +30,6 @@ import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.MessageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 

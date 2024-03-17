@@ -33,19 +33,30 @@
         <dependency>
             <groupId>com.zeroc</groupId>
             <artifactId>ice</artifactId>
-            <version>3.6.5</version>
+            <version>${ice.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.zeroc</groupId>
             <artifactId>icebox</artifactId>
-            <version>3.6.5</version>
+            <version>${ice.version}</version>
         </dependency>
         <dependency>
             <groupId>com.zeroc</groupId>
             <artifactId>icegrid</artifactId>
-            <version>3.6.5</version>
+            <version>${ice.version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zeroc</groupId>
+            <artifactId>ice-compat</artifactId>
+            <version>${ice.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zeroc</groupId>
+            <artifactId>glacier2</artifactId>
+            <version>${ice.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

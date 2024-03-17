@@ -4,15 +4,17 @@ import com.dtstep.lighthouse.client.rpc.RPCClient;
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.exception.InitializationException;
-import com.dtstep.lighthouse.common.ice.AuxInterfacePrx;
-import com.dtstep.lighthouse.common.ice.ReceiverInterfacePrx;
+import com.dtstep.lighthouse.common.ice.RemoteLightServerPrx;
 import com.dtstep.lighthouse.common.util.SnappyUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zeroc.Ice.Communicator;
+import com.zeroc.Ice.InitializationData;
+import com.zeroc.Ice.Properties;
+import com.zeroc.Ice.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ICERPCClientImpl implements RPCClient {
 
@@ -20,7 +22,7 @@ public class ICERPCClientImpl implements RPCClient {
 
     private static String[] initParams;
 
-    private static Ice.Communicator ic;
+    private static Communicator ic;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -44,15 +46,15 @@ public class ICERPCClientImpl implements RPCClient {
         try {
             String cfg = String.format("--Ice.Default.Locator=LightHouseIceGrid/Locator %s -z", locatorSbr.toString());
             initParams = new String[]{cfg};
-            Ice.Properties iceProperties = Ice.Util.createProperties();
+            Properties iceProperties = Util.createProperties();
             iceProperties.setProperty("Ice.Override.ConnectTimeout", "5000");
             iceProperties.setProperty("Ice.RetryIntervals", "20");
             iceProperties.setProperty("Ice.ThreadPool.Client.Size", "50");
             iceProperties.setProperty("Ice.ThreadPool.Client.SizeMax", "300");
             iceProperties.setProperty("Ice.MessageSizeMax", "1409600");
-            Ice.InitializationData initData = new Ice.InitializationData();
+            InitializationData initData = new InitializationData();
             initData.properties = iceProperties;
-            ic = Ice.Util.initialize(initParams, initData);
+            ic = Util.initialize(initParams, initData);
             logger.info("lighthouse client init success!");
         }catch (Exception ex){
             throw new InitializationException(String.format("lighthouse remote service not available,locators:%s",locators));
@@ -64,8 +66,8 @@ public class ICERPCClientImpl implements RPCClient {
 
     @Override
     public GroupVerifyEntity queryGroup(String token) throws Exception {
-        AuxInterfacePrx auxInterfacePrx = ICEHandler.getAuxInterfacePrx(ic);
-        String str = auxInterfacePrx.queryGroupByToken(token);
+        RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getAuxInterfacePrx(ic);
+        String str = remoteLightServerPrx.queryGroupInfo(token);
         GroupVerifyEntity groupVerifyEntity = null;
         if(!StringUtil.isEmpty(str)){
             groupVerifyEntity = objectMapper.readValue(str, GroupVerifyEntity.class);
@@ -81,8 +83,8 @@ public class ICERPCClientImpl implements RPCClient {
         }else{
             bytes = SnappyUtil.compressToByte(text);
         }
-        ReceiverInterfacePrx receiverInterfacePrx = ICEHandler.getReceiverInterfacePrx(ic);
-        receiverInterfacePrx.logic(bytes);
+        RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getAuxInterfacePrx(ic);
+        remoteLightServerPrx.process(bytes);
     }
 
 

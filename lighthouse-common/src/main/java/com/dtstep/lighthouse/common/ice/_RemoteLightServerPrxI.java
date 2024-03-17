@@ -15,6 +15,9 @@
 
 package com.dtstep.lighthouse.common.ice;
 
-interface _Marker
+/** @hidden */
+public class _RemoteLightServerPrxI extends com.zeroc.Ice._ObjectPrxI implements RemoteLightServerPrx
 {
+    /** @hidden */
+    public static final long serialVersionUID = 0L;
 }
