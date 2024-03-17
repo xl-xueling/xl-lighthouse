@@ -35,6 +35,7 @@ public class LDPOnceTestInstance {
         int dataSize = Integer.parseInt(args[0]);
         LDPConfig.loadConfiguration();
         LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
+        createGroup();
         BehaviorModalSample modalSample = new BehaviorModalSample();
         String token = modalSample.getToken();
         testConfigContext.setToken(token);
@@ -58,6 +59,16 @@ public class LDPOnceTestInstance {
         System.out.println("total send size:" + totalSize);
         Thread.sleep(10000);
         System.exit(0);
+    }
+
+
+    public static void createGroup() throws Exception {
+        int count = DaoHelper.sql.count("SELECT count(1) FROM ldp_groups where token = ?","test_scene_behavior_stat");
+        if(count == 0){
+            DaoHelper.sql.execute("INSERT INTO `ldp_projects` VALUES (1,'sssss',10221,0,'sadgasg','2024-03-17 10:07:51','2024-03-17 10:07:51')");
+            DaoHelper.sql.execute("INSERT INTO `ldp_groups` VALUES (11,'test_scene_behavior_stat',1,0,'[{\\\"name\\\":\\\"behavior_id\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"request_id\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"imei\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"province\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"recall_no\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"abtest_no\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"score\\\",\\\"type\\\":\\\"number\\\"},{\\\"name\\\":\\\"city\\\",\\\"type\\\":\\\"string\\\"}]','测试统计组！','39Vke68YgJ3N6Y6i6o76Nfsz06Sqr3hM','JmVM5qDhpkizvJSLjgCoXa10k5j4UWJyj3LSJsPp',1,'{\\\"limitingConfig\\\":{}}','2024-03-17 12:48:35','2024-03-17 12:48:35','2024-03-17 12:48:35')");
+            System.out.println("create group success!");
+        }
     }
 
     public static void createSampleTable(int dataSize) throws Exception {
