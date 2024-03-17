@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.disruptor;
+package com.dtstep.lighthouse.ice.servant.event;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,17 +16,36 @@ package com.dtstep.lighthouse.core.disruptor;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.RingBuffer;
 import com.dtstep.lighthouse.common.entity.event.IceEvent;
+import com.lmax.disruptor.dsl.Disruptor;
+import com.lmax.disruptor.dsl.ProducerType;
+
+import java.util.concurrent.Executors;
 
 
 public final class IceEventProducer {
 
-    private final RingBuffer<IceEvent> ringBuffer;
+    private static final RingBuffer<IceEvent> ringBuffer;
 
-    public IceEventProducer(RingBuffer<IceEvent> ringBuffer) {
-        this.ringBuffer = ringBuffer;
+    static {
+        Disruptor<IceEvent> disruptor = new Disruptor<>(
+                IceEvent::new,
+                1024 * 1024 * 2,
+                Executors.defaultThreadFactory(),
+                ProducerType.MULTI,
+                new BlockingWaitStrategy()
+        );
+        IceEventHandler[] handlers = new IceEventHandler[10];
+        for(int i=0;i<handlers.length;i++){
+            handlers[i] = new IceEventHandler();
+        }
+        disruptor.handleEventsWithWorkerPool(handlers);
+        disruptor.start();
+        ringBuffer = disruptor.getRingBuffer();
     }
+
 
     public void onData(final String message,final int repeat) {
         long sequence = ringBuffer.next();

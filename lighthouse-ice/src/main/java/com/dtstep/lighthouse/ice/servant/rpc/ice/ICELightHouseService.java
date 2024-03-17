@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.ice.servant.ice;
+package com.dtstep.lighthouse.ice.servant.rpc.ice;
 
 import com.dtstep.lighthouse.common.ice.RemoteLightServer;
 import com.zeroc.Ice.Communicator;

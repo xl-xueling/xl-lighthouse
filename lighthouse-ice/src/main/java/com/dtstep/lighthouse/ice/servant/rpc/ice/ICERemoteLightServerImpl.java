@@ -1,7 +1,8 @@
-package com.dtstep.lighthouse.ice.servant.ice;
+package com.dtstep.lighthouse.ice.servant.rpc.ice;
 
-import com.dtstep.lighthouse.client.rpc.ice.ICERPCClientImpl;
+import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.ice.RemoteLightServer;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.ice.servant.logic.RPCServer;
 import com.dtstep.lighthouse.ice.servant.logic.impl.RPCServerImpl;
 import com.zeroc.Ice.Current;
@@ -19,13 +20,20 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         try{
             rpc.process(message);
         }catch (Exception ex){
-            ex.printStackTrace();
+            logger.error("process message error!",ex);
         }
         return null;
     }
 
     @Override
-    public String queryGroupInfo(String token, Current current) {
-        return "ssss";
+    public String queryGroupInfo(String token, Current current){
+        GroupVerifyEntity groupVerifyEntity;
+        try{
+            groupVerifyEntity = rpc.queryGroup(token);
+        }catch (Exception ex){
+            logger.error("query group info error!",ex);
+            return "System Error!";
+        }
+        return JsonUtil.toJSONString(groupVerifyEntity);
     }
 }
