@@ -49,8 +49,12 @@ public final class LDPCache<K,V> implements Cache<K,V> {
         this.cache = new HashMap<>();
         this.doublyQueue = new DoublyLinkedList<>();
         this.size = 0;
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(1,
-                new BasicThreadFactory.Builder().namingPattern("ldp-cache-clear-schedule-pool-%d").daemon(true).build());
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(1, runnable -> {
+                    Thread thread = new Thread(runnable);
+                    thread.setName("ldp-cache-clear-"+thread.getId());
+                    thread.setDaemon(true);
+                    return thread;
+                });
         service.scheduleWithFixedDelay(new ClearThread<>(this,lock),0,1, TimeUnit.MINUTES);
     }
 
