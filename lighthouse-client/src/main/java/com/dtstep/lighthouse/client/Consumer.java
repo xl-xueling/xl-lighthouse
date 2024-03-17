@@ -35,14 +35,11 @@ final class Consumer {
 
     private final EventPool<SimpleSlotEvent> eventPool;
 
-    private final Communicator communicator;
-
     private final int frequency;
 
     private final int batchSize;
 
-    Consumer(Communicator communicator, EventPool<SimpleSlotEvent> eventPool, final int frequency, final int batchSize){
-        this.communicator = communicator;
+    Consumer(EventPool<SimpleSlotEvent> eventPool, final int frequency, final int batchSize){
         this.eventPool = eventPool;
         this.frequency = frequency;
         this.batchSize = batchSize;
@@ -62,7 +59,7 @@ final class Consumer {
 
     public void start(){
         for(int i = 0; i< threadSize; i++){
-            executor.scheduleWithFixedDelay(new DelayRunnable(eventPool,communicator,batchSize),0,frequency, TimeUnit.MILLISECONDS);
+            executor.scheduleWithFixedDelay(new DelayRunnable(eventPool,batchSize),0,frequency, TimeUnit.MILLISECONDS);
         }
     }
 

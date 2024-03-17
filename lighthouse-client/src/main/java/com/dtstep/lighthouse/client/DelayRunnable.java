@@ -16,10 +16,14 @@ package com.dtstep.lighthouse.client;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.client.rpc.RPCClientProxy;
 import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.common.aggregator.SlotsGroup;
 import com.dtstep.lighthouse.common.entity.event.SimpleSlotEvent;
 import com.dtstep.lighthouse.common.constant.StatConst;
+import com.dtstep.lighthouse.common.enums.fusing.FusingRules;
+import com.dtstep.lighthouse.common.fusing.FusingSwitch;
+import com.dtstep.lighthouse.common.fusing.FusingToken;
 import com.dtstep.lighthouse.common.sbr.StringBuilderHolder;
 import com.dtstep.lighthouse.common.util.StopWatch;
 import org.slf4j.Logger;
@@ -38,15 +42,12 @@ final class DelayRunnable extends Thread {
 
     private final int batchSize;
 
-    private final MessageSender messageSender;
-
     private static final long timeThreshold = TimeUnit.SECONDS.toMillis(1);
 
-    DelayRunnable(EventPool<SimpleSlotEvent> eventPool, Ice.Communicator ic, int batchSize){
+    DelayRunnable(EventPool<SimpleSlotEvent> eventPool,int batchSize){
         this.setDaemon(true);
         this.eventPool = eventPool;
         this.batchSize = batchSize;
-        this.messageSender = new MessageSender(ic);
     }
 
     @Override
@@ -76,7 +77,7 @@ final class DelayRunnable extends Thread {
                     sbr.append(entry.getKey()).append(StatConst.SEPARATOR_LEVEL_1).append(entry.getValue());
                     i++;
                 }
-                messageSender.send(sbr.toString());
+                send(sbr.toString());
                 sbr.setLength(0);
                 if(logger.isDebugEnabled()){
                     logger.debug("process client message,thread:{},slot:{},process size:{},remaining size:{},capacity:{},accessTime:{},cost:{}ms",
@@ -86,6 +87,25 @@ final class DelayRunnable extends Thread {
             }
         }catch (Exception ex){
             logger.error("lighthouse send client messages error!",ex);
+        }
+    }
+
+    public void send(String text){
+        FusingToken fusingToken = null;
+        try{
+            fusingToken = FusingSwitch.entry(FusingRules.CLIENT_EXCEPTION_RULE);
+            if(fusingToken == null){
+                logger.error("number of exceptions reaches the threshold, the call is blocked!");
+                return;
+            }
+            RPCClientProxy.instance().send(text);
+        }catch (Ice.NotRegisteredException ex){
+            LightHouse._InitFlag.set(false);
+            logger.error("lighthouse client failed to send message!",ex);
+            FusingSwitch.track(fusingToken);
+        }catch (Exception ex){
+            logger.error("lighthouse client failed to send message!",ex);
+            FusingSwitch.track(fusingToken);
         }
     }
 }
