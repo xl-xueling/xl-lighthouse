@@ -21,8 +21,9 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
             rpc.process(message);
         }catch (Exception ex){
             logger.error("process message error!",ex);
+            return "System Error!";
         }
-        return null;
+        return "Success!";
     }
 
     @Override
