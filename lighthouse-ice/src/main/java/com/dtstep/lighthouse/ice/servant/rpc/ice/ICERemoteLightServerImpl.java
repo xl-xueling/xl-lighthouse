@@ -2,7 +2,6 @@ package com.dtstep.lighthouse.ice.servant.rpc.ice;
 
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.ice.RemoteLightServer;
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.SerializeUtil;
 import com.dtstep.lighthouse.ice.servant.logic.RPCServer;
 import com.dtstep.lighthouse.ice.servant.logic.impl.RPCServerImpl;

@@ -8,7 +8,6 @@ import com.dtstep.lighthouse.common.ice.RemoteLightServerPrx;
 import com.dtstep.lighthouse.common.util.SerializeUtil;
 import com.dtstep.lighthouse.common.util.SnappyUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zeroc.Ice.Communicator;
 import com.zeroc.Ice.InitializationData;
 import com.zeroc.Ice.Properties;
@@ -21,11 +20,7 @@ public class ICERPCClientImpl implements RPCClient {
 
     private static final Logger logger = LoggerFactory.getLogger(ICERPCClientImpl.class);
 
-    private static String[] initParams;
-
     private static Communicator ic;
-
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public boolean init(String locators) throws Exception {
@@ -46,7 +41,7 @@ public class ICERPCClientImpl implements RPCClient {
         }
         try {
             String cfg = String.format("--Ice.Default.Locator=LightHouseIceGrid/Locator %s -z", locatorSbr.toString());
-            initParams = new String[]{cfg};
+            String[] initParams = new String[]{cfg};
             Properties iceProperties = Util.createProperties();
             iceProperties.setProperty("Ice.Override.ConnectTimeout", "5000");
             iceProperties.setProperty("Ice.RetryIntervals", "20");
