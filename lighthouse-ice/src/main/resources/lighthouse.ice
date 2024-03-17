@@ -4,7 +4,7 @@ module LightServer {
     ["java:type:java.util.ArrayList"]sequence<string> StringList;
     ["java:type:java.util.ArrayList"]sequence<long> LongList;
         interface RemoteLightServer {
-                string process(SequenceByte message);
-                string queryGroupInfo(string token);
+                SequenceByte process(SequenceByte message);
+                SequenceByte queryGroupInfo(string token);
         };
 };

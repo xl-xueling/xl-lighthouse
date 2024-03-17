@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.ice.servant.rpc.ice;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.ice.RemoteLightServer;
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.common.util.SerializeUtil;
 import com.dtstep.lighthouse.ice.servant.logic.RPCServer;
 import com.dtstep.lighthouse.ice.servant.logic.impl.RPCServerImpl;
 import com.zeroc.Ice.Current;
@@ -16,25 +17,27 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
     private static final RPCServer rpc = new RPCServerImpl();
 
     @Override
-    public String process(byte[] message, Current current){
+    public byte[] process(byte[] message, Current current){
         try{
             rpc.process(message);
         }catch (Exception ex){
             logger.error("process message error!",ex);
-            return "System Error!";
+            return SerializeUtil.serialize( "System Error!");
         }
-        return "Success!";
+        return null;
     }
 
     @Override
-    public String queryGroupInfo(String token, Current current){
+    public byte[] queryGroupInfo(String token, Current current){
         GroupVerifyEntity groupVerifyEntity;
         try{
             groupVerifyEntity = rpc.queryGroup(token);
         }catch (Exception ex){
             logger.error("query group info error!",ex);
-            return "System Error!";
+            return SerializeUtil.serialize( "System Error!");
         }
-        return JsonUtil.toJSONString(groupVerifyEntity);
+        return SerializeUtil.serialize(groupVerifyEntity);
     }
+
+
 }

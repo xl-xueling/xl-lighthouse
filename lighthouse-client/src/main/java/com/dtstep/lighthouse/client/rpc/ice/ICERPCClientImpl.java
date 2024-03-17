@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.common.ice.RemoteLightServerPrx;
+import com.dtstep.lighthouse.common.util.SerializeUtil;
 import com.dtstep.lighthouse.common.util.SnappyUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,15 +63,13 @@ public class ICERPCClientImpl implements RPCClient {
         return true;
     }
 
-
-
     @Override
     public GroupVerifyEntity queryGroup(String token) throws Exception {
         RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getAuxInterfacePrx(ic);
-        String str = remoteLightServerPrx.queryGroupInfo(token);
+        byte[] bytes = remoteLightServerPrx.queryGroupInfo(token);
         GroupVerifyEntity groupVerifyEntity = null;
-        if(!StringUtil.isEmpty(str)){
-            groupVerifyEntity = objectMapper.readValue(str, GroupVerifyEntity.class);
+        if(bytes != null){
+            groupVerifyEntity = SerializeUtil.deserialize(bytes);
         }
         return groupVerifyEntity;
     }

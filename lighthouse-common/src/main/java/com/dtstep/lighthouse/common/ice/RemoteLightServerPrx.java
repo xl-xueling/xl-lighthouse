@@ -17,22 +17,22 @@ package com.dtstep.lighthouse.common.ice;
 
 public interface RemoteLightServerPrx extends com.zeroc.Ice.ObjectPrx
 {
-    default String process(byte[] message)
+    default byte[] process(byte[] message)
     {
         return process(message, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default String process(byte[] message, java.util.Map<String, String> context)
+    default byte[] process(byte[] message, java.util.Map<String, String> context)
     {
         return _iceI_processAsync(message, context, true).waitForResponse();
     }
 
-    default java.util.concurrent.CompletableFuture<String> processAsync(byte[] message)
+    default java.util.concurrent.CompletableFuture<byte[]> processAsync(byte[] message)
     {
         return _iceI_processAsync(message, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<String> processAsync(byte[] message, java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<byte[]> processAsync(byte[] message, java.util.Map<String, String> context)
     {
         return _iceI_processAsync(message, context, false);
     }
@@ -44,35 +44,35 @@ public interface RemoteLightServerPrx extends com.zeroc.Ice.ObjectPrx
      * @param sync -
      * @return -
      **/
-    default com.zeroc.IceInternal.OutgoingAsync<String> _iceI_processAsync(byte[] iceP_message, java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<byte[]> _iceI_processAsync(byte[] iceP_message, java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<String> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "process", null, sync, null);
+        com.zeroc.IceInternal.OutgoingAsync<byte[]> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "process", null, sync, null);
         f.invoke(true, context, null, ostr -> {
                      ostr.writeByteSeq(iceP_message);
                  }, istr -> {
-                     String ret;
-                     ret = istr.readString();
+                     byte[] ret;
+                     ret = istr.readByteSeq();
                      return ret;
                  });
         return f;
     }
 
-    default String queryGroupInfo(String token)
+    default byte[] queryGroupInfo(String token)
     {
         return queryGroupInfo(token, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default String queryGroupInfo(String token, java.util.Map<String, String> context)
+    default byte[] queryGroupInfo(String token, java.util.Map<String, String> context)
     {
         return _iceI_queryGroupInfoAsync(token, context, true).waitForResponse();
     }
 
-    default java.util.concurrent.CompletableFuture<String> queryGroupInfoAsync(String token)
+    default java.util.concurrent.CompletableFuture<byte[]> queryGroupInfoAsync(String token)
     {
         return _iceI_queryGroupInfoAsync(token, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<String> queryGroupInfoAsync(String token, java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<byte[]> queryGroupInfoAsync(String token, java.util.Map<String, String> context)
     {
         return _iceI_queryGroupInfoAsync(token, context, false);
     }
@@ -84,14 +84,14 @@ public interface RemoteLightServerPrx extends com.zeroc.Ice.ObjectPrx
      * @param sync -
      * @return -
      **/
-    default com.zeroc.IceInternal.OutgoingAsync<String> _iceI_queryGroupInfoAsync(String iceP_token, java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<byte[]> _iceI_queryGroupInfoAsync(String iceP_token, java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<String> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "queryGroupInfo", null, sync, null);
+        com.zeroc.IceInternal.OutgoingAsync<byte[]> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "queryGroupInfo", null, sync, null);
         f.invoke(true, context, null, ostr -> {
                      ostr.writeString(iceP_token);
                  }, istr -> {
-                     String ret;
-                     ret = istr.readString();
+                     byte[] ret;
+                     ret = istr.readByteSeq();
                      return ret;
                  });
         return f;
