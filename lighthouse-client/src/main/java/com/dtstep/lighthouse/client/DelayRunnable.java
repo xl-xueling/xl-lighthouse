@@ -26,6 +26,7 @@ import com.dtstep.lighthouse.common.fusing.FusingSwitch;
 import com.dtstep.lighthouse.common.fusing.FusingToken;
 import com.dtstep.lighthouse.common.sbr.StringBuilderHolder;
 import com.dtstep.lighthouse.common.util.StopWatch;
+import com.zeroc.Ice.NotRegisteredException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,7 +100,7 @@ final class DelayRunnable extends Thread {
                 return;
             }
             RPCClientProxy.instance().send(text);
-        }catch (Ice.NotRegisteredException ex){
+        }catch (NotRegisteredException ex){
             LightHouse._InitFlag.set(false);
             logger.error("lighthouse client failed to send message!",ex);
             FusingSwitch.track(fusingToken);

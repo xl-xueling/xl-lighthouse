@@ -1,9 +1,9 @@
 package com.dtstep.lighthouse.ice.servant;
 
-import IceBox.Service;
 import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
+import com.zeroc.IceBox.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

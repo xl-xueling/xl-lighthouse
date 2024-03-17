@@ -31,28 +31,14 @@
                 <option>-Dlog4j.configurationFile=${ldp_lighthouse_home}/conf/log4j2-ice.xml</option>
                 <option>IceBox.Server</option>
                 <env>CLASSPATH=.:${ldp_lighthouse_home}/lib/*</env>
-                <service name="ReceiverService" entry="com.dtstep.lighthouse.ice.servant.ReceiverService">
-                    <adapter name="ReceiverService" id="ReceiverService${index}" endpoints="default" replica-group="ReceiverServiceRep" />
-                </service>
-                <service name="AuxService" entry="com.dtstep.lighthouse.ice.servant.AuxService">
-                    <adapter name="AuxService" id="AuxService${index}" endpoints="default" replica-group="AuxServiceRep" />
-                </service>
-                <service name="DataQueryService" entry="com.dtstep.lighthouse.ice.servant.DataQueryService">
-                    <adapter name="DataQueryService" id="DataQueryService${index}" endpoints="default" replica-group="DataQueryServiceRep" />
+                <service name="LightHouseService" entry="com.dtstep.lighthouse.ice.servant.LightHouseService">
+                    <adapter name="LightHouseService" id="LightHouseService${index}" endpoints="default" replica-group="LightHouseServiceRep" />
                 </service>
             </icebox>
         </server-template>
-        <replica-group id="ReceiverServiceRep">
+        <replica-group id="LightHouseServiceRep">
             <load-balancing type="adaptive" n-replicas="0" />
-            <object identity="identity_receiver" type="::LightHouseServer::ReceiverInterface"/>
-        </replica-group>
-        <replica-group id="AuxServiceRep">
-            <load-balancing type="adaptive" n-replicas="0" />
-            <object identity="identity_aux" type="::LightHouseServer::AuxInterface"/>
-        </replica-group>
-        <replica-group id="DataQueryServiceRep">
-            <load-balancing type="adaptive" n-replicas="0" />
-            <object identity="identity_dataquery" type="::LightHouseServer::DataQueryInterface"/>
+            <object identity="LightHouseServiceIdentity" type="::LightServer::RemoteLightServer"/>
         </replica-group>
     	${ldp_lighthouse_ice_nodes}
      </application>

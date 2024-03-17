@@ -16,7 +16,6 @@ package com.dtstep.lighthouse.client;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Ice.Communicator;
 import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.common.entity.event.SimpleSlotEvent;
 import org.slf4j.Logger;

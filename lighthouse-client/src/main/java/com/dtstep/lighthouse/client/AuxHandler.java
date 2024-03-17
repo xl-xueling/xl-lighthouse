@@ -17,20 +17,12 @@ package com.dtstep.lighthouse.client;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.client.rpc.RPCClientProxy;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
-import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.exception.LightSendException;
-import com.dtstep.lighthouse.common.exception.LightTimeOutException;
-import com.dtstep.lighthouse.common.ice.AuxInterfacePrx;
 import com.dtstep.lighthouse.common.lru.Cache;
 import com.dtstep.lighthouse.common.lru.LRU;
-import com.dtstep.lighthouse.common.util.StringUtil;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 final class AuxHandler {
 
