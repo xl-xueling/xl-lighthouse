@@ -59,7 +59,7 @@ public final class SysConst {
 
     public static final int DEBUG_MODE_DURATION_TIME = 30;
 
-    public static final String TEST_SCENE_BEHAVIOR_STAT = "_test_scene_behavior_stat";
+    public static final String TEST_SCENE_BEHAVIOR_STAT = "test_scene_behavior_stat";
 
     public static final String PARAM_SIGN_KEY = "sign_key";
 

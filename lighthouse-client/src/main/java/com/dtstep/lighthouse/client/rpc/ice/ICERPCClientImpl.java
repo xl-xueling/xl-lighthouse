@@ -51,6 +51,8 @@ public class ICERPCClientImpl implements RPCClient {
             InitializationData initData = new InitializationData();
             initData.properties = iceProperties;
             ic = Util.initialize(initParams, initData);
+            RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
+            remoteLightServerPrx.ice_ping();
             logger.info("lighthouse client init success!");
         }catch (Exception ex){
             throw new InitializationException(String.format("lighthouse remote service not available,locators:%s",locators));
@@ -60,7 +62,7 @@ public class ICERPCClientImpl implements RPCClient {
 
     @Override
     public GroupVerifyEntity queryGroup(String token) throws Exception {
-        RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getAuxInterfacePrx(ic);
+        RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
         byte[] bytes = remoteLightServerPrx.queryGroupInfo(token);
         GroupVerifyEntity groupVerifyEntity = null;
         if(bytes != null){
@@ -77,7 +79,7 @@ public class ICERPCClientImpl implements RPCClient {
         }else{
             bytes = SnappyUtil.compressToByte(text);
         }
-        RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getAuxInterfacePrx(ic);
+        RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
         remoteLightServerPrx.process(bytes);
     }
 
