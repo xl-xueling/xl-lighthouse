@@ -1,16 +1,18 @@
-package com.dtstep.lighthouse.ice.servant.rpc.ice;
+package com.dtstep.lighthouse.ice.servant.logic.impl;
 
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.event.IceEvent;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
+import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.SnappyUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.disruptor.IceEventProducer;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.ice.servant.IceEventHandler;
-import com.dtstep.lighthouse.ice.servant.rpc.RPCServer;
+import com.dtstep.lighthouse.ice.servant.logic.RPCServer;
 import com.google.common.base.Splitter;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.RingBuffer;
@@ -27,6 +29,15 @@ public class RPCServerImpl implements RPCServer {
     private static final Logger logger = LoggerFactory.getLogger(RPCServerImpl.class);
 
     private static final IceEventProducer eventProducer;
+
+    static {
+        try{
+            LDPConfig.loadConfiguration();
+        }catch (Exception ex){
+            logger.error("ice server start error,system initialization error!",ex);
+            throw new InitializationException();
+        }
+    }
 
     static {
         Disruptor<IceEvent> disruptor = new Disruptor<>(
