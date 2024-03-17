@@ -37,9 +37,9 @@ public final class LightHouse {
 
     private static final Logger logger = LoggerFactory.getLogger(LightHouse.class);
 
-    private static final int consumerFrequency = 500;
+    private static int consumerFrequency = 500;
 
-    private static final int consumerBatchSize = 200;
+    private static int consumerBatchSize = 200;
 
     private static final EventPool<SimpleSlotEvent> eventPool = new BlockingEventPool<>("ClientEventPool",3,200000);
 
@@ -49,12 +49,11 @@ public final class LightHouse {
 
     private static final AtomicBoolean _LightSwitch = new AtomicBoolean(true);
 
-    private LightHouse(){}
+    private static final String KEY_PROCESS_FREQUENCY = "lighthouse_process_frequency";
 
-    static {
-        Consumer consumer = new Consumer(eventPool, consumerFrequency, consumerBatchSize);
-        consumer.start();
-    }
+    private static final String KEY_PROCESS_BATCH = "lighthouse_process_batch";
+
+    private LightHouse(){}
 
     public static synchronized void init(final String locators) throws Exception {
         if(!_InitFlag.get()){
@@ -63,7 +62,18 @@ public final class LightHouse {
                 throw new InitializationException(String.format("lighthouse remote service not available,locators:%s",locators));
             }
             _InitFlag.set(true);
+            Consumer consumer = new Consumer(eventPool, consumerFrequency, consumerBatchSize);
+            consumer.start();
         }
+    }
+
+    public static synchronized void init(final String locators,Properties properties) throws Exception{
+        if(properties.containsKey(KEY_PROCESS_FREQUENCY)){
+            consumerFrequency = (Integer) properties.get(KEY_PROCESS_FREQUENCY);
+        }else if(properties.containsKey(KEY_PROCESS_BATCH)){
+            consumerBatchSize = (Integer) properties.get(KEY_PROCESS_BATCH);
+        }
+        init(locators);
     }
 
     public static void stat(final String token,final String secretKey,Map<String,Object> paramMap,final long timestamp) throws Exception{
