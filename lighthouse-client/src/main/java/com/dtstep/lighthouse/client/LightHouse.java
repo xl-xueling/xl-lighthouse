@@ -69,9 +69,10 @@ public final class LightHouse {
 
     public static synchronized void init(final String locators,Properties properties) throws Exception{
         if(properties.containsKey(KEY_PROCESS_FREQUENCY)){
-            consumerFrequency = (Integer) properties.get(KEY_PROCESS_FREQUENCY);
-        }else if(properties.containsKey(KEY_PROCESS_BATCH)){
-            consumerBatchSize = (Integer) properties.get(KEY_PROCESS_BATCH);
+            consumerFrequency = Integer.parseInt(properties.getProperty(KEY_PROCESS_FREQUENCY));
+        }
+        if(properties.containsKey(KEY_PROCESS_BATCH)){
+            consumerBatchSize = Integer.parseInt(properties.getProperty(KEY_PROCESS_BATCH));
         }
         init(locators);
     }
@@ -110,5 +111,7 @@ public final class LightHouse {
         }
     }
 
-
+    public static void stop() {
+        _LightSwitch.set(false);
+    }
 }
