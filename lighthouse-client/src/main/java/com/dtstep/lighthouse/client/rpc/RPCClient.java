@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.client.rpc;
 
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 
+
 public interface RPCClient {
 
     boolean init(String configuration) throws Exception;

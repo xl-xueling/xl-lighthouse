@@ -61,6 +61,8 @@ public class ICERPCClientImpl implements RPCClient {
         return true;
     }
 
+
+
     @Override
     public GroupVerifyEntity queryGroup(String token) throws Exception {
         AuxInterfacePrx auxInterfacePrx = ICEHandler.getAuxInterfacePrx(ic);
