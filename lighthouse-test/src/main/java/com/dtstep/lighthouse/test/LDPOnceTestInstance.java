@@ -69,8 +69,8 @@ public class LDPOnceTestInstance {
     public static void createGroup() throws Exception {
         int count = DaoHelper.sql.count("SELECT count(1) FROM ldp_groups where token = ?","test_scene_behavior_stat");
         if(count == 0){
-            DaoHelper.sql.execute("INSERT INTO `ldp_projects` VALUES (1,'sssss',10221,0,'sadgasg','2024-03-17 10:07:51','2024-03-17 10:07:51')");
-            DaoHelper.sql.execute("INSERT INTO `ldp_groups` VALUES (11,'test_scene_behavior_stat',1,0,'[{\\\"name\\\":\\\"behavior_id\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"request_id\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"imei\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"province\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"recall_no\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"abtest_no\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"score\\\",\\\"type\\\":\\\"number\\\"},{\\\"name\\\":\\\"city\\\",\\\"type\\\":\\\"string\\\"}]','测试统计组！','39Vke68YgJ3N6Y6i6o76Nfsz06Sqr3hM','JmVM5qDhpkizvJSLjgCoXa10k5j4UWJyj3LSJsPp',1,'{\\\"limitingConfig\\\":{}}','2024-03-17 12:48:35','2024-03-17 12:48:35','2024-03-17 12:48:35')");
+            DaoHelper.sql.execute("INSERT INTO `ldp_projects` VALUES (11,'sssss',10221,0,'sadgasg','2024-03-17 10:07:51','2024-03-17 10:07:51')");
+            DaoHelper.sql.execute("INSERT INTO `ldp_groups` VALUES (111,'test_scene_behavior_stat',11,0,'[{\\\"name\\\":\\\"behavior_id\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"request_id\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"imei\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"province\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"recall_no\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"abtest_no\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"score\\\",\\\"type\\\":\\\"number\\\"},{\\\"name\\\":\\\"city\\\",\\\"type\\\":\\\"string\\\"}]','测试统计组！','39Vke68YgJ3N6Y6i6o76Nfsz06Sqr3hM','JmVM5qDhpkizvJSLjgCoXa10k5j4UWJyj3LSJsPp',1,'{\\\"limitingConfig\\\":{}}','2024-03-17 12:48:35','2024-03-17 12:48:35','2024-03-17 12:48:35')");
             System.out.println("create group success!");
         }
     }
