@@ -20,7 +20,7 @@ import Ice.AsyncResult;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
-final class NotifyThread extends Ice.Callback {
+public final class NotifyThread extends Ice.Callback {
 
     private final Lock lock;
 

@@ -45,26 +45,19 @@ final class Producer {
 
     private final EventPool<SimpleSlotEvent> eventPool;
 
-    private final AuxInterfacePrx auxInterfacePrx;
-
-    private final MessageSender messageSender;
-
-    Producer(Ice.Communicator ic, EventPool<SimpleSlotEvent> eventPool){
+    Producer(EventPool<SimpleSlotEvent> eventPool){
         this.eventPool = eventPool;
-        Ice.ObjectPrx auxBasePrx = ic.stringToProxy("identity_aux").ice_connectionId(UUID.randomUUID().toString()).ice_locatorCacheTimeout(1200);
-        auxInterfacePrx = AuxInterfacePrxHelper.checkedCast(auxBasePrx);
-        this.messageSender = new MessageSender(ic);
     }
 
     private static final Cache<String,String> cacheHolder = LRU.newBuilder().maximumSize(5000).expireAfterWrite(2, TimeUnit.MINUTES).softValues().build();
 
-    void send(String token, String secretKey, Map<String, Object> paramMap, int repeat, long timestamp,boolean isSync) throws Exception{
-        GroupVerifyEntity groupVerifyEntity = AuxHandler.queryStatGroup(auxInterfacePrx,token);
+    void send(String token, String secretKey, Map<String, Object> paramMap, int repeat, long timestamp) throws Exception{
+        GroupVerifyEntity groupVerifyEntity = AuxHandler.queryStatGroup(token);
         if(groupVerifyEntity == null){
             logger.error("statistic group({}) not exist!",token);
             return;
         }
-        String md5 = cacheHolder.get(secretKey,t -> {return Md5Util.getMD5(secretKey);});
+        String md5 = cacheHolder.get(secretKey,t -> Md5Util.getMD5(secretKey));
         if(!groupVerifyEntity.getVerifyKey().equals(md5)){
             logger.error("light client key validation failed,token:{},key:{}",token,secretKey);
             return;
@@ -88,22 +81,12 @@ final class Producer {
             }
             long microTime = DateUtil.batchTime(groupVerifyEntity.getMinTimeParam().getInterval(),groupVerifyEntity.getMinTimeParam().getTimeUnit(),timestamp);
             String message = MessageHelper.serializeOfText(groupVerifyEntity.getGroupId(),map,microTime);
-            if(isSync){
-                syncProcess(message,repeat);
-            }else{
-                process(message,repeat);
-            }
+            process(message,repeat);
         }
     }
-
-    private static final ThreadLocal<DecimalFormat> decimalThreadLocal = ThreadLocal.withInitial(() -> new DecimalFormat("#.###"));
 
     private void process(String message, int repeat) throws Exception{
         eventPool.put(HashUtil.getHashIndex(message,eventPool.slotSize()),new SimpleSlotEvent(message,repeat));
     }
 
-    private void syncProcess(String message,int repeat) throws Exception{
-        String text = message + StatConst.SEPARATOR_LEVEL_1 + repeat;
-        messageSender.send(text);
-    }
 }
