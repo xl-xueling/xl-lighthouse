@@ -6,6 +6,7 @@ import {
     OrderTypeEnum, PermissionEnum, RecordTypeEnum,
     ResourceTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum, PrivateTypeEnum
 } from "@/types/insights-common";
+import Decimal from "decimal.js";
 
 export interface HomeData {
     projectCount?:number;
@@ -248,13 +249,13 @@ export interface TimeLineBarChartData {
 export interface EChartChartValue {
     name?:string;
     type?:string;
-    data?:Array<number>;
+    data?:Array<Decimal>;
 }
 
 export interface StatValue {
     batchTime?:number;
     displayBatchTime?:string;
-    value?:number;
+    value?:Decimal;
     statesValue?:number[];
     updateTime?:number;
 }
