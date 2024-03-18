@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
-import {loadingOption} from "@/pages/stat/preview/common";
+import {getLineErrorOption, loadingOption} from "@/pages/stat/preview/common";
 import {getRandomString, stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
 
@@ -105,12 +105,18 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
             setDimensList(dimensList.length == 1 && dimensList[0] == null ? [] : dimensList);
             const batchList = data[0].valuesList.map(z => z.displayBatchTime);
             setBatchList(batchList);
+            errorMessage = null;
             const seriesArray = getSeries(data);
             setSeriesArray(seriesArray);
             chart.clear();
             chart.setOption(defaultOption);
+        }else{
+            const chart = chartRef.current.getEchartsInstance();
+            chart.clear();
+            const emptyOption = getLineErrorOption(errorMessage);
+            chart.setOption(emptyOption);
         }
-    },[JSON.stringify(data)])
+    },[JSON.stringify(data),errorMessage])
 
     const getReactChart = () => {
         if(size == 'default'){

@@ -77,7 +77,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         if(statInfo && refFetchId.current === id){
             const statChartData = await handlerFetchStatData(statInfo,searchForm);
             if(statChartData.code == '0'){
-                setStatChartLoading(false);
                 setStatChartData(statChartData.data);
                 setStatChartErrorMessage(null);
             }else{
@@ -138,7 +137,14 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     }
 
     useEffect(() => {
-        fetchStatData().then();
+        if(statInfo && statInfo.templateEntity.dimensArray.length == 0 || searchForm != null){
+            console.log("----1")
+            fetchStatData().then();
+        }else{
+            console.log("----2")
+            setStatChartData(null);
+            setStatChartErrorMessage(t['statDisplay.filterConfig.warning']);
+        }
         fetchLimitData().then();
     },[statInfo,JSON.stringify(searchForm)])
 
