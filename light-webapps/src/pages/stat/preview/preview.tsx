@@ -43,6 +43,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [limitChartLoading,setLimitChartLoading] = useState<boolean>(false);
     const [option,setOption] = useState({});
     const refs = useRef<any[]>([]);
+    const refFetchId = useRef<any>(null);
 
     const tableCallback = async (type,data) => {
         if(type == 'showFilterConfigModal'){
@@ -54,12 +55,14 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         }
     }
 
-    const fetchData = async () => {
+    const fetchStatInfo = async () => {
         setLoading(true);
         await requestQueryById({id:id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                setStatInfo(data)
+                if (refFetchId.current === id) {
+                    setStatInfo(data)
+                }
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -71,7 +74,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
 
     const fetchStatData = async () => {
         setStatChartLoading(true);
-        if(statInfo){
+        if(statInfo && refFetchId.current === id){
             const statChartData = await handlerFetchStatData(statInfo,searchForm);
             if(statChartData.code == '0'){
                 setStatChartLoading(false);
@@ -87,7 +90,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
 
     const fetchLimitData = async () => {
         setLimitChartLoading(true);
-        if(statInfo){
+        if(statInfo && refFetchId.current === id){
             const limitChartData = await handlerFetchLimitData();
             setLimitChartData(limitChartData.data);
         }
@@ -144,11 +147,13 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     }
 
     useEffect(() => {
-        echarts.connect('sameGroup');
-        setSearchForm(null);
-        fetchData().then();
+        refFetchId.current = id;
+        setTimeout(() => {
+            echarts.connect('sameGroup');
+            setSearchForm(null);
+            fetchStatInfo().then();
+        },10)
     },[id,reloadTime])
-
 
 
     return(
