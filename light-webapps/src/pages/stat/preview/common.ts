@@ -87,6 +87,39 @@ export const loadingOption = {
     maskColor: 'rgba(255, 255, 255, 1)',
 };
 
+export const getLineErrorOption = (errorMessage) => {
+    return {
+        xAxis: {
+            type: 'category',
+            data: []
+        },
+        yAxis: {
+            type: 'value'
+        },
+        grid: {
+            top:'15px',
+            left: '20px',
+            right: '20px',
+            bottom: '2px',
+            containLabel: true
+        },
+        series: [{
+            data: [],
+            type: 'line'
+        }],
+        graphic: errorMessage && [{
+            type: 'text',
+            left: 'center',
+            top: 'middle',
+            style: {
+                fill: '#000',
+                text: errorMessage,
+                fontSize: 12,
+            }
+        }]
+    };
+}
+
 const getBasicLineSeries = (chartData) => {
     const seriesArray = new Array<any>();
     for(let i=0;i<chartData.length;i++){
