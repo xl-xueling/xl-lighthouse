@@ -37,6 +37,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [statChartErrorMessage,setStatChartErrorMessage] = useState<string>(null);
     const [limitChartData,setLimitChartData] = useState<Array<LimitData>>(null);
     const [limitChartLoading,setLimitChartLoading] = useState<boolean>(false);
+    const [pageTitle,setPageTitle] = useState<string>(null)
     const [option,setOption] = useState({});
     const refs = useRef<any[]>([]);
     const refFetchId = useRef<any>(null);
@@ -66,6 +67,13 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         }).catch((error) => {
             console.log(error);
         })
+    }
+
+    const getPageTitle = () => {
+        return statInfo?.state == StatStateEnum.RUNNING ?
+            specifyTitle?specifyTitle:statInfo?.title
+            :
+            <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{specifyTitle?specifyTitle:statInfo?.title}</span>
     }
 
     const fetchStatData = async () => {
@@ -128,8 +136,8 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
 
     const getLimitChart = () => {
         return (
-            <Col span={24} key={getRandomString(32)}>
-                <Card title={'sss'}>
+            <Col span={24}>
+                <Card title={t['statDisplay.limit.title']}>
                     <TimeLineBarPanel loading={limitChartLoading} size={'default'} data={limitChartData} />
                 </Card>
             </Col>
@@ -137,6 +145,8 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     }
 
     useEffect(() => {
+        const pageTitle = getPageTitle();
+        setPageTitle(pageTitle);
         if(statInfo && statInfo.templateEntity.dimensArray.length == 0 || searchForm != null){
             fetchStatData().then();
         }else{
@@ -173,10 +183,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                         >
                             <IconTag style={{marginRight:'10px'}}/>
                             {
-                                statInfo?.state == StatStateEnum.RUNNING ?
-                                    specifyTitle?specifyTitle:statInfo?.title
-                                    :
-                                    <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{specifyTitle?specifyTitle:statInfo?.title}</span>
+                                pageTitle
                             }
                             <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
                         </Typography.Title>
