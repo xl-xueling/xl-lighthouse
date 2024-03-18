@@ -16,84 +16,91 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
     const [option,setOption] = useState({});
     const chartRef = useRef(null);
 
-    const defaultOption = {
-        tooltip: {
-            trigger: 'axis',
-            formatter: function (params) {
-                const newParams = [];
-                const paramData = params.sort(function (a, b) {
-                    return b.value - a.value;
-                });
-                for (let i = 0, len = paramData.length; i < len; i++) {
-                    const v = paramData[i];
-                    const s = 'value : ' + v.value;
-                    newParams.push(s)
-                }
-                return "<br>" + newParams.join('<br>');
-            },
-            confine: true
-        },
-        dataZoom: [
-            {
-                type: 'inside',
-                start: 0,
-                end: 100
-            }
-        ],
-        legend: {
-            data: dimensList,
-            icon:'circle',
-            itemHeight:'10',
-        },
-        grid: {
-            top: dimensList.length> 0 ? '40px':'25px',
-            left: '10px',
-            right: '10px',
-            bottom: '0px',
-            containLabel: true
-        },
-        xAxis: [
-            {
-                type: 'category',
-                boundaryGap: false,
-                data: batchList,
-                axisLabel: {
-                    animation: true
-                }
-            }
-        ],
-        yAxis: [
-            {
-                type: 'value',
-                axisLabel: {
-                    animation: true,
-                    formatter: function (value, index) {
-                        if (value >= 1000 && value < 1000000) {
-                            value = value / 1000 + "K";
-                        } else if (value >= 1000000 && value < 1000000000) {
-                            value = value / 1000000 + "M";
-                        } else if (value >= 1000000000 && value < 1000000000000) {
-                            value = value / 1000000000 + "B";
-                        } else if (value >= 1000000000000) {
-                            value = value / 1000000000000 + "T";
-                        }
-                        return value;
+    const getDefaultOption = () => {
+        return !data ? {} : {
+            tooltip: {
+                show:data && !loading,
+                trigger: 'axis',
+                formatter: function (params) {
+                    if(!params){
+                        return;
                     }
+                    const newParams = [];
+                    const paramData = params.sort(function (a, b) {
+                        return b.value - a.value;
+                    });
+                    for (let i = 0, len = paramData.length; i < len; i++) {
+                        const v = paramData[i];
+                        const dimens = v.seriesName.startsWith('series')?"value":v.seriesName;
+                        const s = v.marker + ' ' + dimens + ' : ' + v.value;
+                        newParams.push(s)
+                    }
+                    return params[0].axisValue + "<br>" + newParams.join('<br>');
                 },
-            }
-        ],
-        series: seriesArray,
-        graphic: errorMessage && [{
-            type: 'text',
-            left: 'center',
-            top: 'middle',
-            style: {
-                fill: '#0000',
-                text: errorMessage,
-                fontSize: 12,
-            }
-        }]
-    };
+                confine: true
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 0,
+                    end: 100
+                }
+            ],
+            legend: {
+                data: dimensList,
+                icon:'circle',
+                itemHeight:'10',
+            },
+            grid: {
+                top: dimensList.length> 0 ? '40px':'25px',
+                left: '10px',
+                right: '10px',
+                bottom: '0px',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: batchList,
+                    axisLabel: {
+                        animation: true
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        animation: true,
+                        formatter: function (value, index) {
+                            if (value >= 1000 && value < 1000000) {
+                                value = value / 1000 + "K";
+                            } else if (value >= 1000000 && value < 1000000000) {
+                                value = value / 1000000 + "M";
+                            } else if (value >= 1000000000 && value < 1000000000000) {
+                                value = value / 1000000000 + "B";
+                            } else if (value >= 1000000000000) {
+                                value = value / 1000000000000 + "T";
+                            }
+                            return value;
+                        }
+                    },
+                }
+            ],
+            series: seriesArray,
+            graphic: errorMessage && [{
+                type: 'text',
+                left: 'center',
+                top: 'middle',
+                style: {
+                    fill: '#0000',
+                    text: errorMessage,
+                    fontSize: 12,
+                }
+            }]
+        };
+    }
 
     const getSeries = (chartData) => {
         const seriesArray = new Array<any>();
@@ -133,7 +140,7 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
             const seriesArray = getSeries(data);
             setSeriesArray(seriesArray);
             chart.clear();
-            chart.setOption(defaultOption);
+            chart.setOption(getDefaultOption());
         }else{
             const chart = chartRef.current.getEchartsInstance();
             chart.clear();
@@ -144,11 +151,11 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts ref={chartRef} option={!data? {}:defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}}  showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} option={!data? {}:getDefaultOption()} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts ref={chartRef} option={!data? {}:defaultOption} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} option={!data? {}:getDefaultOption()} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts ref={chartRef} option={!data? {}:defaultOption} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} option={!data? {}:getDefaultOption()} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }
     }
 
