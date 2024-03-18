@@ -33,7 +33,7 @@ export default function OrderDetailModal({orderId,onClose}) {
     return(
         <Modal
             title= {t['detailModal.title']}
-            style={{ width:'950px',top:'20px' }}
+            style={{ width:'1150px',maxWidth:'80%',top:'20px' }}
             visible={true}
             footer={null}
             onCancel={onClose}>
