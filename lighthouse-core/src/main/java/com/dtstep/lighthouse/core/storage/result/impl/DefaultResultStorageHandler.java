@@ -276,7 +276,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                     BigDecimal bigDecimal = ((BigDecimal) object).stripTrailingZeros();
                     statValue.setValue(bigDecimal.toPlainString());
                 }else {
-                    statValue.setValue(StringUtil.displayFormat(new BigDecimal(object.toString()).doubleValue()));
+                    statValue.setValue(object);
                 }
             }
         }

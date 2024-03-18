@@ -4,6 +4,8 @@ import ReactECharts from 'echarts-for-react';
 import {getLineErrorOption, loadingOption} from "@/pages/stat/preview/common";
 import {getRandomString, stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
+import Decimal from 'decimal.js';
+
 
 export default function StatBasicLineChart({data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null}) {
 
@@ -17,12 +19,19 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
     const defaultOption = {
         tooltip: {
             trigger: 'axis',
-            axisPointer: {
-                type: 'line',
-                label: {
-                    backgroundColor: '#6a7985'
+            formatter: function (params) {
+                const newParams = [];
+                const paramData = params.sort(function (a, b) {
+                    return b.value - a.value;
+                });
+                for (let i = 0, len = paramData.length; i < len; i++) {
+                    const v = paramData[i];
+                    const s = 'value : ' + v.value;
+                    newParams.push(s)
                 }
-            }
+                return "<br>" + newParams.join('<br>');
+            },
+            confine: true
         },
         dataZoom: [
             {
@@ -37,7 +46,7 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
             itemHeight:'10',
         },
         grid: {
-            top: dimensList.length> 0 ? '40px':'15px',
+            top: dimensList.length> 0 ? '40px':'25px',
             left: '10px',
             right: '10px',
             bottom: '0px',
@@ -79,7 +88,7 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
             left: 'center',
             top: 'middle',
             style: {
-                fill: '#000',
+                fill: '#0000',
                 text: errorMessage,
                 fontSize: 12,
             }
@@ -100,6 +109,9 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
                 name: dimensValue,
                 type: 'line',
                 data: values,
+                label: {
+                    show: false,
+                },
                 animation: true,
                 animationEasing: 'quadraticInOut',
                 animationDurationUpdate:1000,
