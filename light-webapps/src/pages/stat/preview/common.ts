@@ -87,51 +87,33 @@ export const loadingOption = {
     maskColor: 'rgba(255, 255, 255, 1)',
 };
 
-export const getTimeLineBarOption = (seriesArray,data:Array<LimitData>,errorMessage:string,timeIndex) => {
-    if(!data){
-        return {};
-    }
-    const batchList = data.map(z => z.displayBatchTime);
-    const option = {
-        baseOption: {
-            timeline: {
-                axisType: 'category',
-                autoPlay: false,
-                playInterval: 1000,
-                data: batchList,
-                label: {
-                    formatter: '{value}'
-                }
-            },
-            xAxis: {
-                type: 'category',
-                data: data[timeIndex].values.map(z => z.dimensValue)
-            },
-            yAxis: {
-                type: 'value'
-            },
-        },
-        options: seriesArray,
-    };
-    return option;
-}
-
-
-export const getLineOption = (lineChartData:LineChartData,errorMessage:string) => {
-    if(!lineChartData){
-        return {};
-    }
-    const data = Array.from(lineChartData.dataMap).map(([key,value]) => {
-        return {
-            name:key,
-            type:'line',
-            data:value,
+const getBasicLineSeries = (chartData) => {
+    const seriesArray = new Array<any>();
+    for(let i=0;i<chartData.length;i++){
+        const dimensValue = chartData[i].dimensValue;
+        const values = chartData[i].valuesList.map(z => z.value);
+        const seriesObj =  {
+            name: dimensValue,
+            type: 'line',
+            data: values,
             animation: true,
             animationEasing: 'quadraticInOut',
-            animationDurationUpdate:1000,
-        }
-    })
-    return {
+            animationDurationUpdate:3000,
+        };
+        seriesArray.push(seriesObj);
+    }
+    return seriesArray;
+}
+
+export const getStatBasicLineOption = (statData:Array<StatData>,stateIndex:number,errorMessage:string):any => {
+    if(!statData){
+        return {};
+    }
+    let dimensList = statData.map(z => z.displayDimensValue);
+    dimensList = dimensList.length == 1 && dimensList[0] == null ? [] : dimensList
+    const batchList = statData[0].valuesList.map(z => z.displayBatchTime);
+    const seriesArray = getBasicLineSeries(statData);
+    return  {
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -149,23 +131,24 @@ export const getLineOption = (lineChartData:LineChartData,errorMessage:string) =
             }
         ],
         legend: {
-            data: lineChartData.dataMap.keys(),
+            data: dimensList,
             icon:'circle',
             itemHeight:'10',
         },
         grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
+            top:'25px',
+            left: '25px',
+            right: '25px',
+            bottom: '10px',
             containLabel: true
         },
         xAxis: [
             {
                 type: 'category',
                 boundaryGap: false,
-                data: errorMessage ? [] : lineChartData.xAxis,
+                data: batchList,
                 axisLabel: {
-                    animation: false
+                    animation: true
                 }
             }
         ],
@@ -173,12 +156,11 @@ export const getLineOption = (lineChartData:LineChartData,errorMessage:string) =
             {
                 type: 'value',
                 axisLabel: {
-                    animation: false
+                    animation: true
                 },
             }
         ],
-
-        series: errorMessage ? [] : data,
+        series: seriesArray,
         graphic: errorMessage && [{
             type: 'text',
             left: 'center',

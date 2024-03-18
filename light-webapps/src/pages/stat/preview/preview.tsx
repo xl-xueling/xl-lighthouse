@@ -13,14 +13,15 @@ import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
 import StatUpdateModal from "@/pages/stat/update";
 import {getRandomString} from "@/utils/util";
 import {
-    getLineOption, handlerFetchLimitData,
+    getStatBasicLineOption,
+    handlerFetchLimitData,
     handlerFetchStatData,
     translateResponseDataToLineChartData,
 } from "@/pages/stat/preview/common";
-import BasicLinePanel from "@/pages/stat/preview/line_chart";
 import * as echarts from "echarts";
 import TimeLineBarPanel from "@/pages/stat/preview/timeline_bar_chart";
-import LineChartV2 from "@/pages/stat/preview/line_chart_v2";
+import StatBasicLineChartV2 from "@/pages/stat/preview/line_chart_v2";
+import StatBasicLineChart from "@/pages/stat/preview/line_chart_v1";
 const { Row, Col } = Grid;
 
 export default function StatPreviewPanel({specifyTitle = null,size = 'default',id}) {
@@ -36,7 +37,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [showLimitedRecord,setShowLimitedRecord] = useState<boolean>(false);
     const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
     const [statChartData,setStatChartData] = useState<Array<StatData>>(null);
-    const [statChartErrorMessage,setStatChartErrorMessage] = useState(null);
+    const [statChartErrorMessage,setStatChartErrorMessage] = useState<string>(null);
     const [limitChartData,setLimitChartData] = useState<Array<LimitData>>(null);
     const [limitChartLoading,setLimitChartLoading] = useState<boolean>(false);
     const [option,setOption] = useState({});
@@ -93,12 +94,10 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     }
 
     const getStatChart = () => {
-        // const lineData = translateResponseDataToLineChartData(statChartData,-1);
-        //  const option = getLineOption(lineData, null);
          return (
                 <Col span={24}>
                     <Card>
-                        <LineChartV2 data={statChartData} errorMessage={null} loading={statChartLoading} size={size} group={'sameGroup'}/>
+                        <StatBasicLineChart size={'small'} data={statChartData} errorMessage={statChartErrorMessage} loading={statChartLoading} group={'sameGroup'}/>
                     </Card>
                 </Col>
         )
@@ -107,16 +106,13 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const getStateCharts = () => {
         const stateList = statInfo.templateEntity.statStateList;
         return stateList.map((z,index) => {
-            const lineData = translateResponseDataToLineChartData(statChartData,z.functionIndex);
-            const option = getLineOption(lineData, null);
             return (
-                <Col span={12} key={getRandomString(32)}>
+                <Col span={24} key={getRandomString()}>
                     <Card title={z.stateBody}>
-                        <BasicLinePanel loading={statChartLoading} size={'mini'} option={option} group={'sameGroup'}/>
+                        <StatBasicLineChart size={'small'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={statChartLoading} group={'sameGroup'}/>
                     </Card>
                 </Col>
-            );
-
+            )
         })
     }
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -166,9 +162,10 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                         {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch}/>}
                         {getStatChart()}
                     </Card>
-                    <Row gutter={16}>
-                        {/*{getStateCharts()}*/}
-                    </Row>
+                    {statInfo.templateEntity.statStateList.length > 1 &&
+                        <Row gutter={16}>
+                            {getStateCharts()}
+                        </Row>}
                     <Row gutter={16}>
                         {/*{getLimitChart()}*/}
                     </Row>

@@ -5,7 +5,7 @@ import {loadingOption} from "@/pages/stat/preview/common";
 import {getRandomString, stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
 
-export default function LineChartV2({data = null,errorMessage = null,size="default", loading = false,group=null}) {
+export default function StatBasicLineChart({data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null}) {
 
     const [timeIndex,setTimeIndex] = useState<number>(0);
     const [seriesArray,setSeriesArray] = useState([]);
@@ -37,10 +37,10 @@ export default function LineChartV2({data = null,errorMessage = null,size="defau
             itemHeight:'10',
         },
         grid: {
-            top:'25px',
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
+            top:'15px',
+            left: '20px',
+            right: '20px',
+            bottom: '0px',
             containLabel: true
         },
         xAxis: [
@@ -78,14 +78,19 @@ export default function LineChartV2({data = null,errorMessage = null,size="defau
         const seriesArray = new Array<any>();
         for(let i=0;i<chartData.length;i++){
             const dimensValue = chartData[i].dimensValue;
-            const values = chartData[i].valuesList.map(z => z.value);
+            let values;
+            if(stateIndex == -1){
+                values = chartData[i].valuesList.map(z => z.value);
+            }else{
+                values = chartData[i].valuesList.map(z => z.statesValue[stateIndex]);
+            }
             const seriesObj =  {
                 name: dimensValue,
                 type: 'line',
                 data: values,
                 animation: true,
                 animationEasing: 'quadraticInOut',
-                animationDurationUpdate:3000,
+                animationDurationUpdate:1000,
             };
             seriesArray.push(seriesObj);
         }
