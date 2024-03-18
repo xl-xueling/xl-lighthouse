@@ -45,9 +45,7 @@ export default function BasicLinePanel({option = null,size="default", loading = 
 
     return (<>
         <Space size={16} direction="vertical" style={{ width: '100%' }}>
-            <div onWheel={(e) => {e.stopPropagation();}}>
-                {getReactChart()}
-            </div>
+            {getReactChart()}
         </Space>
     </>);
 }
