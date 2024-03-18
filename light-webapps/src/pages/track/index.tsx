@@ -289,9 +289,9 @@ export default function TrackStatPage() {
                         debugMode &&
                         <Card>
                             <Spin loading={listLoading} style={{display:'block',width:'100%'}}>
-                                { (messagesColumns && messageData && messageData.length > 0 )?
-                                    <Space size={16} direction="vertical" style={{minHeight:'150px'}}>
-                                        <Table size={"small"} pagination={false} rowKey={'Seq'} columns={messagesColumns} data={messageData} />
+                                {(messagesColumns && messageData && messageData.length > 0 )?
+                                    <Space size={16} direction="vertical" style={{minHeight:'150px',width:'100%'}}>
+                                        <Table size={"small"} pagination={false} border={false} rowKey={'Seq'} columns={messagesColumns} data={messageData} />
                                     </Space>
                                     :
                                     <Empty style={{width:'100%'}} description={t['statTrack.list.empty.message']}/>
