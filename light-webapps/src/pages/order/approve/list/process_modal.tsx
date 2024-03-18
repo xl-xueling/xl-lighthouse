@@ -124,7 +124,7 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
 
         <Modal
             title= {t['approveModal.title']}
-            style={{ width:'950px',top:'20px' }}
+            style={{ width:'1150px',maxWidth:'80%',top:'20px' }}
             visible={true}
             footer={null}
             onCancel={onClose}>
