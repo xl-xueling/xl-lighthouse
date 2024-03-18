@@ -68,7 +68,6 @@ function SearchForm({onSearch, form,onClear, allDepartInfo}) {
                       );
                     },
                   }}
-                  TreeSelect
                   allowClear={true}
                   treeData={translate(allDepartInfo)}
               />
