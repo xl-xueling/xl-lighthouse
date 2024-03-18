@@ -75,6 +75,16 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
                             placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"}
                             multiple={true}
                             treeCheckable={true}
+                            treeProps={{
+                                height: 200,
+                                renderTitle: (props) => {
+                                    return (
+                                        <span style={{ whiteSpace: 'nowrap', }} >
+                                            {props.title}
+                                        </span>
+                                    );
+                                },
+                            }}
                             treeCheckStrictly={false}
                             allowClear={true}
                             showSearch={true}
