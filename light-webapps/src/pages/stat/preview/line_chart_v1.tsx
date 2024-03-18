@@ -100,16 +100,17 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
     useEffect(() => {
         if(data){
             const chart = chartRef.current.getEchartsInstance();
-            chart.clear();
+            chart.group = group;
             const dimensList = data.map(z => z.displayDimensValue);
             setDimensList(dimensList.length == 1 && dimensList[0] == null ? [] : dimensList);
             const batchList = data[0].valuesList.map(z => z.displayBatchTime);
             setBatchList(batchList);
             const seriesArray = getSeries(data);
             setSeriesArray(seriesArray);
+            chart.clear();
             chart.setOption(defaultOption);
         }
-    },[data])
+    },[JSON.stringify(data)])
 
     const getReactChart = () => {
         if(size == 'default'){
