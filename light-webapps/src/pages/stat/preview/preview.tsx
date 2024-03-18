@@ -163,10 +163,10 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                             <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
                         </Typography.Title>
                         {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch}/>}
-                        {/*{getStatChart()}*/}
+                        {getStatChart()}
                     </Card>
                     <Row gutter={16}>
-                        {/*{getStateCharts()}*/}
+                        {getStateCharts()}
                     </Row>
                     <Row gutter={16}>
                         {getLimitChart()}

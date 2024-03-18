@@ -363,6 +363,16 @@
             <version>2.2.2</version>
         </dependency>
         <dependency>
+            <groupId>com.zeroc</groupId>
+            <artifactId>ice</artifactId>
+            <version>${ice.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zeroc</groupId>
+            <artifactId>icebox</artifactId>
+            <version>${ice.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.3.2</version>
