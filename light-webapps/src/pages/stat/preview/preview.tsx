@@ -187,9 +187,11 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                         <Row gutter={16}>
                             {getStateCharts()}
                         </Row>}
-                    <Row gutter={16}>
-                        {/*{getLimitChart()}*/}
-                    </Row>
+                    {statInfo.templateEntity.limitFlag &&
+                        <Row gutter={16}>
+                            {getLimitChart()}
+                        </Row>
+                    }
                     <Card>
                         <Typography.Title
                             heading={6}
