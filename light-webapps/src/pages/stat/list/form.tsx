@@ -60,6 +60,16 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
                             <TreeSelect
                                 placeholder={"Please Select"}
                                 multiple={true}
+                                treeProps={{
+                                    height: 200,
+                                    renderTitle: (props) => {
+                                        return (
+                                            <span style={{ whiteSpace: 'nowrap', }} >
+                                            {props.title}
+                                        </span>
+                                        );
+                                    },
+                                }}
                                 allowClear={true}
                                 treeData={translate(allDepartInfo)}
                             />

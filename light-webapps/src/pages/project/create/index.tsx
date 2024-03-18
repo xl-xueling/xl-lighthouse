@@ -127,6 +127,16 @@ function ProjectCreatePanel({onClose,allDepartInfo,onSuccess}){
                     <Form.Item label={t['projectCreate.form.label.department']} field="departmentId" rules={[{ required: true ,message: t['projectCreate.form.department.errMsg'], validateTrigger : ['onSubmit']}]}>
                         <TreeSelect
                             disabled={true}
+                            treeProps={{
+                                height: 200,
+                                renderTitle: (props) => {
+                                    return (
+                                        <span style={{ whiteSpace: 'nowrap', }} >
+                                            {props.title}
+                                        </span>
+                                    );
+                                },
+                            }}
                             placeholder={"Please Select"}
                             allowClear={true}
                             treeData={translateToFlatStruct(allDepartInfo)}
