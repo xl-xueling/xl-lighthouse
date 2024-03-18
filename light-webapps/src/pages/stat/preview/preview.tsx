@@ -112,7 +112,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         const stateList = statInfo.templateEntity.statStateList;
         return stateList.map((z,index) => {
             return (
-                <Col span={24/statInfo.templateEntity.statStateList.length} key={getRandomString()}>
+                <Col span={24/statInfo.templateEntity.statStateList.length} key={'state-chart-' + z.functionIndex}>
                     <Card title={z.stateBody}>
                         <StatBasicLineChart size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
                     </Card>
