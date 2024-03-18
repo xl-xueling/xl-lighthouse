@@ -70,14 +70,16 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
 
     const fetchStatData = async () => {
         setStatChartLoading(true);
-        if(statInfo && refFetchId.current === id){
+        if(statInfo){
             const statChartData = await handlerFetchStatData(statInfo,searchForm);
-            if(statChartData.code == '0'){
-                setStatChartData(statChartData.data);
-                setStatChartErrorMessage(null);
-            }else{
-                setStatChartData(null);
-                setStatChartErrorMessage(statChartData.message);
+            if (refFetchId.current === id) {
+                if(statChartData.code == '0'){
+                    setStatChartData(statChartData.data);
+                    setStatChartErrorMessage(null);
+                }else{
+                    setStatChartData(null);
+                    setStatChartErrorMessage(statChartData.message);
+                }
             }
         }
         setStatChartLoading(false);
@@ -85,9 +87,11 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
 
     const fetchLimitData = async () => {
         setLimitChartLoading(true);
-        if(statInfo && refFetchId.current === id){
+        if(statInfo){
             const limitChartData = await handlerFetchLimitData();
-            setLimitChartData(limitChartData.data);
+            if (refFetchId.current === id) {
+                setLimitChartData(limitChartData.data);
+            }
         }
         setLimitChartLoading(false);
     }
