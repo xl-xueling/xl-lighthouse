@@ -144,11 +144,11 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts ref={chartRef} option={defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}}  showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} option={!data? {}:defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}}  showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts ref={chartRef} option={defaultOption} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} option={!data? {}:defaultOption} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts ref={chartRef} option={defaultOption} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} option={!data? {}:defaultOption} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }
     }
 
