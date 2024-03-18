@@ -38,8 +38,8 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
         },
         grid: {
             top: dimensList.length> 0 ? '40px':'15px',
-            left: '20px',
-            right: '20px',
+            left: '10px',
+            right: '10px',
             bottom: '0px',
             containLabel: true
         },
@@ -57,7 +57,19 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
             {
                 type: 'value',
                 axisLabel: {
-                    animation: true
+                    animation: true,
+                    formatter: function (value, index) {
+                        if (value >= 1000 && value < 1000000) {
+                            value = value / 1000 + "K";
+                        } else if (value >= 1000000 && value < 1000000000) {
+                            value = value / 1000000 + "M";
+                        } else if (value >= 1000000000 && value < 1000000000000) {
+                            value = value / 1000000000 + "B";
+                        } else if (value >= 1000000000000) {
+                            value = value / 1000000000000 + "T";
+                        }
+                        return value;
+                    }
                 },
             }
         ],
