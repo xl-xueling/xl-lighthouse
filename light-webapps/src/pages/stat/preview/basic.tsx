@@ -36,8 +36,13 @@ export default function BasicInfo({statInfo,callback}) {
         {
             label: 'Project',
             value:
-            <span style={{display:"inline-flex",alignItems:"center"}}>
-                {statInfo?.projectTitle} [{statInfo?.projectId}]
+            <span>
+                {statInfo?.permissions.includes(PermissionEnum.ManageAble)?
+                    <span style={{display:"inline-flex",alignItems:"center"}}>
+                        <Link className={'ldp-custom-link'} href={'/project/manage/' + statInfo?.projectId} target={'_blank'}>{statInfo?.projectTitle}</Link> [{statInfo?.projectId}]
+                    </span>
+                    :statInfo?.projectTitle [statInfo?.projectId]
+                }
             </span>
             ,
         },
