@@ -20,6 +20,7 @@ import {
 import BasicLinePanel from "@/pages/stat/preview/line_chart";
 import * as echarts from "echarts";
 import TimeLineBarPanel from "@/pages/stat/preview/timeline_bar_chart";
+import LineChartV2 from "@/pages/stat/preview/line_chart_v2";
 const { Row, Col } = Grid;
 
 export default function StatPreviewPanel({specifyTitle = null,size = 'default',id}) {
@@ -92,12 +93,12 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     }
 
     const getStatChart = () => {
-        const lineData = translateResponseDataToLineChartData(statChartData,-1);
-        const option = getLineOption(lineData, null);
-        return (
+        // const lineData = translateResponseDataToLineChartData(statChartData,-1);
+        //  const option = getLineOption(lineData, null);
+         return (
                 <Col span={24}>
                     <Card>
-                        <BasicLinePanel loading={statChartLoading} size={size} option={option} group={'sameGroup'}/>
+                        <LineChartV2 data={statChartData} errorMessage={null} loading={statChartLoading} size={size} group={'sameGroup'}/>
                     </Card>
                 </Col>
         )
@@ -166,10 +167,10 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                         {getStatChart()}
                     </Card>
                     <Row gutter={16}>
-                        {getStateCharts()}
+                        {/*{getStateCharts()}*/}
                     </Row>
                     <Row gutter={16}>
-                        {getLimitChart()}
+                        {/*{getLimitChart()}*/}
                     </Row>
                     <Card>
                         <Typography.Title

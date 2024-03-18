@@ -128,7 +128,7 @@ export const getLineOption = (lineChartData:LineChartData,errorMessage:string) =
             data:value,
             animation: true,
             animationEasing: 'quadraticInOut',
-            animationDurationUpdate:30,
+            animationDurationUpdate:1000,
         }
     })
     return {
