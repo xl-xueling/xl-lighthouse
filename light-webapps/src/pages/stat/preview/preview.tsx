@@ -103,7 +103,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
          return (
                 <Col span={24}>
                     <Card>
-                        <StatBasicLineChart size={'small'} data={statChartData} errorMessage={statChartErrorMessage} loading={statChartLoading} group={'sameGroup'}/>
+                        <StatBasicLineChart size={'small'} data={statChartData} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
                     </Card>
                 </Col>
         )
@@ -118,7 +118,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
             return (
                 <Col span={24/statInfo.templateEntity.statStateList.length} key={getRandomString()}>
                     <Card title={z.stateBody}>
-                        <StatBasicLineChart size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={statChartLoading} group={'sameGroup'}/>
+                        <StatBasicLineChart size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
                     </Card>
                 </Col>
             )

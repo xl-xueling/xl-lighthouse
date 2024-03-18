@@ -104,7 +104,7 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
         }else if(statInfo.timeparam.endsWith("hour")){
             startDate = endDate = formatTimeStamp(Date.now(),DateTimeFormat);
         }else if(statInfo.timeparam.endsWith("day")){
-            const startTimestamp = getDayStartTimestamp(getDayBefore(Date.now(),14));
+            const startTimestamp = getDayStartTimestamp(getDayBefore(Date.now(),13));
             startDate = formatTimeStamp(startTimestamp,DateTimeFormat);
             const endTimeStamp = getDayEndTimestamp(Date.now());
             endDate = formatTimeStamp(endTimeStamp,DateTimeFormat);
@@ -138,6 +138,11 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
         }
     }
 
+    useEffect(() => {
+        const initDateParam = getInitDateParam();
+        form.setFieldValue("date",initDateParam);
+    },[statInfo])
+
     return (
         <div className={styles['search-form-wrapper']}>
         <Form
@@ -146,9 +151,6 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
             className={styles['search-form']}
             labelAlign="left"
             colon={": "}
-            initialValues={{
-                date: getInitDateParam(),
-            }}
             labelCol={{ span: size == 'mini' ? 0 : 5 }}
             wrapperCol={{ span: size == 'mini' ? 24:19 }}
         >
