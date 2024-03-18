@@ -23,6 +23,7 @@ import TimeLineBarPanel from "@/pages/stat/preview/timeline_bar_chart";
 import StatBasicLineChartV2 from "@/pages/stat/preview/line_chart_v2";
 import StatBasicLineChart from "@/pages/stat/preview/line_chart_v1";
 const { Row, Col } = Grid;
+import './style/index.module.less';
 
 export default function StatPreviewPanel({specifyTitle = null,size = 'default',id}) {
 
@@ -107,9 +108,9 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         const stateList = statInfo.templateEntity.statStateList;
         return stateList.map((z,index) => {
             return (
-                <Col span={24} key={getRandomString()}>
+                <Col span={24/statInfo.templateEntity.statStateList.length} key={getRandomString()}>
                     <Card title={z.stateBody}>
-                        <StatBasicLineChart size={'small'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={statChartLoading} group={'sameGroup'}/>
+                        <StatBasicLineChart size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={statChartLoading} group={'sameGroup'}/>
                     </Card>
                 </Col>
             )
