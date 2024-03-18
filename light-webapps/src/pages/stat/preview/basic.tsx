@@ -20,6 +20,8 @@ import {getStatExpiredEnumDescription} from "@/pages/common/desc/base";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import DepartmentLabel from "@/pages/department/common/depart";
 import {PermissionEnum} from "@/types/insights-common";
+import { GoBug } from "react-icons/go";
+
 
 export default function BasicInfo({statInfo,callback}) {
 
@@ -79,6 +81,7 @@ export default function BasicInfo({statInfo,callback}) {
                             <>
                             <Button shape={"circle"} icon={<IconEdit/>} size={"mini"} onClick={() => callback('showUpdateModal')}/>
                             <Button shape={"circle"} icon={<TbFilterEdit/>} size={"mini"} onClick={() => callback('showFilterConfigModal')}/>
+                            <Link href={"/track/stat/"+statInfo.id} target={'_blank'}><Button shape={"circle"} icon={<GoBug/>} size={"mini"}/></Link>
                             </>
                             :null}
                         <Button shape={"circle"} icon={<IconList/>} size={"mini"} onClick={() => callback('showLimitedRecord')}/>
