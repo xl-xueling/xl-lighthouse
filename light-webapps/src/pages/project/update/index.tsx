@@ -108,6 +108,16 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
                         <TreeSelect
                             placeholder={"Please Select"}
                             allowClear={true}
+                            treeProps={{
+                                height: 200,
+                                renderTitle: (props) => {
+                                    return (
+                                        <span style={{ whiteSpace: 'nowrap', }} >
+                                            {props.title}
+                                        </span>
+                                    );
+                                },
+                            }}
                             treeData={departmentListData}
                         />
                     </Form.Item>

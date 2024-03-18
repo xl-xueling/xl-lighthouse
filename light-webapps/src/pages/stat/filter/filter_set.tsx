@@ -76,11 +76,29 @@ export default function StatFilterConfigModal({statInfo,onClose,onSuccess}:{stat
                     )
                 }if(componentType == ComponentTypeEnum.FILTER_SELECT){
                     return (
-                        <TreeSelect size={"mini"} multiple={true} treeCheckable={true} allowClear={true} treeData={translateToTreeNodes(configData)} />
+                        <TreeSelect size={"mini"} multiple={true} treeCheckable={true} allowClear={true} treeProps={{
+                            height: 200,
+                            renderTitle: (props) => {
+                                return (
+                                    <span style={{ whiteSpace: 'nowrap', }} >
+                                            {props.title}
+                                        </span>
+                                );
+                            },
+                        }} treeData={translateToTreeNodes(configData)} />
                     )
                 }else{
                     return (
-                        <TreeSelect size={"mini"} multiple={true} treeCheckable={true} allowClear={true} treeData={translateToTreeNodes(configData)} />
+                        <TreeSelect size={"mini"} multiple={true} treeCheckable={true} allowClear={true} treeProps={{
+                            height: 200,
+                            renderTitle: (props) => {
+                                return (
+                                    <span style={{ whiteSpace: 'nowrap', }} >
+                                            {props.title}
+                                        </span>
+                                );
+                            },
+                        }} treeData={translateToTreeNodes(configData)} />
                     )
                 }
 
