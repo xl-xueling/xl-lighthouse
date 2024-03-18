@@ -80,10 +80,11 @@ export default function BasicInfo({statInfo,callback}) {
                         {statInfo?.permissions.includes(PermissionEnum.ManageAble)?
                             <>
                             <Button shape={"circle"} icon={<IconEdit/>} size={"mini"} onClick={() => callback('showUpdateModal')}/>
-                            <Button shape={"circle"} icon={<TbFilterEdit/>} size={"mini"} onClick={() => callback('showFilterConfigModal')}/>
-                            <Link href={"/track/stat/"+statInfo.id} target={'_blank'}><Button shape={"circle"} icon={<GoBug/>} size={"mini"}/></Link>
+                            <Button shape={"circle"} icon={<GoBug/>} size={"mini"} onClick={() => {window.open("/track/stat/"+statInfo.id)}}/>
                             </>
                             :null}
+                        {statInfo?.permissions.includes(PermissionEnum.ManageAble) && statInfo?.templateEntity.dimensArray.length > 0?
+                            <Button shape={"circle"} icon={<TbFilterEdit/>} size={"mini"} onClick={() => callback('showFilterConfigModal')}/>:null}
                         <Button shape={"circle"} icon={<IconList/>} size={"mini"} onClick={() => callback('showLimitedRecord')}/>
                     </Space>
                 </div>,
