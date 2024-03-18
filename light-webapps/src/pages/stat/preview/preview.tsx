@@ -95,6 +95,9 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     }
 
     const getStatChart = () => {
+        if(!statInfo){
+            return ;
+        }
          return (
                 <Col span={24}>
                     <Card>
@@ -105,6 +108,9 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     }
 
     const getStateCharts = () => {
+        if(!statInfo){
+            return ;
+        }
         const stateList = statInfo.templateEntity.statStateList;
         return stateList.map((z,index) => {
             return (
