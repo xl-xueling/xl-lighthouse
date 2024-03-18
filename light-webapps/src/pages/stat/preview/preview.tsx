@@ -138,10 +138,8 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
 
     useEffect(() => {
         if(statInfo && statInfo.templateEntity.dimensArray.length == 0 || searchForm != null){
-            console.log("----1")
             fetchStatData().then();
         }else{
-            console.log("----2")
             setStatChartData(null);
             setStatChartErrorMessage(t['statDisplay.filterConfig.warning']);
         }
