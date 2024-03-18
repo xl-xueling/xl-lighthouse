@@ -12,18 +12,14 @@ import {getStatStateDescription} from "@/pages/common/desc/base";
 import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
 import StatUpdateModal from "@/pages/stat/update";
 import {getRandomString} from "@/utils/util";
-import {
-    getStatBasicLineOption,
-    handlerFetchLimitData,
-    handlerFetchStatData,
-    translateResponseDataToLineChartData,
-} from "@/pages/stat/preview/common";
+import {handlerFetchLimitData, handlerFetchStatData,} from "@/pages/stat/preview/common";
 import * as echarts from "echarts";
 import TimeLineBarPanel from "@/pages/stat/preview/timeline_bar_chart";
-import StatBasicLineChartV2 from "@/pages/stat/preview/line_chart_v2";
 import StatBasicLineChart from "@/pages/stat/preview/line_chart_v1";
-const { Row, Col } = Grid;
 import './style/index.module.less';
+import {StatStateEnum} from "@/types/insights-common";
+
+const { Row, Col } = Grid;
 
 export default function StatPreviewPanel({specifyTitle = null,size = 'default',id}) {
 
@@ -172,7 +168,12 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                             style={{marginBottom:'25px'}}
                         >
                             <IconTag style={{marginRight:'10px'}}/>
-                            {specifyTitle?specifyTitle:statInfo?.title}
+                            {
+                                statInfo?.state == StatStateEnum.RUNNING ?
+                                    specifyTitle?specifyTitle:statInfo?.title
+                                    :
+                                    <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{specifyTitle?specifyTitle:statInfo?.title}</span>
+                            }
                             <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
                         </Typography.Title>
                         {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch}/>}
