@@ -82,14 +82,14 @@ public class DefaultKeyGenerator implements KeyGenerator {
 
     @Override
     public String dimensKey(Group group, String dimens, String dimensValue) {
-        int startIndex = Math.abs((int) (HashUtil.BKDRHash(group.getRandomId() + "_" + dimens) % SysConst._DBKeyPrefixArray.length));
-        int position = Math.abs((int) (HashUtil.BKDRHash(group.getRandomId() + "_" + dimens + "_" + dimensValue) % SysConst._DIMENS_STORAGE_PRE_PARTITIONS_SIZE));
+        int startIndex = Math.abs((int) (HashUtil.BKDRHash(group.getRandomId() + "_" + group.getDataVersion() + "_" + dimens) % SysConst._DBKeyPrefixArray.length));
+        int position = Math.abs((int) (HashUtil.BKDRHash(group.getRandomId() + "_" + group.getDataVersion() + "_" + dimens + "_" + dimensValue) % SysConst._DIMENS_STORAGE_PRE_PARTITIONS_SIZE));
         int index = startIndex + position;
         while (index >= SysConst._DBKeyPrefixArray.length){
             index = index - SysConst._DBKeyPrefixArray.length;
         }
         String prefix = SysConst._DBKeyPrefixArray[index];
-        String origin = Md5Util.getMD5(group.getRandomId() + "_" + dimens);
+        String origin = Md5Util.getMD5(group.getRandomId() + "_" + group.getDataVersion() + "_" + dimens);
         return prefix + origin + "_" + Md5Util.getMD5(dimensValue);
     }
 }
