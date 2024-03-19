@@ -16,15 +16,25 @@ import {
     getYearStartTimestamp, MonthFormat, YearFormat
 } from "@/utils/date";
 import {formatString, getRandomString} from "@/utils/util";
+import StructurePanel from "@/pages/metricset/structure/structure";
 
 const { useForm } = Form;
 
 
-export default function SearchForm({size,statInfo,onSearch}:{size:string,statInfo:Stat,onSearch:(values: Record<string, any>) => void}) {
+const SearchForm = React.forwardRef(( props:{size,statInfo,onSearch},ref) => {
 
     const t = useLocale(locale);
+    const {size = 'default',statInfo,onSearch} = props;
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const { Row, Col } = Grid;
+
+        React.useImperativeHandle(ref,() => ({
+            getData
+        }));
+
+        const getData = () => {
+            return form.getFieldsValue();
+        }
 
     useEffect(() => {
         setFiltersConfig(statInfo?.renderConfig?.filters);
@@ -208,3 +218,5 @@ export default function SearchForm({size,statInfo,onSearch}:{size:string,statInf
         </div>
     );
 }
+)
+export default SearchForm;
