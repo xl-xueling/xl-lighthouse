@@ -33,15 +33,7 @@ public final class RedisHandler {
 
     private static RedisClient client;
 
-    private static JedisClusterInfoCache clusterInfoCache;
-
-    private static final Field FIELD_CONNECTION_HANDLER;
-
-    private static final Field FIELD_CACHE;
-
     static {
-        FIELD_CONNECTION_HANDLER = getField(BinaryJedisCluster.class, "connectionHandler");
-        FIELD_CACHE = getField(JedisClusterConnectionHandler.class, "cache");
         try{
             String redisCluster = LDPConfig.getVal(LDPConfig.KEY_REDIS_CLUSTER);
             assert redisCluster != null;
@@ -49,8 +41,6 @@ public final class RedisHandler {
             client = new RedisClient();
             String password = LDPConfig.getVal(LDPConfig.KEY_REDIS_CLUSTER_PASSWORD);
             client.init(servers,password);
-            JedisSlotBasedConnectionHandler connectionHandler = getValue(client.getJedisCluster(), FIELD_CONNECTION_HANDLER);
-            clusterInfoCache = getValue(connectionHandler, FIELD_CACHE);
         }catch (Exception ex){
             logger.error("init redis cluster error,process exit!",ex);
             System.exit(-1);
@@ -63,37 +53,8 @@ public final class RedisHandler {
 
     public static String scriptLoad(String script){
         JedisCluster jedisCluster = client.getJedisCluster();
-        Map<String, JedisPool> poolMap = jedisCluster.getClusterNodes();
-        String sha = null;
-        for(JedisPool jedisPool : poolMap.values()){
-            sha = jedisPool.getResource().scriptLoad(script);
-        }
-        return sha;
+        return jedisCluster.scriptLoad(script);
     }
 
-    public static Jedis getClient(String key){
-        int slot = JedisClusterCRC16.getSlot(key);
-        JedisPool pool = clusterInfoCache.getSlotPool(slot);
-        return pool.getResource();
-    }
-
-    private static Field getField(Class<?> cls, String fieldName) {
-        try {
-            Field field = cls.getDeclaredField(fieldName);
-            field.setAccessible(true);
-            return field;
-        } catch (NoSuchFieldException | SecurityException e) {
-            throw new RuntimeException("cannot find or access field '" + fieldName + "' from " + cls.getName(), e);
-        }
-    }
-
-    @SuppressWarnings({"unchecked"})
-    private static <T> T getValue(Object obj, Field field) {
-        try {
-            return (T) field.get(obj);
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 }

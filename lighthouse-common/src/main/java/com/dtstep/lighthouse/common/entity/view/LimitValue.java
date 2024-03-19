@@ -20,9 +20,9 @@ public class LimitValue{
 
     private String dimensValue;
 
-    private double score;
+    private Object score;
 
-    public LimitValue(String dimensValue,double score){
+    public LimitValue(String dimensValue,Object score){
         this.dimensValue = dimensValue;
         this.score = score;
     }
@@ -35,11 +35,11 @@ public class LimitValue{
         this.dimensValue = dimensValue;
     }
 
-    public double getScore() {
+    public Object getScore() {
         return score;
     }
 
-    public void setScore(double score) {
+    public void setScore(Object score) {
         this.score = score;
     }
 }
