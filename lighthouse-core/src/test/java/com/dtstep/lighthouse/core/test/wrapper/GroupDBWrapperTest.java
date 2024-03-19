@@ -22,8 +22,10 @@ public class GroupDBWrapperTest {
 
     @Test
     public void testQueryGroup() throws Exception {
-        int groupId = 100286;
+        int groupId = 100288;
         GroupExtEntity groupExtEntity = GroupDBWrapper.queryById(groupId);
+        Integer groupId2 = 100288;
+        GroupExtEntity groupExtEntity3 = GroupDBWrapper.queryById(groupId2);
         System.out.println("groupExtEntity:" + JsonUtil.toJSONString(groupExtEntity));
     }
 
@@ -33,4 +35,5 @@ public class GroupDBWrapperTest {
         int result = GroupDBWrapper.changeState(groupId, GroupStateEnum.LIMITING, LocalDateTime.now());
         System.out.println("result is:" + result);
     }
+
 }

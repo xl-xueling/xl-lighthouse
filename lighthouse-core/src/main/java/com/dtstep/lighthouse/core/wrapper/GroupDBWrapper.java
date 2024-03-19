@@ -60,8 +60,10 @@ public final class GroupDBWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(GroupDBWrapper.class);
 
+    private static final Integer _CacheExpireMinutes = 3;
+
     private static final Cache<Object, Optional<GroupExtEntity>> groupCache = Caffeine.newBuilder()
-            .expireAfterWrite(3, TimeUnit.MINUTES)
+            .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
             .maximumSize(100000)
             .softValues()
             .build();
@@ -74,6 +76,11 @@ public final class GroupDBWrapper {
 
 
     public static GroupExtEntity queryById(int groupId){
+        Optional<GroupExtEntity> optional2 = groupCache.getIfPresent(groupId);
+        if(optional2 != null){
+            System.out.println("optional2 is:" + optional2.isPresent() + ",isEmpty:" + optional2.get().getRefreshTime());
+        }
+        System.out.println("optional2 is:" + optional2 + ",present:");
         Optional<GroupExtEntity> optional = groupCache.get(groupId, (k) -> actualQueryGroupById(groupId));
         assert optional != null;
         return optional.orElse(null);
@@ -348,7 +355,8 @@ public final class GroupDBWrapper {
             while (resultSet.next()){
                 Integer id = resultSet.getInt("id");
                 String token = resultSet.getString("token");
-                list.add(new RefreshEntity(id,token));
+                long refreshTime = resultSet.getTimestamp("refresh_time").getTime();
+                list.add(new RefreshEntity(id,token,refreshTime));
             }
             return list;
         }
@@ -360,8 +368,8 @@ public final class GroupDBWrapper {
         QueryRunner queryRunner = new QueryRunner();
         List<RefreshEntity> ids;
         try{
-            long time = DateUtil.getSecondBefore(System.currentTimeMillis(),20);
-            ids = queryRunner.query(conn, "select id,token from ldp_groups where create_time != refresh_time and refresh_time > ?", new RefreshListSetHandler(),new Date(time));
+            long time = DateUtil.getMinuteBefore(System.currentTimeMillis(),_CacheExpireMinutes);
+            ids = queryRunner.query(conn, "select id,token,refresh_time from ldp_groups where create_time != refresh_time and refresh_time >= ?", new RefreshListSetHandler(),new Date(time));
         }finally {
             ConnectionManager.close(dbConnection);
         }
@@ -374,9 +382,12 @@ public final class GroupDBWrapper {
 
         private String token;
 
-        public RefreshEntity(Integer id,String token){
+        private Long refreshTime;
+
+        public RefreshEntity(Integer id,String token,Long refreshTime){
             this.id = id;
             this.token = token;
+            this.refreshTime = refreshTime;
         }
 
         public Integer getId() {
@@ -394,6 +405,14 @@ public final class GroupDBWrapper {
         public void setToken(String token) {
             this.token = token;
         }
+
+        public Long getRefreshTime() {
+            return refreshTime;
+        }
+
+        public void setRefreshTime(Long refreshTime) {
+            this.refreshTime = refreshTime;
+        }
     }
 
     static class RefreshThread implements Runnable {
@@ -404,11 +423,14 @@ public final class GroupDBWrapper {
                 List<RefreshEntity> entities = queryRefreshIdList();
                 if(CollectionUtils.isNotEmpty(entities)){
                     for(RefreshEntity refreshEntity:entities){
-                        if(logger.isTraceEnabled()){
-                            logger.trace("clear group local cache,id:{},token:{}",refreshEntity.getId(),refreshEntity.getToken());
+                        Optional<GroupExtEntity> cache = groupCache.getIfPresent(refreshEntity.getId());
+                        if(cache != null && cache.get().getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < refreshEntity.getRefreshTime()){
+                            if(logger.isTraceEnabled()){
+                                logger.trace("clear group local cache,id:{},token:{}",refreshEntity.getId(),refreshEntity.getToken());
+                            }
+                            groupCache.invalidate(refreshEntity.getId());
+                            groupCache.invalidate(refreshEntity.getToken());
                         }
-                        groupCache.invalidate(refreshEntity.getId());
-                        groupCache.invalidate(refreshEntity.getToken());
                     }
                 }
             }catch (Exception ex){
