@@ -418,15 +418,23 @@ public class StatDBWrapper {
                         Optional<List<StatExtEntity>> groupStatCache = groupStatListCache.getIfPresent(refreshEntity.getGroupId());
                         if(groupStatCache != null){
                             List<StatExtEntity> statCacheList = groupStatCache.get();
-                            List<StatExtEntity> entityList = statCacheList.stream()
-                                    .filter(x -> x.getId().intValue() == refreshEntity.getId().intValue()
-                                    && x.getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < refreshEntity.getRefreshTime()
-                                    ).collect(Collectors.toList());
-                            if(CollectionUtils.isNotEmpty(entityList)){
+                            List<Integer> cacheIdList = statCacheList.stream().map(Stat::getId).collect(Collectors.toList());
+                            if(!cacheIdList.contains(refreshEntity.getId())){
                                 if(logger.isTraceEnabled()){
                                     logger.trace("clear group-stats local cache,groupId:{},token:{}",refreshEntity.getGroupId(),refreshEntity.getToken());
                                 }
                                 groupStatListCache.invalidate(refreshEntity.getGroupId());
+                            }else{
+                                List<StatExtEntity> entityList = statCacheList.stream()
+                                        .filter(x -> x.getId().intValue() == refreshEntity.getId().intValue()
+                                                && x.getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < refreshEntity.getRefreshTime()
+                                        ).collect(Collectors.toList());
+                                if(CollectionUtils.isNotEmpty(entityList)){
+                                    if(logger.isTraceEnabled()){
+                                        logger.trace("clear group-stats local cache,groupId:{},token:{}",refreshEntity.getGroupId(),refreshEntity.getToken());
+                                    }
+                                    groupStatListCache.invalidate(refreshEntity.getGroupId());
+                                }
                             }
                         }
                     }
