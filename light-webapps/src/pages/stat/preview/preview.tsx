@@ -44,6 +44,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [option,setOption] = useState({});
     const refs = useRef<any[]>([]);
     const refFetchId = useRef<any>(null);
+    const formRef = useRef(null);
 
     const tableCallback = async (type,data) => {
         if(type == 'showFilterConfigModal'){
@@ -138,6 +139,11 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     }
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    const refresh = () => {
+        const formParams = formRef.current.getData();
+        setSearchForm({...formParams,t:Date.now()});
+    }
+
     const getLimitChart = () => {
         return (
             <Col span={24}>
@@ -152,12 +158,19 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         if(!statInfo){
             return;
         }
+        let validateDimensParam = {};
+        if(searchForm != null){
+            validateDimensParam = Object.keys(searchForm).reduce((acc, key) => {
+                if (key != 't' && key != 'date' && searchForm[key] !== null && searchForm[key] !== undefined && searchForm[key].length > 0) {
+                    acc[key] = searchForm[key];
+                }
+                return acc;
+            }, {});
+        }
+        const numDimensParam = Object.keys(validateDimensParam).length;
         const pageTitle = getPageTitle();
         setPageTitle(pageTitle);
-       if(statInfo.templateEntity.dimensArray.length > 0 && searchForm == null){
-            setStatChartData(null);
-            setStatChartErrorMessage(t['statDisplay.filterConfig.warning']);
-        }else if(statInfo.templateEntity.dimensArray.length > 0 && Object.keys(searchForm).length === 1 && searchForm.hasOwnProperty('t')){
+       if(statInfo.templateEntity.dimensArray.length > 0 && numDimensParam == 0){
             setStatChartData(null);
             setStatChartErrorMessage(t['statDisplay.filterConfig.warning']);
         }else{
@@ -196,9 +209,9 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                                 pageTitle
                             }
                             <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
-                            <Button style={{marginLeft:'15px'}} icon={<IoMdRefresh/>} size={"mini"} shape={"round"} onClick={() => {setSearchForm({...searchForm,t:Date.now()});}} />
+                            <Button style={{marginLeft:'15px'}} icon={<IoMdRefresh/>} size={"mini"} shape={"round"} onClick={() => {refresh()}} />
                         </Typography.Title>
-                        {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch}/>}
+                        {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch} ref={formRef}/>}
                         {getStatChart()}
                     </Card>
                     {statInfo.templateEntity.statStateList.length > 1 &&
