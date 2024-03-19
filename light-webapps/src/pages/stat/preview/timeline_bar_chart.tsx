@@ -7,15 +7,12 @@ import * as echarts from "echarts";
 
 export default function TimeLineBarPanel({data = null,size="default", loading = false,group=null}) {
 
-    const [timeIndex,setTimeIndex] = useState<number>(0);
+    const [timeIndex,setTimeIndex] = useState<number>(-1);
     const [seriesArray,setSeriesArray] = useState([]);
     const [batchList,setBatchList] = useState([]);
+    const [currentBatch,setCurrentBatch] = useState(null);
     const [dimensList,setDimensList] = useState([]);
     const chartRef = useRef(null);
-
-    const handleTimelineClick = (e) => {
-        console.log("e is:" + e);
-    };
 
     const getSeries = (chartData) => {
         const seriesArray = new Array<any>();
@@ -147,20 +144,15 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
         }
     },[timeIndex])
 
-    const onclick={
-        click:(params)=>{
-            const index = params.dataIndex;
-            setDimensList(data[index].values.map(z => z.dimensValue));
-            setTimeIndex(index);
-        },
-    }
-
     useEffect(() => {
         if(data){
             const seriesArray = getSeries(data);
             setSeriesArray(seriesArray);
             const batchList = data.map(z => z.displayBatchTime);
             setBatchList(batchList);
+            const index = timeIndex == -1 || currentBatch == null || batchList.indexOf(currentBatch) == -1 ? seriesArray.length - 1 : batchList.indexOf(currentBatch);
+            setTimeIndex(index);
+            setCurrentBatch(currentBatch);
         }
     },[data])
 
@@ -169,8 +161,9 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
         chart.on('timelinechanged', (e:any) => {
             const index = e.currentIndex;
             setTimeIndex(index);
+            setCurrentBatch(batchList[index]);
         });
-    },[])
+    },[batchList])
 
     const getReactChart = () => {
         if(size == 'default'){
