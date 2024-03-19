@@ -16,54 +16,20 @@ package com.dtstep.lighthouse.core.batch;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.dtstep.lighthouse.common.constant.SysConst;
-import com.dtstep.lighthouse.common.hash.HashUtil;
-import com.dtstep.lighthouse.common.util.DateUtil;
+
 import com.dtstep.lighthouse.common.util.Md5Util;
-import com.dtstep.lighthouse.common.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public final class BatchAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(BatchAdapter.class);
 
-    private final static Cache<String, String> intervalBatchKeyCache = Caffeine.newBuilder()
-            .expireAfterWrite(2, TimeUnit.MINUTES)
-            .maximumSize(5000)
-            .softValues()
-            .build();
-
     private static final IntervalBatchHandler intervalBatchHandler = new IntervalBatchHandler();
-
-    public static long getBatch(final int interval, final TimeUnit timeUnit, final long t){
-        return intervalBatchHandler.getBatch(interval,timeUnit,t);
-    }
-
-    public static String generateBatchBaseKey(String token,int statId,int dataVersion,String dimens,long baseTime,int functionIndex) {
-        String time = DateUtil.formatTimeStamp(baseTime, "yyyyMMddHHmmss");
-        String origin = Md5Util.getMD5(token + "_" + statId + "_" + dataVersion + "_" + time + "_" + dimens + "_" + functionIndex);
-        String prefix = getPrePartitionPrefix(origin,dimens);
-        return prefix + origin;
-    }
 
     public static String generateLimitKey(String mapperStatId,int dataVersion,long batchTime){
         return Md5Util.getMD5(mapperStatId + "_" + dataVersion + "_" + batchTime);
-    }
-
-    private static String getPrePartitionPrefix(String origin, String dimens){
-        int index;
-        if(StringUtil.isEmpty(dimens)){
-            index = Math.abs((int) (HashUtil.BKDRHash(origin) % SysConst._RESULT_STORAGE_PRE_PARTITIONS_SIZE));
-        }else{
-            index = Math.abs((int) (HashUtil.BKDRHash(origin + "_" + dimens) % SysConst._RESULT_STORAGE_PRE_PARTITIONS_SIZE));
-        }
-        return SysConst._DBKeyPrefixArray[index];
     }
 
     public static List<Long> queryBatchTimeList(String timeParam,long startTime,long endTime) throws Exception {
