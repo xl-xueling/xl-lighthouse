@@ -4,7 +4,6 @@ import ReactECharts from 'echarts-for-react';
 import {loadingOption} from "@/pages/stat/preview/common";
 import {stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
-import {IconStar} from "@arco-design/web-react/icon";
 
 export default function TimeLineBarPanel({data = null,size="default", loading = false,group=null}) {
 
@@ -48,6 +47,7 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
               top:'25px',
               left:'50px',
               right:'50px',
+              bottom:'90px',
             },
             tooltip: {
                 show:data && !loading,
@@ -80,16 +80,13 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
                 axisType: 'category',
                 autoPlay: false,
                 playInterval: 1000,
-                currentIndex:timeIndex,
+                bottom:'0px',
                 left: '100px',
                 right:'100px',
-                bottom:'25px',
-                top:'385px',
+                currentIndex:timeIndex,
                 data: batchList,
-                label:{
-                    normal:{
-                        show:true,
-                    }
+                label: {
+                    formatter: '{value}'
                 },
                 controlStyle:{
                     showPlayBtn:false,
