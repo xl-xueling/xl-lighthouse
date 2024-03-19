@@ -149,15 +149,19 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     }
 
     useEffect(() => {
-        console.log("searchForm is:" + JSON.stringify(searchForm));
+        if(!statInfo){
+            return;
+        }
         const pageTitle = getPageTitle();
         setPageTitle(pageTitle);
-        if(statInfo && statInfo.templateEntity.dimensArray.length == 0 || searchForm != null){
-            console.log("start to fetch stat data..")
-            fetchStatData().then();
-        }else{
+       if(statInfo.templateEntity.dimensArray.length > 0 && searchForm == null){
             setStatChartData(null);
             setStatChartErrorMessage(t['statDisplay.filterConfig.warning']);
+        }else if(statInfo.templateEntity.dimensArray.length > 0 && Object.keys(searchForm).length === 1 && searchForm.hasOwnProperty('t')){
+            setStatChartData(null);
+            setStatChartErrorMessage(t['statDisplay.filterConfig.warning']);
+        }else{
+            fetchStatData().then();
         }
         fetchLimitData().then();
     },[statInfo,JSON.stringify(searchForm)])
