@@ -45,7 +45,7 @@ public class StatDBWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(StatDBWrapper.class);
 
-    private static final Integer _CacheExpireMinutes = 3;
+    private static final Integer _CacheExpireMinutes = 5;
 
     private static final LoadingCache<Integer, Optional<StatExtEntity>> statCache = Caffeine.newBuilder()
             .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
@@ -106,6 +106,7 @@ public class StatDBWrapper {
                 Integer metaId = rs.getInt("meta_id");
                 long createTime = rs.getTimestamp("create_time").getTime();
                 long updateTime = rs.getTimestamp("update_time").getTime();
+                long refreshTime = rs.getTimestamp("refresh_time").getTime();
                 String randomId = rs.getString("random_id");
                 String columns = rs.getString("columns");
                 stat.setId(id);
@@ -124,6 +125,7 @@ public class StatDBWrapper {
                 stat.setMetaId(metaId);
                 stat.setCreateTime(DateUtil.timestampToLocalDateTime(createTime));
                 stat.setUpdateTime(DateUtil.timestampToLocalDateTime(updateTime));
+                stat.setRefreshTime(DateUtil.timestampToLocalDateTime(refreshTime));
                 stat.setRandomId(randomId);
                 stat.setGroupColumns(columns);
                 statList.add(stat);
@@ -424,7 +426,7 @@ public class StatDBWrapper {
                                 if(logger.isTraceEnabled()){
                                     logger.trace("clear group-stats local cache,groupId:{},token:{}",refreshEntity.getGroupId(),refreshEntity.getToken());
                                 }
-                                statCache.invalidate(refreshEntity.getId());
+                                groupStatListCache.invalidate(refreshEntity.getGroupId());
                             }
                         }
                     }
