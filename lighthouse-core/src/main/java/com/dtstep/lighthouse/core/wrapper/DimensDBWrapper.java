@@ -16,62 +16,24 @@ package com.dtstep.lighthouse.core.wrapper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
-import com.dtstep.lighthouse.core.storage.dimens.DimensStorageSelector;
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Sets;
 import com.dtstep.lighthouse.common.constant.StatConst;
-import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.entity.stat.FilterParam;
 import com.dtstep.lighthouse.common.entity.stat.FilterParamElement;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
-import com.dtstep.lighthouse.common.hash.HashUtil;
-import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.formula.FormulaCalculate;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
 public final class DimensDBWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(DimensDBWrapper.class);
-
-    private final static Cache<String, Optional<List<String>>> DIMENS_CACHE = Caffeine.newBuilder()
-            .expireAfterWrite(2, TimeUnit.MINUTES)
-            .maximumSize(90000)
-            .softValues()
-            .build();
-
-
-    public static List<String> loadDimension(String token, String dimens,String lastDimensValue, int limit) {
-        String cacheKey = token + "_" + dimens + "_" + lastDimensValue + "_" + limit;
-        GroupExtEntity groupExtEntity = GroupDBWrapper.queryByToken(token);
-        if(groupExtEntity == null){
-            return null;
-        }
-        Optional<List<String>> optional = DIMENS_CACHE.get(cacheKey,k -> {
-            List<String> result = null;
-            try{
-                result = DimensStorageSelector.query(groupExtEntity,dimens,lastDimensValue,limit);
-            }catch (Exception ex){
-                logger.error("load dimens error!",ex);
-            }
-            return Optional.ofNullable(result);
-        });
-        if(optional != null && optional.isPresent()){
-            return optional.get();
-        }
-        return null;
-    }
-
-
 
     public static String getDimensValue(Map<String,Object> envMap,String[] dimensArr,long batchTime) throws Exception {
         if(dimensArr == null){
