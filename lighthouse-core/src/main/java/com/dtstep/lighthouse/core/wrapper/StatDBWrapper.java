@@ -390,7 +390,7 @@ public class StatDBWrapper {
         List<RefreshEntity> ids;
         try{
             long time = DateUtil.getMinuteBefore(System.currentTimeMillis(),_CacheExpireMinutes);
-            ids = queryRunner.query(conn, "select a.id,a.group_id,a.refresh_time,b.token from ldp_stats a inner join ldp_groups b on a.group_id = b.id where create_time != refresh_time and refresh_time >= ?", new RefreshListSetHandler(),new Date(time));
+            ids = queryRunner.query(conn, "select a.id,a.group_id,a.refresh_time,b.token from ldp_stats a inner join ldp_groups b on a.group_id = b.id where a.create_time != a.refresh_time and a.refresh_time >= ?", new RefreshListSetHandler(),new Date(time));
         }finally {
             ConnectionManager.close(dbConnection);
         }
