@@ -45,7 +45,7 @@ public class StatDBWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(StatDBWrapper.class);
 
-    private static final Integer _CacheExpireMinutes = 5;
+    private static final Integer _CacheExpireMinutes = 50;
 
     private static final LoadingCache<Integer, Optional<StatExtEntity>> statCache = Caffeine.newBuilder()
             .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
@@ -392,7 +392,7 @@ public class StatDBWrapper {
         List<RefreshEntity> ids;
         try{
             long time = DateUtil.getMinuteBefore(System.currentTimeMillis(),_CacheExpireMinutes);
-            ids = queryRunner.query(conn, "select a.id,a.group_id,a.refresh_time,b.token from ldp_stats a inner join ldp_groups b on a.group_id = b.id where a.create_time != a.refresh_time and a.refresh_time >= ? limit 10000", new RefreshListSetHandler(),new Date(time));
+            ids = queryRunner.query(conn, "select a.id,a.group_id,a.refresh_time,b.token from ldp_stats a inner join ldp_groups b on a.group_id = b.id where a.refresh_time >= ? limit 10000", new RefreshListSetHandler(),new Date(time));
         }finally {
             ConnectionManager.close(dbConnection);
         }
