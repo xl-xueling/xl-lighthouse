@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import SearchForm from "./search_form";
-import {Card, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
+import {Button, Card, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
 import {LimitData, Stat, StatData, TreeNode} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
@@ -18,6 +18,9 @@ import TimeLineBarPanel from "@/pages/stat/preview/timeline_bar_chart";
 import StatBasicLineChart from "@/pages/stat/preview/line_chart_v1";
 import './style/index.module.less';
 import {StatStateEnum} from "@/types/insights-common";
+import { IoMdRefreshCircle } from "react-icons/io";
+import { IoMdRefresh } from "react-icons/io";
+import { IoIosRefresh } from "react-icons/io";
 
 const { Row, Col } = Grid;
 
@@ -51,6 +54,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
             setShowUpdateModal(true);
         }
     }
+
 
     const fetchStatInfo = async () => {
         setLoading(true);
@@ -145,9 +149,11 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     }
 
     useEffect(() => {
+        console.log("searchForm is:" + JSON.stringify(searchForm));
         const pageTitle = getPageTitle();
         setPageTitle(pageTitle);
         if(statInfo && statInfo.templateEntity.dimensArray.length == 0 || searchForm != null){
+            console.log("start to fetch stat data..")
             fetchStatData().then();
         }else{
             setStatChartData(null);
@@ -186,6 +192,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                                 pageTitle
                             }
                             <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
+                            <Button style={{marginLeft:'15px'}} icon={<IoMdRefresh/>} size={"mini"} shape={"round"} onClick={() => {setSearchForm({...searchForm,t:Date.now()});}} />
                         </Typography.Title>
                         {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch}/>}
                         {getStatChart()}

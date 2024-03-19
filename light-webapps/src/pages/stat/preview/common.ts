@@ -14,21 +14,7 @@ import {ResultData} from "@/types/insights-common";
 export const handlerFetchStatData = async (statInfo:Stat,search:any):Promise<ResultData<Array<StatData>>> => {
     const combineParam:any = {}
     combineParam.statId = statInfo?.id;
-    if(search != null){
-        const date = search.date;
-        if(date && Array.isArray(date)){
-            combineParam.startTime = getDayStartTimestamp(convertDateToTimestamp(date[0],DateFormat));
-            combineParam.endTime = getDayEndTimestamp(convertDateToTimestamp(date[1],DateFormat));
-        }
-        const dimensParams = {};
-        for (const [key, value] of Object.entries(search)) {
-            if(key == 'date' || key == 't'){
-                continue;
-            }
-            dimensParams[key] = value;
-        }
-        combineParam.dimensParams = dimensParams;
-    }else{
+    if(search == null || search.date == null || !Array.isArray(search.date)){
         const timeParam = statInfo?.timeparam;
         if(timeParam.endsWith('minute') || timeParam.endsWith('second') || timeParam.endsWith('hour')){
             combineParam.startTime = getDailyStartTimestamp();
@@ -40,6 +26,20 @@ export const handlerFetchStatData = async (statInfo:Stat,search:any):Promise<Res
             combineParam.startTime = getDayBefore(getDailyStartTimestamp(),365);
             combineParam.endTime = getDailyEndTimestamp();
         }
+    }else {
+        const date = search.date;
+        combineParam.startTime = getDayStartTimestamp(convertDateToTimestamp(date[0],DateFormat));
+        combineParam.endTime = getDayEndTimestamp(convertDateToTimestamp(date[1],DateFormat));
+    }
+    if(search != null){
+        const dimensParams = {};
+        for (const [key, value] of Object.entries(search)) {
+            if(key == 'date' || key == 't'){
+                continue;
+            }
+            dimensParams[key] = value;
+        }
+        combineParam.dimensParams = dimensParams;
     }
     return await requestStatData(combineParam);
 }

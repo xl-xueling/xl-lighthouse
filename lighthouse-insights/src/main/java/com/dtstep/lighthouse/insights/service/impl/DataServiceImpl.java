@@ -40,6 +40,9 @@ public class DataServiceImpl implements DataService {
         if(ArrayUtils.isEmpty(dimensArray)){
             return null;
         }
+        if(MapUtils.isEmpty(dimensParams)){
+            return null;
+        }
         List<String> destSortedList = Arrays.asList(dimensArray);
         List<String> originSortedList = new ArrayList<>();
         for(String dimens : dimensParams.keySet()){
