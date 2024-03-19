@@ -63,6 +63,9 @@ public class DataController {
         StatExtEntity stat = statService.queryById(statId);
         Validate.notNull(stat);
         List<String> dimensList = dataService.dimensArrangement(stat,queryParam.getDimensParams());
+        if(stat.getTemplateEntity().getDimensArray().length > 0 && CollectionUtils.isEmpty(dimensList)){
+            return ResultData.result(ResultCode.dataQueryMissingDimensParams);
+        }
         List<StatDataObject> objectList = dataService.dataQuery(stat,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
         return ResultData.success(objectList);
     }
