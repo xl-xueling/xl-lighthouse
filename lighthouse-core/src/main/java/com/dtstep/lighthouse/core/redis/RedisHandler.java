@@ -21,11 +21,6 @@ import com.dtstep.lighthouse.core.config.LDPConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.*;
-import redis.clients.jedis.util.JedisClusterCRC16;
-
-import java.lang.reflect.Field;
-import java.util.Map;
-
 
 public final class RedisHandler {
 
