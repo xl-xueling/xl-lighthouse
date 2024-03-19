@@ -24,16 +24,11 @@ public class GroupDBWrapperTest {
     public void testQueryGroup() throws Exception {
         int groupId = 100288;
         GroupExtEntity groupExtEntity = GroupDBWrapper.queryById(groupId);
-        Integer groupId2 = 100288;
-        GroupExtEntity groupExtEntity3 = GroupDBWrapper.queryById(groupId2);
+        String token = "test_scene_behavior_stat";
+        GroupExtEntity groupExtEntity3 = GroupDBWrapper.queryByToken(token);
         System.out.println("groupExtEntity:" + JsonUtil.toJSONString(groupExtEntity));
+        Thread.sleep(100000000);
     }
 
-    @Test
-    public void testChangeGroup() throws Exception {
-        int groupId = 100286;
-        int result = GroupDBWrapper.changeState(groupId, GroupStateEnum.LIMITING, LocalDateTime.now());
-        System.out.println("result is:" + result);
-    }
 
 }
