@@ -21,7 +21,7 @@ public class SendTest {
         LightHouse.init("10.206.6.13:4061");
         long t = System.currentTimeMillis();
         List<Double> doubleList = new ArrayList<>();
-        for(int i=0;i<145;i++){
+        for(int i=0;i<14500;i++){
             Map<String,Object> map = new HashMap<>();
             map.put("randomId", UUID.randomUUID().toString());
             map.put("province", ThreadLocalRandom.current().nextInt(300));
@@ -31,7 +31,6 @@ public class SendTest {
                 map.put("city","b");
             }
             double randomValue = ThreadLocalRandom.current().nextDouble();
-            // 创建 DecimalFormat 对象，设置保留三位小数的格式
             DecimalFormat df = new DecimalFormat("#.###");
             String formattedValue = df.format(randomValue);
             doubleList.add(Double.parseDouble(formattedValue));

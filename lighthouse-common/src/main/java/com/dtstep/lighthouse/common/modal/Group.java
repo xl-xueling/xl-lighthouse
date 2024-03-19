@@ -25,6 +25,8 @@ public class Group implements Serializable {
     
     private String desc;
 
+    private Integer dataVersion = 0;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
@@ -149,4 +151,11 @@ public class Group implements Serializable {
         this.projectTitle = projectTitle;
     }
 
+    public Integer getDataVersion() {
+        return dataVersion;
+    }
+
+    public void setDataVersion(Integer dataVersion) {
+        this.dataVersion = dataVersion;
+    }
 }

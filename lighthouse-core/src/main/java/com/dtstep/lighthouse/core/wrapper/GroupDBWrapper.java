@@ -133,6 +133,7 @@ public final class GroupDBWrapper {
                 Integer projectId = rs.getInt("project_id");
                 int debugMode = rs.getInt("debug_mode");
                 String columns = rs.getString("columns");
+                Integer dataVersion = rs.getInt("data_version");
                 String randomId = rs.getString("random_id");
                 String desc = rs.getString("desc");
                 String extendConfig = rs.getString("extend_config");
@@ -151,6 +152,7 @@ public final class GroupDBWrapper {
                 SwitchStateEnum debugModeState = SwitchStateEnum.forValue(debugMode);
                 group.setDebugMode(debugModeState);
                 group.setDesc(desc);
+                group.setDataVersion(dataVersion);
                 group.setSecretKey(secretKey);
                 group.setRandomId(randomId);
                 group.setCreateTime(DateUtil.timestampToLocalDateTime(createTime));
