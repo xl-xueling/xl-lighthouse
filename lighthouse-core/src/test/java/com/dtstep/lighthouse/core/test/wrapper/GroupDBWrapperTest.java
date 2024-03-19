@@ -21,12 +21,14 @@ public class GroupDBWrapperTest {
 
 
     @Test
-    public void testQueryGroup() throws Exception {
+    public void testGroupCache() throws Exception {
         int groupId = 100288;
-        GroupExtEntity groupExtEntity = GroupDBWrapper.queryById(groupId);
         String token = "test_scene_behavior_stat";
-        GroupExtEntity groupExtEntity3 = GroupDBWrapper.queryByToken(token);
-        System.out.println("groupExtEntity:" + JsonUtil.toJSONString(groupExtEntity));
+        for(int i=0;i<100000;i++){
+            GroupExtEntity groupExtEntity1 = GroupDBWrapper.queryById(groupId);
+            System.out.println("groupExtEntity1:" + groupExtEntity1 + ",refreshTime:" + groupExtEntity1.getRefreshTime());
+            Thread.sleep(5000);
+        }
         Thread.sleep(100000000);
     }
 
