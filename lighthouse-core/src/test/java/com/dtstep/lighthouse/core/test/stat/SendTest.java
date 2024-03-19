@@ -21,7 +21,7 @@ public class SendTest {
         LightHouse.init("10.206.6.13:4061");
         long t = System.currentTimeMillis();
         List<Double> doubleList = new ArrayList<>();
-        for(int i=0;i<14500;i++){
+        for(int i=0;i<158137;i++){
             Map<String,Object> map = new HashMap<>();
             map.put("randomId", UUID.randomUUID().toString());
             map.put("province", ThreadLocalRandom.current().nextInt(300));

@@ -47,7 +47,8 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
 
     @Override
     public List<String> query(Group group, String dimens, String lastDimensValue, int limit) throws Exception {
-        int startIndex = Math.abs((int) (HashUtil.BKDRHash(group.getRandomId() + "_" + dimens) % SysConst._DBKeyPrefixArray.length));
+        String baseKey = group.getRandomId() + "_" + group.getDataVersion() + "_" + dimens;
+        int startIndex = Math.abs((int) (HashUtil.BKDRHash(baseKey) % SysConst._DBKeyPrefixArray.length));
         List<String> dimensList = new ArrayList<>();
         String startRow = null;
         if(!StringUtil.isEmpty(lastDimensValue)){
@@ -68,8 +69,8 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
                 break;
             }
             String prefix = SysConst._DBKeyPrefixArray[current];
-            String partStartRow = prefix + Md5Util.getMD5(group.getRandomId() + "_" + dimens) + ".";
-            String partEndRow = prefix + Md5Util.getMD5(group.getRandomId() + "_" + dimens) + "|";
+            String partStartRow = prefix + Md5Util.getMD5(baseKey) + ".";
+            String partEndRow = prefix + Md5Util.getMD5(baseKey) + "|";
             if (finalStartRow != null && finalStartRow.compareTo(partEndRow) > 0) {
                 continue;
             } else if (finalStartRow != null && finalStartRow.compareTo(partStartRow) > 0) {
