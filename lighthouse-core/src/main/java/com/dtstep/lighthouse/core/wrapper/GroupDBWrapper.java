@@ -364,7 +364,7 @@ public final class GroupDBWrapper {
         List<RefreshEntity> ids;
         try{
             long time = DateUtil.getMinuteBefore(System.currentTimeMillis(),_CacheExpireMinutes);
-            ids = queryRunner.query(conn, "select id,token,refresh_time from ldp_groups where create_time != refresh_time and refresh_time >= ?", new RefreshListSetHandler(),new Date(time));
+            ids = queryRunner.query(conn, "select id,token,refresh_time from ldp_groups where create_time != refresh_time and refresh_time >= ? limit 10000", new RefreshListSetHandler(),new Date(time));
         }finally {
             ConnectionManager.close(dbConnection);
         }
