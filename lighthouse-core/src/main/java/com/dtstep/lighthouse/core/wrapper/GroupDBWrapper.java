@@ -60,7 +60,7 @@ public final class GroupDBWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(GroupDBWrapper.class);
 
-    private static final Integer _CacheExpireMinutes = 3;
+    private static final Integer _CacheExpireMinutes = 30;
 
     private static final Cache<Object, Optional<GroupExtEntity>> groupCache = Caffeine.newBuilder()
             .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
