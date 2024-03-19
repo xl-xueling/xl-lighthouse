@@ -76,11 +76,6 @@ public final class GroupDBWrapper {
 
 
     public static GroupExtEntity queryById(int groupId){
-        Optional<GroupExtEntity> optional2 = groupCache.getIfPresent(groupId);
-        if(optional2 != null){
-            System.out.println("optional2 is:" + optional2.isPresent() + ",isEmpty:" + optional2.get().getRefreshTime());
-        }
-        System.out.println("optional2 is:" + optional2 + ",present:");
         Optional<GroupExtEntity> optional = groupCache.get(groupId, (k) -> actualQueryGroupById(groupId));
         assert optional != null;
         return optional.orElse(null);
