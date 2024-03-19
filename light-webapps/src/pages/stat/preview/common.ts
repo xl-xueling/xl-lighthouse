@@ -44,8 +44,7 @@ export const handlerFetchStatData = async (statInfo:Stat,search:any):Promise<Res
     return await requestStatData(combineParam);
 }
 
-export const handlerFetchLimitData = async ():Promise<ResultData<Array<LimitData>>> => {
-    const statId = 1100522;
+export const handlerFetchLimitData = async (statId):Promise<ResultData<Array<LimitData>>> => {
     const combineParam = {
         statId:statId,
     }

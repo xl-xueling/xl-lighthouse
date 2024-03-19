@@ -96,7 +96,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const fetchLimitData = async () => {
         setLimitChartLoading(true);
         if(statInfo){
-            const limitChartData = await handlerFetchLimitData();
+            const limitChartData = await handlerFetchLimitData(statInfo.id);
             if (refFetchId.current === id) {
                 setLimitChartData(limitChartData.data);
             }
@@ -138,7 +138,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         return (
             <Col span={24}>
                 <Card title={t['statDisplay.limit.title']}>
-                    <TimeLineBarPanel loading={limitChartLoading} size={'default'} data={limitChartData} />
+                    <TimeLineBarPanel data={limitChartData} loading={limitChartLoading} size={'default'} />
                 </Card>
             </Col>
         );
