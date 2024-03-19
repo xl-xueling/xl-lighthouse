@@ -43,7 +43,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.Tuple;
+import redis.clients.jedis.resps.Tuple;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -99,11 +99,11 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
                     logger.trace("limit data query,stat:{},formula:{},dimens:{},dimens size:{},dimens value:{},cost:{}"
                             , statExtEntity.getId(),templateEntity.getStat(),templateEntity.getDimens(),dimensSet.size(), JsonUtil.toJSONString(dimensSet),(t2 - t1));
                 }
-                LinkedHashMap<String, Double> keyValueMap = Maps.newLinkedHashMap();
+                LinkedHashMap<String, String> keyValueMap = Maps.newLinkedHashMap();
                 if(limitTypeEnum == LimitTypeEnum.TOP){
                     long t3 = System.currentTimeMillis();
                     dbMap.entrySet().stream().sorted(Comparator.comparing(o -> 0 - Double.parseDouble(o.getValue().getValue().toString()))).limit(cacheSize)
-                            .forEachOrdered(e -> keyValueMap.put(e.getKey(), Double.parseDouble(e.getValue().getValue().toString())));
+                            .forEachOrdered(e -> keyValueMap.put(e.getKey(), e.getValue().getValue().toString()));
                     long t4 = System.currentTimeMillis();
                     RedisHandler.getInstance().batchPutTopN(redisKey,keyValueMap,cacheSize,expireSeconds * 10);
                     long t5 = System.currentTimeMillis();
@@ -114,7 +114,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
                 }else if(limitTypeEnum == LimitTypeEnum.LAST){
                     long t3 = System.currentTimeMillis();
                     dbMap.entrySet().stream().sorted(Comparator.comparing(o -> Double.parseDouble(o.getValue().getValue().toString()))).limit(cacheSize)
-                            .forEachOrdered(e -> keyValueMap.put(e.getKey(), Double.parseDouble(e.getValue().getValue().toString())));
+                            .forEachOrdered(e -> keyValueMap.put(e.getKey(), e.getValue().getValue().toString()));
                     long t4 = System.currentTimeMillis();
                     RedisHandler.getInstance().batchPutLastN(redisKey,keyValueMap,cacheSize,expireSeconds * 10);
                     long t5 = System.currentTimeMillis();
@@ -153,12 +153,12 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
     public List<LimitValue> query(StatExtEntity statExtEntity, long batchTime) throws Exception {
         List<LimitValue> resultList = new ArrayList<>();
         String baseKey = BatchAdapter.generateLimitKey(statExtEntity.getRandomId(),statExtEntity.getDataVersion(),batchTime);
-        Set<Tuple> limitSet = new HashSet<>();
+        List<Tuple> limitSet = new ArrayList<>();
         int limitSize = statExtEntity.getTemplateEntity().getLimitSize();
         if(statExtEntity.getTemplateEntity().getLimitTypeEnum() == LimitTypeEnum.TOP){
             IntStream.range(0,StatConst.LIMIT_SALT).forEach(z -> {
                 String redisKey = RedisConst.LIMIT_N_PREFIX + "_" + baseKey + "_" + z;
-                Set<Tuple> tempDimensSet = RedisHandler.getInstance().zrevrange(redisKey,0,limitSize);
+                List<Tuple> tempDimensSet = RedisHandler.getInstance().zrevrange(redisKey,0,limitSize);
                 if(CollectionUtils.isNotEmpty(tempDimensSet)){
                     limitSet.addAll(tempDimensSet);
                 }
@@ -172,7 +172,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
         }else if(statExtEntity.getTemplateEntity().getLimitTypeEnum() == LimitTypeEnum.LAST){
             IntStream.range(0,StatConst.LIMIT_SALT).forEach(z -> {
                 String redisKey = RedisConst.LIMIT_N_PREFIX + "_" + baseKey + "_" + z;
-                Set<Tuple> tempDimensSet = RedisHandler.getInstance().zrange(redisKey,0,limitSize);
+                List<Tuple> tempDimensSet = RedisHandler.getInstance().zrange(redisKey,0,limitSize);
                 if(CollectionUtils.isNotEmpty(tempDimensSet)){
                     limitSet.addAll(tempDimensSet);
                 }

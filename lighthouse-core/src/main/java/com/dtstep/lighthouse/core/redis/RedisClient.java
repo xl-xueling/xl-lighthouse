@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.*;
 import redis.clients.jedis.exceptions.JedisNoScriptException;
+import redis.clients.jedis.resps.Tuple;
 
 import java.util.*;
 
@@ -101,7 +102,7 @@ public final class RedisClient {
 
     private static String sha_topN = null;
 
-    public void batchPutTopN(String key, LinkedHashMap<String,Double> memberMap, int limit, int expireSeconds){
+    public void batchPutTopN(String key, LinkedHashMap<String,String> memberMap, int limit, int expireSeconds){
         String members = Joiner.on(StatConst.MULTI_PAIR_SEPARATOR).join(memberMap.keySet());
         String scores = Joiner.on(StatConst.MULTI_PAIR_SEPARATOR).join(memberMap.values());
         final JedisCluster jedisCluster = RedisHandler.getInstance().getJedisCluster();
@@ -146,7 +147,7 @@ public final class RedisClient {
 
     private static String sha_lastN = null;
 
-    public void batchPutLastN(String key, LinkedHashMap<String,Double> memberMap, int limit, int expireSeconds){
+    public void batchPutLastN(String key, LinkedHashMap<String,String> memberMap, int limit, int expireSeconds){
         String members = Joiner.on(StatConst.MULTI_PAIR_SEPARATOR).join(memberMap.keySet());
         String scores = Joiner.on(StatConst.MULTI_PAIR_SEPARATOR).join(memberMap.values());
         final JedisCluster jedisCluster = RedisHandler.getInstance().getJedisCluster();
@@ -163,11 +164,11 @@ public final class RedisClient {
         }
     }
 
-    public Set<Tuple> zrevrange(String key, int start, int end){
+    public List<Tuple> zrevrange(String key, int start, int end){
         return jedisCluster.zrevrangeWithScores(key, start, end);
     }
 
-    public Set<Tuple> zrange(String key,int start,int end){
+    public List<Tuple> zrange(String key, int start, int end){
         return jedisCluster.zrangeWithScores(key, start, end);
     }
 
@@ -176,7 +177,7 @@ public final class RedisClient {
     }
 
     public synchronized void init(String[] servers, String password) {
-        GenericObjectPoolConfig<Jedis> config = new GenericObjectPoolConfig<>();
+        GenericObjectPoolConfig<Connection> config = new GenericObjectPoolConfig<>();
         config.setMaxTotal(1000);
         config.setMinIdle(200);
         config.setMaxWaitMillis(20000);
@@ -234,23 +235,5 @@ public final class RedisClient {
 
     public void incrBy(final String key,int step) throws Exception{
         jedisCluster.incrBy(key,step);
-    }
-
-    @Deprecated
-    public void batchDelete(String hashTag,String prefix){
-        ScanParams scanParams = new ScanParams().match(hashTag.concat(prefix).concat("*")).count(200);
-        String cur = ScanParams.SCAN_POINTER_START;
-        boolean hasNext = true;
-        while (hasNext) {
-            ScanResult<String> scanResult = jedisCluster.scan(cur, scanParams);
-            List<String> keys = scanResult.getResult();
-            for (String key : keys) {
-                jedisCluster.del(key);
-            }
-            cur = scanResult.getCursor();
-            if (StringUtils.equals("0", cur)) {
-                hasNext = false;
-            }
-        }
     }
 }
