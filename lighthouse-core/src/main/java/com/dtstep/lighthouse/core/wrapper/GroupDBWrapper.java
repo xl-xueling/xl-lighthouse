@@ -418,8 +418,16 @@ public final class GroupDBWrapper {
                 List<RefreshEntity> entities = queryRefreshIdList();
                 if(CollectionUtils.isNotEmpty(entities)){
                     for(RefreshEntity refreshEntity:entities){
-                        Optional<GroupExtEntity> cache = groupCache.getIfPresent(refreshEntity.getId());
-                        if(cache != null && cache.get().getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < refreshEntity.getRefreshTime()){
+                        Optional<GroupExtEntity> cacheById = groupCache.getIfPresent(refreshEntity.getId());
+                        if(cacheById != null && cacheById.get().getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < refreshEntity.getRefreshTime()){
+                            if(logger.isTraceEnabled()){
+                                logger.trace("clear group local cache,id:{},token:{}",refreshEntity.getId(),refreshEntity.getToken());
+                            }
+                            groupCache.invalidate(refreshEntity.getId());
+                            groupCache.invalidate(refreshEntity.getToken());
+                        }
+                        Optional<GroupExtEntity> cacheByToken = groupCache.getIfPresent(refreshEntity.getToken());
+                        if(cacheByToken != null && cacheByToken.get().getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < refreshEntity.getRefreshTime()){
                             if(logger.isTraceEnabled()){
                                 logger.trace("clear group local cache,id:{},token:{}",refreshEntity.getId(),refreshEntity.getToken());
                             }

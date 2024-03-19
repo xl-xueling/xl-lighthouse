@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.core.wrapper;
 
 import com.dtstep.lighthouse.common.entity.ServiceResult;
+import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
@@ -25,6 +26,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +34,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -40,17 +45,25 @@ public class StatDBWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(StatDBWrapper.class);
 
+    private static final Integer _CacheExpireMinutes = 3;
+
     private static final LoadingCache<Integer, Optional<StatExtEntity>> statCache = Caffeine.newBuilder()
-            .expireAfterWrite(3, TimeUnit.MINUTES)
+            .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
             .softValues()
             .maximumSize(100000)
             .build(StatDBWrapper::actualQueryById);
 
     private final static LoadingCache<Integer, Optional<List<StatExtEntity>>> groupStatListCache = Caffeine.newBuilder()
-            .expireAfterWrite(3, TimeUnit.MINUTES)
+            .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
             .maximumSize(100000)
             .softValues()
             .build(StatDBWrapper::actualQueryListByGroupId);
+
+    static {
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(1,
+                new BasicThreadFactory.Builder().namingPattern("stat-cache-refresh-schedule-pool-%d").daemon(true).build());
+        service.scheduleWithFixedDelay(new RefreshThread(),0,20, TimeUnit.SECONDS);
+    }
 
     public static StatExtEntity queryById(int statId) {
         return Objects.requireNonNull(statCache.get(statId)).orElse(null);
@@ -302,5 +315,123 @@ public class StatDBWrapper {
             return null;
         }
         return entityList.stream().filter(x -> x.getState() == StatStateEnum.RUNNING).collect(Collectors.toList());
+    }
+
+    private static class RefreshEntity {
+
+        private Integer id;
+
+        private Integer groupId;
+
+        private String token;
+
+        private Long refreshTime;
+
+        public RefreshEntity(Integer id,Integer groupId,String token,Long refreshTime){
+            this.id = id;
+            this.token = token;
+            this.groupId = groupId;
+            this.refreshTime = refreshTime;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public Long getRefreshTime() {
+            return refreshTime;
+        }
+
+        public void setRefreshTime(Long refreshTime) {
+            this.refreshTime = refreshTime;
+        }
+
+        public Integer getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(Integer groupId) {
+            this.groupId = groupId;
+        }
+    }
+
+    private static class RefreshListSetHandler implements ResultSetHandler<List<RefreshEntity>> {
+
+        @Override
+        public List<RefreshEntity> handle(ResultSet resultSet) throws SQLException {
+            List<RefreshEntity> list = new ArrayList<>();
+            while (resultSet.next()){
+                Integer id = resultSet.getInt("id");
+                Integer groupId = resultSet.getInt("group_id");
+                long refreshTime = resultSet.getTimestamp("refresh_time").getTime();
+                String token = resultSet.getString("token");
+                list.add(new RefreshEntity(id,groupId,token,refreshTime));
+            }
+            return list;
+        }
+    }
+
+    private static List<RefreshEntity> queryRefreshIdList() throws Exception {
+        DBConnection dbConnection = ConnectionManager.getConnection();
+        Connection conn = dbConnection.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+        List<RefreshEntity> ids;
+        try{
+            long time = DateUtil.getMinuteBefore(System.currentTimeMillis(),_CacheExpireMinutes);
+            ids = queryRunner.query(conn, "select a.id,a.group_id,a.refresh_time,b.token from ldp_stats a inner join ldp_groups b on a.group_id = b.id where create_time != refresh_time and refresh_time >= ?", new RefreshListSetHandler(),new Date(time));
+        }finally {
+            ConnectionManager.close(dbConnection);
+        }
+        return ids;
+    }
+
+    static class RefreshThread implements Runnable {
+
+        @Override
+        public void run() {
+            try{
+                List<RefreshEntity> entities = queryRefreshIdList();
+                if(CollectionUtils.isNotEmpty(entities)){
+                    for(RefreshEntity refreshEntity:entities){
+                        Optional<StatExtEntity> statCacheById = statCache.getIfPresent(refreshEntity.getId());
+                        if(statCacheById != null && statCacheById.get().getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < refreshEntity.getRefreshTime()){
+                            if(logger.isTraceEnabled()){
+                                logger.trace("clear stat local cache,id:{}",refreshEntity.getId());
+                            }
+                            statCache.invalidate(refreshEntity.getId());
+                        }
+
+                        Optional<List<StatExtEntity>> groupStatCache = groupStatListCache.getIfPresent(refreshEntity.getGroupId());
+                        if(groupStatCache != null){
+                            List<StatExtEntity> statCacheList = groupStatCache.get();
+                            List<StatExtEntity> entityList = statCacheList.stream()
+                                    .filter(x -> x.getId().intValue() == refreshEntity.getId().intValue()
+                                    && x.getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < refreshEntity.getRefreshTime()
+                                    ).collect(Collectors.toList());
+                            if(CollectionUtils.isNotEmpty(entityList)){
+                                if(logger.isTraceEnabled()){
+                                    logger.trace("clear group-stats local cache,groupId:{},token:{}",refreshEntity.getGroupId(),refreshEntity.getToken());
+                                }
+                                statCache.invalidate(refreshEntity.getId());
+                            }
+                        }
+                    }
+                }
+            }catch (Exception ex){
+                logger.error("statistic group cache refresh error!",ex);
+            }
+        }
     }
 }
