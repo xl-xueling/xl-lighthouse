@@ -28,7 +28,7 @@ public class IntervalBatchHandler implements BatchInterface{
     @Override
     public String dateTimeFormat(String timeParam, long batchTime) {
         if(timeParam.endsWith("hour")){
-            return DateUtil.formatTimeStamp(batchTime,"MMdd-HH");
+            return DateUtil.formatTimeStamp(batchTime,"MMdd HH:00");
         }else if(timeParam.endsWith("minute")){
             return DateUtil.formatTimeStamp(batchTime,"MMdd HH:mm");
         }else if(timeParam.endsWith("day")){

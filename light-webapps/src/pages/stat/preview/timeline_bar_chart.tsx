@@ -4,6 +4,7 @@ import ReactECharts from 'echarts-for-react';
 import {loadingOption} from "@/pages/stat/preview/common";
 import {stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
+import {IconStar} from "@arco-design/web-react/icon";
 
 export default function TimeLineBarPanel({data = null,size="default", loading = false,group=null}) {
 
@@ -48,23 +49,94 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
               left:'50px',
               right:'50px',
             },
+            tooltip: {
+                show:data && !loading,
+                trigger: 'axis',
+                formatter: function (params) {
+                    if(!params || !Array.isArray(params)){
+                        return;
+                    }
+                    const newParams = [];
+                    const paramData = params.sort(function (a, b) {
+                        return b.value - a.value;
+                    });
+                    for (let i = 0, len = paramData.length; i < len; i++) {
+                        const v = paramData[i];
+                        const s = v.marker + ' value : ' + v.value;
+                        newParams.push(s)
+                    }
+                    return params[0].axisValue + "<br>" + newParams.join('<br>');
+                },
+                confine: true
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 0,
+                    end: 100
+                }
+            ],
             timeline: {
                 axisType: 'category',
                 autoPlay: false,
                 playInterval: 1000,
                 currentIndex:timeIndex,
+                left: '100px',
+                right:'100px',
+                bottom:'25px',
+                top:'385px',
                 data: batchList,
-                label: {
-                    formatter: '{value}'
-                }
+                label:{
+                    normal:{
+                        show:true,
+                    }
+                },
+                controlStyle:{
+                    showPlayBtn:false,
+                    showPrevBtn:true,
+                    showNextBtn:true,
+                    itemGap:20,
+                    prevBtnSize:10,
+                    nextBtnSize:10,
+                },
+                checkpointStyle: {
+                    symbol: 'circle',
+                    symbolSize: 15,
+                    normal: {
+                        color: 'lightgray',
+                        show: true,
+                    },
+                },
+                symbolSize: 8,
+                symbol:'emptyCircle',
+                lineStyle: {
+                    width: 2,
+                },
             },
             xAxis: {
                 type: 'category',
                 data: dimensList,
             },
-            yAxis: {
-                type: 'value',
-            },
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        animation: true,
+                        formatter: function (value, index) {
+                            if (value >= 1000 && value < 1000000) {
+                                value = value / 1000 + "K";
+                            } else if (value >= 1000000 && value < 1000000000) {
+                                value = value / 1000000 + "M";
+                            } else if (value >= 1000000000 && value < 1000000000000) {
+                                value = value / 1000000000 + "B";
+                            } else if (value >= 1000000000000) {
+                                value = value / 1000000000000 + "T";
+                            }
+                            return value;
+                        }
+                    },
+                }
+            ],
             series: [{
                 type: 'bar',
             }]
