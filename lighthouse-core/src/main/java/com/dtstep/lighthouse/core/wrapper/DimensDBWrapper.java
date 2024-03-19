@@ -16,19 +16,11 @@ package com.dtstep.lighthouse.core.wrapper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.google.common.base.Joiner;
-import com.google.common.collect.Sets;
 import com.dtstep.lighthouse.common.constant.StatConst;
-import com.dtstep.lighthouse.common.entity.stat.FilterParam;
-import com.dtstep.lighthouse.common.entity.stat.FilterParamElement;
-import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
-import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.formula.FormulaCalculate;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public final class DimensDBWrapper {
@@ -55,79 +47,6 @@ public final class DimensDBWrapper {
                 sbr.append(subDimens);
             }
             return sbr.toString();
-        }
-    }
-
-    public static HashMap<String,String> columnCombination(List<FilterParam> filterParams, StatExtEntity statExtEntity) {
-        if(CollectionUtils.isEmpty(filterParams)){
-            return null;
-        }
-        Set<FilterParamElement>[] sets = new Set[filterParams.size()];
-        int i=0;
-        List<String> currentDimensList = new ArrayList<>();
-        for(FilterParam filterParam : filterParams){
-            sets[i] = new HashSet<>(filterParam.getValueList());
-            currentDimensList.addAll(Arrays.asList(filterParam.getFilterKey().split(StatConst.DIMENS_SEPARATOR)));
-            i++;
-        }
-        List<String> statDimensList = Arrays.asList(statExtEntity.getTemplateEntity().getDimensArray());
-        Set<List<FilterParamElement>> set = Sets.cartesianProduct(sets);
-        Iterator<List<FilterParamElement>> it = set.iterator();
-        HashMap<String,String> dimensMapper = new HashMap<>();
-        while (it.hasNext()){
-            List<FilterParamElement> list = it.next();
-            List<DimensSorter> valueList = new ArrayList<>();
-            List<DimensSorter> nameList = new ArrayList<>();
-            int index = 0;
-            for (FilterParamElement element : list) {
-                String value = element.getValue();
-                String aliasName = element.getAliasName();
-                if(StringUtil.isEmpty(aliasName)){
-                    aliasName = value;
-                }
-                String[] valueArr = value.split(StatConst.DIMENS_SEPARATOR);
-                String[] aliasArr = aliasName.split(StatConst.DIMENS_SEPARATOR);
-                for (int m = 0; m < valueArr.length; m++) {
-                    String dimensValue = valueArr[m];
-                    String aliasDimensName = aliasArr[m];
-                    valueList.add(new DimensSorter(dimensValue, statDimensList.indexOf(currentDimensList.get(index))));
-                    nameList.add(new DimensSorter(aliasDimensName, statDimensList.indexOf(currentDimensList.get(index))));
-                    index++;
-                }
-            }
-            List<String> resValueList = valueList.stream().sorted(Comparator.comparing(DimensSorter::getIndex)).map(DimensSorter::getValue).collect(Collectors.toList());
-            List<String> resNameList = nameList.stream().sorted(Comparator.comparing(DimensSorter::getIndex)).map(DimensSorter::getValue).collect(Collectors.toList());
-            dimensMapper.put(Joiner.on(StatConst.DIMENS_SEPARATOR).join(resValueList),Joiner.on(StatConst.DIMENS_SEPARATOR).join(resNameList));
-        }
-        return dimensMapper;
-    }
-
-
-    private static class DimensSorter{
-
-        private String value;
-
-        private int index;
-
-        DimensSorter(String value,int index){
-            this.value = value;
-            this.index = index;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
         }
     }
 
