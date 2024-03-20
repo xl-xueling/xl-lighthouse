@@ -134,8 +134,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         );
     }
 
-
-
     function handleSearch(params) {
         setSearchForm({...params,t:Date.now()});
     }
@@ -180,7 +178,9 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         const pageTitle = getPageTitle();
         setPageTitle(pageTitle);
         fetchStatData().then();
-        fetchLimitData().then();
+        if(statInfo.templateEntity.limitFlag){
+            fetchLimitData().then();
+        }
     },[statInfo])
 
     useEffect(() => {
