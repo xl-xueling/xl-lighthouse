@@ -33,7 +33,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [statChartLoading,setStatChartLoading] = useState<boolean>(false);
     const [searchForm,setSearchForm] = useState(null);
     const [showFilterConfigModal,setShowFilterConfigModal] = useState<boolean>(false);
-    const [reloadTime,setReloadTime] = useState<number>(Date.now);
+    const [refreshTime,setRefreshTime] = useState<number>(Date.now());
     const [showLimitedRecord,setShowLimitedRecord] = useState<boolean>(false);
     const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
     const [statChartData,setStatChartData] = useState<Array<StatData>>(null);
@@ -81,22 +81,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
             <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{specifyTitle?specifyTitle:statInfo?.title}</span>
     }
 
-    const fetchStatData = async () => {
-        setStatChartLoading(true);
-        if(statInfo){
-            const statChartData = await handlerFetchStatData(statInfo,searchForm);
-            if (refFetchId.current === id) {
-                if(statChartData.code == '0'){
-                    setStatChartData(statChartData.data);
-                    setStatChartErrorMessage(null);
-                }else{
-                    setStatChartData(null);
-                    setStatChartErrorMessage(statChartData.message);
-                }
-            }
-        }
-        setStatChartLoading(false);
-    }
 
     const fetchLimitData = async () => {
         setLimitChartLoading(true);
@@ -137,13 +121,9 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
             )
         })
     }
-    const [currentIndex, setCurrentIndex] = useState(0);
-
     const refresh = () => {
-        const formParams = formRef.current.getData();
-        setSearchForm({...formParams,t:Date.now()});
+        setRefreshTime(Date.now());
     }
-
     const getLimitChart = () => {
         return (
             <Col span={24}>
@@ -154,34 +134,62 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         );
     }
 
-    useEffect(() => {
+
+
+    function handleSearch(params) {
+        setSearchForm({...params,t:Date.now()});
+    }
+
+    const fetchStatData = async () => {
         if(!statInfo){
             return;
         }
+        const formParams = formRef.current.getData();
         let validateDimensParam = {};
-        if(searchForm != null){
-            validateDimensParam = Object.keys(searchForm).reduce((acc, key) => {
-                if (key != 't' && key != 'date' && searchForm[key] !== null && searchForm[key] !== undefined && searchForm[key].length > 0) {
-                    acc[key] = searchForm[key];
+        if(formParams != null){
+            validateDimensParam = Object.keys(formParams).reduce((acc, key) => {
+                if (key != 't' && key != 'date' && formParams[key] !== null && formParams[key] !== undefined && formParams[key].length > 0) {
+                    acc[key] = formParams[key];
                 }
                 return acc;
             }, {});
         }
         const numDimensParam = Object.keys(validateDimensParam).length;
-        const pageTitle = getPageTitle();
-        setPageTitle(pageTitle);
-       if(statInfo.templateEntity.dimensArray.length > 0 && numDimensParam == 0){
+        if(statInfo.templateEntity.dimensArray.length > 0 && numDimensParam == 0){
             setStatChartData(null);
             setStatChartErrorMessage(t['statDisplay.filterConfig.warning']);
         }else{
-            fetchStatData().then();
+            setStatChartLoading(true);
+            if(statInfo){
+                const statChartData = await handlerFetchStatData(statInfo,formParams);
+                if (refFetchId.current === id) {
+                    if(statChartData.code == '0'){
+                        setStatChartData(statChartData.data);
+                        setStatChartErrorMessage(null);
+                    }else{
+                        setStatChartData(null);
+                        setStatChartErrorMessage(statChartData.message);
+                    }
+                }
+            }
+            setStatChartLoading(false);
         }
-        fetchLimitData().then();
-    },[statInfo,JSON.stringify(searchForm)])
-
-    function handleSearch(params) {
-        setSearchForm({...params,t:Date.now()});
     }
+
+    useEffect(() => {
+        const pageTitle = getPageTitle();
+        setPageTitle(pageTitle);
+        fetchStatData().then();
+        fetchLimitData().then();
+    },[statInfo])
+
+    useEffect(() => {
+        fetchStatData().then();
+    },[JSON.stringify(searchForm)])
+
+    useEffect(() => {
+         fetchStatInfo().then();
+    },[refreshTime])
 
     useEffect(() => {
         refFetchId.current = id;
@@ -190,7 +198,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
             setSearchForm(null);
             fetchStatInfo().then();
         },10)
-    },[id,reloadTime])
+    },[id])
 
 
     return(
@@ -236,7 +244,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                 </Space>
                 {showFilterConfigModal && <StatFilterConfigModal statInfo={statInfo}
                                                                  onClose={() => setShowFilterConfigModal(false)}
-                                                                 onSuccess={() => setReloadTime(Date.now)}
+                                                                 onSuccess={() => refresh()}
                 />}
                 {/*{showLimitedRecord && <LimitedRecordModal resourceId={statInfo?.id} recordTypes={[RecordTypeEnum.STAT_RESULT_LIMITING]} resourceType={ResourceTypeEnum.Stat} onClose={() => setShowLimitedRecord(false)}/>}*/}
                 {showUpdateModal && <StatUpdateModal statInfo={statInfo} onClose={() => setShowUpdateModal(false)} listCallback={(r1,r2) => setStatInfo(r1)}/>}
