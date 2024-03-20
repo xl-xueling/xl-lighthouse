@@ -35,13 +35,13 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
                 return (<div onClick={() => callback(record, 'showDetailModal')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
             }
         },
-        {
-            title: t['statList.label.group'],
-            dataIndex: 'group',
-            render:(value,record) => {
-                return (record.token);
-            }
-        },
+        // {
+        //     title: t['statList.label.group'],
+        //     dataIndex: 'group',
+        //     render:(value,record) => {
+        //         return (record.token);
+        //     }
+        // },
         {
             title: t['statList.label.timeparam'],
             dataIndex: 'timeparam',
