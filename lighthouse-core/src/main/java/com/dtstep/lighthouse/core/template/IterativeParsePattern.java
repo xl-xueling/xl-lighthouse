@@ -70,7 +70,7 @@ public final class IterativeParsePattern implements Parser {
         if(StringUtil.getBLen(title.trim()) < 5){
             return ServiceResult.result(ResultCode.templateParserTitleLengthValidFailed);
         }
-        if(StringUtil.getBLen(title.trim()) > 35){
+        if(StringUtil.getBLen(title.trim()) >= 40){
             return ServiceResult.result(ResultCode.templateParserTitleLengthValidFailed);
         }
         templateEntity.setTitle(title);
