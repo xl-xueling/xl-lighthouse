@@ -76,6 +76,7 @@ export default function BasicInfo({statInfo,callback}) {
             label: 'Operation',
             value:
                 <div>
+                    {!statInfo?.builtIn ?
                     <Space size={6}>
                         {statInfo?.permissions.includes(PermissionEnum.ManageAble)?
                             <>
@@ -86,7 +87,7 @@ export default function BasicInfo({statInfo,callback}) {
                         {statInfo?.permissions.includes(PermissionEnum.ManageAble) && statInfo?.templateEntity.dimensArray.length > 0?
                             <Button shape={"circle"} icon={<TbFilterEdit/>} size={"mini"} onClick={() => callback('showFilterConfigModal')}/>:null}
                         <Button shape={"circle"} icon={<IconList/>} size={"mini"} onClick={() => callback('showLimitedRecord')}/>
-                    </Space>
+                    </Space> : '--'}
                 </div>,
         },
         {
