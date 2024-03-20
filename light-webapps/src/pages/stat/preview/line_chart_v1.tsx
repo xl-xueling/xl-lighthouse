@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
-import {getEmptyOption, getLineErrorOption, getLoadingOption, loadingOption} from "@/pages/stat/preview/common";
+import {getEmptyOption, getLineErrorOption, getLoadingOption} from "@/pages/stat/preview/common";
 import {getRandomString, stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
 import Decimal from 'decimal.js';
@@ -22,7 +22,7 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
     const [theme, setTheme] = useStorage('arco-theme', 'light');
     const chartRef = useRef(null);
     const t = useLocale(locale);
-    
+
     const defaultOption = !data ? {} : {
         tooltip: {
             show:data && !loading,
