@@ -4,15 +4,18 @@ import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.redis.RedisHandler;
 import com.dtstep.lighthouse.core.storage.limit.LimitStorageSelector;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.Test;
 import redis.clients.jedis.resps.Tuple;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
@@ -52,13 +55,41 @@ public class LimitTest {
     @Test
     public void test3() throws Exception {
         LinkedHashMap<String,String> memberMap = new LinkedHashMap<>();
-        RedisHandler.getInstance().batchPutTopN("test2",memberMap,100,1000000000);
-        List<Tuple> tuples = RedisHandler.getInstance().zrange("test2",0,100);
+        memberMap.put("a",new BigDecimal("111").toPlainString());
+        memberMap.put("b",new BigDecimal("1946044683225899.999").toPlainString());
+        memberMap.put("c",new BigDecimal("1946044683225899.198").toPlainString());
+        RedisHandler.getInstance().batchPutTopN("test3",memberMap,100,1000000000);
+        List<Tuple> tuples = RedisHandler.getInstance().zrevrange("test3",0,100);
         Thread.sleep(1000);
         for(Tuple tuple : tuples){
-            BigDecimal d = BigDecimal.valueOf(1000000);
-            System.out.println("r1 is:" + BigDecimal.valueOf(tuple.getScore()).stripTrailingZeros().toPlainString());
-            System.out.println("tuple is:" + tuple.getElement() + ",score:" + new BigDecimal(Double.toString(tuple.getScore())).multiply(d).stripTrailingZeros().toPlainString());
+            System.out.println("tuple is:" + tuple.getElement() + ",r1 is:" + BigDecimal.valueOf(tuple.getScore()).stripTrailingZeros().toPlainString());
         }
+    }
+
+    @Test
+    public void test34() throws Exception {
+        String key = "limitN_0dcec9f3f0cfa964ec4b1ec9e58e572c_0";
+        List<Tuple> tuples = RedisHandler.getInstance().zrevrange(key,0,100);
+        for(int i=0;i<tuples.size();i++){
+            Tuple tuple = tuples.get(i);
+            System.out.println("tuple:" + tuple.getElement() + ",score:" + new BigDecimal(tuple.getScore() + ""));
+        }
+    }
+
+    @Test
+    public void test39() throws Exception{
+        String a = "河南省";
+        String b = "河北省";
+        System.out.println("1:" + Bytes.toBytes(a));
+        System.out.println("2:" + Bytes.toBytes(b));
+    }
+
+    @Test
+    public void test40() throws Exception {
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        List<String> list2 = list.subList(0,list.size());
+        System.out.println("list2 size:" + list2.size());
     }
 }
