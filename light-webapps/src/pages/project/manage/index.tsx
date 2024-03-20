@@ -1,7 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from './style/index.module.less';
-import {Breadcrumb, Card, Descriptions, Notification, Skeleton, Space, Spin, Typography} from "@arco-design/web-react";
+import {
+    Breadcrumb,
+    Card,
+    Descriptions,
+    Link,
+    Notification,
+    Skeleton,
+    Space,
+    Spin,
+    Typography
+} from "@arco-design/web-react";
 import GroupManagePanel from "@/pages/group/manage";
 import {Project, TreeNode} from "@/types/insights-web";
 import {requestQueryById} from "@/api/project";
@@ -104,7 +114,12 @@ export default function ProjectManagePage() {
         {
 
             label: <span style={{marginTop:'2px'}}>{getIcon('project')}</span>,
-            value: <span style={{wordBreak: 'break-word'}}>{projectInfo?.title + " ["+projectInfo?.id+"]"}</span>
+            value: <span style={{wordBreak: 'break-word'}}>
+                <Link className={'ldp-custom-link'} href={'/project/preview/' + projectInfo?.id} target={'_blank'}>
+                        {projectInfo?.title}
+                    </Link>
+                {" ["+projectInfo?.id+"]"}
+            </span>
         },
         {
             label: <IconBook/>,
