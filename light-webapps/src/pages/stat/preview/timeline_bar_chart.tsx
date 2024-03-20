@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
-import {getEmptyOption, getLoadingOption, loadingOption} from "@/pages/stat/preview/common";
+import {getEmptyOption, getLoadingOption} from "@/pages/stat/preview/common";
 import {stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
 import useStorage from "@/utils/useStorage";
