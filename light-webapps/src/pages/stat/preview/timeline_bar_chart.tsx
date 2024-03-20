@@ -51,7 +51,7 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
               top:'25px',
               left:'50px',
               right:'50px',
-              bottom:'90px',
+              bottom:'80px',
             },
             tooltip: {
                 show:data && !loading,
