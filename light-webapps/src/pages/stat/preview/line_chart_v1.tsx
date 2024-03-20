@@ -1,10 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
-import {getLineErrorOption, loadingOption} from "@/pages/stat/preview/common";
+import {getEmptyOption, getLineErrorOption, getLoadingOption, loadingOption} from "@/pages/stat/preview/common";
 import {getRandomString, stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
 import Decimal from 'decimal.js';
+import useStorage from "@/utils/useStorage";
+import useLocale from "@/utils/useLocale";
+import locale from "@/pages/stat/preview/locale";
 
 
 export default function StatBasicLineChart({data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null}) {
@@ -14,8 +17,12 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
     const [batchList,setBatchList] = useState([]);
     const [dimensList,setDimensList] = useState([]);
     const [option,setOption] = useState({});
+    const [loadingOption, setLoadingOption] = useState({});
+    const [emptyOption,setEmptyOption] = useState({});
+    const [theme, setTheme] = useStorage('arco-theme', 'light');
     const chartRef = useRef(null);
-
+    const t = useLocale(locale);
+    
     const defaultOption = !data ? {} : {
         tooltip: {
             show:data && !loading,
@@ -145,6 +152,12 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
             chart.setOption(emptyOption);
         }
     },[JSON.stringify(data),errorMessage])
+
+    useEffect(() => {
+        setLoadingOption(getLoadingOption(theme));
+        setEmptyOption(getEmptyOption(t,theme));
+    },[])
+
 
     const getReactChart = () => {
         if(size == 'default'){
