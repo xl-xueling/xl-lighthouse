@@ -11,23 +11,24 @@ import { CiViewTable } from "react-icons/ci";
 import {Project, TreeNode} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
+import {getTreeResourceIcon} from "@/pages/common/desc/base";
 
 export default function ProjectMenu({projectInfo,callback}:{projectInfo:Project,callback:(type: string,id:number) => Promise<void>}) {
 
     const t = useLocale(locale);
 
-    const renderMenuItems = (items) =>
+    const renderMenuItems = (items,level) =>
         items?.map((item) => {
             if (Array.isArray(item.children) && item.children.length > 0) {
                 return (
                     <Menu.SubMenu key={item.type + "_" + item.value} title={
-                        <span style={{display:"inline-flex",alignItems:"center"}}><CiViewTable style={{marginRight:'10px'}}/>{item.label}</span>
+                        <span style={{display:"inline-flex",alignItems:"center"}}>{getTreeResourceIcon(item.type,level)}{item.label}</span>
                     }>
-                        {renderMenuItems(item.children)}
+                        {renderMenuItems(item.children,level + 1)}
                     </Menu.SubMenu>
                 );
             }
-            return <Menu.Item key={item.type + "_" + item.value}><IconTag/>{item.label}</Menu.Item>;
+            return <Menu.Item key={item.type + "_" + item.value}>{getTreeResourceIcon(item.type,level)}{item.label}</Menu.Item>;
         });
 
 
@@ -46,7 +47,7 @@ export default function ProjectMenu({projectInfo,callback}:{projectInfo:Project,
             }}
         >
         {
-            (projectInfo && projectInfo.structure.children) ? renderMenuItems(projectInfo.structure.children)
+            (projectInfo && projectInfo.structure.children) ? renderMenuItems(projectInfo.structure.children,1)
                 : <Empty style={{marginTop:'50px'}}/>
         }
         </Menu>
