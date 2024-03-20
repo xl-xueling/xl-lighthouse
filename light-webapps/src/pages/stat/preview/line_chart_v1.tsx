@@ -114,6 +114,7 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
                 label: {
                     show: false,
                 },
+                symbolSize: 3,
                 animation: true,
                 animationEasing: 'quadraticInOut',
                 animationDurationUpdate:1000,
