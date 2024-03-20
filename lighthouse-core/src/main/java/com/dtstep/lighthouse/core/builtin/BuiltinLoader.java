@@ -59,6 +59,8 @@ public final class BuiltinLoader {
 
     private static final String groupRandomId = "XjElwfhjXKB7dNzcIHsQ767fPXkTLKsB";
 
+    private static final int dataVersion = 0;
+
     static  {
         builtinProject = new Project();
         builtinProject.setTitle("Cluster Monitor");
@@ -143,6 +145,7 @@ public final class BuiltinLoader {
             groupExtEntity.setBuiltIn(true);
             groupExtEntity.setMinTimeParam(new TimeParam(1, TimeUnit.MINUTES));
             groupExtEntity.setVerifyKey(Md5Util.getMD5(secretKey));
+            groupExtEntity.setDataVersion(dataVersion);
             groupExtEntity.setRandomId(groupRandomId);
             Elements columnElements = element.getElementsByTag("column");
             List<Column> columnList = new ArrayList<>();
@@ -192,6 +195,7 @@ public final class BuiltinLoader {
                 StatExtEntity statExtEntity = StatDBWrapper.combineExtInfo(statEntity,true);
                 statExtEntity.setBuiltIn(true);
                 statExtEntity.setToken(token);
+                statExtEntity.setDataVersion(dataVersion);
                 statExtEntity.setTitle(statExtEntity.getTemplateEntity().getTitle());
                 List<StatExtEntity> groupStats = groupStatsMapping.getOrDefault(groupId, new ArrayList<>());
                 groupStats.add(statExtEntity);

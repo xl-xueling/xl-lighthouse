@@ -68,7 +68,7 @@ public class LimitTest {
 
     @Test
     public void test34() throws Exception {
-        String key = "limitN_cf66b9f6ca96f9b2c853eb92a15d33ac_2";
+        String key = "limitN_c86c43af1b9c4151b91f7a5ca6434bfc_2";
         List<Tuple> tuples = RedisHandler.getInstance().zrevrange(key,0,100);
         for(int i=0;i<tuples.size();i++){
             Tuple tuple = tuples.get(i);
