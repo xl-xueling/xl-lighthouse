@@ -39,6 +39,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [statChartData,setStatChartData] = useState<Array<StatData>>(null);
     const [statChartErrorMessage,setStatChartErrorMessage] = useState<string>(null);
     const [limitChartData,setLimitChartData] = useState<Array<LimitData>>(null);
+    const [limitChartErrorMessage,setLimitChartErrorMessage] = useState<string>(null);
     const [limitChartLoading,setLimitChartLoading] = useState<boolean>(false);
     const [pageTitle,setPageTitle] = useState<string>(null)
     const [option,setOption] = useState({});
@@ -82,12 +83,56 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     }
 
 
+    const fetchStatData = async () => {
+        if(!statInfo){
+            return;
+        }
+        const formParams = formRef.current.getData();
+        let validateDimensParam = {};
+        if(formParams != null){
+            validateDimensParam = Object.keys(formParams).reduce((acc, key) => {
+                if (key != 't' && key != 'date' && formParams[key] !== null && formParams[key] !== undefined && formParams[key].length > 0) {
+                    acc[key] = formParams[key];
+                }
+                return acc;
+            }, {});
+        }
+        const numDimensParam = Object.keys(validateDimensParam).length;
+        if(statInfo.templateEntity.dimensArray.length > 0 && numDimensParam == 0){
+            setStatChartData(null);
+            setStatChartErrorMessage(t['statDisplay.filterConfig.warning']);
+        }else{
+            setStatChartLoading(true);
+            if(statInfo){
+                const statChartData = await handlerFetchStatData(statInfo,formParams);
+                if (refFetchId.current === id) {
+                    if(statChartData.code == '0'){
+                        setStatChartData(statChartData.data);
+                        setStatChartErrorMessage(null);
+                    }else{
+                        setStatChartData(null);
+                        setStatChartErrorMessage(statChartData.message);
+                    }
+                }
+            }
+            setStatChartLoading(false);
+        }
+    }
+
     const fetchLimitData = async () => {
+        if(!statInfo){
+            return;
+        }
         setLimitChartLoading(true);
-        if(statInfo){
-            const limitChartData = await handlerFetchLimitData(statInfo.id);
-            if (refFetchId.current === id) {
+        const limitChartData = await handlerFetchLimitData(statInfo.id);
+        if (refFetchId.current === id) {
+            console.log("limitChartData is:" + JSON.stringify(limitChartData));
+            if(limitChartData.code == '0'){
                 setLimitChartData(limitChartData.data);
+                setLimitChartErrorMessage(null);
+            }else{
+                setLimitChartData(null);
+                setLimitChartErrorMessage(limitChartData.message);
             }
         }
         setLimitChartLoading(false);
@@ -128,7 +173,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         return (
             <Col span={24}>
                 <Card title={t['statDisplay.limit.title']}>
-                    <TimeLineBarPanel data={limitChartData} loading={limitChartLoading} size={'default'} />
+                    <TimeLineBarPanel size={'small'} data={limitChartData} errorMessage={limitChartErrorMessage} loading={loading?false:limitChartLoading} />
                 </Card>
             </Col>
         );
@@ -136,42 +181,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
 
     function handleSearch(params) {
         setSearchForm({...params,t:Date.now()});
-    }
-
-    const fetchStatData = async () => {
-        if(!statInfo){
-            return;
-        }
-        const formParams = formRef.current.getData();
-        let validateDimensParam = {};
-        if(formParams != null){
-            validateDimensParam = Object.keys(formParams).reduce((acc, key) => {
-                if (key != 't' && key != 'date' && formParams[key] !== null && formParams[key] !== undefined && formParams[key].length > 0) {
-                    acc[key] = formParams[key];
-                }
-                return acc;
-            }, {});
-        }
-        const numDimensParam = Object.keys(validateDimensParam).length;
-        if(statInfo.templateEntity.dimensArray.length > 0 && numDimensParam == 0){
-            setStatChartData(null);
-            setStatChartErrorMessage(t['statDisplay.filterConfig.warning']);
-        }else{
-            setStatChartLoading(true);
-            if(statInfo){
-                const statChartData = await handlerFetchStatData(statInfo,formParams);
-                if (refFetchId.current === id) {
-                    if(statChartData.code == '0'){
-                        setStatChartData(statChartData.data);
-                        setStatChartErrorMessage(null);
-                    }else{
-                        setStatChartData(null);
-                        setStatChartErrorMessage(statChartData.message);
-                    }
-                }
-            }
-            setStatChartLoading(false);
-        }
     }
 
     useEffect(() => {

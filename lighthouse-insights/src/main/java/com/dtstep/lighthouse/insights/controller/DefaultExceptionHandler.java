@@ -42,5 +42,12 @@ public class DefaultExceptionHandler {
         return ResultData.result(ResultCode.paramValidateFailed);
     }
 
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
+    public Object handleException(Exception ex) {
+        logger.error("System Error!",ex);
+        return ResultData.result(ResultCode.systemError);
+    }
+
 
 }

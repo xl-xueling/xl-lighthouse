@@ -1,14 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
-import {getEmptyOption, getLoadingOption} from "@/pages/stat/preview/common";
+import {getEmptyOption, getErrorOption, getLineErrorOption, getLoadingOption} from "@/pages/stat/preview/common";
 import {stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
 import useStorage from "@/utils/useStorage";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/preview/locale";
 
-export default function TimeLineBarPanel({data = null,size="default", loading = false,group=null}) {
+export default function TimeLineBarPanel({data = null,errorMessage = null,size="default", loading = false,group=null}) {
 
     const [timeIndex,setTimeIndex] = useState<number>(-1);
     const [seriesArray,setSeriesArray] = useState([]);
@@ -175,8 +175,13 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
             setTimeIndex(index);
             setCurrentBatch(currentBatch);
             render();
+        }else{
+            const chart = chartRef.current.getEchartsInstance();
+            chart.clear();
+            const errorOption = getErrorOption(theme,errorMessage);
+            chart.setOption(errorOption);
         }
-    },[data])
+    },[JSON.stringify(data),errorMessage])
 
     useEffect(() => {
         setLoadingOption(getLoadingOption(theme));
