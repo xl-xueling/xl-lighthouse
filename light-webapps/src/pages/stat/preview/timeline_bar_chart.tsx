@@ -149,6 +149,7 @@ export default function TimeLineBarPanel({data = null,errorMessage = null,size="
     const render = () => {
         const values = data[timeIndex]?.values;
         if(values == undefined || values.length == 0){
+            setDimensList([]);
             const chart = chartRef.current.getEchartsInstance();
             chart.clear();
             chart.setOption(emptyOption);
