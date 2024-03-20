@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.common.util;
 
 import org.junit.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.util.UUID;
 
@@ -26,4 +27,6 @@ public class Md5UtilTest {
             Thread.sleep(1000);
         }
     }
+
+
 }

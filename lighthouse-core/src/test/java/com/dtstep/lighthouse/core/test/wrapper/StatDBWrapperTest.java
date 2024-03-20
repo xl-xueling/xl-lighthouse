@@ -5,8 +5,10 @@ import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
+import com.google.common.hash_snp.Hashing;
 import org.junit.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,5 +35,10 @@ public class StatDBWrapperTest {
             Thread.sleep(5000);
         }
         Thread.sleep(100000000);
+    }
+
+    @Test
+    public void testGuava() throws Exception{
+
     }
 }

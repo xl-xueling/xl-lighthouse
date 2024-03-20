@@ -57,7 +57,7 @@ public final class BuiltinLoader {
 
     private static final String secretKey = "2l2ipBHOssTzsHsdErKDcarxjU6rKZwo";
 
-    private static final String randomId = "XjElwfhjXKB7dNzcIHsQ767fPXkTLKsB";
+    private static final String groupRandomId = "XjElwfhjXKB7dNzcIHsQ767fPXkTLKsB";
 
     static  {
         builtinProject = new Project();
@@ -143,7 +143,7 @@ public final class BuiltinLoader {
             groupExtEntity.setBuiltIn(true);
             groupExtEntity.setMinTimeParam(new TimeParam(1, TimeUnit.MINUTES));
             groupExtEntity.setVerifyKey(Md5Util.getMD5(secretKey));
-            groupExtEntity.setRandomId(randomId);
+            groupExtEntity.setRandomId(groupRandomId);
             Elements columnElements = element.getElementsByTag("column");
             List<Column> columnList = new ArrayList<>();
             for(Element columnElement : columnElements){
@@ -183,7 +183,7 @@ public final class BuiltinLoader {
                 statEntity.setCreateTime(localDateTime);
                 statEntity.setUpdateTime(localDateTime);
                 statEntity.setGroupColumns(groupColumns);
-                statEntity.setRandomId(randomId);
+                statEntity.setRandomId(groupRandomId + "_" + statId);
                 statEntity.setState(StatStateEnum.RUNNING);
                 statEntity.setProjectTitle(builtinProject.getTitle());
                 if(StringUtil.isNotEmpty(renderConfig)){
