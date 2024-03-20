@@ -19,6 +19,8 @@ package com.dtstep.lighthouse.core.storage.limit.impl;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.lock.RedLock;
 import com.dtstep.lighthouse.core.redis.RedisHandler;
+import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
+import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
 import com.dtstep.lighthouse.core.storage.limit.LimitStorageEngine;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
@@ -45,6 +47,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.resps.Tuple;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -53,6 +56,8 @@ import java.util.stream.IntStream;
 public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, LimitValue> {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisLimitStorageEngine.class);
+
+    private static final KeyGenerator keyGenerator = new DefaultKeyGenerator();
 
     @Override
     public void limit(List<LimitBucket> limitBuckets) throws Exception {
@@ -149,6 +154,11 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
         }
     }
 
+
+    private static final Comparator<LimitValue> ascComparator = Comparator.comparing(o -> new BigDecimal(o.getScore().toString()));
+
+    private static final Comparator<LimitValue> descComparator = (o1, o2) -> new BigDecimal(o2.getScore().toString()).compareTo(new BigDecimal(o1.getScore().toString()));
+
     @Override
     public List<LimitValue> query(StatExtEntity statExtEntity, long batchTime) throws Exception {
         List<LimitValue> resultList = new ArrayList<>();
@@ -163,12 +173,14 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
                     limitSet.addAll(tempDimensSet);
                 }
             });
-            limitSet.stream().sorted(Comparator.comparing(Tuple::getScore).reversed()).forEachOrdered(x -> {
-                if(resultList.size() < limitSize){
-                    LimitValue limitValue = new LimitValue(x.getElement(),x.getScore());
-                    resultList.add(limitValue);
-                }
-            });
+            List<String> dimensList = limitSet.stream().sorted(Comparator.comparing(Tuple::getScore).reversed()).map(Tuple::getElement).collect(Collectors.toList());
+            List<String> topDimensList = dimensList.subList(0, Math.min(dimensList.size(), limitSize));
+            Map<String,StatValue> valueMap = ResultStorageSelector.queryWithDimensList(statExtEntity,topDimensList,batchTime);
+            for(String dimens : valueMap.keySet()){
+                LimitValue limitValue = new LimitValue(dimens,valueMap.get(dimens).getValue());
+                resultList.add(limitValue);
+            }
+            resultList.sort(descComparator);
         }else if(statExtEntity.getTemplateEntity().getLimitTypeEnum() == LimitTypeEnum.LAST){
             IntStream.range(0,StatConst.LIMIT_SALT).forEach(z -> {
                 String redisKey = RedisConst.LIMIT_N_PREFIX + "_" + baseKey + "_" + z;
@@ -177,12 +189,17 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
                     limitSet.addAll(tempDimensSet);
                 }
             });
-            limitSet.stream().sorted(Comparator.comparing(Tuple::getScore)).forEachOrdered(x -> {
-                if(resultList.size() < limitSize){
-                    LimitValue limitValue = new LimitValue(x.getElement(),x.getScore());
-                    resultList.add(limitValue);
-                }
-            });
+            List<String> dimensList = limitSet.stream().sorted(Comparator.comparing(Tuple::getScore)).map(Tuple::getElement).collect(Collectors.toList());
+            List<String> lastDimensList = dimensList.subList(0, Math.min(dimensList.size(), limitSize));
+            Map<String,StatValue> valueMap = ResultStorageSelector.queryWithDimensList(statExtEntity,lastDimensList,batchTime);
+            for(String dimens : valueMap.keySet()){
+                LimitValue limitValue = new LimitValue(dimens,valueMap.get(dimens).getValue());
+                resultList.add(limitValue);
+            }
+            resultList.sort(ascComparator);
+        }
+        for (LimitValue limitValue : resultList) {
+            System.out.println("test dimens:" + limitValue.getDimensValue() + ",value:" + limitValue.getScore());
         }
         return resultList;
     }
