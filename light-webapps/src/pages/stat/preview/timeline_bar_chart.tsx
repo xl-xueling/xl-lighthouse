@@ -140,7 +140,7 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
 
     useEffect(() => {
         if(data){
-            setDimensList(data[timeIndex].values.map(z => z.dimensValue));
+            setDimensList(data[timeIndex]?.values.map(z => z.dimensValue));
         }
     },[timeIndex])
 

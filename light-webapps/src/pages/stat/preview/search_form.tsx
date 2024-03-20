@@ -38,8 +38,13 @@ const SearchForm = React.forwardRef(( props:{size,statInfo,onSearch},ref) => {
 
     useEffect(() => {
         setFiltersConfig(statInfo?.renderConfig?.filters);
-        handleReset();
     },[statInfo])
+
+    useEffect(() => {
+        handleReset();
+        const initDateParam = getInitDateParam();
+        form.setFieldValue("date",initDateParam);
+    },[statInfo.id])
 
     const Option = Select.Option;
 
@@ -167,11 +172,6 @@ const SearchForm = React.forwardRef(( props:{size,statInfo,onSearch},ref) => {
             return <DatePicker.RangePicker mode={"year"} style={{width:'100%'}} allowClear={false}/>;
         }
     }
-
-    useEffect(() => {
-        const initDateParam = getInitDateParam();
-        form.setFieldValue("date",initDateParam);
-    },[statInfo])
 
     return (
         <div className={styles['search-form-wrapper']}>
