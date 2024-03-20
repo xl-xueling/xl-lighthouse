@@ -178,7 +178,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         const pageTitle = getPageTitle();
         setPageTitle(pageTitle);
         fetchStatData().then();
-        if(statInfo.templateEntity.limitFlag){
+        if(statInfo?.templateEntity.limitFlag){
             fetchLimitData().then();
         }
     },[statInfo])
