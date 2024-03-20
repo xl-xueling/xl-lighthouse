@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
-import {getEmptyOption, getLineErrorOption, getLoadingOption} from "@/pages/stat/preview/common";
+import {getEmptyOption, getErrorOption, getLineErrorOption, getLoadingOption} from "@/pages/stat/preview/common";
 import {getRandomString, stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
 import Decimal from 'decimal.js';
@@ -95,16 +95,6 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
             }
         ],
         series: seriesArray,
-        graphic: errorMessage && [{
-            type: 'text',
-            left: 'center',
-            top: 'middle',
-            style: {
-                fill: '#0000',
-                text: errorMessage,
-                fontSize: 12,
-            }
-        }]
     };
 
     const getSeries = (chartData) => {
@@ -134,7 +124,7 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
     }
 
     useEffect(() => {
-        if(data){
+       if(data){
             const chart = chartRef.current.getEchartsInstance();
             chart.group = group;
             const dimensList = data.map(z => z.displayDimensValue);
@@ -148,8 +138,8 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
         }else{
             const chart = chartRef.current.getEchartsInstance();
             chart.clear();
-            const emptyOption = getLineErrorOption(errorMessage);
-            chart.setOption(emptyOption);
+            const errorOption = getErrorOption(theme,errorMessage);
+            chart.setOption(errorOption);
         }
     },[JSON.stringify(data),errorMessage])
 

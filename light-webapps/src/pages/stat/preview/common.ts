@@ -72,6 +72,25 @@ export const translateResponseDataToLineChartData = (statData:Array<StatData>,st
     };
 }
 
+export const getErrorOption = (theme,message) => {
+    return {
+        title: {
+            text: message,
+            x: 'center',
+            top:'80px',
+            textStyle: {
+                color: theme == 'light' ? '#000' : '#fff',
+                fontSize: 12,
+                lineWidth: 2,
+                lineHeight:30,
+                fontColor:'black',
+                fontFamily : 'sans-serif',
+                fontWeight: 'normal',
+            }
+        }
+    };
+}
+
 export const getLoadingOption = (theme) => {
     return {
         animation: false,

@@ -77,7 +77,7 @@ public class DataController {
         Validate.notNull(stat);
         List<Long> batchTimeList = queryParam.getBatchTimeList();
         if(CollectionUtils.isEmpty(batchTimeList)){
-            batchTimeList = BatchAdapter.queryBatchTimeList(stat.getTimeparam(),0,System.currentTimeMillis(),2);
+            batchTimeList = BatchAdapter.queryBatchTimeList(stat.getTimeparam(),0,System.currentTimeMillis(),10);
         }
         List<LimitDataObject> objectList = dataService.limitQuery(stat,batchTimeList);
         return ResultData.success(objectList);
