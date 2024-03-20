@@ -155,19 +155,14 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
 
     @Override
     public StatValue query(StatExtEntity statExtEntity, String dimensValue, long batchTime) throws Exception {
-        Map<String,List<StatValue>> resultMap = queryWithDimensList(statExtEntity,List.of(dimensValue),List.of(batchTime));
+        Map<String,List<StatValue>> resultMap = queryWithDimensList(statExtEntity,dimensValue == null ? null:List.of(dimensValue),List.of(batchTime));
         return MapUtils.isEmpty(resultMap) || CollectionUtils.isEmpty(resultMap.get(dimensValue)) ? null : resultMap.get(dimensValue).get(0);
     }
 
     @Override
     public List<StatValue> query(StatExtEntity statExtEntity, String dimensValue, List<Long> batchTimeList) throws Exception {
         Validate.isTrue(CollectionUtils.isNotEmpty(batchTimeList));
-        Map<String,List<StatValue>> resultMap;
-        if(StringUtil.isEmpty(dimensValue)){
-            resultMap = queryWithDimensList(statExtEntity,null,batchTimeList);
-        }else{
-            resultMap = queryWithDimensList(statExtEntity,List.of(dimensValue),batchTimeList);
-        }
+        Map<String,List<StatValue>> resultMap = queryWithDimensList(statExtEntity,dimensValue == null ? null:List.of(dimensValue),batchTimeList);
         return MapUtils.isEmpty(resultMap) || CollectionUtils.isEmpty(resultMap.get(dimensValue)) ? null : resultMap.get(dimensValue);
     }
 
@@ -194,7 +189,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         }
         List<LdpGet> getList = new ArrayList<>();
         for (long batchTime : batchTimeList) {
-            if(CollectionUtils.isEmpty(dimensValueList)){
+            if(dimensValueList == null){
                 for (StatState statState : statStates) {
                     String aggregateKey = keyGenerator.resultKey(statExtEntity,statState.getFunctionIndex(),null,batchTime);
                     String [] keyArr = aggregateKey.split(";");
@@ -216,7 +211,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         List<LdpResult<Long>> results = StorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
         Map<String,LdpResult<Long>> dbResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
         Map<String,List<StatValue>> resultMap = new HashMap<>();
-        if(CollectionUtils.isEmpty(dimensValueList)){
+        if(dimensValueList == null){
             List<StatValue> valueList = new ArrayList<>();
             for(long batchTime : batchTimeList){
                 StatValue statValue = calculate(statExtEntity,null,batchTime,dbResultMap);
