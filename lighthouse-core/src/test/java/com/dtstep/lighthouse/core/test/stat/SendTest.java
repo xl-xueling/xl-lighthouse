@@ -1,6 +1,8 @@
 package com.dtstep.lighthouse.core.test.stat;
 
 import com.dtstep.lighthouse.client.LightHouse;
+import com.dtstep.lighthouse.common.random.RandomID;
+import org.apache.commons.lang3.RandomUtils;
 import org.junit.Test;
 
 import java.text.DecimalFormat;
@@ -49,13 +51,16 @@ public class SendTest {
     @Test
     public void testSum() throws Exception {
         long t = System.currentTimeMillis();
-        Map<String,Object> map1 = new HashMap<>();
-        map1.put("score","2322847798441.226");
-        LightHouse.stat("test_scene_behavior_stat","JmVM5qDhpkizvJSLjgCoXa10k5j4UWJyj3LSJsPp",map1,t);
-        Map<String,Object> map2 = new HashMap<>();
-        map2.put("score","311381319496.367");
-        LightHouse.stat("test_scene_behavior_stat","JmVM5qDhpkizvJSLjgCoXa10k5j4UWJyj3LSJsPp",map2,t);
-        System.out.println("send success!");
+        for(int i = 0;i<11991;i++){
+            Map<String,Object> map = new HashMap<>();
+            map.put("province", RandomID.id(10));
+            double randomValue = ThreadLocalRandom.current().nextDouble();
+            DecimalFormat df = new DecimalFormat("#.###");
+            String formattedValue = df.format(randomValue);
+            map.put("score",formattedValue);
+            LightHouse.stat("RrY:random_test","aJlyT4Rb2gNME61hVLtMsfUyjuB4JhaSzRL1YZZa",map,t);
+            Thread.sleep(300);
+        }
         Thread.sleep(100000);
     }
 }
