@@ -1,9 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
-import {loadingOption} from "@/pages/stat/preview/common";
+import {getEmptyOption, getLoadingOption, loadingOption} from "@/pages/stat/preview/common";
 import {stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
+import useStorage from "@/utils/useStorage";
+import useLocale from "@/utils/useLocale";
+import locale from "@/pages/stat/preview/locale";
 
 export default function TimeLineBarPanel({data = null,size="default", loading = false,group=null}) {
 
@@ -13,6 +16,10 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
     const [currentBatch,setCurrentBatch] = useState(null);
     const [dimensList,setDimensList] = useState([]);
     const chartRef = useRef(null);
+    const [loadingOption, setLoadingOption] = useState({});
+    const [emptyOption,setEmptyOption] = useState({});
+    const [theme, setTheme] = useStorage('arco-theme', 'light');
+    const t = useLocale(locale);
 
     const getSeries = (chartData) => {
         const seriesArray = new Array<any>();
@@ -138,9 +145,19 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
         options: seriesArray,
     };
 
+
     useEffect(() => {
         if(data){
-            setDimensList(data[timeIndex]?.values.map(z => z.dimensValue));
+            const values = data[timeIndex]?.values;
+            setDimensList(values.map(z => z.dimensValue));
+            if(values.length == 0){
+                const chart = chartRef.current.getEchartsInstance();
+                chart.clear();
+                chart.setOption(emptyOption);
+            }else{
+                const chart = chartRef.current.getEchartsInstance();
+                chart.clear();
+            }
         }
     },[timeIndex])
 
@@ -155,6 +172,11 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
             setCurrentBatch(currentBatch);
         }
     },[data])
+
+    useEffect(() => {
+        setLoadingOption(getLoadingOption(theme));
+        setEmptyOption(getEmptyOption(t,theme));
+    },[])
 
     useEffect(() => {
         const chart = chartRef.current.getEchartsInstance();

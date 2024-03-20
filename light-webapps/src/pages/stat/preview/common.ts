@@ -83,8 +83,43 @@ export const loadingOption = {
     fontWeight: 'normal',
     lineWidth: 2,
     fontSize: 13,
-    maskColor: 'rgba(255, 255, 255, 1)',
+    maskColor: 'rgba(0, 0, 0, 1)',
 };
+
+export const getLoadingOption = (theme) => {
+    return {
+        animation: false,
+        icon: 'none',
+        text: 'Loading...',
+        color: '#c23531',
+        showSpinner: true,
+        spinnerRadius: 7,
+        textColor: '#000',
+        fontWeight: 'normal',
+        lineWidth: 2,
+        fontSize: 13,
+        maskColor: theme == 'light'?'rgba(255, 255, 255, 1)' : 'rgba(255, 0, 0, 1)',
+    };
+}
+
+export const getEmptyOption = (t:any,theme) => {
+    return {
+        title: {
+            text: t['statDisplay.chart.empty.warning'],
+            x: 'center',
+            top:'80px',
+            textStyle: {
+                color: theme == 'light' ? '#000' : '#fff',
+                fontSize: 12,
+                lineWidth: 2,
+                lineHeight:30,
+                fontColor:'black',
+                fontFamily : 'sans-serif',
+                fontWeight: 'normal',
+            }
+        }
+    };
+}
 
 export const getLineErrorOption = (errorMessage) => {
     return {
