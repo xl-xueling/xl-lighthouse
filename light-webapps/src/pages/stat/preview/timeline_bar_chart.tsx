@@ -146,18 +146,22 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
     };
 
 
-    useEffect(() => {
-        if(data){
-            const values = data[timeIndex]?.values;
+    const render = () => {
+        const values = data[timeIndex]?.values;
+        if(values == undefined || values.length == 0){
+            const chart = chartRef.current.getEchartsInstance();
+            chart.clear();
+            chart.setOption(emptyOption);
+        }else{
             setDimensList(values.map(z => z.dimensValue));
-            if(values.length == 0){
-                const chart = chartRef.current.getEchartsInstance();
-                chart.clear();
-                chart.setOption(emptyOption);
-            }else{
-                const chart = chartRef.current.getEchartsInstance();
-                chart.clear();
-            }
+            const chart = chartRef.current.getEchartsInstance();
+            chart.clear();
+        }
+    }
+
+    useEffect(() => {
+        if(data && timeIndex != -1 ){
+            render();
         }
     },[timeIndex])
 
@@ -170,6 +174,7 @@ export default function TimeLineBarPanel({data = null,size="default", loading = 
             const index = timeIndex == -1 || currentBatch == null || batchList.indexOf(currentBatch) == -1 ? seriesArray.length - 1 : batchList.indexOf(currentBatch);
             setTimeIndex(index);
             setCurrentBatch(currentBatch);
+            render();
         }
     },[data])
 
