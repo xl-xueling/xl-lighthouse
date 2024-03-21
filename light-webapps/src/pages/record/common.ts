@@ -30,6 +30,18 @@ export function translateRecord(t: any,record:Record){
             }
             return result;
         }
+    }else if(type === RecordTypeEnum.STAT_RESULT_LIMITING){
+        {
+            const result:LimitedRecord = {
+                id:record.id,
+                desc:
+                    t['recordType.groupLimited.strategy'] + ": [" + getLimitingStrategyDescription(t,descObject.strategy) + "] , " +
+                    t['recordType.groupLimited.startTime'] + ": " + formatTimeStamp(Number(descObject.startTime),DateTimeFormat) + " , "
+                    + t['recordType.groupLimited.endTime'] + ": " + formatTimeStamp(Number(descObject.endTime),DateTimeFormat)
+                ,
+            }
+            return result;
+        }
     }
     return {};
 }
