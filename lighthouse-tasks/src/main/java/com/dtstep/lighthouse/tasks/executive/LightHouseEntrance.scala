@@ -99,7 +99,7 @@ object LightHouseEntrance extends Logging{
       .option("kafka.request.timeout.ms","90000")
       .option("kafka.allow.auto.create.topics","false")
       .option("kafka.max.poll.interval.ms","1500000")
-      .option("kafka.fetch.max.wait.ms","1000")
+      .option("kafka.fetch.max.wait.ms","2000")
       .option("kafka.fetch.max.bytes","2097152")
       .option("kafka.connections.max.idle.ms","1080000")
       .option("kafka.max.partition.fetch.bytes","2097152")
