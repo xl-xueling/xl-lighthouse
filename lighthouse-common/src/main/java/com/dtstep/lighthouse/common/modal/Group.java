@@ -35,6 +35,10 @@ public class Group implements Serializable {
 
     private GroupExtendConfig extendConfig = new GroupExtendConfig();
 
+    private LimitingParam limitingParam;
+
+    private DebugParam debugParam;
+
     private SwitchStateEnum debugMode;
 
     private String randomId;
@@ -157,5 +161,21 @@ public class Group implements Serializable {
 
     public void setDataVersion(Integer dataVersion) {
         this.dataVersion = dataVersion;
+    }
+
+    public LimitingParam getLimitingParam() {
+        return limitingParam;
+    }
+
+    public void setLimitingParam(LimitingParam limitingParam) {
+        this.limitingParam = limitingParam;
+    }
+
+    public DebugParam getDebugParam() {
+        return debugParam;
+    }
+
+    public void setDebugParam(DebugParam debugParam) {
+        this.debugParam = debugParam;
     }
 }

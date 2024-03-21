@@ -19,10 +19,7 @@ package com.dtstep.lighthouse.core.wrapper;
 import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.*;
-import com.dtstep.lighthouse.common.modal.Column;
-import com.dtstep.lighthouse.common.modal.Group;
-import com.dtstep.lighthouse.common.modal.GroupExtendConfig;
-import com.dtstep.lighthouse.common.modal.Stat;
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.*;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.config.LDPConfig;
@@ -141,6 +138,16 @@ public final class GroupDBWrapper {
                     GroupExtendConfig groupExtendConfig = JsonUtil.toJavaObject(extendConfig,GroupExtendConfig.class);
                     group.setExtendConfig(groupExtendConfig);
                 }
+                String limitingParam = rs.getString("limiting_param");
+                if(StringUtil.isNotEmpty(limitingParam)){
+                    LimitingParam groupLimitingParam = JsonUtil.toJavaObject(limitingParam, LimitingParam.class);
+                    group.setLimitingParam(groupLimitingParam);
+                }
+                String debugParam = rs.getString("debug_param");
+                if(StringUtil.isNotEmpty(debugParam)){
+                    DebugParam groupDebugParam = JsonUtil.toJavaObject(debugParam, DebugParam.class);
+                    group.setDebugParam(groupDebugParam);
+                }
                 String secretKey = rs.getString("secret_key");
                 long createTime = rs.getTimestamp("create_time").getTime();
                 long updateTime = rs.getTimestamp("update_time").getTime();
@@ -200,7 +207,12 @@ public final class GroupDBWrapper {
         int result;
         try{
             if(groupStateEnum == GroupStateEnum.LIMITING){
-                result = queryRunner.update(conn, "update ldp_groups set state = ?,refresh_time = ? where id = ? and state = ?", groupStateEnum.getState(),date, groupId,GroupStateEnum.RUNNING.getState());
+                long startTime = DateUtil.translateToTimeStamp(date);
+                long endTime = DateUtil.getMinuteAfter(startTime,StatConst.LIMITING_EXPIRE_MINUTES);
+                LimitingParam limitingParam = new LimitingParam();
+                limitingParam.setStartTime(startTime);
+                limitingParam.setEndTime(endTime);
+                result = queryRunner.update(conn, "update ldp_groups set state = ?,refresh_time = ?,limiting_param =? where id = ? and state = ?", groupStateEnum.getState(),date, JsonUtil.toJSONString(limitingParam),groupId,GroupStateEnum.RUNNING.getState());
             }else{
                 result = queryRunner.update(conn, "update ldp_groups set state = ?,refresh_time = ? where id = ?", groupStateEnum.getState(),date, groupId);
             }
@@ -217,7 +229,12 @@ public final class GroupDBWrapper {
         int result;
         try{
             if(switchStateEnum == SwitchStateEnum.OPEN){
-                result = queryRunner.update(conn, "update ldp_groups set debug_mode = ?,refresh_time = ? where id = ? and debug_mode = ?", switchStateEnum.getState(),date, groupId,SwitchStateEnum.CLOSE.getState());
+                long startTime = DateUtil.translateToTimeStamp(date);
+                long endTime = DateUtil.getMinuteAfter(startTime,StatConst.LIMITING_EXPIRE_MINUTES);
+                DebugParam debugParam = new DebugParam();
+                debugParam.setStartTime(startTime);
+                debugParam.setEndTime(endTime);
+                result = queryRunner.update(conn, "update ldp_groups set debug_mode = ?,refresh_time = ?,debug_param =? where id = ? and debug_mode = ?", switchStateEnum.getState(),date,JsonUtil.toJSONString(debugParam), groupId,SwitchStateEnum.CLOSE.getState());
             }else{
                 result = queryRunner.update(conn, "update ldp_groups set debug_mode = ?,refresh_time = ? where id = ? and debug_mode = ?", switchStateEnum.getState(),date, groupId,SwitchStateEnum.OPEN.getState());
             }

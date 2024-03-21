@@ -10,23 +10,18 @@ import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
-import com.dtstep.lighthouse.common.modal.DebugConfig;
-import com.dtstep.lighthouse.common.modal.GroupExtendConfig;
+import com.dtstep.lighthouse.common.modal.DebugParam;
 import com.dtstep.lighthouse.common.modal.IDParam;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.formula.FormulaCalculate;
 import com.dtstep.lighthouse.core.redis.RedisHandler;
-import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.TrackParam;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.StatService;
 import com.dtstep.lighthouse.insights.vo.GroupVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
-import com.dtstep.lighthouse.insights.vo.TrackMessageVO;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -50,27 +45,22 @@ public class TrackController {
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.GROUP_MANAGE_PERMISSION,relationParam = "id")
     @PostMapping("/track/enableDebugMode")
-    public ResultData<DebugConfig> enableDebugMode(@Validated @RequestBody IDParam idParam) throws Exception {
+    public ResultData<DebugParam> enableDebugMode(@Validated @RequestBody IDParam idParam) throws Exception {
         Integer id = idParam.getId();
         GroupVO groupVO = groupService.queryById(id);
-        DebugConfig debugConfig;
+        DebugParam debugPram;
         if(groupVO.getDebugMode() == SwitchStateEnum.OPEN){
-            debugConfig = groupVO.getExtendConfig().getDebugConfig();
-            return ResultData.result(ServiceResult.result(ResultCode.debugModeSwitchAlreadyTurnON,debugConfig));
+            debugPram = groupVO.getDebugParam();
+            return ResultData.result(ServiceResult.result(ResultCode.debugModeSwitchAlreadyTurnON,debugPram));
         }else{
-            GroupExtendConfig extendConfig = groupVO.getExtendConfig();
-            debugConfig = extendConfig.getDebugConfig();
-            if(debugConfig == null){
-                debugConfig = new DebugConfig();
-                extendConfig.setDebugConfig(debugConfig);
-            }
+            debugPram = new DebugParam();
             long now = System.currentTimeMillis();
-            debugConfig.setStartTime(now);
-            debugConfig.setEndTime(DateUtil.getMinuteAfter(now, StatConst.DEBUG_MODEL_EXPIRE_MINUTES));
+            debugPram.setStartTime(now);
+            debugPram.setEndTime(DateUtil.getMinuteAfter(now, StatConst.DEBUG_MODEL_EXPIRE_MINUTES));
             groupVO.setDebugMode(SwitchStateEnum.OPEN);
             groupVO.setRefreshTime(DateUtil.timestampToLocalDateTime(now));
             groupService.update(groupVO);
-            return ResultData.success(debugConfig);
+            return ResultData.success(debugPram);
         }
     }
 

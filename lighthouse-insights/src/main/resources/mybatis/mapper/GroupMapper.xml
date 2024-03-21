@@ -14,6 +14,8 @@
         <result property="debugMode" column="debug_mode" typeHandler="com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler"/>
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.GroupStateEnumTypeHandler"/>
         <result property="extendConfig" column="extend_config" typeHandler="com.dtstep.lighthouse.insights.types.GroupExtendConfigTypeHandler"/>
+        <result property="limitingParam" column="limiting_param" typeHandler="com.dtstep.lighthouse.insights.types.LimitingParamTypeHandler"/>
+        <result property="debugParam" column="debug_param" typeHandler="com.dtstep.lighthouse.insights.types.DebugParamTypeHandler"/>
         <result property="randomId" column="random_id"/>
         <result property="dataVersion" column="data_version"/>
         <result property="projectTitle" column="project_title"/>
@@ -25,7 +27,7 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Group" >
         INSERT INTO ldp_groups (`token`,`project_id`,`columns`,`secret_key`,
                                     `state`,`desc`,
-                                    `extend_config`,`debug_mode`,`random_id`,`refresh_time`,`create_time`,`update_time`) VALUES
+                                    `extend_config`,`runtime_param`,`debug_mode`,`random_id`,`refresh_time`,`create_time`,`update_time`) VALUES
         (
             #{token,jdbcType=VARCHAR},
             #{projectId,jdbcType=INTEGER},
@@ -34,6 +36,8 @@
             #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.GroupStateEnumTypeHandler},
             #{desc,jdbcType=VARCHAR},
             #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.GroupExtendConfigTypeHandler},
+            #{limitingParam,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.LimitingParamTypeHandler},
+            #{debugParam,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.DebugParamTypeHandler},
             #{debugMode,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler},
             #{randomId,jdbcType=VARCHAR},
             #{refreshTime,jdbcType=TIMESTAMP},
@@ -54,6 +58,12 @@
             <if test="extendConfig != null">
                 `extend_config` = #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.GroupExtendConfigTypeHandler},
             </if>
+            <if test="limitingParam != null">
+                `limiting_param` = #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.LimitingParamTypeHandler},
+            </if>
+            <if test="debugParam != null">
+                `debug_param` = #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.DebugParamTypeHandler},
+            </if>
             <if test="debugMode != null">
                 `debug_mode` = #{debugMode,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler},
             </if>
@@ -73,14 +83,14 @@
     <select id="queryById" resultMap="groupResultMap">
         SELECT a.`id`,`token`,`project_id`,`columns`,`random_id`,a.`data_version`,
                a.`state`,a.`desc`,
-               a.`extend_config`,a.`debug_mode`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title
+               a.`extend_config`,a.`limiting_param`,a.`debug_param`,a.`debug_mode`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title
         FROM ldp_groups a left join ldp_projects b on a.project_id = b.id  WHERE a.id = #{id}
     </select>
 
     <select id="queryByProjectId" resultMap="groupResultMap">
         SELECT `id`,`token`,`project_id`,`columns`,`data_version`,
                `state`,`desc`,
-               `extend_config`,`debug_mode`,`refresh_time`,`create_time`,`update_time`
+               `extend_config`,`limiting_param`,`debug_param`,`debug_mode`,`refresh_time`,`create_time`,`update_time`
         FROM ldp_groups WHERE project_id = #{projectId}
     </select>
 

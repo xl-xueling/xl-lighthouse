@@ -20,15 +20,8 @@ import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
 import com.dtstep.lighthouse.common.modal.Group;
-import com.dtstep.lighthouse.common.modal.GroupExtendConfig;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
-import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
-import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.common.util.StringUtil;
-import com.fasterxml.jackson.databind.JsonNode;
-
-import java.time.ZoneId;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -105,11 +98,10 @@ public class GroupExtEntity extends Group {
 
     public static boolean isLimitedExpired(GroupExtEntity groupExtEntity){
         return groupExtEntity.getState() == GroupStateEnum.LIMITING
-                && (System.currentTimeMillis() - groupExtEntity.getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITING_EXPIRE_MINUTES));
+                && groupExtEntity.getLimitingParam().getEndTime() < System.currentTimeMillis();
     }
 
     public static boolean isDebugModeExpired(GroupExtEntity groupExtEntity){
-        GroupExtendConfig extendConfig = groupExtEntity.getExtendConfig();
-        return groupExtEntity.getDebugMode() == SwitchStateEnum.OPEN && extendConfig.getDebugConfig().getEndTime() < System.currentTimeMillis();
+        return groupExtEntity.getDebugMode() == SwitchStateEnum.OPEN && groupExtEntity.getDebugParam().getEndTime() < System.currentTimeMillis();
     }
 }
