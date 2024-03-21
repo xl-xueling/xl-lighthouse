@@ -46,9 +46,9 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public ListData<Record> queryStatLimitList(Integer statId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
         Stat stat = statDao.queryById(statId);
         Validate.notNull(stat);
+        PageHelper.startPage(pageNum,pageSize);
         PageInfo<Record> pageInfo;
         try{
             List<Record> recordList = recordDao.queryStatLimit(stat.getId(),stat.getGroupId());
