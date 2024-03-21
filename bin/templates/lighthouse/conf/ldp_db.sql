@@ -109,6 +109,8 @@ CREATE TABLE `ldp_groups` (
                               `secret_key` varchar(60) NOT NULL,
                               `state` int NOT NULL,
                               `extend_config` varchar(2000) DEFAULT NULL,
+                              `limiting_param` varchar(800) DEFAULT NULL,
+                              `debug_param` varchar(800) DEFAULT NULL,
                               `refresh_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                               `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                               `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -118,7 +120,7 @@ CREATE TABLE `ldp_groups` (
                               KEY `index_create_time` (`create_time`),
                               KEY `index_refresh_time` (`refresh_time`),
                               KEY `index_state` (`state`)
-) ENGINE=InnoDB AUTO_INCREMENT=100289 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=100294 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +164,7 @@ CREATE TABLE `ldp_metricsets` (
                                   `create_time` timestamp NULL DEFAULT NULL,
                                   `update_time` timestamp NULL DEFAULT NULL,
                                   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +186,7 @@ CREATE TABLE `ldp_order_details` (
                                      `process_time` timestamp NULL DEFAULT NULL,
                                      PRIMARY KEY (`id`),
                                      KEY `index_order_id` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,7 +215,7 @@ CREATE TABLE `ldp_orders` (
                               KEY `index_createtime` (`create_time`),
                               KEY `index_order_type` (`order_type`),
                               KEY `index_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100223 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=100227 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,7 +237,7 @@ CREATE TABLE `ldp_permissions` (
                                    KEY `index_owner` (`owner_type`,`owner_id`),
                                    KEY `index_role_id` (`role_id`),
                                    KEY `index_createtime` (`create_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=100541 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=100542 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -279,7 +281,7 @@ CREATE TABLE `ldp_records` (
                                KEY `index_create_time` (`create_time` DESC),
                                KEY `index_record_type` (`record_type`),
                                KEY `index_resource` (`resource_type`,`resource_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100508 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=100514 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,7 +326,7 @@ CREATE TABLE `ldp_roles` (
                              PRIMARY KEY (`id`),
                              KEY `index_pid` (`pid`),
                              KEY `index_roletype_resourceId` (`role_type`,`resource_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=775 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=827 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -347,6 +349,7 @@ CREATE TABLE `ldp_stats` (
                              `meta_id` int DEFAULT NULL,
                              `data_version` int DEFAULT '0',
                              `desc` varchar(300) DEFAULT NULL,
+                             `limiting_param` varchar(800) DEFAULT NULL,
                              `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                              `refresh_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                              `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -356,7 +359,7 @@ CREATE TABLE `ldp_stats` (
                              KEY `index_group_id` (`group_id`),
                              KEY `index_project_id` (`project_id`),
                              KEY `index_title` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=1100532 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1100552 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -397,4 +400,4 @@ CREATE TABLE `ldp_users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-19 11:58:57
+-- Dump completed on 2024-03-21 17:11:05
