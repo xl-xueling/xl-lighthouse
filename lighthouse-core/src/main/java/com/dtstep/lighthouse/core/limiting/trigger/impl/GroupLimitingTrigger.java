@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.limited.trigger.impl;
+package com.dtstep.lighthouse.core.limiting.trigger.impl;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -25,7 +25,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
-import com.dtstep.lighthouse.core.limited.trigger.Trigger;
+import com.dtstep.lighthouse.core.limiting.trigger.Trigger;
 import com.dtstep.lighthouse.core.lock.RedLock;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.LimitingWrapper;
@@ -48,7 +48,7 @@ public class GroupLimitingTrigger implements Trigger<GroupExtEntity> {
                 LocalDateTime localDateTime = LocalDateTime.now();
                 int result = GroupDBWrapper.changeState(groupExtEntity.getId(),GroupStateEnum.LIMITING,localDateTime);
                 if(result == 1){
-                    logger.info("lighthouse limited,the statistics group was changed to the current limiting state,groupId:{}", groupExtEntity.getId());
+                    logger.info("group changed to the limiting state,groupId:{}", groupExtEntity.getId());
                     Record limitingRecord = new Record();
                     long startTime = DateUtil.translateToTimeStamp(localDateTime);
                     limitingRecord.setRecordType(RecordTypeEnum.GROUP_MESSAGE_LIMITING);

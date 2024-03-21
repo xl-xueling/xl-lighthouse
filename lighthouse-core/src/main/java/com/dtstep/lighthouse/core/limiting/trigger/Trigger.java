@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.limited.trigger;
+package com.dtstep.lighthouse.core.limiting.trigger;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
