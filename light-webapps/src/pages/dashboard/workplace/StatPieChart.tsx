@@ -57,8 +57,8 @@ export default function StatPieChart() {
     };
 
     return (
-        <>
-            <ReactECharts option={option} style={chartStyle } />
-        </>
+        <div style={{height:'240px'}}>
+            {chartData && <ReactECharts option={option} style={chartStyle } />}
+        </div>
     );
 }
