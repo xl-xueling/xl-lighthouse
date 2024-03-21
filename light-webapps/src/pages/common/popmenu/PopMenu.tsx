@@ -30,7 +30,7 @@ export default function PopMenuBox (){
     }
 
     return (
-        <div>
+        <div style={{zIndex:'9999'}}>
             <div className={styles['floating-button']}>
                 <Trigger
                     popup={renderMenu}
