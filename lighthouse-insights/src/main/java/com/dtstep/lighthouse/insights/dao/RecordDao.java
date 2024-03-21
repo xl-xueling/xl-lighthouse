@@ -13,4 +13,6 @@ public interface RecordDao {
     int insert(Record record);
 
     List<Record> queryList(@Param("queryParam")RecordQueryParam queryParam);
+
+    List<Record> queryStatLimit(Integer statId,Integer groupId);
 }

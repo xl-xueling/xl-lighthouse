@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.controller;
 
+import com.dtstep.lighthouse.common.modal.IDParam;
 import com.dtstep.lighthouse.common.modal.ListSearchObject;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.common.entity.ListData;
@@ -26,6 +27,16 @@ public class RecordsController {
         Integer pageNum = searchObject.getPagination().getPageNum();
         Integer pageSize = searchObject.getPagination().getPageSize();
         ListData<Record> listData = recordService.queryList(queryParam,pageNum,pageSize);
+        return ResultData.success(listData);
+    }
+
+    @PostMapping("/record/statLimitList")
+    public ResultData<ListData<Record>> queryStatLimitList(@Validated @RequestBody ListSearchObject<IDParam> searchObject){
+        IDParam idParam = searchObject.getQueryParams();
+        Integer statId = idParam.getId();
+        Integer pageNum = searchObject.getPagination().getPageNum();
+        Integer pageSize = searchObject.getPagination().getPageSize();
+        ListData<Record> listData = recordService.queryStatLimitList(statId,pageNum,pageSize);
         return ResultData.success(listData);
     }
 }

@@ -18,10 +18,10 @@ import {GlobalErrorCodes} from "@/utils/constants";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {formatTimeStampBackUp} from "@/utils/util";
-import {LimitedRecord, translateRecord} from "@/pages/record/record";
+import {LimitedRecord, translateRecord} from "@/pages/record/common";
 
 
-export function LimitedRecordModal({resourceId,resourceType,recordTypes}){
+export function RecordsPanel({resourceId,resourceType,recordTypes}){
 
     const t = useLocale(locale);
     const [loading, setLoading] = useState(true);

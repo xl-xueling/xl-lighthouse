@@ -18,9 +18,8 @@ import TimeLineBarPanel from "@/pages/stat/preview/timeline_bar_chart";
 import StatBasicLineChart from "@/pages/stat/preview/line_chart_v1";
 import './style/index.module.less';
 import {StatStateEnum} from "@/types/insights-common";
-import { IoMdRefreshCircle } from "react-icons/io";
 import { IoMdRefresh } from "react-icons/io";
-import { IoIosRefresh } from "react-icons/io";
+import {StatLimitingModal} from "@/pages/stat/limiting/StatLimitingModal";
 
 const { Row, Col } = Grid;
 
@@ -254,7 +253,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                                                                  onClose={() => setShowFilterConfigModal(false)}
                                                                  onSuccess={() => refresh()}
                 />}
-                {/*{showLimitedRecord && <LimitedRecordModal resourceId={statInfo?.id} recordTypes={[RecordTypeEnum.STAT_RESULT_LIMITING]} resourceType={ResourceTypeEnum.Stat} onClose={() => setShowLimitedRecord(false)}/>}*/}
+                {showLimitedRecord && <StatLimitingModal statInfo={statInfo} onClose={() => setShowLimitedRecord(false)}/>}
                 {showUpdateModal && <StatUpdateModal statInfo={statInfo} onClose={() => setShowUpdateModal(false)} listCallback={(r1,r2) => setStatInfo(r1)}/>}
             </Spin>
         </>

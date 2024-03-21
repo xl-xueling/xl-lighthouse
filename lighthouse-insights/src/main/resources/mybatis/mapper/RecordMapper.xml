@@ -42,4 +42,10 @@
         </where>
         order by create_time desc
     </select>
+
+    <select id="queryStatLimit" resultMap="recordResultMap">
+        SELECT `id`,`user_id`,`resource_id`,`resource_type`,`record_type`,`extend`,`create_time` FROM ldp_records
+        where (resource_id = #{statId} and resource_type = '6') or(resource_id = #{groupId} and resource_type = '5')
+        order by create_time desc
+    </select>
 </mapper>

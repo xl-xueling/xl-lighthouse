@@ -9,4 +9,6 @@ public interface RecordService {
     int create(Record record);
 
     ListData<Record> queryList(RecordQueryParam queryParam,Integer pageNum,Integer pageSize);
+
+    ListData<Record> queryStatLimitList(Integer statId,Integer pageNum,Integer pageSize);
 }
