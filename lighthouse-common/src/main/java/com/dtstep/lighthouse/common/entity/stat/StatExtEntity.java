@@ -99,6 +99,6 @@ public class StatExtEntity extends Stat {
 
     public static boolean isLimitedExpired(StatExtEntity statExtEntity){
         return statExtEntity.getState() == StatStateEnum.LIMITING
-                && statExtEntity.getLimitingParam().getEndTime() < System.currentTimeMillis();
+                && (statExtEntity.getLimitingParam() == null || statExtEntity.getLimitingParam().getEndTime() < System.currentTimeMillis());
     }
 }

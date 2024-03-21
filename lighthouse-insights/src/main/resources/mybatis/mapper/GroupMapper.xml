@@ -59,10 +59,10 @@
                 `extend_config` = #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.GroupExtendConfigTypeHandler},
             </if>
             <if test="limitingParam != null">
-                `limiting_param` = #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.LimitingParamTypeHandler},
+                `limiting_param` = #{limitingParam,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.LimitingParamTypeHandler},
             </if>
             <if test="debugParam != null">
-                `debug_param` = #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.DebugParamTypeHandler},
+                `debug_param` = #{debugParam,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.DebugParamTypeHandler},
             </if>
             <if test="debugMode != null">
                 `debug_mode` = #{debugMode,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler},

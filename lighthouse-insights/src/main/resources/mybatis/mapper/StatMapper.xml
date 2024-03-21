@@ -168,7 +168,7 @@
                 `render_config` = #{renderConfig,typeHandler=com.dtstep.lighthouse.insights.types.RenderConfigTypeHandler},
             </if>
             <if test="limitingParam != null">
-                `limiting_param` = #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.LimitingParamTypeHandler},
+                `limiting_param` = #{limitingParam,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.LimitingParamTypeHandler},
             </if>
             <if test="desc != null">
                 `desc` = #{desc},

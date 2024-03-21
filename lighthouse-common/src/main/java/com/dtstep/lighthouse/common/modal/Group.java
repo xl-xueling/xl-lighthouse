@@ -39,7 +39,7 @@ public class Group implements Serializable {
 
     private DebugParam debugParam;
 
-    private SwitchStateEnum debugMode;
+    private SwitchStateEnum debugMode = SwitchStateEnum.CLOSE;
 
     private String randomId;
 

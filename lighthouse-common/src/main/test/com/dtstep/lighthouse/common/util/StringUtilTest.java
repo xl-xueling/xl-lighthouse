@@ -35,12 +35,5 @@ public class StringUtilTest {
         System.out.println("is:" + is);
     }
 
-    @Test
-    public void testBlen() throws Exception {
-        String s = "每5分钟_各省份_总金额统计Top100";
-        String b = "Every5Minute_province_sum_amount_st";
-        int len = StringUtil.getBLen(s);
-        System.out.println("len:" + len);
-    }
 
 }
