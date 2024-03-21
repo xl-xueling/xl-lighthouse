@@ -9,10 +9,10 @@ import {OrderTypeEnum, RecordTypeEnum, ResourceTypeEnum} from "@/types/insights-
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import "./style/index.module.less"
-import {LimitedRecordModal} from "@/pages/record/limited_records";
 import {requestCreateApply} from "@/api/order";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
+import {RecordsPanel} from "@/pages/record/records_panel";
 
 export function LimitingSettingsModal({groupInfo,onClose}){
 
@@ -83,7 +83,7 @@ export function LimitingSettingsModal({groupInfo,onClose}){
             footer={null}>
 
             <Space direction={"vertical"} style={{width:'100%',border:'1px solid var(--color-border)'}}>
-                <LimitedRecordModal resourceId={groupInfo?.id} recordTypes={[RecordTypeEnum.GROUP_MESSAGE_LIMITING]} resourceType={ResourceTypeEnum.Group} />
+                <RecordsPanel resourceId={groupInfo?.id} recordTypes={[RecordTypeEnum.GROUP_MESSAGE_LIMITING]} resourceType={ResourceTypeEnum.Group} />
                 <Collapse style={{marginTop:'10px',borderLeft:"none",borderRight:"none"}}>
                     <CollapseItem style={{borderLeft:"none",borderRight:"none"}} header={<span>{t['limitingConfig.collapse.title']}</span>}
                                   name='1'>

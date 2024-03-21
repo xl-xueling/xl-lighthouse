@@ -10,5 +10,13 @@ export async function requestList(data) :Promise<ResultData<{list:Array<Record>,
     })
 }
 
+export async function requestStatLimitList(data) :Promise<ResultData<{list:Array<Record>,total:number}>>  {
+    return request({
+        url:'/record/statLimitList',
+        method:'POST',
+        data,
+    })
+}
+
 
 

@@ -24,17 +24,11 @@ import {CiViewTable} from "react-icons/ci";
 import {RiAppsLine} from "react-icons/ri";
 import {Group} from "@/types/insights-web";
 import {requestDeleteById, requestQueryById} from "@/api/group";
-import {EditTableColumn} from "@/pages/common/edittable/EditTable";
-import {getRandomString} from "@/utils/util";
 import {HiMiniBoltSlash} from "react-icons/hi2";
 const { Row, Col } = Grid;
 import { RiShieldKeyholeLine } from "react-icons/ri";
-import {GlobalErrorCodes} from "@/utils/constants";
 import GroupUpdatePanel from "@/pages/group/update";
 import SecretKeyModal from "@/pages/group/basic/secret_key";
-import {RecordTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
-import {LimitedRecordModal} from "@/pages/record/limited_records";
-import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
 import {LimitingSettingsModal} from "@/pages/group/limiting/LimitingSettingsModal";
 
 export const GroupManageContext = React.createContext(null)
