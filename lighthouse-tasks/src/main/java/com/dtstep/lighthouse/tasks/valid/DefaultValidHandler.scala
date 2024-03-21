@@ -26,7 +26,7 @@ import com.dtstep.lighthouse.common.enums.result.MessageCaptchaEnum
 import com.dtstep.lighthouse.common.util.{DateUtil, JsonUtil}
 import com.dtstep.lighthouse.common.util.JsonUtil.toJSONString
 import com.dtstep.lighthouse.core.batch.BatchAdapter
-import com.dtstep.lighthouse.core.limited.{LimitedContext, RedisLimitedAspect}
+import com.dtstep.lighthouse.core.limiting.{LimitingContext, RedisLimitingAspect}
 import com.dtstep.lighthouse.core.message.MessageValid
 import com.dtstep.lighthouse.core.redis.RedisHandler
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper
@@ -50,7 +50,7 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
     val groupEntity = GroupDBWrapper.queryById(message.getGroupId);
     if(groupEntity == null || groupEntity.getState != GroupStateEnum.RUNNING) return null
     val threshold = getThreshold(groupEntity,LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING);
-    if (!LimitedContext.getInstance().tryAcquire(groupEntity,threshold,message.getRepeat)) {
+    if (!LimitingContext.getInstance().tryAcquire(groupEntity,threshold,message.getRepeat)) {
       logger.error(s"limited trigger strategy:GROUP_MESSAGE_SIZE_LIMIT," +
         s"group id:${groupEntity.getId},threshold:${threshold * 60L}")
       return null;
@@ -75,7 +75,7 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
   def capture(groupId:Int, message:LightMessage): Unit = {
     val batchTime = DateUtil.batchTime(1, TimeUnit.MINUTES, System.currentTimeMillis)
     val lockTrackKey = RedisConst.LOCK_TRACK_PREFIX + "_" + groupId  + "_" + batchTime
-    if(RedisLimitedAspect.getInstance().tryAcquire(lockTrackKey,5,50,TimeUnit.MINUTES.toSeconds(5),1)){
+    if(RedisLimitingAspect.getInstance().tryAcquire(lockTrackKey,5,50,TimeUnit.MINUTES.toSeconds(5),1)){
       val trackKey = RedisConst.TRACK_PREFIX + "_" + groupId;
       message.setSystemTime(System.currentTimeMillis());
       if(logger.isTraceEnabled()){

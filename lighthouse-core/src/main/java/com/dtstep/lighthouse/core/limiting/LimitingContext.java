@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.limited;
+package com.dtstep.lighthouse.core.limiting;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,35 +17,35 @@ package com.dtstep.lighthouse.core.limited;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.limited.strategy.impl.GroupMsgStrategyService;
+import com.dtstep.lighthouse.core.limiting.strategy.impl.GroupMsgStrategyService;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.core.callback.CallBackMain;
-import com.dtstep.lighthouse.core.limited.strategy.Strategy;
-import com.dtstep.lighthouse.core.limited.strategy.impl.StatResultStrategyService;
-import com.dtstep.lighthouse.core.limited.trigger.Trigger;
-import com.dtstep.lighthouse.core.limited.trigger.impl.GroupLimitingTrigger;
-import com.dtstep.lighthouse.core.limited.trigger.impl.StatLimitingTrigger;
+import com.dtstep.lighthouse.core.limiting.strategy.Strategy;
+import com.dtstep.lighthouse.core.limiting.strategy.impl.StatResultStrategyService;
+import com.dtstep.lighthouse.core.limiting.trigger.Trigger;
+import com.dtstep.lighthouse.core.limiting.trigger.impl.GroupLimitingTrigger;
+import com.dtstep.lighthouse.core.limiting.trigger.impl.StatLimitingTrigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class LimitedContext {
+public final class LimitingContext {
 
-    private static final Logger logger = LoggerFactory.getLogger(LimitedContext.class);
+    private static final Logger logger = LoggerFactory.getLogger(LimitingContext.class);
 
-    private static final LimitedContext context = new LimitedContext();
+    private static final LimitingContext context = new LimitingContext();
 
-    private LimitedContext(){}
+    private LimitingContext(){}
 
-    public static LimitedContext getInstance(){
+    public static LimitingContext getInstance(){
         return context;
     }
 
-    private static final Strategy<GroupExtEntity> groupLimitedService = new GroupMsgStrategyService();
+    private static final Strategy<GroupExtEntity> groupLimitingService = new GroupMsgStrategyService();
 
-    private static final Strategy<StatExtEntity> statLimitedService = new StatResultStrategyService();
+    private static final Strategy<StatExtEntity> statLimitingService = new StatResultStrategyService();
 
     private static final Trigger<GroupExtEntity> groupTrigger = new GroupLimitingTrigger();
 
@@ -63,15 +63,15 @@ public final class LimitedContext {
         }
         boolean isAcquire = false;
         try{
-            isAcquire =  groupLimitedService.process(groupExtEntity,permitsPerSecond,step);
+            isAcquire =  groupLimitingService.process(groupExtEntity,permitsPerSecond,step);
         }catch (Exception ex){
-            logger.error("check group limited error!",ex);
+            logger.error("limiting tryAcquire error!",ex);
         }
         if(!isAcquire){
             try{
                 CallBackMain.getInstance().execute(groupTrigger, groupExtEntity);
             }catch (Exception ex){
-                logger.error("group limited callback execute error!",ex);
+                logger.error("group limiting callback execute error!",ex);
             }
         }
         return isAcquire;
@@ -89,15 +89,15 @@ public final class LimitedContext {
         }
         boolean isAcquire = false;
         try{
-            isAcquire = statLimitedService.process(statExtEntity,permitsPerSecond,step);
+            isAcquire = statLimitingService.process(statExtEntity,permitsPerSecond,step);
         }catch (Exception ex){
-            logger.error("check stat limited error!",ex);
+            logger.error("check stat limiting error!",ex);
         }
         if(!isAcquire){
             try{
                 CallBackMain.getInstance().execute(statTrigger, statExtEntity);
             }catch (Exception ex){
-                logger.error("stat limited callback execute error!",ex);
+                logger.error("stat limiting callback execute error!",ex);
             }
         }
         return isAcquire;

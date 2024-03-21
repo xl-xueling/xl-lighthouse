@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.limited.strategy;
+package com.dtstep.lighthouse.core.limiting.strategy;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,8 +16,8 @@ package com.dtstep.lighthouse.core.limited.strategy;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.core.limited.device.CountingDevice;
-import com.dtstep.lighthouse.core.limited.device.impl.DefaultLimitingCountingDevice;
+import com.dtstep.lighthouse.core.limiting.device.CountingDevice;
+import com.dtstep.lighthouse.core.limiting.device.impl.DefaultLimitingCountingDevice;
 import com.google.common.collect.Lists;
 import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
 

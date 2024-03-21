@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.limited.trigger.impl;
+package com.dtstep.lighthouse.core.limiting.trigger.impl;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -25,7 +25,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
-import com.dtstep.lighthouse.core.limited.trigger.Trigger;
+import com.dtstep.lighthouse.core.limiting.trigger.Trigger;
 import com.dtstep.lighthouse.core.lock.RedLock;
 import com.dtstep.lighthouse.core.wrapper.LimitingWrapper;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;

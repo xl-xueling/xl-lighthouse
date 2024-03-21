@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.limited;
+package com.dtstep.lighthouse.core.limiting;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -33,9 +33,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 
 
-public final class RedisLimitedAspect {
+public final class RedisLimitingAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger(RedisLimitedAspect.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedisLimitingAspect.class);
 
     private final static Cache<String, Optional<Boolean>> limitedCache = Caffeine.newBuilder()
             .expireAfterWrite(StatConst.LIMIT_BATCH_INTERVAL * 2, TimeUnit.SECONDS)
@@ -49,7 +49,7 @@ public final class RedisLimitedAspect {
             .softValues()
             .build();
 
-    private static final RedisLimitedAspect instance = new RedisLimitedAspect();
+    private static final RedisLimitingAspect instance = new RedisLimitingAspect();
 
     private String sha;
 
@@ -72,7 +72,7 @@ public final class RedisLimitedAspect {
 
     private static final Striped<Lock> stripedLock = Striped.lazyWeakLock(80);
 
-    private RedisLimitedAspect(){
+    private RedisLimitingAspect(){
         try{
             this.sha = RedisHandler.scriptLoad(LUA_LIMIT_SCRIPT);
         }catch (Exception ex){
@@ -80,7 +80,7 @@ public final class RedisLimitedAspect {
         }
     }
 
-    public static RedisLimitedAspect getInstance(){
+    public static RedisLimitingAspect getInstance(){
         return instance;
     }
 

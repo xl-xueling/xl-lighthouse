@@ -29,7 +29,6 @@ import com.dtstep.lighthouse.common.util.{DateUtil, JsonUtil}
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader
 import com.dtstep.lighthouse.core.distinct.RedisRoaringFilter
 import com.dtstep.lighthouse.core.formula.FormulaCalculate
-import com.dtstep.lighthouse.core.limited.LimitedContext
 import com.dtstep.lighthouse.core.wrapper.DimensDBWrapper
 import com.google.common.collect.ImmutableMap
 
@@ -41,6 +40,7 @@ import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper
 import org.apache.spark.sql.{Dataset, Encoder, Encoders, SparkSession}
 import org.slf4j.LoggerFactory
 import com.dtstep.lighthouse.common.util.StringUtil
+import com.dtstep.lighthouse.core.limiting.LimitingContext
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator
 import org.apache.commons.lang3.Validate
 import org.apache.spark.internal.Logging
@@ -115,8 +115,8 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
     if (!StringUtil.isEmpty(templateEntity.getDimens)) {
       dimensValue = DimensDBWrapper.getDimensValue(envMap, templateEntity.getDimensArray,batchTime);
       val threshold = getThreshold(groupEntity,LimitingStrategyEnum.STAT_RESULT_SIZE_LIMITING);
-      if (!LimitedContext.getInstance().tryAcquire(statEntity,threshold,1)) {
-        logError(s"limited trigger strategy:STAT_RESULT_SIZE_LIMIT,token:${groupEntity.getToken},stat:${statEntity.getId},threshold:${threshold * 60L}")
+      if (!LimitingContext.getInstance().tryAcquire(statEntity,threshold,1)) {
+        logError(s"limiting trigger strategy:STAT_RESULT_SIZE_LIMIT,token:${groupEntity.getToken},stat:${statEntity.getId},threshold:${threshold * 60L}")
         return list;
       }
     }
