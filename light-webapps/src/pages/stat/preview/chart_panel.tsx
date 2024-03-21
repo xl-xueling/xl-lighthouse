@@ -12,6 +12,8 @@ import {
  DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
 import {requestStatData} from "@/api/data";
+import {getEmptyOption, getLoadingOption} from "@/pages/stat/preview/common";
+import useStorage from "@/utils/useStorage";
 
 export default function ChartPanel({size = 'default',searchForm = null,statInfo,parentLoading = false,ref=null}) {
     const t = useLocale(locale);
@@ -19,7 +21,10 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
     const [batchTimeList,setBatchTimeList] = useState<string[]>([]);
     const [eChartData,setEChartData] = useState<Array<EChartChartValue>>([]);
     const [errorMessage,setErrorMessage] = useState(null);
+    const [loadingOption, setLoadingOption] = useState({});
     const chartRef = ref == null ? useRef(null) : ref;
+    const [emptyOption,setEmptyOption] = useState({});
+    const [theme, setTheme] = useStorage('arco-theme', 'light');
 
     const loadData = (data:Array<StatData>) => {
         const eChartChartValues:Array<EChartChartValue> = [];
@@ -151,19 +156,7 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
             }]
         };
     }
-    const loadingOption = {
-        animation: false,
-        icon: 'none',
-        text: 'Loading...',
-        color: '#c23531',
-        showSpinner: true,
-        spinnerRadius: 7,
-        textColor: '#000',
-        fontWeight: 'normal',
-        lineWidth: 2,
-        fontSize: 13,
-        maskColor: 'rgba(255, 255, 255, 1)',
-    };
+
 
     useEffect(() => {
         if(statInfo?.templateEntity?.dimensArray?.length == 0){
@@ -187,6 +180,11 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
             fetchData().then();
         }
     },[JSON.stringify(searchForm),statInfo?.id])
+
+    useEffect(() => {
+        setLoadingOption(getLoadingOption(theme));
+        setEmptyOption(getEmptyOption(t,theme));
+    },[])
 
     const getReactChart = () => {
         if(size == 'default'){
