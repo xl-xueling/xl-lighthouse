@@ -16,7 +16,7 @@ import {
 import {IconEdit, IconList, IconMan, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
 import UserGroup from "@/pages/user/common/groups";
 import { TbFilterEdit } from "react-icons/tb";
-import {getStatExpiredEnumDescription} from "@/pages/common/desc/base";
+import {getIcon, getStatExpiredEnumDescription} from "@/pages/common/desc/base";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import DepartmentLabel from "@/pages/department/common/depart";
 import {PermissionEnum} from "@/types/insights-common";
@@ -86,7 +86,7 @@ export default function BasicInfo({statInfo,callback}) {
                             :null}
                         {statInfo?.permissions.includes(PermissionEnum.ManageAble) && statInfo?.templateEntity.dimensArray.length > 0?
                             <Button shape={"circle"} icon={<TbFilterEdit/>} size={"mini"} onClick={() => callback('showFilterConfigModal')}/>:null}
-                        <Button shape={"circle"} icon={<IconList/>} size={"mini"} onClick={() => callback('showLimitedRecord')}/>
+                        <Button shape={"circle"} icon={getIcon('limiting')} size={"mini"} onClick={() => callback('showLimitedRecord')}/>
                     </Space> : '--'}
                 </div>,
         },

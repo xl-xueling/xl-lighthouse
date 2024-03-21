@@ -20,6 +20,7 @@ import {IconCalendarClock, IconMindMapping, IconStar, IconStarFill, IconTag} fro
 import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
 import {VscGistSecret, VscOutput} from "react-icons/vsc";
+import {HiMiniBoltSlash} from "react-icons/hi2";
 
 export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
     if(value === StatStateEnum.PENDING){
@@ -267,6 +268,8 @@ export function getIcon(type:string,marginRight:string = null){
         return <VscOutput style={{marginRight: marginRight}}/>
     }else if(type == 'approve'){
         return <IconCalendarClock style={{marginRight: marginRight}}/>
+    }else if(type == 'limiting'){
+        return <HiMiniBoltSlash style={{marginRight: marginRight}}/>
     }
 }
 
