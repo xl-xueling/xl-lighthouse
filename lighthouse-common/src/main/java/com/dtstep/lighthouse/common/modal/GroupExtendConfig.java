@@ -11,16 +11,6 @@ public class GroupExtendConfig implements Serializable {
 
     private HashMap<LimitingStrategyEnum,Integer> limitingConfig = new HashMap<>();
 
-    private DebugConfig debugConfig;
-
-    public DebugConfig getDebugConfig() {
-        return debugConfig;
-    }
-
-    public void setDebugConfig(DebugConfig debugConfig) {
-        this.debugConfig = debugConfig;
-    }
-
     public HashMap<LimitingStrategyEnum, Integer> getLimitingConfig() {
         return limitingConfig;
     }

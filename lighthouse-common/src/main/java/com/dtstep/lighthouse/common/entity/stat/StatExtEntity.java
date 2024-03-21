@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.common.entity.stat;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
@@ -98,6 +99,6 @@ public class StatExtEntity extends Stat {
 
     public static boolean isLimitedExpired(StatExtEntity statExtEntity){
         return statExtEntity.getState() == StatStateEnum.LIMITING
-                && (System.currentTimeMillis() - statExtEntity.getRefreshTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= TimeUnit.MINUTES.toMillis(StatConst.LIMITING_EXPIRE_MINUTES));
+                && statExtEntity.getLimitingParam().getEndTime() < System.currentTimeMillis();
     }
 }

@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.common.modal;
 
-public class DebugConfig {
+public class DebugParam {
 
     private Long startTime;
 

@@ -33,6 +33,8 @@ public class Stat implements Serializable {
 
     private RenderConfig renderConfig = new RenderConfig();
 
+    private LimitingParam limitingParam;
+
     private LocalDateTime createTime;
 
     private LocalDateTime refreshTime;
@@ -205,5 +207,13 @@ public class Stat implements Serializable {
 
     public void setRefreshTime(LocalDateTime refreshTime) {
         this.refreshTime = refreshTime;
+    }
+
+    public LimitingParam getLimitingParam() {
+        return limitingParam;
+    }
+
+    public void setLimitingParam(LimitingParam limitingParam) {
+        this.limitingParam = limitingParam;
     }
 }

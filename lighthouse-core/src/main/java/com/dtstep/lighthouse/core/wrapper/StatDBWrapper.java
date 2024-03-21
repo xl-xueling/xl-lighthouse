@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.core.wrapper;
 
+import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
@@ -9,6 +10,7 @@ import com.dtstep.lighthouse.common.entity.state.StatUnit;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.modal.Column;
+import com.dtstep.lighthouse.common.modal.LimitingParam;
 import com.dtstep.lighthouse.common.modal.RenderConfig;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.DateUtil;
@@ -103,6 +105,14 @@ public class StatDBWrapper {
                 Long expired = rs.getLong("expired");
                 int state = rs.getInt("state");
                 String renderConfig = rs.getString("render_config");
+                if(StringUtil.isNotEmpty(renderConfig)){
+                    stat.setRenderConfig(JsonUtil.toJavaObject(renderConfig, RenderConfig.class));
+                }
+                String limitingParam = rs.getString("limiting_param");
+                if(StringUtil.isNotEmpty(limitingParam)){
+                    LimitingParam statLimitingParam = JsonUtil.toJavaObject(limitingParam, LimitingParam.class);
+                    stat.setLimitingParam(statLimitingParam);
+                }
                 Integer metaId = rs.getInt("meta_id");
                 long createTime = rs.getTimestamp("create_time").getTime();
                 long updateTime = rs.getTimestamp("update_time").getTime();
@@ -117,9 +127,6 @@ public class StatDBWrapper {
                 stat.setTimeparam(timeparam);
                 stat.setDataVersion(dataVersion);
                 stat.setExpired(expired);
-                if(StringUtil.isNotEmpty(renderConfig)){
-                    stat.setRenderConfig(JsonUtil.toJavaObject(renderConfig, RenderConfig.class));
-                }
                 StatStateEnum statStateEnum = StatStateEnum.getByState(state);
                 stat.setState(statStateEnum);
                 stat.setMetaId(metaId);
@@ -151,6 +158,14 @@ public class StatDBWrapper {
                 Long expired = rs.getLong("expired");
                 int state = rs.getInt("state");
                 String renderConfig = rs.getString("render_config");
+                if(StringUtil.isNotEmpty(renderConfig)){
+                    stat.setRenderConfig(JsonUtil.toJavaObject(renderConfig, RenderConfig.class));
+                }
+                String limitingParam = rs.getString("limiting_param");
+                if(StringUtil.isNotEmpty(limitingParam)){
+                    LimitingParam statLimitingParam = JsonUtil.toJavaObject(limitingParam, LimitingParam.class);
+                    stat.setLimitingParam(statLimitingParam);
+                }
                 Integer metaId = rs.getInt("meta_id");
                 long createTime = rs.getTimestamp("create_time").getTime();
                 long updateTime = rs.getTimestamp("update_time").getTime();
@@ -173,9 +188,6 @@ public class StatDBWrapper {
                 stat.setRandomId(randomId);
                 stat.setGroupColumns(columns);
                 stat.setDataVersion(dataVersion);
-                if(StringUtil.isNotEmpty(renderConfig)){
-                    stat.setRenderConfig(JsonUtil.toJavaObject(renderConfig, RenderConfig.class));
-                }
             }
             return stat;
         }
@@ -297,7 +309,12 @@ public class StatDBWrapper {
         int result;
         try{
             if(statStateEnum == StatStateEnum.LIMITING){
-                result = queryRunner.update(conn, "update ldp_stats set state = ?,refresh_time = ? where id = ? and state = ?", statStateEnum.getState(),date, statId,StatStateEnum.RUNNING.getState());
+                long startTime = DateUtil.translateToTimeStamp(date);
+                long endTime = DateUtil.getMinuteAfter(startTime, StatConst.LIMITING_EXPIRE_MINUTES);
+                LimitingParam limitingParam = new LimitingParam();
+                limitingParam.setStartTime(startTime);
+                limitingParam.setEndTime(endTime);
+                result = queryRunner.update(conn, "update ldp_stats set state = ?,refresh_time = ?,limiting_param =? where id = ? and state = ?", statStateEnum.getState(),date,JsonUtil.toJSONString(limitingParam), statId,StatStateEnum.RUNNING.getState());
             }else{
                 result = queryRunner.update(conn, "update ldp_stats set state = ?,refresh_time = ? where id = ?", statStateEnum.getState(),date, statId);
             }

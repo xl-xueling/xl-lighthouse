@@ -14,6 +14,7 @@
         <result property="departmentId" column="department_id"/>
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.StatStateEnumTypeHandler"/>
         <result property="renderConfig" column="render_config" typeHandler="com.dtstep.lighthouse.insights.types.RenderConfigTypeHandler"/>
+        <result property="limitingParam" column="limiting_param" typeHandler="com.dtstep.lighthouse.insights.types.LimitingParamTypeHandler"/>
         <result property="metaId" column="meta_id"/>
         <result property="randomId" column="random_id"/>
         <result property="groupColumns" column="columns"/>
@@ -39,6 +40,7 @@
             #{template,jdbcType=VARCHAR},
             #{timeparam,jdbcType=VARCHAR},
             #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.StatStateEnumTypeHandler},
+            #{limitingParam,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.LimitingParamTypeHandler},
             #{metaId,jdbcType=INTEGER},
             #{randomId,jdbcType=VARCHAR},
             #{expired,jdbcType=BIGINT},
@@ -49,7 +51,7 @@
     </insert>
 
     <select id="queryById" resultMap="statResultMap">
-        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`meta_id`,a.`timeparam`,a.`state`,a.`random_id`,a.`data_version`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title,
+        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`meta_id`,a.`timeparam`,a.`state`,a.`random_id`,a.`limiting_param`,a.`data_version`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title,
                b.department_id,c.token,c.columns
         FROM ldp_stats a
                  inner join ldp_projects b on a.project_id = b.id
@@ -74,7 +76,7 @@
         FROM ldp_departments d
         JOIN cte ON cte.id = d.pid
         )
-        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`timeparam`,a.`state`,a.`random_id`,a.`data_version`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title,
+        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`timeparam`,a.`state`,a.`random_id`,a.`limiting_param`,a.`data_version`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title,
                b.department_id,c.token,c.columns
         FROM ldp_stats a
                  inner join ldp_projects b on a.project_id = b.id
@@ -143,7 +145,7 @@
     </select>
 
     <select id="queryByProjectId" resultMap="statResultMap">
-        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`data_version`,`expired`,`desc`,`create_time`,`update_time`,`refresh_time`
+        SELECT `id`,`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`random_id`,`data_version`,`limiting_param`,`expired`,`desc`,`create_time`,`update_time`,`refresh_time`
         from ldp_stats where project_id = #{projectId}
     </select>
 
@@ -164,6 +166,9 @@
             </if>
             <if test="renderConfig != null">
                 `render_config` = #{renderConfig,typeHandler=com.dtstep.lighthouse.insights.types.RenderConfigTypeHandler},
+            </if>
+            <if test="limitingParam != null">
+                `limiting_param` = #{extendConfig,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.LimitingParamTypeHandler},
             </if>
             <if test="desc != null">
                 `desc` = #{desc},
