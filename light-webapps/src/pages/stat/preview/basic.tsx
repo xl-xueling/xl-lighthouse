@@ -78,6 +78,7 @@ export default function BasicInfo({statInfo,callback}) {
                 <div>
                     {!statInfo?.builtIn ?
                     <Space size={6}>
+                        <Button shape={"circle"} icon={getIcon('limiting')} size={"mini"} onClick={() => callback('showLimitedRecord')}/>
                         {statInfo?.permissions.includes(PermissionEnum.ManageAble)?
                             <>
                             <Button shape={"circle"} icon={<IconEdit/>} size={"mini"} onClick={() => callback('showUpdateModal')}/>
@@ -86,7 +87,6 @@ export default function BasicInfo({statInfo,callback}) {
                             :null}
                         {statInfo?.permissions.includes(PermissionEnum.ManageAble) && statInfo?.templateEntity.dimensArray.length > 0?
                             <Button shape={"circle"} icon={<TbFilterEdit/>} size={"mini"} onClick={() => callback('showFilterConfigModal')}/>:null}
-                        <Button shape={"circle"} icon={getIcon('limiting')} size={"mini"} onClick={() => callback('showLimitedRecord')}/>
                     </Space> : '--'}
                 </div>,
         },
