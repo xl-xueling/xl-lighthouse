@@ -2,23 +2,23 @@ package com.dtstep.lighthouse.common.modal;
 
 public class LimitingParam {
 
-    private Long startTime;
+    private long startTime;
 
-    private Long endTime;
+    private long endTime;
 
-    public Long getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Long startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 
-    public Long getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Long endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
 }

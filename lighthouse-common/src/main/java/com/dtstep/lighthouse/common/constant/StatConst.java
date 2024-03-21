@@ -81,11 +81,11 @@ public final class StatConst {
 
     public static final long NEGATIVE_INFINITY = -999999999999999999L;
 
-    public static final int LIMITING_EXPIRE_MINUTES = 15;
+    public static final int LIMITING_EXPIRE_MINUTES = 10;
+
+    public static final int DEBUG_MODEL_EXPIRE_MINUTES = 10;
 
     public static final int EVENT_POOL_PUT_COST_THRESHOLD = 10000;
-
-    public static final int DEBUG_MODEL_EXPIRE_MINUTES = 30;
 
     public static final String DB_RESULT_STORAGE_COLUMN = "v";
 

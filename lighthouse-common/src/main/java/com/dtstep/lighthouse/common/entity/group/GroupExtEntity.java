@@ -98,10 +98,11 @@ public class GroupExtEntity extends Group {
 
     public static boolean isLimitedExpired(GroupExtEntity groupExtEntity){
         return groupExtEntity.getState() == GroupStateEnum.LIMITING
-                && groupExtEntity.getLimitingParam().getEndTime() < System.currentTimeMillis();
+                && (groupExtEntity.getLimitingParam() == null || groupExtEntity.getLimitingParam().getEndTime() < System.currentTimeMillis());
     }
 
     public static boolean isDebugModeExpired(GroupExtEntity groupExtEntity){
-        return groupExtEntity.getDebugMode() == SwitchStateEnum.OPEN && groupExtEntity.getDebugParam().getEndTime() < System.currentTimeMillis();
+        return groupExtEntity.getDebugMode() == SwitchStateEnum.OPEN
+                && (groupExtEntity.getDebugParam() == null || groupExtEntity.getDebugParam().getEndTime() < System.currentTimeMillis());
     }
 }

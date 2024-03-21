@@ -57,6 +57,7 @@ public class TrackController {
             long now = System.currentTimeMillis();
             debugPram.setStartTime(now);
             debugPram.setEndTime(DateUtil.getMinuteAfter(now, StatConst.DEBUG_MODEL_EXPIRE_MINUTES));
+            groupVO.setDebugParam(debugPram);
             groupVO.setDebugMode(SwitchStateEnum.OPEN);
             groupVO.setRefreshTime(DateUtil.timestampToLocalDateTime(now));
             groupService.update(groupVO);
