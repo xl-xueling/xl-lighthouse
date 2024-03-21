@@ -420,9 +420,7 @@ public class StatDBWrapper {
                             List<StatExtEntity> statCacheList = groupStatCache.get();
                             List<Integer> cacheIdList = statCacheList.stream().map(Stat::getId).collect(Collectors.toList());
                             if(!cacheIdList.contains(refreshEntity.getId())){
-                                if(logger.isTraceEnabled()){
-                                    logger.trace("clear group-stats local cache,groupId:{},token:{}",refreshEntity.getGroupId(),refreshEntity.getToken());
-                                }
+                                logger.info("discover new statistic item:{}, clear group:{} cache!",refreshEntity.getId(),refreshEntity.getGroupId());
                                 groupStatListCache.invalidate(refreshEntity.getGroupId());
                             }else{
                                 List<StatExtEntity> entityList = statCacheList.stream()
