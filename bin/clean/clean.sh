@@ -23,6 +23,9 @@ function clearLogFiles(){
     		    expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/dependency/kafka/logs/server.log*"
             expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/dependency/kafka/logs/state-change.log*"
     		  fi
+    		  if [[ "${SERVICES[@]}" =~ "zookeeper" ]];then
+    		    expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/dependency/zookeeper/logs/*"
+    		  fi
     		  if [[ ${_DEPLOY_LIGHTHOUSE_ICE} == "true" ]];then
     		    expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-ice/*"
             expect ${CUR_DIR}/common/exec.exp "${DEPLOY_USER}" "${ip}" "${DEPLOY_PASSWD}" "rm -rf ${LDP_HOME}/logs/lighthouse-ice/.*.sw*"
