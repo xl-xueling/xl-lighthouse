@@ -89,6 +89,10 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
       return null;
     }
     val list = new ListBuffer[(Int,String, Int)]
+    if(!groupEntity.isBuiltIn){
+      val paramMap = ImmutableMap.of("groupId",groupEntity.getId.toString,"captcha",captcha.toString)
+      list.++=(appendGroupMessageMonitor(paramMap, message.getRepeat));
+    }
     if(captcha != MessageCaptchaEnum.SUCCESS.getCaptcha){
       return list.toList
     }
@@ -98,10 +102,6 @@ private[tasks] class ItemStatPartition(spark:SparkSession) extends Partition[(In
     }
     for(statEntity <- statList) {
       list.++=(append(statEntity, groupEntity, message))
-    }
-    if(!groupEntity.isBuiltIn){
-      val paramMap = ImmutableMap.of("groupId",groupEntity.getId.toString,"captcha",captcha.toString)
-      list.++=(appendGroupMessageMonitor(paramMap, message.getRepeat));
     }
     list.toList
   }
