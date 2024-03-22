@@ -12,25 +12,21 @@ import {
     Spin,
     Switch,
     Table,
-    TableColumnProps, Tooltip,
     Typography,
 } from '@arco-design/web-react';
 import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from "./locale";
-import {IconCheck, IconClose, IconHome, IconPlus} from "@arco-design/web-react/icon";
+import {IconCheck, IconClose, IconHome} from "@arco-design/web-react/icon";
 import styles from "./style/index.module.less";
 import {Stat} from "@/types/insights-web";
-import {requestChangeState, requestQueryById} from "@/api/stat";
+import {requestQueryById} from "@/api/stat";
 import {requestEnableDebugMode, requestDisableDebugMode, requestFetchTrackMessages} from "@/api/track";
 import {useParams} from "react-router-dom";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import ChartPanel from "@/pages/stat/preview/chart_panel";
-import {DebugModeEnum} from "@/types/insights-common";
-import {formatString, getRandomString} from "@/utils/util";
-import get = Reflect.get;
+import {formatString} from "@/utils/util";
 import {formatTimeStamp, getDateFormat} from "@/utils/date";
-import {getOrderTypeDescription} from "@/pages/common/desc/base";
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function TrackStatPage() {
@@ -67,22 +63,6 @@ export default function TrackStatPage() {
     async function fetchMonitorStatInfo() {
         const monitorStatInfo = await getDataWithLocalCache('cache_cluster_monitor_1013',300,actualFetchMonitorStatInfo);
         setMonitorStatInfo(monitorStatInfo);
-    }
-
-    const fetchStatData = async () => {
-        setLoading(true);
-        await requestQueryById({id:id}).then((response) => {
-            const {code, data ,message} = response;
-            if(code == '0'){
-                setStatInfo(data)
-                setGroupId(data.groupId);
-            }else{
-                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-            }
-            setLoading(false);
-        }).catch((error) => {
-            console.log(error);
-        })
     }
 
     const handlerRefreshChart = () => {
@@ -144,7 +124,6 @@ export default function TrackStatPage() {
     },[groupId])
 
     useEffect(() => {
-        fetchStatData().then();
         fetchMonitorStatInfo().then()
     },[])
 
@@ -197,7 +176,7 @@ export default function TrackStatPage() {
         }
         const id = setInterval(() => {
             fetchTrackMessages().then();
-            }, 10000);
+            }, 15000);
         setIntervalId(id);
     }
 
