@@ -26,7 +26,7 @@ import {useParams} from "react-router-dom";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import ChartPanel from "@/pages/stat/preview/chart_panel";
 import {formatString} from "@/utils/util";
-import {formatTimeStamp, getDateFormat} from "@/utils/date";
+import {DateTimeFormat, formatTimeStamp, getDateFormat} from "@/utils/date";
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function TrackStatPage() {
@@ -38,7 +38,6 @@ export default function TrackStatPage() {
     const TextArea = Input.TextArea;
     const [monitorStatInfo,setMonitorStatInfo] = useState(null);
     const [statInfo,setStatInfo] = useState(null);
-    const [groupId,setGroupId] = useState<number>(null);
     const [messagesColumns,setMessagesColumns] = useState([]);
     const [messageData,setMessageData] = useState([]);
     const [searchForm,setSearchForm] = useState(null);
@@ -66,7 +65,25 @@ export default function TrackStatPage() {
     }
 
     const handlerRefreshChart = () => {
-        setSearchForm({"date":[getDateFormat('YYYY-MM-DD'),getDateFormat('YYYY-MM-DD')],"captcha":["0","1","2"],"groupId":[groupId],t:Date.now()})
+        if(!statInfo){
+            return;
+        }
+        setSearchForm({"date":[getDateFormat('YYYY-MM-DD'),getDateFormat('YYYY-MM-DD')],"captcha":["0","1","2"],"groupId":[statInfo?.groupId],t:Date.now()})
+    }
+
+    const fetchStatInfo = async () => {
+        setLoading(true);
+        await requestQueryById({id:id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                setStatInfo(data)
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
     const fetchTrackMessages = async () => {
@@ -88,7 +105,7 @@ export default function TrackStatPage() {
                             key: key,
                             render: (value,record) => {
                                 if(key == 'batchTime' || key == 'processTime' || key == 'messageTime'){
-                                    return <Text>{formatTimeStamp(value,'YYYY-MM-DD hh:mm:ss')}</Text>
+                                    return <Text>{formatTimeStamp(value,DateTimeFormat)}</Text>
                                 }else if(key == 'No'){
                                     return (
                                         <Popover
@@ -116,15 +133,31 @@ export default function TrackStatPage() {
     }
 
     useEffect(() => {
-        if(groupId){
+        if(autoRefreshSwitch){
+            startInterval();
+        }else{
+            stopInterval();
+        }
+        return () => {
+            clearInterval(intervalId);
+        };
+    },[autoRefreshSwitch,JSON.stringify(statInfo)])
+
+    useEffect(() => {
+        formInstance.setFieldValue("notifyArea",notifyMessages.join('\n'));
+    },[notifyMessages])
+
+    useEffect(() => {
+        if(statInfo){
             handlerRefreshChart();
-            enableDebugMode(groupId).then();
+            enableDebugMode(statInfo.groupId).then();
             fetchTrackMessages().then();
         }
-    },[groupId])
+    },[JSON.stringify(statInfo)])
 
     useEffect(() => {
         fetchMonitorStatInfo().then()
+        fetchStatInfo().then();
     },[])
 
     const enableDebugMode = async (groupId:number) => {
@@ -134,12 +167,12 @@ export default function TrackStatPage() {
         await requestEnableDebugMode(changeParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                const msg = formatString('%s ' + t['statTrack.notify.turnedON'],formatTimeStamp(Date.now(),'YYYY-MM-DD hh:mm:ss'),formatTimeStamp(data.startTime,'YYYY-MM-DD hh:mm:ss'),formatTimeStamp(data.endTime,'YYYY-MM-DD hh:mm:ss'));
+                const msg = formatString('%s ' + t['statTrack.notify.turnedON'],formatTimeStamp(Date.now(),DateTimeFormat),formatTimeStamp(data.startTime,DateTimeFormat),formatTimeStamp(data.endTime,DateTimeFormat));
                 setNotifyMessages([msg])
                 setDebugMode(true);
                 setAutoRefreshSwitch(true);
             }else if(code == '5001'){
-                const msg = formatString('%s ' + t['statTrack.notify.already.turnedON'],formatTimeStamp(Date.now(),'YYYY-MM-DD hh:mm:ss'),formatTimeStamp(data.startTime,'YYYY-MM-DD hh:mm:ss'),formatTimeStamp(data.endTime,'YYYY-MM-DD hh:mm:ss'));
+                const msg = formatString('%s ' + t['statTrack.notify.already.turnedON'],formatTimeStamp(Date.now(),DateTimeFormat),formatTimeStamp(data.startTime,DateTimeFormat),formatTimeStamp(data.endTime,DateTimeFormat));
                 setNotifyMessages([msg]);
                 setDebugMode(true);
                 setAutoRefreshSwitch(true);
@@ -158,7 +191,7 @@ export default function TrackStatPage() {
         await requestDisableDebugMode(changeParam).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                const msg = formatString('%s ' + t['statTrack.notify.turnedOFF'],formatTimeStamp(Date.now(),'YYYY-MM-DD hh:mm:ss'));
+                const msg = formatString('%s ' + t['statTrack.notify.turnedOFF'],formatTimeStamp(Date.now(),DateTimeFormat));
                 setNotifyMessages([...notifyMessages,msg])
                 setDebugMode(false);
                 setAutoRefreshSwitch(false);
@@ -175,6 +208,7 @@ export default function TrackStatPage() {
             clearInterval(intervalId);
         }
         const id = setInterval(() => {
+            handlerRefreshChart();
             fetchTrackMessages().then();
             }, 15000);
         setIntervalId(id);
@@ -195,27 +229,11 @@ export default function TrackStatPage() {
         setAutoRefreshSwitch(!autoRefreshSwitch)
     }
 
-    useEffect(() => {
-        if(autoRefreshSwitch){
-            startInterval();
-        }else{
-            stopInterval();
-        }
-        return () => {
-            clearInterval(intervalId);
-        };
-    },[autoRefreshSwitch,JSON.stringify(statInfo)])
-
-    useEffect(() => {
-        formInstance.setFieldValue("notifyArea",notifyMessages.join('\n'));
-    },[notifyMessages])
-
-
     const handlerSwitchDebugMode = async () => {
         if(debugMode){
-            await disableDebugMode(groupId).then();
+            await disableDebugMode(statInfo?.groupId).then();
         }else{
-            await enableDebugMode(groupId).then();
+            await enableDebugMode(statInfo?.groupId).then();
         }
     }
 
