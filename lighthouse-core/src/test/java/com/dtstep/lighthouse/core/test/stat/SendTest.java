@@ -2,6 +2,8 @@ package com.dtstep.lighthouse.core.test.stat;
 
 import com.dtstep.lighthouse.client.LightHouse;
 import com.dtstep.lighthouse.common.random.RandomID;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.Test;
 
@@ -18,6 +20,7 @@ public class SendTest {
             ex.printStackTrace();
         }
     }
+
     @Test
     public void testCount() throws Exception{
         LightHouse.init("10.206.6.13:4061");
@@ -49,9 +52,24 @@ public class SendTest {
     }
 
     @Test
+    public void testStat() throws Exception {
+        System.out.println(700/300);
+        LightHouse.init("10.206.6.13:4061");
+        for(int i=0;i<100000;i++){
+            long t = System.currentTimeMillis();
+            Map<String,Object> map = new HashMap<>();
+            map.put("province", UUID.randomUUID().toString());
+            map.put("city", UUID.randomUUID().toString());
+            map.put("score",RandomID.id(5));
+            LightHouse.stat("RrY:sdsdaasdgasgasgdasdg","qLznbJbjUrl7XRldc6c9Wbpoz9yOr217zJo8sC1r",map,t);
+            Thread.sleep(500);
+        }
+    }
+
+    @Test
     public void testSum() throws Exception {
         long t = System.currentTimeMillis();
-        for(int i = 0;i<11991;i++){
+        for(int i = 0;i<1199001;i++){
             Map<String,Object> map = new HashMap<>();
             map.put("province", RandomID.id(10));
             double randomValue = ThreadLocalRandom.current().nextDouble();
@@ -62,5 +80,16 @@ public class SendTest {
             Thread.sleep(300);
         }
         Thread.sleep(100000);
+    }
+
+    @Test
+    public void testMultiSet() throws Exception{
+        Multiset<String> multiset = HashMultiset.create(10000000);
+        for(int i= 0;i<10000000;i++){
+            multiset.add(UUID.randomUUID().toString());
+        }
+        System.out.println("total size:" + multiset.size());
+        System.out.println("---success");
+
     }
 }

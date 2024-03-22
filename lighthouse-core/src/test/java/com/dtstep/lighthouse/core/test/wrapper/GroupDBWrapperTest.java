@@ -26,7 +26,7 @@ public class GroupDBWrapperTest {
         String token = "test_scene_behavior_stat";
         for(int i=0;i<100000;i++){
             GroupExtEntity groupExtEntity1 = GroupDBWrapper.queryById(groupId);
-            System.out.println("groupExtEntity1:" + groupExtEntity1 + ",refreshTime:" + groupExtEntity1.getRefreshTime());
+            System.out.println("groupExtEntity1:" + JsonUtil.toJSONString(groupExtEntity1.getRunningRelatedColumns()) + ",refreshTime:" + groupExtEntity1.getRefreshTime());
             Thread.sleep(5000);
         }
         Thread.sleep(100000000);
