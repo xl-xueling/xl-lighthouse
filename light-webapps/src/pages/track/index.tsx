@@ -126,6 +126,10 @@ export default function TrackStatPage() {
                 }
                 setMessagesColumns(keysArray);
                 setMessageData(data);
+            }else if(code == '7001'){
+                setDebugMode(false);
+                setAutoRefreshSwitch(false);
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }

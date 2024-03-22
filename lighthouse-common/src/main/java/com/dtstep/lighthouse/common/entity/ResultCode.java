@@ -145,6 +145,9 @@ public enum ResultCode {
     debugModeSwitchAlreadyTurnON("5001","debugModeSwitchAlreadyTurnON"),
 
     dataQueryMissingDimensParams("6001","dataQueryMissingDimensParams"),
+
+    trackDebugModeExpired("7001","trackDebugModeExpired"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

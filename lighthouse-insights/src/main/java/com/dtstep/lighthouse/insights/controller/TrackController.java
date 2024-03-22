@@ -91,6 +91,9 @@ public class TrackController {
         Integer statId = trackParam.getStatId();
         GroupVO groupVO = groupService.queryById(groupId);
         Validate.notNull(groupVO);
+        if(groupVO.getDebugMode() == SwitchStateEnum.CLOSE){
+            return ResultData.result(ResultCode.trackDebugModeExpired);
+        }
         DebugParam debugParam = groupVO.getDebugParam();
         String key = RedisConst.TRACK_PREFIX + "_" + groupId;
         List<String> list = RedisHandler.getInstance().lrange(key,0,StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE);
