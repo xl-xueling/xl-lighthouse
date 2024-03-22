@@ -37,6 +37,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @RestController
@@ -55,7 +56,8 @@ public class TrackController {
         Integer id = idParam.getId();
         GroupVO groupVO = groupService.queryById(id);
         DebugParam debugPram;
-        if(groupVO.getDebugMode() == SwitchStateEnum.OPEN){
+        if(groupVO.getDebugMode() == SwitchStateEnum.OPEN
+                && (groupVO.getDebugParam().getEndTime() - System.currentTimeMillis() > TimeUnit.MINUTES.toMillis(10))){
             debugPram = groupVO.getDebugParam();
             return ResultData.result(ServiceResult.result(ResultCode.debugModeSwitchAlreadyTurnON,debugPram));
         }else{
