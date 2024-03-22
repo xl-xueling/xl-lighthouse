@@ -65,7 +65,7 @@ public final class StatConst {
 
     public static final int DIMENS_VALUE_STORAGE_DURATION_MAX_SIZE = 600;
 
-    public static final int GROUP_MESSAGE_MAX_CACHE_SIZE = 1000;
+    public static final int GROUP_MESSAGE_MAX_CACHE_SIZE = 500;
 
     public static final int LIMIT_MAX_SIZE = 200;
 
