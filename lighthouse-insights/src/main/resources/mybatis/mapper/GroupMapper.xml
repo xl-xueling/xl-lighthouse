@@ -27,7 +27,7 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Group" >
         INSERT INTO ldp_groups (`token`,`project_id`,`columns`,`secret_key`,
                                     `state`,`desc`,
-                                    `extend_config`,`runtime_param`,`debug_mode`,`random_id`,`refresh_time`,`create_time`,`update_time`) VALUES
+                                    `extend_config`,`limiting_param`,`debug_param`,`debug_mode`,`random_id`,`refresh_time`,`create_time`,`update_time`) VALUES
         (
             #{token,jdbcType=VARCHAR},
             #{projectId,jdbcType=INTEGER},
