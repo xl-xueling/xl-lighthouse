@@ -87,26 +87,32 @@ public class TrackController {
     public ResultData<List<LinkedHashMap<String,Object>>> messages(@Validated @RequestBody TrackParam trackParam) throws Exception {
         Integer groupId = trackParam.getGroupId();
         Integer statId = trackParam.getStatId();
+        GroupVO groupVO = groupService.queryById(groupId);
+        Validate.notNull(groupVO);
+        DebugParam debugParam = groupVO.getDebugParam();
         String key = RedisConst.TRACK_PREFIX + "_" + groupId;
-        List<String> list = RedisHandler.getInstance().lrange(key,0,100);
+        List<String> list = RedisHandler.getInstance().lrange(key,0,500);
         List<LinkedHashMap<String,Object>> resultList = new ArrayList<>();
         StatExtEntity statExtEntity = statService.queryById(statId);
         Validate.notNull(statExtEntity);
         TemplateEntity templateEntity = statExtEntity.getTemplateEntity();
-        String[] dimensArray = statExtEntity.getTemplateEntity().getDimensArray();
         Group group = groupService.queryById(statExtEntity.getGroupId());
         for(int i=0;i<list.size();i++){
             LinkedHashMap<String,Object> linkedHashMap = new LinkedHashMap<>();
             LightMessage message = JsonUtil.toJavaObject(list.get(i),LightMessage.class);
             assert message != null;
             long messageTime = message.getTime();
+            if(messageTime > debugParam.getEndTime() || messageTime < debugParam.getStartTime()){
+                continue;
+            }
             linkedHashMap.put("No",i + 1);
             linkedHashMap.put("messageTime",messageTime);
             linkedHashMap.put("processTime",message.getSystemTime());
             long batchTime = DateUtil.batchTime(statExtEntity.getTimeParamInterval(),statExtEntity.getTimeUnit(),messageTime);
             linkedHashMap.put("batchTime",batchTime);
             Map<String,String> paramMap = message.getParamMap();
-            for(String dimens : dimensArray){
+            Set<String> relatedColumns = statExtEntity.getRelatedColumnSet();
+            for(String dimens : relatedColumns){
                 linkedHashMap.put(dimens,paramMap.get(dimens));
             }
             linkedHashMap.put("repeat",message.getRepeat());
@@ -123,7 +129,7 @@ public class TrackController {
                     long result = FormulaCalculate.calculate(statState,envMap,batchTime);
                     if(result == StatConst.ILLEGAL_VAL || result == StatConst.NIL_VAL){
                         isNil = true;
-                        break;
+                        linkedHashMap.put(statState.getStateBody(),"Nil");
                     }else{
                         BigDecimal stateValue = BigDecimal.valueOf(result).divide(BigDecimal.valueOf(1000D),3, RoundingMode.HALF_UP).stripTrailingZeros();
                         linkedHashMap.put(statState.getStateBody(),stateValue.toPlainString());
