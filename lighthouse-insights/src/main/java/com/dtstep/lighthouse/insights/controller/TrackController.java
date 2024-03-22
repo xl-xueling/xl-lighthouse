@@ -150,7 +150,7 @@ public class TrackController {
                     }
                 }
             }else{
-                linkedHashMap.put("result","--");
+                linkedHashMap.put("result","Invalid");
             }
             resultList.add(linkedHashMap);
         }
