@@ -81,7 +81,7 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
       if(logger.isTraceEnabled()){
         logger.trace(s"group[${groupId}] enable debug mode,capture message:${JsonUtil.toJSONString(message)}")
       }
-      RedisHandler.getInstance().limitSet(trackKey,toJSONString(message),StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE,3 * 3600)
+      RedisHandler.getInstance().limitSet(trackKey,toJSONString(message),StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE,2 * 3600)
     }
   }
 

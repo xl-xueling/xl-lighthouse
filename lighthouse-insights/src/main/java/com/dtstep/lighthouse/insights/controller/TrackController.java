@@ -91,7 +91,7 @@ public class TrackController {
         Validate.notNull(groupVO);
         DebugParam debugParam = groupVO.getDebugParam();
         String key = RedisConst.TRACK_PREFIX + "_" + groupId;
-        List<String> list = RedisHandler.getInstance().lrange(key,0,500);
+        List<String> list = RedisHandler.getInstance().lrange(key,0,StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE);
         List<LinkedHashMap<String,Object>> resultList = new ArrayList<>();
         StatExtEntity statExtEntity = statService.queryById(statId);
         Validate.notNull(statExtEntity);
