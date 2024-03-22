@@ -11,10 +11,13 @@ import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
 import com.dtstep.lighthouse.common.modal.DebugParam;
+import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.modal.IDParam;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
 import com.dtstep.lighthouse.core.formula.FormulaCalculate;
+import com.dtstep.lighthouse.core.message.MessageValid;
 import com.dtstep.lighthouse.core.redis.RedisHandler;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.TrackParam;
@@ -30,8 +33,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @ControllerAdvice
@@ -82,28 +88,63 @@ public class TrackController {
         Integer groupId = trackParam.getGroupId();
         Integer statId = trackParam.getStatId();
         String key = RedisConst.TRACK_PREFIX + "_" + groupId;
-        List<String> list = RedisHandler.getInstance().lrange(key,0,1000);
+        List<String> list = RedisHandler.getInstance().lrange(key,0,100);
         List<LinkedHashMap<String,Object>> resultList = new ArrayList<>();
         StatExtEntity statExtEntity = statService.queryById(statId);
         Validate.notNull(statExtEntity);
         TemplateEntity templateEntity = statExtEntity.getTemplateEntity();
+        String[] dimensArray = statExtEntity.getTemplateEntity().getDimensArray();
+        Group group = groupService.queryById(statExtEntity.getGroupId());
         for(int i=0;i<list.size();i++){
             LinkedHashMap<String,Object> linkedHashMap = new LinkedHashMap<>();
             LightMessage message = JsonUtil.toJavaObject(list.get(i),LightMessage.class);
             assert message != null;
             long messageTime = message.getTime();
-            System.out.println("message:" + JsonUtil.toJSONString(message));
-            linkedHashMap.put("seq",i + 1);
+            linkedHashMap.put("No",i + 1);
             linkedHashMap.put("messageTime",messageTime);
             linkedHashMap.put("processTime",message.getSystemTime());
             long batchTime = DateUtil.batchTime(statExtEntity.getTimeParamInterval(),statExtEntity.getTimeUnit(),messageTime);
             linkedHashMap.put("batchTime",batchTime);
+            Map<String,String> paramMap = message.getParamMap();
+            for(String dimens : dimensArray){
+                linkedHashMap.put(dimens,paramMap.get(dimens));
+            }
             linkedHashMap.put("repeat",message.getRepeat());
-            List<StatState> statStates = templateEntity.getStatStateList();
-            Map<String,Object> envMap = new HashMap<>(message.getParamMap());
-            for(StatState statState : statStates){
-                long result = FormulaCalculate.calculate(statState,envMap,batchTime);
-                linkedHashMap.put(statState.getStateBody(),result);
+            String params = paramMap.entrySet().stream().map(z -> z.getKey() + " = " + z.getValue()).collect(Collectors.joining(";"));
+            linkedHashMap.put("params",params);
+            boolean valid = MessageValid.valid(message,group.getColumns());
+            linkedHashMap.put("valid",String.valueOf(valid));
+            if(valid){
+                List<StatState> statStates = templateEntity.getStatStateList();
+                Map<String,Object> envMap = new HashMap<>(message.getParamMap());
+                String formula = templateEntity.getCompleteStat();
+                boolean isNil = false;
+                for(StatState statState : statStates){
+                    long result = FormulaCalculate.calculate(statState,envMap,batchTime);
+                    if(result == StatConst.ILLEGAL_VAL || result == StatConst.NIL_VAL){
+                        isNil = true;
+                        break;
+                    }else{
+                        BigDecimal stateValue = BigDecimal.valueOf(result).divide(BigDecimal.valueOf(1000D),3, RoundingMode.HALF_UP).stripTrailingZeros();
+                        linkedHashMap.put(statState.getStateBody(),stateValue.toPlainString());
+                        formula = formula.replace(statState.getStateBody(),stateValue.toPlainString());
+                    }
+                }
+                if(isNil){
+                    linkedHashMap.put("result","Nil");
+                }else{
+                    Object statValue = AviatorHandler.execute(formula);
+                    if (statValue != null) {
+                        if(statValue.getClass() == BigDecimal.class){
+                            BigDecimal bigDecimal = ((BigDecimal) statValue).stripTrailingZeros();
+                            linkedHashMap.put("result",bigDecimal.toPlainString());
+                        }else {
+                            linkedHashMap.put("result",new BigDecimal(statValue.toString()).setScale(3,RoundingMode.HALF_UP).stripTrailingZeros().toPlainString());
+                        }
+                    }
+                }
+            }else{
+                linkedHashMap.put("result","--");
             }
             resultList.add(linkedHashMap);
         }

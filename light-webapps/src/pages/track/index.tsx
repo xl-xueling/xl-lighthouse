@@ -7,12 +7,12 @@ import {
     Grid,
     Input,
     Message,
-    Notification, Popconfirm,
+    Notification, Popconfirm, Popover,
     Space,
     Spin,
     Switch,
     Table,
-    TableColumnProps,
+    TableColumnProps, Tooltip,
     Typography,
 } from '@arco-design/web-react';
 import React, {useEffect, useState} from 'react';
@@ -100,15 +100,26 @@ export default function TrackStatPage() {
             if(code == '0'){
                 const keysArray = [];
                 for(const key in data[0]){
-                    if(data[0].hasOwnProperty(key)){
+                    if(data[0].hasOwnProperty(key) && key != 'params'){
                         const col = {
                             title: key,
                             dataIndex: key,
+                            headerCellStyle: {width: key == 'No' ? '30px' : null},
                             key: key,
                             render: (value,record) => {
                                 if(key == 'batchTime' || key == 'processTime' || key == 'messageTime'){
                                     return <Text>{formatTimeStamp(value,'YYYY-MM-DD hh:mm:ss')}</Text>
-                                }else{
+                                }else if(key == 'No'){
+                                    return (
+                                        <Popover
+                                            style={{ maxWidth: '600px' }}
+                                            content={<div dangerouslySetInnerHTML={{ __html: record.params.replace(/;/g, "<br>") }} />}
+                                            trigger="click"
+                                        >
+                                            <span style={{ width:'30px',cursor:'pointer', display: 'inline-block' }}>{value}</span>
+                                        </Popover>
+                                        )
+                                }else if(key != 'params'){
                                     return <Text>{value}</Text>
                                 }
                             },
@@ -186,7 +197,7 @@ export default function TrackStatPage() {
         }
         const id = setInterval(() => {
             fetchTrackMessages().then();
-            }, 10000);
+            }, 1000000);
         setIntervalId(id);
     }
 
