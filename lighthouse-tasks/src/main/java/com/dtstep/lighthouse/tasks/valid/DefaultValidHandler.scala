@@ -44,8 +44,6 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
 
   import spark.sqlContext.implicits._;
 
-  private val executorSize = SparkEnv.get.conf.get("spark.executor.instances");
-
   override def valid(message: LightMessage): (Int,LightMessage) = try{
     val groupEntity = GroupDBWrapper.queryById(message.getGroupId);
     if(groupEntity == null || groupEntity.getState != GroupStateEnum.RUNNING) return null
