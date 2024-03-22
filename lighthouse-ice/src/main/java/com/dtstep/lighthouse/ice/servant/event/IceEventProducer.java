@@ -21,6 +21,9 @@ import com.lmax.disruptor.RingBuffer;
 import com.dtstep.lighthouse.common.entity.event.IceEvent;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Executors;
 
@@ -29,7 +32,14 @@ public final class IceEventProducer {
 
     private static final RingBuffer<IceEvent> ringBuffer;
 
+    private static final Logger logger = LoggerFactory.getLogger(IceEventProducer.class);
+
     static {
+        Runtime runtime = Runtime.getRuntime();
+        long maxMemory = runtime.maxMemory();
+        long maxMemoryInMB = maxMemory / (1024 * 1024);
+        int threadSize = Math.min((int) (maxMemoryInMB / 300), 10);
+        Validate.isTrue(threadSize > 0);
         Disruptor<IceEvent> disruptor = new Disruptor<>(
                 IceEvent::new,
                 1024 * 1024 * 2,
@@ -37,7 +47,7 @@ public final class IceEventProducer {
                 ProducerType.MULTI,
                 new BlockingWaitStrategy()
         );
-        IceEventHandler[] handlers = new IceEventHandler[10];
+        IceEventHandler[] handlers = new IceEventHandler[threadSize];
         for(int i=0;i<handlers.length;i++){
             handlers[i] = new IceEventHandler();
         }

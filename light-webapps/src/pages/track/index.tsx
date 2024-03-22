@@ -197,7 +197,7 @@ export default function TrackStatPage() {
         }
         const id = setInterval(() => {
             fetchTrackMessages().then();
-            }, 1000000);
+            }, 10000);
         setIntervalId(id);
     }
 
