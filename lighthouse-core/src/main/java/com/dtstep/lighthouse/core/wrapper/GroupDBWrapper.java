@@ -272,7 +272,7 @@ public final class GroupDBWrapper {
                 if(!StringUtil.isEmpty(dimens)){
                     dimensRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,dimens);
                 }
-                if(stat.getState() == StatStateEnum.RUNNING){
+                if(stat.getState() == StatStateEnum.RUNNING || stat.getState() == StatStateEnum.LIMITING){
                     long currentDuration = TimeParam.calculateDuration(stat.getTimeparam());
                     if(minDuration == 0L){
                         minDuration = currentDuration;
