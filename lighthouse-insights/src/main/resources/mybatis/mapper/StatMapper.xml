@@ -32,7 +32,7 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Stat" >
-        INSERT INTO ldp_stats (`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`meta_id`,`random_id`,`expired`,`desc`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_stats (`title`,`group_id`,`project_id`,`template`,`timeparam`,`state`,`limiting_param`,`meta_id`,`random_id`,`expired`,`desc`,`create_time`,`update_time`) VALUES
         (
             #{title,jdbcType=VARCHAR},
             #{groupId,jdbcType=INTEGER},
