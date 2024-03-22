@@ -155,7 +155,6 @@ export default function TrackStatPage() {
         if(statInfo){
             handlerRefreshChart();
             enableDebugMode(statInfo.groupId).then();
-            fetchTrackMessages().then();
         }
     },[JSON.stringify(statInfo)])
 
@@ -175,6 +174,7 @@ export default function TrackStatPage() {
                 setNotifyMessages([msg])
                 setDebugMode(true);
                 setAutoRefreshSwitch(true);
+                fetchTrackMessages().then();
             }else if(code == '5001'){
                 const msg = formatString('%s ' + t['statTrack.notify.already.turnedON'],formatTimeStamp(Date.now(),DateTimeFormat),formatTimeStamp(data.startTime,DateTimeFormat),formatTimeStamp(data.endTime,DateTimeFormat));
                 setNotifyMessages([msg]);
