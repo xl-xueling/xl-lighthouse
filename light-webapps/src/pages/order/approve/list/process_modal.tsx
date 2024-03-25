@@ -166,6 +166,7 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
                                     focusLock
                                     position={"tr"}
                                     title='Confirm'
+                                    okButtonProps={{ status:"danger" }}
                                     content={t['approveModal.button.reject.confirm']}
                                     onOk={rejectedSubmit}
                         >
