@@ -42,7 +42,7 @@ public class HomePageServiceImpl implements HomePageService {
     private DepartmentService departmentService;
 
     @Override
-    @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryOverview'",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'queryOverview'",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public HomeVO queryOverview() {
         ProjectQueryParam totalProjectQueryParam = new ProjectQueryParam();
         int projectCount = projectService.count(totalProjectQueryParam);

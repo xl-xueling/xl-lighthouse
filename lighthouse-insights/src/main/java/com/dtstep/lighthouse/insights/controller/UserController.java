@@ -44,9 +44,6 @@ public class UserController {
     private ResourceService resourceService;
 
     @Autowired
-    private RoleService roleService;
-
-    @Autowired
     private BaseService baseService;
 
     @RequestMapping("/user/register")
@@ -171,11 +168,10 @@ public class UserController {
     public ResultData<Integer> delete(@Validated @RequestBody IDParam idParam) {
         Integer id = idParam.getId();
         int currentUserId = baseService.getCurrentUserId();
-        if(id.intValue() == currentUserId){
+        if(id == currentUserId){
             return ResultData.result(ResultCode.userDelErrorCannotDelCurrentUser);
         }
         List<Permission> permissions = permissionService.queryUserManagePermission(id,1);
-        String message;
         if(CollectionUtils.isNotEmpty(permissions)){
             Integer roleId = permissions.get(0).getRoleId();
             ResourceDto resource = resourceService.queryByRoleId(roleId);

@@ -24,7 +24,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public Role cacheQueryById(Integer id) {
         return roleDao.queryById(id);
     }
@@ -56,7 +56,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryRole' + '_' + #roleTypeEnum.roleType + '_' + #resourceId",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'queryRole' + '_' + #roleTypeEnum.roleType + '_' + #resourceId",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public Role cacheQueryRole(RoleTypeEnum roleTypeEnum, Integer resourceId) {
         return roleDao.queryRole(roleTypeEnum,resourceId);
     }

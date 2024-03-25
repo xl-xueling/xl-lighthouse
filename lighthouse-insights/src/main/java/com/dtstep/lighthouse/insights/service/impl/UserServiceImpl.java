@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public User cacheQueryById(int id) {
         return userDao.queryById(id);
     }
@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'getUserPermissions' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'getUserPermissions' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public Set<PermissionEnum> getUserPermissions(Integer id) {
         Role optManageRole = roleService.cacheQueryRole(RoleTypeEnum.OPT_MANAGE_PERMISSION,0);
         boolean hasOptManageRole = permissionService.checkUserPermission(id,optManageRole.getId());

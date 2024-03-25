@@ -174,7 +174,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public ProjectVO cacheQueryById(Integer id) {
         return queryById(id);
     }
