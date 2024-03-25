@@ -128,7 +128,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    @Cacheable(value = "LongPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public Group cacheQueryById(Integer id) {
         return groupDao.queryById(id);
     }
