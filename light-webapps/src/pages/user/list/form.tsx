@@ -64,6 +64,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
         onSubmit={() => {
           handleSubmit();
         }}
+        initialValues={{states:['2','3']}}
         colon={" :"}
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 19 }}
