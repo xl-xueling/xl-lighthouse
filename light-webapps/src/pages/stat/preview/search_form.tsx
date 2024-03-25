@@ -42,8 +42,6 @@ const SearchForm = React.forwardRef(( props:{size,statInfo,onSearch},ref) => {
 
     useEffect(() => {
         handleReset();
-        const initDateParam = getInitDateParam();
-        form.setFieldValue("date",initDateParam);
     },[statInfo.id])
 
     const Option = Select.Option;
@@ -72,6 +70,8 @@ const SearchForm = React.forwardRef(( props:{size,statInfo,onSearch},ref) => {
 
     const handleReset = () => {
         form.resetFields();
+        const initDateParam = getInitDateParam();
+        form.setFieldValue("date",initDateParam);
     };
 
     const handleTreeSelectChange =  (key) => (selectedValue, selectedLabel) => {
