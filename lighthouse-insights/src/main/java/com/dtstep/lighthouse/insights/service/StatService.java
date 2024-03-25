@@ -35,6 +35,8 @@ public interface StatService {
 
     RenderConfig getStatRenderConfig(StatVO stat) throws Exception;
 
+    RenderConfig getTestStatRenderConfig(StatVO stat) throws Exception;
+
     ResultCode filterConfig(StatVO stat, List<RenderFilterConfig> filterConfigs);
 
     List<DBStatistics> getTopDepartmentStatSize();

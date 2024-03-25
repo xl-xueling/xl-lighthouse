@@ -4,12 +4,14 @@ import com.clearspring.analytics.util.Lists;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
+import com.dtstep.lighthouse.common.enums.LimitTypeEnum;
 import com.dtstep.lighthouse.common.modal.LimitDataObject;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.common.modal.StatDataObject;
 import com.dtstep.lighthouse.core.storage.limit.LimitStorageSelector;
+import com.dtstep.lighthouse.core.storage.limit.impl.RedisLimitStorageEngine;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.insights.service.DataService;
 import com.dtstep.lighthouse.insights.service.StatService;
@@ -129,20 +131,54 @@ public class DataServiceImpl implements DataService {
             logger.error("query batch time list error!",ex);
         }
         Validate.notNull(batchList);
-        Map<String,List<StatValue>> valuesMap = ResultStorageSelector.queryWithDimensList(statExtEntity,dimensList,batchList);
+        List<String> eliminateDimensList;
+        HashMap<String,String> dimensValueMapping = new HashMap<>();
+        if(CollectionUtils.isNotEmpty(dimensList)){
+            eliminateDimensList = new ArrayList<>();
+            for(String dimensValue : dimensList){
+                String [] arr = dimensValue.split(",");
+                if(arr.length == 2){
+                    eliminateDimensList.add(arr[0]);
+                    dimensValueMapping.put(arr[0],arr[1]);
+                }else{
+                    eliminateDimensList.add(dimensValue);
+                    dimensValueMapping.put(dimensValue,dimensValue);
+                }
+            }
+        }else{
+            eliminateDimensList = dimensList;
+        }
+        Map<String,List<StatValue>> valuesMap = ResultStorageSelector.queryWithDimensList(statExtEntity,eliminateDimensList,batchList);
         List<StatDataObject> dataObjects = new ArrayList<>();
         if(MapUtils.isNotEmpty(valuesMap)){
             for(String dimensValue : valuesMap.keySet()){
                 StatDataObject dataObject = new StatDataObject();
                 List<StatValue> valueList = valuesMap.get(dimensValue);
                 dataObject.setDimensValue(dimensValue);
-                dataObject.setDisplayDimensValue(dimensValue);
+                dataObject.setDisplayDimensValue(dimensValueMapping.get(dimensValue));
                 dataObject.setValuesList(valueList);
                 dataObject.setStatId(statExtEntity.getId());
                 dataObjects.add(dataObject);
             }
         }
         return dataObjects;
+    }
+
+    @Override
+    public List<LimitDataObject> limitQuery(StatExtEntity statExtEntity, List<Long> batchTimeList) throws Exception {
+        List<LimitDataObject> resultList = Lists.newArrayList();
+        if(CollectionUtils.isEmpty(batchTimeList)){
+            return resultList;
+        }
+        for(Long batchTime : batchTimeList){
+            List<LimitValue> valueList = LimitStorageSelector.query(statExtEntity,batchTime);
+            LimitDataObject dataObject = new LimitDataObject();
+            dataObject.setValues(valueList);
+            dataObject.setBatchTime(batchTime);
+            dataObject.setDisplayBatchTime(BatchAdapter.dateTimeFormat(statExtEntity.getTimeparam(),batchTime));
+            resultList.add(dataObject);
+        }
+        return resultList;
     }
 
     @Override
@@ -158,32 +194,72 @@ public class DataServiceImpl implements DataService {
         Validate.notNull(batchList);
         List<StatValue> statValues = new ArrayList<>();
         List<StatDataObject> objectList = new ArrayList<>();
-        List<String> dimensLists = List.of("province");
-        for(String dimens:dimensLists){
+        List<String> eliminateDimensList;
+        HashMap<String,String> dimensValueMapping = new HashMap<>();
+        if(CollectionUtils.isNotEmpty(dimensList)){
+            eliminateDimensList = new ArrayList<>();
+            for(String dimensValue : dimensList){
+                String [] arr = dimensValue.split(",");
+                if(arr.length == 2){
+                    eliminateDimensList.add(arr[0]);
+                    dimensValueMapping.put(arr[0],arr[1]);
+                }else{
+                    eliminateDimensList.add(dimensValue);
+                    dimensValueMapping.put(dimensValue,dimensValue);
+                }
+            }
+        }else{
+            eliminateDimensList = dimensList;
+        }
+        if(eliminateDimensList == null){
             for(long batchTime:batchList){
                 StatValue statValue = new StatValue();
-                statValue.setValue(ThreadLocalRandom.current().nextInt(10000));
+                statValue.setValue(5000 + ThreadLocalRandom.current().nextInt(1000));
                 statValue.setBatchTime(batchTime);
                 statValue.setDisplayBatchTime(DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
                 statValues.add(statValue);
             }
             StatDataObject statDataObject = new StatDataObject();
             statDataObject.setStatId(statExtEntity.getId());
-            statDataObject.setDimensValue(dimens + "-"+ThreadLocalRandom.current().nextInt(10));
             statDataObject.setValuesList(statValues);
             objectList.add(statDataObject);
+        }else{
+            for(String dimens:eliminateDimensList){
+                for(long batchTime:batchList){
+                    StatValue statValue = new StatValue();
+                    statValue.setValue(5000 + ThreadLocalRandom.current().nextInt(1000));
+                    statValue.setBatchTime(batchTime);
+                    statValue.setDisplayBatchTime(DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
+                    statValues.add(statValue);
+                }
+                StatDataObject statDataObject = new StatDataObject();
+                statDataObject.setStatId(statExtEntity.getId());
+                statDataObject.setDimensValue(dimens);
+                statDataObject.setDisplayDimensValue(dimensValueMapping.get(dimens));
+                statDataObject.setValuesList(statValues);
+                objectList.add(statDataObject);
+            }
         }
         return objectList;
     }
 
     @Override
-    public List<LimitDataObject> limitQuery(StatExtEntity statExtEntity, List<Long> batchTimeList) throws Exception {
+    public List<LimitDataObject> testLimitQuery(StatExtEntity statExtEntity, List<Long> batchTimeList) throws Exception {
         List<LimitDataObject> resultList = Lists.newArrayList();
         if(CollectionUtils.isEmpty(batchTimeList)){
             return resultList;
         }
         for(Long batchTime : batchTimeList){
-            List<LimitValue> valueList = LimitStorageSelector.query(statExtEntity,batchTime);
+            List<LimitValue> valueList = new ArrayList<>();
+            for(int i=0;i<10;i++){
+                LimitValue limitValue = new LimitValue("test_" + i,ThreadLocalRandom.current().nextInt(1000));
+                valueList.add(limitValue);
+            }
+            if(statExtEntity.getTemplateEntity().getLimitTypeEnum() == LimitTypeEnum.TOP){
+                valueList.sort(RedisLimitStorageEngine.descComparator);
+            }else{
+                valueList.sort(RedisLimitStorageEngine.ascComparator);
+            }
             LimitDataObject dataObject = new LimitDataObject();
             dataObject.setValues(valueList);
             dataObject.setBatchTime(batchTime);
