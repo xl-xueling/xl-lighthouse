@@ -80,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
         queryParam.setApproveUserId(currentUserId);
         PageHelper.startPage(pageNum,pageSize,"create_time desc");
         List<OrderVO> orderDtoList = new ArrayList<>();
-        PageInfo<Order> pageInfo = null;
+        PageInfo<Order> pageInfo;
         try{
             List<Order> orders = orderDao.queryApproveList(queryParam,pageNum,pageSize);
             pageInfo = new PageInfo<>(orders);
@@ -293,7 +293,6 @@ public class OrderServiceImpl implements OrderService {
         Integer currentUserId = baseService.getCurrentUserId();
         OrderVO orderDto = new OrderVO(order);
         int applyUserId = orderDto.getUserId();
-        List<Integer> roleIds = order.getSteps();
         orderDto.addPermission(PermissionEnum.AccessAble);
         Integer currentNode = order.getCurrentNode();
         if(permissionDao.existPermission(currentUserId,OwnerTypeEnum.USER,currentNode)){
@@ -333,6 +332,9 @@ public class OrderServiceImpl implements OrderService {
         }else if(order.getOrderType() == OrderTypeEnum.LIMITING_SETTINGS){
             Integer groupId = (Integer) configMap.get("groupId");
             return groupService.queryById(groupId);
+        }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
+            Integer userId = order.getUserId();
+            return userService.cacheQueryById(userId);
         }
         return null;
     }
