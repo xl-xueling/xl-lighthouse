@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
-import com.dtstep.lighthouse.common.enums.UserStateEnum;
+import com.dtstep.lighthouse.common.enums.*;
 import com.dtstep.lighthouse.common.modal.PermissionEnum;
 import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.common.modal.User;
@@ -9,9 +9,6 @@ import com.dtstep.lighthouse.insights.dao.DepartmentDao;
 import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
-import com.dtstep.lighthouse.common.enums.OrderTypeEnum;
-import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
-import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.UserVO;
 import com.github.pagehelper.PageHelper;
@@ -93,6 +90,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User queryById(int id) {
         return userDao.queryById(id);
+    }
+
+    @Override
+    public UserStateEnum queryUserState(Integer id) {
+        return UserStateEnum.forValue(userDao.queryUserState(id));
     }
 
     @Override
