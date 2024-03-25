@@ -89,7 +89,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
               >
                 {
                   Object.keys(UserStateEnum).filter(key => !Number.isNaN(Number(key)))
-                      .filter(key => [UserStateEnum.USR_NORMAL,UserStateEnum.USER_FROZEN].includes(Number(key))).map((option,index) => {
+                      .filter(key => [UserStateEnum.USR_NORMAL,UserStateEnum.USER_FROZEN,UserStateEnum.USER_REJECT].includes(Number(key))).map((option,index) => {
                     return <Select.Option key={index} value={option}>
                       {getUserStateDescription(t,Number(option))}
                     </Select.Option>

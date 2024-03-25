@@ -133,7 +133,7 @@
                 AND owner_id = #{queryParam.ownerId}
             </if>
             <if test="queryParam.ownerType != null">
-                AND owner_type = #{queryParam.ownerType}
+                AND owner_type = #{queryParam.ownerType.ownerType}
             </if>
         </where>
     </delete>

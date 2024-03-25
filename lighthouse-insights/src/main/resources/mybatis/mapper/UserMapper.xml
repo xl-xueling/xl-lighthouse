@@ -176,6 +176,6 @@
     </select>
 
     <delete id="deleteById">
-        delete from ldp_user where id = #{id}
+        delete from ldp_users where id = #{id}
     </delete>
 </mapper>

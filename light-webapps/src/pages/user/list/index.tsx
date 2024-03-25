@@ -70,6 +70,8 @@ export default function UserList() {
           message = t['userList.columns.frozen.success'];
         }else if(state == UserStateEnum.USR_NORMAL){
           message = t['userList.columns.activation.success'];
+        }else if(state == UserStateEnum.USER_REJECT){
+          message = t['userList.columns.activation.success'];
         }
         Notification.info({style: { width: 420 }, title: 'Notification', content: message});
         const updatedUsers = userData.map((user) => user.id == userId ? { ...user, state: state } : user);
