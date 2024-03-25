@@ -17,6 +17,14 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
         }else{
             config.headers['Accept-Language'] = 'en-US';
         }
+        if(process.env.REACT_APP_ENV == "simulation"){
+            if(config.url == '/data/stat'){
+                config.url = '/test-data/stat'
+            }
+            if(config.url == '/data/limit'){
+                config.url = '/test-data/limit'
+            }
+        }
         config.headers['accessKey'] = window.localStorage.getItem('accessKey');
         return config;
     }, (error) => {
