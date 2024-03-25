@@ -277,6 +277,55 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
+    public RenderConfig getTestStatRenderConfig(StatVO stat) throws Exception {
+        RenderConfig renderConfig = stat.getRenderConfig();
+        Group group = groupService.queryById(stat.getGroupId());
+        HashMap<String, RenderFilterConfig> filtersConfigMap = new HashMap<>();
+        if(CollectionUtils.isEmpty(renderConfig.getFilters())){
+            TemplateEntity templateEntity = stat.getTemplateEntity();
+            String[] dimensArray = templateEntity.getDimensArray();
+            for(String dimens:dimensArray){
+                List<String> dimensValueList = List.of("test_1","test_2","test_3","test_4","test_5");
+                List<TreeNode> treeNodes = dimensValueList.stream().map(z -> new TreeNode(z,z)).collect(toList());
+                RenderFilterConfig renderFilterConfig = new RenderFilterConfig();
+                renderFilterConfig.setComponentType(ComponentTypeEnum.FILTER_SELECT);
+                renderFilterConfig.setComponentId(0);
+                renderFilterConfig.setLabel(dimens);
+                renderFilterConfig.setDimens(dimens);
+                renderFilterConfig.setConfigData(treeNodes);
+                filtersConfigMap.put(dimens,renderFilterConfig);
+            }
+        }else{
+            List<RenderFilterConfig> filterConfigs = renderConfig.getFilters();
+            for(RenderFilterConfig filterConfig : filterConfigs){
+                Integer componentId = filterConfig.getComponentId();
+                ComponentTypeEnum componentTypeEnum = filterConfig.getComponentType();
+                filterConfig.setComponentId(componentId);
+                filterConfig.setComponentType(componentTypeEnum);
+                filterConfig.setDimens(filterConfig.getDimens());
+                filterConfig.setLabel(filterConfig.getLabel());
+                if(componentId != 0){
+                    Component component = componentService.queryById(componentId);
+                    filterConfig.setTitle(component.getTitle());
+                    filterConfig.setConfigData(component.getConfiguration());
+                    filtersConfigMap.put(filterConfig.getDimens(),filterConfig);
+                }else{
+                    List<String> dimensValueList = List.of("test_1","test_2","test_3","test_4","test_5");
+                    List<TreeNode> treeNodes = dimensValueList.stream().map(z -> new TreeNode(z,z)).collect(toList());
+                    filterConfig.setConfigData(treeNodes);
+                    filtersConfigMap.put(filterConfig.getDimens(),filterConfig);
+                }
+            }
+        }
+        List<RenderFilterConfig> configList = new ArrayList<>();
+        for(String key : filtersConfigMap.keySet()){
+            configList.add(filtersConfigMap.get(key));
+        }
+        renderConfig.setFilters(configList);
+        return renderConfig;
+    }
+
+    @Override
     public ResultCode filterConfig(StatVO stat, List<RenderFilterConfig> filterConfigs) {
         String[] dimensArray = stat.getTemplateEntity().getDimensArray();
         Validate.notNull(dimensArray);

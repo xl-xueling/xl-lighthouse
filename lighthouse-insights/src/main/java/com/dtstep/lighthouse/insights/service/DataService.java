@@ -18,4 +18,6 @@ public interface DataService {
     List<StatDataObject> testDataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimens) throws Exception;
 
     List<LimitDataObject> limitQuery(StatExtEntity statExtEntity,List<Long> batchTimeList) throws Exception;
+
+    List<LimitDataObject> testLimitQuery(StatExtEntity statExtEntity, List<Long> batchTimeList) throws Exception;
 }

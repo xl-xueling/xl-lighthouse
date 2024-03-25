@@ -24,6 +24,9 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
             if(config.url == '/data/limit'){
                 config.url = '/test-data/limit'
             }
+            if(config.url == '/stat/queryById'){
+                config.url = '/stat/testQueryById'
+            }
         }
         config.headers['accessKey'] = window.localStorage.getItem('accessKey');
         return config;

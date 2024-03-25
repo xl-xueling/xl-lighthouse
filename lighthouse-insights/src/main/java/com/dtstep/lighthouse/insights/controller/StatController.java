@@ -93,6 +93,20 @@ public class StatController {
         return ResultData.success(statExtendDto);
     }
 
+    @RequestMapping("/stat/testQueryById")
+    public ResultData<StatExtendVO> testQueryById(@Validated @RequestBody IDParam idParam) throws Exception {
+        Integer id = idParam.getId();
+        StatVO stat = statService.queryById(id);
+        if(stat == null){
+            return ResultData.result(ResultCode.elementNotFound);
+        }
+        RenderConfig renderConfig = statService.getTestStatRenderConfig(stat);
+        StatExtendVO statExtendDto = new StatExtendVO(stat);
+        statExtendDto.setRenderConfig(renderConfig);
+        Validate.notNull(stat);
+        return ResultData.success(statExtendDto);
+    }
+
     @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/stat/filterConfig")
     public ResultData<Integer> filterConfig(@Validated @RequestBody StatFilterConfigParam filterConfigParam) throws Exception{

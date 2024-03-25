@@ -155,9 +155,9 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
     }
 
 
-    private static final Comparator<LimitValue> ascComparator = Comparator.comparing(o -> new BigDecimal(o.getScore().toString()));
+    public static final Comparator<LimitValue> ascComparator = Comparator.comparing(o -> new BigDecimal(o.getScore().toString()));
 
-    private static final Comparator<LimitValue> descComparator = (o1, o2) -> new BigDecimal(o2.getScore().toString()).compareTo(new BigDecimal(o1.getScore().toString()));
+    public static final Comparator<LimitValue> descComparator = (o1, o2) -> new BigDecimal(o2.getScore().toString()).compareTo(new BigDecimal(o1.getScore().toString()));
 
     @Override
     public List<LimitValue> query(StatExtEntity statExtEntity, long batchTime) throws Exception {
@@ -197,9 +197,6 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
                 resultList.add(limitValue);
             }
             resultList.sort(ascComparator);
-        }
-        for (LimitValue limitValue : resultList) {
-            System.out.println("test dimens:" + limitValue.getDimensValue() + ",value:" + limitValue.getScore());
         }
         return resultList;
     }
