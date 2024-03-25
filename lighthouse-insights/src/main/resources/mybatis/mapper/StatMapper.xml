@@ -51,7 +51,7 @@
     </insert>
 
     <select id="queryById" resultMap="statResultMap">
-        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`meta_id`,a.`timeparam`,a.`state`,a.`random_id`,a.`limiting_param`,a.`data_version`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title,
+        SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`meta_id`,a.`timeparam`,a.`state`,a.`random_id`,a.`render_config`,a.`limiting_param`,a.`data_version`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title,
                b.department_id,c.token,c.columns
         FROM ldp_stats a
                  inner join ldp_projects b on a.project_id = b.id
