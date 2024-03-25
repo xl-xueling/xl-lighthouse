@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service;
 
+import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.modal.PermissionEnum;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
@@ -20,6 +21,8 @@ public interface UserService {
     boolean isUserNameExist(String username);
 
     User cacheQueryById(int id);
+
+    UserStateEnum queryUserState(Integer id);
 
     User queryById(int id);
 

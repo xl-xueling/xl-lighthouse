@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.dtstep.lighthouse.insights.dao.UserDao">
 
     <resultMap id="userResultMap" type="com.dtstep.lighthouse.common.modal.User">
@@ -39,6 +40,10 @@
 
     <select id="queryById" resultMap="userResultMap">
         SELECT `id`,`username`,`phone`,`email`,`department_id`,`state`,`third_id`,`last_time`,`create_time`,`update_time` FROM ldp_users WHERE id = #{id}
+    </select>
+
+    <select id="queryUserState" resultType="java.lang.Integer">
+        SELECT `state` FROM ldp_users WHERE id = #{id}
     </select>
 
     <select id="queryAllInfoByUserName" resultMap="userResultMap">

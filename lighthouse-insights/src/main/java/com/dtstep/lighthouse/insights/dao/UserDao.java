@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.dao;
 
+import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.common.modal.User;
 import org.apache.ibatis.annotations.Param;
@@ -17,6 +18,8 @@ public interface UserDao {
     int update(User user);
     
     User queryById(Integer id);
+
+    Integer queryUserState(Integer id);
 
     User queryAllInfoByUserName(String username);
 
