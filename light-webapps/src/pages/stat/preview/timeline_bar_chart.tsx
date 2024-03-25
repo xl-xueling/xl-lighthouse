@@ -154,7 +154,7 @@ export default function TimeLineBarPanel({compId = 0,data = null,errorMessage = 
             chart.clear();
             chart.setOption(emptyOption);
         }else{
-            setDimensList(values.map(z => z.dimensValue));
+            setDimensList(values.map(z => z.displayDimensValue));
             const chart = chartRef.current.getEchartsInstance();
             chart.clear();
         }

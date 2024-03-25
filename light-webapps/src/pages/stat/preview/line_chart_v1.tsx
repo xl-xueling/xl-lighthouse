@@ -100,7 +100,7 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
     const getSeries = (chartData) => {
         const seriesArray = new Array<any>();
         for(let i=0;i<chartData.length;i++){
-            const dimensValue = chartData[i].dimensValue;
+            const dimensValue = chartData[i].displayDimensValue;
             let values;
             if(stateIndex == -1){
                 values = chartData[i].valuesList.map(z => z.value);
