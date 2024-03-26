@@ -159,7 +159,7 @@ public class ProjectServiceImpl implements ProjectService {
                 return ResultCode.releasePermissionAdminAtLeastOne;
             }
         }
-        if(ownerId.intValue() == currentUserId){
+        if(ownerId == currentUserId){
             return ResultCode.releasePermissionCurrentNotAllowed;
         }
         Role role = roleService.queryById(roleId);

@@ -19,7 +19,8 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
-import com.dtstep.lighthouse.common.enums.StatStateEnum;
+import com.dtstep.lighthouse.common.enums.*;
+import com.dtstep.lighthouse.common.modal.Component;
 import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.StringUtil;
@@ -36,9 +37,6 @@ import com.dtstep.lighthouse.common.modal.PermissionEnum;
 import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.common.modal.TreeNode;
-import com.dtstep.lighthouse.common.enums.ComponentTypeEnum;
-import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
@@ -164,7 +162,7 @@ public class StatServiceImpl implements StatService {
             if(permissionService.checkUserPermission(userId, manageRole.getId())){
                 statVO.addPermission(PermissionEnum.ManageAble);
                 statVO.addPermission(PermissionEnum.AccessAble);
-            }else if(permissionService.checkUserPermission(userId,accessRole.getId())){
+            }else if(statVO.getPrivateType() == PrivateTypeEnum.Public || permissionService.checkUserPermission(userId,accessRole.getId())){
                 statVO.addPermission(PermissionEnum.AccessAble);
             }
             Role projectManageRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,statVO.getProjectId());
