@@ -138,9 +138,9 @@ function CardBlock(props: CardBlockType) {
       <div style={{height: size == 'small'?'25px':'60px'}} className={styles.content} onClick={handleClick}>{getContent()}</div>
         <Meta
             avatar={
-                item.permissions.includes(PermissionEnum.AccessAble) ?
                 <Space>
-                </Space>:null
+                    {item.createUser?.username}
+                </Space>
             }
         />
     </Card>

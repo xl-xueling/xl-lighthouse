@@ -6,6 +6,7 @@
         <result column="title" property="title"/>
         <result column="private_type" property="privateType" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
         <result column="desc" property="desc"/>
+        <result column="create_user" property="createUserId"/>
         <result column="structure" property="structure" typeHandler="com.dtstep.lighthouse.insights.types.TreeNodeTypeHandler"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -21,11 +22,12 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.MetricSet">
-        INSERT INTO ldp_metricsets (`title`,`private_type`,`desc`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_metricsets (`title`,`private_type`,`desc`,`create_user`,`create_time`,`update_time`) VALUES
         (
             #{title,jdbcType=VARCHAR},
             #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
             #{desc,jdbcType=VARCHAR},
+            #{createUserId,jdbcType=INTEGER},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
         )
@@ -43,7 +45,7 @@
         FROM ldp_departments d
         JOIN depart_cte ON depart_cte.pid = d.id
         )
-        select `id`,`title`,`private_type`,`desc`,`create_time`,`update_time` from ldp_metricsets
+        select `id`,`title`,`private_type`,`desc`,`create_time`,`create_user`,`update_time` from ldp_metricsets
         <if test="queryParam.ownerFlag == 1">
             inner join
             (select resource_id from (select id,resource_id from ldp_roles where role_type = '15') a
@@ -133,6 +135,6 @@
     </delete>
 
     <select id="queryById" resultMap="metricSetResultMap">
-        SELECT `id`,`title`,`private_type`,`desc`,`structure`,`create_time`,`update_time` FROM ldp_metricsets WHERE id = #{id}
+        SELECT `id`,`title`,`private_type`,`desc`,`structure`,`create_user`,`create_time`,`update_time` FROM ldp_metricsets WHERE id = #{id}
     </select>
 </mapper>

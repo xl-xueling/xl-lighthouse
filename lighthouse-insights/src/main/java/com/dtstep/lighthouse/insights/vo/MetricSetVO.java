@@ -35,6 +35,8 @@ public class MetricSetVO extends MetricSet {
 
     private boolean isCustomStructure = true;
 
+    private User createUser;
+
     private Set<PermissionEnum> permissions = new HashSet<>();
 
     public Set<PermissionEnum> getPermissions() {
@@ -78,5 +80,13 @@ public class MetricSetVO extends MetricSet {
 
     public void setCustomStructure(boolean customStructure) {
         isCustomStructure = customStructure;
+    }
+
+    public User getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(User createUser) {
+        this.createUser = createUser;
     }
 }
