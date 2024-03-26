@@ -37,8 +37,7 @@ public final class RedisHandler {
             String password = LDPConfig.getVal(LDPConfig.KEY_REDIS_CLUSTER_PASSWORD);
             client.init(servers,password);
         }catch (Exception ex){
-            logger.error("init redis cluster error,process exit!",ex);
-            System.exit(-1);
+            logger.error("init redis cluster error!",ex);
         }
     }
 

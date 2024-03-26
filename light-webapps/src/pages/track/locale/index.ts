@@ -11,6 +11,9 @@ const i18n = {
     'statTrack.notify.already.turnedON':'Debug mode has been already turned on, period:',
     'statTrack.start.debugMode.confirm':'Are you sure to start DebugMode?',
     'statTrack.stop.debugMode.confirm':'Are you sure to stop DebugMode?',
+    'statTrack.messageType.success':'Success',
+    'statTrack.messageType.validationFailed':'Parameter validation failed',
+    'statTrack.messageType.otherErrors':'Other Errors',
   },
   'zh-CN': {
     'statTrack.breadcrumb.title':'调试模式',
@@ -24,6 +27,9 @@ const i18n = {
     'statTrack.notify.already.turnedON':'调试模式已处于开启状态，调试周期：[%s - %s]。',
     'statTrack.start.debugMode.confirm':'是否确认打开调试模式？',
     'statTrack.stop.debugMode.confirm':'是否确认关闭调试模式？',
+    'statTrack.messageType.success':'正常消息',
+    'statTrack.messageType.validationFailed':'参数校验失败',
+    'statTrack.messageType.otherErrors':'其他错误',
   },
 };
 

@@ -37,7 +37,7 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
             const displayDimensValue = z.displayDimensValue;
             const statId = z.statId;
             const seriesObject = {
-                name:dimensValue,
+                name:displayDimensValue,
                 type:'line',
                 data:z.valuesList?.map(z => z.value),
                 animation: true,
