@@ -42,6 +42,8 @@ public interface MetricSetService {
 
     ResultCode batchGrantPermissions(PermissionGrantParam grantParam) throws Exception;
 
+    ResultCode releasePermission(PermissionReleaseParam releaseParam) throws Exception;
+
     int update(MetricSet metricSet);
 
     MetricSetVO queryById(Integer id);

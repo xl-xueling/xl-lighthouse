@@ -151,6 +151,28 @@ public class MetricSetServiceImpl implements MetricSetService {
         return ResultCode.success;
     }
 
+    @Override
+    public ResultCode releasePermission(PermissionReleaseParam releaseParam) throws Exception {
+        int currentUserId = baseService.getCurrentUserId();
+        Integer resourceId = releaseParam.getResourceId();
+        Integer permissionId = releaseParam.getPermissionId();
+        Permission permission = permissionService.queryById(permissionId);
+        Integer ownerId = permission.getOwnerId();
+        Integer roleId = permission.getRoleId();
+        if(releaseParam.getRoleType() == RoleTypeEnum.METRIC_MANAGE_PERMISSION){
+            List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(roleId,3);
+            if(adminIds.size() <= 1){
+                return ResultCode.releasePermissionAdminAtLeastOne;
+            }
+        }
+        if(ownerId == currentUserId){
+            return ResultCode.releasePermissionCurrentNotAllowed;
+        }
+        Role role = roleService.queryById(roleId);
+        Validate.isTrue(role.getResourceId().intValue() == resourceId.intValue());
+        permissionService.releasePermission(permissionId);
+        return ResultCode.success;
+    }
 
     @Override
     public int update(MetricSet metricSet) {

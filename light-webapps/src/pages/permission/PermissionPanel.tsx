@@ -19,8 +19,7 @@ import {getRandomString} from "@/utils/util";
 import {
     requestGrantMetricPermission,
     requestGrantProjectPermission,
-    requestQueryList, requestReleaseMetricPermission,
-    requestReleaseProjectPermission
+    requestQueryList, requestReleaseMetricPermission, requestReleaseProjectPermission
 } from "@/api/permission";
 import {getDepartPermissionColumns, getUserPermissionColumns} from "./constants";
 import './styles/index.module.less'
