@@ -14,11 +14,6 @@ function Exception403() {
           className={styles.result}
           status="403"
           subTitle={t['exception.result.403.description']}
-          extra={
-            <Button key="back" type="primary">
-              {t['exception.result.403.back']}
-            </Button>
-          }
         />
       </div>
     </div>
