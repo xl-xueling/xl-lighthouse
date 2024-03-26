@@ -56,7 +56,7 @@ export default function PreviewHeader({projectInfo}:{projectInfo:Project}) {
                             style={{marginTop:'0px'}}
                         >
                             {t['projectPreview.label.project']}：{projectInfo?.title}
-                            <CiLock style={{marginLeft:'5px',fontSize:14}}/>
+                            {projectInfo?.privateType == 0 && <CiLock style={{marginLeft:'5px',fontSize:14}}/>}
                         </Typography.Title>
                     </span>
                 </Grid.Col>
