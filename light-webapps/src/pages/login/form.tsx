@@ -124,7 +124,7 @@ export default function LoginForm() {
                    ]}>
           <Checkbox.Group>
             <Checkbox value={true}>
-              {t['login.form.agreeLicence']}
+              <span dangerouslySetInnerHTML={{__html: t['login.form.agreeLicence']}}/>
             </Checkbox>
           </Checkbox.Group>
         </Form.Item>
