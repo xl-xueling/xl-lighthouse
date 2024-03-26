@@ -255,6 +255,7 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     @Override
     public ListData<MetricSetVO> queryList(MetricSetQueryParam queryParam, Integer pageNum, Integer pageSize) {
+        queryParam.setOwnerId(baseService.getCurrentUserId());
         PageHelper.startPage(pageNum,pageSize);
         PageInfo<MetricSet> pageInfo = null;
         try{
@@ -425,7 +426,7 @@ public class MetricSetServiceImpl implements MetricSetService {
     public List<MetricSetVO> queryStarList() {
         int currentUserId = baseService.getCurrentUserId();
         List<Relation> relationList = relationDao.queryList(currentUserId,RelationTypeEnum.UserStarMetricSetRelation);
-        List<Integer> ids = relationList.stream().map(z -> z.getResourceId()).collect(Collectors.toList());
+        List<Integer> ids = relationList.stream().map(Relation::getResourceId).collect(Collectors.toList());
         List<MetricSetVO> voList = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(ids)){
             MetricSetQueryParam queryParam = new MetricSetQueryParam();
@@ -440,7 +441,7 @@ public class MetricSetServiceImpl implements MetricSetService {
                 }
             }
         }
-        Collections.sort(voList, Comparator.comparingInt(e -> ids.indexOf(e.getId())));
+        voList.sort(Comparator.comparingInt(e -> ids.indexOf(e.getId())));
         return voList;
     }
 
