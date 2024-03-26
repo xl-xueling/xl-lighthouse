@@ -68,7 +68,7 @@ export default function TrackStatPage() {
         if(!statInfo){
             return;
         }
-        setSearchForm({"date":[getDateFormat('YYYY-MM-DD'),getDateFormat('YYYY-MM-DD')],"captcha":["0","1","2"],"groupId":[statInfo?.groupId],t:Date.now()})
+        setSearchForm({"date":[getDateFormat('YYYY-MM-DD'),getDateFormat('YYYY-MM-DD')],"captcha":[formatString("0,%s",t['statTrack.messageType.success']),formatString("1,%s",t['statTrack.messageType.validationFailed']),formatString("2,%s",t['statTrack.messageType.otherErrors'])],"groupId":[statInfo?.groupId],t:Date.now()})
     }
 
     const fetchStatInfo = async () => {
