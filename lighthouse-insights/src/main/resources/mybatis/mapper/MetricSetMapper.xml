@@ -32,6 +32,17 @@
     </insert>
 
     <select id="queryList" resultMap="metricSetResultMap">
+        WITH RECURSIVE depart_cte AS (
+        SELECT d.id
+        FROM ldp_departments d
+        where id in (SELECT department_id
+        FROM ldp_users
+        WHERE id = #{queryParam.ownerId})
+        UNION ALL
+        SELECT d.id
+        FROM ldp_departments d
+        JOIN depart_cte ON depart_cte.id = d.pid
+        )
         select `id`,`title`,`private_type`,`desc`,`create_time`,`update_time` from ldp_metricsets
         <if test="queryParam.ownerFlag == 1">
             inner join
@@ -43,7 +54,12 @@
             inner join
             (select resource_id from (select resource_id from (select id,resource_id from ldp_roles where role_type in ('15','16')) a
             inner join
-            (select role_id from ldp_permissions where owner_type = 1 and owner_id = #{queryParam.ownerId}) b on a.id = b.role_id
+            (select role_id from (select role_id from ldp_permissions where owner_type = 1 and owner_id = #{queryParam.ownerId} union all select role_id FROM ldp_permissions
+            WHERE owner_id IN (
+                SELECT id
+                FROM depart_cte
+            )
+            AND owner_type = '2' ) t group by role_id) b on a.id = b.role_id
             union all
             select id as resource_id from ldp_metricsets where private_type = '1'
             ) e group by resource_id) d on id = d.resource_id
