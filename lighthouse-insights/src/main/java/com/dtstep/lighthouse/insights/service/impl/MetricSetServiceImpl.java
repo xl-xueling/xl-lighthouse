@@ -94,6 +94,7 @@ public class MetricSetServiceImpl implements MetricSetService {
         LocalDateTime localDateTime = LocalDateTime.now();
         metricSet.setCreateTime(localDateTime);
         metricSet.setUpdateTime(localDateTime);
+        metricSet.setCreateUserId(baseService.getCurrentUserId());
         metricSetDao.insert(metricSet);
         int id = metricSet.getId();
         Domain domain = domainService.queryDefault();
@@ -194,6 +195,11 @@ public class MetricSetServiceImpl implements MetricSetService {
             metricSetVO.addPermission(PermissionEnum.AccessAble);
         }else if(metricSetVO.getPrivateType() == PrivateTypeEnum.Public || permissionService.checkUserPermission(currentUserId,accessRole.getId())){
             metricSetVO.addPermission(PermissionEnum.AccessAble);
+        }
+        Integer userId = metricSet.getCreateUserId();
+        if(userId != null){
+            User user = userService.cacheQueryById(userId);
+            metricSetVO.setCreateUser(user);
         }
         return metricSetVO;
     }

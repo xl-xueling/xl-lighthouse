@@ -37,6 +37,8 @@ public class MetricSet implements Serializable {
 
     private LocalDateTime updateTime;
 
+    private Integer createUserId;
+
     private TreeNode structure;
 
     public Integer getId() {
@@ -93,5 +95,13 @@ public class MetricSet implements Serializable {
 
     public void setStructure(TreeNode structure) {
         this.structure = structure;
+    }
+
+    public Integer getCreateUserId() {
+        return createUserId;
+    }
+
+    public void setCreateUserId(Integer createUserId) {
+        this.createUserId = createUserId;
     }
 }
