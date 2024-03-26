@@ -18,7 +18,7 @@ const getApplyDescription = (t: any, orderInfo) => {
     } else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS){
         return formatString(t['applyList.description.updateLimitingThreshold'],orderInfo?.extend?.token)
     } else if(orderInfo.orderType == OrderTypeEnum.USER_PEND_APPROVE){
-        return formatString(t['applyList.description.userPendApprove'],orderInfo?.extend?.name)
+        return formatString(t['applyList.description.userPendApprove'],orderInfo?.extend?.username)
     } else if(orderInfo.orderType == OrderTypeEnum.STAT_PEND_APPROVE){
         return formatString(t['applyList.description.statPendApprove'],orderInfo?.extend?.title)
     }
