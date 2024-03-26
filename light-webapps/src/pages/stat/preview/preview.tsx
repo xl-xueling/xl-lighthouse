@@ -11,15 +11,15 @@ import {requestQueryById} from "@/api/stat";
 import {getStatStateDescription} from "@/pages/common/desc/base";
 import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
 import StatUpdateModal from "@/pages/stat/update";
-import {getRandomString} from "@/utils/util";
 import {handlerFetchLimitData, handlerFetchStatData,} from "@/pages/stat/preview/common";
 import * as echarts from "echarts";
 import TimeLineBarPanel from "@/pages/stat/preview/timeline_bar_chart";
 import StatBasicLineChart from "@/pages/stat/preview/line_chart_v1";
 import './style/index.module.less';
-import {StatStateEnum} from "@/types/insights-common";
-import { IoMdRefresh } from "react-icons/io";
+import {PermissionEnum, StatStateEnum} from "@/types/insights-common";
+import {IoMdRefresh} from "react-icons/io";
 import {StatLimitingModal} from "@/pages/stat/limiting/StatLimitingModal";
+import ErrorPage from "@/pages/common/error";
 
 const { Row, Col } = Grid;
 
@@ -41,6 +41,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [limitChartErrorMessage,setLimitChartErrorMessage] = useState<string>(null);
     const [limitChartLoading,setLimitChartLoading] = useState<boolean>(false);
     const [pageTitle,setPageTitle] = useState<string>(null)
+    const [errorCode,setErrorCode] = useState<string>(null);
     const [option,setOption] = useState({});
     const refs = useRef<any[]>([]);
     const refFetchId = useRef<any>(null);
@@ -63,6 +64,9 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
             const {code, data ,message} = response;
             if(code == '0'){
                 if (refFetchId.current === id) {
+                    if(!data.permissions.includes(PermissionEnum.AccessAble)){
+                        setErrorCode("403");
+                    }
                     setStatInfo(data)
                 }
             }else{
@@ -84,6 +88,9 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
 
     const fetchStatData = async () => {
         if(!statInfo){
+            return;
+        }
+        if(!formRef.current){
             return;
         }
         const formParams = formRef.current.getData();
@@ -199,6 +206,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     },[refreshTime])
 
     useEffect(() => {
+        setErrorCode(null);
         refFetchId.current = id;
         setTimeout(() => {
             echarts.connect('sameGroup');
@@ -209,6 +217,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
 
 
     return(
+        errorCode ? <ErrorPage errorCode={403}/> :
         <>
             <Spin loading={loading} size={20} style={{ display: 'block' }}>
                 <Space size={16} direction="vertical" style={{ width: '100%',minHeight:'500px' }}>
