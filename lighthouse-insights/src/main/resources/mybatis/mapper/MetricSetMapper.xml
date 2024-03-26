@@ -33,11 +33,20 @@
 
     <select id="queryList" resultMap="metricSetResultMap">
         select `id`,`title`,`private_type`,`desc`,`create_time`,`update_time` from ldp_metricsets
-        <if test="queryParam.ownerId != null">
+        <if test="queryParam.ownerFlag == 1">
             inner join
             (select resource_id from (select id,resource_id from ldp_roles where role_type = '15') a
             inner join
             (select role_id from ldp_permissions where owner_type = 1 and owner_id = #{queryParam.ownerId}) b on a.id = b.role_id) d on id = d.resource_id
+        </if>
+        <if test="queryParam.ownerFlag == 0">
+            inner join
+            (select resource_id from (select resource_id from (select id,resource_id from ldp_roles where role_type in ('15','16')) a
+            inner join
+            (select role_id from ldp_permissions where owner_type = 1 and owner_id = #{queryParam.ownerId}) b on a.id = b.role_id
+            union all
+            select id as resource_id from ldp_metricsets where private_type = '1'
+            ) e group by resource_id) d on id = d.resource_id
         </if>
         <where>
             <if test="queryParam.ids != null and queryParam.ids.size > 0">

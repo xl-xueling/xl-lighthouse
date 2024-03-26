@@ -25,6 +25,8 @@ public class MetricSetQueryParam {
 
     private String search;
 
+    private Integer ownerFlag;
+
     private Integer ownerId;
 
     private LocalDateTime createStartTime;
@@ -47,12 +49,12 @@ public class MetricSetQueryParam {
         this.search = search;
     }
 
-    public Integer getOwnerId() {
-        return ownerId;
+    public Integer getOwnerFlag() {
+        return ownerFlag;
     }
 
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
+    public void setOwnerFlag(Integer ownerFlag) {
+        this.ownerFlag = ownerFlag;
     }
 
     public LocalDateTime getCreateStartTime() {
@@ -69,5 +71,13 @@ public class MetricSetQueryParam {
 
     public void setCreateEndTime(LocalDateTime createEndTime) {
         this.createEndTime = createEndTime;
+    }
+
+    public Integer getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 }

@@ -69,7 +69,7 @@ export default function ListCard() {
       const {current, pageSize} = pagination;
       const combineParams = {
           search:formParams.search,
-          ownerId:activeKey == '1'?userInfo?.id:null,
+          ownerFlag:activeKey == '1'?1:0,
       }
       await requestList({
           queryParams:combineParams,
