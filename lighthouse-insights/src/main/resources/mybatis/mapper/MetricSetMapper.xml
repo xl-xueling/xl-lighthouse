@@ -33,15 +33,15 @@
 
     <select id="queryList" resultMap="metricSetResultMap">
         WITH RECURSIVE depart_cte AS (
-        SELECT d.id
+        SELECT d.id,d.pid
         FROM ldp_departments d
         where id in (SELECT department_id
         FROM ldp_users
         WHERE id = #{queryParam.ownerId})
         UNION ALL
-        SELECT d.id
+        SELECT d.id,d.pid
         FROM ldp_departments d
-        JOIN depart_cte ON depart_cte.id = d.pid
+        JOIN depart_cte ON depart_cte.pid = d.id
         )
         select `id`,`title`,`private_type`,`desc`,`create_time`,`update_time` from ldp_metricsets
         <if test="queryParam.ownerFlag == 1">
