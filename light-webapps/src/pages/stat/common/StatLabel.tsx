@@ -8,7 +8,9 @@ export default function StatLabel({statInfo}) {
 
     const getLabel = () => {
         return (
-            <Popover trigger={"click"} content={statInfo?.project?.title + ' > '+ statInfo?.title}>
+            <Popover
+                style={{maxWidth:'500px'}}
+                trigger={"click"} content={statInfo?.projectTitle + ' > '+ statInfo?.token + ' > ' + statInfo?.title}>
                 <span>{statInfo?.title}</span>
             </Popover>
         );
