@@ -23,6 +23,7 @@ import {requestStarList as requestMetricStarList} from "@/api/metricset";
 import {requestStarList as requestProjectStarList} from "@/api/project";
 import {fetchAllDepartmentData} from "@/pages/department/common";
 import {checkLogin} from "@/utils/checkLogin";
+import License from "@/pages/license";
 
 const store = createStore(rootReducer);
 
@@ -158,6 +159,7 @@ function Index() {
             <Switch>
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
+              <Route path="/license" component={License}/>
               <Route path="/" component={PageLayout} />
             </Switch>
           </GlobalContext.Provider>

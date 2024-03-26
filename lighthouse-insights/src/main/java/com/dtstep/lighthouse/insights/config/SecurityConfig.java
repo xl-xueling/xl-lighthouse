@@ -69,6 +69,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers(
+                        "/license",
                         "/user/login",
                         "/user/register",
                         "/department/structure",
