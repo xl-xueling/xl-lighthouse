@@ -15,6 +15,7 @@
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.StatStateEnumTypeHandler"/>
         <result property="renderConfig" column="render_config" typeHandler="com.dtstep.lighthouse.insights.types.RenderConfigTypeHandler"/>
         <result property="limitingParam" column="limiting_param" typeHandler="com.dtstep.lighthouse.insights.types.LimitingParamTypeHandler"/>
+        <result property="privateType" column="private_type" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
         <result property="metaId" column="meta_id"/>
         <result property="randomId" column="random_id"/>
         <result property="groupColumns" column="columns"/>
@@ -52,7 +53,7 @@
 
     <select id="queryById" resultMap="statResultMap">
         SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`meta_id`,a.`timeparam`,a.`state`,a.`random_id`,a.`render_config`,a.`limiting_param`,a.`data_version`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title,
-               b.department_id,c.token,c.columns
+               b.department_id,b.private_type,c.token,c.columns
         FROM ldp_stats a
                  inner join ldp_projects b on a.project_id = b.id
                  inner join ldp_groups c on a.group_id = c.id
@@ -77,7 +78,7 @@
         JOIN cte ON cte.id = d.pid
         )
         SELECT a.`id`,a.`title`,a.`group_id`,a.`project_id`,a.`template`,a.`timeparam`,a.`state`,a.`random_id`,a.`limiting_param`,a.`data_version`,a.`expired`,a.`desc`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title,
-               b.department_id,c.token,c.columns
+               b.department_id,b.private_type,c.token,c.columns
         FROM ldp_stats a
                  inner join ldp_projects b on a.project_id = b.id
                  inner join ldp_groups c on a.group_id = c.id

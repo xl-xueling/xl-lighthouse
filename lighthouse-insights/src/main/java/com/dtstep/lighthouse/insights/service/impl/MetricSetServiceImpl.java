@@ -132,10 +132,9 @@ public class MetricSetServiceImpl implements MetricSetService {
         List<Integer> departmentIdList = grantParam.getDepartmentsPermissions();
         List<Integer> userIdList = grantParam.getUsersPermissions();
         if(CollectionUtils.isNotEmpty(departmentIdList)){
-            for(int i=0;i<departmentIdList.size();i++){
-                Integer tempDepartmentId = departmentIdList.get(i);
+            for (Integer tempDepartmentId : departmentIdList) {
                 Validate.isTrue(roleTypeEnum == RoleTypeEnum.METRIC_ACCESS_PERMISSION);
-                permissionService.grantPermission(tempDepartmentId,OwnerTypeEnum.DEPARTMENT,roleId);
+                permissionService.grantPermission(tempDepartmentId, OwnerTypeEnum.DEPARTMENT, roleId);
             }
         }
         if(CollectionUtils.isNotEmpty(userIdList)){
@@ -145,9 +144,8 @@ public class MetricSetServiceImpl implements MetricSetService {
             if(adminsSet.size() > 3){
                 return ResultCode.grantPermissionAdminExceedLimit;
             }
-            for(int i=0;i<userIdList.size();i++){
-                Integer userId = userIdList.get(i);
-                permissionService.grantPermission(userId,OwnerTypeEnum.USER,roleId);
+            for (Integer userId : userIdList) {
+                permissionService.grantPermission(userId, OwnerTypeEnum.USER, roleId);
             }
         }
         return ResultCode.success;
@@ -172,7 +170,7 @@ public class MetricSetServiceImpl implements MetricSetService {
         if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
             metricSetVO.addPermission(PermissionEnum.ManageAble);
             metricSetVO.addPermission(PermissionEnum.AccessAble);
-        }else if(permissionService.checkUserPermission(currentUserId,accessRole.getId())){
+        }else if(metricSetVO.getPrivateType() == PrivateTypeEnum.Public || permissionService.checkUserPermission(currentUserId,accessRole.getId())){
             metricSetVO.addPermission(PermissionEnum.AccessAble);
         }
         return metricSetVO;

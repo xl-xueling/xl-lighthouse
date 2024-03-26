@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.common.modal;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.PrivateTypeEnum;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 
 import java.io.Serializable;
@@ -62,6 +63,8 @@ public class Stat implements Serializable {
     private String desc;
 
     private String randomId;
+
+    private PrivateTypeEnum privateType;
 
     private Integer dataVersion = 0;
 
@@ -231,5 +234,13 @@ public class Stat implements Serializable {
 
     public void setLimitingParam(LimitingParam limitingParam) {
         this.limitingParam = limitingParam;
+    }
+
+    public PrivateTypeEnum getPrivateType() {
+        return privateType;
+    }
+
+    public void setPrivateType(PrivateTypeEnum privateType) {
+        this.privateType = privateType;
     }
 }
