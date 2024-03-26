@@ -13,11 +13,6 @@ function Exception500() {
         className={styles.result}
         status="500"
         subTitle={t['exception.result.500.description']}
-        extra={
-          <Button key="back" type="primary">
-            {t['exception.result.500.back']}
-          </Button>
-        }
       />
     </div>
   );
