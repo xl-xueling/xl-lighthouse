@@ -63,7 +63,18 @@
     </select>
 
     <select id="checkUserPermission" resultType="boolean">
-        WITH RECURSIVE cte AS (
+        WITH RECURSIVE depart_cte AS (
+            SELECT d.id,d.pid
+            FROM ldp_departments d
+            where id in (SELECT department_id
+                         FROM ldp_users
+                         WHERE id = #{userId})
+            UNION ALL
+            SELECT d.id,d.pid
+            FROM ldp_departments d
+                     JOIN depart_cte ON depart_cte.pid = d.id
+        ),
+        cte AS (
             SELECT id, pid
             FROM ldp_roles
             WHERE id = #{roleId}
@@ -85,11 +96,10 @@
                      SELECT role_id
                      FROM ldp_permissions
                      WHERE owner_id IN (
-                         SELECT department_id
-                         FROM ldp_users
-                         WHERE id = #{userId}
+                         SELECT id
+                         FROM depart_cte
                      )
-                       AND owner_type = '2'
+                    AND owner_type = '2'
                  ) temp
             GROUP BY role_id
         ) d
