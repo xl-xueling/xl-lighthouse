@@ -195,4 +195,17 @@ public class MetricSetController {
         return ResultData.success(list);
     }
 
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "resourceId")
+    @RequestMapping("/metricset/grant")
+    public ResultData<Integer> grant(@Validated @RequestBody PermissionGrantParam grantParam) throws Exception{
+        ResultCode resultCode = metricSetService.batchGrantPermissions(grantParam);
+        return ResultData.result(resultCode);
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "resourceId")
+    @RequestMapping("/metricset/release")
+    public ResultData<Integer> release(@Validated @RequestBody PermissionReleaseParam releaseParam) throws Exception{
+        ResultCode resultCode = metricSetService.releasePermission(releaseParam);
+        return ResultData.result(resultCode);
+    }
 }

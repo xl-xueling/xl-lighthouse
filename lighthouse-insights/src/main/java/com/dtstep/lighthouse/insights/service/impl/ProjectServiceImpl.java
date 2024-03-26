@@ -124,10 +124,9 @@ public class ProjectServiceImpl implements ProjectService {
         List<Integer> departmentIdList = grantParam.getDepartmentsPermissions();
         List<Integer> userIdList = grantParam.getUsersPermissions();
         if(CollectionUtils.isNotEmpty(departmentIdList)){
-            for(int i=0;i<departmentIdList.size();i++){
-                Integer tempDepartmentId = departmentIdList.get(i);
+            for (Integer tempDepartmentId : departmentIdList) {
                 Validate.isTrue(roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION);
-                permissionService.grantPermission(tempDepartmentId,OwnerTypeEnum.DEPARTMENT,roleId);
+                permissionService.grantPermission(tempDepartmentId, OwnerTypeEnum.DEPARTMENT, roleId);
             }
         }
         if(CollectionUtils.isNotEmpty(userIdList)){
@@ -137,9 +136,8 @@ public class ProjectServiceImpl implements ProjectService {
             if(adminsSet.size() > 3){
                 return ResultCode.grantPermissionAdminExceedLimit;
             }
-            for(int i=0;i<userIdList.size();i++){
-                Integer userId = userIdList.get(i);
-                permissionService.grantPermission(userId,OwnerTypeEnum.USER,roleId);
+            for (Integer userId : userIdList) {
+                permissionService.grantPermission(userId, OwnerTypeEnum.USER, roleId);
             }
         }
         return ResultCode.success;
