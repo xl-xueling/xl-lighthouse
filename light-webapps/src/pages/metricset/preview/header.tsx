@@ -75,7 +75,7 @@ export default function MetricSetPreviewHeader() {
                                         style={{marginTop:'0px'}}
                                     >
                                        {t['metricsetPreview.title.prefix']}：{metricSetInfo?.title}
-                                        <CiLock style={{marginLeft:'5px',fontSize:14}}/>
+                                        {metricSetInfo?.privateType == 0 && <CiLock style={{marginLeft:'5px',fontSize:14}}/>}
                                     </Typography.Title>
                                 </span>
                             </Grid.Col>
