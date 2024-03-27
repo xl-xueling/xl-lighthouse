@@ -61,7 +61,12 @@ export default function ComponentCreateModal({onClose,onSuccess}) {
 
     async function handlerSubmit(){
         setLoading(true);
-        await formRef.current.validate();
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         const values = formRef.current.getFieldsValue();
         const configuration = values.configuration;
         if(!isJSON(configuration)){
@@ -93,7 +98,12 @@ export default function ComponentCreateModal({onClose,onSuccess}) {
 
     async function verifySubmit(){
         setLoading(true);
-        await formRef.current.validate();
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         const values = formRef.current.getFieldsValue();
         const configuration = values.configuration;
         if(!isJSON(configuration)){
