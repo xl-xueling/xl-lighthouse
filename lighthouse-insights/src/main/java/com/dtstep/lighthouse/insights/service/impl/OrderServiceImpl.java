@@ -240,7 +240,7 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderStateEnum.PROCESSING);
         order.setReason(reason);
         order.setExtendConfig(extendConfig);
-        List<Integer> steps = new ArrayList<>();
+        order.setUserId(applyUser.getId());
         String hash = null;
         List<Role> roleList = null;
         if(order.getOrderType() == OrderTypeEnum.PROJECT_ACCESS){
@@ -285,7 +285,6 @@ public class OrderServiceImpl implements OrderService {
         Validate.isTrue(CollectionUtils.isNotEmpty(roleList));
         order.setSteps(roleList.stream().map(Role::getId).collect(Collectors.toList()));
         order.setCurrentNode(CollectionUtils.isNotEmpty(roleList)?roleList.get(0).getId():null);
-        order.setUserId(applyUser.getId());
         orderDao.insert(order);
         int orderId = order.getId();
         List<OrderDetail> detailList = new ArrayList<>();
