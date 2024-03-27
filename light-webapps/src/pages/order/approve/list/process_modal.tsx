@@ -45,7 +45,12 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
     },[])
 
     async function approvedSubmit() {
-        await formRef.current.validate();
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         const values = formRef.current.getFieldsValue();
         const approveParam = {
             id:orderInfo.id,
@@ -83,7 +88,12 @@ export default function OrderProcessModal({orderId,onClose,onReload}) {
     }
 
     async function rejectedSubmit() {
-        await formRef.current.validate();
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         const values = formRef.current.getFieldsValue();
         const approveParam = {
             id:orderInfo.id,

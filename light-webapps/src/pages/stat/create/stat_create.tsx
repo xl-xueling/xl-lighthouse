@@ -88,7 +88,12 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose,onSuccess}) 
     };
 
     async function handlerSubmit(){
-        await formRef.current.validate();
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         const values = formRef.current.getFieldsValue();
         const template = editorRef.current.editor.getValue();
         const stat:Stat = {

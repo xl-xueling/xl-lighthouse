@@ -31,7 +31,12 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
     const formRef = useRef(null);
 
     async function handlerSubmit(){
-        await formRef.current.validate();
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         const values = formRef.current.getFieldsValue();
         const updateParam:Stat = {
             id:statInfo.id,

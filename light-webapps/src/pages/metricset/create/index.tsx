@@ -37,7 +37,12 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
     }
 
     async function handlerSubmit(){
-        await formRef.current.validate().catch()
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         setLoading(true);
         const values = formRef.current.getFieldsValue();
         const privateType = values.privateType;

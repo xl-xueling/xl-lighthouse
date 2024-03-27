@@ -104,7 +104,12 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
     ];
 
     const onOk = async() => {
-        await formRef.current.validate();
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         const values = formRef.current.getFieldsValue();
         const columns = editTableRef.current.getData();
         if(!columns || columns.length == 0){
