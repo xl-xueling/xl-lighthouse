@@ -221,7 +221,6 @@ public class DataServiceImpl implements DataService {
             ex.printStackTrace();
         }
         Validate.notNull(batchList);
-        List<StatValue> statValues = new ArrayList<>();
         List<StatDataObject> objectList = new ArrayList<>();
         List<String> eliminateDimensList;
         HashMap<String,String> dimensValueMapping = new HashMap<>();
@@ -254,11 +253,12 @@ public class DataServiceImpl implements DataService {
         }
         List<StatState> statStates = statExtEntity.getTemplateEntity().getStatStateList();
         if(eliminateDimensList == null){
+            List<StatValue> statValues = new ArrayList<>();
             for(long batchTime:batchList){
                 StatValue statValue = new StatValue();
                 statValue.setValue(5000 + ThreadLocalRandom.current().nextInt(1000));
                 statValue.setBatchTime(batchTime);
-                statValue.setDisplayBatchTime(DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
+                statValue.setDisplayBatchTime(BatchAdapter.dateTimeFormat(statExtEntity.getTimeparam(),batchTime));
                 List<Object> statesValue = new ArrayList<>();
                 for(int i=0;i<statStates.size();i++){
                     statesValue.add(5000 + ThreadLocalRandom.current().nextInt(1000));
@@ -272,11 +272,12 @@ public class DataServiceImpl implements DataService {
             objectList.add(statDataObject);
         }else{
             for(String dimens:eliminateDimensList){
+                List<StatValue> statValues = new ArrayList<>();
                 for(long batchTime:batchList){
                     StatValue statValue = new StatValue();
                     statValue.setValue(5000 + ThreadLocalRandom.current().nextInt(1000));
                     statValue.setBatchTime(batchTime);
-                    statValue.setDisplayBatchTime(DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
+                    statValue.setDisplayBatchTime(BatchAdapter.dateTimeFormat(statExtEntity.getTimeparam(),batchTime));
                     List<Object> statesValue = new ArrayList<>();
                     for(int i=0;i<statStates.size();i++){
                         statesValue.add(5000 + ThreadLocalRandom.current().nextInt(1000));
