@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.insights.controller;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.enums.PrivateTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
@@ -83,8 +84,12 @@ public class DataController {
         if(stat.getTemplateEntity().getDimensArray().length > 0 && CollectionUtils.isEmpty(dimensList)){
             return ResultData.result(ResultCode.dataQueryMissingDimensParams);
         }
-        List<StatDataObject> objectList = dataService.dataQuery(stat,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
-        return ResultData.success(objectList);
+        ServiceResult<List<StatDataObject>> serviceResult = dataService.dataQuery(stat,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
+        if(serviceResult.isSuccess()){
+            return ResultData.success(serviceResult.getData());
+        }else{
+            return ResultData.result(serviceResult.getResultCode());
+        }
     }
 
     @PostMapping("/data/limit")
@@ -130,8 +135,12 @@ public class DataController {
             }
         }
         List<String> dimensList = dataService.dimensArrangement(statExtEntity,queryParam.getDimensParams());
-        List<StatDataObject> objectList = dataService.testDataQuery(statExtEntity,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
-        return ResultData.success(objectList);
+        ServiceResult<List<StatDataObject>> serviceResult = dataService.testDataQuery(statExtEntity,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
+        if(serviceResult.isSuccess()){
+            return ResultData.success(serviceResult.getData());
+        }else{
+            return ResultData.result(serviceResult.getResultCode());
+        }
     }
 
     @PostMapping("/test-data/limit")
