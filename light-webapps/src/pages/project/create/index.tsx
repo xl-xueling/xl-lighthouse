@@ -47,7 +47,12 @@ function ProjectCreatePanel({onClose,allDepartInfo,onSuccess}){
         }
     }
     async function handlerSubmit(){
-        await formRef.current.validate();
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         const values = formRef.current.getFieldsValue();
         setLoading(true);
         const privateType = values.privateType;

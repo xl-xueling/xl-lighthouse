@@ -20,7 +20,12 @@ export default function ProjectApplyModal({projectInfo,onClose}) {
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
 
     async function handlerSubmit() {
-        await formRef.current.validate();
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         setLoading(true);
         const values = formRef.current.getFieldsValue();
         const applyParam = {

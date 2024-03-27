@@ -37,7 +37,12 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
 
 
     async function handlerSubmit(){
-        await formRef.current.validate();
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         const values = formRef.current.getFieldsValue();
         setLoading(true);
         const project:Project = {
