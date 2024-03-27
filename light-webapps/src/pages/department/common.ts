@@ -126,6 +126,24 @@ export const translateToTreeNodes = (list):Array<ArcoTreeNode> => {
     return nodeArr;
 }
 
+export const translateToCascadeTreeNodes = (list,parentKey = ""):Array<ArcoTreeNode> => {
+    const nodeArr = new Array<ArcoTreeNode>();
+    list?.forEach(item => {
+        let value;
+        if(parentKey == ''){
+            value = item.value + "," + item.label;
+        }else{
+            value = parentKey + ";" + item.value+"," + item.label;
+        }
+        const nodeItem:ArcoTreeNode = {"key":value,"title":item.label};
+        if(item.children){
+            nodeItem.children = translateToCascadeTreeNodes(item.children,value);
+        }
+        nodeArr.push(nodeItem)
+    })
+    return nodeArr;
+}
+
 
 export const countNodesByType = (list:Array<TreeNode>, targetType:string) => {
     let count = 0;

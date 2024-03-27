@@ -151,15 +151,27 @@ public class DataServiceImpl implements DataService {
         HashMap<String,String> dimensValueMapping = new HashMap<>();
         if(CollectionUtils.isNotEmpty(dimensList)){
             eliminateDimensList = new ArrayList<>();
-            for(String dimensValue : dimensList){
-                String [] arr = dimensValue.split(",");
-                if(arr.length == 2){
-                    eliminateDimensList.add(arr[0]);
-                    dimensValueMapping.put(arr[0],arr[1]);
-                }else{
-                    eliminateDimensList.add(dimensValue);
-                    dimensValueMapping.put(dimensValue,dimensValue);
+            for(String value : dimensList){
+                StringBuilder sbr1 = new StringBuilder();
+                StringBuilder sbr2 = new StringBuilder();
+                String [] dimensArr = value.split(";");
+                for(int i=0;i<dimensArr.length;i++){
+                    String dimens = dimensArr[i];
+                    String [] mapArr = dimens.split(",");
+                    if(i != 0){
+                        sbr1.append(";");
+                        sbr2.append(";");
+                    }
+                    if(mapArr.length == 2){
+                        sbr1.append(mapArr[0]);
+                        sbr2.append(mapArr[1]);
+                    }else{
+                        sbr1.append(dimens);
+                        sbr2.append(dimens);
+                    }
                 }
+                eliminateDimensList.add(sbr1.toString());
+                dimensValueMapping.put(sbr1.toString(),sbr2.toString());
             }
         }else{
             eliminateDimensList = dimensList;
@@ -214,15 +226,27 @@ public class DataServiceImpl implements DataService {
         HashMap<String,String> dimensValueMapping = new HashMap<>();
         if(CollectionUtils.isNotEmpty(dimensList)){
             eliminateDimensList = new ArrayList<>();
-            for(String dimensValue : dimensList){
-                String [] arr = dimensValue.split(",");
-                if(arr.length == 2){
-                    eliminateDimensList.add(arr[0]);
-                    dimensValueMapping.put(arr[0],arr[1]);
-                }else{
-                    eliminateDimensList.add(dimensValue);
-                    dimensValueMapping.put(dimensValue,dimensValue);
+            for(String value : dimensList){
+                StringBuilder sbr1 = new StringBuilder();
+                StringBuilder sbr2 = new StringBuilder();
+                String [] dimensArr = value.split(";");
+                for(int i=0;i<dimensArr.length;i++){
+                    String dimens = dimensArr[i];
+                    String [] mapArr = dimens.split(",");
+                    if(i != 0){
+                        sbr1.append(";");
+                        sbr2.append(";");
+                    }
+                    if(mapArr.length == 2){
+                        sbr1.append(mapArr[0]);
+                        sbr2.append(mapArr[1]);
+                    }else{
+                        sbr1.append(dimens);
+                        sbr2.append(dimens);
+                    }
                 }
+                eliminateDimensList.add(sbr1.toString());
+                dimensValueMapping.put(sbr1.toString(),sbr2.toString());
             }
         }else{
             eliminateDimensList = dimensList;
