@@ -117,7 +117,7 @@ export const treeCheckContainsNode = (list:Array<TreeNode>,targetValue:string,ta
 export const translateToTreeNodes = (list):Array<ArcoTreeNode> => {
     const nodeArr = new Array<ArcoTreeNode>();
     list?.forEach(item => {
-        const nodeItem:ArcoTreeNode = {"key":item.value+"," + item.label,"title":item.label};
+        const nodeItem:ArcoTreeNode = {"key":item.value,"title":item.label};
         if(item.children){
             nodeItem.children = translateToTreeNodes(item.children);
         }
