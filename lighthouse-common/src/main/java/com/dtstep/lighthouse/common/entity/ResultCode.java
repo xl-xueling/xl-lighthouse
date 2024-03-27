@@ -148,6 +148,8 @@ public enum ResultCode {
 
     trackDebugModeExpired("7001","trackDebugModeExpired"),
 
+    dataQueryLimitExceed("8001","dataQueryLimitExceed"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.insights.service;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.modal.LimitDataObject;
 import com.dtstep.lighthouse.common.modal.StatDataObject;
@@ -29,9 +30,9 @@ public interface DataService {
 
     List<String> dimensArrangement(StatExtEntity statExtEntity, LinkedHashMap<String, String[]> dimensParams) throws Exception;
 
-    List<StatDataObject> dataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimens) throws Exception;
+    ServiceResult<List<StatDataObject>> dataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimens) throws Exception;
 
-    List<StatDataObject> testDataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimens) throws Exception;
+    ServiceResult<List<StatDataObject>> testDataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimens) throws Exception;
 
     List<LimitDataObject> limitQuery(StatExtEntity statExtEntity,List<Long> batchTimeList) throws Exception;
 

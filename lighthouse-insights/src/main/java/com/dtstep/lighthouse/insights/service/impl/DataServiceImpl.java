@@ -17,6 +17,9 @@ package com.dtstep.lighthouse.insights.service.impl;
  * limitations under the License.
  */
 import com.clearspring.analytics.util.Lists;
+import com.dtstep.lighthouse.common.constant.StatConst;
+import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
@@ -138,7 +141,7 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public List<StatDataObject> dataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimensList) throws Exception {
+    public ServiceResult<List<StatDataObject>> dataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimensList) throws Exception {
         long startTimeStamp = DateUtil.translateToTimeStamp(startTime);
         long endTimeStamp = DateUtil.translateToTimeStamp(endTime);
         List<Long> batchList = null;
@@ -177,6 +180,9 @@ public class DataServiceImpl implements DataService {
         }else{
             eliminateDimensList = dimensList;
         }
+        if(eliminateDimensList != null && eliminateDimensList.size() * batchList.size() > StatConst.QUERY_RESULT_LIMIT_SIZE){
+            return ServiceResult.result(ResultCode.dataQueryLimitExceed);
+        }
         Map<String,List<StatValue>> valuesMap = ResultStorageSelector.queryWithDimensList(statExtEntity,eliminateDimensList,batchList);
         List<StatDataObject> dataObjects = new ArrayList<>();
         if(MapUtils.isNotEmpty(valuesMap)){
@@ -190,7 +196,7 @@ public class DataServiceImpl implements DataService {
                 dataObjects.add(dataObject);
             }
         }
-        return dataObjects;
+        return ServiceResult.success(dataObjects);
     }
 
     @Override
@@ -211,7 +217,7 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public List<StatDataObject> testDataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimensList) throws Exception{
+    public ServiceResult<List<StatDataObject>> testDataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimensList) throws Exception{
         long startTimeStamp = DateUtil.translateToTimeStamp(startTime);
         long endTimeStamp = DateUtil.translateToTimeStamp(endTime);
         List<Long> batchList = null;
@@ -271,6 +277,9 @@ public class DataServiceImpl implements DataService {
             statDataObject.setValuesList(statValues);
             objectList.add(statDataObject);
         }else{
+            if(eliminateDimensList.size() * batchList.size() > StatConst.QUERY_RESULT_LIMIT_SIZE){
+                return ServiceResult.result(ResultCode.dataQueryLimitExceed);
+            }
             for(String dimens:eliminateDimensList){
                 List<StatValue> statValues = new ArrayList<>();
                 for(long batchTime:batchList){
@@ -293,7 +302,7 @@ public class DataServiceImpl implements DataService {
                 objectList.add(statDataObject);
             }
         }
-        return objectList;
+        return ServiceResult.success(objectList);
     }
 
     @Override
