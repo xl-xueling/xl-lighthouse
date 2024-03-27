@@ -18,6 +18,7 @@ package com.dtstep.lighthouse.insights.service.impl;
  */
 import com.clearspring.analytics.util.Lists;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
+import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.enums.LimitTypeEnum;
@@ -251,12 +252,18 @@ public class DataServiceImpl implements DataService {
         }else{
             eliminateDimensList = dimensList;
         }
+        List<StatState> statStates = statExtEntity.getTemplateEntity().getStatStateList();
         if(eliminateDimensList == null){
             for(long batchTime:batchList){
                 StatValue statValue = new StatValue();
                 statValue.setValue(5000 + ThreadLocalRandom.current().nextInt(1000));
                 statValue.setBatchTime(batchTime);
                 statValue.setDisplayBatchTime(DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
+                List<Object> statesValue = new ArrayList<>();
+                for(int i=0;i<statStates.size();i++){
+                    statesValue.add(5000 + ThreadLocalRandom.current().nextInt(1000));
+                }
+                statValue.setStatesValue(statesValue);
                 statValues.add(statValue);
             }
             StatDataObject statDataObject = new StatDataObject();
@@ -270,6 +277,11 @@ public class DataServiceImpl implements DataService {
                     statValue.setValue(5000 + ThreadLocalRandom.current().nextInt(1000));
                     statValue.setBatchTime(batchTime);
                     statValue.setDisplayBatchTime(DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
+                    List<Object> statesValue = new ArrayList<>();
+                    for(int i=0;i<statStates.size();i++){
+                        statesValue.add(5000 + ThreadLocalRandom.current().nextInt(1000));
+                    }
+                    statValue.setStatesValue(statesValue);
                     statValues.add(statValue);
                 }
                 StatDataObject statDataObject = new StatDataObject();
