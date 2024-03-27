@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import styles from "./style/index.module.less";
-import {translateToTreeNodes} from "@/pages/department/common";
+import {translateToCascadeTreeNodes, translateToTreeNodes} from "@/pages/department/common";
 import {
     DateTimeFormat,
     formatTimeStamp,
@@ -103,7 +103,7 @@ const SearchForm = React.forwardRef(( props:{size,statInfo,onSearch},ref) => {
                             treeCheckStrictly={false}
                             allowClear={true}
                             showSearch={true}
-                            treeData={translateToTreeNodes(renderFilterConfig.configData)} />
+                            treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)} />
             )
         }else{
             return (
@@ -124,7 +124,7 @@ const SearchForm = React.forwardRef(( props:{size,statInfo,onSearch},ref) => {
                             treeCheckStrictly={false}
                             allowClear={true}
                             showSearch={true}
-                            treeData={translateToTreeNodes(renderFilterConfig.configData)} />
+                            treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)} />
             )
         }
     }
