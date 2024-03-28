@@ -58,27 +58,19 @@ public final class LDPConfig {
 
     public static final String KEY_REDIS_CLUSTER_PASSWORD = "redis.cluster.password";
 
-    public static final String KEY_ZOOKEEPER_QUORUM = "zookeeper.quorum";
+    public static final String KEY_HBASE_ZOOKEEPER_QUORUM = "hbase.zookeeper.quorum";
 
-    public static final String KEY_ZOOKEEPER_QUORUM_PORT = "zookeeper.quorum.port";
+    public static final String KEY_HBASE_ZOOKEEPER_QUORUM_PORT = "hbase.zookeeper.quorum.port";
 
-    public static final String KEY_LIMITING_GROUP_MESSAGE_SIZE_PER_SEC = "limited.group.message.size.per.sec";
+    public static final String KEY_LIMITING_GROUP_MESSAGE_SIZE_PER_SEC = "limiting.group.message.size.per.sec";
 
-    public static final String KEY_LIMITING_STAT_RESULT_SIZE_PER_SEC = "limited.stat.result.size.per.sec";
+    public static final String KEY_LIMITING_STAT_RESULT_SIZE_PER_SEC = "limiting.stat.result.size.per.sec";
 
-    public static final String KEY_LIMITED_GROUP_MESSAGE_SIZE_APPROVE_THRESHOLD = "limited.group.message.size.approve.threshold";
-
-    public static final String KEY_LIMITED_STAT_RESULT_SIZE_APPROVE_THRESHOLD = "limited.stat.result.size.approve.threshold";
-
-    public static final String KEY_LIGHTHOUSE_LIMITED_ENABLED = "lighthouse.limited.enabled";
+    public static final String KEY_LIGHTHOUSE_LIMITING_ENABLED = "limiting.enabled";
 
     public static final String KEY_LIGHTHOUSE_ICE_LOCATORS = "lighthouse.ice.locators";
 
-    public static final String KEY_SNAPSHOT_EXPIRE_DAYS = "snapshot.expire.days";
-
     public static final String KEY_DATA_COMPRESSION_TYPE = "data.storage.compression.type";
-
-    public static final String KEY_HADOOP_NAMENODE_IPS = "hadoop.namenode.ips";
 
     public static final String KEY_CLUSTER_ID = "lighthouse.cluster.id";
 
@@ -176,6 +168,6 @@ public final class LDPConfig {
     }
 
     public static boolean limitedEnable() {
-        return getOrDefault(KEY_LIGHTHOUSE_LIMITED_ENABLED,true,Boolean.class);
+        return getOrDefault(KEY_LIGHTHOUSE_LIMITING_ENABLED,true,Boolean.class);
     }
 }

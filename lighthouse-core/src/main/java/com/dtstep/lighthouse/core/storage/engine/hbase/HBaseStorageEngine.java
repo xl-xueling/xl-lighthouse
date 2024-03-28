@@ -77,8 +77,8 @@ public class HBaseStorageEngine implements StorageEngine {
                 if(connection == null || connection.isClosed()){
                     StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
-                    String zooQuorum = LDPConfig.getVal(LDPConfig.KEY_ZOOKEEPER_QUORUM);
-                    String port = LDPConfig.getVal(LDPConfig.KEY_ZOOKEEPER_QUORUM_PORT);
+                    String zooQuorum = LDPConfig.getVal(LDPConfig.KEY_HBASE_ZOOKEEPER_QUORUM);
+                    String port = LDPConfig.getVal(LDPConfig.KEY_HBASE_ZOOKEEPER_QUORUM_PORT);
                     Configuration hBaseConfiguration = HBaseConfiguration.create();
                     hBaseConfiguration.set("hbase.zookeeper.quorum",zooQuorum);
                     hBaseConfiguration.set("hbase.zookeeper.property.clientPort",port);

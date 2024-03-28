@@ -33,19 +33,15 @@
         <value>${ldp_redis_cluster}</value>
     </property>
     <property>
-        <name>hadoop.namenode.ips</name>
-        <value>${ldp_hadoop_namenode_ip}</value>
-    </property>
-    <property>
         <name>redis.cluster.password</name>
         <value>${ldp_redis_cluster_passwd}</value>
     </property>
     <property>
-        <name>zookeeper.quorum</name>
+        <name>hbase.zookeeper.quorum</name>
         <value>${ldp_zookeeper_nodes_ips}</value>
     </property>
     <property>
-        <name>zookeeper.quorum.port</name>
+        <name>hbase.zookeeper.quorum.port</name>
         <value>2181</value>
     </property>
     <property>
@@ -53,27 +49,15 @@
         <value>${ldp_lighthouse_ice_locators}</value>
     </property>
     <property>
-        <name>limited.group.message.size.per.sec</name>
-        <value>30000</value>
-    </property>
-    <property>
-        <name>limited.stat.result.size.per.sec</name>
-        <value>3000</value>
-    </property>
-    <property>
-        <name>lighthouse.limited.enabled</name>
+        <name>limiting.enabled</name>
         <value>true</value>
     </property>
     <property>
-        <name>limited.group.message.size.approve.threshold</name>
-        <value>40000</value>
+        <name>limiting.group.message.size.per.sec</name>
+        <value>30000</value>
     </property>
     <property>
-        <name>limited.stat.result.size.approve.threshold</name>
-        <value>4000</value>
-    </property>
-    <property>
-        <name>snapshot.expire.days</name>
-        <value>1</value>
+        <name>limiting.stat.result.size.per.sec</name>
+        <value>3000</value>
     </property>
 </configuration>
