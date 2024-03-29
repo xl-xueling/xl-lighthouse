@@ -89,6 +89,9 @@ public class HomePageServiceImpl implements HomePageService {
         List<Department> allDepartments = departmentService.queryAll();
         Map<Integer,Department> departmentMap = allDepartments.stream().collect(Collectors.toMap(Department::getId, x -> x));
         for(DBStatistics dbStatistics : statistics){
+            if(dbStatistics.getK() == null){
+                continue;
+            }
             int departmentId = dbStatistics.getK();
             int count = dbStatistics.getV();
             StatValue statValue = new StatValue();
