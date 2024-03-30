@@ -126,11 +126,6 @@ export const routes: IRoute[] = [
         key: 'component/list',
         breadcrumb:false,
       },
-      {
-        name: 'menu.system.document',
-        key: 'document/list',
-        breadcrumb:false,
-      },
     ],
   },
 
