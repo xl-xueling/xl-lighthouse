@@ -12,7 +12,7 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
     }
     const http = axios.create({
         baseURL: baseURL + '/api/v1',
-        timeout: 360000,
+        timeout: 180000,
     })
 
     http.interceptors.request.use((config) => {
