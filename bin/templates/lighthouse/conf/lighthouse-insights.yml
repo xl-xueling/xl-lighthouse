@@ -23,6 +23,9 @@ spring:
       enabled: false
   thymeleaf:
     cache: false
+  cache:
+    redis:
+      time-to-live: 86400000
 mybatis:
   config-location: classpath:mybatis-config.xml
   mapper-locations:
