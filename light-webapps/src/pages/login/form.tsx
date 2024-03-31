@@ -38,7 +38,7 @@ export default function LoginForm() {
         localStorage.setItem('userStatus', 'login');
         localStorage.setItem('accessKey',data.accessKey);
         localStorage.setItem('refreshKey',data.refreshKey);
-        window.location.href = '/';
+        window.location.href = '/dashboard/workplace';
       } else {
         Notification.warning({
           style: { width: 420 },

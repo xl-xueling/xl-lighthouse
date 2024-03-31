@@ -4,10 +4,15 @@ import {removeLoginStatus} from "@/utils/checkLogin";
 import {Message, Notification} from "@arco-design/web-react";
 
 export const request = async <T>(config): Promise<ResultData<T>> => {
-    const baseURL = window['GlobalConfig'].REACT_APP_BASE_URL;
+    let baseURL;
+    if(process.env.REACT_APP_ENV == "simulation"){
+        baseURL = 'http://localhost:9089'
+    }else{
+        baseURL = window['GlobalConfig'].REACT_APP_BASE_URL;
+    }
     const http = axios.create({
         baseURL: baseURL + '/api/v1',
-        timeout: 5000,
+        timeout: 360000,
     })
 
     http.interceptors.request.use((config) => {
