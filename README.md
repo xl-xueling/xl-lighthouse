@@ -1,6 +1,6 @@
 <br>
 <div align="center">
-	<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/26.jpg" width="180px;">
+	<img src="https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/26.jpg" width="220px;">
 </div>
 
 <p align="center">
@@ -42,7 +42,7 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 
 ### 产品优势
 
-+  XL-LightHouse面向企业繁杂的流式数据统计需求，可以帮助企业在极短时间内快速实现数以万计、数十万计的数据指标，而这是Flink、ClickHouse之类技术所远不能比拟的，XL-LightHouse帮助企业低成本实现数据化运营，数据指标体系可遍布企业运转的方方面面；
++  XL-LightHouse面向企业繁杂的流式数据统计需求，可以帮助企业在极短时间内快速实现数以万计、数十万计的数据指标，而这是Flink、Spark、ClickHouse、Doris之类技术所远不能比拟的，XL-LightHouse帮助企业低成本实现数据化运营，数据指标体系可遍布企业运转的方方面面；
 +  对单个流式统计场景的数据量无限制，可以非常庞大，也可以非常稀少，您既可以使用它完成十亿级用户量APP的DAU统计、十几万台服务器的运维监控、一线互联网大厂数据量级的日志统计、也可以用它来统计一天只有零星几次的接口调用量、耗时状况；
 +  支持高并发查询统计结果；
 +  一键部署、一行代码接入，无需专业的大数据研发人员，普通工程人员就可以轻松驾驭；
@@ -50,12 +50,22 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 
 ### XL-LightHouse与Flink和ClickHouse之类技术对比
 
--  https://dtstep.com/
+-  [与Flink和ClickHouse之类技术对比](https://dtstep.com/zh/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/%E5%BC%80%E6%BA%90XL-LightHouse%E4%B8%8EFlink%E3%80%81ClickHouse%E4%B9%8B%E7%B1%BB%E6%8A%80%E6%9C%AF%E7%9B%B8%E6%AF%94%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E5%8A%BF.html)
 
 ###  一键部署
 
--  https://dtstep.com/
+-  [一键部署](https://dtstep.com/zh/%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2.html)
 
 ###  演示站点
 
 演示站点：http://119.91.203.220:19232/     测试账号：admin，密码：123456
+
+###  Web端部分功能预览
+
+![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/5.jpg)
+![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/22.jpg)
+![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/23.jpg)
+![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/7.jpg)
+![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/8.jpg)
+![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/9.jpg)
+![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/11.jpg)
