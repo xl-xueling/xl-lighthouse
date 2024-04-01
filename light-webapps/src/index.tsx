@@ -122,6 +122,7 @@ function Index() {
       fetchBasicInfo().then()
     } else if (window.location.pathname.replace(/\//g, '') !== 'login'
         && window.location.pathname.replace(/\//g, '') !== 'register'
+        && window.location.pathname.replace(/\//g, '') !== 'license'
     ) {
       window.location.pathname = '/login';
     }
