@@ -8,22 +8,14 @@ A general-purpose streaming big data statistics system.<br>
 Easier to use, supports a larger amount of data, and can complete more statistical indicators faster.
 </p>
 
-<div align="center">
-
-</div>
-
-<div align="center">
-
 [![LICENSE](https://img.shields.io/github/license/xl-xueling/xl-lighthouse.svg)](https://github.com/xl-xueling/xl-lighthouse/blob/master/LICENSE)
 [![Language](https://img.shields.io/badge/language-Java-blue.svg)](https://www.java.com)
 [![Language](https://img.shields.io/badge/build-passing-blue.svg)](https://github.com/xl-xueling/xl-lighthouse)
 [![GitHub release](https://img.shields.io/github/tag/xl-xueling/xl-lighthouse.svg?label=release)](https://github.com/xl-xueling/xl-lighthouse/releases)
 [![GitHub release date](https://img.shields.io/github/release-date/xl-xueling/xl-lighthouse.svg)](https://github.com/xl-xueling/xl-lighthouse/releases)
 
-</div>
-<br>
-
 <p align="center"><font size="4">一键部署，一行代码接入，无需大数据研发运维经验，轻松驾驭海量数据实时统计。</font></p>
+<p align="center"><font size="4">支撑百万量级数据指标，帮助企业搭建遍布全身的数据化运营体系。</font></p>
 
 ### 使用XL-LightHouse后：
 
