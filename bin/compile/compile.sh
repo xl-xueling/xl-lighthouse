@@ -52,20 +52,23 @@ function localCompileWebapps(){
      sudo apt-get install -y nodejs
   fi
   npm install -g yarn;
+  local yarnCmd=`which yarn`;
+  local yarnCmdDir=$(dirname "$yarnCmd")
+  ln -s $yarnCmd ${yarnCmdDir}/yarnpkg
   local path=${1};
   cd ${path};
 	rm -rf yarn.lock package-lock.json
-	yarn config set network-timeout 600000 -g
-	yarn config set strict-ssl false
-	yarn config set registry https://registry.npmjs.org/
-	yarn install;
-	yarn install;
-	yarn install;
-	yarn run build;
+	yarnpkg config set network-timeout 600000 -g
+	yarnpkg config set strict-ssl false
+	yarnpkg config set registry https://registry.npmjs.org/
+	yarnpkg install;
+	yarnpkg install;
+	yarnpkg install;
+	yarnpkg run build;
 	if [ ! -d "${path}/build/static" ]; then
-      yarn config set registry https://registry.npm.taobao.org/
-      yarn install;
-	    yarn run build;
+      yarnpkg config set registry https://registry.npm.taobao.org/
+      yarnpkg install;
+	    yarnpkg run build;
   fi
   if [ ! -d "${path}/build/static" ]; then
       echo "Compile lighthouse-insights failed,process exit!"
