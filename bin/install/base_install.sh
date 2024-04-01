@@ -127,6 +127,7 @@ baseUbuntuInstall(){
 	sudo apt-get install -y *snappy*
   sudo apt-get install -y sysstat iotop
   sudo apt-get install -y wget
+  sudo apt-get install -y zlib1g-dev
   sudo apt-get install -y libpcre3 libpcre3-dev
 }
 
@@ -154,6 +155,7 @@ baseDebianInstall(){
         sudo apt-get install -y *snappy*
         sudo apt-get install -y sysstat iotop
         sudo apt-get install -y wget
+        sudo apt-get install -y zlib1g-dev
         sudo apt-get install -y libpcre3 libpcre3-dev
 }
 
