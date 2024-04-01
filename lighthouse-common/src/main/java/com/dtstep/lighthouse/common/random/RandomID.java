@@ -24,8 +24,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public final class RandomID {
 
-    private static final ThreadLocalRandom THREAD_LOCAL_RANDOM = ThreadLocalRandom.current();
-
     private RandomID(){}
 
     private static final char[] DIGITS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
@@ -36,7 +34,7 @@ public final class RandomID {
     public static String id(int size) {
         char[] cs = new char[size];
         for (int i = 0; i < cs.length; i++) {
-            cs[i] = DIGITS[THREAD_LOCAL_RANDOM.nextInt(DIGITS.length)];
+            cs[i] = DIGITS[ThreadLocalRandom.current().nextInt(DIGITS.length)];
         }
         return new String(cs);
     }
@@ -44,7 +42,7 @@ public final class RandomID {
     public static char[] idOfChar(int size) {
         char[] cs = new char[size];
         for (int i = 0; i < cs.length; i++) {
-            cs[i] = DIGITS[THREAD_LOCAL_RANDOM.nextInt(DIGITS.length)];
+            cs[i] = DIGITS[ThreadLocalRandom.current().nextInt(DIGITS.length)];
         }
         return cs;
     }
