@@ -16,6 +16,9 @@ function checkInstall() {
     if [[ ${_DEPLOY_LIGHTHOUSE_ICE} == "true" ]];then
       checkICECommand;
     fi
+    if [[ ${_DEPLOY_LIGHTHOUSE_INSIGHTS} == "true" ]];then
+      checkNginxCommand;
+    fi
     if [[ "${SERVICES[@]}" =~ "mysql" ]];then
     	checkMysqlCommand;
     fi		    

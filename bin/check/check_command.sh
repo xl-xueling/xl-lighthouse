@@ -52,6 +52,14 @@ function checkHBaseCommand() {
       done
 }
 
+function checkNginxCommand() {
+    local IPArray=($(getServiceIPS 'lighthouse_insights'))
+    for ip in "${IPArray[@]}"
+      do
+          remoteExecute ${CUR_DIR}/check/check_file_exist.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "${LDP_HOME}/dependency/nginx/sbin/nginx"
+      done
+}
+
 function checkSparkCommand() {
     local IPArray=($(getServiceIPS 'spark'))
     echo "ipArray:${IPArray[*]}"
