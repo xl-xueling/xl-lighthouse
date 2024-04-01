@@ -100,6 +100,7 @@ baseRHELInstall(){
         sudo yum install -y libzstd*
         sudo yum install -y sysstat iotop
         sudo yum install -y wget
+        sudo yum install -y pcre pcre-devel
 }
 
 baseUbuntuInstall(){
@@ -126,6 +127,7 @@ baseUbuntuInstall(){
 	sudo apt-get install -y *snappy*
   sudo apt-get install -y sysstat iotop
   sudo apt-get install -y wget
+  sudo apt-get install -y libpcre3 libpcre3-dev
 }
 
 baseDebianInstall(){ 
@@ -152,6 +154,7 @@ baseDebianInstall(){
         sudo apt-get install -y *snappy*
         sudo apt-get install -y sysstat iotop
         sudo apt-get install -y wget
+        sudo apt-get install -y libpcre3 libpcre3-dev
 }
 
 baseInstall(){
