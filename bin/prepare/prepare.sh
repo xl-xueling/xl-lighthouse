@@ -94,7 +94,7 @@ sshInit(){
 }
 
 hostsInit(){
-        touch ${CUR_DIR}/hosts && sed -i '1,$d' ${CUR_DIR}/hosts;
+        touch ${CUR_DIR}/hosts;
         for ip in ${NODES[@]}
                 do
                         local hostName=`su ${DEPLOY_USER} -c "ssh -o 'StrictHostKeyChecking no' -t ${DEPLOY_USER}@${ip} 'hostname && exit'"`

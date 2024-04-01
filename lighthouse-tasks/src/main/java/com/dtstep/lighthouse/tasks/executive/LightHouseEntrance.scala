@@ -33,6 +33,7 @@ import com.dtstep.lighthouse.common.util.SnappyUtil
 import com.dtstep.lighthouse.core.consumer.AggregateEvent
 import com.dtstep.lighthouse.tasks.stream.NormalStream
 import org.apache.commons.lang3.tuple.{Pair, Triple}
+import org.apache.spark
 import org.apache.spark.SparkConf
 import org.apache.spark.internal.Logging
 import org.apache.spark.sql._
@@ -116,12 +117,19 @@ object LightHouseEntrance extends Logging{
     spark.stop()
   }
 
+
   private def processNormalRequest(flowData:Dataset[(Int,LightMessage)]): Unit ={
     val spark = flowData.sparkSession;
+    val isRunningOnYarn = spark.sparkContext.master.startsWith("yarn")
+    val checkpointLocation = if (isRunningOnYarn) {
+      "/lighthouse/checkpoint/normal"
+    } else {
+      f"${LDPConfig.getHomeDir}/data/lighthouse/checkpoint/normal"
+    }
     val normalStream = new NormalStream(spark);
     val normalDataSet = normalStream.part(flowData);
     normalDataSet.writeStream.queryName("NormalStream")
-      .option("checkpointLocation","/lighthouse/checkpoint/normal")
+      .option("checkpointLocation",checkpointLocation)
       .foreach(new ItemForeachWriter())
       .outputMode(OutputMode.Append()).trigger(Trigger.ProcessingTime(TimeUnit.SECONDS.toMillis(StatConst.NORMAL_BATCH_INTERVAL))).start()
   }
