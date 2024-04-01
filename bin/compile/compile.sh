@@ -43,8 +43,14 @@ function localCompileNginx() {
 }
 
 function localCompileWebapps(){
-  curl -sL https://rpm.nodesource.com/setup_18.x | sudo bash -
-  sudo yum install -y nodejs
+  local lsb=($(getLSBName));
+  if [[ $lsb == "CentOS" ]] || [[ $lsb == "Rocky" ]] || [[ $lsb == "Alma" ]] || [[ $lsb == "RHEL" ]];then
+    curl -sL https://rpm.nodesource.com/setup_18.x | sudo bash -
+    sudo yum install -y nodejs
+  elif [[ $lsb == "Debian" ]] || [[ $lsb == "Ubuntu" ]] ;then
+     curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+     sudo apt-get install -y nodejs
+  fi
   npm install -g yarn;
   local path=${1};
   cd ${path};
