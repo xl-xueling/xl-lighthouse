@@ -6,7 +6,7 @@ import {Message, Notification} from "@arco-design/web-react";
 export const request = async <T>(config): Promise<ResultData<T>> => {
     let baseURL;
     if(process.env.REACT_APP_ENV == "simulation"){
-        baseURL = 'http://localhost:9089'
+        baseURL = 'http://119.91.203.220:9089'
     }else{
         baseURL = window['GlobalConfig'].REACT_APP_BASE_URL;
     }
