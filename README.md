@@ -49,6 +49,13 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 
 -  [一键部署](https://dtstep.com/zh/%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2.html)
 
+###  使用场景演示
+- [即时通讯场景演示](https://dtstep.com/zh/%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E6%BC%94%E7%A4%BA/%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E7%B1%BBAPP%E5%9C%BA%E6%99%AF%E6%BC%94%E7%A4%BA.html)
+- [技术类场景演示](https://dtstep.com/zh/%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E6%BC%94%E7%A4%BA/%E6%8A%80%E6%9C%AF%E7%B1%BB%E5%9C%BA%E6%99%AF%E4%BD%BF%E7%94%A8%E6%BC%94%E7%A4%BA.html)
+- [电商类场景演示](https://dtstep.com/zh/%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E6%BC%94%E7%A4%BA/%E7%94%B5%E5%95%86%E7%B1%BB%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%BD%BF%E7%94%A8%E6%BC%94%E7%A4%BA.html)
+- [资讯类场景演示](https://dtstep.com/zh/%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E6%BC%94%E7%A4%BA/%E8%B5%84%E8%AE%AF%E7%B1%BB%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%BD%BF%E7%94%A8%E6%BC%94%E7%A4%BA.html)
+
+
 ###  演示站点
 
 演示站点：http://119.91.203.220:19232/     测试账号：admin，密码：123456
