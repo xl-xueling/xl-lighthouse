@@ -41,6 +41,8 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 +  一键部署、一行代码接入，无需专业的大数据研发人员，普通工程人员就可以轻松驾驭；
 +  有完善的数据指标可视化以及数据指标管理维护等功能；
 
+有希望使用XL-LightHouse的用户，可添加本人微信，提供免费一对一技术支持！
+
 ### XL-LightHouse与Flink和ClickHouse之类技术对比
 
 -  [与Flink和ClickHouse之类技术对比](https://dtstep.com/zh/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/%E5%BC%80%E6%BA%90XL-LightHouse%E4%B8%8EFlink%E3%80%81ClickHouse%E4%B9%8B%E7%B1%BB%E6%8A%80%E6%9C%AF%E7%9B%B8%E6%AF%94%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E5%8A%BF.html)
