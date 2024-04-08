@@ -25,7 +25,8 @@ public class HelloWorld {
     @Test
     public void helloWorld() throws Exception {
         long t = System.currentTimeMillis();
-        for(int i = 0;i<31001;i++){
+        for(int i = 0;i<31991;i++){
+            //修改统计组参数值、Token和秘钥
             Map<String,Object> map = new HashMap<>();
             map.put("province", RandomID.id(10));
             map.put("score",ThreadLocalRandom.current().nextDouble(1000));
