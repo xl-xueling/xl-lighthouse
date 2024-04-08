@@ -11,10 +11,10 @@ source "${LDP_HOME}/bin/compile/compile.sh"
 
 pre(){
 	cat ${CUR_DIR}/config/nodelist | awk -F ';' '{print $1}' > ${CUR_DIR}/config/nodelist.new
-	local lsb=($(getLSBName));
-  if [[ $lsb == "CentOS" ]] || [[ $lsb == "Rocky" ]] || [[ $lsb == "Alma" ]] || [[ $lsb == "RHEL" ]];then
+	local packageManager=($(getPackageManager));
+  if [[ $packageManager == "yum" ]];then
     sudo yum install -y epel-release
-  elif [[ $lsb == "Debian" ]] || [[ $lsb == "Ubuntu" ]] ;then
+  elif [[ $packageManager == "apt-get" ]] ;then
     sudo apt-get install -y software-properties-common
   fi
   export PS1="[\u@\h \W]\$" && batch_install expect jq rsync*;
@@ -34,11 +34,11 @@ pre(){
 
 	for ip in "${NODES[@]}"
       do
-        local lsb=($(getLSBName));
-        if [[ $lsb == "CentOS" ]] || [[ $lsb == "Rocky" ]] || [[ $lsb == "Alma" ]] || [[ $lsb == "RHEL" ]];then
+        local packageManager=($(getPackageManager));
+        if [[ $packageManager == "yum" ]];then
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/run/yum.pid"
 			    remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo yum -y install rsync"
-        elif [[ $lsb == "Debian" ]] || [[ $lsb == "Ubuntu" ]] ;then
+        elif [[ $packageManager == "apt-get" ]] ;then
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/lib/dpkg/lock-frontend"
 			    remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/cache/apt/archives/lock"
 			    remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/lib/dpkg/lock"
@@ -127,9 +127,9 @@ prepare_for_deploy(){
   local lsb=($(getLSBName));
   local major=($(getLSBMajorVersion));
   log_info "Current environment os:${lsb},version:${major}"
-  if [[ ${CHECK_OS_VERSION} == "true" ]];then
-  	checkOSVersion $lsb $major;
-  fi
+#  if [[ ${CHECK_OS_VERSION} == "true" ]];then
+#  	checkOSVersion $lsb $major;
+#  fi
   pre;
   if [[ ${_DEPLOY_LIGHTHOUSE_INSIGHTS} == "true" ]];then
     localCompileWebapps ${LDP_HOME}/light-webapps;

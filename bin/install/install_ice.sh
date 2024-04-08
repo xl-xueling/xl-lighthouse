@@ -11,41 +11,7 @@ source ${LDP_HOME}/bin/common/const.sh
 source ${LDP_HOME}/bin/common/common.sh
 source ${LDP_HOME}/bin/check/check_process.sh
 
-installICEONCentOS(){
-  local major=($(getLSBMajorVersion))
-  checkPortExist ${_CDN_PACKAGE_MIRROR_IP} ${_CDN_PACKAGE_MIRROR_PORT}
-	if [ $? == '0' ];then
-    wget http://${_CDN_PACKAGE_MIRROR_IP}:${_CDN_PACKAGE_MIRROR_PORT}/yum-mirror/ice/repo/zeroc-ice-el${major}-cdn.repo -P /etc/yum.repos.d
-  fi
-  sudo yum install -y https://zeroc.com/download/ice/3.7/el${major}/ice-repo-3.7.el${major}.noarch.rpm
-	sudo yum install -y ice-all-runtime ice-all-devel
-	rm -f /etc/yum.repos.d/zeroc-ice-*-cdn.repo
-}
-
-installICEONAlma(){
-  local major=($(getLSBMajorVersion))
-  checkPortExist ${_CDN_PACKAGE_MIRROR_IP} ${_CDN_PACKAGE_MIRROR_PORT}
-	if [ $? == '0' ];then
-    wget http://${_CDN_PACKAGE_MIRROR_IP}:${_CDN_PACKAGE_MIRROR_PORT}/yum-mirror/ice/repo/zeroc-ice-el${major}-cdn.repo -P /etc/yum.repos.d
-  fi
-  sudo yum install -y https://zeroc.com/download/ice/3.7/el${major}/ice-repo-3.7.el${major}.noarch.rpm
-  sudo yum install -y ice-all-runtime ice-all-devel
-  rm -f /etc/yum.repos.d/zeroc-ice-*-cdn.repo
-}
-
-installICEONRocky(){
-  local major=($(getLSBMajorVersion))
-  checkPortExist ${_CDN_PACKAGE_MIRROR_IP} ${_CDN_PACKAGE_MIRROR_PORT}
-	if [ $? == '0' ];then
-    wget http://${_CDN_PACKAGE_MIRROR_IP}:${_CDN_PACKAGE_MIRROR_PORT}/yum-mirror/ice/repo/zeroc-ice-el${major}-cdn.repo -P /etc/yum.repos.d
-  fi
-  sudo yum install -y https://zeroc.com/download/ice/3.7/el${major}/ice-repo-3.7.el${major}.noarch.rpm
-  sudo yum install -y ice-all-runtime ice-all-devel
-  rm -f /etc/yum.repos.d/zeroc-ice-*-cdn.repo
-}
-
-
-installICEONRHEL(){
+installICEWithYum(){
   local major=($(getLSBMajorVersion))
   checkPortExist ${_CDN_PACKAGE_MIRROR_IP} ${_CDN_PACKAGE_MIRROR_PORT}
 	if [ $? == '0' ];then
@@ -84,17 +50,25 @@ installICEONDebian(){
 function execInstallICE(){
   local lsb=($(getLSBName));
 	if [[ "${lsb}" == "CentOS" ]];then
-		installICEONCentOS
+		installICEWithYum
 	elif [ "${lsb}" == "Ubuntu" ];then
 		installICEONUbuntu;
 	elif [ "${lsb}" == "Debian" ];then
 		installICEONDebian;
 	elif [ "${lsb}" == "Rocky" ];then
-    		installICEONRocky;
+    		installICEWithYum;
   elif [ "${lsb}" == "RHEL" ];then
-    		installICEONRHEL;
+    		installICEWithYum;
 	elif [ "${lsb}" == "Alma" ];then
-		installICEONAlma;
+		    installICEWithYum;
+	else
+    local packageManager=($(getPackageManager));
+    if [[ $packageManager == "yum" ]];then
+      installICEWithYum;
+    else
+        echo "The current system version does not support!"
+        exit -1;
+    fi
 	fi
 }
 

@@ -34,6 +34,17 @@ function batch_install(){
 	fi	
 }
 
+function getPackageManager() {
+    if command -v yum &>/dev/null; then
+        echo "yum"
+    elif command -v apt-get &>/dev/null; then
+        echo "apt-get"
+    else
+        echo "No valid package manager[yum/apt-get] found!"
+        exit -1;
+    fi
+}
+
 
 function getLSBName(){
 	local DISTRO='';
@@ -69,6 +80,8 @@ getLSBMajorVersion(){
   elif [ $lsb == "Debian" ];then
      local debianVersion=`cat /etc/debian_version`
      major=${debianVersion%%.*}
+  else
+    major=`cat /etc/redhat-release|sed -r 's/.* ([0-9]+)\..*/\1/'`
   fi
   echo $major;
 }

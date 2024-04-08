@@ -55,4 +55,10 @@ public class RandomIDTest {
             Thread.sleep(1000);
         }
     }
+
+    @Test
+    public void test3() throws Exception{
+        String s = RandomID.id(32);
+        System.out.println("s:" + s);
+    }
 }

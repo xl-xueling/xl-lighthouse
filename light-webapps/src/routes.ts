@@ -126,6 +126,12 @@ export const routes: IRoute[] = [
         key: 'component/list',
         breadcrumb:false,
       },
+      {
+        name: 'menu.system.apiCaller',
+        key: 'caller/list',
+        breadcrumb:false,
+        ignore: true,
+      },
     ],
   },
 
