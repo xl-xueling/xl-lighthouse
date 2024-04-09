@@ -38,7 +38,7 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 
 ### XL-LightHouse与Flink和ClickHouse之类技术对比
 
--  [与Flink和ClickHouse之类技术对比](https://dtstep.com/zh/architecture/02.html)
+-  [与Flink和ClickHouse之类技术对比](https://dtstep.com/zh/architecture/02.html?_blank)
 
 ###  一键部署
 
