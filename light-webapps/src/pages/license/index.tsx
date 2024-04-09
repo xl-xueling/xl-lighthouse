@@ -16,7 +16,7 @@ function License() {
         - b、销售直接或间接借鉴XL-LightHouse系统设计方法的软硬件产品或服务。   
         - c、销售直接或间接包含XL-Formula设计标准（包括在此基础上修改演变而来的标准）的软硬件产品或服务。   
         - d、销售直接或间接依赖XL-LightHouse或XL-Formula相关的数据指标可视化产品或服务，包括但不限于插件、终端等任何形式的产品或服务。   
-   -    如上所述的“服务”指为购买者提供统计数据类服务或提供相应产品的技术支持维护服务，为避免不必要的版权纠纷， 在销售相关产品或服务前请务必查阅【<a href="https://dtstep.com" target="_blank">版权声明</a>】，本协议最终解释权归原作者所有。    
+   -    如上所述的“服务”指为购买者提供统计数据类服务或提供相应产品的技术支持维护服务，为避免不必要的版权纠纷， 在销售相关产品或服务前请务必查阅【<a href="https://dtstep.com/zh/copyright/01.html" target="_blank">版权声明</a>】，本协议最终解释权归原作者所有。    
 `;
 
     const englishLicense = `
@@ -28,7 +28,7 @@ function License() {
         - b. Sales of software and hardware products or services that directly or indirectly refer to the XL-LightHouse system design method.   
         - c. Sales of software and hardware products or services that directly or indirectly include the XL-Formula design standard (including standards modified and evolved on this basis).   
         - d. Sales of data indicator visualization products or services that directly or indirectly rely on XL-LightHouse/XL-Formula, including but not limited to any form of products or services such as plug-ins and terminals.  
-   -     The "service" mentioned above refers to providing statistical data services for buyers or providing technical support and maintenance services for corresponding products. In order to avoid unnecessary copyright disputes, please be sure to read the [<a href="https://dtstep.com" target="_blank">Copyright Statement</a>] before selling related products or services. This The final interpretation right of the agreement belongs to the original author.
+   -     The "service" mentioned above refers to providing statistical data services for buyers or providing technical support and maintenance services for corresponding products. In order to avoid unnecessary copyright disputes, please be sure to read the [<a href="https://dtstep.com/zh/copyright/01.html" target="_blank">Copyright Statement</a>] before selling related products or services. This The final interpretation right of the agreement belongs to the original author.
 `;
 
     return (
