@@ -51,7 +51,7 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 - [资讯类场景演示](https://dtstep.com/zh/%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E6%BC%94%E7%A4%BA/%E8%B5%84%E8%AE%AF%E7%B1%BB%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%BD%BF%E7%94%A8%E6%BC%94%E7%A4%BA.html)
 
 
-###  演示站点
+###  Web端演示站点
 
 演示站点：http://119.91.203.220:19232/     测试账号：admin，密码：123456
 
