@@ -23,7 +23,7 @@ public class HelloWorld {
     static {
         try{
             //修改rpc服务地址,一主一从，默认为部署集群的前两个节点
-            LightHouse.init("10.206.6.21:4061,10.206.6.5:4061");
+            LightHouse.init("10.206.6.39:4061,10.206.6.21:4061");
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -37,7 +37,8 @@ public class HelloWorld {
             Map<String,Object> map = new HashMap<>();
             map.put("province", RandomID.id(10));
             map.put("score",ThreadLocalRandom.current().nextDouble(1000));
-            LightHouse.stat("BHC:test_stat","pAniRUTDgX5fkvGil2Z8ogQSyVPE93uxqMjGP4he",map,t);
+            map.put("uuid","test_"+ThreadLocalRandom.current().nextInt(300));
+            LightHouse.stat("hvg:test_stat","zQsn6b6jpkqwGw7R2ZoMBbW8RJsh2eIgyX8ZVsyf",map,t);
         }
         System.out.println("send ok.");
         Thread.sleep(100000);
