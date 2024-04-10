@@ -10,7 +10,8 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 
 [![LICENSE](https://img.shields.io/github/license/xl-xueling/xl-lighthouse.svg)](https://github.com/xl-xueling/xl-lighthouse/blob/master/LICENSE)
 [![Language](https://img.shields.io/badge/language-Java-blue.svg)](https://www.java.com)
-[![Language](https://img.shields.io/badge/build-passing-blue.svg)](https://github.com/xl-xueling/xl-lighthouse)
+[![repository](https://img.shields.io/badge/build-passing-blue.svg)](https://github.com/xl-xueling/xl-lighthouse)
+[![website](https://img.shields.io/badge/website-dtstep.com-blue)](https://dtstep.com)
 [![GitHub release](https://img.shields.io/github/tag/xl-xueling/xl-lighthouse.svg?label=release)](https://github.com/xl-xueling/xl-lighthouse/releases)
 [![GitHub release date](https://img.shields.io/github/release-date/xl-xueling/xl-lighthouse.svg)](https://github.com/xl-xueling/xl-lighthouse/releases)
 
