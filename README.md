@@ -46,8 +46,8 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 
 ###  Hello World
 
-- [ICON点击数据统计](https://dtstep.com/zh/HelloWorld/01.html)
-- [电商订单数据统计](https://dtstep.com/zh/HelloWorld/02.html)
+- [ICON点击数据统计](https://dtstep.com/zh/helloworld/01.html)
+- [电商订单数据统计](https://dtstep.com/zh/helloworld/02.html)
 
 ###  使用场景演示
 - [即时通讯场景演示](https://dtstep.com/zh/scene/01.html)
