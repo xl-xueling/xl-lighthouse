@@ -38,14 +38,6 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 
 **有希望使用XL-LightHouse的用户，可添加本人微信，提供免费一对一技术支持。如果在部署、使用过程中遇到任何问题，请及时提issue，本人会第一时间处理。**
 
-### XL-LightHouse与Flink和ClickHouse之类技术对比
-
--  [与Flink和ClickHouse之类技术对比](https://dtstep.com/zh/architecture/02.html)
-
-###  一键部署
-
--  [一键部署](https://dtstep.com/zh/deploy/01.html)
-
 ###  Hello World
 
 - [ICON点击数据统计](https://dtstep.com/zh/helloworld/01.html)
@@ -58,6 +50,13 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 - [电商类场景演示](https://dtstep.com/zh/scene/03.html)
 - [资讯类场景演示](https://dtstep.com/zh/scene/04.html)
 
+### XL-LightHouse与Flink和ClickHouse之类技术对比
+
+-  [与Flink和ClickHouse之类技术对比](https://dtstep.com/zh/architecture/02.html)
+
+###  一键部署
+
+-  [一键部署](https://dtstep.com/zh/deploy/01.html)
 
 ###  Web端演示站点
 
