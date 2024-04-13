@@ -40,6 +40,37 @@
 
   <build>
     <plugins>
+      <!--替换revision变量-->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>1.6.0</version>
+        <executions>
+          <execution>
+            <id>flatten</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+            <configuration>
+              <updatePomFile>true</updatePomFile>
+              <flattenMode>resolveCiFriendliesOnly</flattenMode>
+            </configuration>
+          </execution>
+          <execution>
+            <id>flatten.clean</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+        <inherited>true</inherited>
+        <configuration>
+          <updatePomFile>true</updatePomFile>
+          <flattenMode>resolveCiFriendliesOnly</flattenMode>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -83,6 +114,7 @@
 <!--          </execution>-->
 <!--        </executions>-->
 <!--      </plugin>-->
+
 
       <plugin>
         <groupId>net.alchim31.maven</groupId>
