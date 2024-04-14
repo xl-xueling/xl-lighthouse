@@ -98,6 +98,7 @@ object LightHouseEntrance extends Logging{
       .option("subscribe", topics)
       .option("kafka.session.timeout.ms", "120000")
       .option("kafka.request.timeout.ms","90000")
+      .option("kafka.default.api.timeout.ms","180000")
       .option("kafka.allow.auto.create.topics","false")
       .option("kafka.max.poll.interval.ms","1500000")
       .option("kafka.fetch.max.wait.ms","2000")
@@ -108,6 +109,7 @@ object LightHouseEntrance extends Logging{
       .option("kafkaConsumer.pollTimeoutMs", "180000")
       .option("kafka.partition.assignment.strategy", "org.apache.kafka.clients.consumer.StickyAssignor")
       .option("startingOffsets", "latest")
+      .option("fetchOffset.numRetries","5")
       .option("failOnDataLoss","false")
       .load().selectExpr(s"""deserialize(value) AS message""").as[String]
     val transform = new PreTransform(spark)
