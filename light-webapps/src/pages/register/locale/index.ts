@@ -19,8 +19,8 @@ const i18n = {
     'register.form.repeat.password.placeholder': 'Repeat Password',
     'register.form.rememberPassword': 'Remember password',
     'register.form.forgetPassword': 'Forgot password',
-    'register.form.register': 'Register Account',
-    'register.form.login': 'login',
+    'register.form.register': 'Register',
+    'register.form.login': 'Login',
     'register.form.success':'Register successfully, waiting for admins approve!',
   },
   'zh-CN': {

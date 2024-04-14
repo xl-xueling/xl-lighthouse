@@ -12,7 +12,7 @@ const i18n = {
     'login.form.forgetPassword': 'Forgot password',
     'login.form.agreeLicence': "I agree to the <a target='_blank' href='/license'>terms</a>!",
     'login.form.login': 'Login',
-    'login.form.register': 'register account',
+    'login.form.register': 'Register',
     'login.form.agreeLicence.errMsg':'You need to agree to the terms first!',
   },
   'zh-CN': {
@@ -28,7 +28,7 @@ const i18n = {
     'login.form.forgetPassword': '忘记密码',
     'login.form.agreeLicence': "同意使用<a target='_blank' href='/license'>协议</a>！",
     'login.form.login': '登录',
-    'login.form.register': '注册账号',
+    'login.form.register': '注册',
     'login.form.agreeLicence.errMsg':'使用本系统需同意使用协议!',
   },
 };
