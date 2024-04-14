@@ -4,8 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>com.dtstep.lighthouse</groupId>
-    <artifactId>lighthouse-base</artifactId>
+    <artifactId>lighthouse-build-configuration</artifactId>
     <version>${revision}</version>
+    <relativePath>../lighthouse-build-configuration/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>lighthouse-common</artifactId>

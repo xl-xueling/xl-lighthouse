@@ -4,8 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.dtstep.lighthouse</groupId>
-        <artifactId>lighthouse-base</artifactId>
+        <artifactId>lighthouse-build-configuration</artifactId>
         <version>${revision}</version>
+        <relativePath>../lighthouse-build-configuration/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>lighthouse-client</artifactId>
@@ -14,6 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -95,8 +97,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
                 <executions>
@@ -120,18 +122,6 @@
                         </goals>
                         <configuration>
                             <minimizeJar>true</minimizeJar>
-                            <artifactSet>
-                                <includes>
-                                    <include>com.dtstep.lighthouse:lighthouse-client</include>
-                                    <include>com.dtstep.lighthouse:lighthouse-common</include>
-                                    <include>com.zeroc:ice</include>
-                                    <include>com.fasterxml.jackson.core:jackson-core</include>
-                                    <include>com.fasterxml.jackson.core:jackson-databind</include>
-                                    <include>com.fasterxml.jackson.core:jackson-annotations</include>
-                                    <include>org.xerial.snappy:snappy-java</include>
-                                    <include>org.javatuples:javatuples</include>
-                                </includes>
-                            </artifactSet>
                         </configuration>
                     </execution>
                 </executions>

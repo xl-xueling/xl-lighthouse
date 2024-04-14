@@ -5,6 +5,8 @@
 # dependencies
 /node_modules
 /.pnp
+/.idea
+/target
 .pnp.js
 
 # testing
@@ -20,9 +22,8 @@
 # misc
 .DS_Store
 *.pem
-*.iml
-*.class
 *.lst
+*.lock
 
 # debug
 npm-debug.log*
