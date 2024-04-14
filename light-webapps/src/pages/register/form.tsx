@@ -152,7 +152,7 @@ export default function RegisterForm() {
             </FormItem>
             <FormItem>
                 <Button style={{marginBottom:16}} type='primary' htmlType='submit' long loading={loading}>
-                    Register
+                    {t['register.form.register']}
                 </Button>
                 <Button href={"/login"}
                         type="text"
