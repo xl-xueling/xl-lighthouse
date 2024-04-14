@@ -62,6 +62,7 @@ public final class KafkaProducerPool {
         props.put("batch.size", 131072);
         props.put("linger.ms", 100);
         props.put("acks","all");
+        props.put("retries",5);
         props.put("buffer.memory", 33554432);
         props.put("key.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
