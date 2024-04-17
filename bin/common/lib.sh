@@ -5,8 +5,8 @@
 # Email:better_xueling@126.com
 #-----------------------------------------
 
-source ${LDP_HOME}/bin/common/common.sh
-source ${LDP_HOME}/bin/common/const.sh
+source ${CUR_DIR}/common/common.sh
+source ${CUR_DIR}/common/const.sh
 
 
 function getServiceIPS(){

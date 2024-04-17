@@ -5,8 +5,8 @@
 # Email:better_xueling@126.com
 #-----------------------------------------
 
-LOG_FILE="${LDP_HOME}/bin/log/log.txt"
-mkdir -p ${LDP_HOME}/bin/log/
+LOG_FILE="${CUR_DIR}/log/log.txt"
+mkdir -p ${CUR_DIR}/log/
 #>${LOG_FILE}
 #exec &>>${LOG_FILE}
 

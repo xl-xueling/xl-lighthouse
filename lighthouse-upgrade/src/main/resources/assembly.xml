@@ -7,17 +7,13 @@
     <fileSets>
         <fileSet>
             <directory>${project.parent.basedir}/bin</directory>
+            <excludes>
+                <exclude>**/config/**</exclude>
+            </excludes>
             <includes>
                 <include>**/*</include>
             </includes>
             <outputDirectory>/bin</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>${project.parent.basedir}/plugins</directory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-            <outputDirectory>/plugins</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.parent.basedir}/lighthouse-assembly/target/lib/</directory>
@@ -37,6 +33,13 @@
                 <include>**/*</include>
             </includes>
             <outputDirectory>/light-webapps</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/lighthouse-upgrade</directory>
+            <includes>
+                <include>*.sh</include>
+            </includes>
+            <outputDirectory>/</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>

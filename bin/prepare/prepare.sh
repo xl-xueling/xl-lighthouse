@@ -5,8 +5,8 @@
 # Email:better_xueling@126.com
 #-----------------------------------------
 
-source "${LDP_HOME}/bin/prepare/basic.sh"
-source "${LDP_HOME}/bin/compile/compile.sh"
+source "${CUR_DIR}/prepare/basic.sh"
+source "${CUR_DIR}/compile/compile.sh"
 
 
 pre(){

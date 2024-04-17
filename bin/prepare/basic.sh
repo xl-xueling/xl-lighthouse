@@ -12,7 +12,7 @@ NODES=()
 SERVICES=()
 
 function loadNodesPWD() {
-  local FILE=${LDP_HOME}/bin/config/nodelist
+  local FILE=${CUR_DIR}/config/nodelist
   if [ -f "$FILE" ]; then
     while read row; do
       if [ -n "$row" ]; then
@@ -25,7 +25,7 @@ function loadNodesPWD() {
 }
 
 function loadNodes() {
-  local FILE=${LDP_HOME}/bin/config/nodelist.new
+  local FILE=${CUR_DIR}/config/nodelist.new
   if [ -f "$FILE" ]; then
     while read row; do
           if [ -n "$row" ]; then
@@ -51,7 +51,7 @@ function loadDowns() {
       fi
 			SERVICES+=(${array[0]})
 		fi
-	done <${LDP_HOME}/bin/config/sourcelist
+	done <${CUR_DIR}/config/sourcelist
 }
 
 declare -A ATTRS_MAP
@@ -426,15 +426,15 @@ function validStandaloneConfig(){
 function loadScriptConfig() {
 	local clusterId=''
 	if [[ ${DEPLOY_FLAG} == "true" ]];then
-	  if [[ ! -f "${LDP_HOME}/bin/config/nodelist" ]];then
+	  if [[ ! -f "${CUR_DIR}/config/nodelist" ]];then
 		  log_error "File[nodelist] does not exist!"
       exit -1;
 		fi
 		clusterId=`openssl rand -hex 8 | md5sum | cut -c1-8`
-		echo $clusterId > ${LDP_HOME}/bin/config/cluster.id
+		echo $clusterId > ${CUR_DIR}/config/cluster.id
 		log_info "Prepare to deploy a new cluster:${clusterId}"
 	else
-		clusterId=`cat ${LDP_HOME}/bin/config/cluster.id`
+		clusterId=`cat ${CUR_DIR}/config/cluster.id`
 		echo "The current operating cluster is:"${clusterId}
 	fi
 	if [ ! -n "${clusterId}" ];then
