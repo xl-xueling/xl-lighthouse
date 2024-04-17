@@ -20,7 +20,12 @@ if [ -d "$LDP_HOME" ]; then
 fi
 
 main(){
+  if [ ${USER} != "root" ];then
+		echo "The operation is prohibited, only the \"root\" user is allowed to execute!"
+		exit -1;
+	fi
   loadScriptConfig;
+  checkProcessExist;
 	local steps=0;
 	if [ -f $STEPS_TEMP_FILE ]; then
     		read value < $STEPS_TEMP_FILE;

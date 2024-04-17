@@ -37,7 +37,7 @@ function localCompileRedis() {
 function localCompileNginx() {
   local path=${1};
   cd ${path};
-  ./configure --prefix=${path} --with-http_ssl_module --conf-path=${path}/conf.bak/nginx.conf
+  ./configure --prefix=${path}/build --with-http_ssl_module
   make
   make install
 }

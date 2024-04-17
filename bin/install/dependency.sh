@@ -99,6 +99,8 @@ function dependencyInstall() {
     if [ "$service" == "nginx" ];then
          		local path=${source_dir}/${service}/${dirname}
          		localCompileNginx $path;
+         		cp -r $path/build ${source_dir}/${service}/
+         		mv $path/build ${source_dir}/${service}/${dirname}
     fi
 		local IPArray=($(getServiceIPS ${service}))
 		for ip in ${IPArray[@]}; do
