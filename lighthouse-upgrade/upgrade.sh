@@ -4,7 +4,7 @@ source ~/.bashrc;
 UPGRADE_HOME=$(cd "$(dirname "$0")";pwd)
 CUR_DIR=${UPGRADE_HOME}/bin
 CUR_USER=${USER}
-
+LOCKFILE=/tmp/lighthouse_upgrade.lock
 source "${CUR_DIR}/common/lib.sh"
 source "${CUR_DIR}/prepare/prepare.sh"
 source "${CUR_DIR}/check/check.sh"
@@ -24,6 +24,9 @@ main(){
        echo "The operation is prohibited, only the \"root\" user is allowed to execute!"
        exit -1;
   fi
+  [ -e ${LOCKFILE} ] && `cat ${LOCKFILE} | xargs --no-run-if-empty kill -9 >/dev/null 2>&1`
+	trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
+	echo $$ > ${LOCKFILE}
   loadScriptConfig;
   checkProcessExist;
 	local steps=0;
@@ -108,6 +111,7 @@ main(){
                 echo "6" > ${UPGRADE_HOME}/upgrade_steps.tmp
         fi
 	rm -f ${UPGRADE_HOME}/upgrade_steps.tmp;
+	rm -f ${LOCKFILE}
 	exit 0;		
 }
 
