@@ -4,7 +4,7 @@
 # Author:XueLing.雪灵
 # Email:better_xueling@126.com
 #-----------------------------------------
-
+source ~/.bashrc;
 CUR_DIR=$(cd "$(dirname "$0")";pwd)
 LDP_HOME=$(dirname "$CUR_DIR")
 ROOT_HOME=$(dirname "$LDP_HOME")
@@ -26,7 +26,6 @@ main(){
     [ -e ${LOCKFILE} ] && `cat ${LOCKFILE} | xargs --no-run-if-empty kill -9 >/dev/null 2>&1`;
     trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
 	  echo $$ > ${LOCKFILE}
-	  source ~/.bashrc;
   	loadScriptConfig;
 	if [[ ${USER} != ${DEPLOY_USER} ]];then
         	echo "The operation is prohibited, only user[\"${DEPLOY_USER}\"] is allowed to execute!"
