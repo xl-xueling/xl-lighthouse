@@ -26,12 +26,12 @@ main(){
     [ -e ${LOCKFILE} ] && `cat ${LOCKFILE} | xargs --no-run-if-empty kill -9 >/dev/null 2>&1`;
     trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
 	  echo $$ > ${LOCKFILE}
+	  source ~/.bashrc;
   	loadScriptConfig;
 	if [[ ${USER} != ${DEPLOY_USER} ]];then
         	echo "The operation is prohibited, only user[\"${DEPLOY_USER}\"] is allowed to execute!"
         	exit -1;
   	fi	
-	source ~/.bashrc;
 	stop_lighthouse;
 	echo "service has stopped!"
 	rm -f ${LOCKFILE}
