@@ -21,9 +21,9 @@ fi
 
 main(){
   if [ ${USER} != "root" ];then
-		echo "The operation is prohibited, only the \"root\" user is allowed to execute!"
-		exit -1;
-	fi
+       echo "The operation is prohibited, only the \"root\" user is allowed to execute!"
+       exit -1;
+  fi
   loadScriptConfig;
   checkProcessExist;
 	local steps=0;
@@ -31,7 +31,7 @@ main(){
     		read value < $STEPS_TEMP_FILE;
 		steps=$(expr $value)
 	fi
-	echo "steps is:"${steps}
+	echo "current step is:"${steps}
 	local upgrade_directory=$(basename "$UPGRADE_HOME")
 	local TARGET_VERSION;
 	if [[ $upgrade_directory =~ ^lighthouse-upgrade-([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
@@ -41,7 +41,6 @@ main(){
                 exit -1;
 	fi
 	local from_directory=$(basename ${LDP_HOME})
-
 	if [[ $from_directory =~ ^lighthouse-([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
                 FROM_VERSION="${BASH_REMATCH[1]}"
         else
