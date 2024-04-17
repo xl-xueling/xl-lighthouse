@@ -15,7 +15,7 @@ source "${CUR_DIR}/run/stop.sh"
 STEPS_TEMP_FILE=${UPGRADE_HOME}/upgrade_steps.tmp
 FROM_HOME=$LDP_HOME
 
-if [ -d "$folder" ]; then
+if [ -d "$LDP_HOME" ]; then
   cp -r $LDP_HOME/bin/config ${UPGRADE_HOME}/bin
 fi
 
