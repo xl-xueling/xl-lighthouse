@@ -26,11 +26,10 @@
             <directory>${project.parent.basedir}/light-webapps</directory>
             <excludes>
                 <exclude>/node_modules/**</exclude>
-                <exclude>/build/**</exclude>
                 <exclude>/node/**</exclude>
             </excludes>
             <includes>
-                <include>**/*</include>
+                <include>/build/**</include>
             </includes>
             <outputDirectory>/light-webapps</outputDirectory>
         </fileSet>
