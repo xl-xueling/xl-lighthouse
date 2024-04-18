@@ -17,7 +17,8 @@ set timeout -1
 expect {
         -nocase "yes/no" {send "yes\n";exp_continue}
         -nocase "'yes' or 'no'" {send "yes\n";exp_continue}
-	-nocase "password" {send "$source_passwd\r"}
+        -nocase "password" {send "$source_passwd\r"}
+        "${prompt}" {send "\r"}
 }
 expect "${prompt}"
 send "scp -r ${source_path} ${user}@${dest_ip}:${dest_path}\r"
@@ -25,8 +26,8 @@ expect {
         -nocase "yes/no" {send "yes\n";exp_continue}
         -nocase "'yes' or 'no'" {send "yes\n";exp_continue}
         -nocase "password" {send "$dest_passwd\r"}
+        "${prompt}" {send "\r"}
 }
 expect "${prompt}"
 send "exit\n\n"
 expect eof
-
