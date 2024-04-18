@@ -41,7 +41,7 @@ export default function BasicInfo({statInfo,callback}) {
             <span>
                 {statInfo?.permissions.includes(PermissionEnum.ManageAble)?
                     <span style={{display:"inline-flex",alignItems:"center"}}>
-                        <Link className={'ldp-custom-link'} href={'/project/manage/' + statInfo?.projectId} target={'_blank'}>{statInfo?.projectTitle}</Link> [{statInfo?.projectId}]
+                        <Link className={'ldp-custom-link'} href={'/project/manage/' + statInfo?.projectId} target={'_self'}>{statInfo?.projectTitle}</Link> [{statInfo?.projectId}]
                     </span>
                     :<span>{statInfo?.projectTitle + ' [' + statInfo?.projectId+ ']'}</span>
                 }

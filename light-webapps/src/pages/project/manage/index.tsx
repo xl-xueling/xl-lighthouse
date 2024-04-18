@@ -115,7 +115,7 @@ export default function ProjectManagePage() {
 
             label: <span style={{marginTop:'2px'}}>{getIcon('project')}</span>,
             value: <span style={{wordBreak: 'break-word'}}>
-                <Link className={'ldp-custom-link'} href={'/project/preview/' + projectInfo?.id} target={'_blank'}>
+                <Link className={'ldp-custom-link'} href={'/project/preview/' + projectInfo?.id} target={'_self'}>
                         {projectInfo?.title}
                     </Link>
                 {" ["+projectInfo?.id+"]"}
