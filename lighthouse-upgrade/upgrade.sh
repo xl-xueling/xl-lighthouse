@@ -110,8 +110,10 @@ main(){
                         done
                 echo "6" > ${UPGRADE_HOME}/upgrade_steps.tmp
         fi
-	rm -f ${UPGRADE_HOME}/upgrade_steps.tmp;
-	rm -f ${LOCKFILE}
+        rm -f ${UPGRADE_HOME}/upgrade_steps.tmp;
+        rm -f ${LOCKFILE}
+        source ~/.bashrc;
+        sudo -u ${DEPLOY_USER} ${LDP_HOME}/bin/start-all.sh;
 	exit 0;		
 }
 
