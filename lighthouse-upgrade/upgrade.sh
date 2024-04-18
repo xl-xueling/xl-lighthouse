@@ -11,6 +11,7 @@ source "${CUR_DIR}/check/check.sh"
 source "${CUR_DIR}/clean/clean.sh"
 source "${CUR_DIR}/run/start.sh"
 source "${CUR_DIR}/run/stop.sh"
+source "${CUR_DIR}/run/reload.sh"
 
 STEPS_TEMP_FILE=${UPGRADE_HOME}/upgrade_steps.tmp
 FROM_HOME=$LDP_HOME
@@ -110,10 +111,10 @@ main(){
                         done
                 echo "6" > ${UPGRADE_HOME}/upgrade_steps.tmp
         fi
-        rm -f ${UPGRADE_HOME}/upgrade_steps.tmp;
-        rm -f ${LOCKFILE}
-        source ~/.bashrc;
-        sudo -u ${DEPLOY_USER} ${LDP_HOME}/bin/start-all.sh;
+	rm -f ${UPGRADE_HOME}/upgrade_steps.tmp;
+	rm -f ${LOCKFILE};
+	source ~/.bashrc;
+	sudo -u ${DEPLOY_USER} ${LDP_HOME}/bin/start-all.sh;
 	exit 0;		
 }
 
