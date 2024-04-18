@@ -37,9 +37,10 @@ main(){
                 done	
 	
 	find ${PACK_HOME}/${current_date} -type f -name "*.tar.gz" -exec tar -xzf {} -C ${PACK_HOME}/${current_date} \;
-	rm -rf ${PACK_HOME}/${current_date}/*.tar.gz;	
-	tar zcvf ${LDP_HOME}/temp/logpack/lighthouse-summary-${current_date}.tar.gz -C ${LDP_HOME}/temp/logpack/${current_date} .
-	echo "Already packed log file:${LDP_HOME}/temp/logpack/lighthouse-summary-${current_date}.tar.gz"
+	rm -rf ${PACK_HOME}/${current_date}/*.tar.gz;
+  cd ${LDP_HOME}/temp/logpack;
+  tar zcvf lighthouse-summary-${current_date}.tar.gz ${current_date}
+  echo "Already packed log file:${LDP_HOME}/temp/logpack/lighthouse-summary-${current_date}.tar.gz"
 }	
 
 main $@;
