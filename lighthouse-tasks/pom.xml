@@ -8,6 +8,7 @@
       <version>${revision}</version>
   </parent>
   <artifactId>lighthouse-tasks</artifactId>
+  <name>XL-LightHouse - Tasks</name>
   <packaging>jar</packaging>
   <url>http://maven.apache.org</url>
   <properties>

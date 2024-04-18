@@ -11,7 +11,7 @@
   </parent>
 
   <packaging>pom</packaging>
-  <name>lighthouse-base</name>
+  <name>XL-LightHouse</name>
   <url>http://maven.apache.org</url>
   <properties>
     <revision>2.1.4</revision>

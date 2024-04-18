@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>lighthouse-ice</artifactId>
+    <name>XL-LightHouse - ICE</name>
     <packaging>jar</packaging>
     <url>http://maven.apache.org</url>
     <properties>

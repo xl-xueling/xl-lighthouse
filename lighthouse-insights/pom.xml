@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>lighthouse-insights</artifactId>
     <packaging>jar</packaging>
-    <name>lighthouse-insights</name>
+    <name>XL-LightHouse - Insights</name>
     <url>http://maven.apache.org</url>
     <properties>
         <slf4j.version>1.7.2</slf4j.version>
