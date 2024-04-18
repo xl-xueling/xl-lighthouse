@@ -30,6 +30,7 @@ baseInstallWithYum(){
         sudo yum install -y sysstat iotop
         sudo yum install -y wget
         sudo yum install -y pcre pcre-devel
+        sudo yum install -y acl
 }
 
 
@@ -59,6 +60,7 @@ baseInstallWithApt(){
   sudo apt-get install -y wget
   sudo apt-get install -y zlib1g-dev
   sudo apt-get install -y libpcre3 libpcre3-dev
+  sudo apt-get install -y acl
 }
 
 

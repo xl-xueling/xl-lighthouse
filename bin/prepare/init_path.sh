@@ -38,6 +38,7 @@ function initPath(){
   echo export LDP_DATA_DIR=${LDP_DATA_DIR} >> /home/${user}/.bashrc
   sed -i '/LDP_DATA_DIR/d' /root/.bashrc
   echo export LDP_DATA_DIR=${LDP_DATA_DIR} >> /root/.bashrc
+  setfacl -R -m u:${user}:r-x /var/log
 }
 
 
