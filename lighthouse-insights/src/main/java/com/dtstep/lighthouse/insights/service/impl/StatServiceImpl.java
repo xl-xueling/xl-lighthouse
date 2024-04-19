@@ -269,8 +269,8 @@ public class StatServiceImpl implements StatService {
                 filterConfig.setComponentType(componentTypeEnum);
                 filterConfig.setDimens(filterConfig.getDimens());
                 filterConfig.setLabel(filterConfig.getLabel());
-                if(componentId != 0){
-                    Component component = componentService.queryById(componentId);
+                Component component = componentService.queryById(componentId);
+                if(component != null){
                     filterConfig.setTitle(component.getTitle());
                     filterConfig.setConfigData(component.getConfiguration());
                     filtersConfigMap.put(filterConfig.getDimens(),filterConfig);
@@ -318,8 +318,8 @@ public class StatServiceImpl implements StatService {
                 filterConfig.setComponentType(componentTypeEnum);
                 filterConfig.setDimens(filterConfig.getDimens());
                 filterConfig.setLabel(filterConfig.getLabel());
-                if(componentId != 0){
-                    Component component = componentService.queryById(componentId);
+                Component component = componentService.queryById(componentId);
+                if(component != null){
                     filterConfig.setTitle(component.getTitle());
                     filterConfig.setConfigData(component.getConfiguration());
                     filtersConfigMap.put(filterConfig.getDimens(),filterConfig);
@@ -370,6 +370,9 @@ public class StatServiceImpl implements StatService {
             int componentId = filterConfig.getComponentId();
             if(componentId != 0 && filterConfig.getComponentType() == ComponentTypeEnum.FILTER_SELECT){
                 Component component = componentService.queryById(componentId);
+                if(component == null){
+                    return ResultCode.getExtendResultCode(ResultCode.filterConfigComponentInvalid,String.valueOf(componentId));
+                }
                 int level = TreeUtil.getMaxLevel(component.getConfiguration());
                 if(dimensArrayUnit.length != level){
                     return ResultCode.getExtendResultCode(ResultCode.filterConfigLevelNotMatch,dimens);

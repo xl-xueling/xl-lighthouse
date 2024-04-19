@@ -25,14 +25,14 @@ import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.enums.LimitTypeEnum;
-import com.dtstep.lighthouse.common.modal.LimitDataObject;
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
-import com.dtstep.lighthouse.common.modal.StatDataObject;
 import com.dtstep.lighthouse.core.storage.limit.LimitStorageSelector;
 import com.dtstep.lighthouse.core.storage.limit.impl.RedisLimitStorageEngine;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
+import com.dtstep.lighthouse.insights.service.ComponentService;
 import com.dtstep.lighthouse.insights.service.DataService;
 import com.dtstep.lighthouse.insights.service.StatService;
 import org.apache.commons.collections.CollectionUtils;
@@ -55,6 +55,9 @@ import java.util.stream.Collectors;
 public class DataServiceImpl implements DataService {
 
     private static final Logger logger = LoggerFactory.getLogger(DataServiceImpl.class);
+
+    @Autowired
+    private ComponentService componentService;
 
     @Override
     public List<String> dimensArrangement(StatExtEntity statExtEntity, LinkedHashMap<String, String[]> dimensParams) throws Exception {
@@ -90,6 +93,7 @@ public class DataServiceImpl implements DataService {
                     .collect(Collectors.joining(";"));
         }).collect(Collectors.toList());
     }
+
 
     private static class DimensEntity {
 
@@ -199,14 +203,107 @@ public class DataServiceImpl implements DataService {
         return ServiceResult.success(dataObjects);
     }
 
+    private static void filterConfigNodesByLevel(List<TreeNode> nodes, int targetLevel, int currentLevel, List<TreeNode> result) {
+        if(CollectionUtils.isEmpty(nodes)){
+            return;
+        }
+        if (currentLevel == targetLevel) {
+            result.addAll(nodes);
+            return;
+        }
+        for (TreeNode node : nodes) {
+            filterConfigNodesByLevel(node.getChildren(), targetLevel, currentLevel + 1, result);
+        }
+    }
+
+    @Override
+    public String queryDimensDisplayValue(StatExtEntity statExtEntity, int dimensIndex,String dimensValue) throws Exception {
+        String displayDimensValue = dimensValue;
+        RenderConfig renderConfig = statExtEntity.getRenderConfig();
+        if(renderConfig != null && CollectionUtils.isNotEmpty(renderConfig.getFilters())){
+            List<RenderFilterConfig> renderFilterConfigs = renderConfig.getFilters();
+            for(RenderFilterConfig renderFilterConfig : renderFilterConfigs){
+                if(dimensIndex != -1){
+                    List<TreeNode> configData = renderFilterConfig.getConfigData();
+                    List<TreeNode> levelData = new ArrayList<>();
+                    filterConfigNodesByLevel(configData,dimensIndex,0,levelData);
+                    List<TreeNode> treeNodes = levelData.stream().filter(x -> x.getValue() != null && x.getValue().toString().equals(dimensValue)).collect(Collectors.toList());
+                    if(CollectionUtils.isNotEmpty(treeNodes)){
+                        displayDimensValue = treeNodes.get(0).getLabel();
+                    }
+                }
+            }
+        }
+        return displayDimensValue;
+    }
+
+
     @Override
     public List<LimitDataObject> limitQuery(StatExtEntity statExtEntity, List<Long> batchTimeList) throws Exception {
         List<LimitDataObject> resultList = Lists.newArrayList();
         if(CollectionUtils.isEmpty(batchTimeList)){
             return resultList;
         }
+        String[] dimensArray = statExtEntity.getTemplateEntity().getDimensArray();
+        List<String> dimensList = Arrays.asList(dimensArray);
+        Map<String,Map<String,String>> dimensMappingData = new HashMap<>();
+        RenderConfig renderConfig = statExtEntity.getRenderConfig();
+        if(renderConfig != null && CollectionUtils.isNotEmpty(renderConfig.getFilters())){
+            List<RenderFilterConfig> renderFilterConfigs = renderConfig.getFilters();
+            for(RenderFilterConfig renderFilterConfig : renderFilterConfigs){
+                Integer componentId = renderFilterConfig.getComponentId();
+                if(componentId != 0){
+                    Component component = componentService.queryById(componentId);
+                    if(component == null){
+                        continue;
+                    }
+                    List<TreeNode> configData = component.getConfiguration();
+                    String renderDimens = renderFilterConfig.getDimens();
+                    String [] renderDimensArr = renderDimens.split(";");
+                    for(int i=0;i<renderDimensArr.length;i++){
+                        String singleDimens = renderDimensArr[i];
+                        if(!dimensList.contains(singleDimens)){
+                            logger.error("The statistical filtering dimension is not included,statId:{},dimens:{},singleDimens:{}",statExtEntity.getId()
+                                    ,statExtEntity.getTemplateEntity().getDimens(),singleDimens);
+                        }else{
+                            List<TreeNode> levelData = new ArrayList<>();
+                            filterConfigNodesByLevel(configData,i,0,levelData);
+                            if(CollectionUtils.isNotEmpty(levelData)){
+                                Map<String,String> mappingData = new HashMap<>();
+                                for(TreeNode treeNode : levelData){
+                                    mappingData.put(treeNode.getValue().toString(),treeNode.getLabel());
+                                }
+                                dimensMappingData.put(singleDimens,mappingData);
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
         for(Long batchTime : batchTimeList){
             List<LimitValue> valueList = LimitStorageSelector.query(statExtEntity,batchTime);
+            if(CollectionUtils.isNotEmpty(valueList)){
+                for(LimitValue limitValue : valueList){
+                    String dimensValue = limitValue.getDimensValue();
+                    String displayDimensValue = dimensValue;
+                    String [] dimensValueArr = dimensValue.split(";");
+                    if(dimensValueArr.length != statExtEntity.getTemplateEntity().getDimensArray().length){
+                        logger.error("The dimension value and the data format of the dimension do not match" +
+                                ",statId:{},dimens:{},dimensValue:{}",statExtEntity.getId(),statExtEntity.getTemplateEntity().getDimens(),dimensValue);
+                    }else{
+                        List<String> tempList = new ArrayList<>();
+                        for(int i=0;i<dimensValueArr.length;i++){
+                            String dimens = dimensArray[i];
+                            Map<String,String> mappingData = dimensMappingData.get(dimens);
+                            String displayValue = mappingData.getOrDefault(dimensValueArr[i],dimensValueArr[i]);
+                            tempList.add(displayValue);
+                        }
+                        displayDimensValue = String.join(";", tempList);
+                    }
+                    limitValue.setDisplayDimensValue(displayDimensValue);
+                }
+            }
             LimitDataObject dataObject = new LimitDataObject();
             dataObject.setValues(valueList);
             dataObject.setBatchTime(batchTime);

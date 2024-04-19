@@ -20,11 +20,21 @@ public class LimitValue{
 
     private String dimensValue;
 
+    private String displayDimensValue;
+
     private Object score;
 
     public LimitValue(String dimensValue,Object score){
         this.dimensValue = dimensValue;
         this.score = score;
+    }
+
+    public String getDisplayDimensValue() {
+        return displayDimensValue;
+    }
+
+    public void setDisplayDimensValue(String displayDimensValue) {
+        this.displayDimensValue = displayDimensValue;
     }
 
     public String getDimensValue() {

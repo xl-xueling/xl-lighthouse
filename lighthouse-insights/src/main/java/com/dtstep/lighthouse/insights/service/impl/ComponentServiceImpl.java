@@ -169,6 +169,9 @@ public class ComponentServiceImpl implements ComponentService {
 
     @Override
     public Component queryById(Integer id) {
+        if(id == 0){
+            return null;
+        }
         return componentDao.queryById(id);
     }
 }

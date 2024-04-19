@@ -80,6 +80,8 @@ public enum ResultCode {
 
     filterConfigLevelNotMatch("2007","filterConfigLevelNotMatch"),
 
+    filterConfigComponentInvalid("2009","filterConfigComponentInvalid"),
+
     filterConfigDimensCannotBeEmpty("2005","filterConfigDimensCannotBeEmpty"),
 
     filterConfigLabelCannotBeEmpty("2006","filterConfigLabelCannotBeEmpty"),

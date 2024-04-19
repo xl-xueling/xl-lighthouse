@@ -37,10 +37,10 @@ public class HelloWorld {
         for(int i = 0;i<31991;i++){
             //修改统计组参数值、Token和秘钥
             Map<String,Object> map = new HashMap<>();
-            map.put("province", RandomID.id(10));
-            map.put("score",ThreadLocalRandom.current().nextDouble(1000));
-            map.put("uuid","test_"+ThreadLocalRandom.current().nextInt(300));
-            LightHouse.stat("00Q:test_stat","PYTYktqd3oi7xUxumupzhE10pVWOGiA1GU3vE7do",map,t);
+            map.put("uid",RandomID.id(6));
+            map.put("province",ThreadLocalRandom.current().nextInt(5));
+            map.put("stay_time",ThreadLocalRandom.current().nextDouble(1000));
+            LightHouse.stat("DKn:user_stattime2","lHbtEYbit3CQqKepAb9fNW4I78idwCcH4GrFXbdb",map,t);
         }
         System.out.println("send ok.");
         Thread.sleep(100000);
