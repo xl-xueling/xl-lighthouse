@@ -217,28 +217,6 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public String queryDimensDisplayValue(StatExtEntity statExtEntity, int dimensIndex,String dimensValue) throws Exception {
-        String displayDimensValue = dimensValue;
-        RenderConfig renderConfig = statExtEntity.getRenderConfig();
-        if(renderConfig != null && CollectionUtils.isNotEmpty(renderConfig.getFilters())){
-            List<RenderFilterConfig> renderFilterConfigs = renderConfig.getFilters();
-            for(RenderFilterConfig renderFilterConfig : renderFilterConfigs){
-                if(dimensIndex != -1){
-                    List<TreeNode> configData = renderFilterConfig.getConfigData();
-                    List<TreeNode> levelData = new ArrayList<>();
-                    filterConfigNodesByLevel(configData,dimensIndex,0,levelData);
-                    List<TreeNode> treeNodes = levelData.stream().filter(x -> x.getValue() != null && x.getValue().toString().equals(dimensValue)).collect(Collectors.toList());
-                    if(CollectionUtils.isNotEmpty(treeNodes)){
-                        displayDimensValue = treeNodes.get(0).getLabel();
-                    }
-                }
-            }
-        }
-        return displayDimensValue;
-    }
-
-
-    @Override
     public List<LimitDataObject> limitQuery(StatExtEntity statExtEntity, List<Long> batchTimeList) throws Exception {
         List<LimitDataObject> resultList = Lists.newArrayList();
         if(CollectionUtils.isEmpty(batchTimeList)){

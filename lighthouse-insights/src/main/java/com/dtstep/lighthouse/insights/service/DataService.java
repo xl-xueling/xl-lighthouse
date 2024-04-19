@@ -30,8 +30,6 @@ public interface DataService {
 
     List<String> dimensArrangement(StatExtEntity statExtEntity, LinkedHashMap<String, String[]> dimensParams) throws Exception;
 
-    String queryDimensDisplayValue(StatExtEntity statExtEntity, int dimensIndex,String dimensValue) throws Exception;
-
     ServiceResult<List<StatDataObject>> dataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimens) throws Exception;
 
     ServiceResult<List<StatDataObject>> testDataQuery(StatExtEntity statExtEntity, LocalDateTime startTime, LocalDateTime endTime, List<String> dimens) throws Exception;
