@@ -224,7 +224,7 @@ public class DataServiceImpl implements DataService {
         }
         String[] dimensArray = statExtEntity.getTemplateEntity().getDimensArray();
         List<String> dimensList = Arrays.asList(dimensArray);
-        Map<String,Map<String,String>> dimensMappingData = new HashMap<>();
+        Map<String,Map<String,String>> allMappingData = new HashMap<>();
         RenderConfig renderConfig = statExtEntity.getRenderConfig();
         if(renderConfig != null && CollectionUtils.isNotEmpty(renderConfig.getFilters())){
             List<RenderFilterConfig> renderFilterConfigs = renderConfig.getFilters();
@@ -251,11 +251,10 @@ public class DataServiceImpl implements DataService {
                                 for(TreeNode treeNode : levelData){
                                     mappingData.put(treeNode.getValue().toString(),treeNode.getLabel());
                                 }
-                                dimensMappingData.put(singleDimens,mappingData);
+                                allMappingData.put(singleDimens,mappingData);
                             }
                         }
                     }
-
                 }
             }
         }
@@ -270,14 +269,14 @@ public class DataServiceImpl implements DataService {
                         logger.error("The dimension value and the data format of the dimension do not match" +
                                 ",statId:{},dimens:{},dimensValue:{}",statExtEntity.getId(),statExtEntity.getTemplateEntity().getDimens(),dimensValue);
                     }else{
-                        List<String> tempList = new ArrayList<>();
+                        List<String> displayValueList = new ArrayList<>();
                         for(int i=0;i<dimensValueArr.length;i++){
                             String dimens = dimensArray[i];
-                            Map<String,String> mappingData = dimensMappingData.get(dimens);
+                            Map<String,String> mappingData = allMappingData.get(dimens);
                             String displayValue = mappingData.getOrDefault(dimensValueArr[i],dimensValueArr[i]);
-                            tempList.add(displayValue);
+                            displayValueList.add(displayValue);
                         }
-                        displayDimensValue = String.join(";", tempList);
+                        displayDimensValue = String.join(";", displayValueList);
                     }
                     limitValue.setDisplayDimensValue(displayDimensValue);
                 }

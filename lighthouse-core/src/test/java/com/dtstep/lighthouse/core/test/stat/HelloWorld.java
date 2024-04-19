@@ -38,7 +38,7 @@ public class HelloWorld {
             //修改统计组参数值、Token和秘钥
             Map<String,Object> map = new HashMap<>();
             map.put("uid",RandomID.id(6));
-            map.put("province",ThreadLocalRandom.current().nextInt(5));
+            map.put("province",ThreadLocalRandom.current().nextInt(10));
             map.put("stay_time",ThreadLocalRandom.current().nextDouble(1000));
             LightHouse.stat("DKn:user_stattime2","lHbtEYbit3CQqKepAb9fNW4I78idwCcH4GrFXbdb",map,t);
         }
