@@ -12,16 +12,16 @@ const setting = require('./src/settings.json');
 
 module.exports = {
   webpack: override(
-      // (config) => {
-      //     config.resolve.extensions = ['.ts', '.tsx', '.mjs', '.js', '.jsx', 'json', '.gql', '.graphql']
-      //     config.module.rules.unshift({
-      //         test: /\.m?jsx?$/,
-      //         resolve: {
-      //             fullySpecified: false,
-      //         },
-      //     });
-      //     return config;
-      // },
+      (config) => {
+          config.resolve.extensions = ['.ts', '.tsx', '.mjs', '.js', '.jsx', 'json', '.gql', '.graphql']
+          config.module.rules.unshift({
+              test: /\.m?jsx?$/,
+              resolve: {
+                  fullySpecified: false,
+              },
+          });
+          return config;
+      },
     addLessLoader({
       lessLoaderOptions: {
         lessOptions: {},

@@ -14,7 +14,7 @@
   <name>XL-LightHouse</name>
   <url>http://maven.apache.org</url>
   <properties>
-    <revision>2.1.4</revision>
+    <revision>2.1.5</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <PermGen>64m</PermGen>
