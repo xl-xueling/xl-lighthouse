@@ -100,8 +100,17 @@ main(){
                         done
                 echo "5" > ${UPGRADE_HOME}/upgrade_steps.tmp
         fi
+
+   if [ $steps -lt 6 ];then
+                for ip in "${NODES[@]}"
+                        do
+                        	remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "chown -R ${DEPLOY_USER}:${DEPLOY_USER} ${TARGET_HOME}"
+                        	remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "find ${TARGET_HOME}/bin -name '*.sh'|xargs chmod +x"
+			done
+                echo "6" > ${UPGRADE_HOME}/upgrade_steps.tmp
+        fi
 	
-	 if [ $steps -lt 6 ];then
+	 if [ $steps -lt 7 ];then
                 for ip in "${NODES[@]}"
                         do
                                 local cmd1="sed -i \"s|${LDP_HOME}|${TARGET_HOME}|g\" /root/.bashrc";
@@ -109,7 +118,7 @@ main(){
 				local cmd2="sed -i \"s|${LDP_HOME}|${TARGET_HOME}|g\" /home/${DEPLOY_USER}/.bashrc";
 				remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "$cmd2"
                         done
-                echo "6" > ${UPGRADE_HOME}/upgrade_steps.tmp
+                echo "7" > ${UPGRADE_HOME}/upgrade_steps.tmp
         fi
 	rm -f ${UPGRADE_HOME}/upgrade_steps.tmp;
 	rm -f ${LOCKFILE};
