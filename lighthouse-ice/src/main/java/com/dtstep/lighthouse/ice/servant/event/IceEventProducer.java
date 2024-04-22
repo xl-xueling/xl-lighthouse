@@ -39,10 +39,21 @@ public final class IceEventProducer {
         long maxMemory = runtime.maxMemory();
         long maxMemoryInMB = maxMemory / (1024 * 1024);
         int threadSize = Math.min((int) (maxMemoryInMB / 300), 10);
+        int ringBufferSize;
+        if(maxMemoryInMB <= 1024){
+            ringBufferSize = 1024 * 64;
+        }else if(maxMemoryInMB <= 2048){
+            ringBufferSize = 1024 * 128;
+        }else if(maxMemoryInMB <= 3072){
+            ringBufferSize = 1024 * 256;
+        }else {
+            ringBufferSize = 1024 * 512;
+        }
+        logger.info("RingBuffer init,maxMemoryInMB:{},thread size:{},ringBufferSize:{}",maxMemoryInMB,threadSize,ringBufferSize);
         Validate.isTrue(threadSize > 0);
         Disruptor<IceEvent> disruptor = new Disruptor<>(
                 IceEvent::new,
-                1024 * 1024 * 2,
+                ringBufferSize,
                 Executors.defaultThreadFactory(),
                 ProducerType.MULTI,
                 new BlockingWaitStrategy()
