@@ -135,7 +135,7 @@ export function LimitingSettingsModal({groupInfo,onClose}){
                                 label={t['limitingConfig.form.label.updateValue'] + " [" + t['limitingConfig.form.label.unit'] + "]"}
                                 field='updateValue'
                                 rules={[
-                                    { required: true, match: new RegExp(/^(?!0)([1-9]\d{0,9})$/,"g"),message: t['basic.form.verification.failed.warning'] , validateTrigger : ['onSubmit']},
+                                    { required: true, match: new RegExp(/^(?!0)([1-9]\d{0,8})$/,"g"),message: t['basic.form.verification.failed.warning'] , validateTrigger : ['onSubmit']},
                                 ]}
                             >
                                 <Input placeholder='Please Enter...' />
