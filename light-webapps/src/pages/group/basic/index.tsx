@@ -84,7 +84,7 @@ export default function GroupBasicPanel({groupInfo}) {
                                 <Typography.Title
                                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                                 >
-                                    {'Token'}
+                                    {t['group.basic.label.token']}
                                 </Typography.Title>
                                 <Form.Item field="token">
                                     <Input disabled={true}/>
@@ -95,7 +95,7 @@ export default function GroupBasicPanel({groupInfo}) {
                                             <Typography.Title
                                                 style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                                             >
-                                                {'Columns'}
+                                                {t['group.basic.label.column']}
                                             </Typography.Title>
                                         </Grid.Col>
                                     </Grid.Row>
@@ -105,7 +105,7 @@ export default function GroupBasicPanel({groupInfo}) {
                                 <Typography.Title
                                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                                 >
-                                    {'Description'}
+                                    {t['group.basic.label.description']}
                                 </Typography.Title>
                                 <Form.Item field="desc">
                                     <Input.TextArea disabled={true}
@@ -115,7 +115,7 @@ export default function GroupBasicPanel({groupInfo}) {
                                 <Typography.Title
                                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
                                 >
-                                    {'CreateTime'}
+                                    {t['group.basic.label.createTime']}
                                 </Typography.Title>
                                 <Form.Item field="createTime">
                                     <Input disabled={true}/>
