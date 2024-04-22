@@ -273,8 +273,12 @@ public class DataServiceImpl implements DataService {
                         for(int i=0;i<dimensValueArr.length;i++){
                             String dimens = dimensArray[i];
                             Map<String,String> mappingData = allMappingData.get(dimens);
-                            String displayValue = mappingData.getOrDefault(dimensValueArr[i],dimensValueArr[i]);
-                            displayValueList.add(displayValue);
+                            if(mappingData != null && mappingData.containsKey(dimensValueArr[i])){
+                                String displayValue = mappingData.get(dimensValueArr[i]);
+                                displayValueList.add(displayValue);
+                            }else{
+                                displayValueList.add(dimensValueArr[i]);
+                            }
                         }
                         displayDimensValue = String.join(";", displayValueList);
                     }
