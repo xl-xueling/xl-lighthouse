@@ -27,6 +27,8 @@ import com.dtstep.lighthouse.insights.service.RoleService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,6 +45,8 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class PermissionInterceptor implements HandlerInterceptor {
 
+    private static final Logger logger = LoggerFactory.getLogger(PermissionInterceptor.class);
+
     @Autowired
     private PermissionService permissionService;
 
@@ -51,7 +55,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("Request URI:" + request.getRequestURI());
+        logger.info("Request URI:" + request.getRequestURI());
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();
