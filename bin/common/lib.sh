@@ -8,6 +8,20 @@
 source ${CUR_DIR}/common/common.sh
 source ${CUR_DIR}/common/const.sh
 
+function isFolderEmpty() {
+    local folder="$1"
+    local file_count=$(ls -A "$folder" 2>/dev/null | wc -l)
+    if [ "$file_count" -eq 0 ]; then
+        echo true
+    else
+        echo false
+    fi
+}
+
+function getFolderUsage() {
+    local folder="$1"
+    du -s "$folder" | cut -f1
+}
 
 function getServiceIPS(){
 	local service=$1
@@ -77,7 +91,7 @@ function redisClusterFix(){
                         for ((a=1;a<=${_REDIS_NUM_PIDS_PER_NODE};a++))
                                 do
                                         local port=$[7100+${a}]
-                                        remoteExecute ${LDP_HOME}/bin/tools/redis_fix.exp ${DEPLOY_USER} ${ip} ${DEPLOY_PASSWD} ${LDP_HOME} ${port} ${clusterPwd}
+                                        remoteExecute ${LDP_HOME}/bin/tools/redisfix/redis_fix.exp ${DEPLOY_USER} ${ip} ${DEPLOY_PASSWD} ${LDP_HOME} ${port} ${clusterPwd}
                                 done
                 done
 }
