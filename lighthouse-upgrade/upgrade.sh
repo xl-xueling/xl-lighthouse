@@ -41,8 +41,8 @@ main(){
 	if [[ $upgrade_directory =~ ^lighthouse-upgrade-([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
     		TARGET_VERSION="${BASH_REMATCH[1]}"
 	else
-		echo "Upgrade file verification failed!"
-                exit -1;
+		echo "Upgrade files verification failed!"
+    exit -1;
 	fi
 	local from_directory=$(basename ${LDP_HOME})
 	if [[ $from_directory =~ ^lighthouse-([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then

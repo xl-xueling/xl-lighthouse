@@ -48,7 +48,6 @@
         <module>lighthouse-tasks</module>
         <module>lighthouse-test</module>
         <module>lighthouse-insights</module>
-        <module>lighthouse-assembly</module>
       </modules>
       <distributionManagement>
         <snapshotRepository>
@@ -65,7 +64,7 @@
     </profile>
 
     <profile>
-      <id>upgrade</id>
+      <id>release</id>
       <modules>
         <module>lighthouse-build-configuration</module>
         <module>lighthouse-common</module>
@@ -102,7 +101,7 @@
                     <filesets>
                         <fileset>
                             <directory>${project.basedir}/light-webapps/build</directory>
-                          <directory>${project.basedir}/light-webapps/*lock*</directory>
+                            <directory>${project.basedir}/light-webapps/*lock*</directory>
                         </fileset>
                     </filesets>
                 </configuration>
@@ -156,7 +155,7 @@
 
     <!-- 发布jar包到中央仓库 -->
     <profile>
-      <id>release</id>
+      <id>PublishClientToRepository</id>
       <properties>
         <gpg.executable>/usr/local/bin/gpg</gpg.executable>
       </properties>

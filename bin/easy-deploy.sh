@@ -52,6 +52,11 @@ main(){
 		echo "The operation is prohibited, only the \"root\" user is allowed to execute!"
 		exit -1;
 	fi
+	local directoryName=$(basename "$LDP_HOME")
+  if [[ ! $directoryName =~ ^lighthouse-([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+		  echo "Deployment files verification failed!"
+      exit -1;
+	fi
 	local args=$@
 	if [ -d "${LDP_HOME}/dependency" ];then
 		echo "=Important=:This operation will delete all data of the cluster,Please execute it carefully !!!"
