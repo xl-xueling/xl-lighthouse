@@ -142,7 +142,7 @@ public class TrackController {
             linkedHashMap.put("repeat",message.getRepeat());
             String params = paramMap.entrySet().stream().map(z -> z.getKey() + " = " + z.getValue()).collect(Collectors.joining(";"));
             linkedHashMap.put("params",params);
-            boolean valid = MessageValid.valid(message,group.getColumns());
+            boolean valid = MessageValid.valid(group.getId(),message,group.getColumns());
             linkedHashMap.put("valid",String.valueOf(valid));
             if(valid){
                 List<StatState> statStates = templateEntity.getStatStateList();

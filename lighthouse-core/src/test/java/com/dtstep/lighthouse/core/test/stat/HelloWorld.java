@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.core.test.stat;
 
 import com.dtstep.lighthouse.client.LightHouse;
 import com.dtstep.lighthouse.common.random.RandomID;
+import com.dtstep.lighthouse.common.util.StringUtil;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import org.apache.commons.lang3.RandomUtils;
@@ -25,7 +26,7 @@ public class HelloWorld {
     static {
         try{
             //修改rpc服务地址,一主一从，默认为部署集群的前两个节点
-            LightHouse.init("10.206.6.34:4061,10.206.6.19:4061");
+            LightHouse.init("10.206.6.9:4061,10.206.6.28:4061");
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -34,15 +35,16 @@ public class HelloWorld {
     @Test
     public void helloWorld() throws Exception {
         long t = System.currentTimeMillis();
-        for(int i = 0;i<31991;i++){
+        for(int i = 0;i<1000000;i++){
             //修改统计组参数值、Token和秘钥
             Map<String,Object> map = new HashMap<>();
             map.put("uid",RandomID.id(6));
             map.put("province",ThreadLocalRandom.current().nextInt(10));
-            map.put("stay_time",ThreadLocalRandom.current().nextDouble(1000));
-            LightHouse.stat("DKn:user_stattime2","lHbtEYbit3CQqKepAb9fNW4I78idwCcH4GrFXbdb",map,t);
+            Double d = ThreadLocalRandom.current().nextDouble(1000);
+            map.put("stay_time",String.format("%.3f", d));//防止上面随机数出现科学计数法
+            LightHouse.stat("peP:test_stat","iYmC1iUFPCCuMjqbAykSdiIYvEdsJIiUF5ByFlPJ",map,t);
         }
         System.out.println("send ok.");
-        Thread.sleep(100000);
+        Thread.sleep(3000000);
     }
 }

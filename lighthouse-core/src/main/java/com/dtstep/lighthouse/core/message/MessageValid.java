@@ -21,16 +21,21 @@ import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 public final class MessageValid {
 
-    public static boolean valid(LightMessage message, List<Column> columnList) throws Exception {
+    private static final Logger logger = LoggerFactory.getLogger(MessageValid.class);
+
+    public static boolean valid(int groupId,LightMessage message, List<Column> columnList) throws Exception {
         if(CollectionUtils.isEmpty(columnList)){
             return true;
         }
         for (Column metaColumn : columnList) {
-            if (!valid(message, metaColumn)) {
+            if (!valid(groupId,message, metaColumn)) {
                 return false;
             }
         }
@@ -38,13 +43,17 @@ public final class MessageValid {
     }
 
 
-    public static boolean valid(LightMessage message,Column column) {
+    public static boolean valid(int groupId,LightMessage message,Column column) {
         String columnName = column.getName();
         String value = message.getParamMap().get(columnName);
         if(StringUtil.isEmptyOrNullStr(value)){
             return true;
         }
         ColumnTypeEnum columnTypeEnum = column.getType();
-        return columnTypeEnum != ColumnTypeEnum.NUMBER || StringUtil.isNumber(value);
+        boolean is = columnTypeEnum != ColumnTypeEnum.NUMBER || StringUtil.isNumber(value);
+        if(!is){
+            logger.error("valid group {} message failed,column:{},column type:{}",groupId,columnName,columnTypeEnum.getType());
+        }
+        return is;
     }
 }
