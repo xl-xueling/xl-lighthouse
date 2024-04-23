@@ -14,7 +14,7 @@
   <name>XL-LightHouse</name>
   <url>http://maven.apache.org</url>
   <properties>
-    <revision>2.1.6</revision>
+    <revision>2.1.7</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <PermGen>64m</PermGen>
@@ -97,12 +97,32 @@
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <skip>true</skip>
+                    <skip>false</skip>
                     <filesets>
                         <fileset>
                             <directory>${project.basedir}/light-webapps/build</directory>
-                            <directory>${project.basedir}/light-webapps/*lock*</directory>
+                            <includes>
+                              <include>**/*</include>
+                            </includes>
                         </fileset>
+                      <fileset>
+                        <directory>${project.basedir}/light-webapps/node</directory>
+                        <includes>
+                          <include>**/*</include>
+                        </includes>
+                      </fileset>
+                      <fileset>
+                        <directory>${project.basedir}/light-webapps/node_modules</directory>
+                        <includes>
+                          <include>**/*</include>
+                        </includes>
+                      </fileset>
+                      <fileset>
+                        <directory>${project.basedir}/light-webapps</directory>
+                        <includes>
+                          <include>*lock*</include>
+                        </includes>
+                      </fileset>
                     </filesets>
                 </configuration>
             </plugin>
