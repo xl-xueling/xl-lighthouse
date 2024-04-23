@@ -112,7 +112,8 @@ main(){
 			echo "snapshot[${dir}] export completed!"
 		done
 	local end_time=$(date +%s%N)
-	echo "Program execution completed. Total time consumed: $(((end_time - start_time) / 1000000))ms."	
+	echo "Program execution completed. Total time consumed: $(((end_time - start_time) / 1000000))ms."
+	rm -f ${LOCKFILE};
 }
 
 
