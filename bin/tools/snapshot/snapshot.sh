@@ -109,11 +109,20 @@ main(){
 			cd ${LOCAL_PATH};
 			rm -rf ldp-snapshot-${dir}.tar.gz;
   			tar zcvf ldp-snapshot-${dir}.tar.gz ${dir} >/dev/null 2>&1;
+			rm -rf ${dir};
+			local currentIP=($(getLocalIP));
+			for (( i = 0;i < "${#NODES[@]}" && i < 3; i++))
+                		do
+					local ip=${NODES[i]};
+					if [ "$ip" == "$currentIP" ]; then
+        					continue;
+    					fi
+					remoteExecute ${CUR_DIR}/common/sync.exp ${DEPLOY_USER} ${LOCAL_PATH}/ldp-snapshot-${dir}.tar.gz ${ip} "-" ${LOCAL_PATH}
+				done	
 			echo "snapshot[${dir}] export completed!"
 		done
 	local end_time=$(date +%s%N)
-	echo "Program execution completed. Total time consumed: $(((end_time - start_time) / 1000000))ms."
-	rm -f ${LOCKFILE};
+	echo "Program execution completed. Total time consumed: $(((end_time - start_time) / 1000000))ms."	
 }
 
 
