@@ -147,7 +147,7 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose,onSuccess}) 
                     </Grid.Col>
                     <Grid.Col span={20}>
                         <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-                            <p style={{ margin: '0 auto' }}>Create Statistics</p>
+                            <p style={{ margin: '0 auto' }}>{t['statCreate.modal.title']}</p>
                         </div>
                     </Grid.Col>
                 </Row>

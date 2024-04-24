@@ -1,5 +1,6 @@
 const i18n = {
   'en-US': {
+    'statCreate.modal.title':'Create Statistics',
     'statCreate.form.submit.success':'Create statistic item successfully!',
     'statCreate.label.template':'Template',
     'statCreate.label.timeparam':'TimeParam',
@@ -8,6 +9,7 @@ const i18n = {
     'statCreate.label.description':'Description',
   },
   'zh-CN': {
+    'statCreate.modal.title':'创建统计项',
     'statCreate.form.submit.success':'创建统计项成功！',
     'statCreate.label.template':'统计模板',
     'statCreate.label.timeparam':'时间周期',
