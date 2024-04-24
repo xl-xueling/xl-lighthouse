@@ -28,7 +28,8 @@ function createSnapshot(){
 
 
 snapshotHBase(){
-	local batch=${1}
+	local cluster_id=$1
+        local batch=$2;
 	local lists=`echo "list" | $HBASE_HOME/bin/hbase shell | grep -o  '\[.*\]'` 
         local tables=$(echo ${lists} |jq .[] | jq -r values)
         for table in ${tables[@]};do
@@ -39,38 +40,34 @@ snapshotHBase(){
         	hadoop fs -rm -r ${TEMPORARY_PATH} >/dev/null 2>&1;
   	fi
 	hadoop fs -mkdir -p ${TEMPORARY_PATH}
-	for cluster_id in $(echo "$tables" | awk -F'[_:]' '{print $2}' | sort -u); do
-    		for table_name in $(echo "$tables" | grep "cluster_$cluster_id" | awk -F':' '{print $2}'); do
-			createSnapshot $cluster_id $table_name;
-    		done
-		local snapshotDir="ldp-snapshot-${cluster_id}_$batch"
-		local savePath=${LOCAL_PATH}/${snapshotDir}/hbase
-        	rm -rf $savePath && mkdir -p $savePath
-        	hadoop fs -get $TEMPORARY_PATH/* $savePath
-		if  [[ ! "${SNAPSHOT_DIRS[@]}" =~ ${snapshotDir} ]];then
-                        SNAPSHOT_DIRS+=(${snapshotDir})
-		fi
-	done
+	for table_name in $(echo "$tables" | grep "cluster_${cluster_id}" | awk -F':' '{print $2}'); 
+		do
+                        createSnapshot $cluster_id $table_name;
+                done
+	local snapshotDir="ldp-snapshot-${cluster_id}_$batch"
+        local savePath=${LOCAL_PATH}/${snapshotDir}/hbase
+        rm -rf $savePath && mkdir -p $savePath
+        hadoop fs -get $TEMPORARY_PATH/* $savePath
 }
 
 function snapshotMySQL(){
-	local batch=$1;
+	local cluster_id=$1;
+	local batch=$2;
 	local hostName=($(getVal 'ldp_mysql_master'))
 	local port="3906"
 	local dbUser=($(getVal 'ldp_mysql_operate_user'))
 	local dbPwd=($(getVal 'ldp_mysql_operate_user_passwd'))
 	export MYSQL_PWD=$dbPwd;
 	local databases=$(mysql -h $hostName -P $port -u$dbUser -e "SHOW DATABASES;" | grep "_ldp_mysqldb")
-	for cluster_id in $(echo "$databases" | awk -F'[_:]' '{print $2}' | sort -u); do
-		local dbName="cluster_${cluster_id}_ldp_mysqldb"
-		local snapshotDir="ldp-snapshot-${cluster_id}_$batch";
-		local savePath=${LOCAL_PATH}/${snapshotDir}/mysql
-		rm -rf $savePath && mkdir -p $savePath
-		$MYSQL_HOME/bin/mysqldump -h $hostName -P $port -u$dbUser $dbName > $savePath/ldp_db.sql
-		if  [[ ! "${SNAPSHOT_DIRS[@]}" =~ ${snapshotDir} ]];then
-                        SNAPSHOT_DIRS+=(${snapshotDir})
-                fi
-	done
+	local dbName="cluster_${cluster_id}_ldp_mysqldb"
+	if  [[ ! "${databases[@]}" =~ ${dbName} ]];then
+		echo "db does not exist,db:${dbName},process exist!"
+		exit -1;
+	fi	
+        local snapshotDir="ldp-snapshot-${cluster_id}_$batch";
+        local savePath=${LOCAL_PATH}/${snapshotDir}/mysql
+        rm -rf $savePath && mkdir -p $savePath
+        $MYSQL_HOME/bin/mysqldump -h $hostName -P $port -u$dbUser $dbName > $savePath/ldp_db.sql
 }
 
 main(){
@@ -84,15 +81,16 @@ main(){
                 echo "The operation is prohibited, only user[\"${DEPLOY_USER}\"] is allowed to execute!"
                 exit -1;
         fi
+	local cluster_id=`cat ${CUR_DIR}/config/cluster.id`
 	echo "Start backing up mysql data...";
-	snapshotMySQL $batch;
+	snapshotMySQL ${cluster_id} $batch;
 	echo "Backup mysql data completed!"
 	echo "Start backing up hbase data...";
-	snapshotHBase $batch;
+	snapshotHBase ${cluster_id} $batch;
 	echo "Backup hbase data completed!"
-	for dir in "${SNAPSHOT_DIRS[@]}"
-      		do
-  			if [[ ! -d "${LOCAL_PATH}/${dir}/hbase" ]] && [[ "$(isFolderEmpty "${LOCAL_PATH}/${dir}/hbase")" == true ]]; then
+	local dir="ldp-snapshot-${cluster_id}_$batch";
+	echo "output directory:"${LOCAL_PATH}/${dir};
+	if [[ ! -d "${LOCAL_PATH}/${dir}/hbase" ]] && [[ "$(isFolderEmpty "${LOCAL_PATH}/${dir}/hbase")" == true ]]; then
     				echo "hbase data snapshot error, program exits!"
 				exit -1;
 			else
@@ -104,7 +102,7 @@ main(){
                                 exit -1;
 			else
 				local usage=$(getFolderUsage "${LOCAL_PATH}/${dir}/mysql")
-                                echo "mysql snaptshot dir usage:${usage} K."  	
+                                echo "mysql snapshot dir usage:${usage} K."
                         fi
 			cd ${LOCAL_PATH};
 			rm -rf ${dir}.tar.gz;
@@ -120,7 +118,6 @@ main(){
 					remoteExecute ${CUR_DIR}/common/sync.exp ${DEPLOY_USER} ${LOCAL_PATH}/ldp-snapshot-${dir}.tar.gz ${ip} "-" ${LOCAL_PATH}
 				done	
 			echo "snapshot[${dir}] export completed!"
-		done
 	local end_time=$(date +%s%N)
 	echo "Program execution completed. Total time consumed: $(((end_time - start_time) / 1000000))ms."	
 }
