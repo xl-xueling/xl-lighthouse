@@ -102,12 +102,16 @@ main(){
                                 exit -1;
 			else
 				local usage=$(getFolderUsage "${LOCAL_PATH}/${dir}/mysql")
-                                echo "mysql snapshot dir usage:${usage} K."
+                                echo "mysql snaptshot dir usage:${usage} K."  	
                         fi
 			cd ${LOCAL_PATH};
 			rm -rf ${dir}.tar.gz;
   			tar zcvf ${dir}.tar.gz ${dir} >/dev/null 2>&1;
 			rm -rf ${dir};
+			if [ ! -f "${LOCAL_PATH}/${dir}.tar.gz" ]; then
+    				echo "The backup compressed package file is not exported normally,file:${sqlfile},process exist!"
+				exit -1;
+			fi
 			local currentIP=($(getLocalIP));
 			for (( i = 0;i < "${#NODES[@]}" && i < 3; i++))
                 		do
@@ -115,7 +119,8 @@ main(){
 					if [ "$ip" == "$currentIP" ]; then
         					continue;
     					fi
-					remoteExecute ${CUR_DIR}/common/sync.exp ${DEPLOY_USER} ${LOCAL_PATH}/ldp-snapshot-${dir}.tar.gz ${ip} "-" ${LOCAL_PATH}
+					echo "Back up data to node:${ip}"
+					remoteExecute ${CUR_DIR}/common/sync.exp ${DEPLOY_USER} ${LOCAL_PATH}/${dir}.tar.gz ${ip} "-" ${LOCAL_PATH}
 				done	
 			echo "snapshot[${dir}] export completed!"
 	local end_time=$(date +%s%N)
