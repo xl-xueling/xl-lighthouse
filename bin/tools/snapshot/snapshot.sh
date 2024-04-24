@@ -43,7 +43,7 @@ snapshotHBase(){
     		for table_name in $(echo "$tables" | grep "cluster_$cluster_id" | awk -F':' '{print $2}'); do
 			createSnapshot $cluster_id $table_name;
     		done
-		local snapshotDir=${cluster_id}_$batch
+		local snapshotDir="ldp-snapshot-${cluster_id}_$batch"
 		local savePath=${LOCAL_PATH}/${snapshotDir}/hbase
         	rm -rf $savePath && mkdir -p $savePath
         	hadoop fs -get $TEMPORARY_PATH/* $savePath
@@ -63,7 +63,7 @@ function snapshotMySQL(){
 	local databases=$(mysql -h $hostName -P $port -u$dbUser -e "SHOW DATABASES;" | grep "_ldp_mysqldb")
 	for cluster_id in $(echo "$databases" | awk -F'[_:]' '{print $2}' | sort -u); do
 		local dbName="cluster_${cluster_id}_ldp_mysqldb"
-		local snapshotDir=${cluster_id}_$batch
+		local snapshotDir="ldp-snapshot-${cluster_id}_$batch";
 		local savePath=${LOCAL_PATH}/${snapshotDir}/mysql
 		rm -rf $savePath && mkdir -p $savePath
 		$MYSQL_HOME/bin/mysqldump -h $hostName -P $port -u$dbUser $dbName > $savePath/ldp_db.sql
@@ -107,8 +107,8 @@ main(){
                                 echo "mysql snaptshot dir usage:${usage} K."  	
                         fi
 			cd ${LOCAL_PATH};
-			rm -rf ldp-snapshot-${dir}.tar.gz;
-  			tar zcvf ldp-snapshot-${dir}.tar.gz ${dir} >/dev/null 2>&1;
+			rm -rf ${dir}.tar.gz;
+  			tar zcvf ${dir}.tar.gz ${dir} >/dev/null 2>&1;
 			rm -rf ${dir};
 			local currentIP=($(getLocalIP));
 			for (( i = 0;i < "${#NODES[@]}" && i < 3; i++))
