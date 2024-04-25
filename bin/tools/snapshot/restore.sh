@@ -7,7 +7,7 @@ LOCKFILE=/tmp/lighthouse_snapshot.lock
 source "${CUR_DIR}/common/lib.sh"
 source "${CUR_DIR}/prepare/prepare.sh"
 LOCKFILE=/tmp/lighthouse_restore.lock
-LOG_FILE="${CUR_DIR}/log/snapshot_restore.log"
+LOG_FILE="${CUR_DIR}/log/restore.log"
 
 function checkNamespaceExists() {
     local namespace=${1};
