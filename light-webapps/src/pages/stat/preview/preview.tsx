@@ -20,6 +20,7 @@ import {PermissionEnum, StatStateEnum} from "@/types/insights-common";
 import {IoMdRefresh} from "react-icons/io";
 import {StatLimitingModal} from "@/pages/stat/limiting/StatLimitingModal";
 import ErrorPage from "@/pages/common/error";
+import {deepCopyObject} from "@/utils/util";
 
 const { Row, Col } = Grid;
 
@@ -93,6 +94,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         if(!formRef.current){
             return;
         }
+        const cloneStatInfo = deepCopyObject(statInfo);
         const formParams = formRef.current.getData();
         let validateDimensParam = {};
         if(formParams != null){
@@ -104,21 +106,21 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
             }, {});
         }
         const numDimensParam = Object.keys(validateDimensParam).length;
-        if(statInfo.templateEntity.dimensArray.length > 0 && numDimensParam == 0){
-            setStatChartData(null);
-            setStatChartErrorMessage(t['statDisplay.filterConfig.warning']);
+        if(cloneStatInfo.templateEntity.dimensArray.length > 0 && numDimensParam == 0){
+            if (refFetchId.current === cloneStatInfo.id) {
+                setStatChartData(null);
+                setStatChartErrorMessage(t['statDisplay.filterConfig.warning']);
+            }
         }else{
             setStatChartLoading(true);
-            if(statInfo){
-                const statChartData = await handlerFetchStatData(statInfo,formParams);
-                if (refFetchId.current === id) {
-                    if(statChartData.code == '0'){
-                        setStatChartData(statChartData.data);
-                        setStatChartErrorMessage(null);
-                    }else{
-                        setStatChartData(null);
-                        setStatChartErrorMessage(statChartData.message);
-                    }
+            const statChartData = await handlerFetchStatData(cloneStatInfo,formParams);
+            if (refFetchId.current === cloneStatInfo.id) {
+                if(statChartData.code == '0'){
+                    setStatChartData(statChartData.data);
+                    setStatChartErrorMessage(null);
+                }else{
+                    setStatChartData(null);
+                    setStatChartErrorMessage(statChartData.message);
                 }
             }
             setStatChartLoading(false);
@@ -129,9 +131,10 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         if(!statInfo){
             return;
         }
+        const cloneStatInfo = deepCopyObject(statInfo);
         setLimitChartLoading(true);
-        const limitChartData = await handlerFetchLimitData(statInfo.id);
-        if (refFetchId.current === id) {
+        const limitChartData = await handlerFetchLimitData(cloneStatInfo.id);
+        if (refFetchId.current === cloneStatInfo.id) {
             if(limitChartData.code == '0'){
                 setLimitChartData(limitChartData.data);
                 setLimitChartErrorMessage(null);
