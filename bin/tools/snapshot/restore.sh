@@ -75,6 +75,8 @@ restoreMySQL(){
 }
 
 daemon(){
+	trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
+        echo $$ > ${LOCKFILE}
 	local origin=${1}
 	local dirname=$(echo "$(basename "$origin")" | cut -d. -f1)
         local clusterId=`cat ${CUR_DIR}/config/cluster.id`
@@ -83,13 +85,13 @@ daemon(){
         tar zxvf ${origin} -C ${temporaryDir} >/dev/null 2>&1;
         restoreMySQL ${clusterId} ${temporaryDir}/${dirname};
         restoreHBase ${clusterId} ${temporaryDir}/${dirname};
-        rm -f ${LOCKFILE};	
+        rm -f ${LOCKFILE};
+	echo "Restoring completed,Service will be restarted."
+	${LDP_HOME}/bin/restart-all.sh;	
 }
 
 main(){
  	[ -e ${LOCKFILE} ] && `cat ${LOCKFILE} | xargs --no-run-if-empty kill -9 >/dev/null 2>&1`
-	trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
-        echo $$ > ${LOCKFILE}
 	loadScriptConfig >/dev/null 2>&1;
 	if [[ ${USER} != ${DEPLOY_USER} ]];then
                 echo "The operation is prohibited, only user[\"${DEPLOY_USER}\"] is allowed to execute!"
