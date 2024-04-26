@@ -5,6 +5,7 @@
 # Email:better_xueling@126.com
 #-----------------------------------------
 source ~/.bashrc;
+eval "$(cat ~/.bashrc)"
 CUR_DIR=$(cd "$(dirname "$0")";pwd)
 LDP_HOME=$(dirname "$CUR_DIR")
 ROOT_HOME=$(dirname "$LDP_HOME")
