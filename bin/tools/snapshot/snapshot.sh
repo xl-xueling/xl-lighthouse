@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source ~/.bashrc;
-eval "$(cat ~/.bashrc)"
+eval "$(cat ~/.bashrc|tail -n +10)"
 CMD_PATH=$(cd "$(dirname "$0")";pwd)
 CUR_DIR=$(dirname $(dirname "$CMD_PATH"))
 LOCKFILE=/tmp/lighthouse_snapshot.lock

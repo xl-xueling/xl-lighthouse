@@ -1,16 +1,16 @@
 #!/bin/bash
 
 source ~/.bashrc;
-eval "$(cat ~/.bashrc)"
+eval "$(cat ~/.bashrc|tail -n +10)"
 CMD_PATH=$(cd "$(dirname "$0")";pwd)
 CUR_DIR=$(dirname $(dirname "$CMD_PATH"))
-LOCKFILE=/tmp/lighthouse_snapshot.lock
 source "${CUR_DIR}/common/lib.sh"
 source "${CUR_DIR}/prepare/prepare.sh"
 LOCKFILE=/tmp/lighthouse_restore.lock
 LOG_FILE="${CUR_DIR}/log/restore.log"
 
-function checkNamespaceExists() {
+
+checkNamespaceExists() {
     local namespace=${1};
     echo "list_namespace" | $HBASE_HOME/bin/hbase shell  | grep "^$namespace$"
     return $?
@@ -24,10 +24,11 @@ restoreHBase(){
                 echo "snapshot dir:${snapshotDir} not exit,process exist!"
                 exit -1;
         fi
-	hadoop fs -rm -r /hbase/archive/data/*
-	hadoop fs -rm -r /hbase/.hbase-snapshot/*
-	hadoop fs -put ${snapshotDir}/archive/data/* /hbase/archive/data
-	hadoop fs -put ${snapshotDir}/.hbase-snapshot/* /hbase/.hbase-snapshot
+	hadoop fs -mkdir -p /hbase/archive/data
+	hadoop fs -rm -r -f /hbase/archive/data/*
+	hadoop fs -rm -r -f /hbase/.hbase-snapshot/*
+	hadoop fs -put -f ${snapshotDir}/archive/data/* /hbase/archive/data/
+	hadoop fs -put -f ${snapshotDir}/.hbase-snapshot /hbase/
 	if ! checkNamespaceExists "cluster_${clusterId}_ldp_hbasedb" ; then
 		echo "create_namespace 'cluster_${clusterId}_ldp_hbasedb'" | $HBASE_HOME/bin/hbase shell >/dev/null 2>&1
 	fi
@@ -39,6 +40,7 @@ restoreHBase(){
 		local fullTableName="cluster_${clusterId}_ldp_hbasedb:${tableName}";
 		echo "Waiting for restore snapshot of table[${fullTableName}] ...";
        		`echo "disable '${fullTableName}'" | $HBASE_HOME/bin/hbase shell` >/dev/null 2>&1
+		`echo "drop '${fullTableName}'" | $HBASE_HOME/bin/hbase shell` >/dev/null 2>&1
 		`echo "clone_snapshot '${snapshot}','${fullTableName}'" | $HBASE_HOME/bin/hbase shell` >/dev/null 2>&1
 		`echo "enable '${fullTableName}'" | $HBASE_HOME/bin/hbase shell`>/dev/null 2>&1
 		echo "Restore snapshot of table[$fullTableName] success!"
