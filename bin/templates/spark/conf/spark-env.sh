@@ -87,3 +87,6 @@ SPARK_MASTER_WEBUI_PORT=8081
 # You might get better performance to enable these options if using native BLAS (see SPARK-21305).
 # - MKL_NUM_THREADS=1        Disable multi-threading of Intel MKL
 # - OPENBLAS_NUM_THREADS=1   Disable multi-threading of OpenBLAS
+
+export SPARK_MASTER_OPTS="$SPARK_MASTER_OPTS -Duser.timezone=${ldp_lighthouse_timezone}"
+export SPARK_WORKER_OPTS="$SPARK_WORKER_OPTS -Duser.timezone=${ldp_lighthouse_timezone}"

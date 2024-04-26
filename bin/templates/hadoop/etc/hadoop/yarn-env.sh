@@ -46,8 +46,8 @@ export JAVA_HOME=${ldp_java_home}
 # a) override the appsummary log file:
 # export YARN_RESOURCEMANAGER_OPTS="-Dyarn.server.resourcemanager.appsummary.log.file=rm-appsummary.log -Dyarn.server.resourcemanager.appsummary.logger=INFO,RMSUMMARY"
 
-export YARN_RESOURCEMANAGER_OPTS="${YARN_RESOURCEMANAGER_OPTS} -Xmx${ldp_hadoop_resourcemanager_xmx_memory} -Xms${ldp_hadoop_resourcemanager_xms_memory}"
-export YARN_NODEMANAGER_OPTS="${YARN_NODEMANAGER_OPTS} -Xmx${ldp_hadoop_nodemanager_xmx_memory} -Xms${ldp_hadoop_nodemanager_xms_memory}"
+export YARN_RESOURCEMANAGER_OPTS="${YARN_RESOURCEMANAGER_OPTS} -Xmx${ldp_hadoop_resourcemanager_xmx_memory} -Xms${ldp_hadoop_resourcemanager_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone}"
+export YARN_NODEMANAGER_OPTS="${YARN_NODEMANAGER_OPTS} -Xmx${ldp_hadoop_nodemanager_xmx_memory} -Xms${ldp_hadoop_nodemanager_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone}"
 
 #
 # b) Set JMX options
