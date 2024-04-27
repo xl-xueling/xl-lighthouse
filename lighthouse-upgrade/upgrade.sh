@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source ~/.bashrc;
+eval "$(cat ~/.bashrc|tail -n +10)"
 UPGRADE_HOME=$(cd "$(dirname "$0")";pwd)
 CUR_DIR=${UPGRADE_HOME}/bin
 CUR_USER=${USER}
@@ -123,6 +124,7 @@ main(){
 	rm -f ${UPGRADE_HOME}/upgrade_steps.tmp;
 	rm -f ${LOCKFILE};
 	source ~/.bashrc;
+	eval "$(cat ~/.bashrc|tail -n +10)"
 	sudo -u ${DEPLOY_USER} ${LDP_HOME}/bin/start-all.sh;
 	exit 0;		
 }
