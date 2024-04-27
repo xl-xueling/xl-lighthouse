@@ -64,7 +64,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         await requestQueryById({id:id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                if (refFetchId.current === id) {
+                if (refFetchId.current == id) {
                     if(!data.permissions.includes(PermissionEnum.AccessAble)){
                         setErrorCode("403");
                     }
@@ -107,14 +107,14 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         }
         const numDimensParam = Object.keys(validateDimensParam).length;
         if(cloneStatInfo.templateEntity.dimensArray.length > 0 && numDimensParam == 0){
-            if (refFetchId.current === cloneStatInfo.id) {
+            if (refFetchId.current == cloneStatInfo.id) {
                 setStatChartData(null);
                 setStatChartErrorMessage(t['statDisplay.filterConfig.warning']);
             }
         }else{
             setStatChartLoading(true);
             const statChartData = await handlerFetchStatData(cloneStatInfo,formParams);
-            if (refFetchId.current === cloneStatInfo.id) {
+            if (refFetchId.current == cloneStatInfo.id) {
                 if(statChartData.code == '0'){
                     setStatChartData(statChartData.data);
                     setStatChartErrorMessage(null);
@@ -134,7 +134,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         const cloneStatInfo = deepCopyObject(statInfo);
         setLimitChartLoading(true);
         const limitChartData = await handlerFetchLimitData(cloneStatInfo.id);
-        if (refFetchId.current === cloneStatInfo.id) {
+        if (refFetchId.current == cloneStatInfo.id) {
             if(limitChartData.code == '0'){
                 setLimitChartData(limitChartData.data);
                 setLimitChartErrorMessage(null);
