@@ -30,9 +30,9 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
-public final class RedLock {
+public final class RedissonLock {
 
-    private static final Logger logger = LoggerFactory.getLogger(RedLock.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedissonLock.class);
 
     private static RedissonClient redissonClient;
 

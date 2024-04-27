@@ -26,7 +26,7 @@ import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.core.limiting.trigger.Trigger;
-import com.dtstep.lighthouse.core.lock.RedLock;
+import com.dtstep.lighthouse.core.lock.RedissonLock;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.LimitingWrapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -42,7 +42,7 @@ public class GroupLimitingTrigger implements Trigger<GroupExtEntity> {
     @Override
     public void execute(GroupExtEntity groupExtEntity) throws Exception{
         String lockKey = "lock_group_limited_" + groupExtEntity.getId();
-        boolean isLock = RedLock.tryLock(lockKey,30,120, TimeUnit.SECONDS);
+        boolean isLock = RedissonLock.tryLock(lockKey,30,120, TimeUnit.SECONDS);
         if(isLock){
             try{
                 LocalDateTime localDateTime = LocalDateTime.now();
@@ -65,7 +65,7 @@ public class GroupLimitingTrigger implements Trigger<GroupExtEntity> {
             }catch (Exception ex){
                 logger.error("group limiting trigger process error!",ex);
             }finally {
-                RedLock.unLock(lockKey);
+                RedissonLock.unLock(lockKey);
             }
         }
     }

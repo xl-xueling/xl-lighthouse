@@ -4,7 +4,7 @@ import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.hash.HashUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.lock.RedLock;
+import com.dtstep.lighthouse.core.lock.RedissonLock;
 import com.dtstep.lighthouse.core.storage.*;
 import com.dtstep.lighthouse.core.storage.CompareOperator;
 import com.dtstep.lighthouse.core.storage.engine.StorageEngine;
@@ -437,7 +437,7 @@ public class HBaseStorageEngine implements StorageEngine {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             String lockKey = COMPARE_PUT_LOCK_PREFIX + "_" + compareOperator + "_" + object;
-            boolean isLock = RedLock.tryLock(lockKey,8,3, TimeUnit.MINUTES);
+            boolean isLock = RedissonLock.tryLock(lockKey,8,3, TimeUnit.MINUTES);
             if(isLock){
                 try{
                     List<LdpPut> subList = map.get(object);
@@ -500,7 +500,7 @@ public class HBaseStorageEngine implements StorageEngine {
                 }catch (Exception ex){
                     logger.error("batch put error!",ex);
                 }finally {
-                    RedLock.unLock(lockKey);
+                    RedissonLock.unLock(lockKey);
                 }
             }else{
                 logger.error("try lock failed,thread unable to acquire lock,this batch data may be lost,cost:{}ms!",stopWatch.getTime());

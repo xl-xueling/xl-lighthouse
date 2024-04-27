@@ -26,7 +26,7 @@ import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.core.limiting.trigger.Trigger;
-import com.dtstep.lighthouse.core.lock.RedLock;
+import com.dtstep.lighthouse.core.lock.RedissonLock;
 import com.dtstep.lighthouse.core.wrapper.LimitingWrapper;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -43,7 +43,7 @@ public class StatLimitingTrigger implements Trigger<StatExtEntity> {
     @Override
     public void execute(StatExtEntity statExtEntity) throws Exception {
             String lockKey = "lock_stat_limited_" + statExtEntity.getId();
-            boolean isLock = RedLock.tryLock(lockKey,30,120, TimeUnit.SECONDS);
+            boolean isLock = RedissonLock.tryLock(lockKey,30,120, TimeUnit.SECONDS);
             if(isLock){
                 try{
                     LocalDateTime localDateTime = LocalDateTime.now();
@@ -66,7 +66,7 @@ public class StatLimitingTrigger implements Trigger<StatExtEntity> {
                 }catch (Exception ex){
                     logger.error("stat limiting trigger process error!",ex);
                 }finally {
-                    RedLock.unLock(lockKey);
+                    RedissonLock.unLock(lockKey);
                 }
             }
     }

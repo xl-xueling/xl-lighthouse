@@ -17,7 +17,7 @@ package com.dtstep.lighthouse.core.storage.limit.impl;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
-import com.dtstep.lighthouse.core.lock.RedLock;
+import com.dtstep.lighthouse.core.lock.RedissonLock;
 import com.dtstep.lighthouse.core.redis.RedisHandler;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
@@ -92,7 +92,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
         String baseKey = BatchAdapter.generateLimitKey(statExtEntity.getRandomId(),statExtEntity.getDataVersion(),batchTime);
         String lockKey = RedisConst.LOCK_LIMIT_PREFIX + "_" + baseKey + "_" + salt + "_" + DateUtil.formatTimeStamp(batchTime,"yyyyMMddHHmmss");
         String redisKey = RedisConst.LIMIT_N_PREFIX + "_" + baseKey + "_" + salt;
-        boolean isLock = RedLock.tryLock(lockKey,5,3, TimeUnit.MINUTES);
+        boolean isLock = RedissonLock.tryLock(lockKey,5,3, TimeUnit.MINUTES);
         int expireSeconds = (int) statExtEntity.getTimeUnit().toSeconds(statExtEntity.getTimeParamInterval());
         int cacheSize = getLimitCacheSize(statExtEntity,templateEntity.getLimitSize());
         if(isLock){
@@ -131,7 +131,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
             }catch (Exception ex){
                 logger.error("lighthouse stat,limit process error!",ex);
             }finally {
-                RedLock.unLock(lockKey);
+                RedissonLock.unLock(lockKey);
             }
         }else{
             logger.error("try lock failed,thread unable to acquire lock,this batch data may be lost,cost:{}ms!",stopWatch.getTime());
