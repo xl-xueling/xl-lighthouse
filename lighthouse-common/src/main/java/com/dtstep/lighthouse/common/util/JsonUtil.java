@@ -16,6 +16,8 @@ package com.dtstep.lighthouse.common.util;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.constant.StatConst;
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -56,6 +58,7 @@ public class JsonUtil {
         objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
         objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        objectMapper.getSerializerProvider().setNullKeySerializer(new NullKeySerializer());
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
@@ -63,6 +66,16 @@ public class JsonUtil {
         simpleModule.addSerializer(LocalDateTime.class, new LocalDateTimeToEpochSerializer());
         simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeFromEpochDeserializer());
         objectMapper.registerModule(simpleModule);
+    }
+
+    static class NullKeySerializer extends JsonSerializer<Object>
+    {
+        @Override
+        public void serialize(Object nullKey, JsonGenerator jsonGenerator, SerializerProvider unused)
+                throws IOException
+        {
+            jsonGenerator.writeFieldName(StatConst.NULL_STR);
+        }
     }
 
     public static ObjectNode createObjectNode(){

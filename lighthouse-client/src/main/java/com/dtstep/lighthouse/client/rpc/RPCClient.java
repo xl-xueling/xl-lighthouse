@@ -17,6 +17,12 @@ package com.dtstep.lighthouse.client.rpc;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
+import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;
+import com.dtstep.lighthouse.common.entity.view.LimitValue;
+import com.dtstep.lighthouse.common.entity.view.StatValue;
+
+import java.util.List;
+import java.util.Map;
 
 
 public interface RPCClient {
@@ -25,7 +31,19 @@ public interface RPCClient {
 
     void reconnect() throws Exception;
 
+    void send(String text) throws Exception;
+
     GroupVerifyEntity queryGroup(String token) throws Exception;
 
-    void send(String text) throws Exception;
+    StatVerifyEntity queryStat(int id) throws Exception;
+
+    List<StatValue> dataQuery(int statId, String dimensValue, long startTime, long endTime) throws Exception;
+
+    List<StatValue> dataQuery(int statId,String dimensValue,List<Long> batchList) throws Exception;
+
+    Map<String,List<StatValue>> dataQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws Exception;
+
+    Map<String,List<StatValue>> dataQueryWithDimensList(int statId,List<String> dimensValueList,List<Long> batchList) throws Exception;
+
+    List<LimitValue> limitQuery(int statId, long batchTime) throws Exception;
 }

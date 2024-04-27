@@ -152,6 +152,7 @@ public class StatDBWrapper {
                 String title = rs.getString("title");
                 Integer groupId = rs.getInt("group_id");
                 Integer projectId = rs.getInt("project_id");
+                String token = rs.getString("token");
                 String template = rs.getString("template");
                 String timeparam = rs.getString("timeparam");
                 Integer dataVersion = rs.getInt("data_version");
@@ -176,6 +177,7 @@ public class StatDBWrapper {
                 stat.setTitle(title);
                 stat.setGroupId(groupId);
                 stat.setProjectId(projectId);
+                stat.setToken(token);
                 stat.setTemplate(template);
                 stat.setTimeparam(timeparam);
                 stat.setExpired(expired);
@@ -197,10 +199,9 @@ public class StatDBWrapper {
         DBConnection dbConnection = ConnectionManager.getConnection();
         Connection conn = dbConnection.getConnection();
         QueryRunner queryRunner = new QueryRunner();
-        ResultSetHandler<Stat> handler = new BeanHandler<Stat>(Stat.class);
-        Stat stat = null;
+        Stat stat;
         try{
-            stat = queryRunner.query(conn, String.format("select a.*,b.columns from ldp_stats a left join ldp_groups b on a.group_id = b.id where a.id = '%s'",statId), new StatResultSetHandler());
+            stat = queryRunner.query(conn, String.format("select a.*,b.token,b.columns from ldp_stats a left join ldp_groups b on a.group_id = b.id where a.id = '%s'",statId), new StatResultSetHandler());
         }finally {
             ConnectionManager.close(dbConnection);
         }
@@ -213,7 +214,7 @@ public class StatDBWrapper {
         QueryRunner queryRunner = new QueryRunner();
         List<Stat> statList;
         try{
-            statList = queryRunner.query(conn, String.format("select a.*,b.columns from ldp_stats a left join ldp_groups b on a.group_id = b.id where a.group_id = '%s'",groupId), new StatResultListHandler());
+            statList = queryRunner.query(conn, String.format("select a.*,b.token,b.columns from ldp_stats a left join ldp_groups b on a.group_id = b.id where a.group_id = '%s'",groupId), new StatResultListHandler());
         }finally {
             ConnectionManager.close(dbConnection);
         }

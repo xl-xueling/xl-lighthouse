@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 
 public class SerializeUtil {
 
-    public static <T extends Serializable> byte[] serialize(T obj) {
+    public static <T> byte[] serialize(T obj) {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bos);
@@ -18,7 +18,7 @@ public class SerializeUtil {
         }
     }
 
-    public static <T extends Serializable> T deserialize(byte[] byteArray) {
+    public static <T> T deserialize(byte[] byteArray) {
         try {
             ByteArrayInputStream bis = new ByteArrayInputStream(byteArray);
             ObjectInputStream ois = new ObjectInputStream(bis);

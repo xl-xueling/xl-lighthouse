@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.modal.MetaTable;
 import com.dtstep.lighthouse.common.util.DateUtil;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
@@ -155,12 +156,18 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
 
     @Override
     public StatValue query(StatExtEntity statExtEntity, String dimensValue, long batchTime) throws Exception {
+        if(StringUtil.isEmpty(dimensValue)){
+            dimensValue = null;
+        }
         Map<String,List<StatValue>> resultMap = queryWithDimensList(statExtEntity,dimensValue == null ? null:List.of(dimensValue),List.of(batchTime));
         return MapUtils.isEmpty(resultMap) || CollectionUtils.isEmpty(resultMap.get(dimensValue)) ? null : resultMap.get(dimensValue).get(0);
     }
 
     @Override
     public List<StatValue> query(StatExtEntity statExtEntity, String dimensValue, List<Long> batchTimeList) throws Exception {
+        if(StringUtil.isEmpty(dimensValue)){
+            dimensValue = null;
+        }
         Validate.isTrue(CollectionUtils.isNotEmpty(batchTimeList));
         Map<String,List<StatValue>> resultMap = queryWithDimensList(statExtEntity,dimensValue == null ? null:List.of(dimensValue),batchTimeList);
         return MapUtils.isEmpty(resultMap) || CollectionUtils.isEmpty(resultMap.get(dimensValue)) ? null : resultMap.get(dimensValue);
