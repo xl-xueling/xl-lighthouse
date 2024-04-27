@@ -215,7 +215,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
             echarts.connect('sameGroup');
             setSearchForm(null);
             fetchStatInfo().then();
-        },10)
+        },3)
     },[id])
 
 
