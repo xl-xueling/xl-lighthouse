@@ -29,7 +29,7 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
             rpc.process(message);
         }catch (Exception ex){
             logger.error("process message error!",ex);
-            throw new LightRpcException(ex);
+            throw new LightRpcException(ex.getMessage());
         }
         return null;
     }
@@ -41,7 +41,7 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
             groupVerifyEntity = rpc.queryGroup(token);
         }catch (Exception ex){
             logger.error("query group info error!",ex);
-            throw new LightRpcException(ex);
+            throw new LightRpcException(ex.getMessage());
         }
         return SerializeUtil.serialize(groupVerifyEntity);
     }
@@ -53,7 +53,7 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
             statVerifyEntity = rpc.queryStat(id);
         }catch (Exception ex){
             logger.error("query stat info error!",ex);
-            throw new LightRpcException(ex);
+            throw new LightRpcException(ex.getMessage());
         }
         return SerializeUtil.serialize(statVerifyEntity);
     }
@@ -64,7 +64,7 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         try{
             statValues = rpc.dataQuery(statId,dimensValue,startTime,endTime);
         }catch (Exception ex){
-            throw new LightRpcException(ex);
+            throw new LightRpcException(ex.getMessage());
         }
         return SerializeUtil.serialize(statValues);
     }
@@ -75,7 +75,7 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         try{
             statValues = rpc.dataQuery(statId,dimensValue,batchList);
         }catch (Exception ex){
-            throw new LightRpcException(ex);
+            throw new LightRpcException(ex.getMessage());
         }
         return SerializeUtil.serialize(statValues);
     }
@@ -86,7 +86,7 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         try{
             statValues = rpc.dataQueryWithDimensList(statId,dimensValueList,startTime,endTime);
         }catch (Exception ex){
-            throw new LightRpcException(ex);
+            throw new LightRpcException(ex.getMessage());
         }
         return SerializeUtil.serialize(statValues);
     }
@@ -97,7 +97,7 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         try{
             statValues = rpc.dataQueryWithDimensList(statId,dimensValueList,batchList);
         }catch (Exception ex){
-            throw new LightRpcException(ex);
+            throw new LightRpcException(ex.getMessage());
         }
         return SerializeUtil.serialize(statValues);
     }
@@ -108,7 +108,7 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         try{
             limitValues = rpc.limitQuery(statId,batchTime);
         }catch (Exception ex){
-            throw new LightRpcException(ex);
+            throw new LightRpcException(ex.getMessage());
         }
         return SerializeUtil.serialize(limitValues);
     }

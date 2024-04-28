@@ -41,7 +41,7 @@ public class LightRpcException extends com.zeroc.Ice.UserException
 
     public String ice_id()
     {
-        return "::LightServer::LightRpcException";
+        return "com::dtstep::lighthouse::common::ice::LightRpcException";
     }
 
     public String reason;
@@ -50,7 +50,7 @@ public class LightRpcException extends com.zeroc.Ice.UserException
     @Override
     protected void _writeImpl(com.zeroc.Ice.OutputStream ostr_)
     {
-        ostr_.startSlice("::LightServer::LightRpcException", -1, true);
+        ostr_.startSlice("::com::dtstep::lighthouse::common::ice::LightRpcException", -1, true);
         ostr_.writeString(reason);
         ostr_.endSlice();
     }
