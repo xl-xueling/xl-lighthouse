@@ -16,15 +16,22 @@ package com.dtstep.lighthouse.client;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.client.rpc.RPCClient;
 import com.dtstep.lighthouse.client.rpc.RPCClientProxy;
+import com.dtstep.lighthouse.client.rpc.ice.ICERPCClientImpl;
 import com.dtstep.lighthouse.common.aggregator.BlockingEventPool;
 import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.common.entity.event.SimpleSlotEvent;
+import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
+import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;
+import com.dtstep.lighthouse.common.entity.view.LimitValue;
+import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.fusing.FusingToken;
 import com.dtstep.lighthouse.common.fusing.FusingSwitch;
 import com.dtstep.lighthouse.common.enums.fusing.FusingRules;
 import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.common.exception.LightSendException;
+import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.zeroc.Ice.NotRegisteredException;
 import org.slf4j.Logger;
@@ -112,7 +119,76 @@ public final class LightHouse {
         }
     }
 
+    public static List<StatValue> dataQuery(int statId, String secretKey, String dimensValue, long startTime, long endTime) throws Exception {
+        StatVerifyEntity statVerifyEntity = AuxHandler.queryStat(statId);
+        if(statVerifyEntity == null){
+            logger.error("statistic({}) not exist!",statId);
+            return null;
+        }
+        String md5 = AuxHandler.cacheGetMd5(secretKey);
+        if(!statVerifyEntity.getVerifyKey().equals(md5)){
+            logger.error("client secret-key validation failed,id:{},key:{}",statId,secretKey);
+            return null;
+        }
+        return RPCClientProxy.instance().dataQuery(statId,dimensValue,startTime,endTime);
+    }
 
+    public static List<StatValue> dataQuery(int statId, String secretKey, String dimensValue, List<Long> batchList) throws Exception {
+        StatVerifyEntity statVerifyEntity = AuxHandler.queryStat(statId);
+        if(statVerifyEntity == null){
+            logger.error("statistic({}) not exist!",statId);
+            return null;
+        }
+        String md5 = AuxHandler.cacheGetMd5(secretKey);
+        if(!statVerifyEntity.getVerifyKey().equals(md5)){
+            logger.error("client secret-key validation failed,id:{},key:{}",statId,secretKey);
+            return null;
+        }
+        return RPCClientProxy.instance().dataQuery(statId,dimensValue,batchList);
+    }
+
+    public static Map<String,List<StatValue>> dataQueryWithDimensList(int statId, String secretKey, List<String> dimensValueList, long startTime,long endTime) throws Exception {
+        StatVerifyEntity statVerifyEntity = AuxHandler.queryStat(statId);
+        if(statVerifyEntity == null){
+            logger.error("statistic({}) not exist!",statId);
+            return null;
+        }
+        String md5 = AuxHandler.cacheGetMd5(secretKey);
+        if(!statVerifyEntity.getVerifyKey().equals(md5)){
+            logger.error("client secret-key validation failed,id:{},key:{}",statId,secretKey);
+            return null;
+        }
+        return RPCClientProxy.instance().dataQueryWithDimensList(statId,dimensValueList,startTime,endTime);
+    }
+
+    public static Map<String,List<StatValue>> dataQueryWithDimensList(int statId, String secretKey, List<String> dimensValueList, List<Long> batchList) throws Exception {
+        StatVerifyEntity statVerifyEntity = AuxHandler.queryStat(statId);
+        if(statVerifyEntity == null){
+            logger.error("statistic({}) not exist!",statId);
+            return null;
+        }
+        String md5 = AuxHandler.cacheGetMd5(secretKey);
+        if(!statVerifyEntity.getVerifyKey().equals(md5)){
+            logger.error("client secret-key validation failed,id:{},key:{}",statId,secretKey);
+            return null;
+        }
+        return RPCClientProxy.instance().dataQueryWithDimensList(statId,dimensValueList,batchList);
+    }
+
+
+    public static List<LimitValue> limitQuery(int statId, String secretKey, Long batchTime) throws Exception {
+        StatVerifyEntity statVerifyEntity = AuxHandler.queryStat(statId);
+        if(statVerifyEntity == null){
+            logger.error("statistic({}) not exist!",statId);
+            return null;
+        }
+        String md5 = AuxHandler.cacheGetMd5(secretKey);
+        if(!statVerifyEntity.getVerifyKey().equals(md5)){
+            logger.error("client secret-key validation failed,id:{},key:{}",statId,secretKey);
+            return null;
+        }
+        return RPCClientProxy.instance().limitQuery(statId,batchTime);
+    }
 
     public static void stop() {
         _LightSwitch.set(false);

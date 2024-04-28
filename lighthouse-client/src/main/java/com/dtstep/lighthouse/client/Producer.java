@@ -44,15 +44,13 @@ final class Producer {
         this.eventPool = eventPool;
     }
 
-    private static final Cache<String,String> cacheHolder = LRU.newBuilder().maximumSize(5000).expireAfterWrite(2, TimeUnit.MINUTES).softValues().build();
-
     void send(String token, String secretKey, Map<String, Object> paramMap, int repeat, long timestamp) throws Exception{
         GroupVerifyEntity groupVerifyEntity = AuxHandler.queryStatGroup(token);
         if(groupVerifyEntity == null){
             logger.error("group({}) not exist!",token);
             return;
         }
-        String md5 = cacheHolder.get(secretKey,t -> Md5Util.getMD5(secretKey));
+        String md5 = AuxHandler.cacheGetMd5(secretKey);
         if(!groupVerifyEntity.getVerifyKey().equals(md5)){
             logger.error("client key validation failed,token:{},key:{}",token,secretKey);
             return;
