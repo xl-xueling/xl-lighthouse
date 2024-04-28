@@ -48,6 +48,7 @@
         <module>lighthouse-tasks</module>
         <module>lighthouse-test</module>
         <module>lighthouse-insights</module>
+        <module>lighthouse-assembly</module>
       </modules>
       <distributionManagement>
         <snapshotRepository>
