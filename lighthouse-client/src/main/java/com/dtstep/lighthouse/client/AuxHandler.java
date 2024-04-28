@@ -33,7 +33,7 @@ final class AuxHandler {
 
     private static final Cache<Integer,Optional<StatVerifyEntity>> statHolder = LRU.newBuilder().maximumSize(50000).expireAfterWrite(2,TimeUnit.MINUTES).softValues().build();
 
-    private static final Cache<String,String> md5CacheHolder = LRU.newBuilder().maximumSize(5000).expireAfterWrite(2, TimeUnit.MINUTES).softValues().build();
+    private static final Cache<String,String> md5CacheHolder = LRU.newBuilder().maximumSize(50000).expireAfterWrite(2, TimeUnit.MINUTES).softValues().build();
 
     public static GroupVerifyEntity queryStatGroup(String token) {
         return groupHolder.get(token,k -> {

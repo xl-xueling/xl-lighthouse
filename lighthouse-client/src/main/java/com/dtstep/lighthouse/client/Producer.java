@@ -23,15 +23,11 @@ import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.enums.ColumnTypeEnum;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.hash.HashUtil;
-import com.dtstep.lighthouse.common.lru.Cache;
-import com.dtstep.lighthouse.common.lru.LRU;
 import com.dtstep.lighthouse.common.util.DateUtil;
-import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.MessageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 
 final class Producer {

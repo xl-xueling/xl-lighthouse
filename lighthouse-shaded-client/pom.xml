@@ -90,6 +90,17 @@
             <version>4.10</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
     <build>
         <resources>
@@ -151,6 +162,7 @@
                                     <include>com.fasterxml.jackson.core:jackson-annotations</include>
                                     <include>org.xerial.snappy:snappy-java</include>
                                     <include>org.javatuples:javatuples</include>
+                                    <include>commons-codec:commons-codec</include>
                                     <include>com.dtstep.lighthouse:lighthouse-client</include>
                                     <include>com.dtstep.lighthouse:lighthouse-common</include>
                                 </includes>
