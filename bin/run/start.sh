@@ -108,6 +108,7 @@ function startMysql(){
 }
 
 function startLightHouseTasks(){
+  delHDFSDir "/user/work/.sparkStaging/"
   if [[ ${_CLEAR_KAFKA_OFFSET_AT_STARTUP} == "true" ]];then
         clearCheckpoint;
   fi
