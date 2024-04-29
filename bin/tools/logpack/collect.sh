@@ -6,7 +6,9 @@ DAYS=2;
 if [ "$#" -eq 1 ] && [[ "$1" =~ ^[0-9]+$ ]] && [ "$1" -lt 30 ]; then
 	DAYS=${1}
 fi
+
 cur_hostname=$(hostname)
+echo "Prepare to package the log data of the node[$cur_hostname]."
 current_date=$(date +'%Y-%m-%d')
 TARGET_HOME=${LDP_HOME}/temp/logpack/${current_date}/${cur_hostname}
 rm -rf ${LDP_HOME}/temp/logpack/
@@ -24,6 +26,12 @@ ${LDP_HOME}/dependency/jdk/bin/jps -l > ${TARGET_HOME}/system/jps.out
 pid=$(${LDP_HOME}/dependency/jdk/bin/jps -l | awk '{print $1; exit}')
 ${LDP_HOME}/dependency/jdk/bin/jinfo $pid > ${TARGET_HOME}/system/jinfo.out
 ps -ef > ${TARGET_HOME}/system/ps.out
+top -b -n 3 > ${TARGET_HOME}/system/top.out
+df -v > ${TARGET_HOME}/system/df.out
+cat /proc/cpuinfo > ${TARGET_HOME}/system/cpuinfo.out
+cat /proc/meminfo > ${TARGET_HOME}/system/meminfo.out
+${LDP_HOME}/dependency/hadoop/bin/hdfs dfsadmin -report > ${TARGET_HOME}/system/dfsadmin.out
+
 
 if [ -d "$LDP_HOME/dependency/hadoop/logs" ]; then
 	rm -rf ${TARGET_HOME}/hadoop
