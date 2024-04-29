@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source ~/.bashrc;
+eval "$(cat ~/.bashrc|tail -n +10)"
 DAYS=2;
 if [ "$#" -eq 1 ] && [[ "$1" =~ ^[0-9]+$ ]] && [ "$1" -lt 30 ]; then
 	DAYS=${1}
@@ -11,14 +12,18 @@ TARGET_HOME=${LDP_HOME}/temp/logpack/${current_date}/${cur_hostname}
 rm -rf ${LDP_HOME}/temp/logpack/
 mkdir -p ${TARGET_HOME}
 
+rm -rf ${TARGET_HOME}/system
+mkdir -p ${TARGET_HOME}/system
 if [ ! -r "/var/log" ]; then
 	echo "The current user does not have access rights to the directory[/var/log], ignore the log files!"
 else
-	rm -rf ${TARGET_HOME}/system
-	mkdir -p ${TARGET_HOME}/system
 	find /var/log -maxdepth 1 -type f \( -name "*message*" -o -name "*syslog*" \) -mtime -${DAYS} -exec cp {} ${TARGET_HOME}/system \;
 fi
 
+${LDP_HOME}/dependency/jdk/bin/jps -l > ${TARGET_HOME}/system/jps.out
+pid=$(${LDP_HOME}/dependency/jdk/bin/jps -l | awk '{print $1; exit}')
+${LDP_HOME}/dependency/jdk/bin/jinfo $pid > ${TARGET_HOME}/system/jinfo.out
+ps -ef > ${TARGET_HOME}/system/ps.out
 
 if [ -d "$LDP_HOME/dependency/hadoop/logs" ]; then
 	rm -rf ${TARGET_HOME}/hadoop
