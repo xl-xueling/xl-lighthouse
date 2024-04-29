@@ -23,6 +23,13 @@
             <outputDirectory>/lib</outputDirectory>
         </fileSet>
         <fileSet>
+            <directory>${project.parent.basedir}/temporary</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>/temporary</outputDirectory>
+        </fileSet>
+        <fileSet>
             <directory>${project.parent.basedir}/light-webapps</directory>
             <excludes>
                 <exclude>/node_modules/**</exclude>

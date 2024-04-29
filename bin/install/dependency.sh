@@ -129,15 +129,31 @@ function dependencyInstall() {
   done
 }
 
-function pluginsInstall() {
-    source ~/.bashrc;
+function redisRoaringPluginInstall() {
     cd ${LDP_HOME}/plugins/ && tar -zxvf redis-roaring.tar.gz;
     cd ${LDP_HOME}/plugins/redis-roaring && ./configure.sh
     for ip in "${NODES[@]:1}"
                 do
 			remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${CUR_USER} "" ${LDP_HOME}/plugins ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}
 		done
+}
 
+function hadoopAuthPluginInstall() {
+    local hadoop_home="${LDP_HOME}/dependency/hadoop"
+    local IPArray=($(getServiceIPS 'hadoop'))
+        for ip in "${IPArray[@]}"
+                do
+                  remoteExecute ${CUR_DIR}/common/delete.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/common/lib/hadoop-auth-*.jar
+                  remoteExecute ${CUR_DIR}/common/delete.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/hdfs/lib/hadoop-auth-*.jar
+                  remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER}  ${LDP_HOME}/plugins/hadoop-auth/*.jar ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/common/lib/
+                  remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER}  ${LDP_HOME}/plugins/hadoop-auth/*.jar ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/hdfs/lib/
+                done
+}
+
+function pluginsInstall() {
+    source ~/.bashrc;
+    redisRoaringPluginInstall;
+		hadoopAuthPluginInstall;
 }
 
 
