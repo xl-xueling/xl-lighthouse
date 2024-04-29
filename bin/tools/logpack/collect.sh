@@ -27,16 +27,15 @@ pid=$(${LDP_HOME}/dependency/jdk/bin/jps -l | awk '{print $1; exit}')
 ${LDP_HOME}/dependency/jdk/bin/jinfo $pid > ${TARGET_HOME}/system/jinfo.out
 ps -ef > ${TARGET_HOME}/system/ps.out
 top -b -n 3 > ${TARGET_HOME}/system/top.out
-df -v > ${TARGET_HOME}/system/df.out
+df -h > ${TARGET_HOME}/system/df.out
 cat /proc/cpuinfo > ${TARGET_HOME}/system/cpuinfo.out
 cat /proc/meminfo > ${TARGET_HOME}/system/meminfo.out
-${LDP_HOME}/dependency/hadoop/bin/hdfs dfsadmin -report > ${TARGET_HOME}/system/dfsadmin.out
-
 
 if [ -d "$LDP_HOME/dependency/hadoop/logs" ]; then
 	rm -rf ${TARGET_HOME}/hadoop
 	mkdir -p ${TARGET_HOME}/hadoop
 	find $LDP_HOME/dependency/hadoop/logs  -maxdepth 1 -type f  -mtime -${DAYS} -exec cp {} ${TARGET_HOME}/hadoop \;
+	${LDP_HOME}/dependency/hadoop/bin/hdfs dfsadmin -report > ${TARGET_HOME}/hadoop/dfsadmin.out
 fi
 
 if [ -d "$LDP_HOME/dependency/spark/logs" ]; then
