@@ -143,8 +143,8 @@ function hadoopAuthPluginInstall() {
     local IPArray=($(getServiceIPS 'hadoop'))
         for ip in "${IPArray[@]}"
                 do
-                  remoteExecute ${CUR_DIR}/common/delete.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/common/lib/hadoop-auth-*.jar
-                  remoteExecute ${CUR_DIR}/common/delete.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/hdfs/lib/hadoop-auth-*.jar
+                  remoteExecute ${CUR_DIR}/common/delete.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/common/lib/hadoop-auth-3.3.5.jar
+                  remoteExecute ${CUR_DIR}/common/delete.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/hdfs/lib/hadoop-auth-3.3.5.jar
                   remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER}  ${LDP_HOME}/plugins/hadoop-auth/*.jar ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/common/lib/
                   remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER}  ${LDP_HOME}/plugins/hadoop-auth/*.jar ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/hdfs/lib/
                 done

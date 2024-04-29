@@ -8,7 +8,7 @@ if [ "$#" -eq 1 ] && [[ "$1" =~ ^[0-9]+$ ]] && [ "$1" -lt 30 ]; then
 fi
 
 cur_hostname=$(hostname)
-echo "Prepare to package the log data of the node[$cur_hostname]."
+echo "Prepare to package the log of the node[$cur_hostname]."
 current_date=$(date +'%Y-%m-%d')
 TARGET_HOME=${LDP_HOME}/temp/logpack/${current_date}/${cur_hostname}
 rm -rf ${LDP_HOME}/temp/logpack/
