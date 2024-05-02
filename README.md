@@ -56,7 +56,14 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 
 ### XL-LightHouse与Flink和ClickHouse之类技术对比
 
+-  [系统介绍](https://dtstep.com/zh/architecture/01.html)
 -  [与Flink和ClickHouse之类技术对比](https://dtstep.com/zh/architecture/02.html)
+
+###  版本记录
+
+当前稳定版本：releases-2.1.8  [下载地址](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/releases/lighthouse-2.1.8.tar.gz)
+
+-  [版本记录](https://dtstep.com/zh/versions/02.html)
 
 ###  一键部署
 
