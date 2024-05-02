@@ -16,9 +16,7 @@ package com.dtstep.lighthouse.client;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.client.rpc.RPCClient;
 import com.dtstep.lighthouse.client.rpc.RPCClientProxy;
-import com.dtstep.lighthouse.client.rpc.ice.ICERPCClientImpl;
 import com.dtstep.lighthouse.common.aggregator.BlockingEventPool;
 import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.common.entity.event.SimpleSlotEvent;
@@ -31,7 +29,6 @@ import com.dtstep.lighthouse.common.fusing.FusingSwitch;
 import com.dtstep.lighthouse.common.enums.fusing.FusingRules;
 import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.common.exception.LightSendException;
-import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.zeroc.Ice.NotRegisteredException;
 import org.slf4j.Logger;
@@ -119,8 +116,16 @@ public final class LightHouse {
         }
     }
 
+    public static GroupVerifyEntity queryGroupInfo(String token) throws Exception {
+        return AuxHandler.queryGroupInfo(token);
+    }
+
+    public static StatVerifyEntity queryStatInfo(int statId) throws Exception {
+        return AuxHandler.queryStatInfo(statId);
+    }
+
     public static List<StatValue> dataQuery(int statId, String secretKey, String dimensValue, long startTime, long endTime) throws Exception {
-        StatVerifyEntity statVerifyEntity = AuxHandler.queryStat(statId);
+        StatVerifyEntity statVerifyEntity = AuxHandler.queryStatInfo(statId);
         if(statVerifyEntity == null){
             logger.error("statistic({}) not exist!",statId);
             return null;
@@ -134,7 +139,7 @@ public final class LightHouse {
     }
 
     public static List<StatValue> dataQuery(int statId, String secretKey, String dimensValue, List<Long> batchList) throws Exception {
-        StatVerifyEntity statVerifyEntity = AuxHandler.queryStat(statId);
+        StatVerifyEntity statVerifyEntity = AuxHandler.queryStatInfo(statId);
         if(statVerifyEntity == null){
             logger.error("statistic({}) not exist!",statId);
             return null;
@@ -148,7 +153,7 @@ public final class LightHouse {
     }
 
     public static Map<String,List<StatValue>> dataQueryWithDimensList(int statId, String secretKey, List<String> dimensValueList, long startTime,long endTime) throws Exception {
-        StatVerifyEntity statVerifyEntity = AuxHandler.queryStat(statId);
+        StatVerifyEntity statVerifyEntity = AuxHandler.queryStatInfo(statId);
         if(statVerifyEntity == null){
             logger.error("statistic({}) not exist!",statId);
             return null;
@@ -162,7 +167,7 @@ public final class LightHouse {
     }
 
     public static Map<String,List<StatValue>> dataQueryWithDimensList(int statId, String secretKey, List<String> dimensValueList, List<Long> batchList) throws Exception {
-        StatVerifyEntity statVerifyEntity = AuxHandler.queryStat(statId);
+        StatVerifyEntity statVerifyEntity = AuxHandler.queryStatInfo(statId);
         if(statVerifyEntity == null){
             logger.error("statistic({}) not exist!",statId);
             return null;
@@ -177,7 +182,7 @@ public final class LightHouse {
 
 
     public static List<LimitValue> limitQuery(int statId, String secretKey, Long batchTime) throws Exception {
-        StatVerifyEntity statVerifyEntity = AuxHandler.queryStat(statId);
+        StatVerifyEntity statVerifyEntity = AuxHandler.queryStatInfo(statId);
         if(statVerifyEntity == null){
             logger.error("statistic({}) not exist!",statId);
             return null;

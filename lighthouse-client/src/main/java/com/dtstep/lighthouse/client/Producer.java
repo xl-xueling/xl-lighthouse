@@ -41,7 +41,7 @@ final class Producer {
     }
 
     void send(String token, String secretKey, Map<String, Object> paramMap, int repeat, long timestamp) throws Exception{
-        GroupVerifyEntity groupVerifyEntity = AuxHandler.queryStatGroup(token);
+        GroupVerifyEntity groupVerifyEntity = AuxHandler.queryGroupInfo(token);
         if(groupVerifyEntity == null){
             logger.error("group({}) not exist!",token);
             return;

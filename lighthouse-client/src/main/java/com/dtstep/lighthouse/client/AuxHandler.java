@@ -35,7 +35,7 @@ final class AuxHandler {
 
     private static final Cache<String,String> md5CacheHolder = LRU.newBuilder().maximumSize(50000).expireAfterWrite(2, TimeUnit.MINUTES).softValues().build();
 
-    public static GroupVerifyEntity queryStatGroup(String token) {
+    public static GroupVerifyEntity queryGroupInfo(String token) {
         return groupHolder.get(token,k -> {
             GroupVerifyEntity groupVerifyEntity;
             try{
@@ -49,7 +49,7 @@ final class AuxHandler {
     }
 
 
-    public static StatVerifyEntity queryStat(int id) {
+    public static StatVerifyEntity queryStatInfo(int id) {
         return statHolder.get(id,k -> {
             StatVerifyEntity statVerifyEntity;
             try{
