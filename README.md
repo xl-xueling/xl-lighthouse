@@ -42,17 +42,32 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 
 ---
 
-###  Hello World
+### 可以用来做什么？
 
-- [ICON点击数据统计](https://dtstep.com/zh/helloworld/01.html)
-- [电商订单数据统计](https://dtstep.com/zh/helloworld/02.html)
-- [订单支付状态数据统计](https://dtstep.com/zh/helloworld/03.html)
+XL-LightHouse可应用在企业生产的众多环节，可以帮助职场人从容应对大量琐碎、重复性的数据统计工作，量化工作产出，提高工作效率。
 
-###  使用场景演示
+以电商企业来说：
++ 可以为企业决策层提供其所关注的平台交易额、交易量、下单用户数、订单平均金额等指标；
++ 可以为产品经理提供其所负责产品模块的pv、uv和点击率等指标；
++ 可以为运营人员提供关注的拉新用户量，站内广告点击量、广告收益率等指标；
++ 可以为开发人员提供其关注的接口调用量、异常量、耗时情况等指标；
++ 可以为算法工程师提供其关注的模型训练时长、模型准确率，模型上线后的效果评测等指标；
++ 可以为运维人员提供其关注的是线上集群的CPU、内存、负载状况监控等指标；
++ 可以为UI设计师提供其关注的不同设计方案的点击转化对比情况；
++ 可以为数据分析师提供各种数据指标来更准确的判断业务的短板、业务的走势、辅助决策层有针对性的制定营销计划；
+
+更多示例可参考：
+
 - [即时通讯场景演示](https://dtstep.com/zh/scene/01.html)
 - [技术类场景演示](https://dtstep.com/zh/scene/02.html)
 - [电商类场景演示](https://dtstep.com/zh/scene/03.html)
 - [资讯类场景演示](https://dtstep.com/zh/scene/04.html)
+
+### Hello World
+
+- [ICON点击数据统计](https://dtstep.com/zh/helloworld/01.html)
+- [电商订单数据统计](https://dtstep.com/zh/helloworld/02.html)
+- [订单支付状态数据统计](https://dtstep.com/zh/helloworld/03.html)
 
 ### XL-LightHouse与Flink和ClickHouse之类技术对比
 
