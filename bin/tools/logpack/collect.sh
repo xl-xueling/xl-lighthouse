@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source ~/.bashrc;
-eval "$(cat ~/.bashrc|tail -n +10)"
+eval "$(awk '/^export /,0' ~/.bashrc)"
 DAYS=2;
 if [ "$#" -eq 1 ] && [[ "$1" =~ ^[0-9]+$ ]] && [ "$1" -lt 30 ]; then
 	DAYS=${1}

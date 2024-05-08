@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source ~/.bashrc;
-eval "$(cat ~/.bashrc|tail -n +10)"
+eval "$(awk '/^export /,0' ~/.bashrc)"
 CUR_DIR=${LDP_HOME}/bin
 source "${CUR_DIR}/common/lib.sh"
 source "${CUR_DIR}/prepare/prepare.sh"
