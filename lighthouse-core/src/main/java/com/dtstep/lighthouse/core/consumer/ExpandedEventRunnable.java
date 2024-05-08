@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.consumer;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.core.functions.*;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.google.common.base.Splitter;
@@ -69,6 +70,9 @@ public final class ExpandedEventRunnable implements Runnable{
                 if(CollectionUtils.isEmpty(events)){
                     break;
                 }
+                if(logger.isDebugEnabled()){
+                    logger.debug("process expanded events start,thread:{},slot:{},process size:{}",Thread.currentThread().getName(),slot,events.size());
+                }
                 if(logger.isTraceEnabled()){
                     events.forEach(z -> logger.trace("event consumer message:[{}],repeat:[{}]",z.getMessage(),z.getRepeat()));
                 }
@@ -104,6 +108,10 @@ public final class ExpandedEventRunnable implements Runnable{
         if(statExtEntity == null){
             return;
         }
+        if(logger.isDebugEnabled()){
+            logger.debug("expanded consumer runnable,statId:{},aggregateKey:{},functionIndex:{},dimensValue:{},batchTime:{}",statId,aggregateKey,functionIndex
+                    ,dimensValue, DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
+        }
         if(!StringUtil.isEmpty(statExtEntity.getTemplateEntity().getDimens())){
             try{
                 DimensStatProcess.getInstance().process(statExtEntity,dimensValue);
@@ -126,8 +134,12 @@ public final class ExpandedEventRunnable implements Runnable{
                 return;
             }
         }
+        if(logger.isDebugEnabled()){
+            logger.debug("expanded consumer runnable,statId:{},aggregateKey:{},functionIndex:{},dimensValue:{},batchTime:{},metaName:{}",statId,aggregateKey,functionIndex
+                    ,dimensValue, DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"),metaName);
+        }
         if(logger.isTraceEnabled()){
-            logger.trace("event consumer runnable,statId:{},aggregateKey:{},dimensValue:{},batchTime:{},eventList:{}"
+            logger.trace("expanded consumer runnable,statId:{},aggregateKey:{},dimensValue:{},batchTime:{},eventList:{}"
                     ,statId,aggregateKey,dimensValue,batchTime, JsonUtil.toJSONString(eventList));
         }
         switch (functionEnum){

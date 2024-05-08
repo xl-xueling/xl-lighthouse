@@ -60,6 +60,9 @@ public class ResultStorageThread extends Thread {
                 if(CollectionUtils.isEmpty(events)){
                     break;
                 }
+                if(logger.isDebugEnabled()){
+                    logger.debug("process storage events start,thread:{},slot:{},process size:{}",Thread.currentThread().getName(),slot,events.size());
+                }
                 List<MicroBucket> incrementList = events.stream().filter(x -> x.getCalculateEnum() == MicroCalculateEnum.IncCalculate).collect(Collectors.toList());
                 if(!incrementList.isEmpty()){
                     ResultStorageSelector.increment(incrementList);

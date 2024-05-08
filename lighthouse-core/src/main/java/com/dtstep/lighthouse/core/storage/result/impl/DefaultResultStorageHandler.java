@@ -52,8 +52,8 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                 String column = bucket.getColumn();
                 long ttl = bucket.getTTL();
                 long value = subList.stream().map(MicroBucket::getValue).mapToLong(x -> x).sum();
-                if(logger.isTraceEnabled()){
-                    logger.trace("lighthouse trace,batch increment,statId:{},batchTime:{},meta:{},rowKey:{},dimens:{},column:{},functionIndex:{},value:{},ttl:{}",
+                if(logger.isDebugEnabled()){
+                    logger.debug("lighthouse debug,batch increment,statId:{},batchTime:{},meta:{},rowKey:{},dimens:{},column:{},functionIndex:{},value:{},ttl:{}",
                             bucket.getStatId(), DateUtil.formatTimeStamp(bucket.getBatchTime(),"yyyy-MM-dd HH:mm:ss"),bucket.getMetaName(),bucket.getRowKey(),bucket.getDimensValue(),bucket.getColumn(),bucket.getFunctionIndex(),value,bucket.getTTL());
                 }
                 LdpIncrement ldpIncrement = LdpIncrement.with(rowKey,column,value,ttl);
@@ -81,8 +81,8 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                 String column = bucket.getColumn();
                 long ttl = bucket.getTTL();
                 long value = subList.stream().map(MicroBucket::getValue).mapToLong(x -> x).max().getAsLong();
-                if(logger.isTraceEnabled()){
-                    logger.trace("lighthouse trace,batch maxPut,statId:{},batchTime:{},meta:{},rowKey:{},dimens:{},column:{},functionIndex:{},value:{},ttl:{}",
+                if(logger.isDebugEnabled()){
+                    logger.debug("lighthouse debug,batch maxPut,statId:{},batchTime:{},meta:{},rowKey:{},dimens:{},column:{},functionIndex:{},value:{},ttl:{}",
                             bucket.getStatId(), DateUtil.formatTimeStamp(bucket.getBatchTime(),"yyyy-MM-dd HH:mm:ss"),bucket.getMetaName(),bucket.getRowKey(),bucket.getDimensValue(),bucket.getColumn(),bucket.getFunctionIndex(),value,bucket.getTTL());
                 }
                 LdpPut ldpPut = LdpPut.with(rowKey,column,value,ttl);
@@ -110,8 +110,8 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                 String column = bucket.getColumn();
                 long ttl = bucket.getTTL();
                 long value = subList.stream().map(MicroBucket::getValue).mapToLong(x -> x).min().getAsLong();
-                if(logger.isTraceEnabled()){
-                    logger.trace("lighthouse trace,batch minPut,statId:{},batchTime:{},meta:{},rowKey:{},dimens:{},column:{},functionIndex:{},value:{},ttl:{}",
+                if(logger.isDebugEnabled()){
+                    logger.debug("lighthouse debug,batch minPut,statId:{},batchTime:{},meta:{},rowKey:{},dimens:{},column:{},functionIndex:{},value:{},ttl:{}",
                             bucket.getStatId(), DateUtil.formatTimeStamp(bucket.getBatchTime(),"yyyy-MM-dd HH:mm:ss"),bucket.getMetaName(),bucket.getRowKey(),bucket.getDimensValue(),bucket.getColumn(),bucket.getFunctionIndex(),value,bucket.getTTL());
                 }
                 LdpPut ldpPut = LdpPut.with(rowKey,column,value,ttl);
@@ -139,8 +139,8 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                 String column = bucket.getColumn();
                 long ttl = bucket.getTTL();
                 long value = subList.get(0).getValue();
-                if(logger.isTraceEnabled()){
-                    logger.trace("lighthouse trace,batch put,statId:{},batchTime:{},meta:{},rowKey:{},dimens:{},column:{},functionIndex:{},value:{},ttl:{}",
+                if(logger.isDebugEnabled()){
+                    logger.debug("lighthouse debug,batch put,statId:{},batchTime:{},meta:{},rowKey:{},dimens:{},column:{},functionIndex:{},value:{},ttl:{}",
                             bucket.getStatId(),DateUtil.formatTimeStamp(bucket.getBatchTime(),"yyyy-MM-dd HH:mm:ss"),bucket.getMetaName(),bucket.getRowKey(),bucket.getDimensValue(),bucket.getColumn(),bucket.getFunctionIndex(),value,bucket.getTTL());
                 }
                 LdpPut ldpPut = LdpPut.with(rowKey,column,value,ttl);
