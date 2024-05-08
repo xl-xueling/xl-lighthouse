@@ -72,9 +72,9 @@ public class HBaseStorageEngine implements StorageEngine {
     private static volatile Connection connection = null;
 
     public static Connection getConnection() throws Exception{
-        if(connection == null || connection.isClosed()){
+        if(connection == null || connection.isClosed() || connection.isAborted()){
             synchronized (HBaseStorageEngine.class){
-                if(connection == null || connection.isClosed()){
+                if(connection == null || connection.isClosed() || connection.isAborted()){
                     StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
                     String zooQuorum = LDPConfig.getVal(LDPConfig.KEY_HBASE_ZOOKEEPER_QUORUM);
