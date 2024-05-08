@@ -31,16 +31,9 @@ public class HBaseStorageEngine implements StorageEngine {
 
     private static final Logger logger = LoggerFactory.getLogger(HBaseStorageEngine.class);
 
-    private static Admin hBaseAdmin = null;
-
     private static Compression.Algorithm algorithm = null;
 
     static {
-        try{
-            hBaseAdmin = getConnection().getAdmin();
-        }catch (Exception ex){
-            logger.error("hbase get admin error!",ex);
-        }
         String compression = LDPConfig.getOrDefault(LDPConfig.KEY_DATA_COMPRESSION_TYPE,"zstd",String.class);
         if(StringUtil.isNotEmpty(compression)){
             switch (compression) {
@@ -94,14 +87,19 @@ public class HBaseStorageEngine implements StorageEngine {
         return connection;
     }
 
-    public boolean isNameSpaceExist(String namespace) throws Exception {
-        String [] namespaceArr = hBaseAdmin.listNamespaces();
-        for(String dbNamespace : namespaceArr){
-            if(dbNamespace.equals(namespace)){
-                return true;
+    private boolean isNameSpaceExist(String namespace) throws Exception {
+        try(Admin hBaseAdmin = getConnection().getAdmin()){
+            String [] namespaceArr = hBaseAdmin.listNamespaces();
+            for(String dbNamespace : namespaceArr){
+                if(dbNamespace.equals(namespace)){
+                    return true;
+                }
             }
+            return false;
+        }catch (Exception ex){
+            logger.error("check namespace exist error,namespace:{}",namespace,ex);
+            throw ex;
         }
-        return false;
     }
 
     @Override
@@ -113,12 +111,17 @@ public class HBaseStorageEngine implements StorageEngine {
 
     @Override
     public void createNamespaceIfNotExist(String namespace) throws Exception {
-        if(isNameSpaceExist(namespace)){
-            return;
+        try(Admin hBaseAdmin = getConnection().getAdmin()){
+            if(isNameSpaceExist(namespace)){
+                return;
+            }
+            NamespaceDescriptor namespaceDescriptor = NamespaceDescriptor.create(namespace).build();
+            hBaseAdmin.createNamespace(namespaceDescriptor);
+            logger.info("create namespace {} success!",namespace);
+        }catch (Exception ex){
+            logger.error("createNamespaceIfNotExist error,namespace:{}",namespace,ex);
+            throw ex;
         }
-        NamespaceDescriptor namespaceDescriptor = NamespaceDescriptor.create(namespace).build();
-        hBaseAdmin.createNamespace(namespaceDescriptor);
-        logger.info("create namespace {} success!",namespace);
     }
 
     private TableName getTableName(String tableName){
@@ -154,7 +157,7 @@ public class HBaseStorageEngine implements StorageEngine {
                 .setDataBlockEncoding(DataBlockEncoding.FAST_DIFF)
                 .setInMemoryCompaction(MemoryCompactionPolicy.BASIC).build();
         tableDescriptor.setColumnFamily(family);
-        try{
+        try(Admin hBaseAdmin = getConnection().getAdmin()){
             hBaseAdmin.createTable(tableDescriptor.build(),splitKeys);
         }catch (Exception ex){
             logger.error("create hbase table,system error.metaName:{}",tableName,ex);
@@ -175,8 +178,13 @@ public class HBaseStorageEngine implements StorageEngine {
 
     @Override
     public boolean isTableExist(String tableName) throws Exception {
-        TableName tableNameObj = getTableName(tableName);
-        return hBaseAdmin.tableExists(tableNameObj);
+        try(Admin hBaseAdmin = getConnection().getAdmin()){
+            TableName tableNameObj = getTableName(tableName);
+            return hBaseAdmin.tableExists(tableNameObj);
+        }catch (Exception ex){
+            logger.error("check table exist error,tableName:{}",tableName,ex);
+            throw ex;
+        }
     }
 
     @Override
@@ -184,9 +192,14 @@ public class HBaseStorageEngine implements StorageEngine {
         if(!isTableExist(tableName)){
             return;
         }
-        TableName table = getTableName(tableName);
-        hBaseAdmin.disableTable(table);
-        hBaseAdmin.deleteTable(table);
+        try(Admin hBaseAdmin = getConnection().getAdmin()){
+            TableName table = getTableName(tableName);
+            hBaseAdmin.disableTable(table);
+            hBaseAdmin.deleteTable(table);
+        }catch (Exception ex){
+            logger.error("drop table error,tableName:{}",tableName,ex);
+            throw ex;
+        }
     }
 
     @Override
