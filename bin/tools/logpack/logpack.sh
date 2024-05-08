@@ -14,7 +14,7 @@ CUR_USER=${USER}
 current_date=$(date +'%Y-%m-%d')
 cur_hostname=$(hostname)
 PACK_HOME=${LDP_HOME}/temp/logpack/
-
+DAYS=2;
 main(){
   	loadScriptConfig;
 	if [[ ${USER} != ${DEPLOY_USER} ]];then
@@ -23,7 +23,7 @@ main(){
   	fi
 	for ip in "${NODES[@]}"
                 do
-                	remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} "-" "${CUR_DIR}/tools/logpack/collect.sh"
+                	remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} "-" "${CUR_DIR}/tools/logpack/collect.sh ${DAYS}"
 		done
 
 	local currentIP=($(getLocalIP));
