@@ -21,18 +21,6 @@ if [ -d "$LDP_HOME" ]; then
   cp -r $LDP_HOME/bin/config ${UPGRADE_HOME}/bin
 fi
 
-function temporarySync() {
-    local hadoop_home="${LDP_HOME}/dependency/hadoop"
-    local IPArray=($(getServiceIPS 'hadoop'))
-        for ip in "${IPArray[@]}"
-                do
-                  remoteExecute ${CUR_DIR}/common/delete.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/common/lib/hadoop-auth-3.3.5.jar
-                  remoteExecute ${CUR_DIR}/common/delete.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/hdfs/lib/hadoop-auth-3.3.5.jar
-                  remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER}  ${LDP_HOME}/plugins/hadoop-auth/*.jar ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/common/lib/
-                  remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER}  ${LDP_HOME}/plugins/hadoop-auth/*.jar ${ip} ${NODES_MAP[$ip]} ${hadoop_home}/share/hadoop/hdfs/lib/
-                done
-}
-
 main(){
   if [ ${USER} != "root" ];then
        echo "The operation is prohibited, only the \"root\" user is allowed to execute!"
@@ -43,7 +31,6 @@ main(){
 	echo $$ > ${LOCKFILE}
   loadScriptConfig;
   checkProcessExist;
-  temporarySync;
 	local steps=0;
 	if [ -f $STEPS_TEMP_FILE ]; then
     		read value < $STEPS_TEMP_FILE;
