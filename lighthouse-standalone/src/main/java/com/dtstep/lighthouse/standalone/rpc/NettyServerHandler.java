@@ -2,12 +2,14 @@ package com.dtstep.lighthouse.standalone.rpc;
 
 import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.standalone.rpc.provider.impl.StandaloneRemoteServiceImpl;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 
+@ChannelHandler.Sharable
 public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
     private static final ConcurrentHashMap<String,Object> registryMap = new ConcurrentHashMap<String, Object>();

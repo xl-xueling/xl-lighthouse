@@ -22,6 +22,8 @@ public class RpcProxy {
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(),interfaces,proxy);
     }
 
+    private static final CustomIdleStateHandler customIdleStateHandler = new CustomIdleStateHandler();
+
     public static class MethodProxy implements InvocationHandler {
 
         private final Class<?> clazz;
@@ -57,6 +59,7 @@ public class RpcProxy {
                                 int fieldLength = 4;
                                 pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,0,fieldLength,0,fieldLength));
                                 pipeline.addLast(new LengthFieldPrepender(fieldLength));
+                                pipeline.addLast(customIdleStateHandler);
                                 pipeline.addLast("encoder",new RpcEncoder(RpcRequest.class,new KryoSerializer()));
                                 pipeline.addLast("decoder",new RpcDecoder(RpcResponse.class,new KryoSerializer()));
                                 pipeline.addLast("handler",clientHandler);

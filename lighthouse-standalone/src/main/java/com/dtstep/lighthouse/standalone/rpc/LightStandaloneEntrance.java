@@ -20,6 +20,8 @@ public class LightStandaloneEntrance {
     private void start() {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
+        NettyServerHandler nettyServerHandler = new NettyServerHandler();
+        CustomIdleStateHandler customIdleStateHandler = new CustomIdleStateHandler();
         NettyServerHandler.register();
         try {
             ServerBootstrap server = new ServerBootstrap();
@@ -32,9 +34,10 @@ public class LightStandaloneEntrance {
                             int fieldLength = 4;
                             pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,0,fieldLength,0,fieldLength));
                             pipeline.addLast(new LengthFieldPrepender(fieldLength));
+                            pipeline.addLast(customIdleStateHandler);
                             pipeline.addLast("encoder",new RpcEncoder(RpcResponse.class,new KryoSerializer()));
                             pipeline.addLast("decoder",new RpcDecoder(RpcRequest.class,new KryoSerializer()));
-                            pipeline.addLast(new NettyServerHandler());
+                            pipeline.addLast(nettyServerHandler);
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
