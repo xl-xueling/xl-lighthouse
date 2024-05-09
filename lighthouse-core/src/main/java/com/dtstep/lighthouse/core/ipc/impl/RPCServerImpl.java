@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.ice.servant.logic.impl;
+package com.dtstep.lighthouse.core.ipc.impl;
 
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
@@ -13,12 +13,12 @@ import com.dtstep.lighthouse.common.util.SnappyUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.config.LDPConfig;
+import com.dtstep.lighthouse.core.ipc.DisruptorEventProducer;
 import com.dtstep.lighthouse.core.storage.limit.LimitStorageSelector;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
-import com.dtstep.lighthouse.ice.servant.event.IceEventProducer;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
-import com.dtstep.lighthouse.ice.servant.logic.RPCServer;
+import com.dtstep.lighthouse.core.ipc.RPCServer;
 import com.google.common.base.Splitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,13 +31,13 @@ public class RPCServerImpl implements RPCServer {
 
     private static final Logger logger = LoggerFactory.getLogger(RPCServerImpl.class);
 
-    private static final IceEventProducer eventProducer = new IceEventProducer();
+    private static final DisruptorEventProducer eventProducer = new DisruptorEventProducer();
 
     static {
         try{
             LDPConfig.loadConfiguration();
         }catch (Exception ex){
-            logger.error("ice server start error,system initialization error!",ex);
+            logger.error("rpc server start error,system initialization error!",ex);
             throw new InitializationException();
         }
     }

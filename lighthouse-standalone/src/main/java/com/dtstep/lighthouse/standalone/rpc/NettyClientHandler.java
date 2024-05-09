@@ -9,8 +9,8 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if(msg instanceof com.dtstep.lighthouse.standalone.rpc.RpcResponse){
-            com.dtstep.lighthouse.standalone.rpc.RpcResponse response = (com.dtstep.lighthouse.standalone.rpc.RpcResponse) msg;
+        if(msg instanceof RpcResponse){
+            RpcResponse response = (RpcResponse) msg;
             this.response = response.getResult();
         }
     }

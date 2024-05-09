@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.ice.servant.event;
+package com.dtstep.lighthouse.core.ipc;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -34,9 +34,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 
-public final class IceEventHandler implements EventHandler<IceEvent>, WorkHandler<IceEvent> {
+public final class DisruptorEventHandler implements EventHandler<IceEvent>, WorkHandler<IceEvent> {
 
-    private static final Logger logger = LoggerFactory.getLogger(IceEventHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(DisruptorEventHandler.class);
 
     @Override
     public void onEvent(IceEvent event, long sequence, boolean endOfBatch) {}
@@ -49,7 +49,7 @@ public final class IceEventHandler implements EventHandler<IceEvent>, WorkHandle
 
     private static final int SENDER_SIZE = 60;
 
-    public IceEventHandler(){
+    public DisruptorEventHandler(){
         ScheduledExecutorService service = Executors.newScheduledThreadPool(1,
                 new BasicThreadFactory.Builder().namingPattern("ice-clear-schedule-pool-%d").daemon(true).build());
         service.scheduleWithFixedDelay(new ClearThread(),5,5, TimeUnit.SECONDS);

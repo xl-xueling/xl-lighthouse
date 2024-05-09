@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class RpcRequest implements Serializable {
 
+    private String requestId;
+
     private String className;
 
     private String methodName;
@@ -42,5 +44,13 @@ public class RpcRequest implements Serializable {
 
     public void setParameterValues(Object[] parameterValues) {
         this.parameterValues = parameterValues;
+    }
+
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
 }

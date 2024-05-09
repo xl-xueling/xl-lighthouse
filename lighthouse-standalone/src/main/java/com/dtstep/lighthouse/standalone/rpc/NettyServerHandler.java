@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.standalone.rpc;
 
-import com.dtstep.lighthouse.standalone.rpc.provider.impl.RpcServiceImpl;
+import com.dtstep.lighthouse.common.random.RandomID;
+import com.dtstep.lighthouse.standalone.rpc.provider.impl.StandaloneRemoteServiceImpl;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -14,19 +15,19 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
     public NettyServerHandler(){}
 
     public static void register() {
-        registryMap.put("com.dtstep.lighthouse.standalone.rpcv4.provider.IRpcService",new RpcServiceImpl());
+        registryMap.put("com.dtstep.lighthouse.standalone.rpc.provider.StandaloneRemoteService",new StandaloneRemoteServiceImpl());
     }
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, com.dtstep.lighthouse.standalone.rpc.RpcRequest request) throws Exception {
+    public void channelRead0(ChannelHandlerContext ctx, RpcRequest request) throws Exception {
         Object result = new Object();
         if(registryMap.containsKey(request.getClassName())){
             Object provider = registryMap.get(request.getClassName());
             Method method = provider.getClass().getMethod(request.getMethodName(),request.getParameterTypes());
             result = method.invoke(provider,request.getParameterValues());
         }
-        com.dtstep.lighthouse.standalone.rpc.RpcResponse response = new com.dtstep.lighthouse.standalone.rpc.RpcResponse();
-        response.setRequestId("sss");
+        RpcResponse response = new RpcResponse();
+        response.setRequestId(request.getRequestId());
         response.setResult(result);
         ctx.write(response);
         ctx.flush();

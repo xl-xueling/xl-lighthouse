@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.ice.servant.event;
+package com.dtstep.lighthouse.core.ipc;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -28,11 +28,11 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.Executors;
 
 
-public final class IceEventProducer {
+public final class DisruptorEventProducer {
 
     private static final RingBuffer<IceEvent> ringBuffer;
 
-    private static final Logger logger = LoggerFactory.getLogger(IceEventProducer.class);
+    private static final Logger logger = LoggerFactory.getLogger(DisruptorEventProducer.class);
 
     static {
         Runtime runtime = Runtime.getRuntime();
@@ -58,9 +58,9 @@ public final class IceEventProducer {
                 ProducerType.MULTI,
                 new BlockingWaitStrategy()
         );
-        IceEventHandler[] handlers = new IceEventHandler[threadSize];
+        DisruptorEventHandler[] handlers = new DisruptorEventHandler[threadSize];
         for(int i=0;i<handlers.length;i++){
-            handlers[i] = new IceEventHandler();
+            handlers[i] = new DisruptorEventHandler();
         }
         disruptor.handleEventsWithWorkerPool(handlers);
         disruptor.start();

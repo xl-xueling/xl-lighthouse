@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.ice.servant.logic;
+package com.dtstep.lighthouse.core.ipc;
 
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;

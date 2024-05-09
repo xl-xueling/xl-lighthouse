@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.standalone.rpc;
 
 import com.dtstep.lighthouse.common.serializer.HessianSerializer;
+import com.dtstep.lighthouse.common.serializer.KryoSerializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -31,8 +32,8 @@ public class LightStandaloneEntrance {
                             int fieldLength = 4;
                             pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,0,fieldLength,0,fieldLength));
                             pipeline.addLast(new LengthFieldPrepender(fieldLength));
-                            pipeline.addLast("encoder",new RpcEncoder(RpcResponse.class,new HessianSerializer()));
-                            pipeline.addLast("decoder",new RpcDecoder(RpcRequest.class,new HessianSerializer()));
+                            pipeline.addLast("encoder",new RpcEncoder(RpcResponse.class,new KryoSerializer()));
+                            pipeline.addLast("decoder",new RpcDecoder(RpcRequest.class,new KryoSerializer()));
                             pipeline.addLast(new NettyServerHandler());
                         }
                     })

@@ -19,7 +19,5 @@ public class ICELightHouseService implements Service {
     }
 
     @Override
-    public void stop() {
-
-    }
+    public void stop() {}
 }
