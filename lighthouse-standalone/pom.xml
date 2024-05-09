@@ -17,4 +17,34 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.87.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dtstep.lighthouse</groupId>
+            <artifactId>lighthouse-common</artifactId>
+            <version>${revision}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.dtstep.lighthouse</groupId>
+            <artifactId>lighthouse-core</artifactId>
+            <version>${revision}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
 </project>
