@@ -46,6 +46,7 @@
         <module>lighthouse-core</module>
         <module>lighthouse-ice</module>
         <module>lighthouse-tasks</module>
+        <module>lighthouse-standalone</module>
         <module>lighthouse-test</module>
         <module>lighthouse-insights</module>
         <module>lighthouse-assembly</module>
@@ -74,6 +75,7 @@
         <module>lighthouse-core</module>
         <module>lighthouse-ice</module>
         <module>lighthouse-tasks</module>
+        <module>lighthouse-standalone</module>
         <module>lighthouse-test</module>
         <module>lighthouse-insights</module>
         <module>lighthouse-assembly</module>
