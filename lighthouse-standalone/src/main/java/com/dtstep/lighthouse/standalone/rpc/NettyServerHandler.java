@@ -1,6 +1,5 @@
 package com.dtstep.lighthouse.standalone.rpc;
 
-import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.standalone.rpc.provider.impl.StandaloneRemoteServiceImpl;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -31,9 +30,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
         RpcResponse response = new RpcResponse();
         response.setRequestId(request.getRequestId());
         response.setResult(result);
-        ctx.write(response);
-        ctx.flush();
-        ctx.close();
+        ctx.writeAndFlush(response);
     }
 
     @Override
