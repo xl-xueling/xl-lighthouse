@@ -24,6 +24,7 @@ import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
+import com.dtstep.lighthouse.common.enums.RunningMode;
 import com.dtstep.lighthouse.common.fusing.FusingToken;
 import com.dtstep.lighthouse.common.fusing.FusingSwitch;
 import com.dtstep.lighthouse.common.enums.fusing.FusingRules;
@@ -58,28 +59,45 @@ public final class LightHouse {
 
     private static final String KEY_PROCESS_BATCH = "lighthouse_process_batch";
 
+    private static RunningMode _runningMode = RunningMode.CLUSTER;
+
     private LightHouse(){}
 
-    public static synchronized void init(final String locators) throws Exception {
-        if(!_InitFlag.get()){
-            boolean result = RPCClientProxy.instance().init(locators);
-            if(!result){
-                throw new InitializationException(String.format("lighthouse remote service not available,locators:%s",locators));
-            }
-            _InitFlag.set(true);
-            Consumer consumer = new Consumer(eventPool, consumerFrequency, consumerBatchSize);
-            consumer.start();
-        }
+    public static void init(final String locators) throws Exception {
+        init(locators,RunningMode.CLUSTER);
     }
 
-    public static synchronized void init(final String locators,Properties properties) throws Exception{
+    public static void init(final String locators,Properties properties) throws Exception{
         if(properties.containsKey(KEY_PROCESS_FREQUENCY)){
             consumerFrequency = Integer.parseInt(properties.getProperty(KEY_PROCESS_FREQUENCY));
         }
         if(properties.containsKey(KEY_PROCESS_BATCH)){
             consumerBatchSize = Integer.parseInt(properties.getProperty(KEY_PROCESS_BATCH));
         }
-        init(locators);
+        init(locators,RunningMode.CLUSTER);
+    }
+
+    public static synchronized void init(final String locators, RunningMode runningMode) throws Exception {
+        if(!_InitFlag.get()){
+            boolean result = RPCClientProxy.instance().init(locators);
+            if(!result){
+                throw new InitializationException(String.format("lighthouse remote service not available,locators:%s",locators));
+            }
+            _runningMode = runningMode;
+            _InitFlag.set(true);
+            Consumer consumer = new Consumer(eventPool, consumerFrequency, consumerBatchSize);
+            consumer.start();
+        }
+    }
+
+    public static void init(final String locators,Properties properties,RunningMode runningMode) throws Exception{
+        if(properties.containsKey(KEY_PROCESS_FREQUENCY)){
+            consumerFrequency = Integer.parseInt(properties.getProperty(KEY_PROCESS_FREQUENCY));
+        }
+        if(properties.containsKey(KEY_PROCESS_BATCH)){
+            consumerBatchSize = Integer.parseInt(properties.getProperty(KEY_PROCESS_BATCH));
+        }
+        init(locators,runningMode);
     }
 
     public static void stat(final String token,final String secretKey,Map<String,Object> paramMap,final long timestamp) throws Exception{
@@ -193,6 +211,10 @@ public final class LightHouse {
             return null;
         }
         return RPCClientProxy.instance().limitQuery(statId,batchTime);
+    }
+
+    protected static RunningMode getRunningMode() {
+        return _runningMode;
     }
 
     public static void stop() {

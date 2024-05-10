@@ -19,6 +19,7 @@ package com.dtstep.lighthouse.client;
 import com.dtstep.lighthouse.client.rpc.RPCClientProxy;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;
+import com.dtstep.lighthouse.common.enums.RunningMode;
 import com.dtstep.lighthouse.common.exception.LightSendException;
 import com.dtstep.lighthouse.common.lru.Cache;
 import com.dtstep.lighthouse.common.lru.LRU;
@@ -27,7 +28,7 @@ import com.dtstep.lighthouse.common.util.Md5Util;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-final class AuxHandler {
+public final class AuxHandler {
 
     private static final Cache<String,Optional<GroupVerifyEntity>> groupHolder = LRU.newBuilder().maximumSize(50000).expireAfterWrite(2,TimeUnit.MINUTES).softValues().build();
 
@@ -64,6 +65,10 @@ final class AuxHandler {
 
     public static String cacheGetMd5(String str){
         return md5CacheHolder.get(str,t -> Md5Util.getMD5(str));
+    }
+
+    public static RunningMode getRunningMode(){
+        return LightHouse.getRunningMode();
     }
 
 }

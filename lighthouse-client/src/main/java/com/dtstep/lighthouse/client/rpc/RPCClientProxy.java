@@ -16,13 +16,25 @@ package com.dtstep.lighthouse.client.rpc;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.client.AuxHandler;
 import com.dtstep.lighthouse.client.rpc.ice.ICERPCClientImpl;
+import com.dtstep.lighthouse.client.rpc.standalone.StandaloneClientImpl;
+import com.dtstep.lighthouse.common.enums.RunningMode;
 
 public class RPCClientProxy {
 
-    private static final RPCClient instance = new ICERPCClientImpl();
+    private static final RPCClient iceInstance = new ICERPCClientImpl();
+
+    private static final RPCClient standaloneInstance = new StandaloneClientImpl();
 
     public static RPCClient instance(){
-        return instance;
+        RunningMode runningMode = AuxHandler.getRunningMode();
+        if(runningMode == RunningMode.CLUSTER){
+            return iceInstance;
+        }else if(runningMode == RunningMode.STANDALONE){
+            return standaloneInstance;
+        }else{
+            throw new RuntimeException();
+        }
     }
 }
