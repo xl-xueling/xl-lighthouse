@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 
-public class DemoMethodProxy implements InvocationHandler {
+public class RemoteProxy implements InvocationHandler {
 
     private static final InetSocketAddress address = new InetSocketAddress("localhost", 8082);
 
@@ -16,7 +16,7 @@ public class DemoMethodProxy implements InvocationHandler {
 
     private final ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap;
 
-    public DemoMethodProxy(Class<?> clazz,ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap) {
+    public RemoteProxy(Class<?> clazz, ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap) {
        this.clazz = clazz;
        this.poolMap = poolMap;
     }

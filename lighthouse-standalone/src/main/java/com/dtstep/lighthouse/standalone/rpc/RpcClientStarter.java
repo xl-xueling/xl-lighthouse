@@ -63,7 +63,7 @@ public class RpcClientStarter {
     }
 
     public <T> T create(Class<?> clazz){
-        DemoMethodProxy proxy = new DemoMethodProxy(clazz,poolMap);
+        RemoteProxy proxy = new RemoteProxy(clazz,poolMap);
         Class<?> [] interfaces = clazz.isInterface() ? new Class[]{clazz} : clazz.getInterfaces();
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(),interfaces,proxy);
     }
