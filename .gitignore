@@ -4,6 +4,10 @@
 
 # dependencies
 /node_modules
+light-webapps/node_modules
+light-webapps/node
+light-webapps/build
+light-webapps/yarn.lock
 /.pnp
 /.idea
 /target
