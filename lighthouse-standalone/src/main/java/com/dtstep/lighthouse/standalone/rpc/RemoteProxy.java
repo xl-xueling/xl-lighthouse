@@ -1,12 +1,14 @@
 package com.dtstep.lighthouse.standalone.rpc;
 
 import com.dtstep.lighthouse.common.random.RandomID;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.pool.*;
 import io.netty.util.concurrent.Future;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
+import java.util.concurrent.CompletableFuture;
 
 public class RemoteProxy implements InvocationHandler {
 
@@ -28,9 +30,12 @@ public class RemoteProxy implements InvocationHandler {
 
     public Object invoke(Method method, Object[] args) throws Exception {
         RpcRequest rpcRequest = new RpcRequest();
-        rpcRequest.setRequestId(RandomID.id(32));
+        String reqId = RandomID.id(32);
+        rpcRequest.setRequestId(reqId);
         rpcRequest.setClassName(this.clazz.getName());
         rpcRequest.setMethodName(method.getName());
+        CompletableFuture<RpcResponse<?>> completableFuture = new CompletableFuture<>();
+        ProcessedFuture.put(reqId,completableFuture);
         rpcRequest.setParameterTypes(method.getParameterTypes());
         rpcRequest.setParameterValues(args);
         ChannelPool pool = poolMap.get(address);
@@ -41,6 +46,7 @@ public class RemoteProxy implements InvocationHandler {
         } finally {
             pool.release(channel);
         }
-        return null;
+        RpcResponse<?> res = completableFuture.get();
+        return res.getResult();
     }
 }

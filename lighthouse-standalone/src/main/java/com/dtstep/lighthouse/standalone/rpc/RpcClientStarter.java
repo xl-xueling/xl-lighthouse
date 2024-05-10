@@ -27,7 +27,7 @@ public class RpcClientStarter {
                 .channel(NioSocketChannel.class);
 
         CustomIdleStateHandler customIdleStateHandler = new CustomIdleStateHandler();
-        ClientHandler clientHandler = new ClientHandler();
+        NettyClientHandler clientHandler = new NettyClientHandler();
 
         this.poolMap = new AbstractChannelPoolMap<InetSocketAddress, ChannelPool>() {
 
