@@ -10,7 +10,7 @@ import java.util.concurrent.CompletableFuture;
 public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
         if(msg instanceof RpcResponse){
             RpcResponse<?> response = (RpcResponse<?>) msg;
             String requestId = response.getRequestId();
