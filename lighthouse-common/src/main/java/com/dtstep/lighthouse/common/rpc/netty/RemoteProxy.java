@@ -9,17 +9,20 @@ import io.netty.util.concurrent.Future;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RemoteProxy implements InvocationHandler {
 
-    private static final InetSocketAddress address = new InetSocketAddress("localhost", 8082);
-
     private final Class<?> clazz;
+
+    private final List<InetSocketAddress> addressList;
 
     private final ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap;
 
-    public RemoteProxy(Class<?> clazz, ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap) {
+    public RemoteProxy( List<InetSocketAddress> addressList,Class<?> clazz, ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap) {
+       this.addressList = addressList;
        this.clazz = clazz;
        this.poolMap = poolMap;
     }
@@ -39,7 +42,7 @@ public class RemoteProxy implements InvocationHandler {
         ProcessedFuture.put(reqId,completableFuture);
         rpcRequest.setParameterTypes(method.getParameterTypes());
         rpcRequest.setParameterValues(args);
-        ChannelPool pool = poolMap.get(address);
+        ChannelPool pool = poolMap.get(addressList.get(ThreadLocalRandom.current().nextInt(addressList.size())));
         Future<Channel> future = pool.acquire().sync();
         Channel channel = future.getNow();
         try {

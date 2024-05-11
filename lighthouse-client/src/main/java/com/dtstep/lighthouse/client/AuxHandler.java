@@ -40,7 +40,7 @@ public final class AuxHandler {
         return groupHolder.get(token,k -> {
             GroupVerifyEntity groupVerifyEntity;
             try{
-                groupVerifyEntity = RPCClientProxy.instance().queryGroup(token);
+                groupVerifyEntity = RPCClientProxy.instance().queryGroupInfo(token);
             }catch (Exception ex){
                 ex.printStackTrace();
                 throw new LightSendException();
@@ -54,7 +54,7 @@ public final class AuxHandler {
         return statHolder.get(id,k -> {
             StatVerifyEntity statVerifyEntity;
             try{
-                statVerifyEntity = RPCClientProxy.instance().queryStat(id);
+                statVerifyEntity = RPCClientProxy.instance().queryStatInfo(id);
             }catch (Exception ex){
                 ex.printStackTrace();
                 throw new LightSendException();

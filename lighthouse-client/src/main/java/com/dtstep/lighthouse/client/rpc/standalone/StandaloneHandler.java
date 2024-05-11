@@ -1,16 +1,16 @@
 package com.dtstep.lighthouse.client.rpc.standalone;
 
-import com.dtstep.lighthouse.common.rpc.netty.RpcClientStarter;
-import com.dtstep.lighthouse.common.rpc.netty.provider.StandRemoteLightServerPrx;
+import com.dtstep.lighthouse.common.rpc.netty.NettyClientAdapter;
+import com.dtstep.lighthouse.common.rpc.BasicRemoteLightServerPrx;
 
 public class StandaloneHandler {
 
-    private static StandRemoteLightServerPrx standaloneRemoteService;
+    private static BasicRemoteLightServerPrx standaloneRemoteService;
 
-    public static StandRemoteLightServerPrx getRemoteProxy(){
+    public static BasicRemoteLightServerPrx getRemoteProxy(){
         if(standaloneRemoteService == null){
-            RpcClientStarter client = new RpcClientStarter();
-            standaloneRemoteService = client.create(StandRemoteLightServerPrx.class);
+            NettyClientAdapter client = new NettyClientAdapter();
+            standaloneRemoteService = client.create(BasicRemoteLightServerPrx.class);
         }
         return standaloneRemoteService;
     }

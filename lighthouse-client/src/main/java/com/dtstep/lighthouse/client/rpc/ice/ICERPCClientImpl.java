@@ -82,7 +82,7 @@ public class ICERPCClientImpl implements RPCClient {
     }
 
     @Override
-    public GroupVerifyEntity queryGroup(String token) throws Exception {
+    public GroupVerifyEntity queryGroupInfo(String token) throws Exception {
         RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
         byte[] bytes = remoteLightServerPrx.queryGroupInfo(token);
         GroupVerifyEntity groupVerifyEntity = null;
@@ -106,7 +106,7 @@ public class ICERPCClientImpl implements RPCClient {
     }
 
     @Override
-    public StatVerifyEntity queryStat(int id) throws Exception {
+    public StatVerifyEntity queryStatInfo(int id) throws Exception {
         RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
         byte[] bytes = remoteLightServerPrx.queryStatInfo(id);
         StatVerifyEntity statVerifyEntity = null;

@@ -5,6 +5,10 @@ import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import org.junit.Test;
 
+import java.net.InetSocketAddress;
+import java.net.InterfaceAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -28,15 +32,15 @@ public class TestICE {
         },1,TimeUnit.MINUTES);
         for(int i=0;i<10000;i++){
             try{
-                GroupVerifyEntity groupVerifyEntity = client.queryGroup("RrY:test_stat");
+                GroupVerifyEntity groupVerifyEntity = client.queryGroupInfo("RrY:test_stat");
                 System.out.println("groupVerifyEntity:" + JsonUtil.toJSONString(groupVerifyEntity));
             }catch (Exception ex){
                 ex.printStackTrace();
             }
             Thread.sleep(10000);
         }
-        System.out.println("---ssvvv");
         Thread.sleep(10000000000L);
     }
+
 
 }

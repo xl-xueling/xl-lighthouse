@@ -7,14 +7,14 @@ import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.ice.LightRpcException;
 import com.dtstep.lighthouse.core.ipc.RPCServer;
 import com.dtstep.lighthouse.core.ipc.impl.RPCServerImpl;
-import com.dtstep.lighthouse.common.rpc.netty.provider.StandRemoteLightServerPrx;
+import com.dtstep.lighthouse.common.rpc.BasicRemoteLightServerPrx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
 
-public class StandaloneRemoteServiceImpl implements StandRemoteLightServerPrx {
+public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
 
     private static final Logger logger = LoggerFactory.getLogger(StandaloneRemoteServiceImpl.class);
 
@@ -51,27 +51,52 @@ public class StandaloneRemoteServiceImpl implements StandRemoteLightServerPrx {
     }
 
     @Override
-    public List<StatValue> dataQuery(int statId, String dimensValue, long startTime, long endTime) throws LightRpcException {
-        return null;
-    }
-
-    @Override
     public List<StatValue> dataQuery(int statId, String dimensValue, List<Long> batchTime) throws LightRpcException {
-        return null;
+        try{
+            return rpc.dataQuery(statId, dimensValue, batchTime);
+        }catch (Exception ex){
+            logger.error("call dataQuery error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
     }
 
     @Override
-    public Map<String, List<StatValue>> dataQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws LightRpcException {
-        return null;
+    public List<StatValue> dataDurationQuery(int statId, String dimensValue, long startTime, long endTime) throws LightRpcException {
+        try{
+            return rpc.dataDurationQuery(statId, dimensValue, startTime,endTime);
+        }catch (Exception ex){
+            logger.error("call dataDurationQuery error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
     }
 
     @Override
     public Map<String, List<StatValue>> dataQueryWithDimensList(int statId, List<String> dimensValueList, List<Long> batchTime) throws LightRpcException {
-        return null;
+        try{
+            return rpc.dataQueryWithDimensList(statId, dimensValueList, batchTime);
+        }catch (Exception ex){
+            logger.error("call dataQueryWithDimensList error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public Map<String, List<StatValue>> dataDurationQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws LightRpcException {
+        try{
+            return rpc.dataDurationQueryWithDimensList(statId, dimensValueList, startTime,endTime);
+        }catch (Exception ex){
+            logger.error("call dataDurationQueryWithDimensList error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
     }
 
     @Override
     public List<LimitValue> limitQuery(int statId, long batchTime) throws LightRpcException {
-        return null;
+        try{
+            return rpc.limitQuery(statId, batchTime);
+        }catch (Exception ex){
+            logger.error("call limitQuery error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
     }
 }

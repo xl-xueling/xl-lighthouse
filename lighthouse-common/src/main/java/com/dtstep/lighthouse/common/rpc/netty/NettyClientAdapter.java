@@ -16,10 +16,14 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 
-public class RpcClientStarter {
+public class NettyClientAdapter {
 
-    private static final Logger logger = LoggerFactory.getLogger(RpcClientStarter.class);
+    private static final Logger logger = LoggerFactory.getLogger(NettyClientAdapter.class);
+
+    private static final List<InetSocketAddress> addressList = new ArrayList<>();
 
     private final Bootstrap bootstrap;
 
@@ -27,12 +31,23 @@ public class RpcClientStarter {
 
     private static final int maxConnections = 10;
 
-    public RpcClientStarter() {
+    public static void init(String locators) throws Exception {
+        String[] locatorArr = locators.split(",");
+        for (String conf : locatorArr) {
+            String[] arr = conf.split(":");
+            String ip = arr[0];
+            String port = arr[1];
+            InetSocketAddress inetSocketAddress = new InetSocketAddress(ip,Integer.parseInt(port));
+            if(!addressList.contains(inetSocketAddress)){
+                addressList.add(inetSocketAddress);
+            }
+        }
+    }
+
+    public NettyClientAdapter() {
         EventLoopGroup group = new NioEventLoopGroup();
         this.bootstrap = new Bootstrap();
-        this.bootstrap.group(group)
-                .channel(NioSocketChannel.class);
-
+        this.bootstrap.group(group).channel(NioSocketChannel.class);
         CustomIdleStateHandler customIdleStateHandler = new CustomIdleStateHandler();
         NettyClientHandler clientHandler = new NettyClientHandler();
 
@@ -76,17 +91,8 @@ public class RpcClientStarter {
     }
 
     public <T> T create(Class<?> clazz){
-        RemoteProxy proxy = new RemoteProxy(clazz,poolMap);
+        RemoteProxy proxy = new RemoteProxy(addressList,clazz,poolMap);
         Class<?> [] interfaces = clazz.isInterface() ? new Class[]{clazz} : clazz.getInterfaces();
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(),interfaces,proxy);
     }
-
-//    public static void main(String[] args) throws Exception {
-//        RpcClientStarter client = new RpcClientStarter();
-//        StandaloneRemoteService rpc = client.create(StandaloneRemoteService.class);
-//        for(int i = 0;i<100;i++){
-//            rpc.queryGroupInfo("Gjd:feed_behavior_stat");
-//            Thread.sleep(10);
-//        }
-//    }
 }

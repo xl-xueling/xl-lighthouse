@@ -33,9 +33,9 @@ public interface RPCClient {
 
     void send(String text) throws Exception;
 
-    GroupVerifyEntity queryGroup(String token) throws Exception;
+    GroupVerifyEntity queryGroupInfo(String token) throws Exception;
 
-    StatVerifyEntity queryStat(int id) throws Exception;
+    StatVerifyEntity queryStatInfo(int id) throws Exception;
 
     List<StatValue> dataQuery(int statId,String dimensValue,List<Long> batchList) throws Exception;
 

@@ -1,65 +1,90 @@
 package com.dtstep.lighthouse.client.rpc.standalone;
 
 import com.dtstep.lighthouse.client.rpc.RPCClient;
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
-import com.dtstep.lighthouse.common.rpc.netty.provider.StandRemoteLightServerPrx;
+import com.dtstep.lighthouse.common.exception.InitializationException;
+import com.dtstep.lighthouse.common.rpc.BasicRemoteLightServerPrx;
+import com.dtstep.lighthouse.common.rpc.netty.NettyClientAdapter;
+import com.dtstep.lighthouse.common.util.SnappyUtil;
+import com.dtstep.lighthouse.common.util.StringUtil;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
 public class StandaloneClientImpl implements RPCClient {
 
     @Override
-    public boolean init(String configuration) throws Exception {
-        return false;
+    public boolean init(String locators) throws Exception {
+        if(StringUtil.isEmpty(locators)){
+            throw new InitializationException("lighthouse client init failed,locators cannot be empty!");
+        }
+        try {
+            NettyClientAdapter.init(locators);
+        }catch (Exception ex){
+            throw new InitializationException("lighthouse client init failed,locators format error!");
+        }
+        return true;
     }
 
     @Override
-    public void reconnect() throws Exception {
-
-    }
+    public void reconnect() throws Exception {}
 
     @Override
     public void send(String text) throws Exception {
-
+        byte[] bytes;
+        if(text.length() < SysConst._COMPRESS_THRESHOLD_SIZE){
+            bytes = text.getBytes(StandardCharsets.UTF_8);
+        }else{
+            bytes = SnappyUtil.compressToByte(text);
+        }
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+        standaloneRemoteService.process(bytes);
     }
 
     @Override
-    public GroupVerifyEntity queryGroup(String token) throws Exception {
-        StandRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+    public GroupVerifyEntity queryGroupInfo(String token) throws Exception {
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
         return standaloneRemoteService.queryGroupInfo(token);
     }
 
     @Override
-    public StatVerifyEntity queryStat(int id) throws Exception {
-        return null;
+    public StatVerifyEntity queryStatInfo(int id) throws Exception {
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+        return standaloneRemoteService.queryStatInfo(id);
     }
 
     @Override
     public List<StatValue> dataQuery(int statId, String dimensValue, List<Long> batchList) throws Exception {
-        return null;
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+        return standaloneRemoteService.dataQuery(statId, dimensValue, batchList);
     }
 
     @Override
     public List<StatValue> dataDurationQuery(int statId, String dimensValue, long startTime, long endTime) throws Exception {
-        return null;
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+        return standaloneRemoteService.dataDurationQuery(statId, dimensValue, startTime, endTime);
     }
 
     @Override
     public Map<String, List<StatValue>> dataQueryWithDimensList(int statId, List<String> dimensValueList, List<Long> batchList) throws Exception {
-        return null;
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+        return standaloneRemoteService.dataQueryWithDimensList(statId, dimensValueList, batchList);
     }
 
     @Override
     public Map<String, List<StatValue>> dataDurationQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws Exception {
-        return null;
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+        return standaloneRemoteService.dataDurationQueryWithDimensList(statId, dimensValueList, startTime, endTime);
     }
 
     @Override
     public List<LimitValue> limitQuery(int statId, long batchTime) throws Exception {
-        return null;
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+        return standaloneRemoteService.limitQuery(statId, batchTime);
     }
 }
