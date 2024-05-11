@@ -1,5 +1,7 @@
-package com.dtstep.lighthouse.standalone.rpc;
+package com.dtstep.lighthouse.common.rpc.netty;
 
+import com.dtstep.lighthouse.common.entity.rpc.RpcResponse;
+import com.dtstep.lighthouse.common.rpc.netty.ProcessedFuture;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

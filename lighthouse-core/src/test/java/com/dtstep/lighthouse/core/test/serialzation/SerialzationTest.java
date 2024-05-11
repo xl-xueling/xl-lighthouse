@@ -4,7 +4,6 @@ import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.modal.User;
-import com.dtstep.lighthouse.common.serializer.HessianSerializer;
 import com.dtstep.lighthouse.common.serializer.KryoSerializer;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.SerializeUtil;
@@ -56,8 +55,6 @@ public class SerialzationTest {
             SerializeUtil.serialize(user);
         }
         long t2 = System.currentTimeMillis();
-
-        HessianSerializer serializer = new HessianSerializer();
         KryoSerializer kryoSerializer = new KryoSerializer();
         long t3 = System.currentTimeMillis();
         for(int i = 0 ;i<100000;i++){

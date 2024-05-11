@@ -1,8 +1,8 @@
-package com.dtstep.lighthouse.standalone.rpc;
+package com.dtstep.lighthouse.common.rpc.netty;
 
+import com.dtstep.lighthouse.common.entity.rpc.RpcRequest;
+import com.dtstep.lighthouse.common.entity.rpc.RpcResponse;
 import com.dtstep.lighthouse.common.serializer.KryoSerializer;
-import com.dtstep.lighthouse.standalone.executive.LightStandaloneEntrance;
-import com.dtstep.lighthouse.standalone.rpc.provider.StandaloneRemoteService;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;

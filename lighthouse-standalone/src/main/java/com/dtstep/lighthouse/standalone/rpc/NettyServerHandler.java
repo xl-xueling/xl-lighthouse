@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.standalone.rpc;
 
+import com.dtstep.lighthouse.common.entity.rpc.RpcRequest;
+import com.dtstep.lighthouse.common.entity.rpc.RpcResponse;
 import com.dtstep.lighthouse.standalone.rpc.provider.impl.StandaloneRemoteServiceImpl;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;

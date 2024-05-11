@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.standalone.rpc;
+package com.dtstep.lighthouse.common.rpc.netty;
 
 import com.dtstep.lighthouse.common.serializer.Serializer;
 import io.netty.buffer.ByteBuf;

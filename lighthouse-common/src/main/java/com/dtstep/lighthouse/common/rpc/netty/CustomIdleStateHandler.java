@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.standalone.rpc;
+package com.dtstep.lighthouse.common.rpc.netty;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;

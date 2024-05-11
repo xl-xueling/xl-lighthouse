@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.standalone.rpc;
+package com.dtstep.lighthouse.common.entity.rpc;
 
 import java.io.Serializable;
 
