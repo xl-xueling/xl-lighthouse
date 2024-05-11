@@ -8,4 +8,9 @@ public class StandaloneEventSender implements EventSender {
     public void send(String event) throws Exception {
 
     }
+
+    @Override
+    public void syncSend(String text) throws Exception {
+
+    }
 }

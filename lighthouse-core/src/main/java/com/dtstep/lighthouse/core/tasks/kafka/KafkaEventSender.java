@@ -35,8 +35,9 @@ public class KafkaEventSender implements EventSender {
             producer.send(new ProducerRecord<>(KAFKA_TOPIC_NAME, RandomID.id(15).getBytes(StandardCharsets.UTF_8), text.getBytes(StandardCharsets.UTF_8)));
         }catch (Exception ex){
             logger.error("send message failed!",ex);
+        }finally {
+            producerPool.release(producer);
         }
-        producerPool.release(producer);
     }
 
     @Deprecated
