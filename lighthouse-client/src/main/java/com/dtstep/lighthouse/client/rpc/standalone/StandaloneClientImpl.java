@@ -11,12 +11,16 @@ import com.dtstep.lighthouse.common.rpc.BasicRemoteLightServerPrx;
 import com.dtstep.lighthouse.common.rpc.netty.NettyClientAdapter;
 import com.dtstep.lighthouse.common.util.SnappyUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
 public class StandaloneClientImpl implements RPCClient {
+
+    private static final Logger logger = LoggerFactory.getLogger(StandaloneClientImpl.class);
 
     @Override
     public boolean init(String locators) throws Exception {
@@ -25,6 +29,7 @@ public class StandaloneClientImpl implements RPCClient {
         }
         try {
             NettyClientAdapter.init(locators);
+            logger.info("lighthouse client init success!");
         }catch (Exception ex){
             throw new InitializationException(String.format("lighthouse remote service not available,locators:%s",locators));
         }

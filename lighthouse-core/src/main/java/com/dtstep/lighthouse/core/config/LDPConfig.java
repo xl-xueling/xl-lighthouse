@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.config;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.RunningMode;
 import com.google.common.collect.Maps;
 import com.dtstep.lighthouse.common.exception.ConfigParseException;
 import com.dtstep.lighthouse.common.exception.InitializationException;
@@ -74,9 +75,13 @@ public final class LDPConfig {
 
     public static final String KEY_CLUSTER_ID = "lighthouse.cluster.id";
 
+    public static final String KEY_RUNNING_MODE = "lighthouse.running.mode";
+
     public static final String KEY_HOME_PATH = "ldp_home";
 
     public static final String KEY_DATA_DIR = "ldp_data_dir";
+
+    private static RunningMode runningMode;
 
     public static final AtomicBoolean isInit = new AtomicBoolean(false);
 
@@ -137,6 +142,20 @@ public final class LDPConfig {
 
     public static String getDataDir(){
         return paramMap.get(KEY_DATA_DIR);
+    }
+
+    public static RunningMode getRunningMode(){
+        if(runningMode != null){
+            return runningMode;
+        }else{
+            String mode = paramMap.get(KEY_RUNNING_MODE);
+            if(StringUtil.isNotEmpty(mode) && mode.equals("standalone")){
+                runningMode = RunningMode.STANDALONE;
+            }else{
+                runningMode = RunningMode.CLUSTER;
+            }
+            return runningMode;
+        }
     }
 
     public static Map<String,String> getConf(){

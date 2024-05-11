@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.ipc;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.core.tasks.EventSenderFactory;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.lmax.disruptor.EventHandler;
@@ -23,7 +24,6 @@ import com.lmax.disruptor.WorkHandler;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.event.IceEvent;
 import com.dtstep.lighthouse.common.sbr.StringBuilderHolder;
-import com.dtstep.lighthouse.core.kafka.KafkaSender;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,14 +66,14 @@ public final class DisruptorEventHandler implements EventHandler<IceEvent>, Work
                 consumer();
             }
         }catch (Exception ex){
-            logger.error("ice consumer error.",ex);
+            logger.error("ice consumer error!",ex);
         }finally {
             lock.unlock();
         }
     }
 
 
-    private void consumer() {
+    private void consumer() throws Exception {
         int sendSize = multiset.entrySet().size();
         if(sendSize == 0){
             return;
@@ -87,13 +87,13 @@ public final class DisruptorEventHandler implements EventHandler<IceEvent>, Work
             sbr.append(entry.getElement()).append(StatConst.SEPARATOR_LEVEL_1).append(entry.getCount());
             i++;
             if(i >= SENDER_SIZE){
-                sendToKafka(sbr.toString());
+                send(sbr.toString());
                 sbr.setLength(0);
                 i = 0;
             }
         }
         if(sbr.length() > 0){
-            sendToKafka(sbr.toString());
+            send(sbr.toString());
             sbr.setLength(0);
         }
         multiset.clear();
@@ -101,8 +101,8 @@ public final class DisruptorEventHandler implements EventHandler<IceEvent>, Work
         logger.info("lighthouse ice service batch processed {} messages!",sendSize);
     }
 
-    private void sendToKafka(String text) {
-        KafkaSender.send(text);
+    private void send(String text) throws Exception{
+        EventSenderFactory.getEventSender().send(text);
     }
 
     private final class ClearThread implements Runnable{

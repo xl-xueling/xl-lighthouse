@@ -5,6 +5,10 @@
         <value>${ldp_lighthouse_cluster_id}</value>
     </property>
     <property>
+        <name>lighthouse.running.mode</name>
+        <value>${ldp_lighthouse_running_mode}</value>
+    </property>
+    <property>
         <name>javax.jdo.option.ConnectionURL</name>
         <value>jdbc:mysql://${ldp_mysql_master}:3906/cluster_${ldp_lighthouse_cluster_id}_ldp_mysqldb?useUnicode=true&amp;characterEncoding=UTF-8&amp;useCursorFetch=true&amp;defaultFetchSize=100&amp;serverTimezone=${ldp_lighthouse_timezone}</value>
     </property>

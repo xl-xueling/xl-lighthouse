@@ -32,7 +32,7 @@ public final class KafkaProducerPool {
 
     private final GenericObjectPool<KafkaProducer<byte[], byte[]>> connectionPool;
 
-    KafkaProducerPool() {
+    public KafkaProducerPool() {
         Properties properties = getConfig();
         KafkaProducerFactory producerFactory = new KafkaProducerFactory(properties);
         GenericObjectPoolConfig<KafkaProducer<byte[],byte[]>> config = new GenericObjectPoolConfig<>();
