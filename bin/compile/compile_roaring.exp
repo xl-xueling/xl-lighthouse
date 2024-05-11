@@ -18,7 +18,7 @@ expect {
 expect "${prompt}"
 send "cd ${ldp_home}/plugins/\r"
 expect "${prompt}"
-send "tar -zxvf redis-roaring.tar.gz \r"
+send "tar -zxvf redis-roaring-2.0.tar.gz \r"
 expect "${prompt}"
 send "cd redis-roaring\r"
 expect "${prompt}"

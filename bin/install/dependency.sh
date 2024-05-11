@@ -130,7 +130,7 @@ function dependencyInstall() {
 }
 
 function redisRoaringPluginInstall() {
-    cd ${LDP_HOME}/plugins/ && tar -zxvf redis-roaring.tar.gz;
+    cd ${LDP_HOME}/plugins/ && tar -zxvf redis-roaring-2.0.tar.gz;
     cd ${LDP_HOME}/plugins/redis-roaring && ./configure.sh
     for ip in "${NODES[@]:1}"
                 do
