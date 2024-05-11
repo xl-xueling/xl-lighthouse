@@ -37,13 +37,13 @@ public interface RPCClient {
 
     StatVerifyEntity queryStat(int id) throws Exception;
 
-    List<StatValue> dataQuery(int statId, String dimensValue, long startTime, long endTime) throws Exception;
-
     List<StatValue> dataQuery(int statId,String dimensValue,List<Long> batchList) throws Exception;
 
-    Map<String,List<StatValue>> dataQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws Exception;
+    List<StatValue> dataDurationQuery(int statId, String dimensValue, long startTime, long endTime) throws Exception;
 
     Map<String,List<StatValue>> dataQueryWithDimensList(int statId,List<String> dimensValueList,List<Long> batchList) throws Exception;
+
+    Map<String,List<StatValue>> dataDurationQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws Exception;
 
     List<LimitValue> limitQuery(int statId, long batchTime) throws Exception;
 }

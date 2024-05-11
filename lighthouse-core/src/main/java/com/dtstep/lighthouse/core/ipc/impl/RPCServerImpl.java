@@ -43,7 +43,7 @@ public class RPCServerImpl implements RPCServer {
     }
 
     @Override
-    public GroupVerifyEntity queryGroup(String token) throws Exception {
+    public GroupVerifyEntity queryGroupInfo(String token) throws Exception {
         GroupExtEntity groupExtEntity = GroupDBWrapper.queryByToken(token);
         GroupVerifyEntity groupVerifyEntity = null;
         if(groupExtEntity != null){
@@ -62,13 +62,13 @@ public class RPCServerImpl implements RPCServer {
     }
 
     @Override
-    public StatVerifyEntity queryStat(int id) throws Exception {
+    public StatVerifyEntity queryStatInfo(int id) throws Exception {
         StatExtEntity statExtEntity = StatDBWrapper.queryById(id);
         StatVerifyEntity statVerifyEntity = null;
         if(statExtEntity != null){
             statVerifyEntity = new StatVerifyEntity();
             String token = statExtEntity.getToken();
-            GroupVerifyEntity groupVerifyEntity = queryGroup(token);
+            GroupVerifyEntity groupVerifyEntity = queryGroupInfo(token);
             statVerifyEntity.setStatId(id);
             statVerifyEntity.setVerifyKey(groupVerifyEntity.getVerifyKey());
         }
@@ -100,23 +100,6 @@ public class RPCServerImpl implements RPCServer {
         }
     }
 
-
-    @Override
-    public List<StatValue> dataQuery(int statId, String dimensValue, long startTime, long endTime) throws Exception{
-        StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
-        if(statExtEntity == null){
-            throw new IllegalArgumentException("statistic:" + statId + " not exist!");
-        }
-        List<Long> batchList;
-        try{
-            batchList = BatchAdapter.queryBatchTimeList(statExtEntity.getTimeparam(),startTime,endTime);
-        }catch (Exception ex){
-            logger.error("query batch list error,statId:{}",statId,ex);
-            throw ex;
-        }
-        return ResultStorageSelector.query(statExtEntity,dimensValue,batchList);
-    }
-
     @Override
     public List<StatValue> dataQuery(int statId, String dimensValue, List<Long> batchList) throws Exception{
         StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
@@ -127,7 +110,7 @@ public class RPCServerImpl implements RPCServer {
     }
 
     @Override
-    public Map<String, List<StatValue>> dataQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws Exception {
+    public List<StatValue> dataDurationQuery(int statId, String dimensValue, long startTime, long endTime) throws Exception{
         StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
         if(statExtEntity == null){
             throw new IllegalArgumentException("statistic:" + statId + " not exist!");
@@ -139,7 +122,7 @@ public class RPCServerImpl implements RPCServer {
             logger.error("query batch list error,statId:{}",statId,ex);
             throw ex;
         }
-        return ResultStorageSelector.queryWithDimensList(statExtEntity,dimensValueList,batchList);
+        return ResultStorageSelector.query(statExtEntity,dimensValue,batchList);
     }
 
     @Override
@@ -147,6 +130,22 @@ public class RPCServerImpl implements RPCServer {
         StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
         if(statExtEntity == null){
             throw new IllegalArgumentException("statistic:" + statId + " not exist!");
+        }
+        return ResultStorageSelector.queryWithDimensList(statExtEntity,dimensValueList,batchList);
+    }
+
+    @Override
+    public Map<String, List<StatValue>> dataDurationQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws Exception {
+        StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
+        if(statExtEntity == null){
+            throw new IllegalArgumentException("statistic:" + statId + " not exist!");
+        }
+        List<Long> batchList;
+        try{
+            batchList = BatchAdapter.queryBatchTimeList(statExtEntity.getTimeparam(),startTime,endTime);
+        }catch (Exception ex){
+            logger.error("query batch list error,statId:{}",statId,ex);
+            throw ex;
         }
         return ResultStorageSelector.queryWithDimensList(statExtEntity,dimensValueList,batchList);
     }

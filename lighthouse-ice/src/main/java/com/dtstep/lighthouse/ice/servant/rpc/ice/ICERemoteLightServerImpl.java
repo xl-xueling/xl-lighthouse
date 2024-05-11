@@ -37,7 +37,7 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
     public byte[] queryGroupInfo(String token, Current current) throws LightRpcException{
         GroupVerifyEntity groupVerifyEntity;
         try{
-            groupVerifyEntity = rpc.queryGroup(token);
+            groupVerifyEntity = rpc.queryGroupInfo(token);
         }catch (Exception ex){
             logger.error("query group info error!",ex);
             throw new LightRpcException(ex.getMessage());
@@ -49,23 +49,12 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
     public byte[] queryStatInfo(int id, Current current) throws LightRpcException {
         StatVerifyEntity statVerifyEntity;
         try{
-            statVerifyEntity = rpc.queryStat(id);
+            statVerifyEntity = rpc.queryStatInfo(id);
         }catch (Exception ex){
             logger.error("query stat info error!",ex);
             throw new LightRpcException(ex.getMessage());
         }
         return SerializeUtil.serialize(statVerifyEntity);
-    }
-
-    @Override
-    public byte[] dataDurationQuery(int statId, String dimensValue, long startTime, long endTime, Current current) throws LightRpcException {
-        List<StatValue> statValues;
-        try{
-            statValues = rpc.dataQuery(statId,dimensValue,startTime,endTime);
-        }catch (Exception ex){
-            throw new LightRpcException(ex.getMessage());
-        }
-        return SerializeUtil.serialize(statValues);
     }
 
     @Override
@@ -80,10 +69,10 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
     }
 
     @Override
-    public byte[] dataDurationQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime, Current current) throws LightRpcException{
-        Map<String,List<StatValue>> statValues;
+    public byte[] dataDurationQuery(int statId, String dimensValue, long startTime, long endTime, Current current) throws LightRpcException {
+        List<StatValue> statValues;
         try{
-            statValues = rpc.dataQueryWithDimensList(statId,dimensValueList,startTime,endTime);
+            statValues = rpc.dataDurationQuery(statId,dimensValue,startTime,endTime);
         }catch (Exception ex){
             throw new LightRpcException(ex.getMessage());
         }
@@ -95,6 +84,17 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         Map<String,List<StatValue>> statValues;
         try{
             statValues = rpc.dataQueryWithDimensList(statId,dimensValueList,batchList);
+        }catch (Exception ex){
+            throw new LightRpcException(ex.getMessage());
+        }
+        return SerializeUtil.serialize(statValues);
+    }
+
+    @Override
+    public byte[] dataDurationQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime, Current current) throws LightRpcException{
+        Map<String,List<StatValue>> statValues;
+        try{
+            statValues = rpc.dataDurationQueryWithDimensList(statId,dimensValueList,startTime,endTime);
         }catch (Exception ex){
             throw new LightRpcException(ex.getMessage());
         }

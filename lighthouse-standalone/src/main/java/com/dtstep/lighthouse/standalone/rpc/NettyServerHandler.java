@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.standalone.rpc;
 
 import com.dtstep.lighthouse.common.entity.rpc.RpcRequest;
 import com.dtstep.lighthouse.common.entity.rpc.RpcResponse;
-import com.dtstep.lighthouse.standalone.rpc.provider.impl.StandaloneRemoteServiceImpl;
+import com.dtstep.lighthouse.standalone.rpc.provider.StandaloneRemoteServiceImpl;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -18,7 +18,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
     public NettyServerHandler(){}
 
     public static void register() {
-        registryMap.put("com.dtstep.lighthouse.standalone.rpc.provider.StandaloneRemoteService",new StandaloneRemoteServiceImpl());
+        registryMap.put("com.dtstep.lighthouse.common.rpc.netty.provider.StandaloneRemoteService",new StandaloneRemoteServiceImpl());
     }
 
     @Override

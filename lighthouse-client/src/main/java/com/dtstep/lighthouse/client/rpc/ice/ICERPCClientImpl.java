@@ -117,17 +117,6 @@ public class ICERPCClientImpl implements RPCClient {
     }
 
     @Override
-    public List<StatValue> dataQuery(int statId, String dimensValue, long startTime, long endTime) throws Exception {
-        RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
-        byte[] bytes = remoteLightServerPrx.dataDurationQuery(statId,dimensValue,startTime,endTime);
-        List<StatValue> valueList = null;
-        if(bytes != null){
-            valueList = SerializeUtil.deserialize(bytes);
-        }
-        return valueList;
-    }
-
-    @Override
     public List<StatValue> dataQuery(int statId, String dimensValue, List<Long> batchList) throws Exception {
         RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
         byte[] bytes = remoteLightServerPrx.dataQuery(statId,dimensValue,batchList);
@@ -139,9 +128,20 @@ public class ICERPCClientImpl implements RPCClient {
     }
 
     @Override
-    public Map<String, List<StatValue>> dataQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws Exception {
+    public List<StatValue> dataDurationQuery(int statId, String dimensValue, long startTime, long endTime) throws Exception {
         RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
-        byte[] bytes = remoteLightServerPrx.dataDurationQueryWithDimensList(statId,dimensValueList,startTime,endTime);
+        byte[] bytes = remoteLightServerPrx.dataDurationQuery(statId,dimensValue,startTime,endTime);
+        List<StatValue> valueList = null;
+        if(bytes != null){
+            valueList = SerializeUtil.deserialize(bytes);
+        }
+        return valueList;
+    }
+
+    @Override
+    public Map<String, List<StatValue>> dataQueryWithDimensList(int statId, List<String> dimensValueList, List<Long> batchList) throws Exception {
+        RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
+        byte[] bytes = remoteLightServerPrx.dataQueryWithDimensList(statId,dimensValueList,batchList);
         Map<String, List<StatValue>> data = null;
         if(bytes != null){
             data = SerializeUtil.deserialize(bytes);
@@ -150,9 +150,9 @@ public class ICERPCClientImpl implements RPCClient {
     }
 
     @Override
-    public Map<String, List<StatValue>> dataQueryWithDimensList(int statId, List<String> dimensValueList, List<Long> batchList) throws Exception {
+    public Map<String, List<StatValue>> dataDurationQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws Exception {
         RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
-        byte[] bytes = remoteLightServerPrx.dataQueryWithDimensList(statId,dimensValueList,batchList);
+        byte[] bytes = remoteLightServerPrx.dataDurationQueryWithDimensList(statId,dimensValueList,startTime,endTime);
         Map<String, List<StatValue>> data = null;
         if(bytes != null){
             data = SerializeUtil.deserialize(bytes);
