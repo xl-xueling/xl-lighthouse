@@ -26,7 +26,7 @@ public class StandaloneClientImpl implements RPCClient {
         try {
             NettyClientAdapter.init(locators);
         }catch (Exception ex){
-            throw new InitializationException("lighthouse client init failed,locators format error!");
+            throw new InitializationException(String.format("lighthouse remote service not available,locators:%s",locators));
         }
         return true;
     }

@@ -17,7 +17,6 @@ package com.dtstep.lighthouse.common.util;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.constant.StatConst;
-import com.dtstep.lighthouse.common.constant.SysConst;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -27,8 +26,6 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;

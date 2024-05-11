@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.common.rpc.netty;
 import com.dtstep.lighthouse.common.entity.rpc.RpcRequest;
 import com.dtstep.lighthouse.common.entity.rpc.RpcResponse;
 import com.dtstep.lighthouse.common.serializer.KryoSerializer;
+import com.dtstep.lighthouse.common.util.IpUtils;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Proxy;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +38,9 @@ public class NettyClientAdapter {
         for (String conf : locatorArr) {
             String[] arr = conf.split(":");
             String ip = arr[0];
-            String port = arr[1];
-            InetSocketAddress inetSocketAddress = new InetSocketAddress(ip,Integer.parseInt(port));
-            if(!addressList.contains(inetSocketAddress)){
+            int port = Integer.parseInt(arr[1]);
+            InetSocketAddress inetSocketAddress = new InetSocketAddress(ip,port);
+            if(!addressList.contains(inetSocketAddress) && IpUtils.checkIpPort(ip,port)){
                 addressList.add(inetSocketAddress);
             }
         }

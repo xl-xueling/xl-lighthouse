@@ -79,11 +79,11 @@ public final class LightHouse {
 
     public static synchronized void init(final String locators, RunningMode runningMode) throws Exception {
         if(!_InitFlag.get()){
+            _runningMode = runningMode;
             boolean result = RPCClientProxy.instance().init(locators);
             if(!result){
                 throw new InitializationException(String.format("lighthouse remote service not available,locators:%s",locators));
             }
-            _runningMode = runningMode;
             _InitFlag.set(true);
             Consumer consumer = new Consumer(eventPool, consumerFrequency, consumerBatchSize);
             consumer.start();

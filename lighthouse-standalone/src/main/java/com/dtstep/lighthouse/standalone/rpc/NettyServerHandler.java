@@ -18,7 +18,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
     public NettyServerHandler(){}
 
     public static void register() {
-        registryMap.put("com.dtstep.lighthouse.common.rpc.netty.provider.StandaloneRemoteService",new StandaloneRemoteServiceImpl());
+        registryMap.put("com.dtstep.lighthouse.common.rpc.BasicRemoteLightServerPrx",new StandaloneRemoteServiceImpl());
     }
 
     @Override
