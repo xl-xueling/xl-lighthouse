@@ -18,7 +18,7 @@ baseInstallWithYum(){
         sudo yum install -y epel-release
         sudo yum install -y expect jq rsync
 	      sudo yum install -y libtool autoconf gcc gcc-c++ make autoconf automake
-        sudo yum install -y cmake gzip  kernel-devel openssl*
+        sudo yum install -y cmake gzip  kernel-devel openssl openssl-devel
         sudo yum install -y tcl glibc-devel numactl
         sudo yum install -y nc
         sudo yum install -y git maven
