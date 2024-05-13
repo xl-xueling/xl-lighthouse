@@ -27,7 +27,7 @@ import com.dtstep.lighthouse.common.util.{DateUtil, JsonUtil}
 import com.dtstep.lighthouse.common.util.JsonUtil.toJSONString
 import com.dtstep.lighthouse.core.batch.BatchAdapter
 import com.dtstep.lighthouse.core.limiting.{LimitingContext, RedisLimitingAspect}
-import com.dtstep.lighthouse.core.message.MessageValid
+import com.dtstep.lighthouse.core.preparing.handler.valid.MessageValid
 import com.dtstep.lighthouse.core.redis.RedisHandler
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper
 import org.apache.spark.SparkEnv

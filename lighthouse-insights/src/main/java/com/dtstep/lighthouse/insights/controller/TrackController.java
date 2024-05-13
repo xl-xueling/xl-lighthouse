@@ -33,7 +33,7 @@ import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
 import com.dtstep.lighthouse.core.formula.FormulaCalculate;
-import com.dtstep.lighthouse.core.message.MessageValid;
+import com.dtstep.lighthouse.core.preparing.handler.valid.MessageValid;
 import com.dtstep.lighthouse.core.redis.RedisHandler;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.TrackParam;

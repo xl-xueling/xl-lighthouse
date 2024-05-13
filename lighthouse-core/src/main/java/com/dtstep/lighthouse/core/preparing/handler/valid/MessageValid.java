@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.message;
+package com.dtstep.lighthouse.core.preparing.handler.valid;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more

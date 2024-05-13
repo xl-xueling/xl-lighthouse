@@ -52,9 +52,6 @@ public class HBaseStorageEngine implements StorageEngine {
                 case "lzo":
                     algorithm = Compression.Algorithm.LZO;
                     break;
-                case "lzma":
-                    algorithm = Compression.Algorithm.LZMA;
-                    break;
                 default:
                     algorithm = Compression.Algorithm.NONE;
                     break;
