@@ -341,12 +341,7 @@
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
-            <version>3.21.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.1.51.Final</version>
+            <version>${redisson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
@@ -436,11 +431,6 @@
             <groupId>com.apifan.common</groupId>
             <artifactId>common-random</artifactId>
             <version>1.0.16</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

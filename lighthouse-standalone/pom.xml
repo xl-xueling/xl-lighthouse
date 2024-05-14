@@ -19,11 +19,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.1.87.Final</version>
-        </dependency>
-        <dependency>
             <groupId>com.dtstep.lighthouse</groupId>
             <artifactId>lighthouse-common</artifactId>
             <version>${revision}</version>
