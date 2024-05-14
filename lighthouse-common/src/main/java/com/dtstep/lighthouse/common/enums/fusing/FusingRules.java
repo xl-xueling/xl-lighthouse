@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 public enum FusingRules {
 
-    CLIENT_EXCEPTION_RULE("ClientTimeOutFusing",3,10,TimeUnit.MINUTES),
+    CLIENT_EXCEPTION_RULE("ClientTimeOutFusing",3,5,TimeUnit.MINUTES),
 
     CLIENT_MULTI_EXECUTE_RULE("ClientMultiExecuteFusing",1,3,TimeUnit.MINUTES),
 
