@@ -16,7 +16,6 @@ package com.dtstep.lighthouse.insights.service.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.clearspring.analytics.util.Lists;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.common.entity.ServiceResult;
@@ -35,6 +34,7 @@ import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.insights.service.ComponentService;
 import com.dtstep.lighthouse.insights.service.DataService;
 import com.dtstep.lighthouse.insights.service.StatService;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
