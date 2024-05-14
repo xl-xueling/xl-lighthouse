@@ -30,9 +30,9 @@ import java.util.concurrent.TimeUnit;
 
 public final class AuxHandler {
 
-    private static final Cache<String,Optional<GroupVerifyEntity>> groupHolder = LRU.newBuilder().maximumSize(50000).expireAfterWrite(2,TimeUnit.MINUTES).softValues().build();
+    private static final Cache<String,Optional<GroupVerifyEntity>> groupHolder = LRU.newBuilder().maximumSize(50000).expireAfterWrite(90,TimeUnit.SECONDS).softValues().build();
 
-    private static final Cache<Integer,Optional<StatVerifyEntity>> statHolder = LRU.newBuilder().maximumSize(50000).expireAfterWrite(2,TimeUnit.MINUTES).softValues().build();
+    private static final Cache<Integer,Optional<StatVerifyEntity>> statHolder = LRU.newBuilder().maximumSize(50000).expireAfterWrite(90,TimeUnit.SECONDS).softValues().build();
 
     private static final Cache<String,String> md5CacheHolder = LRU.newBuilder().maximumSize(50000).expireAfterWrite(2, TimeUnit.MINUTES).softValues().build();
 

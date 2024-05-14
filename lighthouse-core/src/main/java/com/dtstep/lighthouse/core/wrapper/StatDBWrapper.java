@@ -47,7 +47,7 @@ public class StatDBWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(StatDBWrapper.class);
 
-    private static final Integer _CacheExpireMinutes = 5;
+    private static final Integer _CacheExpireMinutes = 3;
 
     private static final LoadingCache<Integer, Optional<StatExtEntity>> statCache = Caffeine.newBuilder()
             .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
