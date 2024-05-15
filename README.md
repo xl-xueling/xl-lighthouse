@@ -78,8 +78,7 @@ XL-LightHouse可应用在企业生产的众多环节，可以帮助职场人从�
 
 ###  版本记录
 
-当前稳定版本：releases-2.1.9  [安装包下载地址](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/releases/lighthouse-2.1.9.tar.gz)
-
+-  [安装包下载](https://dtstep.com/zh/versions/02.html)
 -  [版本记录](https://dtstep.com/zh/versions/02.html)
 
 ###  技术支持
