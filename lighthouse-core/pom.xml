@@ -59,13 +59,13 @@
         <dependency>
             <groupId>org.apache.hbase.thirdparty</groupId>
             <artifactId>hbase-shaded-gson</artifactId>
-            <version>4.1.4</version>
+            <version>${hbase.thirdparty.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.hbase.thirdparty</groupId>
             <artifactId>hbase-shaded-netty</artifactId>
-            <version>4.1.4</version>
+            <version>${hbase.thirdparty.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -77,7 +77,7 @@
         <dependency>
             <groupId>org.apache.hbase.thirdparty</groupId>
             <artifactId>hbase-shaded-protobuf</artifactId>
-            <version>4.1.4</version>
+            <version>${hbase.thirdparty.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.hadoop</groupId>
@@ -214,7 +214,7 @@
         <dependency>
             <groupId>org.apache.hbase.thirdparty</groupId>
             <artifactId>hbase-shaded-miscellaneous</artifactId>
-            <version>4.1.4</version>
+            <version>${hbase.thirdparty.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.hadoop</groupId>
@@ -225,7 +225,7 @@
         <dependency>
             <groupId>org.apache.hbase.thirdparty</groupId>
             <artifactId>hbase-unsafe</artifactId>
-            <version>4.1.4</version>
+            <version>${hbase.thirdparty.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.hadoop</groupId>
