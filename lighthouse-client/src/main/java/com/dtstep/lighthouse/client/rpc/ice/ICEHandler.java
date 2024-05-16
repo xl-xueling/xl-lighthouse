@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.client.rpc.ice;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.ice.RemoteLightServerPrx;
+import com.dtstep.lighthouse.common.random.RandomID;
 import com.zeroc.Ice.Communicator;
 import com.zeroc.Ice.ObjectPrx;
 
@@ -28,7 +29,7 @@ public class ICEHandler {
 
     public static RemoteLightServerPrx getRemotePrx(Communicator ic){
         if(remoteLightServerPrx == null){
-            ObjectPrx auxBasePrx = ic.stringToProxy("LightHouseServiceIdentity").ice_connectionId(UUID.randomUUID().toString()).ice_locatorCacheTimeout(1200);
+            ObjectPrx auxBasePrx = ic.stringToProxy("LightHouseServiceIdentity").ice_connectionId(RandomID.id(32)).ice_locatorCacheTimeout(1200);
             remoteLightServerPrx = RemoteLightServerPrx.checkedCast(auxBasePrx);
         }
         return remoteLightServerPrx;

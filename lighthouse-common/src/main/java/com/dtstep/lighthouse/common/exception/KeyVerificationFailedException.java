@@ -18,27 +18,27 @@ package com.dtstep.lighthouse.common.exception;
  */
 
 
-public class TableNotExistException extends RuntimeException {
+public class KeyVerificationFailedException extends RuntimeException {
 
     private static final long serialVersionUID = 48337555527290157L;
 
-    public TableNotExistException() {
+    public KeyVerificationFailedException() {
         super();
     }
 
-    public TableNotExistException(String message) {
+    public KeyVerificationFailedException(String message) {
         super(message);
     }
 
-    public TableNotExistException(String message, Throwable cause) {
+    public KeyVerificationFailedException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public TableNotExistException(Throwable cause) {
+    public KeyVerificationFailedException(Throwable cause) {
         super(cause);
     }
 
-    protected TableNotExistException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected KeyVerificationFailedException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

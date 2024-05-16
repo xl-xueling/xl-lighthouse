@@ -8,6 +8,7 @@ light-webapps/node_modules
 light-webapps/node
 light-webapps/build
 light-webapps/yarn.lock
+dependency-reduced-pom.xml
 /.pnp
 /.idea
 /target
