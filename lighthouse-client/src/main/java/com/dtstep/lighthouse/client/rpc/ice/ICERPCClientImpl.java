@@ -24,7 +24,7 @@ import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.common.ice.RemoteLightServerPrx;
-import com.dtstep.lighthouse.common.util.SerializeUtil;
+import com.dtstep.lighthouse.common.serializer.SerializerProxy;
 import com.dtstep.lighthouse.common.util.SnappyUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.zeroc.Ice.Communicator;
@@ -34,6 +34,8 @@ import com.zeroc.Ice.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +89,7 @@ public class ICERPCClientImpl implements RPCClient {
         byte[] bytes = remoteLightServerPrx.queryGroupInfo(token);
         GroupVerifyEntity groupVerifyEntity = null;
         if(bytes != null){
-            groupVerifyEntity = SerializeUtil.deserialize(bytes);
+            groupVerifyEntity = SerializerProxy.instance().deserialize(bytes,GroupVerifyEntity.class);
         }
         return groupVerifyEntity;
     }
@@ -111,7 +113,7 @@ public class ICERPCClientImpl implements RPCClient {
         byte[] bytes = remoteLightServerPrx.queryStatInfo(id);
         StatVerifyEntity statVerifyEntity = null;
         if(bytes != null){
-            statVerifyEntity = SerializeUtil.deserialize(bytes);
+            statVerifyEntity = SerializerProxy.instance().deserialize(bytes,StatVerifyEntity.class);
         }
         return statVerifyEntity;
     }
@@ -122,7 +124,7 @@ public class ICERPCClientImpl implements RPCClient {
         byte[] bytes = remoteLightServerPrx.dataQuery(statId,dimensValue,batchList);
         List<StatValue> valueList = null;
         if(bytes != null){
-            valueList = SerializeUtil.deserialize(bytes);
+            valueList =  SerializerProxy.instance().deserializeList(bytes,StatValue.class);
         }
         return valueList;
     }
@@ -133,7 +135,7 @@ public class ICERPCClientImpl implements RPCClient {
         byte[] bytes = remoteLightServerPrx.dataDurationQuery(statId,dimensValue,startTime,endTime);
         List<StatValue> valueList = null;
         if(bytes != null){
-            valueList = SerializeUtil.deserialize(bytes);
+            valueList = SerializerProxy.instance().deserializeList(bytes,StatValue.class);
         }
         return valueList;
     }
@@ -144,7 +146,7 @@ public class ICERPCClientImpl implements RPCClient {
         byte[] bytes = remoteLightServerPrx.dataQueryWithDimensList(statId,dimensValueList,batchList);
         Map<String, List<StatValue>> data = null;
         if(bytes != null){
-            data = SerializeUtil.deserialize(bytes);
+            data = SerializerProxy.instance().deserializeMap(bytes, HashMap.class);
         }
         return data;
     }
@@ -155,7 +157,7 @@ public class ICERPCClientImpl implements RPCClient {
         byte[] bytes = remoteLightServerPrx.dataDurationQueryWithDimensList(statId,dimensValueList,startTime,endTime);
         Map<String, List<StatValue>> data = null;
         if(bytes != null){
-            data = SerializeUtil.deserialize(bytes);
+            data = SerializerProxy.instance().deserializeMap(bytes, HashMap.class);
         }
         return data;
     }
@@ -166,7 +168,7 @@ public class ICERPCClientImpl implements RPCClient {
         byte[] bytes = remoteLightServerPrx.limitQuery(statId,batchTime);
         List<LimitValue> valueList = null;
         if(bytes != null){
-            valueList = SerializeUtil.deserialize(bytes);
+            valueList = SerializerProxy.instance().deserializeList(bytes,LimitValue.class);
         }
         return valueList;
     }

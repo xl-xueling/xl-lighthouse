@@ -10,6 +10,10 @@ import com.esotericsoftware.kryo.io.Output;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class KryoSerializer implements Serializer {
 
@@ -36,6 +40,7 @@ public class KryoSerializer implements Serializer {
         }
     }
 
+
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> clazz) throws Exception {
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
@@ -44,6 +49,55 @@ public class KryoSerializer implements Serializer {
             return kryo.readObject(input, clazz);
         } catch (Exception e) {
             throw new RuntimeException("Failed to deserialize object!", e);
+        }
+    }
+
+
+    @Override
+    public <T> byte[] serializerList(List<T> list) throws Exception {
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             Output output = new Output(byteArrayOutputStream)) {
+            Kryo kryo = kryoThreadLocal.get();
+            kryo.writeObject(output, list);
+            output.flush();
+            return byteArrayOutputStream.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to serialize list object!", e);
+        }
+    }
+
+    @Override
+    public <T> List<T> deserializeList(byte[] bytes, Class<T> clazz) throws Exception {
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+             Input input = new Input(byteArrayInputStream)) {
+            Kryo kryo = kryoThreadLocal.get();
+            return kryo.readObject(input, ArrayList.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to deserialize list object!", e);
+        }
+    }
+
+    @Override
+    public <K, V> byte[] serializerMap(Map<K,V> map) throws Exception {
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             Output output = new Output(byteArrayOutputStream)) {
+            Kryo kryo = kryoThreadLocal.get();
+            kryo.writeObject(output, map);
+            output.flush();
+            return byteArrayOutputStream.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to serialize map object!", e);
+        }
+    }
+
+    @Override
+    public <K, V> Map<K, V> deserializeMap(byte[] bytes, Class<? extends Map> clazz) throws Exception {
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+             Input input = new Input(byteArrayInputStream)) {
+            Kryo kryo = kryoThreadLocal.get();
+            return kryo.readObject(input, HashMap.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to deserialize list object!", e);
         }
     }
 }

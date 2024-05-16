@@ -6,7 +6,7 @@ import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.ice.LightRpcException;
 import com.dtstep.lighthouse.common.ice.RemoteLightServer;
-import com.dtstep.lighthouse.common.util.SerializeUtil;
+import com.dtstep.lighthouse.common.serializer.SerializerProxy;
 import com.dtstep.lighthouse.core.ipc.RPCServer;
 import com.dtstep.lighthouse.core.ipc.impl.RPCServerImpl;
 import com.zeroc.Ice.Current;
@@ -42,7 +42,12 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
             logger.error("query group info error!",ex);
             throw new LightRpcException(ex.getMessage());
         }
-        return SerializeUtil.serialize(groupVerifyEntity);
+        try{
+            return SerializerProxy.instance().serialize(groupVerifyEntity);
+        }catch (Exception ex){
+            logger.error("rpc response serialize error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
     }
 
     @Override
@@ -54,7 +59,12 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
             logger.error("query stat info error!",ex);
             throw new LightRpcException(ex.getMessage());
         }
-        return SerializeUtil.serialize(statVerifyEntity);
+        try{
+            return SerializerProxy.instance().serialize(statVerifyEntity);
+        }catch (Exception ex){
+            logger.error("rpc response serialize error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
     }
 
     @Override
@@ -65,7 +75,12 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         }catch (Exception ex){
             throw new LightRpcException(ex.getMessage());
         }
-        return SerializeUtil.serialize(statValues);
+        try{
+            return SerializerProxy.instance().serialize(statValues);
+        }catch (Exception ex){
+            logger.error("rpc response serialize error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
     }
 
     @Override
@@ -76,7 +91,12 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         }catch (Exception ex){
             throw new LightRpcException(ex.getMessage());
         }
-        return SerializeUtil.serialize(statValues);
+        try{
+            return SerializerProxy.instance().serialize(statValues);
+        }catch (Exception ex){
+            logger.error("rpc response serialize error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
     }
 
     @Override
@@ -87,7 +107,12 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         }catch (Exception ex){
             throw new LightRpcException(ex.getMessage());
         }
-        return SerializeUtil.serialize(statValues);
+        try{
+            return SerializerProxy.instance().serialize(statValues);
+        }catch (Exception ex){
+            logger.error("rpc response serialize error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
     }
 
     @Override
@@ -98,7 +123,12 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         }catch (Exception ex){
             throw new LightRpcException(ex.getMessage());
         }
-        return SerializeUtil.serialize(statValues);
+        try{
+            return SerializerProxy.instance().serialize(statValues);
+        }catch (Exception ex){
+            logger.error("rpc response serialize error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
     }
 
     @Override
@@ -109,6 +139,11 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         }catch (Exception ex){
             throw new LightRpcException(ex.getMessage());
         }
-        return SerializeUtil.serialize(limitValues);
+        try{
+            return SerializerProxy.instance().serialize(limitValues);
+        }catch (Exception ex){
+            logger.error("rpc response serialize error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
     }
 }

@@ -27,6 +27,18 @@
             <version>5.5.0</version>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.11.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.11.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>com.dtstep.lighthouse</groupId>
             <artifactId>lighthouse-common</artifactId>
             <version>${revision}</version>
