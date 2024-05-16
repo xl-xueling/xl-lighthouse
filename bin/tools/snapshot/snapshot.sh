@@ -10,12 +10,12 @@ source "${CUR_DIR}/prepare/prepare.sh"
 DEFAULT_FS=`$HADOOP_HOME/bin/hdfs getconf -confKey fs.defaultFS`
 TEMPORARY_PATH=${DEFAULT_FS}/snapshot/temporary
 LOCAL_PATH=${LDP_DATA_DIR}/lighthouse/snapshot
-SNAPSHOT_DIRS=()
 
-function createSnapshot(){
+function snapshotHBaseTable(){
 	local cluster_id="$1";
 	local table_name="$2";
 	local full_table_name="cluster_${cluster_id}_ldp_hbasedb:${table_name}";
+	echo "Waiting for backup hbase table[${full_table_name}] ... ";
 	local snapshot_name="${table_name}_snapshot"
 	echo "delete_snapshot '$snapshot_name' " | $HBASE_HOME/bin/hbase shell -n >/dev/null 2>&1
 	echo "snapshot '$full_table_name','$snapshot_name'" | $HBASE_HOME/bin/hbase shell -n >/dev/null 2>&1
@@ -24,7 +24,7 @@ function createSnapshot(){
 	        exit -1;
 	fi
   	`$HBASE_HOME/bin/hbase org.apache.hadoop.hbase.snapshot.ExportSnapshot -snapshot "$snapshot_name" -copy-to "$TEMPORARY_PATH" -mappers 5 -bandwidth 20 -overwrite >/dev/null 2>&1`
-	echo "hbase table:${full_table_name} data backup completed!"
+	echo "hbase table[${full_table_name}] backup completed!"
 }
 
 
@@ -43,7 +43,7 @@ snapshotHBase(){
 	hadoop fs -mkdir -p ${TEMPORARY_PATH}
 	for table_name in $(echo "$tables" | grep "cluster_${cluster_id}" | awk -F':' '{print $2}'); 
 		do
-                        createSnapshot $cluster_id $table_name;
+                        snapshotHBaseTable $cluster_id $table_name;
                 done
 	local snapshotDir="ldp-snapshot-${cluster_id}_$batch"
         local savePath=${LOCAL_PATH}/${snapshotDir}/hbase
@@ -83,10 +83,10 @@ main(){
                 exit -1;
         fi
 	local cluster_id=`cat ${CUR_DIR}/config/cluster.id`
-	echo "Start backing up mysql data...";
+	echo "Start backup mysql data!"
 	snapshotMySQL ${cluster_id} $batch;
 	echo "Backup mysql data completed!"
-	echo "Start backing up hbase data...";
+	echo "Start backup hbase data!"
 	snapshotHBase ${cluster_id} $batch;
 	echo "Backup hbase data completed!"
 	local dir="ldp-snapshot-${cluster_id}_$batch";
