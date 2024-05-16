@@ -78,7 +78,7 @@ function Navbar({ show }: { show: boolean }) {
 
   useEffect(() => {
     intervalCallback();
-    const intervalId = setInterval(intervalCallback, 60 * 1000);
+    const intervalId = setInterval(intervalCallback, 5 * 60 * 1000);
     return () => {
       clearInterval(intervalId);
     };
