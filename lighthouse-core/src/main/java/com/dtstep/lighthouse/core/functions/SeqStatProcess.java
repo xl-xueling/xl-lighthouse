@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.core.functions;
 
+import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
 import com.google.common.base.Splitter;
 import com.dtstep.lighthouse.common.aggregator.BlockingEventPool;
 import com.dtstep.lighthouse.common.aggregator.EventPool;
@@ -20,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -39,8 +39,8 @@ public class SeqStatProcess extends StatProcess<Pair<String,Long>> {
 
     static {
         final int threadSize = 2;
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(threadSize,
-                new BasicThreadFactory.Builder().namingPattern("seq-consumer-schedule-pool-%d").daemon(true).build());
+        ScheduledExecutorService service = ScheduledThreadPoolBuilder.
+                newScheduledThreadPoolExecutor(threadSize,new BasicThreadFactory.Builder().namingPattern("seq-consumer-schedule-pool-%d").daemon(true).build());
         for (int i = 0; i < threadSize; i++) {
             service.scheduleWithFixedDelay(new ResultStorageThread(eventPool, batchSize), 0, 5, TimeUnit.SECONDS);
         }

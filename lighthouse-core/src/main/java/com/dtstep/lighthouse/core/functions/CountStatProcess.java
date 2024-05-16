@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.functions;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
 import com.google.common.base.Splitter;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
@@ -52,8 +53,8 @@ public final class CountStatProcess extends StatProcess<Pair<String,Long>> {
 
     static {
         final int threadSize = 2;
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(threadSize,
-                new BasicThreadFactory.Builder().namingPattern("count-consumer-schedule-pool-%d").daemon(true).build());
+        ScheduledExecutorService service = ScheduledThreadPoolBuilder.
+                newScheduledThreadPoolExecutor(threadSize,new BasicThreadFactory.Builder().namingPattern("count-consumer-schedule-pool-%d").daemon(true).build());
         for (int i = 0; i < threadSize; i++) {
             service.scheduleWithFixedDelay(new ResultStorageThread(eventPool, batchSize), 0, 3, TimeUnit.SECONDS);
         }

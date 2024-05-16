@@ -18,6 +18,7 @@ package com.dtstep.lighthouse.core.limiting.device.impl;
  */
 import com.dtstep.lighthouse.core.callback.CaffeineExpiry;
 import com.dtstep.lighthouse.core.limiting.device.CountingDevice;
+import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -60,7 +61,7 @@ public class DefaultLimitingCountingDevice implements CountingDevice {
     }
 
     static {
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(1,
+        ScheduledExecutorService service = ScheduledThreadPoolBuilder.newScheduledThreadPoolExecutor(1,
                 new BasicThreadFactory.Builder().namingPattern("limiting-counting-schedule-pool-%d").daemon(true).build());
         service.scheduleWithFixedDelay(new RefreshThread(valueCache),0,1, TimeUnit.MINUTES);
     }

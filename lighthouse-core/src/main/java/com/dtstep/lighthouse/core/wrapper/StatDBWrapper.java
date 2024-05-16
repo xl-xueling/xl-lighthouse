@@ -2,7 +2,6 @@ package com.dtstep.lighthouse.core.wrapper;
 
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.ServiceResult;
-import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.entity.state.StatState;
@@ -20,6 +19,7 @@ import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
+import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
 import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -27,7 +27,6 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
-import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +37,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -62,7 +60,7 @@ public class StatDBWrapper {
             .build(StatDBWrapper::actualQueryListByGroupId);
 
     static {
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(1,
+        ScheduledExecutorService service = ScheduledThreadPoolBuilder.newScheduledThreadPoolExecutor(1,
                 new BasicThreadFactory.Builder().namingPattern("stat-cache-refresh-schedule-pool-%d").daemon(true).build());
         service.scheduleWithFixedDelay(new RefreshThread(),0,20, TimeUnit.SECONDS);
     }

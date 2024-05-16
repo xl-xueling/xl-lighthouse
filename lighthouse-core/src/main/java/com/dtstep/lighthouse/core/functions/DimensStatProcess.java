@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.core.functions;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.util.DateUtil;
+import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
 import com.google.common.hash_snp.Hashing;
 import com.dtstep.lighthouse.common.aggregator.BlockingEventPool;
 import com.dtstep.lighthouse.common.aggregator.EventPool;
@@ -27,7 +28,6 @@ import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.hash.HashUtil;
-import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.roaring.BitSetFilterSupplier;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -53,8 +53,8 @@ public final class DimensStatProcess extends Process {
 
     static {
         final int threadSize = 2;
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(threadSize,
-                new BasicThreadFactory.Builder().namingPattern("dimens-consumer-schedule-pool-%d").daemon(true).build());
+        ScheduledExecutorService service = ScheduledThreadPoolBuilder.
+                newScheduledThreadPoolExecutor(threadSize,new BasicThreadFactory.Builder().namingPattern("dimens-consumer-schedule-pool-%d").daemon(true).build());
         for (int i = 0; i < threadSize; i++) {
             service.scheduleWithFixedDelay(new DimensStorageThread(eventPool), 0, 20, TimeUnit.SECONDS);
         }

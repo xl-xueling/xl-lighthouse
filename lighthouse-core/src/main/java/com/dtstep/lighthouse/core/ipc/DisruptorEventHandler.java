@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.ipc;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
 import com.dtstep.lighthouse.core.tasks.EventSenderFactory;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -28,7 +29,6 @@ import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -50,7 +50,7 @@ public final class DisruptorEventHandler implements EventHandler<IceEvent>, Work
     private static final int SENDER_SIZE = 60;
 
     public DisruptorEventHandler(){
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(1,
+        ScheduledExecutorService service = ScheduledThreadPoolBuilder.newScheduledThreadPoolExecutor(1,
                 new BasicThreadFactory.Builder().namingPattern("ice-clear-schedule-pool-%d").daemon(true).build());
         service.scheduleWithFixedDelay(new ClearThread(),5,5, TimeUnit.SECONDS);
     }

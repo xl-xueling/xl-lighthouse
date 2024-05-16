@@ -18,6 +18,7 @@ package com.dtstep.lighthouse.core.consumer;
  */
 import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.common.entity.event.SimpleSlotEvent;
+import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import java.util.concurrent.*;
@@ -34,8 +35,8 @@ public final class ExpandedConsumer {
     ExpandedConsumer(EventPool<SimpleSlotEvent> eventPool, int threadSize){
         this.eventPool = eventPool;
         this.threadSize = threadSize;
-        service = Executors.newScheduledThreadPool(threadSize,
-                        new BasicThreadFactory.Builder().namingPattern("expanded-event-schedule-pool-%d").daemon(true).build());
+        service = ScheduledThreadPoolBuilder.newScheduledThreadPoolExecutor(threadSize,
+                new BasicThreadFactory.Builder().namingPattern("expanded-event-schedule-pool-%d").daemon(true).build());
     }
 
     public void start(){
@@ -43,5 +44,4 @@ public final class ExpandedConsumer {
             service.scheduleWithFixedDelay(new ExpandedEventRunnable(eventPool),0,5, TimeUnit.SECONDS);
         }
     }
-
 }

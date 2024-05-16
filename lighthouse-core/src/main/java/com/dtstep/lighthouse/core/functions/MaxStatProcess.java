@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.core.functions;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.base.Splitter;
@@ -62,8 +63,8 @@ public final class MaxStatProcess extends StatProcess<Pair<String,Long>>{
 
     static {
         final int threadSize = 2;
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(threadSize,
-                new BasicThreadFactory.Builder().namingPattern("max-consumer-schedule-pool-%d").daemon(true).build());
+        ScheduledExecutorService service = ScheduledThreadPoolBuilder.
+                newScheduledThreadPoolExecutor(threadSize,new BasicThreadFactory.Builder().namingPattern("max-consumer-schedule-pool-%d").daemon(true).build());
         for(int i = 0; i< threadSize; i++){
             service.scheduleWithFixedDelay(new ResultStorageThread(eventPool, batchSize),0,5, TimeUnit.SECONDS);
         }

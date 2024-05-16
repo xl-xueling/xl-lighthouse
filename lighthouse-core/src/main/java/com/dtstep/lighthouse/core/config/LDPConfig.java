@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.core.config;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.enums.RunningMode;
+import com.dtstep.lighthouse.common.exception.LDPUncaughtExceptionHandler;
 import com.google.common.collect.Maps;
 import com.dtstep.lighthouse.common.exception.ConfigParseException;
 import com.dtstep.lighthouse.common.exception.InitializationException;
@@ -133,6 +134,7 @@ public final class LDPConfig {
             paramMap.put(name, value);
         }
         paramMap  = Collections.unmodifiableMap(paramMap);
+        Thread.setDefaultUncaughtExceptionHandler(new LDPUncaughtExceptionHandler());
         isInit.set(true);
     }
 

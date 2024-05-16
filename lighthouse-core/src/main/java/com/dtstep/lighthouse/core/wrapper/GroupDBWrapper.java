@@ -25,8 +25,8 @@ import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
-import com.dtstep.lighthouse.core.dao.DaoHelper;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
+import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
 import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -47,7 +47,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -79,7 +78,7 @@ public final class GroupDBWrapper {
     }
 
     static {
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(1,
+        ScheduledExecutorService service = ScheduledThreadPoolBuilder.newScheduledThreadPoolExecutor(1,
                 new BasicThreadFactory.Builder().namingPattern("group-cache-refresh-schedule-pool-%d").daemon(true).build());
         service.scheduleWithFixedDelay(new RefreshThread(),0,20, TimeUnit.SECONDS);
     }

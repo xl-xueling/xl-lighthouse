@@ -5,13 +5,13 @@ import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.common.entity.calculate.MicroBucket;
 import com.dtstep.lighthouse.common.entity.event.LimitBucket;
 import com.dtstep.lighthouse.common.hash.HashUtil;
+import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 /*
@@ -45,8 +45,8 @@ public class LimitStatProcess extends Process {
 
     static {
         final int threadSize = 2;
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(threadSize,
-                new BasicThreadFactory.Builder().namingPattern("limit-consumer-schedule-pool-%d").daemon(true).build());
+        ScheduledExecutorService service = ScheduledThreadPoolBuilder.
+                newScheduledThreadPoolExecutor(threadSize,new BasicThreadFactory.Builder().namingPattern("limit-consumer-schedule-pool-%d").daemon(true).build());
         for (int i = 0; i < threadSize; i++) {
             service.scheduleWithFixedDelay(new LimitStorageThread(eventPool), 0, 10, TimeUnit.SECONDS);
         }
