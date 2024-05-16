@@ -27,7 +27,7 @@
     <zookeeper.version>3.7.1</zookeeper.version>
     <ice.version>3.7.10</ice.version>
     <redisson.version>3.26.1</redisson.version>
-    <netty.version>4.1.87.Final</netty.version>
+    <netty.version>4.1.84.Final</netty.version>
     <!--consistent with spark -->
     <log4j.version>2.17.2</log4j.version>
     <slf4j.version>1.7.32</slf4j.version>
