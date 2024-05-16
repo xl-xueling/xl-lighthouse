@@ -31,10 +31,10 @@
     <!--consistent with spark -->
     <log4j.version>2.17.2</log4j.version>
     <slf4j.version>1.7.32</slf4j.version>
-    <log4j-slf4j2-impl.version>2.20.0</log4j-slf4j2-impl.version>
+    <log4j.slf4j2.impl.version>2.20.0</log4j.slf4j2.impl.version>
     <hbase.thirdparty.version>4.1.3</hbase.thirdparty.version>
     <scope>compile</scope>
-    <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
+    <frontend.maven.plugin.version>1.15.0</frontend.maven.plugin.version>
   </properties>
 
   <!-- 默认打包 -->
@@ -138,7 +138,7 @@
           <plugin>
             <groupId>com.github.eirslett</groupId>
             <artifactId>frontend-maven-plugin</artifactId>
-            <version>${frontend-maven-plugin.version}</version>
+            <version>${frontend.maven.plugin.version}</version>
             <configuration>
               <workingDirectory>${project.basedir}/light-webapps</workingDirectory>
               <installDirectory>${project.basedir}/light-webapps</installDirectory>

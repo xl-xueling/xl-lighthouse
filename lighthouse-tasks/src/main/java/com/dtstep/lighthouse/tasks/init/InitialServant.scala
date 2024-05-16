@@ -18,7 +18,6 @@ package com.dtstep.lighthouse.tasks.init
  * limitations under the License.
  */
 
-import com.dtstep.lighthouse.common.util.ConsoleLogger
 import com.dtstep.lighthouse.core.config.LDPConfig
 import org.apache.spark.SparkFiles
 import org.apache.spark.internal.Logging
@@ -33,7 +32,6 @@ private[tasks] object InitialServant extends Logging {
       if(!LDPConfig.isInit.get()){
         val path = SparkFiles.get("ldp-site.xml")
         LDPConfig.init(path)
-        ConsoleLogger.init();
         logInfo("lighthouse init success!")
       }
     }catch {
