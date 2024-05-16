@@ -120,13 +120,12 @@ main(){
 					if [ "$ip" == "$currentIP" ]; then
         					continue;
     					fi
-					echo "Back up data to node:${ip}"
+					echo "Backup data to node:${ip}"
 					remoteExecute ${CUR_DIR}/common/sync.exp ${DEPLOY_USER} ${LOCAL_PATH}/${dir}.tar.gz ${ip} "-" ${LOCAL_PATH}
 				done	
-			echo "snapshot[${dir}] export completed!"
+			echo "Snapshot files[${LOCAL_PATH}/${dir}.tar.gz] export completed!"
 	local end_time=$(date +%s%N)
-	echo "Program execution completed. Total time consumed: $(((end_time - start_time) / 1000000))ms."	
+	echo "Program execution completed. Total cost: $(((end_time - start_time) / 1000000))ms."
 }
-
 
 main $@;
