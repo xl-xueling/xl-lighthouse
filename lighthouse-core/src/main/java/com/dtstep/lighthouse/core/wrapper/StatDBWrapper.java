@@ -24,6 +24,7 @@ import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -328,9 +329,14 @@ public class StatDBWrapper {
     }
 
     public static List<StatExtEntity> queryRunningListByGroupId(int groupId){
-        List<StatExtEntity> entityList = queryListByGroupId(groupId);
+        List<StatExtEntity> entityList;
+        if(BuiltinLoader.isBuiltinGroup(groupId)){
+            entityList = BuiltinLoader.getBuiltinStatByGroupId(groupId);
+        }else{
+            entityList = queryListByGroupId(groupId);
+        }
         if(CollectionUtils.isEmpty(entityList)){
-            return null;
+            return Collections.emptyList();
         }
         return entityList.stream().filter(x -> x.getState() == StatStateEnum.RUNNING).collect(Collectors.toList());
     }

@@ -21,6 +21,7 @@ import com.dtstep.lighthouse.common.entity.event.SimpleSlotEvent;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.common.aggregator.BlockingEventPool;
 import com.dtstep.lighthouse.common.aggregator.EventPool;
+import com.dtstep.lighthouse.core.preparing.handler.expand.ExpandEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +48,16 @@ public final class RealTimeProcessor {
         try{
             if(StringUtil.isNotEmpty(message)){
                 eventPool.put(slot,new SimpleSlotEvent(message,repeat));
+            }
+        }catch (Exception ex){
+            logger.error("process expanded events error!",ex);
+        }
+    }
+
+    public static void onEvent(ExpandEvent expandEvent){
+        try{
+            if(expandEvent != null){
+                eventPool.put(expandEvent.getSlot(), new SimpleSlotEvent(expandEvent.getMessage(), expandEvent.getRepeat()));
             }
         }catch (Exception ex){
             logger.error("process expanded events error!",ex);
