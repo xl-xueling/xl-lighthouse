@@ -1,5 +1,6 @@
-package com.dtstep.lighthouse.client;
+package com.dtstep.lighthouse.client.cluster;
 
+import com.dtstep.lighthouse.client.LightHouse;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.serializer.KryoSerializer;
 import com.dtstep.lighthouse.common.serializer.Serializer;

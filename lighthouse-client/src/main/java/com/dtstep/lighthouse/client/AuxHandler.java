@@ -43,7 +43,7 @@ public final class AuxHandler {
                 groupVerifyEntity = RPCClientProxy.instance().queryGroupInfo(token);
             }catch (Exception ex){
                 ex.printStackTrace();
-                throw new LightSendException();
+                throw new LightSendException(ex);
             }
             return Optional.ofNullable(groupVerifyEntity);
         }).orElse(null);
@@ -57,7 +57,7 @@ public final class AuxHandler {
                 statVerifyEntity = RPCClientProxy.instance().queryStatInfo(id);
             }catch (Exception ex){
                 ex.printStackTrace();
-                throw new LightSendException();
+                throw new LightSendException(ex);
             }
             return Optional.ofNullable(statVerifyEntity);
         }).orElse(null);

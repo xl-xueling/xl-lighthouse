@@ -8,6 +8,7 @@ import com.dtstep.lighthouse.common.ice.LightRpcException;
 import com.dtstep.lighthouse.core.ipc.RPCServer;
 import com.dtstep.lighthouse.core.ipc.impl.RPCServerImpl;
 import com.dtstep.lighthouse.common.rpc.BasicRemoteLightServerPrx;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +37,7 @@ public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
             return rpc.queryGroupInfo(token);
         }catch (Exception ex){
             logger.error("query group error!",ex);
-            throw new LightRpcException(ex.getMessage());
+            throw new LightRpcException(ex);
         }
     }
 
@@ -46,7 +47,7 @@ public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
             return rpc.queryStatInfo(id);
         }catch (Exception ex){
             logger.error("query stat error!",ex);
-            throw new LightRpcException(ex.getMessage());
+            throw new LightRpcException(ex);
         }
     }
 
@@ -56,7 +57,7 @@ public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
             return rpc.dataQuery(statId, dimensValue, batchTime);
         }catch (Exception ex){
             logger.error("call dataQuery error!",ex);
-            throw new LightRpcException(ex.getMessage());
+            throw new LightRpcException(ex);
         }
     }
 
@@ -66,7 +67,7 @@ public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
             return rpc.dataDurationQuery(statId, dimensValue, startTime,endTime);
         }catch (Exception ex){
             logger.error("call dataDurationQuery error!",ex);
-            throw new LightRpcException(ex.getMessage());
+            throw new LightRpcException(ex);
         }
     }
 
@@ -76,7 +77,7 @@ public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
             return rpc.dataQueryWithDimensList(statId, dimensValueList, batchTime);
         }catch (Exception ex){
             logger.error("call dataQueryWithDimensList error!",ex);
-            throw new LightRpcException(ex.getMessage());
+            throw new LightRpcException(ex);
         }
     }
 
@@ -86,7 +87,7 @@ public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
             return rpc.dataDurationQueryWithDimensList(statId, dimensValueList, startTime,endTime);
         }catch (Exception ex){
             logger.error("call dataDurationQueryWithDimensList error!",ex);
-            throw new LightRpcException(ex.getMessage());
+            throw new LightRpcException(ex);
         }
     }
 
@@ -96,7 +97,7 @@ public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
             return rpc.limitQuery(statId, batchTime);
         }catch (Exception ex){
             logger.error("call limitQuery error!",ex);
-            throw new LightRpcException(ex.getMessage());
+            throw new LightRpcException(ex);
         }
     }
 }

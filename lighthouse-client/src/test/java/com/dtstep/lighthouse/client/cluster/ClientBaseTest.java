@@ -1,4 +1,6 @@
-package com.dtstep.lighthouse.client;
+package com.dtstep.lighthouse.client.cluster;
+
+import com.dtstep.lighthouse.client.LightHouse;
 
 public class ClientBaseTest {
 

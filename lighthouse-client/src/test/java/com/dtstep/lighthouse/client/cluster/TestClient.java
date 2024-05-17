@@ -1,15 +1,15 @@
-package com.dtstep.lighthouse.client;
+package com.dtstep.lighthouse.client.cluster;
 
+import com.dtstep.lighthouse.client.LightHouse;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.enums.RunningMode;
 import com.dtstep.lighthouse.common.util.DateUtil;
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import org.junit.Test;
 
 import java.util.List;
 
-public class TestClient {
+public class TestClient extends ClientBaseTest {
 
 //    static {
 //        try{
@@ -22,8 +22,8 @@ public class TestClient {
 
     @Test
     public void testDataQuery() throws Exception {
-        int statId = 11005772;
-        List<StatValue> valueList = LightHouse.dataQuery(statId,"XutZtE6xsPQK8pWWDp2qqeLCspd5frkuqAc4Y4Ns",null,1714233600000L,1714320000000L);
+        int statId = 1100578;
+        List<StatValue> valueList = LightHouse.dataQuery(statId,"5ONJTOU4JpvoclyI4E0Xbm6XIysis4O0UHCVQhy32",null,1714233600000L,1714320000000L);
         System.out.println("valueList:" + valueList);
         for(int i=0;i<valueList.size();i++){
             StatValue statValue = valueList.get(i);

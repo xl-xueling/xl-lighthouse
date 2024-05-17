@@ -1,5 +1,6 @@
-package com.dtstep.lighthouse.client;
+package com.dtstep.lighthouse.client.cluster;
 
+import com.dtstep.lighthouse.client.LightHouse;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
