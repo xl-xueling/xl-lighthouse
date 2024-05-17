@@ -12,6 +12,7 @@ import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
+import com.dtstep.lighthouse.core.test.CoreBaseTest;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import org.junit.Test;
 
@@ -21,17 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class DataQueryTest {
+public class DataQueryTest extends CoreBaseTest {
 
     private static final KeyGenerator keyGenerator = new DefaultKeyGenerator();
-
-    static {
-        try{
-            LDPConfig.initWithHomePath("/Users/xueling/lighthouse");
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
 
     @Test
     public void countDataQuery() throws Exception {
@@ -65,4 +58,16 @@ public class DataQueryTest {
         System.out.println("o is:" + o);
         System.out.println("bigDecimal:" + bigDecimal.toPlainString());
     }
+
+    @Test
+    public void testDataQuery() throws Exception {
+        int id = 1100577;
+        StatExtEntity statExtEntity = StatDBWrapper.queryById(id);
+        List<Long> batchTimeList = List.of(1715911200000L);
+        List<StatValue> values = ResultStorageSelector.query(statExtEntity,null,batchTimeList);
+        for(StatValue statValue : values){
+            System.out.println("statValue:" + JsonUtil.toJSONString(statValue));
+        }
+    }
+
 }

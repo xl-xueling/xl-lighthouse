@@ -1,7 +1,10 @@
 package com.dtstep.lighthouse.common.util;
 
+import com.dtstep.lighthouse.common.constant.StatConst;
 import org.junit.Test;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -282,5 +285,13 @@ public class DateUtilTest {
         long time = DateUtil.getSecondBefore(current,20);
         System.out.println("current:" + DateUtil.formatTimeStamp(current,"yyyy-MM-dd HH:mm:ss"));
         System.out.println("time:" + DateUtil.formatTimeStamp(time,"yyyy-MM-dd HH:mm:ss"));
+    }
+
+    @Test
+    public void testHours() throws Exception {
+        long t1 = StatConst.SYSTEM_BASE_TIME;
+        long currentTimestamp = System.currentTimeMillis(); // 秒级时间戳
+        long hoursSinceStart = ChronoUnit.HOURS.between(Instant.ofEpochMilli(t1), Instant.ofEpochMilli(currentTimestamp));
+        System.out.println("t1:" + hoursSinceStart);
     }
 }

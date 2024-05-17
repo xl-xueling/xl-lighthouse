@@ -19,6 +19,8 @@ package com.dtstep.lighthouse.common.constant;
  */
 
 
+import com.dtstep.lighthouse.common.util.DateUtil;
+
 import java.util.*;
 
 public final class StatConst {
@@ -32,6 +34,8 @@ public final class StatConst {
     public static final String SEPARATOR_LEVEL_2 = "\u0005";
 
     public static final String SEPARATOR_LEVEL_3 = "\u0006";
+
+    public static final long SYSTEM_BASE_TIME = DateUtil.parseDate("2023-01-01 00:00:00","yyyy-MM-dd HH:mm:ss");
 
     public static final int NORMAL_BATCH_INTERVAL = 5;
 

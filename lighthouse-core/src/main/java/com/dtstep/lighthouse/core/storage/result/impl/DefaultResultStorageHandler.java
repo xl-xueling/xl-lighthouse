@@ -195,12 +195,22 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
             metaName = metaTable.getMetaName();
         }
         List<LdpGet> getList = new ArrayList<>();
+        List<LdpGet> compatibleGetList = new ArrayList<>();
+        HashMap<String,String> compatibleKeyMap = new HashMap<>();
         for (long batchTime : batchTimeList) {
             if(dimensValueList == null){
                 for (StatState statState : statStates) {
                     String aggregateKey = keyGenerator.resultKey(statExtEntity,statState.getFunctionIndex(),null,batchTime);
                     String [] keyArr = aggregateKey.split(";");
-                    LdpGet ldpGet = LdpGet.with(keyArr[0],keyArr[1]);
+                    String key = keyArr[0];
+                    String column = keyArr[1];
+                    String compatibleKey = getCompatibleKey(key);
+                    if(StringUtil.isNotEmpty(compatibleKey)){
+                        LdpGet ldpGet = LdpGet.with(compatibleKey,column);
+                        compatibleGetList.add(ldpGet);
+                        compatibleKeyMap.put(compatibleKey,key);
+                    }
+                    LdpGet ldpGet = LdpGet.with(key,column);
                     getList.add(ldpGet);
                 }
             }else{
@@ -208,7 +218,15 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                     for (StatState statState : statStates) {
                         String aggregateKey = keyGenerator.resultKey(statExtEntity,statState.getFunctionIndex(),dimensValue,batchTime);
                         String [] keyArr = aggregateKey.split(";");
-                        LdpGet ldpGet = LdpGet.with(keyArr[0],keyArr[1]);
+                        String key = keyArr[0];
+                        String column = keyArr[1];
+                        String compatibleKey = getCompatibleKey(key);
+                        if(StringUtil.isNotEmpty(compatibleKey)){
+                            LdpGet ldpGet = LdpGet.with(compatibleKey,column);
+                            compatibleGetList.add(ldpGet);
+                            compatibleKeyMap.put(compatibleKey,key);
+                        }
+                        LdpGet ldpGet = LdpGet.with(key,column);
                         getList.add(ldpGet);
                     }
                 }
@@ -216,7 +234,20 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         }
         Validate.isTrue(getList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
         List<LdpResult<Long>> results = StorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
+        List<LdpResult<Long>> compatibleResults = StorageEngineProxy.getInstance().gets(metaName,compatibleGetList,Long.class);
         Map<String,LdpResult<Long>> dbResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
+        Map<String,LdpResult<Long>> compatibleDBResultMap = compatibleResults.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
+        for(String compatibleAggregateKey : compatibleDBResultMap.keySet()){
+            LdpResult<Long> compatibleResult = compatibleDBResultMap.get(compatibleAggregateKey);
+            if(compatibleResult != null && compatibleResult.getData() != 0L){
+                String [] keyArr = compatibleAggregateKey.split(";");
+                String compatibleKey = keyArr[0];
+                String column = keyArr[1];
+                String mappingKey = compatibleKeyMap.get(compatibleKey);
+                compatibleResult.setKey(mappingKey);
+                dbResultMap.put(mappingKey+";"+column,compatibleResult);
+            }
+        }
         Map<String,List<StatValue>> resultMap = new HashMap<>();
         if(dimensValueList == null){
             List<StatValue> valueList = new ArrayList<>();
@@ -236,6 +267,15 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
             }
         }
         return resultMap;
+    }
+
+    private String getCompatibleKey(String key){
+        String [] arr = key.split("\\|");
+        if(arr.length >= 2 && StringUtil.isNumber(arr[1])){
+            return arr[0] + "|" + arr[2];
+        }else{
+            return null;
+        }
     }
 
     private StatValue calculate(StatExtEntity statExtEntity, String dimensValue, long batchTime,Map<String, LdpResult<Long>> resultMap) {

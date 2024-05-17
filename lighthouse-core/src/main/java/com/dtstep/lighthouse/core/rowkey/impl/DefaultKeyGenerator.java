@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.core.rowkey.impl;
 
+import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.hash.HashUtil;
 import com.dtstep.lighthouse.common.modal.Group;
@@ -13,6 +14,8 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -77,7 +80,11 @@ public class DefaultKeyGenerator implements KeyGenerator {
         String origin = Md5Util.getMD5(randomId + "_" + dataVersion + "_" + baseTime + "_" + dimensValue + "_" + functionIndex);
         int index = Math.abs((int) (HashUtil.BKDRHash(origin) % SysConst._DBKeyPrefixArray.length));
         String prefix = SysConst._DBKeyPrefixArray[index];
-        return prefix + origin;
+        return prefix + getChrono(baseTime) + "|" + origin;
+    }
+
+    private long getChrono(long baseTime) {
+        return ChronoUnit.HOURS.between(Instant.ofEpochMilli(StatConst.SYSTEM_BASE_TIME), Instant.ofEpochMilli(baseTime));
     }
 
     @Override
