@@ -47,6 +47,7 @@
             <if test="queryParam.metaTableTypeEnum!=null">
                 AND `type` = #{queryParam.metaTableTypeEnum.type}
             </if>
+            and `state` = 1
         </where>
     </select>
 

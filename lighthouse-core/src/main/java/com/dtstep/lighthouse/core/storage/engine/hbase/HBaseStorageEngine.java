@@ -34,6 +34,8 @@ public class HBaseStorageEngine implements StorageEngine {
 
     private static Compression.Algorithm algorithm = null;
 
+    private static final int PrePartitionsPerRegionServer = 4;
+
     static {
         String compression = LDPConfig.getOrDefault(LDPConfig.KEY_DATA_COMPRESSION_TYPE,"zstd",String.class);
         if(StringUtil.isNotEmpty(compression)){
@@ -133,7 +135,7 @@ public class HBaseStorageEngine implements StorageEngine {
     private int getDefaultPrePartitionSize() throws Exception {
         try(Admin hBaseAdmin = getConnection().getAdmin()){
             Collection<ServerName> collection = hBaseAdmin.getRegionServers();
-            int prePartitionSize = Math.min(collection.size() * 3, SysConst._DBKeyPrefixArray.length);
+            int prePartitionSize = Math.min(collection.size() * PrePartitionsPerRegionServer, SysConst._DBKeyPrefixArray.length);
             logger.info("getDefaultPrePartitionSize,region server size:{},pre-partition size:{}!",collection.size(),prePartitionSize);
             return prePartitionSize;
         }catch (Exception ex){
@@ -148,12 +150,15 @@ public class HBaseStorageEngine implements StorageEngine {
         String [] keys = SysConst._DBKeyPrefixArray;
         List<String> keysList = Arrays.asList(keys);
         List<List<String>> totalGroupKeyList = ListUtil.listPartition(keysList,prePartitionsSize);
-        byte[][] splitKeys = new byte[prePartitionsSize][];
         TreeSet<byte[]> rows = new TreeSet<>(Bytes.BYTES_COMPARATOR);
         for (int i = 0; i < prePartitionsSize; i++) {
-            String key = totalGroupKeyList.get(i).get(0);
-            rows.add(Bytes.toBytes(key));
+            List<String> groupKeyList = totalGroupKeyList.get(i);
+            if(CollectionUtils.isNotEmpty(groupKeyList)){
+                String key = totalGroupKeyList.get(i).get(0);
+                rows.add(Bytes.toBytes(key));
+            }
         }
+        byte[][] splitKeys = new byte[rows.size()][];
         Iterator<byte[]> rowKeyIterator = rows.iterator();
         int i=0;
         while (rowKeyIterator.hasNext()) {
