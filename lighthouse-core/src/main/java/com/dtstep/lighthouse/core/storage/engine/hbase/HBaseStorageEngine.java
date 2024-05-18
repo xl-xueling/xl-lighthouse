@@ -130,14 +130,29 @@ public class HBaseStorageEngine implements StorageEngine {
         }
     }
 
+    private int getDefaultPrePartitionSize() throws Exception {
+        try(Admin hBaseAdmin = getConnection().getAdmin()){
+            Collection<ServerName> collection = hBaseAdmin.getRegionServers();
+            int prePartitionSize = Math.min(collection.size() * 3, SysConst._DBKeyPrefixArray.length);
+            logger.info("getDefaultPrePartitionSize,region server size:{},pre-partition size:{}!",collection.size(),prePartitionSize);
+            return prePartitionSize;
+        }catch (Exception ex){
+            logger.error("getDefaultPrePartitionSize error!",ex);
+            throw ex;
+        }
+    }
+
     @Override
     public void createTable(String tableName) throws Exception {
-        int prePartitionsSize = SysConst._DBKeyPrefixArray.length;
+        int prePartitionsSize = getDefaultPrePartitionSize();
         String [] keys = SysConst._DBKeyPrefixArray;
+        List<String> keysList = Arrays.asList(keys);
+        List<List<String>> totalGroupKeyList = ListUtil.listPartition(keysList,prePartitionsSize);
         byte[][] splitKeys = new byte[prePartitionsSize][];
         TreeSet<byte[]> rows = new TreeSet<>(Bytes.BYTES_COMPARATOR);
         for (int i = 0; i < prePartitionsSize; i++) {
-            rows.add(Bytes.toBytes(keys[i]));
+            String key = totalGroupKeyList.get(i).get(0);
+            rows.add(Bytes.toBytes(key));
         }
         Iterator<byte[]> rowKeyIterator = rows.iterator();
         int i=0;
