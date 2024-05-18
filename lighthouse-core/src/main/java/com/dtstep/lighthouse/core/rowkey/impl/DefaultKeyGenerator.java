@@ -80,11 +80,11 @@ public class DefaultKeyGenerator implements KeyGenerator {
         String origin = Md5Util.getMD5(randomId + "_" + dataVersion + "_" + mergeTime + "_" + dimensValue + "_" + functionIndex);
         int index = Math.abs((int) (HashUtil.BKDRHash(origin) % SysConst._DBKeyPrefixArray.length));
         String prefix = SysConst._DBKeyPrefixArray[index];
-        return prefix + getChrono(mergeTime) + "|" + origin;
+        return prefix + getChronoLocation(mergeTime) + "|" + origin;
     }
 
-    private long getChrono(long mergeTime) {
-        return ChronoUnit.HOURS.between(Instant.ofEpochMilli(StatConst.SYSTEM_BASE_TIME), Instant.ofEpochMilli(mergeTime));
+    private long getChronoLocation(long mergeTime) {
+        return ChronoUnit.MINUTES.between(Instant.ofEpochMilli(StatConst.SYSTEM_BASE_TIME), Instant.ofEpochMilli(mergeTime));
     }
 
     @Override
