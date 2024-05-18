@@ -39,7 +39,7 @@ public class DefaultKeyGenerator implements KeyGenerator {
     public String generateBatchKey(Stat stat, int functionIndex, String dimensValue, long batchTime) {
         String key = null;
         try{
-            long baseTime;
+            long mergeTime;
             String delta;
             String timeparam = stat.getTimeparam();
             String [] arr = timeparam.split("-");
@@ -48,27 +48,27 @@ public class DefaultKeyGenerator implements KeyGenerator {
             TimeUnit timeUnit;
             switch (timeUnitStr) {
                 case "minute":
-                    baseTime = DateUtil.getHourStartTime(batchTime);
+                    mergeTime = DateUtil.getHourStartTime(batchTime);
                     timeUnit = TimeUnit.MINUTES;
                     break;
                 case "hour":
-                    baseTime = DateUtil.getDayStartTime(batchTime);
+                    mergeTime = DateUtil.getDayStartTime(batchTime);
                     timeUnit = TimeUnit.HOURS;
                     break;
                 case "day":
-                    baseTime = DateUtil.getMonthStartTime(batchTime);
+                    mergeTime = DateUtil.getMonthStartTime(batchTime);
                     timeUnit = TimeUnit.DAYS;
                     break;
                 case "second":
-                    baseTime = DateUtil.getHourStartTime(batchTime);
+                    mergeTime = DateUtil.getHourStartTime(batchTime);
                     timeUnit = TimeUnit.SECONDS;
                     break;
                 default:
                     throw new Exception();
             }
             long duration = timeUnit.toMillis(interval);
-            String baseKey = generateBatchBaseKey(stat.getRandomId(), stat.getDataVersion(), baseTime,dimensValue,functionIndex);
-            delta = Long.toHexString((batchTime - baseTime) / duration);
+            String baseKey = generateBatchBaseKey(stat.getRandomId(), stat.getDataVersion(), mergeTime,dimensValue,functionIndex);
+            delta = Long.toHexString((batchTime - mergeTime) / duration);
             key = StringBuilderHolder.Smaller.getStringBuilder().append(baseKey).append(";").append(delta).toString();
         }catch (Exception ex){
             logger.error("generate batch key error!",ex);
@@ -76,15 +76,15 @@ public class DefaultKeyGenerator implements KeyGenerator {
         return key;
     }
 
-    public String generateBatchBaseKey(String randomId,int dataVersion,long baseTime,String dimensValue,int functionIndex) {
-        String origin = Md5Util.getMD5(randomId + "_" + dataVersion + "_" + baseTime + "_" + dimensValue + "_" + functionIndex);
+    public String generateBatchBaseKey(String randomId,int dataVersion,long mergeTime,String dimensValue,int functionIndex) {
+        String origin = Md5Util.getMD5(randomId + "_" + dataVersion + "_" + mergeTime + "_" + dimensValue + "_" + functionIndex);
         int index = Math.abs((int) (HashUtil.BKDRHash(origin) % SysConst._DBKeyPrefixArray.length));
         String prefix = SysConst._DBKeyPrefixArray[index];
-        return prefix + getChrono(baseTime) + "|" + origin;
+        return prefix + getChrono(mergeTime) + "|" + origin;
     }
 
-    private long getChrono(long baseTime) {
-        return ChronoUnit.HOURS.between(Instant.ofEpochMilli(StatConst.SYSTEM_BASE_TIME), Instant.ofEpochMilli(baseTime));
+    private long getChrono(long mergeTime) {
+        return ChronoUnit.HOURS.between(Instant.ofEpochMilli(StatConst.SYSTEM_BASE_TIME), Instant.ofEpochMilli(mergeTime));
     }
 
     @Override
