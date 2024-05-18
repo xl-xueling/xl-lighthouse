@@ -25,4 +25,5 @@ public interface ResultStorageHandler<W,R> {
 
     Map<String,List<R>> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception;
 
+    Map<String,List<R>> queryWithDimensList0(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception;
 }

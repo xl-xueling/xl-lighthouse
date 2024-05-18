@@ -195,6 +195,64 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
             metaName = metaTable.getMetaName();
         }
         List<LdpGet> getList = new ArrayList<>();
+        for (long batchTime : batchTimeList) {
+            if(dimensValueList == null){
+                for (StatState statState : statStates) {
+                    String aggregateKey = keyGenerator.resultKey(statExtEntity,statState.getFunctionIndex(),null,batchTime);
+                    String [] keyArr = aggregateKey.split(";");
+                    String key = keyArr[0];
+                    String column = keyArr[1];
+                    LdpGet ldpGet = LdpGet.with(key,column);
+                    getList.add(ldpGet);
+                }
+            }else{
+                for(String dimensValue : dimensValueList) {
+                    for (StatState statState : statStates) {
+                        String aggregateKey = keyGenerator.resultKey(statExtEntity,statState.getFunctionIndex(),dimensValue,batchTime);
+                        String [] keyArr = aggregateKey.split(";");
+                        String key = keyArr[0];
+                        String column = keyArr[1];
+                        LdpGet ldpGet = LdpGet.with(key,column);
+                        getList.add(ldpGet);
+                    }
+                }
+            }
+        }
+        Validate.isTrue(getList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
+        List<LdpResult<Long>> results = StorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
+        Map<String,LdpResult<Long>> dbResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
+        Map<String,List<StatValue>> resultMap = new HashMap<>();
+        if(dimensValueList == null){
+            List<StatValue> valueList = new ArrayList<>();
+            for(long batchTime : batchTimeList){
+                StatValue statValue = calculate(statExtEntity,null,batchTime,dbResultMap);
+                valueList.add(statValue);
+            }
+            resultMap.put(null,valueList);
+        }else{
+            for(String dimensValue : dimensValueList){
+                List<StatValue> valueList = new ArrayList<>();
+                for(long batchTime : batchTimeList){
+                    StatValue statValue = calculate(statExtEntity,dimensValue,batchTime,dbResultMap);
+                    valueList.add(statValue);
+                }
+                resultMap.put(dimensValue,valueList);
+            }
+        }
+        return resultMap;
+    }
+
+    public Map<String,List<StatValue>> queryWithDimensList0(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
+        List<StatState> statStates = statExtEntity.getTemplateEntity().getStatStateList();
+        int resMeta = statExtEntity.getMetaId();
+        String metaName;
+        if(statExtEntity.isBuiltIn()){
+            metaName = StatConst.SYSTEM_STAT_RESULT_TABLE;
+        }else{
+            MetaTable metaTable = MetaTableWrapper.queryById(resMeta);
+            metaName = metaTable.getMetaName();
+        }
+        List<LdpGet> getList = new ArrayList<>();
         List<LdpGet> compatibleGetList = new ArrayList<>();
         HashMap<String,String> compatibleKeyMap = new HashMap<>();
         for (long batchTime : batchTimeList) {
