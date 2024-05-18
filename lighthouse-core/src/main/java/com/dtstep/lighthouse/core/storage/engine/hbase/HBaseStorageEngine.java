@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.core.storage.engine.hbase;
 
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.hash.HashUtil;
+import com.dtstep.lighthouse.common.util.ListUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.lock.RedissonLock;
@@ -122,7 +123,11 @@ public class HBaseStorageEngine implements StorageEngine {
     }
 
     private TableName getTableName(String tableName){
-        return TableName.valueOf(String.format("%s:%s",getDefaultNamespace(),tableName));
+        if(tableName.contains(":")){
+            return TableName.valueOf(tableName);
+        }else{
+            return TableName.valueOf(String.format("%s:%s",getDefaultNamespace(),tableName));
+        }
     }
 
     @Override
@@ -195,6 +200,54 @@ public class HBaseStorageEngine implements StorageEngine {
             hBaseAdmin.deleteTable(table);
         }catch (Exception ex){
             logger.error("drop table error,tableName:{}",tableName,ex);
+            throw ex;
+        }
+    }
+
+    public List<RegionInfo> getRegionInfo(String tableName) throws Exception {
+        try(Admin hBaseAdmin = getConnection().getAdmin()){
+            return hBaseAdmin.getRegions(getTableName(tableName));
+        }catch (Exception ex){
+            logger.error("getRegionInfo error,tableName:{}",tableName,ex);
+            throw ex;
+        }
+    }
+
+    public TableName[] listTables() throws Exception {
+        try(Admin hBaseAdmin = getConnection().getAdmin()){
+            return hBaseAdmin.listTableNames();
+        }catch (Exception ex){
+            logger.error("listTables error!",ex);
+            throw ex;
+        }
+    }
+
+    public void merge(String tableName,int targetRegions) throws Exception {
+        List<RegionInfo> list = getRegionInfo(tableName);
+        if(CollectionUtils.isEmpty(list) || list.size() <= targetRegions){
+            logger.info("Merge table:{} regions exit,Current region size is less than target!",tableName);
+            return;
+        }
+        logger.info("Waiting for merge table regions,table:{}",tableName);
+        List<List<RegionInfo>> totalGroupLists = ListUtil.listPartition(list,targetRegions);
+        try(Admin hBaseAdmin = getConnection().getAdmin()){
+            for (int i = 0 ;i < totalGroupLists.size();i++) {
+                List<RegionInfo> groupLists = totalGroupLists.get(i);
+                if (CollectionUtils.isEmpty(groupLists) || groupLists.size() <= 1) {
+                    continue;
+                }
+                byte[][] bytesArray = new byte[groupLists.size()][];
+                for (int n = 0; n < groupLists.size(); n++) {
+                    RegionInfo regionInfo = groupLists.get(n);
+                    bytesArray[n] = Bytes.toBytes(regionInfo.getEncodedName());
+                }
+                logger.info("Start to merge group index:{},regions:{}",i,groupLists.stream().map(RegionInfo::getEncodedName).collect(Collectors.joining(",")));
+                hBaseAdmin.mergeRegionsAsync(bytesArray, false);
+                logger.info("Merge group index:{} completed!",i);
+            }
+            logger.info("Merge table regions[{}] completed!",tableName);
+        }catch (Exception ex){
+            logger.error("Merge table regions[{}] failed!",tableName,ex);
             throw ex;
         }
     }
