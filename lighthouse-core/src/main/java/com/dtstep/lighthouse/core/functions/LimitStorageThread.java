@@ -50,7 +50,7 @@ public class LimitStorageThread extends Thread {
     public void consumer(int slot) {
         try{
             SlotsGroup.SlotWrapper<LimitBucket> slotWrapper = eventPool.take(slot);
-            while (slotWrapper.size() > batchSize * StatConst.backlog_factor || System.currentTimeMillis() - slotWrapper.getLastAccessTime() > TimeUnit.SECONDS.toMillis(30)) {
+            while (slotWrapper.size() > batchSize * StatConst.backlog_factor || System.currentTimeMillis() - slotWrapper.getLastAccessTime() > TimeUnit.SECONDS.toMillis(180)) {
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
                 List<LimitBucket> events = slotWrapper.getEvents(batchSize);
