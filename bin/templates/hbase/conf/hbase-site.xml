@@ -196,11 +196,11 @@
     </property>
     <property>
         <name>hbase.hstore.compaction.max</name>
-        <value>10</value>
+        <value>50</value>
     </property>
     <property>
-	    <name>hbase.hregion.max.filesize</name>
-	    <value>20474836480</value>
+        <name>hbase.hregion.max.filesize</name>
+        <value>10737418240</value>
     </property>
     <property>
 	    <name>hbase.hstore.engine.class</name>
