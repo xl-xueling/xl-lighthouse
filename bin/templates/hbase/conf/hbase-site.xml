@@ -228,7 +228,7 @@
     </property>
     <property>
         <name>hbase.hstore.compaction.ratio</name>
-        <value>1.5</value>
+        <value>1.6</value>
     </property>
     <property>
         <name>hbase.regionserver.flush.policy</name>
