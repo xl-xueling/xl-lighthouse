@@ -223,6 +223,10 @@
         <value>2342880000</value>
     </property>
     <property>
+        <name>hbase.hstore.compaction.ratio</name>
+        <value>1.5</value>
+    </property>
+    <property>
         <name>hbase.regionserver.flush.policy</name>
         <value>org.apache.hadoop.hbase.regionserver.FlushAllLargeStoresPolicy</value>
     </property>
