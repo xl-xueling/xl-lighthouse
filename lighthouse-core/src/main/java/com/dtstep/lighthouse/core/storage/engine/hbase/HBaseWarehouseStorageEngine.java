@@ -8,7 +8,7 @@ import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.lock.RedissonLock;
 import com.dtstep.lighthouse.core.storage.*;
 import com.dtstep.lighthouse.core.storage.CompareOperator;
-import com.dtstep.lighthouse.core.storage.engine.StorageEngine;
+import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngine;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -28,13 +28,15 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
-public class HBaseStorageEngine implements StorageEngine {
+public class HBaseWarehouseStorageEngine implements WarehouseStorageEngine {
 
-    private static final Logger logger = LoggerFactory.getLogger(HBaseStorageEngine.class);
+    private static final Logger logger = LoggerFactory.getLogger(HBaseWarehouseStorageEngine.class);
 
     private static Compression.Algorithm algorithm = null;
 
     private static final int PrePartitionsPerRegionServer = 4;
+
+    private static volatile Connection connection = null;
 
     static {
         String compression = LDPConfig.getOrDefault(LDPConfig.KEY_DATA_COMPRESSION_TYPE,"zstd",String.class);
@@ -62,16 +64,14 @@ public class HBaseStorageEngine implements StorageEngine {
         }
     }
 
-    private static volatile Connection connection = null;
-
     public static Connection getConnection() throws Exception{
         if(connection == null || connection.isClosed() || connection.isAborted()){
-            synchronized (HBaseStorageEngine.class){
+            synchronized (HBaseWarehouseStorageEngine.class){
                 if(connection == null || connection.isClosed() || connection.isAborted()){
                     StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
-                    String zooQuorum = LDPConfig.getVal(LDPConfig.KEY_HBASE_ZOOKEEPER_QUORUM);
-                    String port = LDPConfig.getVal(LDPConfig.KEY_HBASE_ZOOKEEPER_QUORUM_PORT);
+                    String zooQuorum = LDPConfig.getVal("warehouse.storage.engine.hbase.zookeeper.quorum");
+                    String port = LDPConfig.getVal("warehouse.storage.engine.hbase.zookeeper.quorum.port");
                     Configuration hBaseConfiguration = HBaseConfiguration.create();
                     hBaseConfiguration.set("hbase.zookeeper.quorum",zooQuorum);
                     hBaseConfiguration.set("hbase.zookeeper.property.clientPort",port);

@@ -18,6 +18,7 @@ package com.dtstep.lighthouse.core.config;
  */
 import com.dtstep.lighthouse.common.enums.RunningMode;
 import com.dtstep.lighthouse.common.exception.LDPUncaughtExceptionHandler;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.google.common.collect.Maps;
 import com.dtstep.lighthouse.common.exception.ConfigParseException;
 import com.dtstep.lighthouse.common.exception.InitializationException;
@@ -32,6 +33,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -42,27 +45,13 @@ public final class LDPConfig {
 
     private static Map<String,String> paramMap = Maps.newHashMap();
 
-    public static final boolean AUTHORITY_VERIFY_SWITCH = true;
-
     public static final String KEY_KAFKA_BOOTSTRAP_SERVERS = "kafka.bootstrap.servers";
-
-    public static final String KEY_DB_ConnectionURL = "javax.jdo.option.ConnectionURL";
-
-    public static final String KEY_DB_ConnectionUserName = "javax.jdo.option.ConnectionUserName";
-
-    public static final String KEY_DB_ConnectionPassword = "javax.jdo.option.ConnectionPassword";
-
-    public static final String KEY_DB_DriverClassName = "javax.jdo.option.driverClassName";
 
     public static final String KEY_KAFKA_TOPIC_NAME = "kafka.topic.name";
 
     public static final String KEY_REDIS_CLUSTER = "redis.cluster";
 
     public static final String KEY_REDIS_CLUSTER_PASSWORD = "redis.cluster.password";
-
-    public static final String KEY_HBASE_ZOOKEEPER_QUORUM = "hbase.zookeeper.quorum";
-
-    public static final String KEY_HBASE_ZOOKEEPER_QUORUM_PORT = "hbase.zookeeper.quorum.port";
 
     public static final String KEY_LIMITING_GROUP_MESSAGE_SIZE_PER_SEC = "limiting.group.message.size.per.sec";
 
@@ -81,6 +70,10 @@ public final class LDPConfig {
     public static final String KEY_HOME_PATH = "ldp_home";
 
     public static final String KEY_DATA_DIR = "ldp_data_dir";
+
+    public static final String KEY_CMDB_STORAGE_ENGINE = "cmdb.storage.engine";
+
+    public static final String KEY_WAREHOUSE_STORAGE_ENGINE = "warehouse.storage.engine";
 
     private static RunningMode runningMode;
 
@@ -119,23 +112,25 @@ public final class LDPConfig {
         }
         File file = new File(confPath);
         Document document = Jsoup.parse(file, "utf-8");
-        Elements elements = document.select("property");
-        for (Element element : elements) {
-            Elements nameElements = element.getElementsByTag("name");
-            if (nameElements == null || nameElements.size() != 1) {
-                throw new ConfigParseException(String.format("%s parse exception", confPath));
-            }
-            String name = nameElements.get(0).text();
-            Elements valueElements = element.getElementsByTag("value");
-            if (valueElements == null || valueElements.size() != 1) {
-                throw new ConfigParseException(String.format("%s parse exception", confPath));
-            }
-            String value = valueElements.get(0).text();
-            paramMap.put(name, value);
-        }
+        parseProperties(document.select("configuration > property"), "", paramMap);
         paramMap  = Collections.unmodifiableMap(paramMap);
         Thread.setDefaultUncaughtExceptionHandler(new LDPUncaughtExceptionHandler());
         isInit.set(true);
+    }
+
+    private static void parseProperties(Elements elements, String parentKey, Map<String, String> keyValuePairs) {
+        for (Element element : elements) {
+            if (element.tagName().equals("property")) {
+                String name = element.selectFirst("name").text();
+                String value = element.selectFirst("value").text();
+                String fullKey = parentKey.isEmpty() ? name : parentKey + "." + name;
+                keyValuePairs.put(fullKey, value);
+                Elements childProperties = element.select("properties > property");
+                if (!childProperties.isEmpty()) {
+                    parseProperties(childProperties, fullKey, keyValuePairs);
+                }
+            }
+        }
     }
 
     public static String getHomeDir(){

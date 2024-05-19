@@ -26,8 +26,8 @@ import com.dtstep.lighthouse.common.modal.Department;
 import com.dtstep.lighthouse.common.modal.Domain;
 import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.common.modal.User;
-import com.dtstep.lighthouse.core.storage.engine.StorageEngine;
-import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngine;
+import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngineProxy;
 import com.dtstep.lighthouse.insights.service.*;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,7 +144,7 @@ public class InitServiceImpl implements InitService {
 
     @Override
     public void initStorageEngine() throws Exception {
-        StorageEngine dbEngine = StorageEngineProxy.getInstance();
+        WarehouseStorageEngine dbEngine = WarehouseStorageEngineProxy.getInstance();
         String namespace = dbEngine.getDefaultNamespace();
         dbEngine.createNamespaceIfNotExist(namespace);
         String dimensTableName = StatConst.DIMENS_STORAGE_TABLE;

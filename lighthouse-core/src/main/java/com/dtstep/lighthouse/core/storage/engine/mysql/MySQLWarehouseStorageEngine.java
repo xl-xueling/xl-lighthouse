@@ -1,11 +1,11 @@
 package com.dtstep.lighthouse.core.storage.engine.mysql;
 
 import com.dtstep.lighthouse.core.storage.*;
-import com.dtstep.lighthouse.core.storage.engine.StorageEngine;
+import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngine;
 
 import java.util.List;
 
-public class MySQLStorageEngine implements StorageEngine {
+public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
 
     @Override
     public String getDefaultNamespace() {
@@ -14,7 +14,7 @@ public class MySQLStorageEngine implements StorageEngine {
 
     @Override
     public void createNamespaceIfNotExist(String namespace) throws Exception {
-
+        return;
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.dtstep.lighthouse.common.entity.event.DimensBucket;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.storage.dimens.impl.DefaultDimensStorageHandler;
-import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngineProxy;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ public class DimensStorageHandlerTest {
 
     @Test
     public void testCreateDimensTable() throws Exception {
-        StorageEngineProxy.getInstance().dropTable(StatConst.DIMENS_STORAGE_TABLE);
-        StorageEngineProxy.getInstance().createTable(StatConst.DIMENS_STORAGE_TABLE);
+        WarehouseStorageEngineProxy.getInstance().dropTable(StatConst.DIMENS_STORAGE_TABLE);
+        WarehouseStorageEngineProxy.getInstance().createTable(StatConst.DIMENS_STORAGE_TABLE);
     }
 
     @Test

@@ -19,7 +19,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
 import com.dtstep.lighthouse.common.modal.MetaTable;
 import com.dtstep.lighthouse.common.util.DateUtil;
-import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngineProxy;
 import com.dtstep.lighthouse.core.wrapper.MetaTableWrapper;
 import com.dtstep.lighthouse.insights.dao.MetaTableDao;
 import com.dtstep.lighthouse.insights.dto.MetaTableQueryParam;
@@ -39,9 +39,9 @@ public class MetaTableServiceImpl implements MetaTableService {
     @Override
     public int getCurrentStatResultTable() throws Exception {
         MetaTableQueryParam metaTableQueryParam = new MetaTableQueryParam();
-        long maxRecordSize = StorageEngineProxy.getInstance().getMaxRecordSize();
-        long maxContentSize = StorageEngineProxy.getInstance().getMaxContentSize();
-        long maxTimeInterval = StorageEngineProxy.getInstance().getMaxTimeInterval();
+        long maxRecordSize = WarehouseStorageEngineProxy.getInstance().getMaxRecordSize();
+        long maxContentSize = WarehouseStorageEngineProxy.getInstance().getMaxContentSize();
+        long maxTimeInterval = WarehouseStorageEngineProxy.getInstance().getMaxTimeInterval();
         metaTableQueryParam.setMaxRecordSize(maxRecordSize);
         metaTableQueryParam.setMaxContentSize(maxContentSize);
         long timestamp = DateUtil.getSecondBefore(System.currentTimeMillis(),maxTimeInterval);
@@ -64,9 +64,9 @@ public class MetaTableServiceImpl implements MetaTableService {
     @Override
     public int getCurrentSeqResultTable() throws Exception {
         MetaTableQueryParam metaTableQueryParam = new MetaTableQueryParam();
-        long maxRecordSize = StorageEngineProxy.getInstance().getMaxRecordSize();
-        long maxContentSize = StorageEngineProxy.getInstance().getMaxContentSize();
-        long maxTimeInterval = StorageEngineProxy.getInstance().getMaxTimeInterval();
+        long maxRecordSize = WarehouseStorageEngineProxy.getInstance().getMaxRecordSize();
+        long maxContentSize = WarehouseStorageEngineProxy.getInstance().getMaxContentSize();
+        long maxTimeInterval = WarehouseStorageEngineProxy.getInstance().getMaxTimeInterval();
         metaTableQueryParam.setMaxRecordSize(maxRecordSize);
         metaTableQueryParam.setMaxContentSize(maxContentSize);
         long timestamp = DateUtil.getSecondBefore(System.currentTimeMillis(),maxTimeInterval);

@@ -7,14 +7,13 @@ import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.modal.MetaTable;
 import com.dtstep.lighthouse.common.util.DateUtil;
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
 import com.dtstep.lighthouse.core.storage.*;
-import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngineProxy;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageHandler;
 import com.dtstep.lighthouse.core.wrapper.MetaTableWrapper;
 import com.google.common.collect.Lists;
@@ -60,7 +59,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                 ldpIncrements.add(ldpIncrement);
             }
             try {
-                StorageEngineProxy.getInstance().increments(metaName,ldpIncrements);
+                WarehouseStorageEngineProxy.getInstance().increments(metaName,ldpIncrements);
             } catch (Exception ex) {
                 logger.error("data increment exception!", ex);
             }
@@ -89,7 +88,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                 puts.add(ldpPut);
             }
             try {
-                StorageEngineProxy.getInstance().putsWithCompare(metaName, CompareOperator.GREATER,puts);
+                WarehouseStorageEngineProxy.getInstance().putsWithCompare(metaName, CompareOperator.GREATER,puts);
             } catch (Exception ex) {
                 logger.error("data put exception!", ex);
             }
@@ -118,7 +117,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                 puts.add(ldpPut);
             }
             try {
-                StorageEngineProxy.getInstance().putsWithCompare(metaName, CompareOperator.LESSER,puts);
+                WarehouseStorageEngineProxy.getInstance().putsWithCompare(metaName, CompareOperator.LESSER,puts);
             } catch (Exception ex) {
                 logger.error("data put exception!", ex);
             }
@@ -147,7 +146,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                 ldpPuts.add(ldpPut);
             }
             try {
-                StorageEngineProxy.getInstance().puts(metaName,ldpPuts);
+                WarehouseStorageEngineProxy.getInstance().puts(metaName,ldpPuts);
             } catch (Exception ex) {
                 logger.error("data put exception!", ex);
             }
@@ -219,7 +218,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
             }
         }
         Validate.isTrue(getList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
-        List<LdpResult<Long>> results = StorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
+        List<LdpResult<Long>> results = WarehouseStorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
         Map<String,LdpResult<Long>> dbResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
         Map<String,List<StatValue>> resultMap = new HashMap<>();
         if(dimensValueList == null){
@@ -291,8 +290,8 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
             }
         }
         Validate.isTrue(getList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
-        List<LdpResult<Long>> results = StorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
-        List<LdpResult<Long>> compatibleResults = StorageEngineProxy.getInstance().gets(metaName,compatibleGetList,Long.class);
+        List<LdpResult<Long>> results = WarehouseStorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
+        List<LdpResult<Long>> compatibleResults = WarehouseStorageEngineProxy.getInstance().gets(metaName,compatibleGetList,Long.class);
         Map<String,LdpResult<Long>> dbResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
         Map<String,LdpResult<Long>> compatibleDBResultMap = compatibleResults.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
         for(String compatibleAggregateKey : compatibleDBResultMap.keySet()){

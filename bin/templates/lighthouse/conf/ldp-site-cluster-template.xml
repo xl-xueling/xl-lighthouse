@@ -6,7 +6,7 @@
     </property>
     <property>
         <name>lighthouse.running.mode</name>
-        <value>${ldp_lighthouse_running_mode}</value>
+        <value>cluster</value>
     </property>
     <property>
         <name>cmdb.storage.engine</name>

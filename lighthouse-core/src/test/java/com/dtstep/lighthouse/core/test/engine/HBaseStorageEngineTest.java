@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.core.test.engine;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.storage.*;
-import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngineProxy;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -22,19 +22,19 @@ public class HBaseStorageEngineTest {
 
     @Test
     public void testCreateNamespace() throws Exception {
-        StorageEngineProxy.getInstance().createNamespaceIfNotExist("ssvs");
+        WarehouseStorageEngineProxy.getInstance().createNamespaceIfNotExist("ssvs");
     }
 
     @Test
     public void testCreateTable() throws Exception {
         String tableName = "ssvs:table_abc";
-        StorageEngineProxy.getInstance().createTable(tableName);
+        WarehouseStorageEngineProxy.getInstance().createTable(tableName);
     }
 
     @Test
     public void testDeleteTable() throws Exception {
         String tableName = "ssvs:table_abc";
-        StorageEngineProxy.getInstance().dropTable(tableName);
+        WarehouseStorageEngineProxy.getInstance().dropTable(tableName);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class HBaseStorageEngineTest {
             ldpIncrement.setStep(101);
             ldpIncrement.setKey("abc");
             ldpIncrement.setTtl(TimeUnit.DAYS.toMillis(10));
-            StorageEngineProxy.getInstance().increment(tableName,ldpIncrement);
+            WarehouseStorageEngineProxy.getInstance().increment(tableName,ldpIncrement);
         }
         for(int i=0;i<100;i++){
             LdpIncrement ldpIncrement = new LdpIncrement();
@@ -54,7 +54,7 @@ public class HBaseStorageEngineTest {
             ldpIncrement.setStep(201);
             ldpIncrement.setKey("def");
             ldpIncrement.setTtl(TimeUnit.DAYS.toMillis(10));
-            StorageEngineProxy.getInstance().increment(tableName,ldpIncrement);
+            WarehouseStorageEngineProxy.getInstance().increment(tableName,ldpIncrement);
         }
     }
 
@@ -66,7 +66,7 @@ public class HBaseStorageEngineTest {
         LdpGet ldpGet = new LdpGet();
         ldpGet.setColumn(column);
         ldpGet.setKey(key);
-        LdpResult<Long> result = StorageEngineProxy.getInstance().get(tableName,ldpGet,Long.class);
+        LdpResult<Long> result = WarehouseStorageEngineProxy.getInstance().get(tableName,ldpGet,Long.class);
         System.out.println("result:" + JsonUtil.toJSONString(result));
     }
 
@@ -82,7 +82,7 @@ public class HBaseStorageEngineTest {
         List<LdpGet> getList = new ArrayList<>();
         getList.add(get1);
         getList.add(get2);
-        List<LdpResult<Long>> results = StorageEngineProxy.getInstance().gets(tableName,getList,Long.class);
+        List<LdpResult<Long>> results = WarehouseStorageEngineProxy.getInstance().gets(tableName,getList,Long.class);
         System.out.println("results is:" + JsonUtil.toJSONString(results));
     }
 
@@ -90,7 +90,7 @@ public class HBaseStorageEngineTest {
     public void testDelete() throws Exception {
         String tableName = "ssvs:table_abc";
         String key = "abc";
-        StorageEngineProxy.getInstance().delete(tableName,key);
+        WarehouseStorageEngineProxy.getInstance().delete(tableName,key);
     }
 
     @Test
@@ -102,11 +102,11 @@ public class HBaseStorageEngineTest {
         ldpPut.setColumn("v");
         ldpPut.setKey(key);
         ldpPut.setData("aaaaa");
-        StorageEngineProxy.getInstance().put(tableName,ldpPut);
+        WarehouseStorageEngineProxy.getInstance().put(tableName,ldpPut);
         LdpGet ldpGet = new LdpGet();
         ldpGet.setKey(key);
         ldpGet.setColumn("v");
-        LdpResult<String> ldpResult = StorageEngineProxy.getInstance().get(tableName,ldpGet,String.class);
+        LdpResult<String> ldpResult = WarehouseStorageEngineProxy.getInstance().get(tableName,ldpGet,String.class);
         System.out.println("ldpResult is:" + JsonUtil.toJSONString(ldpResult));
     }
 
@@ -122,7 +122,7 @@ public class HBaseStorageEngineTest {
             ldpPut.setTtl(TimeUnit.DAYS.toMillis(10));
             putList.add(ldpPut);
         }
-        StorageEngineProxy.getInstance().puts(tableName,putList);
+        WarehouseStorageEngineProxy.getInstance().puts(tableName,putList);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class HBaseStorageEngineTest {
         String tableName = "ssvs:table_abc";
         String startRow = " 00.";
         String endRow = "00|";
-        List<LdpResult<String>> results = StorageEngineProxy.getInstance().scan(tableName,startRow,endRow,10,String.class);
+        List<LdpResult<String>> results = WarehouseStorageEngineProxy.getInstance().scan(tableName,startRow,endRow,10,String.class);
         for(int i=0;i<results.size();i++){
             LdpResult<String> result = results.get(i);
             System.out.println("result is:" + JsonUtil.toJSONString(result));
@@ -145,11 +145,11 @@ public class HBaseStorageEngineTest {
         ldpPut.setData(1L);
         ldpPut.setKey("103");
         ldpPut.setTtl(TimeUnit.HOURS.toMillis(111));
-        StorageEngineProxy.getInstance().put(tableName,ldpPut);
+        WarehouseStorageEngineProxy.getInstance().put(tableName,ldpPut);
         LdpGet get = new LdpGet();
         get.setKey("103");
         get.setColumn("v");
-        LdpResult<Long> result = StorageEngineProxy.getInstance().get(tableName,get,Long.class);
+        LdpResult<Long> result = WarehouseStorageEngineProxy.getInstance().get(tableName,get,Long.class);
         System.out.println("result is:" + JsonUtil.toJSONString(result));
     }
 
@@ -171,7 +171,7 @@ public class HBaseStorageEngineTest {
         put2.setData(5L);
         put2.setKey("102");
         ldpPuts.add(put2);
-        StorageEngineProxy.getInstance().putsWithCompare(tableName, CompareOperator.GREATER,ldpPuts);
+        WarehouseStorageEngineProxy.getInstance().putsWithCompare(tableName, CompareOperator.GREATER,ldpPuts);
     }
 
     @Test

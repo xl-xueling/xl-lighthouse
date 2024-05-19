@@ -4,7 +4,7 @@ import com.dtstep.lighthouse.core.storage.*;
 
 import java.util.List;
 
-public interface StorageEngine {
+public interface WarehouseStorageEngine {
 
     String getDefaultNamespace();
 

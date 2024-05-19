@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.core.tools;
 
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.storage.engine.hbase.HBaseStorageEngine;
+import com.dtstep.lighthouse.core.storage.engine.hbase.HBaseWarehouseStorageEngine;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.RegionInfo;
 import org.slf4j.Logger;
@@ -19,7 +19,7 @@ public class HBaseTableRegionMerge {
         if(args != null){
             targetSize = Integer.parseInt(args[0]);
         }
-        HBaseStorageEngine storageEngine = new HBaseStorageEngine();
+        HBaseWarehouseStorageEngine storageEngine = new HBaseWarehouseStorageEngine();
         TableName[] tableNames = storageEngine.listTables();
         if(tableNames == null || tableNames.length == 0){
             return;

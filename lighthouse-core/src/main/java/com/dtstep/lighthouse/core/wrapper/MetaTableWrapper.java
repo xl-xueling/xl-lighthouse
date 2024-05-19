@@ -20,7 +20,7 @@ import com.dtstep.lighthouse.common.enums.MetaTableStateEnum;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.core.dao.ConnectionManager;
 import com.dtstep.lighthouse.core.dao.DBConnection;
-import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngineProxy;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.dtstep.lighthouse.common.modal.MetaTable;
@@ -28,7 +28,6 @@ import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
-import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,8 +92,8 @@ public final class MetaTableWrapper {
             metaTable = queryMetaByIdFromDB(metaId);
             if(metaTable != null){
                 String metaName = metaTable.getMetaName();
-                if(!StorageEngineProxy.getInstance().isTableExist(metaName)){
-                    StorageEngineProxy.getInstance().createTable(metaName);
+                if(!WarehouseStorageEngineProxy.getInstance().isTableExist(metaName)){
+                    WarehouseStorageEngineProxy.getInstance().createTable(metaName);
                 }
             }
         }catch (Exception ex){
@@ -148,7 +147,7 @@ public final class MetaTableWrapper {
         }
 
         try{
-            StorageEngineProxy.getInstance().dropTable(tableName);
+            WarehouseStorageEngineProxy.getInstance().dropTable(tableName);
             logger.info("drop storage table success,metaName:{}",tableName);
         }catch (Exception ex){
             logger.error("drop storage table failed,metaName:{}",tableName,ex);
@@ -166,7 +165,7 @@ public final class MetaTableWrapper {
         metaTable.setUpdateTime(date);
         metaTable.setMetaTableType(MetaTableTypeEnum.STAT_RESULT_TABLE);
         try{
-            StorageEngineProxy.getInstance().createTable(metaName);
+            WarehouseStorageEngineProxy.getInstance().createTable(metaName);
             logger.info("create stat storage table,create hbase table success,metaName:{}",metaName);
         }catch (Exception ex){
             logger.error("create stat storage table,create hbase table error,metaName:{}",metaName,ex);
@@ -194,7 +193,7 @@ public final class MetaTableWrapper {
         metaTable.setUpdateTime(date);
         metaTable.setMetaTableType(MetaTableTypeEnum.SEQ_RESULT_TABLE);
         try{
-            StorageEngineProxy.getInstance().createTable(metaName);
+            WarehouseStorageEngineProxy.getInstance().createTable(metaName);
             logger.info("create seq storage table,create hbase table success,metaName:{}",metaName);
         }catch (Exception ex){
             logger.error("create seq storage table,create hbase table error,metaName:{}",metaName,ex);

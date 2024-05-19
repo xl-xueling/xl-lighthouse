@@ -12,7 +12,7 @@ import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
 import com.dtstep.lighthouse.core.storage.LdpPut;
 import com.dtstep.lighthouse.core.storage.LdpResult;
 import com.dtstep.lighthouse.core.storage.dimens.DimensStorageHandler;
-import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngineProxy;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
             LdpPut ldpPut = LdpPut.with(rowKey,dimensColumnName,quartet.getDimensValue(),quartet.getTtl());
             putList.add(ldpPut);
         }
-        StorageEngineProxy.getInstance().puts(StatConst.DIMENS_STORAGE_TABLE,putList);
+        WarehouseStorageEngineProxy.getInstance().puts(StatConst.DIMENS_STORAGE_TABLE,putList);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
             try {
                 while (true) {
                     int requireSize = limit - dimensList.size();
-                    List<LdpResult<String>> dbResults = StorageEngineProxy.getInstance().scan(StatConst.DIMENS_STORAGE_TABLE, partStartRow, partEndRow, requireSize, String.class);
+                    List<LdpResult<String>> dbResults = WarehouseStorageEngineProxy.getInstance().scan(StatConst.DIMENS_STORAGE_TABLE, partStartRow, partEndRow, requireSize, String.class);
                     if (CollectionUtils.isEmpty(dbResults)) {
                         break;
                     }

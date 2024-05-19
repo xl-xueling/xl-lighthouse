@@ -46,10 +46,10 @@ public final class DBConnectionSource {
 
         try {
             Properties p = new Properties();
-            p.setProperty("driverClassName", "com.mysql.cj.jdbc.Driver");
-            p.setProperty("url", LDPConfig.getVal(LDPConfig.KEY_DB_ConnectionURL));
-            p.setProperty("username", LDPConfig.getVal(LDPConfig.KEY_DB_ConnectionUserName));
-            p.setProperty("password", LDPConfig.getVal(LDPConfig.KEY_DB_ConnectionPassword));
+            p.setProperty("driverClassName", LDPConfig.getVal("cmdb.storage.engine.javax.jdo.option.driverClassName"));
+            p.setProperty("url", LDPConfig.getVal("cmdb.storage.engine.javax.jdo.option.ConnectionURL"));
+            p.setProperty("username", LDPConfig.getVal("cmdb.storage.engine.javax.jdo.option.ConnectionUserName"));
+            p.setProperty("password", LDPConfig.getVal("cmdb.storage.engine.javax.jdo.option.ConnectionPassword"));
             p.setProperty("maxActive", "-1");
             p.setProperty("maxIdle", "10");
             p.setProperty("maxWait", "1000");
