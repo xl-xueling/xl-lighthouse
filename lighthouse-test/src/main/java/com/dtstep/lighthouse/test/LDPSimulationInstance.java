@@ -151,7 +151,7 @@ public class LDPSimulationInstance {
 
     public static List<Group> loadTokenList() throws Exception {
         String clusterId = LDPConfig.getVal(LDPConfig.KEY_CLUSTER_ID);
-        List<Group> list = DaoHelper.sql.getList(Group.class,"SELECT token,secret_key FROM cluster_"+clusterId+"_ldp_mysqldb.ldp_stat_group");
+        List<Group> list = DaoHelper.sql.getList(Group.class,"SELECT token,secret_key FROM cluster_"+clusterId+"_ldp_cmdb.ldp_stat_group");
         if(CollectionUtils.isEmpty(list)){
             return null;
         }

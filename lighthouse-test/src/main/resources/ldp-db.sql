@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `ldp_mysqldb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `ldp_mysqldb`;
+CREATE DATABASE  IF NOT EXISTS `ldp_cmdb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `ldp_cmdb`;
 -- MySQL dump 10.13  Distrib 8.0.30, for macos12 (x86_64)
 --
--- Host: 10.206.6.17    Database: ldp_mysqldb
+-- Host: 10.206.6.17    Database: ldp_cmdb
 -- ------------------------------------------------------
 -- Server version	8.0.30
 

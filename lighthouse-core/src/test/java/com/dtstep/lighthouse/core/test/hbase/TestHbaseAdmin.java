@@ -12,7 +12,7 @@ public class TestHbaseAdmin extends CoreBaseTest {
 
     @Test
     public void testGetRegionInfo() throws Exception {
-        String tableName = "cluster_3e710a62_ldp_hbasedb:ldp_stat_1716037618313";
+        String tableName = "cluster_3e710a62_ldp_warehouse:ldp_stat_1716037618313";
         HBaseWarehouseStorageEngine storageEngine = new HBaseWarehouseStorageEngine();
         List<RegionInfo> list =  storageEngine.getRegionInfo(tableName);
         System.out.println("list size:" + list.size());

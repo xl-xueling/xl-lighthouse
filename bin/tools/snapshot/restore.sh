@@ -29,15 +29,15 @@ restoreHBase(){
 	hadoop fs -rm -r -f /hbase/.hbase-snapshot/*
 	hadoop fs -put -f ${snapshotDir}/archive/data/* /hbase/archive/data/
 	hadoop fs -put -f ${snapshotDir}/.hbase-snapshot /hbase/
-	if ! checkNamespaceExists "cluster_${clusterId}_ldp_hbasedb" ; then
-		echo "create_namespace 'cluster_${clusterId}_ldp_hbasedb'" | $HBASE_HOME/bin/hbase shell >/dev/null 2>&1
+	if ! checkNamespaceExists "cluster_${clusterId}_ldp_warehouse" ; then
+		echo "create_namespace 'cluster_${clusterId}_ldp_warehouse'" | $HBASE_HOME/bin/hbase shell >/dev/null 2>&1
 	fi
 	local lists=`echo "list_snapshots" | $HBASE_HOME/bin/hbase shell | grep -o  '\[.*\]'`
         local snapshots=$(echo ${lists} |jq .[] | jq -r values)
         for snapshot in ${snapshots[@]}
 	do
 		local tableName=$(echo "$snapshot" | sed 's/_snapshot$//')
-		local fullTableName="cluster_${clusterId}_ldp_hbasedb:${tableName}";
+		local fullTableName="cluster_${clusterId}_ldp_warehouse:${tableName}";
 		echo "Waiting for restore snapshot of table[${fullTableName}] ...";
        		`echo "disable '${fullTableName}'" | $HBASE_HOME/bin/hbase shell` >/dev/null 2>&1
 		`echo "drop '${fullTableName}'" | $HBASE_HOME/bin/hbase shell` >/dev/null 2>&1
@@ -61,7 +61,7 @@ restoreMySQL(){
 	local port="3906"
 	local dbUser=($(getVal 'ldp_mysql_operate_user'))
 	local dbPwd=($(getVal 'ldp_mysql_operate_user_passwd'))
-	local dbName="cluster_${clusterId}_ldp_mysqldb";
+	local dbName="cluster_${clusterId}_ldp_cmdb";
 	export MYSQL_PWD=$dbPwd;
 	mysql -h $hostName -P $port -u$dbUser -e "create database if not exists ${dbName};"
 	local tables=$(mysql -h $hostName -P $port -u$dbUser -e "use ${dbName};show tables;" | awk '{if(NR>1)print $0}')

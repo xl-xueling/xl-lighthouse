@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.30, for macos12 (x86_64)
 --
--- Host: 10.206.6.17    Database: ldp_mysqldb
+-- Host: 10.206.6.17    Database: ldp_cmdb
 -- ------------------------------------------------------
 -- Server version	8.0.30
 

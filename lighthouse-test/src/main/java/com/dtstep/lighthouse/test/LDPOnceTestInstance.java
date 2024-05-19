@@ -113,7 +113,7 @@ public class LDPOnceTestInstance {
     private static String getDBName(){
         String clusterName = LDPConfig.getVal(LDPConfig.KEY_CLUSTER_ID);
         Validate.notNull(clusterName);
-        return String.format("cluster_%s_ldp_mysqldb",clusterName);
+        return String.format("cluster_%s_ldp_cmdb",clusterName);
     }
 
     public static void generateSampleData(int size) throws Exception {

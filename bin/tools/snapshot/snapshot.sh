@@ -14,7 +14,7 @@ LOCAL_PATH=${LDP_DATA_DIR}/lighthouse/snapshot
 function snapshotHBaseTable(){
 	local cluster_id="$1";
 	local table_name="$2";
-	local full_table_name="cluster_${cluster_id}_ldp_hbasedb:${table_name}";
+	local full_table_name="cluster_${cluster_id}_ldp_warehouse:${table_name}";
 	echo "Waiting for backup hbase table[${full_table_name}] ... ";
 	local snapshot_name="${table_name}_snapshot"
 	echo "delete_snapshot '$snapshot_name' " | $HBASE_HOME/bin/hbase shell -n >/dev/null 2>&1
@@ -59,8 +59,8 @@ function snapshotMySQL(){
 	local dbUser=($(getVal 'ldp_mysql_operate_user'))
 	local dbPwd=($(getVal 'ldp_mysql_operate_user_passwd'))
 	export MYSQL_PWD=$dbPwd;
-	local databases=$(mysql -h $hostName -P $port -u$dbUser -e "SHOW DATABASES;" | grep "_ldp_mysqldb")
-	local dbName="cluster_${cluster_id}_ldp_mysqldb"
+	local databases=$(mysql -h $hostName -P $port -u$dbUser -e "SHOW DATABASES;" | grep "_ldp_cmdb")
+	local dbName="cluster_${cluster_id}_ldp_cmdb"
 	if  [[ ! "${databases[@]}" =~ ${dbName} ]];then
 		echo "db does not exist,db:${dbName},process exist!"
 		exit -1;

@@ -106,7 +106,7 @@ public class HBaseWarehouseStorageEngine implements WarehouseStorageEngine {
     public String getDefaultNamespace() {
         String clusterName = LDPConfig.getVal(LDPConfig.KEY_CLUSTER_ID);
         Validate.notNull(clusterName);
-        return String.format("cluster_%s_ldp_hbasedb",clusterName);
+        return String.format("cluster_%s_ldp_warehouse",clusterName);
     }
 
     @Override
