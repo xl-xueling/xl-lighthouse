@@ -54,18 +54,18 @@ public final class DBConnectionSource {
             p.setProperty("minEvictableIdleTimeMillis", "180000");
             p.setProperty("numTestsPerEvictionRun", "3");
             BasicDataSource dataSource = BasicDataSourceFactory.createDataSource(p);
-            dataSourceMap.put(rdbmsConfiguration.getDbInstance(), dataSource);
+            dataSourceMap.put(rdbmsConfiguration.getDatabase(), dataSource);
         } catch (Exception e) {
             logger.error("get db connection error",e);
         }
     }
 
     public static synchronized BasicDataSource getBasicDataSource(RDBMSConfiguration rdbmsConfiguration) throws SQLException {
-        String instance = rdbmsConfiguration.getDbInstance();
-        Validate.notNull(instance);
-        if(!dataSourceMap.containsKey(instance)){
+        String database = rdbmsConfiguration.getDatabase();
+        Validate.notNull(database);
+        if(!dataSourceMap.containsKey(database)){
             init(rdbmsConfiguration);
         }
-        return dataSourceMap.get(instance);
+        return dataSourceMap.get(database);
     }
 }

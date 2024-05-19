@@ -1,7 +1,6 @@
 package com.dtstep.lighthouse.core.dao;
 
 import com.dtstep.lighthouse.common.exception.InitializationException;
-import com.dtstep.lighthouse.common.util.Md5Util;
 
 import java.io.Serializable;
 import java.util.regex.Matcher;
@@ -9,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class RDBMSConfiguration implements Serializable {
 
-    private String dbInstance;
+    private String database;
 
     private String driverClassName;
 
@@ -25,10 +24,7 @@ public class RDBMSConfiguration implements Serializable {
         Pattern pattern = Pattern.compile("jdbc:mysql://(.*):(\\d+)/(.+)\\?.*");
         Matcher matcher = pattern.matcher(connectionURL);
         if (matcher.find()) {
-            String ip = matcher.group(1);
-            String port = matcher.group(2);
-            String dbName = matcher.group(3);
-            this.dbInstance = Md5Util.get16MD5(ip + "_" + port + "_" + dbName);
+            this.database = matcher.group(3);
         } else {
             throw new InitializationException("Failed to parse rdbms configuration!");
         }
@@ -36,12 +32,12 @@ public class RDBMSConfiguration implements Serializable {
         this.connectionPassword = connectionPassword;
     }
 
-    public String getDbInstance() {
-        return dbInstance;
+    public String getDatabase() {
+        return database;
     }
 
-    public void setDbInstance(String dbInstance) {
-        this.dbInstance = dbInstance;
+    public void setDatabase(String database) {
+        this.database = database;
     }
 
     public String getDriverClassName() {

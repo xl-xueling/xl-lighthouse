@@ -1,16 +1,18 @@
 package com.dtstep.lighthouse.core.storage.warehouse.mysql;
 
 import com.dtstep.lighthouse.common.exception.InitializationException;
+import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.dao.DBConnectionSource;
 import com.dtstep.lighthouse.core.dao.RDBMSConfiguration;
 import com.dtstep.lighthouse.core.storage.*;
 import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngine;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
+import java.sql.*;
 import java.util.List;
 
 public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
@@ -19,6 +21,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
 
     private static final BasicDataSource basicDataSource;
 
+    private static final RDBMSConfiguration mySQLConfiguration;
+
     private static final ThreadLocal<Connection> connectionHolder = new ThreadLocal<>();
 
     static {
@@ -26,7 +30,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         String connectionUrl = LDPConfig.getVal("warehouse.storage.engine.javax.jdo.option.ConnectionURL");
         String connectionUserName = LDPConfig.getVal("warehouse.storage.engine.javax.jdo.option.ConnectionUserName");
         String connectionPassword = LDPConfig.getVal("warehouse.storage.engine.javax.jdo.option.ConnectionPassword");
-        RDBMSConfiguration mySQLConfiguration = new RDBMSConfiguration(driverClassName,connectionUrl,connectionUserName,connectionPassword);
+        mySQLConfiguration = new RDBMSConfiguration(driverClassName,connectionUrl,connectionUserName,connectionPassword);
         try{
             basicDataSource = DBConnectionSource.getBasicDataSource(mySQLConfiguration);
         }catch (Exception ex){
@@ -62,11 +66,56 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
 
     @Override
     public void createTable(String tableName) throws Exception {
-
+        Connection connection = null;
+        Statement statement = null;
+        try{
+            connection = getConnection();
+            String createTableSQL = String.format("CREATE TABLE IF NOT EXISTS %s ("
+                    + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                    + "key VARCHAR(100) NOT NULL, "
+                    + "value bigint DEFAULT '0', "
+                    + "expired timestamp NOT NULL"
+                    + ")",tableName);
+            statement = connection.createStatement();
+            statement.execute(createTableSQL);
+            logger.info("Mysql Table '{}' created successfully!",tableName);
+        } catch (SQLException ex) {
+            logger.error("Mysql Table '{}' created failed!",tableName,ex);
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
     }
 
     @Override
     public boolean isTableExist(String tableName) throws Exception {
+        String query = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?";
+        Connection connection = null;
+        PreparedStatement ps = null;
+        try{
+            connection = getConnection();
+            ps = connection.prepareStatement(query);
+            ps.setString(1, mySQLConfiguration.getDatabase());
+            ps.setString(2, tableName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }catch (Exception ex){
+            logger.error("check mysql table exist error!",ex);
+        }finally {
+            try {
+                if (ps != null) ps.close();
+                if (connection != null) connection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
         return false;
     }
 
