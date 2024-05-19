@@ -30,7 +30,7 @@ public class RDBMSConfiguration implements Serializable {
             String dbName = matcher.group(3);
             this.dbInstance = Md5Util.get16MD5(ip + "_" + port + "_" + dbName);
         } else {
-            throw new InitializationException("Failed to parse MySQL connection!");
+            throw new InitializationException("Failed to parse rdbms configuration!");
         }
         this.connectionUserName = connectionUserName;
         this.connectionPassword = connectionPassword;
