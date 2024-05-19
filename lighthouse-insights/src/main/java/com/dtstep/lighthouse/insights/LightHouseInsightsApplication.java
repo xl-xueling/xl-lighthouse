@@ -33,10 +33,10 @@ public class LightHouseInsightsApplication {
         Map<String,Object> defaultProperties = new HashMap<>();
         defaultProperties.put("spring.config.name","lighthouse-insights");
         defaultProperties.put("spring.redis.cluster.nodes", LDPConfig.getVal(LDPConfig.KEY_REDIS_CLUSTER));
-        defaultProperties.put("spring.datasource.url", LDPConfig.getVal(LDPConfig.KEY_DB_ConnectionURL));
-        defaultProperties.put("spring.datasource.driverClassName", LDPConfig.getVal(LDPConfig.KEY_DB_DriverClassName));
-        defaultProperties.put("spring.datasource.username", LDPConfig.getVal(LDPConfig.KEY_DB_ConnectionUserName));
-        defaultProperties.put("spring.datasource.password", LDPConfig.getVal(LDPConfig.KEY_DB_ConnectionPassword));
+        defaultProperties.put("spring.datasource.driverClassName", LDPConfig.getVal("cmdb.storage.engine.javax.jdo.option.driverClassName"));
+        defaultProperties.put("spring.datasource.url", LDPConfig.getVal("cmdb.storage.engine.javax.jdo.option.ConnectionURL"));
+        defaultProperties.put("spring.datasource.username", LDPConfig.getVal("cmdb.storage.engine.javax.jdo.option.ConnectionUserName"));
+        defaultProperties.put("spring.datasource.password", LDPConfig.getVal("cmdb.storage.engine.javax.jdo.option.ConnectionPassword"));
         springApplication.setDefaultProperties(defaultProperties);
         springApplication.run(args);
     }
