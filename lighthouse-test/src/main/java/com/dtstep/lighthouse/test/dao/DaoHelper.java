@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.dao;
+package com.dtstep.lighthouse.test.dao;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,21 +16,23 @@ package com.dtstep.lighthouse.core.dao;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
-public interface IDao {
+public class DaoHelper {
 
-    int insert(Object paramObject) throws Exception;
+    private static final Logger logger = LoggerFactory.getLogger(DaoHelper.class);
 
-    <T> List<T> getList(Class<T> clazz, String sql, Object... param) throws Exception;
+    private DaoHelper(){}
 
-    <T> T getItem(Class<T> clazz,String sql,Object... param) throws Exception;
+    public static IDao sql;
 
-    int execute(String sql, Object... param) throws Exception;
-
-    int count(String sql, Object... param) throws Exception;
-
-    <T> List<Integer> insertList(List<T> paramObjectList) throws Exception;
-
+    static {
+        try{
+            sql = new DaoHandler();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
 }

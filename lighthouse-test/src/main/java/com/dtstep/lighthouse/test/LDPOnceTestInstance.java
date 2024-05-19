@@ -3,7 +3,7 @@ package com.dtstep.lighthouse.test;
 import com.dtstep.lighthouse.client.LightHouse;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.dao.DaoHelper;
+import com.dtstep.lighthouse.test.dao.DaoHelper;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.test.config.TestConfigContext;
 import com.dtstep.lighthouse.test.entity.BehaviorSampleEntity;

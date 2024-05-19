@@ -12,7 +12,7 @@ import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
 import com.dtstep.lighthouse.core.storage.LdpPut;
 import com.dtstep.lighthouse.core.storage.LdpResult;
 import com.dtstep.lighthouse.core.storage.dimens.DimensStorageHandler;
-import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngineProxy;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

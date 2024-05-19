@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.core.test.hbase;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.core.storage.engine.hbase.HBaseWarehouseStorageEngine;
+import com.dtstep.lighthouse.core.storage.warehouse.hbase.HBaseWarehouseStorageEngine;
 import com.dtstep.lighthouse.core.test.CoreBaseTest;
 import org.apache.hadoop.hbase.client.RegionInfo;
 import org.junit.Test;

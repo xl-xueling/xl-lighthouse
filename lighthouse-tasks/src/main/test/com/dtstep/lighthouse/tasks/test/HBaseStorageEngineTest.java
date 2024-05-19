@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.tasks.test;
 
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.storage.engine.StorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.warehouse.StorageEngineProxy;
 import org.junit.Test;
 
 public class HBaseStorageEngineTest {

@@ -17,8 +17,8 @@ package com.dtstep.lighthouse.core.wrapper;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.modal.Record;
-import com.dtstep.lighthouse.core.dao.ConnectionManager;
-import com.dtstep.lighthouse.core.dao.DBConnection;
+import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
+import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.lang3.Validate;
@@ -29,10 +29,11 @@ import java.time.LocalDateTime;
 
 public final class LimitingWrapper {
 
+    private static final CMDBStorageEngine<Connection> storageEngine = CMDBStorageEngineProxy.getInstance();
+
     public static void record(Record limitingRecord) throws Exception{
         Validate.notNull(limitingRecord);
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         String sql = "INSERT INTO ldp_records (`resource_id`, `resource_type`,`record_type`,`extend`,`create_time`) VALUES (?, ?, ?, ?, ?)";
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -42,7 +43,7 @@ public final class LimitingWrapper {
                     ,limitingRecord.getExtend()
                     ,localDateTime);
         }finally {
-            ConnectionManager.close(dbConnection);
+            storageEngine.closeConnection();
         }
     }
 }

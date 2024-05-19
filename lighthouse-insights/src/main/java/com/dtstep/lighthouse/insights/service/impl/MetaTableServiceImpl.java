@@ -19,7 +19,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
 import com.dtstep.lighthouse.common.modal.MetaTable;
 import com.dtstep.lighthouse.common.util.DateUtil;
-import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngineProxy;
 import com.dtstep.lighthouse.core.wrapper.MetaTableWrapper;
 import com.dtstep.lighthouse.insights.dao.MetaTableDao;
 import com.dtstep.lighthouse.insights.dto.MetaTableQueryParam;

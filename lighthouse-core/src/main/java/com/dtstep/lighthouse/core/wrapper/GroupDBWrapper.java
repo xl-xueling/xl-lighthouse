@@ -23,10 +23,10 @@ import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.*;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.dao.ConnectionManager;
-import com.dtstep.lighthouse.core.dao.DBConnection;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
+import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
+import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
 import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -57,6 +57,8 @@ public final class GroupDBWrapper {
     private static final Logger logger = LoggerFactory.getLogger(GroupDBWrapper.class);
 
     private static final Integer _CacheExpireMinutes = 3;
+
+    private static final CMDBStorageEngine<Connection> storageEngine = CMDBStorageEngineProxy.getInstance();
 
     private static final Cache<Object, Optional<GroupExtEntity>> groupCache = Caffeine.newBuilder()
             .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
@@ -174,34 +176,31 @@ public final class GroupDBWrapper {
     }
 
     private static Group queryGroupByIdFromDB(int groupId) throws Exception {
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         Group group;
         try{
             group = queryRunner.query(conn, String.format("select * from ldp_groups where id = '%s'",groupId), new GroupResultSetHandler());
         }finally {
-            ConnectionManager.close(dbConnection);
+            storageEngine.closeConnection();
         }
         return group;
     }
 
     private static Group queryGroupByTokenFromDB(String token) throws Exception {
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         Group group;
         try{
             group = queryRunner.query(conn, String.format("select * from ldp_groups where token = '%s'",token), new GroupResultSetHandler());
         }finally {
-            ConnectionManager.close(dbConnection);
+            storageEngine.closeConnection();
         }
         return group;
     }
 
     public static int changeState(int groupId, GroupStateEnum groupStateEnum, LocalDateTime date) throws Exception {
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         int result;
         try{
@@ -216,14 +215,13 @@ public final class GroupDBWrapper {
                 result = queryRunner.update(conn, "update ldp_groups set state = ?,refresh_time = ? where id = ?", groupStateEnum.getState(),date, groupId);
             }
         }finally {
-            ConnectionManager.close(dbConnection);
+            storageEngine.closeConnection();
         }
         return result;
     }
 
     public static int changeDebugMode(int groupId,SwitchStateEnum switchStateEnum,LocalDateTime date) throws Exception {
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         int result;
         try{
@@ -238,7 +236,7 @@ public final class GroupDBWrapper {
                 result = queryRunner.update(conn, "update ldp_groups set debug_mode = ?,refresh_time = ? where id = ? and debug_mode = ?", switchStateEnum.getState(),date, groupId,SwitchStateEnum.OPEN.getState());
             }
         }finally {
-            ConnectionManager.close(dbConnection);
+            storageEngine.closeConnection();
         }
         return result;
     }
@@ -376,15 +374,14 @@ public final class GroupDBWrapper {
     }
 
     private static List<RefreshEntity> queryRefreshIdList() throws Exception {
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         List<RefreshEntity> ids;
         try{
             long time = DateUtil.getMinuteBefore(System.currentTimeMillis(),_CacheExpireMinutes);
             ids = queryRunner.query(conn, "select id,token,refresh_time from ldp_groups where create_time != refresh_time and refresh_time >= ? limit 10000", new RefreshListSetHandler(),new Date(time));
         }finally {
-            ConnectionManager.close(dbConnection);
+            storageEngine.closeConnection();
         }
         return ids;
     }

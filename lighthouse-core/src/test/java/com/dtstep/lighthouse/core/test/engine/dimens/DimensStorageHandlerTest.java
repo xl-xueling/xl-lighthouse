@@ -5,7 +5,7 @@ import com.dtstep.lighthouse.common.entity.event.DimensBucket;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.storage.dimens.impl.DefaultDimensStorageHandler;
-import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngineProxy;
 import org.junit.Test;
 
 import java.util.ArrayList;

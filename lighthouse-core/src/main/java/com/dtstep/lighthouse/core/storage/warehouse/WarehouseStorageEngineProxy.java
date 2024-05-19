@@ -1,10 +1,10 @@
-package com.dtstep.lighthouse.core.storage.engine;
+package com.dtstep.lighthouse.core.storage.warehouse;
 
 
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.storage.engine.hbase.HBaseWarehouseStorageEngine;
-import com.dtstep.lighthouse.core.storage.engine.mysql.MySQLWarehouseStorageEngine;
+import com.dtstep.lighthouse.core.storage.warehouse.hbase.HBaseWarehouseStorageEngine;
+import com.dtstep.lighthouse.core.storage.warehouse.mysql.MySQLWarehouseStorageEngine;
 import org.jsoup.helper.Validate;
 
 public class WarehouseStorageEngineProxy {

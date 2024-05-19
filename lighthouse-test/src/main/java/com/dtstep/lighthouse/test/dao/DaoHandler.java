@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.dao;
+package com.dtstep.lighthouse.test.dao;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -20,6 +20,8 @@ import com.dtstep.lighthouse.common.entity.annotation.DBColumnAnnotation;
 import com.dtstep.lighthouse.common.entity.annotation.DBNameAnnotation;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
+import com.dtstep.lighthouse.core.storage.cmdb.mysql.MySQLCMDBStorageEngine;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,14 +38,15 @@ public final class DaoHandler implements IDao {
 
     private static final Logger logger = LoggerFactory.getLogger(DaoHandler.class);
 
+    private static final CMDBStorageEngine<Connection> storageEngine = new MySQLCMDBStorageEngine();
+
     DaoHandler(){}
 
     @Override
     public <T> List<T> getList(Class<T> clazz, String sql, Object... param) throws Exception {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         ResultSet rs = null;
         PreparedStatement ps = null;
         List<T> list;
@@ -61,7 +64,7 @@ public final class DaoHandler implements IDao {
             logger.error("db query error.sql:{}",sql,ex);
             throw ex;
         }finally {
-            close(ps,rs,dbConnection);
+            close(ps,rs,conn);
         }
         logger.debug("db query,sql:{},cost:{}",sql, stopWatch.getTime());
         return list;
@@ -84,8 +87,7 @@ public final class DaoHandler implements IDao {
     public int insert(Object obj) throws Exception {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         Class t = obj.getClass();
         Field[] fields = t.getDeclaredFields();
         Annotation[] annotations = t.getAnnotations();
@@ -142,7 +144,7 @@ public final class DaoHandler implements IDao {
             logger.error("db insert error.sql:{}", sql, ex);
             throw ex;
         }finally {
-            close(ps, null, dbConnection);
+            close(ps, null, conn);
         }
         logger.info("db insert,sql:{},cost:{}",sql, stopWatch.getTime());
         return id;
@@ -210,8 +212,7 @@ public final class DaoHandler implements IDao {
     public int execute(String sql, Object... param) throws Exception {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         PreparedStatement ps = null;
         int res = 0;
         try {
@@ -226,7 +227,7 @@ public final class DaoHandler implements IDao {
         }catch (Exception ex){
             logger.error("execute sql error,sql:{}",sql,ex);
         }finally {
-            close(ps, null, dbConnection);
+            close(ps, null, conn);
         }
         logger.debug("db execute,sql:{},cost:{}",sql, stopWatch.getTime());
         return res;
@@ -234,8 +235,7 @@ public final class DaoHandler implements IDao {
 
     @Override
     public <T> List<Integer> insertList(List<T> paramObjectList) throws Exception {
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         List<String> sqlList = new ArrayList<>();
         for (T t : paramObjectList) {
             sqlList.add(combineSql(t));
@@ -243,16 +243,12 @@ public final class DaoHandler implements IDao {
         List<Integer> ids = new ArrayList<>();
         Statement ps = conn.createStatement();
         try{
-            if(!dbConnection.isTransactionSwitch()){
-                conn.setAutoCommit(false);
-            }
+            conn.setAutoCommit(false);
             for(String s : sqlList){
                 ps.addBatch(s);
             }
             ps.executeBatch();
-            if(!dbConnection.isTransactionSwitch()){
-                conn.commit();
-            }
+            conn.commit();
             ResultSet resultSet = ps.getGeneratedKeys();
             if (resultSet != null) {
                 while (resultSet.next()){
@@ -262,12 +258,10 @@ public final class DaoHandler implements IDao {
             }
         }catch (Exception e){
             logger.error("db insert list error!", e);
-            if(!dbConnection.isTransactionSwitch()){
-                conn.rollback();
-            }
+            conn.rollback();
             throw e;
         }finally {
-            close(ps, null, dbConnection);
+            close(ps, null, conn);
         }
         return ids;
     }
@@ -276,8 +270,7 @@ public final class DaoHandler implements IDao {
     public int count(String sql, Object... param) throws Exception {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         int count = 0;
@@ -296,22 +289,24 @@ public final class DaoHandler implements IDao {
         }catch (Exception ex){
             logger.error("db count error,sql:{}",sql,ex);
         }finally {
-            close(ps, rs, dbConnection);
+            close(ps, rs, conn);
         }
         logger.debug("db count,sql:{},cost:{}",sql, stopWatch.getTime());
         return count;
     }
 
 
-    private void close(Statement ps,ResultSet rs,DBConnection connection) throws Exception{
-        if(ps != null){
-            ConnectionManager.close(ps);
-        }
+    private void close(Statement ps,ResultSet rs,Connection connection) throws Exception{
         if(rs != null){
-            ConnectionManager.close(rs);
+            rs.close();
+        }if(rs != null){
+            rs.close();
+        }
+        if(ps != null){
+            ps.close();
         }
         if(connection != null){
-            ConnectionManager.close(connection);
+            connection.close();
         }
     }
 }

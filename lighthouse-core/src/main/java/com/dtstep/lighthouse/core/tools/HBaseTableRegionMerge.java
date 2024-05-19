@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.core.tools;
 
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.storage.engine.hbase.HBaseWarehouseStorageEngine;
+import com.dtstep.lighthouse.core.storage.warehouse.hbase.HBaseWarehouseStorageEngine;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.RegionInfo;
 import org.slf4j.Logger;

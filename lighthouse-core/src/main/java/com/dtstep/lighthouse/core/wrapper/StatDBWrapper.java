@@ -16,10 +16,10 @@ import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
-import com.dtstep.lighthouse.core.dao.ConnectionManager;
-import com.dtstep.lighthouse.core.dao.DBConnection;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
+import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
+import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
 import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -47,6 +47,8 @@ public class StatDBWrapper {
     private static final Logger logger = LoggerFactory.getLogger(StatDBWrapper.class);
 
     private static final Integer _CacheExpireMinutes = 3;
+
+    private static final CMDBStorageEngine<Connection> storageEngine = CMDBStorageEngineProxy.getInstance();
 
     private static final LoadingCache<Integer, Optional<StatExtEntity>> statCache = Caffeine.newBuilder()
             .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
@@ -195,27 +197,25 @@ public class StatDBWrapper {
     }
 
     private static Stat queryStatByIdFromDB(int statId) throws Exception {
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         Stat stat;
         try{
             stat = queryRunner.query(conn, String.format("select a.*,b.token,b.columns from ldp_stats a left join ldp_groups b on a.group_id = b.id where a.id = '%s'",statId), new StatResultSetHandler());
         }finally {
-            ConnectionManager.close(dbConnection);
+            storageEngine.closeConnection();
         }
         return stat;
     }
 
     public static List<Stat> queryStatByGroupIDFromDB(int groupId) throws Exception {
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         List<Stat> statList;
         try{
             statList = queryRunner.query(conn, String.format("select a.*,b.token,b.columns from ldp_stats a left join ldp_groups b on a.group_id = b.id where a.group_id = '%s'",groupId), new StatResultListHandler());
         }finally {
-            ConnectionManager.close(dbConnection);
+            storageEngine.closeConnection();
         }
         return statList;
     }
@@ -303,8 +303,7 @@ public class StatDBWrapper {
     }
 
     public static int changeState(int statId, StatStateEnum statStateEnum, LocalDateTime date) throws Exception {
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         int result;
         try{
@@ -319,7 +318,7 @@ public class StatDBWrapper {
                 result = queryRunner.update(conn, "update ldp_stats set state = ?,refresh_time = ? where id = ?", statStateEnum.getState(),date, statId);
             }
         }finally {
-            ConnectionManager.close(dbConnection);
+            storageEngine.closeConnection();
         }
         return result;
     }
@@ -408,15 +407,14 @@ public class StatDBWrapper {
     }
 
     private static List<RefreshEntity> queryRefreshIdList() throws Exception {
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         List<RefreshEntity> ids;
         try{
             long time = DateUtil.getMinuteBefore(System.currentTimeMillis(),_CacheExpireMinutes);
             ids = queryRunner.query(conn, "select a.id,a.group_id,a.refresh_time,b.token from ldp_stats a inner join ldp_groups b on a.group_id = b.id where a.refresh_time >= ? limit 10000", new RefreshListSetHandler(),new Date(time));
         }finally {
-            ConnectionManager.close(dbConnection);
+            storageEngine.closeConnection();
         }
         return ids;
     }

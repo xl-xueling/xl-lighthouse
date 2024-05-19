@@ -18,9 +18,9 @@ package com.dtstep.lighthouse.core.wrapper;
  */
 import com.dtstep.lighthouse.common.enums.MetaTableStateEnum;
 import com.dtstep.lighthouse.common.util.DateUtil;
-import com.dtstep.lighthouse.core.dao.ConnectionManager;
-import com.dtstep.lighthouse.core.dao.DBConnection;
-import com.dtstep.lighthouse.core.storage.engine.WarehouseStorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
+import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
+import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngineProxy;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.dtstep.lighthouse.common.modal.MetaTable;
@@ -43,6 +43,8 @@ import java.util.concurrent.TimeUnit;
 public final class MetaTableWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(MetaTableWrapper.class);
+
+    private static final CMDBStorageEngine<Connection> storageEngine = CMDBStorageEngineProxy.getInstance();
 
     private final static Cache<Integer, Optional<MetaTable>> META_CACHE = Caffeine.newBuilder()
             .expireAfterWrite(2, TimeUnit.MINUTES)
@@ -103,21 +105,19 @@ public final class MetaTableWrapper {
     }
 
     private static MetaTable queryMetaByIdFromDB(int metaId) throws Exception {
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         MetaTable metaTable;
         try{
             metaTable = queryRunner.query(conn, String.format("select * from ldp_metas where id = '%s'",metaId), new MetaResultSetHandler());
         }finally {
-            ConnectionManager.close(dbConnection);
+            storageEngine.closeConnection();
         }
         return metaTable;
     }
 
     private static int insertIntoMySQL(MetaTable metaTable) throws Exception {
-        DBConnection dbConnection = ConnectionManager.getConnection();
-        Connection conn = dbConnection.getConnection();
+        Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         String sql = "INSERT INTO ldp_metas (`meta_name`, `type`, `state`,`record_size`,`content_size`,`desc`,`create_time`,`update_time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -125,21 +125,20 @@ public final class MetaTableWrapper {
         try{
              id = queryRunner.insert(conn,sql,new ScalarHandler<>(),metaTable.getMetaName(),metaTable.getMetaTableType().getType(),metaTable.getState().getState(),0,0,null,localDateTime,localDateTime);
         }finally {
-            ConnectionManager.close(dbConnection);
+            storageEngine.closeConnection();
         }
         return id.intValue();
     }
 
     private static void deleteTable(String tableName){
         try{
-            DBConnection dbConnection = ConnectionManager.getConnection();
-            Connection conn = dbConnection.getConnection();
+            Connection conn = storageEngine.getConnection();
             QueryRunner queryRunner = new QueryRunner();
             String sql = "DELETE from ldp_metas where meta_name = ?";
             try{
                 queryRunner.update(conn,sql,tableName);
             }finally {
-                ConnectionManager.close(dbConnection);
+                storageEngine.closeConnection();
             }
             logger.info("drop meta table success,metaName:{}",tableName);
         }catch (Exception ex){

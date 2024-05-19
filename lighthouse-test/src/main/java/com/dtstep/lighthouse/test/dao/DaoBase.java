@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.dao;
+package com.dtstep.lighthouse.test.dao;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
