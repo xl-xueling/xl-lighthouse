@@ -33,15 +33,6 @@ public class RPCServerImpl implements RPCServer {
 
     private static final DisruptorEventProducer eventProducer = new DisruptorEventProducer();
 
-    static {
-        try{
-            LDPConfig.loadConfiguration();
-        }catch (Exception ex){
-            logger.error("rpc server start error,system initialization error!",ex);
-            throw new InitializationException();
-        }
-    }
-
     @Override
     public GroupVerifyEntity queryGroupInfo(String token) throws Exception {
         GroupExtEntity groupExtEntity = GroupDBWrapper.queryByToken(token);

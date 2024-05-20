@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.standalone.executive;
 
+import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.standalone.rpc.NettyServerHandler;
 import com.dtstep.lighthouse.standalone.rpc.ServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
@@ -19,7 +20,8 @@ public class LightStandaloneEntrance {
         this.port = port;
     }
 
-    private void start() {
+    private void start() throws Exception {
+        LDPConfig.loadConfiguration();
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         NettyServerHandler.register();
@@ -39,7 +41,7 @@ public class LightStandaloneEntrance {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         new LightStandaloneEntrance(4061).start();
     }
 }

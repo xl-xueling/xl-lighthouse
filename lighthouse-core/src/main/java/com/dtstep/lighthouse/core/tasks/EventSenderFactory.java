@@ -7,15 +7,21 @@ import com.dtstep.lighthouse.core.tasks.standalone.StandaloneEventSender;
 
 public class EventSenderFactory {
 
-    private static final EventSender kafkaEventSender = new KafkaEventSender();
+    private static EventSender kafkaEventSender;
 
-    private static final EventSender standEventSender = new StandaloneEventSender();
+    private static EventSender standEventSender;
 
     public static EventSender getEventSender(){
         RunningMode runningMode = LDPConfig.getRunningMode();
         if(runningMode == RunningMode.CLUSTER){
+            if(kafkaEventSender == null){
+                kafkaEventSender = new KafkaEventSender();
+            }
             return kafkaEventSender;
         }else if(runningMode == RunningMode.STANDALONE){
+            if(standEventSender == null){
+                standEventSender = new StandaloneEventSender();
+            }
             return standEventSender;
         }else{
             throw new RuntimeException("running mode not support!");

@@ -20,7 +20,7 @@ public class CMDBStorageEngineProxy {
     }
 
     private static void loadStorageEngine(){
-        String engine = LDPConfig.getVal(LDPConfig.KEY_WAREHOUSE_STORAGE_ENGINE);
+        String engine = LDPConfig.getVal(LDPConfig.KEY_CMDB_STORAGE_ENGINE);
         Validate.isTrue(StringUtil.isNotEmpty(engine));
         if("mysql".equals(engine)){
             storageEngine  = new MySQLCMDBStorageEngine();

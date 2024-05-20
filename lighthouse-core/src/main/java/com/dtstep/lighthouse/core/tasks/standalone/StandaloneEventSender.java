@@ -2,8 +2,6 @@ package com.dtstep.lighthouse.core.tasks.standalone;
 
 import com.dtstep.lighthouse.common.entity.message.LightMessage;
 import com.dtstep.lighthouse.common.enums.result.MessageCaptchaEnum;
-import com.dtstep.lighthouse.common.random.RandomID;
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.consumer.RealTimeProcessor;
 import com.dtstep.lighthouse.core.preparing.handler.expand.ExpandEvent;

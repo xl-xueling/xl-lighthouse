@@ -98,7 +98,7 @@ public final class DisruptorEventHandler implements EventHandler<IceEvent>, Work
         }
         multiset.clear();
         lastBatchTime = System.currentTimeMillis();
-        logger.info("lighthouse ice service batch processed {} messages!",sendSize);
+        logger.info("lighthouse rpc service batch processed {} messages!",sendSize);
     }
 
     private void send(String text) throws Exception{
