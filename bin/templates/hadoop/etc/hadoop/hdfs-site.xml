@@ -66,6 +66,10 @@
 <value>true</value>
 </property>
 <property>
+<name>dfs.datanode.read.shortcircuit</name>
+<value>true</value>
+</property>
+<property>
 <name>dfs.domain.socket.path</name>
 <value>${ldp_data_dir}/hadoop/hdfs-socket</value>
 </property>

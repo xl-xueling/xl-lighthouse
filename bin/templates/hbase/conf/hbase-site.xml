@@ -124,7 +124,7 @@
     </property>
     <property>
         <name>hbase.hstore.compaction.throughput.lower.bound</name>
-        <value>6000000</value>
+        <value>5000000</value>
     </property>
     <property>
         <name>hbase.hstore.compaction.throughput.offpeak</name>
