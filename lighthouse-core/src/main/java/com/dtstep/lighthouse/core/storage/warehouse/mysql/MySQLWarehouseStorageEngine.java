@@ -91,7 +91,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     + "id BIGINT AUTO_INCREMENT PRIMARY KEY, "
                     + "k VARCHAR(200) NOT NULL, "
                     + "v bigint DEFAULT '0', "
-                    + "e timestamp NOT NULL"
+                    + "exp_time timestamp NOT NULL, "
+                    + "upd_time timestamp NOT NULL"
                     + ") ENGINE=InnoDB AUTO_INCREMENT=100564 DEFAULT CHARSET=utf8mb3",tableName);
             statement = connection.createStatement();
             statement.execute(sql);
@@ -119,7 +120,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     + "id BIGINT AUTO_INCREMENT PRIMARY KEY, "
                     + "k VARCHAR(200) NOT NULL, "
                     + "v VARCHAR(800) NOT NULL, "
-                    + "e timestamp NOT NULL"
+                    + "exp_time timestamp NOT NULL, "
+                    + "upd_time timestamp NOT NULL"
                     + ") ENGINE=InnoDB AUTO_INCREMENT=100564 DEFAULT CHARSET=utf8mb3",tableName);
             statement = connection.createStatement();
             statement.execute(sql);
@@ -191,7 +193,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
     @Override
     public void put(String tableName, LdpPut ldpPut) throws Exception {
         Object value = ldpPut.getData();
-        String sql = String.format("INSERT INTO %s (`k`, `v`, `e`) VALUES (?, ?, ?) on duplicate key update v = ?",tableName);
+        String sql = "INSERT INTO " + tableName + " (`k`, `v`, `exp_time`, `upd_time`) VALUES (?, ?, ?, ?) on duplicate key update v = ?";
         Connection connection = null;
         PreparedStatement ps = null;
         long current = System.currentTimeMillis();
@@ -207,10 +209,11 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                 throw new IllegalArgumentException(String.format("Current type(%s) not supported!",value.getClass()));
             }
             ps.setTimestamp(3,new Timestamp(current + ldpPut.getTtl()));
+            ps.setTimestamp(4, new Timestamp(current));
             if (value.getClass() == String.class) {
-                ps.setString(4, ldpPut.getData().toString());
+                ps.setString(5, ldpPut.getData().toString());
             } else {
-                ps.setLong(4, (Long) ldpPut.getData());
+                ps.setLong(5, (Long) ldpPut.getData());
             }
             ps.executeUpdate();
         }catch (Exception ex){
@@ -228,7 +231,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
 
     @Override
     public void puts(String tableName, List<LdpPut> ldpPuts) throws Exception {
-        String sql = "INSERT INTO "+tableName+" (`k`, `v`, `e`) VALUES (?, ?, ?) on duplicate key update v = ?";
+        String sql = "INSERT INTO " + tableName + " (`k`, `v`, `exp_time`, `upd_time`) VALUES (?, ?, ?, ?) on duplicate key update v = ?";
         Connection connection = null;
         PreparedStatement ps = null;
         Object value = ldpPuts.get(0).getData();
@@ -247,10 +250,11 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     throw new IllegalArgumentException(String.format("Current type(%s) not supported!", value.getClass()));
                 }
                 ps.setTimestamp(3,new Timestamp(current + ldpPut.getTtl()));
+                ps.setTimestamp(4, new Timestamp(current));
                 if (value.getClass() == String.class) {
-                    ps.setString(4, ldpPut.getData().toString());
+                    ps.setString(5, ldpPut.getData().toString());
                 } else {
-                    ps.setLong(4, (Long) ldpPut.getData());
+                    ps.setLong(5, (Long) ldpPut.getData());
                 }
                 ps.addBatch();
             }
@@ -280,7 +284,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         Connection connection = null;
         PreparedStatement ps = null;
         long current = System.currentTimeMillis();
-        String sql = "INSERT ignore INTO " + tableName + "(`k`,`v`,`e`) values (?,?,?) on duplicate key update v = v + ?";
+        String sql = "INSERT ignore INTO " + tableName + "(`k`,`v`,`exp_time`,`upd_time`) values (?, ?, ?, ?) on duplicate key update v = v + ?";
         String dbKey = getDBKey(ldpIncrement.getKey(),ldpIncrement.getColumn());
         String lockKey = MYSQL_INCREMENT_PUT_LOCK + "_" + dbKey;
         boolean isLock = RedissonLock.tryLock(lockKey,8,3, TimeUnit.MINUTES);
@@ -291,7 +295,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                 ps.setString(1, dbKey);
                 ps.setLong(2,ldpIncrement.getStep());
                 ps.setTimestamp(3,new Timestamp(current + ldpIncrement.getTtl()));
-                ps.setLong(4,ldpIncrement.getStep());
+                ps.setTimestamp(4,new Timestamp(current));
+                ps.setLong(5,ldpIncrement.getStep());
                 ps.executeUpdate();
             }else{
                 logger.error("try lock failed,thread unable to acquire lock,this batch data may be lost,cost:{}ms!",stopWatch.getTime());
@@ -317,7 +322,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         Connection connection = null;
         PreparedStatement ps = null;
         long current = System.currentTimeMillis();
-        String sql = "INSERT ignore INTO " + tableName + "(`k`,`v`,`e`) values (?,?,?) on duplicate key update v = v + ?";
+        String sql = "INSERT ignore INTO " + tableName + "(`k`,`v`,`exp_time`,`upd_time`) values (?, ?, ?, ?) on duplicate key update v = v + ?";
         Map<Long,List<LdpIncrement>> map = ldpIncrements.stream().collect(Collectors.groupingBy(x -> HashUtil.BKDRHash(getDBKey(x.getKey(),x.getColumn())) % batchSalt));
         for(Long object : map.keySet()){
             StopWatch stopWatch = new StopWatch();
@@ -333,7 +338,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                         ps.setString(1, getDBKey(ldpIncrement.getKey(),ldpIncrement.getColumn()));
                         ps.setLong(2,ldpIncrement.getStep());
                         ps.setTimestamp(3,new Timestamp(current + ldpIncrement.getTtl()));
-                        ps.setLong(4,ldpIncrement.getStep());
+                        ps.setTimestamp(4,new Timestamp(current));
+                        ps.setLong(5,ldpIncrement.getStep());
                         ps.addBatch();
                     }
                     ps.executeBatch();
@@ -415,18 +421,18 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
 
     @Override
     public <R> LdpResult<R> get(String tableName, LdpGet ldpGet, Class<R> clazz) throws Exception {
-        String sql = "select value from " + tableName + " where `key` = ?";
-        String key = ldpGet.getKey();
-        String column = ldpGet.getColumn();
+        String sql = "SELECT v FROM " + tableName + " WHERE `k` = ?";
+        String ldpKey = ldpGet.getKey();
+        String ldpColumn = ldpGet.getColumn();
         Connection connection = null;
         PreparedStatement ps = null;
         LdpResult<R> ldpResult = new LdpResult<>();
-        ldpResult.setKey(key);
-        ldpResult.setColumn(column);
+        ldpResult.setKey(ldpKey);
+        ldpResult.setColumn(ldpColumn);
         try{
             connection = getConnection();
             ps = connection.prepareStatement(sql);
-            ps.setString(1,ldpGet.getKey() + ";" + ldpGet.getColumn());
+            ps.setString(1,getDBKey(ldpKey,ldpColumn));
             ResultSet rs = ps.executeQuery();
             R result = null;
             while (rs.next()){
@@ -454,7 +460,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
 
     private static <R> List<LdpResult<R>> partGets(String tableName, List<LdpGet> ldpGets, Class<R> clazz) throws Exception {
         String placeholders = String.join(", ", Collections.nCopies(ldpGets.size(), "?"));
-        String sql = "select `k`,`v` from " + tableName + " where k in("+placeholders+")";
+        String sql = "SELECT `k`,`v`,`upd_time` FROM " + tableName + " WHERE k IN("+placeholders+")";
         Connection connection = null;
         PreparedStatement ps = null;
         List<LdpResult<R>> ldpResults = new ArrayList<>();
@@ -476,6 +482,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                 }else if(clazz == String.class){
                     r = clazz.cast(rs.getString("v"));
                 }
+                Timestamp updTime = rs.getTimestamp("upd_time");
                 String key;
                 String column = null;
                 if(dbKey.contains(";")){
@@ -487,6 +494,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                 ldpResult.setKey(key);
                 ldpResult.setColumn(column);
                 ldpResult.setData(r);
+                ldpResult.setTimestamp(updTime.getTime());
                 ldpResults.add(ldpResult);
             }
         } catch (Exception ex){
@@ -533,7 +541,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
 
     @Override
     public <R> List<LdpResult<R>> scan(String tableName, String startRow, String endRow, int limit, Class<R> clazz) throws Exception {
-        String sql = "select k,v,e from " + tableName + " where k >= ? and k < ? order by k asc limit ?";
+        String sql = "SELECT `k` , `v` ,`upd_time` from " + tableName + " where k >= ? and k < ? order by k asc limit ?";
         Connection connection = null;
         PreparedStatement ps = null;
         List<LdpResult<R>> ldpResults = new ArrayList<>();
@@ -553,6 +561,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                 }else if(clazz == String.class){
                     r = clazz.cast(rs.getString("v"));
                 }
+                Timestamp updTime = rs.getTimestamp("upd_time");
                 String key;
                 String column = null;
                 if(dbKey.contains(";")){
@@ -564,6 +573,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                 ldpResult.setKey(key);
                 ldpResult.setColumn(column);
                 ldpResult.setData(r);
+                ldpResult.setTimestamp(updTime.getTime());
                 ldpResults.add(ldpResult);
             }
         }catch (Exception ex){
