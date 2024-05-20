@@ -36,6 +36,6 @@ public interface WarehouseStorageEngine {
 
     void delete(String tableName,String key) throws Exception;
 
-    boolean isWritable(String tableName) throws Exception;
+    boolean isAppendable(String tableName) throws Exception;
 
 }

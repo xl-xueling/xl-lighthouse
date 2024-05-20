@@ -604,7 +604,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
     }
 
     @Override
-    public boolean isWritable(String tableName) throws Exception {
+    public boolean isAppendable(String tableName) throws Exception {
         return true;
     }
 
