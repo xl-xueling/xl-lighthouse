@@ -236,7 +236,7 @@
     </property>
     <property>
         <name>io.storefile.bloom.max.keys</name>
-        <value>328000000</value>
+        <value>128000000</value>
     </property>
     <property>
         <name>hbase.hregion.percolumnfamilyflush.size.lower.bound.min</name>
