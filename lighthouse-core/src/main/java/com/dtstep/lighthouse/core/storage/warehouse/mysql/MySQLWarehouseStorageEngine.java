@@ -195,7 +195,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
     @Override
     public void put(String tableName, LdpPut ldpPut) throws Exception {
         Object value = ldpPut.getData();
-        String sql = "INSERT INTO " + tableName + " (`k`, `v`, `exp_time`, `upd_time`) VALUES (?, ?, ?, ?) on duplicate key update v = ?";
+        String sql = "INSERT ignore INTO " + tableName + " (`k`, `v`, `exp_time`, `upd_time`) VALUES (?, ?, ?, ?) on duplicate key update v = ?";
         Connection connection = null;
         PreparedStatement ps = null;
         long current = System.currentTimeMillis();
@@ -233,7 +233,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
 
     @Override
     public void puts(String tableName, List<LdpPut> ldpPuts) throws Exception {
-        String sql = "INSERT INTO " + tableName + " (`k`, `v`, `exp_time`, `upd_time`) VALUES (?, ?, ?, ?) on duplicate key update v = ?";
+        String sql = "INSERT ignore INTO " + tableName + " (`k`, `v`, `exp_time`, `upd_time`) VALUES (?, ?, ?, ?) on duplicate key update v = ?";
         Connection connection = null;
         PreparedStatement ps = null;
         Object value = ldpPuts.get(0).getData();

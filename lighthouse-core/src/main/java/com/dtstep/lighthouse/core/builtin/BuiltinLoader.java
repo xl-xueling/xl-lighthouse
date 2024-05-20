@@ -182,7 +182,7 @@ public final class BuiltinLoader {
                 statEntity.setProjectId(builtinProject.getId());
                 statEntity.setGroupId(groupId);
                 statEntity.setMetaId(-1);
-                statEntity.setExpired(2592000L);
+                statEntity.setExpired(1209600L);
                 statEntity.setCreateTime(localDateTime);
                 statEntity.setUpdateTime(localDateTime);
                 statEntity.setGroupColumns(groupColumns);
