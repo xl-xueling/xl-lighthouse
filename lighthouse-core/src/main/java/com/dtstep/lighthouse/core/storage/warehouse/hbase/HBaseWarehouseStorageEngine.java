@@ -145,7 +145,61 @@ public class HBaseWarehouseStorageEngine implements WarehouseStorageEngine {
     }
 
     @Override
-    public void createTable(String tableName) throws Exception {
+    public void createResultTable(String tableName) throws Exception {
+        int prePartitionsSize = getDefaultPrePartitionSize();
+        String [] keys = SysConst._DBKeyPrefixArray;
+        List<String> keysList = Arrays.asList(keys);
+        List<List<String>> totalGroupKeyList = ListUtil.listPartition(keysList,prePartitionsSize);
+        TreeSet<byte[]> rows = new TreeSet<>(Bytes.BYTES_COMPARATOR);
+        for (int i = 0; i < prePartitionsSize; i++) {
+            List<String> groupKeyList = totalGroupKeyList.get(i);
+            if(CollectionUtils.isNotEmpty(groupKeyList)){
+                String key = totalGroupKeyList.get(i).get(0);
+                rows.add(Bytes.toBytes(key));
+            }
+        }
+        byte[][] splitKeys = new byte[rows.size()][];
+        Iterator<byte[]> rowKeyIterator = rows.iterator();
+        int i=0;
+        while (rowKeyIterator.hasNext()) {
+            byte[] tempRow = rowKeyIterator.next();
+            rowKeyIterator.remove();
+            splitKeys[i] = tempRow;
+            i++;
+        }
+        TableDescriptorBuilder tableDescriptor = TableDescriptorBuilder.newBuilder(getTableName(tableName));
+        ColumnFamilyDescriptor family = ColumnFamilyDescriptorBuilder.newBuilder(Bytes.toBytes("f")).setMaxVersions(1)
+                .setInMemory(false)
+                .setBloomFilterType(BloomType.ROW)
+                .setCompressTags(true)
+                .setTimeToLive((int) TimeUnit.DAYS.toSeconds(30))
+                .setCompactionCompressionType(algorithm)
+                .setCompressionType(algorithm)
+                .setBlocksize(16384)
+                .setDataBlockEncoding(DataBlockEncoding.FAST_DIFF)
+                .setInMemoryCompaction(MemoryCompactionPolicy.BASIC).build();
+        tableDescriptor.setColumnFamily(family);
+        try(Admin hBaseAdmin = getConnection().getAdmin()){
+            hBaseAdmin.createTable(tableDescriptor.build(),splitKeys);
+        }catch (Exception ex){
+            logger.error("create hbase table,system error.metaName:{}",tableName,ex);
+            throw ex;
+        }
+        boolean isResult;
+        try{
+            isResult = isTableExist(tableName);
+        }catch (Exception ex){
+            logger.error(String.format("create hbase table,check status error.metaName:%s",tableName),ex);
+            throw ex;
+        }
+        if(!isResult) {
+            logger.info("create hbase table error,table not created.metaName:{}",tableName);
+            throw new Exception("create hbase table error!");
+        }
+    }
+
+    @Override
+    public void createDimensTable(String tableName) throws Exception {
         int prePartitionsSize = getDefaultPrePartitionSize();
         String [] keys = SysConst._DBKeyPrefixArray;
         List<String> keysList = Arrays.asList(keys);
@@ -648,30 +702,9 @@ public class HBaseWarehouseStorageEngine implements WarehouseStorageEngine {
         return resultList;
     }
 
-
     @Override
-    public long getMaxRecordSize() {
-        return Long.MAX_VALUE;
-    }
-
-    @Override
-    public long getMaxContentSize() {
-        return Long.MAX_VALUE;
-    }
-
-    @Override
-    public long getMaxTimeInterval() {
-        return TimeUnit.DAYS.toSeconds(90);
-    }
-
-    @Override
-    public long getRecordSize(String tableName) {
-        return 0;
-    }
-
-    @Override
-    public long getContentSize(String tableName) {
-        return 0;
+    public boolean isWritable(String tableName) throws Exception {
+        return true;
     }
 
     private static class HBaseGetterThread<R> implements Callable<List<LdpResult<R>>> {

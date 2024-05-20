@@ -28,7 +28,7 @@ public class HBaseStorageEngineTest {
     @Test
     public void testCreateTable() throws Exception {
         String tableName = "ssvs:table_abc";
-        WarehouseStorageEngineProxy.getInstance().createTable(tableName);
+        WarehouseStorageEngineProxy.getInstance().createResultTable(tableName);
     }
 
     @Test

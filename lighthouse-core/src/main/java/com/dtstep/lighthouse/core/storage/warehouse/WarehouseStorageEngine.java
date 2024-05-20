@@ -10,7 +10,9 @@ public interface WarehouseStorageEngine {
 
     void createNamespaceIfNotExist(String namespace) throws Exception;
 
-    void createTable(String tableName) throws Exception;
+    void createResultTable(String tableName) throws Exception;
+
+    void createDimensTable(String tableName) throws Exception;
 
     boolean isTableExist(String tableName) throws Exception;
 
@@ -34,14 +36,6 @@ public interface WarehouseStorageEngine {
 
     void delete(String tableName,String key) throws Exception;
 
-    long getMaxRecordSize();
-
-    long getMaxContentSize();
-
-    long getMaxTimeInterval();
-
-    long getRecordSize(String tableName);
-
-    long getContentSize(String tableName);
+    boolean isWritable(String tableName) throws Exception;
 
 }

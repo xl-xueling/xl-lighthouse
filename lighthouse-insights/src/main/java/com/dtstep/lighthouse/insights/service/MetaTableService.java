@@ -20,6 +20,4 @@ package com.dtstep.lighthouse.insights.service;
 public interface MetaTableService {
 
     int getCurrentStatResultTable() throws Exception;
-
-    int getCurrentSeqResultTable() throws Exception;
 }

@@ -25,7 +25,7 @@ public class DimensStorageHandlerTest {
     @Test
     public void testCreateDimensTable() throws Exception {
         WarehouseStorageEngineProxy.getInstance().dropTable(StatConst.DIMENS_STORAGE_TABLE);
-        WarehouseStorageEngineProxy.getInstance().createTable(StatConst.DIMENS_STORAGE_TABLE);
+        WarehouseStorageEngineProxy.getInstance().createResultTable(StatConst.DIMENS_STORAGE_TABLE);
     }
 
     @Test

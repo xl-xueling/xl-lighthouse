@@ -59,27 +59,4 @@ public class MetaTableServiceImpl implements MetaTableService {
         return metaId;
     }
 
-
-    @Transactional
-    @Override
-    public int getCurrentSeqResultTable() throws Exception {
-        MetaTableQueryParam metaTableQueryParam = new MetaTableQueryParam();
-        long maxRecordSize = WarehouseStorageEngineProxy.getInstance().getMaxRecordSize();
-        long maxContentSize = WarehouseStorageEngineProxy.getInstance().getMaxContentSize();
-        long maxTimeInterval = WarehouseStorageEngineProxy.getInstance().getMaxTimeInterval();
-        metaTableQueryParam.setMaxRecordSize(maxRecordSize);
-        metaTableQueryParam.setMaxContentSize(maxContentSize);
-        long timestamp = DateUtil.getSecondBefore(System.currentTimeMillis(),maxTimeInterval);
-        LocalDateTime startDate = DateUtil.timestampToLocalDateTime(timestamp);
-        metaTableQueryParam.setStartDate(startDate);
-        metaTableQueryParam.setMetaTableTypeEnum(MetaTableTypeEnum.SEQ_RESULT_TABLE);
-        MetaTable metaTable = metaTableDao.getCurrentStorageTable(metaTableQueryParam);
-        int metaId;
-        if(metaTable == null){
-            metaId = MetaTableWrapper.createSeqStorageAndMetaTable();
-        }else{
-            metaId = metaTable.getId();
-        }
-        return metaId;
-    }
 }

@@ -95,7 +95,7 @@ public final class MetaTableWrapper {
             if(metaTable != null){
                 String metaName = metaTable.getMetaName();
                 if(!WarehouseStorageEngineProxy.getInstance().isTableExist(metaName)){
-                    WarehouseStorageEngineProxy.getInstance().createTable(metaName);
+                    WarehouseStorageEngineProxy.getInstance().createResultTable(metaName);
                 }
             }
         }catch (Exception ex){
@@ -164,7 +164,7 @@ public final class MetaTableWrapper {
         metaTable.setUpdateTime(date);
         metaTable.setMetaTableType(MetaTableTypeEnum.STAT_RESULT_TABLE);
         try{
-            WarehouseStorageEngineProxy.getInstance().createTable(metaName);
+            WarehouseStorageEngineProxy.getInstance().createResultTable(metaName);
             logger.info("create stat storage table,create hbase table success,metaName:{}",metaName);
         }catch (Exception ex){
             logger.error("create stat storage table,create hbase table error,metaName:{}",metaName,ex);
@@ -176,34 +176,6 @@ public final class MetaTableWrapper {
             logger.info("create stat meta table,save table info success,metaName;{}",metaName);
         }catch (Exception ex){
             logger.error("create stat meta table,save table info error,metaName:{}",metaName,ex);
-            deleteTable(metaName);
-            throw ex;
-        }
-        return tableId;
-    }
-
-    public static int createSeqStorageAndMetaTable() throws Exception {
-        MetaTable metaTable = new MetaTable();
-        String metaName = "ldp_seq_" + System.currentTimeMillis();
-        metaTable.setMetaName(metaName);
-        metaTable.setState(MetaTableStateEnum.VALID);
-        LocalDateTime date = LocalDateTime.now();
-        metaTable.setCreateTime(date);
-        metaTable.setUpdateTime(date);
-        metaTable.setMetaTableType(MetaTableTypeEnum.SEQ_RESULT_TABLE);
-        try{
-            WarehouseStorageEngineProxy.getInstance().createTable(metaName);
-            logger.info("create seq storage table,create hbase table success,metaName:{}",metaName);
-        }catch (Exception ex){
-            logger.error("create seq storage table,create hbase table error,metaName:{}",metaName,ex);
-            throw ex;
-        }
-        int tableId;
-        try{
-            tableId = insertIntoMySQL(metaTable);
-            logger.info("create seq meta table,save table info success,metaName;{}",metaName);
-        }catch (Exception ex){
-            logger.error("create seq meta table,save table info error,metaName:{}",metaName,ex);
             deleteTable(metaName);
             throw ex;
         }
