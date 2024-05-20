@@ -92,7 +92,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     + "k VARCHAR(200) NOT NULL, "
                     + "v bigint DEFAULT '0', "
                     + "exp_time timestamp NOT NULL, "
-                    + "upd_time timestamp NOT NULL"
+                    + "upd_time timestamp NOT NULL, "
+                    + "UNIQUE KEY `k_UNIQUE` (`k`)"
                     + ") ENGINE=InnoDB AUTO_INCREMENT=100564 DEFAULT CHARSET=utf8mb3",tableName);
             statement = connection.createStatement();
             statement.execute(sql);
@@ -121,7 +122,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     + "k VARCHAR(200) NOT NULL, "
                     + "v VARCHAR(800) NOT NULL, "
                     + "exp_time timestamp NOT NULL, "
-                    + "upd_time timestamp NOT NULL"
+                    + "upd_time timestamp NOT NULL, "
+                    + "UNIQUE KEY `k_UNIQUE` (`k`)"
                     + ") ENGINE=InnoDB AUTO_INCREMENT=100564 DEFAULT CHARSET=utf8mb3",tableName);
             statement = connection.createStatement();
             statement.execute(sql);
