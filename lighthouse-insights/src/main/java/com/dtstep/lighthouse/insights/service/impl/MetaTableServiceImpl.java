@@ -19,6 +19,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.enums.MetaTableTypeEnum;
 import com.dtstep.lighthouse.common.modal.MetaTable;
 import com.dtstep.lighthouse.common.util.DateUtil;
+import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngine;
 import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngineProxy;
 import com.dtstep.lighthouse.core.wrapper.MetaTableWrapper;
 import com.dtstep.lighthouse.insights.dao.MetaTableDao;
@@ -38,19 +39,16 @@ public class MetaTableServiceImpl implements MetaTableService {
 
     @Override
     public int getCurrentStatResultTable() throws Exception {
+        WarehouseStorageEngine warehouseStorageEngine = WarehouseStorageEngineProxy.getInstance();
         MetaTableQueryParam metaTableQueryParam = new MetaTableQueryParam();
-        long maxRecordSize = WarehouseStorageEngineProxy.getInstance().getMaxRecordSize();
-        long maxContentSize = WarehouseStorageEngineProxy.getInstance().getMaxContentSize();
-        long maxTimeInterval = WarehouseStorageEngineProxy.getInstance().getMaxTimeInterval();
-        metaTableQueryParam.setMaxRecordSize(maxRecordSize);
-        metaTableQueryParam.setMaxContentSize(maxContentSize);
+        long maxTimeInterval = warehouseStorageEngine.getTableMaxValidPeriod();
         long timestamp = DateUtil.getSecondBefore(System.currentTimeMillis(),maxTimeInterval);
         LocalDateTime startDate = DateUtil.timestampToLocalDateTime(timestamp);
         metaTableQueryParam.setStartDate(startDate);
         metaTableQueryParam.setMetaTableTypeEnum(MetaTableTypeEnum.STAT_RESULT_TABLE);
         MetaTable metaTable = metaTableDao.getCurrentStorageTable(metaTableQueryParam);
         int metaId;
-        if(metaTable == null){
+        if(metaTable == null || !warehouseStorageEngine.isAppendable(metaTable.getMetaName())){
             metaId = MetaTableWrapper.createStatStorageAndMetaTable();
         }else{
             metaId = metaTable.getId();

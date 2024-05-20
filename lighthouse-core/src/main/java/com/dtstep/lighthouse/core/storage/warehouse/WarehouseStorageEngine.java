@@ -38,4 +38,6 @@ public interface WarehouseStorageEngine {
 
     boolean isAppendable(String tableName) throws Exception;
 
+    long getTableMaxValidPeriod() throws Exception;
+
 }

@@ -618,7 +618,12 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         return true;
     }
 
-    private static String getDBKey(String ldpKey,String ldpColumn){
+    @Override
+    public long getTableMaxValidPeriod() throws Exception {
+        return TimeUnit.DAYS.toSeconds(90);
+    }
+
+    private static String getDBKey(String ldpKey, String ldpColumn){
         if(StringUtil.isNotEmpty(ldpColumn)){
             return ldpKey + ";" + ldpColumn;
         }else{

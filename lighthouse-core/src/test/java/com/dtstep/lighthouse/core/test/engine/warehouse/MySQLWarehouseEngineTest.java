@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.core.test.engine.warehouse;
 
+import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.core.storage.CompareOperator;
 import com.dtstep.lighthouse.core.storage.LdpIncrement;
 import com.dtstep.lighthouse.core.storage.LdpPut;
@@ -17,8 +18,10 @@ public class MySQLWarehouseEngineTest extends CoreBaseTest {
 
     @Test
     public void testCreateTable() throws Exception{
-        String table = "ldp_stat_aaaaaaaaaa";
-        mySQLWarehouseStorageEngine.dropTable(table);
+//        String table1 = StatConst.SYSTEM_STAT_RESULT_TABLE;
+//        mySQLWarehouseStorageEngine.createResultTable(table1);
+        String table2 = StatConst.DIMENS_STORAGE_TABLE;
+        mySQLWarehouseStorageEngine.createDimensTable(table2);
     }
 
     @Test
