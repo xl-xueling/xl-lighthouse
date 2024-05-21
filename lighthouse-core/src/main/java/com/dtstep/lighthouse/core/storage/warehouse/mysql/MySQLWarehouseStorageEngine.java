@@ -89,7 +89,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             String sql = String.format("CREATE TABLE IF NOT EXISTS %s ("
                     + "id BIGINT AUTO_INCREMENT PRIMARY KEY, "
                     + "k VARCHAR(200) NOT NULL, "
-                    + "v bigint DEFAULT '0', "
+                    + "v bigint NOT NULL DEFAULT '0', "
                     + "exp_time timestamp NOT NULL, "
                     + "upd_time timestamp NOT NULL, "
                     + "UNIQUE KEY `k_UNIQUE` (`k`)"

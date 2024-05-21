@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.client.standalone;
 
 import com.dtstep.lighthouse.client.LightHouse;
+import com.dtstep.lighthouse.common.util.DateUtil;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -10,7 +11,7 @@ public class TestStat extends StandaloneBaseTest{
 
     @Test
     public void testCount() throws Exception {
-        long t = System.currentTimeMillis();
+        long t = DateUtil.parseDate("2024-06-04 08:39:14","yyyy-MM-dd HH:mm:ss");
         for(int i=0;i<1239;i++){
             HashMap<String,Object> paramMap = new HashMap<>();
             paramMap.put("province", ThreadLocalRandom.current().nextInt(10));

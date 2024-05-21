@@ -18,11 +18,12 @@ public class MySQLWarehouseEngineTest extends CoreBaseTest {
 
     @Test
     public void testCreateTable() throws Exception{
-//        String table1 = StatConst.SYSTEM_STAT_RESULT_TABLE;
-//        mySQLWarehouseStorageEngine.createResultTable(table1);
-        String table2 = StatConst.DIMENS_STORAGE_TABLE;
-        String table3 = "ldp_stat_1716037618313";
-        mySQLWarehouseStorageEngine.createResultTable(table3);
+        String table1 = StatConst.SYSTEM_STAT_RESULT_TABLE;
+        mySQLWarehouseStorageEngine.createResultTable(table1);
+        String table2 = "ldp_stat_1716037618313";
+        mySQLWarehouseStorageEngine.createResultTable(table2);
+        String table3 = StatConst.DIMENS_STORAGE_TABLE;
+        mySQLWarehouseStorageEngine.createDimensTable(table3);
     }
 
     @Test

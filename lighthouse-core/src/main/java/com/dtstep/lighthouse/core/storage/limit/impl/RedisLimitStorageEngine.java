@@ -129,7 +129,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
                     }
                 }
             }catch (Exception ex){
-                logger.error("lighthouse stat,limit process error!",ex);
+                logger.error("lighthouse stat,limit process error,statId:{}!",statExtEntity.getId(),ex);
             }finally {
                 RedissonLock.unLock(lockKey);
             }
