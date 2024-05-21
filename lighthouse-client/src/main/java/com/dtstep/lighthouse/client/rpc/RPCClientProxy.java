@@ -23,18 +23,21 @@ import com.dtstep.lighthouse.common.enums.RunningMode;
 
 public class RPCClientProxy {
 
-    private static final RPCClient iceInstance = new ICERPCClientImpl();
-
-    private static final RPCClient standaloneInstance = new StandaloneClientImpl();
+    private static RPCClient instance;
 
     public static RPCClient instance(){
-        RunningMode runningMode = AuxHandler.getRunningMode();
-        if(runningMode == RunningMode.CLUSTER){
-            return iceInstance;
-        }else if(runningMode == RunningMode.STANDALONE){
-            return standaloneInstance;
+        if(instance != null){
+            return instance;
         }else{
-            throw new RuntimeException();
+            RunningMode runningMode = AuxHandler.getRunningMode();
+            if(runningMode == RunningMode.CLUSTER){
+                instance = new ICERPCClientImpl();
+            }else if(runningMode == RunningMode.STANDALONE){
+                instance = new StandaloneClientImpl();
+            }else{
+                throw new RuntimeException("Running mode["+runningMode+"] not support!");
+            }
+            return instance;
         }
     }
 }
