@@ -21,7 +21,6 @@ import com.dtstep.lighthouse.common.random.RandomID;
 import com.zeroc.Ice.Communicator;
 import com.zeroc.Ice.ObjectPrx;
 
-import java.util.UUID;
 
 public class ICEHandler {
 
