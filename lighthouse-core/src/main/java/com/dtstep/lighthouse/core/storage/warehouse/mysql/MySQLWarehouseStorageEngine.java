@@ -2,13 +2,12 @@ package com.dtstep.lighthouse.core.storage.warehouse.mysql;
 
 import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.common.hash.HashUtil;
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.dao.DBConnectionSource;
 import com.dtstep.lighthouse.core.dao.RDBMSConfiguration;
 import com.dtstep.lighthouse.core.lock.RedissonLock;
-import com.dtstep.lighthouse.core.storage.*;
+import com.dtstep.lighthouse.core.storage.common.*;
 import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngine;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -324,7 +323,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         Connection connection = null;
         PreparedStatement ps = null;
         long current = System.currentTimeMillis();
-        String sql = "INSERT ignore INTO " + tableName + "(`k`,`v`,`exp_time`,`upd_time`) values (?, ?, ?, ?) on duplicate key update v = v + ?";
+        String sql = "INSERT INTO " + tableName + "(`k`,`v`,`exp_time`,`upd_time`) values (?, ?, ?, ?) on duplicate key update v = v + ?";
         Map<Long,List<LdpIncrement>> map = ldpIncrements.stream().collect(Collectors.groupingBy(x -> HashUtil.BKDRHash(getDBKey(x.getKey(),x.getColumn())) % batchSalt));
         for(Long object : map.keySet()){
             StopWatch stopWatch = new StopWatch();

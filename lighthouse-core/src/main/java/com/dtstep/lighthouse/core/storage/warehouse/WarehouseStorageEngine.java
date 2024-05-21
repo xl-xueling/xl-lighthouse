@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.core.storage.warehouse;
 
-import com.dtstep.lighthouse.core.storage.*;
+import com.dtstep.lighthouse.core.storage.common.*;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public interface WarehouseStorageEngine {
 
     void increments(String tableName,List<LdpIncrement> ldpIncrements) throws Exception;
 
-    void putsWithCompare(String tableName, CompareOperator compareOperator,List<LdpPut> ldpPuts) throws Exception;
+    void putsWithCompare(String tableName, CompareOperator compareOperator, List<LdpPut> ldpPuts) throws Exception;
 
     <R> LdpResult<R> get(String tableName, LdpGet ldpGet, Class<R> clazz) throws Exception;
 

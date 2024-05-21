@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.storage;
+package com.dtstep.lighthouse.core.storage.common;
 
 public enum CompareOperator {
 

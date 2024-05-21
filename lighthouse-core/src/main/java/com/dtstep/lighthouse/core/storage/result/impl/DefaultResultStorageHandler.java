@@ -12,7 +12,7 @@ import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
-import com.dtstep.lighthouse.core.storage.*;
+import com.dtstep.lighthouse.core.storage.common.*;
 import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngineProxy;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageHandler;
 import com.dtstep.lighthouse.core.wrapper.MetaTableWrapper;

@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.core.test.engine;
 
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.storage.*;
+import com.dtstep.lighthouse.core.storage.common.*;
 import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngineProxy;
 import org.junit.Test;
 

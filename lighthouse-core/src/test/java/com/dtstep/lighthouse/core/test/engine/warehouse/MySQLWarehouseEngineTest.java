@@ -1,9 +1,9 @@
 package com.dtstep.lighthouse.core.test.engine.warehouse;
 
 import com.dtstep.lighthouse.common.constant.StatConst;
-import com.dtstep.lighthouse.core.storage.CompareOperator;
-import com.dtstep.lighthouse.core.storage.LdpIncrement;
-import com.dtstep.lighthouse.core.storage.LdpPut;
+import com.dtstep.lighthouse.core.storage.common.CompareOperator;
+import com.dtstep.lighthouse.core.storage.common.LdpIncrement;
+import com.dtstep.lighthouse.core.storage.common.LdpPut;
 import com.dtstep.lighthouse.core.storage.warehouse.mysql.MySQLWarehouseStorageEngine;
 import com.dtstep.lighthouse.core.test.CoreBaseTest;
 import org.junit.Test;
@@ -21,7 +21,8 @@ public class MySQLWarehouseEngineTest extends CoreBaseTest {
 //        String table1 = StatConst.SYSTEM_STAT_RESULT_TABLE;
 //        mySQLWarehouseStorageEngine.createResultTable(table1);
         String table2 = StatConst.DIMENS_STORAGE_TABLE;
-        mySQLWarehouseStorageEngine.createDimensTable(table2);
+        String table3 = "ldp_stat_1716037618313";
+        mySQLWarehouseStorageEngine.createResultTable(table3);
     }
 
     @Test
@@ -50,7 +51,7 @@ public class MySQLWarehouseEngineTest extends CoreBaseTest {
 
     @Test
     public void testIncrement() throws Exception {
-        String table = "ldp_stat_aaaaaaaaaa";
+        String table = "ldp_stat_1716037618313";
         String key = "abc";
         LdpIncrement ldpIncrement = new LdpIncrement();
         ldpIncrement.setKey(key);
@@ -61,7 +62,7 @@ public class MySQLWarehouseEngineTest extends CoreBaseTest {
 
     @Test
     public void testIncrements() throws Exception {
-        String table = "ldp_stat_aaaaaaaaaa";
+        String table = "ldp_stat_1716037618313";
         String key1 = "a1";
         LdpIncrement ldpIncrement1 = new LdpIncrement();
         ldpIncrement1.setKey(key1);
@@ -75,12 +76,24 @@ public class MySQLWarehouseEngineTest extends CoreBaseTest {
         List<LdpIncrement> ldpIncrements = new ArrayList<>();
         ldpIncrements.add(ldpIncrement1);
         ldpIncrements.add(ldpIncrement2);
+        ldpIncrements.add(ldpIncrement1);
+        ldpIncrements.add(ldpIncrement2);
+        ldpIncrements.add(ldpIncrement1);
+        ldpIncrements.add(ldpIncrement2);
+        ldpIncrements.add(ldpIncrement1);
+        ldpIncrements.add(ldpIncrement2);
+        ldpIncrements.add(ldpIncrement1);
+        ldpIncrements.add(ldpIncrement2);
+        ldpIncrements.add(ldpIncrement1);
+        ldpIncrements.add(ldpIncrement2);
+        ldpIncrements.add(ldpIncrement1);
+        ldpIncrements.add(ldpIncrement2);
         mySQLWarehouseStorageEngine.increments(table,ldpIncrements);
     }
 
     @Test
     public void testPutWithCompare() throws Exception {
-        String table = "ldp_stat_aaaaaaaaaa";
+        String table = "ldp_stat_1716037618313";
         String key1 = "a5";
         LdpPut ldpPut = new LdpPut();
         ldpPut.setKey(key1);
@@ -89,4 +102,6 @@ public class MySQLWarehouseEngineTest extends CoreBaseTest {
         ldpPut.setTtl(5000);
         mySQLWarehouseStorageEngine.putsWithCompare(table, CompareOperator.GREATER,List.of(ldpPut));
     }
+
+
 }

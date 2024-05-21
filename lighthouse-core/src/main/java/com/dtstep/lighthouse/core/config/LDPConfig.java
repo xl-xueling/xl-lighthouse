@@ -116,9 +116,6 @@ public final class LDPConfig {
         File file = new File(confPath);
         Document document = Jsoup.parse(file, "utf-8");
         parseProperties(document.select("configuration > property"), "", paramMap);
-        for(String key : paramMap.keySet()){
-            System.out.println("key:" + key + ",value:" + paramMap.get(key));
-        }
         paramMap  = Collections.unmodifiableMap(paramMap);
         Thread.setDefaultUncaughtExceptionHandler(new LDPUncaughtExceptionHandler());
         isInit.set(true);
