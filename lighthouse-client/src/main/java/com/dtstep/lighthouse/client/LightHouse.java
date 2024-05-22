@@ -47,7 +47,7 @@ public final class LightHouse {
 
     private static int consumerFrequency = 500;
 
-    private static int consumerBatchSize = 200;
+    private static int consumerBatchSize = 100;
 
     private static final EventPool<SimpleSlotEvent> eventPool = new BlockingEventPool<>("ClientEventPool",3,200000);
 
