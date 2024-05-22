@@ -34,7 +34,7 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
 import com.dtstep.lighthouse.core.formula.FormulaCalculate;
 import com.dtstep.lighthouse.core.preparing.handler.valid.MessageValid;
-import com.dtstep.lighthouse.core.redis.RedisHandler;
+import com.dtstep.lighthouse.core.redis.RedisClient;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.TrackParam;
 import com.dtstep.lighthouse.insights.service.GroupService;
@@ -112,7 +112,7 @@ public class TrackController {
         }
         DebugParam debugParam = groupVO.getDebugParam();
         String key = RedisConst.TRACK_PREFIX + "_" + groupId;
-        List<String> list = RedisHandler.getInstance().lrange(key,0,StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE);
+        List<String> list = RedisClient.getInstance().lrange(key,0,StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE);
         if(list == null){
             list = new ArrayList<>();
         }

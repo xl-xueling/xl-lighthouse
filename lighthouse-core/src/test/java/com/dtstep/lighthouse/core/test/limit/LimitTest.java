@@ -4,21 +4,17 @@ import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import com.dtstep.lighthouse.core.redis.RedisHandler;
+import com.dtstep.lighthouse.core.redis.RedisClient;
 import com.dtstep.lighthouse.core.storage.limit.LimitStorageSelector;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.Test;
 import redis.clients.jedis.resps.Tuple;
-
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 public class LimitTest {
 
@@ -45,7 +41,7 @@ public class LimitTest {
     @Test
     public void test2() throws Exception {
         String key = "limitN_0ac242bfb01d04a4799bcdee78d74228_2";
-        List<Tuple> tuples = RedisHandler.getInstance().zrange(key,0,100);
+        List<Tuple> tuples = RedisClient.getInstance().zrange(key,0,100);
         for(Tuple tuple : tuples){
             System.out.println("tuple is:" + tuple.getElement() + ",score:"
                     + BigDecimal.valueOf(tuple.getScore()));
@@ -58,8 +54,8 @@ public class LimitTest {
         memberMap.put("a",new BigDecimal("111").toPlainString());
         memberMap.put("b",new BigDecimal("1946044683225899.999").toPlainString());
         memberMap.put("c",new BigDecimal("1946044683225899.198").toPlainString());
-        RedisHandler.getInstance().batchPutTopN("test3",memberMap,100,1000000000);
-        List<Tuple> tuples = RedisHandler.getInstance().zrevrange("test3",0,100);
+        RedisClient.getInstance().batchPutTopN("test3",memberMap,100,1000000000);
+        List<Tuple> tuples = RedisClient.getInstance().zrevrange("test3",0,100);
         Thread.sleep(1000);
         for(Tuple tuple : tuples){
             System.out.println("tuple is:" + tuple.getElement() + ",r1 is:" + BigDecimal.valueOf(tuple.getScore()).stripTrailingZeros().toPlainString());
@@ -69,7 +65,7 @@ public class LimitTest {
     @Test
     public void test34() throws Exception {
         String key = "limitN_c86c43af1b9c4151b91f7a5ca6434bfc_2";
-        List<Tuple> tuples = RedisHandler.getInstance().zrevrange(key,0,100);
+        List<Tuple> tuples = RedisClient.getInstance().zrevrange(key,0,100);
         for(int i=0;i<tuples.size();i++){
             Tuple tuple = tuples.get(i);
             System.out.println("tuple:" + tuple.getElement() + ",score:" + new BigDecimal(tuple.getScore() + ""));

@@ -25,12 +25,10 @@ import com.dtstep.lighthouse.common.enums.{GroupStateEnum, LimitingStrategyEnum,
 import com.dtstep.lighthouse.common.enums.result.MessageCaptchaEnum
 import com.dtstep.lighthouse.common.util.{DateUtil, JsonUtil}
 import com.dtstep.lighthouse.common.util.JsonUtil.toJSONString
-import com.dtstep.lighthouse.core.batch.BatchAdapter
 import com.dtstep.lighthouse.core.limiting.{LimitingContext, RedisLimitingAspect}
 import com.dtstep.lighthouse.core.preparing.handler.valid.MessageValid
-import com.dtstep.lighthouse.core.redis.RedisHandler
+import com.dtstep.lighthouse.core.redis.RedisClient
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper
-import org.apache.spark.SparkEnv
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.slf4j.LoggerFactory
 
@@ -79,7 +77,7 @@ private[tasks] class DefaultValidHandler(spark: SparkSession) extends ValidHandl
       if(logger.isTraceEnabled()){
         logger.trace(s"group[${groupId}] enable debug mode,capture message:${JsonUtil.toJSONString(message)}")
       }
-      RedisHandler.getInstance().limitSet(trackKey,toJSONString(message),StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE,2 * 3600)
+      RedisClient.getInstance().limitSet(trackKey,toJSONString(message),StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE,2 * 3600)
     }
   }
 

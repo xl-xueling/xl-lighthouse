@@ -19,12 +19,12 @@ public class TestQueryGroupInfo extends StandaloneBaseTest {
 
     @Test
     public void testStat() throws Exception {
-        String token = "j3X:test_standalone";
+        String token = "HVP:test_standalone";
         HashMap<String,Object> paramMap = new HashMap<>();
         paramMap.put("province", ThreadLocalRandom.current().nextInt(10));
         paramMap.put("city",ThreadLocalRandom.current().nextInt(100));
         paramMap.put("score",ThreadLocalRandom.current().nextDouble(1000));
-        LightHouse.stat(token,"IRkSd4rEDL75fXRkpUynvt2L5q8Gdwembam3OyCL",paramMap,System.currentTimeMillis());
+        LightHouse.stat(token,"73V8IcFZu9kckcpc8xOrN2aZLcUrFlu2E67uRcgM",paramMap,System.currentTimeMillis());
         Thread.sleep(5000);
     }
 }

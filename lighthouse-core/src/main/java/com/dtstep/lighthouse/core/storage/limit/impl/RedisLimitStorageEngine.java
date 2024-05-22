@@ -18,7 +18,7 @@ package com.dtstep.lighthouse.core.storage.limit.impl;
  */
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.lock.RedissonLock;
-import com.dtstep.lighthouse.core.redis.RedisHandler;
+import com.dtstep.lighthouse.core.redis.RedisClient;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
 import com.dtstep.lighthouse.core.storage.limit.LimitStorageEngine;
@@ -110,7 +110,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
                     dbMap.entrySet().stream().sorted(Comparator.comparing(o -> 0 - Double.parseDouble(o.getValue().getValue().toString()))).limit(cacheSize)
                             .forEachOrdered(e -> keyValueMap.put(e.getKey(), e.getValue().getValue().toString()));
                     long t4 = System.currentTimeMillis();
-                    RedisHandler.getInstance().batchPutTopN(redisKey,keyValueMap,cacheSize,expireSeconds * 10);
+                    RedisClient.getInstance().batchPutTopN(redisKey,keyValueMap,cacheSize,expireSeconds * 10);
                     long t5 = System.currentTimeMillis();
                     if(logger.isDebugEnabled()){
                         logger.debug("limit topN put,stat:{},batchTime:{},redis key:{},dimensSet size:{},keyValueMap size:{},cost1:{},cost2:{},cost3:{}"
@@ -121,7 +121,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
                     dbMap.entrySet().stream().sorted(Comparator.comparing(o -> Double.parseDouble(o.getValue().getValue().toString()))).limit(cacheSize)
                             .forEachOrdered(e -> keyValueMap.put(e.getKey(), e.getValue().getValue().toString()));
                     long t4 = System.currentTimeMillis();
-                    RedisHandler.getInstance().batchPutLastN(redisKey,keyValueMap,cacheSize,expireSeconds * 10);
+                    RedisClient.getInstance().batchPutLastN(redisKey,keyValueMap,cacheSize,expireSeconds * 10);
                     long t5 = System.currentTimeMillis();
                     if(logger.isDebugEnabled()) {
                         logger.debug("limit lastN put,stat:{},batchTime:{},redis key:{},dimensSet size:{},keyValueMap size:{},cost1:{},cost2:{},cost3:{}"
@@ -168,7 +168,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
         if(statExtEntity.getTemplateEntity().getLimitTypeEnum() == LimitTypeEnum.TOP){
             IntStream.range(0,StatConst.LIMIT_SALT).forEach(z -> {
                 String redisKey = RedisConst.LIMIT_N_PREFIX + "_" + baseKey + "_" + z;
-                List<Tuple> tempDimensSet = RedisHandler.getInstance().zrevrange(redisKey,0,limitSize);
+                List<Tuple> tempDimensSet = RedisClient.getInstance().zrevrange(redisKey,0,limitSize);
                 if(CollectionUtils.isNotEmpty(tempDimensSet)){
                     limitSet.addAll(tempDimensSet);
                 }
@@ -184,7 +184,7 @@ public class RedisLimitStorageEngine extends LimitStorageEngine<LimitBucket, Lim
         }else if(statExtEntity.getTemplateEntity().getLimitTypeEnum() == LimitTypeEnum.LAST){
             IntStream.range(0,StatConst.LIMIT_SALT).forEach(z -> {
                 String redisKey = RedisConst.LIMIT_N_PREFIX + "_" + baseKey + "_" + z;
-                List<Tuple> tempDimensSet = RedisHandler.getInstance().zrange(redisKey,0,limitSize);
+                List<Tuple> tempDimensSet = RedisClient.getInstance().zrange(redisKey,0,limitSize);
                 if(CollectionUtils.isNotEmpty(tempDimensSet)){
                     limitSet.addAll(tempDimensSet);
                 }

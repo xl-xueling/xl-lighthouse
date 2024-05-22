@@ -16,7 +16,8 @@ package com.dtstep.lighthouse.core.limiting;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.core.redis.RedisHandler;
+import com.dtstep.lighthouse.core.redis.RedisClient;
+import com.dtstep.lighthouse.core.redis.RedisOperator;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.util.concurrent.Striped;
@@ -25,7 +26,6 @@ import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.exceptions.JedisNoScriptException;
 
 import java.util.Optional;
@@ -74,7 +74,7 @@ public final class RedisLimitingAspect {
 
     private RedisLimitingAspect(){
         try{
-            this.sha = RedisHandler.scriptLoad(LUA_LIMIT_SCRIPT);
+            this.sha = RedisClient.scriptLoad(LUA_LIMIT_SCRIPT);
         }catch (Exception ex){
             logger.error("script load error",ex);
         }
@@ -85,15 +85,15 @@ public final class RedisLimitingAspect {
     }
 
     private int getRemainSize(String limitKey, int step, long limitValue,long expireSeconds) {
-        final JedisCluster jedisCluster = RedisHandler.getInstance().getJedisCluster();
+        final RedisOperator redisOperator = RedisClient.getInstance().getRedisOperator();
         try {
-            if (StringUtil.isEmpty(sha) || !jedisCluster.scriptExists(sha, limitKey)) {
-                sha = jedisCluster.scriptLoad(LUA_LIMIT_SCRIPT, limitKey);
+            if (StringUtil.isEmpty(sha) || !redisOperator.scriptExists(sha, limitKey)) {
+                sha = redisOperator.scriptLoad(LUA_LIMIT_SCRIPT, limitKey);
             }
-            Object result = jedisCluster.evalsha(sha, 1, Md5Util.get16MD5(limitKey), String.valueOf(expireSeconds), String.valueOf(step), String.valueOf(limitValue));
+            Object result = redisOperator.evalsha(sha, 1, Md5Util.get16MD5(limitKey), String.valueOf(expireSeconds), String.valueOf(step), String.valueOf(limitValue));
             return Integer.parseInt(String.valueOf(result));
         }catch (JedisNoScriptException ex){
-            sha = jedisCluster.scriptLoad(LUA_LIMIT_SCRIPT, limitKey);
+            sha = redisOperator.scriptLoad(LUA_LIMIT_SCRIPT, limitKey);
             return getRemainSize(limitKey, step, limitValue,expireSeconds);
         }catch (Exception ex){
             logger.error("redis try acquire error",ex);

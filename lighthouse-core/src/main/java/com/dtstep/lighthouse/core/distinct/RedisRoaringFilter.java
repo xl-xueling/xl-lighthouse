@@ -21,18 +21,17 @@ import com.dtstep.lighthouse.common.util.BinaryUtil;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.util.StringUtil;
-import com.dtstep.lighthouse.core.redis.RedisHandler;
+import com.dtstep.lighthouse.core.redis.RedisClient;
+import com.dtstep.lighthouse.core.redis.RedisOperator;
 import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
 import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
 import com.google.common.collect.Lists;
 import com.dtstep.lighthouse.common.constant.RedisConst;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
-import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.exceptions.JedisNoScriptException;
 
 import java.util.*;
@@ -104,7 +103,7 @@ public final class RedisRoaringFilter<T> {
 
     public RedisRoaringFilter(){
         try{
-            this.sha = RedisHandler.scriptLoad(BLOOM_LUA_SCRIPT_LOCAL_HASH);
+            this.sha = RedisClient.scriptLoad(BLOOM_LUA_SCRIPT_LOCAL_HASH);
         }catch (Exception ex){
             logger.error("redis script load error",ex);
         }
@@ -121,10 +120,10 @@ public final class RedisRoaringFilter<T> {
         if(CollectionUtils.isEmpty(valueList)){
             return 0;
         }
-        final JedisCluster jedisCluster = RedisHandler.getInstance().getJedisCluster();
+        final RedisOperator redisOperator = RedisClient.getInstance().getRedisOperator();
         try {
             if (StringUtil.isEmpty(sha)) {
-                sha = jedisCluster.scriptLoad(BLOOM_LUA_SCRIPT_LOCAL_HASH, key);
+                sha = redisOperator.scriptLoad(BLOOM_LUA_SCRIPT_LOCAL_HASH, key);
             }
             Map<Integer,List<T>> distinctMap = valueList.parallelStream().collect(Collectors.groupingBy(x -> Math.abs(x.hashCode()) % part));
             return distinctMap.entrySet().parallelStream().map(x -> {
@@ -142,7 +141,7 @@ public final class RedisRoaringFilter<T> {
                         offsetStrArray.add(BinaryUtil.translateTenTo36(low) + "," + BinaryUtil.translateTenTo36(high));
                     }
                     String str = StringUtils.join(offsetStrArray, ";");
-                    Object result = jedisCluster.evalsha(sha, 1, Md5Util.get16MD5(key + "_" + partIndex), str, String.valueOf(expireSeconds));
+                    Object result = redisOperator.evalsha(sha, 1, Md5Util.get16MD5(key + "_" + partIndex), str, String.valueOf(expireSeconds));
                     if(result != null && StringUtil.isNumber(result.toString())){
                         return CollectionUtils.isNotEmpty(subList) ? Long.parseLong(result.toString()) : 0L;
                     }else{
@@ -153,7 +152,7 @@ public final class RedisRoaringFilter<T> {
             }).mapToLong(x -> x).sum();
         }catch (JedisNoScriptException ex){
             IntStream.range(0, part).forEach((x) ->{
-                sha = jedisCluster.scriptLoad(BLOOM_LUA_SCRIPT_LOCAL_HASH, Md5Util.get16MD5(key + "_" + x));
+                sha = redisOperator.scriptLoad(BLOOM_LUA_SCRIPT_LOCAL_HASH, Md5Util.get16MD5(key + "_" + x));
             });
             return filterWithRoaringMap(key,valueList,expireSeconds,part);
         }catch (Exception ex){

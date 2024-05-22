@@ -16,6 +16,10 @@ package com.dtstep.lighthouse.core.redis;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.RunningMode;
+import com.dtstep.lighthouse.core.config.LDPConfig;
+import com.dtstep.lighthouse.core.redis.cluster.RedisClusterOperator;
+import com.dtstep.lighthouse.core.redis.standalone.RedisStandaloneOperator;
 import com.google.common.base.Joiner;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.util.StringUtil;
@@ -35,15 +39,9 @@ public final class RedisClient {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisClient.class);
 
-    private static JedisCluster jedisCluster = null;
+    private static final RedisClient client = new RedisClient();
 
-    public void init(String[] servers) {
-        init(servers, null);
-    }
-
-    public JedisCluster getJedisCluster() {
-        return jedisCluster;
-    }
+    private static RedisOperator redisOperator = null;
 
     private static final String LIMIT_SET_LUA  =
                     "redis.call('lpush',KEYS[1],ARGV[1])\t\n" +
@@ -53,15 +51,48 @@ public final class RedisClient {
 
     private static String sha_limit_set = null;
 
-    public void limitSet(String key,String value,int limit,final int expireSeconds){
-        final JedisCluster jedisCluster = RedisHandler.getInstance().getJedisCluster();
-        try {
-            if (StringUtil.isEmpty(sha_limit_set) || !jedisCluster.scriptExists(sha_limit_set, key)) {
-                sha_limit_set = jedisCluster.scriptLoad(LIMIT_SET_LUA, key);
+    static {
+        try{
+            String redisServers = LDPConfig.getVal(LDPConfig.KEY_REDIS_CLUSTER);
+            assert redisServers != null;
+            String[] servers = redisServers.split(",");
+            String password = LDPConfig.getVal(LDPConfig.KEY_REDIS_CLUSTER_PASSWORD);
+            RunningMode runningMode = LDPConfig.getRunningMode();
+            if(runningMode == RunningMode.CLUSTER){
+                redisOperator = new RedisClusterOperator();
+            }else if(runningMode == RunningMode.STANDALONE){
+                redisOperator = new RedisStandaloneOperator();
             }
-            jedisCluster.evalsha(sha_limit_set, 1, key, value, String.valueOf(limit), String.valueOf(expireSeconds));
+            redisOperator.init(servers,password);
+        }catch (Exception ex){
+            logger.error("init redis cluster error!",ex);
+        }
+    }
+
+    public static RedisClient getInstance(){
+        return client;
+    }
+
+    public static String scriptLoad(String script){
+        return redisOperator.scriptLoad(script);
+    }
+
+    public static String scriptLoad(String script,String key){
+        return redisOperator.scriptLoad(script,key);
+    }
+
+    public RedisOperator getRedisOperator() {
+        return redisOperator;
+    }
+
+    public void limitSet(String key,String value,int limit,final int expireSeconds){
+        try {
+            if (StringUtil.isEmpty(sha_limit_set) || !redisOperator.scriptExists(sha_limit_set, key)) {
+                sha_limit_set = redisOperator.scriptLoad(LIMIT_SET_LUA, key);
+            }
+            redisOperator.evalsha(sha_limit_set, 1, key, value, String.valueOf(limit), String.valueOf(expireSeconds));
         }catch (JedisNoScriptException ex){
-            sha_limit_set = jedisCluster.scriptLoad(LIMIT_SET_LUA, key);
+            sha_limit_set = redisOperator.scriptLoad(LIMIT_SET_LUA, key);
             limitSet(key, value, limit,expireSeconds);
         }catch (Exception ex){
             logger.error("redis limit set error!",ex);
@@ -69,7 +100,7 @@ public final class RedisClient {
     }
 
     public void del(String key){
-        jedisCluster.del(key);
+        redisOperator.del(key);
     }
 
 
@@ -105,14 +136,13 @@ public final class RedisClient {
     public void batchPutTopN(String key, LinkedHashMap<String,String> memberMap, int limit, int expireSeconds){
         String members = Joiner.on(StatConst.MULTI_PAIR_SEPARATOR).join(memberMap.keySet());
         String scores = Joiner.on(StatConst.MULTI_PAIR_SEPARATOR).join(memberMap.values());
-        final JedisCluster jedisCluster = RedisHandler.getInstance().getJedisCluster();
         try{
             if(StringUtil.isEmpty(sha_topN)){
-                sha_topN = jedisCluster.scriptLoad(LUA_PUT_TOP_N,key);
+                sha_topN = redisOperator.scriptLoad(LUA_PUT_TOP_N,key);
             }
-            jedisCluster.evalsha(sha_topN, 1, key, scores,members,String.valueOf(limit), String.valueOf(expireSeconds));
+            redisOperator.evalsha(sha_topN, 1, key, scores,members,String.valueOf(limit), String.valueOf(expireSeconds));
         }catch (JedisNoScriptException ex){
-            sha_topN = jedisCluster.scriptLoad(LUA_PUT_TOP_N, key);
+            sha_topN = redisOperator.scriptLoad(LUA_PUT_TOP_N, key);
             batchPutTopN(key,memberMap,limit,expireSeconds);
         }catch (Exception ex){
             logger.error("redis batch put error,key:{},memberMap:{},limit:{}",key, memberMap,limit,ex);
@@ -150,14 +180,13 @@ public final class RedisClient {
     public void batchPutLastN(String key, LinkedHashMap<String,String> memberMap, int limit, int expireSeconds){
         String members = Joiner.on(StatConst.MULTI_PAIR_SEPARATOR).join(memberMap.keySet());
         String scores = Joiner.on(StatConst.MULTI_PAIR_SEPARATOR).join(memberMap.values());
-        final JedisCluster jedisCluster = RedisHandler.getInstance().getJedisCluster();
         try{
             if(StringUtil.isEmpty(sha_lastN)){
-                sha_lastN = jedisCluster.scriptLoad(LUA_PUT_LAST_N,key);
+                sha_lastN = redisOperator.scriptLoad(LUA_PUT_LAST_N,key);
             }
-            jedisCluster.evalsha(sha_lastN, 1, key, scores,members,String.valueOf(limit), String.valueOf(expireSeconds));
+            redisOperator.evalsha(sha_lastN, 1, key, scores,members,String.valueOf(limit), String.valueOf(expireSeconds));
         }catch (JedisNoScriptException ex){
-            sha_lastN = jedisCluster.scriptLoad(LUA_PUT_LAST_N, key);
+            sha_lastN = redisOperator.scriptLoad(LUA_PUT_LAST_N, key);
             batchPutLastN(key,memberMap,limit,expireSeconds);
         }catch (Exception ex){
             logger.error("redis batch put error,key:{},memberMap:{},limit:{}",key, memberMap,limit,ex);
@@ -165,75 +194,51 @@ public final class RedisClient {
     }
 
     public List<Tuple> zrevrange(String key, int start, int end){
-        return jedisCluster.zrevrangeWithScores(key, start, end);
+        return redisOperator.zrevrangeWithScores(key, start, end);
     }
 
     public List<Tuple> zrange(String key, int start, int end){
-        return jedisCluster.zrangeWithScores(key, start, end);
+        return redisOperator.zrangeWithScores(key, start, end);
     }
 
     public List<String> lrange(String key,int start,int end){
-        return jedisCluster.lrange(key, start, end);
-    }
-
-    public synchronized void init(String[] servers, String password) {
-        GenericObjectPoolConfig<Connection> config = new GenericObjectPoolConfig<>();
-        config.setMaxTotal(1000);
-        config.setMinIdle(200);
-        config.setMaxWaitMillis(20000);
-        config.setTestOnBorrow(false);
-        config.setTestOnReturn(true);
-        config.setTestOnCreate(false);
-        Set<HostAndPort> jedisClusterNodes = new HashSet<>();
-        if (ArrayUtils.isNotEmpty(servers)) {
-            for (String sever : servers) {
-                jedisClusterNodes.add(new HostAndPort(sever.split(":")[0], Integer.parseInt(sever.split(":")[1])));
-            }
-        }
-        int timeout = 20000;
-        int maxAttempts = 10;
-        int soTimeout = 10000;
-        if (password == null || password.length() == 0) {
-            jedisCluster = new JedisCluster(jedisClusterNodes, timeout, maxAttempts, config);
-        } else {
-            jedisCluster = new JedisCluster(jedisClusterNodes, timeout, soTimeout, maxAttempts, password, config);
-        }
+        return redisOperator.lrange(key, start, end);
     }
 
     public void set(final String key,String value,final int expireSeconds) {
         if(StringUtil.isEmpty(key) || StringUtil.isEmpty(value)){
             return;
         }
-        jedisCluster.setex(key, expireSeconds, value);
+        redisOperator.setex(key, expireSeconds, value);
     }
 
     public void setBytes(final String key,byte[] value,final int expireSeconds) {
         if(StringUtil.isEmpty(key) || value == null){
             return;
         }
-        jedisCluster.setex(key.getBytes(),expireSeconds,value);
+        redisOperator.setex(key.getBytes(),expireSeconds,value);
     }
 
     public byte[] getBytes(final String key) {
         if(StringUtil.isEmpty(key)){
             return null;
         }
-        return jedisCluster.get(key.getBytes());
+        return redisOperator.get(key.getBytes());
     }
 
     public String get(final String key) {
-        return jedisCluster.get(key);
+        return redisOperator.get(key);
     }
 
-    public boolean exist(final String key) {
-        return jedisCluster.exists(key);
+    public boolean exists(final String key) {
+        return redisOperator.exists(key);
     }
 
     public void expire(final String key,int second) throws Exception{
-        jedisCluster.expire(key,second);
+        redisOperator.expire(key,second);
     }
 
     public void incrBy(final String key,int step) throws Exception{
-        jedisCluster.incrBy(key,step);
+        redisOperator.incrBy(key,step);
     }
 }

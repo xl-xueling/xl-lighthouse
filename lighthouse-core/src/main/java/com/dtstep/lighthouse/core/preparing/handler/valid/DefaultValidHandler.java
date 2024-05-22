@@ -13,7 +13,7 @@ import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.limiting.LimitingContext;
 import com.dtstep.lighthouse.core.limiting.RedisLimitingAspect;
-import com.dtstep.lighthouse.core.redis.RedisHandler;
+import com.dtstep.lighthouse.core.redis.RedisClient;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
@@ -64,7 +64,7 @@ public class DefaultValidHandler implements ValidHandler {
             if(logger.isTraceEnabled()){
                 logger.trace("group[{}] enable debug mode,capture message:{}",groupId,JsonUtil.toJSONString(message));
             }
-            RedisHandler.getInstance().limitSet(trackKey, JsonUtil.toJSONString(message), StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE,2 * 3600);
+            RedisClient.getInstance().limitSet(trackKey, JsonUtil.toJSONString(message), StatConst.GROUP_MESSAGE_MAX_CACHE_SIZE,2 * 3600);
         }
     }
 }
