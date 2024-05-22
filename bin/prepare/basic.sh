@@ -493,8 +493,8 @@ function validStandaloneConfig(){
 function loadNodesConfig(){
 	loadNodesPWD;
   loadNodes;
+  local nodesSize=${#NODES[@]}
   if [[ ${DEPLOY_FLAG} == "true" ]];then
-    local nodesSize=${#NODES[@]}
     if [ $nodesSize -eq 0 ]; then
           log_error "Cluster node cannot be empty,process exist!"
           exit -1;
