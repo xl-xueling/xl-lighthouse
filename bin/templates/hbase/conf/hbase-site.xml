@@ -187,10 +187,6 @@
         <value>5</value>
     </property>
     <property>
-        <name>hbase.hstore.compaction.throughput.higher.bound</name>
-        <value>20971520</value>
-    </property>
-    <property>
         <name>hbase.hstore.compaction.min</name>
         <value>3</value>
     </property>
@@ -228,7 +224,7 @@
     </property>
     <property>
         <name>hbase.hstore.compaction.ratio</name>
-        <value>1.6</value>
+        <value>1.5</value>
     </property>
     <property>
         <name>hbase.regionserver.flush.policy</name>
