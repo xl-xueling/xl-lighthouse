@@ -15,6 +15,9 @@ current_date=$(date +'%Y-%m-%d')
 cur_hostname=$(hostname)
 PACK_HOME=${LDP_HOME}/temp/logpack/
 DAYS=2;
+if [ "$#" -eq 1 ] && [[ "$1" =~ ^[0-9]+$ ]] && [ "$1" -lt 30 ]; then
+	DAYS=${1}
+fi
 main(){
   	prepare;
 	if [[ ${USER} != ${DEPLOY_USER} ]];then
