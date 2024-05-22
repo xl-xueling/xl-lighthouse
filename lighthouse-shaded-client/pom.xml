@@ -61,7 +61,6 @@
             <groupId>org.xerial.snappy</groupId>
             <artifactId>snappy-java</artifactId>
             <version>1.1.7.3</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.zeroc</groupId>
@@ -111,6 +110,17 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.15</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3.2</version>
             <exclusions>
                 <exclusion>
                     <artifactId>*</artifactId>
@@ -195,16 +205,12 @@
                                     <shadedPattern>com.dtstep.lighthouse.com.esotericsoftware</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.apache</pattern>
-                                    <shadedPattern>com.dtstep.lighthouse.org.apache</shadedPattern>
+                                    <pattern>org.apache.commons</pattern>
+                                    <shadedPattern>com.dtstep.lighthouse.org.apache.commons</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.javatuples</pattern>
                                     <shadedPattern>com.dtstep.lighthouse.org.javatuples</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.xerial</pattern>
-                                    <shadedPattern>com.dtstep.lighthouse.org.xerial</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.objenesis</pattern>
