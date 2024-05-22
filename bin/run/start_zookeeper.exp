@@ -1,0 +1,23 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set ip [lindex $argv 1]
+set passwd [lindex $argv 2]
+set ldp_home [lindex $argv 3]
+set zookeeper_home ${ldp_home}/dependency/zookeeper
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+spawn ssh ${user}@${ip}
+set timeout -1
+expect {     
+        -nocase "yes/no" {send "yes\n";exp_continue} 
+        -nocase "password" {send "$passwd\n"}
+        "${prompt}" {send "\r"}
+}
+expect "${prompt}"
+send "${zookeeper_home}/bin/zkServer.sh start\r"
+expect "${prompt}"
+send "exit\r"
+expect eof

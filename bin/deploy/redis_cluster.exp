@@ -1,0 +1,28 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set ip [lindex $argv 1]
+set passwd [lindex $argv 2]
+set ldp_home [lindex $argv 3]
+set nodes [lindex $argv 4]
+set cluster_passwd [lindex $argv 5]
+set redis_home ${ldp_home}/dependency/redis
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+spawn ssh ${user}@${ip}
+set timeout -1
+expect {     
+        -nocase  "yes/no" {send "yes\n";exp_continue}
+        -nocase  "password" {send "$passwd\n"}
+        "${prompt}" {send "\r"}
+}
+expect "${prompt}"
+send "${redis_home}/bin/redis-cli -a ${cluster_passwd} --cluster create ${nodes} --cluster-replicas 1\r"
+expect "type 'yes' to accept"
+send "yes\r"
+expect "${prompt}"
+send "exit\r"
+expect eof
+

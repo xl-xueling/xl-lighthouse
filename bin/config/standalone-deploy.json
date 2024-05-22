@@ -1,0 +1,14 @@
+{
+  "lighthouse": {
+    "deploy_user": "work",
+    "deploy_user_passwd": "test123456"
+  },
+  "mysql": {
+    "root_passwd": "root",
+    "operate_user": "lighthouse",
+    "operate_user_passwd": "cXvsaGWExxG0082sZ"
+  },
+  "redis": {
+    "cluster_passwd": "naJKcZEoGGeSSAad"
+  }
+}

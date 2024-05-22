@@ -1,0 +1,53 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set ip [lindex $argv 1]
+set passwd [lindex $argv 2]
+set deploy_user [lindex $argv 3]
+set deploy_passwd [lindex $argv 4]
+spawn ssh ${user}@${ip}
+set timeout -1
+expect {     
+        -nocase "yes/no" {send "yes\n";exp_continue} 
+        -nocase "password" {send "$passwd\n"}
+}
+
+expect {
+        "*#" {send "groupadd ${deploy_user}\r"}
+        "*${user}@*" {send "groupadd ${deploy_user}\r"}
+}
+ 
+expect {
+	"*#" {send "useradd -r -m -s /bin/bash -g ${deploy_user} ${deploy_user}\r"}
+	"*${user}@*" {send "useradd -r -m -s /bin/bash -g ${deploy_user} ${deploy_user}\r"}
+}
+
+expect {
+	"*#" {send "echo \"${deploy_user}:${deploy_passwd}\" | chpasswd\r"}
+	"*${user}@*" {send "echo \"${deploy_user}:${deploy_passwd}\" | chpasswd\r"}
+}
+
+
+expect {
+	"*#" {send "sed -i \'/export PS1/d\' /root/.bashrc\r";}
+	"*${user}@*" {send "sed -i \'/export PS1/d\' /root/.bashrc\r";}
+}
+expect {
+	"*#" {send "echo \"export PS1=\\\"\[\\u@\\h \\W\]\\\\\\\\$ \\\"\" >> /root/.bashrc\r";}
+	"*${user}@*" {send "echo \"export PS1=\\\"\[\\u@\\h \\W\]\\\\\\\\$ \\\"\" >> /root/.bashrc\r";}
+}
+
+expect {
+        "*#" {send "sed -i \'/export PS1/d\' /home/${deploy_user}/.bashrc\r";}
+        "*${user}@*" {send "sed -i \'/export PS1/d\' /home/${deploy_user}/.bashrc\r";}
+}
+expect {
+        "*#" {send "echo \"export PS1=\\\"\[\\u@\\h \\W\]\\\\\\\\$ \\\"\" >> /home/${deploy_user}/.bashrc\r";}
+        "*${user}@*" {send "echo \"export PS1=\\\"\[\\u@\\h \\W\]\\\\\\\\$ \\\"\" >> /home/${deploy_user}/.bashrc\r";}
+}
+
+expect {
+	"*#" {send "exit\r";}
+	"*${user}@*" {send "exit\r";}
+}
+expect eof

@@ -1,0 +1,35 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set exclude [lindex $argv 1]
+set source_path [lindex $argv 2]
+set dest_ip [lindex $argv 3]
+set dest_passwd [lindex $argv 4]
+set dest_path [lindex $argv 5]
+spawn ssh ${user}@${dest_ip}
+set timeout -1
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+expect {     
+        -nocase "yes/no" {send "yes\n";exp_continue} 
+        -nocase "password" {send "$dest_passwd\n"}
+        "${prompt}" {send "\r"}
+}
+expect "${prompt}"
+send "export LANG=\"en_US.UTF-8\"\r"
+expect "${prompt}"
+send "mkdir -p ${dest_path}\r"
+expect "${prompt}"
+send "exit\r"
+expect eof
+
+spawn sh -c "rsync -av --exclude='${exclude}'  ${source_path} ${user}@${dest_ip}:${dest_path}  >/dev/null 2>&1"
+set timeout -1
+expect {
+        -nocase "yes/no" {send "yes\n";exp_continue}
+        -nocase "password" {send "$dest_passwd\n";expect eof}
+	"${prompt}" {exit 0;expect eof}
+}
+

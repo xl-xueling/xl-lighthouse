@@ -1,0 +1,38 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set ip [lindex $argv 1]
+set passwd [lindex $argv 2]
+set variable_name [lindex $argv 3]
+set compare_value [lindex $argv 4]
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+spawn ssh ${user}@${ip}
+set timeout -1
+expect {     	
+        -nocase "yes/no" {send "yes\n";exp_continue} 
+        -nocase "password" {send "$passwd\n"}
+	"${prompt}" {send "\r"}
+}
+expect "${prompt}"
+send "echo \$${variable_name}\r\n"
+expect -re {^(.*?)\r?\n?([^\r\n]*\# )}
+set variable_value $expect_out(1,string)
+puts $variable_value
+set start_index [string first "/" $variable_value]
+if {$start_index != -1} {
+    set env_path [string range $variable_value $start_index end]
+} else {
+    set env_path '/'	  
+} 
+puts [string length $env_path]
+puts [string length $compare_value]
+if { ${env_path} eq ${compare_value} } {
+    exit 0
+} else {
+    exit 1
+}
+expect eof;
+

@@ -1,0 +1,34 @@
+{
+  "lighthouse": {
+    "deploy_user": "work",
+    "deploy_user_passwd": "test123456",
+    "ice_nodes_size": 3,
+    "insights_nodes_size": 1
+  },
+  "zookeeper": {
+    "nodes_size": 3
+  },
+  "hadoop": {
+    "nodes_size": 3
+  },
+  "hbase": {
+    "nodes_size": 3
+  },
+  "spark": {
+    "nodes_size": 3
+  },
+  "kafka": {
+    "nodes_size": 3,
+    "topic_name": "lighthouse-topic-v1"
+  },
+  "mysql": {
+    "nodes_size": 1,
+    "root_passwd": "root",
+    "operate_user": "lighthouse",
+    "operate_user_passwd": "cXvsaGWExxG0082sZ"
+  },
+  "redis": {
+    "nodes_size": 3,
+    "cluster_passwd": "naJKcZEoGGeSSAad"
+  }
+}

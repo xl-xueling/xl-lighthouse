@@ -1,0 +1,34 @@
+#!/usr/bin/expect
+
+set user [lindex $argv 0]
+set ip [lindex $argv 1]
+set passwd [lindex $argv 2]
+set ldp_home [lindex $argv 3]
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
+spawn ssh ${user}@${ip}
+set timeout -1
+expect {     
+        -nocase  "yes/no" {send "yes\n";exp_continue}
+        -nocase  "password" {send "$passwd\n"}
+        "${prompt}" {send "\r"}
+}
+expect "${prompt}"
+send "icegridadmin --Ice.Config=${ldp_home}/conf/ice_node.cfg \r"
+expect "user"
+send "s\r"
+expect "password"
+send "s\r"
+#expect ">>>"
+#send "application remove LightHouseServerApp \r"
+expect ">>>"
+send "application add ${ldp_home}/conf/ice_app.xml \r"
+expect ">>>"
+send "server start lighthouse-icebox11 \r"
+expect ">>>"
+send "exit\r"
+expect "${prompt}"
+send "exit\r"
+expect eof
