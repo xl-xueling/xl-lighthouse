@@ -19,7 +19,7 @@ source "${CUR_DIR}/run/stop.sh"
 source "${CUR_DIR}/run/reload.sh"
 
 main(){
-  loadScriptConfig;
+  prepare;
   redisClusterFix;
   log_info "Fix Redis Complete!";
 }

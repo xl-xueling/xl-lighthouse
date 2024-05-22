@@ -27,7 +27,7 @@ public class LDPSimulationInstance {
 
     public static void main(String[] args) throws Exception {
         LDPConfig.loadConfiguration();
-        LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
+        LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS),LDPConfig.getRunningMode());
         List<Group> groupEntityList = loadTokenList();
         Runnable runnable = () -> {
             try{

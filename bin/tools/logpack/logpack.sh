@@ -16,7 +16,7 @@ cur_hostname=$(hostname)
 PACK_HOME=${LDP_HOME}/temp/logpack/
 DAYS=2;
 main(){
-  	loadScriptConfig;
+  	prepare;
 	if [[ ${USER} != ${DEPLOY_USER} ]];then
         	echo "The operation is prohibited, only user[\"${DEPLOY_USER}\"] is allowed to execute!"
         	exit -1;

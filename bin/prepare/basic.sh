@@ -7,6 +7,7 @@
 
 DEPLOY_USER=''
 DEPLOY_PASSWD=''
+RUNNING_MODE=''
 declare -A NODES_MAP
 NODES=()
 SERVICES=()
@@ -210,7 +211,7 @@ function loadClusterIPS() {
 
 function loadDeployAttrs() {
 	local file=${LDP_HOME}/bin/config/${RUNNING_MODE}-deploy.json;
-        echo "running_mode is:${RUNNING_MODE}"
+  echo "Running mode is:${RUNNING_MODE}"
 	local services=$(cat ${file} | jq '.' | jq -r keys[])
         for service in ${services[@]};do
                 local keys=$(cat ${file} | jq -r '.'${service} | jq -r keys[])
@@ -491,25 +492,27 @@ function validStandaloneConfig(){
 
 function loadNodesConfig(){
 	loadNodesPWD;
-        loadNodes;
-	local nodesSize=${#NODES[@]}
-	if [ $nodesSize -eq 0 ]; then
-    		log_error "Cluster node cannot be empty,process exist!"	
-		exit -1;
-	elif [ $nodesSize -eq 1 ]; then
-    		RUNNING_MODE="standalone"
-	elif [ $nodesSize -eq 2 ]; then
-    		echo "Cluster deployment requires at least three nodes,process exist!"
-		exit -1;
-	else
-    		RUNNING_MODE="cluster"
-	fi
+  loadNodes;
+  if [[ ${DEPLOY_FLAG} == "true" ]];then
+    local nodesSize=${#NODES[@]}
+    if [ $nodesSize -eq 0 ]; then
+          log_error "Cluster node cannot be empty,process exist!"
+          exit -1;
+    elif [ $nodesSize -eq 1 ]; then
+          RUNNING_MODE="standalone"
+          echo "standalone" > ${LDP_HOME}/bin/config/running.mode
+    elif [ $nodesSize -eq 2 ]; then
+          echo "Cluster deployment requires at least three nodes,process exist!"
+          exit -1;
+    else
+          RUNNING_MODE="cluster"
+          echo "cluster" > ${LDP_HOME}/bin/config/running.mode
+    fi
+  else
+    RUNNING_MODE=`cat ${LDP_HOME}/bin/config/running.mode`
+  fi
 	log_info "Nodes info: [${NODES[*]}],Nodes size:"${nodesSize}",Running mode:"${RUNNING_MODE};
-	if [[ ${RUNNING_MODE} == "standalone" ]];then
-    		echo "standalone" > ${LDP_HOME}/bin/config/running.mode
-  	else
-    		echo "cluster" > ${LDP_HOME}/bin/config/running.mode
-  	fi
+
 	local clusterId=''
         if [[ ${DEPLOY_FLAG} == "true" ]];then
         if [[ ! -f "${CUR_DIR}/config/nodelist" ]];then

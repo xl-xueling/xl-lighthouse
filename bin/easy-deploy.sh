@@ -11,7 +11,6 @@ LDP_DATA_DIR=${LDP_HOME}/data
 ROOT_HOME=$(dirname "$LDP_HOME")
 CUR_USER=${USER}
 DEPLOY_FLAG="true"
-RUNNING_MODE="cluster"
 CHECK_OS_VERSION="true"
 LOCKFILE=/tmp/lighthouse_deploy.lock
 source "${CUR_DIR}/common/lib.sh"
@@ -29,11 +28,6 @@ easy_deploy(){
 	trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
 	echo $$ > ${LOCKFILE}
 	echo $(exec sh -c 'echo $PPID') >> ${LOCKFILE}
-	if [[ ${RUNNING_MODE} == "standalone" ]];then
-    echo "standalone" > ${LDP_HOME}/bin/config/running.mode
-  else
-    echo "cluster" > ${LDP_HOME}/bin/config/running.mode
-  fi
 	prepare_for_deploy;
 	killAll;
   	install;

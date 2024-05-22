@@ -92,7 +92,7 @@ daemon(){
 
 main(){
  	[ -e ${LOCKFILE} ] && `cat ${LOCKFILE} | xargs --no-run-if-empty kill -9 >/dev/null 2>&1`
-	loadScriptConfig >/dev/null 2>&1;
+	prepare >/dev/null 2>&1;
 	if [[ ${USER} != ${DEPLOY_USER} ]];then
                 echo "The operation is prohibited, only user[\"${DEPLOY_USER}\"] is allowed to execute!"
                 exit -1;
