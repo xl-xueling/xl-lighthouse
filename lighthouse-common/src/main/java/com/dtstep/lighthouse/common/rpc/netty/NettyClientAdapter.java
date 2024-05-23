@@ -53,7 +53,7 @@ public class NettyClientAdapter {
         CustomIdleStateHandler customIdleStateHandler = new CustomIdleStateHandler();
         NettyClientHandler clientHandler = new NettyClientHandler();
 
-        this.poolMap = new AbstractChannelPoolMap<>() {
+        this.poolMap = new AbstractChannelPoolMap<InetSocketAddress, ChannelPool>() {
 
             @Override
             protected ChannelPool newPool(InetSocketAddress key) {
