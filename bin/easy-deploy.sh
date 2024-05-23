@@ -35,6 +35,9 @@ easy_deploy(){
 	source ~/.bashrc;
 	checkInstall;
 	stop_all;
+	if [[ ${_CLEAR_CLUSTER_LOGFILES_AT_STARTUP} == "true" ]];then
+        clearLogFiles;
+  fi
 	start_all;
 	rm -f ${LOCKFILE}
 	echo "XL-LightHouse installed successfully!"
