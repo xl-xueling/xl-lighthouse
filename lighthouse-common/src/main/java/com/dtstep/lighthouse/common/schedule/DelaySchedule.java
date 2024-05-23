@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.core.schedule;
+package com.dtstep.lighthouse.common.schedule;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -19,7 +19,6 @@ package com.dtstep.lighthouse.core.schedule;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 

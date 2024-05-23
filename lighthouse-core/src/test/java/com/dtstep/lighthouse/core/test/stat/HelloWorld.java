@@ -26,7 +26,7 @@ public class HelloWorld {
     static {
         try{
             //修改rpc服务地址,一主一从，默认为部署集群的前两个节点
-            LightHouse.init("10.206.6.9:4061,10.206.6.28:4061");
+            LightHouse.init("10.206.6.12:4061");
         }catch (Exception ex){
             ex.printStackTrace();
         }

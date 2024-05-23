@@ -18,7 +18,7 @@ package com.dtstep.lighthouse.core.limiting.device.impl;
  */
 import com.dtstep.lighthouse.core.callback.CaffeineExpiry;
 import com.dtstep.lighthouse.core.limiting.device.CountingDevice;
-import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
+import com.dtstep.lighthouse.common.schedule.ScheduledThreadPoolBuilder;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.github.benmanes.caffeine.cache.Cache;

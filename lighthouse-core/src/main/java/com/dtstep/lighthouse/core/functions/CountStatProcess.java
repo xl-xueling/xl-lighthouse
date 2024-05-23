@@ -16,7 +16,7 @@ package com.dtstep.lighthouse.core.functions;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
+import com.dtstep.lighthouse.common.schedule.ScheduledThreadPoolBuilder;
 import com.google.common.base.Splitter;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;

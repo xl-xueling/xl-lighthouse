@@ -18,7 +18,7 @@ package com.dtstep.lighthouse.core.consumer;
  */
 import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.common.entity.event.SimpleSlotEvent;
-import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
+import com.dtstep.lighthouse.common.schedule.ScheduledThreadPoolBuilder;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import java.util.concurrent.*;

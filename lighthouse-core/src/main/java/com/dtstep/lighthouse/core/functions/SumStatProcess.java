@@ -17,7 +17,7 @@ package com.dtstep.lighthouse.core.functions;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.core.formula.FormulaCalculate;
-import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
+import com.dtstep.lighthouse.common.schedule.ScheduledThreadPoolBuilder;
 import com.google.common.base.Splitter;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;

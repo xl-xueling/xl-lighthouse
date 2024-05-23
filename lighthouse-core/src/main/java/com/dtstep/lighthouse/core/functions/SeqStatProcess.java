@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.core.functions;
 
-import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
+import com.dtstep.lighthouse.common.schedule.ScheduledThreadPoolBuilder;
 import com.google.common.base.Splitter;
 import com.dtstep.lighthouse.common.aggregator.BlockingEventPool;
 import com.dtstep.lighthouse.common.aggregator.EventPool;

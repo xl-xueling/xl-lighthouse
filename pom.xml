@@ -33,6 +33,7 @@
     <slf4j.version>2.0.6</slf4j.version>
     <RoaringBitmap.version>0.9.25</RoaringBitmap.version>
     <hbase.thirdparty.version>4.1.3</hbase.thirdparty.version>
+    <commons.lang3.version>3.12.0</commons.lang3.version>
     <scope>compile</scope>
     <frontend.maven.plugin.version>1.15.0</frontend.maven.plugin.version>
   </properties>

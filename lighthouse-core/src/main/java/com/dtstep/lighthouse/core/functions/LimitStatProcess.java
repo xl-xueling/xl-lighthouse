@@ -5,7 +5,7 @@ import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.common.entity.calculate.MicroBucket;
 import com.dtstep.lighthouse.common.entity.event.LimitBucket;
 import com.dtstep.lighthouse.common.hash.HashUtil;
-import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
+import com.dtstep.lighthouse.common.schedule.ScheduledThreadPoolBuilder;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;

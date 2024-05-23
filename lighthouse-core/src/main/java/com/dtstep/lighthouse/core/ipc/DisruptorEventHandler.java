@@ -16,7 +16,7 @@ package com.dtstep.lighthouse.core.ipc;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
+import com.dtstep.lighthouse.common.schedule.ScheduledThreadPoolBuilder;
 import com.dtstep.lighthouse.core.tasks.EventSenderFactory;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;

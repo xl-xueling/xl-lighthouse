@@ -18,6 +18,8 @@ package com.dtstep.lighthouse.client;
  */
 import com.dtstep.lighthouse.common.aggregator.EventPool;
 import com.dtstep.lighthouse.common.entity.event.SimpleSlotEvent;
+import com.dtstep.lighthouse.common.schedule.ScheduledThreadPoolBuilder;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +54,8 @@ final class Consumer {
                 logger.error("lighthouse executor shutdown failed!",ex);
             }
         }
-        executor = Executors.newScheduledThreadPool(threadSize);
+        executor = ScheduledThreadPoolBuilder.newScheduledThreadPoolExecutor(threadSize,
+                new BasicThreadFactory.Builder().namingPattern("ldp-consumer-schedule-pool-%d").daemon(true).build());
     }
 
 

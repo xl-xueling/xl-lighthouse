@@ -17,7 +17,7 @@ package com.dtstep.lighthouse.core.functions;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.util.DateUtil;
-import com.dtstep.lighthouse.core.schedule.ScheduledThreadPoolBuilder;
+import com.dtstep.lighthouse.common.schedule.ScheduledThreadPoolBuilder;
 import com.google.common.hash_snp.Hashing;
 import com.dtstep.lighthouse.common.aggregator.BlockingEventPool;
 import com.dtstep.lighthouse.common.aggregator.EventPool;
