@@ -101,6 +101,12 @@ if [ -d "$LDP_HOME/logs/lighthouse-insights" ]; then
         find $LDP_HOME/logs/lighthouse-insights -maxdepth 1 -type f -name "*.log*"  -mtime -${DAYS} -exec cp {} ${TARGET_HOME}/lighthouse-insights \;
 fi
 
+if [ -d "$LDP_HOME/logs/lighthouse-standalone" ]; then
+        rm -rf ${TARGET_HOME}/lighthouse-standalone
+        mkdir -p ${TARGET_HOME}/lighthouse-standalone
+        find $LDP_HOME/logs/lighthouse-standalone -maxdepth 1 -type f -name "*.log*"  -mtime -${DAYS} -exec cp {} ${TARGET_HOME}/lighthouse-standalone \;
+fi
+
 cd ${LDP_HOME}/temp/logpack/${current_date};
 tar -zcvf ${cur_hostname}.tar.gz ${cur_hostname} --remove-files
 
