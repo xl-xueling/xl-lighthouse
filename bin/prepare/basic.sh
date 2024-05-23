@@ -16,12 +16,12 @@ function loadNodesPWD() {
   local FILE=${CUR_DIR}/config/nodelist
   if [ -f "$FILE" ]; then
     while read row; do
-      if [ -n "$row" ]; then
+      if [[ -n "$row" && "$row" != \#* ]]; then
         local ip=${row%%;*}
         local passwd=${row#*;}
         NODES_MAP[${ip}]=${passwd}
       fi
-	  done < ${FILE}
+          done < ${FILE}
   fi
 }
 
@@ -29,7 +29,7 @@ function loadNodes() {
   local FILE=${CUR_DIR}/config/nodelist.new
   if [ -f "$FILE" ]; then
     while read row; do
-          if [ -n "$row" ]; then
+          if [[ -n "$row" && "$row" != \#* ]]; then
                   NODES+=(${row})
           fi
     done < ${FILE}
@@ -38,6 +38,7 @@ function loadNodes() {
     exit -1;
   fi
 }
+
 
 declare -A DOWNS_MAP
 
