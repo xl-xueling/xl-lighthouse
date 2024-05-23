@@ -92,8 +92,9 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     + "v bigint NOT NULL DEFAULT '0', "
                     + "exp_time timestamp NOT NULL, "
                     + "upd_time timestamp NOT NULL, "
-                    + "UNIQUE KEY `k_UNIQUE` (`k`)"
-                    + ") ENGINE=InnoDB AUTO_INCREMENT=100564 DEFAULT CHARSET=utf8mb3",tableName);
+                    + "UNIQUE KEY `k_UNIQUE` (`k`), "
+                    + "KEY `index_exp_time` (`exp_time`)"
+                    + ") ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=utf8mb3",tableName);
             statement = connection.createStatement();
             statement.execute(sql);
             logger.info("Mysql Table '{}' created successfully!",tableName);
@@ -122,8 +123,9 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     + "v VARCHAR(800) NOT NULL, "
                     + "exp_time timestamp NOT NULL, "
                     + "upd_time timestamp NOT NULL, "
-                    + "UNIQUE KEY `k_UNIQUE` (`k`)"
-                    + ") ENGINE=InnoDB AUTO_INCREMENT=100564 DEFAULT CHARSET=utf8mb3",tableName);
+                    + "UNIQUE KEY `k_UNIQUE` (`k`), "
+                    + "KEY `index_exp_time` (`exp_time`)"
+                    + ") ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=utf8mb3",tableName);
             statement = connection.createStatement();
             statement.execute(sql);
             logger.info("Mysql Table '{}' created successfully!",tableName);
