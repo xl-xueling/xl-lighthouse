@@ -28,7 +28,7 @@ main(){
 	  echo $$ > ${LOCKFILE}
   	prepare;
 	if [[ ${USER} != ${DEPLOY_USER} ]];then
-        	echo "The operation is prohibited, only user[\"${DEPLOY_USER}\"] is allowed to execute!"
+        	log_error "The operation is prohibited, only user[\"${DEPLOY_USER}\"] is allowed to execute!"
         	exit -1;
   	fi
 	stop_all;

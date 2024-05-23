@@ -503,7 +503,7 @@ function loadNodesConfig(){
           RUNNING_MODE="standalone"
           echo "standalone" > ${LDP_HOME}/bin/config/running.mode
     elif [ $nodesSize -eq 2 ]; then
-          echo "Cluster deployment requires at least three nodes,process exist!"
+          log_error "Cluster deployment requires at least three nodes,process exist!"
           exit -1;
     else
           RUNNING_MODE="cluster"
