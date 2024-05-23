@@ -83,18 +83,6 @@ public class ICERPCClientImpl implements RPCClient {
     }
 
     @Override
-    public GroupVerifyEntity queryGroupInfo(String token) throws Exception {
-        RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
-        byte[] bytes = remoteLightServerPrx.queryGroupInfo(token);
-        GroupVerifyEntity groupVerifyEntity = null;
-        if(bytes != null){
-            groupVerifyEntity = SerializerProxy.instance().deserialize(bytes,GroupVerifyEntity.class);
-        }
-        return groupVerifyEntity;
-    }
-
-
-    @Override
     public void send(String text) throws Exception {
         byte[] bytes;
         if(text.length() < SysConst._COMPRESS_THRESHOLD_SIZE){
@@ -107,11 +95,22 @@ public class ICERPCClientImpl implements RPCClient {
     }
 
     @Override
+    public GroupVerifyEntity queryGroupInfo(String token) throws Exception {
+        RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
+        byte[] bytes = remoteLightServerPrx.queryGroupInfo(token);
+        GroupVerifyEntity groupVerifyEntity = null;
+        if(bytes != null && bytes.length > 0){
+            groupVerifyEntity = SerializerProxy.instance().deserialize(bytes,GroupVerifyEntity.class);
+        }
+        return groupVerifyEntity;
+    }
+
+    @Override
     public StatVerifyEntity queryStatInfo(int id) throws Exception {
         RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
         byte[] bytes = remoteLightServerPrx.queryStatInfo(id);
         StatVerifyEntity statVerifyEntity = null;
-        if(bytes != null){
+        if(bytes != null && bytes.length > 0){
             statVerifyEntity = SerializerProxy.instance().deserialize(bytes,StatVerifyEntity.class);
         }
         return statVerifyEntity;
@@ -122,7 +121,7 @@ public class ICERPCClientImpl implements RPCClient {
         RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
         byte[] bytes = remoteLightServerPrx.dataQuery(statId,dimensValue,batchList);
         List<StatValue> valueList = null;
-        if(bytes != null){
+        if(bytes != null && bytes.length > 0){
             valueList =  SerializerProxy.instance().deserializeList(bytes,StatValue.class);
         }
         return valueList;
@@ -133,7 +132,7 @@ public class ICERPCClientImpl implements RPCClient {
         RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
         byte[] bytes = remoteLightServerPrx.dataDurationQuery(statId,dimensValue,startTime,endTime);
         List<StatValue> valueList = null;
-        if(bytes != null){
+        if(bytes != null && bytes.length > 0){
             valueList = SerializerProxy.instance().deserializeList(bytes,StatValue.class);
         }
         return valueList;
@@ -144,7 +143,7 @@ public class ICERPCClientImpl implements RPCClient {
         RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
         byte[] bytes = remoteLightServerPrx.dataQueryWithDimensList(statId,dimensValueList,batchList);
         Map<String, List<StatValue>> data = null;
-        if(bytes != null){
+        if(bytes != null && bytes.length > 0){
             data = SerializerProxy.instance().deserializeMap(bytes, HashMap.class);
         }
         return data;
@@ -155,7 +154,7 @@ public class ICERPCClientImpl implements RPCClient {
         RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
         byte[] bytes = remoteLightServerPrx.dataDurationQueryWithDimensList(statId,dimensValueList,startTime,endTime);
         Map<String, List<StatValue>> data = null;
-        if(bytes != null){
+        if(bytes != null && bytes.length > 0){
             data = SerializerProxy.instance().deserializeMap(bytes, HashMap.class);
         }
         return data;
@@ -166,7 +165,7 @@ public class ICERPCClientImpl implements RPCClient {
         RemoteLightServerPrx remoteLightServerPrx = ICEHandler.getRemotePrx(ic);
         byte[] bytes = remoteLightServerPrx.limitQuery(statId,batchTime);
         List<LimitValue> valueList = null;
-        if(bytes != null){
+        if(bytes != null && bytes.length > 0){
             valueList = SerializerProxy.instance().deserializeList(bytes,LimitValue.class);
         }
         return valueList;

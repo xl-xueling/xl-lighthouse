@@ -42,6 +42,9 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
             logger.error("query group info error!",ex);
             throw new LightRpcException(ex.getMessage());
         }
+        if(groupVerifyEntity == null){
+            return null;
+        }
         try{
             return SerializerProxy.instance().serialize(groupVerifyEntity);
         }catch (Exception ex){
@@ -58,6 +61,9 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         }catch (Exception ex){
             logger.error("query stat info error!",ex);
             throw new LightRpcException(ex.getMessage());
+        }
+        if(statVerifyEntity == null){
+            return null;
         }
         try{
             return SerializerProxy.instance().serialize(statVerifyEntity);

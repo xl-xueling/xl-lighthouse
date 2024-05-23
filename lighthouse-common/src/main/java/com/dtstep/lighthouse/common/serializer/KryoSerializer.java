@@ -1,6 +1,12 @@
 package com.dtstep.lighthouse.common.serializer;
 
 
+import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
+import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;
+import com.dtstep.lighthouse.common.entity.stat.TimeParam;
+import com.dtstep.lighthouse.common.entity.view.LimitValue;
+import com.dtstep.lighthouse.common.entity.view.StatValue;
+import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.modal.User;
 import com.esotericsoftware.kryo.Kryo;
@@ -24,6 +30,12 @@ public class KryoSerializer implements Serializer {
         kryo.register(User.class);
         kryo.register(LocalDateTime.class);
         kryo.register(UserStateEnum.class);
+        kryo.register(LimitValue.class);
+        kryo.register(StatValue.class);
+        kryo.register(StatVerifyEntity.class);
+        kryo.register(GroupVerifyEntity.class);
+        kryo.register(GroupStateEnum.class);
+        kryo.register(TimeParam.class);
         return kryo;
     });
 
