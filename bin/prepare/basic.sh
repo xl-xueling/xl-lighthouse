@@ -149,7 +149,7 @@ function loadStandaloneIPS() {
                         )
                 ATTRS_MAP['ldp_nginx_nodes_size']=1
                 local standalone_ips=${ATTRS_MAP['ldp_lighthouse_standalone_nodes_ips']}
-                local iceNodesArray=($(echo standalone_ips | tr ',' ' '))
+                local iceNodesArray=($(echo $standalone_ips | tr ',' ' '))
                 ATTRS_MAP["ldp_lighthouse_ice_locators"]=${iceNodesArray[0]}:4061
         fi
 }
