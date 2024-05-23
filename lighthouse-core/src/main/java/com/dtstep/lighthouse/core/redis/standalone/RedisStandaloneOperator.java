@@ -19,12 +19,8 @@ public class RedisStandaloneOperator implements RedisOperator {
         }
         String masterIp = servers[0].split(":")[0];
         String masterPort = servers[0].split(":")[1];
-        String slaverIp = servers[1].split(":")[0];
-        String slaverPort = servers[1].split(":")[1];
         masterJedis = new Jedis(masterIp,Integer.parseInt(masterPort));
         masterJedis.auth(password);
-//        slaverJedis = new Jedis(slaverIp,Integer.parseInt(slaverPort));
-//        slaverJedis.auth(password);
     }
 
     @Override
