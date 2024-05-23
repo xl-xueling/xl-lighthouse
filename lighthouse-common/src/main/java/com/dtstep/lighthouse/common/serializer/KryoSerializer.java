@@ -7,8 +7,6 @@ import com.dtstep.lighthouse.common.entity.stat.TimeParam;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.enums.GroupStateEnum;
-import com.dtstep.lighthouse.common.enums.UserStateEnum;
-import com.dtstep.lighthouse.common.modal.User;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -27,9 +25,7 @@ public class KryoSerializer implements Serializer {
         Kryo kryo = new Kryo();
         kryo.setReferences(true);
         kryo.setRegistrationRequired(false);
-        kryo.register(User.class);
         kryo.register(LocalDateTime.class);
-        kryo.register(UserStateEnum.class);
         kryo.register(LimitValue.class);
         kryo.register(StatValue.class);
         kryo.register(StatVerifyEntity.class);
