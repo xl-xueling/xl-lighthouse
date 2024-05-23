@@ -201,7 +201,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
     @Override
     public void put(String tableName, LdpPut ldpPut) throws Exception {
         Object value = ldpPut.getData();
-        String sql = "INSERT ignore INTO " + tableName + " (`k`, `v`, `exp_time`, `upd_time`) VALUES (?, ?, ?, ?) on duplicate key update v = ?";
+        String sql = "INSERT ignore INTO " + tableName + " (`k`, `v`, `exp_time`, `upd_time`) VALUES (?, ?, ?, ?) on duplicate key update v = ?,exp_time = ? , upd_time = ?";
         Connection connection = null;
         PreparedStatement ps = null;
         long current = System.currentTimeMillis();
@@ -223,9 +223,11 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             } else {
                 ps.setLong(5, (Long) ldpPut.getData());
             }
+            ps.setTimestamp(6,new Timestamp(current + ldpPut.getTtl()));
+            ps.setTimestamp(7, new Timestamp(current));
             ps.executeUpdate();
         }catch (Exception ex){
-            logger.error("put data to mysql error!",ex);
+            logger.error("put data to mysql error,tableName:{}!",tableName,ex);
             ex.printStackTrace();
         }finally {
             try {
@@ -239,7 +241,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
 
     @Override
     public void puts(String tableName, List<LdpPut> ldpPuts) throws Exception {
-        String sql = "INSERT ignore INTO " + tableName + " (`k`, `v`, `exp_time`, `upd_time`) VALUES (?, ?, ?, ?) on duplicate key update v = ?";
+        String sql = "INSERT ignore INTO " + tableName + " (`k`, `v`, `exp_time`, `upd_time`) VALUES (?, ?, ?, ?) on duplicate key update v = ?,exp_time = ? , upd_time = ?";
         Connection connection = null;
         PreparedStatement ps = null;
         Object value = ldpPuts.get(0).getData();
@@ -264,13 +266,15 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                 } else {
                     ps.setLong(5, (Long) ldpPut.getData());
                 }
+                ps.setTimestamp(6,new Timestamp(current + ldpPut.getTtl()));
+                ps.setTimestamp(7, new Timestamp(current));
                 ps.addBatch();
             }
             ps.executeBatch();
             connection.commit();
             ps.clearBatch();
         } catch (Exception ex){
-            logger.error("puts data to mysql error!",ex);
+            logger.error("puts data to mysql error,tableName:{},putsSize:{}!",tableName,ldpPuts.size(),ex);
             ex.printStackTrace();
         } finally {
             try {

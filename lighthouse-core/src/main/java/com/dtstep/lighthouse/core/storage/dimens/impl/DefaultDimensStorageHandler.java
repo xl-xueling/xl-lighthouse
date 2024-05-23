@@ -17,7 +17,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensBucket, String> {
@@ -33,6 +35,7 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
         if(CollectionUtils.isEmpty(list)){
             return;
         }
+        Set<String> uniqueSet = new HashSet<>();
         List<LdpPut> putList = new ArrayList<>();
         for(DimensBucket quartet : list){
             String rowKey = keyGenerator.dimensKey(quartet.getGroup(),quartet.getDimens(),quartet.getDimensValue());
@@ -40,7 +43,10 @@ public class DefaultDimensStorageHandler implements DimensStorageHandler<DimensB
                 logger.trace("save dimens,token:{},dimens:{},dimensValue:{},rowKey:{}",quartet.getGroup().getToken(),quartet.getDimens(),quartet.getDimensValue(),rowKey);
             }
             LdpPut ldpPut = LdpPut.with(rowKey,dimensColumnName,quartet.getDimensValue(),quartet.getTtl());
-            putList.add(ldpPut);
+            if(!uniqueSet.contains(rowKey)){
+                putList.add(ldpPut);
+                uniqueSet.add(rowKey);
+            }
         }
         WarehouseStorageEngineProxy.getInstance().puts(StatConst.DIMENS_STORAGE_TABLE,putList);
     }
