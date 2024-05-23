@@ -302,6 +302,9 @@ function loadExtendZooAttrs() {
 }
 
 function loadExtendRedisAttrs(){
+  if [[ ${RUNNING_MODE} == "standalone" ]];then
+      _REDIS_NUM_PIDS_PER_NODE=6;
+  fi
 	local IPArray=($(getServiceIPS 'redis'))
   local redis_cluster=''
 	local index=0;
@@ -318,11 +321,7 @@ function loadExtendRedisAttrs(){
 		                done
                 done
 	ATTRS_MAP['ldp_redis_cluster']=${redis_cluster}
-	if [[ ${RUNNING_MODE} == "standalone" ]];then
-        	ATTRS_MAP['ldp_redis_cluster_enabled']="no"
-	else
-        	ATTRS_MAP['ldp_redis_cluster_enabled']="yes"
-	fi
+	ATTRS_MAP['ldp_redis_cluster_enabled']="yes"
 }
 
 function loadExtendKafkaAttrs(){

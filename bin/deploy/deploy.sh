@@ -41,25 +41,20 @@ deployMysql(){
 deployRedis(){
   local userPasswd=($(getUserPassword ${DEPLOY_USER}));
   local IPArray=($(getServiceIPS 'redis'))
-  if [[ ${RUNNING_MODE} == "standalone" ]];then
-    echo "replicaof no one" >> ${LDP_HOME}/dependency/redis/conf/redis-7101.conf
-    echo "replicaof ${IPArray[0]} 7101" >> ${LDP_HOME}/dependency/redis/conf/redis-7102.conf
-  else
-  	local nodes=''
-    for ip in "${IPArray[@]}"
-                  do
-                          for ((a=1;a<=${_REDIS_NUM_PIDS_PER_NODE};a++))
-                            do
-                              local port=$[7100+${a}]
-                              nodes=${nodes}" "${ip}:${port}
-                              remoteExecute ${CUR_DIR}/deploy/deploy_redis.exp ${DEPLOY_USER} ${ip} ${userPasswd} ${LDP_HOME} ${LDP_DATA_DIR} ${port}
-                            done
-                  done
-    sleep 5
-    checkRedis;
-    local clusterPwd=($(getVal 'ldp_redis_cluster_passwd'))
-    remoteExecute ${CUR_DIR}/deploy/redis_cluster.exp ${DEPLOY_USER} ${ip} ${userPasswd} ${LDP_HOME} "${nodes}" ${clusterPwd}
-  fi
+  local nodes=''
+  for ip in "${IPArray[@]}"
+                do
+                        for ((a=1;a<=${_REDIS_NUM_PIDS_PER_NODE};a++))
+                          do
+                            local port=$[7100+${a}]
+                            nodes=${nodes}" "${ip}:${port}
+                            remoteExecute ${CUR_DIR}/deploy/deploy_redis.exp ${DEPLOY_USER} ${ip} ${userPasswd} ${LDP_HOME} ${LDP_DATA_DIR} ${port}
+                          done
+                done
+  sleep 5
+  checkRedis;
+  local clusterPwd=($(getVal 'ldp_redis_cluster_passwd'))
+  remoteExecute ${CUR_DIR}/deploy/redis_cluster.exp ${DEPLOY_USER} ${ip} ${userPasswd} ${LDP_HOME} "${nodes}" ${clusterPwd}
 	log_info "Program progress,deploy redis complete!"
 }
 
