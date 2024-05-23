@@ -109,7 +109,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         } finally {
             try {
                 if (statement != null) statement.close();
-                if (connection != null) connection.close();
+                if (connection != null) closeConnection();
             } catch (SQLException se) {
                 se.printStackTrace();
             }
@@ -140,7 +140,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         } finally {
             try {
                 if (statement != null) statement.close();
-                if (connection != null) connection.close();
+                if (connection != null) closeConnection();
             } catch (SQLException se) {
                 se.printStackTrace();
             }
@@ -167,7 +167,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         }finally {
             try {
                 if (ps != null) ps.close();
-                if (connection != null) connection.close();
+                if (connection != null) closeConnection();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -191,7 +191,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         }finally {
             try {
                 if (statement != null) statement.close();
-                if (connection != null) connection.close();
+                if (connection != null) closeConnection();
             } catch (SQLException se) {
                 se.printStackTrace();
             }
@@ -230,7 +230,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         }finally {
             try {
                 if (ps != null) ps.close();
-                if (connection != null) connection.close();
+                if (connection != null) closeConnection();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -275,7 +275,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         } finally {
             try {
                 if (ps != null) ps.close();
-                if (connection != null) connection.close();
+                if (connection != null) closeConnection();
             } catch (SQLException se) {
                 se.printStackTrace();
             }
@@ -316,7 +316,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             RedissonLock.unLock(lockKey);
             try {
                 if (ps != null) ps.close();
-                if (connection != null) connection.close();
+                if (connection != null) closeConnection();
             } catch (SQLException se) {
                 se.printStackTrace();
             }
@@ -359,7 +359,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     RedissonLock.unLock(lockKey);
                     try {
                         if (ps != null) ps.close();
-                        if (connection != null) connection.close();
+                        if (connection != null) closeConnection();
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
@@ -456,7 +456,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         }finally {
             try {
                 if (ps != null) ps.close();
-                if (connection != null) connection.close();
+                if (connection != null) closeConnection();
             } catch (SQLException se) {
                 se.printStackTrace();
             }
@@ -466,7 +466,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
 
     private static final int BATCH_GET_SIZE = 200;
 
-    private static <R> List<LdpResult<R>> partGets(String tableName, List<LdpGet> ldpGets, Class<R> clazz) throws Exception {
+    private <R> List<LdpResult<R>> partGets(String tableName, List<LdpGet> ldpGets, Class<R> clazz) throws Exception {
         String placeholders = String.join(", ", Collections.nCopies(ldpGets.size(), "?"));
         String sql = "SELECT `k`,`v`,`upd_time` FROM " + tableName + " WHERE k IN("+placeholders+")";
         Connection connection = null;
@@ -511,7 +511,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         } finally {
             try {
                 if (ps != null) ps.close();
-                if (connection != null) connection.close();
+                if (connection != null) closeConnection();
             } catch (SQLException se) {
                 se.printStackTrace();
             }
@@ -590,7 +590,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         }finally {
             try {
                 if (ps != null) ps.close();
-                if (connection != null) connection.close();
+                if (connection != null) closeConnection();
             } catch (SQLException se) {
                 se.printStackTrace();
             }
@@ -614,7 +614,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         }finally {
             try {
                 if (ps != null) ps.close();
-                if (connection != null) connection.close();
+                if (connection != null) closeConnection();
             } catch (SQLException se) {
                 se.printStackTrace();
             }
@@ -639,7 +639,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         }
     }
 
-    private static class MysqlGetterThread<R> implements Callable<List<LdpResult<R>>> {
+    private class MysqlGetterThread<R> implements Callable<List<LdpResult<R>>> {
 
         private final String tableName;
 

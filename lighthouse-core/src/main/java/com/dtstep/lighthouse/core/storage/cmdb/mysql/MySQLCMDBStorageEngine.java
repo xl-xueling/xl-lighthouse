@@ -46,8 +46,13 @@ public class MySQLCMDBStorageEngine implements CMDBStorageEngine<Connection> {
     public void closeConnection() throws Exception {
         Connection conn = connectionHolder.get();
         if (conn != null) {
-            conn.close();
-            connectionHolder.remove();
+            try{
+                conn.close();
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }finally {
+                connectionHolder.remove();
+            }
         }
     }
 }
