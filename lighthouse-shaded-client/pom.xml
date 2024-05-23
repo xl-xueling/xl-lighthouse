@@ -220,6 +220,10 @@
                                     <pattern>io.netty</pattern>
                                     <shadedPattern>com.dtstep.lighthouse.io.netty</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>org.xerial</pattern>
+                                    <shadedPattern>com.dtstep.lighthouse.org.xerial</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
