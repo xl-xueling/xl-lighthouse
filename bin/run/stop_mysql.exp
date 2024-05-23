@@ -4,6 +4,7 @@ set user [lindex $argv 0]
 set ip [lindex $argv 1]
 set passwd [lindex $argv 2]
 set ldp_home [lindex $argv 3]
+set rootPwd [lindex $argv 4]
 set mysql_home ${ldp_home}/dependency/mysql
 set prompt "*${user}@*\\\$"
 if { $user == "root" } {
@@ -17,7 +18,7 @@ expect {
         "${prompt}" {send "\r"}
 }
 expect "${prompt}"
-send "${mysql_home}/bin/mysqladmin shutdown\r"
+send "${mysql_home}/bin/mysqladmin shutdown -p${rootPwd}\r"
 send "exit\r"
 expect eof
 

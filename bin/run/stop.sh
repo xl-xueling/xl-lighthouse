@@ -78,10 +78,11 @@ function stopRedis(){
 
 function stopMysql(){
   local userPasswd=($(getUserPassword ${DEPLOY_USER}));
+  local rootPwd=($(getVal 'ldp_mysql_root_passwd'))
          local IPArray=($(getServiceIPS 'mysql'))
          for ip in "${IPArray[@]}"
                 do
-                        remoteExecute ${CUR_DIR}/run/stop_mysql.exp  ${DEPLOY_USER} ${ip} ${userPasswd} ${LDP_HOME}
+                        remoteExecute ${CUR_DIR}/run/stop_mysql.exp  ${DEPLOY_USER} ${ip} ${userPasswd} ${LDP_HOME} ${rootPwd}
                 done
 	killService 'mysql';
 	log_info "Program progress,stop mysql complete!"
