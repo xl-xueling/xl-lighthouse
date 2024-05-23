@@ -148,9 +148,12 @@ public class DefaultExpandHandler implements ExpandHandler {
         monitorMessage.setRepeat(repeat);
         monitorMessage.setTime(System.currentTimeMillis());
         List<StatExtEntity> monitorStats = StatDBWrapper.queryRunningListByGroupId(monitorGroup.getId());
-        List<ExpandEvent> result = null;
+        List<ExpandEvent> result = new ArrayList<>();
         for(StatExtEntity monitorStat : monitorStats){
-            result = append(monitorStat,monitorGroup,monitorMessage);
+            List<ExpandEvent> subList = append(monitorStat,monitorGroup,monitorMessage);
+            if(CollectionUtils.isNotEmpty(subList)){
+                result.addAll(subList);
+            }
         }
         return result;
     }

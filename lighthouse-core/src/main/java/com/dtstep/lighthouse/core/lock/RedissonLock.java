@@ -52,33 +52,16 @@ public final class RedissonLock {
             for (String server : servers) {
                 nodeAddress.add("redis://" + server);
             }
-            if(LDPConfig.getRunningMode() == RunningMode.STANDALONE){
-                if(CollectionUtils.isEmpty(nodeAddress) || servers.length != 2){
-                    logger.error("Redisson lock init failed!");
-                    throw new InitializationException("Redisson lock init failed!");
-                }
-                config.useMasterSlaveServers()
-                        .setPassword(password)
-                        .setIdleConnectionTimeout(480000)
-                        .setConnectTimeout(480000)
-                        .setRetryAttempts(6)
-                        .setRetryInterval(6000)
-                        .setKeepAlive(false)
-                        .setTimeout(480000)
-                        .setMasterAddress(nodeAddress.get(0))
-                        .setSlaveAddresses(Set.of(nodeAddress.get(1)));
-            }else{
-                config.useClusterServers().setPassword(password).setScanInterval(5000)
-                        .setIdleConnectionTimeout(480000)
-                        .setConnectTimeout(480000)
-                        .setRetryAttempts(6)
-                        .setRetryInterval(6000)
-                        .setKeepAlive(false)
-                        .setMasterConnectionPoolSize(64)
-                        .setCheckSlotsCoverage(false)
-                        .setTimeout(480000)
-                        .setNodeAddresses(nodeAddress);
-            }
+            config.useClusterServers().setPassword(password).setScanInterval(5000)
+                    .setIdleConnectionTimeout(480000)
+                    .setConnectTimeout(480000)
+                    .setRetryAttempts(6)
+                    .setRetryInterval(6000)
+                    .setKeepAlive(false)
+                    .setMasterConnectionPoolSize(64)
+                    .setCheckSlotsCoverage(false)
+                    .setTimeout(480000)
+                    .setNodeAddresses(nodeAddress);
             redissonClient = Redisson.create(config);
         }catch (Exception ex){
             logger.error("init redlock error,process exit!",ex);

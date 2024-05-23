@@ -57,12 +57,7 @@ public final class RedisClient {
             assert redisServers != null;
             String[] servers = redisServers.split(",");
             String password = LDPConfig.getVal(LDPConfig.KEY_REDIS_CLUSTER_PASSWORD);
-            RunningMode runningMode = LDPConfig.getRunningMode();
-            if(runningMode == RunningMode.CLUSTER){
-                redisOperator = new RedisClusterOperator();
-            }else if(runningMode == RunningMode.STANDALONE){
-                redisOperator = new RedisStandaloneOperator();
-            }
+            redisOperator = new RedisClusterOperator();
             redisOperator.init(servers,password);
         }catch (Exception ex){
             logger.error("init redis cluster error!",ex);
