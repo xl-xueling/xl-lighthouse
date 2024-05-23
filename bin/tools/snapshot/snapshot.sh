@@ -105,12 +105,13 @@ main(){
 				local usage=$(getFolderUsage "${LOCAL_PATH}/${dir}/mysql")
                                 echo "mysql snaptshot dir usage:${usage} K."  	
                         fi
+      echo "Waiting for snapshot files to be packed!"
 			cd ${LOCAL_PATH};
 			rm -rf ${dir}.tar.gz;
   			tar zcvf ${dir}.tar.gz ${dir} >/dev/null 2>&1;
 			rm -rf ${dir};
 			if [ ! -f "${LOCAL_PATH}/${dir}.tar.gz" ]; then
-    				echo "The backup compressed package file is not exported normally,file:${sqlfile},process exist!"
+    				echo "The snapshot compressed package file is not exported normally,file:${sqlfile},process exist!"
 				exit -1;
 			fi
 			local currentIP=($(getLocalIP));
