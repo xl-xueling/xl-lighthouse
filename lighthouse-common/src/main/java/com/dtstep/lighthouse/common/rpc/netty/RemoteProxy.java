@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.common.rpc.netty;
 
+import com.dtstep.lighthouse.common.entity.rpc.RpcMsgType;
 import com.dtstep.lighthouse.common.entity.rpc.RpcRequest;
 import com.dtstep.lighthouse.common.entity.rpc.RpcResponse;
 import com.dtstep.lighthouse.common.ice.LightRpcException;
@@ -21,12 +22,9 @@ public class RemoteProxy implements InvocationHandler {
 
     private final List<InetSocketAddress> addressList;
 
-    private final ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap;
-
-    public RemoteProxy( List<InetSocketAddress> addressList,Class<?> clazz, ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap) {
+    public RemoteProxy(List<InetSocketAddress> addressList,Class<?> clazz) {
        this.addressList = addressList;
        this.clazz = clazz;
-       this.poolMap = poolMap;
     }
 
     @Override
@@ -44,6 +42,8 @@ public class RemoteProxy implements InvocationHandler {
         ProcessedFuture.put(reqId,completableFuture);
         rpcRequest.setParameterTypes(method.getParameterTypes());
         rpcRequest.setParameterValues(args);
+        rpcRequest.setType(RpcMsgType.Normal);
+        ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap = NettyClientAdapter.getPoolMap();
         ChannelPool pool = poolMap.get(addressList.get(ThreadLocalRandom.current().nextInt(addressList.size())));
         Future<Channel> future = pool.acquire().sync();
         Channel channel = future.getNow();

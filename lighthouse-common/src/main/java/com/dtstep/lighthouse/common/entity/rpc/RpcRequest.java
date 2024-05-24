@@ -10,6 +10,8 @@ public class RpcRequest implements Serializable {
 
     private String methodName;
 
+    private RpcMsgType type;
+
     private Class<?>[] parameterTypes;
 
     private Object[] parameterValues;
@@ -52,5 +54,13 @@ public class RpcRequest implements Serializable {
 
     public void setRequestId(String requestId) {
         this.requestId = requestId;
+    }
+
+    public RpcMsgType getType() {
+        return type;
+    }
+
+    public void setType(RpcMsgType type) {
+        this.type = type;
     }
 }

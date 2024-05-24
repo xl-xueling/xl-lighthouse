@@ -8,10 +8,10 @@ import io.netty.handler.timeout.IdleStateHandler;
 import java.util.concurrent.TimeUnit;
 
 @ChannelHandler.Sharable
-public class CustomIdleStateHandler extends IdleStateHandler {
+public class CustomIdleServerHandler extends IdleStateHandler {
 
-    public CustomIdleStateHandler() {
-        super(30, 0, 0, TimeUnit.SECONDS);
+    public CustomIdleServerHandler() {
+        super(10, 0, 10, TimeUnit.SECONDS);
     }
 
     @Override

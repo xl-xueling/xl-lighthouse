@@ -40,6 +40,9 @@ public final class ScheduledThreadPoolBuilder {
                         if (future.isDone()) {
                             future.get();
                             logger.info("thread:{} execute completed!",threadName);
+                        }else if(future.isCancelled()){
+                            future.get();
+                            logger.info("thread:{} is canceled!",threadName);
                         }
                     } catch (InterruptedException ex) {
                         logger.error("thread:{} interrupted!",threadName,ex);

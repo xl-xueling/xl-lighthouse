@@ -8,6 +8,8 @@ public class RpcResponse<T> implements Serializable {
 
     private String error;
 
+    private RpcMsgType type;
+
     private T result;
 
     public String getRequestId() {
@@ -32,5 +34,13 @@ public class RpcResponse<T> implements Serializable {
 
     public void setResult(T result) {
         this.result = result;
+    }
+
+    public RpcMsgType getType() {
+        return type;
+    }
+
+    public void setType(RpcMsgType type) {
+        this.type = type;
     }
 }
