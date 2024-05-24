@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
@@ -645,7 +646,7 @@ public class HBaseWarehouseStorageEngine implements WarehouseStorageEngine {
         }
     }
 
-    private  static final ExecutorService pool = Executors.newFixedThreadPool(5);
+    private static final ExecutorService pool = Executors.newFixedThreadPool(5,new BasicThreadFactory.Builder().namingPattern("HBase-WarehouseEngine-schedule-pool-%d").daemon(true).build());
 
     private static final int BATCH_GET_SIZE = 200;
 

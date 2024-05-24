@@ -13,6 +13,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,12 +108,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             logger.error("Mysql Table '{}' created failed!",tableName,ex);
             ex.printStackTrace();
         } finally {
-            try {
-                if (statement != null) statement.close();
-                if (connection != null) closeConnection();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            release(null,statement,connection);
         }
     }
 
@@ -138,12 +134,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             logger.error("Mysql Table '{}' created failed!",tableName,ex);
             ex.printStackTrace();
         } finally {
-            try {
-                if (statement != null) statement.close();
-                if (connection != null) closeConnection();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            release(null,statement,connection);
         }
     }
 
@@ -152,25 +143,20 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         String query = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?";
         Connection connection = null;
         PreparedStatement ps = null;
+        ResultSet rs = null;
         try{
             connection = getConnection();
             ps = connection.prepareStatement(query);
             ps.setString(1, mySQLConfiguration.getDatabase());
             ps.setString(2, tableName);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
-                }
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
             }
         }catch (Exception ex){
             logger.error("check mysql table exist error!",ex);
         }finally {
-            try {
-                if (ps != null) ps.close();
-                if (connection != null) closeConnection();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+            release(rs,ps,connection);
         }
         return false;
     }
@@ -189,12 +175,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             logger.error("drop table:{} error!",tableName,ex);
             ex.printStackTrace();
         }finally {
-            try {
-                if (statement != null) statement.close();
-                if (connection != null) closeConnection();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            release(null,statement,connection);
         }
     }
 
@@ -230,12 +211,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             logger.error("put data to mysql error,tableName:{}!",tableName,ex);
             ex.printStackTrace();
         }finally {
-            try {
-                if (ps != null) ps.close();
-                if (connection != null) closeConnection();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+            release(null,ps,connection);
         }
     }
 
@@ -277,12 +253,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             logger.error("puts data to mysql error,tableName:{},putsSize:{}!",tableName,ldpPuts.size(),ex);
             ex.printStackTrace();
         } finally {
-            try {
-                if (ps != null) ps.close();
-                if (connection != null) closeConnection();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            release(null,ps,connection);
         }
     }
 
@@ -317,12 +288,11 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             logger.error("increment process error!",ex);
             ex.printStackTrace();
         } finally {
-            RedissonLock.unLock(lockKey);
-            try {
-                if (ps != null) ps.close();
-                if (connection != null) closeConnection();
-            } catch (SQLException se) {
-                se.printStackTrace();
+            release(null,ps,connection);
+            try{
+                RedissonLock.unLock(lockKey);
+            }catch (Exception ex){
+                ex.printStackTrace();
             }
         }
     }
@@ -360,11 +330,10 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     logger.error("increments process error!",ex);
                     ex.printStackTrace();
                 } finally {
-                    RedissonLock.unLock(lockKey);
-                    try {
-                        if (ps != null) ps.close();
-                        if (connection != null) closeConnection();
-                    } catch (SQLException ex) {
+                    release(null,ps,connection);
+                    try{
+                        RedissonLock.unLock(lockKey);
+                    }catch (Exception ex){
                         ex.printStackTrace();
                     }
                 }
@@ -438,6 +407,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         String ldpColumn = ldpGet.getColumn();
         Connection connection = null;
         PreparedStatement ps = null;
+        ResultSet rs = null;
         LdpResult<R> ldpResult = new LdpResult<>();
         ldpResult.setKey(ldpKey);
         ldpResult.setColumn(ldpColumn);
@@ -445,7 +415,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             connection = getConnection();
             ps = connection.prepareStatement(sql);
             ps.setString(1,getDBKey(ldpKey,ldpColumn));
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             R result = null;
             while (rs.next()){
                 if(clazz == Long.class){
@@ -458,12 +428,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         }catch (Exception ex){
             logger.error("get data from mysql error!",ex);
         }finally {
-            try {
-                if (ps != null) ps.close();
-                if (connection != null) closeConnection();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            release(rs,ps,connection);
         }
         return ldpResult;
     }
@@ -475,16 +440,17 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         String sql = "SELECT `k`,`v`,`upd_time` FROM " + tableName + " WHERE k IN("+placeholders+")";
         Connection connection = null;
         PreparedStatement ps = null;
+        ResultSet rs = null;
         List<LdpResult<R>> ldpResults = new ArrayList<>();
         try {
-            connection = basicDataSource.getConnection();
+            connection = getConnection();
             ps = connection.prepareStatement(sql);
             for (int i = 0; i < ldpGets.size(); i++) {
                 LdpGet ldpGet = ldpGets.get(i);
                 String tempKey = getDBKey(ldpGet.getKey(),ldpGet.getColumn());
                 ps.setString(i + 1, tempKey);
             }
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             while (rs.next()) {
                 LdpResult<R> ldpResult = new LdpResult<>();
                 R r = null;
@@ -513,17 +479,36 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             logger.error("query data info error!",ex);
             ex.printStackTrace();
         } finally {
-            try {
-                if (ps != null) ps.close();
-                if (connection != null) closeConnection();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            release(rs,ps,connection);
         }
         return ldpResults;
     }
 
-    private  static final ExecutorService pool = Executors.newFixedThreadPool(5);
+    private void release(ResultSet rs,Statement statement,Connection connection){
+        try{
+            if(rs != null){
+                rs.close();
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        try{
+            if(statement != null){
+                statement.close();
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        try{
+            if(connection != null){
+                closeConnection();
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private static final ExecutorService pool = Executors.newFixedThreadPool(5,new BasicThreadFactory.Builder().namingPattern("MySql-WarehouseEngine-schedule-pool-%d").daemon(true).build());
 
     @Override
     public <R> List<LdpResult<R>> gets(String tableName, List<LdpGet> ldpGets, Class<R> clazz) throws Exception {
@@ -556,6 +541,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         String sql = "SELECT `k` , `v` ,`upd_time` from " + tableName + " where k >= ? and k < ? order by k asc limit ?";
         Connection connection = null;
         PreparedStatement ps = null;
+        ResultSet rs = null;
         List<LdpResult<R>> ldpResults = new ArrayList<>();
         try{
             connection = getConnection();
@@ -563,7 +549,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             ps.setString(1,startRow);
             ps.setString(2,endRow);
             ps.setInt(3,limit);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             while (rs.next()) {
                 LdpResult<R> ldpResult = new LdpResult<>();
                 R r = null;
@@ -592,12 +578,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             logger.error("scan mysql data error!",ex);
             ex.printStackTrace();
         }finally {
-            try {
-                if (ps != null) ps.close();
-                if (connection != null) closeConnection();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            release(rs,ps,connection);
         }
         return ldpResults;
     }
@@ -616,12 +597,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             logger.error("delete mysql data error!",ex);
             ex.printStackTrace();
         }finally {
-            try {
-                if (ps != null) ps.close();
-                if (connection != null) closeConnection();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            release(null,ps,connection);
         }
     }
 
