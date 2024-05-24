@@ -96,8 +96,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     + "id BIGINT AUTO_INCREMENT PRIMARY KEY, "
                     + "k VARCHAR(200) NOT NULL, "
                     + "v bigint NOT NULL DEFAULT '0', "
-                    + "exp_time timestamp NOT NULL, "
                     + "upd_time timestamp NOT NULL, "
+                    + "exp_time timestamp NOT NULL, "
                     + "UNIQUE KEY `k_UNIQUE` (`k`), "
                     + "KEY `index_exp_time` (`exp_time`)"
                     + ") ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=utf8mb3",tableName);
@@ -122,8 +122,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     + "id BIGINT AUTO_INCREMENT PRIMARY KEY, "
                     + "k VARCHAR(200) NOT NULL, "
                     + "v VARCHAR(800) NOT NULL, "
-                    + "exp_time timestamp NOT NULL, "
                     + "upd_time timestamp NOT NULL, "
+                    + "exp_time timestamp NOT NULL, "
                     + "UNIQUE KEY `k_UNIQUE` (`k`), "
                     + "KEY `index_exp_time` (`exp_time`)"
                     + ") ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=utf8mb3",tableName);
