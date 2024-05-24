@@ -20,13 +20,13 @@ public class TestClient {
     @Test
     public void testStandalone() throws Exception{
         System.out.println("init standalone.");
-        String token = "Gjd:feed_behavior_stat";
+        String token = "3qa:test_stat";
         System.out.println("ok.");
-        for(int i = 0;i<1000;i++){
+        for(int i = 0;i<1;i++){
             HashMap<String,Object> paramMap = new HashMap<>();
             paramMap.put("province","p1");
             paramMap.put("city","c1");
-            LightHouse.stat(token,"9oyIXK9XQEiysrMBCoAvTq2pyPjMlTjznmPVXWCe",paramMap,System.currentTimeMillis());
+            LightHouse.stat(token,"RXaVeenRemZRdWxqAICNkoTnynpUWCix6Lzn6e8Z",paramMap,System.currentTimeMillis());
         }
         Thread.sleep(500000);
     }

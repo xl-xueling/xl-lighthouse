@@ -52,7 +52,7 @@ public class MySQLWarehouseEngineTest extends CoreBaseTest {
 
     @Test
     public void testIncrement() throws Exception {
-        String table = "ldp_stat_1716037618313";
+        String table = "ldp_system_result";
         String key = "abc";
         LdpIncrement ldpIncrement = new LdpIncrement();
         ldpIncrement.setKey(key);
@@ -63,7 +63,7 @@ public class MySQLWarehouseEngineTest extends CoreBaseTest {
 
     @Test
     public void testIncrements() throws Exception {
-        String table = "ldp_stat_1716037618313";
+        String table = "ldp_system_result";
         String key1 = "a1";
         LdpIncrement ldpIncrement1 = new LdpIncrement();
         ldpIncrement1.setKey(key1);
@@ -73,6 +73,7 @@ public class MySQLWarehouseEngineTest extends CoreBaseTest {
         LdpIncrement ldpIncrement2 = new LdpIncrement();
         ldpIncrement2.setKey(key2);
         ldpIncrement2.setColumn(null);
+        ldpIncrement2.setTtl(100000000);
         ldpIncrement2.setStep(10);
         List<LdpIncrement> ldpIncrements = new ArrayList<>();
         ldpIncrements.add(ldpIncrement1);

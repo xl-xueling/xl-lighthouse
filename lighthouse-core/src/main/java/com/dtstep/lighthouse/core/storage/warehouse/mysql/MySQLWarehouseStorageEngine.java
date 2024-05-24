@@ -267,7 +267,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         Connection connection = null;
         PreparedStatement ps = null;
         long current = System.currentTimeMillis();
-        String sql = "INSERT ignore INTO " + tableName + "(`k`,`v`,`exp_time`,`upd_time`) values (?, ?, ?, ?) on duplicate key update v = v + ?";
+        String sql = "INSERT INTO " + tableName + "(`k`,`v`,`exp_time`,`upd_time`) values (?, ?, ?, ?) on duplicate key update `v` = `v` + ?, `exp_time` = ? , `upd_time` = ?";
         String dbKey = getDBKey(ldpIncrement.getKey(),ldpIncrement.getColumn());
         String lockKey = MYSQL_INCREMENT_PUT_LOCK + "_" + dbKey;
         boolean isLock = RedissonLock.tryLock(lockKey,8,3, TimeUnit.MINUTES);
@@ -280,6 +280,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                 ps.setTimestamp(3,new Timestamp(current + ldpIncrement.getTtl()));
                 ps.setTimestamp(4,new Timestamp(current));
                 ps.setLong(5,ldpIncrement.getStep());
+                ps.setTimestamp(6,new Timestamp(current + ldpIncrement.getTtl()));
+                ps.setTimestamp(7,new Timestamp(current));
                 ps.executeUpdate();
             }else{
                 logger.error("try lock failed,thread unable to acquire lock,this batch data may be lost,cost:{}ms!",stopWatch.getTime());
@@ -301,10 +303,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
 
     @Override
     public void increments(String tableName, List<LdpIncrement> ldpIncrements) throws Exception {
-        Connection connection = null;
-        PreparedStatement ps = null;
         long current = System.currentTimeMillis();
-        String sql = "INSERT INTO " + tableName + "(`k`,`v`,`exp_time`,`upd_time`) values (?, ?, ?, ?) on duplicate key update v = v + ?";
+        String sql = "INSERT INTO " + tableName + "(`k`,`v`,`exp_time`,`upd_time`) values (?, ?, ?, ?) on duplicate key update `v` = `v` + ?, `exp_time` = ? , `upd_time` = ?";
         Map<Long,List<LdpIncrement>> map = ldpIncrements.stream().collect(Collectors.groupingBy(x -> HashUtil.BKDRHash(getDBKey(x.getKey(),x.getColumn())) % batchSalt));
         for(Long object : map.keySet()){
             StopWatch stopWatch = new StopWatch();
@@ -313,6 +313,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             String lockKey = MYSQL_INCREMENTS_LOCK_PREFIX + "_" +  + object;
             boolean isLock = RedissonLock.tryLock(lockKey,8,3, TimeUnit.MINUTES);
             if(isLock){
+                Connection connection = null;
+                PreparedStatement ps = null;
                 try {
                     connection = getConnection();
                     ps = connection.prepareStatement(sql);
@@ -322,6 +324,8 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                         ps.setTimestamp(3,new Timestamp(current + ldpIncrement.getTtl()));
                         ps.setTimestamp(4,new Timestamp(current));
                         ps.setLong(5,ldpIncrement.getStep());
+                        ps.setTimestamp(6,new Timestamp(current + ldpIncrement.getTtl()));
+                        ps.setTimestamp(7,new Timestamp(current));
                         ps.addBatch();
                     }
                     ps.executeBatch();
@@ -500,15 +504,13 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             ex.printStackTrace();
         }
         try{
-            if(connection != null){
-                closeConnection();
-            }
+            closeConnection();
         }catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
-    private static final ExecutorService pool = Executors.newFixedThreadPool(5,new BasicThreadFactory.Builder().namingPattern("MySql-WarehouseEngine-schedule-pool-%d").daemon(true).build());
+    private static final ExecutorService pool = Executors.newFixedThreadPool(5,new BasicThreadFactory.Builder().namingPattern("MySql-WarehouseEngine-schedule-pool-%d").build());
 
     @Override
     public <R> List<LdpResult<R>> gets(String tableName, List<LdpGet> ldpGets, Class<R> clazz) throws Exception {

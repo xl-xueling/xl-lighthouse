@@ -646,7 +646,7 @@ public class HBaseWarehouseStorageEngine implements WarehouseStorageEngine {
         }
     }
 
-    private static final ExecutorService pool = Executors.newFixedThreadPool(5,new BasicThreadFactory.Builder().namingPattern("HBase-WarehouseEngine-schedule-pool-%d").daemon(true).build());
+    private static final ExecutorService pool = Executors.newFixedThreadPool(5,new BasicThreadFactory.Builder().namingPattern("HBase-WarehouseEngine-schedule-pool-%d").build());
 
     private static final int BATCH_GET_SIZE = 200;
 
