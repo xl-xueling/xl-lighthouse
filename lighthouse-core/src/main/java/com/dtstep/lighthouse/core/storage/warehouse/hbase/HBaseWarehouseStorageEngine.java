@@ -574,7 +574,7 @@ public class HBaseWarehouseStorageEngine implements WarehouseStorageEngine {
         for(Long object : map.keySet()){
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
-            String lockKey = COMPARE_PUT_LOCK_PREFIX + "_" + compareOperator + "_" + object;
+            String lockKey = COMPARE_PUT_LOCK_PREFIX + "_" + tableName + "_" + compareOperator + "_" + object;
             boolean isLock = RedissonLock.tryLock(lockKey,8,3, TimeUnit.MINUTES);
             if(isLock){
                 try{

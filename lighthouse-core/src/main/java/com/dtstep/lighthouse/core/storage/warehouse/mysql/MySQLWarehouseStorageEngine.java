@@ -215,45 +215,59 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         }
     }
 
+    private static final String MYSQL_PUTS_LOCK_PREFIX = "MYSQL_PUTS_LOCK_PREFIX";
+
     @Override
     public void puts(String tableName, List<LdpPut> ldpPuts) throws Exception {
         String sql = "INSERT ignore INTO " + tableName + " (`k`, `v`, `exp_time`, `upd_time`) VALUES (?, ?, ?, ?) on duplicate key update v = ?,exp_time = ? , upd_time = ?";
         Connection connection = null;
         PreparedStatement ps = null;
-        Object value = ldpPuts.get(0).getData();
         long current = System.currentTimeMillis();
-        try{
-            connection = getConnection();
-            ps = connection.prepareStatement(sql);
-            connection.setAutoCommit(false);
-            for (LdpPut ldpPut : ldpPuts) {
-                ps.setString(1, getDBKey(ldpPut.getKey(), ldpPut.getColumn()));
-                if (value.getClass() == String.class) {
-                    ps.setString(2, ldpPut.getData().toString());
-                } else if (value.getClass() == Long.class) {
-                    ps.setLong(2, (Long) ldpPut.getData());
-                } else {
-                    throw new IllegalArgumentException(String.format("Current type(%s) not supported!", value.getClass()));
+        Map<Long,List<LdpPut>> map = ldpPuts.stream().collect(Collectors.groupingBy(x -> HashUtil.BKDRHash(getDBKey(x.getKey(),x.getColumn())) % batchSalt));
+        for(Long object : map.keySet()){
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            List<LdpPut> subList = map.get(object);
+            String lockKey = MYSQL_PUTS_LOCK_PREFIX + "_" + tableName + "_" +  + object;
+            boolean isLock = RedissonLock.tryLock(lockKey,8,3,TimeUnit.MINUTES);
+            if(isLock){
+                try{
+                    connection = getConnection();
+                    ps = connection.prepareStatement(sql);
+                    connection.setAutoCommit(false);
+                    for (LdpPut ldpPut : subList) {
+                        Object value = ldpPut.getData();
+                        ps.setString(1, getDBKey(ldpPut.getKey(), ldpPut.getColumn()));
+                        if (value.getClass() == String.class) {
+                            ps.setString(2, ldpPut.getData().toString());
+                        } else if (value.getClass() == Long.class) {
+                            ps.setLong(2, (Long) ldpPut.getData());
+                        } else {
+                            throw new IllegalArgumentException(String.format("Current type(%s) not supported!", value.getClass()));
+                        }
+                        ps.setTimestamp(3,new Timestamp(current + ldpPut.getTtl()));
+                        ps.setTimestamp(4, new Timestamp(current));
+                        if (value.getClass() == String.class) {
+                            ps.setString(5, ldpPut.getData().toString());
+                        } else {
+                            ps.setLong(5, (Long) ldpPut.getData());
+                        }
+                        ps.setTimestamp(6,new Timestamp(current + ldpPut.getTtl()));
+                        ps.setTimestamp(7, new Timestamp(current));
+                        ps.addBatch();
+                    }
+                    ps.executeBatch();
+                    connection.commit();
+                    ps.clearBatch();
+                } catch (Exception ex){
+                    logger.error("puts data to mysql error,tableName:{},putsSize:{}!",tableName,ldpPuts.size(),ex);
+                    ex.printStackTrace();
+                } finally {
+                    release(null,ps,connection);
                 }
-                ps.setTimestamp(3,new Timestamp(current + ldpPut.getTtl()));
-                ps.setTimestamp(4, new Timestamp(current));
-                if (value.getClass() == String.class) {
-                    ps.setString(5, ldpPut.getData().toString());
-                } else {
-                    ps.setLong(5, (Long) ldpPut.getData());
-                }
-                ps.setTimestamp(6,new Timestamp(current + ldpPut.getTtl()));
-                ps.setTimestamp(7, new Timestamp(current));
-                ps.addBatch();
+            }else{
+                logger.error("try lock failed,thread unable to acquire lock,this batch data may be lost,cost:{}ms!",stopWatch.getTime());
             }
-            ps.executeBatch();
-            connection.commit();
-            ps.clearBatch();
-        } catch (Exception ex){
-            logger.error("puts data to mysql error,tableName:{},putsSize:{}!",tableName,ldpPuts.size(),ex);
-            ex.printStackTrace();
-        } finally {
-            release(null,ps,connection);
         }
     }
 
@@ -269,7 +283,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         long current = System.currentTimeMillis();
         String sql = "INSERT INTO " + tableName + "(`k`,`v`,`exp_time`,`upd_time`) values (?, ?, ?, ?) on duplicate key update `v` = `v` + ?, `exp_time` = ? , `upd_time` = ?";
         String dbKey = getDBKey(ldpIncrement.getKey(),ldpIncrement.getColumn());
-        String lockKey = MYSQL_INCREMENT_PUT_LOCK + "_" + dbKey;
+        String lockKey = MYSQL_INCREMENT_PUT_LOCK + "_" + tableName + "_" + dbKey;
         boolean isLock = RedissonLock.tryLock(lockKey,8,3, TimeUnit.MINUTES);
         try {
             if(isLock){
@@ -310,7 +324,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             List<LdpIncrement> subList = map.get(object);
-            String lockKey = MYSQL_INCREMENTS_LOCK_PREFIX + "_" +  + object;
+            String lockKey = MYSQL_INCREMENTS_LOCK_PREFIX + "_" + tableName + "_" +  + object;
             boolean isLock = RedissonLock.tryLock(lockKey,8,3, TimeUnit.MINUTES);
             if(isLock){
                 Connection connection = null;
@@ -360,7 +374,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
         for(Long object : map.keySet()){
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
-            String lockKey = MYSQL_COMPARE_PUT_LOCK_PREFIX + "_" + compareOperator + "_" + object;
+            String lockKey = MYSQL_COMPARE_PUT_LOCK_PREFIX + "_" + tableName + "_" + compareOperator + "_" + object;
             boolean isLock = RedissonLock.tryLock(lockKey,8,3, TimeUnit.MINUTES);
             if(isLock){
                 try{
