@@ -259,6 +259,16 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     ps.executeBatch();
                     connection.commit();
                     ps.clearBatch();
+                } catch (SQLException ex){
+                    if(connection != null){
+                        try{
+                            connection.rollback();
+                        }catch (Exception e){
+                            ex.printStackTrace();
+                        }
+                    }
+                    logger.error("puts data to mysql error,tableName:{},putsSize:{}!",tableName,ldpPuts.size(),ex);
+                    ex.printStackTrace();
                 } catch (Exception ex){
                     logger.error("puts data to mysql error,tableName:{},putsSize:{}!",tableName,ldpPuts.size(),ex);
                     ex.printStackTrace();
