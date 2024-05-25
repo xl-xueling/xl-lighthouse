@@ -32,7 +32,7 @@ public class LDPFlowTestInstance {
     public static void main(String[] args) throws Exception {
         int minuteSize = Integer.parseInt(args[0]);
         LDPConfig.loadConfiguration();
-        LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS),LDPConfig.getRunningMode());
+        LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
         TestConfigContext testConfigContext = new TestConfigContext();
         ModalSample<BehaviorSampleEntity> modalSample = new BehaviorModalSample();
         String token = modalSample.getToken();

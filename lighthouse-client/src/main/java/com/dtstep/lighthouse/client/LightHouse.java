@@ -19,8 +19,10 @@ package com.dtstep.lighthouse.client;
 import com.dtstep.lighthouse.client.rpc.RPCClientProxy;
 import com.dtstep.lighthouse.common.aggregator.BlockingEventPool;
 import com.dtstep.lighthouse.common.aggregator.EventPool;
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.entity.event.SimpleSlotEvent;
 import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
+import com.dtstep.lighthouse.common.entity.monitor.ClusterInfo;
 import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
@@ -32,6 +34,8 @@ import com.dtstep.lighthouse.common.fusing.FusingSwitch;
 import com.dtstep.lighthouse.common.enums.fusing.FusingRules;
 import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.common.exception.LightSendException;
+import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.common.util.OkHttpUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.zeroc.Ice.NotRegisteredException;
 import org.slf4j.Logger;
@@ -65,23 +69,10 @@ public final class LightHouse {
 
     private LightHouse(){}
 
-    public static void init(final String locators) throws Exception {
-        init(locators,RunningMode.CLUSTER);
-    }
-
-    public static void init(final String locators,Properties properties) throws Exception{
-        if(properties.containsKey(KEY_PROCESS_FREQUENCY)){
-            consumerFrequency = Integer.parseInt(properties.getProperty(KEY_PROCESS_FREQUENCY));
-        }
-        if(properties.containsKey(KEY_PROCESS_BATCH)){
-            consumerBatchSize = Integer.parseInt(properties.getProperty(KEY_PROCESS_BATCH));
-        }
-        init(locators,RunningMode.CLUSTER);
-    }
-
-    public static synchronized void init(final String locators, RunningMode runningMode) throws Exception {
+    public static synchronized void init(final String locators) throws Exception {
         if(!_InitFlag.get()){
-            _runningMode = runningMode;
+            ClusterInfo clusterInfo = getRunningMode(locators);
+            _runningMode = clusterInfo.getRunningMode();
             boolean result = RPCClientProxy.instance().init(locators);
             if(!result){
                 throw new InitializationException(String.format("lighthouse remote service not available,locators:%s",locators));
@@ -92,14 +83,35 @@ public final class LightHouse {
         }
     }
 
-    public static void init(final String locators,Properties properties,RunningMode runningMode) throws Exception{
+    public static void init(final String locators,Properties properties) throws Exception{
         if(properties.containsKey(KEY_PROCESS_FREQUENCY)){
             consumerFrequency = Integer.parseInt(properties.getProperty(KEY_PROCESS_FREQUENCY));
         }
         if(properties.containsKey(KEY_PROCESS_BATCH)){
             consumerBatchSize = Integer.parseInt(properties.getProperty(KEY_PROCESS_BATCH));
         }
-        init(locators,runningMode);
+        init(locators);
+    }
+
+    private static ClusterInfo getRunningMode(String locators) {
+        String[] locatorArr = locators.split(",");
+        ClusterInfo clusterInfo = null;
+        for (String conf : locatorArr) {
+            String[] arr = conf.split(":");
+            String ip = arr[0];
+            try{
+                String response = OkHttpUtil.post(String.format("http://%s:%s/clusterInfo)", ip, SysConst.CLUSTER_MONITOR_SERVICE_PORT),"");
+                if(StringUtil.isNotEmpty(response)){
+                    clusterInfo = JsonUtil.toJavaObject(response,ClusterInfo.class);
+                    if(clusterInfo != null){
+                        break;
+                    }
+                }
+            }catch (Exception ex){
+                logger.error("Request remote service failed,ip:{}",ip);
+            }
+        }
+        return clusterInfo;
     }
 
     public static void stat(final String token,final String secretKey,Map<String,Object> paramMap,final long timestamp) throws Exception{

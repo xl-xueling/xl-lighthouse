@@ -221,6 +221,18 @@
                                     <shadedPattern>com.dtstep.lighthouse.io.netty</shadedPattern>
                                 </relocation>
                                 <relocation>
+                                    <pattern>com.fasterxml</pattern>
+                                    <shadedPattern>com.dtstep.lighthouse.com.fasterxml</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>okhttp3</pattern>
+                                    <shadedPattern>com.dtstep.lighthouse.okhttp3</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>okio</pattern>
+                                    <shadedPattern>com.dtstep.lighthouse.okio</shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>org.xerial</pattern>
                                     <shadedPattern>com.dtstep.lighthouse.org.xerial</shadedPattern>
                                 </relocation>

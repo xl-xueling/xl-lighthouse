@@ -11,7 +11,7 @@ public class TestClient {
     static {
         try{
             //修改rpc服务地址,一主一从，默认为部署集群的前两个节点
-            LightHouse.init("127.0.0.1:4061", RunningMode.STANDALONE);
+            LightHouse.init("127.0.0.1:4061");
         }catch (Exception ex){
             ex.printStackTrace();
         }

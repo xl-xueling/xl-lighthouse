@@ -38,7 +38,7 @@ public class LDPOnceTestInstance {
     public static void main(String[] args) throws Exception {
         int dataSize = Integer.parseInt(args[0]);
         LDPConfig.loadConfiguration();
-        LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS),LDPConfig.getRunningMode());
+        LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
         createGroup();
         BehaviorModalSample modalSample = new BehaviorModalSample();
         String token = modalSample.getToken();

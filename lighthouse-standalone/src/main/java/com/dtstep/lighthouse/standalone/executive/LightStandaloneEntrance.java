@@ -31,10 +31,10 @@ public class LightStandaloneEntrance {
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ServerInitializer());
             ChannelFuture future = server.bind(this.port).sync();
-            logger.info("standalone service start,listen:{}",port);
+            logger.info("ldp standalone service start,listen:{}",port);
             future.channel().closeFuture().sync();
         }catch (Exception ex){
-            logger.error("standalone service startup exception!",ex);
+            logger.error("ldp standalone service startup exception!",ex);
         }finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();

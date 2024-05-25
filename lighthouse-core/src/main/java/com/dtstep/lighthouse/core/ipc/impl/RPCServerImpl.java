@@ -14,6 +14,7 @@ import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.ipc.DisruptorEventProducer;
+import com.dtstep.lighthouse.core.ipc.monitor.ClusterMonitorService;
 import com.dtstep.lighthouse.core.storage.limit.LimitStorageSelector;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
@@ -32,6 +33,14 @@ public class RPCServerImpl implements RPCServer {
     private static final Logger logger = LoggerFactory.getLogger(RPCServerImpl.class);
 
     private static final DisruptorEventProducer eventProducer = new DisruptorEventProducer();
+
+    static {
+        try{
+            ClusterMonitorService.start();
+        }catch (Exception ex){
+            logger.error("cluster monitor server start failed!",ex);
+        }
+    }
 
     @Override
     public GroupVerifyEntity queryGroupInfo(String token) throws Exception {

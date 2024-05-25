@@ -14,7 +14,7 @@ public class TestStat{
 
     @Test
     public void testCount() throws Exception {
-        LightHouse.init("10.206.6.36:4061", RunningMode.STANDALONE);
+        LightHouse.init("10.206.6.36:4061");
         String token = "3qa:test_stat";
         long t = System.currentTimeMillis();
         for(int i = 0;i<927931;i++){
