@@ -9,7 +9,7 @@ public class StandaloneHandler {
 
     public static BasicRemoteLightServerPrx getRemoteProxy(){
         if(standaloneRemoteService == null){
-            NettyClientAdapter client = new NettyClientAdapter();
+            NettyClientAdapter client = NettyClientAdapter.instance();
             standaloneRemoteService = client.create(BasicRemoteLightServerPrx.class);
         }
         return standaloneRemoteService;

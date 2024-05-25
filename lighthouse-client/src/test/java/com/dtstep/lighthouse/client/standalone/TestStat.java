@@ -1,25 +1,32 @@
 package com.dtstep.lighthouse.client.standalone;
 
 import com.dtstep.lighthouse.client.LightHouse;
+import com.dtstep.lighthouse.common.enums.RunningMode;
+import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class TestStat extends StandaloneBaseTest{
+public class TestStat{
 
     @Test
     public void testCount() throws Exception {
-        long t = DateUtil.getCurrentHourTime();
-        for(int i=0;i<1239;i++){
-            HashMap<String,Object> paramMap = new HashMap<>();
-            paramMap.put("province", ThreadLocalRandom.current().nextInt(10));
-            paramMap.put("city", ThreadLocalRandom.current().nextInt(10));
-            paramMap.put("score",ThreadLocalRandom.current().nextDouble(10));
-            LightHouse.stat("HVP:test_standalone","73V8IcFZu9kckcpc8xOrN2aZLcUrFlu2E67uRcgM",paramMap,t);
-            Thread.sleep(100);
+        LightHouse.init("10.206.6.36:4061", RunningMode.STANDALONE);
+        String token = "3qa:test_stat";
+        long t = System.currentTimeMillis();
+        for(int i = 0;i<927931;i++){
+            //修改统计组参数值、Token和秘钥
+            Map<String,Object> map = new HashMap<>();
+            map.put("uid", RandomID.id(6));
+            map.put("province", ThreadLocalRandom.current().nextInt(10));
+            Double d = ThreadLocalRandom.current().nextDouble(1000);
+            map.put("score",String.format("%.3f", d));//防止上面随机数出现科学计数法
+            LightHouse.stat(token,"EumZ8y6M4hDRrQVXYOiYMaBsHiXhQYmIUJewlrKO",map,t);
         }
-        Thread.sleep(50 * 1000);
+        System.out.println("send ok.");
+        Thread.sleep(3000000);
     }
 }

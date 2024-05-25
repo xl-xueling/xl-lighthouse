@@ -60,24 +60,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
         }
     }
 
-
-    @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent) {
-            IdleStateEvent e = (IdleStateEvent) evt;
-            if (e.state() == IdleState.READER_IDLE) {
-                ctx.close();
-            } else if (e.state() == IdleState.WRITER_IDLE) {
-                RpcResponse rpcResponse = new RpcResponse();
-                rpcResponse.setType(RpcMsgType.HeartBeat);
-                rpcResponse.setRequestId(UUID.randomUUID().toString());
-                ctx.writeAndFlush(rpcResponse);
-            }
-        } else {
-            super.userEventTriggered(ctx, evt);
-        }
-    }
-
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();

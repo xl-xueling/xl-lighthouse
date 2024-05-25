@@ -3,10 +3,7 @@ package com.dtstep.lighthouse.common.rpc.netty;
 import com.dtstep.lighthouse.common.entity.rpc.RpcMsgType;
 import com.dtstep.lighthouse.common.entity.rpc.RpcRequest;
 import com.dtstep.lighthouse.common.entity.rpc.RpcResponse;
-import com.dtstep.lighthouse.common.rpc.netty.ProcessedFuture;
 import com.dtstep.lighthouse.common.schedule.ScheduledThreadPoolBuilder;
-import com.dtstep.lighthouse.common.util.JsonUtil;
-import com.zeroc.IceInternal.Ex;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelId;
@@ -14,6 +11,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;
@@ -27,19 +26,24 @@ import java.util.concurrent.TimeUnit;
 @ChannelHandler.Sharable
 public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
+    private static final Logger logger = LoggerFactory.getLogger(NettyClientHandler.class);
+
     private static final Map<ChannelId, InetSocketAddress> clientAddresses = new HashMap<>();
 
     private static final Map<InetSocketAddress,ScheduledFuture<?>> scheduledFutureMap = new HashMap<>();
+
+    private static final ScheduledExecutorService service = ScheduledThreadPoolBuilder.
+            newScheduledThreadPoolExecutor(1,new BasicThreadFactory.Builder().namingPattern("netty-retry-schedule-pool-%d").daemon(true).build());
 
     @Override
     public synchronized void channelActive(ChannelHandlerContext ctx) throws Exception {
         InetSocketAddress remoteAddress = (InetSocketAddress) ctx.channel().remoteAddress();
         if (remoteAddress != null) {
             String remoteIp = remoteAddress.getAddress().getHostAddress();
-            System.out.println("Client connected from IP: " + remoteIp + ",channel:" + ctx.channel().id());
+            logger.info("Client connected from IP: " + remoteIp + ",channel:" + ctx.channel().id());
             clientAddresses.put(ctx.channel().id(), remoteAddress);
         } else {
-            System.err.println("Remote address is null");
+            logger.info("Remote address is null");
         }
         super.channelActive(ctx);
     }
@@ -74,9 +78,6 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
-    private static final ScheduledExecutorService service = ScheduledThreadPoolBuilder.
-            newScheduledThreadPoolExecutor(1,new BasicThreadFactory.Builder().namingPattern("demo-consumer-schedule-pool-%d").daemon(true).build());
-
     @Override
     public synchronized void channelInactive(ChannelHandlerContext ctx) throws Exception {
         InetSocketAddress remoteAddress = clientAddresses.remove(ctx.channel().id());
@@ -103,6 +104,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
         @Override
         public void run() {
             ScheduledFuture<?> scheduledFuture = scheduledFutureMap.get(inetSocketAddress);
+            logger.info("Netty reconnect thread execute,inetSocketAddress:{},channel state:{}",inetSocketAddress,NettyClientAdapter.getState(inetSocketAddress));
             if(scheduledFuture == null){
                 return;
             }
@@ -111,7 +113,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
                     scheduledFuture.cancel(true);
                 }
             }else {
-                NettyClientAdapter.connect();
+                NettyClientAdapter.instance().connect();
             }
 
         }

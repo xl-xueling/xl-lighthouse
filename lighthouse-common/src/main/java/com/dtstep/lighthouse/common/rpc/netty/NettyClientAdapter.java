@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class NettyClientAdapter {
 
@@ -31,14 +30,23 @@ public class NettyClientAdapter {
 
     private static final List<InetSocketAddress> addressList = new ArrayList<>();
 
-
     private static ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap;
 
     private static final int maxConnections = 10;
 
     private static final ConcurrentHashMap<InetSocketAddress,Boolean> connectionStateHolder = new ConcurrentHashMap<>();
 
-    public static void init(String locators) throws Exception {
+    private static final NettyClientHandler clientHandler = new NettyClientHandler();
+
+    private static final NettyClientAdapter nettyClientAdapter = new NettyClientAdapter();
+
+    private NettyClientAdapter(){}
+
+    public static NettyClientAdapter instance(){
+        return nettyClientAdapter;
+    }
+
+    public void init(String locators) throws Exception {
         String[] locatorArr = locators.split(",");
         for (String conf : locatorArr) {
             String[] arr = conf.split(":");
@@ -52,9 +60,7 @@ public class NettyClientAdapter {
         connect();
     }
 
-    private static final NettyClientHandler clientHandler = new NettyClientHandler();
-
-    public static void connect(){
+    public void connect(){
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group).channel(NioSocketChannel.class);
@@ -80,8 +86,8 @@ public class NettyClientAdapter {
 
                     @Override
                     public void channelCreated(Channel ch) throws Exception {
-                        if(logger.isDebugEnabled()){
-                            logger.debug("channel created,id:" + ch.id());
+                        if(logger.isInfoEnabled()){
+                            logger.info("Netty channel created,id:" + ch.id());
                         }
                         int fieldLength = 4;
                         ch.pipeline()
@@ -95,12 +101,12 @@ public class NettyClientAdapter {
                 }, maxConnections);
                 channelPool.acquire().addListener((Future<Channel> future) -> {
                     if (future.isSuccess()) {
-                        System.out.println("Netty Client Adapter Connect,reset result To :true!");
+                        logger.info("Upgrade netty channel state,id:{},state:{}",future.getNow().id(),true);
                         Channel channel = future.getNow();
                         channelPool.release(channel);
                         setState(key,true);
                     } else {
-                        System.out.println("Netty Client Adapter Connect,result:false!");
+                        logger.info("Upgrade netty channel state,id:{},state:{}",future.getNow().id(),false);
                         setState(key,false);
                     }
                 });

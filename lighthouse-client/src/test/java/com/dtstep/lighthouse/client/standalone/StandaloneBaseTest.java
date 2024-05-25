@@ -7,7 +7,7 @@ public class StandaloneBaseTest {
 
     static {
         try{
-            LightHouse.init("10.206.6.36:4061", RunningMode.STANDALONE);
+            LightHouse.init("127.0.0.1:4061", RunningMode.STANDALONE);
         }catch (Exception ex){
             ex.printStackTrace();
         }
