@@ -45,6 +45,7 @@ public class RemoteProxy implements InvocationHandler {
         rpcRequest.setType(RpcMsgType.Normal);
         ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap = NettyClientAdapter.getPoolMap();
         ChannelPool pool = poolMap.get(addressList.get(ThreadLocalRandom.current().nextInt(addressList.size())));
+        System.out.println("poolMap id:" + poolMap + ",pool id:" + pool);
         Future<Channel> future = pool.acquire().sync();
         Channel channel = future.getNow();
         try {

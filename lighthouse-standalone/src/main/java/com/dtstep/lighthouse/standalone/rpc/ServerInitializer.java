@@ -17,15 +17,12 @@ import java.util.concurrent.TimeUnit;
 
 public class ServerInitializer extends ChannelInitializer<SocketChannel> {
 
-    private static final CustomIdleServerHandler customIdleStateHandler = new CustomIdleServerHandler();
-
     private static final NettyServerHandler nettyServerHandler = new NettyServerHandler();
 
     @Override
     protected void initChannel(SocketChannel ch) {
         int fieldLength = 4;
         ChannelPipeline pipeline = ch.pipeline();
-//        pipeline.addLast(customIdleStateHandler);
         pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,0,fieldLength,0,fieldLength));
         pipeline.addLast(new LengthFieldPrepender(fieldLength));
         pipeline.addLast("encoder",new RpcEncoder(RpcResponse.class,new KryoSerializer()));

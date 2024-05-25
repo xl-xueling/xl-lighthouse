@@ -37,12 +37,12 @@ public final class ScheduledThreadPoolBuilder {
                 if (throwable == null && runnable instanceof Future<?>) {
                     try {
                         Future<?> future = (Future<?>) runnable;
-                        if (future.isDone()) {
+                        if(future.isCancelled()){
+                            logger.info("thread:{} is cancelled!",threadName);
+                            Thread.currentThread().interrupt();
+                        }else if (future.isDone()) {
                             future.get();
                             logger.info("thread:{} execute completed!",threadName);
-                        }else if(future.isCancelled()){
-                            future.get();
-                            logger.info("thread:{} is canceled!",threadName);
                         }
                     } catch (InterruptedException ex) {
                         logger.error("thread:{} interrupted!",threadName,ex);

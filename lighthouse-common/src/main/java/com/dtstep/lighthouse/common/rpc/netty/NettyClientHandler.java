@@ -9,21 +9,40 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.zeroc.IceInternal.Ex;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.util.concurrent.ScheduledFuture;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
+import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 @ChannelHandler.Sharable
 public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
-    private static ScheduledFuture<?> scheduledFuture;
+    private static final Map<ChannelId, InetSocketAddress> clientAddresses = new HashMap<>();
+
+    private static final Map<InetSocketAddress,ScheduledFuture<?>> scheduledFutureMap = new HashMap<>();
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        InetSocketAddress remoteAddress = (InetSocketAddress) ctx.channel().remoteAddress();
+        if (remoteAddress != null) {
+            String remoteIp = remoteAddress.getAddress().getHostAddress();
+            System.out.println("Client connected from IP: " + remoteIp + ",channel:" + ctx.channel().id());
+            clientAddresses.put(ctx.channel().id(), remoteAddress);
+        } else {
+            System.err.println("Remote address is null");
+        }
+        super.channelActive(ctx);
+    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
@@ -59,22 +78,42 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
             newScheduledThreadPoolExecutor(1,new BasicThreadFactory.Builder().namingPattern("demo-consumer-schedule-pool-%d").daemon(true).build());
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        NettyClientAdapter.setState(false);
-        service.scheduleWithFixedDelay(new RefreshThread(), 0,30, TimeUnit.SECONDS);
+    public synchronized void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        InetSocketAddress remoteAddress = clientAddresses.remove(ctx.channel().id());
+        NettyClientAdapter.setState(remoteAddress,false);
+        ScheduledFuture<?> current = scheduledFutureMap.get(remoteAddress);
+        if(current != null && !current.isCancelled()){
+            current.cancel(true);
+            scheduledFutureMap.remove(remoteAddress);
+        }
+        ScheduledFuture<?> scheduledFuture = service.scheduleWithFixedDelay(new RefreshThread(remoteAddress), 0,1, TimeUnit.MINUTES);
+        scheduledFutureMap.put(remoteAddress,scheduledFuture);
         super.channelInactive(ctx);
     }
 
 
-
     private static class RefreshThread implements Runnable {
+
+        private final InetSocketAddress inetSocketAddress;
+
+        public RefreshThread(InetSocketAddress inetSocketAddress){
+            this.inetSocketAddress = inetSocketAddress;
+        }
+
         @Override
         public void run() {
-            if(NettyClientAdapter.getState()){
-                service.shutdown();
-            }else{
+            ScheduledFuture<?> scheduledFuture = scheduledFutureMap.get(inetSocketAddress);
+            if(scheduledFuture == null){
+                return;
+            }
+            if(NettyClientAdapter.getState(inetSocketAddress)){
+                if(!scheduledFuture.isCancelled()){
+                    scheduledFuture.cancel(true);
+                }
+            }else {
                 NettyClientAdapter.connect();
             }
+
         }
     }
 

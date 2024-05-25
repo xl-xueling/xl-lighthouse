@@ -2,7 +2,6 @@ package com.dtstep.lighthouse.common.rpc.netty;
 
 import com.dtstep.lighthouse.common.entity.rpc.RpcRequest;
 import com.dtstep.lighthouse.common.entity.rpc.RpcResponse;
-import com.dtstep.lighthouse.common.schedule.ScheduledThreadPoolBuilder;
 import com.dtstep.lighthouse.common.serializer.KryoSerializer;
 import com.dtstep.lighthouse.common.util.IpUtils;
 import io.netty.bootstrap.Bootstrap;
@@ -15,7 +14,6 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.Future;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +21,7 @@ import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -33,16 +31,12 @@ public class NettyClientAdapter {
 
     private static final List<InetSocketAddress> addressList = new ArrayList<>();
 
-    private static Bootstrap bootstrap;
 
     private static ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap;
 
     private static final int maxConnections = 10;
 
-    private static final AtomicBoolean stateHolder = new AtomicBoolean(true);
-
-    ScheduledExecutorService service = ScheduledThreadPoolBuilder.
-            newScheduledThreadPoolExecutor(1,new BasicThreadFactory.Builder().namingPattern("demo-consumer-schedule-pool-%d").daemon(true).build());
+    private static final ConcurrentHashMap<InetSocketAddress,Boolean> connectionStateHolder = new ConcurrentHashMap<>();
 
     public static void init(String locators) throws Exception {
         String[] locatorArr = locators.split(",");
@@ -58,13 +52,12 @@ public class NettyClientAdapter {
         connect();
     }
 
+    private static final NettyClientHandler clientHandler = new NettyClientHandler();
 
     public static void connect(){
         EventLoopGroup group = new NioEventLoopGroup();
-        bootstrap = new Bootstrap();
+        Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group).channel(NioSocketChannel.class);
-        CustomIdleClientHandler customIdleClientHandler = new CustomIdleClientHandler();
-        NettyClientHandler clientHandler = new NettyClientHandler();
         poolMap = new AbstractChannelPoolMap<InetSocketAddress, ChannelPool>() {
 
             @Override
@@ -100,14 +93,15 @@ public class NettyClientAdapter {
                                 .addLast(clientHandler);
                     }
                 }, maxConnections);
-
                 channelPool.acquire().addListener((Future<Channel> future) -> {
                     if (future.isSuccess()) {
+                        System.out.println("Netty Client Adapter Connect,reset result To :true!");
                         Channel channel = future.getNow();
                         channelPool.release(channel);
-                        stateHolder.set(true);
+                        setState(key,true);
                     } else {
-                        stateHolder.set(false);
+                        System.out.println("Netty Client Adapter Connect,result:false!");
+                        setState(key,false);
                     }
                 });
                 return channelPool;
@@ -119,12 +113,12 @@ public class NettyClientAdapter {
         return poolMap;
     }
 
-    public static boolean getState(){
-        return stateHolder.get();
+    public static boolean getState(InetSocketAddress address){
+        return connectionStateHolder.get(address);
     }
 
-    public static void setState(boolean result){
-        stateHolder.set(result);
+    public static void setState(InetSocketAddress address,boolean result){
+        connectionStateHolder.put(address,result);
     }
 
 
