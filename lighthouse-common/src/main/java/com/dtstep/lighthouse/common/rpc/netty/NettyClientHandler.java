@@ -32,7 +32,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     private static final Map<InetSocketAddress,ScheduledFuture<?>> scheduledFutureMap = new HashMap<>();
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public synchronized void channelActive(ChannelHandlerContext ctx) throws Exception {
         InetSocketAddress remoteAddress = (InetSocketAddress) ctx.channel().remoteAddress();
         if (remoteAddress != null) {
             String remoteIp = remoteAddress.getAddress().getHostAddress();
