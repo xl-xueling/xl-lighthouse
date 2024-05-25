@@ -12,6 +12,9 @@ dependency-reduced-pom.xml
 /.pnp
 /.idea
 /target
+target/
+**/target/
+.flattened-pom.xml
 .pnp.js
 
 # testing
