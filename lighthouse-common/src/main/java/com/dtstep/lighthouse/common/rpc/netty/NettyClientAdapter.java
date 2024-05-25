@@ -22,7 +22,6 @@ import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class NettyClientAdapter {
@@ -40,8 +39,6 @@ public class NettyClientAdapter {
     private static final NettyClientAdapter nettyClientAdapter = new NettyClientAdapter();
 
     private NettyClientAdapter(){}
-
-    private EventLoopGroup group;
 
     public static NettyClientAdapter instance(){
         return nettyClientAdapter;
@@ -62,7 +59,7 @@ public class NettyClientAdapter {
     }
 
     public void connect(){
-        group = new NioEventLoopGroup();
+        EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group).channel(NioSocketChannel.class);
         poolMap = new AbstractChannelPoolMap<InetSocketAddress, ChannelPool>() {
@@ -113,23 +110,6 @@ public class NettyClientAdapter {
                 return channelPool;
             }
         };
-    }
-
-    public void reconnect(InetSocketAddress address) {
-
-        poolMap.get(address).acquire().addListener(new FutureListener<Channel>() {
-
-            @Override
-            public void operationComplete(Future<Channel> future) throws Exception {
-                if (future.isSuccess()) {
-                    Channel channel = future.getNow();
-                    logger.info("Reconnected to " + address + ",channel id:" + channel.id());
-                } else {
-                    logger.error("Reconnected to " + address + " failed!",future.cause());
-                    group.schedule(() -> reconnect(address), 3, TimeUnit.MINUTES);
-                }
-            }
-        });
     }
 
     public static ChannelPoolMap<InetSocketAddress, ChannelPool> getPoolMap(){
