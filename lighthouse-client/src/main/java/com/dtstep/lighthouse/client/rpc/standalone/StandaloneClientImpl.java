@@ -28,7 +28,7 @@ public class StandaloneClientImpl implements RPCClient {
             throw new InitializationException("lighthouse client init failed,locators cannot be empty!");
         }
         try {
-            NettyClientAdapter.init(locators);
+            NettyClientAdapter.instance().init(locators);
             logger.info("lighthouse client init success!");
         }catch (Exception ex){
             throw new InitializationException(String.format("lighthouse remote service not available,locators:%s",locators));

@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 @ChannelHandler.Sharable
@@ -29,11 +27,6 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(NettyClientHandler.class);
 
     private static final Map<ChannelId, InetSocketAddress> clientAddresses = new HashMap<>();
-
-    private static final Map<InetSocketAddress,ScheduledFuture<?>> scheduledFutureMap = new HashMap<>();
-
-    private static final ScheduledExecutorService service = ScheduledThreadPoolBuilder.
-            newScheduledThreadPoolExecutor(1,new BasicThreadFactory.Builder().namingPattern("netty-retry-schedule-pool-%d").daemon(true).build());
 
     @Override
     public synchronized void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -81,17 +74,11 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public synchronized void channelInactive(ChannelHandlerContext ctx) throws Exception {
         InetSocketAddress remoteAddress = clientAddresses.remove(ctx.channel().id());
-        NettyClientAdapter.setState(remoteAddress,false);
-        ScheduledFuture<?> current = scheduledFutureMap.get(remoteAddress);
-        if(current != null && !current.isCancelled()){
-            current.cancel(true);
-            scheduledFutureMap.remove(remoteAddress);
+        if(remoteAddress != null){
+            ctx.channel().eventLoop().schedule(new RefreshThread(remoteAddress),3,TimeUnit.MINUTES);
         }
-        ScheduledFuture<?> scheduledFuture = service.scheduleWithFixedDelay(new RefreshThread(remoteAddress), 0,1, TimeUnit.MINUTES);
-        scheduledFutureMap.put(remoteAddress,scheduledFuture);
         super.channelInactive(ctx);
     }
-
 
     private static class RefreshThread implements Runnable {
 
@@ -103,19 +90,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
         @Override
         public void run() {
-            ScheduledFuture<?> scheduledFuture = scheduledFutureMap.get(inetSocketAddress);
-            logger.info("Netty reconnect thread execute,inetSocketAddress:{},channel state:{}",inetSocketAddress,NettyClientAdapter.getState(inetSocketAddress));
-            if(scheduledFuture == null){
-                return;
-            }
-            if(NettyClientAdapter.getState(inetSocketAddress)){
-                if(!scheduledFuture.isCancelled()){
-                    scheduledFuture.cancel(true);
-                }
-            }else {
-                NettyClientAdapter.instance().connect();
-            }
-
+            NettyClientAdapter.instance().reconnect(inetSocketAddress);
         }
     }
 

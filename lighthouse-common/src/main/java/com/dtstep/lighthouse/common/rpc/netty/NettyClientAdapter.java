@@ -14,6 +14,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.FutureListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,13 +35,13 @@ public class NettyClientAdapter {
 
     private static final int maxConnections = 10;
 
-    private static final ConcurrentHashMap<InetSocketAddress,Boolean> connectionStateHolder = new ConcurrentHashMap<>();
-
     private static final NettyClientHandler clientHandler = new NettyClientHandler();
 
     private static final NettyClientAdapter nettyClientAdapter = new NettyClientAdapter();
 
     private NettyClientAdapter(){}
+
+    private EventLoopGroup group;
 
     public static NettyClientAdapter instance(){
         return nettyClientAdapter;
@@ -61,7 +62,7 @@ public class NettyClientAdapter {
     }
 
     public void connect(){
-        EventLoopGroup group = new NioEventLoopGroup();
+        group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group).channel(NioSocketChannel.class);
         poolMap = new AbstractChannelPoolMap<InetSocketAddress, ChannelPool>() {
@@ -91,7 +92,7 @@ public class NettyClientAdapter {
                         }
                         int fieldLength = 4;
                         ch.pipeline()
-                                .addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS))
+                                .addLast(new IdleStateHandler(0, 30, 0, TimeUnit.SECONDS))
                                 .addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, fieldLength, 0, fieldLength))
                                 .addLast(new LengthFieldPrepender(fieldLength))
                                 .addLast("encoder", new RpcEncoder(RpcRequest.class, new KryoSerializer()))
@@ -99,15 +100,14 @@ public class NettyClientAdapter {
                                 .addLast(clientHandler);
                     }
                 }, maxConnections);
+
                 channelPool.acquire().addListener((Future<Channel> future) -> {
                     if (future.isSuccess()) {
-                        logger.info("Upgrade netty channel state,id:{},state:{}",future.getNow().id(),true);
+                        logger.info("Netty create channel success,id:{}",future.getNow().id());
                         Channel channel = future.getNow();
                         channelPool.release(channel);
-                        setState(key,true);
                     } else {
-                        logger.info("Upgrade netty channel state,id:{},state:{}",future.getNow().id(),false);
-                        setState(key,false);
+                        logger.info("Netty create channel failed,id:{}",future.getNow().id());
                     }
                 });
                 return channelPool;
@@ -115,18 +115,26 @@ public class NettyClientAdapter {
         };
     }
 
+    public void reconnect(InetSocketAddress address) {
+
+        poolMap.get(address).acquire().addListener(new FutureListener<Channel>() {
+
+            @Override
+            public void operationComplete(Future<Channel> future) throws Exception {
+                if (future.isSuccess()) {
+                    Channel channel = future.getNow();
+                    logger.info("Reconnected to " + address + ",channel id:" + channel.id());
+                } else {
+                    logger.error("Reconnected to " + address + " failed!",future.cause());
+                    group.schedule(() -> reconnect(address), 3, TimeUnit.MINUTES);
+                }
+            }
+        });
+    }
+
     public static ChannelPoolMap<InetSocketAddress, ChannelPool> getPoolMap(){
         return poolMap;
     }
-
-    public static boolean getState(InetSocketAddress address){
-        return connectionStateHolder.get(address);
-    }
-
-    public static void setState(InetSocketAddress address,boolean result){
-        connectionStateHolder.put(address,result);
-    }
-
 
     public <T> T create(Class<?> clazz){
         RemoteProxy proxy = new RemoteProxy(addressList,clazz);

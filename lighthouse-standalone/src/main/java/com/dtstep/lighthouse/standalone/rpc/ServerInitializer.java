@@ -27,7 +27,7 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new LengthFieldPrepender(fieldLength));
         pipeline.addLast("encoder",new RpcEncoder(RpcResponse.class,new KryoSerializer()));
         pipeline.addLast("decoder",new RpcDecoder(RpcRequest.class,new KryoSerializer()));
-        pipeline.addLast(new IdleStateHandler(0, 0, 10, TimeUnit.SECONDS));
+        pipeline.addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS));
         pipeline.addLast(nettyServerHandler);
     }
 }

@@ -19,11 +19,11 @@ public class TestQueryGroupInfo extends StandaloneBaseTest {
         for(int i=0;i<1000;i++){
             try{
                 GroupVerifyEntity groupVerifyEntity = RPCClientProxy.instance().queryGroupInfo(token);
-                System.out.println("groupVerifyInfo:" + JsonUtil.toJSONString(groupVerifyEntity));
+//                System.out.println("groupVerifyInfo:" + JsonUtil.toJSONString(groupVerifyEntity));
+                System.out.println("query ..");
             }catch (Exception ex){
-                ex.printStackTrace();
             }
-            Thread.sleep(10000);
+            Thread.sleep(1000);
         }
         Thread.sleep(TimeUnit.MINUTES.toMillis(50));
     }
