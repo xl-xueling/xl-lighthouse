@@ -33,7 +33,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
         InetSocketAddress remoteAddress = (InetSocketAddress) ctx.channel().remoteAddress();
         if (remoteAddress != null) {
             String remoteIp = remoteAddress.getAddress().getHostAddress();
-            logger.info("Client connected from IP: " + remoteIp + ",channel:" + ctx.channel().id());
+            logger.info("Client connected from IP: " + remoteIp + ",channel:" + ctx.channel().id() + ",clientAddresses size:" + clientAddresses.size());
             clientAddresses.put(ctx.channel().id(), remoteAddress);
         } else {
             logger.info("Remote address is null");
