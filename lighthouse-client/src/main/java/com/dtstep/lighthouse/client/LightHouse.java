@@ -108,7 +108,7 @@ public final class LightHouse {
                     }
                 }
             }catch (Exception ex){
-                logger.error("Request remote service failed,ip:{}",ip);
+                logger.error("Request remote service failed,ip:{},port:{}",ip,SysConst.CLUSTER_MONITOR_SERVICE_PORT);
             }
         }
         return clusterInfo;

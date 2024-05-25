@@ -1,8 +1,7 @@
 package com.dtstep.lighthouse.common.util;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
+import java.net.*;
 
 public class IpUtils {
 
@@ -23,4 +22,13 @@ public class IpUtils {
         }
     }
 
+    public static boolean isPortUsing(int port) {
+        boolean flag = false;
+        InetSocketAddress d = new InetSocketAddress(port);
+        try(Socket socket = new Socket()) {
+            socket.connect(d,3000);
+            flag = true;
+        } catch (IOException ignored) {}
+        return flag;
+    }
 }
