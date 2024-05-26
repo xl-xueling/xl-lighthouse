@@ -290,6 +290,11 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                     ex.printStackTrace();
                 } finally {
                     release(null,ps,connection);
+                    try{
+                        RedissonLock.unLock(lockKey);
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                    }
                 }
             }else{
                 logger.error("try lock failed,thread unable to acquire lock,this batch data may be lost,cost:{}ms!",stopWatch.getTime());
