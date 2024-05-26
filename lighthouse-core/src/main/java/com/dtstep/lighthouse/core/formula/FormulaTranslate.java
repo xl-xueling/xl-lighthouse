@@ -30,7 +30,6 @@ import com.dtstep.lighthouse.common.exception.TemplateParseException;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.parquet.Strings;
 
 import java.io.StringReader;
 import java.util.*;
@@ -113,7 +112,7 @@ public final class FormulaTranslate {
         if(unitList.size() > 1){
             countState.setUnitList(unitList.subList(1,unitList.size()));
             List<String> unitOriginList = unitList.subList(1,unitList.size()).stream().map(StatUnit::getOrigin).collect(Collectors.toList());
-            String countBody = Strings.join(unitOriginList,",");
+            String countBody = String.join(",",unitOriginList);
             countState.setStateBody(String.format("%s(%s)","count",countBody));
         }else{
             countState.setUnitList(new ArrayList<>());
