@@ -25,9 +25,6 @@ function initPath(){
   mkdir -p ${LDP_DATA_DIR}/lighthouse/snapshot
   mkdir -p ${LDP_HOME}/logs
   mkdir -p ${LDP_HOME}/bin/log
-	mkdir -p ${LDP_HOME}/logs/lighthouse-tasks
-	mkdir -p ${LDP_HOME}/logs/lighthouse-ice
-	mkdir -p ${LDP_HOME}/logs/lighthouse-insights
 
   sed -i '/LDP_HOME/d' /home/${user}/.bashrc
   echo export LDP_HOME=${LDP_HOME} >> /home/${user}/.bashrc
