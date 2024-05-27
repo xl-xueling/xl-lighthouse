@@ -127,7 +127,7 @@ const i18n = {
     'userSetting.form.department.errMsg': '请选择部门！',
     'security.form.label.original.password':'原密码',
     'security.form.label.password':'新密码',
-    'security.form.label.confirm.password':'再次输入密码！',
+    'security.form.label.confirm.password':'再次输入密码',
     'security.form.submit.success':'修改密码成功',
     'security.form.original.password.errMsg': '请再次输入密码!',
     'security.form.password.errMsg': '密码不能为空！',
