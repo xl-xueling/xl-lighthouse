@@ -14,7 +14,7 @@ source "${CUR_DIR}/clean/clean.sh"
 source "${CUR_DIR}/run/start.sh"
 source "${CUR_DIR}/run/stop.sh"
 source "${CUR_DIR}/run/reload.sh"
-
+LOG_FILE="${CUR_DIR}/log/example.log"
 
 main(){
 	[ -e ${LOCKFILE} ] && `cat ${LOCKFILE} | xargs --no-run-if-empty kill -9 >/dev/null 2>&1`;
@@ -36,8 +36,8 @@ main(){
 	fi
 	log_info "Waiting for the statistics task to start..."
 	sleep 10;
-	nohup java -Xmx300m -Xms300m -cp ${LDP_HOME}/lib/*:${LDP_HOME}/lib/lighthouse-test-*.jar com.dtstep.lighthouse.test.LDPFlowTestInstance 300 > example.log 2>&1 &
-	log_info "The statistical example task has been started, and the log is being output to the [example.log] file."
+	nohup java -Xmx300m -Xms300m -cp ${LDP_HOME}/lib/*:${LDP_HOME}/lib/lighthouse-test-*.jar com.dtstep.lighthouse.test.LDPFlowTestInstance 300 > ${LOG_FILE} 2>&1 &
+	log_info "The statistical example task has been started, and the log is being output to the [${LOG_FILE}] file."
 	rm -f ${LOCKFILE}
 }
 

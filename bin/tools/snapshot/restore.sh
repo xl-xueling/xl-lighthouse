@@ -117,7 +117,8 @@ daemon(){
 	fi
   rm -f ${LOCKFILE};
 	echo "Restoring completed,Service will be restarted."
-	${LDP_HOME}/bin/restart-all.sh;	
+  ${LDP_HOME}/bin/restart-all.sh;
+
 }
 
 main(){
@@ -127,12 +128,14 @@ main(){
     log_error "The operation is prohibited, only user[\"${DEPLOY_USER}\"] is allowed to execute!"
     exit -1;
   fi
-	local origin=${1};s
+	local origin=${1};
 	if [ ! -f "$origin" ]; then
     log_error "Snapshot file:${origin} does not exist,process exit!"
     exit -1;
   fi
-	daemon ${origin} > ${LOG_FILE} 2>&1 &
+  rm -f ${LOG_FILE}
+  daemon ${origin} > ${LOG_FILE} 2>&1 &
+  log_info "The restore tasks has been started, and the log is being output to the [${LOG_FILE}] file."
 }
 
 main $@;

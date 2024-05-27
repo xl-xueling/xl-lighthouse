@@ -14,7 +14,7 @@ source "${CUR_DIR}/clean/clean.sh"
 source "${CUR_DIR}/run/start.sh"
 source "${CUR_DIR}/run/stop.sh"
 source "${CUR_DIR}/run/reload.sh"
-
+LOG_FILE="${CUR_DIR}/log/example.log"
 
 main(){
 	prepare;
@@ -26,7 +26,7 @@ main(){
 	java -Xmx300m -Xms300m -cp ${LDP_HOME}/lib/*:${LDP_HOME}/lib/lighthouse-test-*.jar com.dtstep.lighthouse.test.example.StopExample
 	jps -l|grep 'com.dtstep.lighthouse.test.example.StartExample'|grep -v Jps|awk '{print $1}'|xargs --no-run-if-empty kill -9
  	jps -l|grep 'com.dtstep.lighthouse.test.example.StopExample'|grep -v Jps|awk '{print $1}'|xargs --no-run-if-empty kill -9
-	rm -f ./example.log;
+	rm -f ${LOG_FILE};
 	log_info "The statistical example task has been stopped!"
 }
 
