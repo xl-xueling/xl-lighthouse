@@ -134,8 +134,8 @@ main(){
     exit -1;
   fi
   rm -f ${LOG_FILE}
-  daemon ${origin} > ${LOG_FILE} 2>&1 &
-  log_info "The restore tasks has been started, and the log is being output to the [${LOG_FILE}] file."
+  daemon ${origin} > ${LOG_FILE} 2>/dev/null &
+  log_info "The restore task has been started, and the log is being output to the file[${LOG_FILE}]."
 }
 
 main $@;
