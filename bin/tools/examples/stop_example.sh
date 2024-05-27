@@ -4,7 +4,6 @@ eval "$(awk '/^export /,0' ~/.bashrc)"
 LOCKFILE=/tmp/lighthouse_example.lock
 CMD_PATH=$(cd "$(dirname "$0")";pwd)
 CUR_DIR=$(dirname $(dirname "$CMD_PATH"))
-echo "cur_dir:"${CUR_DIR}
 source "${CUR_DIR}/common/lib.sh"
 source "${CUR_DIR}/prepare/prepare.sh"
 source "${CUR_DIR}/install/install.sh"
