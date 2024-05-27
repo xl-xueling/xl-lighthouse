@@ -183,12 +183,6 @@
                             <minimizeJar>false</minimizeJar>
                             <filters>
                                 <filter>
-                                    <artifact>com.fasterxml.jackson.core:*</artifact>
-                                    <excludes>
-                                        <exclude>**</exclude>
-                                    </excludes>
-                                </filter>
-                                <filter>
                                     <artifact>org.slf4j:*</artifact>
                                     <excludes>
                                         <exclude>**</exclude>
@@ -231,10 +225,6 @@
                                 <relocation>
                                     <pattern>okio</pattern>
                                     <shadedPattern>com.dtstep.lighthouse.okio</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.xerial</pattern>
-                                    <shadedPattern>com.dtstep.lighthouse.org.xerial</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
