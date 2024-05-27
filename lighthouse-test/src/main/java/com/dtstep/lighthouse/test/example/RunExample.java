@@ -40,7 +40,7 @@ public class RunExample {
             Validate.isTrue(metaId != null && metaId > 0);
             exampleContext.setMetaId(metaId);
             createExample();
-            logger.info("Create new statistics example,groupId:"+ exampleContext.getGroup().getId());
+            logger.info("Create new statistics examples success!");
         }else{
             logger.info("Statistics example already exists,groupId:"+ group.getId());
         }
@@ -119,6 +119,7 @@ public class RunExample {
         accessPermission.setCreateTime(localDateTime);
         accessPermission.setUpdateTime(localDateTime);
         PermissionHandler.createPermission(conn,accessPermission);
+        logger.info("create project example completed,projectId:{}",project.getId());
     }
 
     public static void createGroup(Connection connection) throws Exception {
@@ -175,6 +176,7 @@ public class RunExample {
         accessPermission.setCreateTime(localDateTime);
         accessPermission.setUpdateTime(localDateTime);
         PermissionHandler.createPermission(connection,accessPermission);
+        logger.info("create group example completed,groupId:{}",group.getId());
     }
 
     private static final List<Pair<String,String>> templateList = List.of(
@@ -258,6 +260,7 @@ public class RunExample {
             accessPermission.setCreateTime(localDateTime);
             accessPermission.setUpdateTime(localDateTime);
             PermissionHandler.createPermission(connection,accessPermission);
+            logger.info("create statistic example completed,statId:{}",id);
         }
     }
 }
