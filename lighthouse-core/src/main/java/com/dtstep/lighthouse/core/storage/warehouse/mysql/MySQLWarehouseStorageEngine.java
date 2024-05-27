@@ -18,6 +18,7 @@ package com.dtstep.lighthouse.core.storage.warehouse.mysql;
  */
 import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.common.hash.HashUtil;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.dao.DBConnectionSource;
@@ -250,7 +251,6 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                 try{
                     connection = getConnection();
                     ps = connection.prepareStatement(sql);
-                    connection.setAutoCommit(false);
                     for (LdpPut ldpPut : subList) {
                         Object value = ldpPut.getData();
                         ps.setString(1, getDBKey(ldpPut.getKey(), ldpPut.getColumn()));
@@ -273,20 +273,9 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
                         ps.addBatch();
                     }
                     ps.executeBatch();
-                    connection.commit();
                     ps.clearBatch();
-                } catch (SQLException ex){
-                    if(connection != null){
-                        try{
-                            connection.rollback();
-                        }catch (Exception e){
-                            ex.printStackTrace();
-                        }
-                    }
-                    logger.error("puts data to mysql error,tableName:{},putsSize:{}!",tableName,ldpPuts.size(),ex);
-                    ex.printStackTrace();
                 } catch (Exception ex){
-                    logger.error("puts data to mysql error,tableName:{},putsSize:{}!",tableName,ldpPuts.size(),ex);
+                    logger.error("puts data to mysql error,tableName:{},putsSize:{}!",tableName,subList.size(),ex);
                     ex.printStackTrace();
                 } finally {
                     release(null,ps,connection);
