@@ -118,7 +118,7 @@ daemon(){
   rm -f ${LOCKFILE};
 	echo "Restoring completed,Service will be restarted."
   ${LDP_HOME}/bin/restart-all.sh;
-
+  log_info "Data restore execution completed!"
 }
 
 main(){
