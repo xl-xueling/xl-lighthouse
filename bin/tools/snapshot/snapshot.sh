@@ -46,7 +46,7 @@ snapshotHBaseWarehouse(){
     done
 	local exportPath=${SNAPSHOT_DIR}/mysql;
   mkdir -p $exportPath;
-  hadoop fs -get $TEMPORARY_PATH/* $exportPath
+  hadoop fs -get $temporaryPath/* $exportPath
 }
 
 function snapshotMySqlCMDB(){
