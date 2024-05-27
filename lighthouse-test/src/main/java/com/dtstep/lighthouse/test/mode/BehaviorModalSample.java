@@ -38,7 +38,8 @@ public class BehaviorModalSample implements ModalSample<BehaviorSampleEntity> {
         String uuid = RandomID.id(32);
         BehaviorSampleEntity behaviorSampleEntity = new BehaviorSampleEntity();
         behaviorSampleEntity.setBehavior_id(uuid);
-        behaviorSampleEntity.setBehavior_type(ThreadLocalRandom.current().nextInt(1,5));
+        behaviorSampleEntity.setRequest_id(uuid);
+        behaviorSampleEntity.setBehavior_type(ThreadLocalRandom.current().nextInt(1,3));
         behaviorSampleEntity.setAbtest_no("abtest_" + ThreadLocalRandom.current().nextInt(1,30));
         behaviorSampleEntity.setApp_version(ThreadLocalRandom.current().nextInt(1,3) + "." + ThreadLocalRandom.current().nextInt(1,5) + "." + ThreadLocalRandom.current().nextInt(1,5));
         if(ThreadLocalRandom.current().nextInt(10) < 7){
@@ -57,7 +58,7 @@ public class BehaviorModalSample implements ModalSample<BehaviorSampleEntity> {
         behaviorSampleEntity.setTop_level(String.valueOf(topLevel));
         behaviorSampleEntity.setSec_level(String.valueOf(secLevel));
         behaviorSampleEntity.setRecall_no(ThreadLocalRandom.current().nextInt(1,100));
-        double d = ThreadLocalRandom.current().nextDouble(1,999999999);
+        double d = ThreadLocalRandom.current().nextDouble(0,10);
         behaviorSampleEntity.setScore(String.format("%.3f", d));
         return behaviorSampleEntity;
     }
