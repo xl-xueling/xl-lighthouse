@@ -44,12 +44,34 @@ public class StartExample {
                 logger.info("Create new statistics examples success!");
             }else{
                 logger.info("Statistics example already exists,groupId:"+ group.getId());
+                startExample();
             }
         }catch (Exception ex){
             logger.error("Failed to create statistic examples!",ex);
-            System.exit(-1);
+            System.exit(1);
         }
         System.exit(0);
+    }
+
+    public static void startExample() throws Exception {
+        Group groupInfo = GroupHandler.queryGroupInfo(SysConst.TEST_SCENE_BEHAVIOR_STAT);
+        if(groupInfo == null){
+            return;
+        }
+        Connection conn = null;
+        try {
+            conn = CMDBStorageEngineProxy.getInstance().getConnection();
+            conn.setAutoCommit(false);
+            StatHandler.startByGroupId(conn,groupInfo.getId());
+            conn.commit();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            if(conn != null){
+                conn.rollback();
+            }
+        }finally {
+            CMDBStorageEngineProxy.getInstance().closeConnection();
+        }
     }
 
     private static void createExample() throws Exception {

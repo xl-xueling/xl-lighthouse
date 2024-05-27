@@ -2,9 +2,6 @@ package com.dtstep.lighthouse.test.relation;
 
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.modal.Role;
-import com.dtstep.lighthouse.common.modal.User;
-import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
-import com.dtstep.lighthouse.test.example.RunExample;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;

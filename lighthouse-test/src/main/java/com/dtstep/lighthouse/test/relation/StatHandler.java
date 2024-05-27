@@ -78,7 +78,19 @@ public class StatHandler {
             ps.setInt(2, groupId);
             ps.executeUpdate();
         } catch (Exception ex) {
-            logger.error("delete mysql data error!", ex);
+            logger.error("stopByGroupId data error!", ex);
+            ex.printStackTrace();
+        }
+    }
+
+    public static void startByGroupId(Connection connection,Integer groupId) throws Exception {
+        String sql = "UPDATE ldp_stats SET `state` = ? WHERE group_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, StatStateEnum.RUNNING.getState());
+            ps.setInt(2, groupId);
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            logger.error("startByGroupId data error!", ex);
             ex.printStackTrace();
         }
     }
