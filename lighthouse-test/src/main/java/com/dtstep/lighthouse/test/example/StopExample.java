@@ -6,14 +6,24 @@ import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
 import com.dtstep.lighthouse.test.relation.GroupHandler;
 import com.dtstep.lighthouse.test.relation.StatHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 
 public class StopExample {
 
-    public static void main(String[] args) throws Exception {
-        LDPConfig.loadConfiguration();
-        stopExample();
+    private static final Logger logger = LoggerFactory.getLogger(StopExample.class);
+
+    public static void main(String[] args) {
+        try{
+            LDPConfig.loadConfiguration();
+            stopExample();
+        }catch (Exception ex){
+            logger.error("Failed to stop statistic examples!",ex);
+            System.exit(-1);
+        }
+        System.exit(0);
     }
 
     public static void stopExample() throws Exception {

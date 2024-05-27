@@ -22,28 +22,34 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RunExample {
+public class StartExample {
 
-    private static final Logger logger = LoggerFactory.getLogger(RunExample.class);
+    private static final Logger logger = LoggerFactory.getLogger(StartExample.class);
 
     private static final ExampleContext exampleContext = new ExampleContext();
 
-    public static void main(String[] args) throws Exception {
-        LDPConfig.loadConfiguration();
-        Group group = GroupHandler.queryGroupInfo(SysConst.TEST_SCENE_BEHAVIOR_STAT);
-        if(group == null){
-            User user = UserHandler.queryUserInfo(SysConst._ADMIN_USER_NAME);
-            Validate.notNull(user);
-            exampleContext.setAdminId(user.getId());
-            exampleContext.setDepartmentId(user.getDepartmentId());
-            Integer metaId = MetaHandler.queryValidMetaId();
-            Validate.isTrue(metaId != null && metaId > 0);
-            exampleContext.setMetaId(metaId);
-            createExample();
-            logger.info("Create new statistics examples success!");
-        }else{
-            logger.info("Statistics example already exists,groupId:"+ group.getId());
+    public static void main(String[] args) {
+        try{
+            LDPConfig.loadConfiguration();
+            Group group = GroupHandler.queryGroupInfo(SysConst.TEST_SCENE_BEHAVIOR_STAT);
+            if(group == null){
+                User user = UserHandler.queryUserInfo(SysConst._ADMIN_USER_NAME);
+                Validate.notNull(user);
+                exampleContext.setAdminId(user.getId());
+                exampleContext.setDepartmentId(user.getDepartmentId());
+                Integer metaId = MetaHandler.queryValidMetaId();
+                Validate.isTrue(metaId != null && metaId > 0);
+                exampleContext.setMetaId(metaId);
+                createExample();
+                logger.info("Create new statistics examples success!");
+            }else{
+                logger.info("Statistics example already exists,groupId:"+ group.getId());
+            }
+        }catch (Exception ex){
+            logger.error("Failed to create statistic examples!",ex);
+            System.exit(-1);
         }
+        System.exit(0);
     }
 
     private static void createExample() throws Exception {
