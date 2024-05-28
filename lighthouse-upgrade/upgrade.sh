@@ -18,7 +18,7 @@ STEPS_TEMP_FILE=${UPGRADE_HOME}/upgrade_steps.tmp
 FROM_HOME=$LDP_HOME
 
 if [ -d "$LDP_HOME" ]; then
-  cp -r $LDP_HOME/bin/config ${UPGRADE_HOME}/bin
+  cp -rf $LDP_HOME/bin/config ${UPGRADE_HOME}/bin
 fi
 
 main(){
