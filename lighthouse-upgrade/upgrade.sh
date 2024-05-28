@@ -29,8 +29,8 @@ main(){
   [ -e ${LOCKFILE} ] && `cat ${LOCKFILE} | xargs --no-run-if-empty kill -9 >/dev/null 2>&1`
 	trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
 	echo $$ > ${LOCKFILE}
-  loadScriptConfig;
-  checkProcessExist;
+  prepare;
+	checkProcessExist;
 	local steps=0;
 	if [ -f $STEPS_TEMP_FILE ]; then
     		read value < $STEPS_TEMP_FILE;
