@@ -106,7 +106,7 @@ daemon(){
 	local dirname=$(echo "$(basename "$origin")" | cut -d. -f1)
   local clusterId=`cat ${CUR_DIR}/config/cluster.id`
   local temporaryDir=${LDP_HOME}/temp/snapshot
-  mkdir -p ${temporaryDir}
+  mkdir -p ${temporaryDir} && rm -rf ${temporaryDir}/*
   tar zxvf ${origin} -C ${temporaryDir} >/dev/null 2>&1;
   if [[ ${RUNNING_MODE} == "standalone" ]];then
 		restoreMySQLCMDB ${clusterId} ${temporaryDir}/${dirname};
