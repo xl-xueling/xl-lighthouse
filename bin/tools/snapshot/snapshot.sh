@@ -14,6 +14,7 @@ SNAPSHOT_DIR=${LOCAL_PATH}/ldp-snapshot-${CLUSTER_ID}_${BATCH};
 
 function snapshotHBaseTable(){
 	local table_name="$1";
+	local temporaryPath="$2";
 	local full_table_name="cluster_${CLUSTER_ID}_ldp_warehouse:${table_name}";
 	echo "Waiting for backup hbase table[${full_table_name}] ... ";
 	local snapshot_name="${table_name}_snapshot"
@@ -23,7 +24,7 @@ function snapshotHBaseTable(){
         	echo "create snapshot ["${snapshot_name}"] failed!"
 	        exit -1;
 	fi
-  `$HBASE_HOME/bin/hbase org.apache.hadoop.hbase.snapshot.ExportSnapshot -snapshot "$snapshot_name" -copy-to "$TEMPORARY_PATH" -mappers 5 -bandwidth 20 -overwrite >/dev/null 2>&1`
+  `$HBASE_HOME/bin/hbase org.apache.hadoop.hbase.snapshot.ExportSnapshot -snapshot "$snapshot_name" -copy-to "$temporaryPath" -mappers 5 -bandwidth 20 -overwrite >/dev/null 2>&1`
 	echo "hbase table[${full_table_name}] backup completed!"
 }
 
@@ -42,9 +43,9 @@ snapshotHBaseWarehouse(){
 	hadoop fs -mkdir -p ${temporaryPath}
 	for table_name in $(echo "$tables" | grep "cluster_${CLUSTER_ID}" | awk -F':' '{print $2}');
 		do
-      snapshotHBaseTable CLUSTER_ID $table_name;
+      snapshotHBaseTable $table_name $temporaryPath;
     done
-	local exportPath=${SNAPSHOT_DIR}/mysql;
+	local exportPath=${SNAPSHOT_DIR}/hbase;
   mkdir -p $exportPath;
   hadoop fs -get $temporaryPath/* $exportPath
 }
@@ -110,14 +111,14 @@ function clusterSnapshot(){
           log_error "HBase data snapshot error, program exits!"
           exit -1;
   else
-          local usage=$(getFolderUsage "${LOCAL_PATH}/${dir}/hbase")
+          local usage=$(getFolderUsage "${SNAPSHOT_DIR}/hbase")
           log_info "HBase snapshot dir usage:${usage} K."
   fi
   if [[ ! -d "${SNAPSHOT_DIR}/mysql" ]] && [[ "$(isFolderEmpty "${SNAPSHOT_DIR}/mysql")" == true ]]; then
           log_error "Mysql data snapshot error, program exits!"
           exit -1;
   else
-          local usage=$(getFolderUsage "${LOCAL_PATH}/${dir}/mysql")
+          local usage=$(getFolderUsage "${SNAPSHOT_DIR}/mysql")
           log_info "Mysql snapshot dir usage:${usage} K."
   fi
 }

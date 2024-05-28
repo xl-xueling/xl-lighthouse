@@ -129,7 +129,11 @@ main(){
     exit -1;
   fi
 	local origin=${1};
-	if [ ! -f "$origin" ]; then
+	if [ -z "$origin" ]; then
+    log_error "Please set the snapshot file path!";
+    exit -1;
+  fi
+  if [ ! -f "$origin" ]; then
     log_error "Snapshot file:${origin} does not exist,process exit!"
     exit -1;
   fi
