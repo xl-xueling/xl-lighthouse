@@ -23,7 +23,7 @@ else
 fi
 
 ${LDP_HOME}/dependency/jdk/bin/jps -l > ${TARGET_HOME}/system/jps.out
-pid=$(${LDP_HOME}/dependency/jdk/bin/jps -l | grep -E "lighthouse" |grep -v Jps | awk '{print $1; exit}')
+pid=$(${LDP_HOME}/dependency/jdk/bin/jps -l | grep -v Jps | awk '{print $1; exit}')
 ${LDP_HOME}/dependency/jdk/bin/jinfo $pid > ${TARGET_HOME}/system/jinfo.out
 ps -ef > ${TARGET_HOME}/system/ps.out
 top -b -n 3 > ${TARGET_HOME}/system/top.out
