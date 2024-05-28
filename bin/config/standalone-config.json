@@ -7,6 +7,6 @@
     "insights_xms_memory": "512M"
   },
   "redis": {
-    "max_memory": "1024M"
+    "max_memory": "512M"
   }
 }
