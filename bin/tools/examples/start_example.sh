@@ -29,13 +29,14 @@ main(){
 		log_error "The statistical example task is already running, please stop it first!"
 		exit -1;
 	fi	
+	sleep 5;
 	java -Xmx300m -Xms300m -cp ${LDP_HOME}/lib/*:${LDP_HOME}/lib/lighthouse-test-*.jar com.dtstep.lighthouse.test.example.StartExample
 	if [ $? != '0' ];then
 		log_error "Create statistic examples failed,process exit!"
 		exit -1;
 	fi
 	log_info "Waiting for the statistics task to start..."
-	sleep 10;
+	sleep 5;
 	nohup java -Xmx300m -Xms300m -cp ${LDP_HOME}/lib/*:${LDP_HOME}/lib/lighthouse-test-*.jar com.dtstep.lighthouse.test.LDPFlowTestInstance 300 > ${LOG_FILE} 2>&1 &
 	log_info "The statistical example task has been started, and the log is being output to the file[${LOG_FILE}]."
 	rm -f ${LOCKFILE}
