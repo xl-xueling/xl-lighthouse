@@ -41,7 +41,7 @@ snapshotHBaseWarehouse(){
         	hadoop fs -rm -r ${temporaryPath} >/dev/null 2>&1;
   	fi
 	hadoop fs -mkdir -p ${temporaryPath}
-	for table_name in $(echo "$tables" | grep "cluster_${CLUSTER_ID}" | awk -F':' '{print $2}');
+	for table_name in $(echo "$tables" | grep "cluster_${CLUSTER_ID}_ldp_warehouse" | awk -F':' '{print $2}');
 		do
       snapshotHBaseTable $table_name $temporaryPath;
     done
