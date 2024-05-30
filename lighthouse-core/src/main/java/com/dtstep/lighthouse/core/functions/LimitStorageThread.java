@@ -36,7 +36,7 @@ public class LimitStorageThread extends Thread {
 
     private final EventPool<LimitBucket> eventPool;
 
-    private static final int batchSize = 30000;
+    private static final int batchSize = 20000;
 
     LimitStorageThread(EventPool<LimitBucket> eventPool){
         this.eventPool = eventPool;
@@ -50,7 +50,7 @@ public class LimitStorageThread extends Thread {
     public void consumer(int slot) {
         try{
             SlotsGroup.SlotWrapper<LimitBucket> slotWrapper = eventPool.take(slot);
-            while (slotWrapper.size() > batchSize * StatConst.backlog_factor || System.currentTimeMillis() - slotWrapper.getLastAccessTime() > TimeUnit.SECONDS.toMillis(180)) {
+            while (slotWrapper.size() > batchSize * StatConst.backlog_factor || System.currentTimeMillis() - slotWrapper.getLastAccessTime() > TimeUnit.SECONDS.toMillis(90)) {
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
                 List<LimitBucket> events = slotWrapper.getEvents(batchSize);
