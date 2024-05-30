@@ -37,7 +37,7 @@ main(){
 	fi
 	log_info "Waiting for the statistics task to start..."
 	sleep 5;
-	nohup java -Xmx300m -Xms300m -cp ${LDP_HOME}/lib/*:${LDP_HOME}/lib/lighthouse-test-*.jar com.dtstep.lighthouse.test.LDPFlowTestInstance 300 > ${LOG_FILE} 2>&1 &
+	nohup java -Xmx300m -Xms300m -cp ${LDP_HOME}/lib/*:${LDP_HOME}/lib/lighthouse-test-*.jar com.dtstep.lighthouse.test.LDPFlowTestInstance 100 > ${LOG_FILE} 2>&1 &
 	log_info "The statistical example task has been started, and the log is being output to the file[${LOG_FILE}]."
 	rm -f ${LOCKFILE}
 }
