@@ -82,6 +82,8 @@ XL-LightHouse可应用在企业生产的众多环节，可以帮助职场人从�
 - [电商类场景演示](https://dtstep.com/zh/scene/03.html)
 - [资讯类场景演示](https://dtstep.com/zh/scene/04.html)
 
+XL-LightHouse面向企业至上而下所有人员共同使用，期望帮助企业以极低的成本，搭建起"遍布全身"的数据化运营体系！
+
 ### 单机版本
 
 XL-LightHouse除了大数据版本外，同时支持单机版。单机模式成本低廉，最低配置只需要一台4核8G的云服务器，部署运维更加简单！
