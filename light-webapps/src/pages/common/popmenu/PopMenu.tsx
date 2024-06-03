@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import {Button, Card, Menu, Spin, Trigger, Typography} from '@arco-design/web-react';
-import {IconMessage, IconClose, IconBug, IconBulb, IconUser} from '@arco-design/web-react/icon';
+import React, { useState } from 'react';
+import {Button, Menu, Trigger} from '@arco-design/web-react';
 const MenuItem = Menu.Item;
 import styles from './style/index.module.less';
-import { RiNavigationFill } from "react-icons/ri";
-import { TbNavigationPlus } from "react-icons/tb";
 import { MdOutlineNavigation } from "react-icons/md";
-import MetricNavModal from "@/pages/metricset/common/MetricNavModal";
 import {getIcon} from "@/desc/base";
 import ProjectNavModal from "@/pages/project/common/ProjectNavModal";
-
+import MetricNavModal from "@/pages/metricset/common/MetricNavModal";
 
 export default function PopMenuBox (){
     const [popupVisibleOne, setPopupVisibleOne] = useState(false);
