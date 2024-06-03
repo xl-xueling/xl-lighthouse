@@ -25,11 +25,11 @@ module.exports = withLess(
         use: ['@svgr/webpack'],
       });
 
-      config.resolve.alias['@/assets'] = path.resolve(
-        __dirname,
-        './src/assets'
-      );
-      config.resolve.alias['@'] = path.resolve(__dirname, './src');
+      // config.resolve.alias['@/assets'] = path.resolve(
+      //   __dirname,
+      //   './src/assets'
+      // );
+      // config.resolve.alias['@'] = path.resolve(__dirname, './src');
 
       return config;
     },
