@@ -1,12 +1,17 @@
 {
+  "include": [
+    "src/**/*"
+  ],
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "declarationDir": "./dist",
     "strict": false,
     "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
@@ -15,11 +20,11 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": "./src",
+    "noEmit": false,
     "paths": {
       "@/*": ["./*"]
     },
     "rootDirs": ["common/src/", "arco-design-pro-cra/src/", "arco-design-pro-next/src/"]
   },
-  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

@@ -4,7 +4,7 @@
   "private": false,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && tsc --project tsconfig.json",
     "start": "next start",
     "export": "next export",
     "eslint": "eslint src/ --ext .ts,.tsx,.js,.jsx --fix --cache",
