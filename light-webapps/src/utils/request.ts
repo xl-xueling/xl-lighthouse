@@ -1,18 +1,20 @@
 import axios, {AxiosResponse} from 'axios'
 import {ResultData} from "@/types/insights-common";
 import {removeLoginStatus} from "@/utils/checkLogin";
-import {Message, Notification} from "@arco-design/web-react";
+import {Notification} from "@arco-design/web-react";
+import { getGlobalConfig } from './configLoader';
 
 export const request = async <T>(config): Promise<ResultData<T>> => {
+    const envConfig = await getGlobalConfig().then();
     let baseURL;
     if(process.env.REACT_APP_ENV == "simulation"){
         baseURL = 'http://119.91.203.220:9089'
     }else{
-        baseURL = window['GlobalConfig'].REACT_APP_BASE_URL;
+        baseURL = envConfig.REACT_APP_BASE_URL;
     }
     const http = axios.create({
         baseURL: baseURL + '/api/v1',
-        timeout: 180000,
+        timeout: envConfig.AXIOS_TIMEOUT,
     })
 
     http.interceptors.request.use((config) => {

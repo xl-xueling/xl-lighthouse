@@ -6,11 +6,10 @@ import UsersTransfer from "@/pages/components/transfer/user_transfer";
 import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
 import {IconCaretDown, IconCaretRight} from "@arco-design/web-react/icon";
 import {GrantPrivileges, MetricSet} from "@/types/insights-web";
-import {ResultData} from "@/types/insights-common";
-import {requestCreate, requestUpdate} from "@/api/metricset";
-import {updateStoreStaredMetricInfo, updateStoreStaredProjectInfo} from "@/index";
 import {useDispatch, useSelector} from "react-redux";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
+import {requestUpdate} from "@/api/metricset";
+import {updateStoreStaredMetricInfo} from "@/pages/_app";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview/[id]";
 
 
 export default function MetricSetUpdateModal({onClose,onSuccess}) {

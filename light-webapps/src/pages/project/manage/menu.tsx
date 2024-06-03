@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
 import {Button, Grid} from "@arco-design/web-react";
 const { Row, Col } = Grid;
 import { Menu, Slider } from '@arco-design/web-react';
@@ -7,7 +6,7 @@ import {IconApps, IconBug, IconBulb, IconFile, IconFolder, IconTag, IconTags} fr
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
 import {TreeNode} from "@/types/insights-web";
-import {getIcon} from "@/pages/common/desc/base";
+import {getIcon} from "@/desc/base";
 
 export default function ProjectManageMenu({structure,callback}:{structure:TreeNode,callback:(id:number) => Promise<void>}) {
 

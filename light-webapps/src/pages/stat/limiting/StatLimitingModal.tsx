@@ -4,9 +4,9 @@ import {
 } from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import {StatLimitingRecordsPanel} from "@/pages/stat/limiting/limit_records_panel";
+import StatLimitingRecordsPanel from "@/pages/stat/limiting/limit_records_panel";
 
-export function StatLimitingModal({statInfo,onClose}){
+const StatLimitingModal = ({statInfo,onClose}) => {
 
     const t = useLocale(locale);
 
@@ -22,3 +22,5 @@ export function StatLimitingModal({statInfo,onClose}){
         </Modal>
     );
 }
+
+export default StatLimitingModal;

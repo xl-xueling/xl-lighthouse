@@ -14,12 +14,10 @@ import {IconEdit, IconStar, IconStarFill} from "@arco-design/web-react/icon";
 import {PiLinkSimple} from "react-icons/pi";
 import {StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
 import {getRandomString} from "@/utils/util";
-import {getStatExpiredEnumDescription, getStatStateDescriptionWithBadge} from "@/pages/common/desc/base";
+import {getStatExpiredEnumDescription, getStatStateDescriptionWithBadge} from "@/desc/base";
 import {Link} from "@arco-design/web-react/lib";
 const TabPane = Tabs.TabPane;
 const { Text } = Typography;
-
-
 
 export function getColumnsOfManage(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
 
@@ -268,4 +266,8 @@ export function getBindColumns(t: any,bindList:Array<number>,callback: (record: 
             }
         },
     ];
+}
+
+export default function Constants() {
+    return <>{/* nothing */}</>;
 }

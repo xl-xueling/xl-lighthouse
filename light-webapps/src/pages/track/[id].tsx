@@ -22,7 +22,7 @@ import styles from "./style/index.module.less";
 import {Stat} from "@/types/insights-web";
 import {requestQueryById} from "@/api/stat";
 import {requestEnableDebugMode, requestDisableDebugMode, requestFetchTrackMessages} from "@/api/track";
-import {useParams} from "react-router-dom";
+import {useRouter} from "next/router";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import ChartPanel from "@/pages/stat/preview/chart_panel";
 import {formatString} from "@/utils/util";
@@ -45,7 +45,8 @@ export default function TrackStatPage() {
     const [autoRefreshSwitch,setAutoRefreshSwitch] = useState<boolean>(true);
     const [debugMode,setDebugMode] = useState(true);
     const [intervalId,setIntervalId] = useState<any>(null);
-    const {id} = useParams();
+    const router = useRouter();
+    const { id } = router.query;
     const [formInstance] = Form.useForm();
     const { Text } = Typography;
 

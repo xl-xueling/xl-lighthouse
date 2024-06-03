@@ -194,27 +194,6 @@ setupMock({
         });
 
 
-        Mock.mock('/api/v1/user/fetchUserInfo', () => {
-            const userRole = window.localStorage.getItem('userRole') || 'admin';
-            const data = Mock.mock({
-                "id": /[0-9]{8}/,
-                "userName":'@name()',
-                "email":'@EMAIL()',
-                "phone":/[1][1-3][0-9]{10}/,
-                "departmentId":2,
-                "state":0,
-                "createdTime":'@datetime',
-                "avatar":
-                    'https://lf1-xgcdn-tos.pstatp.com/obj/vcloud/vadmin/start.8e0e4855ee346a46ccff8ff3e24db27b.png',
-                "permissions": generatePermission(userRole),
-            });
-            return {
-                code:'0',
-                message:'success',
-                data:data
-            };
-        });
-
 
         Mock.mock('/api/v1/user/register', (params) => {
             console.log("receive params:" + JSON.stringify(params));

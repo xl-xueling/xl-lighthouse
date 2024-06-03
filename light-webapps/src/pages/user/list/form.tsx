@@ -15,7 +15,7 @@ import {translate} from "@/pages/department/common";
 import {ArcoTreeNode, Department} from "@/types/insights-web";
 import {useSelector} from "react-redux";
 import {OrderTypeEnum, UserStateEnum} from "@/types/insights-common";
-import {getOrderTypeDescription, getUserStateDescription} from "@/pages/common/desc/base";
+import {getOrderTypeDescription, getUserStateDescription} from "@/desc/base";
 const { Row, Col } = Grid;
 
 function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {

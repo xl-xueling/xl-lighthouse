@@ -14,7 +14,6 @@ import {
 } from '@arco-design/web-react';
 import styles from "./style/index.module.less";
 import StructurePanel from "@/pages/metricset/structure/structure";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 import {requestResetStructure, requestUpdateStructure} from "@/api/metricset";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
@@ -26,11 +25,7 @@ const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
 import { RiPlayListAddLine } from "react-icons/ri";
-import {IconCheckCircleFill} from "@arco-design/web-react/icon";
-import { VscSync } from "react-icons/vsc";
-import { FiRefreshCcw } from "react-icons/fi";
-import md5 from 'md5';
-import {areJsonObjectsEqual, getRandomString} from "@/utils/util";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview/[id]";
 
 export const MetricSetStructureContext = React.createContext(null);
 

@@ -6,7 +6,7 @@ import {
     Grid,
     Input,
     Notification,
-    PaginationProps,
+    PaginationProps, Popconfirm,
     Space,
     Table,
     Tabs
@@ -21,15 +21,18 @@ import {
     requestGrantProjectPermission,
     requestQueryList, requestReleaseMetricPermission, requestReleaseProjectPermission
 } from "@/api/permission";
-import {getDepartPermissionColumns, getUserPermissionColumns} from "./constants";
 import './styles/index.module.less'
 import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
 import UsersTransfer from "@/pages/components/transfer/user_transfer";
+import {getRoleTypeDescription} from "@/desc/base";
+import UserGroup from "@/pages/user/common/groups";
+import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
+import DepartmentLabel from "@/pages/department/common/depart";
 
 const CollapseItem = Collapse.Item;
 const TabPane = Tabs.TabPane;
 
-export function PermissionPanel({type,resourceId,resourceType}){
+const PermissionPanel = ({type,resourceId,resourceType}) => {
 
     const t = useLocale(locale);
     const { Col, Row } = Grid;
@@ -42,6 +45,119 @@ export function PermissionPanel({type,resourceId,resourceType}){
     const userTransferRef = useRef(null);
     const [activeKeys,setActiveKeys] = useState([]);
     const formRef = useRef(null);
+
+
+    const getUserPermissionColumns = (t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) => {
+
+        return [
+            {
+                title: 'ID',
+                dataIndex: 'id',
+                headerCellStyle: { width:'20px' },
+            },
+            {
+                title: 'RoleType',
+                dataIndex: 'roleType',
+                headerCellStyle: { width:'20px' },
+                render: (value, record) => {
+                    return getRoleTypeDescription(t,value);
+                }
+            },
+            {
+                title: 'User',
+                dataIndex: 'extend',
+                headerCellStyle: { width:'20px' },
+                render: (value, record) => {
+                    console.log("record:" + record);
+                    return <UserGroup users={[value]}/>
+                }
+            },
+            {
+                title: 'CreateTime',
+                dataIndex: 'createTime',
+                headerCellStyle: { width:'20px' },
+                render: (value, record) => {
+                    return formatTimeStamp(value,DateTimeFormat) ;
+                }
+            },
+            {
+                title: 'Operation',
+                dataIndex: 'operation',
+                headerCellStyle: { width:'20px' },
+                render: (value, record) => {
+                    const button = <Popconfirm key={getRandomString()}
+                                               focusLock
+                                               position={"tr"}
+                                               title='Confirm'
+                                               content={t['permissionManage.list.operation.remove.confirm']}
+                                               onOk={() => callback(record, 'release')}
+                    >
+                        <Button key={getRandomString()}
+                                type="text"
+                                size="mini">
+                            {t['permissionManage.list.operation.remove']}
+                        </Button>
+                    </Popconfirm>
+                    return  <Space size={0} direction="horizontal">{[button]}</Space>;
+                }
+            }
+        ]
+    }
+
+    const getDepartPermissionColumns = (t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) => {
+
+        return [
+            {
+                title: 'ID',
+                dataIndex: 'id',
+                headerCellStyle: { width:'20px' },
+            },
+            {
+                title: 'RoleType',
+                dataIndex: 'roleType',
+                headerCellStyle: { width:'20px' },
+                render: (value, record) => {
+                    return getRoleTypeDescription(t,value);
+                }
+            },
+            {
+                title: 'Department',
+                dataIndex: 'ownerId',
+                headerCellStyle: { width:'20px' },
+                render: (value, record) => <DepartmentLabel departmentId={value} />
+            },
+            {
+                title: 'CreateTime',
+                dataIndex: 'createTime',
+                headerCellStyle: { width:'20px' },
+                render: (value, record) => {
+                    return formatTimeStamp(value,DateTimeFormat) ;
+                }
+            },
+            {
+                title: 'Operation',
+                dataIndex: 'operation',
+                headerCellStyle: { width:'20px' },
+                render: (value, record) => {
+                    const button = <Popconfirm key={getRandomString()}
+                                               focusLock
+                                               position={"tr"}
+                                               title='Confirm'
+                                               content={t['permissionManage.list.operation.remove.confirm']}
+                                               onOk={() => callback(record, 'release')}
+                    >
+                        <Button key={getRandomString()}
+                                type="text"
+                                size="mini">
+                            {t['permissionManage.list.operation.remove']}
+                        </Button>
+                    </Popconfirm>
+                    return  <Space size={0} direction="horizontal">{[button]}</Space>;
+                }
+            }
+        ]
+    }
+
 
     const tableCallback = async (record, type) => {
         if(type == 'release'){
@@ -249,6 +365,7 @@ export function PermissionPanel({type,resourceId,resourceType}){
         <Form
             autoComplete={'off'}
             labelCol={{span: 4, offset: 0}}
+            className={'permission-panel'}
         >
         <Space direction={"vertical"} style={{width:'100%'}}>
             <Form.Item field={'search'} style={{marginBottom:'0px'}}>
@@ -272,3 +389,5 @@ export function PermissionPanel({type,resourceId,resourceType}){
         </Form>
     );
 }
+
+export default PermissionPanel;

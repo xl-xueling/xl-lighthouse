@@ -8,7 +8,7 @@ import {
     Table,
     Form,
     Input,
-     Breadcrumb, Notification,
+    Breadcrumb, Notification, TreeSelect, Popconfirm,
 } from '@arco-design/web-react';
 
 import {IconHome, IconPlus} from "@arco-design/web-react/icon";
@@ -16,11 +16,14 @@ import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {Component} from "@/types/insights-common";
 import {requestList} from "@/api/component";
-import {getColumns} from "./constants";
 import ComponentUpdateModal from "@/pages/component/update/ComponentUpdateModal";
 import {requestDeleteById} from "@/api/component";
 import styles from "@/pages/component/list/style/index.module.less";
 import ComponentCreateModal from "@/pages/component/create/ComponentCreateModal";
+import {CiLock} from "react-icons/ci";
+import {translateResponse} from "@/pages/department/common";
+import UserGroup from "@/pages/user/common/groups";
+import {getRandomString} from "@/utils/util";
 const { Row, Col } = Grid;
 const { useForm } = Form;
 export default function ComponentList() {
@@ -66,6 +69,78 @@ export default function ComponentList() {
         }
     };
 
+
+    const getColumns = (t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) => {
+        return [
+            {
+                title: t['componentList.label.id'],
+                dataIndex: 'id',
+            },
+            {
+                title: t['componentList.label.title'],
+                dataIndex: 'title',
+                render: (value,record) =>
+                {
+                    return (
+                        <span style={{display:"inline-flex",alignItems:"center"}}>{value}{record.privateType == 0 ?<CiLock style={{marginLeft:'5px'}}/>:null}</span>
+                    )
+                }
+            },
+            {
+                title: t['componentList.label.display'],
+                dataIndex: 'configuration',
+                headerCellStyle: {width: '500px'},
+                render: (value, record) => {
+                    return <TreeSelect
+                        placeholder={"Please Select"}
+                        multiple={true}
+                        treeCheckable={true}
+                        allowClear={true}
+                        treeData={translateResponse(value)}
+                    />;
+                }
+            },
+            {
+                title: t['componentList.label.admins'],
+                dataIndex: 'user',
+                render: (value) => {
+                    return (<UserGroup users={[value]}/>);
+                },
+            },
+            {
+                title: t['componentList.label.operations'],
+                dataIndex: 'operations',
+                headerCellStyle: {width: '250px'},
+                render: (value, record) => {
+                    let updateButton;
+                    let deleteButton;
+                    if(record.permissions.includes('ManageAble')){
+                        updateButton = <Button key={getRandomString()}
+                                               onClick={() => callback(record, 'update')}
+                                               type="text"
+                                               size="mini">
+                            {t['componentList.columns.button.update']}
+                        </Button>;
+                        deleteButton =
+                            <Popconfirm key={getRandomString()}
+                                        focusLock
+                                        position={"tr"}
+                                        title='Confirm'
+                                        content={t['componentList.form.delete.confirm']}
+                                        onOk={() => callback(record, 'delete')}
+                            >
+                                <Button
+                                    type="text"
+                                    size="mini">
+                                    {t['componentList.columns.button.delete']}
+                                </Button>
+                            </Popconfirm>
+                    }
+                    return  <Space size={0} direction="horizontal">{[updateButton,deleteButton]}</Space>;
+                }
+            }
+        ];
+    }
     const columns = useMemo(() => getColumns(t, tableCallback), [t]);
 
     const fetchData = async (): Promise<void> => {

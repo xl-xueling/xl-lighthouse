@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import SearchForm from "./search_form";
 import {Button, Card, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
@@ -8,7 +8,7 @@ import locale from "./locale";
 import {IconTag} from "@arco-design/web-react/icon";
 import BasicInfo from "@/pages/stat/preview/basic";
 import {requestQueryById} from "@/api/stat";
-import {getStatStateDescription} from "@/pages/common/desc/base";
+import {getStatStateDescription} from "@/desc/base";
 import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
 import StatUpdateModal from "@/pages/stat/update";
 import {handlerFetchLimitData, handlerFetchStatData,} from "@/pages/stat/preview/common";
@@ -18,9 +18,10 @@ import StatBasicLineChart from "@/pages/stat/preview/line_chart_v1";
 import './style/index.module.less';
 import {PermissionEnum, StatStateEnum} from "@/types/insights-common";
 import {IoMdRefresh} from "react-icons/io";
-import {StatLimitingModal} from "@/pages/stat/limiting/StatLimitingModal";
 import ErrorPage from "@/pages/common/error";
 import {deepCopyObject} from "@/utils/util";
+import StatLimitingModal from "@/pages/stat/limiting/StatLimitingModal";
+import {GlobalContext} from "@/context";
 
 const { Row, Col } = Grid;
 
@@ -47,6 +48,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const refs = useRef<any[]>([]);
     const refFetchId = useRef<any>(null);
     const formRef = useRef(null);
+    const { setLang, lang, theme, setTheme } = useContext(GlobalContext)
 
     const tableCallback = async (type,data) => {
         if(type == 'showFilterConfigModal'){
@@ -153,7 +155,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
          return (
                 <Col span={24}>
                     <Card>
-                        <StatBasicLineChart size={'small'} data={statChartData} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
+                        <StatBasicLineChart theme={theme} size={'small'} data={statChartData} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
                     </Card>
                 </Col>
         )
@@ -168,7 +170,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
             return (
                 <Col span={24/statInfo.templateEntity.statStateList.length} key={'state-chart-' + z.functionIndex}>
                     <Card title={z.stateBody}>
-                        <StatBasicLineChart size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
+                        <StatBasicLineChart theme={theme} size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
                     </Card>
                 </Col>
             )
@@ -181,7 +183,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         return (
             <Col span={24}>
                 <Card title={t['statDisplay.limit.title']}>
-                    <TimeLineBarPanel compId={statInfo?.id} size={'small'} data={limitChartData} errorMessage={limitChartErrorMessage} loading={loading?false:limitChartLoading} />
+                    <TimeLineBarPanel theme={theme} compId={statInfo?.id} size={'small'} data={limitChartData} errorMessage={limitChartErrorMessage} loading={loading?false:limitChartLoading} />
                 </Card>
             </Col>
         );

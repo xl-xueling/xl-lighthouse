@@ -8,12 +8,12 @@ import styles from './style/index.module.less';
 import DepartmentLabel from "@/pages/department/common/depart";
 import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import {UserStateEnum} from "@/types/insights-common";
-import {getUserStateDescription} from "@/pages/common/desc/base";
+import {getUserStateDescription} from "@/desc/base";
 
 const { Text } = Typography;
 
 
-export function getColumns(t: any,callback: (record: Record<string, any>, type: string) => Promise<void>) {
+const getColumns = (t: any,callback: (record: Record<string, any>, type: string) => Promise<void>) => {
   return [
     {
       title: t['userList.columns.id'],
@@ -116,3 +116,5 @@ export function getColumns(t: any,callback: (record: Record<string, any>, type: 
     },
   ]
 }
+
+export default getColumns;

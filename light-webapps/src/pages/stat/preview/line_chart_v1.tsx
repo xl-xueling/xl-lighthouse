@@ -10,7 +10,7 @@ import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/preview/locale";
 
 
-export default function StatBasicLineChart({data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null}) {
+export default function StatBasicLineChart({theme="light",data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null}) {
 
     const [timeIndex,setTimeIndex] = useState<number>(0);
     const [seriesArray,setSeriesArray] = useState([]);
@@ -19,7 +19,6 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
     const [option,setOption] = useState({});
     const [loadingOption, setLoadingOption] = useState({});
     const [emptyOption,setEmptyOption] = useState({});
-    const [theme, setTheme] = useStorage('arco-theme', 'light');
     const chartRef = useRef(null);
     const t = useLocale(locale);
 
@@ -56,6 +55,9 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
             data: dimensList,
             icon:'circle',
             itemHeight:'10',
+            textStyle: {
+                color: theme === 'dark' ? '#ffffff' : '#605d5d',
+            },
         },
         grid: {
             top: dimensList.length> 0 ? '40px':'25px',
@@ -70,8 +72,9 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
                 boundaryGap: false,
                 data: batchList,
                 axisLabel: {
-                    animation: true
-                }
+                    animation: true,
+                    color: theme === 'dark' ? '#ffffff' : '#605d5d',
+                },
             }
         ],
         yAxis: [
@@ -79,6 +82,7 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
                 type: 'value',
                 axisLabel: {
                     animation: true,
+                    color: theme === 'dark' ? '#ffffff' : '#605d5d',
                     formatter: function (value, index) {
                         if (value >= 1000 && value < 1000000) {
                             value = value / 1000 + "K";
@@ -148,6 +152,11 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
         setLoadingOption(getLoadingOption(theme));
         setEmptyOption(getEmptyOption(t,theme));
     },[])
+
+    useEffect(() => {
+        setLoadingOption(getLoadingOption(theme));
+        setEmptyOption(getEmptyOption(t,theme));
+    },[theme])
 
 
     const getReactChart = () => {

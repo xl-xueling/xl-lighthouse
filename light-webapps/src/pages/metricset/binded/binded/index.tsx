@@ -11,7 +11,7 @@ import React, {useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import BindedProjectListPanel from "./binded_project";
-import {getIcon} from "@/pages/common/desc/base";
+import {getIcon} from "@/desc/base";
 import BindedStatisticListPanel from "@/pages/metricset/binded/binded/binded_stat";
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;

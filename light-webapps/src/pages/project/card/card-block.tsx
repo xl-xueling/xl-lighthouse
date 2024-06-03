@@ -2,21 +2,16 @@ import React, {useEffect, useState} from 'react';
 import cs from 'classnames';
 import {Button, Card, Descriptions, Popconfirm, Space, Tag, Typography} from '@arco-design/web-react';
 import {
-    IconFaceSmileFill,
-    IconPenFill,
     IconPushpin, IconStar,
     IconStarFill,
-    IconSunFill,
-    IconThumbUpFill,
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import {MetricSet, Project} from "@/types/insights-web";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
-import {useHistory} from 'react-router-dom';
 import {getRandomString} from "@/utils/util";
-import {getLockIcon, getTreeResourceIcon} from "@/pages/common/desc/base";
+import {getLockIcon, getTreeResourceIcon} from "@/desc/base";
 import {PermissionEnum} from "@/types/insights-common";
 import {useSelector} from "react-redux";
 import { HiMiniStar } from "react-icons/hi2";
@@ -27,6 +22,7 @@ const { Meta } = Card;
 interface CardBlockType {
   item: MetricSet;
   loading?: boolean;
+  from?:string;
   callback;
   size?:string;
 }
@@ -38,10 +34,9 @@ const IconList = [
 const { Paragraph } = Typography;
 
 function CardBlock(props: CardBlockType) {
-  const {item ,callback,size } = props;
+  const {item ,callback,size,from } = props;
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(props.loading);
-  const history = useHistory();
 
   const t = useLocale(locale);
     const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo);
@@ -65,11 +60,11 @@ function CardBlock(props: CardBlockType) {
   const className = cs(styles['card-block']);
 
     const redirectPreview = () => {
-        window.open('/project/preview/' + item?.id, '_blank');
+        window.open('/project/preview/' + item?.id, from == "list" ? '_blank':'_self');
     };
 
     const redirectManage = () => {
-        window.open('/project/manage/' + item?.id, '_blank');
+        window.open('/project/manage/' + item?.id, from == "list" ? '_blank':'_self');
     };
 
     const getTitleIcon = (index) => {

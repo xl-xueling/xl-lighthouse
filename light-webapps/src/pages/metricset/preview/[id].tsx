@@ -1,5 +1,4 @@
 import React, {createContext, useEffect, useState} from 'react';
-import {Switch, Route, Redirect, useHistory,useParams} from 'react-router-dom';
 import {
     Card,
     Typography,
@@ -22,6 +21,7 @@ import {
     IconThunderbolt
 } from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
+import { IoArrowBack } from "react-icons/io5";
 import locale from "./locale";
 import {requestQueryById} from "@/api/metricset";
 import {MetricSet} from "@/types/insights-web";
@@ -36,21 +36,23 @@ import {PermissionEnum, ResourceTypeEnum} from "@/types/insights-common";
 import {VscGistSecret} from "react-icons/vsc";
 import {GlobalErrorCodes} from "@/utils/constants";
 import ErrorPage from "@/pages/common/error";
-import {getIcon} from "@/pages/common/desc/base";
+import {getIcon} from "@/desc/base";
 import { FiEdit } from "react-icons/fi";
-import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
 import MetricSetUpdateModal from "@/pages/metricset/update";
 import {useSelector} from "react-redux";
 import {addMetricPreviewHistory} from "@/pages/metricset/preview/history";
 import {deepCopyObject} from "@/utils/util";
 import {requestDeleteById} from "@/api/metricset";
+import { useRouter } from 'next/router';
+import PermissionManageModal from "@/pages/permission/PermissionManageModal";
 
 export const MetricSetPreviewContext = React.createContext(null)
 
 export default function Index() {
-    const {id} = useParams();
+    const router = useRouter();
+    const { Text } = Typography;
+    const { id } = router.query;
     const t = useLocale(locale);
-    const history = useHistory();
     const [loading, setLoading] = useState<boolean>(false);
     const [initLoading, setInitLoading] = useState<boolean>(true);
     const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
@@ -98,7 +100,7 @@ export default function Index() {
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetPreview.form.submit.deleteSuccess']});
                 setTimeout(() => {
-                    history.push('/metricset/list');
+                    router.push('/metricset/list');
                 },2000)
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
@@ -139,7 +141,7 @@ export default function Index() {
     useEffect(() => {
         fetchData().then();
     }, [reloadTime])
-
+    const { Row, Col } = Grid;
     return (
         <MetricSetPreviewContext.Provider value={{metricSetInfo, setMetricSetInfo, reloadTime, setReloadTime}}>
             <>
@@ -147,13 +149,19 @@ export default function Index() {
                     errorCode ? <ErrorPage errorCode={errorCode}/>
                         :
                         <>
-                            <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
-                                <Breadcrumb.Item>
-                                    <IconHome/>
-                                </Breadcrumb.Item>
-                                <Breadcrumb.Item
-                                    style={{fontWeight: 20}}>{t['metricSetPreview.breadcrumb']}</Breadcrumb.Item>
-                            </Breadcrumb>
+                            <Row>
+                                <Col span={16}>
+                                    <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
+                                        <Breadcrumb.Item>
+                                            <IconHome/>
+                                        </Breadcrumb.Item>
+                                        <Breadcrumb.Item style={{fontWeight: 20}}>{t['metricSetPreview.breadcrumb']}</Breadcrumb.Item>
+                                    </Breadcrumb>
+                                </Col>
+                                <Col span={8} style={{textAlign:'right',fontSize:'13px',color:'#43454a'}}>
+                                    <Text style={{cursor:'pointer'}} onClick={() => router.back()}>[{t['basic.route.back']}]</Text>
+                                </Col>
+                            </Row>
                             <Spin loading={initLoading} style={{ width: '100%',minHeight:'800px' }}>
                             <Space size={16} direction="vertical" style={{width: '100%'}}>
                                 <Card>

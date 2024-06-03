@@ -1,11 +1,10 @@
 import React from "react";
-import ReactDOM from "react-dom";
 
 import Markdown from "markdown-to-jsx";
-
+import Login from "@/pages/login";
+import {Space} from "@arco-design/web-react";
 
 function License() {
-
 
     const chineseLicense = `
 # 使用协议
@@ -32,15 +31,21 @@ function License() {
 `;
 
     return (
-        <div>
-            <Markdown>
-                {chineseLicense}
-            </Markdown>
-            <Markdown>
-                {englishLicense}
-            </Markdown>
-        </div>
+        <>
+            <Space style={{paddingLeft:'20px'}}>
+                <Markdown>
+                    {chineseLicense}
+                </Markdown>
+            </Space>
+            <Space style={{paddingLeft:'20px'}}>
+                <Markdown>
+                    {englishLicense}
+                </Markdown>
+            </Space>
+        </>
     )
 }
+
+License.displayName = 'LicensePage';
 
 export default License;

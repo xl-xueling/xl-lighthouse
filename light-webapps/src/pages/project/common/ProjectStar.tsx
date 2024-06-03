@@ -24,10 +24,10 @@ import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import styles from "./styles/index.module.less";
 import {LuLayers} from "react-icons/lu";
 import {CiLock, CiViewTable} from "react-icons/ci";
-import {getIcon} from "@/pages/common/desc/base";
+import {getIcon} from "@/desc/base";
 import {requestStarById, requestUnStarById} from "@/api/project";
-import {updateStoreStaredProjectInfo} from "@/index";
 import {useDispatch,useSelector} from "react-redux";
+import {updateStoreStaredProjectInfo} from "@/pages/_app";
 const { Row, Col } = Grid;
 
 export default function ProjectStar({projectInfo}) {

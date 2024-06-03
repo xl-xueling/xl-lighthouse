@@ -3,7 +3,6 @@ import {Card, Grid, Notification, Space} from '@arco-design/web-react';
 import Overview from './overview';
 import Shortcuts from './shortcuts';
 import styles from './style/index.module.less';
-import './mock';
 import {useSelector} from "react-redux";
 import {HomeData, MetricSet, Stat} from "@/types/insights-web";
 import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
@@ -21,7 +20,7 @@ export const HomePageContext = React.createContext(null)
 
 function Workplace() {
     const t = useLocale(locale);
-  const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
+  const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo || []);
 
   const [listData,setListData] = useState<MetricSet[]>(staredMetricInfo.slice(0,8));
 
@@ -64,9 +63,10 @@ function Workplace() {
         fetchHomeData().then();
         fetchStatInfo().then();
     }, []);
-  useEffect(() => {
-      setListData(staredMetricInfo.slice(0,8))
-  },[staredMetricInfo])
+
+  // useEffect(() => {
+  //     setListData(staredMetricInfo.slice(0,8))
+  // },[staredMetricInfo])
 
   return (
       <>
@@ -86,7 +86,7 @@ function Workplace() {
       <Row gutter={gutter}>
           {listData.map((item, index) => (
               <Col span={6} key={index}>
-                  <MetricSetCardBox key={index} item={item}/>
+                  <MetricSetCardBox from={"home"} key={index} item={item}/>
               </Col>
           ))}
       </Row>

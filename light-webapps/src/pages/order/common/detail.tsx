@@ -6,15 +6,15 @@ import locale from "./locale/index";
 import {Order} from "@/types/insights-web";
 import {ApproveStateEnum, OrderStateEnum, OrderTypeEnum} from "@/types/insights-common";
 import {BiListUl} from "react-icons/bi";
+import {getRandomString} from "@/utils/util";
+import {getOrderApproveRoleTypeDescription} from "@/desc/base";
 import {
     getLimitingSettingsColumns,
-    getOrderColumns,
-    getOrderDetailColumns,
-    getProjectAccessColumns, getStatAccessColumns,
+    getOrderColumns, getOrderDetailColumns,
+    getProjectAccessColumns,
+    getStatAccessColumns,
     getUserApproveColumns
 } from "@/pages/order/common/constants";
-import {getRandomString} from "@/utils/util";
-import {getOrderApproveRoleTypeDescription} from "@/pages/common/desc/base";
 
 const { Text } = Typography;
 

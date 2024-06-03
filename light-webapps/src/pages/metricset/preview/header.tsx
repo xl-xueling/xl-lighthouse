@@ -15,26 +15,17 @@ import {
 } from '@arco-design/web-react';
 import {
     IconBook,
-    IconCalendar,
     IconClockCircle,
-    IconDesktop,
-    IconFile, IconFire,
-    IconFolder, IconLink, IconLock, IconMobile,
-    IconPlus, IconPushpin, IconSettings, IconStar, IconStarFill, IconStorage, IconTag, IconUser, IconUserGroup,
+    IconUserGroup,
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './/locale';
-import styles from './style/shortcuts.module.less';
-import {requestStructure} from "@/api/project";
-import {ArcoTreeNode} from "@/types/insights-web";
 import { LuLayers } from "react-icons/lu";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
-import {RiAppsLine} from "react-icons/ri";
 import {CiLock} from "react-icons/ci";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview/index";
-import ProjectStar from "@/pages/project/common/ProjectStar";
 import MetricSetStar from "@/pages/metricset/common/MetricSetStar";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview/[id]";
 const { Row, Col } = Grid;
 export default function MetricSetPreviewHeader() {
 

@@ -5,7 +5,7 @@ import {
 } from "@/types/insights-common";
 import {Record} from "@/types/insights-web";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
-import {getLimitingStrategyDescription} from "@/pages/common/desc/base";
+import {getLimitingStrategyDescription} from "@/desc/base";
 
 
 export interface LimitedRecord {

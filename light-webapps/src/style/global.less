@@ -1,4 +1,5 @@
 @import 'nprogress/nprogress.css';
+@import '@arco-themes/react-ldp-theme/index.less';
 
 html,
 body {
@@ -25,6 +26,93 @@ body {
   }
 }
 
+.limiting-setting-panel .arco-collapse-item-content{
+  background-color: var(--color-bg-1) !important;
+}
+
+.permission-panel .arco-collapse-item-content{
+  background-color: var(--color-bg-1) !important;
+}
+
+.arco-tree-node{
+  cursor: pointer !important;
+}
+
+.arco-tree-node-selected {
+  background-color:var(--color-fill-2) !important;
+  font-weight: bold;
+}
+
+.arco-tree-node:hover{
+  background-color:var(--color-fill-2) !important;
+}
+
+.arco-tree-node-title:hover{
+  background: none !important;
+}
+
+.arco-tree-node-drag-icon {
+  display: none;
+}
+
+.arco-tree-node-title{
+  width: 100% !important;
+}
+
+.arco-tree-node-custom-icon{
+  margin-right:5px !important;
+}
+
+.arco-tree-node-switcher{
+  margin-right:6px !important;
+}
+
+  .edit_table_panel  .arco-form-item-control{
+    min-height: 0 ;
+  }
+
+  .edit_table_panel  .arco-select .arco-select-view:hover {
+    background: none ;
+    border:none ;
+  }
+
+  .edit_table_panel .arco-select .arco-select-view {
+    background: none ;
+    border:none;
+  }
+
+  .arco-input-size-mini{
+    background-color: var(--color-bg-5);
+  }
+
+  .edit_table_panel td {
+    border-right:1px solid var(--color-border-1);
+    padding:0 0;
+  }
+
+  .edit_table_panel  .arco-select-popup .arco-select-option {
+    line-height: 25px ;
+    font-size: 12px ;
+  }
+
+  .edit_table_panel  td:has(.arco-select-view){
+    padding: 0 0 ;
+    min-height: 0 ;
+  }
+
+  .edit_table_panel  .arco-table-td{
+    padding: 0 2px ;
+    min-height: 0 ;
+  }
+
+  .edit_table_panel .editable-cell{
+    height: 18px ;
+  }
+
+  .edit_table_panel .editable-cell:has(.arco-select-view){
+    height: 23px ;
+  }
+
 body[arco-theme='dark'] {
   .chart-wrapper {
     .bizcharts-tooltip {
@@ -39,4 +127,3 @@ body[arco-theme='dark'] {
     }
   }
 }
-

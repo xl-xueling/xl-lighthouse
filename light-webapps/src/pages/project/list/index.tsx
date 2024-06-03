@@ -13,8 +13,7 @@ import {
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
-import {getColumns} from './constants';
-import {requestDeleteById, requestList} from "@/api/project";
+import {requestDeleteById} from "@/api/project";
 import {Project, TreeNode} from "@/types/insights-web";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useSelector} from "react-redux";

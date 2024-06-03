@@ -97,10 +97,10 @@ const TreeTransfer = ({ dataSource, targetKeys, ...restProps }) => {
                             selectable={true}
                             checkedKeys={checkedKeys}
                             onCheck={(_, { node: { key } }) => {
-                                onItemSelect(key, checkedKeys.indexOf(key) === -1);
+                                onItemSelect(key+"", checkedKeys.indexOf(key) === -1);
                             }}
                             onSelect={(_, { node: { key } }) => {
-                                onItemSelect(key, checkedKeys.indexOf(key) === -1);
+                                onItemSelect(key+"", checkedKeys.indexOf(key) === -1);
                             }}
                         >
                             {generatorTreeNodes(initTreeData)}

@@ -12,9 +12,9 @@ import "./style/index.module.less"
 import {requestCreateApply} from "@/api/order";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import {RecordsPanel} from "@/pages/record/records_panel";
+import RecordsPanel from "@/pages/record/records_panel";
 
-export function LimitingSettingsModal({groupInfo,onClose}){
+const LimitingSettingsModal = ({groupInfo,onClose}) => {
 
     const t = useLocale(locale);
     const CollapseItem = Collapse.Item;
@@ -77,11 +77,11 @@ export function LimitingSettingsModal({groupInfo,onClose}){
         <Modal
             title= {t['limitingConfig.modal.title']}
             alignCenter={false}
+            className={'limiting-setting-panel'}
             style={{width:'1180px',maxWidth:'80%', top: '150px' }}
             visible={true}
             onCancel={onClose}
             footer={null}>
-
             <Space direction={"vertical"} style={{width:'100%',border:'1px solid var(--color-border)'}}>
                 <RecordsPanel resourceId={groupInfo?.id} recordTypes={[RecordTypeEnum.GROUP_MESSAGE_LIMITING]} resourceType={ResourceTypeEnum.Group} />
                 <Collapse style={{marginTop:'10px',borderLeft:"none",borderRight:"none"}}>
@@ -178,3 +178,5 @@ export function LimitingSettingsModal({groupInfo,onClose}){
         </Modal>
     )
 }
+
+export default LimitingSettingsModal;

@@ -13,17 +13,21 @@ import {
   IconMobile,
   IconFire, IconClockCircle, IconNotification, IconCalendarClock,
 } from '@arco-design/web-react/icon';
-import {Switch, Route, Redirect, useHistory} from 'react-router-dom';
+
+
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/shortcuts.module.less';
-import {getIcon} from "@/pages/common/desc/base";
+import {getIcon} from "@/desc/base";
 import { VscOutput } from "react-icons/vsc";
 import {useSelector} from "react-redux";
 import {Project} from "@/types/insights-web";
 import {getRandomString} from "@/utils/util";
+import {useRouter} from "next/router";
+import {route} from "next/dist/server/router";
 
 function Shortcuts() {
+  const router = useRouter();
   const t = useLocale(locale);
   const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo || []);
 
@@ -55,7 +59,6 @@ function Shortcuts() {
     },
   ];
 
-  const history = useHistory();
 
   function onClickShortcut(key) {
     if(key == 'metricManage'){
@@ -72,7 +75,7 @@ function Shortcuts() {
   }
 
   const handleClick = (href) => {
-    history.push(href);
+    router.push(href);
   };
 
   return (

@@ -7,7 +7,7 @@ import { RiNavigationFill } from "react-icons/ri";
 import { TbNavigationPlus } from "react-icons/tb";
 import { MdOutlineNavigation } from "react-icons/md";
 import MetricNavModal from "@/pages/metricset/common/MetricNavModal";
-import {getIcon} from "@/pages/common/desc/base";
+import {getIcon} from "@/desc/base";
 import ProjectNavModal from "@/pages/project/common/ProjectNavModal";
 
 

@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
 import {
     Card,
     Typography,
@@ -12,36 +11,11 @@ import {
     Spin,
     Menu, Empty
 } from '@arco-design/web-react';
-import MetricSetPreviewHeader from "@/pages/metricset/preview/header";
-import {
-    IconDashboard,
-    IconFolder,
-    IconHome,
-    IconMindMapping,
-    IconTag,
-    IconThunderbolt
-} from "@arco-design/web-react/icon";
-import BindedList from "@/pages/metricset/binded/list";
-import GroupBasicPanel from "@/pages/group/basic";
-import ProjectPreviewPage from "@/pages/project/preview";
-import useLocale from "@/utils/useLocale";
-import locale from "../locale";
-import {requestQueryById} from "@/api/metricset";
-import {MetricSet} from "@/types/insights-web";
-import styles from "@/pages/project/preview/style/index.module.less";
-import ProjectMenu from "@/pages/project/preview/menu";
-import StatPreviewPanel from "@/pages/stat/preview/preview";
-import {CiViewTable} from "react-icons/ci";
-import get = Reflect.get;
-import {PiDiamondsFour} from "react-icons/pi";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
-import { BiExtension } from "react-icons/bi";
-import { BiWalletAlt } from "react-icons/bi";
-import { RxCube } from "react-icons/rx";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
-import {getTreeResourceIcon} from "@/pages/common/desc/base";
+import {getTreeResourceIcon} from "@/desc/base";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview/[id]";
 
 
 export default function MetricSetDataViewMenu({callback}) {

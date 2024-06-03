@@ -14,7 +14,6 @@ import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
 import styles from './style/index.module.less';
-import './mock';
 import { getColumns } from './constants';
 
 const { Title } = Typography;

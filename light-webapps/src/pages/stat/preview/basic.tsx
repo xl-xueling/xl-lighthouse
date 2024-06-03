@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
 import {ArcoTreeNode, Department} from "@/types/insights-web";
 import {
     Button,
@@ -13,10 +12,10 @@ import {
     TreeSelect,
     Typography
 } from "@arco-design/web-react";
-import {IconEdit, IconList, IconMan, IconPublic, IconPushpin} from "@arco-design/web-react/icon";
+import {IconEdit} from "@arco-design/web-react/icon";
 import UserGroup from "@/pages/user/common/groups";
 import { TbFilterEdit } from "react-icons/tb";
-import {getIcon, getStatExpiredEnumDescription} from "@/pages/common/desc/base";
+import {getIcon, getStatExpiredEnumDescription} from "@/desc/base";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import DepartmentLabel from "@/pages/department/common/depart";
 import {PermissionEnum} from "@/types/insights-common";
@@ -82,7 +81,7 @@ export default function BasicInfo({statInfo,callback}) {
                         {statInfo?.permissions.includes(PermissionEnum.ManageAble)?
                             <>
                             <Button shape={"circle"} icon={<IconEdit/>} size={"mini"} onClick={() => callback('showUpdateModal')}/>
-                            <Button shape={"circle"} icon={<GoBug/>} size={"mini"} onClick={() => {window.open("/track/stat/"+statInfo.id)}}/>
+                            <Button shape={"circle"} icon={<GoBug/>} size={"mini"} onClick={() => {window.open("/track/"+statInfo.id)}}/>
                             </>
                             :null}
                         {statInfo?.permissions.includes(PermissionEnum.ManageAble) && statInfo?.templateEntity.dimensArray.length > 0?

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
 import styles from './style/index.module.less';
 import {
     Breadcrumb,
@@ -28,10 +27,10 @@ import DepartmentLabel from "@/pages/department/common/depart";
 import {ImTree} from "react-icons/im";
 import {GlobalErrorCodes} from "@/utils/constants";
 import ErrorPage from "@/pages/common/error";
-import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
 import {ResourceTypeEnum} from "@/types/insights-common";
-import {getIcon} from "@/pages/common/desc/base";
-
+import {getIcon} from "@/desc/base";
+import { useRouter } from 'next/router';
+import PermissionManageModal from "@/pages/permission/PermissionManageModal";
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function ProjectManagePage() {
@@ -44,7 +43,8 @@ export default function ProjectManagePage() {
     const [errorCode, setErrorCode] = useState<string>(null);
     const [projectInfo, setProjectInfo] = useState<Project>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const {id} = useParams();
+    const router = useRouter();
+    const { id } = router.query;
 
     const menuCallback = async (id: number) => {
         setGroupId(id);

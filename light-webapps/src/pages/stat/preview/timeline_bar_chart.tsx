@@ -8,7 +8,7 @@ import useStorage from "@/utils/useStorage";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/preview/locale";
 
-export default function TimeLineBarPanel({compId = 0,data = null,errorMessage = null,size="default", loading = false,group=null}) {
+export default function TimeLineBarPanel({theme="light",compId = 0,data = null,errorMessage = null,size="default", loading = false,group=null}) {
 
     const [timeIndex,setTimeIndex] = useState<number>(-1);
     const [seriesArray,setSeriesArray] = useState([]);
@@ -18,7 +18,6 @@ export default function TimeLineBarPanel({compId = 0,data = null,errorMessage = 
     const chartRef = useRef(null);
     const [loadingOption, setLoadingOption] = useState({});
     const [emptyOption,setEmptyOption] = useState({});
-    const [theme, setTheme] = useStorage('arco-theme', 'light');
     const t = useLocale(locale);
 
     const getSeries = (chartData) => {
@@ -188,7 +187,7 @@ export default function TimeLineBarPanel({compId = 0,data = null,errorMessage = 
         setCurrentBatch(null);
         setLoadingOption(getLoadingOption(theme));
         setEmptyOption(getEmptyOption(t,theme));
-    },[compId])
+    },[compId,theme])
 
     useEffect(() => {
         const chart = chartRef.current.getEchartsInstance();

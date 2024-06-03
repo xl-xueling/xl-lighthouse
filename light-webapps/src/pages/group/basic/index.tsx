@@ -36,7 +36,7 @@ import EditTable, {
 } from "@/pages/common/edittable/EditTable";
 import {FormInstance} from "@arco-design/web-react/lib";
 import {formatTimeStampBackUp} from "@/utils/util";
-import {getColumns} from "./constants";
+import getColumns from "@/pages/group/basic/constants";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 

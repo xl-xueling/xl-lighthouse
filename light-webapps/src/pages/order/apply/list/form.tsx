@@ -14,7 +14,7 @@ import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import styles from './style/index.module.less';
 import {OrderTypeEnum, StatTimeParamEnum} from "@/types/insights-common";
-import {getOrderTypeDescription} from "@/pages/common/desc/base";
+import {getOrderTypeDescription} from "@/desc/base";
 
 const { Row, Col } = Grid;
 const { useForm } = Form;

@@ -8,12 +8,7 @@ import {useSelector} from "react-redux";
 import locale from './locale';
 import {Department, Stat, TreeNode} from "@/types/insights-web";
 import {requestChangeState, requestDeleteById, requestList} from "@/api/stat";
-import {getBindColumns, getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
-import Detail from "@/pages/stat/list/detail";
 import StatUpdateModal from "@/pages/stat/update";
-import {getRandomString} from "@/utils/util";
-import {GlobalErrorCodes} from "@/utils/constants";
-import StatDetailModal from "@/pages/stat/list/detail";
 import {ResourceTypeEnum, StatStateEnum} from "@/types/insights-common";
 import {requestResetPasswd} from "@/api/user";
 import SearchForm from "@/pages/stat/list/form";
@@ -24,6 +19,7 @@ import StatApplyModal from "@/pages/stat/apply";
 import {GroupManageContext} from "@/pages/group/manage";
 import {Simulate} from "react-dom/test-utils";
 import keyDown = Simulate.keyDown;
+import {getBindColumns, getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
 
 export default function StatisticalListPanel({formParams = {},from = null,parentLoading=false,extend=null}) {
     const t = useLocale(locale);

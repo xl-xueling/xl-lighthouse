@@ -2,7 +2,6 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {Breadcrumb, Card, Notification, PaginationProps, Table, Typography,} from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
-import {getColumns} from './constants';
 import {requestChangeState, requestDeleteById, requestList, requestResetPasswd} from "@/api/user";
 import {Department, User} from "@/types/insights-web";
 import {useSelector} from "react-redux";
@@ -11,6 +10,7 @@ import SearchForm from "@/pages/user/list/form";
 import {IconHome} from "@arco-design/web-react/icon";
 import ErrorPage from "@/pages/common/error";
 import {GlobalErrorCodes} from "@/utils/constants";
+import getColumns from "@/pages/user/list/constants";
 
 const { Title } = Typography;
 

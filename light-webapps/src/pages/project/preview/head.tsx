@@ -14,7 +14,7 @@ import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import styles from "@/pages/metricset/preview/style/shortcuts.module.less";
 import {LuLayers} from "react-icons/lu";
 import {CiLock, CiViewTable} from "react-icons/ci";
-import {getIcon} from "@/pages/common/desc/base";
+import {getIcon} from "@/desc/base";
 import ProjectStar from "@/pages/project/common/ProjectStar";
 const { Row, Col } = Grid;
 export default function PreviewHeader({projectInfo}:{projectInfo:Project}) {

@@ -2,8 +2,9 @@ import React from 'react';
 import Footer from '@/components/Footer';
 import RegisterForm from './form';
 import styles from './style/index.module.less';
+import License from "@/pages/license";
 
-export default function Index() {
+function Register() {
 
   return (
     <div className={styles.container}>
@@ -18,3 +19,6 @@ export default function Index() {
     </div>
   );
 }
+
+Register.displayName = 'RegisterPage';
+export default Register;

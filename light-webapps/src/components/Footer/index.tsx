@@ -6,13 +6,13 @@ import styles from './style/index.module.less';
 import {getDateFormat, YearFormat} from "@/utils/date";
 
 function Footer(props: FooterProps = {}) {
-  const { className, ...restProps } = props;
-  return (
-    <Layout.Footer className={cs(styles.footer, className)} {...restProps}>
-      Copyright &copy; {getDateFormat(YearFormat)} XueLing All Rights Reserved.
-      <span style={{marginLeft:'10px'}}>Version:2.2.3</span>
-    </Layout.Footer>
-  );
+    const { className, ...restProps } = props;
+    return (
+        <Layout.Footer className={cs(styles.footer, className)} {...restProps}>
+            Copyright &copy; {getDateFormat(YearFormat)} XueLing All Rights Reserved.
+            <span style={{marginLeft:'10px'}}>Version:2.2.3</span>
+        </Layout.Footer>
+    );
 }
 
 export default Footer;

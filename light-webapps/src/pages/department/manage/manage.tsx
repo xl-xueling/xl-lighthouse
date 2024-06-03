@@ -12,7 +12,7 @@ import {
     requestUpdateById
 } from "@/api/department";
 import {getRandomString, getTextBlenLength, validateWithRegex} from "@/utils/util";
-import {TEXT_BASE_PATTERN_2, TEXT_BASE_PATTERN_3} from "@/utils/constants";
+import {TEXT_BASE_PATTERN_3} from "@/utils/constants";
 
 export default function ManagePanel() {
     const t = useLocale(locale);
@@ -151,7 +151,7 @@ export default function ManagePanel() {
 
     return (
         <Spin loading={loading} size={20} style={{ display: 'block' }}>
-          <div className={styles['chat-panel']}>
+          <div className={styles['department-manage-panel']}>
             <Tree
                 ref={treeRef}
                 draggable={true}

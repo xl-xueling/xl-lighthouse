@@ -6,7 +6,7 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
 import {formatString, formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import {OrderStateEnum, OrderTypeEnum, PermissionEnum} from "@/types/insights-common";
-import {getOrderStateDescription, getOrderTypeDescription} from "@/pages/common/desc/base";
+import {getOrderStateDescription, getOrderTypeDescription} from "@/desc/base";
 
 const getApplyDescription = (t: any, orderInfo) => {
     if(orderInfo.orderType == OrderTypeEnum.PROJECT_ACCESS){
@@ -24,7 +24,7 @@ const getApplyDescription = (t: any, orderInfo) => {
     }
 }
 
-export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+const getColumns = (t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) => {
     return [
         {
             title: t['applyList.columns.id'],
@@ -103,3 +103,5 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
         },
     ]
 }
+
+export default getColumns;

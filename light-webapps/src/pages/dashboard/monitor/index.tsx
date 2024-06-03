@@ -8,7 +8,6 @@ import StudioStatus from './studio-status';
 import QuickOperation from './quick-operation';
 import StudioInformation from './studio-information';
 import styles from './style/index.module.less';
-import './mock';
 
 export default function Monitor() {
   const userInfo = useSelector((state: any) => state.userInfo);

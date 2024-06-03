@@ -9,8 +9,8 @@ import {FormInstance} from "@arco-design/web-react/es/Form";
 import {GlobalContext} from "@/context";
 import {requestChangePassword, requestUpdateById} from "@/api/user";
 import {ResultData} from "@/types/insights-common";
-import md5 from 'md5';
 import {removeLoginStatus} from "@/utils/checkLogin";
+import {md5} from "js-md5";
 export default function Security({userInfo}) {
   const t = useLocale(locale);
   const formRef = useRef<FormInstance>();

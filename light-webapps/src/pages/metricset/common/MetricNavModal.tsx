@@ -81,7 +81,7 @@ export default function MetricNavModal ({onClose}){
                         <Row gutter={12}>
                             {listData.map((item, index) => (
                                 <Col span={6} key={index}>
-                                    <MetricSetCardBox size={'small'} key={index} item={item}/>
+                                    <MetricSetCardBox from={"quick"} size={'small'} key={index} item={item}/>
                                 </Col>
                             ))}
                         </Row>

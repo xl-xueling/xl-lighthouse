@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
 import styles from "./style/index.module.less";
 import {
     Card,
@@ -10,7 +9,7 @@ import {
     Breadcrumb
 } from "@arco-design/web-react";
 import ProjectMenu from "@/pages/project/preview/menu";
-
+import {useRouter} from "next/router";
 const {Row, Col} = Grid;
 import PreviewHeader from "@/pages/project/preview/head";
 import {Project} from "@/types/insights-web";
@@ -23,7 +22,8 @@ import StatPreviewPanel from "@/pages/stat/preview/preview";
 
 export default function ProjectPreviewPage() {
 
-    const {id} = useParams();
+    const router = useRouter();
+    const { id } = router.query;
     const t = useLocale(locale);
     const [loading, setLoading] = useState<boolean>(true);
     const [projectInfo, setProjectInfo] = useState<Project>(null);

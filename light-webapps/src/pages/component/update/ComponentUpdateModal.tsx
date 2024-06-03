@@ -12,7 +12,7 @@ import {
 } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import {getTextBlenLength, isJSON, stringifyObj} from "@/utils/util";
-import {getComponentTypeDescription} from "@/pages/common/desc/base";
+import {getComponentTypeDescription} from "@/desc/base";
 import locale from "./locale";
 import {ComponentTypeEnum} from "@/types/insights-common";
 import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
@@ -26,14 +26,7 @@ import 'ace-builds/src-noconflict/theme-gruvbox';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/mode-json5';
 import 'ace-builds/src-noconflict/mode-jsoniq';
-import "ace-builds/webpack-resolver";
 import 'ace-builds/src-noconflict/ext-language_tools';
-import "brace/mode/xml";
-import "brace/mode/json";
-import "brace/mode/jsoniq";
-import "brace/theme/textmate";
-import {requestCreate} from "@/api/component";
-import {requestVerify} from "@/api/component";
 import {translate, translateResponse} from "@/pages/department/common";
 import {requestUpdate} from "@/api/component";
 

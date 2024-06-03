@@ -13,7 +13,7 @@ import {RiAppsLine} from "react-icons/ri";
 import {EditTableComponentEnum} from "@/pages/common/edittable/EditTable";
 
 
-export function getColumns(t: any) {
+const getColumns = (t: any) => {
 
     return [
         {
@@ -51,3 +51,5 @@ export function getColumns(t: any) {
         }
     ];
 }
+
+export default getColumns;

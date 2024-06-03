@@ -1,13 +1,12 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
-import {useParams} from "react-router-dom";
+import React, {useEffect, useRef, useState} from 'react';
 import {
     Button,
     Form,
     Tabs,
     Grid,
-    Input, Message,
+    Input,
     Modal, Notification,
-    Select, Space, TableColumnProps, TreeSelect,
+    Space, TreeSelect,
     Typography, Table
 } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
@@ -28,7 +27,7 @@ const FormItem = Form.Item;
 import styles from "./style/index.module.less";
 import EditTableV2 from "@/pages/common/editable_v2/EditTableV2";
 import CustomComponents from "@/pages/stat/filter/custom_component";
-import {getSystemComponentTypeDescription} from "@/pages/common/desc/base";
+import {getSystemComponentTypeDescription} from "@/desc/base";
 
 export default function StatFilterConfigModal({statInfo,onClose,onSuccess}:{statInfo:Stat,onClose:() => void,onSuccess:() => void}) {
 

@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
-import styles from "./style/index.module.less";
 import {Empty, Grid, Input, Skeleton, Space, Spin, Tree} from "@arco-design/web-react";
 const { Row, Col } = Grid;
 import { Menu, Slider } from '@arco-design/web-react';
@@ -11,7 +9,7 @@ import { CiViewTable } from "react-icons/ci";
 import {Project, TreeNode} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import {getTreeResourceIcon} from "@/pages/common/desc/base";
+import {getTreeResourceIcon} from "@/desc/base";
 
 export default function ProjectMenu({projectInfo,callback}:{projectInfo:Project,callback:(type: string,id:number) => Promise<void>}) {
 

@@ -15,7 +15,7 @@ import styles from './style/index.module.less';
 import {translate} from "@/pages/department/common";
 import {Project} from "@/types/insights-web";
 import {requestQueryById} from "@/api/project";
-import {getStatExpiredEnumDescription} from "@/pages/common/desc/base";
+import {getStatExpiredEnumDescription} from "@/desc/base";
 const { Row, Col } = Grid;
 const { useForm } = Form;
 

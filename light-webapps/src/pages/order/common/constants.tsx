@@ -9,7 +9,7 @@ import {
     getLimitingStrategyDescription,
     getOrderDetailStateDescription,
     getOrderStateDescription
-} from "@/pages/common/desc/base";
+} from "@/desc/base";
 const { Text } = Typography;
 
 export function getOrderColumns(t: any) {
@@ -304,4 +304,8 @@ export function getOrderDetailColumns(t: any,orderInfo:Order) {
             ,
         },
     ];
+}
+
+export default function Constants() {
+    return <>{/* nothing */}</>;
 }

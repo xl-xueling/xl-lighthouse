@@ -9,17 +9,16 @@ import {
     Table,
 } from '@arco-design/web-react';
 import SearchForm from "./form";
-import {getColumns} from "./constants";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {Order, Project} from "@/types/insights-web";
-import {getRandomString} from "@/utils/util";
 import {IconHome} from "@arco-design/web-react/icon";
 import {requestApplyList, requestProcess} from "@/api/order";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {convertDateToTimestamp, DateFormat, getDayEndTimestamp, getDayStartTimestamp} from "@/utils/date";
 import OrderDetailModal from "@/pages/order/common/detail_modal";
+import getColumns from "@/pages/order/apply/list/constants";
 
 export default function ApplyListPage() {
 

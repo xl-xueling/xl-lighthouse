@@ -22,12 +22,12 @@ import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
 import DepartmentLabel from "@/pages/department/common/depart";
 import {getRandomString} from "@/utils/util";
-import {getColumns} from "./constants";
 import {requestDeleteById} from "@/api/project";
 import ProjectApplyModal from "@/pages/project/apply";
 import ApplyModal from "@/pages/order/apply/modal/ApplyModal";
 import NewMetricBindedModal from "@/pages/metricset/binded/binded";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
+import getColumns from "@/pages/metricset/binded/list/constants";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview/[id]";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 

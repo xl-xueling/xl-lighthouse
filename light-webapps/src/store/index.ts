@@ -1,6 +1,20 @@
 import defaultSettings from '../settings.json';
 import {Department, MetricSet, Project, User} from "@/types/insights-web";
 
+// export interface GlobalState {
+//   settings?: typeof defaultSettings;
+//   userInfo?: {
+//     name?: string;
+//     avatar?: string;
+//     job?: string;
+//     organization?: string;
+//     location?: string;
+//     email?: string;
+//     permissions: Record<string, string[]>;
+//   };
+//   userLoading?: boolean;
+// }
+
 export interface GlobalState {
   settings?: typeof defaultSettings;
   userInfo? : User;
@@ -9,6 +23,13 @@ export interface GlobalState {
   staredMetricInfo? :Array<MetricSet>;
   staredProjectInfo?:Array<Project>;
 }
+
+// const initialState: GlobalState = {
+//   settings: defaultSettings,
+//   userInfo: {
+//     permissions: {},
+//   },
+// };
 
 const initialState = ():GlobalState => {
   const initUser: User= {
@@ -23,8 +44,7 @@ const initialState = ():GlobalState => {
   }
 };
 
-
-export default function processReducer(state = initialState(), action) {
+export default function store(state = initialState(), action) {
   switch (action.type) {
     case 'update-allDepartInfo':{
       const { allDepartInfo = initialState().allDepartInfo,departLoading = true } = action.payload;

@@ -17,8 +17,7 @@ import StatLabel from "@/pages/stat/common/StatLabel";
 import ProjectLabel from "@/pages/project/common/ProjectLabel";
 
 
-
-export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+const getColumns = (t: any, metricSetInfo:MetricSet, callback: (record: Record<string, any>, type: string) => Promise<void>) => {
 
     return [
         {
@@ -120,3 +119,5 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
         }
     ];
 }
+
+export default getColumns;

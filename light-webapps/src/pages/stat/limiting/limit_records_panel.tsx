@@ -21,7 +21,7 @@ import {formatTimeStampBackUp} from "@/utils/util";
 import {LimitedRecord, translateRecord} from "@/pages/record/common";
 
 
-export function StatLimitingRecordsPanel({resourceId}){
+const StatLimitingRecordsPanel = ({resourceId}) => {
 
     const t = useLocale(locale);
     const [loading, setLoading] = useState(true);
@@ -107,3 +107,5 @@ export function StatLimitingRecordsPanel({resourceId}){
                size={"small"} pagination={pagination} columns={columns} data={recordData} onChange={onChangeTable} />
     );
 }
+
+export default StatLimitingRecordsPanel;

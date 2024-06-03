@@ -35,9 +35,7 @@ import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
-import { PiSortAscending } from "react-icons/pi";
 import {getMetricPreviewHistory} from "@/pages/metricset/preview/history";
-import cs from "classnames";
 import ProjectCardBox from "@/pages/project/card/ProjectCardBox";
 
 
@@ -81,7 +79,7 @@ export default function ProjectNavModal ({onClose}){
                         <Row gutter={12}>
                             {listData.map((item, index) => (
                                 <Col span={6} key={index}>
-                                    <ProjectCardBox size={'small'} key={index} item={item}/>
+                                    <ProjectCardBox from={"quick"} size={'small'} key={index} item={item}/>
                                 </Col>
                             ))}
                         </Row>

@@ -13,7 +13,7 @@ import {RiAppsLine} from "react-icons/ri";
 import {MetricSet} from "@/types/insights-web";
 import {BindElement} from "@/types/insights-common";
 
-export function getColumns(t: any, bindElement:BindElement,selectedItems:MetricSet[],callback: (type: string,record: Record<string, any>) => Promise<void>) {
+const getColumns = (t: any, bindElement:BindElement,selectedItems:MetricSet[],callback: (type: string,record: Record<string, any>) => Promise<void>) => {
 
     return [
         {
@@ -67,3 +67,5 @@ export function getColumns(t: any, bindElement:BindElement,selectedItems:MetricS
         },
     ];
 }
+
+export default getColumns;

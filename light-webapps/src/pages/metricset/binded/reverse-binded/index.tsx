@@ -19,10 +19,10 @@ import {requestBinded, requestStarList} from "@/api/metricset";
 import {ArcoTreeNode, Department, MetricSet, TreeNode} from "@/types/insights-web";
 import locale from "./locale";
 import {requestList} from "@/api/metricset";
-import {getColumns} from "./constants";
 import {BindElement} from "@/types/insights-common";
-import {getResourceTypeDescription} from "@/pages/common/desc/base";
+import {getResourceTypeDescription} from "@/desc/base";
 import {formatString} from "@/utils/util";
+import getColumns from "@/pages/metricset/binded/reverse-binded/constants";
 
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;

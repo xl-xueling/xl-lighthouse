@@ -1,5 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {useParams} from "react-router-dom";
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Stat, StatData, EChartChartValue, StatValue} from "@/types/insights-web";
 import {Notification, Space} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
@@ -14,6 +13,7 @@ import {
 import {requestStatData} from "@/api/data";
 import {getEmptyOption, getLoadingOption} from "@/pages/stat/preview/common";
 import useStorage from "@/utils/useStorage";
+import {GlobalContext} from "@/context";
 
 export default function ChartPanel({size = 'default',searchForm = null,statInfo,parentLoading = false,ref=null}) {
     const t = useLocale(locale);
@@ -24,7 +24,7 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
     const [loadingOption, setLoadingOption] = useState({});
     const chartRef = ref == null ? useRef(null) : ref;
     const [emptyOption,setEmptyOption] = useState({});
-    const [theme, setTheme] = useStorage('arco-theme', 'light');
+    const { setLang, lang, theme, setTheme } = useContext(GlobalContext)
 
     const loadData = (data:Array<StatData>) => {
         const eChartChartValues:Array<EChartChartValue> = [];
@@ -185,6 +185,11 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
         setLoadingOption(getLoadingOption(theme));
         setEmptyOption(getEmptyOption(t,theme));
     },[])
+
+    useEffect(() => {
+        setLoadingOption(getLoadingOption(theme));
+        setEmptyOption(getEmptyOption(t,theme));
+    },[theme])
 
     const getReactChart = () => {
         if(size == 'default'){

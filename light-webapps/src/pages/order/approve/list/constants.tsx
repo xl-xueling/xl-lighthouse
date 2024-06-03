@@ -5,7 +5,7 @@ import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
 import {OrderStateEnum, OrderTypeEnum, PermissionEnum} from "@/types/insights-common";
-import {getOrderStateDescription, getOrderTypeDescription} from "@/pages/common/desc/base";
+import {getOrderStateDescription, getOrderTypeDescription} from "@/desc/base";
 import {formatString, formatTimeStampBackUp, getRandomString} from "@/utils/util";
 
 const getApproveDescription = (t: any, orderInfo) => {
@@ -24,7 +24,7 @@ const getApproveDescription = (t: any, orderInfo) => {
     }
 }
 
-export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+const getColumns = (t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) => {
     return [
         {
             title: t['approveList.columns.id'],
@@ -96,3 +96,5 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
         },
     ]
 }
+
+export default getColumns;

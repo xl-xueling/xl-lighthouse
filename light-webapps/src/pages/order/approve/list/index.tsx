@@ -7,7 +7,6 @@ import {
 } from '@arco-design/web-react';
 import {Order, Project} from "@/types/insights-web";
 import {requestApproveList} from "@/api/order";
-import {getColumns} from "@/pages/order/approve/list/constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/order/approve/list/locale";
 import SearchForm from "@/pages/order/approve/list/form";
@@ -15,6 +14,7 @@ import OrderDetailModal from "@/pages/order/common/detail_modal";
 import OrderProcessModal from "@/pages/order/approve/list/process_modal";
 import {IconHome} from "@arco-design/web-react/icon";
 import {convertDateToTimestamp, DateFormat, getDayEndTimestamp, getDayStartTimestamp} from "@/utils/date";
+import getColumns from "@/pages/order/approve/list/constants";
 
 export default function ApproveList() {
     const t = useLocale(locale);

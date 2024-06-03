@@ -21,7 +21,7 @@ import {formatTimeStampBackUp} from "@/utils/util";
 import {LimitedRecord, translateRecord} from "@/pages/record/common";
 
 
-export function RecordsPanel({resourceId,resourceType,recordTypes}){
+const RecordsPanel = ({resourceId,resourceType,recordTypes}) => {
 
     const t = useLocale(locale);
     const [loading, setLoading] = useState(true);
@@ -110,3 +110,5 @@ export function RecordsPanel({resourceId,resourceType,recordTypes}){
                size={"small"} pagination={pagination} columns={columns} data={recordData} onChange={onChangeTable} />
     );
 }
+
+export default RecordsPanel;

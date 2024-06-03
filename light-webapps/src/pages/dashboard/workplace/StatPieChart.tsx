@@ -1,20 +1,8 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {useParams} from "react-router-dom";
-import {Stat, StatData, EChartChartValue, StatValue} from "@/types/insights-web";
-import {Link, Notification, Space, Typography} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import ReactECharts from 'echarts-for-react';
-import {
-    convertDateToTimestamp,
-    getDailyEndTimestamp,
-    getDailyStartTimestamp,
-    DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
-} from "@/utils/date";
-import {formatString, getRandomString} from "@/utils/util";
 import {HomePageContext} from "@/pages/dashboard/workplace/index";
-import styles from "@/pages/dashboard/workplace/style/overview.module.less";
-// import 'default-passive-events'
 
 export default function StatPieChart() {
 

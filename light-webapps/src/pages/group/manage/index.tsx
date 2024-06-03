@@ -29,7 +29,7 @@ const { Row, Col } = Grid;
 import { RiShieldKeyholeLine } from "react-icons/ri";
 import GroupUpdatePanel from "@/pages/group/update";
 import SecretKeyModal from "@/pages/group/basic/secret_key";
-import {LimitingSettingsModal} from "@/pages/group/limiting/LimitingSettingsModal";
+import LimitingSettingsModal from "@/pages/group/limiting/LimitingSettingsModal";
 
 export const GroupManageContext = React.createContext(null)
 

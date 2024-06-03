@@ -21,7 +21,6 @@ import {IconHome} from "@arco-design/web-react/icon";
 import {requestDeleteById} from "@/api/metricset";
 import {useDispatch,useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import {updateStoreStaredMetricInfo} from "@/index";
 import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
 import {getRandomString} from "@/utils/util";
 const { Title } = Typography;
@@ -121,7 +120,7 @@ export default function ListCard() {
                     </Col>
                     {listData.map((item, index) => (
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox from={"list"} key={index} item={item}/>
                         </Col>
                     ))}
                 </Row>

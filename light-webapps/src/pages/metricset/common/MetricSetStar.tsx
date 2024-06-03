@@ -10,24 +10,13 @@ import {
     Button,
     Descriptions,
     Grid,
-    Message,
-    Modal, Notification,
+    Notification,
     Popconfirm,
-    Skeleton,
-    Space,
-    Typography
 } from "@arco-design/web-react";
-import { RiAppsLine } from "react-icons/ri";
 import {MetricSet, Project} from "@/types/insights-web";
-import UserGroup from "@/pages/user/common/groups";
-import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
-import styles from "./styles/index.module.less";
-import {LuLayers} from "react-icons/lu";
-import {CiLock, CiViewTable} from "react-icons/ci";
-import {getIcon} from "@/pages/common/desc/base";
 import {requestStarById, requestUnStarById} from "@/api/metricset";
-import {updateStoreStaredMetricInfo} from "@/index";
 import {useDispatch,useSelector} from "react-redux";
+import {updateStoreStaredMetricInfo} from "@/pages/_app";
 const { Row, Col } = Grid;
 
 export default function MetricSetStar({metricInfo}) {

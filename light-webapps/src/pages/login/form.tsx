@@ -15,8 +15,8 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import {requestLogin} from "@/api/user";
 import {ResultData} from "@/types/insights-common";
-import md5 from 'md5';
 import {LoginParam} from "@/types/insights-web";
+import {md5} from "js-md5";
 
 
 export default function LoginForm() {
