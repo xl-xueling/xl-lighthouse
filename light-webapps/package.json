@@ -1,5 +1,5 @@
 {
-  "name": "next-app-ts",
+  "name": "lighthouse-webapps",
   "private": true,
   "scripts": {
     "dev": "next dev",
