@@ -1,11 +1,11 @@
 {
-  "name": "lighthouse-webapps",
+  "name": "light-webapps",
   "version": "1.0.0",
   "private": false,
   "license": "ISC",
   "scripts": {
     "dev": "next dev",
-    "build": "npm-run-all build:next build:ts-clean build:ts-build",
+    "build": "npm-run-all clean build:next build:ts-clean build:ts-build",
     "build:next": "next build",
     "build:ts-clean": "tsc --build --clean",
     "build:ts-build": "tsc --build",
@@ -16,6 +16,11 @@
     "stylelint": "stylelint 'src/**/*.less' 'src/**/*.css' --fix --cache",
     "pre-commit": "pretty-quick --staged && npm run eslint && npm run stylelint"
   },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
   "dependencies": {
     "@arco-design/color": "^0.4.0",
     "@arco-design/web-react": "^2.62.0",
