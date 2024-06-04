@@ -3,28 +3,44 @@
     "src/**/*"
   ],
   "compilerOptions": {
+    "outDir": "dist",
+    "module": "commonjs",
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "declarationDir": "./dist",
-    "strict": false,
-    "skipLibCheck": true,
     "declaration": true,
     "declarationMap": true,
-    "forceConsistentCasingInFileNames": true,
+    "emitDeclarationOnly": false,
+    "declarationDir": "./dist",
+    "sourceMap": true,
+    "strict": false,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": "./src",
     "noEmit": false,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     },
-    "rootDirs": ["common/src/", "arco-design-pro-cra/src/", "arco-design-pro-next/src/"]
+    "rootDirs": [
+      "common/src/",
+      "arco-design-pro-cra/src/",
+      "arco-design-pro-next/src/"
+    ],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "incremental": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

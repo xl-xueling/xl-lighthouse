@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "private": false,
   "license": "ISC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "next dev",
     "build": "npm-run-all clean build:next build:ts-clean build:ts-build",
     "build:next": "next build",
     "build:ts-clean": "tsc --build --clean",
-    "build:ts-build": "tsc --build",
+    "build:ts-build": "tsc -p tsconfig.json",
     "start": "next start",
     "export": "next export",
     "clean": "rm -rf dist",
@@ -18,6 +20,7 @@
   },
   "files": [
     "dist/",
+    "src/",
     "README.md",
     "LICENSE"
   ],
@@ -55,6 +58,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^5.5.0",
+    "@types/lodash": "^4.17.4",
     "@types/node": "^18.19.33",
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.2",
