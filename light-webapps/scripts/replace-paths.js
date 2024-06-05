@@ -17,6 +17,7 @@ files.forEach(file => {
 
     try {
         const results = replace.sync(options);
+        console.log("results is:" + JSON.stringify(results))
         console.log(`Modified files:`, results.join(', '));
     } catch (error) {
         console.error('Error occurred:', error);
