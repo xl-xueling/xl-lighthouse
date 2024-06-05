@@ -27,7 +27,7 @@ import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/mode-json5';
 import 'ace-builds/src-noconflict/mode-jsoniq';
 import 'ace-builds/src-noconflict/ext-language_tools';
-import {translate, translateResponse} from "@/pages/department/common";
+import {translate, translateResponse} from "@/pages/department/base";
 import {requestUpdate} from "@/api/component";
 
 

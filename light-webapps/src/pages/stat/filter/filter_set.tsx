@@ -18,7 +18,7 @@ import {requestFilterConfig, requestFilterReset} from "@/api/stat";
 import {Group, Project, Stat} from "@/types/insights-web";
 import {GlobalErrorCodes} from "@/utils/constants";
 import {Component, ComponentTypeEnum, RenderFilterConfig} from "@/types/insights-common";
-import {translateToTreeNodes} from "@/pages/department/common";
+import {translateToTreeNodes} from "@/pages/department/base";
 import {requestList} from "@/api/component";
 import SystemComponents from "@/pages/stat/filter/system_component";
 import {FormInstance} from "@arco-design/web-react/lib";

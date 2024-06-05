@@ -18,7 +18,7 @@ import {Resource, TreeNode} from "@/types/insights-web";
 import {getRandomString} from "@/utils/util";
 import {ResourceTypeEnum} from "@/types/insights-common";
 import {MetricSetStructureContext} from "@/pages/metricset/structure/index";
-import {treeCheckContainsNode} from "@/pages/department/common";
+import {treeCheckContainsNode} from "@/pages/department/base";
 import {getResourceTypeDescription} from "@/desc/base";
 
 export default function MetricSetRepositoryModal({id,onClose}) {

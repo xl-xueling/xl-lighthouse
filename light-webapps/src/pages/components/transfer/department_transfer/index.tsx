@@ -3,7 +3,7 @@ import { useState } from 'react';
 import TreeTransfer from "@/pages/components/transfer/department_transfer/tree_transfer";
 import {useSelector} from "react-redux";
 import {Department, TreeNode} from "@/types/insights-web";
-import {translate} from "@/pages/department/common";
+import {translate} from "@/pages/department/base";
 
 const DepartmentsTransfer = React.forwardRef((none,ref)  => {
 

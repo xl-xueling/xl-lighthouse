@@ -18,7 +18,7 @@ import changeTheme from '@/utils/changeTheme';
 import useStorage from '@/utils/useStorage';
 import Layout from './layout';
 import {getDataWithLocalCache} from "@/utils/localCache";
-import {fetchAllDepartmentData} from "@/pages/department/common";
+import {fetchAllDepartmentData} from "@/pages/department/base";
 import {MetricSet, Project} from "@/types/insights-web";
 import {requestFetchUserInfo} from "@/api/user";
 import {checkLogin} from "@/utils/checkLogin";

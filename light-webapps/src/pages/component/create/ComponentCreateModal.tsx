@@ -43,7 +43,7 @@ import 'ace-builds/src-noconflict/mode-jsoniq';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import {requestCreate} from "@/api/component";
 import {requestVerify} from "@/api/component";
-import {translate, translateResponse} from "@/pages/department/common";
+import {translate, translateResponse} from "@/pages/department/base";
 
 
 export default function ComponentCreateModal({onClose,onSuccess}) {

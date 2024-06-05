@@ -2,7 +2,7 @@ import React, {useCallback, useContext, useEffect, useRef, useState} from 'react
 import {getRandomString} from "@/utils/util";
 import {ComponentTypeEnum, RenderFilterConfig} from "@/types/insights-common";
 import {Input, Space, Table, TableColumnProps, TreeSelect} from "@arco-design/web-react";
-import {translateToTreeNodes} from "@/pages/department/common";
+import {translateToTreeNodes} from "@/pages/department/base";
 import {IconPlus} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/filter/locale";

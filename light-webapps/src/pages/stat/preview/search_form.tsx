@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import styles from "./style/index.module.less";
-import {translateToCascadeTreeNodes, translateToTreeNodes} from "@/pages/department/common";
+import {translateToCascadeTreeNodes, translateToTreeNodes} from "@/pages/department/base";
 import {
     DateTimeFormat,
     formatTimeStamp,

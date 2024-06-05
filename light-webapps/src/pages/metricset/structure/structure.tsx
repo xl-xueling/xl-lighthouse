@@ -9,7 +9,7 @@ import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
 import {MetricSetStructureContext} from "@/pages/metricset/structure/index";
 import {TreeNode} from "@/types/insights-web";
-import {countNodesByType} from "@/pages/department/common";
+import {countNodesByType} from "@/pages/department/base";
 import {getTreeResourceIcon} from "@/desc/base";
 import {MetricSetPreviewContext} from "@/pages/metricset/preview/[id]";
 

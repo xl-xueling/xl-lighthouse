@@ -21,7 +21,7 @@ import {requestDeleteById} from "@/api/component";
 import styles from "@/pages/component/list/style/index.module.less";
 import ComponentCreateModal from "@/pages/component/create/ComponentCreateModal";
 import {CiLock} from "react-icons/ci";
-import {translateResponse} from "@/pages/department/common";
+import {translateResponse} from "@/pages/department/base";
 import UserGroup from "@/pages/user/common/groups";
 import {getRandomString} from "@/utils/util";
 const { Row, Col } = Grid;

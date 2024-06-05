@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Department, TreeNode, User} from "@/types/insights-web";
 import {Descriptions, Popover} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
-import {getFullPathNodes} from "@/pages/department/common";
+import {getFullPathNodes} from "@/pages/department/base";
 
 export interface Props {
     users: Array<User>;
