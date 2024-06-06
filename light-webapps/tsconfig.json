@@ -4,7 +4,7 @@
   ],
   "compilerOptions": {
     "outDir": "dist",
-    "module": "commonjs",
+    "module": "esnext",
     "target": "es5",
     "declaration": true,
     "declarationMap": true,
