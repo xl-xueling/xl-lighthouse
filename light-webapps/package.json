@@ -7,7 +7,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm-run-all clean build:next",
+    "build:next": "next build",
     "pro-build": "npm-run-all clean pro-build:next pro-build:ts-clean pro-build:ts-build pro-build:follow-process",
     "pro-build:next": "next build",
     "pro-build:ts-clean": "tsc --build --clean",
