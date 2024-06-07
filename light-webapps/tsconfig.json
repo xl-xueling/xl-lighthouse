@@ -3,13 +3,12 @@
     "src/**/*"
   ],
   "compilerOptions": {
-    "outDir": "dist",
     "module": "esnext",
     "target": "es5",
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": false,
-    "declarationDir": "./dist",
+    "declarationDir": "./build",
     "sourceMap": true,
     "strict": false,
     "esModuleInterop": true,
@@ -41,6 +40,6 @@
   },
   "exclude": [
     "node_modules",
-    "dist"
+    "build"
   ]
 }

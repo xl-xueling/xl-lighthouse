@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": false,
   "license": "ISC",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "dev": "next dev",
     "build": "npm-run-all clean build:next",
@@ -16,13 +16,13 @@
     "pro-build:follow-process": "node scripts/follow_process.js",
     "start": "next start",
     "export": "next export",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf build",
     "eslint": "eslint src/ --ext .ts,.tsx,.js,.jsx --fix --cache",
     "stylelint": "stylelint 'src/**/*.less' 'src/**/*.css' --fix --cache",
     "pre-commit": "pretty-quick --staged && npm run eslint && npm run stylelint"
   },
   "files": [
-    "dist/",
+    "build/",
     "src/",
     "README.md",
     "LICENSE"

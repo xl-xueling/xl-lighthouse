@@ -3,7 +3,7 @@ const fs = require('fs');
 const replace = require('replace-in-file');
 const glob = require('glob');
 
-const files = glob.sync('dist/**/*.{d.ts,js,jsx,module.less}');
+const files = glob.sync('build/**/*.{d.ts,js,jsx,module.less}');
 
 files.forEach(file => {
     const fileDir = path.dirname(file);
@@ -11,7 +11,7 @@ files.forEach(file => {
         files: file,
         from: /(@\/[^'"]+)/g,
         to: (match) => {
-            const relativePath = path.relative(fileDir, path.join('dist', match.slice(2)));
+            const relativePath = path.relative(fileDir, path.join('build', match.slice(2)));
             return `./${relativePath}`.replace(/\\/g, '/');
         },
     };
@@ -25,7 +25,7 @@ files.forEach(file => {
 });
 
 const filePrefix = '_app';
-const filesToDelete = glob.sync('dist/pages/*');
+const filesToDelete = glob.sync('build/pages/*');
 
 console.log("Handling global.less conflicts start!");
 filesToDelete.forEach(file => {

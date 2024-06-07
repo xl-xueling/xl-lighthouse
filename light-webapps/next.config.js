@@ -12,7 +12,7 @@ const setting = require("./src/settings.json");
 
 module.exports = withLess(
     withTM({
-        distDir: "dist",
+        distDir: "build",
         lessLoaderOptions: {
             lessOptions: {
                 modifyVars: {
