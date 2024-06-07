@@ -7,8 +7,11 @@
 light-webapps/node_modules
 light-webapps/node
 light-webapps/.next
+light-webapps/.yalc
 light-webapps/build
 light-webapps/yarn.lock
+light-webapps/yalc.lock
+
 dependency-reduced-pom.xml
 /.pnp
 /.idea
