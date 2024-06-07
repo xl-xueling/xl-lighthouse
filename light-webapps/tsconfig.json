@@ -3,6 +3,7 @@
     "src/**/*"
   ],
   "compilerOptions": {
+    "outDir": "build",
     "module": "esnext",
     "target": "es5",
     "declaration": true,
