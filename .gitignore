@@ -11,6 +11,7 @@ light-webapps/.yalc
 light-webapps/build
 light-webapps/yarn.lock
 light-webapps/yalc.lock
+light-webapps/package-lock.json
 
 dependency-reduced-pom.xml
 /.pnp

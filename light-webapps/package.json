@@ -23,9 +23,7 @@
   },
   "files": [
     "build/",
-    "src/",
-    "README.md",
-    "LICENSE"
+    "src/"
   ],
   "dependencies": {
     "@arco-design/color": "^0.4.0",
