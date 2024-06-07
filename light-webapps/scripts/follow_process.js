@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const replace = require('replace-in-file');
 const glob = require('glob');
 
@@ -17,9 +18,26 @@ files.forEach(file => {
 
     try {
         const results = replace.sync(options);
-        console.log("results is:" + JSON.stringify(results))
-        console.log(`Modified files:`, results.join(', '));
+        console.log("Modified file relative path:" + JSON.stringify(results))
     } catch (error) {
         console.error('Error occurred:', error);
     }
 });
+
+const filePrefix = '_app';
+const filesToDelete = glob.sync('dist/pages/*');
+
+console.log("Handling global.less conflicts start!");
+filesToDelete.forEach(file => {
+    if (path.basename(file).startsWith(filePrefix)) {
+        fs.unlink(file, (err) => {
+            if (err) {
+                console.error(`Error deleting file ${file}:`, err);
+            } else {
+                console.log(`Deleted file: ${file}`);
+            }
+        });
+    }
+});
+console.log("Handling global.less conflicts completed!")
+

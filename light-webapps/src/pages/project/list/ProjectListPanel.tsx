@@ -25,7 +25,7 @@ import {GlobalState} from "@/store";
 import {requestBinded} from "@/api/metricset";
 import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
 import {convertDateToTimestamp, DateFormat, getDayEndTimestamp, getDayStartTimestamp} from "@/utils/date";
-import {updateStoreStaredProjectInfo} from "@/pages/_app";
+import {updateStoreStaredProjectInfo} from "@/store";
 import {getBindColumns, getColumns} from "@/pages/project/list/constants";
 
 const BreadcrumbItem = Breadcrumb.Item;

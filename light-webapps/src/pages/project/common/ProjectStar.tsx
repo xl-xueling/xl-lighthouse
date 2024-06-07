@@ -27,7 +27,7 @@ import {CiLock, CiViewTable} from "react-icons/ci";
 import {getIcon} from "@/desc/base";
 import {requestStarById, requestUnStarById} from "@/api/project";
 import {useDispatch,useSelector} from "react-redux";
-import {updateStoreStaredProjectInfo} from "@/pages/_app";
+import {updateStoreStaredProjectInfo} from "@/store";
 const { Row, Col } = Grid;
 
 export default function ProjectStar({projectInfo}) {

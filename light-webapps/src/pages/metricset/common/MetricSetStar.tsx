@@ -16,7 +16,7 @@ import {
 import {MetricSet, Project} from "@/types/insights-web";
 import {requestStarById, requestUnStarById} from "@/api/metricset";
 import {useDispatch,useSelector} from "react-redux";
-import {updateStoreStaredMetricInfo} from "@/pages/_app";
+import {updateStoreStaredMetricInfo} from "@/store";
 const { Row, Col } = Grid;
 
 export default function MetricSetStar({metricInfo}) {

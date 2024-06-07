@@ -9,6 +9,7 @@ import {ConfigProvider, Message, Notification} from '@arco-design/web-react';
 import zhCN from '@arco-design/web-react/es/locale/zh-CN';
 import enUS from '@arco-design/web-react/es/locale/en-US';
 import axios from 'axios';
+import '@/style/global.less';
 import NProgress from 'nprogress';
 import rootReducer from '../store';
 import {requestStarList as requestMetricStarList} from "@/api/metricset";
@@ -29,26 +30,6 @@ interface RenderConfig {
   arcoLang?: string;
   arcoTheme?: string;
 }
-
-export const updateStoreUserInfo = (userInfo) => ({
-  type: 'update-userInfo',
-  payload: {userInfo: userInfo,userLoading:false},
-});
-
-export const updateStoreAllDepartInfo = (allDepartInfo) => ({
-  type: 'update-allDepartInfo',
-  payload: {allDepartInfo: allDepartInfo,departLoading:false},
-});
-
-export const updateStoreStaredMetricInfo = (staredMetricInfo) => ({
-  type: 'update-staredMetricInfo',
-  payload: {staredMetricInfo: staredMetricInfo,staredMetricsLoading:false},
-});
-
-export const updateStoreStaredProjectInfo = (staredProjectInfo) => ({
-  type: 'update-staredProjectInfo',
-  payload: {staredProjectInfo: staredProjectInfo,staredProjectLoading:false},
-});
 
 export default function MyApp({
   pageProps,
@@ -90,7 +71,6 @@ export default function MyApp({
       })
     })
   }
-
 
   async function fetchBasicInfo() {
     const allDepartInfo = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);

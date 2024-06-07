@@ -11,7 +11,7 @@ import {ArcoFlatNode, Department, Project, User} from "@/types/insights-web";
 import {useDispatch, useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {GlobalErrorCodes, TEXT_BASE_PATTERN_2} from "@/utils/constants";
-import {updateStoreStaredProjectInfo} from "@/pages/_app";
+import {updateStoreStaredProjectInfo} from "@/store";
 
 export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,onSuccess}){
 

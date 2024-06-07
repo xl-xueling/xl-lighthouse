@@ -15,6 +15,27 @@ import {Department, MetricSet, Project, User} from "@/types/insights-web";
 //   userLoading?: boolean;
 // }
 
+
+export const updateStoreUserInfo = (userInfo) => ({
+  type: 'update-userInfo',
+  payload: {userInfo: userInfo,userLoading:false},
+});
+
+export const updateStoreAllDepartInfo = (allDepartInfo) => ({
+  type: 'update-allDepartInfo',
+  payload: {allDepartInfo: allDepartInfo,departLoading:false},
+});
+
+export const updateStoreStaredMetricInfo = (staredMetricInfo) => ({
+  type: 'update-staredMetricInfo',
+  payload: {staredMetricInfo: staredMetricInfo,staredMetricsLoading:false},
+});
+
+export const updateStoreStaredProjectInfo = (staredProjectInfo) => ({
+  type: 'update-staredProjectInfo',
+  payload: {staredProjectInfo: staredProjectInfo,staredProjectLoading:false},
+});
+
 export interface GlobalState {
   settings?: typeof defaultSettings;
   userInfo? : User;

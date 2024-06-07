@@ -14,7 +14,7 @@ import CardBlock from './card-block';
 import {MetricSet, Project, TreeNode} from "@/types/insights-web";
 import {requestStarById, requestUnStarById} from "@/api/project";
 import {useDispatch,useSelector} from "react-redux";
-import {updateStoreStaredProjectInfo} from "@/pages/_app";
+import {updateStoreStaredProjectInfo} from "@/store";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 
