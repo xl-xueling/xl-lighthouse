@@ -7,7 +7,6 @@
 light-webapps/node_modules
 light-webapps/node
 light-webapps/.next
-light-webapps/dist
 light-webapps/build
 light-webapps/yarn.lock
 dependency-reduced-pom.xml
