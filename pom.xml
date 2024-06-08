@@ -9,7 +9,6 @@
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.7.18</version>
   </parent>
-
   <packaging>pom</packaging>
   <name>XL-LightHouse</name>
   <url>http://maven.apache.org</url>
