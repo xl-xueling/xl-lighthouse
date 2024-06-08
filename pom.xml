@@ -37,6 +37,7 @@
     <commons.lang3.version>3.12.0</commons.lang3.version>
     <scope>compile</scope>
     <frontend.maven.plugin.version>1.15.0</frontend.maven.plugin.version>
+    <npm.registry.url>https://registry.npmmirror.com</npm.registry.url>
   </properties>
 
   <!-- 默认打包 -->
@@ -137,6 +138,7 @@
                     </filesets>
                 </configuration>
             </plugin>
+
           <plugin>
             <groupId>com.github.eirslett</groupId>
             <artifactId>frontend-maven-plugin</artifactId>
@@ -154,7 +156,10 @@
                 <phase>validate</phase>
                 <configuration>
                   <nodeVersion>v18.20.2</nodeVersion>
-                  <yarnVersion>v1.22.2</yarnVersion>
+                  <yarnVersion>v1.22.22</yarnVersion>
+                  <!--使用cdn下载地址，不能随意切换版本，该地址可以注释掉，使用yarn和Node的默认地址 -->
+                  <nodeDownloadRoot>https://ldp-soft-1300542249.cos.ap-nanjing.myqcloud.com/mvn/node/</nodeDownloadRoot>
+                  <yarnDownloadRoot>https://ldp-soft-1300542249.cos.ap-nanjing.myqcloud.com/mvn/yarn/</yarnDownloadRoot>
                 </configuration>
               </execution>
               <execution>
@@ -164,17 +169,17 @@
                 </goals>
                 <phase>validate</phase>
                 <configuration>
-                  <arguments>install</arguments>
+                  <arguments>install --registry ${npm.registry.url}</arguments>
                 </configuration>
               </execution>
               <execution>
-                <id>yarn run build</id>
+                <id>yarn build</id>
                 <goals>
                   <goal>yarn</goal>
                 </goals>
                 <phase>validate</phase>
                 <configuration>
-                  <arguments>run build</arguments>
+                  <arguments>build</arguments>
                 </configuration>
               </execution>
             </executions>
