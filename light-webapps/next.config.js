@@ -7,7 +7,7 @@ const withTM = require('next-transpile-modules')([
     '@arco-themes/react-ldp-theme',
 ]);
 
-const CopyWebpackPlugin = require('copy-webpack-plugin'); // 添加这行
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const setting = require("./src/settings.json");
 
 module.exports = withLess(

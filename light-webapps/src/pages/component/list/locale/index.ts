@@ -1,3 +1,6 @@
+import {IconDashboard} from "@arco-design/web-react/icon";
+import React from "react";
+
 const i18n = {
   'en-US': {
     'componentList.breadcrumb.title':'Filter Components',
