@@ -25,7 +25,7 @@ const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
 import { RiPlayListAddLine } from "react-icons/ri";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview/[id]";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview/MetricPreviewPanel";
 
 export const MetricSetStructureContext = React.createContext(null);
 

@@ -44,11 +44,13 @@ import {addMetricPreviewHistory} from "@/pages/metricset/preview/history";
 import {deepCopyObject} from "@/utils/util";
 import {requestDeleteById} from "@/api/metricset";
 import PermissionManageModal from "@/pages/permission/PermissionManageModal";
+import { useRouter } from 'next/router';
 
 export const MetricSetPreviewContext = React.createContext(null)
 
 export default function MetricPreviewPanel({id}) {
     const { Text } = Typography;
+    const router = useRouter();
     const t = useLocale(locale);
     const [loading, setLoading] = useState<boolean>(false);
     const [initLoading, setInitLoading] = useState<boolean>(true);

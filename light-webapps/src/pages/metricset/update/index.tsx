@@ -9,7 +9,7 @@ import {GrantPrivileges, MetricSet} from "@/types/insights-web";
 import {useDispatch, useSelector} from "react-redux";
 import {requestUpdate} from "@/api/metricset";
 import {updateStoreStaredMetricInfo} from "@/store";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview/[id]";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview/MetricPreviewPanel";
 
 
 export default function MetricSetUpdateModal({onClose,onSuccess}) {

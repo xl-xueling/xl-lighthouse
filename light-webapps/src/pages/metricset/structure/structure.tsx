@@ -11,7 +11,7 @@ import {MetricSetStructureContext} from "@/pages/metricset/structure/index";
 import {TreeNode} from "@/types/insights-web";
 import {countNodesByType} from "@/pages/department/base";
 import {getTreeResourceIcon} from "@/desc/base";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview/[id]";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview/MetricPreviewPanel";
 
 const { Row, Col } = Grid;
 

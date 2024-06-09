@@ -27,7 +27,7 @@ import ProjectApplyModal from "@/pages/project/apply";
 import ApplyModal from "@/pages/order/apply/modal/ApplyModal";
 import NewMetricBindedModal from "@/pages/metricset/binded/binded";
 import getColumns from "@/pages/metricset/binded/list/constants";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview/[id]";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview/MetricPreviewPanel";
 const { Row, Col } = Grid;
 const { Text } = Typography;
 
