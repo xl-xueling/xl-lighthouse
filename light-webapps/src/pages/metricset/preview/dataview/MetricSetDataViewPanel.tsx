@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Typography, Grid, Space, Tabs, Spin} from '@arco-design/web-react';
 import styles from "@/pages/project/preview/style/index.module.less";
-import StatPreviewPanel from "@/pages/stat/preview/preview";
+import StatPreviewPanel from "@/pages/stat/preview/StatPreviewPanel";
 import MetricSetDataViewMenu from "@/pages/metricset/preview/dataview/MetricSetDataViewMenu";
 const { Title } = Typography;
 const { Row, Col } = Grid;

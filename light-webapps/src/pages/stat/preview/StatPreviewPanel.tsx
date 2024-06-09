@@ -1,11 +1,11 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import SearchForm from "./search_form";
-import {Button, Card, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
+import {Breadcrumb, Button, Card, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
 import {LimitData, Stat, StatData, TreeNode} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import {IconTag} from "@arco-design/web-react/icon";
+import {IconHome, IconTag} from "@arco-design/web-react/icon";
 import BasicInfo from "@/pages/stat/preview/basic";
 import {requestQueryById} from "@/api/stat";
 import {getStatStateDescription} from "@/desc/base";
@@ -224,6 +224,12 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     return(
         errorCode ? <ErrorPage errorCode={403}/> :
         <>
+            <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
+                <Breadcrumb.Item>
+                    <IconHome/>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item style={{fontWeight: 20}}>{t['statDisplay.breadcrumbItem']}</Breadcrumb.Item>
+            </Breadcrumb>
             <Spin loading={loading} size={20} style={{ display: 'block' }}>
                 <Space size={16} direction="vertical" style={{ width: '100%',minHeight:'500px' }}>
                     {statInfo &&
