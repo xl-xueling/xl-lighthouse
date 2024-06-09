@@ -1,21 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
-    Card,
     Typography,
     Grid,
-    Space,
     Tabs,
-    Divider,
-    Notification,
-    Breadcrumb,
-    Spin,
     Menu, Empty
 } from '@arco-design/web-react';
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 import {getTreeResourceIcon} from "@/desc/base";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview/[id]";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview/MetricPreviewPanel";
 
 
 export default function MetricSetDataViewMenu({callback}) {

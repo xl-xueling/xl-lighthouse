@@ -25,7 +25,7 @@ import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
 import {CiLock} from "react-icons/ci";
 import MetricSetStar from "@/pages/metricset/common/MetricSetStar";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview/[id]";
+import {MetricSetPreviewContext} from "@/pages/metricset/preview/MetricPreviewPanel";
 const { Row, Col } = Grid;
 export default function MetricSetPreviewHeader() {
 
