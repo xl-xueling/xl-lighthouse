@@ -8,6 +8,12 @@ const withTM = require('next-transpile-modules')([
 ]);
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ThreadLoader = require('thread-loader');
+const threadLoaderOptions = {
+    workers: 2,
+};
+ThreadLoader.warmup(threadLoaderOptions, ['babel-loader']);
+
 const setting = require("./src/settings.json");
 
 module.exports = withLess(
@@ -24,7 +30,20 @@ module.exports = withLess(
             config.module.rules.push({
                 test: /\.svg$/,
                 use: ['@svgr/webpack'],
-            });
+            },
+                {
+                    test: /\.js$/,
+                    include: path.resolve('src'),
+                    use: [
+                        'cache-loader',
+                        {
+                            loader: 'thread-loader',
+                            options: threadLoaderOptions,
+                        },
+                        'babel-loader',
+                    ],
+                }
+            );
 
             config.plugins.push(
                 new CopyWebpackPlugin({
@@ -33,6 +52,13 @@ module.exports = withLess(
                     ],
                 })
             );
+            config.watchOptions = {
+                poll: 1000,
+                ignored: /node_modules/,
+            };
+
+
+            config.parallelism = 4;
 
             return config;
         },

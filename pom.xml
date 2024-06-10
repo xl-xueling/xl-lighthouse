@@ -37,6 +37,7 @@
     <commons.lang3.version>3.12.0</commons.lang3.version>
     <scope>compile</scope>
     <frontend.maven.plugin.version>1.15.0</frontend.maven.plugin.version>
+    <!--NPM镜像库地址-->
     <npm.registry.url>https://registry.npmmirror.com</npm.registry.url>
   </properties>
 
