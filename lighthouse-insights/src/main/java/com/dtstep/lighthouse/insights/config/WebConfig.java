@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -42,6 +43,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
     private PermissionInterceptor permissionInterceptor;
+
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -80,6 +82,7 @@ public class WebConfig implements WebMvcConfigurer {
         simpleModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerdeConfig.LocalDateTimeToEpochSerializer());
         simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeSerdeConfig.LocalDateTimeFromEpochDeserializer());
         objectMapper.registerModule(simpleModule);
+        converters.add(new ByteArrayHttpMessageConverter());
         converters.add(new MappingJackson2HttpMessageConverter(objectMapper));
     }
 
