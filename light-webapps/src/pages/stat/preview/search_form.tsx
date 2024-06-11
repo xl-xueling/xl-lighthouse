@@ -17,6 +17,7 @@ import {
 } from "@/utils/date";
 import {formatString, getRandomString} from "@/utils/util";
 import StructurePanel from "@/pages/metricset/structure/structure";
+import dayjs from "dayjs";
 
 const { useForm } = Form;
 
@@ -159,17 +160,17 @@ const SearchForm = React.forwardRef(( props:{size,statInfo,onSearch},ref) => {
 
     const getDatePicker = () => {
         if(statInfo.timeparam.endsWith("second")){
-            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false}/>;
+            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false} disabledDate={function (date) { return dayjs(date).isAfter(dayjs()); }} />;
         }else if(statInfo.timeparam.endsWith("minute")){
-            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false}/>;
+            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false} disabledDate={function (date) { return dayjs(date).isAfter(dayjs()); }} />;
         }else if(statInfo.timeparam.endsWith("hour")){
-            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false}/>;
+            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false} disabledDate={function (date) { return dayjs(date).isAfter(dayjs()); }} />;
         }else if(statInfo.timeparam.endsWith("day")){
-            return <DatePicker.RangePicker style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false}/>;
+            return <DatePicker.RangePicker style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false} disabledDate={function (date) { return dayjs(date).isAfter(dayjs()); }} />;
         }else if(statInfo.timeparam.endsWith("month")){
-            return <DatePicker.RangePicker mode={"month"} style={{width:'100%'}} allowClear={false}/>;
+            return <DatePicker.RangePicker mode={"month"} style={{width:'100%'}} allowClear={false} disabledDate={function (date) { return dayjs(date).isAfter(dayjs()); }} />;
         }else if(statInfo.timeparam.endsWith("year")){
-            return <DatePicker.RangePicker mode={"year"} style={{width:'100%'}} allowClear={false}/>;
+            return <DatePicker.RangePicker mode={"year"} style={{width:'100%'}} allowClear={false} disabledDate={function (date) { return dayjs(date).isAfter(dayjs()); }} />;
         }
     }
 
