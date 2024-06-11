@@ -13,10 +13,11 @@ import useLocale from "@/utils/useLocale";
 import locale from "@/pages/dashboard/workplace/locale";
 import StatPieChart from "@/pages/dashboard/workplace/StatPieChart";
 import {getDataWithLocalCache} from "@/utils/localCache";
+import {HomePageContext} from "@/pages/common/context";
 const { Row, Col } = Grid;
 const gutter = 16;
 
-export const HomePageContext = React.createContext(null)
+
 
 function Workplace() {
     const t = useLocale(locale);

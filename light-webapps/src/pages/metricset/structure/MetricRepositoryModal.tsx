@@ -17,7 +17,7 @@ import locale from "./locale";
 import {Resource, TreeNode} from "@/types/insights-web";
 import {getRandomString} from "@/utils/util";
 import {ResourceTypeEnum} from "@/types/insights-common";
-import {MetricSetStructureContext} from "@/pages/metricset/structure/index";
+import {MetricSetStructureContext} from "@/pages/common/context";
 import {treeCheckContainsNode} from "@/pages/department/base";
 import {getResourceTypeDescription} from "@/desc/base";
 import getColumns from "@/pages/metricset/structure/constants";

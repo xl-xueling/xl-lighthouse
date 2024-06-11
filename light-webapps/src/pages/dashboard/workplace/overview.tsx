@@ -20,7 +20,7 @@ import IconContent from './assets/content.svg';
 import IconIncrease from './assets/increase.svg';
 import {GlobalState} from "@/store";
 import ChartPanel from "@/pages/stat/preview/chart_panel";
-import {HomePageContext} from "@/pages/dashboard/workplace/index";
+import {HomePageContext} from "@/pages/common/context";
 
 const { Row, Col } = Grid;
 

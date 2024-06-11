@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import ReactECharts from 'echarts-for-react';
-import {HomePageContext} from "@/pages/dashboard/workplace/index";
+import {HomePageContext} from "@/pages/common/context";
 
 export default function StatPieChart() {
 

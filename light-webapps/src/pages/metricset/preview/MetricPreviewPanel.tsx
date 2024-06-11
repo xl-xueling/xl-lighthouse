@@ -45,8 +45,7 @@ import {deepCopyObject} from "@/utils/util";
 import {requestDeleteById} from "@/api/metricset";
 import PermissionManageModal from "@/pages/permission/PermissionManageModal";
 import { useRouter } from 'next/router';
-
-export const MetricSetPreviewContext = React.createContext(null)
+import {MetricSetPreviewContext} from "@/pages/common/context";
 
 export default function MetricPreviewPanel({id}) {
     const { Text } = Typography;

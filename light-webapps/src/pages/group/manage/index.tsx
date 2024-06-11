@@ -26,12 +26,13 @@ import {Group} from "@/types/insights-web";
 import {requestDeleteById, requestQueryById} from "@/api/group";
 import {HiMiniBoltSlash} from "react-icons/hi2";
 const { Row, Col } = Grid;
+import {GroupManageContext} from "@/pages/common/context";
 import { RiShieldKeyholeLine } from "react-icons/ri";
 import GroupUpdatePanel from "@/pages/group/update";
 import SecretKeyModal from "@/pages/group/basic/secret_key";
 import LimitingSettingsModal from "@/pages/group/limiting/LimitingSettingsModal";
 
-export const GroupManageContext = React.createContext(null)
+
 
 export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
     const TabPane = Tabs.TabPane;

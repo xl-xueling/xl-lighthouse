@@ -13,13 +13,13 @@ import {ResourceTypeEnum, StatStateEnum} from "@/types/insights-common";
 import {requestResetPasswd} from "@/api/user";
 import SearchForm from "@/pages/stat/list/form";
 import {requestBinded} from "@/api/metricset";
-import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
 import ProjectApplyModal from "@/pages/project/apply";
 import StatApplyModal from "@/pages/stat/apply";
-import {GroupManageContext} from "@/pages/group/manage";
+import {GroupManageContext} from "@/pages/common/context";
 import {Simulate} from "react-dom/test-utils";
 import keyDown = Simulate.keyDown;
 import {getBindColumns, getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
+import {MetricSetBindListContext} from "@/pages/common/context";
 
 export default function StatisticalListPanel({formParams = {},from = null,parentLoading=false,extend=null}) {
     const t = useLocale(locale);

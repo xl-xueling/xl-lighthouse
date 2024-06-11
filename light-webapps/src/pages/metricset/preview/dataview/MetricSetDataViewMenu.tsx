@@ -9,8 +9,7 @@ const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 import {getTreeResourceIcon} from "@/desc/base";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview/MetricPreviewPanel";
-
+import {MetricSetPreviewContext} from "@/pages/common/context";
 
 export default function MetricSetDataViewMenu({callback}) {
 

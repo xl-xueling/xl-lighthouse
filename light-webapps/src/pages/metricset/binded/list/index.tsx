@@ -27,11 +27,10 @@ import ProjectApplyModal from "@/pages/project/apply";
 import ApplyModal from "@/pages/order/apply/modal/ApplyModal";
 import NewMetricBindedModal from "@/pages/metricset/binded/binded";
 import getColumns from "@/pages/metricset/binded/list/constants";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview/MetricPreviewPanel";
+import {MetricSetPreviewContext} from "@/pages/common/context";
+import {MetricSetBindListContext} from "@/pages/common/context";
 const { Row, Col } = Grid;
 const { Text } = Typography;
-
-export const MetricSetBindListContext = React.createContext(null)
 
 export default function MetricSetBindListPanel() {
 
