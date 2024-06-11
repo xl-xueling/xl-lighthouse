@@ -415,21 +415,67 @@
     <build>
         <plugins>
 
-                        <plugin>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-maven-plugin</artifactId>
-                            <version>2.7.8</version>
-                            <configuration>
-                                <fork>false</fork>
-                                <layout>ZIP</layout>
-                                <includes>
-                                    <include>
-                                        <groupId>nothing</groupId>
-                                        <artifactId>nothing</artifactId>
-                                    </include>
-                                </includes>
-                            </configuration>
-                        </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.0</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                    <encoding>UTF-8</encoding>
+                    <excludes>
+                        <exclude>**/node_modules/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>build-plain-jar</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>plain</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Spring Boot Maven Plugin for executable JAR -->
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.7.8</version>
+                <executions>
+                    <execution>
+                        <id>repackage-executable</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>exec</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <fork>false</fork>
+                    <layout>ZIP</layout>
+                    <includes>
+                        <include>
+                            <groupId>nothing</groupId>
+                            <artifactId>nothing</artifactId>
+                        </include>
+                    </includes>
+                </configuration>
+            </plugin>
 
             <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
@@ -466,29 +512,6 @@
 
 
 
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-jar-plugin</artifactId>
-                            <version>3.1.0</version>
-                            <configuration>
-                                <excludes>
-                                    <exclude>**/node_modules/**</exclude>
-                                </excludes>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-compiler-plugin</artifactId>
-                            <version>3.10.0</version>
-                            <configuration>
-                                <source>11</source>
-                                <target>11</target>
-                                <encoding>UTF-8</encoding>
-                                <excludes>
-                                    <exclude>**/node_modules/**</exclude>
-                                </excludes>
-                            </configuration>
-                        </plugin>
 
 
 <!--            <plugin>-->
