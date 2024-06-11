@@ -186,7 +186,7 @@ const SearchForm = React.forwardRef(( props:{size,statInfo,onSearch},ref) => {
         >
             <Row gutter={24}>
                 <Col span={12}>
-                    <Form.Item label={'Date'} field={"date"}>
+                    <Form.Item label={t['basic.form.label.date']} field={"date"}>
                         {getDatePicker()}
                     </Form.Item>
                 </Col>
