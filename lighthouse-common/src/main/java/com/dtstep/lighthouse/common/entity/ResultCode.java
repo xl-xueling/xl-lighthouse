@@ -152,6 +152,8 @@ public enum ResultCode {
 
     dataQueryLimitExceed("8001","dataQueryLimitExceed"),
 
+    exportLimitExceed("9001","exportLimitExceed"),
+
     ;
 
     ResultCode(String code , String i18nLabel){
