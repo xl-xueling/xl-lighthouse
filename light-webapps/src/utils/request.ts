@@ -6,12 +6,7 @@ import { getGlobalConfig } from './configLoader';
 
 export const request = async <T>(config): Promise<ResultData<T>> => {
     const envConfig = await getGlobalConfig().then();
-    let baseURL;
-    if(process.env.REACT_APP_ENV == "simulation"){
-        baseURL = 'http://119.91.203.220:9089'
-    }else{
-        baseURL = envConfig.REACT_APP_BASE_URL;
-    }
+    let baseURL = envConfig.REACT_APP_BASE_URL;
     const http = axios.create({
         baseURL: baseURL + '/api/v1',
         timeout: envConfig.AXIOS_TIMEOUT,
@@ -23,17 +18,6 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
             config.headers['Accept-Language'] = language;
         }else{
             config.headers['Accept-Language'] = 'en-US';
-        }
-        if(process.env.REACT_APP_ENV == "simulation"){
-            if(config.url == '/data/stat'){
-                config.url = '/test-data/stat'
-            }
-            if(config.url == '/data/limit'){
-                config.url = '/test-data/limit'
-            }
-            if(config.url == '/stat/queryById'){
-                config.url = '/stat/testQueryById'
-            }
         }
         config.headers['accessKey'] = window.localStorage.getItem('accessKey');
         return config;

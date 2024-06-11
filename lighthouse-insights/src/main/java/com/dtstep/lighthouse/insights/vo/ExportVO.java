@@ -4,13 +4,23 @@ import java.io.Serializable;
 
 public class ExportVO implements Serializable {
 
-    private String link;
+    private String filename;
 
-    public String getLink() {
-        return link;
+    private String content;
+
+    public String getFilename() {
+        return filename;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

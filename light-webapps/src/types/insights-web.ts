@@ -272,3 +272,7 @@ export interface Permission {
     updateTime?:number;
 }
 
+export interface ExportData {
+    filename?:string;
+    content?:string;
+}
