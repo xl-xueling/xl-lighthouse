@@ -20,6 +20,7 @@ import {ResourceTypeEnum} from "@/types/insights-common";
 import {MetricSetStructureContext} from "@/pages/metricset/structure/index";
 import {treeCheckContainsNode} from "@/pages/department/base";
 import {getResourceTypeDescription} from "@/desc/base";
+import getColumns from "@/pages/metricset/structure/constants";
 
 export default function MetricSetRepositoryModal({id,onClose}) {
 
@@ -29,6 +30,7 @@ export default function MetricSetRepositoryModal({id,onClose}) {
     const {listNodes,setListNodes} = useContext(MetricSetStructureContext);
     const {needSync,setNeedSync} = useContext(MetricSetStructureContext);
     const [refreshTime,setRefreshTime] = useState<number>(Date.now);
+    const Text = Typography.Text;
 
     const tableCallback = async (record, type) => {
         if(type == 'add'){
@@ -50,71 +52,6 @@ export default function MetricSetRepositoryModal({id,onClose}) {
             setNeedSync(true);
             setRefreshTime(Date.now);
         }
-    }
-
-    const getColumns = (t: any,listNodes:TreeNode[], callback: (record: Record<string, any>, type: string) => Promise<void>) => {
-        return [
-            {
-                title: t['repositoryModal.column.label.id'],
-                dataIndex: 'resourceId',
-                render: (value, record) =>
-                    {value}
-                ,
-            },
-            {
-                title: t['repositoryModal.column.label.title'],
-                dataIndex: 'title',
-                render: (value, record) =>
-                {value}
-                ,
-            },
-
-            {
-                title: t['repositoryModal.column.label.resourceType'],
-                dataIndex: 'resourceType',
-                render: (value, record) => {
-                    return getResourceTypeDescription(t,value);
-                },
-            },
-            {
-                title: t['repositoryModal.column.label.relationShip'],
-                dataIndex: 'fullTitle',
-                render: (value, record) => {
-                    if(record.resourceType == ResourceTypeEnum.Stat){
-                        const array = value.split(";");
-                        return array[0] +  '  >  ' + array[1];
-                    }
-                },
-            },
-            {
-                title: t['repositoryModal.column.label.operations'],
-                dataIndex: 'operations',
-                render: (value, record) => {
-                    let button;
-                    let type;
-                    if(record.resourceType == ResourceTypeEnum.Stat){
-                        type = 'stat';
-                    }else if(record.resourceType == ResourceTypeEnum.Project){
-                        type = 'project';
-                    }
-                    if(!treeCheckContainsNode(listNodes,record.resourceId,type)){
-                        button = <Button key={getRandomString()}
-                                         type="text"
-                                         onClick={() => callback(record,'add')}
-                                         size="mini">
-                            {t['repositoryModal.column.label.operations.add']}
-                        </Button>;
-                    }else{
-                        button = <Button disabled={true} key={getRandomString()}
-                                         type="secondary"
-                                         size="mini">
-                            {t['repositoryModal.column.label.operations.added']}
-                        </Button>;
-                    }
-                    return  <Space key={getRandomString()} size={0} direction="horizontal">{[button]}</Space>;
-                }
-            }
-        ];
     }
 
     const columns = useMemo(() => getColumns(t,listNodes, tableCallback), [t,refreshTime]);
