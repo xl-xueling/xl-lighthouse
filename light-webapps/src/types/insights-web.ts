@@ -28,8 +28,8 @@ export interface Department {
 
 export interface AuthorizeInfo {
     clusterId?:string;
-    installationCode:string;
-    activationCode:string;
+    installationCode?:string;
+    activationCode?:string;
     createTime?:number;
     expireTime?:number;
     userLimit?:number;

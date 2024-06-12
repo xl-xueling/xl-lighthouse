@@ -12,7 +12,7 @@ import {
     Typography
 } from "@arco-design/web-react";
 import GroupManagePanel from "@/pages/group/manage";
-import {Project, TreeNode} from "@/types/insights-web";
+import {AuthorizeInfo, Project, TreeNode} from "@/types/insights-web";
 import {requestQueryById} from "@/api/project";
 import ProjectManageMenu from "@/pages/project/manage/menu";
 import {IconBook, IconClockCircle, IconHome, IconUserGroup} from "@arco-design/web-react/icon";
