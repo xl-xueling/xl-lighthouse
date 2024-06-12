@@ -76,6 +76,7 @@ const i18n = {
     'menu.system.department':'Departments',
     'menu.system.users':'Users',
     'menu.system.user.settings':'User Settings',
+    'menu.system.registration':'Registration',
     'menu.system.filterComponents':'Filter Components',
     'menu.system.apiCaller':'Api Caller',
     'menu.system.document':'Documents',
@@ -143,7 +144,6 @@ const i18n = {
     'message.empty.tips': '暂无内容',
     'message.lang.tips': '语言切换至 ',
     'navbar.search.placeholder': '输入内容查询',
-
     'menu.favorites':'我的收藏',
     'menu.favorites.project':'统计工程',
     'menu.favorites.stat':'统计项',
@@ -157,6 +157,7 @@ const i18n = {
     'menu.system':'系统管理',
     'menu.system.department':'部门管理',
     'menu.system.users':'用户列表',
+    'menu.system.registration':'系统注册',
     'menu.system.user.settings':'用户设置',
     'menu.system.filterComponents':'筛选组件',
     'menu.system.apiCaller':'API调用方',
