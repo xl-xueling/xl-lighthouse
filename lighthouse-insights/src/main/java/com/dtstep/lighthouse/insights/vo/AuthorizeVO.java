@@ -17,6 +17,8 @@ public class AuthorizeVO implements Serializable {
 
     private Integer userLimit;
 
+    private String organize;
+
     public String getClusterId() {
         return clusterId;
     }
@@ -63,5 +65,13 @@ public class AuthorizeVO implements Serializable {
 
     public void setUserLimit(Integer userLimit) {
         this.userLimit = userLimit;
+    }
+
+    public String getOrganize() {
+        return organize;
+    }
+
+    public void setOrganize(String organize) {
+        this.organize = organize;
     }
 }
