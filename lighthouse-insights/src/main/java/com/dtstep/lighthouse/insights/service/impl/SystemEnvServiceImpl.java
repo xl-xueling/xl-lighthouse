@@ -21,8 +21,10 @@ import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.insights.dao.SystemEnvDao;
 import com.dtstep.lighthouse.common.modal.SystemEnv;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SystemEnvServiceImpl implements SystemEnvService {
@@ -38,6 +40,22 @@ public class SystemEnvServiceImpl implements SystemEnvService {
             systemEnv.setParam(SysConst.PARAM_SIGN_KEY);
             systemEnv.setValue(RandomID.id(64));
             systemEnvDao.insert(systemEnv);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void createIfNotExist(String param, String value) {
+        Validate.notNull(param);
+        Validate.notNull(value);
+        SystemEnv systemEnv = new SystemEnv();
+        systemEnv.setParam(param);
+        systemEnv.setValue(value);
+        boolean isExist = systemEnvDao.isParamExist(param);
+        if(!isExist){
+            systemEnvDao.insert(systemEnv);
+        }else{
+            systemEnvDao.update(systemEnv);
         }
     }
 
