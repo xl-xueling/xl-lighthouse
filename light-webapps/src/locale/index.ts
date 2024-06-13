@@ -158,7 +158,7 @@ const i18n = {
     'menu.system.department':'部门管理',
     'menu.system.users':'用户列表',
     'menu.system.user.settings':'用户设置',
-    'menu.system.authorize':'系统注册',
+    'menu.system.authorize':'系统授权',
     'menu.system.filterComponents':'筛选组件',
     'menu.system.apiCaller':'API调用方',
     'menu.system.document':'系统文档',

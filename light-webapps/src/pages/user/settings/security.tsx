@@ -20,7 +20,7 @@ export default function Security({userInfo}) {
 
   function onSubmitClick() {
     setFormLoading(true);
-    formRef.current.validate().then((values) => {
+      formRef.current.validate().then((values) => {
       const proc = async () =>{
         const changePasswdParams = {
             id:values.id,

@@ -154,6 +154,8 @@ public enum ResultCode {
 
     exportLimitExceed("9001","exportLimitExceed"),
 
+    authorizationFailed("10001","authorizationFailed"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

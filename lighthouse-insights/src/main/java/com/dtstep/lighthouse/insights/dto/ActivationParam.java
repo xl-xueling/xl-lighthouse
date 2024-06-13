@@ -1,13 +1,17 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class ActivationParam implements Serializable {
 
+    @NotNull
     private String organize;
 
+    @NotNull
     private String installationCode;
 
+    @NotNull
     private String activationCode;
 
     public String getOrganize() {

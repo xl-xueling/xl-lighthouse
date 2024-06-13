@@ -9,17 +9,19 @@ export async function requestAuthorizeInfo() :Promise<ResultData<AuthorizeInfo>>
     })
 }
 
-export async function requestAuthActivation() :Promise<ResultData<AuthorizeInfo>> {
+export async function requestAuthActivation(data) :Promise<ResultData<AuthorizeInfo>> {
     return request({
         url:'/authorize/activation',
         method:'POST',
+        data,
     })
 }
 
 
-export async function requestAuthUnbind() :Promise<ResultData<AuthorizeInfo>> {
+export async function requestAuthUnbind(data) :Promise<ResultData<AuthorizeInfo>> {
     return request({
         url:'/authorize/unbind',
         method:'POST',
+        data,
     })
 }

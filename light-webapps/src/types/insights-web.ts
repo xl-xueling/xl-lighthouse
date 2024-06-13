@@ -30,7 +30,8 @@ export interface AuthorizeInfo {
     clusterId?:string;
     installationCode?:string;
     activationCode?:string;
-    createTime?:number;
+    organize?:string;
+    startTime?:number;
     expireTime?:number;
     userLimit?:number;
 }

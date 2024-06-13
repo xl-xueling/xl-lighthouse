@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.constant.StatConst;
 import org.junit.Test;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
@@ -293,5 +294,19 @@ public class DateUtilTest {
         long currentTimestamp = System.currentTimeMillis(); // 秒级时间戳
         long hoursSinceStart = ChronoUnit.HOURS.between(Instant.ofEpochMilli(t1), Instant.ofEpochMilli(currentTimestamp));
         System.out.println("t1:" + hoursSinceStart);
+    }
+
+    @Test
+    public void testTranslateToTimeStamp() throws Exception {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        long t = DateUtil.translateToTimeStamp(localDateTime);
+        System.out.println("t:" + t);
+    }
+
+    @Test
+    public void testGetDateAfterMonths() throws Exception {
+        long t = System.currentTimeMillis();
+        long t2 = DateUtil.getDateAfterMonths(t,7);
+        System.out.println(DateUtil.formatTimeStamp(t2,"yyyy-MM-dd HH:mm:ss"));
     }
 }
