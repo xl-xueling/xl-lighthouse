@@ -19,8 +19,6 @@ package com.dtstep.lighthouse.tasks.valid
  */
 
 import com.dtstep.lighthouse.common.entity.message.LightMessage
-import com.dtstep.lighthouse.common.enums.result.RequestCodeEnum
-import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 
