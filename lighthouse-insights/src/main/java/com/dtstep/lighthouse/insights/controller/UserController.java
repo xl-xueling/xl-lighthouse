@@ -126,7 +126,7 @@ public class UserController {
         if(dbUser == null
                 || dbUser.getState() != UserStateEnum.USER_NORMAL
                 || dbUser.getId().intValue() != userId.intValue()){
-            return ResultData.result(ResultCode.unauthorized);
+            return ResultData.result(ResultCode.accessDenied);
         }
         if(!passwordEncoder.matches(originPassword,dbUser.getPassword())){
             return ResultData.result(ResultCode.userChangePasswordWrong);

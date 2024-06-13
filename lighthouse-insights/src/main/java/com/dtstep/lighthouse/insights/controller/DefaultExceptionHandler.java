@@ -56,7 +56,7 @@ public class DefaultExceptionHandler {
     public Object globalAuthorizeExceptionHandler(HttpServletRequest request, AuthorizeException e)
     {
         logger.error("globalErrorHandler",e);
-        return ResultData.result(ResultCode.unauthorized);
+        return ResultData.result(ResultCode.systemUnauthorized);
     }
 
     @ExceptionHandler(value = UnexpectedTypeException.class)

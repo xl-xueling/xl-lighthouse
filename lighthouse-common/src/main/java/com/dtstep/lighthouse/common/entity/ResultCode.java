@@ -14,6 +14,8 @@ public enum ResultCode {
 
     systemError("500","systemError"),
 
+    systemUnauthorized("1000","systemUnauthorized"),
+
     loginCheckFailed("1001","loginCheckFailed"),
 
     authRenewalFailed("1002","authRenewalFailed"),
