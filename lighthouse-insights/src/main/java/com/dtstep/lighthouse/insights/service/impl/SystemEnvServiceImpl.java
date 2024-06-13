@@ -63,4 +63,9 @@ public class SystemEnvServiceImpl implements SystemEnvService {
     public String getParam(String param) {
         return systemEnvDao.getParam(param);
     }
+
+    @Override
+    public void delete(String param) {
+        systemEnvDao.delete(param);
+    }
 }

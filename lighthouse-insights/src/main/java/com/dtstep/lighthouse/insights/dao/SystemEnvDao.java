@@ -29,4 +29,6 @@ public interface SystemEnvDao {
     String getParam(String param);
 
     int update(SystemEnv systemEnv);
+
+    void delete(String param);
 }

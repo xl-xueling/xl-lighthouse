@@ -34,6 +34,7 @@ export interface AuthorizeInfo {
     startTime?:number;
     expireTime?:number;
     userLimit?:number;
+    timestamp?:number;
 }
 
 export interface GrantPrivileges {

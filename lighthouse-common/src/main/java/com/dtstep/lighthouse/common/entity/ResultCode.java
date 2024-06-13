@@ -156,6 +156,8 @@ public enum ResultCode {
 
     authorizationFailed("10001","authorizationFailed"),
 
+    authorizationUnbindFailed("10002","authorizationUnbindFailed"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

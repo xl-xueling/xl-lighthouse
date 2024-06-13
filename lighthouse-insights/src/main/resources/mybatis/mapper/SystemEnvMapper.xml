@@ -26,4 +26,7 @@
         update ldp_env set value = #{value,jdbcType=VARCHAR} WHERE param = #{param,jdbcType=VARCHAR}
     </update>
 
+    <delete id="delete">
+        delete from ldp_env WHERE param = #{param,jdbcType=VARCHAR}
+    </delete>
 </mapper>
