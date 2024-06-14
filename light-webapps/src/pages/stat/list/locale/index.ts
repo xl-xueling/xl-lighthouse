@@ -86,7 +86,7 @@ const i18n = {
     'statList.label.title':'统计项名称',
     'statList.label.relationship':'归属',
     'statList.label.group':'统计组',
-    'statList.label.timeparam':'时间周期',
+    'statList.label.timeparam':'统计周期',
     'statList.label.state':'状态',
     'statList.label.expired':'过期时间',
     'statList.label.operations':'操作',

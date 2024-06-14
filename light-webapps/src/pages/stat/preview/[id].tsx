@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 const {Row, Col} = Grid;
 
 import StatPreviewPanel from "@/pages/stat/preview/StatPreviewPanel";
+import {IconHome} from "@arco-design/web-react/icon";
 
 export default function StatPreviewPage() {
     const router = useRouter();
@@ -15,6 +16,12 @@ export default function StatPreviewPage() {
     return (
         <>
             <>
+                <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
+                    <Breadcrumb.Item>
+                        <IconHome/>
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item style={{fontWeight: 20}}>{t['statDisplay.breadcrumbItem']}</Breadcrumb.Item>
+                </Breadcrumb>
                 <StatPreviewPanel id={id}/>
             </>
         </>

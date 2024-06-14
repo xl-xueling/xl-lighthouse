@@ -224,12 +224,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     return(
         errorCode ? <ErrorPage errorCode={403}/> :
         <>
-            <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
-                <Breadcrumb.Item>
-                    <IconHome/>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item style={{fontWeight: 20}}>{t['statDisplay.breadcrumbItem']}</Breadcrumb.Item>
-            </Breadcrumb>
             <Spin loading={loading} size={20} style={{ display: 'block' }}>
                 <Space size={16} direction="vertical" style={{ width: '100%',minHeight:'500px' }}>
                     {statInfo &&

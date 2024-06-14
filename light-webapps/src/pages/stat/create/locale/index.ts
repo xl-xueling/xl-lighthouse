@@ -12,7 +12,7 @@ const i18n = {
     'statCreate.modal.title':'创建统计项',
     'statCreate.form.submit.success':'创建统计项成功！',
     'statCreate.label.template':'统计模板',
-    'statCreate.label.timeparam':'时间周期',
+    'statCreate.label.timeparam':'统计周期',
     'statCreate.label.expired':'有效期',
     'statCreate.label.group':'统计组',
     'statCreate.label.description':'描述',
