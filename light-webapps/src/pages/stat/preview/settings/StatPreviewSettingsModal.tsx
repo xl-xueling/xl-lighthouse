@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Form, FormInstance, Input, Modal, Radio, Tabs, Typography} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/preview/settings/locale";
@@ -9,6 +9,7 @@ export default function StatPreviewSettingsModal({statInfo,onClose}) {
     const FormItem = Form.Item;
     const TabPane = Tabs.TabPane;
     const RadioGroup = Radio.Group;
+    const [functionIndex,setFunctionIndex] = useState<number>(-1);
 
     return (
         <Modal

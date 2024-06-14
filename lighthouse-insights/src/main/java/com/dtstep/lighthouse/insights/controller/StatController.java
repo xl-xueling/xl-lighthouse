@@ -29,6 +29,7 @@ import com.dtstep.lighthouse.insights.service.StatService;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.vo.StatExtendVO;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -156,8 +157,12 @@ public class StatController {
         StatVO stat = statService.queryById(id);
         Validate.notNull(stat);
         List<RenderChartConfig> chartConfigs = renderConfigParam.getCharts();
-        RenderDateConfig dateConfig = renderConfigParam.getDatepicker();
-        ResultCode resultCode = statService.renderConfig(stat,dateConfig,chartConfigs);
+        ResultCode resultCode;
+        if(CollectionUtils.isNotEmpty(chartConfigs)){
+             resultCode = statService.chartsConfig(stat,chartConfigs);
+        }else{
+            resultCode = ResultCode.renderConfigConfigCannotBeEmpty;
+        }
         return ResultData.result(resultCode);
     }
 
