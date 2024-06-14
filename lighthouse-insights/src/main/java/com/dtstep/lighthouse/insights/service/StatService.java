@@ -20,12 +20,9 @@ import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
 import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
-import com.dtstep.lighthouse.common.modal.DBStatistics;
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
-import com.dtstep.lighthouse.common.modal.RenderConfig;
-import com.dtstep.lighthouse.common.modal.RenderFilterConfig;
-import com.dtstep.lighthouse.common.modal.Stat;
 
 import java.util.List;
 
@@ -54,6 +51,8 @@ public interface StatService {
     RenderConfig getTestStatRenderConfig(StatVO stat) throws Exception;
 
     ResultCode filterConfig(StatVO stat, List<RenderFilterConfig> filterConfigs);
+
+    ResultCode chartsConfig(StatVO stat,List<RenderChartConfig> chartConfigs);
 
     List<DBStatistics> getTopDepartmentStatSize();
 }

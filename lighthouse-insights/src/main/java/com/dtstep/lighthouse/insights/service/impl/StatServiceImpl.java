@@ -393,6 +393,15 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
+    public ResultCode chartsConfig(StatVO stat,List<RenderChartConfig> chartConfigs) {
+        if(CollectionUtils.isEmpty(chartConfigs)){
+            return ResultCode.renderConfigConfigCannotBeEmpty;
+        }
+
+        return ResultCode.success;
+    }
+
+    @Override
     public int count(StatQueryParam queryParam) {
         return statDao.count(queryParam);
     }

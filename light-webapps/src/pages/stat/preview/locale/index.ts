@@ -7,6 +7,7 @@ const i18n = {
         'statDisplay.filterConfig.warning':'Please set filter options!',
         'statDisplay.limit.title':'Limit Result',
         'statDisplay.chart.empty.warning':'No Data!',
+        'statDisplay.button.settings':'Settings',
     },
     'zh-CN': {
         'statDisplay.breadcrumbItem':'数据指标',
@@ -16,6 +17,7 @@ const i18n = {
         'statDisplay.filterConfig.warning':'请选择筛选条件！',
         'statDisplay.limit.title':'Limit统计',
         'statDisplay.chart.empty.warning':'暂无数据！',
+        'statDisplay.button.settings':'设置',
     },
 };
 

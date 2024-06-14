@@ -1,6 +1,17 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import SearchForm from "./search_form";
-import {Breadcrumb, Button, Card, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
+import {
+    Breadcrumb,
+    Button,
+    Card,
+    Divider, Dropdown,
+    Grid,
+    Menu,
+    Notification,
+    Space,
+    Spin,
+    Typography
+} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
 import {LimitData, Stat, StatData, TreeNode} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
@@ -8,7 +19,7 @@ import locale from "./locale";
 import {IconHome, IconTag} from "@arco-design/web-react/icon";
 import BasicInfo from "@/pages/stat/preview/basic";
 import {requestQueryById} from "@/api/stat";
-import {getStatStateDescription} from "@/desc/base";
+import {getIcon, getStatStateDescription} from "@/desc/base";
 import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
 import StatUpdateModal from "@/pages/stat/update";
 import {handlerFetchLimitData, handlerFetchStatData,} from "@/pages/stat/preview/common";
@@ -22,6 +33,16 @@ import ErrorPage from "@/pages/common/error";
 import {deepCopyObject} from "@/utils/util";
 import StatLimitingModal from "@/pages/stat/limiting/StatLimitingModal";
 import {GlobalContext} from "@/context";
+import { BiDotsVertical } from "react-icons/bi";
+import { TbDotsVertical } from "react-icons/tb";
+import { TbDots } from "react-icons/tb";
+import { PiDotsThree } from "react-icons/pi";
+import { PiDotsThreeBold } from "react-icons/pi";
+import StatPreviewSettingsModal from "@/pages/stat/preview/settings/StatPreviewSettingsModal";
+import {HiMiniBoltSlash} from "react-icons/hi2";
+import { AiOutlineSetting } from "react-icons/ai";
+import { CiSettings } from "react-icons/ci";
+
 
 const { Row, Col } = Grid;
 
@@ -37,6 +58,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [refreshTime,setRefreshTime] = useState<number>(Date.now());
     const [showLimitedRecord,setShowLimitedRecord] = useState<boolean>(false);
     const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
+    const [showSettingsModal,setShowSettingsModal] = useState<boolean>(false);
     const [statChartData,setStatChartData] = useState<Array<StatData>>(null);
     const [statChartErrorMessage,setStatChartErrorMessage] = useState<string>(null);
     const [limitChartData,setLimitChartData] = useState<Array<LimitData>>(null);
@@ -51,12 +73,15 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const { setLang, lang, theme, setTheme } = useContext(GlobalContext)
 
     const tableCallback = async (type,data) => {
+        console.log("type:" + type + ",data:" + data);
         if(type == 'showFilterConfigModal'){
             setShowFilterConfigModal(true);
         }else if(type == 'showLimitedRecord'){
             setShowLimitedRecord(true);
         }else if(type == 'showUpdateModal'){
             setShowUpdateModal(true);
+        }else if(type == 'showSettingsModal'){
+            setShowSettingsModal(true);
         }
     }
 
@@ -169,7 +194,16 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         return stateList.map((z,index) => {
             return (
                 <Col span={24/statInfo.templateEntity.statStateList.length} key={'state-chart-' + z.functionIndex}>
-                    <Card title={z.stateBody}>
+                    <Card title={
+                        <Grid.Row gutter={8}>
+                        <Grid.Col span={20}>
+                            {z.stateBody}
+                        </Grid.Col>
+                        <Grid.Col span={4} style={{ textAlign:"right" }}>
+                            <CiSettings onClick={() => tableCallback('showSettingsModal',z.functionIndex)} style={{cursor:'pointer'}}/>
+                        </Grid.Col>
+                        </Grid.Row>
+                    }>
                         <StatBasicLineChart theme={theme} size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
                     </Card>
                 </Col>
@@ -269,6 +303,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                 />}
                 {showLimitedRecord && <StatLimitingModal statInfo={statInfo} onClose={() => setShowLimitedRecord(false)}/>}
                 {showUpdateModal && <StatUpdateModal statInfo={statInfo} onClose={() => setShowUpdateModal(false)} listCallback={(r1,r2) => setStatInfo(r1)}/>}
+                {showSettingsModal && <StatPreviewSettingsModal statInfo={statInfo} onClose={() => setShowSettingsModal(false)}/>}
             </Spin>
         </>
     );

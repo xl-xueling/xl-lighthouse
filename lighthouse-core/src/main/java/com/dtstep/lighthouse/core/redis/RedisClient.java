@@ -16,19 +16,13 @@ package com.dtstep.lighthouse.core.redis;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.common.enums.RunningMode;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.redis.cluster.RedisClusterOperator;
-import com.dtstep.lighthouse.core.redis.standalone.RedisStandaloneOperator;
 import com.google.common.base.Joiner;
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.util.StringUtil;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.*;
 import redis.clients.jedis.exceptions.JedisNoScriptException;
 import redis.clients.jedis.resps.Tuple;
 

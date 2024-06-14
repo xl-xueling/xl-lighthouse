@@ -90,6 +90,8 @@ public enum ResultCode {
 
     filterConfigConfigCannotBeEmpty("2008","filterConfigConfigCannotBeEmpty"),
 
+    renderConfigConfigCannotBeEmpty("2008","renderConfigConfigCannotBeEmpty"),
+
     orderCreateRepeatSubmit("2007","orderCreateRepeatSubmit"),
 
     templateParserNoValidItem("2008","templateParserNoValidItem"),
