@@ -1,10 +1,10 @@
 {
   "lighthouse": {
     "timezone": "Asia/Shanghai",
-    "standalone_xmx_memory": "1200M",
-    "standalone_xms_memory": "1200M",
-    "insights_xmx_memory": "256M",
-    "insights_xms_memory": "256M"
+    "standalone_xmx_memory": "800M",
+    "standalone_xms_memory": "800M",
+    "insights_xmx_memory": "200M",
+    "insights_xms_memory": "200M"
   },
   "redis": {
     "max_memory": "256M"

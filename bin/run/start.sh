@@ -117,7 +117,7 @@ function startLightHouseStandalone(){
 			local serverCmd="nohup java -Xms${standalone_xms_memory} -Xmx${standalone_xmx_memory} -XX:+UseG1GC -Dlog4j.configurationFile=${LDP_HOME}/conf/log4j2-standalone.xml -cp ${LDP_HOME}/lib/*:${jar_path} com.dtstep.lighthouse.standalone.executive.LightStandaloneEntrance >/dev/null 2>&1 &";
 			remoteExecute ${CUR_DIR}/common/exec.exp ${DEPLOY_USER} ${ip} ${userPasswd} "$serverCmd"
 		done
-	sleep 10;
+	sleep 5;
 	checkLightHouseStandalone;
 }
 
@@ -204,11 +204,12 @@ start_all(){
 		sleep 10;
 	fi
 	log_info "Waiting to start LightHouse ..."
-	sleep 20;
 	if [[ ${RUNNING_MODE} == "standalone" ]];then
+	    sleep 10;
 	    startLightHouseInsights;
 	    startLightHouseStandalone;
 	else
+	  sleep 20;
 	  startLightHouseICE;
     startLightHouseInsights;
 	  startLightHouseTasks;
