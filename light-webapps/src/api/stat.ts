@@ -1,5 +1,5 @@
 import {request} from "@/utils/request";
-import {ResultData} from "@/types/insights-common";
+import {ChartTypeEnum, ResultData} from "@/types/insights-common";
 import {Group, Project, Stat, User} from "@/types/insights-web";
 
 
@@ -26,6 +26,15 @@ export async function requestFilterConfig(data):Promise<ResultData> {
         data,
     })
 }
+
+export async function requestRenderConfig(data):Promise<ResultData> {
+    return request({
+        url:'/stat/renderConfig',
+        method:'POST',
+        data,
+    })
+}
+
 
 export async function requestFilterReset(data):Promise<ResultData> {
     return request({

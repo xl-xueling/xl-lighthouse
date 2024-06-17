@@ -73,7 +73,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const { setLang, lang, theme, setTheme } = useContext(GlobalContext)
 
     const tableCallback = async (type,data) => {
-        console.log("type:" + type + ",data:" + data);
         if(type == 'showFilterConfigModal'){
             setShowFilterConfigModal(true);
         }else if(type == 'showLimitedRecord'){

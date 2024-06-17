@@ -397,7 +397,13 @@ public class StatServiceImpl implements StatService {
         if(CollectionUtils.isEmpty(chartConfigs)){
             return ResultCode.renderConfigConfigCannotBeEmpty;
         }
-
+        RenderConfig renderConfig = stat.getRenderConfig();
+        if(renderConfig == null){
+            renderConfig = new RenderConfig();
+            stat.setRenderConfig(renderConfig);
+        }
+        renderConfig.setCharts(chartConfigs);
+        statDao.update(stat);
         return ResultCode.success;
     }
 

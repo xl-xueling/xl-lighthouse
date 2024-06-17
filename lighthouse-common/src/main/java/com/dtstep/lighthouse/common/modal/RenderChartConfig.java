@@ -8,7 +8,7 @@ public class RenderChartConfig {
 
     private String title;
 
-    private ChartTypeEnum chartTypeEnum = ChartTypeEnum.LINE_CHART;
+    private ChartTypeEnum chartType;
 
     public int getFunctionIndex() {
         return functionIndex;
@@ -26,11 +26,11 @@ public class RenderChartConfig {
         this.title = title;
     }
 
-    public ChartTypeEnum getChartTypeEnum() {
-        return chartTypeEnum;
+    public ChartTypeEnum getChartType() {
+        return chartType;
     }
 
-    public void setChartTypeEnum(ChartTypeEnum chartTypeEnum) {
-        this.chartTypeEnum = chartTypeEnum;
+    public void setChartType(ChartTypeEnum chartType) {
+        this.chartType = chartType;
     }
 }

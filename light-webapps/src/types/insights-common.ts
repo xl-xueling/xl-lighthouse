@@ -128,6 +128,12 @@ export interface RenderDateConfig {
     label?:string,
 }
 
+export interface RenderChartConfig {
+    functionIndex?:number,
+    title?:string,
+    chartType?:ChartTypeEnum,
+}
+
 export interface Component {
     id?:number,
     title?:string,
@@ -195,4 +201,11 @@ export enum ComponentTypeEnum {
 export enum LimitingStrategyEnum {
     GROUP_MESSAGE_SIZE_LIMITING = 'GROUP_MESSAGE_SIZE_LIMITING',
     STAT_RESULT_SIZE_LIMITING = 'STAT_RESULT_SIZE_LIMITING'
+}
+
+export enum ChartTypeEnum {
+    LINE_CHART=1,
+    LINE_AREA_CHART=2,
+    BAR_CHART=3,
+    PIE_CHART=4,
 }

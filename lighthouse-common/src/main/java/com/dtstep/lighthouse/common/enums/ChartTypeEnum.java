@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.common.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.io.Serializable;
@@ -17,23 +18,24 @@ public enum ChartTypeEnum implements Serializable  {
     ;
 
     @JsonValue
-    private int type;
+    private int chartType;
 
-    public int getType() {
-        return type;
+    public int getChartType() {
+        return chartType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setChartType(int chartType) {
+        this.chartType = chartType;
     }
 
-    ChartTypeEnum(int type){
-        this.type = type;
+    ChartTypeEnum(int chartType){
+        this.chartType = chartType;
     }
 
-    public static ChartTypeEnum getChartTypeEnum(int type){
+    @JsonCreator
+    public static ChartTypeEnum fromType(int type){
         for(ChartTypeEnum chartTypeEnum : ChartTypeEnum.values()){
-            if(chartTypeEnum.getType() == type){
+            if(chartTypeEnum.getChartType() == type){
                 return chartTypeEnum;
             }
         }
