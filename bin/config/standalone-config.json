@@ -1,12 +1,16 @@
 {
   "lighthouse": {
     "timezone": "Asia/Shanghai",
-    "standalone_xmx_memory": "800M",
-    "standalone_xms_memory": "800M",
+    "standalone_xmx_memory": "900M",
+    "standalone_xms_memory": "900M",
     "insights_xmx_memory": "200M",
     "insights_xms_memory": "200M"
   },
   "redis": {
     "max_memory": "256M"
+  },
+  "mysql": {
+    "innodb_buffer_pool_size":"500M",
+    "max_connections": "50"
   }
 }
