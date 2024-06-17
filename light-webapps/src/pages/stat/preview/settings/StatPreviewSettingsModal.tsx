@@ -43,10 +43,12 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
         const stateList = templateEntity.statStateList;
            return stateList.map(z => {
                 return <div key={getRandomString()}>
-                            <FormItem style={{display:z.functionIndex == selectedFunctionIndex ? '':'none'}} label={t['statPreviewSettings.form.label.chartTitle']} field={z.functionIndex + "_chartTitle"}>
+                            <FormItem style={{display:z.functionIndex == selectedFunctionIndex ? '':'none'}} label={t['statPreviewSettings.form.label.chartTitle']} field={z.functionIndex + "_chartTitle"} rules={[
+                                { required: true, message: t['basic.form.verification.empty.warning'], validateTrigger : ['onSubmit'] }]}>
                                 <Input />
                             </FormItem>
-                            <FormItem style={{display:z.functionIndex == selectedFunctionIndex ? '':'none'}} field={z.functionIndex + "_chartType"} label={t['statPreviewSettings.form.label.chartType']} rules={[{ required: true}]}>
+                            <FormItem style={{display:z.functionIndex == selectedFunctionIndex ? '':'none'}} field={z.functionIndex + "_chartType"} label={t['statPreviewSettings.form.label.chartType']} rules={[
+                                { required: true, message: t['basic.form.verification.empty.warning'], validateTrigger : ['onSubmit'] }]}>
                                 <Radio.Group defaultValue={ChartTypeEnum.LINE_CHART}>
                                     <Radio checked={true} value={ChartTypeEnum.LINE_CHART}>{t['statPreviewSettings.form.label.chartType.lineChart']}</Radio>
                                 </Radio.Group>
@@ -73,13 +75,13 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
     },[statInfo])
 
     const handlerSubmit = async () => {
-        setSubmitLoading(true);
         try{
             await formRef.current.validate();
         }catch (error){
             console.log(error)
             return;
         }
+        setSubmitLoading(true);
         const values = formRef.current.getFieldsValue();
         const templateEntity = statInfo.templateEntity;
         const stateList = templateEntity.statStateList;
@@ -156,7 +158,7 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
                     wrapperCol={{ span: 19 }}
                     initialValues={initialValues}
                 >
-                    <FormItem label={t['statPreviewSettings.form.label.function']}>
+                    <FormItem label={t['statPreviewSettings.form.label.function']} rules={[{ required: true}]}>
                         <RadioGroup
                             className={'disable-select'}
                             size='small' onChange={changeFunction}
