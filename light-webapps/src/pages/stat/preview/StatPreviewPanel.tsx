@@ -179,6 +179,16 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         )
     }
 
+    const getStateChartTitle = (functionIndex) => {
+        const chartsConfigs = statInfo?.renderConfig?.charts;
+        if(chartsConfigs){
+            const chartsConfig = chartsConfigs?.filter(item => item.functionIndex === functionIndex);
+            return  chartsConfig[0].title;
+        }else{
+            return statInfo.templateEntity.statStateList[functionIndex].stateBody;
+        }
+    }
+
     const getStateCharts = () => {
         if(!statInfo){
             return ;
@@ -189,12 +199,12 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                 <Col span={24/statInfo.templateEntity.statStateList.length} key={'state-chart-' + z.functionIndex}>
                     <Card title={
                         <Grid.Row gutter={8}>
-                        <Grid.Col span={20}>
-                            {z.stateBody}
-                        </Grid.Col>
-                        <Grid.Col span={4} style={{ textAlign:"right" }}>
-                            <CiSettings onClick={() => tableCallback('showSettingsModal',z.functionIndex)} style={{cursor:'pointer'}}/>
-                        </Grid.Col>
+                            <Grid.Col span={20}>
+                                {getStateChartTitle(z.functionIndex)}
+                            </Grid.Col>
+                            <Grid.Col span={4} style={{ textAlign:"right" }}>
+                                <CiSettings onClick={() => tableCallback('showSettingsModal',z.functionIndex)} style={{cursor:'pointer'}}/>
+                            </Grid.Col>
                         </Grid.Row>
                     }>
                         <StatBasicLineChart theme={theme} size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>

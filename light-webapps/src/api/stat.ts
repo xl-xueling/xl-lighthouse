@@ -27,6 +27,14 @@ export async function requestFilterConfig(data):Promise<ResultData> {
     })
 }
 
+export async function requestFilterReset(data):Promise<ResultData> {
+    return request({
+        url:'/stat/filterReset',
+        method:'POST',
+        data,
+    })
+}
+
 export async function requestRenderConfig(data):Promise<ResultData> {
     return request({
         url:'/stat/renderConfig',
@@ -35,14 +43,16 @@ export async function requestRenderConfig(data):Promise<ResultData> {
     })
 }
 
-
-export async function requestFilterReset(data):Promise<ResultData> {
+export async function requestRenderReset(data):Promise<ResultData> {
     return request({
-        url:'/stat/filterReset',
+        url:'/stat/renderReset',
         method:'POST',
         data,
     })
 }
+
+
+
 
 export async function requestUpdate(data):Promise<ResultData> {
     return request({

@@ -1,11 +1,12 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Form, Input, Modal, Radio, Tabs ,Notification} from "@arco-design/web-react";
+import {Form, Input, Modal, Radio, Tabs, Notification, Button} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/preview/settings/locale";
 import {ChartTypeEnum} from "@/types/insights-common";
-import {requestRenderConfig} from "@/api/stat";
+import {requestRenderConfig, requestRenderReset} from "@/api/stat";
 import {getRandomString} from "@/utils/util";
 import {StatInfoPreviewContext} from "@/pages/common/context";
+import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
 export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
 
     const t = useLocale(locale);
@@ -15,7 +16,8 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
     const TabPane = Tabs.TabPane;
     const RadioGroup = Radio.Group;
     const [selectedFunctionIndex,setSelectedFunctionIndex] = useState<number>(functionIndex);
-    const [loading,setLoading] = useState<boolean>(false);
+    const [submitLoading,setSubmitLoading] = useState<boolean>(false);
+    const [resetLoading,setResetLoading] = useState<boolean>(false);
     const [initialValues, setInitialValues] = useState({});
 
     const changeFunction = (v) => {
@@ -27,8 +29,8 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
         const stateList = templateEntity.statStateList;
         return  (
             stateList.map((option) => {
-                return <Radio key={option.functionIndex} checked={option.functionIndex == 1} value={option.functionIndex}>
-                    {"Function-" + (option.functionIndex + 1)}
+                return <Radio key={option.functionIndex} checked={option.functionIndex == 0} value={option.functionIndex}>
+                    {"Function-" + (option.functionIndex)}
                 </Radio>
                 }
             )
@@ -40,14 +42,14 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
         const stateList = templateEntity.statStateList;
            return stateList.map(z => {
                 return <div key={getRandomString()}>
-                    <FormItem style={{display:z.functionIndex == selectedFunctionIndex ? 'none':''}} label={t['statPreviewSettings.form.label.chartTitle']} field={z.functionIndex + "_chartTitle"}>
-                        <Input />
-                    </FormItem>
-                    <FormItem style={{display:z.functionIndex == selectedFunctionIndex ? 'none':''}} field={z.functionIndex + "_chartType"} label={t['statPreviewSettings.form.label.chartType']} rules={[{ required: true}]}>
-                        <Radio.Group defaultValue={ChartTypeEnum.LINE_CHART}>
-                            <Radio checked={true} value={ChartTypeEnum.LINE_CHART}>{t['statPreviewSettings.form.label.chartType.lineChart']}</Radio>
-                        </Radio.Group>
-                    </FormItem>
+                            <FormItem style={{display:z.functionIndex == selectedFunctionIndex ? '':'none'}} label={t['statPreviewSettings.form.label.chartTitle']} field={z.functionIndex + "_chartTitle"}>
+                                <Input />
+                            </FormItem>
+                            <FormItem style={{display:z.functionIndex == selectedFunctionIndex ? '':'none'}} field={z.functionIndex + "_chartType"} label={t['statPreviewSettings.form.label.chartType']} rules={[{ required: true}]}>
+                                <Radio.Group defaultValue={ChartTypeEnum.LINE_CHART}>
+                                    <Radio checked={true} value={ChartTypeEnum.LINE_CHART}>{t['statPreviewSettings.form.label.chartType.lineChart']}</Radio>
+                                </Radio.Group>
+                            </FormItem>
                 </div>
             });
     }
@@ -70,7 +72,7 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
     },[statInfo])
 
     const handlerSubmit = async () => {
-        setLoading(true);
+        setSubmitLoading(true);
         try{
             await formRef.current.validate();
         }catch (error){
@@ -99,10 +101,29 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
                 const renderConfig = {...statInfo.renderConfig,charts:chartsParams};
                 const newStatInfo = {...statInfo,renderConfig:renderConfig};
                 setStatInfo(newStatInfo);
+                onClose();
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
-            setLoading(false);
+            setSubmitLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
+    const handlerReset = async () => {
+        setResetLoading(true);
+        await requestRenderReset({id:statInfo?.id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                const renderConfig = {...statInfo.renderConfig,charts:null};
+                const newStatInfo = {...statInfo,renderConfig:renderConfig};
+                setStatInfo(newStatInfo);
+                onClose();
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+            setResetLoading(false);
         }).catch((error) => {
             console.log(error);
         })
@@ -114,7 +135,16 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
             visible={true}
             onCancel={onClose}
             alignCenter={false}
-            onOk={handlerSubmit}
+            footer={
+                <>
+                    <Button loading={resetLoading} status={"danger"} type={"primary"} onClick={handlerReset}>
+                        {t['basic.form.button.reset']}
+                    </Button>
+                    <Button loading={submitLoading} type="primary" onClick={handlerSubmit}>
+                        {t['basic.form.button.submit']}
+                    </Button>
+                </>
+            }
             style={{ width:'900px',verticalAlign:'top', top: '130px'}}>
             <div style={{display:"flex",justifyContent:"center",paddingTop:'20px'}}>
                 <Form
@@ -127,6 +157,7 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
                 >
                     <FormItem label={t['statPreviewSettings.form.label.function']}>
                         <RadioGroup
+                            className={'disable-select'}
                             size='small' onChange={changeFunction}
                             type='button' defaultValue={0} style={{ marginBottom: 20 }}>
                             {getRatios()}
