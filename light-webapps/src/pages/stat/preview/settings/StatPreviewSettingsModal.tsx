@@ -30,7 +30,7 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
         return  (
             stateList.map((option) => {
                 return <Radio key={option.functionIndex} checked={option.functionIndex == 0} value={option.functionIndex}>
-                    {"Function-" + (option.functionIndex)}
+                    {"Function-" + (option.functionIndex + 1)}
                 </Radio>
                 }
             )
