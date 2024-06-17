@@ -1,14 +1,16 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
     Modal,
 } from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import StatLimitingRecordsPanel from "@/pages/stat/limiting/limit_records_panel";
+import {StatInfoPreviewContext} from "@/pages/common/context";
 
-const StatLimitingModal = ({statInfo,onClose}) => {
+const StatLimitingModal = ({onClose}) => {
 
     const t = useLocale(locale);
+    const { statInfo, setStatInfo } = useContext(StatInfoPreviewContext);
 
     return (
         <Modal

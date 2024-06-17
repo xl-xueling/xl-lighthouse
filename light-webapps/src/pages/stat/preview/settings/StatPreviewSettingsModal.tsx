@@ -1,15 +1,15 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Form, FormInstance, Input, Modal, Radio, Tabs, Typography,Notification} from "@arco-design/web-react";
+import {Form, Input, Modal, Radio, Tabs ,Notification} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/preview/settings/locale";
-import {Stat} from "@/types/insights-web";
 import {ChartTypeEnum} from "@/types/insights-common";
-import {requestAuthActivation} from "../../../../../../../light-pro-webapps/.yalc/light-webapps/build/api/authorize";
 import {requestRenderConfig} from "@/api/stat";
 import {getRandomString} from "@/utils/util";
-export default function StatPreviewSettingsModal({statInfo,functionIndex = 0,onClose}:{statInfo:Stat}) {
+import {StatInfoPreviewContext} from "@/pages/common/context";
+export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
 
     const t = useLocale(locale);
+    const { statInfo, setStatInfo } = useContext(StatInfoPreviewContext);
     const formRef = useRef();
     const FormItem = Form.Item;
     const TabPane = Tabs.TabPane;
@@ -55,7 +55,6 @@ export default function StatPreviewSettingsModal({statInfo,functionIndex = 0,onC
     useEffect(() => {
         let chartsConfigs;
         if(statInfo?.renderConfig?.charts){
-            console.log("statInfo charts is:" + JSON.stringify(statInfo.renderConfig.charts));
             chartsConfigs = statInfo.renderConfig.charts;
         }
         const templateEntity = statInfo.templateEntity;
@@ -64,11 +63,9 @@ export default function StatPreviewSettingsModal({statInfo,functionIndex = 0,onC
         stateList.map(z => {
            const functionIndex = z.functionIndex;
            const chartsConfig = chartsConfigs?.filter(item => item.functionIndex === functionIndex);
-           console.log("chartsConfig is:" + JSON.stringify(chartsConfig));
            obj[functionIndex + "_" + "chartTitle"] = chartsConfig?chartsConfig[0].title:z.stateBody;
            obj[functionIndex + "_" + "chartType"] = chartsConfig?chartsConfig[0].chartType:ChartTypeEnum.LINE_CHART;
         });
-        console.log("obj is:" + JSON.stringify(obj));
         setInitialValues(obj);
     },[statInfo])
 
@@ -99,6 +96,9 @@ export default function StatPreviewSettingsModal({statInfo,functionIndex = 0,onC
         await requestRenderConfig(renderConfig).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
+                const renderConfig = {...statInfo.renderConfig,charts:chartsParams};
+                const newStatInfo = {...statInfo,renderConfig:renderConfig};
+                setStatInfo(newStatInfo);
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }

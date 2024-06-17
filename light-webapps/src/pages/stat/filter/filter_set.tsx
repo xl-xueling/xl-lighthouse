@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
     Button,
     Form,
@@ -28,10 +28,12 @@ import styles from "./style/index.module.less";
 import EditTableV2 from "@/pages/common/editable_v2/EditTableV2";
 import CustomComponents from "@/pages/stat/filter/custom_component";
 import {getSystemComponentTypeDescription} from "@/desc/base";
+import {StatInfoPreviewContext} from "@/pages/common/context";
 
-export default function StatFilterConfigModal({statInfo,onClose,onSuccess}:{statInfo:Stat,onClose:() => void,onSuccess:() => void}) {
+export default function StatFilterConfigModal({onClose,onSuccess}:{onClose:() => void,onSuccess:() => void}) {
 
     const editTableRef = useRef(null);
+    const { statInfo, setStatInfo } = useContext(StatInfoPreviewContext);
     const t = useLocale(locale);
     const [initFilterConfig,setInitFilterConfig] = useState<Array<RenderFilterConfig>>([]);
     const [submitLoading,setSubmitLoading] = useState<boolean>(false);

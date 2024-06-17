@@ -16,10 +16,10 @@ import {useSelector} from "react-redux";
 import {LimitData, Stat, StatData, TreeNode} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import {IconHome, IconTag} from "@arco-design/web-react/icon";
+import {IconTag} from "@arco-design/web-react/icon";
 import BasicInfo from "@/pages/stat/preview/basic";
 import {requestQueryById} from "@/api/stat";
-import {getIcon, getStatStateDescription} from "@/desc/base";
+import {getStatStateDescription} from "@/desc/base";
 import StatFilterConfigModal from "@/pages/stat/filter/filter_set";
 import StatUpdateModal from "@/pages/stat/update";
 import {handlerFetchLimitData, handlerFetchStatData,} from "@/pages/stat/preview/common";
@@ -33,15 +33,9 @@ import ErrorPage from "@/pages/common/error";
 import {deepCopyObject} from "@/utils/util";
 import StatLimitingModal from "@/pages/stat/limiting/StatLimitingModal";
 import {GlobalContext} from "@/context";
-import { BiDotsVertical } from "react-icons/bi";
-import { TbDotsVertical } from "react-icons/tb";
-import { TbDots } from "react-icons/tb";
-import { PiDotsThree } from "react-icons/pi";
-import { PiDotsThreeBold } from "react-icons/pi";
 import StatPreviewSettingsModal from "@/pages/stat/preview/settings/StatPreviewSettingsModal";
-import {HiMiniBoltSlash} from "react-icons/hi2";
-import { AiOutlineSetting } from "react-icons/ai";
 import { CiSettings } from "react-icons/ci";
+import {StatInfoPreviewContext} from "@/pages/common/context";
 
 
 const { Row, Col } = Grid;
@@ -257,7 +251,8 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     return(
         errorCode ? <ErrorPage errorCode={403}/> :
         <>
-            <Spin loading={loading} size={20} style={{ display: 'block' }}>
+            <StatInfoPreviewContext.Provider value={{statInfo,setStatInfo}}>
+                <Spin loading={loading} size={20} style={{ display: 'block' }}>
                 <Space size={16} direction="vertical" style={{ width: '100%',minHeight:'500px' }}>
                     {statInfo &&
                         <>
@@ -273,7 +268,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                             <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
                             <Button style={{marginLeft:'15px'}} icon={<IoMdRefresh/>} size={"mini"} shape={"round"} onClick={() => {refresh()}} />
                         </Typography.Title>
-                        {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch} ref={formRef}/>}
+                        {<SearchForm size={size} onSearch={handleSearch} ref={formRef}/>}
                         {getStatChart()}
                     </Card>
                     {statInfo.templateEntity.statStateList.length > 1 &&
@@ -296,14 +291,15 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                         </>
                     }
                 </Space>
-                {showFilterConfigModal && <StatFilterConfigModal statInfo={statInfo}
+                {showFilterConfigModal && <StatFilterConfigModal
                                                                  onClose={() => setShowFilterConfigModal(false)}
                                                                  onSuccess={() => refresh()}
                 />}
-                {showLimitedRecord && <StatLimitingModal statInfo={statInfo} onClose={() => setShowLimitedRecord(false)}/>}
-                {showUpdateModal && <StatUpdateModal statInfo={statInfo} onClose={() => setShowUpdateModal(false)} listCallback={(r1,r2) => setStatInfo(r1)}/>}
-                {showSettingsModal && <StatPreviewSettingsModal statInfo={statInfo} onClose={() => setShowSettingsModal(false)}/>}
+                {showLimitedRecord && <StatLimitingModal onClose={() => setShowLimitedRecord(false)}/>}
+                {showUpdateModal && <StatUpdateModal onClose={() => setShowUpdateModal(false)} listCallback={(r1,r2) => setStatInfo(r1)}/>}
+                {showSettingsModal && <StatPreviewSettingsModal onClose={() => setShowSettingsModal(false)}/>}
             </Spin>
+            </StatInfoPreviewContext.Provider>
         </>
     );
 }
