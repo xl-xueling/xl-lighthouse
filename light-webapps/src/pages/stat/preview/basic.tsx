@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {ArcoTreeNode, Department} from "@/types/insights-web";
 import {
     Button,
@@ -20,10 +20,12 @@ import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import DepartmentLabel from "@/pages/department/common/depart";
 import {PermissionEnum} from "@/types/insights-common";
 import { GoBug } from "react-icons/go";
+import {StatInfoPreviewContext} from "@/pages/common/context";
 
 
-export default function BasicInfo({statInfo,callback}) {
+export default function BasicInfo({callback}) {
 
+    const { statInfo, setStatInfo } = useContext(StatInfoPreviewContext);
 
     const descriptionData = [
         {

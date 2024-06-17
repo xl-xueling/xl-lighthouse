@@ -51,7 +51,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [showFilterConfigModal,setShowFilterConfigModal] = useState<boolean>(false);
     const [refreshTime,setRefreshTime] = useState<number>(Date.now());
     const [showLimitedRecord,setShowLimitedRecord] = useState<boolean>(false);
-    const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
     const [showSettingsModal,setShowSettingsModal] = useState<boolean>(false);
     const [statChartData,setStatChartData] = useState<Array<StatData>>(null);
     const [statChartErrorMessage,setStatChartErrorMessage] = useState<string>(null);
@@ -71,8 +70,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
             setShowFilterConfigModal(true);
         }else if(type == 'showLimitedRecord'){
             setShowLimitedRecord(true);
-        }else if(type == 'showUpdateModal'){
-            setShowUpdateModal(true);
         }else if(type == 'showSettingsModal'){
             setShowSettingsModal(true);
         }
@@ -296,7 +293,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                         >
                             {t['statDisplay.label.statistic.information']}{'：'}
                         </Typography.Title>
-                        <BasicInfo statInfo={statInfo} callback={tableCallback}/>
+                        <BasicInfo callback={tableCallback}/>
                     </Card>
                         </>
                     }
@@ -306,7 +303,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                                                                  onSuccess={() => refresh()}
                 />}
                 {showLimitedRecord && <StatLimitingModal onClose={() => setShowLimitedRecord(false)}/>}
-                {showUpdateModal && <StatUpdateModal onClose={() => setShowUpdateModal(false)} listCallback={(r1,r2) => setStatInfo(r1)}/>}
                 {showSettingsModal && <StatPreviewSettingsModal onClose={() => setShowSettingsModal(false)}/>}
             </Spin>
             </StatInfoPreviewContext.Provider>

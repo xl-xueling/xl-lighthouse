@@ -1,5 +1,5 @@
 import {Button, Form, Grid, Input, Modal, Notification, Select, Typography,} from '@arco-design/web-react';
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 // import "ace-builds";
@@ -20,15 +20,13 @@ import {Group, Project, Stat} from "@/types/insights-web";
 import {requestUpdate} from "@/api/stat";
 import {StatExpiredEnum, StatTimeParamEnum} from "@/types/insights-common";
 import {getStatExpiredEnumDescription} from "@/desc/base";
-import {StatInfoPreviewContext} from "@/pages/common/context";
 
 const { Row, Col } = Grid;
 
-export default function StatUpdateModal({onClose,listCallback}) {
+export default function StatUpdateModal({statInfo,onClose,listCallback}) {
 
     const [loading,setLoading] = useState<boolean>(false);
     const t = useLocale(locale);
-    const { statInfo, setStatInfo } = useContext(StatInfoPreviewContext);
     const formRef = useRef(null);
 
     async function handlerSubmit(){

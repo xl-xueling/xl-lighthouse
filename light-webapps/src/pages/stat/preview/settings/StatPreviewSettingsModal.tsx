@@ -7,11 +7,12 @@ import {requestRenderConfig, requestRenderReset} from "@/api/stat";
 import {getRandomString} from "@/utils/util";
 import {StatInfoPreviewContext} from "@/pages/common/context";
 import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
+import {FormInstance} from "@arco-design/web-react/es/Form";
 export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
 
     const t = useLocale(locale);
     const { statInfo, setStatInfo } = useContext(StatInfoPreviewContext);
-    const formRef = useRef();
+    const formRef = useRef<FormInstance>();
     const FormItem = Form.Item;
     const TabPane = Tabs.TabPane;
     const RadioGroup = Radio.Group;
