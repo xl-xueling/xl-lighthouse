@@ -41,10 +41,10 @@ export default function ListCard() {
     const [formParams, setFormParams] = useState<any>({});
     const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
     const [pagination, setPagination] = useState<PaginationProps>({
-        sizeOptions: [15,30],
-        sizeCanChange: true,
+        sizeOptions: [11,30],
+        sizeCanChange: false,
         showTotal: true,
-        pageSize: 15,
+        pageSize: 11,
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
@@ -161,7 +161,7 @@ export default function ListCard() {
                   {getCardList()}
               </div>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <Pagination sizeOptions={[15,30]} sizeCanChange={true} defaultCurrent={pagination.current} total={pagination.total}
+                  <Pagination size={"small"} sizeOptions={[11,30]} sizeCanChange={true} defaultCurrent={pagination.current} total={pagination.total}
                               showTotal={true}
                               onChange={changePage}
                   />
