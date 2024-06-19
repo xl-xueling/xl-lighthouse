@@ -4,7 +4,7 @@ import {
     RenderDateConfig,
     RenderFilterConfig, OrderStateEnum,
     OrderTypeEnum, PermissionEnum, RecordTypeEnum,
-    ResourceTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum, PrivateTypeEnum
+    ResourceTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum, PrivateTypeEnum, RenderChartConfig
 } from "@/types/insights-common";
 import Decimal from "decimal.js";
 
@@ -135,10 +135,11 @@ export interface Stat {
     desc?:string;
     templateEntity?:any,
     state?:StatStateEnum;
-    renderConfig?:{datepicker:RenderDateConfig,filters:Array<RenderFilterConfig>}
+    renderConfig?:{datepicker:RenderDateConfig,filters:Array<RenderFilterConfig>,charts:Array<RenderChartConfig>}
     permissions?:PermissionEnum[];
     builtIn?:boolean;
 }
+
 
 export interface MetricSet {
     id?:number;

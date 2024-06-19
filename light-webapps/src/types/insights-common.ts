@@ -123,6 +123,12 @@ export interface RenderFilterConfig {
     configData?:Array<TreeNode>,
 }
 
+export interface RenderChartConfig {
+    functionIndex?:number,
+    title?:string,
+    chartType?:ChartTypeEnum,
+}
+
 export interface RenderDateConfig {
     componentType?:ComponentTypeEnum,
     label?:string,

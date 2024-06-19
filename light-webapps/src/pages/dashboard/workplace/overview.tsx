@@ -8,8 +8,6 @@ import {
   Link, Notification,
 } from '@arco-design/web-react';
 import { useSelector } from 'react-redux';
-import {IconCamera, IconCaretUp} from '@arco-design/web-react/icon';
-import OverviewAreaLine from '@/components/Chart/overview-area-line';
 import axios from 'axios';
 import locale from './locale';
 import useLocale from '@/utils/useLocale';

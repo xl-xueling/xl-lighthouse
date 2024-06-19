@@ -10,7 +10,7 @@ import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/preview/locale";
 
 
-export default function StatBasicLineChart({data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null}) {
+export default function StatBasicLineChart({theme="light",data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null}) {
 
     const [timeIndex,setTimeIndex] = useState<number>(0);
     const [seriesArray,setSeriesArray] = useState([]);
@@ -19,7 +19,6 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
     const [option,setOption] = useState({});
     const [loadingOption, setLoadingOption] = useState({});
     const [emptyOption,setEmptyOption] = useState({});
-    const [theme, setTheme] = useStorage('arco-theme', 'light');
     const chartRef = useRef(null);
     const t = useLocale(locale);
 
