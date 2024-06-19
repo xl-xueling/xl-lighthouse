@@ -34,6 +34,7 @@ import ProjectPreviewPage from "@/pages/project/preview";
 import StatPreviewPage from "@/pages/stat/preview";
 import TrackStatPage from "@/pages/track";
 import Index from "@/pages/metricset/preview";
+import PopMenuBox from "@/pages/common/popmenu/PopMenu";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -300,6 +301,7 @@ function PageLayout() {
                 </Switch>
               </Content>
             </div>
+            <PopMenuBox />
             {showFooter && <Footer />}
           </Layout>
         </Layout>

@@ -24,7 +24,7 @@ import {GlobalState, updateStoreStaredMetricInfo} from "@/store";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 
-export default function MetricSetCardBox ({item,size = 'default'}){
+export default function MetricSetCardBox ({from=null,item,size = 'default'}){
 
     const t = useLocale(locale);
     const dispatch = useDispatch();
@@ -78,6 +78,6 @@ export default function MetricSetCardBox ({item,size = 'default'}){
     }
 
     return (
-        <CardBlock item={item} callback={tableCallback} size={size} />
+        <CardBlock from={from} item={item} callback={tableCallback} size={size} />
     );
 }

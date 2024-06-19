@@ -125,7 +125,7 @@ export default function ListCard() {
                     </Col>
                     {listData.map((item, index) => (
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox from={"list"} key={index} item={item}/>
                         </Col>
                     ))}
                 </Row>
