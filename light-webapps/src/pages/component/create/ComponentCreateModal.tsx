@@ -32,16 +32,22 @@ import {ComponentTypeEnum, PrivateTypeEnum} from "@/types/insights-common";
 import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 const FormItem = Form.Item;
 const Option = Select.Option;
-// import AceEditor from "react-ace";
-// import "ace-builds";
-// import 'ace-builds/src-noconflict/ace'
-// import 'ace-builds/src-noconflict/theme-textmate';
-// import 'ace-builds/src-noconflict/theme-gruvbox';
-// import 'ace-builds/src-noconflict/mode-json';
-// import 'ace-builds/src-noconflict/mode-json5';
-// import 'ace-builds/src-noconflict/mode-jsoniq';
-// import "ace-builds/webpack-resolver";
-// import 'ace-builds/src-noconflict/ext-language_tools';
+import AceEditor from "react-ace";
+import "ace-builds";
+import 'ace-builds/src-noconflict/ace'
+import 'ace-builds/src-noconflict/theme-textmate';
+import 'ace-builds/src-noconflict/theme-gruvbox';
+import 'ace-builds/src-noconflict/mode-json';
+import 'ace-builds/src-noconflict/mode-json5';
+import 'ace-builds/src-noconflict/mode-jsoniq';
+import 'ace-builds/src-noconflict/ext-language_tools';
+import 'ace-builds/src-noconflict/worker-json';
+import ace from 'ace-builds/src-noconflict/ace';
+
+import "brace/mode/xml";
+import "brace/mode/json";
+import "brace/mode/jsoniq";
+import "brace/theme/textmate";
 import {requestCreate} from "@/api/component";
 import {requestVerify} from "@/api/component";
 import {translate, translateResponse} from "@/pages/department/common";
@@ -53,7 +59,42 @@ export default function ComponentCreateModal({onClose,onSuccess}) {
     const [editorTheme,setEditorTheme] = useState('textmate');
     const [loading,setLoading] = useState<boolean>();
     const editorRef = useRef<any>();
+    const [value, setValue] = useState("");
+    const [annotations, setAnnotations] = useState([]);
     const formRef = useRef(null);
+
+    const onChange = (newValue) => {
+        setValue(newValue);
+        try {
+            JSON.parse(newValue);
+            setAnnotations([]);
+        } catch (e) {
+            const match = e.message.match(/position (\d+)/);
+            if (match) {
+                const position = parseInt(match[1], 10);
+                const lines = newValue.slice(0, position).split("\n");
+                const row = lines.length - 1;
+                const column = lines[lines.length - 1].length;
+                setAnnotations([{
+                    row:row,
+                    column,
+                    text: e.message,
+                    type: "error",
+                    timestamp:Date.now(),
+                }]);
+            } else {
+                setTimeout(() => {
+                    setAnnotations([{
+                        row: 0,
+                        column: 0,
+                        text: e.message,
+                        type: "error",
+                        timestamp:Date.now(),
+                    }]);
+                },100);
+            }
+        }
+    };
 
     async function handlerSubmit(){
         setLoading(true);
@@ -196,27 +237,30 @@ export default function ComponentCreateModal({onClose,onSuccess}) {
                         <Button type={"secondary"} size={"mini"} onClick={verifySubmit}>{t['componentCreate.form.button.verify']}</Button>
                     </Grid.Col>
                 </Grid.Row>
-                {/*<FormItem field={'configuration'} rules={[{ required: true,message: t['componentCreate.form.configuration.errMsg'] , validateTrigger : ['onSubmit']}]}>*/}
-                {/*    <AceEditor*/}
-                {/*        style={{ height:'400px',backgroundColor:"var(--color-fill-2)",width:'100%'}}*/}
-                {/*        ref={editorRef}*/}
-                {/*        mode="json"*/}
-                {/*        theme={editorTheme}*/}
-                {/*        name="code-editor"*/}
-                {/*        editorProps={{ $blockScrolling: true }}*/}
-                {/*        enableLiveAutocompletion={true}*/}
-                {/*        enableSnippets={true}*/}
-                {/*        highlightActiveLine={false}*/}
-                {/*        showPrintMargin={false}*/}
-                {/*        showGutter={true}*/}
-                {/*        enableBasicAutocompletion={true}*/}
-                {/*        setOptions={{*/}
-                {/*            enableBasicAutocompletion: true,*/}
-                {/*            enableSnippets:true,*/}
-                {/*            enableLiveAutocompletion:true,*/}
-                {/*        }}*/}
-                {/*    />*/}
-                {/*</FormItem>*/}
+                <FormItem field={'configuration'} rules={[{ required: true,message: t['componentCreate.form.configuration.errMsg'] , validateTrigger : ['onSubmit']}]}>
+                    <AceEditor
+                        style={{ height:'400px',backgroundColor:"var(--color-fill-2)",width:'100%'}}
+                        ref={editorRef}
+                        mode="json5"
+                        theme={editorTheme}
+                        name="code-editor"
+                        editorProps={{ $blockScrolling: true }}
+                        enableLiveAutocompletion={true}
+                        enableSnippets={true}
+                        highlightActiveLine={false}
+                        showPrintMargin={false}
+                        onChange={onChange}
+                        annotations={annotations}
+                        showGutter={true}
+                        enableBasicAutocompletion={true}
+                        setOptions={{
+                            enableBasicAutocompletion: true,
+                            enableSnippets:true,
+                            useWorker: true,
+                            enableLiveAutocompletion:true,
+                        }}
+                    />
+                </FormItem>
                 <Typography.Title
                     style={{fontSize:13}}>
                     {t['componentCreate.form.label.privateType']}
