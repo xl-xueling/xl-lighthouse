@@ -7,6 +7,14 @@ import {
   IconTag,
   IconMenuFold,
   IconMenuUnfold,
+  IconList,
+  IconApps,
+  IconCalendarClock,
+  IconSettings,
+  IconUser,
+  IconExclamationCircle,
+  IconCheckCircle,
+  IconFile, IconCodepen,
 } from '@arco-design/web-react/icon';
 import { useSelector } from 'react-redux';
 import qs from 'query-string';
@@ -20,6 +28,12 @@ import getUrlParams from './utils/getUrlParams';
 import lazyload from './utils/lazyload';
 import { GlobalState } from './store';
 import styles from './style/layout.module.less';
+import {PiDiamondsFour} from "react-icons/pi";
+import ProjectManagePage from "@/pages/project/manage";
+import ProjectPreviewPage from "@/pages/project/preview";
+import StatPreviewPage from "@/pages/stat/preview";
+import TrackStatPage from "@/pages/track";
+import Index from "@/pages/metricset/preview";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -30,9 +44,36 @@ const Content = Layout.Content;
 function getIconFromKey(key) {
   switch (key) {
     case 'dashboard':
-      return <IconDashboard className={styles.icon} />;
+      return <IconDashboard className={styles.icon}/>;
+    case 'list':
+      return <IconList className={styles.icon}/>;
+    case 'form':
+      return <IconSettings className={styles.icon}/>;
+    case 'profile':
+      return <IconFile className={styles.icon}/>;
+    case 'visualization':
+      return <IconApps className={styles.icon}/>;
+    case 'result':
+      return <IconCheckCircle className={styles.icon}/>;
+    case 'exception':
+      return <IconExclamationCircle className={styles.icon}/>;
+    case 'user':
+      return <IconUser className={styles.icon}/>;
+    case 'system':
+      return <IconSettings className={styles.icon}/>;
+    case 'order':
+      return <IconCalendarClock className={styles.icon}/>;
+    case 'stat':
+      return <IconApps className={styles.icon}/>;
+    case 'filter':
+      return <IconList className={styles.icon}/>;
+    case 'statistics':
+      //return <GoTasklist style={{marginRight:'16px'}} className={styles.icon}/>
+      return <PiDiamondsFour style={{marginRight: '16px'}} className={styles.icon}/>;
+    case 'favorites':
+      return <IconCodepen className={styles.icon}/>
     default:
-      return <div className={styles['icon-empty']} />;
+      return <div className={styles['icon-empty']}/>;
   }
 }
 
@@ -235,6 +276,11 @@ function PageLayout() {
               )}
               <Content>
                 <Switch>
+                  <Route path="/project/manage/:id" component={ProjectManagePage}/>
+                  <Route path="/metricset/preview/:id" component={Index}/>
+                  <Route path="/project/preview/:id" component={ProjectPreviewPage}/>
+                  <Route path="/stat/preview/:id" component={StatPreviewPage}/>
+                  <Route path="/track/stat/:id" component={TrackStatPage}/>
                   {flattenRoutes.map((route, index) => {
                     return (
                       <Route
