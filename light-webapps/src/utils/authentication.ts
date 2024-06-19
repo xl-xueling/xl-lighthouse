@@ -28,19 +28,20 @@ const judge = (actions: string[], perm: string[]) => {
 
 const auth = (params: Auth, userPermission: UserPermission) => {
   const { resource, actions = [] } = params;
+  const ldpUserPermissions = {'ldp.resource':userPermission};
   if (resource instanceof RegExp) {
-    const permKeys = Object.keys(userPermission);
+    const permKeys = Object.keys(ldpUserPermissions);
     const matchPermissions = permKeys.filter((item) => item.match(resource));
     if (!matchPermissions.length) {
       return false;
     }
     return matchPermissions.every((key) => {
-      const perm = userPermission[key];
+      const perm = ldpUserPermissions[key];
       return judge(actions, perm);
     });
   }
 
-  const perm = userPermission[resource];
+  const perm = ldpUserPermissions[resource];
   return judge(actions, perm);
 };
 
