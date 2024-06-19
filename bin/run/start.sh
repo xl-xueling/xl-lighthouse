@@ -204,11 +204,12 @@ start_all(){
 		sleep 10;
 	fi
 	log_info "Waiting to start LightHouse ..."
-	sleep 20;
 	if [[ ${RUNNING_MODE} == "standalone" ]];then
+	    sleep 10;
 	    startLightHouseInsights;
 	    startLightHouseStandalone;
 	else
+	  sleep 20;
 	  startLightHouseICE;
     startLightHouseInsights;
 	  startLightHouseTasks;
