@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useParams,useHistory} from "react-router-dom";
 import styles from "./style/index.module.less";
 import {
     Card,
@@ -7,7 +7,7 @@ import {
     Space,
     Spin,
     Notification,
-    Breadcrumb
+    Breadcrumb, Typography
 } from "@arco-design/web-react";
 import ProjectMenu from "@/pages/project/preview/menu";
 
@@ -25,6 +25,8 @@ export default function ProjectPreviewPage() {
 
     const {id} = useParams();
     const t = useLocale(locale);
+    const history = useHistory();
+    const { Text } = Typography;
     const [loading, setLoading] = useState<boolean>(true);
     const [projectInfo, setProjectInfo] = useState<Project>(null);
     const [selectedStatId, setSelectedStatId] = useState<number>(null);
@@ -57,12 +59,19 @@ export default function ProjectPreviewPage() {
 
     return (
         <>
-            <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
-                <Breadcrumb.Item>
-                    <IconHome/>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item style={{fontWeight: 20}}>{t['projectPreview.breadcrumb']}</Breadcrumb.Item>
-            </Breadcrumb>
+            <Row>
+                <Col span={16}>
+                    <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
+                        <Breadcrumb.Item>
+                            <IconHome/>
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item style={{fontWeight: 20}}>{t['projectPreview.breadcrumb']}</Breadcrumb.Item>
+                    </Breadcrumb>
+                </Col>
+                <Col span={8} style={{textAlign:'right',fontSize:'13px',color:'#43454a'}}>
+                    <Text style={{cursor:'pointer'}} onClick={() => history.goBack()}>[{t['basic.route.back']}]</Text>
+                </Col>
+            </Row>
             <Spin loading={loading} style={{display: 'block'}}>
                 <Space size={16} direction="vertical" style={{width: '100%'}}>
                     <Card>
