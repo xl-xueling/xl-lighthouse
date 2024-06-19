@@ -43,11 +43,6 @@ import 'ace-builds/src-noconflict/mode-jsoniq';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/worker-json';
 import ace from 'ace-builds/src-noconflict/ace';
-
-import "brace/mode/xml";
-import "brace/mode/json";
-import "brace/mode/jsoniq";
-import "brace/theme/textmate";
 import {requestCreate} from "@/api/component";
 import {requestVerify} from "@/api/component";
 import {translate, translateResponse} from "@/pages/department/common";

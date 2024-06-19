@@ -1,7 +1,8 @@
 {
-  "name": "arco-design-pro",
+  "name": "light-webapps",
   "version": "1.0.0",
-  "description": "Arco Design Pro",
+  "license": "ISC",
+  "description": "XL-LightHouse-LightWebapps",
   "scripts": {
     "start": "vite",
     "dev": "vite",
@@ -12,7 +13,6 @@
     "pre-commit": "pretty-quick --staged && npm run eslint && npm run stylelint"
   },
   "dependencies": {
-    "@antv/data-set": "^0.11.8",
     "@arco-design/color": "^0.4.0",
     "@arco-design/web-react": "^2.32.2",
     "@arco-plugins/vite-react": "^1.0.5",
@@ -22,8 +22,6 @@
     "ace-builds": "^1.35.0",
     "arco-design-pro": "^2.8.1",
     "axios": "^0.24.0",
-    "bizcharts": "^4.1.11",
-    "brace": "^0.11.1",
     "classnames": "^2.3.1",
     "copy-to-clipboard": "^3.3.1",
     "decimal.js": "^10.4.3",
@@ -64,7 +62,6 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "husky": "^7.0.2",
     "less": "^4.1.2",
     "less-loader": "7.3.0",
     "markdown-to-jsx": "^7.4.5",

@@ -28,4 +28,8 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    outDir: 'build',
+    chunkSizeWarningLimit: 10000,
+  }
 });
