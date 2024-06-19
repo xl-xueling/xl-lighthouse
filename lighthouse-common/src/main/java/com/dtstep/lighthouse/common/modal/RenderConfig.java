@@ -24,6 +24,8 @@ public class RenderConfig {
 
     private List<RenderFilterConfig> filters;
 
+    private List<RenderChartConfig> charts;
+
     public RenderDateConfig getDatepicker() {
         return datepicker;
     }
@@ -38,5 +40,13 @@ public class RenderConfig {
 
     public void setFilters(List<RenderFilterConfig> filters) {
         this.filters = filters;
+    }
+
+    public List<RenderChartConfig> getCharts() {
+        return charts;
+    }
+
+    public void setCharts(List<RenderChartConfig> charts) {
+        this.charts = charts;
     }
 }

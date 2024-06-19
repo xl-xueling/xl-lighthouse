@@ -83,6 +83,21 @@ export async function requestQueryByIds(data:{ids:number[]}) :Promise<ResultData
     })
 }
 
+export async function requestRenderConfig(data):Promise<ResultData> {
+    return request({
+        url:'/stat/renderConfig',
+        method:'POST',
+        data,
+    })
+}
+
+export async function requestRenderReset(data):Promise<ResultData> {
+    return request({
+        url:'/stat/renderReset',
+        method:'POST',
+        data,
+    })
+}
 
 
 

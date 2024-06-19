@@ -21,6 +21,7 @@ import {IoMdRefresh} from "react-icons/io";
 import {StatLimitingModal} from "@/pages/stat/limiting/StatLimitingModal";
 import ErrorPage from "@/pages/common/error";
 import {deepCopyObject} from "@/utils/util";
+import StatPreviewSettingsModal from "@/pages/stat/preview/settings/StatPreviewSettingsModal";
 
 const { Row, Col } = Grid;
 
@@ -35,10 +36,10 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const [showFilterConfigModal,setShowFilterConfigModal] = useState<boolean>(false);
     const [refreshTime,setRefreshTime] = useState<number>(Date.now());
     const [showLimitedRecord,setShowLimitedRecord] = useState<boolean>(false);
-    const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
     const [statChartData,setStatChartData] = useState<Array<StatData>>(null);
     const [statChartErrorMessage,setStatChartErrorMessage] = useState<string>(null);
     const [limitChartData,setLimitChartData] = useState<Array<LimitData>>(null);
+    const [showSettingsModal,setShowSettingsModal] = useState<boolean>(false);
     const [limitChartErrorMessage,setLimitChartErrorMessage] = useState<string>(null);
     const [limitChartLoading,setLimitChartLoading] = useState<boolean>(false);
     const [pageTitle,setPageTitle] = useState<string>(null)
@@ -53,8 +54,8 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
             setShowFilterConfigModal(true);
         }else if(type == 'showLimitedRecord'){
             setShowLimitedRecord(true);
-        }else if(type == 'showUpdateModal'){
-            setShowUpdateModal(true);
+        }else if(type == 'showSettingsModal'){
+            setShowSettingsModal(true);
         }
     }
 
@@ -266,7 +267,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                                                                  onSuccess={() => refresh()}
                 />}
                 {showLimitedRecord && <StatLimitingModal statInfo={statInfo} onClose={() => setShowLimitedRecord(false)}/>}
-                {showUpdateModal && <StatUpdateModal statInfo={statInfo} onClose={() => setShowUpdateModal(false)} listCallback={(r1,r2) => setStatInfo(r1)}/>}
+                {showSettingsModal && <StatPreviewSettingsModal onClose={() => setShowSettingsModal(false)}/>}
             </Spin>
         </>
     );

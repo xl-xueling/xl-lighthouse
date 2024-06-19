@@ -24,10 +24,12 @@ import com.dtstep.lighthouse.insights.dto.ChangeStatStateParam;
 import com.dtstep.lighthouse.insights.dto.StatFilterConfigParam;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.insights.dto.StatRenderConfigParam;
 import com.dtstep.lighthouse.insights.service.StatService;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.dtstep.lighthouse.insights.vo.StatExtendVO;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,6 +145,36 @@ public class StatController {
         Validate.notNull(stat);
         RenderConfig renderConfig = stat.getRenderConfig();
         renderConfig.setFilters(null);
+        ResultCode resultCode = statService.update(stat);
+        return ResultData.result(resultCode);
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/stat/renderConfig")
+    public ResultData<Integer> renderConfig(@Validated @RequestBody StatRenderConfigParam renderConfigParam) throws Exception{
+        Integer id = renderConfigParam.getId();
+        StatVO stat = statService.queryById(id);
+        Validate.notNull(stat);
+        List<RenderChartConfig> chartConfigs = renderConfigParam.getCharts();
+        ResultCode resultCode;
+        if(CollectionUtils.isNotEmpty(chartConfigs)){
+            resultCode = statService.chartsConfig(stat,chartConfigs);
+        }else{
+            resultCode = ResultCode.renderConfigConfigCannotBeEmpty;
+        }
+        return ResultData.result(resultCode);
+    }
+
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")
+    @RequestMapping("/stat/renderReset")
+    public ResultData<Integer> renderReset(@Validated @RequestBody IDParam idParam) throws Exception{
+        Integer id = idParam.getId();
+        Stat stat = statService.queryById(id);
+        Validate.notNull(stat);
+        RenderConfig renderConfig = stat.getRenderConfig();
+        renderConfig.setCharts(null);
+        renderConfig.setDatepicker(null);
         ResultCode resultCode = statService.update(stat);
         return ResultData.result(resultCode);
     }
