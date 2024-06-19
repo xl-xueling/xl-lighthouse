@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import SearchForm from "./search_form";
 import {Button, Card, Grid, Notification, Space, Spin, Typography} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
@@ -22,6 +22,9 @@ import {StatLimitingModal} from "@/pages/stat/limiting/StatLimitingModal";
 import ErrorPage from "@/pages/common/error";
 import {deepCopyObject} from "@/utils/util";
 import StatPreviewSettingsModal from "@/pages/stat/preview/settings/StatPreviewSettingsModal";
+import {GlobalContext} from "@/context";
+import {CiSettings} from "react-icons/ci";
+import {StatInfoPreviewContext} from "@/pages/common/context";
 
 const { Row, Col } = Grid;
 
@@ -48,6 +51,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const refs = useRef<any[]>([]);
     const refFetchId = useRef<any>(null);
     const formRef = useRef(null);
+    const { setLang, lang, theme, setTheme } = useContext(GlobalContext)
 
     const tableCallback = async (type,data) => {
         if(type == 'showFilterConfigModal'){
@@ -160,6 +164,16 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         )
     }
 
+    const getStateChartTitle = (functionIndex) => {
+        const chartsConfigs = statInfo?.renderConfig?.charts;
+        if(chartsConfigs){
+            const chartsConfig = chartsConfigs?.filter(item => item.functionIndex === functionIndex);
+            return  chartsConfig[0].title;
+        }else{
+            return statInfo.templateEntity.statStateList[functionIndex].stateBody;
+        }
+    }
+
     const getStateCharts = () => {
         if(!statInfo){
             return ;
@@ -168,8 +182,17 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         return stateList.map((z,index) => {
             return (
                 <Col span={24/statInfo.templateEntity.statStateList.length} key={'state-chart-' + z.functionIndex}>
-                    <Card title={z.stateBody}>
-                        <StatBasicLineChart size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
+                    <Card title={
+                        <Grid.Row gutter={8}>
+                            <Grid.Col span={20}>
+                                {getStateChartTitle(z.functionIndex)}
+                            </Grid.Col>
+                            <Grid.Col span={4} style={{ textAlign:"right" }}>
+                                <CiSettings onClick={() => tableCallback('showSettingsModal',z.functionIndex)} style={{cursor:'pointer'}}/>
+                            </Grid.Col>
+                        </Grid.Row>
+                    }>
+                        <StatBasicLineChart theme={theme} size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
                     </Card>
                 </Col>
             )
@@ -223,7 +246,8 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     return(
         errorCode ? <ErrorPage errorCode={403}/> :
         <>
-            <Spin loading={loading} size={20} style={{ display: 'block' }}>
+            <StatInfoPreviewContext.Provider value={{statInfo,setStatInfo}}>
+                <Spin loading={loading} size={20} style={{ display: 'block' }}>
                 <Space size={16} direction="vertical" style={{ width: '100%',minHeight:'500px' }}>
                     {statInfo &&
                         <>
@@ -269,6 +293,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                 {showLimitedRecord && <StatLimitingModal statInfo={statInfo} onClose={() => setShowLimitedRecord(false)}/>}
                 {showSettingsModal && <StatPreviewSettingsModal onClose={() => setShowSettingsModal(false)}/>}
             </Spin>
+            </StatInfoPreviewContext.Provider>
         </>
     );
 }

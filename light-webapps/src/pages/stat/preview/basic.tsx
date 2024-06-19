@@ -81,7 +81,6 @@ export default function BasicInfo({statInfo,callback}) {
                         <Button shape={"circle"} icon={getIcon('limiting')} size={"mini"} onClick={() => callback('showLimitedRecord')}/>
                         {statInfo?.permissions.includes(PermissionEnum.ManageAble)?
                             <>
-                            <Button shape={"circle"} icon={<IconEdit/>} size={"mini"} onClick={() => callback('showUpdateModal')}/>
                             <Button shape={"circle"} icon={<GoBug/>} size={"mini"} onClick={() => {window.open("/track/stat/"+statInfo.id)}}/>
                             </>
                             :null}
