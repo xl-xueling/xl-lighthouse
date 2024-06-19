@@ -21,6 +21,8 @@ import {getDataWithLocalCache} from "@/utils/localCache";
 import {requestFetchUserInfo} from "@/api/user";
 import {fetchAllDepartmentData} from "@/pages/department/common";
 import {MetricSet, Project} from "@/types/insights-web";
+import Register from "@/pages/register";
+import License from "@/pages/license";
 
 const store = createStore(rootReducer);
 
@@ -39,18 +41,6 @@ function Index() {
     }
   }
 
-  function fetchUserInfo() {
-    store.dispatch({
-      type: 'update-userInfo',
-      payload: { userLoading: true },
-    });
-    axios.get('/api/user/userInfo').then((res) => {
-      store.dispatch({
-        type: 'update-userInfo',
-        payload: { userInfo: res.data, userLoading: false },
-      });
-    });
-  }
 
   async function fetchPinMetricsData():Promise<Array<MetricSet>> {
     return new Promise<Array<MetricSet>>((resolve,reject) => {
@@ -145,6 +135,8 @@ function Index() {
           <GlobalContext.Provider value={contextValue}>
             <Switch>
               <Route path="/login" component={Login} />
+              <Route path="/register" component={Register} />
+              <Route path="/license" component={License}/>
               <Route path="/" component={PageLayout} />
             </Switch>
           </GlobalContext.Provider>

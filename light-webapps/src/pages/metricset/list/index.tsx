@@ -100,6 +100,10 @@ export default function ListCard() {
         setFormParams({search});
     }
 
+    const changePage = (pageNum,pageSize) => {
+        setPagination({ ...pagination, current: pageNum, pageSize:pageSize});
+    }
+
     useEffect(() => {
         fetchData().then();
     }, [reloadTime,activeKey,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
@@ -157,7 +161,10 @@ export default function ListCard() {
                   {getCardList()}
               </div>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Pagination sizeOptions={[15,30]} sizeCanChange={true} defaultCurrent={pagination.current} total={pagination.total} showTotal={true}/>
+                  <Pagination sizeOptions={[15,30]} sizeCanChange={true} defaultCurrent={pagination.current} total={pagination.total}
+                              showTotal={true}
+                              onChange={changePage}
+                  />
               </div>
           </div>
             {showCreatePanel && <MetricSetAddPanel onClose={() => setShowCreatePanel(false)} onSuccess={handlerReloadList}/>}
