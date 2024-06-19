@@ -12,7 +12,7 @@ import {
 import styles from "./style/index.module.less";
 import StatPreviewPanel from "@/pages/stat/preview/preview";
 import StructurePanel from "@/pages/metricset/structure/structure";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
+import {MetricSetPreviewContext} from "@/pages/common/context";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;

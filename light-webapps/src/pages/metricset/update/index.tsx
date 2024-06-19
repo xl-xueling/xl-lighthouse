@@ -9,7 +9,7 @@ import {GrantPrivileges, MetricSet} from "@/types/insights-web";
 import {ResultData} from "@/types/insights-common";
 import {requestCreate, requestUpdate} from "@/api/metricset";
 import {useDispatch, useSelector} from "react-redux";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
+import {MetricSetPreviewContext} from "@/pages/common/context";
 import {updateStoreStaredMetricInfo} from "@/store";
 
 

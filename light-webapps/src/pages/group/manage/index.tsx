@@ -30,8 +30,7 @@ import { RiShieldKeyholeLine } from "react-icons/ri";
 import GroupUpdatePanel from "@/pages/group/update";
 import SecretKeyModal from "@/pages/group/basic/secret_key";
 import {LimitingSettingsModal} from "@/pages/group/limiting/LimitingSettingsModal";
-
-export const GroupManageContext = React.createContext(null)
+import {GroupManageContext} from "@/pages/common/context";
 
 export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
     const TabPane = Tabs.TabPane;

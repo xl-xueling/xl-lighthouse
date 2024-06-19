@@ -44,8 +44,7 @@ import {useSelector} from "react-redux";
 import {addMetricPreviewHistory} from "@/pages/metricset/preview/history";
 import {deepCopyObject} from "@/utils/util";
 import {requestDeleteById} from "@/api/metricset";
-
-export const MetricSetPreviewContext = React.createContext(null)
+import {MetricSetPreviewContext} from "@/pages/common/context";
 
 export default function Index() {
     const {id} = useParams();

@@ -19,15 +19,8 @@ import IconComments from './assets/comments.svg';
 import IconContent from './assets/content.svg';
 import IconIncrease from './assets/increase.svg';
 import {GlobalState} from "@/store";
-import {requestStructure} from "@/api/department";
-import {ResultData} from "@/types/insights-common";
-import {requestOverView} from "@/api/home";
-import {HomeData, Stat} from "@/types/insights-web";
 import ChartPanel from "@/pages/stat/preview/chart_panel";
-import {requestQueryById} from "@/api/stat";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
-import {HomePageContext} from "@/pages/dashboard/workplace/index";
-import {getRandomString} from "@/utils/util";
+import {HomePageContext} from "@/pages/common/context";
 
 const { Row, Col } = Grid;
 
