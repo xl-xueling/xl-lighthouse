@@ -9,9 +9,8 @@ import useForm from "@arco-design/web-react/es/Form/useForm";
 import {getTextBlenLength} from "@/utils/util";
 import {ArcoFlatNode, Department, Project, User} from "@/types/insights-web";
 import {useDispatch, useSelector} from "react-redux";
-import {GlobalState} from "@/store";
+import {GlobalState, updateStoreStaredProjectInfo} from "@/store";
 import {GlobalErrorCodes, TEXT_BASE_PATTERN_2} from "@/utils/constants";
-import {updateStoreStaredProjectInfo} from "@/index";
 
 export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,onSuccess}){
 

@@ -21,7 +21,7 @@ import {IconHome} from "@arco-design/web-react/icon";
 import {requestDeleteById} from "@/api/metricset";
 import {useDispatch,useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import {updateStoreStaredMetricInfo} from "@/index";
+import {updateStoreStaredMetricInfo} from "@/store";
 import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
 import {getRandomString} from "@/utils/util";
 const { Title } = Typography;

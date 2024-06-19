@@ -21,7 +21,6 @@ import {
 import React, {useEffect, useRef, useState} from 'react';
 const { Title } = Typography;
 import locale from './locale';
-import AceEditor from "react-ace";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/store";
 import {Column, Department, Group, Stat, User} from "@/types/insights-web";

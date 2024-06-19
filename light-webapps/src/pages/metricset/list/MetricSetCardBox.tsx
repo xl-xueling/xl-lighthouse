@@ -20,8 +20,7 @@ import {requestStarById, requestList, requestUnStarById} from "@/api/metricset";
 import {IconHome} from "@arco-design/web-react/icon";
 import {requestDeleteById} from "@/api/metricset";
 import {useDispatch,useSelector} from "react-redux";
-import {GlobalState} from "@/store";
-import {updateStoreStaredMetricInfo} from "@/index";
+import {GlobalState, updateStoreStaredMetricInfo} from "@/store";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 

@@ -1,37 +1,22 @@
 import axios, {AxiosResponse} from 'axios'
 import {ResultData} from "@/types/insights-common";
 import {removeLoginStatus} from "@/utils/checkLogin";
-import {Message, Notification} from "@arco-design/web-react";
+import {Notification} from "@arco-design/web-react";
+import { getGlobalConfig } from './configLoader';
 
 export const request = async <T>(config): Promise<ResultData<T>> => {
-    let baseURL;
-    if(process.env.REACT_APP_ENV == "simulation"){
-        baseURL = 'http://119.91.203.220:9089'
-    }else{
-        baseURL = window['GlobalConfig'].REACT_APP_BASE_URL;
-    }
+    const envConfig = await getGlobalConfig().then();
+    let baseURL = envConfig.REACT_APP_BASE_URL;
     const http = axios.create({
         baseURL: baseURL + '/api/v1',
-        timeout: 180000,
+        timeout: envConfig.AXIOS_TIMEOUT,
     })
-
     http.interceptors.request.use((config) => {
         const language = localStorage.getItem('arco-lang');
         if (language) {
             config.headers['Accept-Language'] = language;
         }else{
             config.headers['Accept-Language'] = 'en-US';
-        }
-        if(process.env.REACT_APP_ENV == "simulation"){
-            if(config.url == '/data/stat'){
-                config.url = '/test-data/stat'
-            }
-            if(config.url == '/data/limit'){
-                config.url = '/test-data/limit'
-            }
-            if(config.url == '/stat/queryById'){
-                config.url = '/stat/testQueryById'
-            }
         }
         config.headers['accessKey'] = window.localStorage.getItem('accessKey');
         return config;

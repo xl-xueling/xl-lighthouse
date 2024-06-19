@@ -11,7 +11,6 @@ type Auth = {
 
 export interface AuthParams {
   requiredPermissions?: Array<Auth>;
-  requiredLDPPermissions?: Array<string>;
   oneOfPerm?: boolean;
 }
 
@@ -29,20 +28,19 @@ const judge = (actions: string[], perm: string[]) => {
 
 const auth = (params: Auth, userPermission: UserPermission) => {
   const { resource, actions = [] } = params;
-  const ldpUserPermissions = {'ldp.resource':userPermission};
   if (resource instanceof RegExp) {
-    const permKeys = Object.keys(ldpUserPermissions);
+    const permKeys = Object.keys(userPermission);
     const matchPermissions = permKeys.filter((item) => item.match(resource));
     if (!matchPermissions.length) {
       return false;
     }
     return matchPermissions.every((key) => {
-      const perm = ldpUserPermissions[key];
+      const perm = userPermission[key];
       return judge(actions, perm);
     });
   }
 
-  const perm = ldpUserPermissions[resource];
+  const perm = userPermission[resource];
   return judge(actions, perm);
 };
 

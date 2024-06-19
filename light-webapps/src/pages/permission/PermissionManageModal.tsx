@@ -1,26 +1,12 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
-    Button,
     Collapse,
-    Form,
-    Grid,
-    Input,
     Modal,
-    Notification,
-    PaginationProps,
-    Space,
-    Table,
     Tabs
 } from "@arco-design/web-react";
-import {Permission} from "@/types/insights-web";
-import {OwnerTypeEnum, ResourceTypeEnum, RoleTypeEnum} from "@/types/insights-common";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
-import {getRandomString} from "@/utils/util";
-import {requestGrantProjectPermission, requestQueryList, requestReleaseProjectPermission} from "@/api/permission";
-import {getDepartPermissionColumns, getUserPermissionColumns} from "./constants";
 import './styles/index.module.less'
-import DepartmentsTransfer from "@/pages/components/transfer/department_transfer";
 import {PermissionPanel} from "@/pages/permission/PermissionPanel";
 
 const CollapseItem = Collapse.Item;

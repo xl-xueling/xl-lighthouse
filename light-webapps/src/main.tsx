@@ -1,51 +1,28 @@
-
 import './style/global.less';
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import {createStore} from 'redux';
-import {Provider} from 'react-redux';
-import {ConfigProvider, Message, Notification} from '@arco-design/web-react';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import {ConfigProvider, Message,Notification} from '@arco-design/web-react';
 import zhCN from '@arco-design/web-react/es/locale/zh-CN';
 import enUS from '@arco-design/web-react/es/locale/en-US';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import rootReducer from './store';
-import PageLayout from './layout';
-import {GlobalContext} from './context';
-import Login from './pages/login';
-import changeTheme from './utils/changeTheme';
-import useStorage from './utils/useStorage';
-import './mock';
-import Register from "@/pages/register";
-import {requestFetchUserInfo} from "@/api/user";
-import {getDataWithLocalCache} from "@/utils/localCache";
-import {MetricSet, Project} from "@/types/insights-web";
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import axios from 'axios';
 import {requestStarList as requestMetricStarList} from "@/api/metricset";
 import {requestStarList as requestProjectStarList} from "@/api/project";
+import rootReducer from './store';
+import PageLayout from './layout';
+import { GlobalContext } from './context';
+import Login from './pages/login';
+import {checkLogin} from './utils/checkLogin';
+import changeTheme from './utils/changeTheme';
+import useStorage from './utils/useStorage';
+import {getDataWithLocalCache} from "@/utils/localCache";
+import {requestFetchUserInfo} from "@/api/user";
 import {fetchAllDepartmentData} from "@/pages/department/common";
-import {checkLogin} from "@/utils/checkLogin";
-import License from "@/pages/license";
+import {MetricSet, Project} from "@/types/insights-web";
 
 const store = createStore(rootReducer);
-
-export const updateStoreUserInfo = (userInfo) => ({
-  type: 'update-userInfo',
-  payload: {userInfo: userInfo,userLoading:false},
-});
-
-export const updateStoreAllDepartInfo = (allDepartInfo) => ({
-  type: 'update-allDepartInfo',
-  payload: {allDepartInfo: allDepartInfo,departLoading:false},
-});
-
-export const updateStoreStaredMetricInfo = (staredMetricInfo) => ({
-  type: 'update-staredMetricInfo',
-  payload: {staredMetricInfo: staredMetricInfo,staredMetricsLoading:false},
-});
-
-export const updateStoreStaredProjectInfo = (staredProjectInfo) => ({
-  type: 'update-staredProjectInfo',
-  payload: {staredProjectInfo: staredProjectInfo,staredProjectLoading:false},
-});
 
 function Index() {
   const [lang, setLang] = useStorage('arco-lang', 'en-US');
@@ -62,10 +39,18 @@ function Index() {
     }
   }
 
-  const addTodo = (todo) => ({
-    type: 'ADD_TODO',
-    payload: todo,
-  });
+  function fetchUserInfo() {
+    store.dispatch({
+      type: 'update-userInfo',
+      payload: { userLoading: true },
+    });
+    axios.get('/api/user/userInfo').then((res) => {
+      store.dispatch({
+        type: 'update-userInfo',
+        payload: { userInfo: res.data, userLoading: false },
+      });
+    });
+  }
 
   async function fetchPinMetricsData():Promise<Array<MetricSet>> {
     return new Promise<Array<MetricSet>>((resolve,reject) => {
@@ -113,6 +98,7 @@ function Index() {
         payload: {userInfo: resultData.data, userLoading: false},
       });
     })
+
   }
 
   useEffect(() => {
@@ -159,8 +145,6 @@ function Index() {
           <GlobalContext.Provider value={contextValue}>
             <Switch>
               <Route path="/login" component={Login} />
-              <Route path="/register" component={Register} />
-              <Route path="/license" component={License}/>
               <Route path="/" component={PageLayout} />
             </Switch>
           </GlobalContext.Provider>

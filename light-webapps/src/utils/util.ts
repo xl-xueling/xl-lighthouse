@@ -44,7 +44,7 @@ export function isJSON(str):boolean {
 
 export function getTextBlenLength(str){
     let len = 0;
-    for(let i=0;i<str.length;i++){
+    for(let i=0;i<str?.length;i++){
         if(str.charAt(i).match(/[\u4e00-\u9fa5]/g) != null) len+=2;
         else len += 1;
     }

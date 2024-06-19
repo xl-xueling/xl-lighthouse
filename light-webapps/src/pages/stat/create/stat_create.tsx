@@ -7,16 +7,14 @@ import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import AceEditor from "react-ace";
-import "ace-builds";
-import 'ace-builds/src-noconflict/ace'
-import 'ace-builds/src-noconflict/theme-textmate';
-import 'ace-builds/src-noconflict/theme-gruvbox';
-import 'ace-builds/src-noconflict/mode-xml';
-import "ace-builds/webpack-resolver";
-import 'ace-builds/src-noconflict/ext-language_tools';
-import "brace/mode/xml";
-import "brace/theme/textmate";
+// import AceEditor from "react-ace";
+// import "ace-builds";
+// import 'ace-builds/src-noconflict/ace'
+// import 'ace-builds/src-noconflict/theme-textmate';
+// import 'ace-builds/src-noconflict/theme-gruvbox';
+// import 'ace-builds/src-noconflict/mode-xml';
+// import "ace-builds/webpack-resolver";
+// import 'ace-builds/src-noconflict/ext-language_tools';
 const { Row, Col } = Grid;
 import Draggable from 'react-draggable';
 import { MdOutlineDragIndicator } from "react-icons/md";
@@ -176,26 +174,26 @@ export default function StatAddPanel({projectInfo,groupInfo,onClose,onSuccess}) 
                     {'Template: '}
                 </Typography.Title>
                 <FormItem rules={[{ required: true }]}>
-                    <AceEditor
-                        style={{ height:'60px',backgroundColor:"var(--color-fill-2)",width:'100%'}}
-                        ref={editorRef}
-                        mode="xml"
-                        theme={editorTheme}
-                        name="code-editor"
-                        editorProps={{ $blockScrolling: true }}
-                        enableLiveAutocompletion={true}
-                        enableSnippets={true}
-                        highlightActiveLine={false}
-                        showPrintMargin={false}
-                        showGutter={false}
-                        enableBasicAutocompletion={true}
-                        onChange={handleEditorChange}
-                        setOptions={{
-                            enableBasicAutocompletion: true,
-                            enableSnippets:true,
-                            enableLiveAutocompletion:true,
-                        }}
-                    />
+                    {/*<AceEditor*/}
+                    {/*    style={{ height:'60px',backgroundColor:"var(--color-fill-2)",width:'100%'}}*/}
+                    {/*    ref={editorRef}*/}
+                    {/*    mode="xml"*/}
+                    {/*    theme={editorTheme}*/}
+                    {/*    name="code-editor"*/}
+                    {/*    editorProps={{ $blockScrolling: true }}*/}
+                    {/*    enableLiveAutocompletion={true}*/}
+                    {/*    enableSnippets={true}*/}
+                    {/*    highlightActiveLine={false}*/}
+                    {/*    showPrintMargin={false}*/}
+                    {/*    showGutter={false}*/}
+                    {/*    enableBasicAutocompletion={true}*/}
+                    {/*    onChange={handleEditorChange}*/}
+                    {/*    setOptions={{*/}
+                    {/*        enableBasicAutocompletion: true,*/}
+                    {/*        enableSnippets:true,*/}
+                    {/*        enableLiveAutocompletion:true,*/}
+                    {/*    }}*/}
+                    {/*/>*/}
                 </FormItem>
 
                 <Typography.Title

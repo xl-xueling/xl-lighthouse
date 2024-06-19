@@ -1,8 +1,6 @@
 {
-  "extends": "./tsconfig-base.json",
   "compilerOptions": {
     "target": "es5",
-    "downlevelIteration": true,
     "lib": [
       "dom",
       "dom.iterable",
@@ -20,7 +18,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "src"

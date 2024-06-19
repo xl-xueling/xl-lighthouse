@@ -18,20 +18,16 @@ import {ComponentTypeEnum} from "@/types/insights-common";
 import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 const FormItem = Form.Item;
 const Option = Select.Option;
-import AceEditor from "react-ace";
-import "ace-builds";
-import 'ace-builds/src-noconflict/ace'
-import 'ace-builds/src-noconflict/theme-textmate';
-import 'ace-builds/src-noconflict/theme-gruvbox';
-import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/mode-json5';
-import 'ace-builds/src-noconflict/mode-jsoniq';
-import "ace-builds/webpack-resolver";
-import 'ace-builds/src-noconflict/ext-language_tools';
-import "brace/mode/xml";
-import "brace/mode/json";
-import "brace/mode/jsoniq";
-import "brace/theme/textmate";
+// import AceEditor from "react-ace";
+// import "ace-builds";
+// import 'ace-builds/src-noconflict/ace'
+// import 'ace-builds/src-noconflict/theme-textmate';
+// import 'ace-builds/src-noconflict/theme-gruvbox';
+// import 'ace-builds/src-noconflict/mode-json';
+// import 'ace-builds/src-noconflict/mode-json5';
+// import 'ace-builds/src-noconflict/mode-jsoniq';
+// import "ace-builds/webpack-resolver";
+// import 'ace-builds/src-noconflict/ext-language_tools';
 import {requestCreate} from "@/api/component";
 import {requestVerify} from "@/api/component";
 import {translate, translateResponse} from "@/pages/department/common";
@@ -191,27 +187,27 @@ export default function ComponentUpdateModal({componentInfo,onClose,onSuccess}) 
                         <Button type={"secondary"} size={"mini"} onClick={verifySubmit}>{t['componentUpdate.form.button.verify']}</Button>
                     </Grid.Col>
                 </Grid.Row>
-                <FormItem field={'configuration'} rules={[{ required: true,message: t['componentUpdate.form.configuration.errMsg'] , validateTrigger : ['onSubmit']}]}>
-                    <AceEditor
-                        style={{ height:'400px',backgroundColor:"var(--color-fill-2)",width:'100%'}}
-                        ref={editorRef}
-                        mode="json"
-                        theme={editorTheme}
-                        name="code-editor"
-                        editorProps={{ $blockScrolling: true }}
-                        enableLiveAutocompletion={true}
-                        enableSnippets={true}
-                        highlightActiveLine={false}
-                        showPrintMargin={false}
-                        showGutter={true}
-                        enableBasicAutocompletion={true}
-                        setOptions={{
-                            enableBasicAutocompletion: true,
-                            enableSnippets:true,
-                            enableLiveAutocompletion:true,
-                        }}
-                    />
-                </FormItem>
+                {/*<FormItem field={'configuration'} rules={[{ required: true,message: t['componentUpdate.form.configuration.errMsg'] , validateTrigger : ['onSubmit']}]}>*/}
+                {/*    <AceEditor*/}
+                {/*        style={{ height:'400px',backgroundColor:"var(--color-fill-2)",width:'100%'}}*/}
+                {/*        ref={editorRef}*/}
+                {/*        mode="json"*/}
+                {/*        theme={editorTheme}*/}
+                {/*        name="code-editor"*/}
+                {/*        editorProps={{ $blockScrolling: true }}*/}
+                {/*        enableLiveAutocompletion={true}*/}
+                {/*        enableSnippets={true}*/}
+                {/*        highlightActiveLine={false}*/}
+                {/*        showPrintMargin={false}*/}
+                {/*        showGutter={true}*/}
+                {/*        enableBasicAutocompletion={true}*/}
+                {/*        setOptions={{*/}
+                {/*            enableBasicAutocompletion: true,*/}
+                {/*            enableSnippets:true,*/}
+                {/*            enableLiveAutocompletion:true,*/}
+                {/*        }}*/}
+                {/*    />*/}
+                {/*</FormItem>*/}
                 <Typography.Title
                     style={{fontSize:13}}>
                     {t['componentUpdate.form.label.privateType']}
