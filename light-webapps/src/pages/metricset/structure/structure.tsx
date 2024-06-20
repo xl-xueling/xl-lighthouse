@@ -143,7 +143,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                     }
                     const destRef = treeRef.current.getCacheNode([destPid])[0].props.dataRef;
                     if(destRef.type == 'stat'){
-                        Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.waring.unable.moveToIndicatorNode']});
+                        Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.unable.moveToIndicatorNode']});
                         return;
                     }
                     const loop = (data, key, callback) => {
