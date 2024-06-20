@@ -26,6 +26,17 @@ export interface Department {
     pid:number;
 }
 
+export interface AuthorizeInfo {
+    clusterId?:string;
+    installationCode?:string;
+    activationCode?:string;
+    organize?:string;
+    startTime?:number;
+    expireTime?:number;
+    userLimit?:number;
+    timestamp?:number;
+}
+
 export interface GrantPrivileges {
     id:number;
     departments?:Array<number>;

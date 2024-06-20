@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.dao;
+package com.dtstep.lighthouse.common.exception;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,19 +16,29 @@ package com.dtstep.lighthouse.insights.dao;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.common.modal.SystemEnv;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface SystemEnvDao {
 
-    int insert(SystemEnv systemEnv);
+public class AuthorizeException extends RuntimeException {
 
-    boolean isParamExist(String param);
+    private static final long serialVersionUID = -1552854069794203957L;
 
-    String getParam(String param);
+    public AuthorizeException() {
+        super();
+    }
 
-    int update(SystemEnv systemEnv);
+    public AuthorizeException(String message) {
+        super(message);
+    }
 
-    void delete(String param);
+    public AuthorizeException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public AuthorizeException(Throwable cause) {
+        super(cause);
+    }
+
+    protected AuthorizeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }

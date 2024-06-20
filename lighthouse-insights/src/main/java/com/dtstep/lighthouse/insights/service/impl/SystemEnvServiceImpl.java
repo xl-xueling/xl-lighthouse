@@ -16,13 +16,16 @@ package com.dtstep.lighthouse.insights.service.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import com.dtstep.lighthouse.common.constant.SysConst;
+import com.dtstep.lighthouse.common.modal.SystemEnv;
 import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.insights.dao.SystemEnvDao;
-import com.dtstep.lighthouse.common.modal.SystemEnv;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SystemEnvServiceImpl implements SystemEnvService {
@@ -41,8 +44,29 @@ public class SystemEnvServiceImpl implements SystemEnvService {
         }
     }
 
+    @Transactional
+    @Override
+    public void createIfNotExist(String param, String value) {
+        Validate.notNull(param);
+        Validate.notNull(value);
+        SystemEnv systemEnv = new SystemEnv();
+        systemEnv.setParam(param);
+        systemEnv.setValue(value);
+        boolean isExist = systemEnvDao.isParamExist(param);
+        if(!isExist){
+            systemEnvDao.insert(systemEnv);
+        }else{
+            systemEnvDao.update(systemEnv);
+        }
+    }
+
     @Override
     public String getParam(String param) {
         return systemEnvDao.getParam(param);
+    }
+
+    @Override
+    public void delete(String param) {
+        systemEnvDao.delete(param);
     }
 }

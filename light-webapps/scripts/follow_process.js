@@ -59,4 +59,5 @@ function copyFiles(pattern, srcBaseDir, destBaseDir) {
 
 copyFiles('**/*.css', srcDir, destDir);
 copyFiles('**/*.less', srcDir, destDir)
+copyFiles('**/*.svg', srcDir, destDir)
 
