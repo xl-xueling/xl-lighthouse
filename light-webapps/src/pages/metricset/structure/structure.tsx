@@ -7,11 +7,11 @@ import {areJsonObjectsEqual, getRandomString, getTextBlenLength, validateWithReg
 import {TEXT_BASE_PATTERN_2, TEXT_BASE_PATTERN_3} from "@/utils/constants";
 import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
-import {MetricSetStructureContext} from "@/pages/metricset/structure/index";
+import {MetricSetStructureContext} from "@/pages/common/context";
 import {TreeNode} from "@/types/insights-web";
-import {countNodesByType} from "@/pages/department/common";
+import {countNodesByType} from "@/pages/department/base";
 import {getTreeResourceIcon} from "@/pages/common/desc/base";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
+import {MetricSetPreviewContext} from "@/pages/common/context";
 
 const { Row, Col } = Grid;
 
@@ -143,7 +143,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                     }
                     const destRef = treeRef.current.getCacheNode([destPid])[0].props.dataRef;
                     if(destRef.type == 'stat'){
-                        Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.waring.unable.moveToIndicatorNode']});
+                        Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.unable.moveToIndicatorNode']});
                         return;
                     }
                     const loop = (data, key, callback) => {

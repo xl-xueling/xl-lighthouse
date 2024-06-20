@@ -12,7 +12,7 @@ import {
 import styles from "./style/index.module.less";
 import StatPreviewPanel from "@/pages/stat/preview/preview";
 import StructurePanel from "@/pages/metricset/structure/structure";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
+import {MetricSetPreviewContext} from "@/pages/common/context";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
@@ -26,8 +26,8 @@ import {Resource, TreeNode} from "@/types/insights-web";
 import {getColumns} from "./constants";
 import {getRandomString} from "@/utils/util";
 import {ResourceTypeEnum} from "@/types/insights-common";
-import {MetricSetStructureContext} from "@/pages/metricset/structure/index";
-import {treeCheckContainsNode} from "@/pages/department/common";
+import {MetricSetStructureContext} from "@/pages/common/context";
+import {treeCheckContainsNode} from "@/pages/department/base";
 
 export default function MetricSetRepositoryModal({id,onClose}) {
 

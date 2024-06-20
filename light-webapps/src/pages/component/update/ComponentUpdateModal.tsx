@@ -19,22 +19,11 @@ import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 const FormItem = Form.Item;
 const Option = Select.Option;
 import AceEditor from "react-ace";
-import "ace-builds";
-import 'ace-builds/src-noconflict/ace'
 import 'ace-builds/src-noconflict/theme-textmate';
 import 'ace-builds/src-noconflict/theme-gruvbox';
-import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/mode-json5';
-import 'ace-builds/src-noconflict/mode-jsoniq';
-import "ace-builds/webpack-resolver";
+import 'ace-builds/src-noconflict/mode-xml';
 import 'ace-builds/src-noconflict/ext-language_tools';
-import "brace/mode/xml";
-import "brace/mode/json";
-import "brace/mode/jsoniq";
-import "brace/theme/textmate";
-import {requestCreate} from "@/api/component";
-import {requestVerify} from "@/api/component";
-import {translate, translateResponse} from "@/pages/department/common";
+import {translate, translateResponse} from "@/pages/department/base";
 import {requestUpdate} from "@/api/component";
 
 
@@ -44,7 +33,42 @@ export default function ComponentUpdateModal({componentInfo,onClose,onSuccess}) 
     const [editorTheme,setEditorTheme] = useState('textmate');
     const [loading,setLoading] = useState<boolean>();
     const editorRef = useRef<any>();
+    const [value, setValue] = useState("");
+    const [annotations, setAnnotations] = useState([]);
     const formRef = useRef(null);
+
+    const onChange = (newValue) => {
+        setValue(newValue);
+        try {
+            JSON.parse(newValue);
+            setAnnotations([]);
+        } catch (e) {
+            const match = e.message.match(/position (\d+)/);
+            if (match) {
+                const position = parseInt(match[1], 10);
+                const lines = newValue.slice(0, position).split("\n");
+                const row = lines.length - 1;
+                const column = lines[lines.length - 1].length;
+                setAnnotations([{
+                    row:row,
+                    column,
+                    text: e.message,
+                    type: "error",
+                    timestamp:Date.now(),
+                }]);
+            } else {
+                setTimeout(() => {
+                    setAnnotations([{
+                        row: 0,
+                        column: 0,
+                        text: e.message,
+                        type: "error",
+                        timestamp:Date.now(),
+                    }]);
+                },100);
+            }
+        }
+    };
 
     async function handlerSubmit(){
         setLoading(true);
@@ -203,6 +227,8 @@ export default function ComponentUpdateModal({componentInfo,onClose,onSuccess}) 
                         enableSnippets={true}
                         highlightActiveLine={false}
                         showPrintMargin={false}
+                        onChange={onChange}
+                        annotations={annotations}
                         showGutter={true}
                         enableBasicAutocompletion={true}
                         setOptions={{

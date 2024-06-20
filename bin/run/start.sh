@@ -95,7 +95,10 @@ function startLightHouseInsights(){
   local IPArray=($(getServiceIPS 'lighthouse_insights'))
 	for ip in "${IPArray[@]}"
 		do
-			local jar_path=$(find ${LDP_HOME}/lib -type f -name 'lighthouse-insights-*.jar'|head -n 1)
+			local jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-pro-insights-*-pro.*.jar' | head -n 1)
+      if [[ ! -n $jar_path ]]; then
+        jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-insights-*.jar' | head -n 1)
+      fi
 			local serverCmd="nohup java -Xms${web_xms_memory} -Xmx${web_xmx_memory} -XX:+UseG1GC -Dloader.path=${LDP_HOME}/lib,${LDP_HOME}/light-webapps -Duser.timezone=${timezone} -Dlogging.config=file:${LDP_HOME}/conf/log4j2-insights.xml -Dspring.config.location=${LDP_HOME}/conf/lighthouse-insights.yml -jar ${jar_path} >/dev/null 2>&1 &"
 			remoteExecute ${CUR_DIR}/common/exec.exp ${DEPLOY_USER} ${ip} ${userPasswd} "$serverCmd"
 			local webappCmd="${LDP_HOME}/dependency/nginx/sbin/nginx -c ${LDP_HOME}/dependency/nginx/conf/nginx.conf -p ${LDP_HOME}/dependency/nginx"
@@ -113,7 +116,10 @@ function startLightHouseStandalone(){
   local IPArray=($(getServiceIPS 'lighthouse_standalone'))
 	for ip in "${IPArray[@]}"
 		do
-			local jar_path=$(find ${LDP_HOME}/lib -type f -name 'lighthouse-standalone-*.jar'|head -n 1)
+      local jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-pro-standalone-*-pro.*.jar' | head -n 1)
+      if [[ ! -n $jar_path ]]; then
+        jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-standalone-*.jar' | head -n 1)
+      fi
 			local serverCmd="nohup java -Xms${standalone_xms_memory} -Xmx${standalone_xmx_memory} -XX:+UseG1GC -Dlog4j.configurationFile=${LDP_HOME}/conf/log4j2-standalone.xml -cp ${LDP_HOME}/lib/*:${jar_path} com.dtstep.lighthouse.standalone.executive.LightStandaloneEntrance >/dev/null 2>&1 &";
 			remoteExecute ${CUR_DIR}/common/exec.exp ${DEPLOY_USER} ${ip} ${userPasswd} "$serverCmd"
 		done
@@ -144,11 +150,15 @@ function startLightHouseTasks(){
 	local tasks_num_executors=($(getVal 'ldp_lighthouse_tasks_num_executors'))
 	local timezone=($(getVal 'ldp_lighthouse_timezone'))
 	local master=($(getVal 'ldp_spark_master'))
+	local jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-pro-tasks-*-pro.*.jar' | head -n 1)
+  if [[ ! -n $jar_path ]]; then
+    jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-tasks-*.jar' | head -n 1)
+  fi
 	local cmd;
 	if [[ "${SERVICES[@]}" =~ "hadoop" ]];then
-	  cmd="spark-submit --class com.dtstep.lighthouse.tasks.executive.LightHouseEntrance --files ${LDP_HOME}/conf/log4j2-tasks.xml --conf \"spark.driver.extraJavaOptions=-Duser.timezone=${timezone} -Dlog4j.configurationFile=${LDP_HOME}/conf/log4j2-tasks.xml\"  --conf spark.memory.fraction=0.2 --conf spark.memory.storageFraction=0.1 --conf \"spark.executor.extraJavaOptions=-Duser.timezone=${timezone} -Xloggc:/tmp/gc-lighthouse-%t.log -verbose:gc -XX:-OmitStackTraceInFastThrow -XX:+PrintGCDetails -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m -XX:G1HeapRegionSize=16M -XX:MaxDirectMemorySize=${tasks_direct_memory} -XX:ErrorFile=/tmp/hs_err_pid<pid>.log -Dlog4j.configurationFile=${LDP_HOME}/conf/log4j2-tasks.xml\" --master yarn --conf spark.driver.memory=${tasks_driver_memory} --executor-memory ${tasks_executor_memory} --executor-cores ${tasks_executor_cores} --num-executors ${tasks_num_executors} --exclude-packages org.apache.logging.log4j:log4j-slf4j-impl --jars $(find ${LDP_HOME}/lib/ -type f -name "*.jar" ! -name "spring*.jar" -exec readlink -f {} \; | tr '\n' ',') ${LDP_HOME}/lib/lighthouse-tasks-*.jar ${LDP_HOME}/conf/ldp-site.xml >/dev/null 2>&1 &"
+	  cmd="spark-submit --class com.dtstep.lighthouse.tasks.executive.LightHouseEntrance --files ${LDP_HOME}/conf/log4j2-tasks.xml --conf \"spark.driver.extraJavaOptions=-Duser.timezone=${timezone} -Dlog4j.configurationFile=${LDP_HOME}/conf/log4j2-tasks.xml\"  --conf spark.memory.fraction=0.2 --conf spark.memory.storageFraction=0.1 --conf \"spark.executor.extraJavaOptions=-Duser.timezone=${timezone} -Xloggc:/tmp/gc-lighthouse-%t.log -verbose:gc -XX:-OmitStackTraceInFastThrow -XX:+PrintGCDetails -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m -XX:G1HeapRegionSize=16M -XX:MaxDirectMemorySize=${tasks_direct_memory} -XX:ErrorFile=/tmp/hs_err_pid<pid>.log -Dlog4j.configurationFile=${LDP_HOME}/conf/log4j2-tasks.xml\" --master yarn --conf spark.driver.memory=${tasks_driver_memory} --executor-memory ${tasks_executor_memory} --executor-cores ${tasks_executor_cores} --num-executors ${tasks_num_executors} --exclude-packages org.apache.logging.log4j:log4j-slf4j-impl --jars $(find ${LDP_HOME}/lib/ -type f -name "*.jar" ! -name "spring*.jar" -exec readlink -f {} \; | tr '\n' ',') ${jar_path} ${LDP_HOME}/conf/ldp-site.xml >/dev/null 2>&1 &"
 	else
-	  cmd="spark-submit --class com.dtstep.lighthouse.tasks.executive.LightHouseEntrance --files ${LDP_HOME}/conf/log4j2-tasks.xml --conf \"spark.driver.extraJavaOptions=-Duser.timezone=${timezone} -Dlog4j.configurationFile=${LDP_HOME}/conf/log4j2-tasks.xml\"  --conf spark.memory.fraction=0.2 --conf spark.memory.storageFraction=0.1 --conf \"spark.executor.extraJavaOptions=-Duser.timezone=${timezone} -Xloggc:/tmp/gc-lighthouse-%t.log -verbose:gc -XX:-OmitStackTraceInFastThrow -XX:+PrintGCDetails -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m -XX:G1HeapRegionSize=16M -XX:MaxDirectMemorySize=${tasks_direct_memory} -XX:ErrorFile=/tmp/hs_err_pid<pid>.log -Dlog4j.configurationFile=${LDP_HOME}/conf/log4j2-tasks.xml\" --master spark://${master}:7077 --conf spark.driver.memory=${tasks_driver_memory} --executor-memory ${tasks_executor_memory} --executor-cores ${tasks_executor_cores} --num-executors ${tasks_num_executors} --exclude-packages org.apache.logging.log4j:log4j-slf4j-impl --jars $(find ${LDP_HOME}/lib/ -type f -name "*.jar" ! -name "spring*.jar" -exec readlink -f {} \; | tr '\n' ',') ${LDP_HOME}/lib/lighthouse-tasks-*.jar ${LDP_HOME}/conf/ldp-site.xml >/dev/null 2>&1 &"
+	  cmd="spark-submit --class com.dtstep.lighthouse.tasks.executive.LightHouseEntrance --files ${LDP_HOME}/conf/log4j2-tasks.xml --conf \"spark.driver.extraJavaOptions=-Duser.timezone=${timezone} -Dlog4j.configurationFile=${LDP_HOME}/conf/log4j2-tasks.xml\"  --conf spark.memory.fraction=0.2 --conf spark.memory.storageFraction=0.1 --conf \"spark.executor.extraJavaOptions=-Duser.timezone=${timezone} -Xloggc:/tmp/gc-lighthouse-%t.log -verbose:gc -XX:-OmitStackTraceInFastThrow -XX:+PrintGCDetails -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m -XX:G1HeapRegionSize=16M -XX:MaxDirectMemorySize=${tasks_direct_memory} -XX:ErrorFile=/tmp/hs_err_pid<pid>.log -Dlog4j.configurationFile=${LDP_HOME}/conf/log4j2-tasks.xml\" --master spark://${master}:7077 --conf spark.driver.memory=${tasks_driver_memory} --executor-memory ${tasks_executor_memory} --executor-cores ${tasks_executor_cores} --num-executors ${tasks_num_executors} --exclude-packages org.apache.logging.log4j:log4j-slf4j-impl --jars $(find ${LDP_HOME}/lib/ -type f -name "*.jar" ! -name "spring*.jar" -exec readlink -f {} \; | tr '\n' ',') ${jar_path} ${LDP_HOME}/conf/ldp-site.xml >/dev/null 2>&1 &"
 	fi
 	if [ $CUR_USER == $DEPLOY_USER ];then
 		 remoteExecute ${CUR_DIR}/common/exec.exp ${DEPLOY_USER} ${master} "-" "${cmd}"
@@ -204,11 +214,12 @@ start_all(){
 		sleep 10;
 	fi
 	log_info "Waiting to start LightHouse ..."
-	sleep 20;
 	if [[ ${RUNNING_MODE} == "standalone" ]];then
+	    sleep 10;
 	    startLightHouseInsights;
 	    startLightHouseStandalone;
 	else
+	  sleep 20;
 	  startLightHouseICE;
     startLightHouseInsights;
 	  startLightHouseTasks;

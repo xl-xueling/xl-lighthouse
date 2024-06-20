@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Form, Input, Message, Modal, Notification, Radio, Skeleton, Spin, TreeSelect} from "@arco-design/web-react";
 import UserTermQuery from "@/pages/user/common/userTermQuery";
-import {translate, translateToFlatStruct} from "@/pages/department/common";
+import {translate, translateToFlatStruct} from "@/pages/department/base";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {requestCreate, requestQueryById, requestUpdateById} from "@/api/project";
@@ -9,9 +9,8 @@ import useForm from "@arco-design/web-react/es/Form/useForm";
 import {getTextBlenLength} from "@/utils/util";
 import {ArcoFlatNode, Department, Project, User} from "@/types/insights-web";
 import {useDispatch, useSelector} from "react-redux";
-import {GlobalState} from "@/store";
+import {GlobalState, updateStoreStaredProjectInfo} from "@/store";
 import {GlobalErrorCodes, TEXT_BASE_PATTERN_2} from "@/utils/constants";
-import {updateStoreStaredProjectInfo} from "@/index";
 
 export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,onSuccess}){
 

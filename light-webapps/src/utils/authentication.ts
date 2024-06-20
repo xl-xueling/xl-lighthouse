@@ -11,7 +11,6 @@ type Auth = {
 
 export interface AuthParams {
   requiredPermissions?: Array<Auth>;
-  requiredLDPPermissions?: Array<string>;
   oneOfPerm?: boolean;
 }
 

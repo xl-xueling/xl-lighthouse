@@ -10,7 +10,7 @@ import {
     TableColumnProps,
     TreeSelect
 } from "@arco-design/web-react";
-import {translateToTreeNodes} from "@/pages/department/common";
+import {translateToTreeNodes} from "@/pages/department/base";
 import {IconPlus} from "@arco-design/web-react/icon";
 import {requestList} from "@/api/component";
 import useLocale from "@/utils/useLocale";

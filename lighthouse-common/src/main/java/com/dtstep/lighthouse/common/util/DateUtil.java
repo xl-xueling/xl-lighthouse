@@ -343,4 +343,12 @@ public final class DateUtil {
         ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
         return zonedDateTime.toInstant().toEpochMilli();
     }
+
+    public static long getDateAfterMonths(long timestamp, int months) {
+        LocalDate date = Instant.ofEpochMilli(timestamp)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalDate newDate = date.plusMonths(months);
+        return newDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
 }

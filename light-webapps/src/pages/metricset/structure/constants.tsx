@@ -12,7 +12,7 @@ import {
 import styles from "./style/index.module.less";
 import StatPreviewPanel from "@/pages/stat/preview/preview";
 import StructurePanel from "@/pages/metricset/structure/structure";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
+import {MetricSetPreviewContext} from "@/pages/common/context";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
@@ -20,7 +20,7 @@ import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import {getResourceTypeDescription} from "@/pages/common/desc/base";
 import {ResourceTypeEnum} from "@/types/insights-common";
 import {TreeNode} from "@/types/insights-web";
-import {treeCheckContainsNode} from "@/pages/department/common";
+import {treeCheckContainsNode} from "@/pages/department/base";
 const { Text } = Typography;
 
 export function getColumns(t: any,listNodes:TreeNode[], callback: (record: Record<string, any>, type: string) => Promise<void>) {

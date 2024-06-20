@@ -8,15 +8,10 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
 import AceEditor from "react-ace";
-import "ace-builds";
-import 'ace-builds/src-noconflict/ace'
 import 'ace-builds/src-noconflict/theme-textmate';
 import 'ace-builds/src-noconflict/theme-gruvbox';
 import 'ace-builds/src-noconflict/mode-xml';
-import "ace-builds/webpack-resolver";
 import 'ace-builds/src-noconflict/ext-language_tools';
-import "brace/mode/xml";
-import "brace/theme/textmate";
 const { Row, Col } = Grid;
 import Draggable from 'react-draggable';
 import { MdOutlineDragIndicator } from "react-icons/md";

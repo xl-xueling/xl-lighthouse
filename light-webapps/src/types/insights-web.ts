@@ -4,7 +4,7 @@ import {
     RenderDateConfig,
     RenderFilterConfig, OrderStateEnum,
     OrderTypeEnum, PermissionEnum, RecordTypeEnum,
-    ResourceTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum, PrivateTypeEnum
+    ResourceTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum, PrivateTypeEnum, RenderChartConfig
 } from "@/types/insights-common";
 import Decimal from "decimal.js";
 
@@ -24,6 +24,17 @@ export interface Department {
     name: string;
     children?:Array<Department>;
     pid:number;
+}
+
+export interface AuthorizeInfo {
+    clusterId?:string;
+    installationCode?:string;
+    activationCode?:string;
+    organize?:string;
+    startTime?:number;
+    expireTime?:number;
+    userLimit?:number;
+    timestamp?:number;
 }
 
 export interface GrantPrivileges {
@@ -135,10 +146,11 @@ export interface Stat {
     desc?:string;
     templateEntity?:any,
     state?:StatStateEnum;
-    renderConfig?:{datepicker:RenderDateConfig,filters:Array<RenderFilterConfig>}
+    renderConfig?:{datepicker:RenderDateConfig,filters:Array<RenderFilterConfig>,charts:Array<RenderChartConfig>}
     permissions?:PermissionEnum[];
     builtIn?:boolean;
 }
+
 
 export interface MetricSet {
     id?:number;
@@ -270,5 +282,10 @@ export interface Permission {
     extend?:any;
     createTime?:number;
     updateTime?:number;
+}
+
+export interface ExportData {
+    filename?:string;
+    content?:string;
 }
 

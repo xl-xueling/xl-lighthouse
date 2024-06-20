@@ -2,19 +2,16 @@ import {Button, Form, Grid, Input, Modal, Notification, Select, Typography,} fro
 import React, {useEffect, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
-import AceEditor from "react-ace";
-import "ace-builds";
-import 'ace-builds/src-noconflict/ace'
-import 'ace-builds/src-noconflict/theme-textmate';
-import 'ace-builds/src-noconflict/theme-sqlserver';
-import 'ace-builds/src-noconflict/theme-dawn';
-import 'ace-builds/src-noconflict/theme-kuroir';
-import 'ace-builds/src-noconflict/theme-gruvbox';
-import 'ace-builds/src-noconflict/mode-xml';
-import "ace-builds/webpack-resolver";
-import 'ace-builds/src-noconflict/ext-language_tools';
-import "brace/mode/xml";
-import "brace/theme/textmate";
+// import "ace-builds";
+// import 'ace-builds/src-noconflict/ace'
+// import 'ace-builds/src-noconflict/theme-textmate';
+// import 'ace-builds/src-noconflict/theme-sqlserver';
+// import 'ace-builds/src-noconflict/theme-dawn';
+// import 'ace-builds/src-noconflict/theme-kuroir';
+// import 'ace-builds/src-noconflict/theme-gruvbox';
+// import 'ace-builds/src-noconflict/mode-xml';
+// import "ace-builds/webpack-resolver";
+// import 'ace-builds/src-noconflict/ext-language_tools';
 import Draggable from 'react-draggable';
 import {MdOutlineDragIndicator} from "react-icons/md";
 import {Group, Project, Stat} from "@/types/insights-web";

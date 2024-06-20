@@ -13,7 +13,7 @@ import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import styles from './style/index.module.less';
 import {useSelector} from "react-redux";
 import {Department, TreeNode} from "@/types/insights-web";
-import {translate} from "@/pages/department/common";
+import {translate} from "@/pages/department/base";
 import ProjectTermQuery from "@/pages/project/common/projectTermQuery";
 
 const { Row, Col } = Grid;

@@ -1,14 +1,16 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
     Modal,
 } from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {StatLimitingRecordsPanel} from "@/pages/stat/limiting/limit_records_panel";
+import {StatInfoPreviewContext} from "@/pages/common/context";
 
-export function StatLimitingModal({statInfo,onClose}){
+function StatLimitingModal({onClose}) {
 
     const t = useLocale(locale);
+    const { statInfo, setStatInfo } = useContext(StatInfoPreviewContext);
 
     return (
         <Modal
@@ -22,3 +24,5 @@ export function StatLimitingModal({statInfo,onClose}){
         </Modal>
     );
 }
+
+export default StatLimitingModal;

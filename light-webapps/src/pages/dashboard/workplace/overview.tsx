@@ -8,8 +8,6 @@ import {
   Link, Notification,
 } from '@arco-design/web-react';
 import { useSelector } from 'react-redux';
-import {IconCamera, IconCaretUp} from '@arco-design/web-react/icon';
-import OverviewAreaLine from '@/components/Chart/overview-area-line';
 import axios from 'axios';
 import locale from './locale';
 import useLocale from '@/utils/useLocale';
@@ -19,15 +17,8 @@ import IconComments from './assets/comments.svg';
 import IconContent from './assets/content.svg';
 import IconIncrease from './assets/increase.svg';
 import {GlobalState} from "@/store";
-import {requestStructure} from "@/api/department";
-import {ResultData} from "@/types/insights-common";
-import {requestOverView} from "@/api/home";
-import {HomeData, Stat} from "@/types/insights-web";
 import ChartPanel from "@/pages/stat/preview/chart_panel";
-import {requestQueryById} from "@/api/stat";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
-import {HomePageContext} from "@/pages/dashboard/workplace/index";
-import {getRandomString} from "@/utils/util";
+import {HomePageContext} from "@/pages/common/context";
 
 const { Row, Col } = Grid;
 

@@ -14,25 +14,18 @@ import {
 } from '@arco-design/web-react';
 import styles from "./style/index.module.less";
 import StructurePanel from "@/pages/metricset/structure/structure";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
+import {MetricSetPreviewContext} from "@/pages/common/context";
 import {requestResetStructure, requestUpdateStructure} from "@/api/metricset";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import MetricSetRepositoryModal from "@/pages/metricset/structure/MetricRepositoryModal";
 import {TreeNode} from "@/types/insights-web";
-
+import {MetricSetStructureContext} from "@/pages/common/context"
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
 import { RiPlayListAddLine } from "react-icons/ri";
-import {IconCheckCircleFill} from "@arco-design/web-react/icon";
-import { VscSync } from "react-icons/vsc";
-import { FiRefreshCcw } from "react-icons/fi";
-import md5 from 'md5';
-import {areJsonObjectsEqual, getRandomString} from "@/utils/util";
-
-export const MetricSetStructureContext = React.createContext(null);
 
 export default function MetricSetStructure() {
 

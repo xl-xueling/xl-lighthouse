@@ -19,20 +19,13 @@ import {requestDeleteById, requestList, requestStarById, requestUnStarById} from
 import {Department, MetricSet, Project, TreeNode} from "@/types/insights-web";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useDispatch, useSelector} from "react-redux";
-import ProjectCreatePanel from "@/pages/project/create";
 import ProjectUpdatePanel from "@/pages/project/update";
-import Detail from "@/pages/project/list/detail";
-import ReverseBindedPanel from "@/pages/metricset/binded/reverse-binded";
 import ProjectApplyModal from "@/pages/project/apply";
-import {IconHome} from "@arco-design/web-react/icon";
 import {ResourceTypeEnum} from "@/types/insights-common";
-import {GlobalErrorCodes} from "@/utils/constants";
-import {getRandomString} from "@/utils/util";
 import {GlobalState} from "@/store";
 import {requestBinded} from "@/api/metricset";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
-import {MetricSetBindListContext} from "@/pages/metricset/binded/list";
-import {updateStoreStaredProjectInfo} from "@/index";
+import {MetricSetBindListContext} from "@/pages/common/context";
+import {updateStoreStaredProjectInfo} from "@/store";
 import {convertDateToTimestamp, DateFormat, getDayEndTimestamp, getDayStartTimestamp} from "@/utils/date";
 
 const BreadcrumbItem = Breadcrumb.Item;

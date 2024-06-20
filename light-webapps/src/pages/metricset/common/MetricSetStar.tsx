@@ -26,7 +26,7 @@ import {LuLayers} from "react-icons/lu";
 import {CiLock, CiViewTable} from "react-icons/ci";
 import {getIcon} from "@/pages/common/desc/base";
 import {requestStarById, requestUnStarById} from "@/api/metricset";
-import {updateStoreStaredMetricInfo} from "@/index";
+import {updateStoreStaredMetricInfo} from "@/store";
 import {useDispatch,useSelector} from "react-redux";
 const { Row, Col } = Grid;
 

@@ -32,7 +32,7 @@ import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
 import {RiAppsLine} from "react-icons/ri";
 import {CiLock} from "react-icons/ci";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview/index";
+import {MetricSetPreviewContext} from "@/pages/common/context";
 import ProjectStar from "@/pages/project/common/ProjectStar";
 import MetricSetStar from "@/pages/metricset/common/MetricSetStar";
 const { Row, Col } = Grid;

@@ -14,6 +14,8 @@ public enum ResultCode {
 
     systemError("500","systemError"),
 
+    systemUnauthorized("1000","systemUnauthorized"),
+
     loginCheckFailed("1001","loginCheckFailed"),
 
     authRenewalFailed("1002","authRenewalFailed"),
@@ -88,6 +90,8 @@ public enum ResultCode {
 
     filterConfigConfigCannotBeEmpty("2008","filterConfigConfigCannotBeEmpty"),
 
+    renderConfigConfigCannotBeEmpty("2008","renderConfigConfigCannotBeEmpty"),
+
     orderCreateRepeatSubmit("2007","orderCreateRepeatSubmit"),
 
     templateParserNoValidItem("2008","templateParserNoValidItem"),
@@ -151,6 +155,12 @@ public enum ResultCode {
     trackDebugModeExpired("7001","trackDebugModeExpired"),
 
     dataQueryLimitExceed("8001","dataQueryLimitExceed"),
+
+    exportLimitExceed("9001","exportLimitExceed"),
+
+    authorizationFailed("10001","authorizationFailed"),
+
+    authorizationUnbindFailed("10002","authorizationUnbindFailed"),
 
     ;
 

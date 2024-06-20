@@ -40,7 +40,7 @@ const TabPane = Tabs.TabPane;
 import { BiExtension } from "react-icons/bi";
 import { BiWalletAlt } from "react-icons/bi";
 import { RxCube } from "react-icons/rx";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
+import {MetricSetPreviewContext} from "@/pages/common/context";
 import {getTreeResourceIcon} from "@/pages/common/desc/base";
 
 

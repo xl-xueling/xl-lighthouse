@@ -3,6 +3,7 @@ import {ResultData} from "@/types/insights-common";
 import {User} from "@/types/insights-web";
 
 export async function requestLogin(data):Promise<ResultData> {
+    console.log("start login.")
     return request({
         url:'/user/login',
         method:'POST',

@@ -11,10 +11,10 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import {ResultData} from "@/types/insights-common";
 import {getDataWithLocalCache} from "@/utils/localCache";
-import {fetchAllDepartmentData, translate} from "@/pages/department/common";
+import {fetchAllDepartmentData, translate} from "@/pages/department/base";
 import {ArcoTreeNode, User} from "@/types/insights-web";
 import {requestRegister} from "@/api/user";
-import md5 from 'md5';
+import {md5} from 'js-md5';
 
 export default function RegisterForm() {
 

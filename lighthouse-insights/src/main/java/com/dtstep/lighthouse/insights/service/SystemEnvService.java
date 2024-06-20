@@ -21,4 +21,8 @@ public interface SystemEnvService {
     void generateSignKeyIfNotExist();
 
     String getParam(String param);
+
+    void createIfNotExist(String param,String value);
+
+    void delete(String param);
 }

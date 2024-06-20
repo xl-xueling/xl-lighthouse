@@ -27,4 +27,8 @@ public interface SystemEnvDao {
     boolean isParamExist(String param);
 
     String getParam(String param);
+
+    int update(SystemEnv systemEnv);
+
+    void delete(String param);
 }

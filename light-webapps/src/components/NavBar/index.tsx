@@ -28,6 +28,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { GlobalState } from '@/store';
 import { GlobalContext } from '@/context';
 import useLocale from '@/utils/useLocale';
+import DarkLogo from '@/assets/dark-logo.svg';
+import LightLogo from '@/assets/light-logo.svg';
 import Logo from '@/assets/logo.svg';
 import {Switch, Route, Redirect, useHistory} from 'react-router-dom';
 
@@ -142,7 +144,7 @@ function Navbar({ show }: { show: boolean }) {
     <div className={styles.navbar}>
       <div className={styles.left}>
         <div className={styles.logo} onClick={() => handleClick('/')}>
-          <Logo />
+          {theme == "dark" ? <DarkLogo/> : <LightLogo/>}
           <div className={styles['logo-name']}>XL-LightHouse</div>
         </div>
       </div>

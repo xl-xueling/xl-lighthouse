@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.insights.controller;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.exception.AuthorizeException;
 import com.dtstep.lighthouse.common.exception.PermissionException;
 import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.insights.vo.ResultData;
@@ -38,7 +39,7 @@ public class DefaultExceptionHandler {
     @ResponseBody
     public Object globalErrorHandler(HttpServletRequest request, MethodArgumentNotValidException e)
     {
-        logger.info(e.getMessage());
+        logger.error("globalErrorHandler",e);
         return ResultData.result(ResultCode.paramValidateFailed);
     }
 
@@ -46,15 +47,23 @@ public class DefaultExceptionHandler {
     @ResponseBody
     public Object globalPermissionExceptionHandler(HttpServletRequest request, PermissionException e)
     {
-        logger.info(e.getMessage());
+        logger.error("globalErrorHandler",e);
         return ResultData.result(ResultCode.accessDenied);
+    }
+
+    @ExceptionHandler(value = AuthorizeException.class)
+    @ResponseBody
+    public Object globalAuthorizeExceptionHandler(HttpServletRequest request, AuthorizeException e)
+    {
+        logger.error("globalErrorHandler",e);
+        return ResultData.result(ResultCode.systemUnauthorized);
     }
 
     @ExceptionHandler(value = UnexpectedTypeException.class)
     @ResponseBody
     public Object globalErrorHandler(HttpServletRequest request, UnexpectedTypeException e)
     {
-        logger.info(e.getMessage());
+        logger.error("globalErrorHandler",e);
         return ResultData.result(ResultCode.paramValidateFailed);
     }
 
@@ -64,6 +73,4 @@ public class DefaultExceptionHandler {
         logger.error("System Error!",ex);
         return ResultData.result(ResultCode.systemError);
     }
-
-
 }

@@ -16,31 +16,29 @@ package com.dtstep.lighthouse.insights.service.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import com.dtstep.lighthouse.common.constant.StatConst;
+import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
 import com.dtstep.lighthouse.common.enums.*;
 import com.dtstep.lighthouse.common.modal.Component;
-import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.common.modal.*;
+import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.common.util.StringUtil;
-import com.dtstep.lighthouse.common.entity.ListData;
-import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.formula.TemplateUtil;
 import com.dtstep.lighthouse.core.storage.dimens.DimensStorageSelector;
-import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
-import com.dtstep.lighthouse.insights.dao.GroupDao;
-import com.dtstep.lighthouse.insights.dao.StatDao;
-import com.dtstep.lighthouse.insights.dto.StatQueryParam;
-import com.dtstep.lighthouse.common.modal.PermissionEnum;
-import com.dtstep.lighthouse.common.entity.ServiceResult;
-import com.dtstep.lighthouse.insights.vo.StatVO;
-import com.dtstep.lighthouse.common.modal.TreeNode;
-import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
+import com.dtstep.lighthouse.insights.dao.StatDao;
+import com.dtstep.lighthouse.insights.dto.StatQueryParam;
+import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.util.TreeUtil;
+import com.dtstep.lighthouse.insights.vo.StatVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
@@ -56,7 +54,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -388,6 +389,21 @@ public class StatServiceImpl implements StatService {
         }
         RenderConfig renderConfig = stat.getRenderConfig();
         renderConfig.setFilters(filterConfigs);
+        statDao.update(stat);
+        return ResultCode.success;
+    }
+
+    @Override
+    public ResultCode chartsConfig(StatVO stat,List<RenderChartConfig> chartConfigs) {
+        if(CollectionUtils.isEmpty(chartConfigs)){
+            return ResultCode.renderConfigConfigCannotBeEmpty;
+        }
+        RenderConfig renderConfig = stat.getRenderConfig();
+        if(renderConfig == null){
+            renderConfig = new RenderConfig();
+            stat.setRenderConfig(renderConfig);
+        }
+        renderConfig.setCharts(chartConfigs);
         statDao.update(stat);
         return ResultCode.success;
     }

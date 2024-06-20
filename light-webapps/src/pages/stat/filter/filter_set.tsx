@@ -19,7 +19,7 @@ import {requestFilterConfig, requestFilterReset} from "@/api/stat";
 import {Group, Project, Stat} from "@/types/insights-web";
 import {GlobalErrorCodes} from "@/utils/constants";
 import {Component, ComponentTypeEnum, RenderFilterConfig} from "@/types/insights-common";
-import {translateToTreeNodes} from "@/pages/department/common";
+import {translateToTreeNodes} from "@/pages/department/base";
 import {requestList} from "@/api/component";
 import SystemComponents from "@/pages/stat/filter/system_component";
 import {FormInstance} from "@arco-design/web-react/lib";
@@ -29,11 +29,13 @@ import styles from "./style/index.module.less";
 import EditTableV2 from "@/pages/common/editable_v2/EditTableV2";
 import CustomComponents from "@/pages/stat/filter/custom_component";
 import {getSystemComponentTypeDescription} from "@/pages/common/desc/base";
+import {StatInfoPreviewContext} from "@/pages/common/context";
 
-export default function StatFilterConfigModal({statInfo,onClose,onSuccess}:{statInfo:Stat,onClose:() => void,onSuccess:() => void}) {
+export default function StatFilterConfigModal({onClose,onSuccess}:{onClose:() => void,onSuccess:() => void}) {
 
     const editTableRef = useRef(null);
     const t = useLocale(locale);
+    const { statInfo, setStatInfo } = useContext(StatInfoPreviewContext);
     const [initFilterConfig,setInitFilterConfig] = useState<Array<RenderFilterConfig>>([]);
     const [submitLoading,setSubmitLoading] = useState<boolean>(false);
     const [resetLoading,setResetLoading] = useState<boolean>(false);

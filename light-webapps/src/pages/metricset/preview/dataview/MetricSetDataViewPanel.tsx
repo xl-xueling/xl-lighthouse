@@ -4,7 +4,6 @@ import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb, 
 import styles from "@/pages/project/preview/style/index.module.less";
 import StatPreviewPanel from "@/pages/stat/preview/preview";
 import MetricSetDataViewMenu from "@/pages/metricset/preview/dataview/MetricSetDataViewMenu";
-import {MetricSetPreviewContext} from "@/pages/metricset/preview";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;

@@ -44,13 +44,13 @@ import {useSelector} from "react-redux";
 import {addMetricPreviewHistory} from "@/pages/metricset/preview/history";
 import {deepCopyObject} from "@/utils/util";
 import {requestDeleteById} from "@/api/metricset";
-
-export const MetricSetPreviewContext = React.createContext(null)
+import {MetricSetPreviewContext} from "@/pages/common/context";
 
 export default function Index() {
     const {id} = useParams();
     const t = useLocale(locale);
     const history = useHistory();
+    const { Text } = Typography;
     const [loading, setLoading] = useState<boolean>(false);
     const [initLoading, setInitLoading] = useState<boolean>(true);
     const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
@@ -147,13 +147,19 @@ export default function Index() {
                     errorCode ? <ErrorPage errorCode={errorCode}/>
                         :
                         <>
-                            <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
-                                <Breadcrumb.Item>
-                                    <IconHome/>
-                                </Breadcrumb.Item>
-                                <Breadcrumb.Item
-                                    style={{fontWeight: 20}}>{t['metricSetPreview.breadcrumb']}</Breadcrumb.Item>
-                            </Breadcrumb>
+                            <Row>
+                                <Col span={16}>
+                                    <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
+                                        <Breadcrumb.Item>
+                                            <IconHome/>
+                                        </Breadcrumb.Item>
+                                        <Breadcrumb.Item style={{fontWeight: 20}}>{t['metricSetPreview.breadcrumb']}</Breadcrumb.Item>
+                                    </Breadcrumb>
+                                </Col>
+                                <Col span={8} style={{textAlign:'right',fontSize:'13px',color:'#43454a'}}>
+                                    <Text style={{cursor:'pointer'}} onClick={() => history.goBack()}>[{t['basic.route.back']}]</Text>
+                                </Col>
+                            </Row>
                             <Spin loading={initLoading} style={{ width: '100%',minHeight:'800px' }}>
                             <Space size={16} direction="vertical" style={{width: '100%'}}>
                                 <Card>

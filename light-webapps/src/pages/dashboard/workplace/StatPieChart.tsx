@@ -12,7 +12,7 @@ import {
     DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
 import {formatString, getRandomString} from "@/utils/util";
-import {HomePageContext} from "@/pages/dashboard/workplace/index";
+import {HomePageContext} from "@/pages/common/context";
 import styles from "@/pages/dashboard/workplace/style/overview.module.less";
 // import 'default-passive-events'
 

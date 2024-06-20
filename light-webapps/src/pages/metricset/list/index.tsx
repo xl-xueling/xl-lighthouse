@@ -21,7 +21,7 @@ import {IconHome} from "@arco-design/web-react/icon";
 import {requestDeleteById} from "@/api/metricset";
 import {useDispatch,useSelector} from "react-redux";
 import {GlobalState} from "@/store";
-import {updateStoreStaredMetricInfo} from "@/index";
+import {updateStoreStaredMetricInfo} from "@/store";
 import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
 import {getRandomString} from "@/utils/util";
 const { Title } = Typography;
@@ -41,10 +41,10 @@ export default function ListCard() {
     const [formParams, setFormParams] = useState<any>({});
     const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
     const [pagination, setPagination] = useState<PaginationProps>({
-        sizeOptions: [15,30],
-        sizeCanChange: true,
+        sizeOptions: [11,30],
+        sizeCanChange: false,
         showTotal: true,
-        pageSize: 15,
+        pageSize: 11,
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
@@ -100,6 +100,10 @@ export default function ListCard() {
         setFormParams({search});
     }
 
+    const changePage = (pageNum,pageSize) => {
+        setPagination({ ...pagination, current: pageNum, pageSize:pageSize});
+    }
+
     useEffect(() => {
         fetchData().then();
     }, [reloadTime,activeKey,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
@@ -121,7 +125,7 @@ export default function ListCard() {
                     </Col>
                     {listData.map((item, index) => (
                         <Col span={6} key={index}>
-                            <MetricSetCardBox key={index} item={item}/>
+                            <MetricSetCardBox from={"list"} key={index} item={item}/>
                         </Col>
                     ))}
                 </Row>
@@ -157,7 +161,10 @@ export default function ListCard() {
                   {getCardList()}
               </div>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Pagination sizeOptions={[15,30]} sizeCanChange={true} defaultCurrent={pagination.current} total={pagination.total} showTotal={true}/>
+                  <Pagination size={"small"} sizeOptions={[11,30]} sizeCanChange={true} defaultCurrent={pagination.current} total={pagination.total}
+                              showTotal={true}
+                              onChange={changePage}
+                  />
               </div>
           </div>
             {showCreatePanel && <MetricSetAddPanel onClose={() => setShowCreatePanel(false)} onSuccess={handlerReloadList}/>}

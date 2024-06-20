@@ -7,14 +7,6 @@ import {
     Button,
     Grid, TreeSelect, Drawer, Descriptions, Divider, Link,
 } from '@arco-design/web-react';
-import { GlobalContext } from '@/context';
-import locale from './locale';
-import useLocale from '@/utils/useLocale';
-import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
-import styles from './style/index.module.less';
-import {translate} from "@/pages/department/common";
-import {Project} from "@/types/insights-web";
-import {requestQueryById} from "@/api/project";
 import DepartmentLabel from "@/pages/department/common/depart";
 import UserGroup from "@/pages/user/common/groups";
 const { Row, Col } = Grid;

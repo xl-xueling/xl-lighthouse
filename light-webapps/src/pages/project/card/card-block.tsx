@@ -27,6 +27,7 @@ const { Meta } = Card;
 interface CardBlockType {
   item: MetricSet;
   loading?: boolean;
+  from?:string;
   callback;
   size?:string;
 }
@@ -38,7 +39,7 @@ const IconList = [
 const { Paragraph } = Typography;
 
 function CardBlock(props: CardBlockType) {
-  const {item ,callback,size } = props;
+  const {item ,callback,size,from} = props;
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(props.loading);
   const history = useHistory();
@@ -65,11 +66,11 @@ function CardBlock(props: CardBlockType) {
   const className = cs(styles['card-block']);
 
     const redirectPreview = () => {
-        window.open('/project/preview/' + item?.id, '_blank');
+        window.open('/project/preview/' + item?.id, from == "list" ? '_blank':'_self');
     };
 
     const redirectManage = () => {
-        window.open('/project/manage/' + item?.id, '_blank');
+        window.open('/project/manage/' + item?.id, from == "list" ? '_blank':'_self');
     };
 
     const getTitleIcon = (index) => {

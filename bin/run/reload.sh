@@ -20,7 +20,7 @@ function reloadDependConfig(){
 		if [[ ! -d ${templates_path} ]] || [[ ! "$(ls -A $templates_path)" ]]; then
 			continue;
 		fi
-		mkdir -p ${reload_dir}/${service}
+		rm -rf ${reload_dir}/${service} && mkdir -p ${reload_dir}/${service}
 		local IPArray=($(getServiceIPS ${service}))
 		for ip in ${IPArray[@]}; do
 			cp -r ${CUR_DIR}/templates/${service}/* ${reload_dir}/${service}
@@ -46,7 +46,7 @@ function reloadLightConfig(){
   local userPasswd=($(getUserPassword ${DEPLOY_USER}));
         local service="lighthouse"
         local templates_path=${CUR_DIR}/templates/${service}/
-        mkdir -p ${reload_dir}/${service}
+        rm -rf ${reload_dir}/${service} && mkdir -p ${reload_dir}/${service}
         for ip in ${NODES[@]}; do
                 cp -r ${CUR_DIR}/templates/${service}/* ${reload_dir}/${service}
                 for attr in ${!ATTRS_MAP[@]}; do

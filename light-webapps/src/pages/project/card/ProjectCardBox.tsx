@@ -14,12 +14,12 @@ import CardBlock from './card-block';
 import {MetricSet, Project, TreeNode} from "@/types/insights-web";
 import {requestStarById, requestUnStarById} from "@/api/project";
 import {useDispatch,useSelector} from "react-redux";
-import {updateStoreStaredMetricInfo, updateStoreStaredProjectInfo} from "@/index";
+import {updateStoreStaredMetricInfo, updateStoreStaredProjectInfo} from "@/store";
 import {IconStarFill} from "@arco-design/web-react/icon";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 
-export default function ProjectCardBox ({item,size = 'default'}){
+export default function ProjectCardBox ({item,from=null,size = 'default'}){
 
     const t = useLocale(locale);
     const dispatch = useDispatch();
@@ -73,6 +73,6 @@ export default function ProjectCardBox ({item,size = 'default'}){
     }
 
     return (
-        <CardBlock item={item} callback={tableCallback} size={size} />
+        <CardBlock from={from} item={item} callback={tableCallback} size={size} />
     );
 }
