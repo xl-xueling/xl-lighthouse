@@ -39,9 +39,9 @@ function existByJPS(){
 	local ret=''
 	source ~/.bashrc
 	if [ $CUR_USER == $DEPLOY_USER ];then
-		ret=`ssh -o 'StrictHostKeyChecking no' ${DEPLOY_USER}@$ip ${JAVA_HOME}/bin/jps -l|grep ${process}|grep -v Jps |wc -l|tr -d '\n\r'`
+		ret=`ssh -o 'StrictHostKeyChecking no' ${DEPLOY_USER}@$ip ${JAVA_HOME}/bin/jps -l|grep -E ${process}|grep -v Jps |wc -l|tr -d '\n\r'`
 	else
-		ret=`su - ${DEPLOY_USER} -lc "ssh -o 'StrictHostKeyChecking no' ${DEPLOY_USER}@$ip ${JAVA_HOME}/bin/jps -l|grep ${process}|grep -v Jps |wc -l|tr -d '\n\r'"`
+		ret=`su - ${DEPLOY_USER} -lc "ssh -o 'StrictHostKeyChecking no' ${DEPLOY_USER}@$ip ${JAVA_HOME}/bin/jps -l|grep -E ${process}|grep -v Jps |wc -l|tr -d '\n\r'"`
 	fi
 	local code=0
         if [ "${ret}" == "0" ];then
@@ -344,7 +344,7 @@ function checkLightHouseInsights(){
                         	log_error "[${ip}]port(8181) listener does not exist,lighthouse-insights startup failed!";
                         	exit -1;
                        	fi
-			existByJPS ${ip} 'lighthouse-insights'
+			existByJPS ${ip} 'lighthouse-(pro-)?insights'
                        	if [ $? != '0' ];then
                         	log_error "[${ip}]process(lighthouse-insights) does not exist,lighthouse-insights startup failed!";
                         	exit -1;
@@ -548,7 +548,7 @@ function checkLightHouseInsightsExist(){
         local index=0;
         for ip in "${IPArray[@]}"
                 do
-			existByJPS ${ip} 'lighthouse-insights'
+			existByJPS ${ip} 'lighthouse-(pro-)?insights'
                       if [ $? == '0' ];then
                         log_error "The lighthouse-insights(ip:${ip}) process is running, please stop it and execute again!";
                         exit -1;
