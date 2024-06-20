@@ -19,7 +19,7 @@ import changeTheme from './utils/changeTheme';
 import useStorage from './utils/useStorage';
 import {getDataWithLocalCache} from "@/utils/localCache";
 import {requestFetchUserInfo} from "@/api/user";
-import {fetchAllDepartmentData} from "@/pages/department/common";
+import {fetchAllDepartmentData} from "@/pages/department/base";
 import {MetricSet, Project} from "@/types/insights-web";
 import Register from "@/pages/register";
 import License from "@/pages/license";

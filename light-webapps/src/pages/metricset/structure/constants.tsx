@@ -20,7 +20,7 @@ import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import {getResourceTypeDescription} from "@/pages/common/desc/base";
 import {ResourceTypeEnum} from "@/types/insights-common";
 import {TreeNode} from "@/types/insights-web";
-import {treeCheckContainsNode} from "@/pages/department/common";
+import {treeCheckContainsNode} from "@/pages/department/base";
 const { Text } = Typography;
 
 export function getColumns(t: any,listNodes:TreeNode[], callback: (record: Record<string, any>, type: string) => Promise<void>) {

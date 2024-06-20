@@ -11,7 +11,7 @@ import {
 } from '@arco-design/web-react';
 import {FormInstance} from "@arco-design/web-react/es/Form";
 import {requestUpdateById} from "@/api/user";
-import {translate} from "@/pages/department/common";
+import {translate} from "@/pages/department/base";
 import {ResultData} from "@/types/insights-common";
 import {User} from "@/types/insights-web";
 import {createStore} from "redux";

@@ -23,7 +23,7 @@ import 'ace-builds/src-noconflict/theme-textmate';
 import 'ace-builds/src-noconflict/theme-gruvbox';
 import 'ace-builds/src-noconflict/mode-xml';
 import 'ace-builds/src-noconflict/ext-language_tools';
-import {translate, translateResponse} from "@/pages/department/common";
+import {translate, translateResponse} from "@/pages/department/base";
 import {requestUpdate} from "@/api/component";
 
 

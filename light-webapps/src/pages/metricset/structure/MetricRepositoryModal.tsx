@@ -27,7 +27,7 @@ import {getColumns} from "./constants";
 import {getRandomString} from "@/utils/util";
 import {ResourceTypeEnum} from "@/types/insights-common";
 import {MetricSetStructureContext} from "@/pages/common/context";
-import {treeCheckContainsNode} from "@/pages/department/common";
+import {treeCheckContainsNode} from "@/pages/department/base";
 
 export default function MetricSetRepositoryModal({id,onClose}) {
 

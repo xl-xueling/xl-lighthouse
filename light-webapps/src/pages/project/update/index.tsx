@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Form, Input, Message, Modal, Notification, Radio, Skeleton, Spin, TreeSelect} from "@arco-design/web-react";
 import UserTermQuery from "@/pages/user/common/userTermQuery";
-import {translate, translateToFlatStruct} from "@/pages/department/common";
+import {translate, translateToFlatStruct} from "@/pages/department/base";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {requestCreate, requestQueryById, requestUpdateById} from "@/api/project";

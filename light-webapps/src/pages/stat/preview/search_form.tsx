@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Department, TreeNode, Stat} from "@/types/insights-web";
 import {ComponentTypeEnum, RenderDateConfig, RenderFilterConfig} from "@/types/insights-common";
 import {Button, DatePicker, Form, Grid, Input, Notification, Select, TreeSelect} from "@arco-design/web-react";
@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import styles from "./style/index.module.less";
-import {translateToCascadeTreeNodes, translateToTreeNodes} from "@/pages/department/common";
+import {translateToCascadeTreeNodes, translateToTreeNodes} from "@/pages/department/base";
 import {
     DateTimeFormat,
     formatTimeStamp,
@@ -18,14 +18,16 @@ import {
 import {formatString, getRandomString} from "@/utils/util";
 import StructurePanel from "@/pages/metricset/structure/structure";
 import dayjs from "dayjs";
+import {StatInfoPreviewContext} from "@/pages/common/context";
 
 const { useForm } = Form;
 
 
-const SearchForm = React.forwardRef(( props:{size,statInfo,onSearch},ref) => {
+const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
 
     const t = useLocale(locale);
-    const {size = 'default',statInfo,onSearch} = props;
+    const { statInfo, setStatInfo } = useContext(StatInfoPreviewContext);
+    const {size = 'default',onSearch} = props;
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const { Row, Col } = Grid;
 
@@ -43,7 +45,7 @@ const SearchForm = React.forwardRef(( props:{size,statInfo,onSearch},ref) => {
 
     useEffect(() => {
         handleReset();
-    },[statInfo.id])
+    },[statInfo?.id])
 
     const Option = Select.Option;
 

@@ -12,7 +12,7 @@ import locale from './locale';
 import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import styles from './style/index.module.less';
-import {translate} from "@/pages/department/common";
+import {translate} from "@/pages/department/base";
 const { Row, Col } = Grid;
 const { useForm } = Form;
 

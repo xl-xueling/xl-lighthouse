@@ -2,19 +2,8 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import dayjs from 'dayjs';
 import {
     Form,
-    Input,
-    DatePicker,
-    Button,
     Grid, TreeSelect, Drawer, Descriptions, Divider, Link,
 } from '@arco-design/web-react';
-import { GlobalContext } from '@/context';
-import locale from './locale';
-import useLocale from '@/utils/useLocale';
-import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
-import styles from './style/index.module.less';
-import {translate} from "@/pages/department/common";
-import {Project} from "@/types/insights-web";
-import {requestQueryById} from "@/api/project";
 import {getStatExpiredEnumDescription} from "@/pages/common/desc/base";
 const { Row, Col } = Grid;
 const { useForm } = Form;

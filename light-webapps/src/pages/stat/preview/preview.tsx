@@ -18,7 +18,7 @@ import StatBasicLineChart from "@/pages/stat/preview/line_chart_v1";
 import './style/index.module.less';
 import {PermissionEnum, StatStateEnum} from "@/types/insights-common";
 import {IoMdRefresh} from "react-icons/io";
-import {StatLimitingModal} from "@/pages/stat/limiting/StatLimitingModal";
+import StatLimitingModal from "@/pages/stat/limiting/StatLimitingModal";
 import ErrorPage from "@/pages/common/error";
 import {deepCopyObject} from "@/utils/util";
 import StatPreviewSettingsModal from "@/pages/stat/preview/settings/StatPreviewSettingsModal";
@@ -263,7 +263,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                             <span style={{color:"red",fontSize:'15px',marginLeft:'10px'}}>{'['}{getStatStateDescription(t,statInfo?.state)}{']'}</span>
                             <Button style={{marginLeft:'15px'}} icon={<IoMdRefresh/>} size={"mini"} shape={"round"} onClick={() => {refresh()}} />
                         </Typography.Title>
-                        {<SearchForm size={size} statInfo={statInfo} onSearch={handleSearch} ref={formRef}/>}
+                        {<SearchForm size={size} onSearch={handleSearch} ref={formRef}/>}
                         {getStatChart()}
                     </Card>
                     {statInfo.templateEntity.statStateList.length > 1 &&
@@ -281,16 +281,16 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                         >
                             {t['statDisplay.label.statistic.information']}{'：'}
                         </Typography.Title>
-                        <BasicInfo statInfo={statInfo} callback={tableCallback}/>
+                        <BasicInfo callback={tableCallback}/>
                     </Card>
                         </>
                     }
                 </Space>
-                {showFilterConfigModal && <StatFilterConfigModal statInfo={statInfo}
+                {showFilterConfigModal && <StatFilterConfigModal
                                                                  onClose={() => setShowFilterConfigModal(false)}
                                                                  onSuccess={() => refresh()}
                 />}
-                {showLimitedRecord && <StatLimitingModal statInfo={statInfo} onClose={() => setShowLimitedRecord(false)}/>}
+                {showLimitedRecord && <StatLimitingModal onClose={() => setShowLimitedRecord(false)}/>}
                 {showSettingsModal && <StatPreviewSettingsModal onClose={() => setShowSettingsModal(false)}/>}
             </Spin>
             </StatInfoPreviewContext.Provider>

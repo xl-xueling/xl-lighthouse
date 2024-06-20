@@ -10,7 +10,7 @@ import {
     TreeSelect,
     Typography
 } from "@arco-design/web-react";
-import {translateToFlatStruct} from "@/pages/department/common";
+import {translateToFlatStruct} from "@/pages/department/base";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {getTextBlenLength} from "@/utils/util";

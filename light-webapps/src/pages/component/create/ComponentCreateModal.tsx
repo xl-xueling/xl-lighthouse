@@ -45,7 +45,7 @@ import 'ace-builds/src-noconflict/worker-json';
 import ace from 'ace-builds/src-noconflict/ace';
 import {requestCreate} from "@/api/component";
 import {requestVerify} from "@/api/component";
-import {translate, translateResponse} from "@/pages/department/common";
+import {translate, translateResponse} from "@/pages/department/base";
 
 
 export default function ComponentCreateModal({onClose,onSuccess}) {

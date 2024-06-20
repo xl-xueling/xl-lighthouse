@@ -6,7 +6,7 @@ import UserGroup from "@/pages/user/common/groups";
 import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
 import { CiLock } from "react-icons/ci";
-import {translateResponse} from "@/pages/department/common";
+import {translateResponse} from "@/pages/department/base";
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
