@@ -50,7 +50,7 @@ main(){
 		exit -1;
 	fi
 	local directoryName=$(basename "$LDP_HOME")
-  if [[ ! $directoryName =~ ^lighthouse-([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+  if [[ ! $directoryName =~ ^lighthouse-([0-9]+)\.([0-9]+)\.([0-9]+)(-pro\.([0-9]+))?$ ]]; then
 		  echo "Deployment files verification failed!"
       exit -1;
 	fi
