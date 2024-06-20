@@ -60,7 +60,7 @@ if { $service == "cluster-all" } {
 	send "jps -l|grep 'IceBox.Server'|grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
 } elseif  { $service == "lighthouse-insights" } {
     send "ps -ef|grep 'nginx'|grep -v grep|awk '{print \$2}' |xargs --no-run-if-empty kill -9\r"
-	send "jps -l|grep 'lighthouse-insights' | grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
+	send "jps -l|grep -E 'lighthouse-pro-insights|lighthouse-insights' | grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
 } elseif  { $service == "lighthouse-standalone" } {
   	send "jps -l|grep 'LightStandaloneEntrance' | grep -v Jps|awk '{print \$1}'|xargs --no-run-if-empty kill -9\r"
 } elseif { $service == "lighthouse-tasks" } {

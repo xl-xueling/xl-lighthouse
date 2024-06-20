@@ -95,7 +95,7 @@ function startLightHouseInsights(){
   local IPArray=($(getServiceIPS 'lighthouse_insights'))
 	for ip in "${IPArray[@]}"
 		do
-			local jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-insights-*-pro.*.jar' | head -n 1)
+			local jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-pro-insights-*-pro.*.jar' | head -n 1)
       if [[ ! -n $jar_path ]]; then
         jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-insights-*.jar' | head -n 1)
       fi
@@ -116,7 +116,7 @@ function startLightHouseStandalone(){
   local IPArray=($(getServiceIPS 'lighthouse_standalone'))
 	for ip in "${IPArray[@]}"
 		do
-      local jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-standalone-*-pro.*.jar' | head -n 1)
+      local jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-pro-standalone-*-pro.*.jar' | head -n 1)
       if [[ ! -n $jar_path ]]; then
         jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-standalone-*.jar' | head -n 1)
       fi
@@ -150,7 +150,7 @@ function startLightHouseTasks(){
 	local tasks_num_executors=($(getVal 'ldp_lighthouse_tasks_num_executors'))
 	local timezone=($(getVal 'ldp_lighthouse_timezone'))
 	local master=($(getVal 'ldp_spark_master'))
-	local jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-tasks-*-pro.*.jar' | head -n 1)
+	local jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-pro-tasks-*-pro.*.jar' | head -n 1)
   if [[ ! -n $jar_path ]]; then
     jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-tasks-*.jar' | head -n 1)
   fi
