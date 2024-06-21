@@ -61,10 +61,6 @@ public final class SysConst {
 
     public static final String PARAM_SIGN_KEY = "sign_key";
 
-    public static final String PARAM_INSTALLATION_CODE = "installation_code";
-
-    public static final String PARAM_ACTIVATION_CODE = "activation_code";
-
     public final static String AUTH_ACCESS_PARAM = "accessKey";
 
     public final static String AUTH_REFRESH_PARAM = "refreshKey";
