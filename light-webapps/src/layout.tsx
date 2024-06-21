@@ -108,8 +108,7 @@ function PageLayout() {
   const [routes, defaultRoute] = useRoute(userInfo?.permissions);
   const defaultSelectedKeys = [currentComponent || defaultRoute];
   const paths = (currentComponent || defaultRoute).split('/');
-  const defaultOpenKeys = paths.slice(0, paths.length - 1);
-
+  const defaultOpenKeys = ["dashboard","statistics"];
   const [breadcrumb, setBreadCrumb] = useState([]);
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [selectedKeys, setSelectedKeys] =
