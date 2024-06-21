@@ -41,7 +41,7 @@ function existByJPS(){
 	if [ $CUR_USER == $DEPLOY_USER ];then
 		ret=`ssh -o 'StrictHostKeyChecking no' ${DEPLOY_USER}@$ip ${JAVA_HOME}/bin/jps -l|grep -E "${process}" |grep -v Jps |wc -l|tr -d '\n\r'`
 	else
-		ret=`su - ${DEPLOY_USER} -lc "ssh -o 'StrictHostKeyChecking no' ${DEPLOY_USER}@$ip ${JAVA_HOME}/bin/jps -l|grep -E "${process}" |grep -v Jps |wc -l|tr -d '\n\r'"`
+		ret=`su - ${DEPLOY_USER} -lc "ssh -o 'StrictHostKeyChecking no' ${DEPLOY_USER}@$ip ${JAVA_HOME}/bin/jps -l|grep -E \"${process}\" |grep -v Jps |wc -l|tr -d '\n\r'"`
 	fi
 	local code=0
         if [ "${ret}" == "0" ];then
