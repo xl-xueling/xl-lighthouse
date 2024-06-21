@@ -8,4 +8,7 @@ export function removeLoginStatus() {
   localStorage.removeItem('refreshKey');
   localStorage.removeItem('accessKey');
   localStorage.removeItem('userRole');
+  localStorage.removeItem('cache_stared_metrics');
+  localStorage.removeItem('cache_stared_projects');
+  localStorage.removeItem('cache_all_department');
 }

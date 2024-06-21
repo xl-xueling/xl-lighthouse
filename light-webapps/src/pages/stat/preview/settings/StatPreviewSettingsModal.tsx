@@ -4,7 +4,7 @@ import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/preview/settings/locale";
 import {ChartTypeEnum} from "@/types/insights-common";
 import {requestRenderConfig, requestRenderReset} from "@/api/stat";
-import {getRandomString} from "@/utils/util";
+import {getRandomString, getTextBlenLength} from "@/utils/util";
 import {StatInfoPreviewContext} from "@/pages/common/context";
 import {IconRefresh, IconSearch} from "@arco-design/web-react/icon";
 import {FormInstance} from "@arco-design/web-react/es/Form";
@@ -44,8 +44,20 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
            return stateList?.map(z => {
                 return <div key={getRandomString()}>
                             <FormItem style={{display:z.functionIndex == selectedFunctionIndex ? '':'none'}} label={t['statPreviewSettings.form.label.chartTitle']} field={z.functionIndex + "_chartTitle"} rules={[
-                                { required: true, message: t['basic.form.verification.empty.warning'], validateTrigger : ['onSubmit'] }]}>
-                                <Input />
+                                { required: true, message: t['basic.form.verification.empty.warning'], validateTrigger : ['onSubmit'] },
+                                {
+                                    required:true,
+                                    validator: (v, cb) => {
+                                    if (getTextBlenLength(v) < 6) {
+                                        return cb(t['basic.form.verification.length.less.warning'])
+                                    }else if (getTextBlenLength(v) > 50) {
+                                        return cb(t['basic.form.verification.length.larger.warning'])
+                                    }
+                                        cb(null);
+                                    }, validateTrigger : ['onSubmit']
+                                }
+                            ]}>
+                            <Input />
                             </FormItem>
                             <FormItem style={{display:z.functionIndex == selectedFunctionIndex ? '':'none'}} field={z.functionIndex + "_chartType"} label={t['statPreviewSettings.form.label.chartType']} rules={[
                                 { required: true, message: t['basic.form.verification.empty.warning'], validateTrigger : ['onSubmit'] }]}>
@@ -152,10 +164,10 @@ export default function StatPreviewSettingsModal({functionIndex = 0,onClose}) {
             <div style={{display:"flex",justifyContent:"center",paddingTop:'20px'}}>
                 <Form
                     ref={formRef}
-                    style={{width:'80%'}}
+                    style={{width:'90%'}}
                     colon={true}
-                    labelCol={{ span: 5 }}
-                    wrapperCol={{ span: 19 }}
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 18 }}
                     initialValues={initialValues}
                 >
                     <FormItem label={t['statPreviewSettings.form.label.function']} rules={[{ required: true}]}>
