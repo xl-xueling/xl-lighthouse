@@ -20,6 +20,7 @@ import {getLockIcon, getTreeResourceIcon} from "@/pages/common/desc/base";
 import {PermissionEnum} from "@/types/insights-common";
 import {useSelector} from "react-redux";
 import { HiMiniStar } from "react-icons/hi2";
+import { FaRegUser } from "react-icons/fa";
 
 const { Meta } = Card;
 
@@ -139,8 +140,8 @@ function CardBlock(props: CardBlockType) {
       <div style={{height: size == 'small'?'25px':'60px'}} className={styles.content} onClick={handleClick}>{getContent()}</div>
         <Meta
             avatar={
-                <Space>
-                    {item.createUser?.username}
+                <Space style={{fontSize:'12px'}}>
+                    <FaRegUser size={9}/>{item.createUser?.username}
                 </Space>
             }
         />
