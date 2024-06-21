@@ -96,7 +96,8 @@ function ProjectCreatePanel({onClose,allDepartInfo,onSuccess}){
     return (
         <Modal
             title= {t['projectCreate.form.title']}
-            style={{ width:'960px',verticalAlign:'top', marginTop: '130px' }}
+            alignCenter={false}
+            style={{ width:'960px',maxWidth:'80%',verticalAlign:'top', marginTop: '100px' }}
             visible={true}
             confirmLoading={loading}
             onOk={handlerSubmit}

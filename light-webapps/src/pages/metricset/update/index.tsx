@@ -85,7 +85,8 @@ export default function MetricSetUpdateModal({onClose,onSuccess}) {
         <Modal
             title={t['updateMetricSet.modal.title']}
             visible={true}
-            style={{ width:'960px',verticalAlign:'top', marginTop: '130px' }}
+            alignCenter={false}
+            style={{ width:'960px',maxWidth:'80%',verticalAlign:'top', marginTop: '100px' }}
             confirmLoading={loading}
             onCancel={onClose}
             onOk={handlerSubmit}

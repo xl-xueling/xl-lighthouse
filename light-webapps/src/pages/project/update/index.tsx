@@ -82,7 +82,8 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
         <Modal
             title= {t['projectUpdate.form.title']}
             visible={true}
-            style={{ width:'850px',top:'20px' }}
+            alignCenter={false}
+            style={{ width:'960px',maxWidth:'80%',verticalAlign:'top', marginTop: '100px' }}
             onOk={handlerSubmit}
             confirmLoading={loading}
             onCancel={onClose}>
