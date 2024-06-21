@@ -168,7 +168,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
         const chartsConfigs = statInfo?.renderConfig?.charts;
         if(chartsConfigs){
             const chartsConfig = chartsConfigs?.filter(item => item.functionIndex === functionIndex);
-            return  chartsConfig[0].title;
+            return chartsConfig[0].title;
         }else{
             return statInfo.templateEntity.statStateList[functionIndex].stateBody;
         }
@@ -187,9 +187,11 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                             <Grid.Col span={20}>
                                 {getStateChartTitle(z.functionIndex)}
                             </Grid.Col>
-                            <Grid.Col span={4} style={{ textAlign:"right" }}>
-                                <CiSettings onClick={() => tableCallback('showSettingsModal',z.functionIndex)} style={{cursor:'pointer'}}/>
-                            </Grid.Col>
+                            {statInfo?.permissions.includes(PermissionEnum.ManageAble)?
+                                <Grid.Col span={4} style={{ textAlign:"right" }}>
+                                    <CiSettings onClick={() => tableCallback('showSettingsModal',z.functionIndex)} style={{cursor:'pointer'}}/>
+                                </Grid.Col>:null
+                            }
                         </Grid.Row>
                     }>
                         <StatBasicLineChart theme={theme} size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
