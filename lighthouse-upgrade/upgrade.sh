@@ -39,7 +39,7 @@ main(){
 	echo "current step is:"${steps}
 	local upgrade_directory=$(basename "$UPGRADE_HOME")
 	local TARGET_VERSION;
-	if [[ $upgrade_directory =~ ^lighthouse-([0-9]+)\.([0-9]+)\.([0-9]+)(-pro\.([0-9]+))?$ ]]; then
+	if [[ $upgrade_directory =~ ^lighthouse-upgrade-([0-9]+)\.([0-9]+)\.([0-9]+)(-pro\.([0-9]+))?$ ]]; then
     		TARGET_VERSION="${BASH_REMATCH[1]}"
 	else
 		echo "Upgrade files verification failed!"
