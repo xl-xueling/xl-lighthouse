@@ -177,7 +177,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
         {
             title: t['statList.label.operations'],
             dataIndex: 'operations',
-            headerCellStyle: {width:'200px' },
+            headerCellStyle: {width:'180px' },
             render: (_, record) => {
                 let viewButton;
                 let applyButton;

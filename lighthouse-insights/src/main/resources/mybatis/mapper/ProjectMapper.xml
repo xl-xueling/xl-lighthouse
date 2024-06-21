@@ -105,6 +105,7 @@
             inner join (select resource_id from ldp_roles r where r.role_type = '9'
             and r.id IN (select role_id from ldp_permissions where owner_id = #{queryParam.ownerId} and owner_type = '1')) b on a.id = b.resource_id
         </if>
+        order by create_time desc
     </select>
 
     <select id="count">
