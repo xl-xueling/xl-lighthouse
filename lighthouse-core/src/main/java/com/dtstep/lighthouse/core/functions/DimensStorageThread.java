@@ -68,7 +68,7 @@ public final class DimensStorageThread extends Thread {
                 logger.info("process dimens events,thread:{},slot:{},process size:{},remaining size:{},capacity:{},accessTime:{},cost:{}ms",
                         Thread.currentThread().getName(),slot,events.size(),slotWrapper.size(),slotWrapper.getCapacity(),slotWrapper.getLastAccessTime(),cost);
                 if(cost > _threadConsumePeriod){
-                    logger.warn("batch processing expanded events takes too long, and may cause message delays" +
+                    logger.warn("batch processing dimens events takes too long, and may cause message delays" +
                             ",thread:{},slot:{},cost:{}",Thread.currentThread().getName(),slot,String.format("[%sms > %sms]",cost,_threadConsumePeriod));
                 }
             }
