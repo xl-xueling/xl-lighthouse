@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.common.aggregator;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.constant.StatConst;
+import com.dtstep.lighthouse.common.entity.event.SlotEvent;
 import com.dtstep.lighthouse.common.hash.HashUtil;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Comparator;
 
-public class BlockingEventPool<T> implements EventPool<T> {
+public class BlockingEventPool<T extends SlotEvent<T>> implements EventPool<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(BlockingEventPool.class);
 

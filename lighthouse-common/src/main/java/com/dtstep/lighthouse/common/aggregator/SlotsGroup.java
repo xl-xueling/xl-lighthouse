@@ -16,7 +16,9 @@ package com.dtstep.lighthouse.common.aggregator;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.event.SlotEvent;
 import com.dtstep.lighthouse.common.queue.BoundedPriorityBlockingQueue;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +29,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public final class SlotsGroup<T> {
+public final class SlotsGroup<T extends SlotEvent<T>> {
 
     private static final Logger logger = LoggerFactory.getLogger(SlotsGroup.class);
 
@@ -60,11 +62,13 @@ public final class SlotsGroup<T> {
     }
 
 
-    public static class SlotWrapper<T> {
+    public static class SlotWrapper<T extends SlotEvent<T>> {
 
         private BlockingQueue<T> queue;
 
         private long lastAccessTime;
+
+        private long headElementTime;
 
         private int capacity;
 
@@ -103,16 +107,33 @@ public final class SlotsGroup<T> {
             this.capacity = capacity;
         }
 
+        public long getHeadElementTime() {
+            return headElementTime;
+        }
+
+        public void setHeadElementTime(long headElementTime) {
+            this.headElementTime = headElementTime;
+        }
+
         public List<T> getEvents(int batch) throws Exception{
             List<T> list = new ArrayList<>();
             queue.drainTo(list,batch);
             this.setLastAccessTime(System.currentTimeMillis());
+            T t = queue.peek();
+            if(t != null){
+                long headElementTime = t.getEventTimestamp();
+                this.setHeadElementTime(headElementTime);
+            }else{
+                this.setHeadElementTime(Long.MAX_VALUE);
+            }
             return list;
         }
 
         public int size() throws Exception{
             return queue.size();
         }
+
+
     }
 }
 

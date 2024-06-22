@@ -1,4 +1,7 @@
 package com.dtstep.lighthouse.common.aggregator;
+
+import com.dtstep.lighthouse.common.entity.event.SlotEvent;
+
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,7 +19,7 @@ package com.dtstep.lighthouse.common.aggregator;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public interface EventPool<T> {
+public interface EventPool<T extends SlotEvent<T>> {
 
     void put(int slot, T t) throws Exception;
 

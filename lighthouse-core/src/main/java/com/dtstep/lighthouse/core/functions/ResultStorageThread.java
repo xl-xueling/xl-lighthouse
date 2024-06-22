@@ -53,7 +53,10 @@ public class ResultStorageThread extends Thread {
     public void consumer(int slot) {
         try{
             SlotsGroup.SlotWrapper<MicroBucket> slotWrapper = eventPool.take(slot);
-            while (slotWrapper.size() > batchSize * StatConst.storage_backlog_factor || System.currentTimeMillis() - slotWrapper.getLastAccessTime() > TimeUnit.SECONDS.toMillis(20)){
+            while (slotWrapper.size() > batchSize * StatConst.storage_backlog_factor
+                    || System.currentTimeMillis() - slotWrapper.getLastAccessTime() > TimeUnit.SECONDS.toMillis(20)
+                    || System.currentTimeMillis() - slotWrapper.getHeadElementTime() > TimeUnit.MINUTES.toMillis(2)
+            ){
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
                 List<MicroBucket> events = slotWrapper.getEvents(batchSize);

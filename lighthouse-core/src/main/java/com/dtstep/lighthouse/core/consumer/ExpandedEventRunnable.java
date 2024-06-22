@@ -63,7 +63,9 @@ public final class ExpandedEventRunnable implements Runnable{
     private void consumer(int slot){
         try{
             SlotsGroup.SlotWrapper<SimpleSlotEvent> slotWrapper = eventPool.take(slot);
-            while (slotWrapper.size() > batchLimitSize * StatConst.backlog_factor || System.currentTimeMillis() - slotWrapper.getLastAccessTime() > TimeUnit.SECONDS.toMillis(15)){
+            while (slotWrapper.size() > batchLimitSize * StatConst.backlog_factor
+                    || System.currentTimeMillis() - slotWrapper.getLastAccessTime() > TimeUnit.SECONDS.toMillis(15)
+                    || System.currentTimeMillis() - slotWrapper.getHeadElementTime() > TimeUnit.MINUTES.toMillis(2)){
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
                 List<SimpleSlotEvent> events = slotWrapper.getEvents(batchLimitSize);

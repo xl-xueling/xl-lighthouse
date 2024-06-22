@@ -26,7 +26,9 @@ public abstract class SlotEvent<T> implements Serializable, Comparable<T> {
 
     private static final long serialVersionUID = -7952906204061708958L;
 
-    private long timestamp = DateUtil.batchTime(2, TimeUnit.MINUTES,System.currentTimeMillis());
+    private long eventTimestamp = System.currentTimeMillis();
+
+    private long timestamp = DateUtil.batchTime(2, TimeUnit.MINUTES,eventTimestamp);
 
     public long getTimestamp() {
         return timestamp;
@@ -34,5 +36,13 @@ public abstract class SlotEvent<T> implements Serializable, Comparable<T> {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public long getEventTimestamp() {
+        return eventTimestamp;
+    }
+
+    public void setEventTimestamp(long eventTimestamp) {
+        this.eventTimestamp = eventTimestamp;
     }
 }
