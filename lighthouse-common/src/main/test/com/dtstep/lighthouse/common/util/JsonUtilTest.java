@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.common.util;
 
+import com.dtstep.lighthouse.common.entity.calculate.MicroBucket;
 import com.dtstep.lighthouse.common.entity.message.LightMessage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -77,5 +78,13 @@ public class JsonUtilTest {
 
         int t = arrNode.get(0).get("groupId").intValue();
         System.out.println("t:" + t);
+    }
+
+    @Test
+    public void testMicro() throws Exception{
+        MicroBucket microBucket = new MicroBucket.Builder().create();
+        microBucket.setBatchTime(System.currentTimeMillis());
+        String str = JsonUtil.toJSONString(microBucket);
+        System.out.println("str:" + str);
     }
 }

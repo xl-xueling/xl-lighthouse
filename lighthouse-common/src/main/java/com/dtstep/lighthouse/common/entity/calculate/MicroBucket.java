@@ -144,12 +144,12 @@ public final class MicroBucket extends SlotEvent<MicroBucket> {
         }
     }
 
-    public String getColumn() {
-        return column;
+    public int getStatId() {
+        return statId;
     }
 
-    public void setColumn(String column) {
-        this.column = column;
+    public void setStatId(int statId) {
+        this.statId = statId;
     }
 
     public String getRowKey() {
@@ -160,6 +160,14 @@ public final class MicroBucket extends SlotEvent<MicroBucket> {
         this.rowKey = rowKey;
     }
 
+    public String getMetaName() {
+        return metaName;
+    }
+
+    public void setMetaName(String metaName) {
+        this.metaName = metaName;
+    }
+
     public long getValue() {
         return value;
     }
@@ -168,12 +176,12 @@ public final class MicroBucket extends SlotEvent<MicroBucket> {
         this.value = value;
     }
 
-    public boolean isLimit() {
-        return isLimit;
+    public int getFunctionIndex() {
+        return functionIndex;
     }
 
-    public void setLimit(boolean limit) {
-        isLimit = limit;
+    public void setFunctionIndex(int functionIndex) {
+        this.functionIndex = functionIndex;
     }
 
     public String getDimensValue() {
@@ -184,22 +192,6 @@ public final class MicroBucket extends SlotEvent<MicroBucket> {
         this.dimensValue = dimensValue;
     }
 
-    public String getMetaName() {
-        return metaName;
-    }
-
-    public void setMetaName(String metaName) {
-        this.metaName = metaName;
-    }
-
-    public int getStatId() {
-        return statId;
-    }
-
-    public void setStatId(int statId) {
-        this.statId = statId;
-    }
-
     public long getBatchTime() {
         return batchTime;
     }
@@ -208,20 +200,12 @@ public final class MicroBucket extends SlotEvent<MicroBucket> {
         this.batchTime = batchTime;
     }
 
-    public MicroCalculateEnum getCalculateEnum() {
-        return calculateEnum;
+    public boolean isLimit() {
+        return isLimit;
     }
 
-    public void setCalculateEnum(MicroCalculateEnum calculateEnum) {
-        this.calculateEnum = calculateEnum;
-    }
-
-    public long getTTL() {
-        return ttl;
-    }
-
-    public void setTTL(long ttl) {
-        this.ttl = ttl;
+    public void setLimit(boolean limit) {
+        isLimit = limit;
     }
 
     public long getTtl() {
@@ -232,11 +216,19 @@ public final class MicroBucket extends SlotEvent<MicroBucket> {
         this.ttl = ttl;
     }
 
-    public int getFunctionIndex() {
-        return functionIndex;
+    public MicroCalculateEnum getCalculateEnum() {
+        return calculateEnum;
     }
 
-    public void setFunctionIndex(int functionIndex) {
-        this.functionIndex = functionIndex;
+    public void setCalculateEnum(MicroCalculateEnum calculateEnum) {
+        this.calculateEnum = calculateEnum;
+    }
+
+    public String getColumn() {
+        return column;
+    }
+
+    public void setColumn(String column) {
+        this.column = column;
     }
 }
