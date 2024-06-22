@@ -30,7 +30,7 @@ main(){
 		exit -1;
 	fi	
 	sleep 5;
-	java -Xmx300m -Xms300m -cp ${LDP_HOME}/lib/*:${LDP_HOME}/lib/lighthouse-test-*.jar com.dtstep.lighthouse.test.example.StartExample
+	java -Xmx256m -Xms256m -cp ${LDP_HOME}/lib/*:${LDP_HOME}/lib/lighthouse-test-*.jar com.dtstep.lighthouse.test.example.StartExample
 	if [ $? != '0' ];then
 		log_error "Create statistic examples failed,process exit!"
 		exit -1;
@@ -38,7 +38,7 @@ main(){
 	log_info "Waiting for the statistics task to start..."
 	sleep 5;
 	local timezone=($(getVal 'ldp_lighthouse_timezone'))
-	nohup java -Xmx300m -Xms300m -Duser.timezone=${timezone} -cp ${LDP_HOME}/lib/*:${LDP_HOME}/lib/lighthouse-test-*.jar com.dtstep.lighthouse.test.LDPFlowTestInstance 100 > ${LOG_FILE} 2>&1 &
+	nohup java -Xmx256m -Xms256m -Duser.timezone=${timezone} -cp ${LDP_HOME}/lib/*:${LDP_HOME}/lib/lighthouse-test-*.jar com.dtstep.lighthouse.test.LDPFlowTestInstance 100 > ${LOG_FILE} 2>&1 &
 	log_info "The statistical example task has been started, and the log is being output to the file[${LOG_FILE}]."
 	rm -f ${LOCKFILE}
 }
