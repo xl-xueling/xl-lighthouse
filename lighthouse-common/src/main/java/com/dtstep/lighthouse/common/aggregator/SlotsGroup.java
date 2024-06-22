@@ -125,7 +125,6 @@ public final class SlotsGroup<T extends SlotEvent<T>> {
             T t = queue.peek();
             if(t != null){
                 long headElementTime = t.getEventTimestamp();
-                logger.info("headElement,time:" + DateUtil.formatTimeStamp(t.getEventTimestamp(),"yyyy-MM-dd HH:mm:ss") + ",data:" + JsonUtil.toJSONString(t));
                 this.setHeadElementTime(headElementTime);
             }else{
                 this.setHeadElementTime(Long.MAX_VALUE);
