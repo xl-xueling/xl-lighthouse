@@ -120,7 +120,7 @@ function startLightHouseStandalone(){
       if [[ ! -n $jar_path ]]; then
         jar_path=$(find "${LDP_HOME}/lib" -type f -name 'lighthouse-standalone-*.jar' | head -n 1)
       fi
-			local serverCmd="nohup java -Xms${standalone_xms_memory} -Xmx${standalone_xmx_memory} -XX:+UseG1GC -Dlog4j.configurationFile=${LDP_HOME}/conf/log4j2-standalone.xml -cp ${LDP_HOME}/lib/*:${jar_path} com.dtstep.lighthouse.standalone.executive.LightStandaloneEntrance >/dev/null 2>&1 &";
+			local serverCmd="nohup java -Xms${standalone_xms_memory} -Xmx${standalone_xmx_memory} -XX:+UseG1GC -Duser.timezone=${timezone} -Dlog4j.configurationFile=${LDP_HOME}/conf/log4j2-standalone.xml -cp ${LDP_HOME}/lib/*:${jar_path} com.dtstep.lighthouse.standalone.executive.LightStandaloneEntrance >/dev/null 2>&1 &";
 			remoteExecute ${CUR_DIR}/common/exec.exp ${DEPLOY_USER} ${ip} ${userPasswd} "$serverCmd"
 		done
 	sleep 10;

@@ -45,5 +45,9 @@
   },
   "redis": {
     "max_memory": "200M"
+  },
+  "mysql": {
+    "max_connections": "100",
+    "innodb_buffer_pool_size": "500M"
   }
 }
