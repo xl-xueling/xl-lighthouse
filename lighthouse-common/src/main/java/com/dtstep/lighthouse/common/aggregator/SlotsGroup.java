@@ -16,8 +16,11 @@ package com.dtstep.lighthouse.common.aggregator;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.calculate.MicroBucket;
 import com.dtstep.lighthouse.common.entity.event.SlotEvent;
 import com.dtstep.lighthouse.common.queue.BoundedPriorityBlockingQueue;
+import com.dtstep.lighthouse.common.random.RandomID;
+import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,6 +125,7 @@ public final class SlotsGroup<T extends SlotEvent<T>> {
             T t = queue.peek();
             if(t != null){
                 long headElementTime = t.getEventTimestamp();
+                logger.info("headElement,time:" + DateUtil.formatTimeStamp(t.getEventTimestamp(),"yyyy-MM-dd HH:mm:ss") + ",data:" + JsonUtil.toJSONString(t));
                 this.setHeadElementTime(headElementTime);
             }else{
                 this.setHeadElementTime(Long.MAX_VALUE);
@@ -132,7 +136,6 @@ public final class SlotsGroup<T extends SlotEvent<T>> {
         public int size() throws Exception{
             return queue.size();
         }
-
 
     }
 }

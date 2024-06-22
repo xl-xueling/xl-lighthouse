@@ -47,6 +47,10 @@ public final class ExpandedEventRunnable implements Runnable{
 
     private static final Logger logger = LoggerFactory.getLogger(ExpandedEventRunnable.class);
 
+    private static final long _threadConsumePeriod = TimeUnit.SECONDS.toMillis(15);
+
+    private static final long _maximumBacklogPeriod = TimeUnit.MINUTES.toMillis(2);
+
     private final EventPool<SimpleSlotEvent> eventPool;
 
     ExpandedEventRunnable(EventPool<SimpleSlotEvent> eventPool){
@@ -64,8 +68,8 @@ public final class ExpandedEventRunnable implements Runnable{
         try{
             SlotsGroup.SlotWrapper<SimpleSlotEvent> slotWrapper = eventPool.take(slot);
             while (slotWrapper.size() > batchLimitSize * StatConst.backlog_factor
-                    || System.currentTimeMillis() - slotWrapper.getLastAccessTime() > TimeUnit.SECONDS.toMillis(15)
-                    || System.currentTimeMillis() - slotWrapper.getHeadElementTime() > TimeUnit.MINUTES.toMillis(2)){
+                    || System.currentTimeMillis() - slotWrapper.getLastAccessTime() > _threadConsumePeriod
+                    || System.currentTimeMillis() - slotWrapper.getHeadElementTime() > _maximumBacklogPeriod){
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
                 List<SimpleSlotEvent> events = slotWrapper.getEvents(batchLimitSize);
@@ -96,8 +100,13 @@ public final class ExpandedEventRunnable implements Runnable{
                     List<Pair<String,Long>> dataList = lists.stream().map(x -> Pair.of(x.getData(),x.getRepeat())).collect(Collectors.toList());
                     consumer(entity.getStatId(), entity.getAggregateKey(), entity.getFunctionIndex(), entity.getDimensValue(), entity.getBatchTime(), dataList);
                 }
+                long cost = stopWatch.getTime();
                 logger.info("process expanded events,thread:{},slot:{},process size:{},remaining size:{},eventMap size:{},accessTime:{},cost:{}ms",
-                        Thread.currentThread().getName(),slot,events.size(),slotWrapper.size(),eventMap.size(),slotWrapper.getLastAccessTime(),stopWatch.getTime());
+                        Thread.currentThread().getName(),slot,events.size(),slotWrapper.size(),eventMap.size(),slotWrapper.getLastAccessTime(),cost);
+                if(cost > _threadConsumePeriod){
+                    logger.warn("batch processing expanded events takes too long, and may cause message delays" +
+                            ",thread:{},slot:{},cost:{}",Thread.currentThread().getName(),slot,String.format("[%sms > %sms]",cost,_threadConsumePeriod));
+                }
             }
         }catch (Exception ex){
             logger.error("process expanded events error!",ex);

@@ -34,6 +34,10 @@ public class LimitStorageThread extends Thread {
 
     private static final Logger logger = LoggerFactory.getLogger(LimitStorageThread.class);
 
+    private static final long _threadConsumePeriod = TimeUnit.SECONDS.toMillis(90);
+
+    private static final long _maximumBacklogPeriod =  TimeUnit.MINUTES.toMillis(3);
+
     private final EventPool<LimitBucket> eventPool;
 
     private static final int batchSize = 20000;
@@ -51,8 +55,8 @@ public class LimitStorageThread extends Thread {
         try{
             SlotsGroup.SlotWrapper<LimitBucket> slotWrapper = eventPool.take(slot);
             while (slotWrapper.size() > batchSize * StatConst.backlog_factor
-                    || System.currentTimeMillis() - slotWrapper.getLastAccessTime() > TimeUnit.SECONDS.toMillis(90)
-                    || System.currentTimeMillis() - slotWrapper.getHeadElementTime() > TimeUnit.MINUTES.toMillis(3)
+                    || System.currentTimeMillis() - slotWrapper.getLastAccessTime() > _threadConsumePeriod
+                    || System.currentTimeMillis() - slotWrapper.getHeadElementTime() > _maximumBacklogPeriod
             ) {
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
@@ -61,8 +65,13 @@ public class LimitStorageThread extends Thread {
                     break;
                 }
                 LimitStorageSelector.limit(events);
+                long cost = stopWatch.getTime();
                 logger.info("process limit events,thread:{},slot:{},process size:{},remaining size:{},capacity:{},accessTime:{},cost:{}ms",
-                        Thread.currentThread().getName(),slot,events.size(),slotWrapper.size(),slotWrapper.getCapacity(),slotWrapper.getLastAccessTime(),stopWatch.getTime());
+                        Thread.currentThread().getName(),slot,events.size(),slotWrapper.size(),slotWrapper.getCapacity(),slotWrapper.getLastAccessTime(),cost);
+                if(cost > _threadConsumePeriod){
+                    logger.warn("batch processing limit events takes too long, and may cause message delays" +
+                            ",thread:{},slot:{},cost:{}",Thread.currentThread().getName(),slot,String.format("[%sms > %sms]",cost,_threadConsumePeriod));
+                }
             }
         }catch (Exception ex){
             logger.error("process limit events error!",ex);
