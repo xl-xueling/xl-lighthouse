@@ -47,7 +47,6 @@ public class DefaultExceptionHandler {
     @ResponseBody
     public Object globalPermissionExceptionHandler(HttpServletRequest request, PermissionException e)
     {
-        logger.error("globalErrorHandler",e);
         return ResultData.result(ResultCode.accessDenied);
     }
 
@@ -55,7 +54,7 @@ public class DefaultExceptionHandler {
     @ResponseBody
     public Object globalAuthorizeExceptionHandler(HttpServletRequest request, AuthorizeException e)
     {
-        logger.error("globalErrorHandler",e);
+        logger.warn("System is not authorized!");
         return ResultData.result(ResultCode.systemUnauthorized);
     }
 
