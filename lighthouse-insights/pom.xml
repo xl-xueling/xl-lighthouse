@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="utf-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <groupId>com.dtstep.lighthouse</groupId>
         <artifactId>lighthouse-base</artifactId>
@@ -128,7 +128,6 @@
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
@@ -185,7 +184,6 @@
             <artifactId>jsch</artifactId>
             <version>0.1.54</version>
         </dependency>
-
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
@@ -273,13 +271,11 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.2</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
             <version>2.6.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
@@ -310,7 +306,6 @@
             <artifactId>persistence-api</artifactId>
             <version>1.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.dom4j</groupId>
             <artifactId>dom4j</artifactId>
@@ -411,11 +406,11 @@
             <artifactId>kryo</artifactId>
             <version>5.5.0</version>
         </dependency>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-        <scope>test</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -423,78 +418,91 @@
     </dependencies>
     <build>
         <plugins>
-
-                        <plugin>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-maven-plugin</artifactId>
-                            <version>2.7.8</version>
-                            <configuration>
-                                <fork>false</fork>
-                                <layout>ZIP</layout>
-                                <includes>
-                                    <include>
-                                        <groupId>nothing</groupId>
-                                        <artifactId>nothing</artifactId>
-                                    </include>
-                                </includes>
-                            </configuration>
-                        </plugin>
-
             <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-resources-plugin</artifactId>
-                            <version>3.3.1</version>
-                <executions>
-                                    <execution>
-                                        <id>copy-resources</id>
-                                        <phase>package</phase>
-                                        <goals>
-                                            <goal>copy-resources</goal>
-                                        </goals>
-                                        <configuration>
-                                            <resources>
-                                                <resource>
-                                                    <directory>src/main/resources</directory>
-                                                    <filtering>true</filtering>
-                                                    <excludes>
-                                                        <exclude>**/node_modules/**</exclude>
-                                                        <exclude>light-insights</exclude>
-                                                        <exclude>light-insights/node_modules/**</exclude>
-                                                    </excludes>
-                                                </resource>
-                                            </resources>
-                                            <outputDirectory>${project.build.directory}/resources</outputDirectory>
-                                        </configuration>
-                                    </execution>
-                                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.0</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                    <encoding>UTF-8</encoding>
+                    <excludes>
+                        <exclude>**/node_modules/**</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
-
-
-
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-jar-plugin</artifactId>
-                            <version>3.1.0</version>
-                            <configuration>
-                                <excludes>
-                                    <exclude>**/node_modules/**</exclude>
-                                </excludes>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-compiler-plugin</artifactId>
-                            <version>3.10.0</version>
-                            <configuration>
-                                <source>11</source>
-                                <target>11</target>
-                                <encoding>UTF-8</encoding>
-                                <excludes>
-                                    <exclude>**/node_modules/**</exclude>
-                                </excludes>
-                            </configuration>
-                        </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>build-plain-jar</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>plain</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.7.8</version>
+                <executions>
+                    <execution>
+                        <id>repackage-executable</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>exec</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <fork>false</fork>
+                    <layout>ZIP</layout>
+                    <includes>
+                        <include>
+                            <groupId>nothing</groupId>
+                            <artifactId>nothing</artifactId>
+                        </include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                    <excludes>
+                                        <exclude>**/node_modules/**</exclude>
+                                        <exclude>light-insights</exclude>
+                                        <exclude>light-insights/node_modules/**</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${project.build.directory}/resources</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>

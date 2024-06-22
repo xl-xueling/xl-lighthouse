@@ -55,7 +55,14 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
         String secretKey = systemEnvService.getParam(SysConst.PARAM_SIGN_KEY);
-        Jws<Claims> jws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(authToken);
+        Jws<Claims> jws;
+        try{
+            jws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(authToken);
+        }catch (Exception ex){
+            logger.warn("JWT signature verification failed!");
+            filterChain.doFilter(request,response);
+            return;
+        }
         if(jws == null){
             filterChain.doFilter(request,response);
             return;
