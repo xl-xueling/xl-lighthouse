@@ -40,20 +40,22 @@ import {getIcon} from "@/pages/common/desc/base";
 import { FiEdit } from "react-icons/fi";
 import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
 import MetricSetUpdateModal from "@/pages/metricset/update";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addMetricPreviewHistory} from "@/pages/metricset/preview/history";
 import {deepCopyObject} from "@/utils/util";
 import {requestDeleteById} from "@/api/metricset";
 import {MetricSetPreviewContext} from "@/pages/common/context";
+import {updateStoreStaredMetricInfo} from "@/store";
 
 export default function Index() {
     const {id} = useParams();
     const t = useLocale(locale);
     const history = useHistory();
     const { Text } = Typography;
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(false);
     const [initLoading, setInitLoading] = useState<boolean>(true);
-    const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
+    const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo || []);
     const [metricSetInfo, setMetricSetInfo] = useState<MetricSet>(null);
     const [reloadTime, setReloadTime] = useState<number>(Date.now());
     const [errorCode, setErrorCode] = useState<string>(null);
@@ -97,6 +99,9 @@ export default function Index() {
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['metricSetPreview.form.submit.deleteSuccess']});
+                localStorage.removeItem('cache_stared_metrics');
+                const currentFixedData = staredMetricInfo?.filter(x => x.id != id);
+                dispatch(updateStoreStaredMetricInfo([...currentFixedData]))
                 setTimeout(() => {
                     history.push('/metricset/list');
                 },2000)

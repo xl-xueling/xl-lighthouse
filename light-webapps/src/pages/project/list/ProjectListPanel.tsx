@@ -54,8 +54,7 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
     const [bindList,setBindList] = useState<number[]>([]);
     const handleMetricBindListReloadCallback = useContext(MetricSetBindListContext);
     const [reloadTime,setReloadTime] = useState<number>(Date.now());
-    const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo);
-
+    const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo || []);
     const tableCallback = async (record, type) => {
         if(type == 'update'){
             setSelectedProject(record);
@@ -84,6 +83,9 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
             const {code, data ,message} = response;
             if(code == '0'){
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
+                localStorage.removeItem('cache_stared_projects');
+                const currentFixedData = staredProjectInfo?.filter(x => x.id != id);
+                dispatch(updateStoreStaredProjectInfo([...currentFixedData]))
                 setReloadTime(Date.now());
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});

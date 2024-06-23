@@ -17,7 +17,7 @@ import {getColumns} from './constants';
 import {requestDeleteById, requestList} from "@/api/project";
 import {Project, TreeNode} from "@/types/insights-web";
 import useForm from "@arco-design/web-react/es/Form/useForm";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {IconHome} from "@arco-design/web-react/icon";
 import {GlobalState} from "@/store";
 import ProjectListPanel from "@/pages/project/list/ProjectListPanel";
@@ -39,6 +39,7 @@ export default function Index() {
   const [reloadTime,setReloadTime] = useState<number>(Date.now);
   const userInfo = useSelector((state: GlobalState) => state.userInfo);
   const [owner,setOwner] = useState(0);
+  const dispatch = useDispatch();
   const [formParams, setFormParams] = useState<any>({ownerId:userInfo.id});
 
   const hideCreateModal = () => {
@@ -52,7 +53,6 @@ export default function Index() {
   const [loading, setLoading] = useState(true);
 
   function handleSearch(params) {
-    console.log("params is:" + JSON.stringify(params));
     setFormParams({...params,t:Date.now()});
   }
 
@@ -68,24 +68,6 @@ export default function Index() {
   const handlerReloadList = () => {
     setFormParams({...formParams,t:Date.now()});
   }
-
-  const handlerBindedProject = async () => {
-    setBindedVisible(true);
-  };
-
-  const handlerDeleteProject = async (id: number) => {
-    await requestDeleteById({id}).then((response) => {
-      const {code, data ,message} = response;
-      if(code == '0'){
-        Notification.info({style: { width: 420 }, title: 'Notification', content: t['projectList.operations.delete.submit.success']});
-        handleSearch(formParams);
-      }else{
-        Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
-      }
-    }).catch((error) => {
-      console.log(error);
-    })
-  };
 
   return (
       <>
