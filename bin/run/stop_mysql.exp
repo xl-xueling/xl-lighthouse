@@ -12,13 +12,20 @@ if { $user == "root" } {
 }
 spawn ssh ${user}@${ip}
 set timeout -1
-expect {     
-        -nocase "yes/no" {send "yes\n";exp_continue} 
+expect {
+        -nocase "yes/no" {send "yes\n";exp_continue}
         -nocase "password" {send "$passwd\n"}
         "${prompt}" {send "\r"}
 }
 expect "${prompt}"
-send "${mysql_home}/bin/mysqladmin shutdown -p${rootPwd}\r"
+send "export LC_ALL=C\r"
+expect "${prompt}"
+send "${mysql_home}/bin/mysqladmin shutdown -u root -p\r"
+expect "Enter password:"
+send "${rootPwd}\n"
+expect {
+        -nocase "ERROR" {send "\r"}
+        "${prompt}" {send "\r"}
+}
 send "exit\r"
 expect eof
-
