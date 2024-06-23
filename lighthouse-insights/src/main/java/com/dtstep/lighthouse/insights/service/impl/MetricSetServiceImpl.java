@@ -88,6 +88,7 @@ public class MetricSetServiceImpl implements MetricSetService {
     @Autowired
     private ProjectDao projectDao;
 
+
     @Transactional
     @Override
     public int create(MetricSet metricSet) {
@@ -234,6 +235,7 @@ public class MetricSetServiceImpl implements MetricSetService {
         List<Integer> metricIds = bindParam.getMetricIds();
         List<MetricBindElement> bindElements = bindParam.getBindElements();
         List<Relation> relationList = new ArrayList<>();
+        LocalDateTime localDateTime = LocalDateTime.now();
         for(Integer metricId : metricIds){
             List<Integer> projectIds = bindElements.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.Project).map(MetricBindElement::getResourceId).collect(Collectors.toList());
             for(Integer projectId : projectIds){
@@ -250,7 +252,8 @@ public class MetricSetServiceImpl implements MetricSetService {
                     relation.setResourceId(projectId);
                     relation.setResourceType(ResourceTypeEnum.Project);
                     relation.setHash(hash);
-                    relation.setCreateTime(LocalDateTime.now());
+                    relation.setCreateTime(localDateTime);
+                    relation.setUpdateTime(localDateTime);
                     relationList.add(relation);
                 }
             }
@@ -269,7 +272,8 @@ public class MetricSetServiceImpl implements MetricSetService {
                     relation.setResourceId(statId);
                     relation.setResourceType(ResourceTypeEnum.Stat);
                     relation.setHash(hash);
-                    relation.setCreateTime(LocalDateTime.now());
+                    relation.setCreateTime(localDateTime);
+                    relation.setUpdateTime(localDateTime);
                     relationList.add(relation);
                 }
             }
@@ -369,7 +373,19 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
+    @Transactional
     public int delete(MetricSet metricSet) {
+        Integer metricId = metricSet.getId();
+        RelationDeleteParam userStarRelation = new RelationDeleteParam();
+        userStarRelation.setRelationType(RelationTypeEnum.UserStarMetricSetRelation);
+        userStarRelation.setResourceId(metricId);
+        userStarRelation.setResourceType(ResourceTypeEnum.MetricSet);
+        relationService.delete(userStarRelation);
+
+        RelationDeleteParam metricBindRelation = new RelationDeleteParam();
+        metricBindRelation.setRelationType(RelationTypeEnum.MetricSetBindRelation);
+        metricBindRelation.setSubjectId(metricId);
+        relationService.delete(metricBindRelation);
         return metricSetDao.deleteById(metricSet.getId());
     }
 

@@ -258,6 +258,7 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.count(queryParam);
     }
 
+    @Transactional
     @Override
     public ServiceResult<Integer> deleteById(Integer id) {
         Project project = projectDao.queryById(id);
@@ -268,6 +269,11 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceResult.result(ResultCode.projectDelErrorGroupExist);
         }
         int result = projectDao.deleteById(id);
+        RelationDeleteParam userStarRelation = new RelationDeleteParam();
+        userStarRelation.setRelationType(RelationTypeEnum.UserStarProjectRelation);
+        userStarRelation.setResourceId(id);
+        userStarRelation.setResourceType(ResourceTypeEnum.Project);
+        relationService.delete(userStarRelation);
         resourceService.deleteResourceCallback(ResourceDto.newResource(ResourceTypeEnum.Project,project.getId(),ResourceTypeEnum.Department,project.getDepartmentId()));
         return ServiceResult.success(result);
     }

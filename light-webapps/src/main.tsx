@@ -69,13 +69,13 @@ function Index() {
       payload: {allDepartInfo: allDepartInfo,departLoading:false},
     })
 
-    const staredMetricInfo = await getDataWithLocalCache('cache_stared_metrics',600,fetchPinMetricsData);
+    const staredMetricInfo = await getDataWithLocalCache('cache_stared_metrics',300,fetchPinMetricsData);
     store.dispatch({
       type: 'update-staredMetricInfo',
       payload: {staredMetricInfo: staredMetricInfo,staredMetricsLoading:false},
     })
 
-    const staredProjectInfo = await getDataWithLocalCache('cache_stared_projects',600,fetchPinProjectsData);
+    const staredProjectInfo = await getDataWithLocalCache('cache_stared_projects',300,fetchPinProjectsData);
     store.dispatch({
       type: 'update-staredProjectInfo',
       payload: {staredProjectInfo: staredProjectInfo,staredProjectLoading:false},
