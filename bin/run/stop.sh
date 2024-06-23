@@ -138,6 +138,7 @@ stop_all(){
          stopLightHouseICE;
          stopLightHouseTasks;
       fi
+      killService 'zombie';
 }
 
 stop_lighthouse(){
