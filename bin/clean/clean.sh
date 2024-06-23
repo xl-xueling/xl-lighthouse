@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#-----------------------------------------
+# Author:XueLing.雪灵
+# Email:better_xueling@126.com
+#-----------------------------------------
+
 function killAll(){
 	for ip in "${NODES[@]}"
     do

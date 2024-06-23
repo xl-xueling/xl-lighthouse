@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#-----------------------------------------
+# Author:XueLing.雪灵
+# Email:better_xueling@126.com
+#-----------------------------------------
+
 source ~/.bashrc;
 eval "$(awk '/^export /,0' ~/.bashrc)"
 CUR_DIR=${LDP_HOME}/bin

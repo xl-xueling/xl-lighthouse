@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#-----------------------------------------
+# Author:XueLing.雪灵
+# Email:better_xueling@126.com
+#-----------------------------------------
+
 iptables_enabled() {
     if sudo systemctl is-active --quiet iptables; then
         return 0

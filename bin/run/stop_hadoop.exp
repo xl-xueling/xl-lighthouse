@@ -1,5 +1,10 @@
 #!/usr/bin/expect
 
+#-----------------------------------------
+# Author:XueLing.雪灵
+# Email:better_xueling@126.com
+#-----------------------------------------
+
 set user [lindex $argv 0]
 set ip [lindex $argv 1]
 set passwd [lindex $argv 2]
