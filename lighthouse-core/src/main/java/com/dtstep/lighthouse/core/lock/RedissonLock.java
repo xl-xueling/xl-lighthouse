@@ -64,7 +64,7 @@ public final class RedissonLock {
                     .setNodeAddresses(nodeAddress);
             redissonClient = Redisson.create(config);
         }catch (Exception ex){
-            logger.error("init redlock error,process exit!",ex);
+            logger.error("init redisson lock error,process exit!",ex);
             System.exit(-1);
         }
     }
