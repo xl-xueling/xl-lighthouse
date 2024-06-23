@@ -1,3 +1,4 @@
+
 export function stringifyObj(obj): string {
     let cache = [];
     const str = JSON.stringify(obj, function(key, value) {
@@ -124,4 +125,8 @@ export function deepCopyObject(originalObject) {
         }
     }
     return copiedObject;
+}
+
+export function windowRedirect(href){
+    window.location.href = href;
 }
