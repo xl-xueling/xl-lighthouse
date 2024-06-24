@@ -30,13 +30,19 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
             dataIndex: 'title',
             render: (value,record) =>
             {
-                if(record.resourceType == ResourceTypeEnum.Project){
+                if(record.resourceType == ResourceTypeEnum.Project && record?.extend){
                     return (
                         <ProjectLabel projectInfo={record?.extend} />
                     )
-                }else if(record.resourceType == ResourceTypeEnum.Stat){
+                }else if(record.resourceType == ResourceTypeEnum.Stat && record?.extend){
                     return (
                         <StatLabel statInfo={record?.extend}/>
+                    )
+                }else{
+                    return (
+                        <Typography.Text type="secondary">
+                            {t['basic.warning.relateElementDeleted']}
+                        </Typography.Text>
                     )
                 }
             }
@@ -46,11 +52,11 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
             dataIndex: 'relationType',
             render: (value,record) =>
             {
-                if(record.resourceType == ResourceTypeEnum.Project){
+                if(record.resourceType == ResourceTypeEnum.Project && record?.extend){
                     return (
                         t['bindedList.list.elementType.project']
                     )
-                }else if(record.resourceType == ResourceTypeEnum.Stat){
+                }else if(record.resourceType == ResourceTypeEnum.Stat && record?.extend){
                     return (
                         t['bindedList.list.elementType.stat']
                     )
@@ -88,7 +94,6 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
             headerCellStyle: {width:'250px' },
             render: (_, record) => {
                 const itemPermission = record.extend?.permissions;
-                console.log("itemPermissions length:" + itemPermission.length);
                 let removeButton;
                 let applyButton;
                 if(metricSetInfo.permissions.includes(PermissionEnum.ManageAble)){
@@ -107,7 +112,7 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
                     </Button>
                         </Popconfirm>
                 }
-                if(itemPermission.length == 0){
+                if(itemPermission && itemPermission.length == 0){
                     applyButton =  <Button key={getRandomString()}
                                            type="text"
                                            onClick={() => callback(record,'apply')}
