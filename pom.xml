@@ -60,6 +60,7 @@
         <module>lighthouse-test</module>
         <module>lighthouse-insights</module>
         <module>lighthouse-assembly</module>
+        <module>lighthouse-upgrade</module>
       </modules>
       <distributionManagement>
         <snapshotRepository>
