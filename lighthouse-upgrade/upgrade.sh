@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#-----------------------------------------
+# Author:XueLing.雪灵
+# Email:better_xueling@126.com
+#-----------------------------------------
+
 source ~/.bashrc;
 eval "$(awk '/^export /,0' ~/.bashrc)"
 UPGRADE_HOME=$(cd "$(dirname "$0")";pwd)
