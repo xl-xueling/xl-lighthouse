@@ -39,7 +39,7 @@ XL-LightHouse是开源社区第一个也是目前唯一一个通用型流式数�
 +  有完善的API，支持高并发查询统计结果；
 +  支持数据自动备份、可以一键导入历史数据、可以方便的执行集群扩容/缩容；
 +  前端基于最新版ArcoDesign(React版本)开发，页面清爽大气，操作体验非常好；
-+  支持自定义存储引擎；   
++  支持自定义存储引擎；
 +  所有代码100%开源，方便进行二次开发；
 +  轻量级开箱即用，一键部署、一行代码接入、普通工程人员即可轻松驾驭；
 
@@ -113,7 +113,8 @@ XL-LightHouse除了大数据版本外，同时支持单机版。单机模式成�
 ###  版本记录
 
 -  [安装包下载](https://dtstep.com/zh/versions/02.html)
--  [版本记录](https://dtstep.com/zh/versions/02.html)
+-  [开源版本](https://dtstep.com/zh/versions/02.html)
+-  [商业版本](https://dtstep.com/zh/commercial/01.html)
 
 ###  技术支持
 
