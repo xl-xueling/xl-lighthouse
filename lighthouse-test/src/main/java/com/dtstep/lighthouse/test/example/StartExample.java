@@ -96,7 +96,7 @@ public class StartExample {
 
     private static void createProject(Connection conn) throws Exception {
         Project project = new Project();
-        project.setTitle("我的测试工程");
+        project.setTitle("XL-LightHouse演示工程");
         project.setBuiltIn(false);
         project.setDepartmentId(exampleContext.getDepartmentId());
         project.setPrivateType(PrivateTypeEnum.Public);
