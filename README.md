@@ -127,9 +127,12 @@ XL-LightHouse除了大数据版本外，同时支持单机版。单机模式成�
 
 3、使用过程中遇到任何问题请及时提Issue，如有必要可提交相关日志给开发者，开发者将会提供必要的技术支持；
 
-###  一键部署
+###  日常运维
 
 -  [一键部署](https://dtstep.com/zh/deploy/01.html)
+-  [一键升级](https://dtstep.com/zh/management/06.html)
+-  [数据备份](https://dtstep.com/zh/management/07.html)
+-  [日常运维](https://dtstep.com/zh/management/03.html)
 
 ###  Web端部分功能预览
 ![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/32.jpg)
