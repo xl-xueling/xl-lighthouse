@@ -35,7 +35,6 @@ import StatPreviewPage from "@/pages/stat/preview";
 import TrackStatPage from "@/pages/track";
 import Index from "@/pages/metricset/preview";
 import PopMenuBox from "@/pages/common/popmenu/PopMenu";
-import TempIndex from "@/pages/temp";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -282,7 +281,6 @@ function PageLayout() {
                   <Route path="/project/preview/:id" component={ProjectPreviewPage}/>
                   <Route path="/stat/preview/:id" component={StatPreviewPage}/>
                   <Route path="/track/stat/:id" component={TrackStatPage}/>
-                  <Route path="/temp" component={TempIndex}/>
                   {flattenRoutes.map((route, index) => {
                     return (
                       <Route
