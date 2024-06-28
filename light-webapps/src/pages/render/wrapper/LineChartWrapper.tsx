@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {handlerFetchStatData, translateStatDataToSequenceData} from "@/pages/stat/preview/common";
-import {RenderSequenceData, Stat, StatData} from "@/types/insights-web";
-import EChartLineChartRender from "@/pages/render/render/echarts/line/LineChartRender";
+import {RenderValue, Stat} from "@/types/insights-web";
+import LineChartRender from "@/pages/render/render/echarts/line/LineChartRender";
 
 interface Props {
     from?:string;
@@ -16,7 +16,7 @@ export default function LineChartWrapper (props:Props){
 
     const {from,statInfo,functionIndex,filters,startTime,endTime} = props;
 
-    const [renderData,setRenderData] = useState<Array<RenderSequenceData>>();
+    const [renderData,setRenderData] = useState<Array<RenderValue>>();
 
     const [errorMessage,setErrorMessage] = useState<string>();
 
@@ -42,7 +42,7 @@ export default function LineChartWrapper (props:Props){
 
     return (
         <>
-            {renderData && <EChartLineChartRender from={from} renderData={renderData} errorMessage={errorMessage} />}
+            {renderData && <LineChartRender from={from} renderData={renderData} errorMessage={errorMessage} />}
         </>
     );
 }
