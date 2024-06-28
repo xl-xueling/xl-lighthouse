@@ -111,18 +111,15 @@ public class StatController {
         return ResultData.success(statExtendDto);
     }
 
-    @RequestMapping("/stat/testQueryById")
-    public ResultData<StatExtendVO> testQueryById(@Validated @RequestBody IDParam idParam) throws Exception {
-        Integer id = idParam.getId();
-        StatVO stat = statService.queryById(id);
-        if(stat == null){
+
+    @RequestMapping("/stat/queryByIds")
+    public ResultData<List<StatVO>> queryByIds(@Validated @RequestBody IDParams idParams) throws Exception {
+        List<Integer> ids = idParams.getIds();
+        List<StatVO> voList = statService.queryByIds(ids);
+        if(CollectionUtils.isEmpty(voList)){
             return ResultData.result(ResultCode.elementNotFound);
         }
-        RenderConfig renderConfig = statService.getTestStatRenderConfig(stat);
-        StatExtendVO statExtendDto = new StatExtendVO(stat);
-        statExtendDto.setRenderConfig(renderConfig);
-        Validate.notNull(stat);
-        return ResultData.success(statExtendDto);
+        return ResultData.success(voList);
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")

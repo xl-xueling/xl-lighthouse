@@ -8,7 +8,7 @@ import {
     getDayStartTimestamp
 } from "@/utils/date";
 import {requestLimitData, requestStatData} from "@/api/data";
-import {LimitData, LineChartData, Stat, StatData} from "@/types/insights-web";
+import {LimitData, LineChartData, RenderValue, Stat, StatData} from "@/types/insights-web";
 import {ResultData} from "@/types/insights-common";
 
 export const handlerFetchStatData = async (statInfo:Stat,search:any):Promise<ResultData<Array<StatData>>> => {
@@ -44,6 +44,35 @@ export const handlerFetchStatData = async (statInfo:Stat,search:any):Promise<Res
     return await requestStatData(combineParam);
 }
 
+export const translateStatDataToSequenceData = (statData:Array<StatData>,functionIndex:number = -1):Array<RenderValue> => {
+    if(!statData){
+        return ;
+    }
+    const renderValues:Array<RenderValue> = [];
+    for(let i=0;i<statData.length;i++){
+        const displayDimensValue = statData[i].displayDimensValue;
+        const dimensData = statData[i].valuesList;
+        const batchList = statData[i].valuesList.map(z => z.batchTime);
+        const displayBatchList = statData[i].valuesList.map(z => z.displayBatchTime);
+        let values;
+        if(functionIndex == -1){
+            values = dimensData.map(z => z.value)
+        }else{
+            values = dimensData.map(z => z.statesValue[functionIndex]);
+        }
+        for(let n=0;n<values.length;n++){
+            const renderValue:RenderValue = {};
+            renderValue.value = values[n];
+            renderValue.batchTime = batchList[n];
+            renderValue.displayBatchTime = displayBatchList[n];
+            renderValue.category = displayDimensValue;
+            renderValues.push(renderValue);
+        }
+    }
+    return renderValues;
+}
+
+
 export const handlerFetchLimitData = async (statId):Promise<ResultData<Array<LimitData>>> => {
     const combineParam = {
         statId:statId,
@@ -51,26 +80,6 @@ export const handlerFetchLimitData = async (statId):Promise<ResultData<Array<Lim
     return await requestLimitData(combineParam);
 }
 
-export const translateResponseDataToLineChartData = (statData:Array<StatData>,stateIndex:number):LineChartData => {
-    if(!statData){
-        return null;
-    }
-    const dataMap = new Map();
-    statData?.forEach(z => {
-        let values
-        if(stateIndex >= 0){
-            values = z.valuesList.map(z => z.statesValue[stateIndex]);
-        }else{
-            values = z.valuesList.map(z => z.value);
-        }
-        dataMap.set(z.dimensValue,values);
-    })
-    const batchList = statData[0].valuesList.map(z => z.displayBatchTime);
-    return {
-        xAxis: batchList,
-        dataMap: dataMap,
-    };
-}
 
 export const getErrorOption = (theme,message) => {
     return {

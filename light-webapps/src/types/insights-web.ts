@@ -186,7 +186,6 @@ export interface Resource {
     extend?:any;
 }
 
-
 export interface Order {
     id?:number;
     userId?:number;
@@ -237,6 +236,13 @@ export interface StatData{
     dimensValue?:string;
     displayDimensValue?:string;
     valuesList?:StatValue[];
+}
+
+export interface RenderValue {
+    category?:String;
+    batchTime?:number;
+    displayBatchTime?:string;
+    value?:Decimal;
 }
 
 export interface LimitData {

@@ -59,6 +59,16 @@ export async function requestQueryById(data) :Promise<ResultData<Stat>> {
     })
 }
 
+export async function requestQueryByIds(data) :Promise<ResultData<Array<Stat>>> {
+    return request({
+        url:'/stat/queryByIds',
+        method:'POST',
+        data,
+    })
+}
+
+
+
 export async function requestQueryByGroupId(data) :Promise<ResultData<{list:Array<Stat>}>> {
     return request({
         url:'/stat/queryByGroupId',
@@ -70,14 +80,6 @@ export async function requestQueryByGroupId(data) :Promise<ResultData<{list:Arra
 export async function requestDeleteById(data) :Promise<ResultData> {
     return request({
         url:'/stat/deleteById',
-        method:'POST',
-        data,
-    })
-}
-
-export async function requestQueryByIds(data:{ids:number[]}) :Promise<ResultData<Record<number,Stat>>> {
-    return request({
-        url:'/stat/queryByIds',
         method:'POST',
         data,
     })
