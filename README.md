@@ -135,6 +135,13 @@ XL-LightHouse除了大数据版本外，同时支持单机版。单机模式成�
 -  [数据备份](https://dtstep.com/zh/management/07.html)
 -  [日常运维](https://dtstep.com/zh/management/03.html)
 
+###  版权声明
+
+- 1、企业、机构内部使用或个人学习使用XL-LightHouse源程序不受任何限制，但不可删除程序中的项目Logo标识、版权声明等信息。
+- 2、销售基于XL-LightHouse源码或相关设计方案的软硬件产品及服务，需要向开发者缴纳一定比例的授权费用(0.2%~2%)。
+
+创作者权益受法律保护，为避免不必要的版权纠纷，在销售相关产品或服务前，请务必查阅：[版权声明](https://dtstep.com/zh/copyright/01.html)
+
 ###  Web端部分功能预览
 ![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/32.jpg)
 ![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/5.jpg)
