@@ -63,13 +63,21 @@ export default function MetricSetRepositoryModal({id,onClose}) {
     const columns = useMemo(() => getColumns(t,listNodes, tableCallback), [t,refreshTime]);
 
     const [pagination, setPagination] = useState<PaginationProps>({
-        sizeOptions: [15,20,30,50],
-        sizeCanChange: true,
+        sizeOptions: [15],
+        sizeCanChange: false,
         showTotal: true,
         pageSize: 15,
         current: 1,
         pageSizeChangeResetCurrent: true,
     });
+
+    function onChangeTable({ current, pageSize }) {
+        setPagination({
+            ...pagination,
+            current,
+            pageSize,
+        });
+    }
 
     const fetchData = async () => {
         const {current, pageSize} = pagination;
@@ -104,7 +112,7 @@ export default function MetricSetRepositoryModal({id,onClose}) {
 
     useEffect(() => {
         fetchData().then();
-    },[id])
+    },[id,pagination.current, pagination.pageSize])
 
     return (
         <Modal
@@ -119,6 +127,7 @@ export default function MetricSetRepositoryModal({id,onClose}) {
                 rowKey={'resourceId'}
                 style={{minHeight:'200px'}}
                 size={"small"}
+                onChange={onChangeTable}
                 loading={loading}
                 pagination={pagination}
                 columns={columns}
