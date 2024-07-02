@@ -4,7 +4,7 @@
   <groupId>com.dtstep.lighthouse</groupId>
   <artifactId>lighthouse-client</artifactId>
   <name>XL-LightHouse - Client</name>
-  <version>2.2.1</version>
+  <version>2.2.5</version>
   <description>Parent pom providing dependency and plugin management for applications built with Maven</description>
   <url>http://maven.apache.org/lighthouse-build-configuration/lighthouse-client</url>
   <developers>
@@ -62,6 +62,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>3.6.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport</artifactId>
       <version>4.1.84.Final</version>
@@ -88,7 +94,7 @@
     <dependency>
       <groupId>com.dtstep.lighthouse</groupId>
       <artifactId>lighthouse-common</artifactId>
-      <version>2.2.1</version>
+      <version>2.2.4</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>

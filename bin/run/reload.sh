@@ -57,7 +57,7 @@ function reloadLightConfig(){
                 find ${reload_dir}/${service}/ -type f | xargs --no-run-if-empty sed -i -e 's]${ldp_lighthouse_nodeip}]'${ip}']g'
                 cp ${reload_dir}/${service}/conf/ldp-site-${RUNNING_MODE}.xml ${reload_dir}/${service}/conf/ldp-site.xml
                 remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${DEPLOY_USER} "ldp-site-*.xml" ${reload_dir}/${service}/conf/ ${ip} "${userPasswd}" ${LDP_HOME}/conf/
-                remoteExecute ${CUR_DIR}/common/sync.exp ${DEPLOY_USER} ${reload_dir}/${service}/light-webapps/public/* ${ip} "${userPasswd}" ${LDP_HOME}/light-webapps/build/
+                remoteExecute ${CUR_DIR}/common/sync_files.exp ${DEPLOY_USER} "${reload_dir}/${service}/light-webapps/public" ${ip} "${userPasswd}" ${LDP_HOME}/light-webapps/build/
         done
 }
 
