@@ -94,18 +94,6 @@ function Navbar({ show }: { show: boolean }) {
     }
   }
 
-  useEffect(() => {
-    dispatch({
-      type: 'update-userInfo',
-      payload: {
-        userInfo: {
-          ...userInfo,
-          permissions: generatePermission(role),
-        },
-      },
-    });
-  }, [role]);
-
   if (!show) {
     return (
       <div className={styles['fixed-settings']}>
