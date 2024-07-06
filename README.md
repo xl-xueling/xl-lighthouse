@@ -17,6 +17,7 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 
 <p align="center"><font size="4">一键部署，一行代码接入，无需大数据研发运维经验，轻松驾驭海量数据实时统计。</font></p>
 <p align="center"><font size="4">支撑百万量级数据指标，打造成本最低的数据化运营方案，帮助企业快速搭建数据化运营体系。</font></p>
+<p align="center"><font size="4">流式统计运算性能超越Flink/Spark 100倍！</font></p>
 <p align="center"><font size="4">除大数据版本外，同时支持单机版！</font></p>
 
 ### 概述
@@ -58,6 +59,8 @@ XL-LightHouse并不是要帮你解决所有的问题，而是要以极低的成�
 
 ---
 **已完成对所有功能的严格测试，可以放心使用。可添加本人微信，提供免费一对一技术支持。遇到任何问题，及时提Issue，本人会第一时间处理。**
+
+**现阶段侧重商业付费版本的功能开发，开源版本更新可能会略有延迟，本项目长期维护，敬请放心使用。**
 
 ---
 
