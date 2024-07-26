@@ -19,6 +19,7 @@ set timeout -1
 expect {     
         -nocase "yes/no" {send "yes\n";exp_continue} 
         -nocase "password" {send "$dest_passwd\n"}
+         "${prompt}" {send "\r"}
 }
 expect "${prompt}"
 send "cd ${ldp_home}/plugins/\r"
