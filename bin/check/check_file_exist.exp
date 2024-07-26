@@ -17,6 +17,7 @@ set timeout -1
 expect {     
         -nocase "yes/no" {send "yes\n";exp_continue} 
         -nocase "password" {send "$passwd\n"}
+         "${prompt}" {send "\r"}
 }
 expect "${prompt}"
 send "export LANG=\"en_US.UTF-8\"\r"

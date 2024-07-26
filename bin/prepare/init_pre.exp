@@ -11,11 +11,16 @@ set ip [lindex $argv 1]
 set passwd [lindex $argv 2]
 set deploy_user [lindex $argv 3]
 set deploy_passwd [lindex $argv 4]
+set prompt "*${user}@*\\\$"
+if { $user == "root" } {
+        set prompt "*${user}@*#"
+}
 spawn ssh ${user}@${ip}
 set timeout -1
 expect {     
         -nocase "yes/no" {send "yes\n";exp_continue} 
         -nocase "password" {send "$passwd\n"}
+        "${prompt}" {send "\r"}
 }
 
 expect {
