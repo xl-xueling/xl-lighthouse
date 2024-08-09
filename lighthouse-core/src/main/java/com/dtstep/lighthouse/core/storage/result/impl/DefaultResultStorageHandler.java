@@ -41,10 +41,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBucket, StatValue> {
@@ -189,9 +186,9 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
     }
 
     @Override
-    public Map<String, StatValue> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, long batchTime) throws Exception {
-        Map<String,List<StatValue>> dbMap = queryWithDimensList(statExtEntity,dimensValueList,List.of(batchTime));
-        Map<String,StatValue> resultMap = new HashMap<>();
+    public LinkedHashMap<String, StatValue> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, long batchTime) throws Exception {
+        LinkedHashMap<String,List<StatValue>> dbMap = queryWithDimensList(statExtEntity,dimensValueList,List.of(batchTime));
+        LinkedHashMap<String,StatValue> resultMap = new LinkedHashMap<>();
         for(String key : dbMap.keySet()){
             resultMap.put(key,dbMap.get(key).get(0));
         }
@@ -199,7 +196,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
     }
 
     @Override
-    public Map<String,List<StatValue>> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
+    public LinkedHashMap<String,List<StatValue>> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
         List<StatState> statStates = statExtEntity.getTemplateEntity().getStatStateList();
         int resMeta = statExtEntity.getMetaId();
         String metaName;
@@ -236,7 +233,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         Validate.isTrue(getList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
         List<LdpResult<Long>> results = WarehouseStorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
         Map<String,LdpResult<Long>> dbResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
-        Map<String,List<StatValue>> resultMap = new HashMap<>();
+        LinkedHashMap<String,List<StatValue>> resultMap = new LinkedHashMap<>();
         if(dimensValueList == null){
             List<StatValue> valueList = new ArrayList<>();
             for(long batchTime : batchTimeList){
@@ -257,7 +254,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         return resultMap;
     }
 
-    public Map<String,List<StatValue>> queryWithDimensList0(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
+    public LinkedHashMap<String,List<StatValue>> queryWithDimensList0(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
         List<StatState> statStates = statExtEntity.getTemplateEntity().getStatStateList();
         int resMeta = statExtEntity.getMetaId();
         String metaName;
@@ -321,7 +318,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                 dbResultMap.put(mappingKey+";"+column,compatibleResult);
             }
         }
-        Map<String,List<StatValue>> resultMap = new HashMap<>();
+        LinkedHashMap<String,List<StatValue>> resultMap = new LinkedHashMap<>();
         if(dimensValueList == null){
             List<StatValue> valueList = new ArrayList<>();
             for(long batchTime : batchTimeList){

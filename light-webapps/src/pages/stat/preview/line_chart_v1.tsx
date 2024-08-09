@@ -32,7 +32,7 @@ export default function StatBasicLineChart({theme="light",data = null,errorMessa
                 }
                 const newParams = [];
                 const paramData = params.sort(function (a, b) {
-                    return b.value - a.value;
+                    return (dimensList.indexOf(a.seriesName) - dimensList.indexOf(b.seriesName))
                 });
                 for (let i = 0, len = paramData.length; i < len; i++) {
                     const v = paramData[i];

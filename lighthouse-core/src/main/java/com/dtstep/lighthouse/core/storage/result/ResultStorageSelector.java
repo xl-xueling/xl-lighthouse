@@ -53,15 +53,15 @@ public class ResultStorageSelector {
         return resultStorageHandler.query(statExtEntity, dimensValue, batchTimeList);
     }
 
-    public static Map<String,StatValue> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, long batchTime) throws Exception {
+    public static LinkedHashMap<String,StatValue> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, long batchTime) throws Exception {
         return resultStorageHandler.queryWithDimensList(statExtEntity, dimensValueList, batchTime);
     }
 
-    public static Map<String,List<StatValue>> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
+    public static LinkedHashMap<String,List<StatValue>> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
         return resultStorageHandler.queryWithDimensList(statExtEntity, dimensValueList, batchTimeList);
     }
 
-    public static Map<String,List<StatValue>> queryWithDimensList0(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
+    public static LinkedHashMap<String,List<StatValue>> queryWithDimensList0(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
         return resultStorageHandler.queryWithDimensList0(statExtEntity, dimensValueList, batchTimeList);
     }
 }
