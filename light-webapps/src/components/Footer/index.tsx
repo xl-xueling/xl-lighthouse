@@ -11,7 +11,7 @@ function Footer(props: FooterProps = {}) {
   return (
     <Layout.Footer className={cs(styles.footer, className)} {...restProps}>
         <span style={{cursor:"pointer"}} onClick={() => windowRedirect('/license')}>Copyright &copy; {getDateFormat(YearFormat)} XueLing All Rights Reserved.</span>
-      <span style={{marginLeft:'10px'}}>Version:2.2.5</span>
+      <span style={{marginLeft:'10px'}}>Version:2.2.6</span>
     </Layout.Footer>
   );
 }
