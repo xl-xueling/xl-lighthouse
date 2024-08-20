@@ -196,19 +196,32 @@ function PageLayout() {
 
   function updateMenuStatus() {
     const pathKeys = pathname.split('/');
-    const newSelectedKeys: string[] = [];
+    let newSelectedKeys: string[] = [];
     const newOpenKeys: string[] = [...openKeys];
     while (pathKeys.length > 0) {
       const currentRouteKey = pathKeys.join('/');
       const menuKey = currentRouteKey.replace(/^\//, '');
       const menuType = menuMap.current.get(menuKey);
-      if (menuType && menuType.menuItem) {
-        newSelectedKeys.push(menuKey);
-      }
-      if (menuType && menuType.subMenu && !openKeys.includes(menuKey)) {
+      newSelectedKeys.push(menuKey);
+      if (!openKeys.includes(menuKey)) {
         newOpenKeys.push(menuKey);
       }
       pathKeys.pop();
+    }
+    if(pathname.startsWith('/metricset/preview/')){
+      newSelectedKeys = [...newSelectedKeys,"metricset/list"]
+    }
+    if(pathname.startsWith('/stat/preview/')){
+      newSelectedKeys = [...newSelectedKeys,"stat/list"]
+    }
+    if(pathname.startsWith('/view/preview/')){
+      newSelectedKeys = [...newSelectedKeys,"view/list"]
+    }
+    if(pathname.startsWith('/project/preview/')){
+      newSelectedKeys = [...newSelectedKeys,"project/list"]
+    }
+    if(pathname.startsWith('/project/manage/')){
+      newSelectedKeys = [...newSelectedKeys,"project/list"]
     }
     setSelectedKeys(newSelectedKeys);
     setOpenKeys(newOpenKeys);
