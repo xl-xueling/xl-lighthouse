@@ -2,6 +2,14 @@ import {request} from "@/utils/request";
 import {ResultData} from "@/types/insights-common";
 import {ArcoTreeNode, Group} from "@/types/insights-web";
 
+export async function requestList(data) :Promise<ResultData<{list:Array<Group>,total:number}>> {
+    return request({
+        url:'/group/list',
+        method:'POST',
+        data,
+    })
+}
+
 export async function requestQueryById(data) :Promise<ResultData<Group>> {
     return request({
         url:'/group/queryById',
