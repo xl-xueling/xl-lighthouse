@@ -196,6 +196,8 @@ export enum ComponentTypeEnum {
     FILTER_INPUT=4,
     FILTER_SELECT=5,
     FILTER_REMOTE_SEARCH_SELECT=6,
+    DATEPICKER_DATE_WEEK_SELECT=7,
+    DATEPICKER_DATE_MONTH_SELECT=8,
 }
 
 export enum LimitingStrategyEnum {
@@ -208,4 +210,19 @@ export enum ChartTypeEnum {
     LINE_AREA_CHART=2,
     BAR_CHART=3,
     PIE_CHART=4,
+    DASHBOARD_CHART=5,
+    FUNNEL_CHART=6,
+    CALENDAR_CHART=7,
+    TABLE_CHART=8,
+}
+
+
+export enum AssociateStateEnum {
+    UnAssociate=0,
+    Associated=1,
+}
+
+export enum SelectedStateEnum {
+    UnSelect=0,
+    Selected=1,
 }
