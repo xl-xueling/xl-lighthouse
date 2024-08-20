@@ -82,6 +82,8 @@ const vi18n = {
         'basic.resourceType.domain':'Domain',
         'basic.limitingStrategy.messageSizeLimiting':'Group Message Size Limiting',
         'basic.limitingStrategy.resultSizeLimiting':'Statistic Result Size Limiting',
+        'basic.viewState.published':'Published',
+        'basic.viewState.unPublished':'Unpublished',
     },
     'zh-CN': {
         'system.error':'系统异常!',
@@ -175,6 +177,8 @@ const vi18n = {
         'basic.resourceType.domain':'域',
         'basic.limitingStrategy.messageSizeLimiting':'统计组消息量限流',
         'basic.limitingStrategy.resultSizeLimiting':'统计项结果量限流',
+        'basic.viewState.published':'已发布',
+        'basic.viewState.unPublished':'未发布',
     }
 }
 export default vi18n;
