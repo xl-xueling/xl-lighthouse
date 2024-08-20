@@ -82,6 +82,8 @@ const i18n = {
     'menu.system.document':'Documents',
     'menu.homepage':'Workbench',
     'menu.metricset.list':'MetricSets',
+    'menu.view':'Data View',
+    'menu.view.list':'Views',
   },
   'zh-CN': {
     'menu.dashboard': '仪表盘',
@@ -164,6 +166,8 @@ const i18n = {
     'menu.system.document':'系统文档',
     'menu.homepage':'Workbench',
     'menu.metricset.list':'指标集',
+    'menu.view':'数据视图',
+    'menu.view.list':'视图列表',
   },
 };
 
