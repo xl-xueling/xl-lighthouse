@@ -7,12 +7,13 @@ import {
     Tabs,
     Dropdown, Menu, TreeSelect, Card, Table, TableColumnProps, Space, Modal
 } from '@arco-design/web-react';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import BindedProjectListPanel from "./binded_project";
 import {getIcon} from "@/pages/common/desc/base";
 import BindedStatisticListPanel from "@/pages/metricset/binded/binded/binded_stat";
+import {MetricSetBindListContext} from "@/pages/common/context";
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
@@ -20,6 +21,12 @@ const TabPane = Tabs.TabPane;
 export default function NewMetricBindedModal({metricSetInfo,onClose,PRO_ViewBindTab = null}) {
 
     const t = useLocale(locale);
+
+    const {needReload,setNeedReload,handleMetricBindListReloadCallback}  = useContext(MetricSetBindListContext);
+
+    const handlerCallback = () => {
+        handleMetricBindListReloadCallback();
+    }
 
     return (
         <Modal
@@ -48,8 +55,11 @@ export default function NewMetricBindedModal({metricSetInfo,onClose,PRO_ViewBind
                     <BindedStatisticListPanel metricSetInfo={metricSetInfo} />
                 </TabPane>
                 {
-                    PRO_ViewBindTab &&
-                    PRO_ViewBindTab(metricSetInfo)
+                    PRO_ViewBindTab && <TabPane
+                    key='4'
+                    title={getIcon('view')}>
+                        {PRO_ViewBindTab(metricSetInfo,handlerCallback)}
+                    </TabPane>
                 }
             </Tabs>
         </Modal>

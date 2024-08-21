@@ -45,6 +45,7 @@ export default function MetricSetBindListPanel() {
     const [currentRecord,setCurrentRecord] = useState<Relation>(null);
     const [needReload,setNeedReload] = useState<boolean>(false);
 
+
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,30],
         sizeCanChange: true,
@@ -145,7 +146,7 @@ export default function MetricSetBindListPanel() {
     },[reloadTime,pagination.current, pagination.pageSize,JSON.stringify(searchForms)])
 
     return (
-        <MetricSetBindListContext.Provider value={handleMetricBindListReloadCallback}>
+        <MetricSetBindListContext.Provider value={{needReload,setNeedReload,handleMetricBindListReloadCallback}}>
         <Card>
             <Form
                 className={styles['search-form']}

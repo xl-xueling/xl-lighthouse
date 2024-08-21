@@ -35,7 +35,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
     const refFetchId = useRef<number>(null);
     const [bindList,setBindList] = useState<number[]>([]);
     const [refreshTime,setRefreshTime] = useState<number>(null);
-    const handleMetricBindListReloadCallback = useContext(MetricSetBindListContext);
+    const {handleMetricBindListReloadCallback} = useContext(MetricSetBindListContext);
     const handlerStatDeleteCallback = useContext(GroupManageContext);
 
     const tableCallback = async (record, type) => {

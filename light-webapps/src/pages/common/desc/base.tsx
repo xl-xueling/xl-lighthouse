@@ -14,7 +14,14 @@ import {
     StatStateEnum,
     UserStateEnum
 } from "@/types/insights-common";
-import {PiCubeTransparentThin, PiDiamondsFour, PiLinkSimple, PiLockKeyOpenThin, PiLockKeyThin} from "react-icons/pi";
+import {
+    PiCubeTransparentLight,
+    PiCubeTransparentThin,
+    PiDiamondsFour,
+    PiLinkSimple,
+    PiLockKeyOpenThin,
+    PiLockKeyThin
+} from "react-icons/pi";
 import {CiViewTable} from "react-icons/ci";
 import {IconCalendarClock, IconMindMapping, IconStar, IconStarFill, IconTag} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
@@ -253,7 +260,7 @@ export function getIcon(type:string,marginRight:string = null){
     }else if(type == 'stat'){
         return <IconTag style={{marginRight: marginRight}}/>
     }else if(type == 'view'){
-        return <PiCubeTransparentThin style={{marginRight: marginRight}}/>
+        return <PiCubeTransparentLight size={16} style={{marginRight: marginRight}}/>
     }else if(type == 'metric'){
         return <LuLayers style={{marginRight: marginRight}}/>
     }else if(type == 'permission'){
