@@ -382,6 +382,10 @@ public class MetricSetServiceImpl implements MetricSetService {
                 String key = RandomID.id(10,keyList);
                 TreeNode treeNode = new TreeNode(key,relation.getResourceTitle(),relation.getResourceId(),"stat");
                 rootNode.addChild(treeNode);
+            }else if(relation.getResourceType() == ResourceTypeEnum.View){
+                String key = RandomID.id(10,keyList);
+                TreeNode treeNode = new TreeNode(key,relation.getResourceTitle(),relation.getResourceId(),"view");
+                rootNode.addChild(treeNode);
             }
         }
         return rootNode;

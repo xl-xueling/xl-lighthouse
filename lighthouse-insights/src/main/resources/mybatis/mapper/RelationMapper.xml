@@ -71,10 +71,12 @@
         CASE
         WHEN a.resource_type = '4' THEN b.title
         WHEN a.resource_type = '6' THEN c.title
+        WHEN a.resource_type = '8' THEN d.title
         END AS resource_title
         FROM ldp_relations a
         LEFT join ldp_projects b on a.resource_type = '4' and a.resource_id = b.id
         LEFT join ldp_stats c on a.resource_type = '6' and a.resource_id = c.id
+        LEFT join ldp_views d on a.resource_type = '8' and a.resource_id = d.id
         <where>
             <if test="queryParam.subjectId != null">
                 AND subject_id = #{queryParam.subjectId}
@@ -83,8 +85,9 @@
                 AND relation_type = #{queryParam.relationType.relationType}
             </if>
             <if test="queryParam.search != null">
-                AND ((a.resource_type = '4' AND p.title LIKE CONCAT('%', #{queryParam.search}, '%'))
-                OR (a.resource_type = '6' AND s.title LIKE CONCAT('%', #{queryParam.search}, '%')))
+                AND ((a.resource_type = '4' AND b.title LIKE CONCAT('%', #{queryParam.search}, '%'))
+                OR (a.resource_type = '6' AND c.title LIKE CONCAT('%', #{queryParam.search}, '%')))
+                OR (a.resource_type = '8' AND d.title LIKE CONCAT('%', #{queryParam.search}, '%')))
             </if>
         </where>
         order by resource_type asc ,create_time desc
