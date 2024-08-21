@@ -52,7 +52,7 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
     const [applyVisible,setApplyVisible] = React.useState(false);
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
     const [bindList,setBindList] = useState<number[]>([]);
-    const {handleMetricBindListReloadCallback} = useContext(MetricSetBindListContext);
+    const {handleMetricBindListReloadCallback} = useContext(MetricSetBindListContext) || {};
     const [reloadTime,setReloadTime] = useState<number>(Date.now());
     const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo || []);
     const tableCallback = async (record, type) => {
