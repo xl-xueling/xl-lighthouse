@@ -43,7 +43,6 @@ import { RxCube } from "react-icons/rx";
 import {MetricSetPreviewContext} from "@/pages/common/context";
 import {getTreeResourceIcon} from "@/pages/common/desc/base";
 
-
 export default function MetricSetDataViewMenu({callback}) {
 
     const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
@@ -55,9 +54,11 @@ export default function MetricSetDataViewMenu({callback}) {
                     <Menu.SubMenu key={item.key}
                                   onClick={(e)=>
                     {e.stopPropagation();
-                    if(item.type == 'stat'){
-                        callback("clickStatMenu",Number(item.value),item.label);
-                    }
+                        if(item.type == 'stat'){
+                            callback("clickStatMenu",Number(item.value),item.label);
+                        }else if(item.type == 'view'){
+                            callback("clickViewMenu",Number(item.value),item.label);
+                        }
                     }}
 
                                   title={
@@ -71,6 +72,8 @@ export default function MetricSetDataViewMenu({callback}) {
             {e.stopPropagation();
                 if(item.type == 'stat'){
                     callback("clickStatMenu",Number(item.value),item.label);
+                }else if(item.type == 'view'){
+                    callback("clickViewMenu",Number(item.value),item.label);
                 }
             }} key={item.key}>{getTreeResourceIcon(item.type,level)}{item.label}</Menu.Item>;
         });

@@ -1,22 +1,50 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
-import {Card, Typography, Grid, Space, Tabs, Divider, Notification, Breadcrumb, Spin} from '@arco-design/web-react';
+import React, {useContext, useState} from 'react';
+import {Grid, Space, Spin, Tabs, Typography} from '@arco-design/web-react';
 import styles from "@/pages/project/preview/style/index.module.less";
 import StatPreviewPanel from "@/pages/stat/preview/preview";
 import MetricSetDataViewMenu from "@/pages/metricset/preview/dataview/MetricSetDataViewMenu";
+import {MetricSetPreviewContext} from "@/pages/common/context";
+import {ResourceTypeEnum} from "@/types/insights-common";
+
 const { Title } = Typography;
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
+interface Item {
+    resourceId:number;
+    resourceType:ResourceTypeEnum;
+    specifyTitle:string;
+}
+
 export default function MetricSetDataViewPanel({parentLoading}) {
 
-    const [selectedStatId,setSelectedStatId] = useState<number>(null);
-    const [specifyTitle,setSpecifyTitle] = useState<number>(null);
+    const [selectedItem,setSelectedItem] = useState<Item>(null);
+
+    const {PRO_ViewPreview} = useContext(MetricSetPreviewContext);
 
     const handlerCallback = async (type,p1,p2) => {
         if(type == 'clickStatMenu'){
-            setSelectedStatId(Number(p1));
-            setSpecifyTitle(p2);
+            const item = {
+                resourceId:Number(p1),
+                resourceType:ResourceTypeEnum.Stat,
+                specifyTitle:p2
+            }
+            setSelectedItem(item);
+        }else if(type == 'clickViewMenu'){
+            const item = {
+                resourceId:Number(p1),
+                resourceType:ResourceTypeEnum.View,
+                specifyTitle:p2
+            }
+            setSelectedItem(item);
+        }
+    }
+
+    const render = () => {
+        if(selectedItem.resourceType == ResourceTypeEnum.Stat){
+            return <StatPreviewPanel size={'small'} id={selectedItem.resourceId} specifyTitle={selectedItem.specifyTitle}/>
+        }else{
+            return PRO_ViewPreview(selectedItem.resourceId,selectedItem.specifyTitle);
         }
     }
 
@@ -30,7 +58,7 @@ export default function MetricSetDataViewPanel({parentLoading}) {
                         </Row>
                     </Space>
                     <Space className={styles.right} size={16} direction="vertical">
-                        {selectedStatId && <StatPreviewPanel size={'small'} id={selectedStatId} specifyTitle={specifyTitle}/>}
+                        {selectedItem && render()}
                     </Space>
                 </div>
             </Space>
