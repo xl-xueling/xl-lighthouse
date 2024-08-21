@@ -13,6 +13,7 @@ const i18n = {
     'bindedList.list.column.label.operations.apply':'Apply',
     'bindedList.list.elementType.project':'Statistic Project',
     'bindedList.list.elementType.stat':'Statistic Item',
+    'bindedList.list.elementType.view':'Data View',
     'bindedList.list.button.bind':'New Bind',
   },
   'zh-CN': {
@@ -29,6 +30,7 @@ const i18n = {
     'bindedList.list.column.label.admins':'管理员',
     'bindedList.list.elementType.project':'统计工程',
     'bindedList.list.elementType.stat':'统计项',
+    'bindedList.list.elementType.view':'数据视图',
     'bindedList.list.button.bind':'绑定',
   },
 };

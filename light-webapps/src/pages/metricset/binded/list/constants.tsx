@@ -15,6 +15,7 @@ import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import {MetricSet} from "@/types/insights-web";
 import StatLabel from "@/pages/stat/common/StatLabel";
 import ProjectLabel from "@/pages/project/common/ProjectLabel";
+import ViewLabel from "@/pages/view/common/ViewLabel";
 
 
 
@@ -38,6 +39,10 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
                     return (
                         <StatLabel statInfo={record?.extend}/>
                     )
+                }else if(record.resourceType == ResourceTypeEnum.View && record?.extend){
+                    return (
+                        <ViewLabel viewInfo={record?.extend}/>
+                    )
                 }else{
                     return (
                         <Typography.Text type="secondary">
@@ -60,6 +65,10 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
                     return (
                         t['bindedList.list.elementType.stat']
                     )
+                }else if(record.resourceType == ResourceTypeEnum.View && record?.extend){
+                    return (
+                        t['bindedList.list.elementType.view']
+                    )
                 }
 
             }
@@ -69,7 +78,7 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
             dataIndex: 'department',
             render: (value,record) =>
             {
-                return <DepartmentLabel departmentId={record.extend?.departmentId} />
+                return record.extend?.departmentId?<DepartmentLabel departmentId={record.extend?.departmentId} />:'--'
             }
         },
         {
