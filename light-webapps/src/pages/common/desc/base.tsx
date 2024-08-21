@@ -240,11 +240,13 @@ export const getTreeResourceIcon= (type,level) => {
     if(type == 'stat'){
         return <IconTag style={{marginRight:'8px'}}/>
     }else if(type == 'metric'){
-        return <LuLayers style={{marginRight:'8px'}}/>
+        return <LuLayers style={{marginRight:'8px',position: 'relative', top: '2px'}}/>
     }else if(type == 'group'){
-        return <CiViewTable style={{marginRight:'8px'}}/>
+        return <CiViewTable style={{marginRight:'8px',position: 'relative', top: '2px'}}/>
     }else if(type == 'project'){
-        return <PiDiamondsFour style={{marginRight:'8px'}}/>
+        return <PiDiamondsFour style={{marginRight:'8px',position: 'relative', top: '2px'}}/>
+    }else if(type == 'view'){
+        return <PiCubeTransparentLight size={15} style={{marginRight:'8px',position: 'relative', top: '2px'}}/>
     }else if(type == 'dir' && level == 1){
         return <RxCube style={{marginRight:'8px'}}/>
     } else if(type == 'dir' && level == 2){

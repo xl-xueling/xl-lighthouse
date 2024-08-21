@@ -76,7 +76,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
             return (
                 <Tree.Node
                         draggable={item.type == 'stat'}
-                        icon={<span>{getTreeResourceIcon(item.type,level)}{item.type == 'stat'?<IconDragDotVertical style={{marginRight:'10px'}} />:null}</span>}
+                        icon={<span>{getTreeResourceIcon(item.type,level)}{item.type == 'stat' || item.type == 'view'?<IconDragDotVertical style={{marginRight:'10px'}} />:null}</span>}
                         key={item.key}
                         title={item.label}
                      {...ret} dataRef={item}>
