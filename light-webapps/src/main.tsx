@@ -1,5 +1,5 @@
 import './style/global.less';
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -20,7 +20,7 @@ import useStorage from './utils/useStorage';
 import {getDataWithLocalCache} from "@/utils/localCache";
 import {requestFetchUserInfo} from "@/api/user";
 import {fetchAllDepartmentData} from "@/pages/department/base";
-import {MetricSet, Project} from "@/types/insights-web";
+import {MetricSet, Project, User} from "@/types/insights-web";
 import Register from "@/pages/register";
 import License from "@/pages/license";
 
@@ -62,6 +62,16 @@ function Index() {
     })
   }
 
+  async function fetchUserData():Promise<User> {
+    return new Promise<User>((resolve,reject) => {
+      requestFetchUserInfo().then((response) => {
+        resolve(response.data);
+      }).catch((error) => {
+        reject(error);
+      })
+    })
+  }
+
   async function fetchBasicInfo() {
     const allDepartInfo = await getDataWithLocalCache('cache_all_department',300,fetchAllDepartmentData);
     store.dispatch({
@@ -81,14 +91,11 @@ function Index() {
       payload: {staredProjectInfo: staredProjectInfo,staredProjectLoading:false},
     })
 
-    requestFetchUserInfo().then((resultData) => {
-      const userInfo = resultData.data;
-      store.dispatch({
-        type: 'update-userInfo',
-        payload: {userInfo: resultData.data, userLoading: false},
-      });
-    })
-
+    const userInfo = await getDataWithLocalCache('cache_user_info',120,fetchUserData);
+    store.dispatch({
+      type: 'update-userInfo',
+      payload: {userInfo:userInfo, userLoading: false},
+    });
   }
 
   useEffect(() => {

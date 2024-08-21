@@ -17,6 +17,7 @@ const initialState = ():GlobalState => {
   return {
     settings: defaultSettings,
     userInfo: initUser,
+    userLoading:true,
     allDepartInfo:[],
     staredMetricInfo:[],
     staredProjectInfo:[],
