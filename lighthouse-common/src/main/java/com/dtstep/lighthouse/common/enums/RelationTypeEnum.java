@@ -18,6 +18,8 @@ public enum RelationTypeEnum {
     StatParallelIndicator(5),
 
     StatSubsequentIndicator(6),
+
+    UserStarViewRelation(7),
     
     ;
 

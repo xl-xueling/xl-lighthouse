@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.insights.dao;
+package com.dtstep.lighthouse.insights.types;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,29 +16,12 @@ package com.dtstep.lighthouse.insights.dao;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
-import com.dtstep.lighthouse.common.modal.Group;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import com.dtstep.lighthouse.common.enums.ViewStateEnum;
+import com.fasterxml.jackson.core.type.TypeReference;
 
-import java.util.List;
+public class ViewStateEnumTypeHandler extends BaseObjectTypeHandler<ViewStateEnum>{
 
-@Repository
-public interface GroupDao {
-
-    int insert(Group group);
-
-    int update(Group group);
-
-    Group queryById(Integer id);
-
-    int deleteById(Integer id);
-
-    String getSecretKey(Integer id);
-
-    List<Group> queryByProjectId(Integer projectId);
-
-    List<Group> queryList(@Param("queryParam")GroupQueryParam queryParam);
-
-    int count(@Param("queryParam")GroupQueryParam queryParam);
+    public ViewStateEnumTypeHandler(){
+        super(new TypeReference<>() {});
+    }
 }

@@ -39,6 +39,10 @@ public enum RoleTypeEnum {
 
     METRIC_ACCESS_PERMISSION(16),
 
+    VIEW_MANAGE_PERMISSION(17),
+
+    VIEW_ACCESS_PERMISSION(18),
+
     ;
 
     RoleTypeEnum(int roleType){

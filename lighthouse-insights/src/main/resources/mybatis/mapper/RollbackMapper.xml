@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dtstep.lighthouse.insights.dao.RollbackDao">
+
+    <resultMap id="rollbackResultMap" type="com.dtstep.lighthouse.common.modal.RollbackModal">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="resource_id" property="resourceId"/>
+        <result column="data_type" property="dataType" typeHandler="com.dtstep.lighthouse.insights.types.RollbackTypeEnumTypeHandler"/>
+        <result column="config" property="config"/>
+        <result column="version" property="version"/>
+        <result column="base_flag" property="baseFlag"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.RollbackModal" >
+        INSERT INTO ldp_rollbacks (`user_id`, `resource_id`, `data_type`,`config`,`version`,`base_flag`,`create_time`) VALUES
+        (
+            #{userId,jdbcType=INTEGER},
+            #{resourceId,jdbcType=INTEGER},
+            #{dataType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RollbackTypeEnumTypeHandler},
+            #{config,jdbcType=VARCHAR},
+            #{version,jdbcType=TIMESTAMP},
+            #{baseFlag,jdbcType=INTEGER},
+            #{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="getLatestVersion" resultType="Integer">
+        SELECT `version` FROM ldp_rollbacks WHERE resource_id = #{resourceId} and data_type = #{rollbackTypeEnum.type} order by create_time desc limit 1
+    </select>
+
+    <select id="queryByVersion" resultMap="rollbackResultMap">
+        SELECT `id`,`user_id`, `resource_id`,`data_type`,`config`,`version`,`base_flag`,`create_time`
+        FROM ldp_rollbacks
+        <where>
+            <if test="queryParam.resourceId != null">
+                AND resource_id = #{queryParam.resourceId}
+            </if>
+            <if test="queryParam.dataType != null">
+                AND data_type = #{queryParam.dataType.type}
+            </if>
+            <if test="queryParam.version != null">
+                AND version = #{queryParam.version}
+            </if>
+        </where>
+        order by create_time desc limit 1
+    </select>
+
+    <select id="queryVersionList" resultMap="rollbackResultMap">
+        SELECT `id`,`user_id`, `resource_id`,`data_type`,`version`,`base_flag`,`create_time`
+        FROM ldp_rollbacks  WHERE resource_id = #{queryParam.resourceId} and data_type = #{queryParam.dataType.type} order by create_time desc limit 300
+    </select>
+</mapper>

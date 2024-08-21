@@ -77,6 +77,8 @@ public final class SysConst {
 
     public final static int USER_STAR_METRICSET_LIMIT = 100;
 
+    public final static int USER_STAR_VIEW_LIMIT = 20;
+
     public final static int USER_STAR_PROJECT_LIMIT = 100;
 
     public final static int CLUSTER_MONITOR_SERVICE_PORT = 18101;

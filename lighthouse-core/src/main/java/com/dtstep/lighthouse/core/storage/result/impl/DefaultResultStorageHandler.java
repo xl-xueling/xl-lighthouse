@@ -348,7 +348,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         }
     }
 
-    private StatValue calculate(StatExtEntity statExtEntity, String dimensValue, long batchTime,Map<String, LdpResult<Long>> resultMap) {
+    public StatValue calculate(StatExtEntity statExtEntity, String dimensValue, long batchTime,Map<String, LdpResult<Long>> resultMap) {
         boolean invalidFlag = false;
         String formula = statExtEntity.getTemplateEntity().getCompleteStat();
         StatValue statValue = new StatValue();

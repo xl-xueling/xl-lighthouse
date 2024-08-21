@@ -162,6 +162,8 @@ public enum ResultCode {
 
     authorizationUnbindFailed("10002","authorizationUnbindFailed"),
 
+    userStarViewLimitExceed("3001","userStarViewLimitExceed"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

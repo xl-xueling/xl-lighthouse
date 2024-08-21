@@ -19,6 +19,10 @@ public enum ComponentTypeEnum {
 
     FILTER_REMOTE_SEARCH_SELECT(6),
 
+    DATEPICKER_DATE_WEEK_SELECT(7),
+
+    DATEPICKER_DATE_MONTH_SELECT(8),
+
     ;
 
     @JsonValue

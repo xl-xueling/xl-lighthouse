@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dtstep.lighthouse.insights.dao.ViewDao">
+
+    <resultMap id="viewResultMap" type="com.dtstep.lighthouse.common.modal.View">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="userId" column="user_id"/>
+        <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.ViewStateEnumTypeHandler"/>
+        <result property="privateType" column="private_type" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
+        <result property="version" column="version"/>
+        <result property="desc" column="desc"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.View" >
+        INSERT INTO ldp_views (`title`,`user_id`,`state`,`private_type`,`version`,`desc`,`create_time`,`update_time`) VALUES
+        (
+            #{title,jdbcType=VARCHAR},
+            #{userId,jdbcType=INTEGER},
+            #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ViewStateEnumTypeHandler},
+            #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
+            #{version,jdbcType=INTEGER},
+            #{desc,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="queryById" resultMap="viewResultMap">
+        SELECT `id`,`title`,`user_id`,`state`,`private_type`,`version`,`desc`,`create_time`,`update_time` FROM ldp_views WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.View">
+        UPDATE ldp_views
+        <set>
+            <if test="title != null">
+                `title` = #{title},
+            </if>
+            <if test="desc != null">
+                `desc` = #{desc},
+            </if>
+            <if test="privateType != null">
+                `private_type` = #{privateType.privateType},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+            <if test="state != null">
+                `state` = #{state.state},
+            </if>
+            <if test="version != null">
+                `version` = #{version},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="queryList" resultMap="viewResultMap">
+        select * from (select `id`,`title`,`state`,`private_type`,`version`,`desc`,`create_time`,`update_time` from ldp_views
+        <where>
+            <if test="queryParam.ids != null and queryParam.ids.size > 0">
+                AND id IN
+                <foreach item="item" index="index" collection="queryParam.ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="queryParam.ids != null and queryParam.ids.size == 0">
+                1 != 1
+            </if>
+            <if test="queryParam.privateType!=null">
+                AND private_type = #{queryParam.privateType}
+            </if>
+            <if test="queryParam.createStartTime!=null">
+                AND create_time &gt;= #{queryParam.createStartTime}
+            </if>
+            <if test="queryParam.createEndTime!=null">
+                AND create_time &lt;= #{queryParam.createEndTime}
+            </if>
+            <if test="queryParam.search != null">
+                AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})
+            </if>
+            <if test="queryParam.ownerId == null">
+                AND state = '1'
+            </if>
+        </where>
+        ) a
+        <if test="queryParam.ownerId != null">
+            inner join (select resource_id from ldp_roles r where r.role_type = '17'
+            and r.id IN (select role_id from ldp_permissions where owner_id = #{queryParam.ownerId} and owner_type = '1')) b on a.id = b.resource_id
+        </if>
+        order by create_time desc
+    </select>
+
+    <delete id="deleteById">
+        delete from ldp_views where id = #{id}
+    </delete>
+</mapper>

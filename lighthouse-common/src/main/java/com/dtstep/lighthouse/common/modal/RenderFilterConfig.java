@@ -28,11 +28,15 @@ public class RenderFilterConfig {
 
     private String label;
 
+    private String token;
+
     private String dimens;
 
     private Integer componentId;
 
     private List<TreeNode> configData;
+
+    private Integer maxLevel = 1;
 
     public ComponentTypeEnum getComponentType() {
         return componentType;
@@ -80,5 +84,21 @@ public class RenderFilterConfig {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Integer getMaxLevel() {
+        return maxLevel;
+    }
+
+    public void setMaxLevel(Integer maxLevel) {
+        this.maxLevel = maxLevel;
     }
 }

@@ -17,7 +17,7 @@ const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
 
-export default function NewMetricBindedModal({metricSetInfo,onClose}) {
+export default function NewMetricBindedModal({metricSetInfo,onClose,PRO_ViewBindTab = null}) {
 
     const t = useLocale(locale);
 
@@ -47,6 +47,10 @@ export default function NewMetricBindedModal({metricSetInfo,onClose}) {
                     }>
                     <BindedStatisticListPanel metricSetInfo={metricSetInfo} />
                 </TabPane>
+                {
+                    PRO_ViewBindTab &&
+                    PRO_ViewBindTab(metricSetInfo)
+                }
             </Tabs>
         </Modal>
     );

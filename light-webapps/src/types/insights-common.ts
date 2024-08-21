@@ -35,7 +35,6 @@ export interface BindElement {
     title?:string,
 }
 
-
 export enum RecordTypeEnum {
     CREATE_DEPARTMENT=1,
     UPDATE_DEPARTMENT=2,

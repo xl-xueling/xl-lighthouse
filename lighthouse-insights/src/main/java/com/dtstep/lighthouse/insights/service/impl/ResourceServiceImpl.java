@@ -58,8 +58,10 @@ public class ResourceServiceImpl implements ResourceService {
     private MetricSetDao metricSetDao;
 
     @Autowired
-    private DomainService domainService;
+    private ViewDao viewDao;
 
+    @Autowired
+    private DomainService domainService;
 
     @Transactional
     @Override
@@ -118,6 +120,14 @@ public class ResourceServiceImpl implements ResourceService {
             manageRole = new Role(RoleTypeEnum.METRIC_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
             accessRole = new Role(RoleTypeEnum.METRIC_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
             name = metricSetDao.queryById(resource.getResourceId()).getTitle();
+        }else if(resource.getResourceType() == ResourceTypeEnum.View){
+            Role parentManageRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_MANAGE_PERMISSION,resource.getResourcePid());
+            Integer manageRolePid = parentManageRole.getId();
+            Role parentAccessRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_ACCESS_PERMISSION,resource.getResourcePid());
+            Integer accessRolePid = parentAccessRole.getId();
+            manageRole = new Role(RoleTypeEnum.VIEW_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
+            accessRole = new Role(RoleTypeEnum.VIEW_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
+            name = viewDao.queryById(resource.getResourceId()).getTitle();
         }
         Validate.notNull(manageRole);
         Validate.notNull(accessRole);
@@ -177,12 +187,19 @@ public class ResourceServiceImpl implements ResourceService {
             manageRole = new Role(RoleTypeEnum.STAT_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
             accessRole = new Role(RoleTypeEnum.STAT_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
         }else if(resource.getResourceType() == ResourceTypeEnum.MetricSet){
-            Role parentManageRole = roleService.cacheQueryRole(RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION,resource.getResourcePid());
+            Role parentManageRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_MANAGE_PERMISSION,resource.getResourcePid());
             Integer manageRolePid = parentManageRole.getId();
-            Role parentAccessRole = roleService.cacheQueryRole(RoleTypeEnum.DEPARTMENT_ACCESS_PERMISSION,resource.getResourcePid());
+            Role parentAccessRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_ACCESS_PERMISSION,resource.getResourcePid());
             Integer accessRolePid = parentAccessRole.getId();
             manageRole = new Role(RoleTypeEnum.METRIC_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
             accessRole = new Role(RoleTypeEnum.METRIC_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
+        }else if(resource.getResourceType() == ResourceTypeEnum.View){
+            Role parentManageRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_MANAGE_PERMISSION,resource.getResourcePid());
+            Integer manageRolePid = parentManageRole.getId();
+            Role parentAccessRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_ACCESS_PERMISSION,resource.getResourcePid());
+            Integer accessRolePid = parentAccessRole.getId();
+            manageRole = new Role(RoleTypeEnum.VIEW_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
+            accessRole = new Role(RoleTypeEnum.VIEW_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
         }
         Validate.notNull(manageRole);
         Validate.notNull(accessRole);
@@ -216,6 +233,9 @@ public class ResourceServiceImpl implements ResourceService {
         }else if(resource.getResourceType() == ResourceTypeEnum.MetricSet){
             manageRole = roleService.cacheQueryRole(RoleTypeEnum.METRIC_MANAGE_PERMISSION,resource.getResourceId());
             accessRole = roleService.cacheQueryRole(RoleTypeEnum.METRIC_ACCESS_PERMISSION,resource.getResourceId());
+        }else if(resource.getResourceType() == ResourceTypeEnum.View){
+            manageRole = roleService.cacheQueryRole(RoleTypeEnum.VIEW_MANAGE_PERMISSION,resource.getResourceId());
+            accessRole = roleService.cacheQueryRole(RoleTypeEnum.VIEW_ACCESS_PERMISSION,resource.getResourceId());
         }
         Validate.notNull(manageRole);
         Validate.notNull(accessRole);
@@ -270,6 +290,9 @@ public class ResourceServiceImpl implements ResourceService {
         }else if(roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.METRIC_ACCESS_PERMISSION){
             MetricSet metricSet = metricSetDao.queryById(resourceId);
             resource = new ResourceDto(ResourceTypeEnum.MetricSet,resourceId,metricSet);
+        }else if(roleTypeEnum == RoleTypeEnum.VIEW_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.VIEW_ACCESS_PERMISSION){
+            View view = viewDao.queryById(resourceId);
+            resource = new ResourceDto(ResourceTypeEnum.View,resourceId,view);
         }else if(roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){
             resource = new ResourceDto(ResourceTypeEnum.System,0);
         }else if (roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){

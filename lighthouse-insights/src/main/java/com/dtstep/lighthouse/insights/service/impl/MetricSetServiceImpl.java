@@ -88,6 +88,8 @@ public class MetricSetServiceImpl implements MetricSetService {
     @Autowired
     private ProjectDao projectDao;
 
+    @Autowired
+    private ViewDao viewDao;
 
     @Transactional
     @Override
@@ -271,6 +273,27 @@ public class MetricSetServiceImpl implements MetricSetService {
                     relation.setRelationType(RelationTypeEnum.MetricSetBindRelation);
                     relation.setResourceId(statId);
                     relation.setResourceType(ResourceTypeEnum.Stat);
+                    relation.setHash(hash);
+                    relation.setCreateTime(localDateTime);
+                    relation.setUpdateTime(localDateTime);
+                    relationList.add(relation);
+                }
+            }
+
+            List<Integer> viewIds = bindElements.stream().filter(x -> x.getResourceType() == ResourceTypeEnum.View).map(MetricBindElement::getResourceId).collect(Collectors.toList());
+            for(Integer viewId : viewIds){
+                View view = viewDao.queryById(viewId);
+                if(view == null){
+                    continue;
+                }
+                String hash = Md5Util.getMD5(metricId + "_" + RelationTypeEnum.MetricSetBindRelation.getRelationType() + "_" + viewId + "_" + ResourceTypeEnum.View.getResourceType());
+                boolean isExist = relationService.isExist(hash);
+                if(!isExist){
+                    Relation relation = new Relation();
+                    relation.setSubjectId(metricId);
+                    relation.setRelationType(RelationTypeEnum.MetricSetBindRelation);
+                    relation.setResourceId(viewId);
+                    relation.setResourceType(ResourceTypeEnum.View);
                     relation.setHash(hash);
                     relation.setCreateTime(localDateTime);
                     relation.setUpdateTime(localDateTime);

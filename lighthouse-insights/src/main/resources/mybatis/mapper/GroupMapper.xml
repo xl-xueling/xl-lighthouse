@@ -106,6 +106,21 @@
         </where>
     </select>
 
+    <select id="queryList"  resultMap="groupResultMap">
+        SELECT a.`id`,`token`,`project_id`,`columns`,`random_id`,a.`data_version`,
+        a.`state`,a.`desc`,
+        a.`extend_config`,a.`limiting_param`,a.`debug_param`,a.`debug_mode`,a.`create_time`,a.`update_time`,a.`refresh_time`,b.title as project_title
+        FROM ldp_groups a left join ldp_projects b on a.project_id = b.id
+        <where>
+            <if test="queryParam != null and queryParam.search != null">
+                AND `token` LIKE CONCAT('%', #{queryParam.search}, '%')
+            </if>
+            <if test="queryParam != null and queryParam.token != null">
+                AND `token` = ${queryParam.token}
+            </if>
+        </where>
+    </select>
+
     <select id="getSecretKey" resultType="String">
         SELECT `secret_key` FROM ldp_groups WHERE id = #{id}
     </select>

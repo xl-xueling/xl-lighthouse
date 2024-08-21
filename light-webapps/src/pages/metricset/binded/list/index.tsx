@@ -35,7 +35,7 @@ const { Text } = Typography;
 export default function MetricSetBindListPanel() {
 
     const t = useLocale(locale);
-    const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
+    const { metricSetInfo, setMetricSetInfo,PRO_ViewBindTab} = useContext(MetricSetPreviewContext);
     const { reloadTime, setReloadTime } = useContext(MetricSetPreviewContext);
     const [listData, setListData] = useState<Relation[]>([]);
     const [loading,setLoading] = useState<boolean>(true);
@@ -173,7 +173,7 @@ export default function MetricSetBindListPanel() {
             </Form>
         <Table rowKey={'id'} size={"small"} onChange={onChangeTable} loading={loading} pagination={pagination} columns={columns} data={listData}/>
         {showApplyModal && <ApplyModal itemInfo={currentRecord?.extend} resourceType={currentRecord.resourceType} onClose={() => setShowApplyModal(false)}/>}
-        {showBindModal && <NewMetricBindedModal metricSetInfo={metricSetInfo} onClose={() =>
+        {showBindModal && <NewMetricBindedModal metricSetInfo={metricSetInfo} PRO_ViewBindTab={PRO_ViewBindTab} onClose={() =>
         {
             setShowBindModal(false);
             if(needReload){

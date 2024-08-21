@@ -26,6 +26,8 @@ public class GroupQueryParam implements Serializable {
 
     private String token;
 
+    private String search;
+
     public Integer getId() {
         return id;
     }
@@ -48,5 +50,13 @@ public class GroupQueryParam implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 }

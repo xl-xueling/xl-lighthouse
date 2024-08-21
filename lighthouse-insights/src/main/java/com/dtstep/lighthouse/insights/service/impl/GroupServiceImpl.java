@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.insights.service.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
@@ -40,8 +41,12 @@ import com.dtstep.lighthouse.common.modal.ResourceDto;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
 import com.dtstep.lighthouse.insights.vo.GroupVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -53,6 +58,8 @@ import java.util.*;
 @Service
 public class GroupServiceImpl implements GroupService {
 
+    private static final Logger logger = LoggerFactory.getLogger(GroupServiceImpl.class);
+
     @Autowired
     private GroupDao groupDao;
 
@@ -61,6 +68,29 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     private ResourceService resourceService;
+
+    @Override
+    public ListData<GroupVO> queryList(GroupQueryParam groupQueryParam, Integer pageNum, Integer pageSize) throws Exception {
+        PageHelper.startPage(pageNum,pageSize);
+        List<GroupVO> dtoList = new ArrayList<>();
+        PageInfo<Group> pageInfo;
+        try{
+            List<Group> list = groupDao.queryList(groupQueryParam);
+            pageInfo = new PageInfo<>(list);
+        }finally {
+            PageHelper.clearPage();
+        }
+        for(Group group : pageInfo.getList()){
+            try{
+                GroupExtEntity groupExtEntity = GroupDBWrapper.combineExtInfo(group);
+                GroupVO groupVO = new GroupVO(groupExtEntity);
+                dtoList.add(groupVO);
+            }catch (Exception ex){
+                logger.error("translate item info error,itemId:{}!",group.getId(),ex);
+            }
+        }
+        return ListData.newInstance(dtoList,pageInfo.getTotal(),pageNum,pageSize);
+    }
 
     @Transactional
     @Override

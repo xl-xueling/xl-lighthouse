@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.insights.service;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.insights.vo.GroupVO;
@@ -31,6 +32,8 @@ public interface GroupService {
     int delete(Group group);
     
     GroupVO queryById(Integer id) throws Exception;
+
+    ListData<GroupVO> queryList(GroupQueryParam groupQueryParam, Integer pageNum, Integer pageSize) throws Exception;
 
     Group cacheQueryById(Integer id);
 
