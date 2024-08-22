@@ -11,4 +11,5 @@ export function removeLoginStatus() {
   localStorage.removeItem('cache_stared_metrics');
   localStorage.removeItem('cache_stared_projects');
   localStorage.removeItem('cache_all_department');
+  localStorage.removeItem('cache_user_info');
 }
