@@ -366,6 +366,9 @@ public class OrderServiceImpl implements OrderService {
         }else if(order.getOrderType() == OrderTypeEnum.STAT_ACCESS){
             Integer statId = (Integer) configMap.get("statId");
             return statService.queryById(statId);
+        }else if(order.getOrderType() == OrderTypeEnum.VIEW_ACCESS){
+            Integer viewId = (Integer) configMap.get("viewId");
+            return viewService.queryById(viewId);
         }else if(order.getOrderType() == OrderTypeEnum.LIMITING_SETTINGS){
             Integer groupId = (Integer) configMap.get("groupId");
             return groupService.queryById(groupId);

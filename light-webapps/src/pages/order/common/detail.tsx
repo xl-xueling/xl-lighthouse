@@ -11,7 +11,7 @@ import {
     getOrderColumns,
     getOrderDetailColumns,
     getProjectAccessColumns, getStatAccessColumns,
-    getUserApproveColumns
+    getUserApproveColumns, getViewAccessColumns
 } from "@/pages/order/common/constants";
 import {getRandomString} from "@/utils/util";
 import {getOrderApproveRoleTypeDescription} from "@/pages/common/desc/base";
@@ -30,6 +30,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
     const userApproveColumns = useMemo(() => getUserApproveColumns(t), [t]);
     const projectAccessColumns = useMemo(() => getProjectAccessColumns(t), [t]);
     const statAccessColumns = useMemo(() => getStatAccessColumns(t), [t]);
+    const viewAccessColumns = useMemo(() => getViewAccessColumns(t), [t]);
     const orderDetailColumns = useMemo(() => getOrderDetailColumns(t,orderInfo), [t,orderInfo]);
     const limitingSettingsColumns = useMemo(() => getLimitingSettingsColumns(t), [t]);
 
@@ -111,9 +112,12 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
             return (
                 <Table size={"small"} rowKey="id" pagination={false} columns={statAccessColumns} data={[orderInfo.extend]} />
             )
+        }else if(orderInfo.orderType == OrderTypeEnum.VIEW_ACCESS && orderInfo.extend){
+            return (
+                <Table size={"small"} rowKey="id" pagination={false} columns={viewAccessColumns} data={[orderInfo.extend]} />
+            )
         }else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS && orderInfo.extend){
             const extendElement = {...orderInfo.extend,strategy:orderInfo.extendConfig.strategy,currentValue:orderInfo.extendConfig.currentValue,updateValue:orderInfo.extendConfig.updateValue}
-            console.log("bindElements is:" + JSON.stringify(extendElement));
             return (
                 <Table size={"small"} rowKey="id" pagination={false} columns={limitingSettingsColumns} data={[extendElement]} />
             )

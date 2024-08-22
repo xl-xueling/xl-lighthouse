@@ -80,10 +80,11 @@ export function getOrderApproveRoleTypeDescription(t:any,value:RoleTypeEnum){
         title = t['orderApprove.roleType.description.projectManager'];
     }else if(value == RoleTypeEnum.METRIC_MANAGE_PERMISSION){
         title = t['orderApprove.roleType.description.metricManager'];
+    }else if(value == RoleTypeEnum.VIEW_MANAGE_PERMISSION){
+        title = t['orderApprove.roleType.description.viewManager'];
     }
     return title;
 }
-
 
 export const getStatExpiredEnumDescription = (expired) => {
     if(expired == StatExpiredEnum.Week_2){
@@ -221,9 +222,7 @@ export function getRoleTypeDescription(t:any,value:RoleTypeEnum){
         return t['basic.roleType.description.viewManage'];
     }else if(value == RoleTypeEnum.VIEW_ACCESS_PERMISSION){
         return t['basic.roleType.description.viewAccess'];
-    }
-
-    else if(value == RoleTypeEnum.DOMAIN_MANAGE_PERMISSION){
+    }else if(value == RoleTypeEnum.DOMAIN_MANAGE_PERMISSION){
         return t['basic.roleType.description.domainManage'];
     }else if(value == RoleTypeEnum.DOMAIN_ACCESS_PERMISSION){
         return t['basic.roleType.description.domainAccess'];
@@ -299,6 +298,8 @@ export function getResourceTypeDescription(t:any,resourceType:ResourceTypeEnum){
         return t['basic.resourceType.statistic'];
     }else if(resourceType == ResourceTypeEnum.Metric){
         return t['basic.resourceType.metricSet'];
+    }else if(resourceType == ResourceTypeEnum.View){
+        return t['basic.resourceType.view'];
     }else if(resourceType == ResourceTypeEnum.Department){
         return t['basic.resourceType.department'];
     }else if(resourceType == ResourceTypeEnum.Group){
