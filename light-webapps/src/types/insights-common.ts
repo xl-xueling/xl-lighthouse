@@ -186,6 +186,12 @@ export enum StatStateEnum {
     INVALID=7,
 }
 
+export interface LabelValue{
+    label?:string,
+    value?:any,
+    state?:number,
+}
+
 export enum DebugModeEnum {
     CLOSE=0,
     OPEN=1,
