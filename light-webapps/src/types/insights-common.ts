@@ -20,6 +20,7 @@ export enum OrderTypeEnum {
     LIMITING_SETTINGS=4,
     STAT_PEND_APPROVE=5,
     USER_PEND_APPROVE=6,
+    VIEW_ACCESS=7,
 }
 
 export enum PermissionEnum {
@@ -110,6 +111,8 @@ export enum RoleTypeEnum {
     STAT_ACCESS_PERMISSION=14,
     METRIC_MANAGE_PERMISSION=15,
     METRIC_ACCESS_PERMISSION=16,
+    VIEW_MANAGE_PERMISSION=17,
+    VIEW_ACCESS_PERMISSION=18,
 }
 
 export interface RenderFilterConfig {

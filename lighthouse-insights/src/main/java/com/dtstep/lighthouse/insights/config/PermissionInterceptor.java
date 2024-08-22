@@ -88,7 +88,9 @@ public class PermissionInterceptor implements HandlerInterceptor {
             }else if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION
                     || roleTypeEnum == RoleTypeEnum.GROUP_MANAGE_PERMISSION
                     || roleTypeEnum == RoleTypeEnum.STAT_MANAGE_PERMISSION
-                    || roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION){
+                    || roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION
+                    || roleTypeEnum == RoleTypeEnum.VIEW_MANAGE_PERMISSION
+            ){
                 int id = getRelateParam(request,authPermission.relationParam());
                 if(id != 0){
                     role = roleService.cacheQueryRole(roleTypeEnum,id);

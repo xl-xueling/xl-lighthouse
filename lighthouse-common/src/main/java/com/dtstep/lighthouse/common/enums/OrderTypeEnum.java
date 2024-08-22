@@ -21,6 +21,8 @@ public enum OrderTypeEnum {
 
     USER_PEND_APPROVE(6,List.of(FlowNode.newBuilder(RoleTypeEnum.OPT_MANAGE_PERMISSION))),
 
+    VIEW_ACCESS(7,List.of(FlowNode.newBuilder(RoleTypeEnum.VIEW_MANAGE_PERMISSION))),
+
     ;
 
     OrderTypeEnum(int orderType){

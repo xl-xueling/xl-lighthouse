@@ -193,6 +193,8 @@ export function getOrderTypeDescription(t:any,value:OrderTypeEnum){
         return t['basic.orderType.description.metricAccess']
     }else if(value == OrderTypeEnum.STAT_ACCESS){
         return t['basic.orderType.description.statAccess'];
+    }else if(value == OrderTypeEnum.VIEW_ACCESS){
+        return t['basic.orderType.description.viewAccess'];
     }else if(value == OrderTypeEnum.LIMITING_SETTINGS){
         return t['basic.orderType.description.updateLimitingThreshold'];
     }
@@ -215,7 +217,13 @@ export function getRoleTypeDescription(t:any,value:RoleTypeEnum){
         return t['basic.roleType.description.statManage'];
     }else if(value == RoleTypeEnum.STAT_ACCESS_PERMISSION){
         return t['basic.roleType.description.statAccess'];
-    }else if(value == RoleTypeEnum.DOMAIN_MANAGE_PERMISSION){
+    }else if(value == RoleTypeEnum.VIEW_MANAGE_PERMISSION){
+        return t['basic.roleType.description.viewManage'];
+    }else if(value == RoleTypeEnum.VIEW_ACCESS_PERMISSION){
+        return t['basic.roleType.description.viewAccess'];
+    }
+
+    else if(value == RoleTypeEnum.DOMAIN_MANAGE_PERMISSION){
         return t['basic.roleType.description.domainManage'];
     }else if(value == RoleTypeEnum.DOMAIN_ACCESS_PERMISSION){
         return t['basic.roleType.description.domainAccess'];

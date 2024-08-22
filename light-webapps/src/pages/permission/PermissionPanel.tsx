@@ -18,8 +18,8 @@ import locale from "./locale";
 import {getRandomString} from "@/utils/util";
 import {
     requestGrantMetricPermission,
-    requestGrantProjectPermission,
-    requestQueryList, requestReleaseMetricPermission, requestReleaseProjectPermission
+    requestGrantProjectPermission, requestGrantViewPermission,
+    requestQueryList, requestReleaseMetricPermission, requestReleaseProjectPermission, requestReleaseViewPermission
 } from "@/api/permission";
 import {getDepartPermissionColumns, getUserPermissionColumns} from "./constants";
 import './styles/index.module.less'
@@ -90,6 +90,12 @@ export function PermissionPanel({type,resourceId,resourceType}){
             }else{
                 roleType = RoleTypeEnum.METRIC_ACCESS_PERMISSION;
             }
+        }else if(resourceType == ResourceTypeEnum.View){
+            if(type == 3){
+                roleType = RoleTypeEnum.VIEW_MANAGE_PERMISSION;
+            }else{
+                roleType = RoleTypeEnum.VIEW_ACCESS_PERMISSION;
+            }
         }else{
             throw new Error();
         }
@@ -103,6 +109,8 @@ export function PermissionPanel({type,resourceId,resourceType}){
             request = requestReleaseProjectPermission(requestParam);
         }else if(resourceType == ResourceTypeEnum.Metric){
             request = requestReleaseMetricPermission(requestParam);
+        }else if(resourceType == ResourceTypeEnum.View){
+            request = requestReleaseViewPermission(requestParam);
         }
         await request.then((response) => {
             const {code, data ,message} = response;
@@ -132,6 +140,12 @@ export function PermissionPanel({type,resourceId,resourceType}){
                 roleType = RoleTypeEnum.METRIC_MANAGE_PERMISSION;
             }else{
                 roleType = RoleTypeEnum.METRIC_ACCESS_PERMISSION;
+            }
+        }else if(resourceType == ResourceTypeEnum.View){
+            if(type == 3){
+                roleType = RoleTypeEnum.VIEW_MANAGE_PERMISSION;
+            }else{
+                roleType = RoleTypeEnum.VIEW_ACCESS_PERMISSION;
             }
         }else{
             throw new Error();
@@ -207,6 +221,12 @@ export function PermissionPanel({type,resourceId,resourceType}){
             }else{
                 roleType = RoleTypeEnum.METRIC_ACCESS_PERMISSION;
             }
+        }else if(resourceType == ResourceTypeEnum.View){
+            if(type == 3){
+                roleType = RoleTypeEnum.VIEW_MANAGE_PERMISSION;
+            }else{
+                roleType = RoleTypeEnum.VIEW_ACCESS_PERMISSION;
+            }
         }else{
             throw new Error();
         }
@@ -221,6 +241,8 @@ export function PermissionPanel({type,resourceId,resourceType}){
             request = requestGrantProjectPermission(requestParam);
         }else if(resourceType == ResourceTypeEnum.Metric){
             request = requestGrantMetricPermission(requestParam);
+        }else if(resourceType == ResourceTypeEnum.View){
+            request = requestGrantViewPermission(requestParam);
         }
         await request.then((response) => {
                 const {code, data ,message} = response;

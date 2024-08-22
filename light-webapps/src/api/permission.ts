@@ -41,3 +41,20 @@ export async function requestReleaseMetricPermission(data) :Promise<ResultData<O
         data,
     })
 }
+
+
+export async function requestGrantViewPermission(data) :Promise<ResultData<Order>> {
+    return request({
+        url:'/view/grant',
+        method:'POST',
+        data,
+    })
+}
+
+export async function requestReleaseViewPermission(data) :Promise<ResultData<Order>> {
+    return request({
+        url:'/view/release',
+        method:'POST',
+        data,
+    })
+}
