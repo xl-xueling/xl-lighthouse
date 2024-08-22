@@ -32,6 +32,8 @@ public interface OrderService {
 
     ResultCode submit(User applyUser, OrderTypeEnum orderTypeEnum, String reason, Map<String,Object> extendConfig) throws Exception;
 
+    ResultCode batchSubmit(User applyUser,OrderTypeEnum orderTypeEnum,String reason, Map<String,Object> extendConfig) throws Exception;
+
     int process(OrderProcessParam processParam) throws Exception;
 
     int pendCount(int userId);

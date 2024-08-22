@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface ViewService {
 
+    ViewVO queryById(Integer id);
+
     List<ViewVO> queryByIds(List<Integer> ids);
 }

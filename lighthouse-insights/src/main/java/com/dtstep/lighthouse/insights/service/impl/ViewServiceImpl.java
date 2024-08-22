@@ -49,6 +49,16 @@ public class ViewServiceImpl implements ViewService {
         return voList;
     }
 
+    @Override
+    public ViewVO queryById(Integer id) {
+        View view = viewDao.queryById(id);
+        ViewVO viewVO = null;
+        if(view != null){
+            viewVO = translate(view);
+        }
+        return viewVO;
+    }
+
     private ViewVO translate(View view){
         ViewVO viewVO = new ViewVO(view);
         int currentUserId = baseService.getCurrentUserId();

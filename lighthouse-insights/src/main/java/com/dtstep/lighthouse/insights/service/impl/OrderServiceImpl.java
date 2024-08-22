@@ -90,6 +90,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private GroupService groupService;
 
+    @Autowired
+    private ViewService viewService;
+
     @Override
     public ListData<OrderVO> queryApproveList(ApproveOrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
         Integer currentUserId = baseService.getCurrentUserId();
@@ -192,6 +195,10 @@ public class OrderServiceImpl implements OrderService {
                 MetricSet metricSet = (MetricSet) param;
                 Role role = roleService.queryRole(roleTypeEnum, metricSet.getId());
                 checkAddRole(roleList,role);
+            }else if(roleTypeEnum == RoleTypeEnum.VIEW_MANAGE_PERMISSION){
+                View view = (View) param;
+                Role role = roleService.queryRole(roleTypeEnum, view.getId());
+                checkAddRole(roleList,role);
             }else if(roleTypeEnum == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION){
                 int departmentId = 0;
                 FlowNode.Extend extend = flowNode.getExtend();
@@ -263,6 +270,16 @@ public class OrderServiceImpl implements OrderService {
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + statId;
             hash = Md5Util.getMD5(message);
             roleList = getApproveRoleList(applyUser,orderTypeEnum,stat);
+        }else if(order.getOrderType() == OrderTypeEnum.VIEW_ACCESS){
+            if(!extendConfig.containsKey("viewId")){
+                return ResultCode.paramValidateFailed;
+            }
+            Integer viewId = (Integer) extendConfig.get("viewId");
+            View view = viewService.queryById(viewId);
+            Validate.notNull(view);
+            String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + view;
+            hash = Md5Util.getMD5(message);
+            roleList = getApproveRoleList(applyUser,orderTypeEnum,view);
         }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING;
             hash = Md5Util.getMD5(message);
@@ -302,6 +319,11 @@ public class OrderServiceImpl implements OrderService {
         }
         orderDetailDao.batchInsert(detailList);
         return ResultCode.success;
+    }
+
+    @Override
+    public ResultCode batchSubmit(User applyUser, OrderTypeEnum orderTypeEnum, String reason, Map<String, Object> extendConfig) throws Exception {
+        return null;
     }
 
     private OrderVO translateApproveEntity(Order order) throws Exception{
