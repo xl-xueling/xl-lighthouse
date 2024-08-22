@@ -16,8 +16,12 @@ package com.dtstep.lighthouse.insights.controller;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.OrderTypeEnum;
 import com.dtstep.lighthouse.common.modal.ListSearchObject;
 import com.dtstep.lighthouse.common.modal.Pagination;
+import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.insights.service.impl.OrderServiceImpl;
+import com.dtstep.lighthouse.insights.vo.ResourceVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
@@ -29,6 +33,8 @@ import com.dtstep.lighthouse.insights.service.OrderService;
 import com.dtstep.lighthouse.insights.service.UserService;
 import com.dtstep.lighthouse.insights.vo.OrderVO;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,9 +42,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @ControllerAdvice
 public class ApplyController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ApplyController.class);
 
     @Autowired
     private OrderService orderService;
@@ -54,7 +66,25 @@ public class ApplyController {
         int currentUserId = baseService.getCurrentUserId();
         Validate.isTrue(currentUserId == createParam.getUserId());
         User user = userService.queryById(currentUserId);
-        ResultCode resultCode = orderService.submit(user,createParam.getOrderType(),createParam.getReason(),createParam.getExtendConfig());
+        ResultCode resultCode;
+        if(createParam.getOrderType() == OrderTypeEnum.VIEW_ACCESS){
+            resultCode = orderService.submit(user,createParam.getOrderType(),createParam.getReason(),createParam.getExtendConfig());
+            Map<String,Object> extendConfig = createParam.getExtendConfig();
+            if(extendConfig.containsKey("resources")){
+                List<ResourceVO> resourceVOList = JsonUtil.toJavaObjectList(JsonUtil.toJSONString(extendConfig.get("resources")),ResourceVO.class);
+                Validate.notNull(resourceVOList);
+                for(ResourceVO resourceVO : resourceVOList){
+                    Map<String,Object> extendMap = new HashMap<>();
+                    extendMap.put("statId",resourceVO.getResourceId());
+                    resultCode = orderService.submit(user,OrderTypeEnum.STAT_ACCESS,createParam.getReason(),extendMap);
+                    if(resultCode != ResultCode.success){
+                        break;
+                    }
+                }
+            }
+        }else{
+            resultCode = orderService.submit(user,createParam.getOrderType(),createParam.getReason(),createParam.getExtendConfig());
+        }
         return ResultData.result(resultCode);
     }
 
