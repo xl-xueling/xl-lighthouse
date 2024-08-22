@@ -19,6 +19,8 @@ public class ViewVO extends View {
 
     private Map<String,List<TreeNode>> filtersData;
 
+    private List<ResourceVO> resourceList;
+
     public Map<String, List<TreeNode>> getFiltersData() {
         return filtersData;
     }
@@ -64,4 +66,11 @@ public class ViewVO extends View {
         this.config = config;
     }
 
+    public List<ResourceVO> getResourceList() {
+        return resourceList;
+    }
+
+    public void setResourceList(List<ResourceVO> resourceList) {
+        this.resourceList = resourceList;
+    }
 }
