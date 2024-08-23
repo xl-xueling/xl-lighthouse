@@ -47,6 +47,9 @@ export const getFullPathNodes = (id, treeData:Array<TreeNode>) => {
             }
         }
     }
+    if(!treeData){
+        return result;
+    }
     for (const node of treeData) {
         findNodeAndParents(node, []);
     }
