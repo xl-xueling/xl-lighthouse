@@ -502,6 +502,11 @@ public class OrderServiceImpl implements OrderService {
             Role role = roleService.cacheQueryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
             Validate.notNull(role);
             permissionService.grantPermission(userId,OwnerTypeEnum.USER,role.getId());
+        }else if(order.getOrderType() == OrderTypeEnum.VIEW_ACCESS){
+            Integer viewId = (Integer) order.getExtendConfig().get("viewId");
+            Role role = roleService.cacheQueryRole(RoleTypeEnum.VIEW_ACCESS_PERMISSION,viewId);
+            Validate.notNull(role);
+            permissionService.grantPermission(userId,OwnerTypeEnum.USER,role.getId());
         }else if(order.getOrderType() == OrderTypeEnum.LIMITING_SETTINGS){
             Integer groupId = (Integer) order.getExtendConfig().get("groupId");
             String strategy = (String) order.getExtendConfig().get("strategy");
