@@ -164,6 +164,8 @@ public enum ResultCode {
 
     userStarViewLimitExceed("3001","userStarViewLimitExceed"),
 
+    viewMissingRequestParam("11001","viewMissingRequestParam");
+
     ;
 
     ResultCode(String code , String i18nLabel){

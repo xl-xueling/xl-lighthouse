@@ -1,6 +1,5 @@
 package com.dtstep.lighthouse.common.entity.view;
 
-import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.common.modal.DebugParam;
 
 import java.io.Serializable;
@@ -14,7 +13,7 @@ public class WidgetDataObject implements Serializable {
 
     private List<DebugParam> debugParams;
 
-    private ResultCode resultCode;
+    private String errorMessage;
 
     public String getWidgetKey() {
         return widgetKey;
@@ -40,11 +39,11 @@ public class WidgetDataObject implements Serializable {
         this.debugParams = debugParams;
     }
 
-    public ResultCode getResultCode() {
-        return resultCode;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setResultCode(ResultCode resultCode) {
-        this.resultCode = resultCode;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

@@ -92,6 +92,13 @@ public class ResultData<T> {
         return resultData;
     }
 
+    public static String getMessage(ResultCode resultCode,Object ...params){
+        messageSource = SpringUtil.getBean(MessageSource.class);
+        String message = messageSource.getMessage(resultCode.getI18nLabel(),null,LocaleContextHolder.getLocale());
+        message = String.format(message,params);
+        return message;
+    }
+
     public String getCode() {
         return code;
     }
