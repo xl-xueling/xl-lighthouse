@@ -2,6 +2,7 @@ import React from "react";
 import {Badge} from "@arco-design/web-react";
 import {
     ApproveStateEnum,
+    ChartTypeEnum,
     ComponentTypeEnum,
     LimitingStrategyEnum,
     OrderStateEnum,
@@ -14,14 +15,7 @@ import {
     StatStateEnum,
     UserStateEnum
 } from "@/types/insights-common";
-import {
-    PiCubeTransparentLight,
-    PiCubeTransparentThin,
-    PiDiamondsFour,
-    PiLinkSimple,
-    PiLockKeyOpenThin,
-    PiLockKeyThin
-} from "react-icons/pi";
+import {PiCubeTransparentLight, PiDiamondsFour, PiLinkSimple, PiLockKeyOpenThin, PiLockKeyThin} from "react-icons/pi";
 import {CiViewTable} from "react-icons/ci";
 import {IconCalendarClock, IconMindMapping, IconStar, IconStarFill, IconTag} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
@@ -127,7 +121,6 @@ export function getSystemComponentTypeDescription(t:any,value:ComponentTypeEnum)
         return t['basic.componentsType.system.filterSelect'];
     }
 }
-
 
 export function getOrderStateDescription(t:any,value:OrderStateEnum){
     if(value == OrderStateEnum.Processing){
@@ -308,3 +301,4 @@ export function getResourceTypeDescription(t:any,resourceType:ResourceTypeEnum){
         return t['basic.resourceType.domain'];
     }
 }
+
