@@ -17,18 +17,16 @@ package com.dtstep.lighthouse.insights.controller;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.constant.SysConst;
+import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.common.enums.LimitingStrategyEnum;
-import com.dtstep.lighthouse.common.modal.GroupExtendConfig;
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.*;
-import com.dtstep.lighthouse.common.modal.IDParam;
 import com.dtstep.lighthouse.insights.vo.GroupVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
-import com.dtstep.lighthouse.common.modal.Domain;
-import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.insights.service.DomainService;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.StatService;
@@ -55,6 +53,13 @@ public class GroupController {
 
     @Autowired
     private DomainService domainService;
+
+    @RequestMapping("/group/list")
+    public ResultData<ListData<GroupVO>> list(@Validated @RequestBody ListSearchObject<GroupQueryParam> searchObject) throws Exception{
+        GroupQueryParam queryParam = searchObject.getQueryParamOrDefault(new GroupQueryParam());
+        ListData<GroupVO> listData = groupService.queryList(queryParam,searchObject.getPagination().getPageNum(),searchObject.getPagination().getPageSize());
+        return ResultData.success(listData);
+    }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION,relationParam = "projectId")
     @RequestMapping("/group/create")
