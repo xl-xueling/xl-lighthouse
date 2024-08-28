@@ -94,6 +94,55 @@ public class DataServiceImpl implements DataService {
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public LinkedHashMap<String, String> dimensArrangementV2(StatExtEntity statExtEntity, LinkedHashMap<String,String[]> dimensParams) throws Exception {
+        String[] dimensArray = statExtEntity.getTemplateEntity().getDimensArray();
+        if(ArrayUtils.isEmpty(dimensArray)){
+            return null;
+        }
+        if(MapUtils.isEmpty(dimensParams)){
+            return null;
+        }
+        List<String> destSortedList = Arrays.asList(dimensArray);
+        List<String> originSortedList = new ArrayList<>();
+        for(String dimens : dimensParams.keySet()){
+            if(!dimens.contains(";")){
+                originSortedList.add(dimens);
+            }else{
+                String [] arr = dimens.split(";");
+                originSortedList.addAll(Arrays.asList(arr));
+            }
+        }
+        String[][] valuesArray = dimensParams.values().toArray(new String[0][0]);
+        List<String> unSortedList = arrangement(valuesArray);
+        LinkedHashMap<String,String> dimensMapperMap = new LinkedHashMap<>();
+        for (String item : unSortedList) {
+            String[] arr = item.split(";");
+            DimensEntity[] entity = new DimensEntity[arr.length];
+            for (int m = 0; m < arr.length; m++) {
+                DimensEntity pair = new DimensEntity(originSortedList.get(m), arr[m]);
+                entity[m] = pair;
+            }
+            List<DimensEntity> sortedList = Arrays.stream(entity).sorted(new CustomComparator(destSortedList)).collect(Collectors.toList());
+            List<String> dimensValueList = new ArrayList<>();
+            List<String> dimensDisplayValueList = new ArrayList<>();
+            for (DimensEntity dimensEntity : sortedList) {
+                String value = dimensEntity.getValue();
+                if (value.contains(",")) {
+                    String[] mapperArr = value.split(",");
+                    dimensValueList.add(mapperArr[0]);
+                    dimensDisplayValueList.add(mapperArr[1]);
+                } else {
+                    dimensValueList.add(value);
+                    dimensDisplayValueList.add(value);
+                }
+            }
+            String dimensValueStr = String.join(";", dimensValueList);
+            String dimensDisplayValueStr = String.join(";", dimensDisplayValueList);
+            dimensMapperMap.put(dimensValueStr, dimensDisplayValueStr);
+        }
+        return dimensMapperMap;
+    }
 
     private static class DimensEntity {
 
