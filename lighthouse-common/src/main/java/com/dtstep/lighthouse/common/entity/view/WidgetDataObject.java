@@ -4,12 +4,15 @@ import com.dtstep.lighthouse.common.modal.DebugParam;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class WidgetDataObject implements Serializable {
 
     private String widgetKey;
 
     private List<StatDataSeries> data;
+
+    private Map<String,List<StatDataSeries>> contrastData;
 
     private List<DebugParam> debugParams;
 
@@ -45,5 +48,13 @@ public class WidgetDataObject implements Serializable {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public Map<String, List<StatDataSeries>> getContrastData() {
+        return contrastData;
+    }
+
+    public void setContrastData(Map<String, List<StatDataSeries>> contrastData) {
+        this.contrastData = contrastData;
     }
 }
