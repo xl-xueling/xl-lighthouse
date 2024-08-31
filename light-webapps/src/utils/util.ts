@@ -130,3 +130,7 @@ export function deepCopyObject(originalObject) {
 export function windowRedirect(href){
     window.location.href = href;
 }
+
+export function isEmpty(str){
+    return str === undefined || str === null || str.trim() === '';
+}
