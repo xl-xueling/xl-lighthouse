@@ -22,7 +22,7 @@ export default function ProjectMenu({projectInfo,callback}:{projectInfo:Project,
             if (Array.isArray(item.children) && item.children.length > 0) {
                 return (
                     <Menu.SubMenu key={item.type + "_" + item.value} title={
-                        <span style={{display:"inline-flex",alignItems:"center"}}>{getTreeResourceIcon(item.type,level)}{item.label}</span>
+                        <span>{getTreeResourceIcon(item.type,level)}{item.label}</span>
                     }>
                         {renderMenuItems(item.children,level + 1)}
                     </Menu.SubMenu>

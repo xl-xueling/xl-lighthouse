@@ -22,6 +22,7 @@ import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
 import {VscGistSecret, VscOutput} from "react-icons/vsc";
 import {HiMiniBoltSlash} from "react-icons/hi2";
+import {TbBrandVisualStudio} from "react-icons/tb";
 
 export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
     if(value === StatStateEnum.PENDING){
@@ -246,11 +247,11 @@ export const getTreeResourceIcon= (type,level) => {
     }else if(type == 'project'){
         return <PiDiamondsFour style={{marginRight:'8px',position: 'relative', top: '2px'}}/>
     }else if(type == 'view'){
-        return <PiCubeTransparentLight size={15} style={{marginRight:'8px',position: 'relative', top: '2px'}}/>
+        return <TbBrandVisualStudio size={15} style={{marginRight:'8px',position: 'relative',top:'2px'}}/>
     }else if(type == 'dir' && level == 1){
-        return <RxCube style={{marginRight:'8px'}}/>
+        return <RxCube size={15} style={{marginRight:'8px',position: 'relative', top: '1px'}}/>
     } else if(type == 'dir' && level == 2){
-        return <IconMindMapping  style={{marginRight:'8px'}}/>
+        return <IconMindMapping  style={{marginRight:'8px',position: 'relative', top: '2px'}}/>
     }
 }
 

@@ -63,7 +63,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
         }else if(level == 1){
             return <RxCube style={{marginRight:'8px'}}/>
         }else if(level == 2){
-            return <IconMindMapping  style={{marginRight:'8px'}}/>
+            return <IconMindMapping style={{marginRight:'8px'}}/>
         }
     }
 
@@ -76,7 +76,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
             return (
                 <Tree.Node
                         draggable={item.type == 'stat'}
-                        icon={<span>{getTreeResourceIcon(item.type,level)}{item.type == 'stat' || item.type == 'view'?<IconDragDotVertical style={{marginRight:'10px'}} />:null}</span>}
+                        icon={<span style={{display:"inline-block",alignItems:"center",justifyContent:'center'}}>{getTreeResourceIcon(item.type,level)}{item.type == 'stat' || item.type == 'view'?<IconDragDotVertical style={{marginRight:'10px'}} />:null}</span>}
                         key={item.key}
                         title={item.label}
                      {...ret} dataRef={item}>
