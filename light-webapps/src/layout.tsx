@@ -36,6 +36,9 @@ import TrackStatPage from "@/pages/track";
 import Index from "@/pages/metricset/preview";
 import PopMenuBox from "@/pages/common/popmenu/PopMenu";
 import {arrayDistinct} from "@/utils/util";
+import {AiOutlineDashboard} from "react-icons/ai";
+import {TbBrandVisualStudio, TbCalendarTime} from "react-icons/tb";
+import {FiSettings} from "react-icons/fi";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -46,15 +49,15 @@ const Content = Layout.Content;
 function getIconFromKey(key) {
   switch (key) {
     case 'dashboard':
-      return <IconDashboard className={styles.icon}/>;
+      return <AiOutlineDashboard size={17} style={{marginRight: '15px',strokeWidth: '2px',opacity:0.9}} className={styles.icon}/>;
+    case 'view':
+      return <TbBrandVisualStudio size={17} style={{marginRight: '15px',strokeWidth: '2px',opacity:0.9}} className={styles.icon}/>;
     case 'list':
       return <IconList className={styles.icon}/>;
     case 'form':
       return <IconSettings className={styles.icon}/>;
     case 'profile':
       return <IconFile className={styles.icon}/>;
-    case 'visualization':
-      return <IconApps className={styles.icon}/>;
     case 'result':
       return <IconCheckCircle className={styles.icon}/>;
     case 'exception':
@@ -62,16 +65,15 @@ function getIconFromKey(key) {
     case 'user':
       return <IconUser className={styles.icon}/>;
     case 'system':
-      return <IconSettings className={styles.icon}/>;
+      return <FiSettings size={16} style={{marginRight: '15px',strokeWidth: '2px',opacity:0.9}} className={styles.icon}/>;
     case 'order':
-      return <IconCalendarClock className={styles.icon}/>;
+      return <TbCalendarTime size={16} style={{marginRight: '15px',strokeWidth: '2px',opacity:0.9}} className={styles.icon}/>;
     case 'stat':
       return <IconApps className={styles.icon}/>;
     case 'filter':
       return <IconList className={styles.icon}/>;
     case 'statistics':
-      //return <GoTasklist style={{marginRight:'16px'}} className={styles.icon}/>
-      return <PiDiamondsFour style={{marginRight: '16px'}} className={styles.icon}/>;
+      return <PiDiamondsFour size={17} style={{marginRight: '15px',strokeWidth: '2px',opacity:0.9}} className={styles.icon}/>;
     case 'favorites':
       return <IconCodepen className={styles.icon}/>
     default:
