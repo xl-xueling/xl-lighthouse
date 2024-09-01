@@ -42,6 +42,8 @@ import useStorage from '@/utils/useStorage';
 import { generatePermission } from '@/routes';
 import {removeLoginStatus} from "@/utils/checkLogin";
 import {requestPendCount} from "@/api/order";
+import { FaUser } from "react-icons/fa";
+
 
 function Navbar({ show }: { show: boolean }) {
   const t = useLocale();
@@ -146,7 +148,7 @@ function Navbar({ show }: { show: boolean }) {
         {/*</li>*/}
         <li>
           <Select
-            triggerElement={<IconButton icon={<IconLanguage />} />}
+            triggerElement={<IconButton icon={<IconLanguage style={{color:'var(--color-neutral-6)'}} />} />}
             options={[
               { label: '中文', value: 'zh-CN' },
               { label: 'English', value: 'en-US' },
@@ -169,7 +171,7 @@ function Navbar({ show }: { show: boolean }) {
           <Badge count={pendCount} dot offset={[2, -2]}>
             <IconButton onClick={() => handleClick('/order/approve/list')} icon={<IconCalendarClock
                 style={{
-                  color: '#888',
+                  color:'var(--color-neutral-6)',
                   fontSize: 18,
                   verticalAlign: -3,
                 }}
@@ -185,7 +187,7 @@ function Navbar({ show }: { show: boolean }) {
             }
           >
             <IconButton
-              icon={theme !== 'dark' ? <IconMoonFill /> : <IconSunFill />}
+              icon={theme !== 'dark' ? <IconMoonFill style={{color:'var(--color-neutral-6)'}} /> : <IconSunFill style={{color:'var(--color-neutral-6)'}} />}
               onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
             />
           </Tooltip>
@@ -194,9 +196,9 @@ function Navbar({ show }: { show: boolean }) {
         {userInfo && (
           <li>
             <Dropdown droplist={droplist} position="br" disabled={userLoading}>
-              <Avatar size={32} style={{ cursor: 'pointer',backgroundColor: 'rgb(123 187 221)'}}>
-                <IconUser/>
-              </Avatar>
+              <IconButton
+                  icon={<FaUser size={13} style={{color:'var(--color-neutral-6)'}}/>}
+              />
             </Dropdown>
           </li>
         )}
