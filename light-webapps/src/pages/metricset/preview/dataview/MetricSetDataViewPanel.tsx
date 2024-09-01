@@ -5,6 +5,7 @@ import StatPreviewPanel from "@/pages/stat/preview/preview";
 import MetricSetDataViewMenu from "@/pages/metricset/preview/dataview/MetricSetDataViewMenu";
 import {MetricSetPreviewContext} from "@/pages/common/context";
 import {ResourceTypeEnum} from "@/types/insights-common";
+import ErrorPage from "@/pages/common/error";
 
 const { Title } = Typography;
 const { Row, Col } = Grid;
@@ -43,8 +44,14 @@ export default function MetricSetDataViewPanel({parentLoading}) {
     const render = () => {
         if(selectedItem.resourceType == ResourceTypeEnum.Stat){
             return <StatPreviewPanel size={'small'} id={selectedItem.resourceId} specifyTitle={selectedItem.specifyTitle}/>
+        }else if(selectedItem.resourceType == ResourceTypeEnum.View){
+            if(PRO_ViewPreview == null){
+                return <ErrorPage errorCode={'403'} />
+            }else{
+                return PRO_ViewPreview(selectedItem.resourceId,selectedItem.specifyTitle);
+            }
         }else{
-            return PRO_ViewPreview(selectedItem.resourceId,selectedItem.specifyTitle);
+
         }
     }
 

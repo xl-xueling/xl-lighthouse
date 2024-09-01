@@ -17,7 +17,7 @@ export default function ErrorPage({errorCode}) {
     }
 
     return (
-        <div>
+        <div className={'disable-select'}>
             {getErrorPage()}
         </div>
     );
