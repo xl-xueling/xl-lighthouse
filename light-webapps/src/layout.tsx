@@ -67,7 +67,7 @@ function getIconFromKey(key) {
     case 'system':
       return <FiSettings size={16} style={{marginRight: '15px',strokeWidth: '2px',opacity:0.9}} className={styles.icon}/>;
     case 'order':
-      return <TbCalendarTime size={16} style={{marginRight: '15px',strokeWidth: '2px',opacity:0.9}} className={styles.icon}/>;
+      return <TbCalendarTime size={17} style={{marginRight: '15px',strokeWidth: '2px',opacity:0.9}} className={styles.icon}/>;
     case 'stat':
       return <IconApps className={styles.icon}/>;
     case 'filter':
