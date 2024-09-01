@@ -144,7 +144,6 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
                   {t['detailModal.label.order.info']}
               </Typography.Title>
               <Table size={"small"} rowKey="id" pagination={false} columns={orderColumns} data={listData} />
-
               <Typography.Title
                   style={{ marginTop: 30 }}
                   heading={6}>

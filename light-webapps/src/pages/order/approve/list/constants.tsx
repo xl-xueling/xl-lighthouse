@@ -1,12 +1,10 @@
 import React from 'react';
 import {Button, Typography, Space, Popconfirm, Message, Link, Badge} from '@arco-design/web-react';
 const { Text } = Typography;
-import { PiLinkSimple } from "react-icons/pi";
-import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
 import {OrderStateEnum, OrderTypeEnum, PermissionEnum} from "@/types/insights-common";
 import {getOrderStateDescription, getOrderTypeDescription} from "@/pages/common/desc/base";
-import {formatString, formatTimeStampBackUp, getRandomString} from "@/utils/util";
+import {formatString, formatTimeStampBackUp} from "@/utils/util";
 
 const getApproveDescription = (t: any, orderInfo) => {
     if(orderInfo.orderType == OrderTypeEnum.PROJECT_ACCESS){
@@ -15,7 +13,9 @@ const getApproveDescription = (t: any, orderInfo) => {
         return formatString(t['approveList.description.statAccess'],orderInfo?.extend?.title)
     } else if(orderInfo.orderType == OrderTypeEnum.METRIC_ACCESS){
         return formatString(t['approveList.description.metricAccess'],orderInfo?.extend?.title)
-    } else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS){
+    } else if(orderInfo.orderType == OrderTypeEnum.VIEW_ACCESS){
+        return formatString(t['approveList.description.viewAccess'],orderInfo?.extend?.title)
+    }else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS){
         return formatString(t['approveList.description.updateLimitingThreshold'],orderInfo?.extend?.token)
     } else if(orderInfo.orderType == OrderTypeEnum.USER_PEND_APPROVE){
         return formatString(t['approveList.description.userPendApprove'],orderInfo?.extend?.username)

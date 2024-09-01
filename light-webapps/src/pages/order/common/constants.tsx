@@ -8,7 +8,7 @@ import {Order} from "@/types/insights-web";
 import {
     getLimitingStrategyDescription,
     getOrderDetailStateDescription,
-    getOrderStateDescription
+    getOrderStateDescription, getOrderTypeDescription
 } from "@/pages/common/desc/base";
 const { Text } = Typography;
 
@@ -32,19 +32,7 @@ export function getOrderColumns(t: any) {
             title: t['detailModal.columns.type'],
             dataIndex: 'orderType',
             render: (value) => {
-                if(value == '1'){
-                    return <Text>{t['detailModal.columns.type.project.access']}</Text>;
-                }else if(value == '2'){
-                    return <Text>{t['detailModal.columns.type.stat.access']}</Text>;
-                }else if(value == '3'){
-                    return <Text>{t['detailModal.columns.type.metrics.access']}</Text>;
-                }else if(value == '4'){
-                    return <Text>{t['detailModal.columns.type.update.limiting.threshold']}</Text>;
-                }else if(value == '5'){
-                    return <Text>{t['detailModal.columns.type.stat.pend.approve']}</Text>;
-                }else if(value == '6'){
-                    return <Text>{t['detailModal.columns.type.user.pend.approve']}</Text>;
-                }
+                return getOrderTypeDescription(t,value);
             },
         },
         {

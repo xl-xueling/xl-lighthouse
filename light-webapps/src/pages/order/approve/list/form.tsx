@@ -45,6 +45,7 @@ function SearchForm(props: {
             form={form}
             className={styles['search-form']}
             labelAlign="left"
+            colon={' :'}
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 19 }}
         >
