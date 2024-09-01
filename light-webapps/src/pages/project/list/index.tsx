@@ -82,8 +82,8 @@ export default function Index() {
       <Grid.Row justify="space-between" align="center" style={{marginBottom:'15px'}}>
         <Grid.Col span={16} style={{ textAlign: 'left' }}>
           <Space>
-            <Radio.Group defaultValue={"0"} name='button-radio-group' onChange={handleChangeOwnerType}>
-              {[{value:"0",label:t['projectList.operations.all.projects']},{value:"1",label:t['projectList.operations.my.projects']}].map((item) => {
+            <Radio.Group defaultValue={"1"} name='button-radio-group' onChange={handleChangeOwnerType}>
+              {[{value:"1",label:t['projectList.operations.my.projects']},{value:"0",label:t['projectList.operations.all.projects']}].map((item) => {
                 return (
                     <Radio key={item.value} value={item.value}>
                       {({ checked }) => {

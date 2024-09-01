@@ -82,7 +82,7 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
             title={t['createMetricSet.modal.title']}
             visible={true}
             alignCenter={false}
-            style={{ width:'960px',maxWidth:'80%',verticalAlign:'top', marginTop: '100px' }}
+            style={{ width:'960px',maxWidth:'80%',verticalAlign:'top', top: '150px' }}
             confirmLoading={loading}
             onCancel={onClose}
             onOk={handlerSubmit}

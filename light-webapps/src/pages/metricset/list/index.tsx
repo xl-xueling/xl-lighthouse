@@ -37,7 +37,7 @@ export default function ListCard() {
     const [reloadTime,setReloadTime] = useState<number>(Date.now);
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
     const { Meta } = Card;
-    const [activeKey, setActiveKey] = useState('0');
+    const [activeKey, setActiveKey] = useState('1');
     const [formParams, setFormParams] = useState<any>({});
     const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo);
     const [pagination, setPagination] = useState<PaginationProps>({
@@ -153,8 +153,8 @@ export default function ListCard() {
                 style={{ width: '280px',paddingRight:'24px'}} allowClear={true} onSearch={handlerSearch}
               />
             }>
-              <Tabs.TabPane key={"0"} title={t['metricSetList.tab.title.all']} />
               <Tabs.TabPane key={"1"} title={t['metricSetList.tab.title.owner']} />
+              <Tabs.TabPane key={"0"} title={t['metricSetList.tab.title.all']} />
           </Tabs>
           <div className={styles.container}>
               <div>
