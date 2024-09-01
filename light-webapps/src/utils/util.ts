@@ -134,3 +134,12 @@ export function windowRedirect(href){
 export function isEmpty(str){
     return str === undefined || str === null || str.trim() === '';
 }
+
+export const arrayDistinct = (array:Array<string>):Array<string> => {
+    if(!array){
+        return [];
+    }
+    return array.filter((value, index, self) => {
+        return self.indexOf(value) === index;
+    });
+}

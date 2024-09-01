@@ -35,6 +35,7 @@ import StatPreviewPage from "@/pages/stat/preview";
 import TrackStatPage from "@/pages/track";
 import Index from "@/pages/metricset/preview";
 import PopMenuBox from "@/pages/common/popmenu/PopMenu";
+import {arrayDistinct} from "@/utils/util";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -197,7 +198,7 @@ function PageLayout() {
   function updateMenuStatus() {
     const pathKeys = pathname.split('/');
     let newSelectedKeys: string[] = [];
-    const newOpenKeys: string[] = [...openKeys];
+    let newOpenKeys: string[] = [...openKeys];
     while (pathKeys.length > 0) {
       const currentRouteKey = pathKeys.join('/');
       const menuKey = currentRouteKey.replace(/^\//, '');
@@ -209,19 +210,35 @@ function PageLayout() {
       pathKeys.pop();
     }
     if(pathname.startsWith('/metricset/preview/')){
-      newSelectedKeys = [...newSelectedKeys,"metricset/list"]
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"metricset/list"])
     }
     if(pathname.startsWith('/stat/preview/')){
-      newSelectedKeys = [...newSelectedKeys,"stat/list"]
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"stat/list"])
     }
     if(pathname.startsWith('/view/preview/')){
-      newSelectedKeys = [...newSelectedKeys,"view/list"]
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"view/list"])
     }
     if(pathname.startsWith('/project/preview/')){
-      newSelectedKeys = [...newSelectedKeys,"project/list"]
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"project/list"])
     }
     if(pathname.startsWith('/project/manage/')){
-      newSelectedKeys = [...newSelectedKeys,"project/list"]
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"project/list"])
+    }
+    if(pathname.startsWith('/department/manage')){
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"department/manage"])
+      newOpenKeys = arrayDistinct([...newOpenKeys,"system"]);
+    }
+    if(pathname.startsWith('/component/list')){
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"component/list"]);
+      newOpenKeys = arrayDistinct([...newOpenKeys,"system"]);
+    }
+    if(pathname.startsWith('/user/list')){
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"user/list"]);
+      newOpenKeys = arrayDistinct([...newOpenKeys,"system"]);
+    }
+    if(pathname.startsWith('/authorize')){
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"authorize"]);
+      newOpenKeys = arrayDistinct([...newOpenKeys,"system"]);
     }
     setSelectedKeys(newSelectedKeys);
     setOpenKeys(newOpenKeys);
