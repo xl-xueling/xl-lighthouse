@@ -6,7 +6,7 @@ import DepartmentLabel from "@/pages/department/common/depart";
 import {OrderStateEnum, RoleTypeEnum} from "@/types/insights-common";
 import {Order} from "@/types/insights-web";
 import {
-    getLimitingStrategyDescription,
+    getLimitingStrategyDescription, getOrderApproveRoleTypeDescription,
     getOrderDetailStateDescription,
     getOrderStateDescription, getOrderTypeDescription
 } from "@/pages/common/desc/base";
@@ -264,8 +264,6 @@ export function getLimitingSettingsColumns(t: any) {
     ];
 }
 
-
-
 export function getOrderDetailColumns(t: any,orderInfo:Order) {
     return [
         {
@@ -282,15 +280,7 @@ export function getOrderDetailColumns(t: any,orderInfo:Order) {
             title: t['detailModal.detail.columns.roleType'],
             dataIndex: 'roleType',
             render: (value,record) => {
-                if(value === RoleTypeEnum.FULL_MANAGE_PERMISSION){
-                    return t['detailModal.detail.columns.roleType.systemManager'];
-                }else if(value == RoleTypeEnum.DEPARTMENT_MANAGE_PERMISSION){
-                    return t['detailModal.detail.columns.roleType.departmentManager'];
-                }else if(value == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
-                    return t['detailModal.detail.columns.roleType.projectManager'];
-                }else if(value == RoleTypeEnum.OPT_MANAGE_PERMISSION){
-                    return t['detailModal.detail.columns.roleType.operateManager'];
-                }
+                return getOrderApproveRoleTypeDescription(t,value);
             },
         },
         {
