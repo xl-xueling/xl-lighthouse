@@ -166,3 +166,21 @@ export const countNodesByType = (list:Array<TreeNode>, targetType:string) => {
     return count;
 }
 
+
+export const countNodesByTypes = (list:Array<TreeNode>, targetTypes:Array<string>) => {
+    let count = 0;
+    function traverse(node) {
+        if (targetTypes.includes(node.type)) {
+            count++;
+        }
+        if (node.children && node.children.length > 0) {
+            for (const child of node.children) {
+                traverse(child);
+            }
+        }
+    }
+    for (const rootNode of list) {
+        traverse(rootNode);
+    }
+    return count;
+}

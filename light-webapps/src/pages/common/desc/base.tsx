@@ -263,7 +263,7 @@ export function getIcon(type:string,marginRight:string = null){
     }else if(type == 'stat'){
         return <IconTag style={{marginRight: marginRight}}/>
     }else if(type == 'view'){
-        return <PiCubeTransparentLight size={16} style={{marginRight: marginRight}}/>
+        return <TbBrandVisualStudio size={16} style={{marginRight: marginRight}}/>
     }else if(type == 'metric'){
         return <LuLayers style={{marginRight: marginRight}}/>
     }else if(type == 'permission'){

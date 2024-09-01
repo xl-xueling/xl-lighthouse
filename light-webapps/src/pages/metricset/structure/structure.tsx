@@ -9,7 +9,7 @@ import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
 import {MetricSetStructureContext} from "@/pages/common/context";
 import {TreeNode} from "@/types/insights-web";
-import {countNodesByType} from "@/pages/department/base";
+import {countNodesByType, countNodesByTypes} from "@/pages/department/base";
 import {getTreeResourceIcon} from "@/pages/common/desc/base";
 import {MetricSetPreviewContext} from "@/pages/common/context";
 
@@ -75,7 +75,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
             item.parentKey = parentKey;
             return (
                 <Tree.Node
-                        draggable={item.type == 'stat'}
+                        draggable={item.type == 'stat' || item.type == 'view'}
                         icon={<span style={{display:"inline-block",alignItems:"center",justifyContent:'center'}}>{getTreeResourceIcon(item.type,level)}{item.type == 'stat' || item.type == 'view'?<IconDragDotVertical style={{marginRight:'10px'}} />:null}</span>}
                         key={item.key}
                         title={item.label}
@@ -126,6 +126,8 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                     const array = key.split("_");
                     if(array[0] == 'stat'){
                         menuCallback("clickStatMenu",array[1]);
+                    }else if(array[0] == 'view'){
+                        menuCallback("clickViewMenu",array[1]);
                     }
                 }}
                 onCheck={(keys, extra) => {
@@ -142,7 +144,7 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                         destPid = treeRef.current.getCacheNode([dropNode.props._key])[0].props.dataRef.pid;
                     }
                     const destRef = treeRef.current.getCacheNode([destPid])[0].props.dataRef;
-                    if(destRef.type == 'stat'){
+                    if(destRef.type == 'stat' || destRef.type == 'view'){
                         Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.unable.moveToIndicatorNode']});
                         return;
                     }
@@ -296,13 +298,15 @@ const StructurePanel =  React.forwardRef((props:{menuCallback},ref) => {
                                         const dataChildren = node.dataRef.children || [];
                                         if (dataChildren.length > 0) {
                                             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.deleteHashChild']});
-                                        } else if(node.dataRef.type == 'stat' && countNodesByType(treeData,'stat') <= 1){
+                                        } else if(node.dataRef.type == 'stat' && countNodesByTypes(treeData,['stat','view']) <= 1){
+                                            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.requireAtLeastOneNode']});
+                                        } else if(node.dataRef.type == 'view' && countNodesByTypes(treeData,['stat','view']) <= 1){
                                             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['structure.warning.requireAtLeastOneNode']});
                                         }else {
-                                            const w = deleteNodeByKey([...treeData], node.dataRef.id)
-                                            setTreeData([...w]);
-                                        }
-                                    }}
+                                                const w = deleteNodeByKey([...treeData], node.dataRef.id)
+                                                setTreeData([...w]);
+                                            }
+                                        }}
                                 >
                                     <IconMinus
                                         style={{
