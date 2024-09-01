@@ -11,6 +11,8 @@ export const MonthFormat = 'YYYY-MM';
 
 export const YearFormat = 'YYYY';
 
+export const TimeFormat = 'MM-DD HH:mm:ss';
+
 export function getSystemTimeZone() : string {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }

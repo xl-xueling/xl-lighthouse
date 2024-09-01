@@ -26,7 +26,7 @@ import {useParams} from "react-router-dom";
 import {getDataWithLocalCache} from "@/utils/localCache";
 import ChartPanel from "@/pages/stat/preview/chart_panel";
 import {formatString} from "@/utils/util";
-import {DateTimeFormat, formatTimeStamp, getDateFormat} from "@/utils/date";
+import {DateTimeFormat, formatTimeStamp, getDateFormat, TimeFormat} from "@/utils/date";
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function TrackStatPage() {
@@ -105,7 +105,7 @@ export default function TrackStatPage() {
                             key: key,
                             render: (value,record) => {
                                 if(key == 'batchTime' || key == 'processTime' || key == 'messageTime'){
-                                    return <Text>{formatTimeStamp(value,DateTimeFormat)}</Text>
+                                    return <Text>{formatTimeStamp(value,TimeFormat)}</Text>
                                 }else if(key == 'No'){
                                     return (
                                         <Popover
