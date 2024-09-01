@@ -58,7 +58,7 @@ const EditTableV2 = React.forwardRef( (props:{columns,initData}, ref) => {
     return (
         <div className={styles["edit_panel"]}>
             <Table size={"mini"}
-                   className={"edit_table_panel_v2"}
+                   className={["edit_table_panel_v2","tableCellArcoSelect"]}
                    style={{minHeight:'200px'}}
                    data={targetData}
                    components={{

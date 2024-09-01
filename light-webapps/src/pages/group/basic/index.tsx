@@ -98,7 +98,7 @@ export default function GroupBasicPanel({groupInfo}) {
                                             </Typography.Title>
                                         </Grid.Col>
                                     </Grid.Row>
-                                    <Table pagination={false} size={"mini"} columns={columnsProps} data={columnsData}  border={true} />
+                                    <Table className={['tableCellArcoSelect']} pagination={false} size={"mini"} columns={columnsProps} data={columnsData}  border={true} />
                                     {/*<EditTable ref={editTableRef} columnsProps={columnsProps} columnsData={columnsData}/>*/}
                                 </Form.Item>
                                 <Typography.Title
