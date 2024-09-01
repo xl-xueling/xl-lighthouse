@@ -43,6 +43,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
                 form={form}
                 className={styles['search-form']}
                 labelAlign="left"
+                colon={' :'}
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 19 }}
             >
