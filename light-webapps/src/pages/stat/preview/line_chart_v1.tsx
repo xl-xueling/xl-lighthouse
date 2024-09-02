@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
-import {getEmptyOption, getErrorOption, getLineErrorOption, getLoadingOption} from "@/pages/stat/preview/common";
 import {getRandomString, stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
 import Decimal from 'decimal.js';

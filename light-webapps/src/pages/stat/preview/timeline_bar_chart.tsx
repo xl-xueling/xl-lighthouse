@@ -1,14 +1,13 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
-import {getEmptyOption, getErrorOption, getLineErrorOption, getLoadingOption} from "@/pages/stat/preview/common";
 import {stringifyObj} from "@/utils/util";
 import * as echarts from "echarts";
 import useStorage from "@/utils/useStorage";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/preview/locale";
 import {GlobalContext} from "@/context";
-import {getEchartsEmptyOption, getEchartsLoadingOption} from "@/components/Chart/lib";
+import {getEchartsEmptyOption, getEchartsErrorOption, getEchartsLoadingOption} from "@/components/Chart/lib";
 import dark1Theme from "@/components/Chart/themes/dark1-theme.json"
 import light1Theme from "@/components/Chart/themes/light1-theme.json"
 
@@ -167,7 +166,7 @@ export default function TimeLineBarPanel({compId = 0,data = null,errorMessage = 
         }else{
             const chart = chartRef.current.getEchartsInstance();
             chart.clear();
-            const errorOption = getErrorOption(theme,errorMessage);
+            const errorOption = getEchartsErrorOption(theme,errorMessage);
             chart.setOption(errorOption);
         }
     },[JSON.stringify(data),errorMessage])

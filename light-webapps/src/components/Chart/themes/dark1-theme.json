@@ -32,7 +32,7 @@
     "smooth": false,
     "animation": true,
     "animationEasing": "quadraticInOut",
-    "animationDurationUpdate":1000
+    "animationDurationUpdate": 1000
   },
   "radar": {
     "itemStyle": {
@@ -330,7 +330,7 @@
     }
   },
   "legend": {
-    "inactiveColor":"#454141",
+    "inactiveColor": "#454141",
     "textStyle": {
       "color": "white",
       "fontSize": 13
@@ -357,13 +357,13 @@
       "color": "#ccc",
       "borderWidth": 1
     },
-    "controlStyle":{
-      "showPlayBtn":false,
-      "showPrevBtn":true,
-      "showNextBtn":true,
-      "itemGap":20,
-      "prevBtnSize":10,
-      "nextBtnSize":10
+    "controlStyle": {
+      "showPlayBtn": false,
+      "showPrevBtn": true,
+      "showNextBtn": true,
+      "itemGap": 20,
+      "prevBtnSize": 10,
+      "nextBtnSize": 10
     },
     "progress": {
       "label": {
@@ -371,7 +371,7 @@
       }
     },
     "symbolSize": 8,
-    "symbol":"emptyCircle",
+    "symbol": "emptyCircle",
     "label": {
       "color": "#5f5d5d"
     },
