@@ -100,11 +100,11 @@ function Navbar({ show }: { show: boolean }) {
   if (!show) {
     return (
       <div className={styles['fixed-settings']}>
-        <Settings
-          trigger={
-            <Button icon={<IconSettings />} type="primary" size="large" />
-          }
-        />
+        {/*<Settings*/}
+        {/*  trigger={*/}
+        {/*    <Button icon={<IconSettings />} type="primary" size="large" />*/}
+        {/*  }*/}
+        {/*/>*/}
       </div>
     );
   }
