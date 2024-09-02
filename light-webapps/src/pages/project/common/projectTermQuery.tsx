@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {
     Form,
     Message,
@@ -10,14 +10,14 @@ import debounce from 'lodash/debounce';
 import {requestList, requestTermList} from "@/api/project";
 import useLocale from "@/utils/useLocale";
 
-const ProjectTermQuery = ({formRef = null,initValues = null,completeCallBack=null}) => {
+const ProjectTermQuery = React.forwardRef(( props:{},ref) => {
 
     const [selectedValues, setSelectedValues] = useState([]);
     const [options, setOptions] = useState([]);
     const [values, setValues] = useState([]);
     const [fetching, setFetching] = useState(false);
     const refFetchId = useRef(null);
-
+    const selectRef = useRef();
     const debouncedFetchProject = useCallback(
         debounce((inputValue) => {
             refFetchId.current = Date.now();
@@ -47,12 +47,27 @@ const ProjectTermQuery = ({formRef = null,initValues = null,completeCallBack=nul
         []
     );
 
+    const handlerChange = (v) => {
+        setSelectedValues(v);
+    }
+
+    useImperativeHandle(ref, () => ({
+        getValue: () => {
+            return selectedValues.length == 0 ? null : selectedValues;
+        },
+        reset: () => {
+            setSelectedValues([]);
+        }
+    }));
+
 
     return (
         <Select
+            ref={selectRef}
             showSearch
             mode='multiple'
             bordered={true}
+            value={selectedValues}
             options={options}
             placeholder='Search Project'
             filterOption={false}
@@ -70,8 +85,9 @@ const ProjectTermQuery = ({formRef = null,initValues = null,completeCallBack=nul
                 ) : null
             }
             onSearch={debouncedFetchProject}
+            onChange={handlerChange}
         />
     );
-}
+})
 
 export default ProjectTermQuery;

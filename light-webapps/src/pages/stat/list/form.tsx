@@ -23,15 +23,20 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
     const t = useLocale(locale);
     const { lang } = useContext(GlobalContext);
     const [form] = useForm();
+    const formRef = useRef();
+    const projectTermQueryRef = useRef();
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
 
     const handleSubmit = () => {
-        const values = form.getFieldsValue();
-        props.onSearch(values);
+        let formValues = form.getFieldsValue();
+        const projectIds = projectTermQueryRef.current.getValue();
+        formValues = {...formValues,projectIds:projectIds};
+        props.onSearch(formValues);
     };
 
     const handleReset = () => {
         form.resetFields();
+        projectTermQueryRef.current.reset();
         props.onSearch({});
     };
 
@@ -41,6 +46,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
         <div className={styles['search-form-wrapper']}>
             <Form
                 form={form}
+                ref={formRef}
                 className={styles['search-form']}
                 labelAlign="left"
                 colon={' :'}
@@ -79,8 +85,8 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
                         </Form.Item>
                     </Col>
                     <Col span={colSpan}>
-                        <Form.Item label={t['statList.table.columns.project']} field="project">
-                            <ProjectTermQuery />
+                        <Form.Item label={t['statList.table.columns.project']} field="projectIds">
+                            <ProjectTermQuery ref={projectTermQueryRef} />
                         </Form.Item>
                     </Col>
                 </Row>
