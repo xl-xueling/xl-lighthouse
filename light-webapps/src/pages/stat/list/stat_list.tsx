@@ -6,22 +6,15 @@ import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import useLocale from '@/utils/useLocale';
 import {useSelector} from "react-redux";
 import locale from './locale';
-import {Department, Stat, TreeNode} from "@/types/insights-web";
+import {Stat, TreeNode} from "@/types/insights-web";
 import {requestChangeState, requestDeleteById, requestList} from "@/api/stat";
 import {getBindColumns, getColumns, getColumnsOfManage} from "@/pages/stat/list/constants";
-import Detail from "@/pages/stat/list/detail";
 import StatUpdateModal from "@/pages/stat/update";
-import {getRandomString} from "@/utils/util";
-import {GlobalErrorCodes} from "@/utils/constants";
-import StatDetailModal from "@/pages/stat/list/detail";
 import {ResourceTypeEnum, StatStateEnum} from "@/types/insights-common";
 import {requestBinded} from "@/api/metricset";
 import {MetricSetBindListContext} from "@/pages/common/context";
-import ProjectApplyModal from "@/pages/project/apply";
 import StatApplyModal from "@/pages/stat/apply";
 import {GroupManageContext} from "@/pages/common/context";
-import {Simulate} from "react-dom/test-utils";
-import {Props} from "@/pages/project/list/ProjectListPanel";
 
 interface Props {
     formParams?:any,
