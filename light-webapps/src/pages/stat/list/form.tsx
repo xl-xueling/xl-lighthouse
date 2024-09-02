@@ -61,6 +61,8 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
                             <TreeSelect
                                 placeholder={"Please Select"}
                                 multiple={true}
+                                treeCheckable={true}
+                                treeCheckStrictly={true}
                                 treeProps={{
                                     height: 200,
                                     renderTitle: (props) => {

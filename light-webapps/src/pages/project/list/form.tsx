@@ -58,6 +58,8 @@ function SearchForm({onSearch, form,onClear, allDepartInfo}) {
                   ref={treeRef}
                   placeholder={"Please select"}
                   multiple={true}
+                  treeCheckable={true}
+                  treeCheckStrictly={true}
                   treeProps={{
                     height: 200,
                     renderTitle: (props) => {
