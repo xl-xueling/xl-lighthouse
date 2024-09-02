@@ -262,7 +262,9 @@ export default function TrackStatPage() {
                                 <Form.Item field={"notifyArea"}>
                                     <TextArea
                                         readOnly={true}
-                                        style={{ width: '100%',height:'280px',fontSize:'13px',backgroundColor:'#373434',color:'white' }}
+                                        autoFocus={false}
+                                        autoSize={false}
+                                        style={{ width: '100%',height:'280px',resize:"none",border:'none',fontSize:'13px',backgroundColor:'#232324',color:'white' }}
                                     />
                                 </Form.Item>
                             </Form>

@@ -217,6 +217,9 @@ function PageLayout() {
     if(pathname.startsWith('/stat/preview/')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"stat/list"])
     }
+    if(pathname.startsWith('/track/stat/')){
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"stat/list"])
+    }
     if(pathname.startsWith('/view/preview/')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"view/list"])
     }
