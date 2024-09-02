@@ -38,7 +38,7 @@ export interface Props {
     extend?:any,
 }
 
-export default function ProjectListPanel({formParams = {}, owner=0,parentLoading = false,extend = null,from = null}:Props) {
+export default function ProjectListPanel({formParams = {}, owner=1,parentLoading = false,extend = null,from = null}:Props) {
     const t = useLocale(locale);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const [listData, setListData] = useState<Project[]>([]);
@@ -208,7 +208,17 @@ export default function ProjectListPanel({formParams = {}, owner=0,parentLoading
 
     useEffect(() => {
         fetchData().then();
-    }, [reloadTime,owner,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+    }, [reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+
+    useEffect(() => {
+        setPagination({
+            ...pagination,
+            current : 1
+        });
+        setTimeout(() => {
+            setReloadTime(Date.now);
+        },0)
+    },[owner])
 
     const fetchData = async (): Promise<void> => {
         setLoading(true);

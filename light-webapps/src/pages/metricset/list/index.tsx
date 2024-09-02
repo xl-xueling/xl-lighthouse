@@ -106,7 +106,17 @@ export default function ListCard() {
 
     useEffect(() => {
         fetchData().then();
-    }, [reloadTime,activeKey,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+    }, [reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+
+    useEffect(() => {
+        setPagination({
+            ...pagination,
+            current : 1
+        });
+        setTimeout(() => {
+            setReloadTime(Date.now);
+        },0)
+    },[activeKey])
 
   const handleShowCreatePanel = () => {
       setShowCreatePanel(true);
