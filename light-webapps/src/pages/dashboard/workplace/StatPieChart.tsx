@@ -15,12 +15,16 @@ import {formatString, getRandomString} from "@/utils/util";
 import {HomePageContext} from "@/pages/common/context";
 import styles from "@/pages/dashboard/workplace/style/overview.module.less";
 // import 'default-passive-events'
+import dark1Theme from "@/components/Chart/themes/dark1-theme.json"
+import light1Theme from "@/components/Chart/themes/light1-theme.json"
+import {GlobalContext} from "@/context";
 
 export default function StatPieChart() {
 
     const { homeData, statInfo } = useContext(HomePageContext);
     const [chartData,setChartData] = useState(null);
     const t = useLocale(locale);
+    const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
 
     const option = {
         tooltip: {
@@ -58,7 +62,7 @@ export default function StatPieChart() {
 
     return (
         <div style={{height:'240px'}}>
-            {chartData && <ReactECharts option={option} style={chartStyle } />}
+            {chartData && <ReactECharts theme={theme == 'dark' ? dark1Theme : light1Theme} option={option} style={chartStyle } />}
         </div>
     );
 }

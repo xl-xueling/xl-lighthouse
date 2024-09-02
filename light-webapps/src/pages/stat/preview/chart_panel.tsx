@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {Stat, StatData, EChartChartValue, StatValue} from "@/types/insights-web";
 import {Notification, Space} from "@arco-design/web-react";
@@ -14,6 +14,9 @@ import {
 import {requestStatData} from "@/api/data";
 import {getEmptyOption, getLoadingOption} from "@/pages/stat/preview/common";
 import useStorage from "@/utils/useStorage";
+import {GlobalContext} from "@/context";
+import dark1Theme from "@/components/Chart/themes/dark1-theme.json"
+import light1Theme from "@/components/Chart/themes/light1-theme.json"
 
 export default function ChartPanel({size = 'default',searchForm = null,statInfo,parentLoading = false,ref=null}) {
     const t = useLocale(locale);
@@ -24,7 +27,8 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
     const [loadingOption, setLoadingOption] = useState({});
     const chartRef = ref == null ? useRef(null) : ref;
     const [emptyOption,setEmptyOption] = useState({});
-    const [theme, setTheme] = useStorage('arco-theme', 'light');
+
+    const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
 
     const loadData = (data:Array<StatData>) => {
         const eChartChartValues:Array<EChartChartValue> = [];
@@ -188,13 +192,13 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts ref={chartRef} option={getOption()} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
+            return <ReactECharts ref={chartRef} option={getOption()} theme={theme == 'dark' ? dark1Theme : light1Theme}  style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts ref={chartRef} option={getOption()} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
+            return <ReactECharts ref={chartRef} option={getOption()} theme={theme == 'dark' ? dark1Theme : light1Theme} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts ref={chartRef} option={getOption()} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
+            return <ReactECharts ref={chartRef} option={getOption()} theme={theme == 'dark' ? dark1Theme : light1Theme} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }
     }
