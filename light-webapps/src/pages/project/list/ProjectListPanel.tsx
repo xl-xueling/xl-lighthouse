@@ -27,6 +27,7 @@ import {requestBinded} from "@/api/metricset";
 import {MetricSetBindListContext} from "@/pages/common/context";
 import {updateStoreStaredProjectInfo} from "@/store";
 import {convertDateToTimestamp, DateFormat, getDayEndTimestamp, getDayStartTimestamp} from "@/utils/date";
+import {useUpdateEffect} from "ahooks";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -210,7 +211,7 @@ export default function ProjectListPanel({formParams = {}, owner=1,parentLoading
         fetchData().then();
     }, [reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
-    useEffect(() => {
+    useUpdateEffect(() => {
         setPagination({
             ...pagination,
             current : 1

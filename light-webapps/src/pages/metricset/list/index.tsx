@@ -110,7 +110,6 @@ export default function ListCard() {
     }, [reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
     useUpdateEffect(() => {
-        console.log("--activeKey:" + activeKey)
         setPagination({
             ...pagination,
             current : 1
