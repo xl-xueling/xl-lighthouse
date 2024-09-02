@@ -83,7 +83,7 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
             title= {t['projectUpdate.form.title']}
             visible={true}
             alignCenter={false}
-            style={{ width:'960px',maxWidth:'80%',verticalAlign:'top', marginTop: '100px' }}
+            style={{ width:'960px',maxWidth:'80%',verticalAlign:'top', top: '150px' }}
             onOk={handlerSubmit}
             confirmLoading={loading}
             onCancel={onClose}>
