@@ -106,7 +106,7 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
                                 }
                                 cb(null);
                             }
-                            , validateTrigger : ['onBlur']
+                            , validateTrigger : ['onSubmit']
                         }]}>
                         <Input placeholder='Please enter project name' autoFocus={false} />
                     </Form.Item>
