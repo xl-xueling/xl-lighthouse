@@ -10,6 +10,15 @@ export default function BindedStatisticListPanel({metricSetInfo,onClose = null})
         setFormParams({search});
     }
 
+    const pagination = {
+        sizeOptions: [15],
+        sizeCanChange: false,
+        showTotal: true,
+        pageSize: 15,
+        current: 1,
+        pageSizeChangeResetCurrent: true,
+    };
+
     return (
         <>
         <Form
@@ -19,7 +28,7 @@ export default function BindedStatisticListPanel({metricSetInfo,onClose = null})
                 <Input.Search size={"small"} style={{width:'320px'}} allowClear={true} onSearch={handlerSearch}/>
             </Form.Item>
         </Form>
-        <StatisticalListPanel formParams={formParams} from={'bind'} extend={metricSetInfo}/>
+        <StatisticalListPanel formParams={formParams} from={'bind'} extend={metricSetInfo} defaultPagination={pagination}/>
         </>
     );
 }

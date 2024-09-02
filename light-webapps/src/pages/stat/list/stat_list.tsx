@@ -21,9 +21,30 @@ import ProjectApplyModal from "@/pages/project/apply";
 import StatApplyModal from "@/pages/stat/apply";
 import {GroupManageContext} from "@/pages/common/context";
 import {Simulate} from "react-dom/test-utils";
-import keyDown = Simulate.keyDown;
+import {Props} from "@/pages/project/list/ProjectListPanel";
 
-export default function StatisticalListPanel({formParams = {},from = null,parentLoading=false,extend=null}) {
+interface Props {
+    formParams?:any,
+    from?:string,
+    parentLoading?:boolean,
+    extend?:any,
+    defaultPagination?:PaginationProps,
+}
+
+const StatisticalListPanel:React.FC<Props> = ({
+                                              formParams= {},
+                                              from= null,
+                                              parentLoading = false,
+                                              extend = null,
+                                              defaultPagination= {
+                                                  sizeOptions: [15,20,30,50],
+                                                  sizeCanChange: true,
+                                                  showTotal: true,
+                                                  pageSize: 15,
+                                                  current: 1,
+                                                  pageSizeChangeResetCurrent: true,
+                                              }
+                                          }) => {
     const t = useLocale(locale);
     const [loading,setLoading] = useState<boolean>(false);
     const [listData,setListData] = useState<Array<Stat>>([]);
@@ -37,6 +58,7 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
     const [refreshTime,setRefreshTime] = useState<number>(null);
     const { handleMetricBindListReloadCallback } = useContext(MetricSetBindListContext) || {};
     const handlerStatDeleteCallback = useContext(GroupManageContext);
+    const [pagination, setPagination] = useState<PaginationProps>(defaultPagination);
 
     const tableCallback = async (record, type) => {
         if(type == 'showUpdateModal'){
@@ -139,15 +161,6 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
 
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const columns = useMemo(() => handleGetColumns(), [t,from,listData,bindList]);
-    const [pagination, setPagination] = useState<PaginationProps>({
-        sizeOptions: [15,20,30,50],
-        sizeCanChange: true,
-        showTotal: true,
-        pageSize: 15,
-        current: 1,
-        pageSizeChangeResetCurrent: true,
-    });
-
 
     function onChangeTable({ current, pageSize }) {
         setPagination({
@@ -217,4 +230,6 @@ export default function StatisticalListPanel({formParams = {},from = null,parent
             {applyVisible && <StatApplyModal statInfo={selectedStat} onClose={() => setApplyVisible(false)}/>}
         </>
         );
-}
+};
+
+export default StatisticalListPanel;

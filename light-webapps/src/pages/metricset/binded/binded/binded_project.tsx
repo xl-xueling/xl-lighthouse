@@ -11,6 +11,15 @@ export default function BindedProjectListPanel({metricSetInfo}) {
         setFormParams({search});
     }
 
+    const pagination = {
+        sizeOptions: [15],
+        sizeCanChange: false,
+        showTotal: true,
+        pageSize: 15,
+        current: 1,
+        pageSizeChangeResetCurrent: true,
+    };
+
     return (
         <>
         <Form
@@ -20,7 +29,7 @@ export default function BindedProjectListPanel({metricSetInfo}) {
                 <Input.Search size={"small"} style={{width:'320px'}} allowClear={true} onSearch={handlerSearch}/>
             </Form.Item>
         </Form>
-            <ProjectListPanel formParams={formParams} from={'bind'} extend={metricSetInfo}/>
+            <ProjectListPanel formParams={formParams} from={'bind'} extend={metricSetInfo} defaultPagination={pagination}/>
         </>
     );
 }

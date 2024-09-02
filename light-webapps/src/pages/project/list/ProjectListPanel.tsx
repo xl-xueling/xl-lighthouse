@@ -37,9 +37,24 @@ export interface Props {
     from?:string,
     parentLoading?:boolean,
     extend?:any,
+    defaultPagination?:PaginationProps,
 }
 
-export default function ProjectListPanel({formParams = {}, owner=1,parentLoading = false,extend = null,from = null}:Props) {
+const ProjectListPanel:React.FC<Props> = ({
+                                              formParams= {},
+                                              owner = 1,
+                                              parentLoading = false,
+                                              extend = null,
+                                              from= null,
+                                              defaultPagination= {
+                                                  sizeOptions: [15,20,30,50],
+                                                  sizeCanChange: true,
+                                                  showTotal: true,
+                                                  pageSize: 15,
+                                                  current: 1,
+                                                  pageSizeChangeResetCurrent: true,
+                                              }
+}) => {
     const t = useLocale(locale);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const [listData, setListData] = useState<Project[]>([]);
@@ -56,6 +71,8 @@ export default function ProjectListPanel({formParams = {}, owner=1,parentLoading
     const {handleMetricBindListReloadCallback} = useContext(MetricSetBindListContext) || {};
     const [reloadTime,setReloadTime] = useState<number>(Date.now());
     const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo || []);
+    const [pagination, setPagination] = useState<PaginationProps>(defaultPagination);
+
     const tableCallback = async (record, type) => {
         if(type == 'update'){
             setSelectedProject(record);
@@ -171,14 +188,6 @@ export default function ProjectListPanel({formParams = {}, owner=1,parentLoading
     }
 
     const columns = useMemo(() => handleGetColumns(), [t,bindList,staredProjectInfo,listData]);
-    const [pagination, setPagination] = useState<PaginationProps>({
-        sizeOptions: [15,20,30,50],
-        sizeCanChange: true,
-        showTotal: true,
-        pageSize: 15,
-        current: 1,
-        pageSizeChangeResetCurrent: true,
-    });
 
     const [loading, setLoading] = useState(true);
 
@@ -272,5 +281,6 @@ export default function ProjectListPanel({formParams = {}, owner=1,parentLoading
             {applyVisible && <ProjectApplyModal projectInfo={selectedProject} onClose={() => setApplyVisible(false)}/>}
         </>
     );
-
 }
+
+export default ProjectListPanel;
