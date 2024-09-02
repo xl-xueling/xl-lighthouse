@@ -345,11 +345,16 @@
       "color": "#a4b1d7",
       "borderWidth": 1
     },
-    "controlStyle": {
-      "color": "#a4b1d7",
-      "borderColor": "#a4b1d7",
-      "borderWidth": 1
+    "controlStyle":{
+      "showPlayBtn":false,
+      "showPrevBtn":true,
+      "showNextBtn":true,
+      "itemGap":20,
+      "prevBtnSize":10,
+      "nextBtnSize":10
     },
+    "symbolSize": 8,
+    "symbol":"emptyCircle",
     "checkpointStyle": {
       "color": "#316bf3",
       "borderColor": "#ffffff"

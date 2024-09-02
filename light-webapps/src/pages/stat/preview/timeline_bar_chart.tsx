@@ -96,27 +96,11 @@ export default function TimeLineBarPanel({compId = 0,data = null,errorMessage = 
                 label: {
                     formatter: '{value}'
                 },
-                controlStyle:{
-                    showPlayBtn:false,
-                    showPrevBtn:true,
-                    showNextBtn:true,
-                    itemGap:20,
-                    prevBtnSize:10,
-                    nextBtnSize:10,
-                },
-                checkpointStyle: {
-                    symbol: 'circle',
-                    symbolSize: 15,
-                    normal: {
-                        color: 'lightgray',
-                        show: true,
-                    },
-                },
-                symbolSize: 8,
-                symbol:'emptyCircle',
-                lineStyle: {
-                    width: 2,
-                },
+                // symbolSize: 8,
+                // symbol:'emptyCircle',
+                // lineStyle: {
+                //     width: 2,
+                // },
             },
             xAxis: {
                 type: 'category',

@@ -351,32 +351,33 @@
   "timeline": {
     "lineStyle": {
       "color": "#293c55",
-      "width": 1
+      "width": 2
     },
     "itemStyle": {
-      "color": "#27727b",
+      "color": "#ccc",
       "borderWidth": 1
     },
-    "controlStyle": {
-      "color": "#27727b",
-      "borderColor": "#27727b",
-      "borderWidth": 0.5
+    "controlStyle":{
+      "showPlayBtn":false,
+      "showPrevBtn":true,
+      "showNextBtn":true,
+      "itemGap":20,
+      "prevBtnSize":10,
+      "nextBtnSize":10
     },
-    "checkpointStyle": {
-      "color": "#c1232b",
-      "borderColor": "#c23531"
+    "progress": {
+      "label": {
+        "color": "#ccc"
+      }
     },
+    "symbolSize": 8,
+    "symbol":"emptyCircle",
     "label": {
-      "color": "#293c55"
+      "color": "#5f5d5d"
     },
     "emphasis": {
       "itemStyle": {
         "color": "#72d4e0"
-      },
-      "controlStyle": {
-        "color": "#27727b",
-        "borderColor": "#27727b",
-        "borderWidth": 0.5
       },
       "label": {
         "color": "#293c55"
