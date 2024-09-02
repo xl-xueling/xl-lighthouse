@@ -51,7 +51,6 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
     const refs = useRef<any[]>([]);
     const refFetchId = useRef<any>(null);
     const formRef = useRef(null);
-    const { setLang, lang, theme, setTheme } = useContext(GlobalContext)
 
     const tableCallback = async (type,data) => {
         if(type == 'showFilterConfigModal'){
@@ -194,7 +193,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                             }
                         </Grid.Row>
                     }>
-                        <StatBasicLineChart theme={theme} size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
+                        <StatBasicLineChart size={'mini'} data={statChartData} stateIndex={z.functionIndex} errorMessage={statChartErrorMessage} loading={loading?false:statChartLoading} group={'sameGroup'}/>
                     </Card>
                 </Col>
             )

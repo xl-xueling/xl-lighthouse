@@ -23,8 +23,8 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
     const t = useLocale(locale);
     const { lang } = useContext(GlobalContext);
     const [form] = useForm();
-    const formRef = useRef();
-    const projectTermQueryRef = useRef();
+    const formRef = useRef(null);
+    const projectTermQueryRef = useRef(null);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
 
     const handleSubmit = () => {

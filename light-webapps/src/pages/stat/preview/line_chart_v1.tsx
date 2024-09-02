@@ -1,10 +1,6 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
-import {getRandomString, stringifyObj} from "@/utils/util";
-import * as echarts from "echarts";
-import Decimal from 'decimal.js';
-import useStorage from "@/utils/useStorage";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/preview/locale";
 import dark1Theme from "@/components/Chart/themes/dark1-theme.json"

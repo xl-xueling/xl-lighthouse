@@ -12,8 +12,6 @@ import {
  DateFormat, getDayBefore, getDayStartTimestamp, getDayEndTimestamp
 } from "@/utils/date";
 import {requestStatData} from "@/api/data";
-import {getEmptyOption, getLoadingOption} from "@/pages/stat/preview/common";
-import useStorage from "@/utils/useStorage";
 import {GlobalContext} from "@/context";
 import dark1Theme from "@/components/Chart/themes/dark1-theme.json"
 import light1Theme from "@/components/Chart/themes/light1-theme.json"
