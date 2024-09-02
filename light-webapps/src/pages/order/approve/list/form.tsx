@@ -63,6 +63,7 @@ function SearchForm(props: {
                 <Select
                     mode="multiple"
                     allowClear
+                    maxTagCount={"responsive"}
                 >
                   {
                     Object.keys(OrderTypeEnum).filter(key => !Number.isNaN(Number(key))).map((option,index) => {
@@ -82,6 +83,7 @@ function SearchForm(props: {
                 <Select
                     mode="multiple"
                     allowClear
+                    maxTagCount={"responsive"}
                 >
                   <Select.Option value={0}>{t['basic.orderState.description.processing']}</Select.Option>
                   <Select.Option value={2}>{t['basic.orderState.description.approved']}</Select.Option>

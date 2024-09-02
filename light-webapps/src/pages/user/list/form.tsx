@@ -87,6 +87,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
                 placeholder={t['userList.state.placeholder']}
                 mode="multiple"
                 allowClear
+                maxTagCount={"responsive"}
               >
                 {
                   Object.keys(UserStateEnum).filter(key => !Number.isNaN(Number(key)))
