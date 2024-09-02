@@ -76,6 +76,7 @@ export interface User {
     createTime?:number;
     avatar?:string;
     permissions?: any;
+    defaultDomain?:any;
 }
 
 export interface Project {
