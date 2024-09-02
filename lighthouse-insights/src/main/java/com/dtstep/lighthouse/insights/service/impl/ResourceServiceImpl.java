@@ -286,7 +286,7 @@ public class ResourceServiceImpl implements ResourceService {
             resource = new ResourceDto(ResourceTypeEnum.Group,resourceId,group);
         }else if(roleTypeEnum == RoleTypeEnum.STAT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.STAT_ACCESS_PERMISSION){
             Stat stat = statDao.queryById(resourceId);
-            resource = new ResourceDto(ResourceTypeEnum.Group,resourceId,stat);
+            resource = new ResourceDto(ResourceTypeEnum.Stat,resourceId,stat);
         }else if(roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.METRIC_ACCESS_PERMISSION){
             MetricSet metricSet = metricSetDao.queryById(resourceId);
             resource = new ResourceDto(ResourceTypeEnum.MetricSet,resourceId,metricSet);
@@ -294,8 +294,6 @@ public class ResourceServiceImpl implements ResourceService {
             View view = viewDao.queryById(resourceId);
             resource = new ResourceDto(ResourceTypeEnum.View,resourceId,view);
         }else if(roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){
-            resource = new ResourceDto(ResourceTypeEnum.System,0);
-        }else if (roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){
             resource = new ResourceDto(ResourceTypeEnum.System,0);
         }
         return resource;
