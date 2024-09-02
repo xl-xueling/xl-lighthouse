@@ -52,14 +52,13 @@ export function getColumns(t: any, staredProjectInfo:Array<Project>, callback: (
               ,
     },
     {
-      title: <>{t['projectList.columns.name']}<IoInformationCircleOutline style={{fontSize:12}}/></>,
+      title: <>{t['projectList.columns.name']}</>,
       dataIndex: 'title',
       render: (value,record) =>
       {
           return (
-              <div style={{ cursor: "pointer" }} >
-                  <span style={{display:"inline-flex",alignItems:"center"}}>{value}{record.privateType == 0 ?<CiLock style={{marginLeft:'5px'}}/>:null}</span>
-              </div>)
+              <span style={{display:"inline-flex",alignItems:"center"}}>{value}{record.privateType == 0 ?<CiLock style={{marginLeft:'5px'}}/>:null}</span>
+              )
       }
               ,
     },
