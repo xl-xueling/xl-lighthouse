@@ -30,7 +30,10 @@
     },
     "symbolSize": 4,
     "symbol": "emptyCircle",
-    "smooth": false
+    "smooth": false,
+    "animation": true,
+    "animationEasing": "quadraticInOut",
+    "animationDurationUpdate":1000
   },
   "radar": {
     "itemStyle": {

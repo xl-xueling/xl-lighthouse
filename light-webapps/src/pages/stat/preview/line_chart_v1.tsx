@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
 import {getEmptyOption, getErrorOption, getLineErrorOption, getLoadingOption} from "@/pages/stat/preview/common";
@@ -8,9 +8,11 @@ import Decimal from 'decimal.js';
 import useStorage from "@/utils/useStorage";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/preview/locale";
+import dark1Theme from "@/components/Chart/themes/dark1-theme.json"
+import light1Theme from "@/components/Chart/themes/light1-theme.json"
+import {GlobalContext} from "@/context";
 
-
-export default function StatBasicLineChart({theme="light",data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null}) {
+export default function StatBasicLineChart({data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null}) {
 
     const [timeIndex,setTimeIndex] = useState<number>(0);
     const [seriesArray,setSeriesArray] = useState([]);
@@ -21,6 +23,7 @@ export default function StatBasicLineChart({theme="light",data = null,errorMessa
     const [emptyOption,setEmptyOption] = useState({});
     const chartRef = useRef(null);
     const t = useLocale(locale);
+    const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
 
     const defaultOption = !data ? {} : {
         tooltip: {
@@ -113,10 +116,6 @@ export default function StatBasicLineChart({theme="light",data = null,errorMessa
                 label: {
                     show: false,
                 },
-                symbolSize: 3,
-                animation: true,
-                animationEasing: 'quadraticInOut',
-                animationDurationUpdate:1000,
             };
             seriesArray.push(seriesObj);
         }
@@ -151,11 +150,11 @@ export default function StatBasicLineChart({theme="light",data = null,errorMessa
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts ref={chartRef} option={!data? {}:defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} theme={theme == 'dark' ? dark1Theme : light1Theme} option={!data? {}:defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts ref={chartRef} option={!data? {}:defaultOption} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} theme={theme == 'dark' ? dark1Theme : light1Theme} option={!data? {}:defaultOption} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts ref={chartRef} option={!data? {}:defaultOption} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} theme={theme == 'dark' ? dark1Theme : light1Theme} option={!data? {}:defaultOption} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }
     }
 

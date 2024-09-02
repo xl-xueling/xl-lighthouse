@@ -25,11 +25,14 @@
       "borderWidth": 1
     },
     "lineStyle": {
-      "width": "3"
+      "width": "2"
     },
-    "symbolSize": "5",
+    "symbolSize": 2,
     "symbol": "emptyCircle",
-    "smooth": false
+    "smooth": false,
+    "animation": true,
+    "animationEasing": "quadraticInOut",
+    "animationDurationUpdate":1000
   },
   "radar": {
     "itemStyle": {
