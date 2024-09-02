@@ -90,9 +90,10 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
             <Form
                 form={form}
                 ref={formRef}
+                colon={" : "}
                 autoComplete='off'
                 scrollToFirstError>
-                    <Form.Item label='Title' field='title' rules={[
+                    <Form.Item label={t['projectUpdate.form.label.title']} field='title' rules={[
                         { required: true, message: t['projectUpdate.form.name.errMsg'] , validateTrigger : ['onSubmit']},
                         { required: true, match: new RegExp(TEXT_BASE_PATTERN_2,"g"),message: t['projectUpdate.form.name.validate.errMsg'] , validateTrigger : ['onSubmit']},
                         {
@@ -109,7 +110,7 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
                         }]}>
                         <Input placeholder='Please enter project name' autoFocus={false} />
                     </Form.Item>
-                    <Form.Item label='Department' field="departmentId" rules={[{ required: true ,message: t['projectUpdate.form.department.errMsg'], validateTrigger : ['onSubmit']}]}>
+                    <Form.Item label={t['projectUpdate.form.label.department']} field="departmentId" rules={[{ required: true ,message: t['projectUpdate.form.department.errMsg'], validateTrigger : ['onSubmit']}]}>
                         <TreeSelect
                             placeholder={"Please Select"}
                             allowClear={true}
@@ -126,15 +127,15 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
                             treeData={departmentListData}
                         />
                     </Form.Item>
-                    <Form.Item label={'Description'} field="desc" rules={[
+                    <Form.Item label={t['projectUpdate.form.label.desc']} field="desc" rules={[
                         {required: true ,message:t['projectUpdate.form.description.errMsg'],validateTrigger : ['onSubmit']}
                     ]}>
                         <Input.TextArea placeholder='Please enter description' style={{ minHeight: 64}} maxLength={90} showWordLimit={true}/>
                     </Form.Item>
-                    <Form.Item label={'PrivateType'} field="privateType" rules={[{required:true}]}>
+                    <Form.Item label={t['projectUpdate.form.label.privateType']}  field="privateType" rules={[{required:true}]}>
                         <Radio.Group defaultValue={0}>
-                            <Radio value={0}>Private</Radio>
-                            <Radio value={1}>Public</Radio>
+                            <Radio value={0}>{t['projectUpdate.form.label.privateType.private']}</Radio>
+                            <Radio value={1}>{t['projectUpdate.form.label.privateType.public']}</Radio>
                         </Radio.Group>
                     </Form.Item>
                 </Form>

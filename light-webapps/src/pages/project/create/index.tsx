@@ -107,6 +107,7 @@ function ProjectCreatePanel({onClose,allDepartInfo,onSuccess}){
                 <Form
                     autoComplete='off'
                     ref={formRef}
+                    colon={" : "}
                     labelCol={{span: 4, offset: 0}}
                     initialValues={{
                         privateType:0,
