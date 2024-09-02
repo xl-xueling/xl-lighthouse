@@ -24,6 +24,7 @@ import {GlobalState} from "@/store";
 import {updateStoreStaredMetricInfo} from "@/store";
 import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
 import {getRandomString} from "@/utils/util";
+import {useUpdateEffect} from "ahooks";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 
@@ -108,7 +109,8 @@ export default function ListCard() {
         fetchData().then();
     }, [reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
-    useEffect(() => {
+    useUpdateEffect(() => {
+        console.log("--activeKey:" + activeKey)
         setPagination({
             ...pagination,
             current : 1
@@ -171,7 +173,7 @@ export default function ListCard() {
                   {getCardList()}
               </div>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <Pagination size={"small"} sizeOptions={[11,30]} sizeCanChange={true} defaultCurrent={pagination.current} total={pagination.total}
+                  <Pagination size={"small"} sizeOptions={[11,30]} sizeCanChange={true} current={pagination.current} total={pagination.total}
                               showTotal={true}
                               onChange={changePage}
                   />
