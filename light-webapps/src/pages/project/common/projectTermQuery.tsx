@@ -7,7 +7,7 @@ import {
 import { useCallback } from 'react';
 import { Spin } from '@arco-design/web-react';
 import debounce from 'lodash/debounce';
-import {requestTermList} from "@/api/project";
+import {requestList, requestTermList} from "@/api/project";
 import useLocale from "@/utils/useLocale";
 
 const ProjectTermQuery = ({formRef = null,initValues = null,completeCallBack=null}) => {
@@ -24,18 +24,25 @@ const ProjectTermQuery = ({formRef = null,initValues = null,completeCallBack=nul
             const fetchId = refFetchId.current;
             setFetching(true);
             setOptions([]);
-            requestTermList(inputValue).then((v) => {
-                const data = v.data.list;
+            const combineParams:any = {}
+            combineParams.search = inputValue;
+            requestList({
+                queryParams:combineParams,
+                pagination:{
+                    pageSize:50,
+                    pageNum:1,
+                }
+            }).then((response) => {
+                const {code, data ,message} = response;
                 if(refFetchId.current === fetchId){
-                    const options = data.map((project) => ({
+                    const options = data.list.map((project) => ({
                         label: <div> {`${project.title}`}</div>,
                         value: project.id,
                     }))
                     setFetching(false);
                     setOptions(options);
                 }
-            })
-
+            });
         }, 500),
         []
     );
