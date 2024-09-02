@@ -62,6 +62,9 @@ public class UserController {
     @Autowired
     private BaseService baseService;
 
+    @Autowired
+    private DomainService domainService;
+
     @RequestMapping("/user/register")
     public ResultData<Integer> register(@Validated @RequestBody UserCreateParam createParam) throws Exception{
         String userName = createParam.getUsername();
@@ -86,6 +89,8 @@ public class UserController {
         User user = userService.queryById(userId);
         Validate.notNull(user);
         UserVO userVO = new UserVO(user);
+        Domain domain = domainService.queryDefault();
+        userVO.setDefaultDomain(domain);
         Set<PermissionEnum> permissionEnumSets = userService.getUserPermissions(userId);
         userVO.setPermissions(permissionEnumSets);
         return ResultData.success(userVO);

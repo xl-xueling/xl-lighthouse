@@ -23,6 +23,7 @@ import com.dtstep.lighthouse.common.modal.ResourceDto;
 import com.dtstep.lighthouse.insights.service.DomainService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,11 +44,13 @@ public class DomainServiceImpl implements DomainService {
     }
 
     @Override
+    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'queryById' + '_' + #id",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public Domain queryById(Integer id) {
         return domainDao.queryById(id);
     }
 
     @Override
+    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'queryDefault'",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public Domain queryDefault() {
         return domainDao.queryDefault();
     }
