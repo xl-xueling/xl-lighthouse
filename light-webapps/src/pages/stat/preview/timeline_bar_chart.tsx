@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Space} from "@arco-design/web-react";
 import ReactECharts from 'echarts-for-react';
 import {getEmptyOption, getErrorOption, getLineErrorOption, getLoadingOption} from "@/pages/stat/preview/common";
@@ -7,6 +7,10 @@ import * as echarts from "echarts";
 import useStorage from "@/utils/useStorage";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/preview/locale";
+import {GlobalContext} from "@/context";
+import {getEchartsEmptyOption, getEchartsLoadingOption} from "@/components/Chart/lib";
+import dark1Theme from "@/components/Chart/themes/dark1-theme.json"
+import light1Theme from "@/components/Chart/themes/light1-theme.json"
 
 export default function TimeLineBarPanel({compId = 0,data = null,errorMessage = null,size="default", loading = false,group=null}) {
 
@@ -18,7 +22,7 @@ export default function TimeLineBarPanel({compId = 0,data = null,errorMessage = 
     const chartRef = useRef(null);
     const [loadingOption, setLoadingOption] = useState({});
     const [emptyOption,setEmptyOption] = useState({});
-    const [theme, setTheme] = useStorage('arco-theme', 'light');
+    const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
     const t = useLocale(locale);
 
     const getSeries = (chartData) => {
@@ -186,9 +190,9 @@ export default function TimeLineBarPanel({compId = 0,data = null,errorMessage = 
 
     useEffect(() => {
         setCurrentBatch(null);
-        setLoadingOption(getLoadingOption(theme));
-        setEmptyOption(getEmptyOption(t,theme));
-    },[compId])
+        setLoadingOption(getEchartsLoadingOption(theme));
+        setEmptyOption(getEchartsEmptyOption(t,theme));
+    },[compId,theme])
 
     useEffect(() => {
         const chart = chartRef.current.getEchartsInstance();
@@ -201,11 +205,11 @@ export default function TimeLineBarPanel({compId = 0,data = null,errorMessage = 
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts ref={chartRef} option={defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}}  showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} theme={theme == 'dark' ? dark1Theme : light1Theme} option={defaultOption} style={{ height: '300px' ,width:'100%',marginLeft:'0px'}}  showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'small'){
-            return <ReactECharts ref={chartRef} option={defaultOption} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} theme={theme == 'dark' ? dark1Theme : light1Theme} option={defaultOption} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }else if(size == 'mini'){
-            return <ReactECharts ref={chartRef} option={defaultOption} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
+            return <ReactECharts ref={chartRef} theme={theme == 'dark' ? dark1Theme : light1Theme} option={defaultOption} style={{ height: '150px' ,width:'100%',marginLeft:'0px'}} showLoading={loading} loadingOption={loadingOption}/>
         }
     }
 

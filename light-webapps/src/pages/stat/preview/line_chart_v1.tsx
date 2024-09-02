@@ -11,6 +11,7 @@ import locale from "@/pages/stat/preview/locale";
 import dark1Theme from "@/components/Chart/themes/dark1-theme.json"
 import light1Theme from "@/components/Chart/themes/light1-theme.json"
 import {GlobalContext} from "@/context";
+import {getEchartsEmptyOption, getEchartsErrorOption, getEchartsLoadingOption} from "@/components/Chart/lib";
 
 export default function StatBasicLineChart({data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null}) {
 
@@ -137,15 +138,15 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
         }else{
             const chart = chartRef.current.getEchartsInstance();
             chart.clear();
-            const errorOption = getErrorOption(theme,errorMessage);
+            const errorOption = getEchartsErrorOption(theme,errorMessage);
             chart.setOption(errorOption);
         }
     },[JSON.stringify(data),errorMessage])
 
     useEffect(() => {
-        setLoadingOption(getLoadingOption(theme));
-        setEmptyOption(getEmptyOption(t,theme));
-    },[])
+        setLoadingOption(getEchartsLoadingOption(theme));
+        setEmptyOption(getEchartsEmptyOption(t,theme));
+    },[theme])
 
 
     const getReactChart = () => {

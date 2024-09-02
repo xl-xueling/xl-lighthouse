@@ -17,6 +17,7 @@ import useStorage from "@/utils/useStorage";
 import {GlobalContext} from "@/context";
 import dark1Theme from "@/components/Chart/themes/dark1-theme.json"
 import light1Theme from "@/components/Chart/themes/light1-theme.json"
+import {getEchartsEmptyOption, getEchartsLoadingOption} from "@/components/Chart/lib";
 
 export default function ChartPanel({size = 'default',searchForm = null,statInfo,parentLoading = false,ref=null}) {
     const t = useLocale(locale);
@@ -186,9 +187,9 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
     },[JSON.stringify(searchForm),statInfo?.id])
 
     useEffect(() => {
-        setLoadingOption(getLoadingOption(theme));
-        setEmptyOption(getEmptyOption(t,theme));
-    },[])
+        setLoadingOption(getEchartsLoadingOption(theme));
+        setEmptyOption(getEchartsEmptyOption(t,theme));
+    },[theme])
 
     const getReactChart = () => {
         if(size == 'default'){

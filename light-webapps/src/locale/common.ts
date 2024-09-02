@@ -107,6 +107,7 @@ const vi18n = {
         'basic.chartType.funnelChart':'FunnelChart',
         'basic.chartType.calendarChart':'CalendarChart',
         'basic.chartType.table':'Table',
+        'basic.chart.empty.warning': 'No Data!',
     },
     'zh-CN': {
         'system.error':'系统异常!',
@@ -225,6 +226,7 @@ const vi18n = {
         'basic.chartType.funnelChart':'漏斗图',
         'basic.chartType.calendarChart':'日历图',
         'basic.chartType.table':'表格',
+        'basic.chart.empty.warning': '暂无数据!',
     }
 }
 export default vi18n;
