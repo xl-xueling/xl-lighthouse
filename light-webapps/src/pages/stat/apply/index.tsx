@@ -80,7 +80,8 @@ export default function StatApplyModal({statInfo,onClose}) {
     return (
         <Modal
             title= {t['statApply.modal.title']}
-            style={{ width:'750px',top:'20px' }}
+            alignCenter={false}
+            style={{ width:'750px',top:'100px' }}
             visible={true}
             confirmLoading={loading}
             onOk={handlerSubmit}

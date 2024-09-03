@@ -171,7 +171,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
           onOk={onOk}
           visible={true}
           alignCenter={false}
-          style={{width:'960px',maxWidth:'80%', top: '130px' }}
+          style={{width:'960px',maxWidth:'80%', top: '150px' }}
           confirmLoading={confirmLoading}
           onCancel={onClose}>
         <Form
