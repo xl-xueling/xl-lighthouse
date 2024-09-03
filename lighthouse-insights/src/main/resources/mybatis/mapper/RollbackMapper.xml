@@ -10,7 +10,7 @@
         <result column="data_type" property="dataType" typeHandler="com.dtstep.lighthouse.insights.types.RollbackTypeEnumTypeHandler"/>
         <result column="config" property="config"/>
         <result column="version" property="version"/>
-        <result column="state" property="stateEnum" typeHandler="com.dtstep.lighthouse.insights.types.RollbackStateEnumTypeHandler"/>
+        <result column="state" property="state" typeHandler="com.dtstep.lighthouse.insights.types.RollbackStateEnumTypeHandler"/>
         <result column="create_time" property="createTime"/>
     </resultMap>
 
@@ -22,7 +22,7 @@
             #{dataType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RollbackTypeEnumTypeHandler},
             #{config,jdbcType=VARCHAR},
             #{version,jdbcType=TIMESTAMP},
-            #{stateEnum,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RollbackStateEnumTypeHandler},
+            #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RollbackStateEnumTypeHandler},
             #{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
@@ -56,8 +56,8 @@
     <update id="update" parameterType="com.dtstep.lighthouse.common.modal.RollbackModal">
         UPDATE ldp_rollbacks
         <set>
-            <if test="stateEnum != null">
-                `state` = #{stateEnum.state},
+            <if test="state != null">
+                `state` = #{state.state},
             </if>
         </set>
         WHERE id = #{id}

@@ -40,7 +40,7 @@ public class RollbackServiceImpl implements RollbackService {
         int userId = baseService.getCurrentUserId();
         rollbackModal.setVersion(version);
         rollbackModal.setCreateTime(localDateTime);
-        rollbackModal.setStateEnum(RollbackStateEnum.UNPUBLISHED);
+        rollbackModal.setState(RollbackStateEnum.UNPUBLISHED);
         rollbackModal.setUserId(userId);
         rollbackDao.insert(rollbackModal);
         ObjectNode objectNode = JsonUtil.createObjectNode();

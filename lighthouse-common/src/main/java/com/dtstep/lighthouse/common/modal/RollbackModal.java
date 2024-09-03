@@ -20,7 +20,7 @@ public class RollbackModal implements Serializable {
 
     private Integer version;
 
-    private RollbackStateEnum stateEnum;
+    private RollbackStateEnum state;
 
     private LocalDateTime createTime;
 
@@ -80,11 +80,11 @@ public class RollbackModal implements Serializable {
         this.createTime = createTime;
     }
 
-    public RollbackStateEnum getStateEnum() {
-        return stateEnum;
+    public RollbackStateEnum getState() {
+        return state;
     }
 
-    public void setStateEnum(RollbackStateEnum stateEnum) {
-        this.stateEnum = stateEnum;
+    public void setState(RollbackStateEnum state) {
+        this.state = state;
     }
 }
