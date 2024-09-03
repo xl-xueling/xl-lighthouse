@@ -255,6 +255,24 @@ export const getTreeResourceIcon= (type,level) => {
     }
 }
 
+export const getTreeResourceIconWithColor = (type,level,color) => {
+    if(type == 'stat'){
+        return <IconTag style={{marginRight:'8px',color:color}}/>
+    }else if(type == 'metric'){
+        return <LuLayers color={color} style={{marginRight:'8px',position: 'relative', top: '2px',color:color}}/>
+    }else if(type == 'group'){
+        return <CiViewTable color={color} style={{marginRight:'8px',position: 'relative', top: '2px',color:color}}/>
+    }else if(type == 'project'){
+        return <PiDiamondsFour color={color} style={{marginRight:'8px',position: 'relative', top: '2px',color:color}}/>
+    }else if(type == 'view'){
+        return <TbBrandVisualStudio color={color} size={15} style={{marginRight:'8px',position: 'relative',top:'2px',color:color}}/>
+    }else if(type == 'dir' && level == 1){
+        return <RxCube size={15} color={color} style={{marginRight:'8px',position: 'relative', top: '1px',color:color}}/>
+    } else if(type == 'dir' && level == 2){
+        return <IconMindMapping color={color} style={{marginRight:'8px',position: 'relative', top: '2px',color:color}}/>
+    }
+}
+
 export function getIcon(type:string,marginRight:string = null){
     if(type == 'project'){
         return <PiDiamondsFour style={{marginRight: marginRight}}/>
