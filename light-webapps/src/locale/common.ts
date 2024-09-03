@@ -73,7 +73,7 @@ const vi18n = {
         'basic.roleType.description.operationAccess':'Operation Access Permission',
         'basic.componentsType.dateSelect':'Date Select',
         'basic.componentsType.dateRangeSelect':'Date Range Select',
-        'basic.componentsType.datetimeRangeSelect':'DateTime Range Select',
+        'basic.componentsType.datetimeRangeSelect':'Time Range Select',
         'basic.componentsType.weekSelect':'Date(Week) Select',
         'basic.componentsType.monthSelect':'Date(Month) Select',
         'basic.componentsType.filterInput':'Filter Input',
