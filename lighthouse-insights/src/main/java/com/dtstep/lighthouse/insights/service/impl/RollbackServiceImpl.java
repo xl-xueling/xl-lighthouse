@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.enums.RollbackStateEnum;
 import com.dtstep.lighthouse.common.enums.RollbackTypeEnum;
 import com.dtstep.lighthouse.common.modal.RollbackModal;
 import com.dtstep.lighthouse.common.util.DateUtil;
@@ -39,13 +40,12 @@ public class RollbackServiceImpl implements RollbackService {
         int userId = baseService.getCurrentUserId();
         rollbackModal.setVersion(version);
         rollbackModal.setCreateTime(localDateTime);
-        int baseFlag = 1;
-        rollbackModal.setBaseFlag(baseFlag);
+        rollbackModal.setStateEnum(RollbackStateEnum.UNPUBLISHED);
         rollbackModal.setUserId(userId);
         rollbackDao.insert(rollbackModal);
         ObjectNode objectNode = JsonUtil.createObjectNode();
         objectNode.put("version",version);
-        objectNode.put("baseFlag",baseFlag);
+        objectNode.put("state",RollbackStateEnum.UNPUBLISHED.getState());
         objectNode.put("dataType",rollbackTypeEnum.getType());
         objectNode.put("createTime", DateUtil.translateToTimeStamp(localDateTime));
         return objectNode;

@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.common.modal;
 
+import com.dtstep.lighthouse.common.enums.RollbackStateEnum;
 import com.dtstep.lighthouse.common.enums.RollbackTypeEnum;
 
 import java.io.Serializable;
@@ -19,7 +20,7 @@ public class RollbackModal implements Serializable {
 
     private Integer version;
 
-    private Integer baseFlag;
+    private RollbackStateEnum stateEnum;
 
     private LocalDateTime createTime;
 
@@ -79,11 +80,11 @@ public class RollbackModal implements Serializable {
         this.createTime = createTime;
     }
 
-    public Integer getBaseFlag() {
-        return baseFlag;
+    public RollbackStateEnum getStateEnum() {
+        return stateEnum;
     }
 
-    public void setBaseFlag(Integer baseFlag) {
-        this.baseFlag = baseFlag;
+    public void setStateEnum(RollbackStateEnum stateEnum) {
+        this.stateEnum = stateEnum;
     }
 }

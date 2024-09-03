@@ -10,19 +10,19 @@
         <result column="data_type" property="dataType" typeHandler="com.dtstep.lighthouse.insights.types.RollbackTypeEnumTypeHandler"/>
         <result column="config" property="config"/>
         <result column="version" property="version"/>
-        <result column="base_flag" property="baseFlag"/>
+        <result column="state" property="stateEnum" typeHandler="com.dtstep.lighthouse.insights.types.RollbackStateEnumTypeHandler"/>
         <result column="create_time" property="createTime"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.RollbackModal" >
-        INSERT INTO ldp_rollbacks (`user_id`, `resource_id`, `data_type`,`config`,`version`,`base_flag`,`create_time`) VALUES
+        INSERT INTO ldp_rollbacks (`user_id`, `resource_id`, `data_type`,`config`,`version`,`state`,`create_time`) VALUES
         (
             #{userId,jdbcType=INTEGER},
             #{resourceId,jdbcType=INTEGER},
             #{dataType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RollbackTypeEnumTypeHandler},
             #{config,jdbcType=VARCHAR},
             #{version,jdbcType=TIMESTAMP},
-            #{baseFlag,jdbcType=INTEGER},
+            #{stateEnum,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RollbackStateEnumTypeHandler},
             #{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
@@ -32,7 +32,7 @@
     </select>
 
     <select id="queryByVersion" resultMap="rollbackResultMap">
-        SELECT `id`,`user_id`, `resource_id`,`data_type`,`config`,`version`,`base_flag`,`create_time`
+        SELECT `id`,`user_id`, `resource_id`,`data_type`,`config`,`version`,`state`,`create_time`
         FROM ldp_rollbacks
         <where>
             <if test="queryParam.resourceId != null">
@@ -49,7 +49,17 @@
     </select>
 
     <select id="queryVersionList" resultMap="rollbackResultMap">
-        SELECT `id`,`user_id`, `resource_id`,`data_type`,`version`,`base_flag`,`create_time`
+        SELECT `id`,`user_id`, `resource_id`,`data_type`,`version`,`state`,`create_time`
         FROM ldp_rollbacks  WHERE resource_id = #{queryParam.resourceId} and data_type = #{queryParam.dataType.type} order by create_time desc limit 300
     </select>
+
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.RollbackModal">
+        UPDATE ldp_rollbacks
+        <set>
+            <if test="stateEnum != null">
+                `state` = #{stateEnum.state},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
 </mapper>
