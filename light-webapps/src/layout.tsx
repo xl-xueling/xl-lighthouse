@@ -214,19 +214,13 @@ function PageLayout() {
     if(pathname.startsWith('/metricset/preview/')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"metricset/list"])
     }
-    if(pathname.startsWith('/stat/preview/')){
+    if(pathname.startsWith('/stat/preview/') || pathname.startsWith('/track/stat/')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"stat/list"])
     }
-    if(pathname.startsWith('/track/stat/')){
-      newSelectedKeys = arrayDistinct([...newSelectedKeys,"stat/list"])
-    }
-    if(pathname.startsWith('/view/preview/')){
+    if(pathname.startsWith('/view/preview/') || pathname.startsWith('/view/simulate/')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"view/list"])
     }
-    if(pathname.startsWith('/project/preview/')){
-      newSelectedKeys = arrayDistinct([...newSelectedKeys,"project/list"])
-    }
-    if(pathname.startsWith('/project/manage/')){
+    if(pathname.startsWith('/project/preview/') || pathname.startsWith('/project/manage/')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"project/list"])
     }
     if(pathname.startsWith('/department/manage')){
