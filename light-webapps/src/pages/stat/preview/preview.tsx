@@ -279,6 +279,7 @@ export default function StatPreviewPanel({specifyTitle = null,size = 'default',i
                     <Card>
                         <Typography.Title
                             heading={6}
+                            style={{marginBottom:'15px',marginTop:'0px'}}
                         >
                             {t['statDisplay.label.statistic.information']}{'：'}
                         </Typography.Title>
