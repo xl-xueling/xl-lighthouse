@@ -21,6 +21,8 @@ public class ViewVO extends View {
 
     private List<ResourceVO> resourceList;
 
+    private Integer currentVersion;
+
     public Map<String, List<TreeNode>> getFiltersData() {
         return filtersData;
     }
@@ -72,5 +74,13 @@ public class ViewVO extends View {
 
     public void setResourceList(List<ResourceVO> resourceList) {
         this.resourceList = resourceList;
+    }
+
+    public Integer getCurrentVersion() {
+        return currentVersion;
+    }
+
+    public void setCurrentVersion(Integer currentVersion) {
+        this.currentVersion = currentVersion;
     }
 }
