@@ -74,7 +74,7 @@ export default function BasicInfo({callback}) {
             value: formatTimeStamp(statInfo?.createTime,DateTimeFormat),
         },
         {
-            label: 'Operation',
+            label: 'Operations',
             value:
                 <div>
                     {!statInfo?.builtIn ?
