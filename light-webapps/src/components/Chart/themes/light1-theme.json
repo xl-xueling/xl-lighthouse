@@ -225,7 +225,7 @@
       "show": true,
       "lineStyle": {
         "color": [
-          "#E0E6F1"
+          "#dfdada"
         ]
       }
     },
@@ -257,7 +257,7 @@
       "color": "#6E7079"
     },
     "splitLine": {
-      "show": true,
+      "show": false,
       "lineStyle": {
         "color": [
           "#E0E6F1"
