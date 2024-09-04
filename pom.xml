@@ -158,8 +158,8 @@
                 <configuration>
                   <nodeVersion>v18.20.2</nodeVersion>
                   <yarnVersion>v1.22.22</yarnVersion>
-                  <!--使用cdn下载地址，不能随意切换版本，该地址可以注释掉，使用Yarn和Node的默认地址 -->
-                  <nodeDownloadRoot>https://mirrors.cloud.tencent.com/nodejs-release/</nodeDownloadRoot>
+                  <!--使用镜像下载地址，如果出现访问404，可以将下面两行地址注释掉，使用Yarn和Node的默认地址进行下载 -->
+                  <nodeDownloadRoot>https://npmmirror.com/mirrors/node/</nodeDownloadRoot>
                   <yarnDownloadRoot>https://ldp-soft-1300542249.cos.ap-nanjing.myqcloud.com/mvn/yarn/</yarnDownloadRoot>
                 </configuration>
               </execution>
