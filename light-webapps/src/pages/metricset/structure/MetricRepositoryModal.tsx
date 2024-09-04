@@ -40,11 +40,17 @@ export default function MetricSetRepositoryModal({id,onClose}) {
 
     const tableCallback = async (record, type) => {
         if(type == 'add'){
+            let itemDesc;
+            if(record.resourceType == ResourceTypeEnum.Stat){
+                itemDesc = 'stat';
+            }else if(record.resourceType == ResourceTypeEnum.View){
+                itemDesc = 'view';
+            }
             const treeNode:TreeNode = {
                 key:getRandomString(8),
                 label:record.title,
                 value:record.resourceId,
-                type:record.resourceType == ResourceTypeEnum.Stat?'stat':null,
+                type:itemDesc,
             }
             await addTreeNode(treeNode).then();
         }
