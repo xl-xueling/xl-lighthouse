@@ -50,20 +50,20 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}):a
                 className={styles['search-form']}
                 labelAlign="left"
                 colon={' :'}
+                autoComplete={'off'}
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 19 }}
             >
                 <Row gutter={24}>
                     <Col span={colSpan}>
-                        <Form.Item label={t['statList.table.columns.name']} field="name">
+                        <Form.Item label={t['statList.table.columns.name']} field="search">
                             <Input
                                 allowClear
-                                placeholder={"Name"}
                             />
                         </Form.Item>
                     </Col>
                     <Col span={colSpan}>
-                        <Form.Item label={t['statList.table.columns.department']} field="department">
+                        <Form.Item label={t['statList.table.columns.department']} field="departmentIds">
                             <TreeSelect
                                 placeholder={"Please Select"}
                                 multiple={true}

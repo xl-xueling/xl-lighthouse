@@ -37,6 +37,7 @@ function SearchForm({onSearch, form,onClear, allDepartInfo}) {
       <div className={styles['search-form-wrapper']}>
       <Form
         form={form}
+        autoComplete={'off'}
         className={styles['search-form']}
         labelAlign="left"
         labelCol={{ span: 5 }}

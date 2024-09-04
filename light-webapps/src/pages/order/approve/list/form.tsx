@@ -43,6 +43,7 @@ function SearchForm(props: {
       <div className={styles['search-form-wrapper']}>
         <Form
             form={form}
+            autoComplete={'off'}
             className={styles['search-form']}
             labelAlign="left"
             colon={' :'}
