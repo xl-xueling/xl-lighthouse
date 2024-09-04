@@ -54,6 +54,8 @@ export function getColumns(t: any,listNodes:TreeNode[], callback: (record: Recor
                 if(record.resourceType == ResourceTypeEnum.Stat){
                     const array = value.split(";");
                     return array[0] +  '  >  ' + array[1];
+                }else if(record.resourceType == ResourceTypeEnum.View){
+                    return '--';
                 }
             },
         },
@@ -67,6 +69,8 @@ export function getColumns(t: any,listNodes:TreeNode[], callback: (record: Recor
                     type = 'stat';
                 }else if(record.resourceType == ResourceTypeEnum.Project){
                     type = 'project';
+                }else if(record.resourceType == ResourceTypeEnum.View){
+                    type = 'view';
                 }
                 if(!treeCheckContainsNode(listNodes,record.resourceId,type)){
                     button = <Button key={getRandomString()}

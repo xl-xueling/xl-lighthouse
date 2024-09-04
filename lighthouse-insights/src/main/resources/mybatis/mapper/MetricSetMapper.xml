@@ -93,20 +93,42 @@
     </select>
 
     <select id="queryIndicatorList" resultMap="indicatorResultMap">
-        select f.* from (SELECT a.`id` as resource_id,'6' as resource_type, a.title, CONCAT_WS(';', a.project_id, a.group_id,a.id) as full_path,CONCAT_WS(';', b.title, c.token,a.title) as full_title,a.create_time
-                         FROM ldp_stats a
-                                  inner join ldp_projects b on a.project_id = b.id
-                                  inner join ldp_groups c on a.group_id = c.id ) f
-                            inner join (
-            select resource_id from (
-                                        select a.resource_id as resource_id from ldp_relations a
-                                                                                     inner join ldp_stats b on a.resource_id = b.id
-                                        where a.resource_type = '6' and a.subject_id = #{id} and a.relation_type='1'
-                                        union all
-                                        select b.id as resource_id from ldp_stats b
-                                        where b.project_id in (select resource_id from ldp_relations a where a.resource_type = '4' and a.subject_id = #{id} and a.relation_type='1')
-                                    ) t group by resource_id
-        ) d on f.resource_id = d.resource_id
+        SELECT f.resource_id, f.resource_type, f.title,f.full_path,f.full_title,f.create_time
+        FROM (
+                 SELECT a.`id` as resource_id, '6' as resource_type, a.title ,CONCAT_WS(';',d.`id`, e.`id`,a.`id`) as full_path,CONCAT_WS(';',d.`title`, e.`token`,a.`title`) as full_title,a.create_time as create_time
+                 FROM ldp_stats a
+                          INNER JOIN ldp_projects d ON a.project_id = d.id
+                          INNER JOIN ldp_groups e ON a.group_id = e.id
+                 WHERE a.id IN (
+                     SELECT resource_id
+                     FROM ldp_relations
+                     WHERE resource_type = '6'
+                       AND subject_id = #{id}
+                       AND relation_type = '1'
+                 )
+                 UNION ALL
+                 SELECT c.`id` as resource_id, '6' as resource_type, c.title, CONCAT_WS(';',d.`id`, e.`id`,c.`id`) as full_path,CONCAT_WS(';',d.`title`, e.`token`,c.`title`) as full_title,c.create_time as create_time
+                 FROM ldp_stats c
+                          INNER JOIN ldp_projects d ON c.project_id = d.id
+                          INNER JOIN ldp_groups e ON c.group_id = e.id
+                 WHERE d.id IN (
+                     SELECT resource_id
+                     FROM ldp_relations
+                     WHERE resource_type = '4'
+                       AND subject_id = #{id}
+                       AND relation_type = '1'
+                 )
+                 UNION ALL
+                 SELECT b.`id` as resource_id, '8' as resource_type, b.title, b.`id` as full_path,b.title as full_title,b.create_time as create_time
+                 FROM ldp_views b
+                 WHERE b.id IN (
+                     SELECT resource_id
+                     FROM ldp_relations
+                     WHERE resource_type = '8'
+                       AND subject_id = #{id}
+                       AND relation_type = '1'
+                 )
+             ) f
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.common.modal.MetricSet">
