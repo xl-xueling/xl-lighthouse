@@ -1,11 +1,14 @@
 package com.dtstep.lighthouse.insights.test.service;
 
+import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.modal.Indicator;
 import com.dtstep.lighthouse.common.modal.MetricBindElement;
 import com.dtstep.lighthouse.common.modal.TreeNode;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dto.MetricBindParam;
+import com.dtstep.lighthouse.insights.dto.MetricPendQueryParam;
 import com.dtstep.lighthouse.insights.service.MetricSetService;
 import com.dtstep.lighthouse.insights.test.listener.SpringTestExecutionListener;
 import com.dtstep.lighthouse.insights.vo.MetricSetVO;
@@ -43,5 +46,14 @@ public class TestMetricSetService {
         MetricSetVO metricSetVO = metricSetService.queryById(id);
         TreeNode nodes = metricSetService.getStructure(metricSetVO);
         System.out.println("treeNode is:" + JsonUtil.toJSONString(nodes));
+    }
+
+    @Test
+    public void testQueryIndicators() throws Exception {
+        int id = 100012;
+        MetricPendQueryParam queryParam = new MetricPendQueryParam();
+        queryParam.setId(id);
+        ListData<Indicator> indicators = metricSetService.queryIndicatorList(queryParam,1,15);
+        System.out.println("indicators:" + JsonUtil.toJSONString(indicators));
     }
 }
