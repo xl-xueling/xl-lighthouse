@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * API调用方法示例
- *
+ * Java API调用示例
  */
 public class DataQueryTest {
 
