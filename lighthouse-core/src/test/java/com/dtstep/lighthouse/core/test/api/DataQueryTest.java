@@ -152,8 +152,14 @@ public class DataQueryTest {
 
 
     /**
+     *
+     * 该接口需要v2.2.7以上版本支持！
+     *
      * 对应API：LightHouse.limitQuery(int statId, String secretKey, Long batchTime)
      * 查询Limit同结果数据，batchTime为对应的批次时间
+     *
+     * 该接口需要v2.2.7以上版本支持！
+     *
      * @throws Exception
      */
     @Test
