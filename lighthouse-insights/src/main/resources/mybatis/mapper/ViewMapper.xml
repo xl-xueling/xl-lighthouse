@@ -82,8 +82,8 @@
             <if test="queryParam.search != null">
                 AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search})
             </if>
-            <if test="queryParam.ownerId == null">
-                AND state = '1'
+            <if test="queryParam.state != null">
+                AND `state` = #{queryParam.state}
             </if>
         </where>
         ) a

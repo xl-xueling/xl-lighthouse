@@ -17,6 +17,8 @@ public class ViewQueryParam {
 
     private Integer ownerId;
 
+    private Integer state;
+
     public String getSearch() {
         return search;
     }
@@ -63,5 +65,13 @@ public class ViewQueryParam {
 
     public void setIds(List<Integer> ids) {
         this.ids = ids;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 }
