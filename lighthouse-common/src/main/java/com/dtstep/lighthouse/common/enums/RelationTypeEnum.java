@@ -39,8 +39,8 @@ public enum RelationTypeEnum {
     }
 
     @JsonCreator
-    public static PrivateTypeEnum forValue(int privateType){
-        PrivateTypeEnum[] values = PrivateTypeEnum.values();
-        return Stream.of(values).filter(it -> it.getPrivateType() == privateType).findAny().orElse(null);
+    public static RelationTypeEnum forValue(int relationType){
+        RelationTypeEnum[] values = RelationTypeEnum.values();
+        return Stream.of(values).filter(it -> it.getRelationType() == relationType).findAny().orElse(null);
     }
 }

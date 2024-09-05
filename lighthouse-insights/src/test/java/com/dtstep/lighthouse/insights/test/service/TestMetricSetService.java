@@ -72,4 +72,11 @@ public class TestMetricSetService {
         ListData<RelationVO> listData = relationService.queryList(relationQueryParam, 1, 15);
         System.out.println("listData is:" + listData.getTotal());
     }
+
+    @Test
+    public void testStructure() throws Exception{
+        MetricSetVO metricSetVO = metricSetService.queryById(100012);
+        TreeNode structure = metricSetService.getStructure(metricSetVO);
+        System.out.println("structure:" + JsonUtil.toJSONString(structure));
+    }
 }

@@ -23,6 +23,7 @@ import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.insights.dao.*;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.service.*;
@@ -380,12 +381,16 @@ public class MetricSetServiceImpl implements MetricSetService {
         for(Relation relation : relationList){
             if(relation.getResourceType() == ResourceTypeEnum.Stat){
                 String key = RandomID.id(10,keyList);
-                TreeNode treeNode = new TreeNode(key,relation.getResourceTitle(),relation.getResourceId(),"stat");
-                rootNode.addChild(treeNode);
+                if(StringUtil.isNotEmpty(relation.getResourceTitle())){
+                    TreeNode treeNode = new TreeNode(key,relation.getResourceTitle(),relation.getResourceId(),"stat");
+                    rootNode.addChild(treeNode);
+                }
             }else if(relation.getResourceType() == ResourceTypeEnum.View){
                 String key = RandomID.id(10,keyList);
-                TreeNode treeNode = new TreeNode(key,relation.getResourceTitle(),relation.getResourceId(),"view");
-                rootNode.addChild(treeNode);
+                if(StringUtil.isNotEmpty(relation.getResourceTitle())){
+                    TreeNode treeNode = new TreeNode(key,relation.getResourceTitle(),relation.getResourceId(),"view");
+                    rootNode.addChild(treeNode);
+                }
             }
         }
         return rootNode;
