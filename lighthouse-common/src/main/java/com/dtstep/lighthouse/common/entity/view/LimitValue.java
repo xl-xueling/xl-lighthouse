@@ -27,6 +27,8 @@ public class LimitValue implements Serializable {
 
     private Object score;
 
+    public LimitValue(){}
+
     public LimitValue(String dimensValue,Object score){
         this.dimensValue = dimensValue;
         this.score = score;
