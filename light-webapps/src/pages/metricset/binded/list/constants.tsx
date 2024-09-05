@@ -57,18 +57,20 @@ export function getColumns(t: any, metricSetInfo:MetricSet, callback: (record: R
             dataIndex: 'relationType',
             render: (value,record) =>
             {
-                if(record.resourceType == ResourceTypeEnum.Project && record?.extend){
+                if(record.resourceType == ResourceTypeEnum.Project){
                     return (
                         t['bindedList.list.elementType.project']
                     )
-                }else if(record.resourceType == ResourceTypeEnum.Stat && record?.extend){
+                }else if(record.resourceType == ResourceTypeEnum.Stat){
                     return (
                         t['bindedList.list.elementType.stat']
                     )
-                }else if(record.resourceType == ResourceTypeEnum.View && record?.extend){
+                }else if(record.resourceType == ResourceTypeEnum.View){
                     return (
                         t['bindedList.list.elementType.view']
                     )
+                }else{
+                    return '--';
                 }
 
             }
