@@ -25,8 +25,9 @@ public class HelloWorld {
 
     static {
         try{
-            //修改rpc服务地址,一主一从，默认为部署集群的前两个节点
-            LightHouse.init("10.206.6.12:4061");
+            //修改rpc服务注册中心地址,集群模式为一主一从，默认为部署集群的前两个节点IP,使用逗号分割，单机模式为当前节点IP
+            //LightHouse.init("10.206.6.11:4061,10.206.6.12:4061");//集群模式初始化
+            LightHouse.init("10.206.6.12:4061");//单机模式初始化
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -45,6 +46,6 @@ public class HelloWorld {
             LightHouse.stat("peP:test_stat","iYmC1iUFPCCuMjqbAykSdiIYvEdsJIiUF5ByFlPJ",map,t);
         }
         System.out.println("send ok.");
-        Thread.sleep(3000000);
+        Thread.sleep(30000);//client为异步发送，防止进程结束时内存中部分消息没有发送出去
     }
 }
