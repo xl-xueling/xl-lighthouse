@@ -1,14 +1,14 @@
-export const getEchartsErrorOption = (theme,message) => {
+export const getEchartsErrorOption = (theme,message,chartHeight = null) => {
     return {
         title: {
             text: message,
             x: 'center',
-            top:'80px',
+            top:chartHeight == null ? 80 : (chartHeight - 32)/2,
             textStyle: {
                 color: theme == 'light' ? '#000' : '#fff',
                 fontSize: 12,
                 lineWidth: 2,
-                lineHeight:30,
+                lineHeight:20,
                 fontColor:'black',
                 fontFamily : 'sans-serif',
                 fontWeight: 'normal',
