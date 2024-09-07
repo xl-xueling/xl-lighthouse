@@ -10,16 +10,12 @@ import {
     Typography
 } from "@arco-design/web-react";
 import React from "react";
-import {IconEdit, IconStar, IconStarFill} from "@arco-design/web-react/icon";
-import {PiLinkSimple} from "react-icons/pi";
-import {StatExpiredEnum, StatStateEnum} from "@/types/insights-common";
+import {StatStateEnum} from "@/types/insights-common";
 import {getRandomString} from "@/utils/util";
 import {getStatExpiredEnumDescription, getStatStateDescriptionWithBadge} from "@/pages/common/desc/base";
 import {Link} from "@arco-design/web-react/lib";
 const TabPane = Tabs.TabPane;
 const { Text } = Typography;
-
-
 
 export function getColumnsOfManage(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
 
@@ -32,7 +28,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
             title: t['statList.label.title'],
             dataIndex: 'title',
             render:(value,record) => {
-                return (<div onClick={() => callback(record, 'showDetailModal')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
+                return (<Text>{value}</Text>)
             }
         },
         // {
@@ -146,7 +142,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             title: t['statList.label.title'],
             dataIndex: 'title',
             render:(value,record) => {
-                return (<div onClick={() => callback(record, 'showDetailModal')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
+                return (<Text>{value}</Text>)
             }
         },
         {
@@ -215,7 +211,7 @@ export function getBindColumns(t: any,bindList:Array<number>,callback: (record: 
             title: t['statList.label.title'],
             dataIndex: 'title',
             render:(value,record) => {
-                return (<div onClick={() => callback(record, 'showDetailModal')} style={{ cursor: "pointer" }} ><Text>{value}</Text></div>)
+                return (<Text>{value}</Text>)
             }
         },
         {
