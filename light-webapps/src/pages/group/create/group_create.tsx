@@ -134,12 +134,12 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
                       setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
                     }}
                           defaultValue={"string"}>
-              <Select.Option key={"string"}  value={"string"} onClick={() => {
+              <Select.Option style={{lineHeight:'30px'}} key={"string"}  value={"string"} onClick={() => {
                 setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
               }}>
                 String
               </Select.Option>
-              <Select.Option key={"number"}  value={"number"} onClick={() => {
+              <Select.Option style={{lineHeight:'30px'}} key={"number"}  value={"number"} onClick={() => {
                 setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
               }}>
                 Number

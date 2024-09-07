@@ -64,12 +64,12 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
                                 setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
                             }}
                             defaultValue={text}>
-                        <Select.Option key={"string"}  value={"string"} onClick={() => {
+                        <Select.Option style={{lineHeight:'30px'}} key={"string"}  value={"string"} onClick={() => {
                             setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
                         }}>
                             String
                         </Select.Option>
-                        <Select.Option key={"number"}  value={"number"} onClick={() => {
+                        <Select.Option style={{lineHeight:'30px'}} key={"number"}  value={"number"} onClick={() => {
                             setExpandedKeys((keys) => keys.filter((key) => key !== record.key));
                         }}>
                             Number
@@ -176,13 +176,27 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
         })
     }
 
+    function sortByList(arr, list) {
+        return arr
+            .map((item, index) => ({ ...item, index }))
+            .sort((a, b) => {
+                const aInList = list.includes(a.name);
+                const bInList = list.includes(b.name);
+                if (aInList && !bInList) return -1;
+                if (!aInList && bInList) return 1;
+                return a.index - b.index;
+            })
+            .map(({ index, ...item }) => item);
+    }
+
     useEffect(() => {
-        const columnArr: Array<EditTableColumn> = [];
+        let columnArr: Array<EditTableColumn> = [];
         const relatedColumns = groupInfo?.relatedColumns;
         for (let i = 0; i < groupInfo?.columns.length; i++) {
             const columnInfo = groupInfo?.columns[i];
             columnArr.push({...columnInfo, "key": getRandomString(),lockColumns:relatedColumns?.includes(columnInfo.name)?['name','type','operation']:[]})
         }
+        columnArr = sortByList(columnArr,relatedColumns);
         setInitData(columnArr);
         const formData = {
             token:groupInfo?.token,

@@ -3,6 +3,7 @@ import {Form, FormInstance, Input, Table, TableColumnProps} from '@arco-design/w
 import styles from './style/index.module.less';
 import {Column} from "@/types/insights-web";
 import {getRandomString} from "@/utils/util";
+import {GlobalContext} from "@/context";
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext<{ getForm?: () => FormInstance }>({});
@@ -34,6 +35,7 @@ const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
     const tableRef = useRef(null);
     const [count, setCount] = useState(1);
     const [data,setData] = useState(columnsData);
+    const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
 
     function handleSave(row) {
         const newData = [...data];
@@ -76,7 +78,7 @@ const EditTable = React.forwardRef( (props:{columnsProps,columnsData},ref) => {
 
 
     return (
-        <div className={styles["edit_panel"]}>
+        <div className={theme == 'dark'?styles.dark_edit_panel:styles.light_edit_panel}>
             <Table
                 className={["edit_table_panel","tableCellArcoSelect"]}
                 ref={tableRef}
