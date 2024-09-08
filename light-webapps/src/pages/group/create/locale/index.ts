@@ -2,7 +2,9 @@ const i18n = {
     'en-US': {
         'groupCreate.modal.title':'Create Group',
         'groupCreate.form.validate.token.notEmpty.errorMsg':'Token cannot be empty!',
-        'groupCreate.form.validate.token.failed':'Token verification failed!',
+        'groupCreate.form.validate.token.failed':'Token format verification failed!',
+        'groupCreate.form.token.less.limit': 'Token length is less than required!',
+        'groupCreate.form.token.exceeds.limit': 'Title length exceeds limit!',
         'groupCreate.form.validate.column.notEmpty.errorMsg':'Columns information cannot be empty!',
         'groupCreate.form.validate.columnName.notEmpty':'ColumnName cannot be empty!',
         'groupCreate.form.validate.columnName.length.failed':'ColumnName[%s] length should be between 3-15 chars!',
@@ -18,7 +20,9 @@ const i18n = {
     'zh-CN': {
         'groupCreate.modal.title':'创建统计组',
         'groupCreate.form.validate.token.notEmpty.errorMsg':'Token cannot be empty!',
-        'groupCreate.form.validate.token.failed':'Token校验失败！',
+        'groupCreate.form.validate.token.failed':'Token格式校验失败！',
+        'groupCreate.form.token.less.limit': 'Token长度低于要求!',
+        'groupCreate.form.token.exceeds.limit': 'Token长度超出限制!',
         'groupCreate.form.validate.column.notEmpty.errorMsg':'字段信息不能为空！',
         'groupCreate.form.validate.columnName.notEmpty':'字段名称不能为空!',
         'groupCreate.form.validate.columnName.length.failed':'字段名称[%s]长度应处于3-15字符之间!',

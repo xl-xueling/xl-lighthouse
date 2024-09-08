@@ -171,7 +171,7 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
           onOk={onOk}
           visible={true}
           alignCenter={false}
-          style={{width:'960px',maxWidth:'80%', top: '150px' }}
+          style={{width:'1060px',maxWidth:'80%',top: '100px'}}
           confirmLoading={confirmLoading}
           onCancel={onClose}>
         <Form
@@ -186,6 +186,18 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
           <Form.Item field="token"
                      rules={[
                        { required: true, message: t['groupCreate.form.validate.token.notEmpty.errorMsg'], validateTrigger : ['onSubmit'] },
+                       {
+                         required:true,
+                         validator: (v, cb) => {
+                           if (getTextBlenLength(v) < 5) {
+                             return cb(t['groupCreate.form.token.less.limit'])
+                           }else if (getTextBlenLength(v) > 25) {
+                             return cb(t['groupCreate.form.token.exceeds.limit'])
+                           }
+                           cb(null);
+                         }
+                         , validateTrigger : ['onSubmit']
+                       },
                        { required: true, match: new RegExp(_TokenPattern,"g"),message: t['groupCreate.form.validate.token.failed'] , validateTrigger : ['onSubmit']},
                      ]}>
             <Input
