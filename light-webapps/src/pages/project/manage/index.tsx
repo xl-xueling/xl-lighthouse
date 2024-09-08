@@ -204,8 +204,8 @@ export default function ProjectManagePage() {
                                 </div>
                                 <div className={styles['layout-content']}>
                                     {showManagePanel &&
-                                    <Card><GroupManagePanel projectInfo={projectInfo} groupId={groupId}
-                                                            deleteCallback={callback}/></Card>}
+                                    <GroupManagePanel projectInfo={projectInfo} groupId={groupId}
+                                                            deleteCallback={callback}/>}
                                 </div>
                                 {showGroupCreatePanel && <GroupCreateModal projectId={id} callback={callback}
                                                                            onClose={() => setShowGroupCreatePanel(false)}/>}
