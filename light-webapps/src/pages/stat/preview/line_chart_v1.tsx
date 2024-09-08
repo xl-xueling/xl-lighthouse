@@ -136,7 +136,7 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
             const errorOption = getEchartsErrorOption(theme,errorMessage);
             chart.setOption(errorOption);
         }
-    },[JSON.stringify(data),errorMessage])
+    },[JSON.stringify(data),errorMessage,theme])
 
     useEffect(() => {
         setLoadingOption(getEchartsLoadingOption(theme));
