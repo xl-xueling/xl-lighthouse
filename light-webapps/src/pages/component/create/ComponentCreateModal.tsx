@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {
     Radio,
     Button,
@@ -37,6 +37,7 @@ import "ace-builds";
 import 'ace-builds/src-noconflict/ace'
 import 'ace-builds/src-noconflict/theme-textmate';
 import 'ace-builds/src-noconflict/theme-gruvbox';
+import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/mode-json5';
 import 'ace-builds/src-noconflict/mode-jsoniq';
@@ -46,6 +47,8 @@ import ace from 'ace-builds/src-noconflict/ace';
 import {requestCreate} from "@/api/component";
 import {requestVerify} from "@/api/component";
 import {translate, translateResponse} from "@/pages/department/base";
+import useStorage from "@/utils/useStorage";
+import {GlobalContext} from "@/context";
 
 
 export default function ComponentCreateModal({onClose,onSuccess}) {
@@ -57,6 +60,15 @@ export default function ComponentCreateModal({onClose,onSuccess}) {
     const [value, setValue] = useState("");
     const [annotations, setAnnotations] = useState([]);
     const formRef = useRef(null);
+    const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
+
+    useEffect(() => {
+        if(theme == 'light'){
+            setEditorTheme('textmate');
+        }else if(theme == 'dark'){
+            setEditorTheme('monokai');
+        }
+    },[theme])
 
     const onChange = (newValue) => {
         setValue(newValue);

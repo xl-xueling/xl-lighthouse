@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {
     Radio,
     Button,
@@ -21,10 +21,13 @@ const Option = Select.Option;
 import AceEditor from "react-ace";
 import 'ace-builds/src-noconflict/theme-textmate';
 import 'ace-builds/src-noconflict/theme-gruvbox';
+import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/mode-xml';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import {translate, translateResponse} from "@/pages/department/base";
 import {requestUpdate} from "@/api/component";
+import useStorage from "@/utils/useStorage";
+import {GlobalContext} from "@/context";
 
 
 export default function ComponentUpdateModal({componentInfo,onClose,onSuccess}) {
@@ -36,7 +39,15 @@ export default function ComponentUpdateModal({componentInfo,onClose,onSuccess}) 
     const [value, setValue] = useState("");
     const [annotations, setAnnotations] = useState([]);
     const formRef = useRef(null);
+    const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
 
+    useEffect(() => {
+        if(theme == 'light'){
+            setEditorTheme('textmate');
+        }else if(theme == 'dark'){
+            setEditorTheme('monokai');
+        }
+    },[theme])
     const onChange = (newValue) => {
         setValue(newValue);
         try {
