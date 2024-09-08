@@ -134,7 +134,7 @@ export default function ComponentList() {
                     <Row gutter={24}>
                         <Col span={7}>
                             <Form.Item field="Title">
-                                <Input.Search  placeholder={t['componentList.label.title']} allowClear onSearch={(v) => {handleSearch({search:v})}} />
+                                <Input.Search size={"small"}  placeholder={t['componentList.label.title']} allowClear onSearch={(v) => {handleSearch({search:v})}} />
                             </Form.Item>
                         </Col>
                         <Grid.Col span={17} style={{ textAlign: 'right' }}>

@@ -30,6 +30,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             headerCellStyle: {width: '500px'},
             render: (value, record) => {
                 return <TreeSelect
+                    size={"small"}
                     placeholder={"Please Select"}
                     multiple={true}
                     treeCheckable={true}
