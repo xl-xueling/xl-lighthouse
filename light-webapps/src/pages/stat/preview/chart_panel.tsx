@@ -152,7 +152,7 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
                 left: 'center',
                 top: 'middle',
                 style: {
-                    fill: '#000',
+                    fill: theme == 'dark'?'#fff':'#000',
                     text: errorMessage,
                     fontSize: 12,
                 }
