@@ -130,6 +130,8 @@ const vi18n = {
         'basic.shortcuts.last1m':'1 Month ago',
         'basic.shortcuts.last2m':'2 Month ago',
         'basic.shortcuts.last3m':'3 Month ago',
+        'basic.view.label.lastWeek':'LastWeek',
+        'basic.view.label.lastMonth':'LastMonth',
     },
     'zh-CN': {
         'system.error':'系统异常!',
@@ -271,6 +273,8 @@ const vi18n = {
         'basic.shortcuts.last1m':'前一月',
         'basic.shortcuts.last2m':'前两月',
         'basic.shortcuts.last3m':'前三月',
+        'basic.view.label.lastWeek':'周同比',
+        'basic.view.label.lastMonth':'月同比',
     }
 }
 export default vi18n;
