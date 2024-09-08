@@ -95,7 +95,7 @@ export default function LoginForm() {
         >
           <Input
             prefix={<IconUser />}
-            autoComplete='off'
+            autoComplete="off"
             placeholder={t['login.form.userName.placeholder']}
           />
         </Form.Item>
@@ -108,7 +108,7 @@ export default function LoginForm() {
         >
           <Input.Password
             prefix={<IconLock />}
-            autoComplete='off'
+            autoComplete="new-password"
             placeholder={t['login.form.password.placeholder']}
           />
         </Form.Item>
