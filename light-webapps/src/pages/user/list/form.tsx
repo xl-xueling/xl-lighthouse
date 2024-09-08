@@ -64,6 +64,7 @@ function SearchForm(props: {onSearch: (values: Record<string, any>) => void;}) {
         onSubmit={() => {
           handleSubmit();
         }}
+        autoComplete={'off'}
         initialValues={{states:['2','3']}}
         colon={" :"}
         labelCol={{ span: 5 }}
