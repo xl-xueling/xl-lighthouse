@@ -244,11 +244,6 @@ function PageLayout() {
   }
 
   useEffect(() => {
-    document.getElementById("loading").style.display = "none";
-    document.body.style.backgroundColor="";
-  },[])
-
-  useEffect(() => {
     if(!userLoading){
       const timer = setTimeout(() => {
         document.documentElement.classList.add('loaded');

@@ -115,6 +115,11 @@ function Index() {
     changeTheme(theme);
   }, [theme]);
 
+  useEffect(() => {
+    document.getElementById("loading").style.display = "none";
+    document.body.style.backgroundColor="";
+  },[])
+
   const contextValue = {
     lang,
     setLang,
