@@ -244,23 +244,37 @@ function PageLayout() {
   }
 
   useEffect(() => {
+    document.getElementById("loading").style.display = "none";
+    document.body.style.backgroundColor="";
+  },[])
+
+  useEffect(() => {
+    if(!userLoading){
+      const timer = setTimeout(() => {
+        document.documentElement.classList.add('loaded');
+      }, 200);
+      return () => clearTimeout(timer);
+    }},[userLoading]);
+
+  useEffect(() => {
     const routeConfig = routeMap.current.get(pathname);
     setBreadCrumb(routeConfig || []);
     updateMenuStatus();
   }, [pathname]);
   return (
     <Layout className={styles.layout}>
-      <div
-        className={cs(styles['layout-navbar'], {
-          [styles['layout-navbar-hidden']]: !showNavbar,
-        })}
-      >
-        <Navbar show={showNavbar} />
-      </div>
       {userLoading ? (
         <Spin className={styles['spin']} />
       ) : (
-        <Layout>
+          <>
+            <div
+                className={cs(styles['layout-navbar'], {
+                  [styles['layout-navbar-hidden']]: !showNavbar,
+                })}
+            >
+              <Navbar show={showNavbar} />
+            </div>
+          <Layout>
           {showMenu && (
             <Sider
               className={styles['layout-sider']}
@@ -333,6 +347,7 @@ function PageLayout() {
             {showFooter && <Footer />}
           </Layout>
         </Layout>
+          </>
       )}
     </Layout>
   );
