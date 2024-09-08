@@ -244,14 +244,6 @@ function PageLayout() {
   }
 
   useEffect(() => {
-    if(!userLoading){
-      const timer = setTimeout(() => {
-        document.documentElement.classList.add('loaded');
-      }, 200);
-      return () => clearTimeout(timer);
-    }},[userLoading]);
-
-  useEffect(() => {
     const routeConfig = routeMap.current.get(pathname);
     setBreadCrumb(routeConfig || []);
     updateMenuStatus();

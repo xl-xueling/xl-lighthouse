@@ -120,6 +120,13 @@ function Index() {
     document.body.style.backgroundColor="";
   },[])
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document.documentElement.classList.add('loaded');
+    }, 200);
+    return () => clearTimeout(timer);
+  },[]);
+
   const contextValue = {
     lang,
     setLang,
