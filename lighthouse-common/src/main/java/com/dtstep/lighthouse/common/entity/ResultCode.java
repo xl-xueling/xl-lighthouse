@@ -168,6 +168,8 @@ public enum ResultCode {
 
     viewResponseNoData("11002","viewResponseNoData"),
 
+    viewNoValidStatItem("11003","viewNoValidStatItem"),
+
 
     ;
 
