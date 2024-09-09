@@ -164,7 +164,10 @@ public enum ResultCode {
 
     userStarViewLimitExceed("3001","userStarViewLimitExceed"),
 
-    viewMissingRequestParam("11001","viewMissingRequestParam");
+    viewMissingRequestParam("11001","viewMissingRequestParam"),
+
+    viewResponseNoData("11002","viewResponseNoData"),
+
 
     ;
 
