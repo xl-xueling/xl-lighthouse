@@ -130,8 +130,13 @@ public class DataServiceImpl implements DataService {
                 String value = dimensEntity.getValue();
                 if (value.contains(",")) {
                     String[] mapperArr = value.split(",");
-                    dimensValueList.add(mapperArr[0]);
-                    dimensDisplayValueList.add(mapperArr[1]);
+                    String tempValue = mapperArr[0];
+                    String tempDisplayValue = mapperArr[1];
+                    if(tempDisplayValue.equals("--")){
+                        tempDisplayValue = tempValue;
+                    }
+                    dimensValueList.add(tempValue);
+                    dimensDisplayValueList.add(tempDisplayValue);
                 } else {
                     dimensValueList.add(value);
                     dimensDisplayValueList.add(value);
