@@ -12,6 +12,8 @@ export const MetricSetStructureContext = React.createContext(null);
 
 export const StatInfoPreviewContext = React.createContext(null);
 
+export const ViewRenderContext = React.createContext(null);
+
 export default function Constants() {
     return <>{/* nothing */}</>;
 }
