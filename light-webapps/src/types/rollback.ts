@@ -6,9 +6,9 @@ export interface Rollback {
     id?:number;
     userId?:number;
     resourceId?:number;
+    state?:number;
     dataType?:RollbackTypeEnum;
     config?:string;
     version?:number;
-    baseFlag?:number;
     createTime?:number;
 }
