@@ -174,7 +174,6 @@ public class InitServiceImpl implements InitService {
     public void cmdbUpgrade() throws Exception {
         String ldpHome = System.getenv("LDP_HOME");
         String upgradeSqlFile = ldpHome + "/conf/ldp_upgrade.sql";
-        logger.info("upgradeSqlFile is:" + upgradeSqlFile);
         File sqlFile = new File(upgradeSqlFile);
         if (!sqlFile.exists()) {
             logger.info("cmdb database update file does not exist.");
