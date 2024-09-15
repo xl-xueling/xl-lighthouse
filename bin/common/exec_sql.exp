@@ -10,7 +10,8 @@ set ip [lindex $argv 1]
 set passwd [lindex $argv 2]
 set ldp_home [lindex $argv 3]
 set root_pwd [lindex $argv 4]
-set sql_path [lindex $argv 5]
+set db_name [lindex $argv 5]
+set sql_path [lindex $argv 6]
 set mysql_home ${ldp_home}/dependency/mysql
 set prompt "*${user}@*\\\$"
 if { $user == "root" } {
@@ -25,6 +26,8 @@ expect {
 }
 expect "${prompt}"
 send "${mysql_home}/bin/mysql -u root -h localhost -p'${root_pwd}'\r"
+expect "*>"
+send "use ${db_name};\r"
 expect "*>"
 send "source ${sql_path};\r"
 send "exit\r"
