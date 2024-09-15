@@ -27,4 +27,6 @@ public interface InitService {
     void initDefaultDomain() throws Exception;
 
     void initStorageEngine() throws Exception;
+
+    void cmdbUpgrade() throws Exception;
 }

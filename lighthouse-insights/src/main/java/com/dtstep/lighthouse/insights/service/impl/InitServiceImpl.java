@@ -26,19 +26,32 @@ import com.dtstep.lighthouse.common.modal.Department;
 import com.dtstep.lighthouse.common.modal.Domain;
 import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.common.modal.User;
+import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
+import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
 import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngine;
 import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngineProxy;
 import com.dtstep.lighthouse.insights.service.*;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class InitServiceImpl implements InitService {
+
+    private static final Logger logger = LoggerFactory.getLogger(InitServiceImpl.class);
 
     @Autowired
     private UserService userService;
@@ -154,6 +167,67 @@ public class InitServiceImpl implements InitService {
         String sysStatTableName = StatConst.SYSTEM_STAT_RESULT_TABLE;
         if(!dbEngine.isTableExist(sysStatTableName)){
             dbEngine.createResultTable(sysStatTableName);
+        }
+    }
+
+    @Override
+    public void cmdbUpgrade() throws Exception {
+        String ldpHome = System.getenv("LDP_HOME");
+        String upgradeSqlFile = ldpHome + "/conf/ldp_upgrade.sql";
+        logger.info("upgradeSqlFile is:" + upgradeSqlFile);
+        File sqlFile = new File(upgradeSqlFile);
+        if (!sqlFile.exists()) {
+            logger.info("cmdb database update file does not exist.");
+            return;
+        }
+        CMDBStorageEngine<Connection> storageEngine = CMDBStorageEngineProxy.getInstance();
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            conn = storageEngine.getConnection();
+            conn.setAutoCommit(false);
+            stmt = conn.createStatement();
+            BufferedReader br = new BufferedReader(new FileReader(upgradeSqlFile));
+            String line;
+            StringBuilder sql = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("--") || line.startsWith("//") || line.startsWith("/*")) {
+                    continue;
+                }
+                sql.append(line);
+                if (line.endsWith(";")) {
+                    try {
+                        stmt.execute(sql.toString());
+                    } catch (SQLException ex) {
+                        logger.error("execute cmdb upgrade error!",ex);
+                    }
+                    sql.setLength(0);
+                }
+            }
+            conn.commit();
+            br.close();
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            throw e;
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
         }
     }
 }

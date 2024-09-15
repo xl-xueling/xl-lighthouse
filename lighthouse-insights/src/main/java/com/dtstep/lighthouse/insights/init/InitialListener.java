@@ -83,6 +83,13 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
             logger.error("Storage database initialization failed!",ex);
             System.exit(-1);
         }
+
+        try{
+            initService.cmdbUpgrade();
+        }catch (Exception ex){
+            logger.error("CMDB database upgrade failed!",ex);
+            System.exit(-1);
+        }
         logger.info("service init success!");
     }
 }
