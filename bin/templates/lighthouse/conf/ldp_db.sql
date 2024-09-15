@@ -164,7 +164,8 @@ CREATE TABLE `ldp_metricsets` (
                                   `create_user` int DEFAULT NULL,
                                   `create_time` timestamp NULL DEFAULT NULL,
                                   `update_time` timestamp NULL DEFAULT NULL,
-                                  PRIMARY KEY (`id`)
+                                  PRIMARY KEY (`id`),
+                                  KEY `index_create_time` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100025 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -186,7 +187,8 @@ CREATE TABLE `ldp_order_details` (
                                      `create_time` timestamp NULL DEFAULT NULL,
                                      `process_time` timestamp NULL DEFAULT NULL,
                                      PRIMARY KEY (`id`),
-                                     KEY `index_order_id` (`order_id`)
+                                     KEY `index_order_id` (`order_id`),
+                                     KEY `index_create_time` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -326,7 +328,8 @@ CREATE TABLE `ldp_roles` (
                              `desc` varchar(300) DEFAULT NULL,
                              PRIMARY KEY (`id`),
                              KEY `index_pid` (`pid`),
-                             KEY `index_roletype_resourceId` (`role_type`,`resource_id`)
+                             KEY `index_roletype_resourceId` (`role_type`,`resource_id`),
+                             KEY `index_create_time` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1215 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -383,7 +386,8 @@ CREATE TABLE `ldp_stats` (
                              KEY `index_state` (`state`),
                              KEY `index_group_id` (`group_id`),
                              KEY `index_project_id` (`project_id`),
-                             KEY `index_title` (`title`)
+                             KEY `index_title` (`title`),
+                             KEY `index_create_time` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1100607 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -436,7 +440,8 @@ CREATE TABLE `ldp_views` (
                              `update_time` timestamp NOT NULL,
                              PRIMARY KEY (`id`),
                              KEY `index_state` (`state`),
-                             KEY `index_title` (`title`)
+                             KEY `index_title` (`title`),
+                             KEY `index_create_time` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1100023 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
