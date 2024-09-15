@@ -12,6 +12,7 @@ CUR_DIR=${UPGRADE_HOME}/bin
 CUR_USER=${USER}
 LOCKFILE=/tmp/lighthouse_upgrade.lock
 source "${CUR_DIR}/common/lib.sh"
+source "${CUR_DIR}/upgrade/upgrade.sh"
 source "${CUR_DIR}/prepare/prepare.sh"
 source "${CUR_DIR}/check/check.sh"
 source "${CUR_DIR}/clean/clean.sh"
@@ -126,6 +127,12 @@ main(){
                         done
                 echo "7" > ${UPGRADE_HOME}/upgrade_steps.tmp
         fi
+
+   if [ $steps -lt 8 ];then
+      db_upgrade;
+      echo "8" > ${UPGRADE_HOME}/upgrade_steps.tmp
+   fi
+
 	rm -f ${UPGRADE_HOME}/upgrade_steps.tmp;
 	rm -f ${LOCKFILE};
 	source ~/.bashrc;
