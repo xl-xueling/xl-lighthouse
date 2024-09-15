@@ -127,12 +127,6 @@ main(){
                         done
                 echo "7" > ${UPGRADE_HOME}/upgrade_steps.tmp
         fi
-
-   if [ $steps -lt 8 ];then
-      db_upgrade;
-      echo "8" > ${UPGRADE_HOME}/upgrade_steps.tmp
-   fi
-
 	rm -f ${UPGRADE_HOME}/upgrade_steps.tmp;
 	rm -f ${LOCKFILE};
 	source ~/.bashrc;
