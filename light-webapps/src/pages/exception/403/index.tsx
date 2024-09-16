@@ -8,15 +8,13 @@ function Exception403() {
   const t = useLocale(locale);
 
   return (
-    <div className={styles.container}>
       <div className={styles.wrapper}>
-        <Result
-          className={styles.result}
-          status="403"
-          subTitle={t['exception.result.403.description']}
-        />
+          <Result
+              className={styles.result}
+              status="403"
+              subTitle={t['exception.result.403.description']}
+          />
       </div>
-    </div>
   );
 }
 
