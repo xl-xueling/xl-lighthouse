@@ -330,7 +330,7 @@ CREATE TABLE `ldp_roles` (
                              KEY `index_pid` (`pid`),
                              KEY `index_roletype_resourceId` (`role_type`,`resource_id`),
                              KEY `index_create_time` (`create_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=1215 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10215 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
