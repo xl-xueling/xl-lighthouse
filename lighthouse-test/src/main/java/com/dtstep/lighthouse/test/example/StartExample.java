@@ -41,9 +41,9 @@ public class StartExample {
                 Validate.isTrue(metaId != null && metaId > 0);
                 exampleContext.setMetaId(metaId);
                 createExample();
-                logger.info("Create new statistics examples success!");
+                logger.info("Create statistic examples success!");
             }else{
-                logger.info("Statistics example already exists,groupId:"+ group.getId());
+                logger.info("Statistic examples already exists,groupId:"+ group.getId());
                 startExample();
             }
         }catch (Exception ex){
