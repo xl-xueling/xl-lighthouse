@@ -72,7 +72,8 @@ export default function ProjectApplyModal({projectInfo,onClose}) {
     return (
         <Modal
             title= {t['projectApply.modal.title']}
-            style={{ width:'750px',top:'20px' }}
+            alignCenter={false}
+            style={{ width:'800px',maxWidth:'80%',verticalAlign:'top', top: '150px' }}
             visible={true}
             confirmLoading={loading}
             onOk={handlerSubmit}
