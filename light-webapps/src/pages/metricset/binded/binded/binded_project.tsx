@@ -1,6 +1,5 @@
 import {Form, Grid, Input} from "@arco-design/web-react";
 import React, {useState} from "react";
-import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import ProjectListPanel from "@/pages/project/list/ProjectListPanel";
 
 export default function BindedProjectListPanel({metricSetInfo}) {
@@ -29,7 +28,7 @@ export default function BindedProjectListPanel({metricSetInfo}) {
                 <Input.Search size={"small"} style={{width:'320px'}} allowClear={true} onSearch={handlerSearch}/>
             </Form.Item>
         </Form>
-            <ProjectListPanel formParams={formParams} from={'bind'} extend={metricSetInfo} defaultPagination={pagination}/>
+            <ProjectListPanel formParams={formParams} from={'bind'} extend={metricSetInfo} defaultPagination={pagination} owner={0}/>
         </>
     );
 }
