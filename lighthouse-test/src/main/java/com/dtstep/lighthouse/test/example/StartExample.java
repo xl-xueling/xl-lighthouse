@@ -261,7 +261,6 @@ public class StartExample {
             manageRole.setUpdateTime(localDateTime);
             manageRole.setDesc(RoleTypeEnum.STAT_MANAGE_PERMISSION+"("+ stat.getTitle()+")");
             int manageRoleId = RoleHandler.createRole(connection,manageRole);
-            exampleContext.setGroupManageRoleId(manageRoleId);
 
             Role accessRole = new Role();
             accessRole.setPid(exampleContext.getGroupAccessRoleId());
@@ -271,7 +270,6 @@ public class StartExample {
             accessRole.setUpdateTime(localDateTime);
             accessRole.setDesc(RoleTypeEnum.STAT_ACCESS_PERMISSION+"("+stat.getTitle()+")");
             int accessRoleId = RoleHandler.createRole(connection,accessRole);
-            exampleContext.setGroupAccessRoleId(accessRoleId);
 
             Permission managePermission = new Permission();
             managePermission.setRoleId(manageRoleId);
