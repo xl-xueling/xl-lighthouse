@@ -247,7 +247,7 @@ export const getTreeResourceIcon= (type,level) => {
     }else if(type == 'project'){
         return <PiDiamondsFour style={{marginRight:'8px',position: 'relative', top: '2px'}}/>
     }else if(type == 'view'){
-        return <TbBrandVisualStudio size={15} style={{marginRight:'8px',position: 'relative',top:'2px'}}/>
+        return <TbBrandVisualStudio size={15} style={{marginRight:'8px',position: 'relative',top:'2px',opacity:0.8}}/>
     }else if(type == 'dir' && level == 1){
         return <RxCube size={15} style={{marginRight:'8px',position: 'relative', top: '1px'}}/>
     } else if(type == 'dir' && level == 2){

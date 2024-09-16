@@ -62,7 +62,7 @@ export default function MetricSetDataViewMenu({callback}) {
                     }}
 
                                   title={
-                        <span style={{display:"inline-flex",alignItems:"center"}}>{getTreeResourceIconWithColor(item.type,level,'var(--color-neutral-8)')}{item.label}</span>
+                        <span style={{display:"inline-flex",alignItems:"center"}}>{getTreeResourceIcon(item.type,level)}{item.label}</span>
                     }>
                         {renderMenuItems(item.children,level + 1)}
                     </Menu.SubMenu>
@@ -75,7 +75,7 @@ export default function MetricSetDataViewMenu({callback}) {
                 }else if(item.type == 'view'){
                     callback("clickViewMenu",Number(item.value),item.label);
                 }
-            }} key={item.key}>{getTreeResourceIconWithColor(item.type,level,'var(--color-neutral-8)')}{item.label}</Menu.Item>;
+            }} key={item.key}>{getTreeResourceIcon(item.type,level)}{item.label}</Menu.Item>;
         });
 
     return (
