@@ -43,7 +43,7 @@
 
     <select id="queryRole" resultMap="roleResultMap">
         SELECT `id`,`role_type`, `resource_id`,`pid`, `create_time`, `update_time` FROM ldp_roles
-        WHERE role_type = #{roleTypeEnum.roleType} and resource_id = #{resourceId}
+        WHERE role_type = #{roleTypeEnum.roleType} and resource_id = #{resourceId} limit 1
     </select>
 
     <select id="isRoleExist" resultType="boolean">
