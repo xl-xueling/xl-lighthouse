@@ -90,14 +90,13 @@ function CardBlock(props: CardBlockType) {
       style={{cursor:'pointer'}}
         actions={
           [
-          item.permissions.includes(PermissionEnum.AccessAble)?
-              <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();redirectPreview();}}>
-                 <Button type={"secondary"} size={"mini"}>{t['basic.form.button.preview']}</Button>
-              </span>:null,
-              item.permissions.includes(PermissionEnum.ManageAble)?
-                  <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();redirectManage();}}>
-                 <Button type={"primary"} size={"mini"}>{t['basic.form.button.manage']}</Button>
-              </span>:null,
+          <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();redirectPreview();}}>
+             <Button type={"secondary"} size={"mini"}>{t['basic.form.button.preview']}</Button>
+          </span>,
+          item.permissions.includes(PermissionEnum.ManageAble)?
+              <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();redirectManage();}}>
+             <Button type={"primary"} size={"mini"}>{t['basic.form.button.manage']}</Button>
+          </span>:null,
         ]}
 
       title={
