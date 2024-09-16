@@ -165,17 +165,17 @@ public final class MetaTableWrapper {
         metaTable.setMetaTableType(MetaTableTypeEnum.STAT_RESULT_TABLE);
         try{
             WarehouseStorageEngineProxy.getInstance().createResultTable(metaName);
-            logger.info("create stat storage table,create hbase table success,metaName:{}",metaName);
+            logger.info("create storage table success,metaName:{}",metaName);
         }catch (Exception ex){
-            logger.error("create stat storage table,create hbase table error,metaName:{}",metaName,ex);
+            logger.error("create storage table error,metaName:{}",metaName,ex);
             throw ex;
         }
         int tableId;
         try{
             tableId = insertIntoMySQL(metaTable);
-            logger.info("create stat meta table,save table info success,metaName;{}",metaName);
+            logger.info("save storage table meta info success,metaName;{}",metaName);
         }catch (Exception ex){
-            logger.error("create stat meta table,save table info error,metaName:{}",metaName,ex);
+            logger.error("save storage table meta info error,metaName:{}",metaName,ex);
             deleteTable(metaName);
             throw ex;
         }

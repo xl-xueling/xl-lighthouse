@@ -25,9 +25,9 @@ public class MetaHandler {
         String metaName = metaTable.getMetaName();
         try{
             WarehouseStorageEngineProxy.getInstance().createResultTable(metaName);
-            logger.info("create stat storage table,create hbase table success,metaName:{}",metaName);
+            logger.info("create stat storage table success,metaName:{}",metaName);
         }catch (Exception ex){
-            logger.error("create stat storage table,create hbase table error,metaName:{}",metaName,ex);
+            logger.error("create stat storage table error,metaName:{}",metaName,ex);
             throw ex;
         }
 
