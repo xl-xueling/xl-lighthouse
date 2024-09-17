@@ -8,7 +8,7 @@ const i18n = {
     'projectApply.column.createTime':'CreateTime',
     'projectApply.column.department':'Department',
     'projectApply.column.description':'Description',
-    'projectApply.form.submit.success':'Access request submitted!',
+    'projectApply.form.submit.success':'Access request has been submitted!',
   },
   'zh-CN': {
     'projectApply.modal.title':'申请工程访问权限',
