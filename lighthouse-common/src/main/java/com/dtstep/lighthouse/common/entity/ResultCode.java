@@ -170,6 +170,7 @@ public enum ResultCode {
 
     viewNoValidStatItem("11003","viewNoValidStatItem"),
 
+    viewNotAuthorized("11004","viewNotAuthorized"),
 
     ;
 
