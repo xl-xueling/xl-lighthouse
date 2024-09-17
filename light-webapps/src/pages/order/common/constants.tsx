@@ -112,29 +112,28 @@ export function getStatAccessColumns(t: any) {
             ,
         },
         {
-            title: t['detailModal.statAccess.columns.department'],
-            dataIndex: 'departmentId',
-            render: (value,record) => {
-                return <DepartmentLabel departmentId={value}/>
-            }
-            ,
-        },
-        {
-            title: t['detailModal.statAccess.columns.admins'],
-            dataIndex: 'admins',
-            render: (value,record) => {
-                return <UserGroup users={value}/>
+            title: t['detailModal.statAccess.columns.relationship'],
+            dataIndex: 'relationship',
+            render:(value,record) => {
+                return (record.projectTitle + ' > ' + record.token);
             }
         },
+        // {
+        //     title: t['detailModal.statAccess.columns.department'],
+        //     dataIndex: 'departmentId',
+        //     render: (value,record) => {
+        //         return <DepartmentLabel departmentId={value}/>
+        //     }
+        //     ,
+        // },
         {
             title: t['detailModal.statAccess.columns.desc'],
             dataIndex: 'desc',
             render: (value,record) => {
-                return <Text>{value}</Text>
+                return <Text ellipsis={true}>{value}</Text>
             }
-            ,
-        },
-    ];
+        }
+    ]
 }
 
 export function getViewAccessColumns(t: any) {

@@ -53,15 +53,17 @@ export default function StatApplyModal({statInfo,onClose}) {
     }
 
 
-    useEffect(() => {
-        console.log("statInfo is:" + JSON.stringify(statInfo));
-    },[])
-
-
     const data = [
         {
             label: t['statApply.column.title'],
             value: statInfo?.title,
+        },
+        {
+            title: t['statApply.label.relationship'],
+            dataIndex: 'relationship',
+            render:(value,record) => {
+                return (record.projectTitle + ' > ' + record.token);
+            }
         },
         {
             label: t['statApply.column.department'],
@@ -73,7 +75,7 @@ export default function StatApplyModal({statInfo,onClose}) {
         },
         {
             label: t['statApply.column.description'],
-            value: statInfo?.desc,
+            value: <Text ellipsis={true}>{statInfo?.desc}</Text>,
         },
     ];
 
