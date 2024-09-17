@@ -8,7 +8,7 @@ const i18n = {
     'statApply.column.createTime':'CreateTime',
     'statApply.column.department':'Department',
     'statApply.column.description':'Description',
-    'statApply.form.submit.success':'Access request submitted!',
+    'statApply.form.submit.success':'Statistic access request submitted!',
   },
   'zh-CN': {
     'statApply.modal.title':'申请统计项访问权限',
@@ -19,7 +19,7 @@ const i18n = {
     'statApply.column.createTime':'创建时间',
     'statApply.column.department':'部门',
     'statApply.column.description':'描述',
-    'statApply.form.submit.success':'已提交工程访问权限申请！',
+    'statApply.form.submit.success':'已提交统计项访问权限申请！',
   },
 };
 
