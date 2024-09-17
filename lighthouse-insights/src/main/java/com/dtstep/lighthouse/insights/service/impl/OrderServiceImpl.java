@@ -277,7 +277,7 @@ public class OrderServiceImpl implements OrderService {
             Integer viewId = (Integer) extendConfig.get("viewId");
             View view = viewService.queryById(viewId);
             Validate.notNull(view);
-            String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + view;
+            String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + viewId;
             hash = Md5Util.getMD5(message);
             roleList = getApproveRoleList(applyUser,orderTypeEnum,view);
         }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
