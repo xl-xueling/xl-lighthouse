@@ -93,7 +93,7 @@ export default function UserList() {
         Notification.info({style: { width: 420 }, title: 'Notification', content: t['userList.columns.delete.success']});
         setTimeout(() => {
           handleSearch({...formParams,t:Date.now()});
-        },2000)
+        },1000)
       }else if(GlobalErrorCodes.includes(String(code))){
         setErrorCode(code);
       }else{
