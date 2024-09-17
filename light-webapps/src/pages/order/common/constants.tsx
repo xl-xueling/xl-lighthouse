@@ -100,6 +100,7 @@ export function getStatAccessColumns(t: any) {
         {
             title: t['detailModal.statAccess.columns.id'],
             dataIndex: 'id',
+            headerCellStyle: { width: '90px' },
             render: (value,record) =>
                 <Text>{value}</Text>
             ,
@@ -107,6 +108,7 @@ export function getStatAccessColumns(t: any) {
         {
             title: t['detailModal.statAccess.columns.title'],
             dataIndex: 'title',
+            headerCellStyle: { minWidth: '150px' },
             render: (value,record) =>
                 <Text>{value}</Text>
             ,
@@ -114,6 +116,7 @@ export function getStatAccessColumns(t: any) {
         {
             title: t['detailModal.statAccess.columns.relationship'],
             dataIndex: 'relationship',
+            headerCellStyle: { minWidth: '150px' },
             render:(value,record) => {
                 return (record.projectTitle + ' > ' + record.token);
             }
@@ -130,9 +133,10 @@ export function getStatAccessColumns(t: any) {
             title: t['detailModal.statAccess.columns.desc'],
             dataIndex: 'desc',
             render: (value,record) => {
-                return <Text ellipsis={true}>{value}</Text>
+                return <Text>{value}</Text>
             }
-        }
+            ,
+        },
     ]
 }
 

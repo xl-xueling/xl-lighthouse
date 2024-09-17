@@ -62,7 +62,7 @@ export default function StatApplyModal({statInfo,onClose}) {
             title: t['statApply.label.relationship'],
             dataIndex: 'relationship',
             render:(value,record) => {
-                return (record.projectTitle + ' > ' + record.token);
+                return record.projectTitle + ' > ' + record.token;
             }
         },
         {
@@ -75,7 +75,7 @@ export default function StatApplyModal({statInfo,onClose}) {
         },
         {
             label: t['statApply.column.description'],
-            value: <Text ellipsis={true}>{statInfo?.desc}</Text>,
+            value: statInfo?.desc,
         },
     ];
 
