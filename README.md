@@ -169,6 +169,12 @@ XL-LightHouse除了大数据版本外，同时支持单机版。单机模式成�
 ![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/11.jpg)
 ![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/37.jpg)
 
+###  商业版本Web端部分功能预览
+
+XL-LightHouse商业版提供更加强大和便利的数据统计分析功能，目前已支持折线图、面积图、柱状图、饼状图、漏斗图、表格等多种展示形式，支持各种日期筛选和维度筛选组件的嵌入使用。不需要SQL开发，只需页面配置，即可轻松实现美观大方的数据展示效果，价格十分优惠，详见项目网站介绍，欢迎采购！
+
+![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/38.jpg)
+
 ### Contact
 
 如果您有任何问题、意见或建议，请您添加以下微信。
