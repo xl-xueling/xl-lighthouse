@@ -222,6 +222,7 @@ export enum ChartTypeEnum {
     FUNNEL_CHART=6,
     CALENDAR_CHART=7,
     TABLE_CHART=8,
+    SORTED_BAR_CHART=9,
 }
 
 
