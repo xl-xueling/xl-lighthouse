@@ -23,6 +23,11 @@
             <version>${revision}</version>
         </dependency>
         <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec-http</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.dtstep.lighthouse</groupId>
             <artifactId>lighthouse-core</artifactId>
             <version>${revision}</version>
