@@ -22,14 +22,12 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-        logger.info("---a8");
         if (request.method() == HttpMethod.GET) {
             handleGetRequest(ctx, request);
         }
         else if (request.method() == HttpMethod.POST) {
             handlePostRequest(ctx, request);
         }
-        logger.info("---a9");
     }
 
     private void handleGetRequest(ChannelHandlerContext ctx, FullHttpRequest request) {
@@ -42,15 +40,20 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
             clusterInfo.setStartTime(time);
             clusterInfo.setRunningTime(System.currentTimeMillis() - time);
             result = JsonUtil.toJSONString(clusterInfo);
+            FullHttpResponse response = new DefaultFullHttpResponse(
+                    HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(result.getBytes()));
+            response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
+            response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
+            ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
         }else{
             result = "The current http service does not allow the GET request type!";
             logger.warn(result);
+            FullHttpResponse response = new DefaultFullHttpResponse(
+                    HttpVersion.HTTP_1_1, HttpResponseStatus.METHOD_NOT_ALLOWED, Unpooled.wrappedBuffer(result.getBytes()));
+            response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
+            response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
+            ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
         }
-        FullHttpResponse response = new DefaultFullHttpResponse(
-                HttpVersion.HTTP_1_1, HttpResponseStatus.METHOD_NOT_ALLOWED, Unpooled.wrappedBuffer(result.getBytes()));
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
-        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
-        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
 

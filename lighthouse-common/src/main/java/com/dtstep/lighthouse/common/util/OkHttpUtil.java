@@ -38,7 +38,7 @@ public class OkHttpUtil {
         }
     }
 
-    public static String get(String url, String requestBody) throws IOException {
+    public static String get(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .build();

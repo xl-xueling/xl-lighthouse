@@ -6,8 +6,8 @@ public class OKhttpTest {
 
     @Test
     public void testRequest() throws Exception {
-        String url = "http://127.0.0.1:18101/clusterInfo";
-        String response = OkHttpUtil.post(url,"");
+        String url = "http://10.206.6.31:18101/clusterInfo";
+        String response = OkHttpUtil.get(url);
         System.out.println("resonse:" + response);
     }
 }
