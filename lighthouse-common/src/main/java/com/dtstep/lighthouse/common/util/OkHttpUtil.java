@@ -37,4 +37,16 @@ public class OkHttpUtil {
             return response.body().string();
         }
     }
+
+    public static String get(String url, String requestBody) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            return response.body().string();
+        }
+    }
 }

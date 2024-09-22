@@ -16,13 +16,16 @@ package com.dtstep.lighthouse.ice.servant.rpc.ice;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.client.LightHouse;
 import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.common.ice.RemoteLightServer;
 import com.dtstep.lighthouse.core.config.LDPConfig;
+import com.dtstep.lighthouse.core.http.LightHouseHttpService;
 import com.zeroc.Ice.Communicator;
 import com.zeroc.Ice.ObjectAdapter;
 import com.zeroc.Ice.Util;
 import com.zeroc.IceBox.Service;
+import com.zeroc.IceInternal.Ex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,15 +38,33 @@ public class ICELightHouseService implements Service {
         try{
             LDPConfig.loadConfiguration();
         }catch (Exception ex){
-            logger.error("ice server start error,system initialization error!",ex);
+            logger.error("ice service initialization error!",ex);
             throw new InitializationException();
         }
+
+        new Thread(() -> {
+            try{
+                new LightHouseHttpService().start();
+                logger.info("ice service http listening has been started!");
+            }catch (Exception ex){
+                logger.error("ice service http listening start error!",ex);
+                throw new InitializationException();
+            }
+        }).start();
+
+        try{
+            LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
+        }catch (Exception ex){
+            logger.error("ice service initialization error!",ex);
+            throw new InitializationException();
+        }
+
         ObjectAdapter adapter = communicator.createObjectAdapter(s);
         communicator.getProperties().setProperty("Ice.MessageSizeMax", "1409600");
         RemoteLightServer servant = new ICERemoteLightServerImpl();
         adapter.add(servant, Util.stringToIdentity("LightHouseServiceIdentity"));
         adapter.activate();
-        System.out.println("lighthouse server start success!");
+        System.out.println("ice server start success!");
     }
 
     @Override
