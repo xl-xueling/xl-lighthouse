@@ -46,7 +46,7 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
             response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
             ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
         }else{
-            result = "The current http service does not allow the GET request type!";
+            result = "The current http service does not allow GET request type!";
             logger.warn(result);
             FullHttpResponse response = new DefaultFullHttpResponse(
                     HttpVersion.HTTP_1_1, HttpResponseStatus.METHOD_NOT_ALLOWED, Unpooled.wrappedBuffer(result.getBytes()));

@@ -3,9 +3,11 @@ package com.dtstep.lighthouse.core.test.api;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.OkHttpUtil;
+import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class HttpApiTest {
 
@@ -61,5 +63,32 @@ public class HttpApiTest {
         System.out.println(response);
     }
 
+    @Test
+    public void testDataQueryWithDimensList() throws Exception {
+        String apiUrl = "http://10.206.6.31:18101/api/rpc/v1/dataQueryWithDimensList";
+        Map<String,Object> requestMap = new HashMap<>();
+        requestMap.put("statId","1100613");
+        requestMap.put("secretKey","dTdYSwzPz5GRMm1GDAMYKouGKoeD5IW8YVDiAAdH");
+        List<String> list = List.of("21","72","36");
+        requestMap.put("dimensValueList",list);
+        requestMap.put("startTime", DateUtil.getDayStartTime(System.currentTimeMillis()));
+        requestMap.put("endTime", DateUtil.getDayEndTime(System.currentTimeMillis()));
+        String requestParams = JsonUtil.toJSONString(requestMap);
+        String response = OkHttpUtil.post(apiUrl,requestParams);
+        System.out.println(response);
+    }
 
+    @Test
+    public void testLimitQuery() throws Exception{
+        String apiUrl = "http://10.206.6.31:18101/api/rpc/v1/limitQuery";
+        Map<String,Object> requestMap = new HashMap<>();
+        requestMap.put("statId","1100617");
+        requestMap.put("secretKey","dTdYSwzPz5GRMm1GDAMYKouGKoeD5IW8YVDiAAdH");
+        long batchTime = DateUtil.batchTime(5, TimeUnit.MINUTES,DateUtil.getMinuteBefore(System.currentTimeMillis(),5));
+        System.out.println("batchTime:" + DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
+        requestMap.put("batchTime", batchTime);
+        String requestParams = JsonUtil.toJSONString(requestMap);
+        String response = OkHttpUtil.post(apiUrl,requestParams);
+        System.out.println(response);
+    }
 }
