@@ -8,7 +8,7 @@ public enum ApiResultCode {
 
     ProcessError("102","Process Error!"),
 
-    ApiNotSupported("103","The api is not supported!"),
+    ApiNotSupported("103","The current call is not supported!"),
 
     MissingParams("104","Missing required parameters!"),
 

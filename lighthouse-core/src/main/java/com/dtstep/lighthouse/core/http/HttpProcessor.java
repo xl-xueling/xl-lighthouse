@@ -79,7 +79,7 @@ public class HttpProcessor {
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("params"));
         }
         try{
-            LightHouse.stat(tokenObj.toString(),secretKeyObj.toString(),(Map<String,Object>)paramsObj,Integer.parseInt(repeat.toString()),Integer.parseInt(timestamp.toString()));
+            LightHouse.stat(tokenObj.toString(),secretKeyObj.toString(),(Map<String,Object>)paramsObj,Integer.parseInt(repeat.toString()),Long.parseLong(timestamp.toString()));
         }catch (Exception ex){
             ApiResultCode apiResultCode = ApiResultCode.ProcessError;
             return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
@@ -94,6 +94,7 @@ public class HttpProcessor {
         Object dimensValueObj = requestMap.get("dimensValue");
         Object startTimeObj = requestMap.get("startTime");
         Object endTimeObj = requestMap.get("endTime");
+        Object batchList = requestMap.get("batchList");
         if(statIdObj == null){
             ApiResultCode apiResultCode = ApiResultCode.MissingParam;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("statId"));
@@ -106,34 +107,49 @@ public class HttpProcessor {
             ApiResultCode apiResultCode = ApiResultCode.MissingParam;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("secretKey"));
         }
-        if(startTimeObj == null){
-            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
-            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("startTime"));
-        }
-        if(!StringUtil.isNumber(startTimeObj.toString())){
-            ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
-            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("startTime"));
-        }
-        if(endTimeObj == null){
-            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
-            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("endTime"));
-        }
-        if(!StringUtil.isNumber(endTimeObj.toString())){
-            ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
-            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("endTime"));
-        }
         String dimensValue = null;
         if(dimensValueObj != null){
             dimensValue = dimensValueObj.toString();
         }
-        List<StatValue> list;
-        try{
-            list = LightHouse.dataQuery(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),dimensValue,Long.parseLong(startTimeObj.toString()),Long.parseLong(endTimeObj.toString()));
-        }catch (Exception ex){
-            ApiResultCode apiResultCode = ApiResultCode.ProcessError;
-            return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
+        if(batchList == null){
+            if(startTimeObj == null){
+                ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+                return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("startTime"));
+            }
+            if(!StringUtil.isNumber(startTimeObj.toString())){
+                ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
+                return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("startTime"));
+            }
+            if(endTimeObj == null){
+                ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+                return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("endTime"));
+            }
+            if(!StringUtil.isNumber(endTimeObj.toString())){
+                ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
+                return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("endTime"));
+            }
+            List<StatValue> list;
+            try{
+                list = LightHouse.dataQuery(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),dimensValue,Long.parseLong(startTimeObj.toString()),Long.parseLong(endTimeObj.toString()));
+            }catch (Exception ex){
+                ApiResultCode apiResultCode = ApiResultCode.ProcessError;
+                return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
+            }
+            return new ApiResultData(ApiResultCode.Success.getCode(), ApiResultCode.Success.getMessage(),list);
+        }else{
+            if(!(batchList instanceof List)){
+                ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
+                return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("batchList"));
+            }
+            List<StatValue> list;
+            try{
+                list = LightHouse.dataQuery(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),dimensValue,(List<Long>)batchList);
+            }catch (Exception ex){
+                ApiResultCode apiResultCode = ApiResultCode.ProcessError;
+                return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
+            }
+            return new ApiResultData(ApiResultCode.Success.getCode(), ApiResultCode.Success.getMessage(),list);
         }
-        return new ApiResultData(ApiResultCode.Success.getCode(), ApiResultCode.Success.getMessage(),list);
     }
 
     public static ApiResultData dataQueryWithDimensList(String requestBody) throws Exception {

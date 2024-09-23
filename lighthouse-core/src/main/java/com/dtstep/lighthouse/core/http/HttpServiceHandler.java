@@ -89,8 +89,17 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
     private ApiResultData request(String uri, String requestBody) throws Exception {
         if(uri.startsWith("/api/rpc/v1/")){
             String interfaceName = getInterfaceName(uri);
-            if(interfaceName.equals("stat")){
-                return HttpProcessor.stat(requestBody);
+            switch (interfaceName) {
+                case "stat":
+                    return HttpProcessor.stat(requestBody);
+                case "stats":
+                    return HttpProcessor.stats(requestBody);
+                case "dataQuery":
+                    return HttpProcessor.dataQuery(requestBody);
+                case "dataQueryWithDimensList":
+                    return HttpProcessor.dataQueryWithDimensList(requestBody);
+                case "limitQuery":
+                    return HttpProcessor.limitQuery(requestBody);
             }
         }
         return new ApiResultData(ApiResultCode.ApiNotSupported.getCode(), ApiResultCode.ApiNotSupported.getMessage());
