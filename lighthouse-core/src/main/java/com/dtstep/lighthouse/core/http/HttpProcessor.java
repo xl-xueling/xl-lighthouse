@@ -6,10 +6,10 @@ import com.dtstep.lighthouse.common.entity.ApiResultData;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.util.StringUtil;
-import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,13 @@ public class HttpProcessor {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static ApiResultData stats(String requestBody) throws Exception {
-        List<Map<String, Object>> list = objectMapper.readValue(requestBody, new TypeReference<>() {});
+        List<Map<String, Object>> list;
+        try{
+            list = objectMapper.readValue(requestBody, new TypeReference<>() {});
+        }catch (Exception ex){
+            ApiResultCode apiResultCode = ApiResultCode.ParametersParseException;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
+        }
         if(CollectionUtils.isEmpty(list)){
             ApiResultCode apiResultCode = ApiResultCode.MissingParams;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
@@ -38,7 +44,17 @@ public class HttpProcessor {
     }
 
     public static ApiResultData stat(String requestBody) throws Exception {
-        Map<String, Object> requestMap = objectMapper.readValue(requestBody,Map.class);
+        Map<String, Object> requestMap;
+        try{
+            requestMap =  objectMapper.readValue(requestBody,new TypeReference<>() {});
+        }catch (Exception ex){
+            ApiResultCode apiResultCode = ApiResultCode.ParametersParseException;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
+        }
+        if(MapUtils.isEmpty(requestMap)){
+            ApiResultCode apiResultCode = ApiResultCode.MissingParams;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
+        }
         return stat(requestMap);
     }
 
@@ -93,7 +109,17 @@ public class HttpProcessor {
     }
 
     public static ApiResultData dataQuery(String requestBody) throws Exception {
-        Map<String, Object> requestMap = objectMapper.readValue(requestBody,Map.class);
+        Map<String, Object> requestMap;
+        try{
+            requestMap =  objectMapper.readValue(requestBody,new TypeReference<>() {});
+        }catch (Exception ex){
+            ApiResultCode apiResultCode = ApiResultCode.ParametersParseException;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
+        }
+        if(MapUtils.isEmpty(requestMap)){
+            ApiResultCode apiResultCode = ApiResultCode.MissingParams;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
+        }
         Object statIdObj = requestMap.get("statId");
         Object secretKeyObj = requestMap.get("secretKey");
         Object dimensValueObj = requestMap.get("dimensValue");
@@ -164,7 +190,17 @@ public class HttpProcessor {
     }
 
     public static ApiResultData dataQueryWithDimensList(String requestBody) throws Exception {
-        Map<String, Object> requestMap = objectMapper.readValue(requestBody,Map.class);
+        Map<String, Object> requestMap;
+        try{
+            requestMap =  objectMapper.readValue(requestBody,new TypeReference<>() {});
+        }catch (Exception ex){
+            ApiResultCode apiResultCode = ApiResultCode.ParametersParseException;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
+        }
+        if(MapUtils.isEmpty(requestMap)){
+            ApiResultCode apiResultCode = ApiResultCode.MissingParams;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
+        }
         Object statIdObj = requestMap.get("statId");
         Object secretKeyObj = requestMap.get("secretKey");
         Object dimensValueListObj = requestMap.get("dimensValueList");
@@ -241,7 +277,17 @@ public class HttpProcessor {
     }
 
     public static ApiResultData limitQuery(String requestBody) throws Exception {
-        Map<String, Object> requestMap = objectMapper.readValue(requestBody, Map.class);
+        Map<String, Object> requestMap;
+        try{
+            requestMap =  objectMapper.readValue(requestBody,new TypeReference<>() {});
+        }catch (Exception ex){
+            ApiResultCode apiResultCode = ApiResultCode.ParametersParseException;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
+        }
+        if(MapUtils.isEmpty(requestMap)){
+            ApiResultCode apiResultCode = ApiResultCode.MissingParams;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
+        }
         Object statIdObj = requestMap.get("statId");
         Object secretKeyObj = requestMap.get("secretKey");
         Object batchTimeObj = requestMap.get("batchTime");

@@ -22,7 +22,15 @@ public class HttpProcessorTest extends CoreBaseTest {
 
     @Test
     public void testStat() throws Exception{
-        String text = "{\"params\":{\"imei\":\"2553889d-017a-4ef8-aa32-26751933ac8f\"},\"secretKey\":\"dTdYSwzPz5GRMm1GDAMYKouGKoeD5IW8YVDiAAdH\",\"timestamp\":1727061587634,\"token\":\"_demo_feed_behavior_stat\"}";
+        String text = "{\n" +
+                "\t\"params\": {\n" +
+                "\t\t\"behavior_type\": \"3\",\n" +
+                "\t\t\"imei\": \"9dad2cd3-0c58-444e-a31a-832308a9f8c5\"\n" +
+                "\t},\n" +
+                "\t\"secretKey\": \"dTdYSwzPz5GRMm1GDAMYKouGKoeD5IW8YVDiAAdH\",\n" +
+                "\t\"timestamp\": 1727075686477,\n" +
+                "\t\"token\": \"_demo_feed_behavior_stat\"\n" +
+                "}";
         ApiResultData apiResultData = HttpProcessor.stat(text);
         System.out.println("result:" + JsonUtil.toJSONString(apiResultData));
     }

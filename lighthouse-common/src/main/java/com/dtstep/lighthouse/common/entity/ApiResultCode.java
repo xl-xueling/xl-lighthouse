@@ -8,13 +8,15 @@ public enum ApiResultCode {
 
     ProcessError("102","Process Error!"),
 
-    ApiNotSupported("103","The current call is not supported!"),
+    ParametersParseException("103","Parameters parsing exception!"),
 
-    MissingParams("104","Missing required parameters!"),
+    ApiNotSupported("104","The current call is not supported!"),
 
-    MissingParam("105","Missing required parameter[%s]!"),
+    MissingParams("105","Missing required parameters!"),
 
-    IllegalParam("106","Parameter[%s] verification failed!"),
+    MissingParam("106","Missing required parameter[%s]!"),
+
+    IllegalParam("107","Parameter[%s] verification failed!"),
 
     ;
 
