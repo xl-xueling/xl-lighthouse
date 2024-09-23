@@ -21,6 +21,18 @@ public class HttpProcessorTest extends CoreBaseTest {
     }
 
     @Test
+    public void testStat() throws Exception{
+        String text = "{\"params\":{\"imei\":\"2553889d-017a-4ef8-aa32-26751933ac8f\"},\"secretKey\":\"dTdYSwzPz5GRMm1GDAMYKouGKoeD5IW8YVDiAAdH\",\"timestamp\":1727061587634,\"token\":\"_demo_feed_behavior_stat\"}";
+        ApiResultData apiResultData = HttpProcessor.stat(text);
+        System.out.println("result:" + JsonUtil.toJSONString(apiResultData));
+    }
+
+    @Test
+    public void testStats() throws Exception{
+        String text = "";
+    }
+
+    @Test
     public void testDataQuery() throws Exception {
         Map<String,Object> requestMap = new HashMap<>();
         requestMap.put("statId","1100607");
@@ -31,17 +43,5 @@ public class HttpProcessorTest extends CoreBaseTest {
         System.out.println("requestData:" + requestData);
         ApiResultData apiResultData = HttpProcessor.dataQuery(requestData);
         System.out.println("result:" + JsonUtil.toJSONString(apiResultData));
-    }
-
-    @Test
-    public void testStat() throws Exception{
-        String text = "{\"params\":{\"imei\":\"2553889d-017a-4ef8-aa32-26751933ac8f\"},\"secretKey\":\"dTdYSwzPz5GRMm1GDAMYKouGKoeD5IW8YVDiAAdH\",\"timestamp\":1727061587634,\"token\":\"_demo_feed_behavior_stat\"}";
-        ApiResultData apiResultData = HttpProcessor.stat(text);
-        System.out.println("result:" + JsonUtil.toJSONString(apiResultData));
-    }
-
-    @Test
-    public void testStats() throws Exception{
-        String text = "";
     }
 }

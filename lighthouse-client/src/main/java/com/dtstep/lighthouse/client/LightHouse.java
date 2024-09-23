@@ -183,6 +183,12 @@ public final class LightHouse {
         if(!_InitFlag.get()){
             throw new InitializationException("connection is not initialized or the connection is abnormal, request ignored!");
         }
+        if(StringUtil.isEmpty(secretKey)){
+            throw new IllegalArgumentException("Missing required parameter[secretKey]!");
+        }
+        if(startTime >= endTime){
+            throw new IllegalArgumentException("Parameter[startTime >= endTime] verification failed!");
+        }
         StatVerifyEntity statVerifyEntity = AuxHandler.queryStatInfo(statId);
         if(statVerifyEntity == null){
             logger.error("statistic({}) not exist!",statId);
@@ -200,6 +206,9 @@ public final class LightHouse {
         if(!_InitFlag.get()){
             throw new InitializationException("connection is not initialized or the connection is abnormal, request ignored!");
         }
+        if(StringUtil.isEmpty(secretKey)){
+            throw new IllegalArgumentException("Missing required parameter[secretKey]!");
+        }
         StatVerifyEntity statVerifyEntity = AuxHandler.queryStatInfo(statId);
         if(statVerifyEntity == null){
             logger.error("statistic({}) not exist!",statId);
@@ -216,6 +225,12 @@ public final class LightHouse {
     public static Map<String,List<StatValue>> dataQueryWithDimensList(int statId, String secretKey, List<String> dimensValueList, long startTime,long endTime) throws Exception {
         if(!_InitFlag.get()){
             throw new InitializationException("connection is not initialized or the connection is abnormal, request ignored!");
+        }
+        if(StringUtil.isEmpty(secretKey)){
+            throw new IllegalArgumentException("Missing required parameter[secretKey]!");
+        }
+        if(startTime >= endTime){
+            throw new IllegalArgumentException("Parameter[startTime >= endTime] verification failed!");
         }
         StatVerifyEntity statVerifyEntity = AuxHandler.queryStatInfo(statId);
         if(statVerifyEntity == null){

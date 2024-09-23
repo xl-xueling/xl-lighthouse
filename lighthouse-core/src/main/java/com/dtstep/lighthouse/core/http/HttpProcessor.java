@@ -128,9 +128,17 @@ public class HttpProcessor {
                 ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
                 return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("endTime"));
             }
+
+            long startTimeStamp = Long.parseLong(startTimeObj.toString());
+            long endTimeStamp = Long.parseLong(endTimeObj.toString());
+            if(startTimeStamp >= endTimeStamp){
+                ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
+                return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("startTime >= endTime"));
+            }
+
             List<StatValue> list;
             try{
-                list = LightHouse.dataQuery(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),dimensValue,Long.parseLong(startTimeObj.toString()),Long.parseLong(endTimeObj.toString()));
+                list = LightHouse.dataQuery(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),dimensValue,startTimeStamp,endTimeStamp);
             }catch (Exception ex){
                 ApiResultCode apiResultCode = ApiResultCode.ProcessError;
                 return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
@@ -197,9 +205,17 @@ public class HttpProcessor {
                 ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
                 return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("endTime"));
             }
+
+            long startTimeStamp = Long.parseLong(startTimeObj.toString());
+            long endTimeStamp = Long.parseLong(endTimeObj.toString());
+            if(startTimeStamp >= endTimeStamp){
+                ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
+                return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("startTime >= endTime"));
+            }
+
             Map<String,List<StatValue>> data;
             try{
-                data = LightHouse.dataQueryWithDimensList(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),(List<String>)dimensValueListObj,Long.parseLong(startTimeObj.toString()),Long.parseLong(endTimeObj.toString()));
+                data = LightHouse.dataQueryWithDimensList(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),(List<String>)dimensValueListObj,startTimeStamp,endTimeStamp);
             }catch (Exception ex){
                 ApiResultCode apiResultCode = ApiResultCode.ProcessError;
                 return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
