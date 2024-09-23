@@ -16,7 +16,6 @@ package com.dtstep.lighthouse.standalone.executive;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.standalone.rpc.NettyServerHandler;
 import com.dtstep.lighthouse.standalone.rpc.ServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;

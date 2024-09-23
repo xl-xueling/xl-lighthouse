@@ -3,12 +3,16 @@ package com.dtstep.lighthouse.core.http;
 import com.dtstep.lighthouse.client.LightHouse;
 import com.dtstep.lighthouse.common.entity.ApiResultCode;
 import com.dtstep.lighthouse.common.entity.ApiResultData;
+import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 
 public class HttpProcessor {
@@ -17,8 +21,27 @@ public class HttpProcessor {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    public static ApiResultData stats(String requestBody) throws Exception {
+        List<Map<String, Object>> list = objectMapper.readValue(requestBody, new TypeReference<>() {});
+        if(CollectionUtils.isEmpty(list)){
+            ApiResultCode apiResultCode = ApiResultCode.MissingParams;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
+        }
+        for(Map<String,Object> requestMap : list){
+            ApiResultData apiResultData = stat(requestMap);
+            if(!apiResultData.getCode().equals(ApiResultCode.Success.getCode())){
+                return apiResultData;
+            }
+        }
+        return new ApiResultData(ApiResultCode.Success.getCode(), ApiResultCode.Success.getMessage());
+    }
+
     public static ApiResultData stat(String requestBody) throws Exception {
         Map<String, Object> requestMap = objectMapper.readValue(requestBody,Map.class);
+        return stat(requestMap);
+    }
+
+    public static ApiResultData stat(Map<String,Object> requestMap) throws Exception {
         Object tokenObj = requestMap.get("token");
         Object secretKeyObj = requestMap.get("secretKey");
         Object paramsObj = requestMap.get("params");
@@ -55,11 +78,60 @@ public class HttpProcessor {
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("params"));
         }
         try{
-            LightHouse.stat(tokenObj.toString(),secretKeyObj.toString(),(Map<String,Object>)paramsObj,(Integer)repeat,(Long)timestamp);
+            LightHouse.stat(tokenObj.toString(),secretKeyObj.toString(),(Map<String,Object>)paramsObj,Integer.parseInt(repeat.toString()),Integer.parseInt(timestamp.toString()));
         }catch (Exception ex){
             ApiResultCode apiResultCode = ApiResultCode.ProcessError;
             return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
         }
         return new ApiResultData(ApiResultCode.Success.getCode(), ApiResultCode.Success.getMessage());
+    }
+
+    public static ApiResultData dataQuery(String requestBody) throws Exception {
+        Map<String, Object> requestMap = objectMapper.readValue(requestBody,Map.class);
+        Object statIdObj = requestMap.get("statId");
+        Object secretKeyObj = requestMap.get("secretKey");
+        Object dimensValueObj = requestMap.get("dimensValue");
+        Object startTimeObj = requestMap.get("startTime");
+        Object endTimeObj = requestMap.get("endTime");
+        if(statIdObj == null){
+            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("statId"));
+        }
+        if(!StringUtil.isNumber(statIdObj.toString())){
+            ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("statId"));
+        }
+        if(secretKeyObj == null){
+            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("secretKey"));
+        }
+        if(startTimeObj == null){
+            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("startTime"));
+        }
+        if(!StringUtil.isNumber(startTimeObj.toString())){
+            ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("startTime"));
+        }
+        if(endTimeObj == null){
+            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("endTime"));
+        }
+        if(!StringUtil.isNumber(endTimeObj.toString())){
+            ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("endTime"));
+        }
+        String dimensValue = null;
+        if(dimensValueObj != null){
+            dimensValue = dimensValueObj.toString();
+        }
+        List<StatValue> list;
+        try{
+            list = LightHouse.dataQuery(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),dimensValue,Long.parseLong(startTimeObj.toString()),Long.parseLong(endTimeObj.toString()));
+        }catch (Exception ex){
+            ApiResultCode apiResultCode = ApiResultCode.ProcessError;
+            return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
+        }
+        return new ApiResultData(ApiResultCode.Success.getCode(), ApiResultCode.Success.getMessage(),list);
     }
 }

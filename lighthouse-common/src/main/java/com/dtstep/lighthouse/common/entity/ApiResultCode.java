@@ -10,9 +10,11 @@ public enum ApiResultCode {
 
     ApiNotSupported("103","The api is not supported!"),
 
-    MissingParam("104","Missing required parameter[%s]!"),
+    MissingParams("104","Missing required parameters!"),
 
-    IllegalParam("105","Parameter[%s] verification failed!"),
+    MissingParam("105","Missing required parameter[%s]!"),
+
+    IllegalParam("106","Parameter[%s] verification failed!"),
 
     ;
 
