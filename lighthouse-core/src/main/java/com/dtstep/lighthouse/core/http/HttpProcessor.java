@@ -68,6 +68,11 @@ public class HttpProcessor {
             ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("repeat"));
         }
+        if(repeat != null && Integer.parseInt(repeat.toString()) <= 0){
+            ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("repeat <= 0"));
+        }
+
         if(timestamp == null){
             timestamp = System.currentTimeMillis();
         }
@@ -128,14 +133,12 @@ public class HttpProcessor {
                 ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
                 return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("endTime"));
             }
-
             long startTimeStamp = Long.parseLong(startTimeObj.toString());
             long endTimeStamp = Long.parseLong(endTimeObj.toString());
             if(startTimeStamp >= endTimeStamp){
                 ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
                 return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("startTime >= endTime"));
             }
-
             List<StatValue> list;
             try{
                 list = LightHouse.dataQuery(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),dimensValue,startTimeStamp,endTimeStamp);

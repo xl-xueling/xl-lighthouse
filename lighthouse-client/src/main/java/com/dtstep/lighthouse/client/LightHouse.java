@@ -128,6 +128,9 @@ public final class LightHouse {
         if(!_InitFlag.get()){
             throw new InitializationException("connection is not initialized or the connection is abnormal, statistics ignored!");
         }
+        if(repeat <= 0){
+            throw new IllegalArgumentException("Parameter[repeat <= 0] verification failed!");
+        }
         FusingToken fusingToken = null;
         try{
             fusingToken = FusingSwitch.entry(FusingRules.CLIENT_EXCEPTION_RULE);
