@@ -74,6 +74,7 @@ public class HttpApiTest {
         requestMap.put("startTime", DateUtil.getDayStartTime(System.currentTimeMillis()));
         requestMap.put("endTime", DateUtil.getDayEndTime(System.currentTimeMillis()));
         String requestParams = JsonUtil.toJSONString(requestMap);
+        System.out.println("requestParams:" + JsonUtil.toJSONString(requestParams));
         String response = OkHttpUtil.post(apiUrl,requestParams);
         System.out.println(response);
     }
@@ -88,6 +89,7 @@ public class HttpApiTest {
         System.out.println("batchTime:" + DateUtil.formatTimeStamp(batchTime,"yyyy-MM-dd HH:mm:ss"));
         requestMap.put("batchTime", batchTime);
         String requestParams = JsonUtil.toJSONString(requestMap);
+        System.out.println("requestParams:" + JsonUtil.toJSONString(requestParams));
         String response = OkHttpUtil.post(apiUrl,requestParams);
         System.out.println(response);
     }
