@@ -90,7 +90,7 @@ export default function Security({userInfo}) {
             ]}
         >
           {(
-              <Input.Password />
+              <Input.Password autoComplete="new-password"/>
           )}
         </Form.Item>
 
