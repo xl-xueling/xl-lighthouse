@@ -28,7 +28,7 @@ import getUrlParams from './utils/getUrlParams';
 import lazyload from './utils/lazyload';
 import { GlobalState } from './store';
 import styles from './style/layout.module.less';
-import {PiDiamondsFour} from "react-icons/pi";
+import {PiDiamondsFour, PiSparkleLight} from "react-icons/pi";
 import ProjectManagePage from "@/pages/project/manage";
 import ProjectPreviewPage from "@/pages/project/preview";
 import StatPreviewPage from "@/pages/stat/preview";
@@ -39,6 +39,7 @@ import {arrayDistinct} from "@/utils/util";
 import {AiOutlineDashboard} from "react-icons/ai";
 import {TbBrandVisualStudio, TbCalendarTime} from "react-icons/tb";
 import {FiSettings} from "react-icons/fi";
+import UserSettings from "@/pages/user/settings";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -68,6 +69,8 @@ function getIconFromKey(key) {
       return <FiSettings size={16} style={{marginRight: '15px',strokeWidth: '2px',opacity:0.9}} className={styles.icon}/>;
     case 'order':
       return <TbCalendarTime size={17} style={{marginRight: '15px',strokeWidth: '2px',opacity:0.9}} className={styles.icon}/>;
+    case 'toolbox':
+      return <PiSparkleLight size={17} style={{marginRight: '15px',strokeWidth: '8px',opacity:0.9}} className={styles.icon}/>
     case 'stat':
       return <IconApps className={styles.icon}/>;
     case 'filter':
@@ -217,7 +220,7 @@ function PageLayout() {
     if(pathname.startsWith('/stat/preview/') || pathname.startsWith('/track/stat/')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"stat/list"])
     }
-    if(pathname.startsWith('/view/preview/') || pathname.startsWith('/view/simulate/')){
+    if(pathname.startsWith('/view/preview/') || pathname.startsWith('/view/simulate/') || pathname.startsWith('/view/track/')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"view/list"])
     }
     if(pathname.startsWith('/project/preview/') || pathname.startsWith('/project/manage/')){
@@ -229,7 +232,11 @@ function PageLayout() {
     }
     if(pathname.startsWith('/component/list')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"component/list"]);
-      newOpenKeys = arrayDistinct([...newOpenKeys,"system"]);
+      newOpenKeys = arrayDistinct([...newOpenKeys,"toolbox"]);
+    }
+    if(pathname.startsWith('/caller/list')){
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"caller/list"]);
+      newOpenKeys = arrayDistinct([...newOpenKeys,"toolbox"]);
     }
     if(pathname.startsWith('/user/list')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"user/list"]);
@@ -311,6 +318,7 @@ function PageLayout() {
                   <Route path="/project/preview/:id" component={ProjectPreviewPage}/>
                   <Route path="/stat/preview/:id" component={StatPreviewPage}/>
                   <Route path="/track/stat/:id" component={TrackStatPage}/>
+                  <Route path="/user/settings" component={UserSettings}/>
                   {flattenRoutes.map((route, index) => {
                     return (
                       <Route

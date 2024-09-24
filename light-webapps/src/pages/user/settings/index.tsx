@@ -9,7 +9,7 @@ import {useSelector} from "react-redux";
 import {Department, TreeNode, User} from "@/types/insights-web";
 import {requestChangeState, requestFetchUserInfo} from "@/api/user";
 
-export default function Index() {
+export default function UserSettings() {
   const t = useLocale(locale);
   const [activeTab, setActiveTab] = useState('basic');
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);

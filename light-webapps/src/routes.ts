@@ -63,6 +63,17 @@ export const routes: IRoute[] = [
     ],
   },
   {
+    name: 'menu.toolbox',
+    key: 'toolbox',
+    children: [
+      {
+        name: 'menu.toolbox.filterComponents',
+        key: 'component/list',
+        breadcrumb:false,
+      },
+    ],
+  },
+  {
     name: 'menu.system',
     key: 'system',
     children: [
@@ -82,22 +93,9 @@ export const routes: IRoute[] = [
           { resource: 'ldp.resource', actions: ['OperationManageAble'] },
         ],
       },
-      {
-        name: 'menu.system.user.settings',
-        key: 'user/settings',
-        ignore:true,
-      },
-      {
-        name: 'menu.system.filterComponents',
-        key: 'component/list',
-        breadcrumb:false,
-      },
-      {
-        name: 'menu.system.apiCaller',
-        key: 'caller/list',
-        breadcrumb:false,
-        ignore: true,
-      },
+    ],
+    requiredPermissions: [
+      { resource: 'ldp.resource', actions: ['OperationManageAble'] },
     ],
   },
 ];
