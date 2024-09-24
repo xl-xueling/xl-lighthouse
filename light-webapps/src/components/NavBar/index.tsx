@@ -195,7 +195,7 @@ function Navbar({ show }: { show: boolean }) {
         {/*<Settings />*/}
         {userInfo && (
           <li>
-            <Dropdown droplist={droplist} position="br" disabled={userLoading}>
+            <Dropdown trigger={'click'} droplist={droplist} position="br" disabled={userLoading}>
               <IconButton
                   icon={<FaUser size={13} style={{color:'var(--color-neutral-6)'}}/>}
               />
