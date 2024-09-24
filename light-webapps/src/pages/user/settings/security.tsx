@@ -11,6 +11,7 @@ import {requestChangePassword, requestUpdateById} from "@/api/user";
 import {ResultData} from "@/types/insights-common";
 import {md5} from 'js-md5';
 import {removeLoginStatus} from "@/utils/checkLogin";
+import {IconLock} from "@arco-design/web-react/icon";
 export default function Security({userInfo}) {
   const t = useLocale(locale);
   const formRef = useRef<FormInstance>();
@@ -90,7 +91,7 @@ export default function Security({userInfo}) {
             ]}
         >
           {(
-              <Input.Password autoComplete="new-password"/>
+              <Input.Password prefix={<IconLock />} autoComplete="new-password"/>
           )}
         </Form.Item>
 
@@ -103,7 +104,7 @@ export default function Security({userInfo}) {
             ]}
         >
           {(
-              <Input.Password />
+              <Input.Password prefix={<IconLock />}/>
           )}
         </Form.Item>
 
@@ -128,7 +129,7 @@ export default function Security({userInfo}) {
                   }]}
           >
               {(
-                  <Input.Password />
+                  <Input.Password prefix={<IconLock />}/>
               )}
           </Form.Item>
           <Form.Item label=" ">
