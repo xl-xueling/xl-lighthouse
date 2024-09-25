@@ -23,6 +23,8 @@ public enum ResourceTypeEnum {
 
     View(8),
 
+    Caller(9),
+
     ;
 
     ResourceTypeEnum(Integer resourceType){

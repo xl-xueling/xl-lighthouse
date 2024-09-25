@@ -61,12 +61,14 @@ public class ResourceServiceImpl implements ResourceService {
     private ViewDao viewDao;
 
     @Autowired
+    private CallerDao callerDao;
+
+    @Autowired
     private DomainService domainService;
 
     @Transactional
     @Override
     public RolePair addResourceCallback(ResourceDto resource) {
-        List<Role> roleList = new ArrayList<>();
         Role manageRole = null;
         Role accessRole = null;
         String name = null;
@@ -128,6 +130,14 @@ public class ResourceServiceImpl implements ResourceService {
             manageRole = new Role(RoleTypeEnum.VIEW_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
             accessRole = new Role(RoleTypeEnum.VIEW_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
             name = viewDao.queryById(resource.getResourceId()).getTitle();
+        }else if(resource.getResourceType() == ResourceTypeEnum.Caller){
+            Role parentManageRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_MANAGE_PERMISSION,resource.getResourcePid());
+            Integer manageRolePid = parentManageRole.getId();
+            Role parentAccessRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_ACCESS_PERMISSION,resource.getResourcePid());
+            Integer accessRolePid = parentAccessRole.getId();
+            manageRole = new Role(RoleTypeEnum.CALLER_MANAGER_PERMISSION,resource.getResourceId(),manageRolePid);
+            accessRole = new Role(RoleTypeEnum.CALLER_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
+            name = callerDao.queryById(resource.getResourceId()).getName();
         }
         Validate.notNull(manageRole);
         Validate.notNull(accessRole);
@@ -141,7 +151,6 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional
     @Override
     public void updateResourcePidCallback(ResourceDto resource) {
-        List<Role> roleList = new ArrayList<>();
         Role manageRole = null;
         Role accessRole = null;
         String name = null;
@@ -186,6 +195,7 @@ public class ResourceServiceImpl implements ResourceService {
             Integer accessRolePid = parentAccessRole.getId();
             manageRole = new Role(RoleTypeEnum.STAT_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
             accessRole = new Role(RoleTypeEnum.STAT_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
+            name = statDao.queryById(resource.getResourceId()).getTitle();
         }else if(resource.getResourceType() == ResourceTypeEnum.MetricSet){
             Role parentManageRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_MANAGE_PERMISSION,resource.getResourcePid());
             Integer manageRolePid = parentManageRole.getId();
@@ -193,6 +203,7 @@ public class ResourceServiceImpl implements ResourceService {
             Integer accessRolePid = parentAccessRole.getId();
             manageRole = new Role(RoleTypeEnum.METRIC_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
             accessRole = new Role(RoleTypeEnum.METRIC_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
+            name = metricSetDao.queryById(resource.getResourceId()).getTitle();
         }else if(resource.getResourceType() == ResourceTypeEnum.View){
             Role parentManageRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_MANAGE_PERMISSION,resource.getResourcePid());
             Integer manageRolePid = parentManageRole.getId();
@@ -200,6 +211,15 @@ public class ResourceServiceImpl implements ResourceService {
             Integer accessRolePid = parentAccessRole.getId();
             manageRole = new Role(RoleTypeEnum.VIEW_MANAGE_PERMISSION,resource.getResourceId(),manageRolePid);
             accessRole = new Role(RoleTypeEnum.VIEW_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
+            name = viewDao.queryById(resource.getResourceId()).getTitle();
+        }else if(resource.getResourceType() == ResourceTypeEnum.Caller){
+            Role parentManageRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_MANAGE_PERMISSION,resource.getResourcePid());
+            Integer manageRolePid = parentManageRole.getId();
+            Role parentAccessRole = roleService.cacheQueryRole(RoleTypeEnum.DOMAIN_ACCESS_PERMISSION,resource.getResourcePid());
+            Integer accessRolePid = parentAccessRole.getId();
+            manageRole = new Role(RoleTypeEnum.CALLER_MANAGER_PERMISSION,resource.getResourceId(),manageRolePid);
+            accessRole = new Role(RoleTypeEnum.CALLER_ACCESS_PERMISSION,resource.getResourceId(),accessRolePid);
+            name = callerDao.queryById(resource.getResourceId()).getName();
         }
         Validate.notNull(manageRole);
         Validate.notNull(accessRole);
@@ -212,7 +232,6 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional
     @Override
     public ResultCode deleteResourceCallback(ResourceDto resource){
-        List<Role> roleList = new ArrayList<>();
         Role manageRole = null;
         Role accessRole = null;
         if(resource.getResourceType() == ResourceTypeEnum.Domain){
@@ -236,6 +255,9 @@ public class ResourceServiceImpl implements ResourceService {
         }else if(resource.getResourceType() == ResourceTypeEnum.View){
             manageRole = roleService.cacheQueryRole(RoleTypeEnum.VIEW_MANAGE_PERMISSION,resource.getResourceId());
             accessRole = roleService.cacheQueryRole(RoleTypeEnum.VIEW_ACCESS_PERMISSION,resource.getResourceId());
+        }else if(resource.getResourceType() == ResourceTypeEnum.Caller){
+            manageRole = roleService.cacheQueryRole(RoleTypeEnum.CALLER_MANAGER_PERMISSION,resource.getResourceId());
+            accessRole = roleService.cacheQueryRole(RoleTypeEnum.CALLER_ACCESS_PERMISSION,resource.getResourceId());
         }
         Validate.notNull(manageRole);
         Validate.notNull(accessRole);
@@ -293,6 +315,9 @@ public class ResourceServiceImpl implements ResourceService {
         }else if(roleTypeEnum == RoleTypeEnum.VIEW_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.VIEW_ACCESS_PERMISSION){
             View view = viewDao.queryById(resourceId);
             resource = new ResourceDto(ResourceTypeEnum.View,resourceId,view);
+        }else if(roleTypeEnum == RoleTypeEnum.CALLER_MANAGER_PERMISSION || roleTypeEnum == RoleTypeEnum.CALLER_ACCESS_PERMISSION){
+            Caller caller = callerDao.queryById(resourceId);
+            resource = new ResourceDto(ResourceTypeEnum.Caller,resourceId,caller);
         }else if(roleTypeEnum == RoleTypeEnum.FULL_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.FULL_ACCESS_PERMISSION){
             resource = new ResourceDto(ResourceTypeEnum.System,0);
         }
