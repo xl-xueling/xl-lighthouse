@@ -4,7 +4,7 @@ public class CallerQueryParam {
 
     private String search;
 
-    private Integer userId;
+    private Integer ownerId;
 
     public String getSearch() {
         return search;
@@ -14,11 +14,11 @@ public class CallerQueryParam {
         this.search = search;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getOwnerId() {
+        return ownerId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 }

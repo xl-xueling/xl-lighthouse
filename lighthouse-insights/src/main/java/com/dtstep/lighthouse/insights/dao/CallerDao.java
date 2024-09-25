@@ -16,7 +16,7 @@ public interface CallerDao {
 
     int deleteById(Integer id);
 
-    View queryById(Integer id);
+    Caller queryById(Integer id);
 
     List<Caller> queryList(@Param("queryParam") CallerQueryParam queryParam);
 }
