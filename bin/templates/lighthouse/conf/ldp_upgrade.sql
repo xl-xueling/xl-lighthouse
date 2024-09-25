@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `ldp_views` (
     KEY `index_state` (`state`),
     KEY `index_title` (`title`),
     KEY `index_create_time` (`create_time`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=1100023 DEFAULT CHARSET=utf8mb3;
+    ) ENGINE=InnoDB AUTO_INCREMENT=1100023 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS `ldp_rollbacks` (
                                                `id` int NOT NULL AUTO_INCREMENT,
@@ -31,4 +31,16 @@ CREATE TABLE IF NOT EXISTS `ldp_rollbacks` (
     PRIMARY KEY (`id`),
     KEY `index_resource` (`resource_id`,`data_type`),
     KEY `index_create_time` (`create_time`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=1100347 DEFAULT CHARSET=utf8mb3;
+    ) ENGINE=InnoDB AUTO_INCREMENT=1100347 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `ldp_callers` (
+                               `id` int NOT NULL AUTO_INCREMENT,
+                               `name` varchar(45) NOT NULL,
+                               `desc` varchar(500) DEFAULT NULL,
+                               `secret_key` varchar(80) NOT NULL,
+                               `create_time` timestamp NOT NULL,
+                               `update_time` timestamp NOT NULL,
+                               PRIMARY KEY (`id`),
+                               KEY `index_name` (`name`),
+                               KEY `index_create_time` (`create_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=11001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
