@@ -43,6 +43,11 @@ public enum RoleTypeEnum {
 
     VIEW_ACCESS_PERMISSION(18),
 
+    CALLER_MANAGER_PERMISSION(19),
+
+    CALLER_ACCESS_PERMISSION(20),
+
+
     ;
 
     RoleTypeEnum(int roleType){

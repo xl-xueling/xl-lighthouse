@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dtstep.lighthouse.insights.dao.CallerDao">
+
+    <resultMap id="callerResultMap" type="com.dtstep.lighthouse.common.modal.Caller">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="secretKey" column="secret_key"/>
+        <result property="desc" column="desc"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Caller" >
+        INSERT INTO ldp_callers (`name`,`secret_key`,`desc`,`create_time`,`update_time`) VALUES
+        (
+            #{name,jdbcType=VARCHAR},
+            #{secretKey,jdbcType=VARCHAR},
+            #{desc,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="queryById" resultMap="callerResultMap">
+        SELECT `id`,`desc`,`create_time`,`update_time` FROM ldp_callers WHERE id = #{id}
+    </select>
+
+    <select id="getSecretKey" resultType="String">
+        SELECT `secret_key` FROM ldp_callers WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.Caller">
+        UPDATE ldp_callers
+        <set>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="desc != null">
+                `desc` = #{desc},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from ldp_callers where id = #{id}
+    </delete>
+
+    <select id="queryList" resultMap="callerResultMap">
+        SELECT c.id, c.name, c.desc,c.`create_time`,c.`update_time`
+        FROM ldp_callers c
+                 JOIN (
+            SELECT r.resource_id
+            FROM ldp_roles r
+            WHERE r.role_type = '19'
+        ) r ON c.id = r.resource_id
+                 JOIN ldp_permissions p ON r.resource_id = p.role_id
+        WHERE p.owner_id = #{queryParam.ownerId} and owner_type = '1'
+    </select>
+
+</mapper>
