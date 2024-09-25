@@ -63,11 +63,11 @@
         SELECT c.id, c.name, c.desc,c.`create_time`,c.`update_time`
         FROM ldp_callers c
                  JOIN (
-            SELECT r.resource_id
+            SELECT r.id,r.resource_id
             FROM ldp_roles r
             WHERE r.role_type = '19'
         ) r ON c.id = r.resource_id
-                 JOIN ldp_permissions p ON r.resource_id = p.role_id
+                 JOIN ldp_permissions p ON r.id = p.role_id
         WHERE p.owner_id = #{queryParam.ownerId} and owner_type = '1'
     </select>
 
