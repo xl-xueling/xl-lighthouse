@@ -46,6 +46,15 @@
         WHERE id = #{id}
     </update>
 
+    <select id="count" resultType="int">
+        SELECT count(1) FROM ldp_callers
+        <where>
+            <if test="queryParam.name != null">
+                AND name = #{queryParam.name}
+            </if>
+        </where>
+    </select>
+
     <delete id="deleteById">
         delete from ldp_callers where id = #{id}
     </delete>

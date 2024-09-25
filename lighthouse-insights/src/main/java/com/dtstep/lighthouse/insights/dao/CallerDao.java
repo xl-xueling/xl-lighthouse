@@ -17,5 +17,7 @@ public interface CallerDao {
 
     Caller queryById(Integer id);
 
+    int count(@Param("queryParam") CallerQueryParam queryParam);
+
     List<Caller> queryList(@Param("queryParam") CallerQueryParam queryParam);
 }

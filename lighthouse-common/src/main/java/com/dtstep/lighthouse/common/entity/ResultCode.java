@@ -172,6 +172,8 @@ public enum ResultCode {
 
     viewNotAuthorized("11004","viewNotAuthorized"),
 
+    callerNameAlreadyExist("12001","callerNameAlreadyExist"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

@@ -6,6 +6,8 @@ public class CallerQueryParam {
 
     private Integer ownerId;
 
+    private String name;
+
     public String getSearch() {
         return search;
     }
@@ -20,5 +22,13 @@ public class CallerQueryParam {
 
     public void setOwnerId(Integer ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
