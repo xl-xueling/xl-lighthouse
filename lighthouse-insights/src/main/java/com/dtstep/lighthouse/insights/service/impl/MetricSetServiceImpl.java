@@ -183,7 +183,10 @@ public class MetricSetServiceImpl implements MetricSetService {
     public int update(MetricSet metricSet) {
         LocalDateTime localDateTime = LocalDateTime.now();
         metricSet.setUpdateTime(localDateTime);
-        return metricSetDao.update(metricSet);
+        int result = metricSetDao.update(metricSet);
+        Domain domain = domainService.queryDefault();
+        resourceService.updateResourcePidCallback(ResourceDto.newResource(ResourceTypeEnum.MetricSet,metricSet.getId(),ResourceTypeEnum.Domain,domain.getId()));
+        return result;
     }
 
     private MetricSetVO translate(MetricSet metricSet){
