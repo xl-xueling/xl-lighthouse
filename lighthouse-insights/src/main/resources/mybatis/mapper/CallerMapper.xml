@@ -23,7 +23,7 @@
     </insert>
 
     <select id="queryById" resultMap="callerResultMap">
-        SELECT `id`,`desc`,`create_time`,`update_time` FROM ldp_callers WHERE id = #{id}
+        SELECT `id`,`name`,`desc`,`create_time`,`update_time` FROM ldp_callers WHERE id = #{id}
     </select>
 
     <select id="getSecretKey" resultType="String">
