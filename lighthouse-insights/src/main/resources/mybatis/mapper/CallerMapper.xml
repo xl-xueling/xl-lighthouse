@@ -67,8 +67,10 @@
             FROM ldp_roles r
             WHERE r.role_type = '19'
         ) r ON c.id = r.resource_id
-                 JOIN ldp_permissions p ON r.id = p.role_id
-        WHERE p.owner_id = #{queryParam.ownerId} and owner_type = '1'
+        <if test="queryParam.ownerId != null">
+            JOIN ldp_permissions p ON r.id = p.role_id
+            WHERE p.owner_id = #{queryParam.ownerId} and owner_type = '1'
+        </if>
     </select>
 
 </mapper>
