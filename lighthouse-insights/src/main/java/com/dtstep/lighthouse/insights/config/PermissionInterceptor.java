@@ -90,6 +90,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
                     || roleTypeEnum == RoleTypeEnum.STAT_MANAGE_PERMISSION
                     || roleTypeEnum == RoleTypeEnum.METRIC_MANAGE_PERMISSION
                     || roleTypeEnum == RoleTypeEnum.VIEW_MANAGE_PERMISSION
+                    || roleTypeEnum == RoleTypeEnum.CALLER_MANAGER_PERMISSION
             ){
                 int id = getRelateParam(request,authPermission.relationParam());
                 if(id != 0){
