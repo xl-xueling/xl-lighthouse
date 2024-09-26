@@ -311,7 +311,7 @@ function PageLayout() {
                   </Breadcrumb>
                 </div>
               )}
-              <Content>
+              <Content style={{minHeight:'calc(100vh - 120px)'}}>
                 <Switch>
                   <Route path="/project/manage/:id" component={ProjectManagePage}/>
                   <Route path="/metricset/preview/:id" component={Index}/>
