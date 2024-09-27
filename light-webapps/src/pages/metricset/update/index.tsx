@@ -129,36 +129,8 @@ export default function MetricSetUpdateModal({onClose,onSuccess}) {
                                 </Radio.Group>
                             </Form.Item>
                         </Grid.Col>
-                        <Grid.Col span={4} style={{ textAlign:"right" }}>
-                            {showGrantPrivileges &&
-                            <div style={{cursor:"pointer",userSelect:"none"}} onClick={toggleShowPickupPanel}>
-                                {showPickUpPanel?<IconCaretDown />:<IconCaretRight />}
-                                <Typography.Text>{t['updateMetricSet.form.label.grant.privilege']}</Typography.Text>
-                            </div>
-                            }
-                        </Grid.Col>
                     </Grid.Row>
                 </Form.Item>
-
-                {showPickUpPanel &&
-                <Form.Item label={t['updateMetricSet.form.label.crowd.pickup']}>
-                    <Row>
-                        <Col
-                            span={24}
-                            style={{ marginBottom: 12 }}
-                        >
-                            <Tabs key='card' tabPosition={"right"}>
-                                <Tabs.TabPane key='1' title='Tab1'>
-                                    <DepartmentsTransfer ref={departmentTransferRef}/>
-                                </Tabs.TabPane>
-                                <Tabs.TabPane key='2' title='Tab2'>
-                                    <UsersTransfer ref={userTransferRef}/>
-                                </Tabs.TabPane>
-                            </Tabs>
-                        </Col>
-                    </Row>
-                </Form.Item>
-                }
             </Form>
         </Modal>
     );
