@@ -8,7 +8,7 @@ import {
     Table,
     Form,
     Input,
-     Breadcrumb, Notification,
+    Breadcrumb, Notification, Divider,
 } from '@arco-design/web-react';
 
 import {IconHome, IconPlus} from "@arco-design/web-react/icon";
@@ -123,28 +123,15 @@ export default function ComponentList() {
                 <Breadcrumb.Item style={{fontWeight:20}}>{t['componentList.breadcrumb.title']}</Breadcrumb.Item>
             </Breadcrumb>
             <Card>
-                <div className={styles['search-form-wrapper']}>
-                <Form
-                    form={form}
-                    className={styles['search-form']}
-                    labelAlign="left"
-                    autoComplete={'off'}
-                    wrapperCol={{ span: 24 }}
-                >
-                    <Row gutter={24}>
-                        <Col span={7}>
-                            <Form.Item field="Title">
-                                <Input.Search size={"small"}  placeholder={t['componentList.label.title']} allowClear onSearch={(v) => {handleSearch({search:v})}} />
-                            </Form.Item>
-                        </Col>
-                        <Grid.Col span={17} style={{ textAlign: 'right' }}>
-                            <Space>
-                                <Button size={"small"} type="primary" onClick={() => setShowCreateModal(true)}>{t['componentList.button.create']}</Button>
-                            </Space>
-                        </Grid.Col>
-                    </Row>
-                </Form>
-                </div>
+                <Grid.Row justify="space-between" align="center" style={{marginBottom:'15px'}}>
+                    <Grid.Col span={16} style={{ textAlign: 'left' }}>
+                        <Input.Search style={{width: 380}} placeholder={t['componentList.label.title']} allowClear onSearch={(v) => {handleSearch({search:v})}} />
+                    </Grid.Col>
+                    <Grid.Col span={8} style={{ textAlign: 'right' }}>
+                        <Button size={"small"} type="primary" onClick={() => setShowCreateModal(true)}>{t['componentList.button.create']}</Button>
+                    </Grid.Col>
+                </Grid.Row>
+                <Divider/>
                 <Table
                     loading={loading}
                     rowKey={'id'}
