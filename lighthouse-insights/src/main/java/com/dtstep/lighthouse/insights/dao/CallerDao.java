@@ -20,4 +20,6 @@ public interface CallerDao {
     int count(@Param("queryParam") CallerQueryParam queryParam);
 
     List<Caller> queryList(@Param("queryParam") CallerQueryParam queryParam);
+
+    String getSecretKey(Integer id);
 }
