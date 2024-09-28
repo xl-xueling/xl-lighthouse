@@ -46,6 +46,8 @@ public interface PermissionService {
 
     int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId);
 
+    int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId,int expire);
+
     int releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId);
 
     int releasePermission(Integer id);

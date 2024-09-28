@@ -11,6 +11,8 @@ public enum OwnerTypeEnum {
 
     DEPARTMENT(2),
 
+    CALLER(3),
+
     ;
 
     OwnerTypeEnum(int ownerType){

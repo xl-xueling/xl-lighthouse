@@ -134,6 +134,33 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionDao.insert(permission);
     }
 
+    @Transactional
+    @Override
+    public int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId,int expire) {
+        Validate.notNull(ownerId);
+        Validate.notNull(ownerTypeEnum);
+        Validate.notNull(roleId);
+        if(existPermission(ownerId,ownerTypeEnum,roleId)){
+            return 0;
+        }
+        if(ownerTypeEnum == OwnerTypeEnum.USER){
+            User user = userService.queryById(ownerId);
+            Validate.notNull(user);
+            Validate.isTrue(user.getState() == UserStateEnum.USER_NORMAL);
+        }else if (ownerTypeEnum == OwnerTypeEnum.DEPARTMENT){
+            Department department = departmentService.queryById(ownerId);
+            Validate.notNull(department);
+        }
+        Permission permission = new Permission();
+        permission.setOwnerId(ownerId);
+        permission.setOwnerType(ownerTypeEnum);
+        permission.setRoleId(roleId);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        permission.setCreateTime(localDateTime);
+        permission.setUpdateTime(localDateTime);
+        return permissionDao.insert(permission);
+    }
+
     @Override
     public int releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId) {
         Validate.notNull(ownerId);
