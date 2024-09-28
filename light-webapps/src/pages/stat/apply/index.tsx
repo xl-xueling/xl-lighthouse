@@ -59,11 +59,8 @@ export default function StatApplyModal({statInfo,onClose}) {
             value: statInfo?.title,
         },
         {
-            title: t['statApply.label.relationship'],
-            dataIndex: 'relationship',
-            render:(value,record) => {
-                return record.projectTitle + ' > ' + record.token;
-            }
+            label: t['statApply.label.relationship'],
+            value: statInfo?.projectTitle + ' > ' + statInfo?.token,
         },
         {
             label: t['statApply.column.department'],
