@@ -1,15 +1,18 @@
 import React from 'react';
-import {Button, Typography, Space, Popconfirm, Message, Link, Badge} from '@arco-design/web-react';
+import {Typography} from '@arco-design/web-react';
 import UserGroup from "@/pages/user/common/groups";
 import {formatTimeStampBackUp} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
-import {OrderStateEnum, OrderTypeEnum, RoleTypeEnum} from "@/types/insights-common";
+import {OrderTypeEnum} from "@/types/insights-common";
 import {Order} from "@/types/insights-web";
 import {
-    getLimitingStrategyDescription, getOrderApproveRoleTypeDescription,
+    getLimitingStrategyDescription,
+    getOrderApproveRoleTypeDescription,
     getOrderDetailStateDescription,
-    getOrderStateDescription, getOrderTypeDescription
+    getOrderStateDescription,
+    getOrderTypeDescription
 } from "@/pages/common/desc/base";
+
 const { Text } = Typography;
 
 export function getOrderColumns(t: any) {
@@ -88,110 +91,94 @@ export function getUserApproveDescription(t: any,orderInfo:Order) {
     ];
 }
 
-
 export function getStatAccessDescription(t: any,orderInfo:Order) {
+    let statInfo;
+    if(orderInfo?.orderType == OrderTypeEnum.CALLER_STAT_ACCESS){
+        statInfo = orderInfo?.extend?.stat;
+    }else{
+        statInfo = orderInfo?.extend;
+    }
     return [
         {
             label: t['detailModal.statAccess.columns.id'],
-            value: orderInfo?.extend?.id,
+            value: statInfo?.id,
         },
         {
             label: t['detailModal.statAccess.columns.title'],
-            value: orderInfo?.extend?.title,
+            value: statInfo?.title,
         },
         {
             label: t['detailModal.statAccess.columns.relationship'],
-            value: orderInfo?.extend?.projectTitle + ' > ' + orderInfo?.extend?.token,
+            value: statInfo?.projectTitle + ' > ' + statInfo?.token,
         },
         {
             label: t['detailModal.statAccess.columns.department'],
-            value: <DepartmentLabel departmentId={orderInfo?.extend?.departmentId}/>,
+            value: <DepartmentLabel departmentId={statInfo?.departmentId}/>,
         },
         {
             label: t['detailModal.statAccess.columns.desc'],
-            value: orderInfo?.extend?.desc ,
+            value: statInfo?.desc ,
             span: 3,
         },
     ];
 }
 
-export function getViewAccessColumns(t: any) {
-    return [
-        {
-            title: t['detailModal.viewAccess.columns.id'],
-            dataIndex: 'id',
-            render: (value,record) =>
-                <Text>{value}</Text>
-            ,
-        },
-        {
-            title: t['detailModal.viewAccess.columns.title'],
-            dataIndex: 'title',
-            render: (value,record) =>
-                <Text>{value}</Text>
-            ,
-        },
-        {
-            title: t['detailModal.viewAccess.columns.admins'],
-            dataIndex: 'admins',
-            render: (value,record) => {
-                return <UserGroup users={value}/>
-            }
-        },
-        {
-            title: t['detailModal.viewAccess.columns.desc'],
-            dataIndex: 'desc',
-            render: (value,record) => {
-                return <Text>{value}</Text>
-            }
-            ,
-        },
-    ];
-}
 
 export function getViewAccessDescription(t: any,orderInfo:Order) {
+    let viewInfo;
+    if(orderInfo?.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS){
+        viewInfo = orderInfo?.extend?.view;
+    }else{
+        viewInfo = orderInfo?.extend;
+    }
     return [
         {
             label: t['detailModal.viewAccess.columns.id'],
-            value:  orderInfo?.extend?.id,
+            value:  viewInfo?.id,
         },
         {
             label:  t['detailModal.viewAccess.columns.title'],
-            value:  orderInfo?.extend?.title,
+            value:  viewInfo?.title,
         },
         {
             label: t['detailModal.viewAccess.columns.admins'],
-            value: <DepartmentLabel departmentId={orderInfo?.extend?.departmentId}/>,
+            value: <DepartmentLabel departmentId={viewInfo?.departmentId}/>,
         },
         {
             label: t['detailModal.viewAccess.columns.desc'],
-            value: orderInfo?.extend?.desc,
+            value: viewInfo?.desc,
             span: 2,
         },
     ];
 }
 
 export function getProjectAccessDescription(t: any,orderInfo:Order) {
+    let projectInfo;
+    if(orderInfo?.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS){
+        projectInfo = orderInfo?.extend?.project;
+    }else{
+        projectInfo = orderInfo?.extend;
+    }
     return [
         {
             label: t['detailModal.projectAccess.columns.id'],
-            value:  orderInfo?.extend?.id,
+            value:  projectInfo?.id,
         },
         {
             label: t['detailModal.projectAccess.columns.title'],
-            value:  orderInfo?.extend?.title,
+            value:  projectInfo?.title,
         },
         {
             label: t['detailModal.projectAccess.columns.department'],
-            value: <DepartmentLabel departmentId={orderInfo?.extend?.departmentId}/>,
+            value: <DepartmentLabel departmentId={projectInfo?.departmentId}/>,
         },
         {
             label: t['detailModal.projectAccess.columns.admins'],
-            value: <UserGroup users={orderInfo?.extend?.admins}/>
+            value: <UserGroup users={projectInfo?.admins}/>
         },
         {
             label: t['detailModal.projectAccess.columns.desc'],
-            value: orderInfo?.extend?.desc,
+            value: projectInfo?.desc,
             span: 2,
         },
     ];

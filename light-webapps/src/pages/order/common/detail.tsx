@@ -161,10 +161,6 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
         }
     }
 
-    useEffect(() => {
-        console.log("orderInfo:" + JSON.stringify(orderInfo?.extend?.expired));
-    },[])
-
     const orderData = [
         {
             label: t['detailModal.columns.id'],
@@ -226,7 +222,6 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
               {
                   getRelatedInformation()
               }
-
               {
                   orderInfo?.orderType == OrderTypeEnum.USER_PEND_APPROVE ? null :
                   <>
