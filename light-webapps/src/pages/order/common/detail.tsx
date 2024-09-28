@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Form, Grid, Input, Steps, Table, Typography} from "@arco-design/web-react";
+import {Button, Descriptions, Form, Grid, Input, Steps, Table, Typography} from "@arco-design/web-react";
 import UserGroup from "@/pages/user/common/groups";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale/index";
@@ -7,14 +7,21 @@ import {Order} from "@/types/insights-web";
 import {ApproveStateEnum, OrderStateEnum, OrderTypeEnum} from "@/types/insights-common";
 import {BiListUl} from "react-icons/bi";
 import {
-    getLimitingSettingsColumns,
+    getLimitingSettingsDescription,
     getOrderColumns,
     getOrderDetailColumns,
-    getProjectAccessColumns, getStatAccessColumns,
-    getUserApproveColumns, getViewAccessColumns
+    getProjectAccessDescription,
+    getStatAccessDescription,
+    getUserApproveDescription,
+    getViewAccessDescription
 } from "@/pages/order/common/constants";
-import {getRandomString} from "@/utils/util";
-import {getOrderApproveRoleTypeDescription} from "@/pages/common/desc/base";
+import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
+import {
+    getOrderApproveRoleTypeDescription,
+    getOrderDescription,
+    getOrderStateDescription,
+    getOrderTypeDescription
+} from "@/pages/common/desc/base";
 
 const { Text } = Typography;
 
@@ -27,12 +34,13 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
     const [showOrderDetail,setShowOrderDetail] = useState(false);
 
     const orderColumns = useMemo(() => getOrderColumns(t), [t]);
-    const userApproveColumns = useMemo(() => getUserApproveColumns(t), [t]);
-    const projectAccessColumns = useMemo(() => getProjectAccessColumns(t), [t]);
-    const statAccessColumns = useMemo(() => getStatAccessColumns(t), [t]);
-    const viewAccessColumns = useMemo(() => getViewAccessColumns(t), [t]);
+    const userApproveDescription = useMemo(() => getUserApproveDescription(t,orderInfo), [t]);
+    const statAccessDescription = useMemo(() => getStatAccessDescription(t,orderInfo), [t]);
+
+    const projectAccessDescription = useMemo(() => getProjectAccessDescription(t,orderInfo), [t]);
+    const viewAccessDescription = useMemo(() => getViewAccessDescription(t,orderInfo), [t]);
+    const limitingSettingsDescription = useMemo(() => getLimitingSettingsDescription(t,orderInfo), [t]);
     const orderDetailColumns = useMemo(() => getOrderDetailColumns(t,orderInfo), [t,orderInfo]);
-    const limitingSettingsColumns = useMemo(() => getLimitingSettingsColumns(t), [t]);
 
     const toggleShowOrderDetail = () => {
         setShowOrderDetail(!showOrderDetail);
@@ -102,36 +110,35 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
     const getRelatedInformation = () => {
         if(orderInfo.orderType == OrderTypeEnum.USER_PEND_APPROVE){
             return (
-                <Table size={"small"} rowKey="id" pagination={false} columns={userApproveColumns} data={userListData} />
+                <Descriptions border data={userApproveDescription}/>
             )
         }else if(orderInfo.orderType == OrderTypeEnum.PROJECT_ACCESS && orderInfo.extend){
             return (
-                <Table size={"small"} rowKey="id" pagination={false} columns={projectAccessColumns} data={[orderInfo.extend]} />
+                <Descriptions border data={projectAccessDescription}/>
             )
         }else if(orderInfo.orderType == OrderTypeEnum.STAT_ACCESS && orderInfo.extend){
             return (
-                <Table size={"small"} rowKey="id" pagination={false} columns={statAccessColumns} data={[orderInfo.extend]} />
+                <Descriptions border data={statAccessDescription}/>
             )
         }else if(orderInfo.orderType == OrderTypeEnum.VIEW_ACCESS && orderInfo.extend){
             return (
-                <Table size={"small"} rowKey="id" pagination={false} columns={viewAccessColumns} data={[orderInfo.extend]} />
+                <Descriptions border data={viewAccessDescription}/>
             )
         }else if(orderInfo.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS && orderInfo.extend){
             return (
-                <Table size={"small"} rowKey="id" pagination={false} columns={projectAccessColumns} data={[orderInfo.extend.project]} />
+                <Descriptions border data={projectAccessDescription}/>
             )
         }else if(orderInfo.orderType == OrderTypeEnum.CALLER_STAT_ACCESS && orderInfo.extend){
             return (
-                <Table size={"small"} rowKey="id" pagination={false} columns={statAccessColumns} data={[orderInfo.extend.stat]} />
+                <Descriptions border data={statAccessDescription}/>
             )
         }else if(orderInfo.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS && orderInfo.extend){
             return (
-                <Table size={"small"} rowKey="id" pagination={false} columns={viewAccessColumns} data={[orderInfo.extend.view]} />
+                <Descriptions border data={viewAccessDescription}/>
             )
         }else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS && orderInfo.extend){
-            const extendElement = {...orderInfo.extend,strategy:orderInfo.extendConfig.strategy,currentValue:orderInfo.extendConfig.currentValue,updateValue:orderInfo.extendConfig.updateValue}
             return (
-                <Table size={"small"} rowKey="id" pagination={false} columns={limitingSettingsColumns} data={[extendElement]} />
+                <Descriptions border data={limitingSettingsDescription}/>
             )
         }else{
             return  <Typography.Text type="secondary">
@@ -139,6 +146,61 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
             </Typography.Text>
         }
     }
+
+    const getExpiredDescription = (expired):String => {
+        if(expired == null){
+            return null;
+        }else if(expired == 2592000){
+            return t['basic.orderExpired.description.expired1'];
+        }else if(expired == 7776000){
+            return t['basic.orderExpired.description.expired2'];
+        }else if(expired == 15552000){
+            return t['basic.orderExpired.description.expired3'];
+        }else if(expired == 31104000){
+            return t['basic.orderExpired.description.expired4'];
+        }
+    }
+
+    useEffect(() => {
+        console.log("orderInfo:" + JSON.stringify(orderInfo?.extend?.expired));
+    },[])
+
+    const orderData = [
+        {
+            label: t['detailModal.columns.id'],
+            value: orderInfo?.id,
+        },
+        {
+            label: t['detailModal.columns.user'],
+            value: <UserGroup users={[orderInfo?.user]}/>,
+        },
+        {
+            label: t['detailModal.columns.type'],
+            value: getOrderTypeDescription(t,orderInfo?.orderType),
+        },
+        {
+            label: t['detailModal.columns.createTime'],
+            value: formatTimeStampBackUp(orderInfo?.createTime),
+        },
+        {
+            label: t['detailModal.columns.updateTime'],
+            value: formatTimeStampBackUp(orderInfo?.updateTime),
+        },
+        {
+            label: t['detailModal.columns.state'],
+            value: getOrderStateDescription(t,orderInfo?.state),
+        },
+        {
+            label: t['detailModal.columns.desc'],
+            value: <>
+                {
+                    getOrderDescription(t,orderInfo)}
+                {
+                    (orderInfo?.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS || orderInfo?.orderType == OrderTypeEnum.CALLER_STAT_ACCESS || orderInfo?.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS) &&
+                    orderInfo?.extend?.expired?<Text style={{color:'red'}} bold={true}> [{getExpiredDescription(orderInfo?.extend?.expired)}]</Text>:null}
+            </>
+        },
+    ];
 
     return (
       <div>
@@ -155,7 +217,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
               >
                   {t['detailModal.label.order.info']}
               </Typography.Title>
-              <Table size={"small"} rowKey="id" pagination={false} columns={orderColumns} data={listData} />
+              <Descriptions border data={orderData} />
               <Typography.Title
                   style={{ marginTop: 30 }}
                   heading={6}>

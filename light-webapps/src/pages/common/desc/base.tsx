@@ -23,6 +23,7 @@ import {RxCube} from "react-icons/rx";
 import {VscGistSecret, VscOutput} from "react-icons/vsc";
 import {HiMiniBoltSlash} from "react-icons/hi2";
 import {TbBrandVisualStudio} from "react-icons/tb";
+import {formatString} from "@/utils/util";
 
 export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
     if(value === StatStateEnum.PENDING){
@@ -43,6 +44,31 @@ export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
         return <Badge color={'red'} text={t['basic.columns.state.invalid']}/>;
     }
 }
+
+export const getOrderDescription = (t: any, orderInfo) => {
+    if(orderInfo.orderType == OrderTypeEnum.PROJECT_ACCESS){
+        return formatString(t['basic.order.description.projectAccess'],orderInfo?.extend?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.STAT_ACCESS){
+        return formatString(t['basic.order.description.statAccess'],orderInfo?.extend?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.METRIC_ACCESS){
+        return formatString(t['basic.order.description.metricAccess'],orderInfo?.extend?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.VIEW_ACCESS){
+        return formatString(t['basic.order.description.viewAccess'],orderInfo?.extend?.title)
+    }else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS){
+        return formatString(t['basic.order.description.updateLimitingThreshold'],orderInfo?.extend?.token)
+    } else if(orderInfo.orderType == OrderTypeEnum.USER_PEND_APPROVE){
+        return formatString(t['basic.order.description.userPendApprove'],orderInfo?.extend?.username)
+    } else if(orderInfo.orderType == OrderTypeEnum.STAT_PEND_APPROVE){
+        return formatString(t['basic.order.description.statPendApprove'],orderInfo?.extend?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS){
+        return formatString(t['basic.order.description.callerProjectAccess'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.project?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.CALLER_STAT_ACCESS){
+        return formatString(t['basic.order.description.callerStatAccess'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.stat?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS){
+        return formatString(t['basic.order.description.callerViewAccess'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.view?.title)
+    }
+}
+
 export function getStatStateDescription (t: any, value:StatStateEnum) {
     if(value === StatStateEnum.PENDING){
         return t['basic.columns.state.pending'];

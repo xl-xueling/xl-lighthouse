@@ -63,89 +63,56 @@ export function getOrderColumns(t: any) {
     ];
 }
 
-export function getUserApproveColumns(t: any) {
+export function getUserApproveDescription(t: any,orderInfo:Order) {
     return [
         {
-            title: t['detailModal.user.approve.columns.id'],
-            dataIndex: 'id',
-            render: (value,record) =>
-                <Text>{value}</Text>
-            ,
+            label: t['detailModal.user.approve.columns.id'],
+            value: orderInfo?.user?.id,
         },
         {
-            title: t['detailModal.user.approve.columns.username'],
-            dataIndex: 'username',
-            render: (value,record) =>
-                <Text>{value}</Text>
-            ,
+            label: t['detailModal.user.approve.columns.username'],
+            value: orderInfo?.user?.username,
         },
         {
-            title: t['detailModal.user.approve.columns.email'],
-            dataIndex: 'email',
-            render: (value,record) =>
-                <Text>{value}</Text>
-            ,
+            label: t['detailModal.user.approve.columns.email'],
+            value: orderInfo?.user?.email,
         },
         {
-            title: t['detailModal.user.approve.columns.department'],
-            dataIndex: 'departmentId',
-            render: (value,record) => {
-                return <DepartmentLabel departmentId={value}/>
-            }
-            ,
+            label: t['detailModal.user.approve.columns.department'],
+            value: <DepartmentLabel departmentId={orderInfo?.user?.departmentId}/>,
         },
         {
-            title: t['detailModal.user.approve.columns.createTime'],
-            dataIndex: 'createTime',
-            render: (value) => {return formatTimeStampBackUp(value)},
-        }
+            label: t['detailModal.user.approve.columns.createTime'],
+            value:  formatTimeStampBackUp(orderInfo?.user?.createTime),
+        },
     ];
 }
 
 
-export function getStatAccessColumns(t: any) {
+export function getStatAccessDescription(t: any,orderInfo:Order) {
     return [
         {
-            title: t['detailModal.statAccess.columns.id'],
-            dataIndex: 'id',
-            headerCellStyle: { width: '90px' },
-            render: (value,record) =>
-                <Text>{value}</Text>
-            ,
+            label: t['detailModal.statAccess.columns.id'],
+            value: orderInfo?.extend?.id,
         },
         {
-            title: t['detailModal.statAccess.columns.title'],
-            dataIndex: 'title',
-            headerCellStyle: { minWidth: '150px' },
-            render: (value,record) =>
-                <Text>{value}</Text>
-            ,
+            label: t['detailModal.statAccess.columns.title'],
+            value: orderInfo?.extend?.title,
         },
         {
-            title: t['detailModal.statAccess.columns.relationship'],
-            dataIndex: 'relationship',
-            headerCellStyle: { minWidth: '150px' },
-            render:(value,record) => {
-                return (record.projectTitle + ' > ' + record.token);
-            }
+            label: t['detailModal.statAccess.columns.relationship'],
+            value: orderInfo?.extend?.projectTitle + ' > ' + orderInfo?.extend?.token,
         },
-        // {
-        //     title: t['detailModal.statAccess.columns.department'],
-        //     dataIndex: 'departmentId',
-        //     render: (value,record) => {
-        //         return <DepartmentLabel departmentId={value}/>
-        //     }
-        //     ,
-        // },
         {
-            title: t['detailModal.statAccess.columns.desc'],
-            dataIndex: 'desc',
-            render: (value,record) => {
-                return <Text>{value}</Text>
-            }
-            ,
+            label: t['detailModal.statAccess.columns.department'],
+            value: <DepartmentLabel departmentId={orderInfo?.extend?.departmentId}/>,
         },
-    ]
+        {
+            label: t['detailModal.statAccess.columns.desc'],
+            value: orderInfo?.extend?.desc ,
+            span: 3,
+        },
+    ];
 }
 
 export function getViewAccessColumns(t: any) {
@@ -182,44 +149,50 @@ export function getViewAccessColumns(t: any) {
     ];
 }
 
-export function getProjectAccessColumns(t: any) {
+export function getViewAccessDescription(t: any,orderInfo:Order) {
     return [
         {
-            title: t['detailModal.projectAccess.columns.id'],
-            dataIndex: 'id',
-            render: (value,record) =>
-                <Text>{value}</Text>
-            ,
+            label: t['detailModal.viewAccess.columns.id'],
+            value:  orderInfo?.extend?.id,
         },
         {
-            title: t['detailModal.projectAccess.columns.title'],
-            dataIndex: 'title',
-            render: (value,record) =>
-                <Text>{value}</Text>
-            ,
+            label:  t['detailModal.viewAccess.columns.title'],
+            value:  orderInfo?.extend?.title,
         },
         {
-            title: t['detailModal.projectAccess.columns.department'],
-            dataIndex: 'departmentId',
-            render: (value,record) => {
-                return <DepartmentLabel departmentId={value}/>
-            }
-            ,
+            label: t['detailModal.viewAccess.columns.admins'],
+            value: <DepartmentLabel departmentId={orderInfo?.extend?.departmentId}/>,
         },
         {
-            title: t['detailModal.projectAccess.columns.admins'],
-            dataIndex: 'admins',
-            render: (value,record) => {
-                return <UserGroup users={value}/>
-            }
+            label: t['detailModal.viewAccess.columns.desc'],
+            value: orderInfo?.extend?.desc,
+            span: 2,
+        },
+    ];
+}
+
+export function getProjectAccessDescription(t: any,orderInfo:Order) {
+    return [
+        {
+            label: t['detailModal.projectAccess.columns.id'],
+            value:  orderInfo?.extend?.id,
         },
         {
-            title: t['detailModal.projectAccess.columns.desc'],
-            dataIndex: 'desc',
-            render: (value,record) => {
-                return <Text>{value}</Text>
-            }
-            ,
+            label: t['detailModal.projectAccess.columns.title'],
+            value:  orderInfo?.extend?.title,
+        },
+        {
+            label: t['detailModal.projectAccess.columns.department'],
+            value: <DepartmentLabel departmentId={orderInfo?.extend?.departmentId}/>,
+        },
+        {
+            label: t['detailModal.projectAccess.columns.admins'],
+            value: <UserGroup users={orderInfo?.extend?.admins}/>
+        },
+        {
+            label: t['detailModal.projectAccess.columns.desc'],
+            value: orderInfo?.extend?.desc,
+            span: 2,
         },
     ];
 }
@@ -271,6 +244,35 @@ export function getLimitingSettingsColumns(t: any) {
                 return <Text>{value}</Text>
             }
             ,
+        },
+    ];
+}
+
+export function getLimitingSettingsDescription(t: any,orderInfo:Order) {
+    return [
+        {
+            label: t['detailModal.limitingSettings.columns.id'],
+            value:  orderInfo?.extend?.id,
+        },
+        {
+            label: t['detailModal.limitingSettings.columns.token'],
+            value:  orderInfo?.extend?.token,
+        },
+        {
+            label: t['detailModal.limitingSettings.columns.project'],
+            value:  orderInfo?.extend?.projectTitle,
+        },
+        {
+            label: t['detailModal.limitingSettings.columns.strategy'],
+            value: orderInfo?.extendConfig?.strategy
+        },
+        {
+            label: t['detailModal.limitingSettings.columns.currentValue'],
+            value: orderInfo?.extendConfig?.currentValue,
+        },
+        {
+            label: t['detailModal.limitingSettings.columns.updateValue'],
+            value: orderInfo?.extendConfig?.updateValue,
         },
     ];
 }
