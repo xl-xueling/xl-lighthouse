@@ -21,6 +21,9 @@ export enum OrderTypeEnum {
     STAT_PEND_APPROVE=5,
     USER_PEND_APPROVE=6,
     VIEW_ACCESS=7,
+    CALLER_PROJECT_ACCESS=8,
+    CALLER_STAT_ACCESS=9,
+    CALLER_VIEW_ACCESS=10,
 }
 
 export enum PermissionEnum {

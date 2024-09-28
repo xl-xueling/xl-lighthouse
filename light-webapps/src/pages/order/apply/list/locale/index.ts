@@ -21,6 +21,9 @@ const i18n = {
     'applyList.description.updateLimitingThreshold':'Update Group[%s] Limiting Threshold.',
     'applyList.description.statPendApprove':'Stat[%s] Pend Approve',
     'applyList.description.userPendApprove':'User[%s] Pend Approve',
+    'applyList.description.callerProjectAccess':'Caller[%s] Request Project[%s] Access',
+    'applyList.description.callerStatAccess':'Caller[%s] Request Stat[%s] Access',
+    'applyList.description.callerViewAccess':'Caller[%s] Request View[%s] Access',
     'applyList.columns.operations.retracted':'Retract',
     'applyList.columns.operations.detail':'Detail',
   },
@@ -48,6 +51,9 @@ const i18n = {
     'applyList.description.updateLimitingThreshold':'调整统计组[%s]限流阈值',
     'applyList.description.statPendApprove':'新增统计项[%s]待审核',
     'applyList.description.userPendApprove':'新增用户[%s]待审核',
+    'applyList.description.callerProjectAccess':'调用方[%s]申请工程[%s]访问权限',
+    'applyList.description.callerStatAccess':'调用方[%s]申请统计项[%s]访问权限',
+    'applyList.description.callerViewAccess':'调用方[%s]申请视图[%s]访问权限',
   },
 };
 

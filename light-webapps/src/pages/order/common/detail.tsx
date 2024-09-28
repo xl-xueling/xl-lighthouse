@@ -116,6 +116,18 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
             return (
                 <Table size={"small"} rowKey="id" pagination={false} columns={viewAccessColumns} data={[orderInfo.extend]} />
             )
+        }else if(orderInfo.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS && orderInfo.extend){
+            return (
+                <Table size={"small"} rowKey="id" pagination={false} columns={projectAccessColumns} data={[orderInfo.extend.project]} />
+            )
+        }else if(orderInfo.orderType == OrderTypeEnum.CALLER_STAT_ACCESS && orderInfo.extend){
+            return (
+                <Table size={"small"} rowKey="id" pagination={false} columns={statAccessColumns} data={[orderInfo.extend.stat]} />
+            )
+        }else if(orderInfo.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS && orderInfo.extend){
+            return (
+                <Table size={"small"} rowKey="id" pagination={false} columns={viewAccessColumns} data={[orderInfo.extend.view]} />
+            )
         }else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS && orderInfo.extend){
             const extendElement = {...orderInfo.extend,strategy:orderInfo.extendConfig.strategy,currentValue:orderInfo.extendConfig.currentValue,updateValue:orderInfo.extendConfig.updateValue}
             return (

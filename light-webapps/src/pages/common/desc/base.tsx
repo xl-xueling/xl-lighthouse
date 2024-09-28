@@ -192,6 +192,12 @@ export function getOrderTypeDescription(t:any,value:OrderTypeEnum){
         return t['basic.orderType.description.viewAccess'];
     }else if(value == OrderTypeEnum.LIMITING_SETTINGS){
         return t['basic.orderType.description.updateLimitingThreshold'];
+    }else if(value == OrderTypeEnum.CALLER_PROJECT_ACCESS){
+        return t['basic.orderType.description.callerProjectAccess']
+    }else if(value == OrderTypeEnum.CALLER_STAT_ACCESS){
+        return t['basic.orderType.description.callerStatAccess']
+    }else if(value == OrderTypeEnum.CALLER_VIEW_ACCESS){
+        return t['basic.orderType.description.callerViewAccess']
     }
 }
 

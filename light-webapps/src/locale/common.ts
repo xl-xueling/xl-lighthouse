@@ -57,6 +57,9 @@ const vi18n = {
         'basic.orderType.description.updateLimitingThreshold':'Update Limiting Threshold',
         'basic.orderType.description.statPendApprove':'Stat Pend Approve',
         'basic.orderType.description.userPendApprove':'User Pend Approve',
+        'basic.orderType.description.callerProjectAccess':'APICaller Request Project Access',
+        'basic.orderType.description.callerStatAccess':'APICaller Request Statistic Access',
+        'basic.orderType.description.callerViewAccess':'APICaller Request View Access',
         'basic.roleType.description.projectManage':'Project Manage Permission',
         'basic.roleType.description.projectAccess':'Project Access Permission',
         'basic.roleType.description.metricManage':'Metric Manage Permission',
@@ -200,7 +203,9 @@ const vi18n = {
         'basic.orderType.description.updateLimitingThreshold':'修改限流阈值',
         'basic.orderType.description.statPendApprove':'审核统计项',
         'basic.orderType.description.userPendApprove':'审核新用户',
-
+        'basic.orderType.description.callerProjectAccess':'API调用方申请工程访问权限',
+        'basic.orderType.description.callerStatAccess':'API调用方申请统计项访问权限',
+        'basic.orderType.description.callerViewAccess':'API调用方申请视图访问权限',
 
         'basic.roleType.description.projectManage':'工程管理权限',
         'basic.roleType.description.projectAccess':'工程访问权限',

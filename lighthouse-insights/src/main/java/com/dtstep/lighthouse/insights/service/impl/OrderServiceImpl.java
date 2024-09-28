@@ -93,6 +93,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ViewService viewService;
 
+    @Autowired
+    private CallerService callerService;
+
     @Override
     public ListData<OrderVO> queryApproveList(ApproveOrderQueryParam queryParam, Integer pageNum, Integer pageSize) {
         Integer currentUserId = baseService.getCurrentUserId();
@@ -182,11 +185,11 @@ public class OrderServiceImpl implements OrderService {
                 Role role = roleService.queryRole(roleTypeEnum,0);
                 checkAddRole(roleList,role);
             }else if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
-                if(orderTypeEnum == OrderTypeEnum.PROJECT_ACCESS){
+                if(orderTypeEnum == OrderTypeEnum.PROJECT_ACCESS || orderTypeEnum == OrderTypeEnum.CALLER_PROJECT_ACCESS){
                     Project project = (Project) param;
                     Role role = roleService.queryRole(roleTypeEnum,project.getId());
                     checkAddRole(roleList,role);
-                }else if(orderTypeEnum == OrderTypeEnum.STAT_ACCESS){
+                }else if(orderTypeEnum == OrderTypeEnum.STAT_ACCESS || orderTypeEnum == OrderTypeEnum.CALLER_STAT_ACCESS){
                     Stat stat = (Stat) param;
                     Role role = roleService.queryRole(roleTypeEnum,stat.getProjectId());
                     checkAddRole(roleList,role);
@@ -293,6 +296,22 @@ public class OrderServiceImpl implements OrderService {
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + groupId + "_" + strategy;
             hash = Md5Util.getMD5(message);
             roleList = getApproveRoleList(applyUser,orderTypeEnum,null);
+        }else if(order.getOrderType() == OrderTypeEnum.CALLER_PROJECT_ACCESS){
+            if(!extendConfig.containsKey("projectId")){
+                return ResultCode.paramValidateFailed;
+            }
+            if(!extendConfig.containsKey("callerId")){
+                return ResultCode.paramValidateFailed;
+            }
+            Integer projectId = (Integer) extendConfig.get("projectId");
+            Project project = projectService.queryById(projectId);
+            Validate.notNull(project);
+            Integer callerId = (Integer) extendConfig.get("callerId");
+            Caller caller = callerService.queryById(callerId);
+            Validate.notNull(caller);
+            String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + callerId + "_" + projectId;
+            hash = Md5Util.getMD5(message);
+            roleList = getApproveRoleList(applyUser,orderTypeEnum,project);
         }
         boolean isExist = orderDao.isExist(hash);
         if(isExist){
@@ -375,6 +394,51 @@ public class OrderServiceImpl implements OrderService {
         }else if(order.getOrderType() == OrderTypeEnum.USER_PEND_APPROVE){
             Integer userId = order.getUserId();
             return userService.cacheQueryById(userId);
+        }else if(order.getOrderType() == OrderTypeEnum.CALLER_PROJECT_ACCESS){
+            Integer projectId = (Integer) configMap.get("projectId");
+            Project project = projectService.queryById(projectId);
+            if(project == null){
+                return null;
+            }
+            Integer callerId = (Integer) configMap.get("callerId");
+            Caller caller = callerService.queryById(callerId);
+            if(caller == null){
+                return null;
+            }
+            HashMap<String,Object> extendMap = new HashMap<>();
+            extendMap.put("project",project);
+            extendMap.put("caller",caller);
+            return extendMap;
+        }else if(order.getOrderType() == OrderTypeEnum.CALLER_STAT_ACCESS){
+            Integer statId = (Integer) configMap.get("statId");
+            Stat stat = statService.queryById(statId);
+            if(stat == null){
+                return null;
+            }
+            Integer callerId = (Integer) configMap.get("callerId");
+            Caller caller = callerService.queryById(callerId);
+            if(caller == null){
+                return null;
+            }
+            HashMap<String,Object> extendMap = new HashMap<>();
+            extendMap.put("stat",stat);
+            extendMap.put("caller",caller);
+            return extendMap;
+        }else if(order.getOrderType() == OrderTypeEnum.CALLER_VIEW_ACCESS){
+            Integer viewId = (Integer) configMap.get("viewId");
+            View view = viewService.queryById(viewId);
+            if(view == null){
+                return null;
+            }
+            Integer callerId = (Integer) configMap.get("callerId");
+            Caller caller = callerService.queryById(callerId);
+            if(caller == null){
+                return null;
+            }
+            HashMap<String,Object> extendMap = new HashMap<>();
+            extendMap.put("view",view);
+            extendMap.put("caller",caller);
+            return extendMap;
         }
         return null;
     }

@@ -3,7 +3,7 @@ import {Button, Typography, Space, Popconfirm, Message, Link, Badge} from '@arco
 import UserGroup from "@/pages/user/common/groups";
 import {formatTimeStampBackUp} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
-import {OrderStateEnum, RoleTypeEnum} from "@/types/insights-common";
+import {OrderStateEnum, OrderTypeEnum, RoleTypeEnum} from "@/types/insights-common";
 import {Order} from "@/types/insights-web";
 import {
     getLimitingStrategyDescription, getOrderApproveRoleTypeDescription,
@@ -31,8 +31,16 @@ export function getOrderColumns(t: any) {
         {
             title: t['detailModal.columns.type'],
             dataIndex: 'orderType',
-            render: (value) => {
-                return getOrderTypeDescription(t,value);
+            render: (value,record) => {
+                if(record.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS){
+                    return getOrderTypeDescription(t,value) + '('+record?.extend?.caller?.name+')';
+                }else if(record.orderType == OrderTypeEnum.CALLER_STAT_ACCESS){
+                    return getOrderTypeDescription(t,value) + '('+record?.extend?.caller?.name+')';
+                }else if(record.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS){
+                    return getOrderTypeDescription(t,value) + '('+record?.extend?.caller?.name+')';
+                }else{
+                    return getOrderTypeDescription(t,value);
+                }
             },
         },
         {

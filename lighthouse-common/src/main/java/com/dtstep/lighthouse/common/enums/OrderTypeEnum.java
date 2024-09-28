@@ -23,6 +23,12 @@ public enum OrderTypeEnum {
 
     VIEW_ACCESS(7,List.of(FlowNode.newBuilder(RoleTypeEnum.VIEW_MANAGE_PERMISSION))),
 
+    CALLER_PROJECT_ACCESS(8,List.of(FlowNode.newBuilder(RoleTypeEnum.PROJECT_MANAGE_PERMISSION))),
+
+    CALLER_STAT_ACCESS(9,List.of(FlowNode.newBuilder(RoleTypeEnum.PROJECT_MANAGE_PERMISSION))),
+
+    CALLER_VIEW_ACCESS(10,List.of(FlowNode.newBuilder(RoleTypeEnum.PROJECT_MANAGE_PERMISSION))),
+
     ;
 
     OrderTypeEnum(int orderType){

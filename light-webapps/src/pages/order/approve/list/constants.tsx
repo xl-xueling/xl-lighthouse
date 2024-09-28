@@ -21,6 +21,12 @@ const getApproveDescription = (t: any, orderInfo) => {
         return formatString(t['approveList.description.userPendApprove'],orderInfo?.extend?.username)
     } else if(orderInfo.orderType == OrderTypeEnum.STAT_PEND_APPROVE){
         return formatString(t['approveList.description.statPendApprove'],orderInfo?.extend?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS){
+        return formatString(t['approveList.description.callerProjectAccess'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.project?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.CALLER_STAT_ACCESS){
+        return formatString(t['approveList.description.callerStatAccess'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.stat?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS){
+        return formatString(t['approveList.description.callerViewAccess'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.view?.title)
     }
 }
 
