@@ -12,9 +12,13 @@ import {AiOutlineSafety} from "react-icons/ai";
 import AuthList from "@/pages/caller/manage/auth_list";
 import CallerUpdateModal from "@/pages/caller/update";
 import SecretKeyModal from "@/pages/caller/manage/secret_key";
+import useLocale from "@/utils/useLocale";
+import locale from "@/pages/caller/manage/locale";
 const TabPane = Tabs.TabPane;
 
 export default function CallerManagePanel({id}){
+
+    const t = useLocale(locale);
 
     const [callerInfo,setCallerInfo] = useState<Caller>(null);
 

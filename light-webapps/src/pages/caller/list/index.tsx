@@ -22,7 +22,7 @@ import CallerUpdateModal from "@/pages/caller/update";
 import useLocale from "@/utils/useLocale";
 const InputSearch = Input.Search;
 
-export default function CallerIndex(){
+export default function CallerListPage(){
 
     const t = useLocale(locale);
 

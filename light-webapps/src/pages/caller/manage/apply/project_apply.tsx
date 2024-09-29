@@ -56,9 +56,6 @@ const ProjectApply : React.FC<Props> = ({
                         options={options}
                         placeholder='Search title'
                         filterOption={false}
-                        renderFormat={(option) => {
-                            return option.children.props.children[1];
-                        }}
                         notFoundContent={
                             fetching ? (
                                 <div

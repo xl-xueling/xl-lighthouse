@@ -25,7 +25,7 @@ export default function AuthAdd({onClose}){
         const currentForm = formRefs.current[activeTab];
         if (currentForm) {
             const values = currentForm.getFieldsValue();
-            if(activeTab == '0'){
+            if(activeTab === 0){
                 const applyParam = {
                     orderType:OrderTypeEnum.CALLER_PROJECT_ACCESS,
                     userId:userInfo?.id,
@@ -52,7 +52,7 @@ export default function AuthAdd({onClose}){
                         content:t['system.error'],
                     })
                 })
-            }else if(activeTab == '1'){
+            }else if(activeTab === 1){
                 const applyParam = {
                     orderType:OrderTypeEnum.CALLER_STAT_ACCESS,
                     userId:userInfo?.id,
@@ -79,7 +79,7 @@ export default function AuthAdd({onClose}){
                         content:t['system.error'],
                     })
                 })
-            }else if(activeTab == '2'){
+            }else if(activeTab === 2){
                 const applyParam = {
                     orderType:OrderTypeEnum.CALLER_VIEW_ACCESS,
                     userId:userInfo?.id,
@@ -133,7 +133,7 @@ export default function AuthAdd({onClose}){
                             {getIcon('project')}
                         </span>}>
                     <Form ref={(ref) => (formRefs.current[0] = ref)} initialValues={{expired:2592000}}>
-                        <ProjectApply caller={callerInfo}/>
+                        <ProjectApply callerInfo={callerInfo}/>
                     </Form>
                 </TabPane>
                 <TabPane
@@ -143,7 +143,7 @@ export default function AuthAdd({onClose}){
                             {getIcon('stat')}
                         </span>}>
                     <Form ref={(ref) => (formRefs.current[1] = ref)} initialValues={{expired:2592000}}>
-                        <StatApply caller={callerInfo}/>
+                        <StatApply callerInfo={callerInfo}/>
                     </Form>
                 </TabPane>
                 {/*<TabPane*/}
