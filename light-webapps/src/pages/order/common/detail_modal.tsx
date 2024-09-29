@@ -34,7 +34,7 @@ export default function OrderDetailModal({orderId,onClose}) {
         <Modal
             title= {t['detailModal.title']}
             alignCenter={false}
-            style={{ width:'1150px',maxWidth:'80%',top:'100px' }}
+            style={{ width:'1150px',maxWidth:'80%',verticalAlign:'top', top: '80px' }}
             visible={true}
             footer={null}
             onCancel={onClose}>
