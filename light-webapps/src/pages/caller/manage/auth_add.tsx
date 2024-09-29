@@ -15,7 +15,12 @@ const TabPane = Tabs.TabPane;
 
 export default function AuthAdd({onClose}){
 
-    const {callerInfo} = useContext(CallerManageContext);
+    const {callerInfo,PRO_ViewBindTab} = useContext(CallerManageContext);
+
+    useEffect(() => {
+        console.log("PRO_ViewBindTab is:" + PRO_ViewBindTab);
+    },[PRO_ViewBindTab])
+
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
     const [activeTab, setActiveTab] = useState(0);
     const t = useLocale(locale);
@@ -146,17 +151,20 @@ export default function AuthAdd({onClose}){
                         <StatApply callerInfo={callerInfo}/>
                     </Form>
                 </TabPane>
-                {/*<TabPane*/}
-                {/*    key='2'*/}
-                {/*    title={*/}
-                {/*        <span>*/}
-                {/*            {getIcon('view')}*/}
-                {/*        </span>*/}
-                {/*    }>*/}
-                {/*    <Form ref={(ref) => (formRefs.current[2] = ref)} initialValues={{expired:2592000}}>*/}
-                {/*        <ViewApply caller={callerInfo}/>*/}
-                {/*    </Form>*/}
-                {/*</TabPane>*/}
+                {
+                    PRO_ViewBindTab &&
+                    <TabPane
+                        key='2'
+                        title={
+                            <span>
+                            {getIcon('view')}
+                        </span>
+                        }>
+                        <Form ref={(ref) => (formRefs.current[2] = ref)} initialValues={{expired:2592000}}>
+                            {PRO_ViewBindTab(callerInfo)}
+                        </Form>
+                    </TabPane>
+                }
             </Tabs>
         </Modal>
     );

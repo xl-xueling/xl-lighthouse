@@ -16,7 +16,7 @@ import useLocale from "@/utils/useLocale";
 import locale from "@/pages/caller/manage/locale";
 const TabPane = Tabs.TabPane;
 
-export default function CallerManagePanel({id}){
+export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
 
     const t = useLocale(locale);
 
@@ -55,7 +55,7 @@ export default function CallerManagePanel({id}){
 
 
     return (
-        <CallerManageContext.Provider value={{callerInfo}}>
+        <CallerManageContext.Provider value={{callerInfo,PRO_ViewBindTab}}>
             <>
                 <Breadcrumb  style={{fontSize: 12, marginBottom: '10px'}}>
                     <Breadcrumb.Item>
