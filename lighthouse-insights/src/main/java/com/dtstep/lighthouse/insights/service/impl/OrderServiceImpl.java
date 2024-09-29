@@ -591,19 +591,22 @@ public class OrderServiceImpl implements OrderService {
             Role role = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,projectId);
             Validate.notNull(role);
             Integer callerId = (Integer) order.getExtendConfig().get("callerId");
-            permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId());
+            Integer expired = (Integer) order.getExtendConfig().get("expired");
+            permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId(),expired);
         }else if(order.getOrderType() == OrderTypeEnum.CALLER_STAT_ACCESS){
             Integer statId = (Integer) order.getExtendConfig().get("statId");
             Role role = roleService.cacheQueryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
             Validate.notNull(role);
             Integer callerId = (Integer) order.getExtendConfig().get("callerId");
-            permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId());
+            Integer expired = (Integer) order.getExtendConfig().get("expired");
+            permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId(),expired);
         }else if(order.getOrderType() == OrderTypeEnum.CALLER_VIEW_ACCESS){
             Integer viewId = (Integer) order.getExtendConfig().get("viewId");
             Role role = roleService.cacheQueryRole(RoleTypeEnum.VIEW_ACCESS_PERMISSION,viewId);
             Validate.notNull(role);
             Integer callerId = (Integer) order.getExtendConfig().get("callerId");
-            permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId());
+            Integer expired = (Integer) order.getExtendConfig().get("expired");
+            permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId(),expired);
         }else if(order.getOrderType() == OrderTypeEnum.LIMITING_SETTINGS){
             Integer groupId = (Integer) order.getExtendConfig().get("groupId");
             String strategy = (String) order.getExtendConfig().get("strategy");

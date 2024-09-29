@@ -18,15 +18,13 @@ package com.dtstep.lighthouse.insights.service.impl;
  */
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.modal.*;
+import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
-import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.PermissionVO;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
-import com.dtstep.lighthouse.common.modal.Department;
-import com.dtstep.lighthouse.common.modal.Permission;
-import com.dtstep.lighthouse.common.modal.User;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
@@ -41,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,6 +58,9 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private CallerService callerService;
 
     @Autowired
     private BaseService baseService;
@@ -136,7 +138,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Transactional
     @Override
-    public int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId,int expire) {
+    public int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId,int expire) throws Exception{
         Validate.notNull(ownerId);
         Validate.notNull(ownerTypeEnum);
         Validate.notNull(roleId);
@@ -150,12 +152,24 @@ public class PermissionServiceImpl implements PermissionService {
         }else if (ownerTypeEnum == OwnerTypeEnum.DEPARTMENT){
             Department department = departmentService.queryById(ownerId);
             Validate.notNull(department);
+        }else if(ownerTypeEnum == OwnerTypeEnum.CALLER){
+            Caller caller = callerService.queryById(ownerId);
+            Validate.notNull(caller);
         }
+        PermissionQueryParam permissionQueryParam = new PermissionQueryParam();
+        permissionQueryParam.setRoleId(roleId);
+        permissionQueryParam.setOwnerId(ownerId);
+        permissionQueryParam.setOwnerType(ownerTypeEnum);
+        delete(permissionQueryParam);
+        long current = System.currentTimeMillis();
+        long expireTime = current + TimeUnit.SECONDS.toMillis(expire);
+        LocalDateTime localDateTime = DateUtil.timestampToLocalDateTime(current);
+        LocalDateTime expireDateTime = DateUtil.timestampToLocalDateTime(expireTime);
         Permission permission = new Permission();
         permission.setOwnerId(ownerId);
         permission.setOwnerType(ownerTypeEnum);
         permission.setRoleId(roleId);
-        LocalDateTime localDateTime = LocalDateTime.now();
+        permission.setExpireTime(expireDateTime);
         permission.setCreateTime(localDateTime);
         permission.setUpdateTime(localDateTime);
         return permissionDao.insert(permission);

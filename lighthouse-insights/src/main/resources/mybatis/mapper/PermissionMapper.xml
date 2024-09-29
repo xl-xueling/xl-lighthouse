@@ -7,28 +7,31 @@
         <result property="ownerId" column="owner_id"/>
         <result property="ownerType" column="owner_type" typeHandler="com.dtstep.lighthouse.insights.types.OwnerTypeEnumTypeHandler"/>
         <result property="roleId" column="role_id"/>
+        <result property="expireTime" column="expire_time"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Permission" >
-        INSERT INTO ldp_permissions (`owner_id`, `owner_type`,`role_id`, `create_time`, `update_time`) VALUES
+        INSERT INTO ldp_permissions (`owner_id`, `owner_type`,`role_id`, `expire_time`, `create_time`, `update_time`) VALUES
         (
             #{ownerId,jdbcType=INTEGER},
             #{ownerType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.OwnerTypeEnumTypeHandler},
             #{roleId,jdbcType=INTEGER},
+            #{expireTime,jdbcType=TIMESTAMP},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO ldp_permissions (`owner_id`, `owner_type`,`role_id`, `create_time`, `update_time`) VALUES
+        INSERT INTO ldp_permissions (`owner_id`, `owner_type`,`role_id`, `expire_time`,`create_time`, `update_time`) VALUES
         <foreach collection="list" item="item" separator=",">
             (
             #{item.ownerId,jdbcType=INTEGER},
             #{item.ownerType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.OwnerTypeEnumTypeHandler},
             #{item.roleId,jdbcType=INTEGER},
+            #{item.expireTime,jdbcType=TIMESTAMP},
             #{item.createTime,jdbcType=TIMESTAMP},
             #{item.updateTime,jdbcType=TIMESTAMP}
             )
@@ -36,7 +39,7 @@
     </insert>
 
     <select id="queryList" resultMap="permissionResultMap">
-        SELECT p.`id`,p.`owner_id`,p.`owner_type`,p.`role_id`,p.`create_time`,p.`update_time`
+        SELECT p.`id`,p.`owner_id`,p.`owner_type`,p.`role_id`,p.`expire_time`,p.`create_time`,p.`update_time`
         FROM ldp_permissions p
         LEFT JOIN ldp_users u ON p.owner_type = '1' AND p.owner_id = u.id
         LEFT JOIN ldp_departments d ON p.owner_type = '2' AND p.owner_id = d.id
@@ -53,7 +56,6 @@
             </if>
         </where>
     </select>
-
 
 
     <select id="existPermission" resultType="boolean">
@@ -126,7 +128,7 @@
     </select>
 
     <select id="queryById" resultMap="permissionResultMap">
-        SELECT `id`,`owner_id`, `owner_type`,`role_id`, `create_time`, `update_time` FROM ldp_permissions WHERE id = #{id}
+        SELECT `id`,`owner_id`, `owner_type`,`role_id`, `expire_time`, `create_time`, `update_time` FROM ldp_permissions WHERE id = #{id}
     </select>
 
     <delete id="delete">

@@ -31,6 +31,8 @@ public class Permission implements Serializable {
 
     private Integer roleId;
 
+    private LocalDateTime expireTime;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
@@ -91,4 +93,11 @@ public class Permission implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public LocalDateTime getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(LocalDateTime expireTime) {
+        this.expireTime = expireTime;
+    }
 }
