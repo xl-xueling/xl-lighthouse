@@ -1,18 +1,27 @@
 package com.dtstep.lighthouse.insights.test.service;
 
+import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.service.PermissionService;
+import com.dtstep.lighthouse.insights.test.listener.SpringTestExecutionListener;
+import com.dtstep.lighthouse.insights.vo.ResourceVO;
+import net.minidev.json.JSONUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LightHouseInsightsApplication.class,properties = {"spring.config.location=classpath:lighthouse-insights.yml"})
+@TestExecutionListeners(listeners = SpringTestExecutionListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 public class TestPermissionService {
 
     @Autowired
@@ -33,5 +42,17 @@ public class TestPermissionService {
         queryParam.setRoleId(402);
         int id = permissionDao.delete(queryParam);
         System.out.println("id:" + id);
+    }
+
+    @Test
+    public void testPermissionList() throws Exception {
+        PermissionQueryParam permissionQueryParam = new PermissionQueryParam();
+        permissionQueryParam.setOwnerId(11017);
+        permissionQueryParam.setOwnerType(OwnerTypeEnum.CALLER);
+        ListData<ResourceVO> listData = permissionService.queryOwnerAuthList(permissionQueryParam,1,10);
+        List<ResourceVO> voList1 = listData.getList();
+        for(ResourceVO resourceVO : voList1){
+            System.out.println("resourceVo is:" + JsonUtil.toJSONString(resourceVO));
+        }
     }
 }

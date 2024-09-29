@@ -16,13 +16,15 @@ package com.dtstep.lighthouse.insights.service.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
 import com.dtstep.lighthouse.insights.service.*;
-import com.dtstep.lighthouse.insights.vo.PermissionVO;
+import com.dtstep.lighthouse.insights.vo.*;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
 import com.github.pagehelper.PageHelper;
@@ -38,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -61,6 +64,15 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Autowired
     private CallerService callerService;
+
+    @Autowired
+    private ProjectService projectService;
+
+    @Autowired
+    private StatService statService;
+
+    @Autowired
+    private ViewService viewService;
 
     @Autowired
     private BaseService baseService;
@@ -202,7 +214,7 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionDao.delete(queryParam);
     }
 
-    private PermissionVO translate(Permission permission){
+    private PermissionVO translate(Permission permission) throws Exception {
         PermissionVO permissionVO = new PermissionVO(permission);
         if(permissionVO.getOwnerType() == OwnerTypeEnum.USER){
             User user = userService.cacheQueryById(permissionVO.getOwnerId());
@@ -210,12 +222,16 @@ public class PermissionServiceImpl implements PermissionService {
         }else if(permissionVO.getOwnerType() == OwnerTypeEnum.DEPARTMENT){
             Department department = departmentService.queryById(permissionVO.getOwnerId());
             permissionVO.setExtend(department);
+        }else if(permissionVO.getOwnerType() == OwnerTypeEnum.CALLER){
+            Caller caller = callerService.queryById(permissionVO.getOwnerId());
+            permissionVO.setExtend(caller);
         }
         int roleId = permission.getRoleId();
         Role role = roleService.cacheQueryById(roleId);
         permissionVO.setRoleType(role.getRoleType());
         return permissionVO;
     }
+
 
     @Override
     public ListData<PermissionVO> queryList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize) {
@@ -238,5 +254,71 @@ public class PermissionServiceImpl implements PermissionService {
             }
         }
         return ListData.newInstance(dtoList,pageInfo.getTotal(),pageNum,pageSize);
+    }
+
+    @Override
+    public ListData<ResourceVO> queryOwnerAuthList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception {
+        PageHelper.startPage(pageNum,pageSize);
+        PageInfo<Permission> pageInfo;
+        try{
+            List<Permission> permissionList = permissionDao.queryList(queryParam);
+            pageInfo = new PageInfo<>(permissionList);
+        }finally {
+            PageHelper.clearPage();
+        }
+        List<ResourceVO> voList = new ArrayList<>();
+        List<Integer> statIdList = new ArrayList<>();
+        List<Integer> projectIdList = new ArrayList<>();
+        List<Integer> viewIdList = new ArrayList<>();
+        HashMap<Integer,Role> roleMap = new HashMap<>();
+        for(Permission permission : pageInfo.getList()){
+            int roleId = permission.getRoleId();
+            Role role = roleService.queryById(roleId);
+            if(role == null){
+                continue;
+            }
+            roleMap.put(roleId,role);
+            RoleTypeEnum roleTypeEnum = role.getRoleType();
+            if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION){
+                int projectId = role.getResourceId();
+                projectIdList.add(projectId);
+            }else if(roleTypeEnum == RoleTypeEnum.STAT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.STAT_ACCESS_PERMISSION){
+                int statId = role.getResourceId();
+                statIdList.add(statId);
+            }else if(roleTypeEnum == RoleTypeEnum.VIEW_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.VIEW_ACCESS_PERMISSION){
+                int viewId = role.getResourceId();
+                viewIdList.add(viewId);
+            }
+        }
+        List<StatVO> statList = statService.queryByIds(statIdList);
+        List<ProjectVO> projectList = projectService.queryByIds(projectIdList);
+        List<ViewVO> viewList = viewService.queryByIds(viewIdList);
+        for(Permission permission : pageInfo.getList()){
+            int roleId = permission.getRoleId();
+            Role role = roleMap.get(roleId);
+            if(role == null){
+                continue;
+            }
+            ResourceVO resourceVO = new ResourceVO();
+            RoleTypeEnum roleTypeEnum = role.getRoleType();
+            if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION){
+                ProjectVO project = projectList.stream().filter(x -> x.getId().intValue() == role.getResourceId().intValue()).findFirst().orElse(null);
+                resourceVO.setExtend(project);
+                resourceVO.setResourceId(role.getResourceId());
+                resourceVO.setResourceType(ResourceTypeEnum.Project);
+            }else if(roleTypeEnum == RoleTypeEnum.STAT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.STAT_ACCESS_PERMISSION){
+                StatVO statVO = statList.stream().filter(x -> x.getId().intValue() == role.getResourceId().intValue()).findFirst().orElse(null);
+                resourceVO.setExtend(statVO);
+                resourceVO.setResourceId(role.getResourceId());
+                resourceVO.setResourceType(ResourceTypeEnum.Stat);
+            }else if(roleTypeEnum == RoleTypeEnum.VIEW_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.VIEW_ACCESS_PERMISSION){
+                ViewVO viewVO = viewList.stream().filter(x -> x.getId().intValue() == role.getResourceId().intValue()).findFirst().orElse(null);
+                resourceVO.setExtend(viewVO);
+                resourceVO.setResourceId(role.getResourceId());
+                resourceVO.setResourceType(ResourceTypeEnum.View);
+            }
+            voList.add(resourceVO);
+        }
+        return ListData.newInstance(voList,pageInfo.getTotal(),pageNum,pageSize);
     }
 }

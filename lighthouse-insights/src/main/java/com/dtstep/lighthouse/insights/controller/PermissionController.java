@@ -18,6 +18,7 @@ package com.dtstep.lighthouse.insights.controller;
  */
 import com.dtstep.lighthouse.common.modal.ListSearchObject;
 import com.dtstep.lighthouse.common.modal.Pagination;
+import com.dtstep.lighthouse.insights.vo.ResourceVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.insights.dto.PermissionListQueryParam;
@@ -56,6 +57,14 @@ public class PermissionController {
         queryParam.setRoleId(role.getId());
         queryParam.setSearch(listQueryParam.getSearch());
         ListData<PermissionVO> listData = permissionService.queryList(queryParam, pagination.getPageNum(), pagination.getPageSize());
+        return ResultData.success(listData);
+    }
+
+    @RequestMapping("/permission/ownerAuthList")
+    public ResultData<ListData<ResourceVO>> authList(@Validated @RequestBody ListSearchObject<PermissionQueryParam> searchObject) throws Exception {
+        PermissionQueryParam listQueryParam = searchObject.getQueryParamOrDefault(new PermissionQueryParam());
+        Pagination pagination = searchObject.getPagination();
+        ListData<ResourceVO> listData = permissionService.queryOwnerAuthList(listQueryParam, pagination.getPageNum(), pagination.getPageSize());
         return ResultData.success(listData);
     }
 

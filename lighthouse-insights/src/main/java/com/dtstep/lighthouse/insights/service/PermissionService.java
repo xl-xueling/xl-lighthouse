@@ -21,6 +21,8 @@ import com.dtstep.lighthouse.insights.vo.PermissionVO;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.common.modal.Permission;
+import com.dtstep.lighthouse.insights.vo.RelationVO;
+import com.dtstep.lighthouse.insights.vo.ResourceVO;
 
 import java.util.List;
 
@@ -41,6 +43,8 @@ public interface PermissionService {
     List<Permission> queryUserManagePermission(Integer userId,Integer limit);
 
     ListData<PermissionVO> queryList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize);
+
+    ListData<ResourceVO> queryOwnerAuthList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception;
 
     boolean existPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 
