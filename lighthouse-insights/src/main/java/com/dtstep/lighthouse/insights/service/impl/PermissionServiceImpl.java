@@ -142,9 +142,11 @@ public class PermissionServiceImpl implements PermissionService {
         Validate.notNull(ownerId);
         Validate.notNull(ownerTypeEnum);
         Validate.notNull(roleId);
-        if(existPermission(ownerId,ownerTypeEnum,roleId)){
-            return 0;
-        }
+        PermissionQueryParam permissionQueryParam = new PermissionQueryParam();
+        permissionQueryParam.setRoleId(roleId);
+        permissionQueryParam.setOwnerId(ownerId);
+        permissionQueryParam.setOwnerType(ownerTypeEnum);
+        delete(permissionQueryParam);
         if(ownerTypeEnum == OwnerTypeEnum.USER){
             User user = userService.queryById(ownerId);
             Validate.notNull(user);
@@ -156,11 +158,6 @@ public class PermissionServiceImpl implements PermissionService {
             Caller caller = callerService.queryById(ownerId);
             Validate.notNull(caller);
         }
-        PermissionQueryParam permissionQueryParam = new PermissionQueryParam();
-        permissionQueryParam.setRoleId(roleId);
-        permissionQueryParam.setOwnerId(ownerId);
-        permissionQueryParam.setOwnerType(ownerTypeEnum);
-        delete(permissionQueryParam);
         long current = System.currentTimeMillis();
         long expireTime = current + TimeUnit.SECONDS.toMillis(expire);
         LocalDateTime localDateTime = DateUtil.timestampToLocalDateTime(current);
