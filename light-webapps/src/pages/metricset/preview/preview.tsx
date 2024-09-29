@@ -173,7 +173,7 @@ export default function MetricPreviewPanel ({id,PRO_ViewBindTab = null,PRO_ViewP
                                     <Tabs type="line" defaultActiveTab={'1'}
                                           extra={
                                               metricSetInfo?.permissions.includes(PermissionEnum.ManageAble)?
-                                                  <Space size={1}>
+                                                  <Space size={2}>
                                                       <Button type={"secondary"}  size={"mini"} onClick={() => setShowUpdatePanel(true)} icon={<FiEdit/>}>{t['metricSetPreview.updateMetricSet']}</Button>
                                                       <Button type={"secondary"}  size={"mini"} onClick={() => setShowPermissionManageModal(true)} icon={getIcon('permission')}>{t['metricSetPreview.permissionsManage']}</Button>
                                                       <Dropdown
