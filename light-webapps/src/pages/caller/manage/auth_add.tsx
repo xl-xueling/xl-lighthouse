@@ -11,6 +11,8 @@ import useLocale from "@/utils/useLocale";
 import {getIcon} from "@/pages/common/desc/base";
 import {requestCreateApply} from "@/api/order";
 import {OrderTypeEnum} from "@/types/insights-common";
+import {TbBrandVisualStudio} from "react-icons/tb";
+import {PiDiamondsFour} from "react-icons/pi";
 const TabPane = Tabs.TabPane;
 
 export default function AuthAdd({onClose}){
@@ -135,7 +137,7 @@ export default function AuthAdd({onClose}){
                     key='0'
                     title={
                         <span>
-                            {getIcon('project')}
+                            <PiDiamondsFour style={{marginBottom:'-2px'}}/>
                         </span>}>
                     <Form ref={(ref) => (formRefs.current[0] = ref)} initialValues={{expired:2592000}}>
                         <ProjectApply callerInfo={callerInfo}/>
@@ -157,8 +159,8 @@ export default function AuthAdd({onClose}){
                         key='2'
                         title={
                             <span>
-                            {getIcon('view')}
-                        </span>
+                                <TbBrandVisualStudio size={16} style={{marginBottom:'-2px'}}/>
+                            </span>
                         }>
                         <Form ref={(ref) => (formRefs.current[2] = ref)} initialValues={{expired:2592000}}>
                             {PRO_ViewBindTab(callerInfo)}

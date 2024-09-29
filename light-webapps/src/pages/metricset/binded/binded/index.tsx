@@ -14,6 +14,8 @@ import BindedProjectListPanel from "./binded_project";
 import {getIcon} from "@/pages/common/desc/base";
 import BindedStatisticListPanel from "@/pages/metricset/binded/binded/binded_stat";
 import {MetricSetBindListContext} from "@/pages/common/context";
+import {TbBrandVisualStudio} from "react-icons/tb";
+import {PiDiamondsFour} from "react-icons/pi";
 const { Row, Col } = Grid;
 const TabPane = Tabs.TabPane;
 
@@ -43,7 +45,7 @@ export default function NewMetricBindedModal({metricSetInfo,onClose,PRO_ViewBind
                 <TabPane
                     key='1'
                     title={
-                        getIcon('project')
+                        <PiDiamondsFour style={{marginBottom:'-2px'}}/>
                     }>
                     <BindedProjectListPanel metricSetInfo={metricSetInfo} />
                 </TabPane>
@@ -57,7 +59,9 @@ export default function NewMetricBindedModal({metricSetInfo,onClose,PRO_ViewBind
                 {
                     PRO_ViewBindTab && <TabPane
                     key='4'
-                    title={getIcon('view')}>
+                    title={
+                        <TbBrandVisualStudio size={16} style={{marginBottom:'-2px'}}/>
+                    }>
                         {PRO_ViewBindTab(metricSetInfo,handlerCallback)}
                     </TabPane>
                 }
