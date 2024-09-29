@@ -40,6 +40,7 @@ import {AiOutlineDashboard} from "react-icons/ai";
 import {TbBrandVisualStudio, TbCalendarTime} from "react-icons/tb";
 import {FiSettings} from "react-icons/fi";
 import UserSettings from "@/pages/user/settings";
+import CallerManage from "@/pages/caller/manage";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -234,7 +235,7 @@ function PageLayout() {
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"component/list"]);
       newOpenKeys = arrayDistinct([...newOpenKeys,"toolbox"]);
     }
-    if(pathname.startsWith('/caller/list')){
+    if(pathname.startsWith('/caller/list') || pathname.startsWith('/caller/manage')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"caller/list"]);
       newOpenKeys = arrayDistinct([...newOpenKeys,"toolbox"]);
     }
@@ -319,6 +320,7 @@ function PageLayout() {
                   <Route path="/stat/preview/:id" component={StatPreviewPage}/>
                   <Route path="/track/stat/:id" component={TrackStatPage}/>
                   <Route path="/user/settings" component={UserSettings}/>
+                  <Route path="/caller/manage/:id" component={CallerManage}/>
                   {flattenRoutes.map((route, index) => {
                     return (
                       <Route
