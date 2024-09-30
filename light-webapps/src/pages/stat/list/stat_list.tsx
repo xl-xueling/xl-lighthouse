@@ -15,6 +15,7 @@ import {requestBinded} from "@/api/metricset";
 import {MetricSetBindListContext} from "@/pages/common/context";
 import StatApplyModal from "@/pages/stat/apply";
 import {GroupManageContext} from "@/pages/common/context";
+import {useUpdateEffect} from "ahooks";
 
 interface Props {
     formParams?:any,
@@ -205,8 +206,20 @@ const StatisticalListPanel:React.FC<Props> = ({
     useEffect(() => {
         setLoading(true);
         fetchData().then();
-    },[refreshTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)])
+    },[refreshTime])
 
+    useUpdateEffect(() => {
+       setRefreshTime(Date.now());
+    },[pagination.current, pagination.pageSize])
+
+    useUpdateEffect(() => {
+        setLoading(true);
+        setPagination({
+            ...pagination,
+            current : 1,
+        });
+        setRefreshTime(Date.now());
+    },[JSON.stringify(formParams)])
 
     return (
         <>

@@ -208,7 +208,6 @@ const ProjectListPanel:React.FC<Props> = ({
         handleSearch({});
     }
 
-
     useEffect(() => {
         if(extend != null){
             const ids = extend.bindElements.filter(x => x.resourceType == ResourceTypeEnum.Project).map(x => x.resourceId);
@@ -218,7 +217,19 @@ const ProjectListPanel:React.FC<Props> = ({
 
     useEffect(() => {
         fetchData().then();
-    }, [reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+    },[reloadTime])
+
+    useUpdateEffect(() => {
+        setReloadTime(Date.now());
+    },[pagination.current, pagination.pageSize])
+
+    useUpdateEffect(() => {
+        setPagination({
+            ...pagination,
+            current : 1,
+        });
+        setReloadTime(Date.now());
+    },[JSON.stringify(formParams)])
 
     useUpdateEffect(() => {
         setPagination({
@@ -226,7 +237,7 @@ const ProjectListPanel:React.FC<Props> = ({
             current : 1
         });
         setTimeout(() => {
-            setReloadTime(Date.now);
+            setReloadTime(Date.now());
         },0)
     },[owner])
 

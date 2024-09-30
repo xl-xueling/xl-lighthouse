@@ -38,7 +38,7 @@ export default function Index() {
   const [applyVisible,setApplyVisible] = React.useState(false);
   const [reloadTime,setReloadTime] = useState<number>(Date.now);
   const userInfo = useSelector((state: GlobalState) => state.userInfo);
-  const [owner,setOwner] = useState(0);
+  const [owner,setOwner] = useState(1);
   const dispatch = useDispatch();
   const [formParams, setFormParams] = useState<any>({ownerId:userInfo.id});
 
