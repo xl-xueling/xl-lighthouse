@@ -43,7 +43,7 @@
             </if>
             and `state` = 1
         </where>
-        order by create_time desc
+        order by create_time desc limit 1
     </select>
 
 </mapper>
