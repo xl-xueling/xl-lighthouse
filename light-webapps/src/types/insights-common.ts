@@ -11,6 +11,7 @@ export interface ResultData<S = any> {
 export enum OwnerTypeEnum {
     USER=1,
     DEPARTMENT=2,
+    CALLER=3,
 }
 
 export enum OrderTypeEnum {

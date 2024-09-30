@@ -1,6 +1,7 @@
 import {Caller} from "@/types/caller";
 import {ResultData} from "@/types/insights-common";
 import {request} from "@/utils/request";
+import {Resource} from "@/types/insights-web";
 
 export async function requestCreate(data:Caller):Promise<ResultData> {
     return request({
@@ -13,6 +14,14 @@ export async function requestCreate(data:Caller):Promise<ResultData> {
 export async function requestList(data) :Promise<ResultData<{list:Array<Caller>,total:number}>> {
     return request({
         url:'/caller/list',
+        method:'POST',
+        data,
+    })
+}
+
+export async function requestAuthList(data) :Promise<ResultData<{list:Array<Resource>,total:number}>> {
+    return request({
+        url:'/permission/ownerAuthList',
         method:'POST',
         data,
     })

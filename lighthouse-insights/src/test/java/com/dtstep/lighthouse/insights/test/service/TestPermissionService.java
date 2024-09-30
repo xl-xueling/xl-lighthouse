@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.test.service;
 
 import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.modal.AuthRecord;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.PermissionDao;
@@ -49,10 +50,10 @@ public class TestPermissionService {
         PermissionQueryParam permissionQueryParam = new PermissionQueryParam();
         permissionQueryParam.setOwnerId(11017);
         permissionQueryParam.setOwnerType(OwnerTypeEnum.CALLER);
-        ListData<ResourceVO> listData = permissionService.queryOwnerAuthList(permissionQueryParam,1,10);
-        List<ResourceVO> voList1 = listData.getList();
-        for(ResourceVO resourceVO : voList1){
-            System.out.println("resourceVo is:" + JsonUtil.toJSONString(resourceVO));
+        ListData<AuthRecord> listData = permissionService.queryOwnerAuthList(permissionQueryParam,1,10);
+        List<AuthRecord> voList1 = listData.getList();
+        for(AuthRecord authRecord : voList1){
+            System.out.println("authRecord is:" + JsonUtil.toJSONString(authRecord));
         }
     }
 }

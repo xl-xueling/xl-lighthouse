@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.insights.controller;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.modal.AuthRecord;
 import com.dtstep.lighthouse.common.modal.ListSearchObject;
 import com.dtstep.lighthouse.common.modal.Pagination;
 import com.dtstep.lighthouse.insights.vo.ResourceVO;
@@ -61,10 +62,10 @@ public class PermissionController {
     }
 
     @RequestMapping("/permission/ownerAuthList")
-    public ResultData<ListData<ResourceVO>> authList(@Validated @RequestBody ListSearchObject<PermissionQueryParam> searchObject) throws Exception {
+    public ResultData<ListData<AuthRecord>> authList(@Validated @RequestBody ListSearchObject<PermissionQueryParam> searchObject) throws Exception {
         PermissionQueryParam listQueryParam = searchObject.getQueryParamOrDefault(new PermissionQueryParam());
         Pagination pagination = searchObject.getPagination();
-        ListData<ResourceVO> listData = permissionService.queryOwnerAuthList(listQueryParam, pagination.getPageNum(), pagination.getPageSize());
+        ListData<AuthRecord> listData = permissionService.queryOwnerAuthList(listQueryParam, pagination.getPageNum(), pagination.getPageSize());
         return ResultData.success(listData);
     }
 

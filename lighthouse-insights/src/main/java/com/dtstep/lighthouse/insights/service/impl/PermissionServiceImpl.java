@@ -257,7 +257,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public ListData<ResourceVO> queryOwnerAuthList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception {
+    public ListData<AuthRecord> queryOwnerAuthList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception {
         PageHelper.startPage(pageNum,pageSize);
         PageInfo<Permission> pageInfo;
         try{
@@ -266,7 +266,7 @@ public class PermissionServiceImpl implements PermissionService {
         }finally {
             PageHelper.clearPage();
         }
-        List<ResourceVO> voList = new ArrayList<>();
+        List<AuthRecord> voList = new ArrayList<>();
         List<Integer> statIdList = new ArrayList<>();
         List<Integer> projectIdList = new ArrayList<>();
         List<Integer> viewIdList = new ArrayList<>();
@@ -299,25 +299,26 @@ public class PermissionServiceImpl implements PermissionService {
             if(role == null){
                 continue;
             }
-            ResourceVO resourceVO = new ResourceVO();
+            AuthRecord authRecord = new AuthRecord(permission);
+            authRecord.setId(permission.getId());
             RoleTypeEnum roleTypeEnum = role.getRoleType();
             if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.PROJECT_ACCESS_PERMISSION){
                 ProjectVO project = projectList.stream().filter(x -> x.getId().intValue() == role.getResourceId().intValue()).findFirst().orElse(null);
-                resourceVO.setExtend(project);
-                resourceVO.setResourceId(role.getResourceId());
-                resourceVO.setResourceType(ResourceTypeEnum.Project);
+                authRecord.setExtend(project);
+                authRecord.setResourceId(role.getResourceId());
+                authRecord.setResourceType(ResourceTypeEnum.Project);
             }else if(roleTypeEnum == RoleTypeEnum.STAT_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.STAT_ACCESS_PERMISSION){
                 StatVO statVO = statList.stream().filter(x -> x.getId().intValue() == role.getResourceId().intValue()).findFirst().orElse(null);
-                resourceVO.setExtend(statVO);
-                resourceVO.setResourceId(role.getResourceId());
-                resourceVO.setResourceType(ResourceTypeEnum.Stat);
+                authRecord.setExtend(statVO);
+                authRecord.setResourceId(role.getResourceId());
+                authRecord.setResourceType(ResourceTypeEnum.Stat);
             }else if(roleTypeEnum == RoleTypeEnum.VIEW_MANAGE_PERMISSION || roleTypeEnum == RoleTypeEnum.VIEW_ACCESS_PERMISSION){
                 ViewVO viewVO = viewList.stream().filter(x -> x.getId().intValue() == role.getResourceId().intValue()).findFirst().orElse(null);
-                resourceVO.setExtend(viewVO);
-                resourceVO.setResourceId(role.getResourceId());
-                resourceVO.setResourceType(ResourceTypeEnum.View);
+                authRecord.setExtend(viewVO);
+                authRecord.setResourceId(role.getResourceId());
+                authRecord.setResourceType(ResourceTypeEnum.View);
             }
-            voList.add(resourceVO);
+            voList.add(authRecord);
         }
         return ListData.newInstance(voList,pageInfo.getTotal(),pageNum,pageSize);
     }

@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.insights.service;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.modal.AuthRecord;
 import com.dtstep.lighthouse.insights.vo.PermissionVO;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
@@ -44,7 +45,7 @@ public interface PermissionService {
 
     ListData<PermissionVO> queryList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize);
 
-    ListData<ResourceVO> queryOwnerAuthList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception;
+    ListData<AuthRecord> queryOwnerAuthList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception;
 
     boolean existPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 
