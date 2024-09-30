@@ -40,7 +40,7 @@ export default function UserGroup(props:Props) {
                                     },
                                     {
                                         label: t['userGroups.label.phone'],
-                                        value: option?.phone,
+                                        value: option?.phone ? option?.phone : '--',
                                     },
                                     {
                                         label: t['userGroups.label.department'],
