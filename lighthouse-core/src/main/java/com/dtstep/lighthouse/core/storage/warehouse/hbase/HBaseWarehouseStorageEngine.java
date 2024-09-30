@@ -726,7 +726,7 @@ public class HBaseWarehouseStorageEngine implements WarehouseStorageEngine {
 
     @Override
     public long getTableMaxValidPeriod() throws Exception {
-        return TimeUnit.DAYS.toSeconds(90);
+        return TimeUnit.DAYS.toSeconds(120);
     }
 
     private static class HBaseGetterThread<R> implements Callable<List<LdpResult<R>>> {

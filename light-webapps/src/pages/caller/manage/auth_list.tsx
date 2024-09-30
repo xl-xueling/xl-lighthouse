@@ -22,6 +22,7 @@ import {getRandomString} from "@/utils/util";
 import {getColumns} from "@/pages/caller/manage/Constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/caller/manage/locale";
+import {AuthRecord} from "@/types/caller";
 
 export default function AuthList({}){
 
@@ -29,7 +30,7 @@ export default function AuthList({}){
     const t = useLocale(locale);
 
     const [showAddAuthModal,setShowAddAuthModal] = useState<boolean>(false);
-    const [listData,setListData] = useState<Resource[]>([]);
+    const [listData,setListData] = useState<AuthRecord[]>([]);
     const [loading,setLoading] = useState<boolean>(false);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,30],
@@ -53,7 +54,6 @@ export default function AuthList({}){
             }
         }).then((response) => {
             const {code, data ,message} = response;
-            console.log("data is:" + JSON.stringify(data));
             if (code === '0') {
                 setListData(data.list);
                 setPagination({

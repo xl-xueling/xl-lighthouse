@@ -644,7 +644,7 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
 
     @Override
     public long getTableMaxValidPeriod() throws Exception {
-        return TimeUnit.DAYS.toSeconds(90);
+        return TimeUnit.DAYS.toSeconds(120);
     }
 
     private static String getDBKey(String ldpKey, String ldpColumn){

@@ -1,5 +1,5 @@
 import {User} from "@/types/insights-web";
-import {PermissionEnum} from "@/types/insights-common";
+import {PermissionEnum, ResourceTypeEnum} from "@/types/insights-common";
 
 export interface Caller {
     id?:number;
@@ -10,4 +10,14 @@ export interface Caller {
     createTime?:number;
     updateTime?:number;
     permissions?:PermissionEnum[];
+}
+
+export interface AuthRecord {
+    id?:number;
+    resourceId?:number;
+    resourceType?:ResourceTypeEnum;
+    expireTime?:number;
+    createTime?:number;
+    updateTime?:number;
+    extend?:any;
 }

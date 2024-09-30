@@ -1,4 +1,4 @@
-import {Caller} from "@/types/caller";
+import {AuthRecord, Caller} from "@/types/caller";
 import {ResultData} from "@/types/insights-common";
 import {request} from "@/utils/request";
 import {Resource} from "@/types/insights-web";
@@ -19,7 +19,7 @@ export async function requestList(data) :Promise<ResultData<{list:Array<Caller>,
     })
 }
 
-export async function requestAuthList(data) :Promise<ResultData<{list:Array<Resource>,total:number}>> {
+export async function requestAuthList(data) :Promise<ResultData<{list:Array<AuthRecord>,total:number}>> {
     return request({
         url:'/permission/ownerAuthList',
         method:'POST',
