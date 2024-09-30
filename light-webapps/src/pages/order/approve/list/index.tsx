@@ -24,7 +24,7 @@ export default function ApproveList() {
     const [currentOrder,setCurrentOrder] = useState<Order>();
     const [reloadTime,setReloadTime] = useState<number>(Date.now);
     const [pagination, setPagination] = useState<PaginationProps>({
-        sizeOptions: [15,20,30,50],
+        sizeOptions: [15,30,50],
         sizeCanChange: true,
         showTotal: true,
         pageSize: 15,
@@ -117,6 +117,7 @@ export default function ApproveList() {
                 rowKey="id"
                 style={{ marginTop:12}}
                 size={"small"}
+                pagination={pagination}
                 onChange={onChangeTable}
                 loading={loading}
                 columns={columns} data={listData} />
