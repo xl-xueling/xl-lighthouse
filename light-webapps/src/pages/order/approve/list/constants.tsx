@@ -76,7 +76,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
         {
             title: t['approveList.columns.operations'],
             dataIndex: 'operations',
-            headerCellStyle: {width:'250px' },
+            headerCellStyle: {width:'150px' },
             render: (_, record) => {
                 if(record.state == OrderStateEnum.Processing && record.permissions.includes(PermissionEnum.ManageAble)){
                     return  <Space size={0} direction="horizontal">
