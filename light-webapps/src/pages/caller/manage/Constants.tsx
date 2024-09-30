@@ -97,29 +97,17 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             headerCellStyle: {width:'250px' },
             render: (_, record) => {
                 const itemPermission = record.extend?.permissions;
-                let removeButton;
-                let deleteButton;
-                removeButton =
+                let extensionButton = <Button key={getRandomString()} onClick={() => callback(record, 'extension')}
+                        type="text"
+                        size="mini">
+                    {'续签'}
+                </Button>
+                let removeButton =
                     <Popconfirm key={getRandomString()}
                                 focusLock
                                 position={"tr"}
                                 title='Confirm'
-                                content={t['bindedList.list.column.label.operations.remove.confirm']}
-                                onOk={() => callback(record, 'remove')}
-                    >
-                        <Button key={getRandomString()}
-                                type="text"
-                                size="mini">
-                            {'续签'}
-                        </Button>
-                    </Popconfirm>
-
-                deleteButton =
-                    <Popconfirm key={getRandomString()}
-                                focusLock
-                                position={"tr"}
-                                title='Confirm'
-                                content={t['bindedList.list.column.label.operations.remove.confirm']}
+                                content={t['callerAuthList.column.label.operations.remove.confirm']}
                                 onOk={() => callback(record, 'remove')}
                     >
                         <Button key={getRandomString()}
@@ -128,7 +116,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                             {'删除'}
                         </Button>
                     </Popconfirm>
-                return  <Space size={0} direction="horizontal">{[removeButton,deleteButton]}</Space>;
+                return  <Space size={0} direction="horizontal">{[extensionButton,removeButton]}</Space>;
             }
         }
     ];

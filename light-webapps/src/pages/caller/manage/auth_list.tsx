@@ -23,6 +23,7 @@ import {getColumns} from "@/pages/caller/manage/Constants";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/caller/manage/locale";
 import {AuthRecord} from "@/types/caller";
+import AuthExtension from "@/pages/caller/manage/auth_extension";
 
 export default function AuthList({}){
 
@@ -32,6 +33,8 @@ export default function AuthList({}){
     const [showAddAuthModal,setShowAddAuthModal] = useState<boolean>(false);
     const [listData,setListData] = useState<AuthRecord[]>([]);
     const [loading,setLoading] = useState<boolean>(false);
+    const [showExtensionModal,setShowExtensionModal] = useState<boolean>(false);
+    const [currentItem,setCurrentItem] = useState<AuthRecord>(null);
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,30],
         sizeCanChange: true,
@@ -76,6 +79,10 @@ export default function AuthList({}){
 
     const tableCallback = async (record, type) => {
         console.log("record is:" + record + ",type:" + type);
+        if(type == 'extension'){
+            setCurrentItem(record);
+            setShowExtensionModal(true);
+        }
     }
 
     const columns = useMemo(() => getColumns(t,tableCallback), [t]);
@@ -101,6 +108,7 @@ export default function AuthList({}){
                 return v.resourceId + '-' + v.resourceType;
             }} size={"small"} columns={columns} data={listData} pagination={pagination} onChange={onChangeTable}/>
             {showAddAuthModal && <AuthAdd onClose={() => {setShowAddAuthModal(false)}} />}
+            {showExtensionModal && <AuthExtension authRecord={currentItem} onClose={() => setShowExtensionModal(false)} />}
         </Card>
     );
 }

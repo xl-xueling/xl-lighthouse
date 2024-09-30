@@ -11,6 +11,8 @@ const i18n = {
     'callerAuthList.column.label.expired':'Expired',
     'callerAuthList.column.label.admins':'Admins',
     'callerAuthList.column.label.operations':'Operations',
+    'callerAuthList.column.label.operations.extension.confirm':'Are you sure to extension of this auth record?',
+    'callerAuthList.column.label.operations.remove.confirm':'Are you sure to remove of this auth record?',
   },
   'zh-CN': {
     'callerCreate.form.label.name':'名称',
@@ -24,6 +26,8 @@ const i18n = {
     'callerAuthList.column.label.expired':'失效时间',
     'callerAuthList.column.label.admins':'管理员',
     'callerAuthList.column.label.operations':'操作',
+    'callerAuthList.column.label.operations.extension.confirm':'是否确认续签该授权记录？',
+    'callerAuthList.column.label.operations.remove.confirm':'是否确认删除该授权记录？',
   },
 };
 
