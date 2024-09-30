@@ -6,31 +6,8 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
 import {formatString, formatTimeStampBackUp, getRandomString} from "@/utils/util";
 import {OrderStateEnum, OrderTypeEnum, PermissionEnum} from "@/types/insights-common";
-import {getOrderStateDescription, getOrderTypeDescription} from "@/pages/common/desc/base";
+import {getOrderDescription, getOrderStateDescription, getOrderTypeDescription} from "@/pages/common/desc/base";
 
-const getApplyDescription = (t: any, orderInfo) => {
-    if(orderInfo.orderType == OrderTypeEnum.PROJECT_ACCESS){
-        return formatString(t['applyList.description.projectAccess'],orderInfo?.extend?.title)
-    } else if(orderInfo.orderType == OrderTypeEnum.STAT_ACCESS){
-        return formatString(t['applyList.description.statAccess'],orderInfo?.extend?.title)
-    } else if(orderInfo.orderType == OrderTypeEnum.METRIC_ACCESS){
-        return formatString(t['applyList.description.metricAccess'],orderInfo?.extend?.title)
-    } else if(orderInfo.orderType == OrderTypeEnum.VIEW_ACCESS){
-        return formatString(t['applyList.description.viewAccess'],orderInfo?.extend?.title)
-    }else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS){
-        return formatString(t['applyList.description.updateLimitingThreshold'],orderInfo?.extend?.token)
-    } else if(orderInfo.orderType == OrderTypeEnum.USER_PEND_APPROVE){
-        return formatString(t['applyList.description.userPendApprove'],orderInfo?.extend?.username)
-    } else if(orderInfo.orderType == OrderTypeEnum.STAT_PEND_APPROVE){
-        return formatString(t['applyList.description.statPendApprove'],orderInfo?.extend?.title)
-    } else if(orderInfo.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS){
-        return formatString(t['applyList.description.callerProjectAccess'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.project?.title)
-    } else if(orderInfo.orderType == OrderTypeEnum.CALLER_STAT_ACCESS){
-        return formatString(t['applyList.description.callerStatAccess'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.stat?.title)
-    } else if(orderInfo.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS){
-        return formatString(t['applyList.description.callerViewAccess'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.view?.title)
-    }
-}
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
@@ -53,7 +30,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             dataIndex: 'detail',
             render: (value,record) =>
             {
-                return getApplyDescription(t,record);
+                return getOrderDescription(t,record);
             }
         },
         {

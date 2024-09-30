@@ -185,11 +185,11 @@ public class OrderServiceImpl implements OrderService {
                 Role role = roleService.queryRole(roleTypeEnum,0);
                 checkAddRole(roleList,role);
             }else if(roleTypeEnum == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
-                if(orderTypeEnum == OrderTypeEnum.PROJECT_ACCESS || orderTypeEnum == OrderTypeEnum.CALLER_PROJECT_ACCESS){
+                if(orderTypeEnum == OrderTypeEnum.PROJECT_ACCESS || orderTypeEnum == OrderTypeEnum.CALLER_PROJECT_ACCESS || orderTypeEnum == OrderTypeEnum.CALLER_PROJECT_ACCESS_EXTENSION){
                     Project project = (Project) param;
                     Role role = roleService.queryRole(roleTypeEnum,project.getId());
                     checkAddRole(roleList,role);
-                }else if(orderTypeEnum == OrderTypeEnum.STAT_ACCESS || orderTypeEnum == OrderTypeEnum.CALLER_STAT_ACCESS){
+                }else if(orderTypeEnum == OrderTypeEnum.STAT_ACCESS || orderTypeEnum == OrderTypeEnum.CALLER_STAT_ACCESS || orderTypeEnum == OrderTypeEnum.CALLER_STAT_ACCESS_EXTENSION){
                     Stat stat = (Stat) param;
                     Role role = roleService.queryRole(roleTypeEnum,stat.getProjectId());
                     checkAddRole(roleList,role);
@@ -351,6 +351,9 @@ public class OrderServiceImpl implements OrderService {
             if(!extendConfig.containsKey("callerId")){
                 return ResultCode.paramValidateFailed;
             }
+            if(!extendConfig.containsKey("permissionId")){
+                return ResultCode.paramValidateFailed;
+            }
             Integer projectId = (Integer) extendConfig.get("projectId");
             Project project = projectService.queryById(projectId);
             Validate.notNull(project);
@@ -370,6 +373,9 @@ public class OrderServiceImpl implements OrderService {
             if(!extendConfig.containsKey("callerId")){
                 return ResultCode.paramValidateFailed;
             }
+            if(!extendConfig.containsKey("permissionId")){
+                return ResultCode.paramValidateFailed;
+            }
             Integer statId = (Integer) extendConfig.get("statId");
             Stat stat = statService.queryById(statId);
             Validate.notNull(stat);
@@ -387,6 +393,9 @@ public class OrderServiceImpl implements OrderService {
                 return ResultCode.paramValidateFailed;
             }
             if(!extendConfig.containsKey("callerId")){
+                return ResultCode.paramValidateFailed;
+            }
+            if(!extendConfig.containsKey("permissionId")){
                 return ResultCode.paramValidateFailed;
             }
             Integer viewId = (Integer) extendConfig.get("viewId");
@@ -544,6 +553,66 @@ public class OrderServiceImpl implements OrderService {
             extendMap.put("view",view);
             extendMap.put("caller",caller);
             extendMap.put("expired",expired);
+            return extendMap;
+        }else if(order.getOrderType() == OrderTypeEnum.CALLER_PROJECT_ACCESS_EXTENSION){
+            Integer projectId = (Integer) configMap.get("projectId");
+            Project project = projectService.queryById(projectId);
+            if(project == null){
+                return null;
+            }
+            Integer callerId = (Integer) configMap.get("callerId");
+            Caller caller = callerService.queryById(callerId);
+            if(caller == null){
+                return null;
+            }
+            Integer extension = (Integer) configMap.get("extension");
+            if(extension == null){
+                return null;
+            }
+            HashMap<String,Object> extendMap = new HashMap<>();
+            extendMap.put("project",project);
+            extendMap.put("caller",caller);
+            extendMap.put("extension",extension);
+            return extendMap;
+        }else if(order.getOrderType() == OrderTypeEnum.CALLER_STAT_ACCESS_EXTENSION){
+            Integer statId = (Integer) configMap.get("statId");
+            Stat stat = statService.queryById(statId);
+            if(stat == null){
+                return null;
+            }
+            Integer callerId = (Integer) configMap.get("callerId");
+            Caller caller = callerService.queryById(callerId);
+            if(caller == null){
+                return null;
+            }
+            Integer extension = (Integer) configMap.get("extension");
+            if(extension == null){
+                return null;
+            }
+            HashMap<String,Object> extendMap = new HashMap<>();
+            extendMap.put("stat",stat);
+            extendMap.put("caller",caller);
+            extendMap.put("extension",extension);
+            return extendMap;
+        }else if(order.getOrderType() == OrderTypeEnum.CALLER_VIEW_ACCESS_EXTENSION){
+            Integer viewId = (Integer) configMap.get("viewId");
+            View view = viewService.queryById(viewId);
+            if(view == null){
+                return null;
+            }
+            Integer callerId = (Integer) configMap.get("callerId");
+            Caller caller = callerService.queryById(callerId);
+            if(caller == null){
+                return null;
+            }
+            Integer extension = (Integer) configMap.get("extension");
+            if(extension == null){
+                return null;
+            }
+            HashMap<String,Object> extendMap = new HashMap<>();
+            extendMap.put("view",view);
+            extendMap.put("caller",caller);
+            extendMap.put("extension",extension);
             return extendMap;
         }
         return null;

@@ -66,6 +66,12 @@ export const getOrderDescription = (t: any, orderInfo) => {
         return formatString(t['basic.order.description.callerStatAccess'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.stat?.title)
     } else if(orderInfo.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS){
         return formatString(t['basic.order.description.callerViewAccess'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.view?.title)
+    }else if(orderInfo.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS_EXTENSION){
+        return formatString(t['basic.order.description.callerProjectAccessExtension'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.project?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.CALLER_STAT_ACCESS_EXTENSION){
+        return formatString(t['basic.order.description.callerStatAccessExtension'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.stat?.title)
+    } else if(orderInfo.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS_EXTENSION){
+        return formatString(t['basic.order.description.callerViewAccessExtension'],orderInfo?.extend?.caller?.name,orderInfo?.extend?.view?.title)
     }
 }
 
@@ -224,6 +230,12 @@ export function getOrderTypeDescription(t:any,value:OrderTypeEnum){
         return t['basic.orderType.description.callerStatAccess']
     }else if(value == OrderTypeEnum.CALLER_VIEW_ACCESS){
         return t['basic.orderType.description.callerViewAccess']
+    }else if(value == OrderTypeEnum.CALLER_PROJECT_ACCESS_EXTENSION){
+        return t['basic.orderType.description.callerProjectAccessExtension']
+    }else if(value == OrderTypeEnum.CALLER_STAT_ACCESS_EXTENSION){
+        return t['basic.orderType.description.callerStatAccessExtension']
+    }else if(value == OrderTypeEnum.CALLER_VIEW_ACCESS_EXTENSION){
+        return t['basic.orderType.description.callerViewAccessExtension']
     }
 }
 
