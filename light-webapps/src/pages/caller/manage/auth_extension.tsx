@@ -1,9 +1,14 @@
-import React, {useRef} from 'react';
-import {Form, Input, Modal, Select, Spin} from "@arco-design/web-react";
+import React, {useContext, useRef} from 'react';
+import {Form, Input, Modal, Notification, Select} from "@arco-design/web-react";
 import {AuthRecord} from "@/types/caller";
-import {LabelValue, ResourceTypeEnum} from "@/types/insights-common";
+import {LabelValue, OrderTypeEnum, ResourceTypeEnum} from "@/types/insights-common";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/caller/manage/locale";
+import {requestCreateApply} from "@/api/order";
+import {useSelector} from "react-redux";
+import {GlobalState} from "@/store";
+import {CallerManageContext} from "@/pages/common/context";
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -17,8 +22,11 @@ const AuthExtension:React.FC<Props> = ({
                                            authRecord,
                                            onClose = null}) => {
 
+    const {callerInfo} = useContext(CallerManageContext);
+
     const periodOptions:Array<LabelValue> = [{label:'一个月',value:2592000},{label:'三个月',value:7776000}
         ,{label:'六个月',value:15552000},{label:'一年',value:31104000}]
+    const userInfo = useSelector((state: GlobalState) => state.userInfo);
 
     const formRef = useRef(null);
 
@@ -26,7 +34,40 @@ const AuthExtension:React.FC<Props> = ({
 
     const handleSubmit = () => {
         const values = formRef.current.getFieldsValue();
-        console.log("values is:" + JSON.stringify(values));
+        const resourceType = authRecord?.resourceType;
+        if(resourceType == ResourceTypeEnum.Project){
+            const applyParam = {
+                orderType:OrderTypeEnum.CALLER_PROJECT_ACCESS_EXTENSION,
+                userId:userInfo?.id,
+                reason:values?.reason,
+                extendConfig:{
+                    projectId:values.project,
+                    callerId:callerInfo?.id,
+                    extension:values.extension,
+                    permissionId:authRecord.id,
+                }
+            }
+            requestCreateApply(applyParam).then((response) => {
+                const {code, data ,message} = response;
+                if(code == '0'){
+                    Notification.info({style: { width: 420 }, title: 'Notification', content: t['callerAuthApply.form.submit.success']});
+                    onClose();
+                }else{
+                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+                }
+            }).catch((error) => {
+                console.log(error);
+                Notification.error({
+                    style: { width: 420 },
+                    title: 'Error',
+                    content:t['system.error'],
+                })
+            })
+        }else if(resourceType == ResourceTypeEnum.Stat){
+
+        }else if(resourceType == ResourceTypeEnum.View){
+
+        }
     }
 
     const getFormItems = () => {
