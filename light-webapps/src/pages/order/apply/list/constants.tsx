@@ -71,7 +71,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
         {
             title: t['applyList.columns.operations'],
             dataIndex: 'operations',
-            headerCellStyle: {width:'250px' },
+            headerCellStyle: {width:'180px' },
             render: (_, record) => {
                 let viewButton;
                 let retractButton;
