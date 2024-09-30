@@ -25,7 +25,8 @@ const AuthExtension:React.FC<Props> = ({
     const t = useLocale(locale);
 
     const handleSubmit = () => {
-
+        const values = formRef.current.getFieldsValue();
+        console.log("values is:" + JSON.stringify(values));
     }
 
     const getFormItems = () => {

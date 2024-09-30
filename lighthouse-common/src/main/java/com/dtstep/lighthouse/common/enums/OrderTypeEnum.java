@@ -27,7 +27,14 @@ public enum OrderTypeEnum {
 
     CALLER_STAT_ACCESS(9,List.of(FlowNode.newBuilder(RoleTypeEnum.PROJECT_MANAGE_PERMISSION))),
 
-    CALLER_VIEW_ACCESS(10,List.of(FlowNode.newBuilder(RoleTypeEnum.PROJECT_MANAGE_PERMISSION))),
+    CALLER_VIEW_ACCESS(10,List.of(FlowNode.newBuilder(RoleTypeEnum.VIEW_MANAGE_PERMISSION))),
+
+    CALLER_PROJECT_ACCESS_EXTENSION(11,List.of(FlowNode.newBuilder(RoleTypeEnum.PROJECT_MANAGE_PERMISSION))),
+
+    CALLER_STAT_ACCESS_EXTENSION(12,List.of(FlowNode.newBuilder(RoleTypeEnum.PROJECT_MANAGE_PERMISSION))),
+
+    CALLER_VIEW_ACCESS_EXTENSION(13,List.of(FlowNode.newBuilder(RoleTypeEnum.VIEW_MANAGE_PERMISSION))),
+
 
     ;
 
