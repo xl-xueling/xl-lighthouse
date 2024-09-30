@@ -38,6 +38,12 @@ public class TestPermissionService {
     }
 
     @Test
+    public void testExtendPermission(){
+        int permissionId = 100809;
+        
+    }
+
+    @Test
     public void testDeletePermission() throws Exception {
         PermissionQueryParam queryParam = new PermissionQueryParam();
         queryParam.setRoleId(402);

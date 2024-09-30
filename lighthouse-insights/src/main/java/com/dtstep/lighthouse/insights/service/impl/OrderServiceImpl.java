@@ -363,6 +363,7 @@ public class OrderServiceImpl implements OrderService {
             Integer permissionId = (Integer)extendConfig.get("permissionId");
             Permission permission = permissionService.queryById(permissionId);
             Validate.notNull(permission);
+            Validate.isTrue(permission.getOwnerId().intValue() == callerId.intValue());
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + callerId + "_" + projectId;
             hash = Md5Util.getMD5(message);
             roleList = getApproveRoleList(applyUser,orderTypeEnum,project);
@@ -385,6 +386,7 @@ public class OrderServiceImpl implements OrderService {
             Integer permissionId = (Integer)extendConfig.get("permissionId");
             Permission permission = permissionService.queryById(permissionId);
             Validate.notNull(permission);
+            Validate.isTrue(permission.getOwnerId().intValue() == callerId.intValue());
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + callerId + "_" + statId;
             hash = Md5Util.getMD5(message);
             roleList = getApproveRoleList(applyUser,orderTypeEnum,stat);
@@ -407,6 +409,7 @@ public class OrderServiceImpl implements OrderService {
             Integer permissionId = (Integer)extendConfig.get("permissionId");
             Permission permission = permissionService.queryById(permissionId);
             Validate.notNull(permission);
+            Validate.isTrue(permission.getOwnerId().intValue() == callerId.intValue());
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + callerId + "_" + viewId;
             hash = Md5Util.getMD5(message);
             roleList = getApproveRoleList(applyUser,orderTypeEnum,view);
