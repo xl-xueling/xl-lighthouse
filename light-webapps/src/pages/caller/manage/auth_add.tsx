@@ -19,20 +19,22 @@ export default function AuthAdd({onClose}){
 
     const {callerInfo,PRO_ViewBindTab} = useContext(CallerManageContext);
 
-    useEffect(() => {
-        console.log("PRO_ViewBindTab is:" + PRO_ViewBindTab);
-    },[PRO_ViewBindTab])
-
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
-    const [activeTab, setActiveTab] = useState(0);
+    const [activeTab, setActiveTab] = useState("0");
     const t = useLocale(locale);
     const formRefs = useRef([]);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const currentForm = formRefs.current[activeTab];
         if (currentForm) {
+            try{
+                await currentForm.validate();
+            }catch (error){
+                console.log(error)
+                return;
+            }
             const values = currentForm.getFieldsValue();
-            if(activeTab === 0){
+            if(activeTab == '0'){
                 const applyParam = {
                     orderType:OrderTypeEnum.CALLER_PROJECT_ACCESS,
                     userId:userInfo?.id,
@@ -59,7 +61,7 @@ export default function AuthAdd({onClose}){
                         content:t['system.error'],
                     })
                 })
-            }else if(activeTab === 1){
+            }else if(activeTab == '1'){
                 const applyParam = {
                     orderType:OrderTypeEnum.CALLER_STAT_ACCESS,
                     userId:userInfo?.id,
@@ -86,7 +88,7 @@ export default function AuthAdd({onClose}){
                         content:t['system.error'],
                     })
                 })
-            }else if(activeTab === 2){
+            }else if(activeTab == '2'){
                 const applyParam = {
                     orderType:OrderTypeEnum.CALLER_VIEW_ACCESS,
                     userId:userInfo?.id,
@@ -118,6 +120,7 @@ export default function AuthAdd({onClose}){
     };
 
     const handleTabChange = (index) => {
+        console.log("---index is:" + index + ",type index:" + typeof index);
         setActiveTab(index);
     };
 
@@ -132,37 +135,37 @@ export default function AuthAdd({onClose}){
             autoFocus={false}
             focusLock={true}
         >
-            <Tabs defaultActiveTab='0' tabPosition={'right'} onChange={handleTabChange}>
+            <Tabs defaultActiveTab="1" tabPosition={'right'} onChange={handleTabChange}>
                 <TabPane
-                    key='0'
+                    key="0"
                     title={
                         <span>
                             <PiDiamondsFour style={{marginBottom:'-2px'}}/>
                         </span>}>
-                    <Form ref={(ref) => (formRefs.current[0] = ref)} initialValues={{expired:2592000}}>
+                    <Form ref={(ref) => (formRefs.current["0"] = ref)} initialValues={{expired:2592000}}>
                         <ProjectApply callerInfo={callerInfo}/>
                     </Form>
                 </TabPane>
                 <TabPane
-                    key='1'
+                    key="1"
                     title={
                         <span>
                             {getIcon('stat')}
                         </span>}>
-                    <Form ref={(ref) => (formRefs.current[1] = ref)} initialValues={{expired:2592000}}>
+                    <Form ref={(ref) => (formRefs.current["1"] = ref)} initialValues={{expired:2592000}}>
                         <StatApply callerInfo={callerInfo}/>
                     </Form>
                 </TabPane>
                 {
                     PRO_ViewBindTab &&
                     <TabPane
-                        key='2'
+                        key="2"
                         title={
                             <span>
                                 <TbBrandVisualStudio size={16} style={{marginBottom:'-2px'}}/>
                             </span>
                         }>
-                        <Form ref={(ref) => (formRefs.current[2] = ref)} initialValues={{expired:2592000}}>
+                        <Form ref={(ref) => (formRefs.current["2"] = ref)} initialValues={{expired:2592000}}>
                             {PRO_ViewBindTab(callerInfo)}
                         </Form>
                     </TabPane>

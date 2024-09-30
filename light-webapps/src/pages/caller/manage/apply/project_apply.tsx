@@ -8,6 +8,8 @@ const TextArea = Input.TextArea;
 import debounce from 'lodash/debounce';
 import {LabelValue} from "@/types/insights-common";
 import {requestList} from "@/api/project";
+import useLocale from "@/utils/useLocale";
+import locale from "@/pages/caller/manage/locale";
 export interface Props {
     callerInfo?:Caller,
 }
@@ -16,6 +18,7 @@ const ProjectApply : React.FC<Props> = ({
                                             callerInfo= null,
     }) => {
 
+    const t = useLocale(locale);
     const periodOptions:Array<LabelValue> = [{label:'一个月',value:2592000},{label:'三个月',value:7776000}
             ,{label:'六个月',value:15552000},{label:'一年',value:31104000}]
     const [options, setOptions] = useState([]);
@@ -50,7 +53,7 @@ const ProjectApply : React.FC<Props> = ({
 
     return (
         <div style={{ width: '95%', margin: '0 auto' }}>
-                <Form.Item field='project' label={'统计工程'} rules={[{ required: true }]}>
+                <Form.Item field='project' label={'统计工程'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <Select
                         showSearch
                         options={options}
@@ -72,7 +75,7 @@ const ProjectApply : React.FC<Props> = ({
                         onSearch={debouncedFetchProject}
                     />
                 </Form.Item>
-                <FormItem field={'expired'} label={'有效期'} rules={[{ required: true }]}>
+                <FormItem field={'expired'} label={'有效期'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <Select
                         placeholder='Select period' defaultValue={periodOptions[0].value}>
                         {periodOptions.map((option, index) => (
@@ -83,7 +86,7 @@ const ProjectApply : React.FC<Props> = ({
                     </Select>
                 </FormItem>
 
-                <FormItem field={'reason'} label={'申请原因'} rules={[{ required: true }]}>
+                <FormItem field={'reason'} label={'申请原因'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <TextArea placeholder='Enter something' style={{ minHeight: 64 }} />
                 </FormItem>
         </div>
