@@ -25,8 +25,10 @@ export default function AuthAdd({onClose}){
     const formRefs = useRef([]);
 
     const handleSubmit = async () => {
+        console.log("---submit,activeTab:" + activeTab)
         const currentForm = formRefs.current[activeTab];
         if (currentForm) {
+            console.log("--vvvvv")
             try{
                 await currentForm.validate();
             }catch (error){
@@ -34,6 +36,7 @@ export default function AuthAdd({onClose}){
                 return;
             }
             const values = currentForm.getFieldsValue();
+            console.log("values is:" + JSON.stringify(values) + ",activeTab:" + activeTab);
             if(activeTab == '0'){
                 const applyParam = {
                     orderType:OrderTypeEnum.CALLER_PROJECT_ACCESS,
@@ -72,6 +75,7 @@ export default function AuthAdd({onClose}){
                         expired:values.expired,
                     }
                 }
+                console.log("---applyParam is:" + JSON.stringify(applyParam));
                 requestCreateApply(applyParam).then((response) => {
                     const {code, data ,message} = response;
                     if(code == '0'){
@@ -135,7 +139,7 @@ export default function AuthAdd({onClose}){
             autoFocus={false}
             focusLock={true}
         >
-            <Tabs defaultActiveTab="1" tabPosition={'right'} onChange={handleTabChange}>
+            <Tabs defaultActiveTab="1" activeTab={activeTab} tabPosition={'right'} onChange={handleTabChange}>
                 <TabPane
                     key="0"
                     title={

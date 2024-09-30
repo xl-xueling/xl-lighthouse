@@ -312,6 +312,40 @@ public class OrderServiceImpl implements OrderService {
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + callerId + "_" + projectId;
             hash = Md5Util.getMD5(message);
             roleList = getApproveRoleList(applyUser,orderTypeEnum,project);
+        }else if(order.getOrderType() == OrderTypeEnum.CALLER_STAT_ACCESS){
+            if(!extendConfig.containsKey("statId")){
+                return ResultCode.paramValidateFailed;
+            }
+            if(!extendConfig.containsKey("callerId")){
+                return ResultCode.paramValidateFailed;
+            }
+            Integer statId = (Integer) extendConfig.get("statId");
+            Stat stat = statService.queryById(statId);
+            Validate.notNull(stat);
+            Integer callerId = (Integer) extendConfig.get("callerId");
+            Caller caller = callerService.queryById(callerId);
+            Validate.notNull(caller);
+            String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + callerId + "_" + statId;
+            hash = Md5Util.getMD5(message);
+            roleList = getApproveRoleList(applyUser,orderTypeEnum,stat);
+        }else if(order.getOrderType() == OrderTypeEnum.CALLER_VIEW_ACCESS){
+            if(!extendConfig.containsKey("viewId")){
+                return ResultCode.paramValidateFailed;
+            }
+            if(!extendConfig.containsKey("callerId")){
+                return ResultCode.paramValidateFailed;
+            }
+            Integer viewId = (Integer) extendConfig.get("viewId");
+            View view = viewService.queryById(viewId);
+            Validate.notNull(view);
+            Integer callerId = (Integer) extendConfig.get("callerId");
+            Caller caller = callerService.queryById(callerId);
+            Validate.notNull(caller);
+            String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + callerId + "_" + viewId;
+            hash = Md5Util.getMD5(message);
+            roleList = getApproveRoleList(applyUser,orderTypeEnum,view);
+        }else{
+            return ResultCode.orderTypeNotExists;
         }
         boolean isExist = orderDao.isExist(hash);
         if(isExist){

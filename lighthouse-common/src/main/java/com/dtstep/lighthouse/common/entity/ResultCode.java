@@ -92,7 +92,9 @@ public enum ResultCode {
 
     renderConfigConfigCannotBeEmpty("2008","renderConfigConfigCannotBeEmpty"),
 
-    orderCreateRepeatSubmit("2007","orderCreateRepeatSubmit"),
+    orderCreateRepeatSubmit("2301","orderCreateRepeatSubmit"),
+
+    orderTypeNotExists("2302","orderTypeNotExists"),
 
     templateParserNoValidItem("2008","templateParserNoValidItem"),
 
