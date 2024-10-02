@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Caller} from "@/types/caller";
 import {requestQueryById} from "@/api/caller";
-import {Breadcrumb, Button, Card, Notification, Space, Tabs, Typography} from "@arco-design/web-react";
+import {Breadcrumb, Button, Card, Link, Notification, Space, Tabs, Typography} from "@arco-design/web-react";
 import {CallerManageContext} from "@/pages/common/context";
 import {IconHome} from "@arco-design/web-react/icon";
 import Header from "@/pages/caller/manage/header";
@@ -15,12 +15,14 @@ import SecretKeyModal from "@/pages/caller/manage/secret_key";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/caller/manage/locale";
 const TabPane = Tabs.TabPane;
+import { useLocation, useHistory } from 'react-router-dom';
 
 export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
 
     const t = useLocale(locale);
 
     const [callerInfo,setCallerInfo] = useState<Caller>(null);
+    const history = useHistory();
 
     const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
 
@@ -43,6 +45,9 @@ export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
         })
     }
 
+    const goBack = () => {
+        history.goBack();
+    };
 
     const handlerUpdateProcess = (callerInfo) => {
         setCallerInfo(callerInfo);
@@ -51,8 +56,6 @@ export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
     useEffect(() => {
         fetchData().then();
     },[id])
-
-
 
     return (
         <CallerManageContext.Provider value={{callerInfo,PRO_ViewBindTab}}>
@@ -102,6 +105,9 @@ export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
                     {showUpdateModal && <CallerUpdateModal callerInfo={callerInfo} onClose={() => setShowUpdateModal(false)} onSuccess={handlerUpdateProcess} />}
                     {showSecretKeyModal && <SecretKeyModal callerId={callerInfo?.id} onClose={() => setShowSecretKeyModal(false)} />}
                 </Space>
+
+                <Button onClick={goBack}>返回</Button>
+
             </>
         </CallerManageContext.Provider>
     );

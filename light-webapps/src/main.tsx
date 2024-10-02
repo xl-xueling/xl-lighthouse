@@ -23,6 +23,7 @@ import {fetchAllDepartmentData} from "@/pages/department/base";
 import {MetricSet, Project, User} from "@/types/insights-web";
 import Register from "@/pages/register";
 import License from "@/pages/license";
+import {AliveScope} from "react-activation";
 
 const store = createStore(rootReducer);
 
@@ -165,4 +166,8 @@ function Index() {
   );
 }
 
-ReactDOM.render(<Index />, document.getElementById('root'));
+ReactDOM.render(
+    <AliveScope>
+    <Index />
+    </AliveScope>
+    , document.getElementById('root'));

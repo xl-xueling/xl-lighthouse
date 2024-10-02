@@ -41,6 +41,8 @@ import {TbBrandVisualStudio, TbCalendarTime} from "react-icons/tb";
 import {FiSettings} from "react-icons/fi";
 import UserSettings from "@/pages/user/settings";
 import CallerManage from "@/pages/caller/manage";
+import KeepAlive, {AliveScope} from "react-activation";
+import TempIndex from "@/pages/temp";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -313,6 +315,7 @@ function PageLayout() {
                 </div>
               )}
               <Content style={{minHeight:'calc(100vh - 120px)'}}>
+                <AliveScope>
                 <Switch>
                   <Route path="/project/manage/:id" component={ProjectManagePage}/>
                   <Route path="/metricset/preview/:id" component={Index}/>
@@ -320,7 +323,15 @@ function PageLayout() {
                   <Route path="/stat/preview/:id" component={StatPreviewPage}/>
                   <Route path="/track/stat/:id" component={TrackStatPage}/>
                   <Route path="/user/settings" component={UserSettings}/>
-                  <Route path="/caller/manage/:id" component={CallerManage}/>
+                  <Route path="/temp/index" component={TempIndex}/>
+                  <Route
+                      path="/caller/manage/:id"
+                      render={props => (
+                          <KeepAlive>
+                            <CallerManage {...props} />
+                          </KeepAlive>
+                      )}
+                  />
                   {flattenRoutes.map((route, index) => {
                     return (
                       <Route
@@ -338,6 +349,7 @@ function PageLayout() {
                     component={lazyload(() => import('./pages/exception/403'))}
                   />
                 </Switch>
+                  </AliveScope>
               </Content>
             </div>
             <PopMenuBox />

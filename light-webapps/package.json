@@ -46,6 +46,7 @@
     "query-string": "^6.13.8",
     "react": "^17.0.2",
     "react-ace": "^10.1.0",
+    "react-activation": "^0.12.4",
     "react-color": "^2.18.1",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.6",
@@ -54,6 +55,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "redux": "^4.1.2",
+    "umi-plugin-keep-alive": "^0.0.1-beta.35",
     "yalc": "^1.0.0-pre.53"
   },
   "devDependencies": {

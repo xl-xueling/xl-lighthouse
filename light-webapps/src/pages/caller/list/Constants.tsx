@@ -43,19 +43,12 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             title: 'Operations',
             dataIndex: 'operations',
             render: (value, record) => {
-                // let updateButton = <Button key={getRandomString()}
-                //                             type="text"
-                //                             onClick={() => callback(record,'update')}
-                //                             size="mini">
-                //     {'修改'}
-                // </Button>;
-                let configButton = <Link key={getRandomString()} target={"_blank"} href={'/caller/manage/'+record.id}>
-                        <Button key={getRandomString()}
-                                               type="text"
-                                               size="mini">
-                        {'管理'}
-                    </Button>
-                </Link>
+                let manageButton = <Button key={getRandomString()}
+                                           onClick={() => callback(record, 'manage')}
+                                           type="text"
+                                           size="mini">
+                    {'管理'}
+                </Button>
                 let deleteButton = <Popconfirm key={getRandomString()}
                                                focusLock
                                                position={"tr"}
@@ -68,7 +61,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                         {'删除'}
                     </Button>
                 </Popconfirm>
-                return  <Space key={getRandomString()} size={0} direction="horizontal">{[configButton,deleteButton]}</Space>;
+                return  <Space key={getRandomString()} size={0} direction="horizontal">{[manageButton,deleteButton]}</Space>;
             }
         },
     ];
