@@ -9,7 +9,7 @@ import {
     TableColumnProps,
     Button,
     PaginationProps,
-    Spin, Divider, Link
+    Spin, Divider, Link, Typography
 } from "@arco-design/web-react";
 import {IconHome} from "@arco-design/web-react/icon";
 const BreadcrumbItem = Breadcrumb.Item;
@@ -24,19 +24,28 @@ import KeepAlive, {useActivate, useUnactivate} from "react-activation";
 const InputSearch = Input.Search;
 import { useLocation, useHistory } from 'react-router-dom';
 import CallerListPanel from "@/pages/caller/list/list";
-
+const {Row, Col} = Grid;
+const { Text } = Typography;
 export default function CallerListPage(){
 
     const t = useLocale(locale);
+    const history = useHistory();
 
     return (
         <>
-            <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
-                <BreadcrumbItem>
-                    <IconHome />
-                </BreadcrumbItem>
-                <BreadcrumbItem style={{fontWeight:20}}>{t['callList.breadcrumb.title']}</BreadcrumbItem>
-            </Breadcrumb>
+            <Row>
+                <Col span={16}>
+                    <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+                        <BreadcrumbItem>
+                            <IconHome />
+                        </BreadcrumbItem>
+                        <BreadcrumbItem style={{fontWeight:20}}>{t['callList.breadcrumb.title']}</BreadcrumbItem>
+                    </Breadcrumb>
+                </Col>
+                <Col span={8} style={{textAlign:'right',fontSize:'13px',color:'#43454a'}}>
+                    <Text style={{cursor:'pointer'}} onClick={() => history.goBack()}>[{t['basic.route.back']}]</Text>
+                </Col>
+            </Row>
             <KeepAlive name="CallerListKeepAlive" cacheKey={"CallerListKeepAlive"} id={"CallerListKeepAlive"} when={true} autoFreeze={true}>
                 <CallerListPanel />
             </KeepAlive>

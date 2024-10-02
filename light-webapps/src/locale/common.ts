@@ -10,7 +10,7 @@ const vi18n = {
         'basic.form.button.close':'Close',
         'basic.form.button.preview':'Preview',
         'basic.form.button.manage':'Manage',
-        'basic.route.back':'Go Back',
+        'basic.route.back':'GoBack',
         'basic.form.label.date':'Date',
         'basic.form.label.input':'Input',
         'basic.form.label.search':'Search',

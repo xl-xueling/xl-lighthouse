@@ -26,7 +26,8 @@ import { useLocation, useHistory } from 'react-router-dom';
 export default function CallerListPanel(){
 
     const t = useLocale(locale);
-    const [loading, setLoading] = useState(false);
+    const [formParams, setFormParams] = useState({});
+    const [loading, setLoading] = useState(true);
     const [showCreateModal,setShowCreateModal] = useState<boolean>(false);
     const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
     const [listData,setListData] = useState<Array<Caller>>([]);
@@ -54,15 +55,10 @@ export default function CallerListPanel(){
         }
     }
 
-    useEffect(() => {
-        setLoading(false);
-        fetchData().then();
-    },[refreshTime])
-
     const columns = useMemo(() => getColumns(t,tableCallback), [t]);
 
     const handlerDeleteCaller = async (id: number) => {
-        setLoading(false);
+        setLoading(true);
         await requestDeleteById({id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -78,21 +74,14 @@ export default function CallerListPanel(){
     };
 
     const fetchData = async () => {
-        setLoading(false);
+        setLoading(true);
         const {current, pageSize} = pagination;
-        // const combineParams = {
-        //     search:formParams.search,
-        //     ownerFlag:activeKey == '1'?1:0,
-        // }
-        const combineParams = {
-
-        };
         await requestList({
-            queryParams:combineParams,
+            queryParams:formParams,
             pagination:{
                 pageSize:pageSize,
                 pageNum:current,
-            },
+            }
         }).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -112,12 +101,21 @@ export default function CallerListPanel(){
         })
     }
 
+    const handlerSearch = (value) => {
+        setPagination({ ...pagination, current: 1 });
+        setFormParams({search:value});
+    }
+
+    useEffect(() => {
+        fetchData().then();
+    },[refreshTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)])
+
     return (<>
         <Spin loading={loading} style={{ display: 'block' }}>
             <Card>
                 <Grid.Row justify="space-between" align="center" style={{marginBottom:'15px'}}>
                     <Grid.Col span={16} style={{ textAlign: 'left' }}>
-                        <InputSearch allowClear placeholder='Enter keyword to search' style={{width: 380}} />
+                        <InputSearch allowClear placeholder='Search Title' style={{width: 380}} onSearch={handlerSearch}/>
                     </Grid.Col>
                     <Grid.Col span={8} style={{ textAlign: 'right' }}>
                         <Button size={"small"} type="primary" onClick={() => setShowCreateModal(true)}>{'创建'}</Button>
