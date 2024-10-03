@@ -1,11 +1,11 @@
 
 import React from "react";
-import {Button, Link, Popconfirm, Space} from "@arco-design/web-react";
+import {Button, Popconfirm, Space,Link} from "@arco-design/web-react";
 import Ellipsis from "@arco-design/web-react/es/Typography/ellipsis";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
 import {getRandomString} from "@/utils/util";
-
+import { useLocation, useHistory } from 'react-router-dom';
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
@@ -43,12 +43,11 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             title: 'Operations',
             dataIndex: 'operations',
             render: (value, record) => {
-                let manageButton = <Button key={getRandomString()}
-                                           onClick={() => callback(record, 'manage')}
-                                           type="text"
-                                           size="mini">
-                    {'管理'}
-                </Button>
+                let manageButton = <Link href={`/caller/manage/${record.id}`} onClick={(e) => {e.preventDefault();callback(record, 'manage')}} style={{ textDecoration: 'none' }}>
+                    <Button type="text" size="mini">
+                        {'管理'}
+                    </Button>
+                </Link>
                 let deleteButton = <Popconfirm key={getRandomString()}
                                                focusLock
                                                position={"tr"}
