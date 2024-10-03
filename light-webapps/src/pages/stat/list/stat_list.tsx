@@ -16,6 +16,7 @@ import {MetricSetBindListContext} from "@/pages/common/context";
 import StatApplyModal from "@/pages/stat/apply";
 import {GroupManageContext} from "@/pages/common/context";
 import {useUpdateEffect} from "ahooks";
+import useNavigateTo from "@/pages/common/redirect/useNavigateTo";
 
 interface Props {
     formParams?:any,
@@ -40,6 +41,7 @@ const StatisticalListPanel:React.FC<Props> = ({
                                               }
                                           }) => {
     const t = useLocale(locale);
+    const navigateTo = useNavigateTo();
     const [loading,setLoading] = useState<boolean>(false);
     const [listData,setListData] = useState<Array<Stat>>([]);
     const [detailVisible, setDetailVisible] = React.useState(false);
@@ -76,6 +78,8 @@ const StatisticalListPanel:React.FC<Props> = ({
         }else if(type == 'apply'){
             setSelectedStat(record);
             setApplyVisible(true);
+        }else if(type == 'preview'){
+            navigateTo('/stat/preview/'+record.id);
         }
     };
 

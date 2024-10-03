@@ -8,6 +8,8 @@ import StatisticalListPanel from "@/pages/stat/list/stat_list";
 import locale from "./locale";
 import SearchForm from "@/pages/stat/list/form";
 import {IconHome} from "@arco-design/web-react/icon";
+import StatList from "@/pages/stat/list/list";
+import KeepAlive from "react-activation";
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function Index() {
@@ -27,10 +29,9 @@ export default function Index() {
                 </BreadcrumbItem>
                 <BreadcrumbItem style={{fontWeight:20}}>{t['statList.breadcrumb.title']}</BreadcrumbItem>
             </Breadcrumb>
-        <Card>
-            <SearchForm onSearch={handleSearch}/>
-            <StatisticalListPanel formParams={formParams}/>
-        </Card>
+            <KeepAlive name="StatListKeepAlive" cacheKey={"StatListKeepAlive"} id={"StatListKeepAlive"} when={true} autoFreeze={true}>
+                <StatList/>
+            </KeepAlive>
         </>
     );
 }

@@ -93,7 +93,7 @@ export function getColumns(t: any, staredProjectInfo:Array<Project>, callback: (
           let applyButton;
           if(record.permissions.includes('ManageAble')){
                 viewButton = <Link key={getRandomString()} href={'/project/preview/'+record.id} onClick={(e) => {e.preventDefault();callback(record, 'preview')}} style={{ textDecoration: 'none' }}>
-                    <Button key={getRandomString()}
+                    <Button
                             type="text"
                             size="mini">
                         {t['projectList.columns.operations.view']}

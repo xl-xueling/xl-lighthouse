@@ -178,13 +178,14 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                 let viewButton;
                 let applyButton;
                 if(record.permissions.includes('ManageAble') || record.permissions.includes('AccessAble')){
-                    viewButton = <Link key={getRandomString()} target={"_blank"} href={'/stat/preview/' + record.id}>
+                    viewButton = <Link key={getRandomString()} href={'/stat/preview/'+record.id} onClick={(e) => {e.preventDefault();callback(record, 'preview')}} style={{ textDecoration: 'none' }}>
                         <Button
-                            type="text"
-                            size="mini">
+                                type="text"
+                                size="mini">
                             {t['statList.table.operations.view']}
                         </Button>
                     </Link>
+
                 }else{
                     applyButton = <Button key={getRandomString()}
                         type="text"
