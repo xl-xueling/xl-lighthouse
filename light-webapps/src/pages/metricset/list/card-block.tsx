@@ -76,15 +76,6 @@ function CardBlock(props: CardBlockType) {
       history.push(`/metricset/preview/${item?.id}`);
   };
 
-
-    const getTitleIcon = (index) => {
-        return (
-            <div className={styles.icon}>
-                {IconList[index]}
-            </div>
-        );
-    };
-
   return (
       <Link to={`/metricset/preview/${item.id}`} style={{ textDecoration: 'none'}}>
           <Card
@@ -107,34 +98,54 @@ function CardBlock(props: CardBlockType) {
                             <span onClick={(e) => {e.stopPropagation();e.preventDefault(); }}>
                                 {staredMetricInfo.map(z => z.id).includes(item.id) ?
                                     <Popconfirm
-                                        focusLock={true}
+
                                         position={"bl"}
                                         title='Confirm'
                                         content={t['metricSetList.operations.unstar.confirm']}
-                                        onOk={async (e) => { await callback('unstar', item); }}
+                                        onOk={async (e) => {await callback('unstar',item)}}
                                     >
-                                        <span>{getTitleIcon(1)}</span>
+                                        <Button type={"primary"} icon={<LuLayers style={{marginTop:'3px'}} size={13}/>} shape={"circle"} size={"mini"} style={{marginRight:'8px'}}/>
                                     </Popconfirm>
-                                    : null
+                                    :
+                                    <Popconfirm
+
+                                        position={"bl"}
+                                        title='Confirm'
+                                        content={t['metricSetList.operations.star.confirm']}
+                                        onOk={async (e) => {await callback('star',item)}}
+                                    >
+                                        <Button icon={<LuLayers style={{marginTop:'3px'}} size={13}/>} shape={"circle"} size={"mini"} style={{marginRight:'8px'}}/>
+                                    </Popconfirm>
                                 }
                             </span>
                           <span>
                                 <span style={{ display: "inline-flex", alignItems: "center" }}>{item.title}{getLockIcon(t, item.privateType, item.permissions)}</span>
                             </span>
-                          <div onClick={(e) => { e.stopPropagation(); e.preventDefault();}} className={styles.more}>
-                              {staredMetricInfo.map(z => z.id).includes(item.id) ? null :
-                                  <Popconfirm
-                                      focusLock
-                                      position={"br"}
-                                      title='Confirm'
-                                      content={t['metricSetList.operations.star.confirm']}
-                                      onOk={async (e) => { await callback('star', item); }}
-                                      onVisibleChange={setVisible}
-                                  >
-                                      <IconStar />
-                                  </Popconfirm>
-                              }
-                          </div>
+                          {/*<div onClick={(e) => { e.stopPropagation(); e.preventDefault();}} className={styles.more}>*/}
+                          {/*    {staredMetricInfo.map(z => z.id).includes(item.id) ?*/}
+                          {/*        <Popconfirm*/}
+                          {/*            focusLock*/}
+                          {/*            position={"br"}*/}
+                          {/*            title='Confirm'*/}
+                          {/*            content={t['metricSetList.operations.unstar.confirm']}*/}
+                          {/*            onOk={async (e) => { await callback('unstar', item); }}*/}
+                          {/*            onVisibleChange={setVisible}*/}
+                          {/*        >*/}
+                          {/*            <IconStarFill/>*/}
+                          {/*        </Popconfirm>*/}
+                          {/*        :*/}
+                          {/*        <Popconfirm*/}
+                          {/*            focusLock*/}
+                          {/*            position={"br"}*/}
+                          {/*            title='Confirm'*/}
+                          {/*            content={t['metricSetList.operations.star.confirm']}*/}
+                          {/*            onOk={async (e) => { await callback('star', item); }}*/}
+                          {/*            onVisibleChange={setVisible}*/}
+                          {/*        >*/}
+                          {/*            <IconStar />*/}
+                          {/*        </Popconfirm>*/}
+                          {/*    }*/}
+                          {/*</div>*/}
                       </div>
                       <div className={styles.time}>{formatTimeStamp(item.createTime, DateTimeFormat)}</div>
                   </div>
