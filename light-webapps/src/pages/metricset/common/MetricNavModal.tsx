@@ -100,7 +100,7 @@ export default function MetricNavModal ({onClose}){
                 }
             </Space>
             <Space style={{justifyContent: 'center', padding:'0px',marginTop:'0px',width: '100%'}}>
-                <Pagination total={staredMetricInfo.length} pageSize={pagination.pageSize} onChange={handleChangePage} current={pagination.current}/>
+                <Pagination showTotal={true} total={staredMetricInfo.length} pageSize={pagination.pageSize} onChange={handleChangePage} current={pagination.current}/>
             </Space>
         </Modal>
     );
