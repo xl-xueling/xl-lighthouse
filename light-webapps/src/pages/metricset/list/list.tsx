@@ -107,7 +107,11 @@ export default function MetricListPanel() {
 
     useEffect(() => {
         fetchData().then();
-    }, [reloadTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+    },[reloadTime])
+
+    useEffect(() => {
+        setReloadTime(Date.now());
+    }, [pagination.current, pagination.pageSize]);
 
     useUpdateEffect(() => {
         setPagination({
@@ -115,16 +119,16 @@ export default function MetricListPanel() {
             current : 1
         });
         setTimeout(() => {
-            setReloadTime(Date.now);
+            setReloadTime(Date.now());
         },0)
-    },[activeKey])
+    },[activeKey,JSON.stringify(formParams)])
 
     const handleShowCreatePanel = () => {
         setShowCreatePanel(true);
     }
 
     const handlerReloadList = () => {
-        setReloadTime(Date.now);
+        setReloadTime(Date.now());
     }
 
     const getCardList = () => {
