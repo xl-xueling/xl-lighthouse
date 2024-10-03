@@ -67,17 +67,20 @@ function CardBlock(props: CardBlockType) {
     );
   };
 
-
   const className = cs(styles['card-block']);
 
   const handleClick = (e) => {
       e.stopPropagation();
       e.preventDefault();
-      history.push(`/metricset/preview/${item?.id}`);
+      if(from == 'list'){
+          history.push(`/metricset/preview/${item?.id}`);
+      }else{
+          window.location.href = `/metricset/preview/${item?.id}`;
+      }
   };
 
   return (
-      <Link to={`/metricset/preview/${item.id}`} style={{ textDecoration: 'none'}}>
+      <Link to={`/metricset/preview/${item.id}`} onClick={(e) => {handleClick(e)}} style={{ textDecoration: 'none'}}>
           <Card
               bordered={true}
               className={className}
