@@ -26,7 +26,7 @@ import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
 import {getRandomString} from "@/utils/util";
 import {useUpdateEffect} from "ahooks";
 import MetricListPanel from "@/pages/metricset/list/list";
-import KeepAlive, {useAliveController} from "react-activation";
+import KeepAlive, {useActivate, useAliveController, useUnactivate} from "react-activation";
 const { Title } = Typography;
 const { Row, Col } = Grid;
 import {useHistory } from 'react-router-dom';

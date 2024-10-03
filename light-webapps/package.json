@@ -55,7 +55,6 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "redux": "^4.1.2",
-    "umi-plugin-keep-alive": "^0.0.1-beta.35",
     "yalc": "^1.0.0-pre.53"
   },
   "devDependencies": {
