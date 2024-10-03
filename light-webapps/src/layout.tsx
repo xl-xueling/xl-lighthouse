@@ -324,14 +324,7 @@ function PageLayout() {
                   <Route path="/track/stat/:id" component={TrackStatPage}/>
                   <Route path="/user/settings" component={UserSettings}/>
                   <Route path="/temp/index" component={TempIndex}/>
-                  <Route
-                      path="/caller/manage/:id"
-                      render={props => (
-                          <KeepAlive>
-                            <CallerManage {...props} />
-                          </KeepAlive>
-                      )}
-                  />
+                  <Route path="/caller/manage/:id" component={<CallerManage/>}/>
                   {flattenRoutes.map((route, index) => {
                     return (
                       <Route
