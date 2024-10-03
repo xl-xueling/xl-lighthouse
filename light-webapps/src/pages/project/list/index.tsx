@@ -23,8 +23,9 @@ import {GlobalState} from "@/store";
 import ProjectListPanel from "@/pages/project/list/ProjectListPanel";
 import ProjectCreatePanel from "@/pages/project/create";
 import ProjectList from "@/pages/project/list/list";
-import KeepAlive from "react-activation";
-
+import KeepAlive, {useActivate, useAliveController, useUnactivate} from "react-activation";
+import {useHistory,useLocation } from 'react-router-dom';
+import {stringifyObj} from "@/utils/util";
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function Index() {
@@ -33,6 +34,8 @@ export default function Index() {
   const [listData, setListData] = useState<Project[]>([]);
   const [selectedProject,setSelectedProject] = useState<Project>(null);
   const [form] = useForm();
+  const { refreshScope } = useAliveController();
+
   const [createVisible, setCreateVisible] = React.useState(false);
   const [updateVisible, setUpdateVisible] = React.useState(false);
   const [detailVisible, setDetailVisible] = React.useState(false);
@@ -43,6 +46,8 @@ export default function Index() {
   const [owner,setOwner] = useState(1);
   const dispatch = useDispatch();
   const [formParams, setFormParams] = useState<any>({ownerId:userInfo.id});
+  const history = useHistory();
+  const location = useLocation();
 
   const hideCreateModal = () => {
     setCreateVisible(false);
@@ -71,6 +76,13 @@ export default function Index() {
     setFormParams({...formParams,t:Date.now()});
   }
 
+  useEffect(() => {
+    const action = history.action;
+    if(action == 'PUSH'){
+      refreshScope('ProjectListKeepAlive').then();
+    }
+  },[])
+
   return (
       <>
         <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
@@ -79,7 +91,11 @@ export default function Index() {
           </BreadcrumbItem>
           <BreadcrumbItem style={{fontWeight:20}}>{t['projectList.breadcrumb.title']}</BreadcrumbItem>
         </Breadcrumb>
-        <KeepAlive name="ProjectListKeepAlive" cacheKey={"ProjectListKeepAlive"} id={"ProjectListKeepAlive"} when={true} autoFreeze={true}>
+        <KeepAlive onActive={() =>{
+        }} name="ProjectListKeepAlive" cacheKey={"ProjectListKeepAlive"} id={"ProjectListKeepAlive"} autoFreeze={true} when={() => {
+          const targetPath = history.location?.pathname;
+          return targetPath && (targetPath.startsWith("/project/manage") || targetPath.startsWith("/project/preview"));
+        }}>
           <ProjectList />
         </KeepAlive>
       </>

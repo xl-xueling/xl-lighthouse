@@ -13,7 +13,6 @@ export default function StatPreviewPage() {
     const t = useLocale(locale);
     const history = useHistory();
     const { Text } = Typography;
-    
     return (
         <>
             <Row>

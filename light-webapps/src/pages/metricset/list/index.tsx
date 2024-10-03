@@ -26,14 +26,24 @@ import MetricSetCardBox from "@/pages/metricset/list/MetricSetCardBox";
 import {getRandomString} from "@/utils/util";
 import {useUpdateEffect} from "ahooks";
 import MetricListPanel from "@/pages/metricset/list/list";
-import KeepAlive from "react-activation";
+import KeepAlive, {useAliveController} from "react-activation";
 const { Title } = Typography;
 const { Row, Col } = Grid;
+import {useHistory } from 'react-router-dom';
 
 
 export default function Index() {
 
   const t = useLocale(locale);
+    const history = useHistory();
+    const { refreshScope } = useAliveController();
+
+    useEffect(() => {
+        const action = history.action;
+        if(action == 'PUSH'){
+            refreshScope('MetricListKeepAlive').then();
+        }
+    },[])
 
   return (
       <>
@@ -43,7 +53,10 @@ export default function Index() {
               </Breadcrumb.Item>
               <Breadcrumb.Item style={{fontWeight:20}}>{t['metricSetList.breadcrumb.title']}</Breadcrumb.Item>
           </Breadcrumb>
-          <KeepAlive name="MetricListKeepAlive" cacheKey={"MetricListKeepAlive"} id={"MetricListKeepAlive"} when={true} autoFreeze={true}>
+          <KeepAlive name="MetricListKeepAlive" cacheKey={"MetricListKeepAlive"} id={"MetricListKeepAlive"} autoFreeze={true} when={() => {
+              const targetPath = history.location?.pathname;
+              return targetPath && (targetPath.startsWith("/metricset/preview"));
+          }}>
             <MetricListPanel />
           </KeepAlive>
       </>
