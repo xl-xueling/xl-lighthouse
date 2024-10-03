@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import cs from 'classnames';
-import {Button, Card, Descriptions, Link, Popconfirm, Space, Tag, Typography} from '@arco-design/web-react';
+import {Button, Card, Descriptions, Popconfirm, Space, Tag, Typography} from '@arco-design/web-react';
 import {
     IconFaceSmileFill,
     IconPenFill,
@@ -14,17 +14,13 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import {MetricSet, Project} from "@/types/insights-web";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
-import {useHistory} from 'react-router-dom';
-import {getRandomString} from "@/utils/util";
-import {getLockIcon, getTreeResourceIcon} from "@/pages/common/desc/base";
+import {useHistory,Link} from 'react-router-dom';
+import {getLockIcon} from "@/pages/common/desc/base";
 import {PermissionEnum} from "@/types/insights-common";
 import {useSelector} from "react-redux";
-import { HiMiniStar } from "react-icons/hi2";
-import {LuLayers} from "react-icons/lu";
 import {PiDiamondsFour} from "react-icons/pi";
 
 const { Meta } = Card;
-
 
 interface CardBlockType {
   item: MetricSet;
@@ -33,10 +29,6 @@ interface CardBlockType {
   callback;
   size?:string;
 }
-
-const IconList = [
-    IconStarFill,
-].map((Tag, index) => <Tag key={index} />);
 
 const { Paragraph } = Typography;
 
@@ -65,7 +57,7 @@ function CardBlock(props: CardBlockType) {
   };
 
 
-  const className = cs(styles['card-block']);
+    const className = cs(styles['card-block']);
 
     const redirectPreview = (e) => {
         e.stopPropagation();
@@ -97,13 +89,15 @@ function CardBlock(props: CardBlockType) {
           actions={
               [
               item.permissions.includes(PermissionEnum.AccessAble)?
-                  <span key={3} className='icon-hover' onClick={redirectPreview}>
-                     <Button type={"secondary"} size={"mini"}>{t['basic.form.button.preview']}</Button>
-                  </span>:null,
+                  <Link to={`/project/preview/${item.id}`} onClick={redirectPreview} style={{ textDecoration: 'none' }}>
+                      <Button type={"secondary"} size={"mini"}>{t['basic.form.button.preview']}</Button>
+                  </Link>
+                  :null,
                   item.permissions.includes(PermissionEnum.ManageAble)?
-                      <span key={3} className='icon-hover' onClick={redirectManage}>
-                     <Button type={"primary"} size={"mini"}>{t['basic.form.button.manage']}</Button>
-                  </span>:null,
+                  <Link to={`/project/manage/${item.id}`} onClick={redirectManage} style={{ textDecoration: 'none' }}>
+                      <Button type={"primary"} style={{opacity:0.8}} size={"mini"}>{t['basic.form.button.manage']}</Button>
+                  </Link>
+                  :null,
             ]}
 
           title={
@@ -121,18 +115,10 @@ function CardBlock(props: CardBlockType) {
                                           content={t['projectList.operations.unstar.confirm']}
                                           onOk={async (e) => {await callback('unstar',item)}}
                               >
-                                  <Button type={"primary"} icon={<PiDiamondsFour style={{marginTop:'3px'}} size={13}/>} shape={"circle"} size={"mini"} style={{marginRight:'8px'}}/>
+                                  <Button type={"primary"} icon={<PiDiamondsFour style={{marginTop:'4px'}} size={15}/>} shape={"circle"} size={"mini"} style={{marginRight:'8px',opacity:0.8}}/>
                               </Popconfirm>
                               :
-                              <Popconfirm
-
-                                  position={"bl"}
-                                  title='Confirm'
-                                  content={t['projectList.operations.unstar.confirm']}
-                                  onOk={async (e) => {await callback('unstar',item)}}
-                              >
-                                  <Button icon={<PiDiamondsFour style={{marginTop:'3px'}} size={13}/>} shape={"circle"} size={"mini"} style={{marginRight:'8px'}}/>
-                              </Popconfirm>
+                              null
                       }
                           </span>
                       <span onClick={redirectPreview}>

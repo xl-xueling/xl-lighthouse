@@ -107,7 +107,7 @@ function CardBlock(props: CardBlockType) {
                                         content={t['metricSetList.operations.unstar.confirm']}
                                         onOk={async (e) => {await callback('unstar',item)}}
                                     >
-                                        <Button type={"primary"} icon={<LuLayers style={{marginTop:'3px'}} size={13}/>} shape={"circle"} size={"mini"} style={{marginRight:'8px'}}/>
+                                        <Button type={"primary"} icon={<LuLayers style={{marginTop:'3px'}} size={13}/>} shape={"circle"} size={"mini"} style={{marginRight:'8px',opacity:0.8}}/>
                                     </Popconfirm>
                                     :
                                     <Popconfirm
