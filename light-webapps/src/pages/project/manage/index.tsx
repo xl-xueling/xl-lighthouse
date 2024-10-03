@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useParams,useHistory} from "react-router-dom";
 import styles from './style/index.module.less';
 import {
     Breadcrumb,
     Card,
-    Descriptions,
+    Descriptions, Grid,
     Link,
     Notification,
     Skeleton,
@@ -31,12 +31,15 @@ import ErrorPage from "@/pages/common/error";
 import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
 import {ResourceTypeEnum} from "@/types/insights-common";
 import {getIcon} from "@/pages/common/desc/base";
+const {Row, Col} = Grid;
+const { Text } = Typography;
 
 const BreadcrumbItem = Breadcrumb.Item;
 
 export default function ProjectManagePage() {
 
     const t = useLocale(locale);
+    const history = useHistory();
     const [groupId, setGroupId] = useState<number>(null);
     const [showGroupCreatePanel, setShowGroupCreatePanel] = useState(false);
     const [showManagePanel, setShowManagePanel] = useState(false);
@@ -145,13 +148,20 @@ export default function ProjectManagePage() {
                 errorCode ? <ErrorPage errorCode={errorCode}/>
                     :
                     <>
-                        <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
-                            <BreadcrumbItem>
-                                <IconHome/>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem
-                                style={{fontWeight: 20}}>{t['projectManage.breadcrumbItem']}</BreadcrumbItem>
-                        </Breadcrumb>
+                        <Row>
+                            <Col span={16}>
+                                <Breadcrumb style={{fontSize: 12, marginBottom: '10px'}}>
+                                    <BreadcrumbItem>
+                                        <IconHome/>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbItem
+                                        style={{fontWeight: 20}}>{t['projectManage.breadcrumbItem']}</BreadcrumbItem>
+                                </Breadcrumb>
+                            </Col>
+                            <Col span={8} style={{textAlign:'right',paddingRight:'15px',fontSize:'13px',color:'#43454a'}}>
+                                <Text style={{cursor:'pointer'}} onClick={() => history.goBack()}>[{t['basic.route.back']}]</Text>
+                            </Col>
+                        </Row>
                         <Spin loading={loading} style={{width: '100%'}}>
                             <div className={styles.layout}>
                                 <div className={styles['layout-left-side']}>
