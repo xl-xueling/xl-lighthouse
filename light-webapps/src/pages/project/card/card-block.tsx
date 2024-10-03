@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import cs from 'classnames';
-import {Button, Card, Descriptions, Popconfirm, Space, Tag, Typography} from '@arco-design/web-react';
+import {Button, Card, Descriptions, Link, Popconfirm, Space, Tag, Typography} from '@arco-design/web-react';
 import {
     IconFaceSmileFill,
     IconPenFill,
@@ -20,6 +20,8 @@ import {getLockIcon, getTreeResourceIcon} from "@/pages/common/desc/base";
 import {PermissionEnum} from "@/types/insights-common";
 import {useSelector} from "react-redux";
 import { HiMiniStar } from "react-icons/hi2";
+import {LuLayers} from "react-icons/lu";
+import {PiDiamondsFour} from "react-icons/pi";
 
 const { Meta } = Card;
 
@@ -65,94 +67,106 @@ function CardBlock(props: CardBlockType) {
 
   const className = cs(styles['card-block']);
 
-    const redirectPreview = () => {
-        window.open('/project/preview/' + item?.id, from == "list" ? '_blank':'_self');
+    const redirectPreview = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if(from == 'list'){
+            history.push(`/project/preview/${item?.id}`);
+        }else{
+            window.location.href = `/project/preview/${item?.id}`;
+        }
     };
 
-    const redirectManage = () => {
-        window.open('/project/manage/' + item?.id, from == "list" ? '_blank':'_self');
-    };
-
-    const getTitleIcon = (index) => {
-        return (
-            <div className={styles.icon}>
-                {IconList[index]}
-            </div>
-        );
+    const redirectManage = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if(from == 'list'){
+            history.push(`/project/manage/${item?.id}`);
+        }else{
+            window.location.href = `/project/manage/${item?.id}`;
+        }
     };
 
   return (
-    <Card
-        onClick={redirectPreview}
-      bordered={true}
-      className={className}
-      size="small"
-      style={{cursor:'pointer',height:size == 'small'?'150px':'190px'}}
-      actions={
-          [
-          item.permissions.includes(PermissionEnum.AccessAble)?
-              <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();redirectPreview();}}>
-                 <Button type={"secondary"} size={"mini"}>{t['basic.form.button.preview']}</Button>
-              </span>:null,
-              item.permissions.includes(PermissionEnum.ManageAble)?
-                  <span key={3} className='icon-hover' onClick={(e) => {e.stopPropagation();redirectManage();}}>
-                 <Button type={"primary"} size={"mini"}>{t['basic.form.button.manage']}</Button>
-              </span>:null,
-        ]}
+      <Link to={`/project/preview/${item.id}`} onClick={(e) => {redirectPreview(e)}} style={{ textDecoration: 'none',width:'100%'}} >
+        <Card
+          bordered={true}
+          className={className}
+          size="small"
+          style={{cursor:'pointer',height:size == 'small'?'150px':'190px'}}
+          actions={
+              [
+              item.permissions.includes(PermissionEnum.AccessAble)?
+                  <span key={3} className='icon-hover' onClick={redirectPreview}>
+                     <Button type={"secondary"} size={"mini"}>{t['basic.form.button.preview']}</Button>
+                  </span>:null,
+                  item.permissions.includes(PermissionEnum.ManageAble)?
+                      <span key={3} className='icon-hover' onClick={redirectManage}>
+                     <Button type={"primary"} size={"mini"}>{t['basic.form.button.manage']}</Button>
+                  </span>:null,
+            ]}
 
-      title={
-          <div>
-              <div
-                  className={cs(styles.title, {
+          title={
+              <div>
+                  <div className={cs(styles.title, {
                       [styles['title-more']]: visible,
-                  })}
-              >
-                  <span onClick={(e) => {e.stopPropagation();}}>
-                  {
-                      staredProjectInfo?.map(z => z.id).includes(item.id)?
-                          <Popconfirm
+                  })}>
+                      <span onClick={(e) => {e.stopPropagation();e.preventDefault();}}>
+                      {
+                          staredProjectInfo?.map(z => z.id).includes(item.id)?
+                              <Popconfirm
 
-                                      position={"bl"}
-                                      title='Confirm'
-                                      content={t['projectList.operations.unstar.confirm']}
-                                      onOk={async (e) => {await callback('unstar',item)}}
-                          >
-                          <span>{getTitleIcon(0)}</span>
-                          </Popconfirm>
-                          :null
-                  }
+                                          position={"bl"}
+                                          title='Confirm'
+                                          content={t['projectList.operations.unstar.confirm']}
+                                          onOk={async (e) => {await callback('unstar',item)}}
+                              >
+                                  <Button type={"primary"} icon={<PiDiamondsFour style={{marginTop:'3px'}} size={13}/>} shape={"circle"} size={"mini"} style={{marginRight:'8px'}}/>
+                              </Popconfirm>
+                              :
+                              <Popconfirm
+
+                                  position={"bl"}
+                                  title='Confirm'
+                                  content={t['projectList.operations.unstar.confirm']}
+                                  onOk={async (e) => {await callback('unstar',item)}}
+                              >
+                                  <Button icon={<PiDiamondsFour style={{marginTop:'3px'}} size={13}/>} shape={"circle"} size={"mini"} style={{marginRight:'8px'}}/>
+                              </Popconfirm>
+                      }
+                          </span>
+                      <span onClick={redirectPreview}>
+                          <span style={{display:"inline-flex",alignItems:"center"}}>{item.title}{getLockIcon(t,item.privateType,item.permissions)}</span>
                       </span>
-                  <span onClick={redirectPreview}>
-                      <span style={{display:"inline-flex",alignItems:"center"}}>{item.title}{getLockIcon(t,item.privateType,item.permissions)}</span>
-                  </span>
-                  <div onClick={(e) => {e.stopPropagation();}} className={styles.more}>
-                  {
-                      staredProjectInfo?.map(z => z.id).includes(item.id) ? null:
-                          <Popconfirm
-                                      focusLock
-                                      position={"br"}
-                                      title='Confirm'
-                                      content={t['projectList.operations.star.confirm']}
-                                      onOk={async (e) => {await callback('star',item)}}
-                          >
-                            <IconStar />
-                          </Popconfirm>
-                  }
+                      {/*<div onClick={(e) => {e.stopPropagation();e.preventDefault();}} className={styles.more}>*/}
+                      {/*{*/}
+                      {/*    staredProjectInfo?.map(z => z.id).includes(item.id) ? null:*/}
+                      {/*        <Popconfirm*/}
+                      {/*                    focusLock*/}
+                      {/*                    position={"br"}*/}
+                      {/*                    title='Confirm'*/}
+                      {/*                    content={t['projectList.operations.star.confirm']}*/}
+                      {/*                    onOk={async (e) => {await callback('star',item)}}*/}
+                      {/*        >*/}
+                      {/*          <IconStar />*/}
+                      {/*        </Popconfirm>*/}
+                      {/*}*/}
+                      {/*</div>*/}
                   </div>
+                  <div className={styles.time}>{formatTimeStamp(item.createTime,DateTimeFormat)}</div>
               </div>
-              <div className={styles.time}>{formatTimeStamp(item.createTime,DateTimeFormat)}</div>
-          </div>
-      }
-    >
-      <div style={{height: size == 'small'?'25px':'60px'}} className={styles.content} onClick={redirectPreview}>{getContent()}</div>
-        <Meta
-            avatar={
-                item.permissions.includes(PermissionEnum.AccessAble) ?
-                <Space>
-                </Space>:null
-            }
-        />
-    </Card>
+          }
+        >
+          <div style={{height: size == 'small'?'25px':'60px'}} className={styles.content} onClick={redirectPreview}>{getContent()}</div>
+            <Meta
+                avatar={
+                    item.permissions.includes(PermissionEnum.AccessAble) ?
+                    <Space>
+                    </Space>:null
+                }
+            />
+        </Card>
+      </Link>
   );
 }
 
