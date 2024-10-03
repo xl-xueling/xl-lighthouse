@@ -274,8 +274,6 @@ export function getRoleTypeDescription(t:any,value:RoleTypeEnum){
 export function getLockIcon(t:any,privateType:PrivateTypeEnum,permissions:PermissionEnum[]){
     if(privateType == PrivateTypeEnum.Public){
         return null;
-    }else if(permissions.includes(PermissionEnum.AccessAble) || permissions.includes(PermissionEnum.ManageAble)){
-        return <PiLockKeyOpenThin style={{marginLeft:'5px'}}/>;
     }else{
         return <PiLockKeyThin style={{marginLeft:'5px'}}/>;
     }

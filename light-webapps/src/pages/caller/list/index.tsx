@@ -33,19 +33,12 @@ export default function CallerListPage(){
 
     return (
         <>
-            <Row>
-                <Col span={16}>
-                    <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
-                        <BreadcrumbItem>
-                            <IconHome />
-                        </BreadcrumbItem>
-                        <BreadcrumbItem style={{fontWeight:20}}>{t['callList.breadcrumb.title']}</BreadcrumbItem>
-                    </Breadcrumb>
-                </Col>
-                <Col span={8} style={{textAlign:'right',fontSize:'13px',color:'#43454a'}}>
-                    <Text style={{cursor:'pointer'}} onClick={() => history.goBack()}>[{t['basic.route.back']}]</Text>
-                </Col>
-            </Row>
+            <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+                <BreadcrumbItem>
+                    <IconHome />
+                </BreadcrumbItem>
+                <BreadcrumbItem style={{fontWeight:20}}>{t['callList.breadcrumb.title']}</BreadcrumbItem>
+            </Breadcrumb>
             <KeepAlive name="CallerListKeepAlive" cacheKey={"CallerListKeepAlive"} id={"CallerListKeepAlive"} when={true} autoFreeze={true}>
                 <CallerListPanel />
             </KeepAlive>

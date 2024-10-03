@@ -36,18 +36,18 @@
 
   .title {
     display: flex;
-    line-height: 23px;
+    line-height: 24px;
     align-items: center;
     font-size: 14px;
     font-weight: 500;
 
     .icon {
-      height: 21px;
-      width: 21px;
+      height: 24px;
+      width: 24px;
       color: var(--color-white);
       background: #626aea;
       text-align: center;
-      line-height: 21px;
+      line-height: 24px;
       border-radius: 50%;
       margin-right: 8px;
     }
@@ -69,6 +69,37 @@
   .title-more {
     .more {
       opacity: 1;
+    }
+  }
+
+
+  .starTitle
+  {
+    display: flex;
+    line-height: 23px;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    .icon {
+      height: 21px;
+      width: 21px;
+      color: var(--color-white);
+      background: var(--color-neutral-4);
+      text-align: center;
+      line-height: 21px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    .status {
+      margin-left: 12px;
+    }
+    .more {
+      color: var(--color-text-4);
+      font-size: 16px;
+      position: absolute;
+      right: 16px;
+      cursor: pointer;
+      opacity: 0;
     }
   }
 
