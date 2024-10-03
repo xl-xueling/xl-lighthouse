@@ -24,6 +24,8 @@ const i18n = {
     'structure.warning.hasInvalidChars':'Title contains invalid characters!',
     'structure.warning.requireAtLeastOneNode':'Structure requires at least one indicator node!',
     'structure.label.pendSync':'Not synced',
+    'structure.label.default':'Default',
+    'structure.label.custom':'Custom',
   },
   'zh-CN': {
     'repositoryModal.modal.title':'指标库',
@@ -50,6 +52,8 @@ const i18n = {
     'structure.warning.hasInvalidChars':'名称中含有无效字符！',
     'structure.warning.requireAtLeastOneNode':'树结构应至少保留一个指标元素！',
     'structure.label.pendSync':'待同步',
+    'structure.label.default':'默认',
+    'structure.label.custom':'自定义',
   },
 };
 
