@@ -7,7 +7,7 @@ import {
     Link,
     Menu,
     Modal,
-    Pagination,
+    Pagination, PaginationProps,
     Space,
     Spin, Tabs,
     Trigger,
@@ -48,9 +48,19 @@ export default function MetricNavModal ({onClose}){
     const [listData,setListData] = useState<Array<MetricSet>>([]);
     const pageSize = 16;
 
-    const handleChangePage = (v) => {
-        const startRow = (v - 1) * pageSize;
-        const endRow = Math.min(v * pageSize - 1, staredMetricInfo.length - 1);
+    const [pagination, setPagination] = useState<PaginationProps>({
+        sizeOptions: [pageSize],
+        sizeCanChange: false,
+        showTotal: true,
+        pageSize: 16,
+        current: 1,
+        pageSizeChangeResetCurrent: true,
+    });
+
+    const handleChangePage = (current) => {
+        setPagination((prev) => ({ ...prev, current }));
+        const startRow = (current - 1) * pageSize;
+        const endRow = Math.min(current * pageSize - 1, staredMetricInfo.length - 1);
         setListData(staredMetricInfo.slice(startRow,endRow + 1));
     }
 
@@ -90,9 +100,7 @@ export default function MetricNavModal ({onClose}){
                 }
             </Space>
             <Space style={{justifyContent: 'center', padding:'0px',marginTop:'0px',width: '100%'}}>
-                <Pagination
-                    hideOnSinglePage={true}
-                    total={staredMetricInfo.length} current={1} pageSize={pageSize} onChange={handleChangePage} />
+                <Pagination total={staredMetricInfo.length} pageSize={pagination.pageSize} onChange={handleChangePage} current={pagination.current}/>
             </Space>
         </Modal>
     );
