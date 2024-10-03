@@ -28,7 +28,8 @@ import {MetricSetBindListContext} from "@/pages/common/context";
 import {updateStoreStaredProjectInfo} from "@/store";
 import {convertDateToTimestamp, DateFormat, getDayEndTimestamp, getDayStartTimestamp} from "@/utils/date";
 import {useUpdateEffect} from "ahooks";
-
+import { useLocation, useHistory } from 'react-router-dom';
+import useNavigateTo from "@/pages/common/redirect/useNavigateTo";
 const BreadcrumbItem = Breadcrumb.Item;
 
 export interface Props {
@@ -60,6 +61,7 @@ const ProjectListPanel:React.FC<Props> = ({
     const [listData, setListData] = useState<Project[]>([]);
     const [selectedProject,setSelectedProject] = useState<Project>(null);
     const [form] = useForm();
+    const navigateTo = useNavigateTo();
     const dispatch = useDispatch();
     const [createVisible, setCreateVisible] = React.useState(false);
     const [updateVisible, setUpdateVisible] = React.useState(false);
@@ -72,7 +74,7 @@ const ProjectListPanel:React.FC<Props> = ({
     const [reloadTime,setReloadTime] = useState<number>(Date.now());
     const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo || []);
     const [pagination, setPagination] = useState<PaginationProps>(defaultPagination);
-
+    const history = useHistory();
     const tableCallback = async (record, type) => {
         if(type == 'update'){
             setSelectedProject(record);
@@ -93,6 +95,10 @@ const ProjectListPanel:React.FC<Props> = ({
             setApplyVisible(!applyVisible);
         }else if(type == 'bind'){
             await handlerBind(record.id).then();
+        }else if(type == 'preview'){
+            navigateTo('/project/preview/'+record.id);
+        }else if(type == 'manage'){
+            navigateTo('/project/manage/'+record.id);
         }
     };
 

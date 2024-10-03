@@ -4,7 +4,7 @@ const { Text } = Typography;
 import { PiLinkSimple } from "react-icons/pi";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import UserGroup from "@/pages/user/common/groups";
-import {formatTimeStampBackUp, getRandomString} from "@/utils/util";
+import {formatTimeStampBackUp, getRandomString, routeRedirect} from "@/utils/util";
 import DepartmentLabel from "@/pages/department/common/depart";
 import { CiLock } from "react-icons/ci";
 import { LuLock } from "react-icons/lu";
@@ -12,6 +12,8 @@ import { PiLockBold } from "react-icons/pi";
 import {RiAppsLine} from "react-icons/ri";
 import {getIcon} from "@/pages/common/desc/base";
 import {Project} from "@/types/insights-web";
+import useNavigateTo from "@/pages/common/redirect/useNavigateTo";
+
 
 export function getColumns(t: any, staredProjectInfo:Array<Project>, callback: (record: Record<string, any>, type: string) => Promise<void>) {
   return [
@@ -90,19 +92,20 @@ export function getColumns(t: any, staredProjectInfo:Array<Project>, callback: (
           let deleteButton;
           let applyButton;
           if(record.permissions.includes('ManageAble')){
-              viewButton = <Button key={getRandomString()}
-                  type="text"
-                  onClick={() => window.open('/project/preview/' + record.id)}
-                  size="mini">
-                  {t['projectList.columns.operations.view']}
-              </Button>;
+                viewButton = <Link key={getRandomString()} href={'/project/preview/'+record.id} onClick={(e) => {e.preventDefault();callback(record, 'preview')}} style={{ textDecoration: 'none' }}>
+                    <Button key={getRandomString()}
+                            type="text"
+                            size="mini">
+                        {t['projectList.columns.operations.view']}
+                    </Button>
+                </Link>
                 updateButton = <Button key={getRandomString()}
                     onClick={() => callback(record, 'update')}
                     type="text"
                     size="mini">
                     {t['projectList.columns.operations.update']}
                 </Button>;
-              manageButton = <Link key={getRandomString()} target={"_blank"} href={'/project/manage/' + record.id}>
+              manageButton = <Link key={getRandomString()} target={"_blank"} href={'/project/manage/'+record.id} onClick={(e) => {e.preventDefault();callback(record, 'manage')}}>
                   <Button
                       type="text"
                       size="mini">

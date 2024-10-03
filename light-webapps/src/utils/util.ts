@@ -1,4 +1,3 @@
-
 export function stringifyObj(obj): string {
     let cache = [];
     const str = JSON.stringify(obj, function(key, value) {

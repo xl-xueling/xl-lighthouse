@@ -12,7 +12,7 @@ const i18n = {
     'metricSetList.operations.unstar.submit.success':'MetricSet has been unStared!'
   },
   'zh-CN': {
-    'metricSetList.breadcrumb.title':'指标集',
+    'metricSetList.breadcrumb.title':'指标集列表',
     'metricSetList.tab.title.all':'全部指标集',
     'metricSetList.tab.title.owner':'我的指标集',
     'metricSetList.button.createMetric':'创建指标集',

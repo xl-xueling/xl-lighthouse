@@ -22,6 +22,8 @@ import {IconHome} from "@arco-design/web-react/icon";
 import {GlobalState} from "@/store";
 import ProjectListPanel from "@/pages/project/list/ProjectListPanel";
 import ProjectCreatePanel from "@/pages/project/create";
+import ProjectList from "@/pages/project/list/list";
+import KeepAlive from "react-activation";
 
 const BreadcrumbItem = Breadcrumb.Item;
 
@@ -71,42 +73,15 @@ export default function Index() {
 
   return (
       <>
-      <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
-        <BreadcrumbItem>
+        <Breadcrumb style={{fontSize: 12,marginBottom:'10px'}}>
+          <BreadcrumbItem>
             <IconHome />
-        </BreadcrumbItem>
-        <BreadcrumbItem style={{fontWeight:20}}>{t['projectList.breadcrumb.title']}</BreadcrumbItem>
-      </Breadcrumb>
-    <Card>
-      <SearchForm onSearch={handleSearch} onClear={handleReset} allDepartInfo={allDepartInfo} form={form}/>
-      <Grid.Row justify="space-between" align="center" style={{marginBottom:'15px'}}>
-        <Grid.Col span={16} style={{ textAlign: 'left' }}>
-          <Space>
-            <Radio.Group defaultValue={"1"} name='button-radio-group' onChange={handleChangeOwnerType}>
-              {[{value:"1",label:t['projectList.operations.my.projects']},{value:"0",label:t['projectList.operations.all.projects']}].map((item) => {
-                return (
-                    <Radio key={item.value} value={item.value}>
-                      {({ checked }) => {
-                        return (
-                            <Button size={"small"} tabIndex={-1} key={item.value} shape='round' style={checked ? {color:'rgb(var(--primary-6)',fontWeight:500}:{fontWeight:500}}>
-                              {item.label}
-                            </Button>
-                        );
-                      }
-                      }
-                    </Radio>
-                );
-              })}
-            </Radio.Group>
-          </Space>
-        </Grid.Col>
-        <Grid.Col span={8} style={{ textAlign: 'right' }}>
-          <Button size={"small"} type="primary" onClick={() => setCreateVisible(true)}>{t['projectList.operations.create.project']}</Button>
-        </Grid.Col>
-      </Grid.Row>
-      <ProjectListPanel formParams={formParams} owner={owner}/>
-      {createVisible && <ProjectCreatePanel allDepartInfo={allDepartInfo} onClose={() => setCreateVisible(false)} onSuccess={handlerReloadList}/>}
-    </Card>
+          </BreadcrumbItem>
+          <BreadcrumbItem style={{fontWeight:20}}>{t['projectList.breadcrumb.title']}</BreadcrumbItem>
+        </Breadcrumb>
+        <KeepAlive name="ProjectListKeepAlive" cacheKey={"ProjectListKeepAlive"} id={"ProjectListKeepAlive"} when={true} autoFreeze={true}>
+          <ProjectList />
+        </KeepAlive>
       </>
   );
 
