@@ -260,6 +260,10 @@ export function getRoleTypeDescription(t:any,value:RoleTypeEnum){
         return t['basic.roleType.description.viewManage'];
     }else if(value == RoleTypeEnum.VIEW_ACCESS_PERMISSION){
         return t['basic.roleType.description.viewAccess'];
+    }else if(value == RoleTypeEnum.CALLER_MANAGE_PERMISSION){
+        return t['basic.roleType.description.callerManage'];
+    }else if(value == RoleTypeEnum.CALLER_ACCESS_PERMISSION){
+        return t['basic.roleType.description.callerAccess'];
     }else if(value == RoleTypeEnum.DOMAIN_MANAGE_PERMISSION){
         return t['basic.roleType.description.domainManage'];
     }else if(value == RoleTypeEnum.DOMAIN_ACCESS_PERMISSION){

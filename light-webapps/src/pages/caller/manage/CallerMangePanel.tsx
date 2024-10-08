@@ -109,7 +109,7 @@ export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
                 {showSecretKeyModal && <SecretKeyModal callerId={callerInfo?.id} onClose={() => setShowSecretKeyModal(false)} />}
                 {showPermissionManageModal &&
                 <PermissionManageModal resourceId={id} resourceType={ResourceTypeEnum.Caller}
-                                       onClose={() => setShowPermissionManageModal(false)}/>}
+                                       onClose={() => setShowPermissionManageModal(false)} showTabs={['3']}/>}
             </Space>
         </CallerManageContext.Provider>
     );

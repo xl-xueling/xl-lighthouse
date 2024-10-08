@@ -102,7 +102,7 @@ export function PermissionPanel({type,resourceId,resourceType}){
             }else{
                 roleType = RoleTypeEnum.VIEW_ACCESS_PERMISSION;
             }
-        }else if(resourceType == ResourceTypeEnum.View){
+        }else if(resourceType == ResourceTypeEnum.Caller){
             if(type == 3){
                 roleType = RoleTypeEnum.CALLER_MANAGE_PERMISSION;
             }else{
