@@ -1,10 +1,14 @@
 package com.dtstep.lighthouse.common.modal;
 
+import java.util.List;
+
 public class CallerQueryParam {
 
     private String search;
 
     private Integer ownerId;
+
+    private List<Integer> departmentIds;
 
     private String name;
 
@@ -30,5 +34,13 @@ public class CallerQueryParam {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Integer> getDepartmentIds() {
+        return departmentIds;
+    }
+
+    public void setDepartmentIds(List<Integer> departmentIds) {
+        this.departmentIds = departmentIds;
     }
 }

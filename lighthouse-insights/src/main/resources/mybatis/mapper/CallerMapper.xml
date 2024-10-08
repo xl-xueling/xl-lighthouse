@@ -65,6 +65,22 @@
     </delete>
 
     <select id="queryList" resultMap="callerResultMap">
+        WITH RECURSIVE cte AS (
+        SELECT d.id
+        FROM ldp_departments d
+        <where>
+            <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
+                AND d.id IN
+                <foreach item="item" index="index" collection="queryParam.departmentIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        UNION ALL
+        SELECT d.id
+        FROM ldp_departments d
+        JOIN cte ON cte.id = d.pid
+        )
         SELECT c.id, c.name, c.`department_id`,c.desc, c.`create_time`, c.`update_time`
         FROM ldp_callers c
         JOIN (
@@ -85,7 +101,10 @@
             </if>
             c.name LIKE CONCAT('%', #{queryParam.search}, '%')
         </if>
+        <if test="queryParam.departmentIds != null and queryParam.departmentIds.size > 0">
+            AND department_id IN(
+            select id from cte
+            )
+        </if>
     </select>
-
-
 </mapper>

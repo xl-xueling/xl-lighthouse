@@ -28,13 +28,14 @@ import SearchForm from "./forms";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useSelector} from "react-redux";
 import {TreeNode} from "@/types/insights-web";
+import {GlobalState} from "@/store";
 
 export default function CallerListPanel(){
 
     const t = useLocale(locale);
     const [form] = useForm();
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
-    const [formParams, setFormParams] = useState({});
+    const [formParams, setFormParams] = useState<any>({});
     const [loading, setLoading] = useState(true);
     const [showCreateModal,setShowCreateModal] = useState<boolean>(false);
     const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
@@ -43,6 +44,7 @@ export default function CallerListPanel(){
     const [refreshTime,setRefreshTime] = useState<number>(Date.now);
     const history = useHistory();
     const [owner,setOwner] = useState(1);
+    const userInfo = useSelector((state: GlobalState) => state.userInfo);
 
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,30],
@@ -85,8 +87,12 @@ export default function CallerListPanel(){
     const fetchData = async () => {
         setLoading(true);
         const {current, pageSize} = pagination;
+        const combineParams:any = {}
+        combineParams.search = formParams.search;
+        combineParams.departmentIds = formParams.departmentIds && formParams.departmentIds.length > 0 ? formParams.departmentIds: null;
+        combineParams.ownerId = owner == 1?userInfo?.id:null;
         await requestList({
-            queryParams:formParams,
+            queryParams:combineParams,
             pagination:{
                 pageSize:pageSize,
                 pageNum:current,

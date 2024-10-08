@@ -74,7 +74,6 @@ public class CallerController {
     @RequestMapping("/caller/list")
     public ResultData<ListData<CallerVO>> list(@Validated @RequestBody ListSearchObject<CallerQueryParam> searchObject) throws Exception {
         CallerQueryParam queryParam = searchObject.getQueryParamOrDefault(new CallerQueryParam());
-        queryParam.setOwnerId(baseService.getCurrentUserId());
         Pagination pagination = searchObject.getPagination();
         ListData<CallerVO> listData = callerService.queryList(queryParam, pagination.getPageNum(), pagination.getPageSize());
         return ResultData.success(listData);

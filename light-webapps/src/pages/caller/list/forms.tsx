@@ -13,6 +13,7 @@ import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import styles from './style/index.module.less';
 import {translate} from "@/pages/department/base";
+import {getRandomString} from "@/utils/util";
 const { Row, Col } = Grid;
 const { useForm } = Form;
 
@@ -76,26 +77,11 @@ function SearchForm({onSearch, form,onClear, allDepartInfo}) {
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={colSpan}>
-                        <Form.Item
-                            label={t['callerList.columns.createdTime']}
-                            field="createTime"
-                        >
-                            <DatePicker.RangePicker
-                                allowClear
-                                style={{ width: '100%' }}
-                                disabledDate={(date) => dayjs(date).isAfter(dayjs())}
-                            />
-                        </Form.Item>
-                    </Col>
                 </Row>
             </Form>
             <div className={styles['right-button']}>
                 <Button size={"small"} type="primary" icon={<IconSearch />} onClick={handleSubmit}>
                     {t['callerList.form.search']}
-                </Button>
-                <Button size={"small"} icon={<IconRefresh />} onClick={onClear}>
-                    {t['callerList.form.reset']}
                 </Button>
             </div>
         </div>

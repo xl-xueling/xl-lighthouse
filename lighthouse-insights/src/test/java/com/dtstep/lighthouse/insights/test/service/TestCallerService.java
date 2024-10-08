@@ -27,8 +27,8 @@ public class TestCallerService {
     @Test
     public void testQuery() throws Exception {
         CallerQueryParam queryParam = new CallerQueryParam();
-        queryParam.setSearch("ssss");
-        queryParam.setOwnerId(110239);
+        queryParam.setSearch("demo");
+        queryParam.setDepartmentIds(List.of(10251));
         ListData<CallerVO> listData = callerService.queryList(queryParam,1,10);
         List<CallerVO> voList = listData.getList();
         for(CallerVO callerVO : voList){

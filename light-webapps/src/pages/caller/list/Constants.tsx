@@ -49,24 +49,31 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             title: t['callerList.columns.operations'],
             dataIndex: 'operations',
             render: (value, record) => {
-                let manageButton = <Link key={getRandomString()} href={`/caller/manage/${record.id}`} onClick={(e) => {e.preventDefault();callback(record, 'manage')}} style={{ textDecoration: 'none' }}>
-                    <Button type="text" size="mini">
-                        {t['callerList.columns.operations.manage']}
-                    </Button>
-                </Link>
-                let deleteButton = <Popconfirm key={getRandomString()}
+                let manageButton;
+                let deleteButton;
+                let noAccessButton;
+                if(record.permissions.includes('ManageAble')){
+                    manageButton = <Link key={getRandomString()} href={`/caller/manage/${record.id}`} onClick={(e) => {e.preventDefault();callback(record, 'manage')}} style={{ textDecoration: 'none' }}>
+                        <Button type="text" size="mini">
+                            {t['callerList.columns.operations.manage']}
+                        </Button>
+                    </Link>
+                    deleteButton = <Popconfirm key={getRandomString()}
                                                focusLock
                                                position={"tr"}
                                                title='Confirm'
                                                content={t['callerList.columns.operations.delete.confirm']}
                                                onOk={() => callback(record, 'delete')}>
                         <Button key={getRandomString()}
-                                               type="text"
-                                               size="mini">
-                        {t['callerList.columns.operations.delete']}
-                    </Button>
-                </Popconfirm>
-                return  <Space key={getRandomString()} size={0} direction="horizontal">{[manageButton,deleteButton]}</Space>;
+                                type="text"
+                                size="mini">
+                            {t['callerList.columns.operations.delete']}
+                        </Button>
+                    </Popconfirm>
+                }else{
+                    noAccessButton = '--';
+                }
+                return  <Space key={getRandomString()} size={0} direction="horizontal">{[manageButton,deleteButton,noAccessButton]}</Space>;
             }
         },
     ];
