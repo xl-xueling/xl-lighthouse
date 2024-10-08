@@ -50,6 +50,9 @@
             <if test="queryParam.ownerType != null">
                 AND p.owner_type = #{queryParam.ownerType.ownerType}
             </if>
+            <if test="queryParam.ownerId != null">
+                AND p.owner_id = #{queryParam.ownerId}
+            </if>
             <if test="queryParam.search != null">
                AND ((p.owner_type = '1' AND u.username LIKE CONCAT('%', #{queryParam.search}, '%'))
                 OR (p.owner_type = '2' AND d.name LIKE CONCAT('%', #{queryParam.search}, '%')))

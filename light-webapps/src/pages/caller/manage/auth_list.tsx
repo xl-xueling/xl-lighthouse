@@ -49,6 +49,7 @@ export default function AuthList({}){
         const combineParams:any = {}
         combineParams.ownerId = callerInfo?.id;
         combineParams.ownerType = OwnerTypeEnum.CALLER;
+        console.log("combineParams is:" + JSON.stringify(combineParams));
         await requestAuthList({
             queryParams:combineParams,
             pagination:{
@@ -75,7 +76,7 @@ export default function AuthList({}){
 
     useEffect(() => {
         fetchData().then();
-    },[])
+    },[callerInfo])
 
     const tableCallback = async (record, type) => {
         console.log("record is:" + record + ",type:" + type);

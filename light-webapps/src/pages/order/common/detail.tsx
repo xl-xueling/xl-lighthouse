@@ -136,7 +136,21 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
             return (
                 <Descriptions border data={viewAccessDescription}/>
             )
-        }else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS && orderInfo.extend){
+        }else if(orderInfo.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS_EXTENSION && orderInfo.extend){
+            return (
+                <Descriptions border data={projectAccessDescription}/>
+            )
+        }else if(orderInfo.orderType == OrderTypeEnum.CALLER_STAT_ACCESS_EXTENSION && orderInfo.extend){
+            return (
+                <Descriptions border data={statAccessDescription}/>
+            )
+        }else if(orderInfo.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS_EXTENSION && orderInfo.extend){
+            return (
+                <Descriptions border data={viewAccessDescription}/>
+            )
+        }
+
+        else if(orderInfo.orderType == OrderTypeEnum.LIMITING_SETTINGS && orderInfo.extend){
             return (
                 <Descriptions border data={limitingSettingsDescription}/>
             )

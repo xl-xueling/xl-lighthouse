@@ -93,7 +93,7 @@ export function getUserApproveDescription(t: any,orderInfo:Order) {
 
 export function getStatAccessDescription(t: any,orderInfo:Order) {
     let statInfo;
-    if(orderInfo?.orderType == OrderTypeEnum.CALLER_STAT_ACCESS){
+    if(orderInfo?.orderType == OrderTypeEnum.CALLER_STAT_ACCESS || orderInfo?.orderType == OrderTypeEnum.CALLER_STAT_ACCESS_EXTENSION){
         statInfo = orderInfo?.extend?.stat;
     }else{
         statInfo = orderInfo?.extend;
@@ -126,7 +126,7 @@ export function getStatAccessDescription(t: any,orderInfo:Order) {
 
 export function getViewAccessDescription(t: any,orderInfo:Order) {
     let viewInfo;
-    if(orderInfo?.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS){
+    if(orderInfo?.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS  || orderInfo?.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS_EXTENSION){
         viewInfo = orderInfo?.extend?.view;
     }else{
         viewInfo = orderInfo?.extend;
@@ -154,7 +154,7 @@ export function getViewAccessDescription(t: any,orderInfo:Order) {
 
 export function getProjectAccessDescription(t: any,orderInfo:Order) {
     let projectInfo;
-    if(orderInfo?.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS){
+    if(orderInfo?.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS || orderInfo?.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS_EXTENSION){
         projectInfo = orderInfo?.extend?.project;
     }else{
         projectInfo = orderInfo?.extend;

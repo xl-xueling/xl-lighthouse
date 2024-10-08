@@ -9,6 +9,7 @@ import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
 import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.insights.service.PermissionService;
 import com.dtstep.lighthouse.insights.test.listener.SpringTestExecutionListener;
+import com.dtstep.lighthouse.insights.vo.PermissionVO;
 import com.dtstep.lighthouse.insights.vo.ResourceVO;
 import net.minidev.json.JSONUtil;
 import org.junit.Test;
@@ -40,7 +41,6 @@ public class TestPermissionService {
     @Test
     public void testExtendPermission(){
         int permissionId = 100809;
-        
     }
 
     @Test
@@ -59,6 +59,18 @@ public class TestPermissionService {
         ListData<AuthRecord> listData = permissionService.queryOwnerAuthList(permissionQueryParam,1,10);
         List<AuthRecord> voList1 = listData.getList();
         for(AuthRecord authRecord : voList1){
+            System.out.println("authRecord is:" + JsonUtil.toJSONString(authRecord));
+        }
+    }
+
+    @Test
+    public void testQueryAuthList() throws Exception {
+        PermissionQueryParam queryParam = new PermissionQueryParam();
+        queryParam.setOwnerType(OwnerTypeEnum.CALLER);
+        queryParam.setOwnerId(11033);
+        ListData<AuthRecord> list = permissionService.queryOwnerAuthList(queryParam,1,10);
+        List<AuthRecord> voList = list.getList();
+        for(AuthRecord authRecord : voList){
             System.out.println("authRecord is:" + JsonUtil.toJSONString(authRecord));
         }
     }

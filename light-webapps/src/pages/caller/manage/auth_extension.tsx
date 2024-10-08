@@ -32,7 +32,13 @@ const AuthExtension:React.FC<Props> = ({
 
     const t = useLocale(locale);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        try{
+            await formRef.current.validate();
+        }catch (error){
+            console.log(error)
+            return;
+        }
         const values = formRef.current.getFieldsValue();
         const resourceType = authRecord?.resourceType;
         if(resourceType == ResourceTypeEnum.Project){
