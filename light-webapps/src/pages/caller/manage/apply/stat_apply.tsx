@@ -18,8 +18,9 @@ const StatApply : React.FC<Props> = ({
     }) => {
 
     const t = useLocale(locale);
-    const periodOptions:Array<LabelValue> = [{label:'一个月',value:2592000},{label:'三个月',value:7776000}
-        ,{label:'六个月',value:15552000},{label:'一年',value:31104000}]
+    const periodOptions:Array<LabelValue> = [{label:t['callerManage.authAdd.expired.3month'],value:7776000}
+        ,{label:t['callerManage.authAdd.expired.6month'],value:15552000},{label:t['callerManage.authAdd.expired.1year'],value:31104000}
+        ,{label:t['callerManage.authAdd.expired.2year'],value:62208000}]
     const [options, setOptions] = useState([]);
     const [fetching, setFetching] = useState(false);
     const refFetchId = useRef<any>(null);
@@ -52,7 +53,7 @@ const StatApply : React.FC<Props> = ({
 
     return (
         <div style={{ width: '95%', margin: '0 auto' }}>
-            <Form.Item field='stat' label={'统计项'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning']}]}>
+            <Form.Item field='stat' label={t['callerManage.authAdd.label.stat']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning']}]}>
                 <Select
                     showSearch
                     options={options}
@@ -75,7 +76,7 @@ const StatApply : React.FC<Props> = ({
                 />
             </Form.Item>
 
-            <FormItem field={'expired'} label={'有效期'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
+            <FormItem field={'expired'} label={t['callerManage.authAdd.label.expired']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                 <Select
                     placeholder='Select period' defaultValue={periodOptions[0].value}>
                     {periodOptions.map((option, index) => (
@@ -86,7 +87,7 @@ const StatApply : React.FC<Props> = ({
                 </Select>
             </FormItem>
 
-            <FormItem field={'reason'} label={'申请原因'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
+            <FormItem field={'reason'} label={t['callerManage.authAdd.label.reason']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                 <TextArea placeholder='Enter something' style={{ minHeight: 64 }} />
             </FormItem>
         </div>

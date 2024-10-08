@@ -17,6 +17,15 @@ const i18n = {
     'callerAuthList.column.label.operations':'Operations',
     'callerAuthList.column.label.operations.extension.confirm':'Are you sure to extension of this auth record?',
     'callerAuthList.column.label.operations.remove.confirm':'Are you sure to remove of this auth record?',
+    'callerManage.authAdd.title':'Add Auth',
+    'callerManage.authAdd.expired.3month':'3 Month',
+    'callerManage.authAdd.expired.6month':'6 Month',
+    'callerManage.authAdd.expired.1year':'1 Year',
+    'callerManage.authAdd.expired.2year':'2 Year',
+    'callerManage.authAdd.label.expired':'Expired',
+    'callerManage.authAdd.label.project':'Project',
+    'callerManage.authAdd.label.stat':'Stat',
+    'callerManage.authAdd.label.reason':'Reason',
 
   },
   'zh-CN': {
@@ -37,6 +46,15 @@ const i18n = {
     'callerAuthList.column.label.operations':'操作',
     'callerAuthList.column.label.operations.extension.confirm':'是否确认续签该授权记录？',
     'callerAuthList.column.label.operations.remove.confirm':'是否确认删除该授权记录？',
+    'callerManage.authAdd.title':'新增授权',
+    'callerManage.authAdd.expired.3month':'三个月',
+    'callerManage.authAdd.expired.6month':'六个月',
+    'callerManage.authAdd.expired.1year':'1年',
+    'callerManage.authAdd.expired.2year':'2年',
+    'callerManage.authAdd.label.expired':'有效期',
+    'callerManage.authAdd.label.project':'统计工程',
+    'callerManage.authAdd.label.stat':'统计项',
+    'callerManage.authAdd.label.reason':'申请原因',
   },
 };
 

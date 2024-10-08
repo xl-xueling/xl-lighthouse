@@ -24,8 +24,8 @@ const AuthExtension:React.FC<Props> = ({
 
     const {callerInfo} = useContext(CallerManageContext);
 
-    const periodOptions:Array<LabelValue> = [{label:'一个月',value:2592000},{label:'三个月',value:7776000}
-        ,{label:'六个月',value:15552000},{label:'一年',value:31104000}]
+    const periodOptions:Array<LabelValue> = [{label:'三个月',value:7776000}
+        ,{label:'六个月',value:15552000},{label:'一年',value:31104000},{label:'两年',value:62208000}]
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
 
     const formRef = useRef(null);

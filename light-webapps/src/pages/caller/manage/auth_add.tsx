@@ -130,7 +130,7 @@ export default function AuthAdd({onClose}){
             style={{ width:'1200px',maxWidth:'80%',verticalAlign:'top', top: '150px' }}
             onCancel={onClose}
             onOk={handleSubmit}
-            title='新增授权'
+            title={t['callerManage.authAdd.title']}
             autoFocus={false}
             focusLock={true}
         >
@@ -141,7 +141,7 @@ export default function AuthAdd({onClose}){
                         <span>
                             <PiDiamondsFour style={{marginBottom:'-2px'}}/>
                         </span>}>
-                    <Form ref={(ref) => (formRefs.current["0"] = ref)} initialValues={{expired:2592000}}>
+                    <Form ref={(ref) => (formRefs.current["0"] = ref)} initialValues={{expired:7776000}}>
                         <ProjectApply callerInfo={callerInfo}/>
                     </Form>
                 </TabPane>
@@ -151,7 +151,7 @@ export default function AuthAdd({onClose}){
                         <span>
                             {getIcon('stat')}
                         </span>}>
-                    <Form ref={(ref) => (formRefs.current["1"] = ref)} initialValues={{expired:2592000}}>
+                    <Form ref={(ref) => (formRefs.current["1"] = ref)} initialValues={{expired:7776000}}>
                         <StatApply callerInfo={callerInfo}/>
                     </Form>
                 </TabPane>
