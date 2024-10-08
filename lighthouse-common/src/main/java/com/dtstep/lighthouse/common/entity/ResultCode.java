@@ -96,6 +96,8 @@ public enum ResultCode {
 
     orderTypeNotExists("2302","orderTypeNotExists"),
 
+    authAlreadyExists("2303","authAlreadyExists"),
+
     templateParserNoValidItem("2008","templateParserNoValidItem"),
 
     templateParserValidFailed("2008","templateParserValidFailed"),

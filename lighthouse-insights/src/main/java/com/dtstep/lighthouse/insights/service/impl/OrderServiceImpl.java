@@ -309,6 +309,12 @@ public class OrderServiceImpl implements OrderService {
             Integer callerId = (Integer) extendConfig.get("callerId");
             Caller caller = callerService.queryById(callerId);
             Validate.notNull(caller);
+            Role accessRole = roleService.queryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,projectId);
+            Validate.notNull(accessRole);
+            boolean hasPermission = permissionService.existPermission(callerId,OwnerTypeEnum.CALLER,accessRole.getId());
+            if(hasPermission){
+                return ResultCode.authAlreadyExists;
+            }
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + callerId + "_" + projectId;
             hash = Md5Util.getMD5(message);
             roleList = getApproveRoleList(applyUser,orderTypeEnum,project);
@@ -325,6 +331,12 @@ public class OrderServiceImpl implements OrderService {
             Integer callerId = (Integer) extendConfig.get("callerId");
             Caller caller = callerService.queryById(callerId);
             Validate.notNull(caller);
+            Role role = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
+            Validate.notNull(role);
+            boolean hasPermission = permissionService.existPermission(callerId,OwnerTypeEnum.CALLER,role.getId());
+            if(hasPermission){
+                return ResultCode.authAlreadyExists;
+            }
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + callerId + "_" + statId;
             hash = Md5Util.getMD5(message);
             roleList = getApproveRoleList(applyUser,orderTypeEnum,stat);
@@ -341,6 +353,12 @@ public class OrderServiceImpl implements OrderService {
             Integer callerId = (Integer) extendConfig.get("callerId");
             Caller caller = callerService.queryById(callerId);
             Validate.notNull(caller);
+            Role role = roleService.queryRole(RoleTypeEnum.VIEW_ACCESS_PERMISSION,viewId);
+            Validate.notNull(role);
+            boolean hasPermission = permissionService.existPermission(callerId,OwnerTypeEnum.CALLER,role.getId());
+            if(hasPermission){
+                return ResultCode.authAlreadyExists;
+            }
             String message = order.getUserId() + "_" + order.getOrderType() + "_" + OrderStateEnum.PROCESSING + "_" + callerId + "_" + viewId;
             hash = Md5Util.getMD5(message);
             roleList = getApproveRoleList(applyUser,orderTypeEnum,view);
