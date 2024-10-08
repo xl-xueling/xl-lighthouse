@@ -39,7 +39,9 @@ export default function CallerUpdateModal({callerInfo = null,onClose,onSuccess})
                 Notification.info({style: { width: 420 }, title: 'Notification', content: t['callerUpdate.form.submit.success']});
                 const newCallerInfo = {...callerInfo,...caller};
                 onSuccess(newCallerInfo);
-                onClose();
+                setTimeout(() => {
+                    onClose();
+                },50)
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
