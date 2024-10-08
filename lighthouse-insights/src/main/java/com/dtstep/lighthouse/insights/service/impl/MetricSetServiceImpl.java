@@ -113,7 +113,7 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     @Transactional
     @Override
-    public ResultCode batchGrantPermissions(PermissionGrantParam grantParam) throws Exception{
+    public ResultCode batchGrantPermissions(PermissionGrantParam grantParam) throws Exception {
         Integer resourceId = grantParam.getResourceId();
         MetricSet metricSet = metricSetDao.queryById(resourceId);
         RoleTypeEnum roleTypeEnum = grantParam.getRoleType();

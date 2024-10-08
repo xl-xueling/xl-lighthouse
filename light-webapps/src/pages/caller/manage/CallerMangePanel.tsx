@@ -16,6 +16,8 @@ import useLocale from "@/utils/useLocale";
 import locale from "@/pages/caller/manage/locale";
 const TabPane = Tabs.TabPane;
 import { useLocation, useHistory } from 'react-router-dom';
+import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
+import {ResourceTypeEnum} from "@/types/insights-common";
 const {Row, Col} = Grid;
 const { Text } = Typography;
 
@@ -27,7 +29,7 @@ export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
     const history = useHistory();
 
     const [showUpdateModal,setShowUpdateModal] = useState<boolean>(false);
-
+    const [showPermissionManageModal,setShowPermissionManageModal] = useState<boolean>(false);
     const [loading,setLoading] = useState<boolean>(false);
 
     const [showSecretKeyModal,setShowSecretKeyModal] = useState<boolean>(false);
@@ -81,7 +83,7 @@ export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
                 <Tabs defaultActiveTab='2' extra={
                     <Space size={1}>
                         <Button type={"secondary"}  size={"mini"} icon={<FiEdit/>} onClick={() => setShowUpdateModal(true)}>{t['callerManage.button.update']}</Button>
-                        <Button type={"secondary"}  size={"mini"} icon={getIcon('permission')}>{t['callerManage.button.permission']}</Button>
+                        <Button type={"secondary"}  size={"mini"} icon={getIcon('permission')} onClick={() => setShowPermissionManageModal(true)}>{t['callerManage.button.permission']}</Button>
                         <Button type={"secondary"}  size={"mini"} icon={<RiShieldKeyholeLine/>} onClick={() => setShowSecretKeyModal(true)}>{t['callerManage.button.secretKey']}</Button>
                     </Space>
 
@@ -105,6 +107,9 @@ export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
 
                 {showUpdateModal && <CallerUpdateModal callerInfo={callerInfo} onClose={() => setShowUpdateModal(false)} onSuccess={handlerUpdateProcess} />}
                 {showSecretKeyModal && <SecretKeyModal callerId={callerInfo?.id} onClose={() => setShowSecretKeyModal(false)} />}
+                {showPermissionManageModal &&
+                <PermissionManageModal resourceId={id} resourceType={ResourceTypeEnum.Caller}
+                                       onClose={() => setShowPermissionManageModal(false)}/>}
             </Space>
         </CallerManageContext.Provider>
     );

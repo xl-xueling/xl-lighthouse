@@ -7,12 +7,15 @@ import com.dtstep.lighthouse.common.enums.*;
 import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.insights.dao.CallerDao;
+import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
+import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.CallerVO;
 import com.dtstep.lighthouse.insights.service.CallerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -156,4 +160,68 @@ public class CallerServiceImpl implements CallerService {
         return callerDao.getSecretKey(id);
     }
 
+    @Transactional
+    @Override
+    public ResultCode batchGrantPermissions(PermissionGrantParam grantParam) throws Exception {
+        Integer resourceId = grantParam.getResourceId();
+        Caller caller = callerDao.queryById(resourceId);
+        RoleTypeEnum roleTypeEnum = grantParam.getRoleType();
+        Validate.notNull(caller);
+        Integer roleId;
+        HashSet<Integer> adminsSet = new HashSet<>();
+        if(roleTypeEnum == RoleTypeEnum.CALLER_MANAGER_PERMISSION){
+            Role role = roleService.queryRole(RoleTypeEnum.CALLER_MANAGER_PERMISSION,resourceId);
+            roleId = role.getId();
+            List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(roleId,5);
+            adminsSet.addAll(adminIds);
+        }else if(roleTypeEnum == RoleTypeEnum.CALLER_ACCESS_PERMISSION){
+            Role role = roleService.queryRole(RoleTypeEnum.CALLER_ACCESS_PERMISSION,resourceId);
+            roleId = role.getId();
+        }else {
+            throw new Exception();
+        }
+        List<Integer> departmentIdList = grantParam.getDepartmentsPermissions();
+        List<Integer> userIdList = grantParam.getUsersPermissions();
+        if(CollectionUtils.isNotEmpty(departmentIdList)){
+            for (Integer tempDepartmentId : departmentIdList) {
+                Validate.isTrue(roleTypeEnum == RoleTypeEnum.CALLER_ACCESS_PERMISSION);
+                permissionService.grantPermission(tempDepartmentId, OwnerTypeEnum.DEPARTMENT, roleId);
+            }
+        }
+        if(CollectionUtils.isNotEmpty(userIdList)){
+            if(roleTypeEnum == RoleTypeEnum.CALLER_MANAGER_PERMISSION){
+                adminsSet.addAll(userIdList);
+            }
+            if(adminsSet.size() > 3){
+                return ResultCode.grantPermissionAdminExceedLimit;
+            }
+            for (Integer userId : userIdList) {
+                permissionService.grantPermission(userId, OwnerTypeEnum.USER, roleId);
+            }
+        }
+        return ResultCode.success;
+    }
+
+    @Override
+    public ResultCode releasePermission(PermissionReleaseParam releaseParam) throws Exception {
+        int currentUserId = baseService.getCurrentUserId();
+        Integer resourceId = releaseParam.getResourceId();
+        Integer permissionId = releaseParam.getPermissionId();
+        Permission permission = permissionService.queryById(permissionId);
+        Integer ownerId = permission.getOwnerId();
+        Integer roleId = permission.getRoleId();
+        if(releaseParam.getRoleType() == RoleTypeEnum.CALLER_MANAGER_PERMISSION){
+            List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(roleId,3);
+            if(adminIds.size() <= 1){
+                return ResultCode.releasePermissionAdminAtLeastOne;
+            }
+        }
+        if(ownerId == currentUserId){
+            return ResultCode.releasePermissionCurrentNotAllowed;
+        }
+        Role role = roleService.queryById(roleId);
+        Validate.isTrue(role.getResourceId().intValue() == resourceId.intValue());
+        permissionService.releasePermission(permissionId);
+        return ResultCode.success;
+    }
 }

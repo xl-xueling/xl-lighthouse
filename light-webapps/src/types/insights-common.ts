@@ -99,6 +99,7 @@ export enum ResourceTypeEnum {
     Stat=6,
     Metric=7,
     View=8,
+    Caller=9,
 }
 
 export enum RoleTypeEnum {
@@ -120,6 +121,8 @@ export enum RoleTypeEnum {
     METRIC_ACCESS_PERMISSION=16,
     VIEW_MANAGE_PERMISSION=17,
     VIEW_ACCESS_PERMISSION=18,
+    CALLER_MANAGE_PERMISSION=19,
+    CALLER_ACCESS_PERMISSION=20,
 }
 
 export interface RenderFilterConfig {

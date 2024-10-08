@@ -17,9 +17,15 @@ import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {getRandomString} from "@/utils/util";
 import {
+    requestGrantCallerPermission,
     requestGrantMetricPermission,
-    requestGrantProjectPermission, requestGrantViewPermission,
-    requestQueryList, requestReleaseMetricPermission, requestReleaseProjectPermission, requestReleaseViewPermission
+    requestGrantProjectPermission,
+    requestGrantViewPermission,
+    requestQueryList,
+    requestReleaseCallerPermission,
+    requestReleaseMetricPermission,
+    requestReleaseProjectPermission,
+    requestReleaseViewPermission
 } from "@/api/permission";
 import {getDepartPermissionColumns, getUserPermissionColumns} from "./constants";
 import './styles/index.module.less'
@@ -96,6 +102,12 @@ export function PermissionPanel({type,resourceId,resourceType}){
             }else{
                 roleType = RoleTypeEnum.VIEW_ACCESS_PERMISSION;
             }
+        }else if(resourceType == ResourceTypeEnum.View){
+            if(type == 3){
+                roleType = RoleTypeEnum.CALLER_MANAGE_PERMISSION;
+            }else{
+                roleType = RoleTypeEnum.CALLER_ACCESS_PERMISSION;
+            }
         }else{
             throw new Error();
         }
@@ -111,6 +123,8 @@ export function PermissionPanel({type,resourceId,resourceType}){
             request = requestReleaseMetricPermission(requestParam);
         }else if(resourceType == ResourceTypeEnum.View){
             request = requestReleaseViewPermission(requestParam);
+        }else if(resourceType == ResourceTypeEnum.Caller){
+            request = requestReleaseCallerPermission(requestParam);
         }
         await request.then((response) => {
             const {code, data ,message} = response;
@@ -146,6 +160,12 @@ export function PermissionPanel({type,resourceId,resourceType}){
                 roleType = RoleTypeEnum.VIEW_MANAGE_PERMISSION;
             }else{
                 roleType = RoleTypeEnum.VIEW_ACCESS_PERMISSION;
+            }
+        }else if(resourceType == ResourceTypeEnum.Caller){
+            if(type == 3){
+                roleType = RoleTypeEnum.CALLER_MANAGE_PERMISSION;
+            }else{
+                roleType = RoleTypeEnum.CALLER_ACCESS_PERMISSION;
             }
         }else{
             throw new Error();
@@ -227,6 +247,12 @@ export function PermissionPanel({type,resourceId,resourceType}){
             }else{
                 roleType = RoleTypeEnum.VIEW_ACCESS_PERMISSION;
             }
+        }else if(resourceType == ResourceTypeEnum.Caller){
+            if(type == 3){
+                roleType = RoleTypeEnum.CALLER_MANAGE_PERMISSION;
+            }else{
+                roleType = RoleTypeEnum.CALLER_ACCESS_PERMISSION;
+            }
         }else{
             throw new Error();
         }
@@ -243,6 +269,8 @@ export function PermissionPanel({type,resourceId,resourceType}){
             request = requestGrantMetricPermission(requestParam);
         }else if(resourceType == ResourceTypeEnum.View){
             request = requestGrantViewPermission(requestParam);
+        }else if(resourceType == ResourceTypeEnum.Caller){
+            request = requestGrantCallerPermission(requestParam);
         }
         await request.then((response) => {
                 const {code, data ,message} = response;

@@ -9,6 +9,8 @@ import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.CallerCreateParam;
 import com.dtstep.lighthouse.insights.dto.CallerUpdateParam;
+import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
+import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.vo.CallerVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
@@ -100,6 +102,20 @@ public class CallerController {
     public ResultData<Integer> authApply(@Validated @RequestBody AuthApplyParam authApplyParam) throws Exception {
         System.out.println("authApplyParam is:" + JsonUtil.toJSONString(authApplyParam));
         return ResultData.success(1);
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.CALLER_MANAGER_PERMISSION,relationParam = "resourceId")
+    @RequestMapping("/caller/grant")
+    public ResultData<Integer> grant(@Validated @RequestBody PermissionGrantParam grantParam) throws Exception{
+        ResultCode resultCode = callerService.batchGrantPermissions(grantParam);
+        return ResultData.result(resultCode);
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.CALLER_MANAGER_PERMISSION,relationParam = "resourceId")
+    @RequestMapping("/caller/release")
+    public ResultData<Integer> release(@Validated @RequestBody PermissionReleaseParam releaseParam) throws Exception{
+        ResultCode resultCode = callerService.releasePermission(releaseParam);
+        return ResultData.result(resultCode);
     }
 
 }

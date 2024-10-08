@@ -42,7 +42,6 @@ export async function requestReleaseMetricPermission(data) :Promise<ResultData<O
     })
 }
 
-
 export async function requestGrantViewPermission(data) :Promise<ResultData<Order>> {
     return request({
         url:'/view/grant',
@@ -54,6 +53,22 @@ export async function requestGrantViewPermission(data) :Promise<ResultData<Order
 export async function requestReleaseViewPermission(data) :Promise<ResultData<Order>> {
     return request({
         url:'/view/release',
+        method:'POST',
+        data,
+    })
+}
+
+export async function requestGrantCallerPermission(data) :Promise<ResultData<Order>> {
+    return request({
+        url:'/caller/grant',
+        method:'POST',
+        data,
+    })
+}
+
+export async function requestReleaseCallerPermission(data) :Promise<ResultData<Order>> {
+    return request({
+        url:'/caller/release',
         method:'POST',
         data,
     })
