@@ -13,6 +13,10 @@ const i18n = {
     'callerList.columns.operations': 'Operation',
     'callerList.columns.operations.manage': 'Manage',
     'callerList.columns.operations.delete': 'Delete',
+    'callerList.operations.my.callers':'My Callers',
+    'callerList.operations.all.callers':'All Callers',
+    'callerList.form.search':'Search',
+    'callerList.form.reset':'Reset',
   },
   'zh-CN': {
     'callerList.breadcrumb.title':'调用方列表',
@@ -20,7 +24,7 @@ const i18n = {
     'callerList.columns.operations.delete.confirm':'是否确认删除当前记录？',
     'callerList.button.create':'创建',
     'callerList.columns.id': 'ID',
-    'callerList.columns.name': '工程名称',
+    'callerList.columns.name': '调用方名称',
     'callerList.columns.admins': '管理员',
     'callerList.columns.createdTime': '创建时间',
     'callerList.columns.department':'所属部门',
@@ -28,6 +32,10 @@ const i18n = {
     'callerList.columns.operations': '操作',
     'callerList.columns.operations.manage': '管理',
     'callerList.columns.operations.delete': '删除',
+    'callerList.operations.my.callers':'我的调用方',
+    'callerList.operations.all.callers':'全部调用方',
+    'callerList.form.search':'搜索',
+    'callerList.form.reset':'重置',
   },
 };
 

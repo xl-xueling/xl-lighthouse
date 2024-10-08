@@ -7,7 +7,7 @@ import {
     Divider,
     Grid, Input,
     Notification,
-    PaginationProps,
+    PaginationProps, Radio, Space,
     Spin,
     Table
 } from "@arco-design/web-react";
@@ -23,10 +23,17 @@ import useLocale from "@/utils/useLocale";
 const InputSearch = Input.Search;
 import { useLocation, useHistory } from 'react-router-dom';
 import {getRandomString} from "@/utils/util";
+import {useUpdateEffect} from "ahooks";
+import SearchForm from "./forms";
+import useForm from "@arco-design/web-react/es/Form/useForm";
+import {useSelector} from "react-redux";
+import {TreeNode} from "@/types/insights-web";
 
 export default function CallerListPanel(){
 
     const t = useLocale(locale);
+    const [form] = useForm();
+    const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const [formParams, setFormParams] = useState({});
     const [loading, setLoading] = useState(true);
     const [showCreateModal,setShowCreateModal] = useState<boolean>(false);
@@ -35,6 +42,7 @@ export default function CallerListPanel(){
     const [current,setCurrent] = useState<Caller>(null);
     const [refreshTime,setRefreshTime] = useState<number>(Date.now);
     const history = useHistory();
+    const [owner,setOwner] = useState(1);
 
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,30],
@@ -107,10 +115,6 @@ export default function CallerListPanel(){
         setFormParams({search:value});
     }
 
-    useEffect(() => {
-        fetchData().then();
-    },[refreshTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)])
-
     function onChangeTable({ current, pageSize }) {
         setPagination({
             ...pagination,
@@ -119,18 +123,74 @@ export default function CallerListPanel(){
         });
     }
 
+    function handleChangeOwnerType(p){
+        setOwner(p);
+    }
+
+    useEffect(() => {
+        fetchData().then();
+    },[refreshTime])
+
+    useUpdateEffect(() => {
+        setRefreshTime(Date.now());
+    },[pagination.current, pagination.pageSize])
+
+    useUpdateEffect(() => {
+        setPagination({
+            ...pagination,
+            current : 1,
+        });
+        setRefreshTime(Date.now());
+    },[JSON.stringify(formParams)])
+
+    useUpdateEffect(() => {
+        setPagination({
+            ...pagination,
+            current : 1
+        });
+        setTimeout(() => {
+            setRefreshTime(Date.now());
+        },0)
+    },[owner])
+
+    function handleSearch(params) {
+        setFormParams({...params,t:Date.now()});
+    }
+
+    function handleReset(){
+        form.resetFields();
+        handleSearch({})
+    }
+
     return (<>
         <Spin loading={loading} style={{ display: 'block' }}>
             <Card>
+                <SearchForm onSearch={handleSearch} onClear={handleReset} allDepartInfo={allDepartInfo} form={form}/>
                 <Grid.Row justify="space-between" align="center" style={{marginBottom:'15px'}}>
                     <Grid.Col span={16} style={{ textAlign: 'left' }}>
-                        <InputSearch allowClear placeholder='Search Title' style={{width: 380}} onSearch={handlerSearch}/>
+                        <Space>
+                            <Radio.Group defaultValue={"1"} name='button-radio-group' onChange={handleChangeOwnerType}>
+                                {[{value:"1",label:t['callerList.operations.my.callers']},{value:"0",label:t['callerList.operations.all.callers']}].map((item) => {
+                                    return (
+                                        <Radio key={item.value} value={item.value}>
+                                            {({ checked }) => {
+                                                return (
+                                                    <Button size={"small"} tabIndex={-1} key={item.value} shape='round' style={checked ? {color:'rgb(var(--primary-6)',fontWeight:500}:{fontWeight:500}}>
+                                                        {item.label}
+                                                    </Button>
+                                                );
+                                            }
+                                            }
+                                        </Radio>
+                                    );
+                                })}
+                            </Radio.Group>
+                        </Space>
                     </Grid.Col>
                     <Grid.Col span={8} style={{ textAlign: 'right' }}>
                         <Button size={"small"} type="primary" onClick={() => setShowCreateModal(true)}>{t['callerList.button.create']}</Button>
                     </Grid.Col>
                 </Grid.Row>
-                <Divider/>
                 <Table rowKey={'id'} size={"small"} columns={columns} data={listData} pagination={pagination} onChange={onChangeTable} />
             </Card>
         </Spin>
