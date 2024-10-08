@@ -67,7 +67,7 @@ export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
                         <Breadcrumb.Item>
                             <IconHome/>
                         </Breadcrumb.Item>
-                        <Breadcrumb.Item style={{fontWeight: 20}}>{'调用方管理'}</Breadcrumb.Item>
+                        <Breadcrumb.Item style={{fontWeight: 20}}>{t['callerManage.title']}</Breadcrumb.Item>
                     </Breadcrumb>
                 </Col>
                 <Col span={8} style={{textAlign:'right',fontSize:'13px',color:'#43454a'}}>
@@ -80,19 +80,16 @@ export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
                 </Card>
                 <Tabs defaultActiveTab='2' extra={
                     <Space size={1}>
-                        <Button type={"secondary"}  size={"mini"} icon={<FiEdit/>} onClick={() => setShowUpdateModal(true)}>{'修改调用方'}</Button>
-                        <Button type={"secondary"}  size={"mini"} icon={getIcon('permission')}>{'权限管理'}</Button>
-                        <Button type={"secondary"}  size={"mini"} icon={<RiShieldKeyholeLine/>} onClick={() => setShowSecretKeyModal(true)}>{'秘钥信息'}</Button>
+                        <Button type={"secondary"}  size={"mini"} icon={<FiEdit/>} onClick={() => setShowUpdateModal(true)}>{t['callerManage.button.update']}</Button>
+                        <Button type={"secondary"}  size={"mini"} icon={getIcon('permission')}>{t['callerManage.button.permission']}</Button>
+                        <Button type={"secondary"}  size={"mini"} icon={<RiShieldKeyholeLine/>} onClick={() => setShowSecretKeyModal(true)}>{t['callerManage.button.secretKey']}</Button>
                     </Space>
 
                 }>
                     <TabPane
                         key='1'
                         title={
-                            <span>
-        <FiMonitor size={12} style={{ marginRight: 6 }} />
-        监控数据
-      </span>
+                            <span style={{ display: "inline-flex", alignItems: "center" }}><FiMonitor size={12} style={{ marginRight: 6 }} />{t['callerManage.tab.monitor']}</span>
                         }
                     >
                         <Typography.Paragraph>Content of Tab Panel 1</Typography.Paragraph>
@@ -100,12 +97,8 @@ export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
                     <TabPane
                         key='2'
                         title={
-                            <span>
-        <AiOutlineSafety size={14} style={{ marginRight: 6 }} />
-        授权信息
-      </span>
-                        }
-                    >
+                            <span style={{ display: "inline-flex", alignItems: "center" }}><AiOutlineSafety size={14} style={{ marginRight: 6 }} />{t['callerManage.tab.authorization']}</span>
+                        }>
                         <AuthList/>
                     </TabPane>
                 </Tabs>

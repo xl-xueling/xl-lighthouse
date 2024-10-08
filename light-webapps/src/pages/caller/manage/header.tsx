@@ -54,7 +54,7 @@ export default function Header({callerInfo}){
                                         heading={6}
                                         style={{marginTop:'0px'}}
                                     >
-                                        {'调用方'} ：<Text copyable={true}>{callerInfo?.name}</Text>
+                                        {t['callerManage.label.caller.prefix']}<Text copyable={true}>{callerInfo?.name}</Text>
                                     </Typography.Title>
                                 </span>
                             </Grid.Col>
