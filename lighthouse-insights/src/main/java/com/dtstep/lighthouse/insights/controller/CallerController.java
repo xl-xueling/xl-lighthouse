@@ -40,6 +40,7 @@ public class CallerController {
         Caller caller = new Caller();
         caller.setName(createParam.getName());
         caller.setDesc(createParam.getDesc());
+        caller.setDepartmentId(createParam.getDepartmentId());
         ServiceResult<Integer> serviceResult = callerService.create(caller);
         return ResultData.result(serviceResult.getResultCode());
     }

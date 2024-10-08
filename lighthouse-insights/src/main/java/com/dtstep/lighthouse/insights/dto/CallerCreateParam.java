@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.insights.dto;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class CallerCreateParam {
@@ -10,6 +11,9 @@ public class CallerCreateParam {
 
     @NotEmpty
     private String desc;
+
+    @NotNull
+    private Integer departmentId;
 
     private List<Integer> usersPermission;
 
@@ -35,5 +39,13 @@ public class CallerCreateParam {
 
     public void setUsersPermission(List<Integer> usersPermission) {
         this.usersPermission = usersPermission;
+    }
+
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 }

@@ -6,16 +6,18 @@
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="secretKey" column="secret_key"/>
+        <result property="departmentId" column="department_id"/>
         <result property="desc" column="desc"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Caller" >
-        INSERT INTO ldp_callers (`name`,`secret_key`,`desc`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_callers (`name`,`secret_key`,`department_id`,`desc`,`create_time`,`update_time`) VALUES
         (
             #{name,jdbcType=VARCHAR},
             #{secretKey,jdbcType=VARCHAR},
+            #{departmentId,jdbcType=VARCHAR},
             #{desc,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
@@ -23,7 +25,7 @@
     </insert>
 
     <select id="queryById" resultMap="callerResultMap">
-        SELECT `id`,`name`,`desc`,`create_time`,`update_time` FROM ldp_callers WHERE id = #{id}
+        SELECT `id`,`name`,`department_id`,`desc`,`create_time`,`update_time` FROM ldp_callers WHERE id = #{id}
     </select>
 
     <select id="getSecretKey" resultType="String">
@@ -35,6 +37,9 @@
         <set>
             <if test="name != null">
                 `name` = #{name},
+            </if>
+            <if test="departmentId != null">
+                `department_id` = #{departmentId},
             </if>
             <if test="desc != null">
                 `desc` = #{desc},
@@ -60,7 +65,7 @@
     </delete>
 
     <select id="queryList" resultMap="callerResultMap">
-        SELECT c.id, c.name, c.desc, c.`create_time`, c.`update_time`
+        SELECT c.id, c.name, c.`department_id`,c.desc, c.`create_time`, c.`update_time`
         FROM ldp_callers c
         JOIN (
         SELECT r.id, r.resource_id

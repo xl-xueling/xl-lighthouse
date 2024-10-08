@@ -22,6 +22,7 @@ import CallerUpdateModal from "@/pages/caller/update";
 import useLocale from "@/utils/useLocale";
 const InputSearch = Input.Search;
 import { useLocation, useHistory } from 'react-router-dom';
+import {getRandomString} from "@/utils/util";
 
 export default function CallerListPanel(){
 
@@ -110,6 +111,14 @@ export default function CallerListPanel(){
         fetchData().then();
     },[refreshTime,pagination.current, pagination.pageSize, JSON.stringify(formParams)])
 
+    function onChangeTable({ current, pageSize }) {
+        setPagination({
+            ...pagination,
+            current,
+            pageSize,
+        });
+    }
+
     return (<>
         <Spin loading={loading} style={{ display: 'block' }}>
             <Card>
@@ -118,11 +127,11 @@ export default function CallerListPanel(){
                         <InputSearch allowClear placeholder='Search Title' style={{width: 380}} onSearch={handlerSearch}/>
                     </Grid.Col>
                     <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                        <Button size={"small"} type="primary" onClick={() => setShowCreateModal(true)}>{'创建'}</Button>
+                        <Button size={"small"} type="primary" onClick={() => setShowCreateModal(true)}>{t['callerList.button.create']}</Button>
                     </Grid.Col>
                 </Grid.Row>
                 <Divider/>
-                <Table rowKey={'id'} size={"small"} columns={columns} data={listData} />
+                <Table rowKey={'id'} size={"small"} columns={columns} data={listData} pagination={pagination} onChange={onChangeTable} />
             </Card>
         </Spin>
         {showCreateModal && <CallerCreateModal onClose={() => setShowCreateModal(false)} onSuccess={() => setRefreshTime(Date.now())}/>}

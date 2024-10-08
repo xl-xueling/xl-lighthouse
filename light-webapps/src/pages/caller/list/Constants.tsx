@@ -43,7 +43,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             title: 'Operations',
             dataIndex: 'operations',
             render: (value, record) => {
-                let manageButton = <Link href={`/caller/manage/${record.id}`} onClick={(e) => {e.preventDefault();callback(record, 'manage')}} style={{ textDecoration: 'none' }}>
+                let manageButton = <Link key={getRandomString()} href={`/caller/manage/${record.id}`} onClick={(e) => {e.preventDefault();callback(record, 'manage')}} style={{ textDecoration: 'none' }}>
                     <Button type="text" size="mini">
                         {'管理'}
                     </Button>

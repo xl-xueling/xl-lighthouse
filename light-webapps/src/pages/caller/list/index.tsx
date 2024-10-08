@@ -37,7 +37,7 @@ export default function CallerListPage(){
                 <BreadcrumbItem>
                     <IconHome />
                 </BreadcrumbItem>
-                <BreadcrumbItem style={{fontWeight:20}}>{t['callList.breadcrumb.title']}</BreadcrumbItem>
+                <BreadcrumbItem style={{fontWeight:20}}>{t['callerList.breadcrumb.title']}</BreadcrumbItem>
             </Breadcrumb>
             <KeepAlive name="CallerListKeepAlive" cacheKey={"CallerListKeepAlive"} id={"CallerListKeepAlive"} when={true} autoFreeze={true}>
                 <CallerListPanel />

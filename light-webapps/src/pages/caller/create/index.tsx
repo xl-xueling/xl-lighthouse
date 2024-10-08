@@ -1,11 +1,15 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Form, Input, Modal,Notification} from "@arco-design/web-react";
+import {Form, Input, Modal, Notification, TreeSelect} from "@arco-design/web-react";
 import locale from "./locale/index";
 import useLocale from "@/utils/useLocale";
 import {Caller} from "@/types/caller";
 import {requestCreate} from "@/api/caller";
 import {TEXT_BASE_PATTERN_4} from "@/utils/constants";
 import {getTextBlenLength} from "@/utils/util";
+import {translateToFlatStruct} from "@/pages/department/base";
+import {useSelector} from "react-redux";
+import {TreeNode} from "@/types/insights-web";
+import {GlobalState} from "@/store";
 
 
 export default function CallerCreateModal({onClose,onSuccess}){
@@ -13,6 +17,8 @@ export default function CallerCreateModal({onClose,onSuccess}){
     const t = useLocale(locale);
     const formRef = useRef(null);
     const [loading,setLoading] = useState<boolean>(false);
+    const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
+    const { userInfo, userLoading } = useSelector((state: GlobalState) => state);
 
     async function handlerSubmit(){
         try{
@@ -23,12 +29,12 @@ export default function CallerCreateModal({onClose,onSuccess}){
         }
         setLoading(true);
         const values = formRef.current.getFieldsValue();
-        console.log("values is:" + JSON.stringify(values));
         const caller:Caller = {
             name:'caller:' + values.name,
+            departmentId:values.departmentId,
             desc:values.desc,
         }
-        console.log('caller is:' + JSON.stringify(caller));
+        console.log("---caller info is:" + JSON.stringify(caller));
         requestCreate(caller).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -50,9 +56,13 @@ export default function CallerCreateModal({onClose,onSuccess}){
         })
     }
 
+    useEffect(() => {
+        console.log("userInfo is:" + JSON.stringify(userInfo));
+    },[userInfo])
+
     return (
         <Modal
-            title= {'创建调用方'}
+            title= {t['callerCreate.title']}
             alignCenter={false}
             style={{ width:'960px',maxWidth:'80%',verticalAlign:'top', top: '150px' }}
             visible={true}
@@ -65,6 +75,9 @@ export default function CallerCreateModal({onClose,onSuccess}){
                 autoComplete='off'
                 colon={" : "}
                 ref={formRef}
+                initialValues={{
+                    departmentId:userInfo?.departmentId,
+                }}
                 labelCol={{span: 4, offset: 0}}>
                 <Form.Item label={t['callerCreate.form.label.name']} field='name' rules={[
                     { required: true, message: t['basic.form.verification.empty.warning'] , validateTrigger : ['onSubmit']},
@@ -82,6 +95,24 @@ export default function CallerCreateModal({onClose,onSuccess}){
                         , validateTrigger : ['onSubmit']
                     }]}>
                     <Input addBefore={'caller:'} autoFocus={false} />
+                </Form.Item>
+                <Form.Item label={t['callerCreate.form.label.department']} field="departmentId" rules={[{ required: true ,message: t['callerCreate.form.department.errMsg'], validateTrigger : ['onSubmit']}]}>
+                    <TreeSelect
+                        disabled={true}
+                        treeProps={{
+                            height: 200,
+                            renderTitle: (props) => {
+                                return (
+                                    <span style={{ whiteSpace: 'nowrap', }} >
+                                            {props.title}
+                                        </span>
+                                );
+                            },
+                        }}
+                        placeholder={"Please Select"}
+                        allowClear={true}
+                        treeData={translateToFlatStruct(allDepartInfo)}
+                    />
                 </Form.Item>
                 <Form.Item label={t['callerCreate.form.label.desc']} field='desc' rules={[
                     { required: true, message: t['basic.form.verification.empty.warning'] , validateTrigger : ['onSubmit']},

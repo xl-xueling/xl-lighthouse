@@ -9,6 +9,8 @@ public class Caller implements Serializable {
 
     private String name;
 
+    private Integer departmentId;
+
     private String secretKey;
 
     private String desc;
@@ -63,5 +65,13 @@ public class Caller implements Serializable {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 }
