@@ -15,7 +15,7 @@ const i18n = {
     'callerAuthList.column.label.expired':'Expired',
     'callerAuthList.column.label.admins':'Admins',
     'callerAuthList.column.label.operations':'Operations',
-    'callerAuthList.column.label.operations.extension':'Extension Request',
+    'callerAuthList.column.label.operations.extension':'Extension',
     'callerAuthList.column.label.operations.remove':'Remove',
     'callerAuthList.column.label.operations.extension.confirm':'Are you sure to extension of this auth record?',
     'callerAuthList.column.label.operations.remove.confirm':'Are you sure to remove of this auth record?',

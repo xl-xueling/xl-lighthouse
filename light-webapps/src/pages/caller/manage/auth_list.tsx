@@ -51,7 +51,6 @@ export default function AuthList({}){
         combineParams.ownerId = callerInfo?.id;
         combineParams.ownerType = OwnerTypeEnum.CALLER;
         combineParams.search = searchForms.search;
-        console.log("combineParams is:" + JSON.stringify(combineParams));
         await requestAuthList({
             queryParams:combineParams,
             pagination:{
@@ -106,7 +105,7 @@ export default function AuthList({}){
         <Card>
             <Row style={{marginBottom:'10px'}}>
                 <Grid.Col span={8}>
-                    <Input.Search style={{width:'380px'}} autoComplete={'off'} size={"small"} placeholder={'Search Title'} allowClear onSearch={handlerSearch}/>
+                    <Input.Search style={{width:'350px'}} autoComplete={'off'} size={"small"} placeholder={'Search'} allowClear onSearch={handlerSearch}/>
                 </Grid.Col>
                 <Grid.Col span={16} style={{textAlign:"right" }}>
                     <Button type={'primary'} size={"mini"} onClick={() => setShowAddAuthModal(true)}>{t['callerAuthList.button.addAuth']}</Button>
