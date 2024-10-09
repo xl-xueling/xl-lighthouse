@@ -178,6 +178,11 @@ public enum ResultCode {
 
     callerNameAlreadyExist("12001","callerNameAlreadyExist"),
 
+    apiCallerNotExist("50001","apiCallerNotExist"),
+
+    apiCallerKeyIncorrect("50002","apiCallerKeyIncorrect"),
+
+
     ;
 
     ResultCode(String code , String i18nLabel){
