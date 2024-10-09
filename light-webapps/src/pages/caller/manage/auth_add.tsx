@@ -42,7 +42,7 @@ export default function AuthAdd({onClose}){
                     extendConfig:{
                         projectId:values.project,
                         callerId:callerInfo?.id,
-                        expired:values.expired,
+                        extension:values.extension,
                     }
                 }
                 requestCreateApply(applyParam).then((response) => {
@@ -69,7 +69,7 @@ export default function AuthAdd({onClose}){
                     extendConfig:{
                         statId:values.stat,
                         callerId:callerInfo?.id,
-                        expired:values.expired,
+                        extension:values.extension,
                     }
                 }
                 requestCreateApply(applyParam).then((response) => {
@@ -96,7 +96,7 @@ export default function AuthAdd({onClose}){
                     extendConfig:{
                         viewId:values.view,
                         callerId:callerInfo?.id,
-                        expired:values.expired,
+                        extension:values.extension,
                     }
                 }
                 requestCreateApply(applyParam).then((response) => {
@@ -141,7 +141,7 @@ export default function AuthAdd({onClose}){
                         <span>
                             <PiDiamondsFour style={{marginBottom:'-2px'}}/>
                         </span>}>
-                    <Form ref={(ref) => (formRefs.current["0"] = ref)} initialValues={{expired:7776000}}>
+                    <Form ref={(ref) => (formRefs.current["0"] = ref)} initialValues={{extension:7776000}}>
                         <ProjectApply callerInfo={callerInfo}/>
                     </Form>
                 </TabPane>
@@ -151,7 +151,7 @@ export default function AuthAdd({onClose}){
                         <span>
                             {getIcon('stat')}
                         </span>}>
-                    <Form ref={(ref) => (formRefs.current["1"] = ref)} initialValues={{expired:7776000}}>
+                    <Form ref={(ref) => (formRefs.current["1"] = ref)} initialValues={{extension:7776000}}>
                         <StatApply callerInfo={callerInfo}/>
                     </Form>
                 </TabPane>
@@ -164,7 +164,7 @@ export default function AuthAdd({onClose}){
                                 <TbBrandVisualStudio size={16} style={{marginBottom:'-2px'}}/>
                             </span>
                         }>
-                        <Form ref={(ref) => (formRefs.current["2"] = ref)} initialValues={{expired:2592000}}>
+                        <Form ref={(ref) => (formRefs.current["2"] = ref)} initialValues={{extension:2592000}}>
                             {PRO_ViewBindTab(callerInfo)}
                         </Form>
                     </TabPane>

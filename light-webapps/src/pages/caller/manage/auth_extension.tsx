@@ -24,9 +24,9 @@ const AuthExtension:React.FC<Props> = ({
 
     const {callerInfo} = useContext(CallerManageContext);
     const t = useLocale(locale);
-    const periodOptions:Array<LabelValue> = [{label:t['callerManage.authAdd.expired.3month'],value:7776000}
-        ,{label:t['callerManage.authAdd.expired.6month'],value:15552000},{label:t['callerManage.authAdd.expired.1year'],value:31104000}
-        ,{label:t['callerManage.authAdd.expired.2year'],value:62208000}]
+    const periodOptions:Array<LabelValue> = [{label:t['callerManage.authAdd.extension.3month'],value:7776000}
+        ,{label:t['callerManage.authAdd.extension.6month'],value:15552000},{label:t['callerManage.authAdd.extension.1year'],value:31104000}
+        ,{label:t['callerManage.authAdd.extension.2year'],value:62208000}]
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
     const formRef = useRef(null);
 

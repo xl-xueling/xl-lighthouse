@@ -150,7 +150,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Transactional
     @Override
-    public int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId,int expire) throws Exception{
+    public int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId,int extension) throws Exception{
         Validate.notNull(ownerId);
         Validate.notNull(ownerTypeEnum);
         Validate.notNull(roleId);
@@ -171,14 +171,14 @@ public class PermissionServiceImpl implements PermissionService {
             Validate.notNull(caller);
         }
         long current = System.currentTimeMillis();
-        long expireTime = current + TimeUnit.SECONDS.toMillis(expire);
+        long extensionTime = current + TimeUnit.SECONDS.toMillis(extension);
         LocalDateTime localDateTime = DateUtil.timestampToLocalDateTime(current);
-        LocalDateTime expireDateTime = DateUtil.timestampToLocalDateTime(expireTime);
+        LocalDateTime extensionDateTime = DateUtil.timestampToLocalDateTime(extensionTime);
         Permission permission = new Permission();
         permission.setOwnerId(ownerId);
         permission.setOwnerType(ownerTypeEnum);
         permission.setRoleId(roleId);
-        permission.setExpireTime(expireDateTime);
+        permission.setExpireTime(extensionDateTime);
         permission.setCreateTime(localDateTime);
         permission.setUpdateTime(localDateTime);
         return permissionDao.insert(permission);

@@ -206,8 +206,13 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
                 {
                     getOrderDescription(t,orderInfo)}
                 {
-                    (orderInfo?.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS || orderInfo?.orderType == OrderTypeEnum.CALLER_STAT_ACCESS || orderInfo?.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS) &&
-                    orderInfo?.extend?.expired?<Text style={{color:'red'}} bold={true}> [{getExpiredDescription(orderInfo?.extend?.expired)}]</Text>:null}
+                    (orderInfo?.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS
+                        || orderInfo?.orderType == OrderTypeEnum.CALLER_STAT_ACCESS
+                        || orderInfo?.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS
+                        || orderInfo?.orderType == OrderTypeEnum.CALLER_PROJECT_ACCESS_EXTENSION
+                        || orderInfo?.orderType == OrderTypeEnum.CALLER_STAT_ACCESS_EXTENSION
+                        || orderInfo?.orderType == OrderTypeEnum.CALLER_VIEW_ACCESS_EXTENSION) &&
+                    orderInfo?.extend?.extension?<Text style={{color:'red'}} bold={true}> [{getExpiredDescription(orderInfo?.extend?.extension)}]</Text>:null}
             </>
         },
     ];

@@ -526,14 +526,14 @@ public class OrderServiceImpl implements OrderService {
             if(caller == null){
                 return null;
             }
-            Integer expired = (Integer) configMap.get("expired");
-            if(expired == null){
+            Integer extension = (Integer) configMap.get("extension");
+            if(extension == null){
                 return null;
             }
             HashMap<String,Object> extendMap = new HashMap<>();
             extendMap.put("project",project);
             extendMap.put("caller",caller);
-            extendMap.put("expired",expired);
+            extendMap.put("extension",extension);
             return extendMap;
         }else if(order.getOrderType() == OrderTypeEnum.CALLER_STAT_ACCESS){
             Integer statId = (Integer) configMap.get("statId");
@@ -546,14 +546,14 @@ public class OrderServiceImpl implements OrderService {
             if(caller == null){
                 return null;
             }
-            Integer expired = (Integer) configMap.get("expired");
-            if(expired == null){
+            Integer extension = (Integer) configMap.get("extension");
+            if(extension == null){
                 return null;
             }
             HashMap<String,Object> extendMap = new HashMap<>();
             extendMap.put("stat",stat);
             extendMap.put("caller",caller);
-            extendMap.put("expired",expired);
+            extendMap.put("extension",extension);
             return extendMap;
         }else if(order.getOrderType() == OrderTypeEnum.CALLER_VIEW_ACCESS){
             Integer viewId = (Integer) configMap.get("viewId");
@@ -566,14 +566,14 @@ public class OrderServiceImpl implements OrderService {
             if(caller == null){
                 return null;
             }
-            Integer expired = (Integer) configMap.get("expired");
-            if(expired == null){
+            Integer extension = (Integer) configMap.get("extension");
+            if(extension == null){
                 return null;
             }
             HashMap<String,Object> extendMap = new HashMap<>();
             extendMap.put("view",view);
             extendMap.put("caller",caller);
-            extendMap.put("expired",expired);
+            extendMap.put("extension",extension);
             return extendMap;
         }else if(order.getOrderType() == OrderTypeEnum.CALLER_PROJECT_ACCESS_EXTENSION){
             Integer projectId = (Integer) configMap.get("projectId");
@@ -772,22 +772,22 @@ public class OrderServiceImpl implements OrderService {
             Role role = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,projectId);
             Validate.notNull(role);
             Integer callerId = (Integer) order.getExtendConfig().get("callerId");
-            Integer expired = (Integer) order.getExtendConfig().get("expired");
-            permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId(),expired);
+            Integer extension = (Integer) order.getExtendConfig().get("extension");
+            permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId(),extension);
         }else if(order.getOrderType() == OrderTypeEnum.CALLER_STAT_ACCESS){
             Integer statId = (Integer) order.getExtendConfig().get("statId");
             Role role = roleService.cacheQueryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
             Validate.notNull(role);
             Integer callerId = (Integer) order.getExtendConfig().get("callerId");
-            Integer expired = (Integer) order.getExtendConfig().get("expired");
-            permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId(),expired);
+            Integer extension = (Integer) order.getExtendConfig().get("extension");
+            permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId(),extension);
         }else if(order.getOrderType() == OrderTypeEnum.CALLER_VIEW_ACCESS){
             Integer viewId = (Integer) order.getExtendConfig().get("viewId");
             Role role = roleService.cacheQueryRole(RoleTypeEnum.VIEW_ACCESS_PERMISSION,viewId);
             Validate.notNull(role);
             Integer callerId = (Integer) order.getExtendConfig().get("callerId");
-            Integer expired = (Integer) order.getExtendConfig().get("expired");
-            permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId(),expired);
+            Integer extension = (Integer) order.getExtendConfig().get("extension");
+            permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId(),extension);
         }else if(order.getOrderType() == OrderTypeEnum.CALLER_PROJECT_ACCESS_EXTENSION){
             Integer projectId = (Integer) order.getExtendConfig().get("projectId");
             Role role = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,projectId);
