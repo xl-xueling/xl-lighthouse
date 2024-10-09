@@ -100,7 +100,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                 let extensionButton = <Button key={getRandomString()} onClick={() => callback(record, 'extension')}
                         type="text"
                         size="mini">
-                    {'续签'}
+                    {t['callerAuthList.column.label.operations.extension']}
                 </Button>
                 let removeButton =
                     <Popconfirm key={getRandomString()}
@@ -113,7 +113,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                         <Button key={getRandomString()}
                                 type="text"
                                 size="mini">
-                            {'删除'}
+                            {t['callerAuthList.column.label.operations.remove']}
                         </Button>
                     </Popconfirm>
                 return  <Space size={0} direction="horizontal">{[extensionButton,removeButton]}</Space>;

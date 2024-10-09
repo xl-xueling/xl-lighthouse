@@ -23,14 +23,12 @@ const AuthExtension:React.FC<Props> = ({
                                            onClose = null}) => {
 
     const {callerInfo} = useContext(CallerManageContext);
-
-    const periodOptions:Array<LabelValue> = [{label:'三个月',value:7776000}
-        ,{label:'六个月',value:15552000},{label:'一年',value:31104000},{label:'两年',value:62208000}]
-    const userInfo = useSelector((state: GlobalState) => state.userInfo);
-
-    const formRef = useRef(null);
-
     const t = useLocale(locale);
+    const periodOptions:Array<LabelValue> = [{label:t['callerManage.authAdd.expired.3month'],value:7776000}
+        ,{label:t['callerManage.authAdd.expired.6month'],value:15552000},{label:t['callerManage.authAdd.expired.1year'],value:31104000}
+        ,{label:t['callerManage.authAdd.expired.2year'],value:62208000}]
+    const userInfo = useSelector((state: GlobalState) => state.userInfo);
+    const formRef = useRef(null);
 
     const handleSubmit = async () => {
         try{
@@ -79,15 +77,15 @@ const AuthExtension:React.FC<Props> = ({
     const getFormItems = () => {
         if(authRecord.resourceType == ResourceTypeEnum.Project){
             const project = authRecord?.extend;
-            return <Form ref={formRef} initialValues={{extension:2592000,project:authRecord.extend.id}}>
-                <Form.Item field='project' label={'统计工程'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
+            return <Form ref={formRef} initialValues={{extension:7776000,project:authRecord.extend.id}}>
+                <Form.Item field='project' label={t['callerManage.extension.label.project']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <Select disabled={true}>
                         <Option key={authRecord.extend.id} value={authRecord.extend.id}>
                             {project?.title + ' [' +project?.id+ ']'}
                         </Option>
                     </Select>
                 </Form.Item>
-                <Form.Item field={'extension'} label={'续签时长'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
+                <Form.Item field={'extension'} label={t['callerManage.extension.label.extension']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <Select
                         placeholder='Select period' defaultValue={periodOptions[0].value}>
                         {periodOptions.map((option, index) => (
@@ -98,21 +96,21 @@ const AuthExtension:React.FC<Props> = ({
                     </Select>
                 </Form.Item>
 
-                <Form.Item field={'reason'} label={'续签原因'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
+                <Form.Item field={'reason'} label={t['callerManage.extension.label.reason']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <TextArea placeholder='Enter something' style={{ minHeight: 64 }} />
                 </Form.Item>
             </Form>
         }else if(authRecord.resourceType == ResourceTypeEnum.Stat){
             const stat = authRecord?.extend;
-            return <Form ref={formRef} initialValues={{extension:2592000,project:authRecord.extend.id}}>
-                <Form.Item field='project' label={'统计项'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
+            return <Form ref={formRef} initialValues={{extension:7776000,project:authRecord.extend.id}}>
+                <Form.Item field='stat' label={t['callerManage.extension.label.stat']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <Select disabled={true}>
                         <Option key={authRecord.extend.id} value={authRecord.extend.id}>
                             {stat?.projectTitle + ' > ' + stat?.token + ' > ' + stat?.title + " ["+stat?.id+"]"}
                         </Option>
                     </Select>
                 </Form.Item>
-                <Form.Item field={'extension'} label={'续签时长'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
+                <Form.Item field={'extension'} label={t['callerManage.extension.label.extension']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <Select
                         placeholder='Select period' defaultValue={periodOptions[0].value}>
                         {periodOptions.map((option, index) => (
@@ -123,21 +121,21 @@ const AuthExtension:React.FC<Props> = ({
                     </Select>
                 </Form.Item>
 
-                <Form.Item field={'reason'} label={'续签原因'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
+                <Form.Item field={'reason'} label={t['callerManage.extension.label.reason']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <TextArea placeholder='Enter something' style={{ minHeight: 64 }} />
                 </Form.Item>
             </Form>
         }else if(authRecord.resourceType == ResourceTypeEnum.View){
             const view = authRecord?.extend;
-            return <Form ref={formRef} initialValues={{extension:2592000,project:authRecord.extend.id}}>
-                <Form.Item field='view' label={'数据视图'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
+            return <Form ref={formRef} initialValues={{extension:7776000,project:authRecord.extend.id}}>
+                <Form.Item field='view' label={t['callerManage.extension.label.view']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <Select disabled={true}>
                         <Option key={view?.id} value={view?.id}>
                             {view?.title + ' [' +view?.id+ ']'}
                         </Option>
                     </Select>
                 </Form.Item>
-                <Form.Item field={'extension'} label={'续签时长'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
+                <Form.Item field={'extension'} label={t['callerManage.extension.label.extension']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <Select
                         placeholder='Select period' defaultValue={periodOptions[0].value}>
                         {periodOptions.map((option, index) => (
@@ -148,7 +146,7 @@ const AuthExtension:React.FC<Props> = ({
                     </Select>
                 </Form.Item>
 
-                <Form.Item field={'reason'} label={'续签原因'} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
+                <Form.Item field={'reason'} label={t['callerManage.extension.label.reason']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <TextArea placeholder='Enter something' style={{ minHeight: 64 }} />
                 </Form.Item>
             </Form>
@@ -162,7 +160,7 @@ const AuthExtension:React.FC<Props> = ({
             style={{ width:'1000px',maxWidth:'80%',verticalAlign:'top', top: '150px' }}
             onCancel={onClose}
             onOk={handleSubmit}
-            title='授权续签'
+            title={t['callerManage.extension.title']}
             autoFocus={false}
             focusLock={true}
         >

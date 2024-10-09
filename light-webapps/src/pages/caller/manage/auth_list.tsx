@@ -49,7 +49,6 @@ export default function AuthList({}){
         const combineParams:any = {}
         combineParams.ownerId = callerInfo?.id;
         combineParams.ownerType = OwnerTypeEnum.CALLER;
-        console.log("combineParams is:" + JSON.stringify(combineParams));
         await requestAuthList({
             queryParams:combineParams,
             pagination:{
@@ -79,10 +78,11 @@ export default function AuthList({}){
     },[callerInfo])
 
     const tableCallback = async (record, type) => {
-        console.log("record is:" + record + ",type:" + type);
         if(type == 'extension'){
             setCurrentItem(record);
             setShowExtensionModal(true);
+        }else if(type == 'remove'){
+
         }
     }
 
@@ -102,7 +102,7 @@ export default function AuthList({}){
                 <Grid.Col span={15}>
                 </Grid.Col>
                 <Grid.Col span={9} style={{textAlign:"right" }}>
-                    <Button type={'primary'} size={"mini"} onClick={() => setShowAddAuthModal(true)}>新增授权</Button>
+                    <Button type={'primary'} size={"mini"} onClick={() => setShowAddAuthModal(true)}>{t['callerAuthList.button.addAuth']}</Button>
                 </Grid.Col>
             </Row>
             <Table rowKey={(v) => {
