@@ -68,6 +68,7 @@ public class TestPermissionService {
         PermissionQueryParam queryParam = new PermissionQueryParam();
         queryParam.setOwnerType(OwnerTypeEnum.CALLER);
         queryParam.setOwnerId(11033);
+        queryParam.setSearch("每分钟");
         ListData<AuthRecord> list = permissionService.queryOwnerAuthList(queryParam,1,10);
         List<AuthRecord> voList = list.getList();
         for(AuthRecord authRecord : voList){

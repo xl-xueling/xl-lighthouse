@@ -260,7 +260,7 @@ public class PermissionServiceImpl implements PermissionService {
         PageHelper.startPage(pageNum,pageSize);
         PageInfo<Permission> pageInfo;
         try{
-            List<Permission> permissionList = permissionDao.queryList(queryParam);
+            List<Permission> permissionList = permissionDao.queryAuthList(queryParam);
             pageInfo = new PageInfo<>(permissionList);
         }finally {
             PageHelper.clearPage();

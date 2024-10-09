@@ -68,6 +68,4 @@ public class PermissionController {
         ListData<AuthRecord> listData = permissionService.queryOwnerAuthList(listQueryParam, pagination.getPageNum(), pagination.getPageSize());
         return ResultData.success(listData);
     }
-
-
 }

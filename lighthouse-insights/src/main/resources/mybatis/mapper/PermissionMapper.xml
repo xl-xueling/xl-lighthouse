@@ -60,6 +60,31 @@
         </where>
     </select>
 
+    <select id="queryAuthList" resultMap="permissionResultMap">
+        select * from (select a.`id`,a.`owner_id`,a.`owner_type`,a.`role_id`,a.`expire_time`,a.`create_time`,a.`update_time`,
+        case
+        when a.role_type = '10' then b.title
+        when a.role_type = '14' then c.title
+        when a.role_type = '18' then d.title
+        end as title
+        from (SELECT p.`id`,p.`owner_id`,p.`owner_type`,p.`role_id`,p.`expire_time`,p.`create_time`,p.`update_time`,r.resource_id,r.role_type
+        FROM ldp_permissions p left join ldp_roles r on p.role_id = r.id) a
+        LEFT join ldp_projects b on a.role_type = '10' and a.resource_id = b.id
+        LEFT join ldp_stats c on a.role_type = '14' and a.resource_id = c.id
+        LEFT join ldp_views d on a.role_type = '18' and a.resource_id = d.id) t
+        <where>
+            <if test="queryParam.ownerId != null">
+                AND t.owner_id = #{queryParam.ownerId}
+            </if>
+            <if test="queryParam.ownerType != null">
+                AND t.owner_type = #{queryParam.ownerType.ownerType}
+            </if>
+            <if test="queryParam.search != null">
+                AND t.title LIKE CONCAT('%', #{queryParam.search}, '%')
+            </if>
+        </where>
+        order by t.create_time desc
+    </select>
 
     <select id="existPermission" resultType="boolean">
         SELECT COUNT(1) > 0

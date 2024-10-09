@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {
     Button,
     Card,
-    Grid,
+    Grid, Input,
     Notification,
     PaginationProps,
     Table,
@@ -35,6 +35,7 @@ export default function AuthList({}){
     const [loading,setLoading] = useState<boolean>(false);
     const [showExtensionModal,setShowExtensionModal] = useState<boolean>(false);
     const [currentItem,setCurrentItem] = useState<AuthRecord>(null);
+    const [searchForms,setSearchForms] = useState<any>({});
     const [pagination, setPagination] = useState<PaginationProps>({
         sizeOptions: [15,30],
         sizeCanChange: true,
@@ -49,6 +50,8 @@ export default function AuthList({}){
         const combineParams:any = {}
         combineParams.ownerId = callerInfo?.id;
         combineParams.ownerType = OwnerTypeEnum.CALLER;
+        combineParams.search = searchForms.search;
+        console.log("combineParams is:" + JSON.stringify(combineParams));
         await requestAuthList({
             queryParams:combineParams,
             pagination:{
@@ -75,7 +78,7 @@ export default function AuthList({}){
 
     useEffect(() => {
         fetchData().then();
-    },[callerInfo])
+    },[callerInfo,pagination.current, pagination.pageSize,JSON.stringify(searchForms)])
 
     const tableCallback = async (record, type) => {
         if(type == 'extension'){
@@ -94,12 +97,18 @@ export default function AuthList({}){
         });
     }
 
+    const handlerSearch = (search) => {
+        setPagination({ ...pagination, current: 1 });
+        setSearchForms({search});
+    }
+
     return (
         <Card>
             <Row style={{marginBottom:'10px'}}>
-                <Grid.Col span={15}>
+                <Grid.Col span={8}>
+                    <Input.Search style={{width:'380px'}} autoComplete={'off'} size={"small"} placeholder={'Search Title'} allowClear onSearch={handlerSearch}/>
                 </Grid.Col>
-                <Grid.Col span={9} style={{textAlign:"right" }}>
+                <Grid.Col span={16} style={{textAlign:"right" }}>
                     <Button type={'primary'} size={"mini"} onClick={() => setShowAddAuthModal(true)}>{t['callerAuthList.button.addAuth']}</Button>
                 </Grid.Col>
             </Row>

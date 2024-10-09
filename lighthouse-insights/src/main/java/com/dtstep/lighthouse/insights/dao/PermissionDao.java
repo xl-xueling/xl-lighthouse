@@ -48,4 +48,6 @@ public interface PermissionDao {
     List<Permission> queryUserManagePermission(Integer userId,Integer limit);
 
     List<Permission> queryList(@Param("queryParam")PermissionQueryParam queryParam);
+
+    List<Permission> queryAuthList(@Param("queryParam")PermissionQueryParam queryParam);
 }
