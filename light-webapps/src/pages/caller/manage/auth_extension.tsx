@@ -154,7 +154,7 @@ const AuthExtension:React.FC<Props> = ({
             </Form>
         }else if(authRecord.resourceType == ResourceTypeEnum.Stat){
             const stat = authRecord?.extend;
-            return <Form ref={formRef} initialValues={{extension:7776000,project:authRecord.extend.id}}>
+            return <Form ref={formRef} initialValues={{extension:7776000,stat:authRecord.extend.id}}>
                 <Form.Item field='stat' label={t['callerManage.extension.label.stat']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <Select disabled={true}>
                         <Option key={authRecord.extend.id} value={authRecord.extend.id}>
@@ -179,7 +179,7 @@ const AuthExtension:React.FC<Props> = ({
             </Form>
         }else if(authRecord.resourceType == ResourceTypeEnum.View){
             const view = authRecord?.extend;
-            return <Form ref={formRef} initialValues={{extension:7776000,project:authRecord.extend.id}}>
+            return <Form ref={formRef} initialValues={{extension:7776000,view:authRecord.extend.id}}>
                 <Form.Item field='view' label={t['callerManage.extension.label.view']} rules={[{ required: true ,message: t['basic.form.verification.empty.warning'] }]}>
                     <Select disabled={true}>
                         <Option key={view?.id} value={view?.id}>
