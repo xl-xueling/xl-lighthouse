@@ -788,6 +788,39 @@ public class OrderServiceImpl implements OrderService {
             Integer callerId = (Integer) order.getExtendConfig().get("callerId");
             Integer expired = (Integer) order.getExtendConfig().get("expired");
             permissionService.grantPermission(callerId,OwnerTypeEnum.CALLER,role.getId(),expired);
+        }else if(order.getOrderType() == OrderTypeEnum.CALLER_PROJECT_ACCESS_EXTENSION){
+            Integer projectId = (Integer) order.getExtendConfig().get("projectId");
+            Role role = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_ACCESS_PERMISSION,projectId);
+            Validate.notNull(role);
+            Integer callerId = (Integer) order.getExtendConfig().get("callerId");
+            Integer extension = (Integer) order.getExtendConfig().get("extension");
+            Integer permissionId = (Integer) order.getExtendConfig().get("permissionId");
+            Permission permission = permissionService.queryById(permissionId);
+            Validate.notNull(permission);
+            Validate.isTrue(permission.getOwnerId().intValue() == callerId.intValue());
+            permissionService.extensionPermission(permissionId,extension);
+        }else if(order.getOrderType() == OrderTypeEnum.CALLER_STAT_ACCESS_EXTENSION){
+            Integer statId = (Integer) order.getExtendConfig().get("statId");
+            Role role = roleService.cacheQueryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
+            Validate.notNull(role);
+            Integer callerId = (Integer) order.getExtendConfig().get("callerId");
+            Integer extension = (Integer) order.getExtendConfig().get("extension");
+            Integer permissionId = (Integer) order.getExtendConfig().get("permissionId");
+            Permission permission = permissionService.queryById(permissionId);
+            Validate.notNull(permission);
+            Validate.isTrue(permission.getOwnerId().intValue() == callerId.intValue());
+            permissionService.extensionPermission(permissionId,extension);
+        }else if(order.getOrderType() == OrderTypeEnum.CALLER_VIEW_ACCESS_EXTENSION){
+            Integer viewId = (Integer) order.getExtendConfig().get("viewId");
+            Role role = roleService.cacheQueryRole(RoleTypeEnum.VIEW_ACCESS_PERMISSION,viewId);
+            Validate.notNull(role);
+            Integer callerId = (Integer) order.getExtendConfig().get("callerId");
+            Integer extension = (Integer) order.getExtendConfig().get("extension");
+            Integer permissionId = (Integer) order.getExtendConfig().get("permissionId");
+            Permission permission = permissionService.queryById(permissionId);
+            Validate.notNull(permission);
+            Validate.isTrue(permission.getOwnerId().intValue() == callerId.intValue());
+            permissionService.extensionPermission(permissionId,extension);
         }else if(order.getOrderType() == OrderTypeEnum.LIMITING_SETTINGS){
             Integer groupId = (Integer) order.getExtendConfig().get("groupId");
             String strategy = (String) order.getExtendConfig().get("strategy");

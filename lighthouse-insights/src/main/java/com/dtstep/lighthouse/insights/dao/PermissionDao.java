@@ -39,6 +39,8 @@ public interface PermissionDao {
 
     boolean existPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 
+    int extensionPermission(Integer id, int expire) throws Exception;
+
     int delete(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 
     List<Integer> queryUserPermissionsByRoleId(Integer roleId, Integer limit);

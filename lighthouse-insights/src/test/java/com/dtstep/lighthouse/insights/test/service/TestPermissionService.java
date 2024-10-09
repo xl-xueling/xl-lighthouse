@@ -74,4 +74,12 @@ public class TestPermissionService {
             System.out.println("authRecord is:" + JsonUtil.toJSONString(authRecord));
         }
     }
+
+    @Test
+    public void testExtensionPermission() throws Exception {
+        int id = 100888;
+        int expire = 300;
+        int s = permissionService.extensionPermission(id,expire);
+        System.out.println("s is:" + s);
+    }
 }

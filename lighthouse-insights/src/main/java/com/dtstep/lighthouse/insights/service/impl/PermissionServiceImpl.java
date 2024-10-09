@@ -235,10 +235,9 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public ListData<PermissionVO> queryList(PermissionQueryParam queryParam, Integer pageNum, Integer pageSize) {
-        ListData<PermissionVO> listData = null;
         PageHelper.startPage(pageNum,pageSize);
         List<PermissionVO> dtoList = new ArrayList<>();
-        PageInfo<PermissionVO> pageInfo = null;
+        PageInfo<PermissionVO> pageInfo;
         try{
             List<Permission> permissionList = permissionDao.queryList(queryParam);
             pageInfo = new PageInfo(permissionList);
@@ -321,5 +320,10 @@ public class PermissionServiceImpl implements PermissionService {
             voList.add(authRecord);
         }
         return ListData.newInstance(voList,pageInfo.getTotal(),pageNum,pageSize);
+    }
+
+    @Override
+    public int extensionPermission(Integer id, int expire) throws Exception {
+        return permissionDao.extensionPermission(id,expire);
     }
 }

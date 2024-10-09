@@ -53,6 +53,8 @@ public interface PermissionService {
 
     int grantPermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId,int expire) throws Exception;
 
+    int extensionPermission(Integer id,int expire) throws Exception;
+
     int releasePermission(Integer ownerId, OwnerTypeEnum ownerTypeEnum, Integer roleId);
 
     int releasePermission(Integer id);

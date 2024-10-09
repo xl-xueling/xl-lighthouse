@@ -67,6 +67,10 @@
         WHERE owner_id = #{ownerId} and owner_type = #{ownerType.ownerType} and role_id = #{roleId}
     </select>
 
+    <update id="extensionPermission">
+        UPDATE ldp_permissions SET expire_time = DATE_ADD(expire_time, INTERVAL #{expire} SECOND) where id = #{id}
+    </update>
+
     <select id="checkUserPermission" resultType="boolean">
         WITH RECURSIVE depart_cte AS (
             SELECT d.id,d.pid

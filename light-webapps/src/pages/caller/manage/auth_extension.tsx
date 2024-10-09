@@ -68,9 +68,61 @@ const AuthExtension:React.FC<Props> = ({
                 })
             })
         }else if(resourceType == ResourceTypeEnum.Stat){
-
+            const applyParam = {
+                orderType:OrderTypeEnum.CALLER_STAT_ACCESS_EXTENSION,
+                userId:userInfo?.id,
+                reason:values?.reason,
+                extendConfig:{
+                    statId:values.stat,
+                    callerId:callerInfo?.id,
+                    extension:values.extension,
+                    permissionId:authRecord.id,
+                }
+            }
+            requestCreateApply(applyParam).then((response) => {
+                const {code, data ,message} = response;
+                if(code == '0'){
+                    Notification.info({style: { width: 420 }, title: 'Notification', content: t['callerAuthApply.form.submit.success']});
+                    onClose();
+                }else{
+                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+                }
+            }).catch((error) => {
+                console.log(error);
+                Notification.error({
+                    style: { width: 420 },
+                    title: 'Error',
+                    content:t['system.error'],
+                })
+            })
         }else if(resourceType == ResourceTypeEnum.View){
-
+            const applyParam = {
+                orderType:OrderTypeEnum.CALLER_VIEW_ACCESS_EXTENSION,
+                userId:userInfo?.id,
+                reason:values?.reason,
+                extendConfig:{
+                    viewId:values.view,
+                    callerId:callerInfo?.id,
+                    extension:values.extension,
+                    permissionId:authRecord.id,
+                }
+            }
+            requestCreateApply(applyParam).then((response) => {
+                const {code, data ,message} = response;
+                if(code == '0'){
+                    Notification.info({style: { width: 420 }, title: 'Notification', content: t['callerAuthApply.form.submit.success']});
+                    onClose();
+                }else{
+                    Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+                }
+            }).catch((error) => {
+                console.log(error);
+                Notification.error({
+                    style: { width: 420 },
+                    title: 'Error',
+                    content:t['system.error'],
+                })
+            })
         }
     }
 
