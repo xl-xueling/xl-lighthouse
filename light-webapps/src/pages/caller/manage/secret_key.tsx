@@ -45,7 +45,7 @@ export default function SecretKeyModal({callerId,onClose}) {
 
     return (
         <Modal
-            title={'调用方秘钥'}
+            title={t['callerManage.callerKey.title']}
             visible={true}
             footer={null}
             alignCenter={false}

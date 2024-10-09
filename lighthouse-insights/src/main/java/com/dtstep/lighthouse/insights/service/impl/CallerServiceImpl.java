@@ -62,10 +62,10 @@ public class CallerServiceImpl implements CallerService {
         countQueryParam.setName(callerName);
         int count = callerDao.count(countQueryParam);
         if(count > 0){
-            return ServiceResult.result(ResultCode.callerNameAlreadyExist);
+            return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.callerNameAlreadyExist,callerName));
         }
         LocalDateTime localDateTime = LocalDateTime.now();
-        String secretKey = RandomID.id(50);
+        String secretKey = RandomID.id(40);
         caller.setSecretKey(secretKey);
         caller.setCreateTime(localDateTime);
         caller.setUpdateTime(localDateTime);

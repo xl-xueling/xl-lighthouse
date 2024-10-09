@@ -43,4 +43,9 @@ public class TestHttpService {
 //        System.out.println("result:" + JsonUtil.toJSONString(apiResultData));
 
     }
+
+    @Test
+    public void testDataQuery() throws Exception {
+        System.out.println("---data query---");
+    }
 }

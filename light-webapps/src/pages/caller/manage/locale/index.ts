@@ -40,6 +40,7 @@ const i18n = {
     'callerManage.extension.label.project':'Project',
     'callerManage.extension.label.stat':'Stat',
     'callerManage.extension.label.reason':'Reason',
+    'callerManage.callerKey.title':'APICaller Secret Key',
   },
   'zh-CN': {
     'callerManage.title':'调用方管理',
@@ -82,6 +83,7 @@ const i18n = {
     'callerManage.extension.label.stat':'统计项',
     'callerManage.authAdd.label.view':'数据视图',
     'callerManage.extension.label.reason':'申请原因',
+    'callerManage.callerKey.title':'调用方秘钥',
   },
 };
 
