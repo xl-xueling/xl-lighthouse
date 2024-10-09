@@ -97,13 +97,6 @@ public class CallerController {
         return ResultData.success(secretKey);
     }
 
-    @AuthPermission(roleTypeEnum = RoleTypeEnum.CALLER_MANAGER_PERMISSION,relationParam = "id")
-    @RequestMapping("/caller/authApply")
-    public ResultData<Integer> authApply(@Validated @RequestBody AuthApplyParam authApplyParam) throws Exception {
-        System.out.println("authApplyParam is:" + JsonUtil.toJSONString(authApplyParam));
-        return ResultData.success(1);
-    }
-
     @AuthPermission(roleTypeEnum = RoleTypeEnum.CALLER_MANAGER_PERMISSION,relationParam = "resourceId")
     @RequestMapping("/caller/grant")
     public ResultData<Integer> grant(@Validated @RequestBody PermissionGrantParam grantParam) throws Exception{

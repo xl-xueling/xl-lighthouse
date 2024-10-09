@@ -81,8 +81,6 @@ export default function AuthList({}){
         if(type == 'extension'){
             setCurrentItem(record);
             setShowExtensionModal(true);
-        }else if(type == 'remove'){
-
         }
     }
 

@@ -102,21 +102,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                         size="mini">
                     {t['callerAuthList.column.label.operations.extension']}
                 </Button>
-                let removeButton =
-                    <Popconfirm key={getRandomString()}
-                                focusLock
-                                position={"tr"}
-                                title='Confirm'
-                                content={t['callerAuthList.column.label.operations.remove.confirm']}
-                                onOk={() => callback(record, 'remove')}
-                    >
-                        <Button key={getRandomString()}
-                                type="text"
-                                size="mini">
-                            {t['callerAuthList.column.label.operations.remove']}
-                        </Button>
-                    </Popconfirm>
-                return  <Space size={0} direction="horizontal">{[extensionButton,removeButton]}</Space>;
+                return  <Space size={0} direction="horizontal">{[extensionButton]}</Space>;
             }
         }
     ];
