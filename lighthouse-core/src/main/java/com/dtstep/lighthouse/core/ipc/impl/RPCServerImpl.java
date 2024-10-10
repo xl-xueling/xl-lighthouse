@@ -55,6 +55,12 @@ public class RPCServerImpl implements RPCServer {
 
     @Override
     public void authVerification(String callerName, String callerKey, int resourceId, ResourceTypeEnum resourceTypeEnum) throws Exception {
+        if(StringUtil.isEmpty(callerName)){
+            throw new IllegalArgumentException("Missing required parameters[callerName]!");
+        }
+        if(StringUtil.isEmpty(callerKey)){
+            throw new IllegalArgumentException("Missing required parameters[callerKey]!");
+        }
         Caller caller = CallerDBWrapper.queryByName(callerName);
         if(caller == null){
             throw new PermissionException("Api caller[" + callerName + "] not exist!");

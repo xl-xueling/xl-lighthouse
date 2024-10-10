@@ -165,7 +165,7 @@ public final class LightHouse {
         return AuxHandler.queryStatInfo(statId);
     }
 
-    public static List<StatValue> dataQuery(int statId, String secretKey, String dimensValue, List<Long> batchList) throws Exception {
+    public static List<StatValue> dataQuery(String callerName,String callerKey,int statId, String dimensValue, List<Long> batchList) throws Exception {
         if(!_InitFlag.get()){
             throw new InitializationException("connection is not initialized or the connection is abnormal, request ignored!");
         }
@@ -174,20 +174,12 @@ public final class LightHouse {
             logger.error("statistic({}) not exist!",statId);
             throw new StatisticNotFoundException("statistic not found,id:" + statId);
         }
-        String md5 = AuxHandler.cacheGetMd5(secretKey);
-        if(!statVerifyEntity.getVerifyKey().equals(md5)){
-            logger.error("client secret-key validation failed,id:{},key:{}",statId,secretKey);
-            throw new KeyVerificationFailedException("client secret-key validation failed!");
-        }
-        return RPCClientProxy.instance().dataQuery(statId,dimensValue,batchList);
+        return RPCClientProxy.instance().dataQueryV2(callerName,callerKey,statId,dimensValue,batchList);
     }
 
-    public static List<StatValue> dataQuery(int statId, String secretKey, String dimensValue, long startTime, long endTime) throws Exception {
+    public static List<StatValue> dataQuery(String callerName,String callerKey,int statId, String dimensValue, long startTime, long endTime) throws Exception {
         if(!_InitFlag.get()){
             throw new InitializationException("connection is not initialized or the connection is abnormal, request ignored!");
-        }
-        if(StringUtil.isEmpty(secretKey)){
-            throw new IllegalArgumentException("Missing required parameter[secretKey]!");
         }
         if(startTime >= endTime){
             throw new IllegalArgumentException("Parameter[startTime >= endTime] verification failed!");
@@ -197,40 +189,24 @@ public final class LightHouse {
             logger.error("statistic({}) not exist!",statId);
             throw new StatisticNotFoundException("statistic not found,id:" + statId);
         }
-        String md5 = AuxHandler.cacheGetMd5(secretKey);
-        if(!statVerifyEntity.getVerifyKey().equals(md5)){
-            logger.error("client secret-key validation failed,id:{},key:{}",statId,secretKey);
-            throw new KeyVerificationFailedException("client secret-key validation failed!");
-        }
-        return RPCClientProxy.instance().dataDurationQuery(statId,dimensValue,startTime,endTime);
+        return RPCClientProxy.instance().dataDurationQueryV2(callerName,callerKey,statId,dimensValue,startTime,endTime);
     }
 
-    public static Map<String,List<StatValue>> dataQueryWithDimensList(int statId, String secretKey, List<String> dimensValueList, List<Long> batchList) throws Exception {
+    public static Map<String,List<StatValue>> dataQueryWithDimensList(String callerName, String callerKey,int statId, List<String> dimensValueList, List<Long> batchList) throws Exception {
         if(!_InitFlag.get()){
             throw new InitializationException("connection is not initialized or the connection is abnormal, request ignored!");
-        }
-        if(StringUtil.isEmpty(secretKey)){
-            throw new IllegalArgumentException("Missing required parameter[secretKey]!");
         }
         StatVerifyEntity statVerifyEntity = AuxHandler.queryStatInfo(statId);
         if(statVerifyEntity == null){
             logger.error("statistic({}) not exist!",statId);
             throw new StatisticNotFoundException("statistic not found,id:" + statId);
         }
-        String md5 = AuxHandler.cacheGetMd5(secretKey);
-        if(!statVerifyEntity.getVerifyKey().equals(md5)){
-            logger.error("client secret-key validation failed,id:{},key:{}",statId,secretKey);
-            throw new KeyVerificationFailedException("client secret-key validation failed!");
-        }
-        return RPCClientProxy.instance().dataQueryWithDimensList(statId,dimensValueList,batchList);
+        return RPCClientProxy.instance().dataQueryWithDimensListV2(callerName,callerKey,statId,dimensValueList,batchList);
     }
 
-    public static Map<String,List<StatValue>> dataQueryWithDimensList(int statId, String secretKey, List<String> dimensValueList, long startTime,long endTime) throws Exception {
+    public static Map<String,List<StatValue>> dataQueryWithDimensList(String callerName,String callerKey,int statId, List<String> dimensValueList, long startTime,long endTime) throws Exception {
         if(!_InitFlag.get()){
             throw new InitializationException("connection is not initialized or the connection is abnormal, request ignored!");
-        }
-        if(StringUtil.isEmpty(secretKey)){
-            throw new IllegalArgumentException("Missing required parameter[secretKey]!");
         }
         if(startTime >= endTime){
             throw new IllegalArgumentException("Parameter[startTime >= endTime] verification failed!");
@@ -240,16 +216,10 @@ public final class LightHouse {
             logger.error("statistic({}) not exist!",statId);
             throw new StatisticNotFoundException("statistic not found,id:" + statId);
         }
-        String md5 = AuxHandler.cacheGetMd5(secretKey);
-        if(!statVerifyEntity.getVerifyKey().equals(md5)){
-            logger.error("client secret-key validation failed,id:{},key:{}",statId,secretKey);
-            throw new KeyVerificationFailedException("client secret-key validation failed!");
-        }
-        return RPCClientProxy.instance().dataDurationQueryWithDimensList(statId,dimensValueList,startTime,endTime);
+        return RPCClientProxy.instance().dataDurationQueryWithDimensListV2(callerName,callerKey,statId,dimensValueList,startTime,endTime);
     }
 
-
-    public static List<LimitValue> limitQuery(int statId, String secretKey, Long batchTime) throws Exception {
+    public static List<LimitValue> limitQuery(String callerName,String callerKey,int statId, Long batchTime) throws Exception {
         if(!_InitFlag.get()){
             throw new InitializationException("connection is not initialized or the connection is abnormal, request ignored!");
         }
@@ -258,12 +228,7 @@ public final class LightHouse {
             logger.error("statistic({}) not exist!",statId);
             throw new StatisticNotFoundException("statistic not found,id:" + statId);
         }
-        String md5 = AuxHandler.cacheGetMd5(secretKey);
-        if(!statVerifyEntity.getVerifyKey().equals(md5)){
-            logger.error("client secret-key validation failed,id:{},key:{}",statId,secretKey);
-            throw new KeyVerificationFailedException("client secret-key validation failed!");
-        }
-        return RPCClientProxy.instance().limitQuery(statId,batchTime);
+        return RPCClientProxy.instance().limitQueryV2(callerName,callerKey,statId,batchTime);
     }
 
     protected static RunningMode getRunningMode() {

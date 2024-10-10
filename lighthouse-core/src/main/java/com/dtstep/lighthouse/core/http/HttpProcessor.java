@@ -123,7 +123,8 @@ public class HttpProcessor {
             ApiResultCode apiResultCode = ApiResultCode.MissingParams;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
         }
-        Object secretKeyObj = requestMap.get("secretKey");
+        Object callerKeyObj = requestMap.get("callerKey");
+        Object callerNameObj = requestMap.get("callerName");
         Object statIdObj = requestMap.get("statId");
         Object dimensValueObj = requestMap.get("dimensValue");
         Object startTimeObj = requestMap.get("startTime");
@@ -137,9 +138,13 @@ public class HttpProcessor {
             ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("statId"));
         }
-        if(secretKeyObj == null){
+        if (callerNameObj == null) {
             ApiResultCode apiResultCode = ApiResultCode.MissingParam;
-            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("secretKey"));
+            return new ApiResultData(apiResultCode.getCode(), apiResultCode.formatMessage("callerName"));
+        }
+        if (callerKeyObj == null) {
+            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+            return new ApiResultData(apiResultCode.getCode(), apiResultCode.formatMessage("callerKey"));
         }
         String dimensValue = null;
         if(dimensValueObj != null){
@@ -170,7 +175,7 @@ public class HttpProcessor {
             }
             List<StatValue> list;
             try{
-                list = LightHouse.dataQuery(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),dimensValue,startTimeStamp,endTimeStamp);
+                list = LightHouse.dataQuery(callerNameObj.toString(),callerKeyObj.toString(),Integer.parseInt(statIdObj.toString()),dimensValue,startTimeStamp,endTimeStamp);
             }catch (Exception ex){
                 ApiResultCode apiResultCode = ApiResultCode.ProcessError;
                 return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
@@ -183,7 +188,7 @@ public class HttpProcessor {
             }
             List<StatValue> list;
             try{
-                list = LightHouse.dataQuery(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),dimensValue,(List<Long>)batchList);
+                list = LightHouse.dataQuery(callerNameObj.toString(),callerKeyObj.toString(),Integer.parseInt(statIdObj.toString()),dimensValue,(List<Long>)batchList);
             }catch (Exception ex){
                 ApiResultCode apiResultCode = ApiResultCode.ProcessError;
                 return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
@@ -205,8 +210,9 @@ public class HttpProcessor {
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
         }
         Object statIdObj = requestMap.get("statId");
-        Object secretKeyObj = requestMap.get("secretKey");
         Object dimensValueListObj = requestMap.get("dimensValueList");
+        Object callerKeyObj = requestMap.get("callerKey");
+        Object callerNameObj = requestMap.get("callerName");
         Object startTimeObj = requestMap.get("startTime");
         Object endTimeObj = requestMap.get("endTime");
         Object batchList = requestMap.get("batchList");
@@ -218,9 +224,13 @@ public class HttpProcessor {
             ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("statId"));
         }
-        if(secretKeyObj == null){
+        if (callerNameObj == null) {
             ApiResultCode apiResultCode = ApiResultCode.MissingParam;
-            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("secretKey"));
+            return new ApiResultData(apiResultCode.getCode(), apiResultCode.formatMessage("callerName"));
+        }
+        if (callerKeyObj == null) {
+            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+            return new ApiResultData(apiResultCode.getCode(), apiResultCode.formatMessage("callerKey"));
         }
         if(dimensValueListObj == null){
             ApiResultCode apiResultCode = ApiResultCode.MissingParam;
@@ -257,7 +267,7 @@ public class HttpProcessor {
 
             Map<String,List<StatValue>> data;
             try{
-                data = LightHouse.dataQueryWithDimensList(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),(List<String>)dimensValueListObj,startTimeStamp,endTimeStamp);
+                data = LightHouse.dataQueryWithDimensList(callerNameObj.toString(),callerKeyObj.toString(),Integer.parseInt(statIdObj.toString()),(List<String>)dimensValueListObj,startTimeStamp,endTimeStamp);
             }catch (Exception ex){
                 ApiResultCode apiResultCode = ApiResultCode.ProcessError;
                 return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
@@ -270,7 +280,7 @@ public class HttpProcessor {
             }
             Map<String,List<StatValue>> data;
             try{
-                data = LightHouse.dataQueryWithDimensList(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),(List<String>)dimensValueListObj,(List<Long>)batchList);
+                data = LightHouse.dataQueryWithDimensList(callerNameObj.toString(),callerKeyObj.toString(),Integer.parseInt(statIdObj.toString()),(List<String>)dimensValueListObj,(List<Long>)batchList);
             }catch (Exception ex){
                 ApiResultCode apiResultCode = ApiResultCode.ProcessError;
                 return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
@@ -292,7 +302,8 @@ public class HttpProcessor {
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
         }
         Object statIdObj = requestMap.get("statId");
-        Object secretKeyObj = requestMap.get("secretKey");
+        Object callerKeyObj = requestMap.get("callerKey");
+        Object callerNameObj = requestMap.get("callerName");
         Object batchTimeObj = requestMap.get("batchTime");
         if (statIdObj == null) {
             ApiResultCode apiResultCode = ApiResultCode.MissingParam;
@@ -302,9 +313,13 @@ public class HttpProcessor {
             ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
             return new ApiResultData(apiResultCode.getCode(), apiResultCode.formatMessage("statId"));
         }
-        if (secretKeyObj == null) {
+        if (callerNameObj == null) {
             ApiResultCode apiResultCode = ApiResultCode.MissingParam;
-            return new ApiResultData(apiResultCode.getCode(), apiResultCode.formatMessage("secretKey"));
+            return new ApiResultData(apiResultCode.getCode(), apiResultCode.formatMessage("callerName"));
+        }
+        if (callerKeyObj == null) {
+            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+            return new ApiResultData(apiResultCode.getCode(), apiResultCode.formatMessage("callerKey"));
         }
         if(batchTimeObj == null){
             ApiResultCode apiResultCode = ApiResultCode.MissingParam;
@@ -316,7 +331,7 @@ public class HttpProcessor {
         }
         List<LimitValue> data;
         try{
-            data = LightHouse.limitQuery(Integer.parseInt(statIdObj.toString()),secretKeyObj.toString(),Long.parseLong(batchTimeObj.toString()));
+            data = LightHouse.limitQuery(callerNameObj.toString(),callerKeyObj.toString(),Integer.parseInt(statIdObj.toString()),Long.parseLong(batchTimeObj.toString()));
         }catch (Exception ex){
             ApiResultCode apiResultCode = ApiResultCode.ProcessError;
             return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
