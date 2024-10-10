@@ -72,6 +72,9 @@ public final class LightHouse {
     public static synchronized void init(final String locators) throws Exception {
         if(!_InitFlag.get()){
             ClusterInfo clusterInfo = getRunningMode(locators);
+            if(clusterInfo == null){
+                throw new InitializationException(String.format("lighthouse remote service not available,locators:%s",locators));
+            }
             _runningMode = clusterInfo.getRunningMode();
             boolean result = RPCClientProxy.instance().init(locators);
             if(!result){

@@ -63,7 +63,7 @@ public class RPCServerImpl implements RPCServer {
         }
         Caller caller = CallerDBWrapper.queryByName(callerName);
         if(caller == null){
-            throw new PermissionException("Api caller[" + callerName + "] not exist!");
+            throw new PermissionException("Api caller[" + callerName + "] does not exist!");
         }
         if(!callerKey.equals(caller.getSecretKey())){
             throw new PermissionException("Api caller[" + callerName + "] secret-key verification failed!");

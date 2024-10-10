@@ -21,12 +21,15 @@ public class DataQueryTest {
         try{
             //修改rpc服务注册中心地址,集群模式为一主一从，默认为部署集群的前两个节点IP,使用逗号分割，单机模式为当前节点IP
             //LightHouse.init("10.206.6.11:4061,10.206.6.12:4061");//集群模式初始化
-            LightHouse.init("10.206.6.26:4061");//单机模式初始化
+            LightHouse.init("10.206.6.31:4061");//单机模式初始化
         }catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
+    private final String callerName = "caller:lighthouse_test_call";
+
+    private final String callerKey = "ssadsgasdg";
 
     /**
      * 对应API：LightHouse.dataQuery(int statId, String secretKey, String dimensValue, long startTime, long endTime)
@@ -40,14 +43,13 @@ public class DataQueryTest {
      */
     @Test
     public void dataQueryTest() throws Exception {
-        int statId = 1100594;
-        String secretKey = "Kq2Ts5PCBBqTqCFfKtbHekcQObDOZDQMVNuN6Ej5";
+        int statId = 1100607;
         String dimensValue = null;
         long t = System.currentTimeMillis();
         long startTime = DateUtil.getDayStartTime(t);
         long endTime = DateUtil.getDayEndTime(t);
         //statId为对应统计项ID，secretKey为统计项所在统计组的秘钥，dimensValue为纬度值，startTime和endTime为查询起止时间范围
-        List<StatValue> statValues = LightHouse.dataQuery(statId,secretKey,dimensValue,startTime,endTime);
+        List<StatValue> statValues = LightHouse.dataQuery(callerName,callerKey,statId,dimensValue,startTime,endTime);
         for (StatValue statValue : statValues) {
             //返回结果：batchTime为对应批次时间，dimensValue为相应纬度值，value为统计结果,statesValue如果统计项中包含多个统计函数，则按按顺序返回每一个统计函数的结果
             System.out.println("batchTime:" + statValue.getDisplayBatchTime() + ",dimensValue:" + statValue.getDimensValue() + ",value:" + statValue.getValue()
@@ -76,7 +78,7 @@ public class DataQueryTest {
         batchList.add(DateUtil.parseDate("2024-09-05 06:00:00","yyyy-MM-dd HH:mm:ss"));
         batchList.add(DateUtil.parseDate("2024-09-05 05:00:00","yyyy-MM-dd HH:mm:ss"));
         //statId为对应统计项ID，secretKey为统计项所在统计组的秘钥，dimensValue为纬度值，batchList为批次时间列表
-        List<StatValue> statValues = LightHouse.dataQuery(statId,secretKey,dimensValue,batchList);
+        List<StatValue> statValues = LightHouse.dataQuery(callerName,callerKey,statId,dimensValue,batchList);
         for (StatValue statValue : statValues) {
             //返回结果：batchTime为对应批次时间，dimensValue为相应纬度值，value为统计结果,statesValue如果统计项中包含多个统计函数，则按按顺序返回每一个统计函数的结果
             System.out.println("batchTime:" + statValue.getDisplayBatchTime() + ",dimensValue:" + statValue.getDimensValue() + ",value:" + statValue.getValue()
@@ -104,7 +106,7 @@ public class DataQueryTest {
         long t = System.currentTimeMillis();
         long startTime = DateUtil.getDayStartTime(t);
         long endTime = DateUtil.getDayEndTime(t);
-        Map<String,List<StatValue>> resultMap = LightHouse.dataQueryWithDimensList(statId,secretKey,dimensValueList,startTime,endTime);
+        Map<String,List<StatValue>> resultMap = LightHouse.dataQueryWithDimensList(callerName,callerKey,statId,dimensValueList,startTime,endTime);
         for(String dimensValue : resultMap.keySet()){
             List<StatValue> statValues = resultMap.get(dimensValue);
             for (StatValue statValue : statValues) {
@@ -138,7 +140,7 @@ public class DataQueryTest {
         batchList.add(DateUtil.parseDate("2024-09-05 07:00:00","yyyy-MM-dd HH:mm:ss"));
         batchList.add(DateUtil.parseDate("2024-09-05 06:00:00","yyyy-MM-dd HH:mm:ss"));
         batchList.add(DateUtil.parseDate("2024-09-05 05:00:00","yyyy-MM-dd HH:mm:ss"));
-        Map<String,List<StatValue>> resultMap = LightHouse.dataQueryWithDimensList(statId,secretKey,dimensValueList,batchList);
+        Map<String,List<StatValue>> resultMap = LightHouse.dataQueryWithDimensList(callerName,callerKey,statId,dimensValueList,batchList);
         for(String dimensValue : resultMap.keySet()){
             List<StatValue> statValues = resultMap.get(dimensValue);
             for (StatValue statValue : statValues) {
@@ -166,7 +168,7 @@ public class DataQueryTest {
         int statId = 1100601;
         String secretKey = "Kq2Ts5PCBBqTqCFfKtbHekcQObDOZDQMVNuN6Ej5";
         long batchTime = DateUtil.parseDate("2024-09-05 09:00:00","yyyy-MM-dd HH:mm:ss");
-        List<LimitValue> limitValues = LightHouse.limitQuery(statId,secretKey,batchTime);
+        List<LimitValue> limitValues = LightHouse.limitQuery(callerName,callerKey,statId,batchTime);
         for(LimitValue limitValue : limitValues){
             System.out.println("dimensValue:" + limitValue.getDimensValue() + ",score:" + limitValue.getScore());
         }

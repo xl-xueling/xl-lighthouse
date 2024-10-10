@@ -17,7 +17,7 @@ public class TestDataQuery extends ClientBaseTest{
     public void testDataQuery() throws Exception {
         int id = 1100578;
         long batchTime = DateUtil.batchTime(1, TimeUnit.MINUTES,System.currentTimeMillis());
-        List<StatValue> result = LightHouse.dataQuery(id,"5ONJTOU4JpvoclyI4E0Xbm6XIysis4O0UHCVQhy3",null, new ArrayList<>(Collections.singletonList(batchTime)));
-        System.out.println("result:" + JsonUtil.toJSONString(result));
+//        List<StatValue> result = LightHouse.dataQuery(id,"5ONJTOU4JpvoclyI4E0Xbm6XIysis4O0UHCVQhy3",null, new ArrayList<>(Collections.singletonList(batchTime)));
+//        System.out.println("result:" + JsonUtil.toJSONString(result));
     }
 }

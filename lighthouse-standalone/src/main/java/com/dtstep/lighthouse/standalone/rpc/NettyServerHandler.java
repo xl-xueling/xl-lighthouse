@@ -19,6 +19,7 @@ package com.dtstep.lighthouse.standalone.rpc;
 import com.dtstep.lighthouse.common.entity.rpc.RpcMsgType;
 import com.dtstep.lighthouse.common.entity.rpc.RpcRequest;
 import com.dtstep.lighthouse.common.entity.rpc.RpcResponse;
+import com.dtstep.lighthouse.common.ice.LightRpcException;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.standalone.rpc.provider.StandaloneRemoteServiceImpl;
 import io.netty.channel.ChannelHandler;
@@ -29,6 +30,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -56,6 +58,16 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
                     Object provider = registryMap.get(request.getClassName());
                     Method method = provider.getClass().getMethod(request.getMethodName(),request.getParameterTypes());
                     result = method.invoke(provider,request.getParameterValues());
+                }catch (InvocationTargetException ex){
+                    Throwable cause = ex.getCause();
+                    if(cause instanceof LightRpcException){
+                        LightRpcException lightRpcException = (LightRpcException) cause;
+                        String errorMessage = lightRpcException.getMessage();
+                        error = errorMessage == null ? "Remote Server process error!" : errorMessage;
+                    }else{
+                        logger.error("method process error,request:{}!", JsonUtil.toJSONString(request),ex);
+                        error = ex.getMessage() == null ? "Remote Server process error!" : cause.getMessage();
+                    }
                 }catch (Exception ex){
                     logger.error("method process error,request:{}!", JsonUtil.toJSONString(request),ex);
                     error = ex.getMessage() == null ? "Remote Server process error!" : ex.getMessage();
