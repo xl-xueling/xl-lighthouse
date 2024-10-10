@@ -23,6 +23,12 @@ import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
+import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.exception.PermissionException;
+import com.dtstep.lighthouse.common.modal.Caller;
+import com.dtstep.lighthouse.common.modal.Permission;
+import com.dtstep.lighthouse.common.modal.Role;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.SnappyUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
@@ -30,10 +36,10 @@ import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.ipc.DisruptorEventProducer;
 import com.dtstep.lighthouse.core.storage.limit.LimitStorageSelector;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageSelector;
-import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
-import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
+import com.dtstep.lighthouse.core.wrapper.*;
 import com.dtstep.lighthouse.core.ipc.RPCServer;
 import com.google.common.base.Splitter;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +52,25 @@ public class RPCServerImpl implements RPCServer {
     private static final Logger logger = LoggerFactory.getLogger(RPCServerImpl.class);
 
     private static final DisruptorEventProducer eventProducer = new DisruptorEventProducer();
+
+    @Override
+    public void authVerification(String callerName, String callerKey, int resourceId, ResourceTypeEnum resourceTypeEnum) throws Exception {
+        Caller caller = CallerDBWrapper.queryByName(callerName);
+        if(caller == null){
+            throw new PermissionException("Api caller[" + callerName + "] not exist!");
+        }
+        if(!callerKey.equals(caller.getSecretKey())){
+            throw new PermissionException("Api caller[" + callerName + "] secret-key verification failed!");
+        }
+        Role role = RoleDBWrapper.queryAccessRoleByResource(resourceId,resourceTypeEnum);
+        if(role == null){
+            throw new PermissionException("Api caller[" + callerName + "] authorization verification failed!");
+        }
+        boolean hasPermission = PermissionDBWrapper.hasPermission(caller.getId(), OwnerTypeEnum.CALLER,role.getId());
+        if(!hasPermission){
+            throw new PermissionException("Api caller[" + callerName + "] authorization verification failed!");
+        }
+    }
 
     @Override
     public GroupVerifyEntity queryGroupInfo(String token) throws Exception {

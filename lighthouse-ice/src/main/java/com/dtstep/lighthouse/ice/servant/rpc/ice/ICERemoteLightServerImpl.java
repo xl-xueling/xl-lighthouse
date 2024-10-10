@@ -20,6 +20,7 @@ import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.ice.LightRpcException;
 import com.dtstep.lighthouse.common.ice.RemoteLightServer;
 import com.dtstep.lighthouse.common.serializer.SerializerProxy;
@@ -155,6 +156,111 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
 
     @Override
     public byte[] limitQuery(int statId, long batchTime, Current current) throws LightRpcException{
+        List<LimitValue> limitValues;
+        try{
+            limitValues = rpc.limitQuery(statId,batchTime);
+        }catch (Exception ex){
+            throw new LightRpcException(ex.getMessage());
+        }
+        try{
+            return SerializerProxy.instance().serialize(limitValues);
+        }catch (Exception ex){
+            logger.error("rpc response serialize error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public byte[] dataDurationQueryV2(String callerName, String callerKey, int statId, String dimensValue, long startTime, long endTime, Current current) throws LightRpcException {
+        try{
+            rpc.authVerification(callerName,callerKey,statId, ResourceTypeEnum.Stat);
+        }catch (Exception ex){
+            throw new LightRpcException(ex.getMessage());
+        }
+        List<StatValue> statValues;
+        try{
+            statValues = rpc.dataDurationQuery(statId,dimensValue,startTime,endTime);
+        }catch (Exception ex){
+            throw new LightRpcException(ex.getMessage());
+        }
+        try{
+            return SerializerProxy.instance().serialize(statValues);
+        }catch (Exception ex){
+            logger.error("rpc response serialize error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public byte[] dataQueryV2(String callerName, String callerKey, int statId, String dimensValue, List<Long> batchList, Current current) throws LightRpcException {
+        try{
+            rpc.authVerification(callerName,callerKey,statId, ResourceTypeEnum.Stat);
+        }catch (Exception ex){
+            throw new LightRpcException(ex.getMessage());
+        }
+        List<StatValue> statValues;
+        try{
+            statValues = rpc.dataQuery(statId,dimensValue,batchList);
+        }catch (Exception ex){
+            throw new LightRpcException(ex.getMessage());
+        }
+        try{
+            return SerializerProxy.instance().serialize(statValues);
+        }catch (Exception ex){
+            logger.error("rpc response serialize error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public byte[] dataDurationQueryWithDimensListV2(String callerName, String callerKey, int statId, List<String> dimensValueList, long startTime, long endTime, Current current) throws LightRpcException {
+        try{
+            rpc.authVerification(callerName,callerKey,statId, ResourceTypeEnum.Stat);
+        }catch (Exception ex){
+            throw new LightRpcException(ex.getMessage());
+        }
+        Map<String,List<StatValue>> statValues;
+        try{
+            statValues = rpc.dataDurationQueryWithDimensList(statId,dimensValueList,startTime,endTime);
+        }catch (Exception ex){
+            throw new LightRpcException(ex.getMessage());
+        }
+        try{
+            return SerializerProxy.instance().serialize(statValues);
+        }catch (Exception ex){
+            logger.error("rpc response serialize error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public byte[] dataQueryWithDimensListV2(String callerName, String callerKey, int statId, List<String> dimensValueList, List<Long> batchList, Current current) throws LightRpcException {
+        try{
+            rpc.authVerification(callerName,callerKey,statId, ResourceTypeEnum.Stat);
+        }catch (Exception ex){
+            throw new LightRpcException(ex.getMessage());
+        }
+        Map<String,List<StatValue>> statValues;
+        try{
+            statValues = rpc.dataQueryWithDimensList(statId,dimensValueList,batchList);
+        }catch (Exception ex){
+            throw new LightRpcException(ex.getMessage());
+        }
+        try{
+            return SerializerProxy.instance().serialize(statValues);
+        }catch (Exception ex){
+            logger.error("rpc response serialize error!",ex);
+            throw new LightRpcException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public byte[] limitQueryV2(String callerName, String callerKey, int statId, long batchTime, Current current) throws LightRpcException {
+        try{
+            rpc.authVerification(callerName,callerKey,statId, ResourceTypeEnum.Stat);
+        }catch (Exception ex){
+            throw new LightRpcException(ex.getMessage());
+        }
         List<LimitValue> limitValues;
         try{
             limitValues = rpc.limitQuery(statId,batchTime);

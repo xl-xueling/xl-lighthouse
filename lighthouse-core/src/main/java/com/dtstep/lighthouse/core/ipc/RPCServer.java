@@ -20,11 +20,14 @@ import com.dtstep.lighthouse.common.entity.group.GroupVerifyEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 
 import java.util.List;
 import java.util.Map;
 
 public interface RPCServer {
+
+    void authVerification(String callerName, String callerKey, int resourceId, ResourceTypeEnum resourceTypeEnum) throws Exception;
 
     GroupVerifyEntity queryGroupInfo(String token) throws Exception;
 

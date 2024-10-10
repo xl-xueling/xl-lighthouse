@@ -52,7 +52,7 @@ public class CallerDBWrapper {
         QueryRunner queryRunner = new QueryRunner();
         Caller caller;
         try{
-            caller = queryRunner.query(conn, String.format("select * from ldp_callers where name = '%s'",callerName), new CallerSetHandler());
+            caller = queryRunner.query(conn, String.format("select id,name,secret_key,create_time,update_time from ldp_callers where name = '%s'",callerName), new CallerSetHandler());
         }finally {
             storageEngine.closeConnection();
         }
@@ -79,16 +79,5 @@ public class CallerDBWrapper {
             }
             return caller;
         }
-    }
-
-    public static ResultCode verify(String callerName,String secretKey) throws Exception {
-        Caller caller = queryByName(callerName);
-        if(caller == null){
-            return ResultCode.getExtendResultCode(ResultCode.apiCallerNotExist,callerName);
-        }
-        if(!caller.getSecretKey().equals(secretKey)){
-            return ResultCode.getExtendResultCode(ResultCode.apiCallerKeyIncorrect,callerName);
-        }
-        return ResultCode.success;
     }
 }

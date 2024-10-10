@@ -41,6 +41,21 @@ public interface RemoteLightServer extends com.zeroc.Ice.Object
     byte[] limitQuery(int statId, long batchTime, com.zeroc.Ice.Current current)
         throws LightRpcException;
 
+    byte[] dataDurationQueryV2(String callerName, String callerKey, int statId, String dimensValue, long startTime, long endTime, com.zeroc.Ice.Current current)
+        throws LightRpcException;
+
+    byte[] dataQueryV2(String callerName, String callerKey, int statId, String dimensValue, java.util.List<Long> batchList, com.zeroc.Ice.Current current)
+        throws LightRpcException;
+
+    byte[] dataDurationQueryWithDimensListV2(String callerName, String callerKey, int statId, java.util.List<String> dimensValueList, long startTime, long endTime, com.zeroc.Ice.Current current)
+        throws LightRpcException;
+
+    byte[] dataQueryWithDimensListV2(String callerName, String callerKey, int statId, java.util.List<String> dimensValueList, java.util.List<Long> batchList, com.zeroc.Ice.Current current)
+        throws LightRpcException;
+
+    byte[] limitQueryV2(String callerName, String callerKey, int statId, long batchTime, com.zeroc.Ice.Current current)
+        throws LightRpcException;
+
     /** @hidden */
     static final String[] _iceIds =
     {
@@ -271,18 +286,180 @@ public interface RemoteLightServer extends com.zeroc.Ice.Object
         return inS.setResult(ostr);
     }
 
+    /**
+     * @hidden
+     * @param obj -
+     * @param inS -
+     * @param current -
+     * @return -
+     * @throws com.zeroc.Ice.UserException -
+    **/
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_dataDurationQueryV2(RemoteLightServer obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+        throws com.zeroc.Ice.UserException
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        com.zeroc.Ice.InputStream istr = inS.startReadParams();
+        String iceP_callerName;
+        String iceP_callerKey;
+        int iceP_statId;
+        String iceP_dimensValue;
+        long iceP_startTime;
+        long iceP_endTime;
+        iceP_callerName = istr.readString();
+        iceP_callerKey = istr.readString();
+        iceP_statId = istr.readInt();
+        iceP_dimensValue = istr.readString();
+        iceP_startTime = istr.readLong();
+        iceP_endTime = istr.readLong();
+        inS.endReadParams();
+        byte[] ret = obj.dataDurationQueryV2(iceP_callerName, iceP_callerKey, iceP_statId, iceP_dimensValue, iceP_startTime, iceP_endTime, current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeByteSeq(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
+    }
+
+    /**
+     * @hidden
+     * @param obj -
+     * @param inS -
+     * @param current -
+     * @return -
+     * @throws com.zeroc.Ice.UserException -
+    **/
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_dataQueryV2(RemoteLightServer obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+        throws com.zeroc.Ice.UserException
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        com.zeroc.Ice.InputStream istr = inS.startReadParams();
+        String iceP_callerName;
+        String iceP_callerKey;
+        int iceP_statId;
+        String iceP_dimensValue;
+        java.util.List<Long> iceP_batchList;
+        iceP_callerName = istr.readString();
+        iceP_callerKey = istr.readString();
+        iceP_statId = istr.readInt();
+        iceP_dimensValue = istr.readString();
+        iceP_batchList = LongListHelper.read(istr);
+        inS.endReadParams();
+        byte[] ret = obj.dataQueryV2(iceP_callerName, iceP_callerKey, iceP_statId, iceP_dimensValue, iceP_batchList, current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeByteSeq(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
+    }
+
+    /**
+     * @hidden
+     * @param obj -
+     * @param inS -
+     * @param current -
+     * @return -
+     * @throws com.zeroc.Ice.UserException -
+    **/
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_dataDurationQueryWithDimensListV2(RemoteLightServer obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+        throws com.zeroc.Ice.UserException
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        com.zeroc.Ice.InputStream istr = inS.startReadParams();
+        String iceP_callerName;
+        String iceP_callerKey;
+        int iceP_statId;
+        java.util.List<String> iceP_dimensValueList;
+        long iceP_startTime;
+        long iceP_endTime;
+        iceP_callerName = istr.readString();
+        iceP_callerKey = istr.readString();
+        iceP_statId = istr.readInt();
+        iceP_dimensValueList = StringListHelper.read(istr);
+        iceP_startTime = istr.readLong();
+        iceP_endTime = istr.readLong();
+        inS.endReadParams();
+        byte[] ret = obj.dataDurationQueryWithDimensListV2(iceP_callerName, iceP_callerKey, iceP_statId, iceP_dimensValueList, iceP_startTime, iceP_endTime, current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeByteSeq(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
+    }
+
+    /**
+     * @hidden
+     * @param obj -
+     * @param inS -
+     * @param current -
+     * @return -
+     * @throws com.zeroc.Ice.UserException -
+    **/
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_dataQueryWithDimensListV2(RemoteLightServer obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+        throws com.zeroc.Ice.UserException
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        com.zeroc.Ice.InputStream istr = inS.startReadParams();
+        String iceP_callerName;
+        String iceP_callerKey;
+        int iceP_statId;
+        java.util.List<String> iceP_dimensValueList;
+        java.util.List<Long> iceP_batchList;
+        iceP_callerName = istr.readString();
+        iceP_callerKey = istr.readString();
+        iceP_statId = istr.readInt();
+        iceP_dimensValueList = StringListHelper.read(istr);
+        iceP_batchList = LongListHelper.read(istr);
+        inS.endReadParams();
+        byte[] ret = obj.dataQueryWithDimensListV2(iceP_callerName, iceP_callerKey, iceP_statId, iceP_dimensValueList, iceP_batchList, current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeByteSeq(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
+    }
+
+    /**
+     * @hidden
+     * @param obj -
+     * @param inS -
+     * @param current -
+     * @return -
+     * @throws com.zeroc.Ice.UserException -
+    **/
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_limitQueryV2(RemoteLightServer obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+        throws com.zeroc.Ice.UserException
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        com.zeroc.Ice.InputStream istr = inS.startReadParams();
+        String iceP_callerName;
+        String iceP_callerKey;
+        int iceP_statId;
+        long iceP_batchTime;
+        iceP_callerName = istr.readString();
+        iceP_callerKey = istr.readString();
+        iceP_statId = istr.readInt();
+        iceP_batchTime = istr.readLong();
+        inS.endReadParams();
+        byte[] ret = obj.limitQueryV2(iceP_callerName, iceP_callerKey, iceP_statId, iceP_batchTime, current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeByteSeq(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
+    }
+
     /** @hidden */
     final static String[] _iceOps =
     {
         "dataDurationQuery",
+        "dataDurationQueryV2",
         "dataDurationQueryWithDimensList",
+        "dataDurationQueryWithDimensListV2",
         "dataQuery",
+        "dataQueryV2",
         "dataQueryWithDimensList",
+        "dataQueryWithDimensListV2",
         "ice_id",
         "ice_ids",
         "ice_isA",
         "ice_ping",
         "limitQuery",
+        "limitQueryV2",
         "process",
         "queryGroupInfo",
         "queryStatInfo"
@@ -307,45 +484,65 @@ public interface RemoteLightServer extends com.zeroc.Ice.Object
             }
             case 1:
             {
-                return _iceD_dataDurationQueryWithDimensList(this, in, current);
+                return _iceD_dataDurationQueryV2(this, in, current);
             }
             case 2:
             {
-                return _iceD_dataQuery(this, in, current);
+                return _iceD_dataDurationQueryWithDimensList(this, in, current);
             }
             case 3:
             {
-                return _iceD_dataQueryWithDimensList(this, in, current);
+                return _iceD_dataDurationQueryWithDimensListV2(this, in, current);
             }
             case 4:
             {
-                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
+                return _iceD_dataQuery(this, in, current);
             }
             case 5:
             {
-                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
+                return _iceD_dataQueryV2(this, in, current);
             }
             case 6:
             {
-                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
+                return _iceD_dataQueryWithDimensList(this, in, current);
             }
             case 7:
             {
-                return com.zeroc.Ice.Object._iceD_ice_ping(this, in, current);
+                return _iceD_dataQueryWithDimensListV2(this, in, current);
             }
             case 8:
             {
-                return _iceD_limitQuery(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
             }
             case 9:
             {
-                return _iceD_process(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
             }
             case 10:
             {
-                return _iceD_queryGroupInfo(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
             }
             case 11:
+            {
+                return com.zeroc.Ice.Object._iceD_ice_ping(this, in, current);
+            }
+            case 12:
+            {
+                return _iceD_limitQuery(this, in, current);
+            }
+            case 13:
+            {
+                return _iceD_limitQueryV2(this, in, current);
+            }
+            case 14:
+            {
+                return _iceD_process(this, in, current);
+            }
+            case 15:
+            {
+                return _iceD_queryGroupInfo(this, in, current);
+            }
+            case 16:
             {
                 return _iceD_queryStatInfo(this, in, current);
             }

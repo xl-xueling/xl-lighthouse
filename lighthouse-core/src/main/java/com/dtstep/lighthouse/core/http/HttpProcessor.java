@@ -5,7 +5,10 @@ import com.dtstep.lighthouse.common.entity.ApiResultCode;
 import com.dtstep.lighthouse.common.entity.ApiResultData;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.modal.Caller;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import com.dtstep.lighthouse.core.wrapper.CallerDBWrapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.CollectionUtils;
@@ -120,8 +123,8 @@ public class HttpProcessor {
             ApiResultCode apiResultCode = ApiResultCode.MissingParams;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
         }
-        Object statIdObj = requestMap.get("statId");
         Object secretKeyObj = requestMap.get("secretKey");
+        Object statIdObj = requestMap.get("statId");
         Object dimensValueObj = requestMap.get("dimensValue");
         Object startTimeObj = requestMap.get("startTime");
         Object endTimeObj = requestMap.get("endTime");

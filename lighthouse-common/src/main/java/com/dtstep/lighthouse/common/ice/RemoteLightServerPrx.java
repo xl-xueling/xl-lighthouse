@@ -511,6 +511,343 @@ public interface RemoteLightServerPrx extends com.zeroc.Ice.ObjectPrx
         LightRpcException.class
     };
 
+    default byte[] dataDurationQueryV2(String callerName, String callerKey, int statId, String dimensValue, long startTime, long endTime)
+        throws LightRpcException
+    {
+        return dataDurationQueryV2(callerName, callerKey, statId, dimensValue, startTime, endTime, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default byte[] dataDurationQueryV2(String callerName, String callerKey, int statId, String dimensValue, long startTime, long endTime, java.util.Map<String, String> context)
+        throws LightRpcException
+    {
+        try
+        {
+            return _iceI_dataDurationQueryV2Async(callerName, callerKey, statId, dimensValue, startTime, endTime, context, true).waitForResponseOrUserEx();
+        }
+        catch(LightRpcException ex)
+        {
+            throw ex;
+        }
+        catch(com.zeroc.Ice.UserException ex)
+        {
+            throw new com.zeroc.Ice.UnknownUserException(ex.ice_id(), ex);
+        }
+    }
+
+    default java.util.concurrent.CompletableFuture<byte[]> dataDurationQueryV2Async(String callerName, String callerKey, int statId, String dimensValue, long startTime, long endTime)
+    {
+        return _iceI_dataDurationQueryV2Async(callerName, callerKey, statId, dimensValue, startTime, endTime, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<byte[]> dataDurationQueryV2Async(String callerName, String callerKey, int statId, String dimensValue, long startTime, long endTime, java.util.Map<String, String> context)
+    {
+        return _iceI_dataDurationQueryV2Async(callerName, callerKey, statId, dimensValue, startTime, endTime, context, false);
+    }
+
+    /**
+     * @hidden
+     * @param iceP_callerName -
+     * @param iceP_callerKey -
+     * @param iceP_statId -
+     * @param iceP_dimensValue -
+     * @param iceP_startTime -
+     * @param iceP_endTime -
+     * @param context -
+     * @param sync -
+     * @return -
+     **/
+    default com.zeroc.IceInternal.OutgoingAsync<byte[]> _iceI_dataDurationQueryV2Async(String iceP_callerName, String iceP_callerKey, int iceP_statId, String iceP_dimensValue, long iceP_startTime, long iceP_endTime, java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<byte[]> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "dataDurationQueryV2", null, sync, _iceE_dataDurationQueryV2);
+        f.invoke(true, context, null, ostr -> {
+                     ostr.writeString(iceP_callerName);
+                     ostr.writeString(iceP_callerKey);
+                     ostr.writeInt(iceP_statId);
+                     ostr.writeString(iceP_dimensValue);
+                     ostr.writeLong(iceP_startTime);
+                     ostr.writeLong(iceP_endTime);
+                 }, istr -> {
+                     byte[] ret;
+                     ret = istr.readByteSeq();
+                     return ret;
+                 });
+        return f;
+    }
+
+    /** @hidden */
+    static final Class<?>[] _iceE_dataDurationQueryV2 =
+    {
+        LightRpcException.class
+    };
+
+    default byte[] dataQueryV2(String callerName, String callerKey, int statId, String dimensValue, java.util.List<Long> batchList)
+        throws LightRpcException
+    {
+        return dataQueryV2(callerName, callerKey, statId, dimensValue, batchList, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default byte[] dataQueryV2(String callerName, String callerKey, int statId, String dimensValue, java.util.List<Long> batchList, java.util.Map<String, String> context)
+        throws LightRpcException
+    {
+        try
+        {
+            return _iceI_dataQueryV2Async(callerName, callerKey, statId, dimensValue, batchList, context, true).waitForResponseOrUserEx();
+        }
+        catch(LightRpcException ex)
+        {
+            throw ex;
+        }
+        catch(com.zeroc.Ice.UserException ex)
+        {
+            throw new com.zeroc.Ice.UnknownUserException(ex.ice_id(), ex);
+        }
+    }
+
+    default java.util.concurrent.CompletableFuture<byte[]> dataQueryV2Async(String callerName, String callerKey, int statId, String dimensValue, java.util.List<Long> batchList)
+    {
+        return _iceI_dataQueryV2Async(callerName, callerKey, statId, dimensValue, batchList, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<byte[]> dataQueryV2Async(String callerName, String callerKey, int statId, String dimensValue, java.util.List<Long> batchList, java.util.Map<String, String> context)
+    {
+        return _iceI_dataQueryV2Async(callerName, callerKey, statId, dimensValue, batchList, context, false);
+    }
+
+    /**
+     * @hidden
+     * @param iceP_callerName -
+     * @param iceP_callerKey -
+     * @param iceP_statId -
+     * @param iceP_dimensValue -
+     * @param iceP_batchList -
+     * @param context -
+     * @param sync -
+     * @return -
+     **/
+    default com.zeroc.IceInternal.OutgoingAsync<byte[]> _iceI_dataQueryV2Async(String iceP_callerName, String iceP_callerKey, int iceP_statId, String iceP_dimensValue, java.util.List<Long> iceP_batchList, java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<byte[]> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "dataQueryV2", null, sync, _iceE_dataQueryV2);
+        f.invoke(true, context, null, ostr -> {
+                     ostr.writeString(iceP_callerName);
+                     ostr.writeString(iceP_callerKey);
+                     ostr.writeInt(iceP_statId);
+                     ostr.writeString(iceP_dimensValue);
+                     LongListHelper.write(ostr, iceP_batchList);
+                 }, istr -> {
+                     byte[] ret;
+                     ret = istr.readByteSeq();
+                     return ret;
+                 });
+        return f;
+    }
+
+    /** @hidden */
+    static final Class<?>[] _iceE_dataQueryV2 =
+    {
+        LightRpcException.class
+    };
+
+    default byte[] dataDurationQueryWithDimensListV2(String callerName, String callerKey, int statId, java.util.List<String> dimensValueList, long startTime, long endTime)
+        throws LightRpcException
+    {
+        return dataDurationQueryWithDimensListV2(callerName, callerKey, statId, dimensValueList, startTime, endTime, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default byte[] dataDurationQueryWithDimensListV2(String callerName, String callerKey, int statId, java.util.List<String> dimensValueList, long startTime, long endTime, java.util.Map<String, String> context)
+        throws LightRpcException
+    {
+        try
+        {
+            return _iceI_dataDurationQueryWithDimensListV2Async(callerName, callerKey, statId, dimensValueList, startTime, endTime, context, true).waitForResponseOrUserEx();
+        }
+        catch(LightRpcException ex)
+        {
+            throw ex;
+        }
+        catch(com.zeroc.Ice.UserException ex)
+        {
+            throw new com.zeroc.Ice.UnknownUserException(ex.ice_id(), ex);
+        }
+    }
+
+    default java.util.concurrent.CompletableFuture<byte[]> dataDurationQueryWithDimensListV2Async(String callerName, String callerKey, int statId, java.util.List<String> dimensValueList, long startTime, long endTime)
+    {
+        return _iceI_dataDurationQueryWithDimensListV2Async(callerName, callerKey, statId, dimensValueList, startTime, endTime, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<byte[]> dataDurationQueryWithDimensListV2Async(String callerName, String callerKey, int statId, java.util.List<String> dimensValueList, long startTime, long endTime, java.util.Map<String, String> context)
+    {
+        return _iceI_dataDurationQueryWithDimensListV2Async(callerName, callerKey, statId, dimensValueList, startTime, endTime, context, false);
+    }
+
+    /**
+     * @hidden
+     * @param iceP_callerName -
+     * @param iceP_callerKey -
+     * @param iceP_statId -
+     * @param iceP_dimensValueList -
+     * @param iceP_startTime -
+     * @param iceP_endTime -
+     * @param context -
+     * @param sync -
+     * @return -
+     **/
+    default com.zeroc.IceInternal.OutgoingAsync<byte[]> _iceI_dataDurationQueryWithDimensListV2Async(String iceP_callerName, String iceP_callerKey, int iceP_statId, java.util.List<String> iceP_dimensValueList, long iceP_startTime, long iceP_endTime, java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<byte[]> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "dataDurationQueryWithDimensListV2", null, sync, _iceE_dataDurationQueryWithDimensListV2);
+        f.invoke(true, context, null, ostr -> {
+                     ostr.writeString(iceP_callerName);
+                     ostr.writeString(iceP_callerKey);
+                     ostr.writeInt(iceP_statId);
+                     StringListHelper.write(ostr, iceP_dimensValueList);
+                     ostr.writeLong(iceP_startTime);
+                     ostr.writeLong(iceP_endTime);
+                 }, istr -> {
+                     byte[] ret;
+                     ret = istr.readByteSeq();
+                     return ret;
+                 });
+        return f;
+    }
+
+    /** @hidden */
+    static final Class<?>[] _iceE_dataDurationQueryWithDimensListV2 =
+    {
+        LightRpcException.class
+    };
+
+    default byte[] dataQueryWithDimensListV2(String callerName, String callerKey, int statId, java.util.List<String> dimensValueList, java.util.List<Long> batchList)
+        throws LightRpcException
+    {
+        return dataQueryWithDimensListV2(callerName, callerKey, statId, dimensValueList, batchList, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default byte[] dataQueryWithDimensListV2(String callerName, String callerKey, int statId, java.util.List<String> dimensValueList, java.util.List<Long> batchList, java.util.Map<String, String> context)
+        throws LightRpcException
+    {
+        try
+        {
+            return _iceI_dataQueryWithDimensListV2Async(callerName, callerKey, statId, dimensValueList, batchList, context, true).waitForResponseOrUserEx();
+        }
+        catch(LightRpcException ex)
+        {
+            throw ex;
+        }
+        catch(com.zeroc.Ice.UserException ex)
+        {
+            throw new com.zeroc.Ice.UnknownUserException(ex.ice_id(), ex);
+        }
+    }
+
+    default java.util.concurrent.CompletableFuture<byte[]> dataQueryWithDimensListV2Async(String callerName, String callerKey, int statId, java.util.List<String> dimensValueList, java.util.List<Long> batchList)
+    {
+        return _iceI_dataQueryWithDimensListV2Async(callerName, callerKey, statId, dimensValueList, batchList, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<byte[]> dataQueryWithDimensListV2Async(String callerName, String callerKey, int statId, java.util.List<String> dimensValueList, java.util.List<Long> batchList, java.util.Map<String, String> context)
+    {
+        return _iceI_dataQueryWithDimensListV2Async(callerName, callerKey, statId, dimensValueList, batchList, context, false);
+    }
+
+    /**
+     * @hidden
+     * @param iceP_callerName -
+     * @param iceP_callerKey -
+     * @param iceP_statId -
+     * @param iceP_dimensValueList -
+     * @param iceP_batchList -
+     * @param context -
+     * @param sync -
+     * @return -
+     **/
+    default com.zeroc.IceInternal.OutgoingAsync<byte[]> _iceI_dataQueryWithDimensListV2Async(String iceP_callerName, String iceP_callerKey, int iceP_statId, java.util.List<String> iceP_dimensValueList, java.util.List<Long> iceP_batchList, java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<byte[]> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "dataQueryWithDimensListV2", null, sync, _iceE_dataQueryWithDimensListV2);
+        f.invoke(true, context, null, ostr -> {
+                     ostr.writeString(iceP_callerName);
+                     ostr.writeString(iceP_callerKey);
+                     ostr.writeInt(iceP_statId);
+                     StringListHelper.write(ostr, iceP_dimensValueList);
+                     LongListHelper.write(ostr, iceP_batchList);
+                 }, istr -> {
+                     byte[] ret;
+                     ret = istr.readByteSeq();
+                     return ret;
+                 });
+        return f;
+    }
+
+    /** @hidden */
+    static final Class<?>[] _iceE_dataQueryWithDimensListV2 =
+    {
+        LightRpcException.class
+    };
+
+    default byte[] limitQueryV2(String callerName, String callerKey, int statId, long batchTime)
+        throws LightRpcException
+    {
+        return limitQueryV2(callerName, callerKey, statId, batchTime, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default byte[] limitQueryV2(String callerName, String callerKey, int statId, long batchTime, java.util.Map<String, String> context)
+        throws LightRpcException
+    {
+        try
+        {
+            return _iceI_limitQueryV2Async(callerName, callerKey, statId, batchTime, context, true).waitForResponseOrUserEx();
+        }
+        catch(LightRpcException ex)
+        {
+            throw ex;
+        }
+        catch(com.zeroc.Ice.UserException ex)
+        {
+            throw new com.zeroc.Ice.UnknownUserException(ex.ice_id(), ex);
+        }
+    }
+
+    default java.util.concurrent.CompletableFuture<byte[]> limitQueryV2Async(String callerName, String callerKey, int statId, long batchTime)
+    {
+        return _iceI_limitQueryV2Async(callerName, callerKey, statId, batchTime, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<byte[]> limitQueryV2Async(String callerName, String callerKey, int statId, long batchTime, java.util.Map<String, String> context)
+    {
+        return _iceI_limitQueryV2Async(callerName, callerKey, statId, batchTime, context, false);
+    }
+
+    /**
+     * @hidden
+     * @param iceP_callerName -
+     * @param iceP_callerKey -
+     * @param iceP_statId -
+     * @param iceP_batchTime -
+     * @param context -
+     * @param sync -
+     * @return -
+     **/
+    default com.zeroc.IceInternal.OutgoingAsync<byte[]> _iceI_limitQueryV2Async(String iceP_callerName, String iceP_callerKey, int iceP_statId, long iceP_batchTime, java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<byte[]> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "limitQueryV2", null, sync, _iceE_limitQueryV2);
+        f.invoke(true, context, null, ostr -> {
+                     ostr.writeString(iceP_callerName);
+                     ostr.writeString(iceP_callerKey);
+                     ostr.writeInt(iceP_statId);
+                     ostr.writeLong(iceP_batchTime);
+                 }, istr -> {
+                     byte[] ret;
+                     ret = istr.readByteSeq();
+                     return ret;
+                 });
+        return f;
+    }
+
+    /** @hidden */
+    static final Class<?>[] _iceE_limitQueryV2 =
+    {
+        LightRpcException.class
+    };
+
     /**
      * Contacts the remote server to verify that the object implements this type.
      * Raises a local exception if a communication error occurs.

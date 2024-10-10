@@ -108,4 +108,34 @@ public class StandaloneClientImpl implements RPCClient {
         BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
         return standaloneRemoteService.limitQuery(statId, batchTime);
     }
+
+    @Override
+    public List<StatValue> dataQueryV2(String callerName,String callerKey,int statId, String dimensValue, List<Long> batchList) throws Exception {
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+        return standaloneRemoteService.dataQuery(statId, dimensValue, batchList);
+    }
+
+    @Override
+    public List<StatValue> dataDurationQueryV2(String callerName,String callerKey,int statId, String dimensValue, long startTime, long endTime) throws Exception {
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+        return standaloneRemoteService.dataDurationQuery(statId, dimensValue, startTime, endTime);
+    }
+
+    @Override
+    public Map<String, List<StatValue>> dataQueryWithDimensListV2(String callerName,String callerKey,int statId, List<String> dimensValueList, List<Long> batchList) throws Exception {
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+        return standaloneRemoteService.dataQueryWithDimensList(statId, dimensValueList, batchList);
+    }
+
+    @Override
+    public Map<String, List<StatValue>> dataDurationQueryWithDimensListV2(String callerName,String callerKey,int statId, List<String> dimensValueList, long startTime, long endTime) throws Exception {
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+        return standaloneRemoteService.dataDurationQueryWithDimensList(statId, dimensValueList, startTime, endTime);
+    }
+
+    @Override
+    public List<LimitValue> limitQueryV2(String callerName,String callerKey,int statId, long batchTime) throws Exception {
+        BasicRemoteLightServerPrx standaloneRemoteService = StandaloneHandler.getRemoteProxy();
+        return standaloneRemoteService.limitQuery(statId, batchTime);
+    }
 }

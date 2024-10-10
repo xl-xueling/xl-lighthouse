@@ -18,6 +18,10 @@ public enum ApiResultCode {
 
     IllegalParam("107","Parameter[%s] verification failed!"),
 
+    ApiCallerNotExist("108","Caller[%s] does not exist!"),
+
+    ApiCallerKeyIncorrect("109","Caller[%s] secret-key verification failed!"),
+
     ;
 
     private String code;

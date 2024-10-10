@@ -37,13 +37,28 @@ public interface RPCClient {
 
     StatVerifyEntity queryStatInfo(int id) throws Exception;
 
+    @Deprecated
     List<StatValue> dataQuery(int statId,String dimensValue,List<Long> batchList) throws Exception;
 
+    @Deprecated
     List<StatValue> dataDurationQuery(int statId, String dimensValue, long startTime, long endTime) throws Exception;
 
+    @Deprecated
     Map<String,List<StatValue>> dataQueryWithDimensList(int statId,List<String> dimensValueList,List<Long> batchList) throws Exception;
 
+    @Deprecated
     Map<String,List<StatValue>> dataDurationQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws Exception;
 
+    @Deprecated
     List<LimitValue> limitQuery(int statId, long batchTime) throws Exception;
+
+    List<StatValue> dataQueryV2(String callerName,String callerKey,int statId,String dimensValue,List<Long> batchList) throws Exception;
+
+    List<StatValue> dataDurationQueryV2(String callerName,String callerKey,int statId, String dimensValue, long startTime, long endTime) throws Exception;
+
+    Map<String,List<StatValue>> dataQueryWithDimensListV2(String callerName,String callerKey,int statId,List<String> dimensValueList,List<Long> batchList) throws Exception;
+
+    Map<String,List<StatValue>> dataDurationQueryWithDimensListV2(String callerName,String callerKey,int statId, List<String> dimensValueList, long startTime, long endTime) throws Exception;
+
+    List<LimitValue> limitQueryV2(String callerName,String callerKey,int statId, long batchTime) throws Exception;
 }

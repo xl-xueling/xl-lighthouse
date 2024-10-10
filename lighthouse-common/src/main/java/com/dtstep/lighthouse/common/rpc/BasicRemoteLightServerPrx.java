@@ -42,4 +42,14 @@ public interface BasicRemoteLightServerPrx {
     Map<String,List<StatValue>> dataDurationQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws LightRpcException;
 
     List<LimitValue> limitQuery(int statId, long batchTime) throws LightRpcException;
+
+    List<StatValue> dataQueryV2(String callerName,String callerKey,int statId, String dimensValue, List<Long> batchTime) throws LightRpcException;
+
+    List<StatValue> dataDurationQueryV2(String callerName,String callerKey,int statId, String dimensValue, long startTime, long endTime) throws LightRpcException;
+
+    Map<String,List<StatValue>> dataQueryWithDimensListV2(String callerName,String callerKey,int statId,List<String> dimensValueList,List<Long> batchTime) throws LightRpcException;
+
+    Map<String,List<StatValue>> dataDurationQueryWithDimensListV2(String callerName,String callerKey,int statId, List<String> dimensValueList, long startTime, long endTime) throws LightRpcException;
+
+    List<LimitValue> limitQueryV2(String callerName,String callerKey,int statId, long batchTime) throws LightRpcException;
 }
