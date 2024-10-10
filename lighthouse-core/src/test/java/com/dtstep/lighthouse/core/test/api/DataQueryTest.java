@@ -29,7 +29,7 @@ public class DataQueryTest {
 
     private final String callerName = "caller:lighthouse_test_call";
 
-    private final String callerKey = "ssadsgasdg";
+    private final String callerKey = "aod36BtsDqLIevpCTIpPgP4MZLkujBpDUPLy9oGd";
 
     /**
      * 对应API：LightHouse.dataQuery(int statId, String secretKey, String dimensValue, long startTime, long endTime)

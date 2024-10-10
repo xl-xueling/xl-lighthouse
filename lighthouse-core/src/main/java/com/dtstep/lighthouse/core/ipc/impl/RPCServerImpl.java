@@ -70,11 +70,11 @@ public class RPCServerImpl implements RPCServer {
         }
         Role role = RoleDBWrapper.queryAccessRoleByResource(resourceId,resourceTypeEnum);
         if(role == null){
-            throw new PermissionException("Api caller[" + callerName + "] authorization verification failed!");
+            throw new PermissionException("Api caller[" + callerName + "] does not have access authorization!");
         }
         boolean hasPermission = PermissionDBWrapper.hasPermission(caller.getId(), OwnerTypeEnum.CALLER,role.getId());
         if(!hasPermission){
-            throw new PermissionException("Api caller[" + callerName + "] authorization verification failed!");
+            throw new PermissionException("Api caller[" + callerName + "] does not have access authorization!");
         }
     }
 
