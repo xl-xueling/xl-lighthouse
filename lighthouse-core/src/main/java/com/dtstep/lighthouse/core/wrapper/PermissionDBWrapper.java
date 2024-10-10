@@ -71,6 +71,7 @@ public class PermissionDBWrapper {
                     "        INNER JOIN role_hierarchy rh ON rh.id = p.role_id\n" +
                     "        WHERE p.owner_id = '%s'\n" +
                     "        AND p.owner_type = '%s'\n" +
+                    "        AND (p.expire_time = null || p.expire_time > NOW())\n" +
                     "    )\n" +
                     "    THEN 'true'\n" +
                     "    ELSE 'false'\n" +

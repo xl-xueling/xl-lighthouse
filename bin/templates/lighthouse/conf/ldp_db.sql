@@ -239,7 +239,8 @@ CREATE TABLE `ldp_permissions` (
                                    PRIMARY KEY (`id`),
                                    KEY `index_owner` (`owner_type`,`owner_id`),
                                    KEY `index_role_id` (`role_id`),
-                                   KEY `index_createtime` (`create_time`)
+                                   KEY `index_createtime` (`create_time`),
+                                   KEY `index_expiretime` (`expire_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100713 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
