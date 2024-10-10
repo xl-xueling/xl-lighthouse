@@ -23,7 +23,7 @@ public class PermissionDBWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(PermissionDBWrapper.class);
 
-    private static final Integer _CacheExpireMinutes = 5;
+    private static final Integer _CacheExpireMinutes = 3;
 
     private static final CMDBStorageEngine<Connection> storageEngine = CMDBStorageEngineProxy.getInstance();
 
