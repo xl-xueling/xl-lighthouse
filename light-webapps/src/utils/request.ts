@@ -84,10 +84,9 @@ export const callerRequest = async <T>(callerInfo:CallerInfo,envConfig:EnvConfig
     })
 
     http.interceptors.request.use((config) => {
-        const language = localStorage.getItem('arco-lang');
         config.headers['Accept-Language'] = 'en-US';
-        config.headers['callerName'] = callerInfo.callerName;
-        config.headers['callerKey'] = callerInfo.callerKey;
+        config.headers['Caller-Name'] = callerInfo.callerName;
+        config.headers['Caller-Key'] = callerInfo.callerKey;
         return config;
     }, (error) => {
         console.log(error);

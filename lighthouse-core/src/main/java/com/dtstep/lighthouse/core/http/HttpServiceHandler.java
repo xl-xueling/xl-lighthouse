@@ -69,9 +69,12 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
             clusterInfo.setRunningTime(System.currentTimeMillis() - time);
             result = JsonUtil.toJSONString(clusterInfo);
         }else{
+            HttpHeaders headers = request.headers();
+            String callerName = headers.get("Caller-Name");
+            String callerKey = headers.get("Caller-Key");
             ApiResultData apiResultData;
             try{
-                apiResultData = request(uri,requestBody);
+                apiResultData = request(uri,callerName,callerKey,requestBody);
             }catch (Exception ex){
                 logger.error("http request process error!",ex);
                 ApiResultCode apiResultCode = ApiResultCode.SystemError;
@@ -86,7 +89,7 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
-    private ApiResultData request(String uri, String requestBody) throws Exception {
+    private ApiResultData request(String uri,String callerName,String callerKey, String requestBody) throws Exception {
         if(uri.startsWith("/api/rpc/v1/")){
             String interfaceName = getInterfaceName(uri);
             switch (interfaceName) {
@@ -95,11 +98,11 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
                 case "stats":
                     return HttpProcessor.stats(requestBody);
                 case "dataQuery":
-                    return HttpProcessor.dataQuery(requestBody);
+                    return HttpProcessor.dataQuery(callerName,callerKey,requestBody);
                 case "dataQueryWithDimensList":
-                    return HttpProcessor.dataQueryWithDimensList(requestBody);
+                    return HttpProcessor.dataQueryWithDimensList(callerName,callerKey,requestBody);
                 case "limitQuery":
-                    return HttpProcessor.limitQuery(requestBody);
+                    return HttpProcessor.limitQuery(callerName,callerKey,requestBody);
             }
         }
         return new ApiResultData(ApiResultCode.ApiNotSupported.getCode(), ApiResultCode.ApiNotSupported.getMessage());
