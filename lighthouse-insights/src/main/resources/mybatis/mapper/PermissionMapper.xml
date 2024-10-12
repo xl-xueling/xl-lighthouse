@@ -145,6 +145,50 @@
                             ON cte.id = d.role_id
     </select>
 
+    <select id="checkOwnerPermission" resultType="boolean">
+        WITH RECURSIVE RoleHierarchy AS (
+            SELECT id, pid
+            FROM ldp_roles
+            WHERE id = #{roleId}
+            UNION ALL
+            SELECT r.id, r.pid
+            FROM ldp_roles r
+                     INNER JOIN RoleHierarchy rh ON r.id = rh.pid
+        ),
+                       DepartmentHierarchy AS (
+                           SELECT d.id, d.pid
+                           FROM ldp_departments d
+                           WHERE d.id = (SELECT department_id FROM ldp_users WHERE id = #{ownerId} AND #{ownerType.ownerType} = 1)
+                           UNION ALL
+                           SELECT d.id, d.pid
+                           FROM ldp_departments d
+                                    INNER JOIN DepartmentHierarchy dh ON d.id = dh.pid
+                       )
+        SELECT
+            CASE
+                WHEN EXISTS (
+                        SELECT 1
+                        FROM ldp_permissions p
+                        WHERE
+                            p.owner_id = #{ownerId}
+                          AND p.owner_type = #{ownerType.ownerType}
+                          AND p.role_id IN (SELECT id FROM RoleHierarchy)
+                          AND (p.expire_time IS NULL OR p.expire_time > NOW())
+                    ) THEN TRUE
+                WHEN #{ownerType.ownerType} = 1 AND EXISTS (
+                        SELECT 1
+                        FROM ldp_permissions p
+                        WHERE
+                            p.owner_id IN (SELECT id FROM DepartmentHierarchy)
+                          AND p.owner_type = 2
+                          AND p.role_id IN (SELECT id FROM RoleHierarchy)
+                          AND (p.expire_time IS NULL OR p.expire_time > NOW())
+                    ) THEN TRUE
+                ELSE FALSE
+                END AS has_permission
+    </select>
+
+
     <select id="queryUserManagePermission" resultMap="permissionResultMap">
         WITH RECURSIVE cte AS (
             SELECT id

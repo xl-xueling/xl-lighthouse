@@ -52,6 +52,9 @@ public class SecurityConfig {
     @Autowired
     private AuthenticationTokenFilter authenticationTokenFilter;
 
+    @Autowired
+    private CallerKeyAuthenticationFilter callerKeyAuthenticationFilter;
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
@@ -88,7 +91,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated();
         httpSecurity.headers().cacheControl();
         httpSecurity.authenticationProvider(authenticationProvider());
-        httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(callerKeyAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.exceptionHandling()
                 .accessDeniedHandler(defaultAccessDeniedHandler)
                 .authenticationEntryPoint(defaultUnauthorizedHandler);

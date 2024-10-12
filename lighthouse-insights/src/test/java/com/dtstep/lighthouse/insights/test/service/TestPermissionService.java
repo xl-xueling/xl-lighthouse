@@ -83,4 +83,13 @@ public class TestPermissionService {
         int s = permissionService.extensionPermission(id,expire);
         System.out.println("s is:" + s);
     }
+
+    @Test
+    public void testCheckOwner() throws Exception {
+        int userId = 110239;
+        int ownerType = 1;
+        int roleId = 1564;
+        boolean is = permissionDao.checkOwnerPermission(userId,OwnerTypeEnum.USER,roleId);
+        System.out.println("is:" + is);
+    }
 }

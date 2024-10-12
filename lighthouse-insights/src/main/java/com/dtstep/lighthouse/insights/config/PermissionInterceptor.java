@@ -19,6 +19,7 @@ package com.dtstep.lighthouse.insights.config;
 import com.dtstep.lighthouse.common.exception.PermissionException;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import com.dtstep.lighthouse.insights.controller.annotation.AllowCallerAccess;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.modal.Role;
@@ -35,6 +36,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,20 +58,26 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         logger.info("Request URI:" + request.getRequestURI());
+        if (handler instanceof ResourceHttpRequestHandler) {
+            return true;
+        }
         if (handler instanceof HandlerMethod) {
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
-            Method method = handlerMethod.getMethod();
-            if (method.isAnnotationPresent(AuthPermission.class)) {
-                boolean flag = false;
-                AuthPermission[] authPermissions = method.getDeclaredAnnotationsByType(AuthPermission.class);
-                for(AuthPermission authPermission : authPermissions){
-                    if(hasPermission(authPermission,request)){
-                        flag = true;
-                        break;
+            if(authentication instanceof CallerKeyAuthenticationToken || authentication instanceof SeedAuthenticationToken){
+                HandlerMethod handlerMethod = (HandlerMethod) handler;
+                Method method = handlerMethod.getMethod();
+                if (method.isAnnotationPresent(AuthPermission.class)) {
+                    boolean flag = false;
+                    AuthPermission[] authPermissions = method.getDeclaredAnnotationsByType(AuthPermission.class);
+                    for(AuthPermission authPermission : authPermissions){
+                        if(hasPermission(authPermission,request)){
+                            flag = true;
+                            break;
+                        }
                     }
+                    if(!flag){throw new PermissionException();}
                 }
-                if(!flag){throw new PermissionException();}
             }
         }
         return true;
@@ -77,7 +86,6 @@ public class PermissionInterceptor implements HandlerInterceptor {
     private boolean hasPermission(AuthPermission authPermission,HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         RoleTypeEnum roleTypeEnum = authPermission.roleTypeEnum();
-        String relatedParam = authPermission.relationParam();
         if(authentication.getClass() == SeedAuthenticationToken.class){
             Integer userId = ((SeedAuthenticationToken) authentication).getUserId();
             Role role = null;
@@ -99,6 +107,8 @@ public class PermissionInterceptor implements HandlerInterceptor {
             }
             Validate.notNull(role);
             return permissionService.checkUserPermission(userId,role.getId());
+        }else if(authentication.getClass() == CallerKeyAuthenticationToken.class){
+            System.out.println("----authentication.getClass-----");
         }
         return false;
     }

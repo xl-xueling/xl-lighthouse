@@ -19,6 +19,7 @@ package com.dtstep.lighthouse.insights.controller;
 import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.insights.controller.annotation.AllowCallerAccess;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
 import com.dtstep.lighthouse.insights.dto.ChangeStatStateParam;
 import com.dtstep.lighthouse.insights.dto.StatFilterConfigParam;
@@ -110,7 +111,6 @@ public class StatController {
         Validate.notNull(stat);
         return ResultData.success(statExtendDto);
     }
-
 
     @RequestMapping("/stat/queryByIds")
     public ResultData<List<StatVO>> queryByIds(@Validated @RequestBody IDParams idParams) throws Exception {

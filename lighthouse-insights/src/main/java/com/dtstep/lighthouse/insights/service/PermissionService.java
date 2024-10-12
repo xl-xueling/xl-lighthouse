@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.insights.service;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.entity.Owner;
 import com.dtstep.lighthouse.common.modal.AuthRecord;
 import com.dtstep.lighthouse.insights.vo.PermissionVO;
 import com.dtstep.lighthouse.insights.dto.PermissionQueryParam;
@@ -37,7 +38,10 @@ public interface PermissionService {
 
     Permission queryById(Integer id);
 
+    @Deprecated
     boolean checkUserPermission(Integer userId, Integer roleId);
+
+    boolean checkOwnerPermission(Owner owner, Integer roleId);
 
     List<Integer> queryUserPermissionsByRoleId(Integer roleId, Integer limit);
 

@@ -35,7 +35,10 @@ public interface PermissionDao {
 
     int delete(@Param("queryParam")PermissionQueryParam queryParam);
 
+    @Deprecated
     boolean checkUserPermission(Integer userId, Integer roleId);
+
+    boolean checkOwnerPermission(Integer ownerId,OwnerTypeEnum ownerType, Integer roleId);
 
     boolean existPermission(Integer ownerId, OwnerTypeEnum ownerType, Integer roleId);
 

@@ -1,4 +1,7 @@
 package com.dtstep.lighthouse.insights.service;
+
+import com.dtstep.lighthouse.common.entity.Owner;
+
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -19,4 +22,6 @@ package com.dtstep.lighthouse.insights.service;
 public interface BaseService {
 
     Integer getCurrentUserId();
+
+    Owner getCurrentOwner();
 }

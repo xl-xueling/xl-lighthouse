@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.insights.controller;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.Owner;
 import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.enums.PrivateTypeEnum;
@@ -69,12 +70,12 @@ public class DataController {
         StatExtEntity stat = statService.queryById(statId);
         Validate.notNull(stat);
         if(!BuiltinLoader.isBuiltinStat(statId) && stat.getPrivateType() == PrivateTypeEnum.Private){
-            int userId = baseService.getCurrentUserId();
+            Owner owner = baseService.getCurrentOwner();
             Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
-            boolean hasManagePermission = permissionService.checkUserPermission(userId,manageRole.getId());
+            boolean hasManagePermission = permissionService.checkOwnerPermission(owner,manageRole.getId());
             if(!hasManagePermission){
                 Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
-                boolean hasAccessPermission = permissionService.checkUserPermission(userId,accessRole.getId());
+                boolean hasAccessPermission = permissionService.checkOwnerPermission(owner,accessRole.getId());
                 if(!hasAccessPermission){
                     return ResultData.result(ResultCode.accessDenied);
                 }
@@ -98,12 +99,12 @@ public class DataController {
         StatExtEntity stat = statService.queryById(statId);
         Validate.notNull(stat);
         if(!BuiltinLoader.isBuiltinStat(statId) && stat.getPrivateType() == PrivateTypeEnum.Private){
-            int userId = baseService.getCurrentUserId();
+            Owner owner = baseService.getCurrentOwner();
             Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
-            boolean hasManagePermission = permissionService.checkUserPermission(userId,manageRole.getId());
+            boolean hasManagePermission = permissionService.checkOwnerPermission(owner,manageRole.getId());
             if(!hasManagePermission){
                 Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
-                boolean hasAccessPermission = permissionService.checkUserPermission(userId,accessRole.getId());
+                boolean hasAccessPermission = permissionService.checkOwnerPermission(owner,accessRole.getId());
                 if(!hasAccessPermission){
                     return ResultData.result(ResultCode.accessDenied);
                 }

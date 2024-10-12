@@ -66,6 +66,42 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
     return result;
 }
 
+export interface CallerInfo {
+    callerName?:string,
+    callerKey?:string,
+}
+
+export interface EnvConfig {
+    REACT_APP_BASE_URL?:string,
+    AXIOS_TIMEOUT?:number,
+}
+
+export const callerRequest = async <T>(callerInfo:CallerInfo,envConfig:EnvConfig,config): Promise<ResultData<T>> => {
+    let baseURL = envConfig.REACT_APP_BASE_URL;
+    const http = axios.create({
+        baseURL: baseURL + '/api/v1',
+        timeout: envConfig.AXIOS_TIMEOUT,
+    })
+
+    http.interceptors.request.use((config) => {
+        const language = localStorage.getItem('arco-lang');
+        config.headers['Accept-Language'] = 'en-US';
+        config.headers['callerName'] = callerInfo.callerName;
+        config.headers['callerKey'] = callerInfo.callerKey;
+        return config;
+    }, (error) => {
+        console.log(error);
+    })
+
+    let result;
+    try{
+        const response: AxiosResponse = await http.request(config);
+        result = response.data;
+    }catch (error) {
+        console.log("Error is:" + error);
+    }
+    return result;
+}
 
 
 

@@ -16,6 +16,11 @@ package com.dtstep.lighthouse.insights.service.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.Owner;
+import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
+import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.insights.config.CallerKeyAuthenticationToken;
+import com.dtstep.lighthouse.insights.config.SeedAuthenticationToken;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +32,29 @@ public class BaseServiceImpl implements BaseService {
     @Override
     public Integer getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication == null ? -1 : (Integer) authentication.getPrincipal();
+        if(authentication == null || authentication.getClass() != SeedAuthenticationToken.class){
+            return null;
+        }else{
+            return (Integer) authentication.getPrincipal();
+        }
+    }
+
+    @Override
+    public Owner getCurrentOwner() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null){
+            return null;
+        }else if(authentication.getClass() == SeedAuthenticationToken.class){
+            Owner owner = new Owner();
+            owner.setOwnerId((Integer) authentication.getPrincipal());
+            owner.setOwnerType(OwnerTypeEnum.USER);
+            return owner;
+        }else if(authentication.getClass() == CallerKeyAuthenticationToken.class){
+            Owner owner = new Owner();
+            owner.setOwnerId((Integer) authentication.getPrincipal());
+            owner.setOwnerType(OwnerTypeEnum.CALLER);
+            return owner;
+        }
+        return null;
     }
 }

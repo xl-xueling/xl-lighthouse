@@ -19,6 +19,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 
 import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.entity.Owner;
 import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
@@ -153,17 +154,17 @@ public class StatServiceImpl implements StatService {
     }
 
     private StatVO translate(StatExtEntity stat) throws Exception {
-        int userId = baseService.getCurrentUserId();
+        Owner owner = baseService.getCurrentOwner();
         StatVO statVO = new StatVO(stat);
         if(stat.isBuiltIn()){
             statVO.addPermission(PermissionEnum.AccessAble);
         }else{
             Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,stat.getId());
             Role accessRole = roleService.cacheQueryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,stat.getId());
-            if(permissionService.checkUserPermission(userId, manageRole.getId())){
+            if(permissionService.checkOwnerPermission(owner, manageRole.getId())){
                 statVO.addPermission(PermissionEnum.ManageAble);
                 statVO.addPermission(PermissionEnum.AccessAble);
-            }else if(statVO.getPrivateType() == PrivateTypeEnum.Public || permissionService.checkUserPermission(userId,accessRole.getId())){
+            }else if(statVO.getPrivateType() == PrivateTypeEnum.Public || permissionService.checkOwnerPermission(owner,accessRole.getId())){
                 statVO.addPermission(PermissionEnum.AccessAble);
             }
             Role projectManageRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,statVO.getProjectId());

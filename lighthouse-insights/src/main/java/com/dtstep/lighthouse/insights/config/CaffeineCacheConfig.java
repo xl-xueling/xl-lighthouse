@@ -45,7 +45,7 @@ public class CaffeineCacheConfig {
         CaffeineCache miniDurationCache = new CaffeineCache("ShortPeriod",Caffeine.newBuilder().recordStats()
                 .expireAfterWrite(30,TimeUnit.SECONDS).maximumSize(300000).build());
         CaffeineCache durationCache = new CaffeineCache("NormalPeriod",Caffeine.newBuilder().recordStats()
-                .expireAfterWrite(10,TimeUnit.MINUTES).maximumSize(300000).build());
+                .expireAfterWrite(5,TimeUnit.MINUTES).maximumSize(300000).build());
         caffeineCacheList.add(miniDurationCache);
         caffeineCacheList.add(durationCache);
         return caffeineCacheList;

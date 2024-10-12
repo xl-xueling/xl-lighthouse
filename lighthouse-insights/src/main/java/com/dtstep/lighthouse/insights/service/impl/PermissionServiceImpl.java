@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.insights.service.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.Owner;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
@@ -106,8 +107,15 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'checkUserPermission' + '_' + #userId + '_' + #roleId",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public boolean checkUserPermission(Integer userId, Integer roleId) {
         return permissionDao.checkUserPermission(userId,roleId);
+    }
+
+    @Override
+    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'checkOwnerPermission' + '_' + #owner.ownerId + '_' + #owner.ownerType + '_' + #roleId",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    public boolean checkOwnerPermission(Owner owner, Integer roleId) {
+        return permissionDao.checkOwnerPermission(owner.getOwnerId(),owner.getOwnerType(),roleId);
     }
 
     @Override

@@ -5,16 +5,21 @@ interface Config {
 
 let config: Config | null = null;
 
-export const loadGlobalConfig = async (): Promise<void> => {
+const loadGlobalConfig = async (configPath = null): Promise<void> => {
     if (!config) {
-        const response = await fetch('/config.json');
-        config = await response.json();
+        if(configPath){
+            const response = await fetch(configPath);
+            config = await response.json();
+        }else{
+            const response = await fetch('/config.json');
+            config = await response.json();
+        }
     }
 };
 
-export const getGlobalConfig = async (): Promise<Config> => {
+export const getGlobalConfig = async (configPath = null): Promise<Config> => {
     if (!config) {
-        await loadGlobalConfig();
+        await loadGlobalConfig(configPath);
         return config;
     }else{
         return config;

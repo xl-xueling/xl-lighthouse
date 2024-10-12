@@ -5,6 +5,7 @@ export interface Caller {
     id?:number;
     name?:string;
     desc?:string;
+    departmentId?:number;
     adminIds?:Array<number>;
     admins?:Array<User>;
     createTime?:number;
