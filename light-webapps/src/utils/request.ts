@@ -77,10 +77,10 @@ export interface EnvConfig {
 }
 
 export const callerRequest = async <T>(callerInfo:CallerInfo,envConfig:EnvConfig,config): Promise<ResultData<T>> => {
-    let baseURL = envConfig.REACT_APP_BASE_URL;
+    let baseURL = envConfig?.REACT_APP_BASE_URL;
     const http = axios.create({
         baseURL: baseURL + '/api/v1',
-        timeout: envConfig.AXIOS_TIMEOUT,
+        timeout: envConfig?.AXIOS_TIMEOUT,
     })
 
     http.interceptors.request.use((config) => {
