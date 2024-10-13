@@ -98,6 +98,9 @@ export const callerRequest = async <T>(callerInfo:CallerInfo,envConfig:EnvConfig
         result = response.data;
     }catch (error) {
         console.log("Error is:" + error);
+        result = {
+            code: error.response?error.response.status:'500',
+        };
     }
     return result;
 }
