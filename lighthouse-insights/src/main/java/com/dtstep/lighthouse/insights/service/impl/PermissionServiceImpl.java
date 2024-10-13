@@ -107,13 +107,13 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'checkUserPermission' + '_' + #userId + '_' + #roleId",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    @Cacheable(value = "MidPeriod",key = "#targetClass + '_' + 'checkUserPermission' + '_' + #userId + '_' + #roleId",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public boolean checkUserPermission(Integer userId, Integer roleId) {
         return permissionDao.checkUserPermission(userId,roleId);
     }
 
     @Override
-    @Cacheable(value = "NormalPeriod",key = "#targetClass + '_' + 'checkOwnerPermission' + '_' + #owner.ownerId + '_' + #owner.ownerType + '_' + #roleId",cacheManager = "caffeineCacheManager",unless = "#result == null")
+    @Cacheable(value = "MidPeriod",key = "#targetClass + '_' + 'checkOwnerPermission' + '_' + #owner.ownerId + '_' + #owner.ownerType + '_' + #roleId",cacheManager = "caffeineCacheManager",unless = "#result == null")
     public boolean checkOwnerPermission(Owner owner, Integer roleId) {
         return permissionDao.checkOwnerPermission(owner.getOwnerId(),owner.getOwnerType(),roleId);
     }

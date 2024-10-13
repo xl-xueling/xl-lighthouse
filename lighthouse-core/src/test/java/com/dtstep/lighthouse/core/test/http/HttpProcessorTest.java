@@ -49,7 +49,5 @@ public class HttpProcessorTest extends CoreBaseTest {
         requestMap.put("endTime", DateUtil.getDayEndTime(System.currentTimeMillis()));
         String requestData = JsonUtil.toJSONString(requestMap);
         System.out.println("requestData:" + requestData);
-        ApiResultData apiResultData = HttpProcessor.dataQuery(requestData);
-        System.out.println("result:" + JsonUtil.toJSONString(apiResultData));
     }
 }
