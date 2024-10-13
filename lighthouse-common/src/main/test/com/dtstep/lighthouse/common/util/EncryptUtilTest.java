@@ -25,4 +25,22 @@ public class EncryptUtilTest {
         System.out.println("original:" + original);
 
     }
+
+    @Test
+    public void testAes() throws Exception {
+        AesUtil aesUtil = new AesUtil(128, 1000);
+        String  passphrase = "yourPassphrase";
+        String plaintext = "Hello, world!";
+        String s = aesUtil.encrypt(passphrase,plaintext);
+        System.out.println("s is:" + s);
+    }
+
+    @Test
+    public void testAes2() throws Exception{
+        AesUtil aesUtil = new AesUtil(128, 1000);
+        String s = "W93HKKdkZy8KlllgSfb6nQ==";
+        String  passphrase = "yourPassphrase";
+        String s2 = aesUtil.decrypt(passphrase,s);
+        System.out.println("s2:" + s2);
+    }
 }
