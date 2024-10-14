@@ -20,7 +20,7 @@ import {Caller} from "@/types/caller";
 import {getColumns} from "./Constants";
 import CallerUpdateModal from "@/pages/caller/update";
 import useLocale from "@/utils/useLocale";
-import KeepAlive, {useActivate, useUnactivate} from "react-activation";
+import {KeepAlive, useAliveController} from "react-activation";
 const InputSearch = Input.Search;
 import { useLocation, useHistory } from 'react-router-dom';
 import CallerListPanel from "@/pages/caller/list/list";

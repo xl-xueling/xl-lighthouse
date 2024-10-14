@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import KeepAlive from "react-activation";
+import {KeepAlive, useAliveController} from "react-activation";
 import { Button } from "@arco-design/web-react";
 
 export default function TempIndex() {

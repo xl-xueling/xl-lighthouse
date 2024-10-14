@@ -41,7 +41,7 @@ import {TbBrandVisualStudio, TbCalendarTime} from "react-icons/tb";
 import {FiSettings} from "react-icons/fi";
 import UserSettings from "@/pages/user/settings";
 import CallerManage from "@/pages/caller/manage";
-import KeepAlive, {AliveScope} from "react-activation";
+import {KeepAlive,AliveScope} from "react-activation";
 import TempIndex from "@/pages/temp";
 
 const MenuItem = Menu.Item;

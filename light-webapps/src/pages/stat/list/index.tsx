@@ -9,7 +9,7 @@ import locale from "./locale";
 import SearchForm from "@/pages/stat/list/form";
 import {IconHome} from "@arco-design/web-react/icon";
 import StatList from "@/pages/stat/list/list";
-import KeepAlive, {useAliveController} from "react-activation";
+import {KeepAlive, useAliveController} from "react-activation";
 import {useHistory } from 'react-router-dom';
 const BreadcrumbItem = Breadcrumb.Item;
 
