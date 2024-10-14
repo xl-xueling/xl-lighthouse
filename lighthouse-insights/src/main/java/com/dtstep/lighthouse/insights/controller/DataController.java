@@ -38,10 +38,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -64,7 +61,7 @@ public class DataController {
     @Autowired
     private StatService statService;
 
-    @PostMapping("/data/stat")
+    @RequestMapping("/data/stat")
     public ResultData<List<StatDataObject>> dataQuery(@Validated @RequestBody DataStatQueryParam queryParam) throws Exception{
         int statId = queryParam.getStatId();
         StatExtEntity stat = statService.queryById(statId);
@@ -93,7 +90,7 @@ public class DataController {
         }
     }
 
-    @PostMapping("/data/limit")
+    @RequestMapping("/data/limit")
     public ResultData<List<LimitDataObject>> limitQuery(@Validated @RequestBody LimitStatQueryParam queryParam) throws Exception {
         int statId = queryParam.getStatId();
         StatExtEntity stat = statService.queryById(statId);
@@ -115,57 +112,6 @@ public class DataController {
             batchTimeList = BatchAdapter.queryBatchTimeList(stat.getTimeparam(),0,System.currentTimeMillis(),10);
         }
         List<LimitDataObject> objectList = dataService.limitQuery(stat,batchTimeList);
-        return ResultData.success(objectList);
-    }
-
-    @PostMapping("/test-data/stat")
-    public ResultData<List<StatDataObject>> testDataQuery(@Validated @RequestBody DataStatQueryParam queryParam) throws Exception{
-        int statId = queryParam.getStatId();
-        StatExtEntity statExtEntity = statService.queryById(statId);
-        Validate.notNull(statExtEntity);
-        if(!BuiltinLoader.isBuiltinStat(statId) && statExtEntity.getPrivateType() == PrivateTypeEnum.Private){
-            int userId = baseService.getCurrentUserId();
-            Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
-            boolean hasManagePermission = permissionService.checkUserPermission(userId,manageRole.getId());
-            if(!hasManagePermission){
-                Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
-                boolean hasAccessPermission = permissionService.checkUserPermission(userId,accessRole.getId());
-                if(!hasAccessPermission){
-                    return ResultData.result(ResultCode.accessDenied);
-                }
-            }
-        }
-        List<String> dimensList = dataService.dimensArrangement(statExtEntity,queryParam.getDimensParams());
-        ServiceResult<List<StatDataObject>> serviceResult = dataService.testDataQuery(statExtEntity,queryParam.getStartTime(),queryParam.getEndTime(),dimensList);
-        if(serviceResult.isSuccess()){
-            return ResultData.success(serviceResult.getData());
-        }else{
-            return ResultData.result(serviceResult.getResultCode());
-        }
-    }
-
-    @PostMapping("/test-data/limit")
-    public ResultData<List<LimitDataObject>> testLimitQuery(@Validated @RequestBody LimitStatQueryParam queryParam) throws Exception {
-        int statId = queryParam.getStatId();
-        StatExtEntity stat = statService.queryById(statId);
-        Validate.notNull(stat);
-        if(!BuiltinLoader.isBuiltinStat(statId) && stat.getPrivateType() == PrivateTypeEnum.Private){
-            int userId = baseService.getCurrentUserId();
-            Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
-            boolean hasManagePermission = permissionService.checkUserPermission(userId,manageRole.getId());
-            if(!hasManagePermission){
-                Role accessRole = roleService.queryRole(RoleTypeEnum.STAT_ACCESS_PERMISSION,statId);
-                boolean hasAccessPermission = permissionService.checkUserPermission(userId,accessRole.getId());
-                if(!hasAccessPermission){
-                    return ResultData.result(ResultCode.accessDenied);
-                }
-            }
-        }
-        List<Long> batchTimeList = queryParam.getBatchTimeList();
-        if(CollectionUtils.isEmpty(batchTimeList)){
-            batchTimeList = BatchAdapter.queryBatchTimeList(stat.getTimeparam(),0,System.currentTimeMillis(),10);
-        }
-        List<LimitDataObject> objectList = dataService.testLimitQuery(stat,batchTimeList);
         return ResultData.success(objectList);
     }
 }
