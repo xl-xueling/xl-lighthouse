@@ -7,10 +7,6 @@ import styles from './style/index.module.less';
 function Exception403({fromExternalEmbedding = false}) {
   const t = useLocale(locale);
 
-  useEffect(() => {
-      console.log("fromExternalEmbedding:" + fromExternalEmbedding)
-  },[fromExternalEmbedding])
-
   return (
       <div className={fromExternalEmbedding?styles.externalEmbeddingWrapper : styles.wrapper}>
           <Result
