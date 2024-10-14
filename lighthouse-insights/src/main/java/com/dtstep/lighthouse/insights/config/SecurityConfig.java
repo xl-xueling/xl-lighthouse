@@ -24,19 +24,12 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-
-import javax.servlet.ServletContext;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -52,9 +45,6 @@ public class SecurityConfig {
     @Autowired
     private AuthenticationTokenFilter authenticationTokenFilter;
 
-    @Autowired
-    private CallerKeyAuthenticationFilter callerKeyAuthenticationFilter;
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
@@ -64,11 +54,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public AuthenticationTokenFilter authenticationTokenFilter() {
-//        return new AuthenticationTokenFilter();
-//    }
 
     @Bean
     public DefaultAuthenticationProvider authenticationProvider(){
@@ -91,8 +76,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated();
         httpSecurity.headers().cacheControl();
         httpSecurity.authenticationProvider(authenticationProvider());
-        httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                    .addFilterBefore(callerKeyAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.exceptionHandling()
                 .accessDeniedHandler(defaultAccessDeniedHandler)
                 .authenticationEntryPoint(defaultUnauthorizedHandler);
