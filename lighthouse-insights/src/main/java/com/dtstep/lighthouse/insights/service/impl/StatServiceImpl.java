@@ -186,7 +186,7 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public List<StatVO> queryByIds(List<Integer> ids) throws Exception{
+    public List<StatVO> queryByIds(List<Integer> ids) throws Exception {
         List<StatVO> voList = new ArrayList<>();
         List<Integer> builtInIds = ids.stream().filter(BuiltinLoader::isBuiltinStat).collect(toList());
         List<Integer> nonBuiltInIds = ids.stream().filter(x -> !builtInIds.contains(x)).collect(toList());

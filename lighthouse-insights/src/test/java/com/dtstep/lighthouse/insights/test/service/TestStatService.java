@@ -60,7 +60,7 @@ public class TestStatService {
 
     @Test
     public void testQueryByIds() throws Exception {
-        Integer[] ids = new Integer[]{1031,1032,1033,1034};
+        Integer[] ids = new Integer[]{1031,1032,1033,1034,1100619};
         List<StatVO> voList = statService.queryByIds(Arrays.asList(ids.clone()));
         for(StatVO statVO : voList){
             System.out.println("statVo is:" + JsonUtil.toJSONString(statVO));
