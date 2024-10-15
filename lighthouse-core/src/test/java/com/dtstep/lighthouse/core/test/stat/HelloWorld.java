@@ -36,7 +36,7 @@ public class HelloWorld {
     @Test
     public void helloWorld() throws Exception {
         long t = System.currentTimeMillis();
-        for(int i = 0;i<1000000;i++){
+        for(int i = 0;i<100000;i++){
             //修改统计组参数值、Token和秘钥
             Map<String,Object> map = new HashMap<>();
             map.put("uid",RandomID.id(6));

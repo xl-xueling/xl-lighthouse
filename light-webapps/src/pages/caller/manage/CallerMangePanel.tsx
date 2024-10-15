@@ -95,7 +95,7 @@ export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
                     </Card>
                     {
                         !loading &&
-                            <Tabs defaultActiveTab='2' extra={
+                            <Tabs defaultActiveTab='1' extra={
                                 <Space size={1}>
                                     <Button type={"secondary"}  size={"mini"} icon={<FiEdit/>} onClick={() => setShowUpdateModal(true)}>{t['callerManage.button.update']}</Button>
                                     <Button type={"secondary"}  size={"mini"} icon={getIcon('permission')} onClick={() => setShowPermissionManageModal(true)}>{t['callerManage.button.permission']}</Button>
