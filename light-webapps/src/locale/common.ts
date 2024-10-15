@@ -2,6 +2,9 @@ const vi18n = {
     'en-US': {
         'system.error':'System Error!',
         'system.error.403':'Access to this resource on the server is denied.',
+        'api.result.0':'Success',
+        'api.result.1':'Params verify failed',
+        'api.result.2':'System Error',
         'basic.form.button.search':'Search',
         'basic.form.button.reset':'Reset',
         'basic.form.button.submit':'Submit',
@@ -165,6 +168,9 @@ const vi18n = {
     'zh-CN': {
         'system.error':'系统异常!',
         'system.error.403':'对不起，您没有访问该资源的权限！',
+        'api.result.0':'成功',
+        'api.result.1':'参数校验错误',
+        'api.result.2':'系统异常',
         'basic.form.button.search':'搜索',
         'basic.form.button.reset':'重置',
         'basic.form.button.submit':'确定',

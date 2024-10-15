@@ -48,6 +48,8 @@ const i18n = {
     'callerPreview.stat.title.1034':'10_minute_call_outbytes',
     'callerPreview.stat.title.1035':'10_minute_call_from_stat',
     'callerPreview.stat.title.1036':'10_minute_call_status_stat',
+    'callerPreview.from.0':'API Call',
+    'callerPreview.from.1':'External Embedding',
   },
   'zh-CN': {
     'callerManage.title':'调用方管理',
@@ -98,6 +100,8 @@ const i18n = {
     'callerPreview.stat.title.1034':'每10分钟_返回数据量',
     'callerPreview.stat.title.1035':'每10分钟_各来源_调用次数',
     'callerPreview.stat.title.1036':'每10分钟_各执行状态_调用次数',
+    'callerPreview.from.0':'接口调用',
+    'callerPreview.from.1':'外部页面嵌入',
   },
 };
 
