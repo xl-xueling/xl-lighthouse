@@ -38,7 +38,7 @@ public class TestClient {
         String token = "_builtin_caller_stat";
         for(int i=0;i<1000;i++){
             HashMap<String,Object> paramMap = new HashMap<>();
-            paramMap.put("callerName","caller:lighthouse_test_call");
+            paramMap.put("callerName","11034");
             paramMap.put("function","dataQuery");
             paramMap.put("from", ThreadLocalRandom.current().nextInt(2));
             paramMap.put("status", ThreadLocalRandom.current().nextInt(3));

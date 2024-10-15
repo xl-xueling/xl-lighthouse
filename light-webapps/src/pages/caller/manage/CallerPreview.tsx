@@ -1,12 +1,17 @@
 import React, {useContext, useEffect, useState} from "react";
 import {CallerManageContext} from "@/pages/common/context";
-import {Card,Notification} from "@arco-design/web-react";
+import {Card, Grid, Notification} from "@arco-design/web-react";
 import {requestQueryByIds} from "@/api/stat";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/caller/manage/locale";
 import {handlerFetchStatData} from "@/pages/stat/preview/common";
 import {useUpdateEffect} from "ahooks";
 import {stringifyMap} from "@/utils/util";
+import StatBasicLineChart from "@/pages/stat/preview/line_chart_v1";
+import {GlobalContext} from "@/context";
+import Exception100 from "@/pages/exception/100";
+
+const { Row, Col } = Grid;
 
 export default function CallerPreviewPanel({}){
 
@@ -20,9 +25,15 @@ export default function CallerPreviewPanel({}){
 
     const [statsData,setStatsData] = useState(new Map());
 
-    const statIds = [1031];
+    const statIds = [1031,1032,1033,1034,1035,1036];
 
-    const [formParams,setFormParams] = useState<any>({"callerName":["caller:lighthouse_test_call"],"function":["dataQuery"]});
+    const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
+
+    const [formParams,setFormParams] = useState<any>({"callerName":["11034"],"function":["dataQuery"]});
+
+    const [errorInfo,setErrorInfo] = useState<string>(null);
+
+
 
     const fetchStatsInfo = async () => {
         setLoading(true);
@@ -45,16 +56,21 @@ export default function CallerPreviewPanel({}){
 
     const fetchStatsData = async () => {
         setLoading(true);
+        const statsDataMap = new Map();
         for (const statId of statIds) {
             const statInfo = statsInfo.get(String(statId));
-            const statChartData = await handlerFetchStatData(statInfo,formParams);
+            let queryParams = formParams;
+            if(statId == 1035){
+                queryParams = {...formParams,"from":['0','1']}
+            }
+            const statChartData = await handlerFetchStatData(statInfo,queryParams);
             if(statChartData.code == '0'){
-
+                statsDataMap.set(String(statId),statChartData.data);
             }else{
-                // setStatChartData(null);
-                // setStatChartErrorMessage(statChartData.message);
+                setErrorInfo(statChartData.message);
             }
         }
+        setStatsData(statsDataMap);
         setLoading(false);
     }
 
@@ -64,13 +80,59 @@ export default function CallerPreviewPanel({}){
         }
     },[statsInfo])
 
+    const getTitle = (statId,indicatorIndex) => {
+        let title;
+        if(statId == '1031'){
+            title = '每分钟_各接口_调用量';
+        }else if(statId == '1032'){
+            title = '每10分钟_各接口_调用量';
+        }else if(statId == '1033'){
+            title = '每10分钟_各接口_请求数据量';
+        }else if(statId == '1034'){
+            title = '每10分钟_各接口_返回数据量';
+        }else if(statId == '1035'){
+            title = '每10分钟_各来源_各接口调用量';
+        }else if(statId == '1036'){
+            title = '每10分钟_各接口_执行状态统计';
+        }
+        return title;
+    }
+
+    const getIndicatorCharts = (statId,indicatorIndex) => {
+        return <Col span={12} style={{marginTop:'15px'}}>
+            <Card title={
+                <Grid.Row gutter={8}>
+                    <Grid.Col span={20}>
+                        {getTitle(statId,indicatorIndex)}
+                    </Grid.Col>
+                </Grid.Row>
+            }>
+                <StatBasicLineChart theme={theme} size={'mini'} data={statsData.get(String(statId))} stateIndex={indicatorIndex - 1} errorMessage={null} loading={loading} group={'sameGroup'}/>
+            </Card>
+        </Col>
+    }
+
     useEffect(() => {
-        fetchStatsInfo().then();
+        if(callerInfo == null){
+            setErrorInfo('页面无法访问！');
+        }else{
+            fetchStatsInfo().then();
+        }
     },[])
 
     return (
-        <Card>
-
-        </Card>
+        <>
+            {
+                errorInfo ? <Exception100 errorMessage={errorInfo}/>:
+                    <Row gutter={16}>
+                        {getIndicatorCharts(1031,0)}
+                        {getIndicatorCharts(1032,0)}
+                        {getIndicatorCharts(1033,0)}
+                        {getIndicatorCharts(1034,0)}
+                        {getIndicatorCharts(1035,0)}
+                        {getIndicatorCharts(1036,0)}
+                    </Row>
+            }
+        </>
     )
 }
