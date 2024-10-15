@@ -1,6 +1,7 @@
 const vi18n = {
     'en-US': {
         'system.error':'System Error!',
+        'system.error.403':'Access to this resource on the server is denied.',
         'basic.form.button.search':'Search',
         'basic.form.button.reset':'Reset',
         'basic.form.button.submit':'Submit',
@@ -163,6 +164,7 @@ const vi18n = {
     },
     'zh-CN': {
         'system.error':'系统异常!',
+        'system.error.403':'对不起，您没有访问该资源的权限！',
         'basic.form.button.search':'搜索',
         'basic.form.button.reset':'重置',
         'basic.form.button.submit':'确定',

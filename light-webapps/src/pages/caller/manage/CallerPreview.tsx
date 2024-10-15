@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {CallerManageContext} from "@/pages/common/context";
-import {Card, Grid, Notification} from "@arco-design/web-react";
+import {Card, Grid, Notification,Typography} from "@arco-design/web-react";
 import {requestQueryByIds} from "@/api/stat";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/caller/manage/locale";
@@ -33,8 +33,6 @@ export default function CallerPreviewPanel({}){
 
     const [errorInfo,setErrorInfo] = useState<string>(null);
 
-
-
     const fetchStatsInfo = async () => {
         setLoading(true);
         await requestQueryByIds({ids:statIds}).then((response) => {
@@ -62,6 +60,8 @@ export default function CallerPreviewPanel({}){
             let queryParams = formParams;
             if(statId == 1035){
                 queryParams = {...formParams,"from":['0','1']}
+            }else if(statId == 1036){
+                queryParams = {...formParams,"status":['0','1','2']}
             }
             const statChartData = await handlerFetchStatData(statInfo,queryParams);
             if(statChartData.code == '0'){
@@ -83,17 +83,17 @@ export default function CallerPreviewPanel({}){
     const getTitle = (statId,indicatorIndex) => {
         let title;
         if(statId == '1031'){
-            title = '每分钟_各接口_调用量';
+            title = t['callerPreview.stat.title.1031'];
         }else if(statId == '1032'){
-            title = '每10分钟_各接口_调用量';
+            title = t['callerPreview.stat.title.1032'];
         }else if(statId == '1033'){
-            title = '每10分钟_各接口_请求数据量';
+            title = t['callerPreview.stat.title.1033'];
         }else if(statId == '1034'){
-            title = '每10分钟_各接口_返回数据量';
+            title =  t['callerPreview.stat.title.1034'];
         }else if(statId == '1035'){
-            title = '每10分钟_各来源_各接口调用量';
+            title = t['callerPreview.stat.title.1035'];
         }else if(statId == '1036'){
-            title = '每10分钟_各接口_执行状态统计';
+            title = t['callerPreview.stat.title.1036'];
         }
         return title;
     }
@@ -103,7 +103,9 @@ export default function CallerPreviewPanel({}){
             <Card title={
                 <Grid.Row gutter={8}>
                     <Grid.Col span={20}>
-                        {getTitle(statId,indicatorIndex)}
+                        <Typography.Title style={{ fontSize: 14 }}>
+                            {getTitle(statId,indicatorIndex)}
+                        </Typography.Title>
                     </Grid.Col>
                 </Grid.Row>
             }>
@@ -114,7 +116,7 @@ export default function CallerPreviewPanel({}){
 
     useEffect(() => {
         if(callerInfo == null){
-            setErrorInfo('页面无法访问！');
+            setErrorInfo(t['system.error.403']);
         }else{
             fetchStatsInfo().then();
         }

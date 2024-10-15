@@ -41,6 +41,13 @@ const i18n = {
     'callerManage.extension.label.stat':'Stat',
     'callerManage.extension.label.reason':'Reason',
     'callerManage.callerKey.title':'APICaller Secret Key',
+
+    'callerPreview.stat.title.1031':'1_minute_call_size',
+    'callerPreview.stat.title.1032':'10_minute_call_size',
+    'callerPreview.stat.title.1033':'10_minute_call_inbytes',
+    'callerPreview.stat.title.1034':'10_minute_call_outbytes',
+    'callerPreview.stat.title.1035':'10_minute_call_from_stat',
+    'callerPreview.stat.title.1036':'10_minute_call_status_stat',
   },
   'zh-CN': {
     'callerManage.title':'调用方管理',
@@ -84,6 +91,13 @@ const i18n = {
     'callerManage.authAdd.label.view':'数据视图',
     'callerManage.extension.label.reason':'申请原因',
     'callerManage.callerKey.title':'调用方秘钥',
+
+    'callerPreview.stat.title.1031':'每分钟_调用次数',
+    'callerPreview.stat.title.1032':'每10分钟_调用次数',
+    'callerPreview.stat.title.1033':'每10分钟_请求数据量',
+    'callerPreview.stat.title.1034':'每10分钟_返回数据量',
+    'callerPreview.stat.title.1035':'每10分钟_各来源_调用次数',
+    'callerPreview.stat.title.1036':'每10分钟_各执行状态_调用次数',
   },
 };
 

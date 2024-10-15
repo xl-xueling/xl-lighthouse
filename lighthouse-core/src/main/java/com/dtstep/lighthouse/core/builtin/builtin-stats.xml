@@ -66,7 +66,7 @@
         </monitor-item>
         <monitor-item id="1032" timeparam="10-minute" renderConfig='{"filters":[{"componentType":5,"label":"callerId","dimens":"callerId","componentId":0},{"componentType":5,"label":"function","dimens":"function","componentId":0}]}'>
             <template>
-                <stat-item title="10_minute_call(top50)" stat="count()" dimens="callerId;function" limit="top50"/>
+                <stat-item title="10_minute_call_size(top50)" stat="count()" dimens="callerId;function" limit="top50"/>
             </template>
         </monitor-item>
         <monitor-item id="1033" timeparam="10-minute" renderConfig='{"filters":[{"componentType":5,"label":"callerId","dimens":"callerId","componentId":0},{"componentType":5,"label":"function","dimens":"function","componentId":0}]}'>
