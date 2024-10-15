@@ -1,4 +1,4 @@
-package com.dtstep.lighthouse.common.util;
+package com.dtstep.lighthouse.core.tools;
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,20 +16,17 @@ package com.dtstep.lighthouse.common.util;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import java.lang.instrument.Instrumentation;
 
+import org.apache.lucene.util.RamUsageEstimator;
 
 public class ObjectSize {
-    private static volatile Instrumentation instru;
 
-    public static void premain(String args, Instrumentation inst) {
-        instru = inst;
-    }
-
-    public static Long getSizeOf(Object object) {
-        if (instru == null) {
-            throw new IllegalStateException("Instrumentation is null");
+    public static long getObjectSize(Object object) {
+        if (object == null) {
+            return 0L;
         }
-        return instru.getObjectSize(object);
+        return RamUsageEstimator.sizeOf(object);
     }
+
+
 }

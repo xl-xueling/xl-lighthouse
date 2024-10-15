@@ -27,7 +27,7 @@ import java.util.Map;
 
 public interface RPCServer {
 
-    void authVerification(String callerName, String callerKey, int resourceId, ResourceTypeEnum resourceTypeEnum) throws Exception;
+    int authVerification(String callerName, String callerKey, int resourceId, ResourceTypeEnum resourceTypeEnum) throws Exception;
 
     GroupVerifyEntity queryGroupInfo(String token) throws Exception;
 

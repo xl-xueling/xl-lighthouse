@@ -44,6 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public class RPCServerImpl implements RPCServer {
     private static final DisruptorEventProducer eventProducer = new DisruptorEventProducer();
 
     @Override
-    public void authVerification(String callerName, String callerKey, int resourceId, ResourceTypeEnum resourceTypeEnum) throws Exception {
+    public int authVerification(String callerName, String callerKey, int resourceId, ResourceTypeEnum resourceTypeEnum) throws Exception {
         if(StringUtil.isEmpty(callerName)){
             throw new IllegalArgumentException("Missing required parameters[callerName]!");
         }
@@ -76,6 +77,7 @@ public class RPCServerImpl implements RPCServer {
         if(!hasPermission){
             throw new PermissionException("Api caller[" + callerName + "] does not have access authorization!");
         }
+        return caller.getId();
     }
 
     @Override
