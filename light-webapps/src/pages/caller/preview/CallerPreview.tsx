@@ -62,7 +62,7 @@ export default function CallerPreviewPanel({}){
             if(statId == 1035){
                 queryParams = {...formParams,"from":['0' + ',' + t['callerPreview.from.0'] , '1'  + ',' + t['callerPreview.from.1']]}
             }else if(statId == 1036){
-                queryParams = {...formParams,"status":['0'+ ',' + t['api.result.0'] , '1'+ ',' + t['api.result.1'] , '2'+ ',' + t['api.result.2']]}
+                queryParams = {...formParams,"status":['0'+ ',' + t['api.result.0'] , '1'+ ',' + t['api.result.1']]}
             }
             const statChartData = await handlerFetchStatData(statInfo,queryParams);
             if(statChartData.code == '0'){
