@@ -107,8 +107,6 @@ public class PermissionInterceptor implements HandlerInterceptor {
             }
             Validate.notNull(role);
             return permissionService.checkUserPermission(userId,role.getId());
-        }else if(authentication.getClass() == CallerKeyAuthenticationToken.class){
-            System.out.println("----authentication.getClass-----");
         }
         return false;
     }
