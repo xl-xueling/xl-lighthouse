@@ -12,7 +12,7 @@ const i18n = {
         'statDisplay.breadcrumbItem':'数据指标',
         'statDisplay.label.statistic.information':'统计信息',
         'statDisplay.filterConfig.warning.dateParam':'请设置日期筛选参数！',
-        'statDisplay.filterConfig.warning.otherParam':'请设置[%s]筛选参数！',
+        'statDisplay.filterConfig.warning.otherParam':'请选择[%s]筛选参数！',
         'statDisplay.filterConfig.warning':'请设置筛选条件！',
         'statDisplay.limit.title':'Limit统计',
         'statDisplay.chart.empty.warning':'暂无数据！',

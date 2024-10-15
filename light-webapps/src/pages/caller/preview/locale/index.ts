@@ -9,6 +9,8 @@ const i18n = {
         'callerPreview.from.0':'API Call',
         'callerPreview.from.1':'External Embedding',
         'callerPreview.label.function':'Function',
+        'callerPreview.filterConfig.warning.dateParam':'Please set[date] filter parameter!',
+        'callerPreview.filterConfig.warning.otherParam':'Please set[%s] filter parameter!',
     },
     'zh-CN': {
         'callerPreview.stat.title.1031':'每分钟_调用次数',
@@ -20,6 +22,8 @@ const i18n = {
         'callerPreview.from.0':'接口调用',
         'callerPreview.from.1':'外部页面嵌入',
         'callerPreview.label.function':'接口',
+        'callerPreview.filterConfig.warning.dateParam':'请设置日期筛选参数！',
+        'callerPreview.filterConfig.warning.otherParam':'请选择[%s]筛选参数！',
     },
 };
 

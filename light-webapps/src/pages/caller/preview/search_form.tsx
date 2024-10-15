@@ -55,12 +55,12 @@ const SearchForm = React.forwardRef(( props:{size,onSearch,statInfo,initValues},
         const values = form.getFieldsValue();
         const dateValue = values.date;
         if(!values.date){
-            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['statDisplay.filterConfig.warning.dateParam']});
+            Notification.warning({style: { width: 420 }, title: 'Warning', content: t['callerPreview.filterConfig.warning.dateParam']});
             return;
         }
         const dimensParam = values['function'];
         if(!dimensParam || dimensParam.length == 0){
-            Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['statDisplay.filterConfig.warning.otherParam'],'function')});
+            Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['callerPreview.filterConfig.warning.otherParam'],t['callerPreview.label.function'])});
             return;
         }
         onSearch(values);
