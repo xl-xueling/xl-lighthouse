@@ -17,6 +17,7 @@ import useLocale from "@/utils/useLocale";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
 import { IoExtensionPuzzleOutline } from "react-icons/io5";
+import {PiSparkleLight} from "react-icons/pi";
 
 
 
@@ -52,7 +53,7 @@ export default function Header({callerInfo}){
                         <Row>
                             <Grid.Col span={15}>
                                 <span style={{display:"inline-flex",alignItems:"center"}}>
-                                    <Button icon={<IoExtensionPuzzleOutline size={15}/>} shape={"circle"} size={"small"} style={{marginRight:'10px',marginBottom:'7px'}}/>
+                                    <Button icon={<PiSparkleLight style={{strokeWidth:'7px'}} size={15}/>} shape={"circle"} size={"small"} style={{marginRight:'10px',marginBottom:'7px'}}/>
                                     <Typography.Title
                                         heading={6}
                                         style={{marginTop:'0px'}}

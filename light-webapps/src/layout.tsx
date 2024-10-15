@@ -43,6 +43,7 @@ import UserSettings from "@/pages/user/settings";
 import CallerManage from "@/pages/caller/manage";
 import {KeepAlive,AliveScope} from "react-activation";
 import TempIndex from "@/pages/temp";
+import {VscTools} from "react-icons/vsc";
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
@@ -73,7 +74,7 @@ function getIconFromKey(key) {
     case 'order':
       return <TbCalendarTime size={17} style={{marginRight: '15px',strokeWidth: '2px',opacity:0.9}} className={styles.icon}/>;
     case 'toolbox':
-      return <PiSparkleLight size={17} style={{marginRight: '15px',strokeWidth: '8px',opacity:0.9}} className={styles.icon}/>
+      return <VscTools size={16} style={{marginRight: '15px',strokeWidth: '0.2px',opacity:0.9}} className={styles.icon}/>
     case 'stat':
       return <IconApps className={styles.icon}/>;
     case 'filter':
