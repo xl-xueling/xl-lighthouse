@@ -16,6 +16,9 @@ import Text from "@arco-design/web-react/es/Typography/text";
 import useLocale from "@/utils/useLocale";
 import {DateTimeFormat, formatTimeStamp} from "@/utils/date";
 import UserGroup from "@/pages/user/common/groups";
+import { IoExtensionPuzzleOutline } from "react-icons/io5";
+
+
 
 export default function Header({callerInfo}){
 
@@ -49,7 +52,7 @@ export default function Header({callerInfo}){
                         <Row>
                             <Grid.Col span={15}>
                                 <span style={{display:"inline-flex",alignItems:"center"}}>
-                                    <Button icon={<VscTools size={14}/>} shape={"circle"} size={"small"} style={{marginRight:'10px',marginBottom:'7px'}}/>
+                                    <Button icon={<IoExtensionPuzzleOutline size={15}/>} shape={"circle"} size={"small"} style={{marginRight:'10px',marginBottom:'7px'}}/>
                                     <Typography.Title
                                         heading={6}
                                         style={{marginTop:'0px'}}
