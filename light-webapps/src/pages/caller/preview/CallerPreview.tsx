@@ -30,7 +30,7 @@ export default function CallerPreviewPanel({}){
 
     const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
 
-    const [formParams,setFormParams] = useState<any>({"callerName":["11034"],"function":["dataQuery"]});
+    const [formParams,setFormParams] = useState<any>({callerId:[String(callerInfo?.id)],function:['dataQuery']});
 
     const [errorInfo,setErrorInfo] = useState<string>(null);
 
@@ -75,12 +75,6 @@ export default function CallerPreviewPanel({}){
         setLoading(false);
     }
 
-    useUpdateEffect(() => {
-        if(statsInfo && statsInfo.size > 0){
-            fetchStatsData().then();
-        }
-    },[statsInfo])
-
     const getTitle = (statId,indicatorIndex) => {
         let title;
         if(statId == '1031'){
@@ -115,6 +109,12 @@ export default function CallerPreviewPanel({}){
         </Col>
     }
 
+    useUpdateEffect(() => {
+        if(statsInfo && statsInfo.size > 0){
+            fetchStatsData().then();
+        }
+    },[statsInfo,JSON.stringify(formParams)])
+
     useEffect(() => {
         if(callerInfo == null){
             setErrorInfo(t['system.error.403']);
@@ -124,13 +124,13 @@ export default function CallerPreviewPanel({}){
     },[])
 
     const onSearch = (v) => {
-        setFormParams({...v,"callerName":["11034"]});
+        setFormParams({...v,"callerId":[String(callerInfo?.id)]});
     }
 
     return (
         <>
             <Card style={{paddingTop:'20px'}}>
-                {statsInfo.get(String(1031)) && <SearchForm size={'small'} onSearch={onSearch} statInfo={statsInfo.get(String(1031))}/>}
+                {statsInfo.get(String(1031)) && <SearchForm size={'small'} onSearch={onSearch} statInfo={statsInfo.get(String(1031))} initValues={{function:['dataQuery,dataQuery']}}/>}
             </Card>
             {
                 errorInfo ? <Exception100 errorMessage={errorInfo}/>:
