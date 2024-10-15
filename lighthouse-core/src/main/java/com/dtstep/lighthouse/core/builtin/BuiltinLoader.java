@@ -151,9 +151,10 @@ public final class BuiltinLoader {
             List<Column> columnList = new ArrayList<>();
             for(Element columnElement : columnElements){
                 String columnName = columnElement.attr("name");
+                String columnType = columnElement.attr("type");
                 Column metaColumn = new Column();
                 metaColumn.setName(columnName);
-                metaColumn.setType(ColumnTypeEnum.STRING);
+                metaColumn.setType(columnType != null && columnType.equals("number") ? ColumnTypeEnum.NUMBER : ColumnTypeEnum.STRING);
                 columnList.add(metaColumn);
             }
             Map<String,ColumnTypeEnum> columnHashMap = columnList.stream().collect(Collectors.toMap(Column::getName, Column::getType));

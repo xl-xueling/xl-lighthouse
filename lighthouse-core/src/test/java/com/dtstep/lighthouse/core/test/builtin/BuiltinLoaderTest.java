@@ -5,12 +5,13 @@ import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
+import com.dtstep.lighthouse.core.test.CoreBaseTest;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.UUID;
 
-public class BuiltinLoaderTest {
+public class BuiltinLoaderTest extends CoreBaseTest {
 
     @Test
     public void testLoadGroup() throws Exception {
