@@ -4,7 +4,6 @@ import {ComponentTypeEnum, RenderDateConfig, RenderFilterConfig} from "@/types/i
 import {Button, DatePicker, Form, Grid, Input, Notification, Select, TreeSelect} from "@arco-design/web-react";
 import {useSelector} from "react-redux";
 import useLocale from "@/utils/useLocale";
-import locale from "./locale";
 import styles from "./style/index.module.less";
 import {translateToCascadeTreeNodes, translateToTreeNodes} from "@/pages/department/base";
 import {
@@ -19,15 +18,14 @@ import {formatString, getRandomString} from "@/utils/util";
 import StructurePanel from "@/pages/metricset/structure/structure";
 import dayjs from "dayjs";
 import {StatInfoPreviewContext} from "@/pages/common/context";
-
+import locale from "./locale/index"
 const { useForm } = Form;
 
 
-const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
+const SearchForm = React.forwardRef(( props:{size,onSearch,statInfo},ref) => {
 
     const t = useLocale(locale);
-    const { statInfo, setStatInfo } = useContext(StatInfoPreviewContext);
-    const {size = 'default',onSearch} = props;
+    const {size = 'default',onSearch,statInfo} = props;
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const { Row, Col } = Grid;
 
@@ -60,13 +58,10 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
             Notification.warning({style: { width: 420 }, title: 'Warning', content: t['statDisplay.filterConfig.warning.dateParam']});
             return;
         }
-        for (let i = 0; i < filtersConfig.length; i++) {
-            const dimens = filtersConfig[i].dimens;
-            const dimensParam = values[dimens];
-            if(!dimensParam || dimensParam.length == 0){
-                Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['statDisplay.filterConfig.warning.otherParam'],dimens)});
-                return;
-            }
+        const dimensParam = values['function'];
+        if(!dimensParam || dimensParam.length == 0){
+            Notification.warning({style: { width: 420 }, title: 'Warning', content: formatString(t['statDisplay.filterConfig.warning.otherParam'],'function')});
+            return;
         }
         onSearch(values);
     };
@@ -77,10 +72,6 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
         form.setFieldValue("date",initDateParam);
     };
 
-    const handleTreeSelectChange =  (key) => (selectedValue, selectedLabel) => {
-        console.log("key:" + key);
-    }
-
     const getFilterRender = (renderFilterConfig:RenderFilterConfig) => {
         if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_INPUT){
             return (
@@ -89,7 +80,6 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
         }if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_SELECT){
             return (
                 <TreeSelect size={"small"}
-                            onChange={handleTreeSelectChange}
                             placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"}
                             multiple={true}
                             treeCheckable={true}
@@ -197,16 +187,16 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
             wrapperCol={{ span: size == 'mini' ? 24:19 }}
         >
             <Row gutter={24}>
-                <Col span={12}>
+                <Col span={8}>
                     <Form.Item label={t['basic.form.label.date']} field={"date"}>
                         {getDatePicker()}
                     </Form.Item>
                 </Col>
                 {
-                    filtersConfig.map((option,index) => {
+                    filtersConfig.filter(x => x.dimens == 'function').map((option,index) => {
                         return (
-                            <Col span={12} key={index}>
-                                <Form.Item label={option.label} field={option.dimens}>
+                            <Col span={8} key={index}>
+                                <Form.Item label={t['callerPreview.label.function']} field={option.dimens}>
                                     {getFilterRender(option)}
                                 </Form.Item>
                             </Col>
@@ -219,13 +209,6 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
                 <Button size={size == 'mini' ? "mini" :"small"} type="primary" onClick={handleSubmit}>
                     {t['basic.form.button.preview']}
                 </Button>
-                {
-                    statInfo?.renderConfig?.filters.length > 1 ?
-                        <Button size={size == 'mini' ? "mini" :"small"} type="secondary" onClick={handleReset}>
-                            {t['basic.form.button.reset']}
-                        </Button>
-                        : null
-                }
             </div>
         </div>
     );

@@ -3,13 +3,14 @@ import {CallerManageContext} from "@/pages/common/context";
 import {Card, Grid, Notification,Typography} from "@arco-design/web-react";
 import {requestQueryByIds} from "@/api/stat";
 import useLocale from "@/utils/useLocale";
-import locale from "@/pages/caller/manage/locale";
+import locale from "./locale/index";
 import {handlerFetchStatData} from "@/pages/stat/preview/common";
 import {useUpdateEffect} from "ahooks";
 import {stringifyMap} from "@/utils/util";
 import StatBasicLineChart from "@/pages/stat/preview/line_chart_v1";
 import {GlobalContext} from "@/context";
 import Exception100 from "@/pages/exception/100";
+import SearchForm from "@/pages/caller/preview/search_form";
 
 const { Row, Col } = Grid;
 
@@ -122,8 +123,15 @@ export default function CallerPreviewPanel({}){
         }
     },[])
 
+    const onSearch = (v) => {
+        setFormParams({...v,"callerName":["11034"]});
+    }
+
     return (
         <>
+            <Card style={{paddingTop:'20px'}}>
+                {statsInfo.get(String(1031)) && <SearchForm size={'small'} onSearch={onSearch} statInfo={statsInfo.get(String(1031))}/>}
+            </Card>
             {
                 errorInfo ? <Exception100 errorMessage={errorInfo}/>:
                     <Row gutter={16}>

@@ -29,7 +29,7 @@ const TabPane = Tabs.TabPane;
 import { useLocation, useHistory } from 'react-router-dom';
 import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
 import {ResourceTypeEnum} from "@/types/insights-common";
-import CallerPreviewPanel from "@/pages/caller/manage/CallerPreview";
+import CallerPreviewPanel from "@/pages/caller/preview/CallerPreview";
 const {Row, Col} = Grid;
 const { Text } = Typography;
 
