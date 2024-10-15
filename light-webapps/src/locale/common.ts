@@ -67,7 +67,7 @@ const vi18n = {
         'basic.order.description.projectAccess':'Request project[%s] access',
         'basic.order.description.statAccess':'Request stat[%s] access',
         'basic.order.description.metricAccess':'Request metrics[%s] access',
-        'basic.order.description.viewAccess':'Request data-view[%s] access',
+        'basic.order.description.viewAccess':'Request view[%s] access',
         'basic.order.description.updateLimitingThreshold':'Update group[%s] limiting threshold.',
         'basic.order.description.statPendApprove':'Stat[%s] pend approve',
         'basic.order.description.userPendApprove':'User[%s] pend approve',
