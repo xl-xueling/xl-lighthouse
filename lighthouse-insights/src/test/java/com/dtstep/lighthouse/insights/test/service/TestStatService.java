@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -55,6 +56,15 @@ public class TestStatService {
         StatQueryParam statQueryParam = JsonUtil.toJavaObject(str,StatQueryParam.class);
         ListData<StatVO> statListData = statService.queryList(statQueryParam,1,15);
         System.out.println("size:" + statListData.getTotal());
+    }
+
+    @Test
+    public void testQueryByIds() throws Exception {
+        Integer[] ids = new Integer[]{1031,1032,1033,1034};
+        List<StatVO> voList = statService.queryByIds(Arrays.asList(ids.clone()));
+        for(StatVO statVO : voList){
+            System.out.println("statVo is:" + JsonUtil.toJSONString(statVO));
+        }
     }
 }
 

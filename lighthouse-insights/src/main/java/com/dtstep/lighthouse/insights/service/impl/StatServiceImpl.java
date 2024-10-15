@@ -187,14 +187,25 @@ public class StatServiceImpl implements StatService {
 
     @Override
     public List<StatVO> queryByIds(List<Integer> ids) throws Exception{
-        StatQueryParam queryParam = new StatQueryParam();
-        queryParam.setIds(ids);
-        List<Stat> statList = statDao.queryList(queryParam);
         List<StatVO> voList = new ArrayList<>();
-        for(Stat stat : statList){
-            StatExtEntity statExtEntity = StatDBWrapper.combineExtInfo(stat,false);
-            StatVO statVO = translate(statExtEntity);
-            voList.add(statVO);
+        List<Integer> builtInIds = ids.stream().filter(BuiltinLoader::isBuiltinStat).collect(toList());
+        List<Integer> nonBuiltInIds = ids.stream().filter(x -> !builtInIds.contains(x)).collect(toList());
+        if(CollectionUtils.isNotEmpty(builtInIds)){
+            for(Integer id : builtInIds){
+                StatExtEntity statExtEntity = BuiltinLoader.getBuiltinStat(id);
+                StatVO statVO = translate(statExtEntity);
+                voList.add(statVO);
+            }
+        }
+        if(CollectionUtils.isNotEmpty(nonBuiltInIds)){
+            StatQueryParam queryParam = new StatQueryParam();
+            queryParam.setIds(nonBuiltInIds);
+            List<Stat> statList = statDao.queryList(queryParam);
+            for(Stat stat : statList){
+                StatExtEntity statExtEntity = StatDBWrapper.combineExtInfo(stat,false);
+                StatVO statVO = translate(statExtEntity);
+                voList.add(statVO);
+            }
         }
         return voList;
     }

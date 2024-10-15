@@ -29,6 +29,7 @@ const TabPane = Tabs.TabPane;
 import { useLocation, useHistory } from 'react-router-dom';
 import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
 import {ResourceTypeEnum} from "@/types/insights-common";
+import CallerPreviewPanel from "@/pages/caller/manage/CallerPreview";
 const {Row, Col} = Grid;
 const { Text } = Typography;
 
@@ -107,7 +108,7 @@ export default function CallerManagePanel({id,PRO_ViewBindTab=null}){
                                         <span style={{ display: "inline-flex", alignItems: "center" }}><FiMonitor size={12} style={{ marginRight: 6 }} />{t['callerManage.tab.monitor']}</span>
                                     }
                                 >
-                                    <Typography.Paragraph>Content of Tab Panel 1</Typography.Paragraph>
+                                    <CallerPreviewPanel/>
                                 </TabPane>
                                 <TabPane
                                     key='2'
