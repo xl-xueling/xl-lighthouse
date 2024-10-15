@@ -50,4 +50,44 @@
             </monitor-item>
         </monitor-items>
     </monitor-group>
+    <monitor-group id="103" token="_builtin_caller_stat">
+        <columns>
+            <column name="callerName" type="string"/>
+            <column name="function" type="string"/>
+            <column name="status" type="string"/>
+            <column name="from" type="string"/>
+            <column name="in_bytes" type="number"/>
+            <column name="out_bytes" type="number"/>
+        </columns>
+        <monitor-item id="1031" timeparam="1-minute" renderConfig='{"filters":[{"componentType":5,"label":"callerName","dimens":"callerName","componentId":0},{"componentType":5,"label":"function","dimens":"function","componentId":0}]}'>
+            <template>
+                <stat-item title="1_minute_call_size" stat="count()" dimens="callerName;function"/>
+            </template>
+        </monitor-item>
+        <monitor-item id="1032" timeparam="10-minute" renderConfig='{"filters":[{"componentType":5,"label":"callerName","dimens":"callerName","componentId":0},{"componentType":5,"label":"function","dimens":"function","componentId":0}]}'>
+            <template>
+                <stat-item title="10_minute_call(top50)" stat="count()" dimens="callerName;function" limit="top50"/>
+            </template>
+        </monitor-item>
+        <monitor-item id="1033" timeparam="10-minute" renderConfig='{"filters":[{"componentType":5,"label":"callerName","dimens":"callerName","componentId":0},{"componentType":5,"label":"function","dimens":"function","componentId":0}]}'>
+            <template>
+                <stat-item title="10_minute_call_inbytes" stat="sum(in_bytes)" dimens="callerName;function"/>
+            </template>
+        </monitor-item>
+        <monitor-item id="1034" timeparam="10-minute" renderConfig='{"filters":[{"componentType":5,"label":"callerName","dimens":"callerName","componentId":0},{"componentType":5,"label":"function","dimens":"function","componentId":0}]}'>
+            <template>
+                <stat-item title="10_minute_call_outbytes(top50)" stat="sum(out_bytes)" dimens="callerName;function" limit="top50"/>
+            </template>
+        </monitor-item>
+        <monitor-item id="1035" timeparam="10-minute" renderConfig='{"filters":[{"componentType":5,"label":"callerName","dimens":"callerName","componentId":0},{"componentType":5,"label":"function","dimens":"function","componentId":0},{"componentType":5,"label":"from","dimens":"from","componentId":0}]}'>
+            <template>
+                <stat-item title="10_minute_call_from_stat" stat="count()" dimens="callerName;function;from"/>
+            </template>
+        </monitor-item>
+        <monitor-item id="1036" timeparam="10-minute" renderConfig='{"filters":[{"componentType":5,"label":"callerName","dimens":"callerName","componentId":0},{"componentType":5,"label":"function","dimens":"function","componentId":0},{"componentType":5,"label":"status","dimens":"status","componentId":0}]}'>
+            <template>
+                <stat-item title="10_minute_call_status_stat" stat="count()" dimens="callerName;function;status"/>
+            </template>
+        </monitor-item>
+    </monitor-group>
 </monitor-groups>
