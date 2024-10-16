@@ -188,7 +188,7 @@ const SearchForm = React.forwardRef(( props:{size,onSearch,statInfo,initValues},
             wrapperCol={{ span: size == 'mini' ? 24:19 }}
         >
             <Row gutter={24}>
-                <Col span={8}>
+                <Col span={12}>
                     <Form.Item label={t['basic.form.label.date']} field={"date"}>
                         {getDatePicker()}
                     </Form.Item>
@@ -196,7 +196,7 @@ const SearchForm = React.forwardRef(( props:{size,onSearch,statInfo,initValues},
                 {
                     filtersConfig.filter(x => x.dimens == 'function').map((option,index) => {
                         return (
-                            <Col span={8} key={index}>
+                            <Col span={12} key={index}>
                                 <Form.Item label={t['callerPreview.label.function']} field={option.dimens}>
                                     {getFilterRender(option)}
                                 </Form.Item>

@@ -26,11 +26,13 @@ export default function CallerPreviewPanel({}){
 
     const [statsData,setStatsData] = useState(new Map());
 
+    const [statsErrorMessage,setStatsErrorMessage] = useState(new Map());
+
     const statIds = [1031,1032,1033,1034,1035,1036];
 
     const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
 
-    const [formParams,setFormParams] = useState<any>({callerId:[String(callerInfo?.id)],function:['dataQuery']});
+    const [formParams,setFormParams] = useState<any>({callerId:[String(callerInfo?.id)]});
 
     const [errorInfo,setErrorInfo] = useState<string>(null);
 
@@ -56,22 +58,38 @@ export default function CallerPreviewPanel({}){
     const fetchStatsData = async () => {
         setLoading(true);
         const statsDataMap = new Map();
+        const statsMessageMap = new Map();
         for (const statId of statIds) {
             const statInfo = statsInfo.get(String(statId));
             let queryParams = formParams;
             if(statId == 1031){
-                queryParams = {callerId:callerInfo?.id};
+                queryParams = {callerId:String(callerInfo?.id)};
             }else if(statId == 1036){
                 queryParams = {...formParams,"status":['0'+ ',' + t['api.result.0'] , '1'+ ',' + t['api.result.1']]}
             }
-            const statChartData = await handlerFetchStatData(statInfo,queryParams);
-            if(statChartData.code == '0'){
-                statsDataMap.set(String(statId),statChartData.data);
+            let validateDimensParam = {};
+            if(queryParams != null){
+                validateDimensParam = Object.keys(queryParams).reduce((acc, key) => {
+                    if (key != 't' && key != 'date' && queryParams[key] !== null && queryParams[key] !== undefined && queryParams[key].length > 0) {
+                        acc[key] = queryParams[key];
+                    }
+                    return acc;
+                }, {});
+            }
+            const numDimensParam = Object.keys(validateDimensParam).length;
+            if(statInfo.templateEntity.dimensArray.length != numDimensParam){
+                statsMessageMap.set(String(statId),t['callerPreview.filterConfig.warning']);
             }else{
-                setErrorInfo(statChartData.message);
+                const statChartData = await handlerFetchStatData(statInfo,queryParams);
+                if(statChartData.code == '0'){
+                    statsDataMap.set(String(statId),statChartData.data);
+                }else{
+                    setErrorInfo(statChartData.message);
+                }
             }
         }
         setStatsData(statsDataMap);
+        setStatsErrorMessage(statsMessageMap);
         setLoading(false);
     }
 
@@ -104,7 +122,7 @@ export default function CallerPreviewPanel({}){
                     </Grid.Col>
                 </Grid.Row>
             }>
-                <StatBasicLineChart theme={theme} size={'mini'} data={statsData.get(String(statId))} stateIndex={indicatorIndex - 1} errorMessage={null} loading={loading} group={'sameGroup'}/>
+                <StatBasicLineChart theme={theme} size={'mini'} data={statsData.get(String(statId))} stateIndex={indicatorIndex - 1} errorMessage={statsErrorMessage.get(String(statId))} loading={loading} group={'sameGroup'}/>
             </Card>
         </Col>
     }
@@ -130,7 +148,7 @@ export default function CallerPreviewPanel({}){
     return (
         <>
             <Card style={{paddingTop:'20px'}}>
-                {statsInfo.get(String(1032)) && <SearchForm size={'small'} onSearch={onSearch} statInfo={statsInfo.get(String(1032))} initValues={{function:['dataQuery,dataQuery']}}/>}
+                {statsInfo.get(String(1032)) && <SearchForm size={'small'} onSearch={onSearch} statInfo={statsInfo.get(String(1032))}/>}
             </Card>
             {
                 errorInfo ? <Exception100 errorMessage={errorInfo}/>:

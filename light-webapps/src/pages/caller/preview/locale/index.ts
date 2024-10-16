@@ -11,6 +11,7 @@ const i18n = {
         'callerPreview.label.function':'Function',
         'callerPreview.filterConfig.warning.dateParam':'Please set[date] filter parameter!',
         'callerPreview.filterConfig.warning.otherParam':'Please set[%s] filter parameter!',
+        'statDicallerPreviewsplay.filterConfig.warning':'Please select a function!',
     },
     'zh-CN': {
         'callerPreview.stat.title.1031':'每分钟_总调用次数',
@@ -24,6 +25,7 @@ const i18n = {
         'callerPreview.label.function':'接口',
         'callerPreview.filterConfig.warning.dateParam':'请设置日期筛选参数！',
         'callerPreview.filterConfig.warning.otherParam':'请选择[%s]筛选参数！',
+        'callerPreview.filterConfig.warning':'请选择接口参数！',
     },
 };
 
