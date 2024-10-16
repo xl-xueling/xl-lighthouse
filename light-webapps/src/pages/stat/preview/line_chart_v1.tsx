@@ -8,7 +8,7 @@ import light1Theme from "@/components/Chart/themes/light1-theme.json"
 import {GlobalContext} from "@/context";
 import {getEchartsEmptyOption, getEchartsErrorOption, getEchartsLoadingOption} from "@/components/Chart/lib";
 
-export default function StatBasicLineChart({data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null}) {
+export default function StatBasicLineChart({data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null,showDimens = true}) {
 
     const [timeIndex,setTimeIndex] = useState<number>(0);
     const [seriesArray,setSeriesArray] = useState([]);
@@ -51,12 +51,13 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
             }
         ],
         legend: {
+            show: showDimens,
             data: dimensList,
             icon:'circle',
             itemHeight:'10',
         },
         grid: {
-            top: dimensList.length> 0 ? '40px':'25px',
+            top: showDimens && dimensList.length> 0 ? '40px':'25px',
             left: '10px',
             right: '10px',
             bottom: '0px',

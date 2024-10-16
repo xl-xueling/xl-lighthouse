@@ -78,6 +78,14 @@ const SearchForm = React.forwardRef(( props:{size,onSearch,statInfo,initValues},
                 <Input size={"small"} allowClear={true} placeholder={size == 'mini' ? renderFilterConfig.label : "Search Value"}  autoComplete={'off'}/>
             )
         }if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_SELECT){
+            console.log("renderFilterConfig.configData is:" + JSON.stringify(renderFilterConfig.configData));
+            let treeData;
+            if(renderFilterConfig.configData.length == 0){
+                treeData = [{"key":"dataQuery","title":"dataQuery"},{"key":"dataDurationQuery","title":"dataDurationQuery"},{"key":"dataQueryWithDimensList","title":"dataQueryWithDimensList"}
+                ,{"key":"dataDurationQueryWithDimensList","title":"dataDurationQueryWithDimensList"},{"key":"limitQuery","title":"limitQuery"}]
+            }else{
+                treeData = translateToCascadeTreeNodes(renderFilterConfig.configData);
+            }
             return (
                 <TreeSelect size={"small"}
                             placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"}
@@ -96,7 +104,7 @@ const SearchForm = React.forwardRef(( props:{size,onSearch,statInfo,initValues},
                             treeCheckStrictly={false}
                             allowClear={true}
                             showSearch={true}
-                            treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)} />
+                            treeData={treeData} />
             )
         }else{
             return (
