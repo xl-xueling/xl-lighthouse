@@ -191,7 +191,7 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
 
     const getReactChart = () => {
         if(size == 'default'){
-            return <ReactECharts ref={chartRef} option={getOption()} theme={theme == 'dark' ? dark1Theme : light1Theme}  style={{ height: '300px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
+            return <ReactECharts ref={chartRef} option={getOption()} theme={theme == 'dark' ? dark1Theme : light1Theme}  style={{ height: '280px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}
                                  loadingOption={loadingOption}/>
         }else if(size == 'small'){
             return <ReactECharts ref={chartRef} option={getOption()} theme={theme == 'dark' ? dark1Theme : light1Theme} style={{ height: '230px' ,width:'100%',marginLeft:'0px'}} showLoading={parentLoading?false:loading}

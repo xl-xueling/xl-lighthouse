@@ -57,11 +57,11 @@ export default function StatPieChart() {
     },[JSON.stringify(homeData)])
 
     const chartStyle = {
-        height: '240px' ,width:'100%',marginLeft:'0px'
+        height: '220px' ,width:'100%',marginLeft:'0px'
     };
 
     return (
-        <div style={{height:'240px'}}>
+        <div style={{height:'220px'}}>
             {chartData && <ReactECharts theme={theme == 'dark' ? dark1Theme : light1Theme} option={option} style={chartStyle } />}
         </div>
     );
