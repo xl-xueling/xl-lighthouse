@@ -59,8 +59,8 @@ export default function CallerPreviewPanel({}){
         for (const statId of statIds) {
             const statInfo = statsInfo.get(String(statId));
             let queryParams = formParams;
-            if(statId == 1035){
-                queryParams = {...formParams,"from":['0' + ',' + t['callerPreview.from.0'] , '1'  + ',' + t['callerPreview.from.1']]}
+            if(statId == 1031){
+                queryParams = {callerId:callerInfo?.id};
             }else if(statId == 1036){
                 queryParams = {...formParams,"status":['0'+ ',' + t['api.result.0'] , '1'+ ',' + t['api.result.1']]}
             }
@@ -93,8 +93,8 @@ export default function CallerPreviewPanel({}){
         return title;
     }
 
-    const getIndicatorCharts = (statId,indicatorIndex) => {
-        return <Col span={12} style={{marginTop:'15px'}}>
+    const getIndicatorCharts = (statId,indicatorIndex,span = 12) => {
+        return <Col span={span} style={{marginTop:'15px'}}>
             <Card title={
                 <Grid.Row gutter={8}>
                     <Grid.Col span={20}>
@@ -130,17 +130,17 @@ export default function CallerPreviewPanel({}){
     return (
         <>
             <Card style={{paddingTop:'20px'}}>
-                {statsInfo.get(String(1031)) && <SearchForm size={'small'} onSearch={onSearch} statInfo={statsInfo.get(String(1031))} initValues={{function:['dataQuery,dataQuery']}}/>}
+                {statsInfo.get(String(1032)) && <SearchForm size={'small'} onSearch={onSearch} statInfo={statsInfo.get(String(1032))} initValues={{function:['dataQuery,dataQuery']}}/>}
             </Card>
             {
                 errorInfo ? <Exception100 errorMessage={errorInfo}/>:
                     <Row gutter={16}>
-                        {getIndicatorCharts(1031,0)}
+                        {getIndicatorCharts(1031,0,24)}
                         {getIndicatorCharts(1032,0)}
                         {getIndicatorCharts(1033,0)}
                         {getIndicatorCharts(1034,0)}
                         {getIndicatorCharts(1035,0)}
-                        {getIndicatorCharts(1036,0)}
+                        {getIndicatorCharts(1036,0,24)}
                     </Row>
             }
         </>
