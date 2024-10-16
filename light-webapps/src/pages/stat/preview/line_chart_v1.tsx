@@ -57,7 +57,7 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
             itemHeight:'10',
         },
         grid: {
-            top: showDimens && dimensList.length> 0 ? '40px':'25px',
+            top: showDimens && dimensList.length> 0 ? '45px':'25px',
             left: '10px',
             right: '10px',
             bottom: '0px',
