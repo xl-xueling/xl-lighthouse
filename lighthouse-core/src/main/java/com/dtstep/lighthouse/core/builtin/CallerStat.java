@@ -1,7 +1,6 @@
 package com.dtstep.lighthouse.core.builtin;
 
 import com.dtstep.lighthouse.client.LightHouse;
-import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,7 @@ public class CallerStat {
 
     private static final Logger logger = LoggerFactory.getLogger(CallerStat.class);
 
-    public static void stat(int callerId, String function, int status,int from, Long inBytes, Long outBytes) {
+    public static void stat(int callerId, String function, int status, Long inBytes, Long outBytes) {
         try{
             if(!LightHouse.isInit()){
                 LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
@@ -24,7 +23,6 @@ public class CallerStat {
         paramMap.put("callerId",callerId);
         paramMap.put("function",function);
         paramMap.put("status",status);
-        paramMap.put("from",from);
         paramMap.put("in_bytes",inBytes);
         paramMap.put("out_bytes",outBytes);
         try{

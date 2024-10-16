@@ -186,9 +186,9 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         try{
             statValues = rpc.dataDurationQuery(statId,dimensValue,startTime,endTime);
             outBytes = ObjectSize.getObjectSize(statValues);
-            CallerStat.stat(callerId,"dataDurationQuery",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataDurationQuery",1,inBytes,outBytes);
         }catch (Exception ex){
-            CallerStat.stat(callerId,"dataDurationQuery",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataDurationQuery",1,inBytes,outBytes);
             throw new LightRpcException(ex.getMessage());
         }
         try{
@@ -213,9 +213,9 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         try{
             statValues = rpc.dataQuery(statId,dimensValue,batchList);
             outBytes = ObjectSize.getObjectSize(statValues);
-            CallerStat.stat(callerId,"dataQuery",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataQuery",1,inBytes,outBytes);
         }catch (Exception ex){
-            CallerStat.stat(callerId,"dataQuery",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataQuery",1,inBytes,outBytes);
             throw new LightRpcException(ex.getMessage());
         }
         try{
@@ -240,9 +240,9 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         try{
             statValues = rpc.dataDurationQueryWithDimensList(statId,dimensValueList,startTime,endTime);
             outBytes = ObjectSize.getObjectSize(statValues);
-            CallerStat.stat(callerId,"dataDurationQueryWithDimensList",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataDurationQueryWithDimensList",1,inBytes,outBytes);
         }catch (Exception ex){
-            CallerStat.stat(callerId,"dataDurationQueryWithDimensList",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataDurationQueryWithDimensList",1,inBytes,outBytes);
             throw new LightRpcException(ex.getMessage());
         }
         try{
@@ -267,9 +267,9 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         try{
             statValues = rpc.dataQueryWithDimensList(statId,dimensValueList,batchList);
             outBytes = ObjectSize.getObjectSize(statValues);
-            CallerStat.stat(callerId,"dataQueryWithDimensList",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataQueryWithDimensList",1,inBytes,outBytes);
         }catch (Exception ex){
-            CallerStat.stat(callerId,"dataQueryWithDimensList",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataQueryWithDimensList",1,inBytes,outBytes);
             throw new LightRpcException(ex.getMessage());
         }
         try{
@@ -294,9 +294,9 @@ public class ICERemoteLightServerImpl implements RemoteLightServer {
         try{
             limitValues = rpc.limitQuery(statId,batchTime);
             outBytes = ObjectSize.getObjectSize(limitValues);
-            CallerStat.stat(callerId,"limitQuery",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"limitQuery",1,inBytes,outBytes);
         }catch (Exception ex){
-            CallerStat.stat(callerId,"limitQuery",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"limitQuery",1,inBytes,outBytes);
             throw new LightRpcException(ex.getMessage());
         }
         try{

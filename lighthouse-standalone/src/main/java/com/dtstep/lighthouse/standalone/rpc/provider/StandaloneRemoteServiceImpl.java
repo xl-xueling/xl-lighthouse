@@ -133,10 +133,10 @@ public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
         try{
             List<StatValue> data = rpc.dataQuery(statId, dimensValue, batchTime);
             outBytes = ObjectSize.getObjectSize(data);
-            CallerStat.stat(callerId,"dataQuery",0,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataQuery",0,inBytes,outBytes);
             return data;
         }catch (Exception ex){
-            CallerStat.stat(callerId,"dataQuery",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataQuery",1,inBytes,outBytes);
             logger.error("call dataQuery error!",ex);
             throw new LightRpcException(ex);
         }
@@ -155,10 +155,10 @@ public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
         try{
             List<StatValue> data = rpc.dataDurationQuery(statId, dimensValue, startTime,endTime);
             outBytes = ObjectSize.getObjectSize(data);
-            CallerStat.stat(callerId,"dataDurationQuery",0,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataDurationQuery",0,inBytes,outBytes);
             return data;
         }catch (Exception ex){
-            CallerStat.stat(callerId,"dataDurationQuery",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataDurationQuery",1,inBytes,outBytes);
             logger.error("call dataDurationQuery error!",ex);
             throw new LightRpcException(ex);
         }
@@ -177,10 +177,10 @@ public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
         try{
             Map<String, List<StatValue>> data = rpc.dataQueryWithDimensList(statId, dimensValueList, batchTime);
             outBytes = ObjectSize.getObjectSize(data);
-            CallerStat.stat(callerId,"dataQueryWithDimensList",0,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataQueryWithDimensList",0,inBytes,outBytes);
             return data;
         }catch (Exception ex){
-            CallerStat.stat(callerId,"dataQueryWithDimensList",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataQueryWithDimensList",1,inBytes,outBytes);
             logger.error("call dataQueryWithDimensList error!",ex);
             throw new LightRpcException(ex);
         }
@@ -199,10 +199,10 @@ public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
         try{
             Map<String, List<StatValue>> data = rpc.dataDurationQueryWithDimensList(statId, dimensValueList, startTime,endTime);
             outBytes = ObjectSize.getObjectSize(data);
-            CallerStat.stat(callerId,"dataDurationQueryWithDimensList",0,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataDurationQueryWithDimensList",0,inBytes,outBytes);
             return data;
         }catch (Exception ex){
-            CallerStat.stat(callerId,"dataDurationQueryWithDimensList",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"dataDurationQueryWithDimensList",1,inBytes,outBytes);
             logger.error("call dataDurationQueryWithDimensList error!",ex);
             throw new LightRpcException(ex);
         }
@@ -221,10 +221,10 @@ public class StandaloneRemoteServiceImpl implements BasicRemoteLightServerPrx {
         try{
             List<LimitValue> data = rpc.limitQuery(statId, batchTime);
             outBytes = ObjectSize.getObjectSize(data);
-            CallerStat.stat(callerId,"limitQuery",0,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"limitQuery",0,inBytes,outBytes);
             return data;
         }catch (Exception ex){
-            CallerStat.stat(callerId,"limitQuery",1,0,inBytes,outBytes);
+            CallerStat.stat(callerId,"limitQuery",1,inBytes,outBytes);
             logger.error("call limitQuery error!",ex);
             throw new LightRpcException(ex);
         }
