@@ -123,7 +123,7 @@ export default function CallerPreviewPanel({}){
                     </Grid.Col>
                 </Grid.Row>
             }>
-                <StatBasicLineChart theme={theme} size={'mini'} data={statsData.get(String(statId))} stateIndex={indicatorIndex - 1}
+                <StatBasicLineChart size={'mini'} data={statsData.get(String(statId))} stateIndex={indicatorIndex - 1}
                                     errorMessage={statsErrorMessage.get(String(statId))} loading={loading} group={'sameGroup'}
                                     showDimens={statId != 1031}
                 />
