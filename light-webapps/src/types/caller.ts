@@ -1,10 +1,11 @@
 import {User} from "@/types/insights-web";
-import {PermissionEnum, ResourceTypeEnum} from "@/types/insights-common";
+import {CallerStateEnum, PermissionEnum, ResourceTypeEnum} from "@/types/insights-common";
 
 export interface Caller {
     id?:number;
     name?:string;
     desc?:string;
+    state?:CallerStateEnum;
     departmentId?:number;
     adminIds?:Array<number>;
     admins?:Array<User>;

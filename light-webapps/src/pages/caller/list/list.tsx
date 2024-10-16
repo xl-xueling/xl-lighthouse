@@ -4,31 +4,31 @@ import {
     Breadcrumb,
     Button,
     Card,
-    Divider,
-    Grid, Input,
+    Grid,
+    Input,
     Notification,
-    PaginationProps, Radio, Space,
+    PaginationProps,
+    Radio,
+    Space,
     Spin,
     Table
 } from "@arco-design/web-react";
 import {getColumns} from "@/pages/caller/list/Constants";
-import {requestDeleteById, requestList} from "@/api/caller";
-import {useActivate, useUnactivate} from "react-activation";
-import {IconHome} from "@arco-design/web-react/icon";
+import {requestChangeState, requestDeleteById, requestList} from "@/api/caller";
 import CallerCreateModal from "@/pages/caller/create";
-const BreadcrumbItem = Breadcrumb.Item;
 import locale from "./locale/index"
-import CallerUpdateModal from "@/pages/caller/update";
 import useLocale from "@/utils/useLocale";
-const InputSearch = Input.Search;
-import { useLocation, useHistory } from 'react-router-dom';
-import {getRandomString} from "@/utils/util";
+import {useHistory} from 'react-router-dom';
 import {useUpdateEffect} from "ahooks";
 import SearchForm from "./forms";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useSelector} from "react-redux";
 import {TreeNode} from "@/types/insights-web";
 import {GlobalState} from "@/store";
+import {CallerStateEnum} from "@/types/insights-common";
+
+const BreadcrumbItem = Breadcrumb.Item;
+const InputSearch = Input.Search;
 
 export default function CallerListPanel(){
 
@@ -63,10 +63,14 @@ export default function CallerListPanel(){
             await handlerDeleteCaller(record.id).then();
         } else if(type == 'manage'){
             history.push(`/caller/manage/${record.id}`);
+        } else if(type == 'frozen'){
+            await handlerChangeState(record.id,CallerStateEnum.Frozen).then();
+        } else if(type == 'restart'){
+            await handlerChangeState(record.id,CallerStateEnum.Normal).then();
         }
     }
 
-    const columns = useMemo(() => getColumns(t,tableCallback), [t]);
+    const columns = useMemo(() => getColumns(t,tableCallback,userInfo), [t]);
 
     const handlerDeleteCaller = async (id: number) => {
         setLoading(true);
@@ -79,6 +83,26 @@ export default function CallerListPanel(){
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
             setLoading(false);
+        }).catch((error) => {
+            console.log(error);
+        })
+    };
+
+    const handlerChangeState = async (callerId: number,state:CallerStateEnum) => {
+        await requestChangeState({"id":callerId,"state":state}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                let message;
+                if(state == CallerStateEnum.Frozen){
+                    message = t['callerList.columns.operations.frozen.success'];
+                }else if(state == CallerStateEnum.Normal){
+                    message = t['callerList.columns.operations.restart.success'];
+                }
+                Notification.info({style: { width: 420 }, title: 'Notification', content: message});
+                setRefreshTime(Date.now());
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
         }).catch((error) => {
             console.log(error);
         })

@@ -58,3 +58,11 @@ export async function requestDeleteById(data):Promise<ResultData> {
         data,
     })
 }
+
+export async function requestChangeState(data) :Promise<ResultData>  {
+    return request({
+        url:'/caller/changeState',
+        method:'POST',
+        data,
+    })
+}

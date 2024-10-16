@@ -7,8 +7,9 @@ import {getRandomString} from "@/utils/util";
 import { useLocation, useHistory } from 'react-router-dom';
 import DepartmentLabel from "@/pages/department/common/depart";
 import {getCallerStateDescription, getStatStateDescriptionWithBadge} from "@/pages/common/desc/base";
+import {CallerStateEnum, PermissionEnum} from "@/types/insights-common";
 
-export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
+export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>,currentUserInfo = null) {
     return [
         {
             title: t['callerList.columns.id'],
@@ -55,10 +56,42 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
         {
             title: t['callerList.columns.operations'],
             dataIndex: 'operations',
+            headerCellStyle: { paddingLeft: '15px',width:'250px' },
             render: (value, record) => {
+                let frozenButton;
+                let startButton;
                 let manageButton;
                 let deleteButton;
                 let noAccessButton;
+                if(currentUserInfo?.permissions?.includes(PermissionEnum.OperationManageAble)){
+                    if(record.state != CallerStateEnum.Frozen){
+                        frozenButton = <Popconfirm key={getRandomString()}
+                                                   focusLock
+                                                   position={"tr"}
+                                                   title='Confirm'
+                                                   content={t['callerList.columns.operations.frozen.confirm']}
+                                                   onOk={() => callback(record, 'frozen')}>
+                            <Button key={getRandomString()}
+                                    type="text"
+                                    size="mini">
+                                {t['callerList.columns.operations.frozen']}
+                            </Button>
+                        </Popconfirm>
+                    }else{
+                        startButton = <Popconfirm key={getRandomString()}
+                                                   focusLock
+                                                   position={"tr"}
+                                                   title='Confirm'
+                                                   content={t['callerList.columns.operations.restart.confirm']}
+                                                   onOk={() => callback(record, 'restart')}>
+                            <Button key={getRandomString()}
+                                    type="text"
+                                    size="mini">
+                                {t['callerList.columns.operations.restart']}
+                            </Button>
+                        </Popconfirm>
+                    }
+                }
                 if(record.permissions.includes('ManageAble')){
                     manageButton = <Link key={getRandomString()} href={`/caller/manage/${record.id}`} onClick={(e) => {e.preventDefault();callback(record, 'manage')}} style={{ textDecoration: 'none' }}>
                         <Button type="text" size="mini">
@@ -80,7 +113,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                 }else{
                     noAccessButton = '--';
                 }
-                return  <Space key={getRandomString()} size={0} direction="horizontal">{[manageButton,deleteButton,noAccessButton]}</Space>;
+                return  <Space key={getRandomString()} size={0} direction="horizontal">{[frozenButton,startButton,manageButton,deleteButton,noAccessButton]}</Space>;
             }
         },
     ];
