@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -111,13 +112,20 @@ public class StatController {
     }
 
     @RequestMapping("/stat/queryByIds")
-    public ResultData<List<StatVO>> queryByIds(@Validated @RequestBody IDParams idParams) throws Exception {
+    public ResultData<List<StatExtendVO>> queryByIds(@Validated @RequestBody IDParams idParams) throws Exception {
         List<Integer> ids = idParams.getIds();
         List<StatVO> voList = statService.queryByIds(ids);
         if(CollectionUtils.isEmpty(voList)){
             return ResultData.result(ResultCode.elementNotFound);
         }
-        return ResultData.success(voList);
+        List<StatExtendVO> extendVOList = new ArrayList<>();
+        for(StatVO stat : voList){
+            RenderConfig renderConfig = statService.getStatRenderConfig(stat);
+            StatExtendVO statExtendDto = new StatExtendVO(stat);
+            statExtendDto.setRenderConfig(renderConfig);
+            extendVOList.add(statExtendDto);
+        }
+        return ResultData.success(extendVOList);
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.STAT_MANAGE_PERMISSION,relationParam = "id")

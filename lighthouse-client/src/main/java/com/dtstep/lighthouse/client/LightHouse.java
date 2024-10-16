@@ -69,6 +69,10 @@ public final class LightHouse {
 
     private LightHouse(){}
 
+    public static boolean isInit() throws Exception {
+        return _InitFlag.get();
+    }
+
     public static synchronized void init(final String locators) throws Exception {
         if(!_InitFlag.get()){
             ClusterInfo clusterInfo = getRunningMode(locators);
