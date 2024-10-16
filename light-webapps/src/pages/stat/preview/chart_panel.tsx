@@ -125,7 +125,7 @@ export default function ChartPanel({size = 'default',searchForm = null,statInfo,
                 left: '3%',
                 right: '4%',
                 bottom: '3%',
-                top: eChartData?.length > 1 ? '40px' : '20px',
+                top: eChartData?.length > 1 ? '40px' : '30px',
                 containLabel: true
             },
             xAxis: [
