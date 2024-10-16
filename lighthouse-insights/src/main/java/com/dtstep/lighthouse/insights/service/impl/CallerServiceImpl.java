@@ -67,6 +67,7 @@ public class CallerServiceImpl implements CallerService {
         LocalDateTime localDateTime = LocalDateTime.now();
         String secretKey = RandomID.id(40);
         caller.setSecretKey(secretKey);
+        caller.setState(CallerStateEnum.NORMAL);
         caller.setCreateTime(localDateTime);
         caller.setUpdateTime(localDateTime);
         callerDao.insert(caller);

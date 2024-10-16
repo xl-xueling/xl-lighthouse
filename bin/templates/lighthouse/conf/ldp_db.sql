@@ -432,6 +432,7 @@ CREATE TABLE `ldp_callers` (
                                `id` int NOT NULL AUTO_INCREMENT,
                                `name` varchar(45) NOT NULL,
                                `desc` varchar(500) DEFAULT NULL,
+                               `state` tinyint(1) NOT NULL,
                                `secret_key` varchar(80) NOT NULL,
                                `create_time` timestamp NOT NULL,
                                `update_time` timestamp NOT NULL,

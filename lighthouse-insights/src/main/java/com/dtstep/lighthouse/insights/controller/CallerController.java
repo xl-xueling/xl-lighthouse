@@ -3,14 +3,13 @@ package com.dtstep.lighthouse.insights.controller;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.common.entity.ServiceResult;
+import com.dtstep.lighthouse.common.enums.CallerStateEnum;
 import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
+import com.dtstep.lighthouse.common.enums.UserStateEnum;
 import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.controller.annotation.AuthPermission;
-import com.dtstep.lighthouse.insights.dto.CallerCreateParam;
-import com.dtstep.lighthouse.insights.dto.CallerUpdateParam;
-import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
-import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
+import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.vo.CallerVO;
 import com.dtstep.lighthouse.insights.vo.ResultData;
@@ -109,6 +108,26 @@ public class CallerController {
     public ResultData<Integer> release(@Validated @RequestBody PermissionReleaseParam releaseParam) throws Exception{
         ResultCode resultCode = callerService.releasePermission(releaseParam);
         return ResultData.result(resultCode);
+    }
+
+    @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
+    @RequestMapping("/caller/changeState")
+    public ResultData<Integer> changeState(@Validated @RequestBody ChangeCallerStateParam changeParam) throws Exception {
+        Integer id = changeParam.getId();
+        CallerStateEnum callerStateEnum = changeParam.getState();
+        Validate.notNull(id);
+        Validate.notNull(callerStateEnum);
+        Caller dbCaller = callerService.queryById(id);
+        Validate.notNull(dbCaller);
+        Caller caller = new Caller();
+        caller.setState(callerStateEnum);
+        caller.setId(id);
+        int result = callerService.update(caller);
+        if(id > 0){
+            return ResultData.success(id);
+        }else{
+            return ResultData.result(ResultCode.systemError);
+        }
     }
 
 }

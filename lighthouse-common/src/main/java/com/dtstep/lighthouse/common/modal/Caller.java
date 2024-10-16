@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.common.modal;
 
+import com.dtstep.lighthouse.common.enums.CallerStateEnum;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -14,6 +16,8 @@ public class Caller implements Serializable {
     private String secretKey;
 
     private String desc;
+
+    private CallerStateEnum state;
 
     private LocalDateTime createTime;
 
@@ -73,5 +77,13 @@ public class Caller implements Serializable {
 
     public void setDepartmentId(Integer departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public CallerStateEnum getState() {
+        return state;
+    }
+
+    public void setState(CallerStateEnum state) {
+        this.state = state;
     }
 }
