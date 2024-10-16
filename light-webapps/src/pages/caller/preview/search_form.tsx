@@ -22,10 +22,10 @@ import locale from "./locale/index"
 const { useForm } = Form;
 
 
-const SearchForm = React.forwardRef(( props:{size,onSearch,statInfo,initValues},ref) => {
+const SearchForm = React.forwardRef(( props:{size,onSearch,statInfo},ref) => {
 
     const t = useLocale(locale);
-    const {size = 'default',onSearch,statInfo,initValues={}} = props;
+    const {size = 'default',onSearch,statInfo} = props;
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
     const { Row, Col } = Grid;
 
@@ -191,7 +191,6 @@ const SearchForm = React.forwardRef(( props:{size,onSearch,statInfo,initValues},
             className={styles['search-form']}
             labelAlign="left"
             colon={": "}
-            initialValues={initValues}
             labelCol={{ span: size == 'mini' ? 0 : 5 }}
             wrapperCol={{ span: size == 'mini' ? 24:19 }}
         >
