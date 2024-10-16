@@ -146,7 +146,6 @@ export default function CallerPreviewPanel({}){
     },[])
 
     const onSearch = (v) => {
-        console.log("--v is:" + JSON.stringify(v));
         setFormParams({...v,"callerId":[String(callerInfo?.id)],t:Date.now()});
     }
 
