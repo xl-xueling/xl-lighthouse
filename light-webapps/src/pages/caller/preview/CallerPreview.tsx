@@ -63,7 +63,8 @@ export default function CallerPreviewPanel({}){
             const statInfo = statsInfo.get(String(statId));
             let queryParams = formParams;
             if(statId == 1031){
-                queryParams = {callerId:String(callerInfo?.id)};
+                queryParams = Object.assign({}, queryParams);
+                delete queryParams.function;
             }else if(statId == 1036){
                 queryParams = {...formParams,"status":['0'+ ',' + t['api.result.0'] , '1'+ ',' + t['api.result.1']]}
             }
@@ -145,6 +146,7 @@ export default function CallerPreviewPanel({}){
     },[])
 
     const onSearch = (v) => {
+        console.log("--v is:" + JSON.stringify(v));
         setFormParams({...v,"callerId":[String(callerInfo?.id)],t:Date.now()});
     }
 

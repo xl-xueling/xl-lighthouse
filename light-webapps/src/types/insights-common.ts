@@ -81,6 +81,13 @@ export enum OrderStateEnum {
     Retracted=4,
 }
 
+export enum CallerStateEnum {
+    Pend=0,
+    Deleted=1,
+    Normal=2,
+    Frozen=3,
+}
+
 export enum ApproveStateEnum {
     Wait=0,
     Pending=1,

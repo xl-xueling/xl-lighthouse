@@ -1,4 +1,3 @@
-
 import React from "react";
 import {Button, Popconfirm, Space,Link} from "@arco-design/web-react";
 import Ellipsis from "@arco-design/web-react/es/Typography/ellipsis";
@@ -7,6 +6,7 @@ import UserGroup from "@/pages/user/common/groups";
 import {getRandomString} from "@/utils/util";
 import { useLocation, useHistory } from 'react-router-dom';
 import DepartmentLabel from "@/pages/department/common/depart";
+import {getCallerStateDescription, getStatStateDescriptionWithBadge} from "@/pages/common/desc/base";
 
 export function getColumns(t: any, callback: (record: Record<string, any>, type: string) => Promise<void>) {
     return [
@@ -44,6 +44,13 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             render: (value) => {
                 return (<UserGroup users={value}/>);
             },
+        },
+        {
+            title: t['callerList.columns.state'],
+            dataIndex: 'state',
+            render: (value,record) => {
+                return getCallerStateDescription(t,value);
+            } ,
         },
         {
             title: t['callerList.columns.operations'],

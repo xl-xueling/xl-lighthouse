@@ -1,7 +1,7 @@
 import React from "react";
 import {Badge} from "@arco-design/web-react";
 import {
-    ApproveStateEnum,
+    ApproveStateEnum, CallerStateEnum,
     ChartTypeEnum,
     ComponentTypeEnum,
     LimitingStrategyEnum,
@@ -206,6 +206,18 @@ export function getUserStateDescription(t:any,value:UserStateEnum){
         return <Badge status="error" text={t['basic.userState.description.rejected']}/>;
     }else if(value == UserStateEnum.USER_DELETED){
         return <Badge status="error" text={t['basic.userState.description.deleted']}/>;
+    }
+}
+
+export function getCallerStateDescription(t:any,value:CallerStateEnum){
+    if(value == CallerStateEnum.Pend){
+        return <Badge status="processing" text={t['basic.callerState.description.pending']}/>;
+    }else if (value === CallerStateEnum.Deleted) {
+        return <Badge status="error" text={t['basic.callerState.description.deleted']}/>;
+    }else if(value === CallerStateEnum.Normal){
+        return <Badge status="success" text={t['basic.callerState.description.normal']}/>;
+    }else if(value === CallerStateEnum.Frozen){
+        return <Badge status="error" text={t['basic.callerState.description.frozen']}/>;
     }
 }
 
