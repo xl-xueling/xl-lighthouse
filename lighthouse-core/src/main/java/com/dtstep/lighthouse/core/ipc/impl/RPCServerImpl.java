@@ -23,6 +23,7 @@ import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
+import com.dtstep.lighthouse.common.enums.CallerStateEnum;
 import com.dtstep.lighthouse.common.enums.OwnerTypeEnum;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.exception.PermissionException;
@@ -65,6 +66,9 @@ public class RPCServerImpl implements RPCServer {
         Caller caller = CallerDBWrapper.queryByName(callerName);
         if(caller == null){
             throw new PermissionException("Api caller[" + callerName + "] does not exist!");
+        }
+        if(caller.getState() != CallerStateEnum.NORMAL){
+            throw new PermissionException("Api caller[" + callerName + "] status is unavailable!");
         }
         if(!callerKey.equals(caller.getSecretKey())){
             throw new PermissionException("Api caller[" + callerName + "] secret-key verification failed!");
