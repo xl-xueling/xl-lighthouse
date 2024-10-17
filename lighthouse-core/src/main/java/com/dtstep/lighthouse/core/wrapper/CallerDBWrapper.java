@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.core.wrapper;
 
-import com.dtstep.lighthouse.common.entity.ResultCode;
+import com.dtstep.lighthouse.common.enums.CallerStateEnum;
 import com.dtstep.lighthouse.common.modal.Caller;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
@@ -52,7 +52,7 @@ public class CallerDBWrapper {
         QueryRunner queryRunner = new QueryRunner();
         Caller caller;
         try{
-            caller = queryRunner.query(conn, String.format("select id,name,secret_key,create_time,update_time from ldp_callers where name = '%s'",callerName), new CallerSetHandler());
+            caller = queryRunner.query(conn, String.format("select id,name,state,secret_key,create_time,update_time from ldp_callers where name = '%s'",callerName), new CallerSetHandler());
         }finally {
             storageEngine.closeConnection();
         }
@@ -68,11 +68,13 @@ public class CallerDBWrapper {
                 caller = new Caller();
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
+                int state = rs.getInt("state");
                 String secretKey = rs.getString("secret_key");
                 long createTime = rs.getTimestamp("create_time").getTime();
                 long updateTime = rs.getTimestamp("update_time").getTime();
                 caller.setId(id);
                 caller.setName(name);
+                caller.setState(CallerStateEnum.forValue(state));
                 caller.setSecretKey(secretKey);
                 caller.setCreateTime(DateUtil.timestampToLocalDateTime(createTime));
                 caller.setUpdateTime(DateUtil.timestampToLocalDateTime(updateTime));
