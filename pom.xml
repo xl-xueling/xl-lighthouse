@@ -106,6 +106,30 @@
       </distributionManagement>
       <build>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>3.0.0-M3</version>
+            <executions>
+              <execution>
+                <id>enforce-java-version</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireJavaVersion>
+                      <version>[9,12)</version>
+                      <message>
+                        [ERROR] == 错误：仅允许使用 JDK 9 或 11 进行编译！当前 JDK 信息 : ${java.vendor} 版本: ${java.runtime.version}!
+                        [ERROR] == Only compilation with JDK 9 or 11 is allowed! Current JDK: ${java.vendor} ,Version: ${java.runtime.version}!
+                      </message>
+                    </requireJavaVersion>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
