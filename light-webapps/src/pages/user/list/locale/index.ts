@@ -56,9 +56,9 @@ const i18n = {
     'userList.columns.activation.success':'激活账号成功!',
     'userList.columns.delete.success':'删除账号成功!',
     'userList.form.resetpasswd.confirm':'是否确认重置用户密码？',
-    'userList.form.activation.confirm':'是否确认激活该用户?',
-    'userList.form.frozen.confirm':'是否确认冻结该用户？',
-    'userList.form.delete.confirm':'是否确认删除该用户?',
+    'userList.form.activation.confirm':'是否确认激活该账号?',
+    'userList.form.frozen.confirm':'是否确认冻结该账号？',
+    'userList.form.delete.confirm':'是否确认删除该账号?',
   },
 };
 
