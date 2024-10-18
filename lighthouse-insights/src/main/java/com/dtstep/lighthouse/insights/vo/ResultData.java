@@ -99,6 +99,15 @@ public class ResultData<T> {
         return message;
     }
 
+    public static String getMessage(ResultCode resultCode){
+        messageSource = SpringUtil.getBean(MessageSource.class);
+        String message = messageSource.getMessage(resultCode.getI18nLabel(),null,LocaleContextHolder.getLocale());
+        if(resultCode.getParams() != null){
+            message = String.format(message, (Object[]) resultCode.getParams());
+        }
+        return message;
+    }
+
     public String getCode() {
         return code;
     }
