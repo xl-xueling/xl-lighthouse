@@ -4,7 +4,8 @@ import locale from './locale';
 import useLocale from '@/utils/useLocale';
 import styles from './style/index.module.less';
 
-function Exception403({fromExternalEmbedding = false}) {
+function Exception403({fromExternalEmbedding = false,errorMessage = null}) {
+
   const t = useLocale(locale);
 
   return (
@@ -12,7 +13,7 @@ function Exception403({fromExternalEmbedding = false}) {
           <Result
               className={styles.result}
               status="403"
-              subTitle={t['exception.result.403.description']}
+              subTitle={errorMessage ? errorMessage : t['exception.result.403.description']}
           />
       </div>
   );

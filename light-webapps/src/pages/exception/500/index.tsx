@@ -4,15 +4,16 @@ import locale from './locale';
 import useLocale from '@/utils/useLocale';
 import styles from './style/index.module.less';
 
-function Exception500() {
+function Exception500({fromExternalEmbedding = false,errorMessage = null}) {
+
   const t = useLocale(locale);
 
   return (
-    <div className={styles.wrapper}>
+      <div className={fromExternalEmbedding?styles.externalEmbeddingWrapper : styles.wrapper}>
       <Result
         className={styles.result}
         status="500"
-        subTitle={t['exception.result.500.description']}
+        subTitle={errorMessage ? errorMessage : t['exception.result.500.description']}
       />
     </div>
   );

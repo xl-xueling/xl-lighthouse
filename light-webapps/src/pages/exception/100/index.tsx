@@ -5,6 +5,7 @@ import useLocale from '@/utils/useLocale';
 import styles from './style/index.module.less';
 
 function Exception100({fromExternalEmbedding = false,errorMessage}) {
+
   const t = useLocale(locale);
 
   return (
