@@ -121,8 +121,8 @@
                     <requireJavaVersion>
                       <version>[9,12)</version>
                       <message>
-                        [ERROR] == 错误：仅允许使用 JDK 9 或 11 进行编译！当前 JDK 信息 : ${java.vendor} 版本: ${java.runtime.version}!
-                        [ERROR] == Only compilation with JDK 9 or 11 is allowed! Current JDK: ${java.vendor} ,Version: ${java.runtime.version}!
+                        [ERROR] == 错误：仅允许使用 JDK 9 或 11 进行编译！当前Maven编译所使用的 JDK 信息为: ${java.vendor} Version: ${java.runtime.version}!
+                        [ERROR] == Error: Only compilation with JDK 9 or 11 is allowed! The current JDK information used for Maven compilation is: : ${java.vendor} Version: ${java.runtime.version}!
                       </message>
                     </requireJavaVersion>
                   </rules>
