@@ -142,7 +142,7 @@ export function getViewAccessDescription(t: any,orderInfo:Order) {
         },
         {
             label: t['detailModal.viewAccess.columns.admins'],
-            value: <DepartmentLabel departmentId={viewInfo?.departmentId}/>,
+            value: <UserGroup users={viewInfo?.admins}/>,
         },
         {
             label: t['detailModal.viewAccess.columns.desc'],
