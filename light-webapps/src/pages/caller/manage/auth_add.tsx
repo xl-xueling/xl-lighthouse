@@ -164,7 +164,7 @@ export default function AuthAdd({onClose}){
                                 <TbBrandVisualStudio size={16} style={{marginBottom:'-2px'}}/>
                             </span>
                         }>
-                        <Form ref={(ref) => (formRefs.current["2"] = ref)} initialValues={{extension:2592000}}>
+                        <Form ref={(ref) => (formRefs.current["2"] = ref)} initialValues={{extension:7776000}}>
                             {PRO_ViewBindTab(callerInfo)}
                         </Form>
                     </TabPane>

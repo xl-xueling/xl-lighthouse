@@ -27,7 +27,7 @@ const i18n = {
     'callerManage.authAdd.extension.2year':'2 Year',
     'callerManage.authAdd.label.extension':'Expired',
     'callerManage.authAdd.label.project':'Project',
-    'callerManage.authAdd.label.stat':'Stat',
+    'callerManage.authAdd.label.stat':'Statistic',
     'callerManage.authAdd.label.view':'DataView',
     'callerManage.authAdd.label.reason':'Reason',
 
