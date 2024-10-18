@@ -124,7 +124,7 @@ export default function CallerPreviewPanel({}){
                 </Grid.Row>
             }>
                 <StatBasicLineChart size={'mini'} data={statsData.get(String(statId))} stateIndex={indicatorIndex - 1}
-                                    errorMessage={statsErrorMessage.get(String(statId))} loading={loading} group={'sameGroup'}
+                                    errorMessage={statsErrorMessage.get(String(statId))} loading={loading}
                                     showDimens={statId != 1031}
                 />
             </Card>
