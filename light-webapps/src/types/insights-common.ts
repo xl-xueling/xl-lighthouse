@@ -242,7 +242,6 @@ export enum ChartTypeEnum {
     SORTED_BAR_CHART=9,
 }
 
-
 export enum AssociateStateEnum {
     UnAssociate=0,
     Associated=1,
@@ -251,4 +250,9 @@ export enum AssociateStateEnum {
 export enum SelectedStateEnum {
     UnSelect=0,
     Selected=1,
+}
+
+export interface ErrorInfo {
+    errorCode?:string,
+    errorMessage?:string,
 }
