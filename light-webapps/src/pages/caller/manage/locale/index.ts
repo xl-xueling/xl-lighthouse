@@ -38,7 +38,8 @@ const i18n = {
     'callerManage.extension.expired.2year':'2 Year',
     'callerManage.extension.label.extension':'ExtensionTime',
     'callerManage.extension.label.project':'Project',
-    'callerManage.extension.label.stat':'Stat',
+    'callerManage.extension.label.stat':'Statistic',
+    'callerManage.extension.label.view':'DataView',
     'callerManage.extension.label.reason':'Reason',
     'callerManage.callerKey.title':'APICaller Secret Key',
 
@@ -90,7 +91,7 @@ const i18n = {
     'callerManage.extension.label.extension':'续签时长',
     'callerManage.extension.label.project':'统计工程',
     'callerManage.extension.label.stat':'统计项',
-    'callerManage.authAdd.label.view':'数据视图',
+    'callerManage.extension.label.view':'数据视图',
     'callerManage.extension.label.reason':'申请原因',
     'callerManage.callerKey.title':'调用方秘钥',
 
