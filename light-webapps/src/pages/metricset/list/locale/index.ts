@@ -1,15 +1,16 @@
 const i18n = {
   'en-US': {
     'metricSetList.breadcrumb.title':'MetricSet List',
-    'metricSetList.tab.title.all':'All',
-    'metricSetList.tab.title.owner':'Owner',
+    'metricSetList.tab.title.all':'All MetricSets',
+    'metricSetList.tab.title.owner':'My MetricSets',
     'metricSetList.button.createMetric':'Create MetricSet',
     'metricSetList.operations.delete.confirm':'Are you sure to delete this item?',
     'metricSetList.operations.delete.submit.success':'Delete MetricSet Successfully!',
     'metricSetList.operations.star.submit.success':'MetricSet has been stared!',
     'metricSetList.operations.star.confirm':'Are you sure to star this item?',
     'metricSetList.operations.unstar.confirm':'Are you sure to unstar this item?',
-    'metricSetList.operations.unstar.submit.success':'MetricSet has been unStared!'
+    'metricSetList.operations.unstar.submit.success':'MetricSet has been unStared!',
+    'metricSetList.onlyShow.tooltips':'Only show elements that are public or have access!',
   },
   'zh-CN': {
     'metricSetList.breadcrumb.title':'指标集列表',
@@ -22,6 +23,7 @@ const i18n = {
     'metricSetList.operations.star.confirm':'是否确认关注当前指标集?',
     'metricSetList.operations.unstar.confirm':'是否确认取消关注指标集？',
     'metricSetList.operations.unstar.submit.success':'指标集已被取消关注！',
+    'metricSetList.onlyShow.tooltips':'以下只展示公开或已拥有访问权限的元素！',
   },
 };
 

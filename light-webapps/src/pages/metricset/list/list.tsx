@@ -157,9 +157,15 @@ export default function MetricListPanel() {
                     activeTab={activeKey}
                     onChange={setActiveKey}
                     extra={
-                        <Input.Search
-                            style={{ width: '280px',paddingRight:'24px'}} allowClear={true} onSearch={handlerSearch}
-                        />
+                        <Space size={20}>
+                            {activeKey == '0' && <Typography.Text style={{fontSize:12,color:'var(--color-text-2)',display:"flex"}}>
+                                <div style={{fontSize:'12px',marginRight:'5px',marginTop:'2px'}}>*</div>
+                                {t['metricSetList.onlyShow.tooltips']}
+                            </Typography.Text>}
+                            <Input.Search
+                                style={{ width: '340px',paddingRight:'24px'}} allowClear={true} onSearch={handlerSearch}
+                            />
+                        </Space>
                     }>
                     <Tabs.TabPane key={"1"} title={t['metricSetList.tab.title.owner']} />
                     <Tabs.TabPane key={"0"} title={t['metricSetList.tab.title.all']} />
