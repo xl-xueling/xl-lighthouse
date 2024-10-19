@@ -142,8 +142,8 @@ fi
 
 # default heap for zookeeper server
 ZK_SERVER_HEAP="${ZK_SERVER_HEAP:-1000}"
-export SERVER_JVMFLAGS="-Xmx${ldp_zookeeper_xmx_memory} -Xms${ldp_zookeeper_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone} $SERVER_JVMFLAGS"
+export SERVER_JVMFLAGS="-Xmx${ldp_zookeeper_xmx_memory} -Xms${ldp_zookeeper_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone} -Dfile.encoding=UTF-8 $SERVER_JVMFLAGS"
 
 # default heap for zookeeper client
 ZK_CLIENT_HEAP="${ZK_CLIENT_HEAP:-256}"
-export CLIENT_JVMFLAGS="-Xmx${ZK_CLIENT_HEAP}m -Duser.timezone=${ldp_lighthouse_timezone} $CLIENT_JVMFLAGS"
+export CLIENT_JVMFLAGS="-Xmx${ZK_CLIENT_HEAP}m -Duser.timezone=${ldp_lighthouse_timezone} -Dfile.encoding=UTF-8 $CLIENT_JVMFLAGS"

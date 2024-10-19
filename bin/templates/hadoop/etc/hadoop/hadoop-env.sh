@@ -102,7 +102,7 @@ export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 # such commands.  In most cases, # this should be left empty and
 # let users supply it on the command line.
 # export HADOOP_CLIENT_OPTS=""
-export HADOOP_OPTS="$HADOOP_OPTS -Duser.timezone=${ldp_lighthouse_timezone}"
+export HADOOP_OPTS="$HADOOP_OPTS -Duser.timezone=${ldp_lighthouse_timezone} -Dfile.encoding=UTF-8"
 
 #
 # A note about classpaths.
@@ -291,9 +291,9 @@ export HADOOP_OPTS="$HADOOP_OPTS -Duser.timezone=${ldp_lighthouse_timezone}"
 # this is the default:
 # export HDFS_NAMENODE_OPTS="-Dhadoop.security.logger=INFO,RFAS"
 
-export HDFS_NAMENODE_OPTS="${HDFS_NAMENODE_OPTS} -Xmx${ldp_hadoop_namenode_xmx_memory} -Xms${ldp_hadoop_namenode_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone}"
-export HDFS_DATANODE_OPTS="${HDFS_DATANODE_OPTS} -Xmx${ldp_hadoop_datanode_xmx_memory} -Xms${ldp_hadoop_datanode_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone}"
-export HDFS_SECONDARYNAMENODE_OPTS="${HDFS_SECONDARYNAMENODE_OPTS} -Xmx${ldp_hadoop_secondarynamenode_xmx_memory} -Xms${ldp_hadoop_secondarynamenode_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone}"
+export HDFS_NAMENODE_OPTS="${HDFS_NAMENODE_OPTS} -Xmx${ldp_hadoop_namenode_xmx_memory} -Xms${ldp_hadoop_namenode_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone} -Dfile.encoding=UTF-8"
+export HDFS_DATANODE_OPTS="${HDFS_DATANODE_OPTS} -Xmx${ldp_hadoop_datanode_xmx_memory} -Xms${ldp_hadoop_datanode_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone} -Dfile.encoding=UTF-8"
+export HDFS_SECONDARYNAMENODE_OPTS="${HDFS_SECONDARYNAMENODE_OPTS} -Xmx${ldp_hadoop_secondarynamenode_xmx_memory} -Xms${ldp_hadoop_secondarynamenode_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone} -Dfile.encoding=UTF-8"
 
 ###
 # SecondaryNameNode specific parameters

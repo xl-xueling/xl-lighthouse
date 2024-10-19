@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export KAFKA_HEAP_OPTS="-Xmx${ldp_kafka_xmx_memory} -Xms${ldp_kafka_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone}"
+export KAFKA_HEAP_OPTS="-Xmx${ldp_kafka_xmx_memory} -Xms${ldp_kafka_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone} -Dfile.encoding=UTF-8"
 
 if [ $# -lt 1 ];
 then

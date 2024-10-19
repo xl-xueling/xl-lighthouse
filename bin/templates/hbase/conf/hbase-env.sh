@@ -113,9 +113,9 @@ export JAVA_HOME=${ldp_java_home}
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${ldp_hadoop_home}/lib/native/:/usr/lib64/:/usr/lib/
 export HBASE_LIBRARY_PATH=$HBASE_LIBRARY_PATH:${ldp_hadoop_home}/lib/native/:/usr/lib64/:/usr/lib/
-export HBASE_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseZGC -XX:ConcGCThreads=2 -XX:ParallelGCThreads=6 -Duser.timezone=${ldp_lighthouse_timezone} -XX:ZCollectionInterval=10 -XX:ZAllocationSpikeTolerance=8 -XX:+UnlockDiagnosticVMOptions -XX:-ZProactive"
-export HBASE_MASTER_OPTS="-Xmx${ldp_hbase_master_xmx_memory} -Xms${ldp_hbase_master_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone} -XX:MaxDirectMemorySize=${ldp_hbase_master_direct_memory} -Xlog:gc*:/tmp/lighthouse_gc-hbase-master-`hostname`.log"
-export HBASE_REGIONSERVER_OPTS="-Xmx${ldp_hbase_regionserver_xmx_memory} -Xms${ldp_hbase_regionserver_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone} -XX:MaxDirectMemorySize=${ldp_hbase_regionserver_direct_memory} -Xlog:gc*:/tmp/lighthouse_gc-hbase-regionserver-`hostname`.log"
+export HBASE_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseZGC -XX:ConcGCThreads=2 -XX:ParallelGCThreads=6 -Duser.timezone=${ldp_lighthouse_timezone} -Dfile.encoding=UTF-8 -XX:ZCollectionInterval=10 -XX:ZAllocationSpikeTolerance=8 -XX:+UnlockDiagnosticVMOptions -XX:-ZProactive"
+export HBASE_MASTER_OPTS="-Xmx${ldp_hbase_master_xmx_memory} -Xms${ldp_hbase_master_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone} -Dfile.encoding=UTF-8 -XX:MaxDirectMemorySize=${ldp_hbase_master_direct_memory} -Xlog:gc*:/tmp/lighthouse_gc-hbase-master-`hostname`.log"
+export HBASE_REGIONSERVER_OPTS="-Xmx${ldp_hbase_regionserver_xmx_memory} -Xms${ldp_hbase_regionserver_xms_memory} -Duser.timezone=${ldp_lighthouse_timezone} -Dfile.encoding=UTF-8 -XX:MaxDirectMemorySize=${ldp_hbase_regionserver_direct_memory} -Xlog:gc*:/tmp/lighthouse_gc-hbase-regionserver-`hostname`.log"
 
 # A string representing this instance of hbase. $USER by default.
 # export HBASE_IDENT_STRING=$USER
