@@ -46,7 +46,7 @@ public class SystemEnvServiceImpl implements SystemEnvService {
 
     @Transactional
     @Override
-    public void createIfNotExist(String param, String value) {
+    public void createOrUpdate(String param, String value) {
         Validate.notNull(param);
         Validate.notNull(value);
         SystemEnv systemEnv = new SystemEnv();
