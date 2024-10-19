@@ -53,6 +53,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             render: (value, record) => {
                 let updateButton;
                 let deleteButton;
+                let noAccessButton;
                 if(record.permissions.includes('ManageAble')){
                     updateButton = <Button key={getRandomString()}
                                            onClick={() => callback(record, 'update')}
@@ -74,8 +75,10 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
                                 {t['componentList.columns.button.delete']}
                             </Button>
                         </Popconfirm>
+                }else{
+                    noAccessButton = '--';
                 }
-                return  <Space size={0} direction="horizontal">{[updateButton,deleteButton]}</Space>;
+                return  <Space size={0} direction="horizontal">{[noAccessButton,updateButton,deleteButton]}</Space>;
             }
         }
     ];
