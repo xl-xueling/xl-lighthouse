@@ -255,7 +255,7 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
                       </Form.Item>
                   </>
               }
-              <Grid.Row>
+              <Grid.Row style={{ marginTop: 10 }}>
                   <Grid.Col span={16}>
                       <Typography.Title
                           heading={6}
