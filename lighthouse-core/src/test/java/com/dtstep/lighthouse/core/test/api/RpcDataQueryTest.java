@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Java API调用示例
+ * Java 数据查询API调用示例
  */
-public class DataQueryTest {
+public class RpcDataQueryTest {
 
     static {
         try{
@@ -27,12 +27,12 @@ public class DataQueryTest {
         }
     }
 
-    private final String callerName = "caller:lighthouse_test_call";
+    private final String callerName = "caller:app_waimai_order";
 
-    private final String callerKey = "aod36BtsDqLIevpCTIpPgP4MZLkujBpDUPLy9oGd";
+    private final String callerKey = "bK7dImv3HCzBBTQvS9pvlieSfXlVeyMDbWs8RNmj";
 
     /**
-     * 对应API：LightHouse.dataQuery(int statId, String secretKey, String dimensValue, long startTime, long endTime)
+     * 对应API：LightHouse.dataQuery(String callerName, String callerKey, int statId,String dimensValue, long startTime, long endTime)
      * @throws Exception
      *
      * 通过维度查询在指定时间范围内的统计结果
@@ -48,19 +48,19 @@ public class DataQueryTest {
         long t = System.currentTimeMillis();
         long startTime = DateUtil.getDayStartTime(t);
         long endTime = DateUtil.getDayEndTime(t);
-        //statId为对应统计项ID，secretKey为统计项所在统计组的秘钥，dimensValue为纬度值，startTime和endTime为查询起止时间范围
+        //statId为对应统计项ID，dimensValue为纬度值，startTime和endTime为查询起止时间范围
         List<StatValue> statValues = LightHouse.dataQuery(callerName,callerKey,statId,dimensValue,startTime,endTime);
         for (StatValue statValue : statValues) {
             //返回结果：batchTime为对应批次时间，dimensValue为相应纬度值，value为统计结果,statesValue如果统计项中包含多个统计函数，则按按顺序返回每一个统计函数的结果
             System.out.println("batchTime:" + statValue.getDisplayBatchTime() + ",dimensValue:" + statValue.getDimensValue() + ",value:" + statValue.getValue()
-                    + ",statesValue:" + JsonUtil.toJSONString(statValue.getStatesValue()));
+                    + ",statesValue:" + JsonUtil.toJSONString(statValue));
         }
         System.out.println("ok!");
     }
 
     /**
      *
-     * 对应API：LightHouse.dataQuery(int statId, String secretKey, String dimensValue, List batchList)
+     * 对应API：LightHouse.dataQuery(String callerName, String callerKey, int statId, String dimensValue, List batchList)
      *
      * 1、batchList为指定具体的批次时间列表；
      * 2、dimensValue传值逻辑与上述示例相同；
@@ -68,16 +68,15 @@ public class DataQueryTest {
      */
     @Test
     public void dataQueryByBatchTest() throws Exception {
-        int statId = 1100602;
-        String secretKey = "Kq2Ts5PCBBqTqCFfKtbHekcQObDOZDQMVNuN6Ej5";
-        String dimensValue = "北京市";
+        int statId = 1100621;
+        String dimensValue = "福建省";
         List<Long> batchList = new ArrayList<>();
         batchList.add(DateUtil.parseDate("2024-09-05 09:00:00","yyyy-MM-dd HH:mm:ss"));
         batchList.add(DateUtil.parseDate("2024-09-05 08:00:00","yyyy-MM-dd HH:mm:ss"));
         batchList.add(DateUtil.parseDate("2024-09-05 07:00:00","yyyy-MM-dd HH:mm:ss"));
         batchList.add(DateUtil.parseDate("2024-09-05 06:00:00","yyyy-MM-dd HH:mm:ss"));
         batchList.add(DateUtil.parseDate("2024-09-05 05:00:00","yyyy-MM-dd HH:mm:ss"));
-        //statId为对应统计项ID，secretKey为统计项所在统计组的秘钥，dimensValue为纬度值，batchList为批次时间列表
+        //statId为对应统计项ID，dimensValue为纬度值，batchList为批次时间列表
         List<StatValue> statValues = LightHouse.dataQuery(callerName,callerKey,statId,dimensValue,batchList);
         for (StatValue statValue : statValues) {
             //返回结果：batchTime为对应批次时间，dimensValue为相应纬度值，value为统计结果,statesValue如果统计项中包含多个统计函数，则按按顺序返回每一个统计函数的结果
@@ -88,7 +87,7 @@ public class DataQueryTest {
     }
 
     /**
-     * 对应API：LightHouse.dataQueryWithDimensList(int statId, String secretKey, List dimensValueList, long startTime,long endTime)
+     * 对应API：LightHouse.dataQueryWithDimensList(String callerName, String callerKey, int statId, List dimensValueList, long startTime,long endTime)
      * 查询多个维度信息指定时间范围的统计结果,dimensValueList为多个维度的集合，每个维度取值逻辑与上述示例一致
      *
      * @throws Exception
@@ -96,7 +95,6 @@ public class DataQueryTest {
     @Test
     public void dataQueryWithDimensListTest() throws Exception {
         int statId = 1100601;
-        String secretKey = "Kq2Ts5PCBBqTqCFfKtbHekcQObDOZDQMVNuN6Ej5";
         List<String> dimensValueList = new ArrayList<>();
         dimensValueList.add("山东省");
         dimensValueList.add("四川省");
@@ -118,14 +116,13 @@ public class DataQueryTest {
     }
 
     /**
-     * 对应API：LightHouse.dataQueryWithDimensList(int statId, String secretKey, List dimensValueList, List batchList)
+     * 对应API：LightHouse.dataQueryWithDimensList(String callerName, String callerKey, int statId, List dimensValueList, List batchList)
      * 查询多个维度信息指定批次的统计结果,dimensValueList为多个维度的集合，每个维度取值逻辑与上述示例一致，batchList为批次时间列表
      * @throws Exception
      */
     @Test
     public void dataQueryWithDimensListByBatchTest() throws Exception {
         int statId = 1100597;
-        String secretKey = "Kq2Ts5PCBBqTqCFfKtbHekcQObDOZDQMVNuN6Ej5";
         List<String> dimensValueList = new ArrayList<>();
         dimensValueList.add("山东省;1");
         dimensValueList.add("山东省;2");
@@ -156,7 +153,7 @@ public class DataQueryTest {
      *
      * 该接口需要v2.2.7以上版本支持！
      *
-     * 对应API：LightHouse.limitQuery(int statId, String secretKey, Long batchTime)
+     * 对应API：LightHouse.limitQuery(String callerName, String callerKey, int statId, Long batchTime)
      * 查询Limit同结果数据，batchTime为对应的批次时间
      *
      * 该接口需要v2.2.7以上版本支持！
@@ -166,14 +163,10 @@ public class DataQueryTest {
     @Test
     public void testLimitQuery() throws Exception {
         int statId = 1100601;
-        String secretKey = "Kq2Ts5PCBBqTqCFfKtbHekcQObDOZDQMVNuN6Ej5";
         long batchTime = DateUtil.parseDate("2024-09-05 09:00:00","yyyy-MM-dd HH:mm:ss");
         List<LimitValue> limitValues = LightHouse.limitQuery(callerName,callerKey,statId,batchTime);
         for(LimitValue limitValue : limitValues){
             System.out.println("dimensValue:" + limitValue.getDimensValue() + ",score:" + limitValue.getScore());
         }
     }
-
-
-
 }
