@@ -47,7 +47,9 @@ public class LightHouseHttpService {
             bootstrap.group(bossGroup, workerGroup)
                     .channel(Epoll.isAvailable() ? EpollServerSocketChannel.class :
                             (KQueue.isAvailable() ? KQueueServerSocketChannel.class : NioServerSocketChannel.class))
+                    .option(ChannelOption.SO_REUSEADDR, true)
                     .option(EpollChannelOption.SO_REUSEPORT, true)
+                    .option(ChannelOption.SO_BACKLOG, 1024)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
@@ -58,11 +60,11 @@ public class LightHouseHttpService {
                                     .addLast(new HttpServiceHandler());
                         }
                     })
-                    .childOption(ChannelOption.SO_BACKLOG, 1024)
                     .childOption(ChannelOption.SO_SNDBUF, 10 * 1024 * 1024)
                     .childOption(ChannelOption.SO_RCVBUF, 10 * 1024 * 1024);
-            ChannelFuture f = bootstrap.bind(SysConst.CLUSTER_MONITOR_SERVICE_PORT).sync();
-            f.channel().closeFuture().sync();
+            ChannelFuture future = bootstrap.bind(SysConst.CLUSTER_MONITOR_SERVICE_PORT).sync();
+            logger.info("ldp standalone http service start,listen:{}",SysConst.CLUSTER_MONITOR_SERVICE_PORT);
+            future.channel().closeFuture().sync();
         } catch (Exception ex) {
             logger.error("ldp standalone http service startup exception!", ex);
         } finally {

@@ -20,6 +20,13 @@ import com.dtstep.lighthouse.standalone.rpc.NettyServerHandler;
 import com.dtstep.lighthouse.standalone.rpc.ServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
+import io.netty.channel.epoll.Epoll;
+import io.netty.channel.epoll.EpollChannelOption;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollServerSocketChannel;
+import io.netty.channel.kqueue.KQueue;
+import io.netty.channel.kqueue.KQueueEventLoopGroup;
+import io.netty.channel.kqueue.KQueueServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
@@ -32,16 +39,32 @@ public class LightStandaloneService {
     private static final int port = 4061;
 
     public static void start() {
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup;
+        EventLoopGroup workerGroup;
+        if (Epoll.isAvailable()) {
+            bossGroup = new EpollEventLoopGroup();
+            workerGroup = new EpollEventLoopGroup();
+        } else if (KQueue.isAvailable()) {
+            bossGroup = new KQueueEventLoopGroup();
+            workerGroup = new KQueueEventLoopGroup();
+        } else {
+            bossGroup = new NioEventLoopGroup();
+            workerGroup = new NioEventLoopGroup();
+        }
         NettyServerHandler.register();
         try {
             ServerBootstrap server = new ServerBootstrap();
             server.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .childHandler(new ServerInitializer());
+                    .channel(Epoll.isAvailable() ? EpollServerSocketChannel.class :
+                            (KQueue.isAvailable() ? KQueueServerSocketChannel.class : NioServerSocketChannel.class))
+                    .option(ChannelOption.SO_REUSEADDR, true)
+                    .option(EpollChannelOption.SO_REUSEPORT, true)
+                    .option(ChannelOption.SO_BACKLOG, 1024)
+                    .childHandler(new ServerInitializer())
+                    .childOption(ChannelOption.SO_SNDBUF, 10 * 1024 * 1024)
+                    .childOption(ChannelOption.SO_RCVBUF, 10 * 1024 * 1024);
             ChannelFuture future = server.bind(port).sync();
-            logger.info("ldp standalone service start,listen:{}",port);
+            logger.info("ldp standalone rpc service start,listen:{}",port);
             future.channel().closeFuture().sync();
         }catch (Exception ex){
             logger.error("ldp standalone rpc service startup exception!",ex);

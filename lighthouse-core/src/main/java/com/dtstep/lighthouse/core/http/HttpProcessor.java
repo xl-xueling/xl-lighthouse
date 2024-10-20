@@ -31,13 +31,6 @@ public class HttpProcessor {
     private static final RPCServer rpc = new RPCServerImpl();
 
     public static ApiResultData stats(String requestBody) throws Exception {
-        try{
-            if(!LightHouse.isInit()){
-                LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
-            }
-        }catch (Exception ex){
-            logger.error("CallerStat initialization error!",ex);
-        }
         List<Map<String, Object>> list;
         try{
             list = objectMapper.readValue(requestBody, new TypeReference<>() {});
@@ -59,13 +52,6 @@ public class HttpProcessor {
     }
 
     public static ApiResultData stat(String requestBody) throws Exception {
-        try{
-            if(!LightHouse.isInit()){
-                LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
-            }
-        }catch (Exception ex){
-            logger.error("CallerStat initialization error!",ex);
-        }
         Map<String, Object> requestMap;
         try{
             requestMap =  objectMapper.readValue(requestBody,new TypeReference<>() {});
@@ -81,6 +67,13 @@ public class HttpProcessor {
     }
 
     public static ApiResultData stat(Map<String,Object> requestMap) throws Exception {
+        try{
+            if(!LightHouse.isInit()){
+                LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
+            }
+        }catch (Exception ex){
+            logger.error("CallerStat initialization error!",ex);
+        }
         Object tokenObj = requestMap.get("token");
         Object secretKeyObj = requestMap.get("secretKey");
         Object paramsObj = requestMap.get("params");
