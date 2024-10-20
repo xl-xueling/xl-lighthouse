@@ -47,56 +47,57 @@ public final class RedisRoaringFilter<T> {
     private static final KeyGenerator keyGenerator = new DefaultKeyGenerator();
 
     public static final String BLOOM_LUA_SCRIPT_LOCAL_HASH =
-            "local function split(fullStr, separator)\n" +
-                    "local startIndex = 1\n" +
-                    "local splitIndex = 1\n" +
-                    "local splitArray = {}\n" +
-                    "while true do\n" +
-                    "   local lastIndex = string.find(fullStr, separator, startIndex)\n" +
-                    "   if not lastIndex then\n" +
-                    "    splitArray[splitIndex] = string.sub(fullStr, startIndex, string.len(fullStr))\n" +
-                    "    break\n" +
-                    "   end\n" +
-                    "   splitArray[splitIndex] = string.sub(fullStr, startIndex, lastIndex - 1)\n" +
-                    "   startIndex = lastIndex + string.len(separator)\n" +
-                    "   splitIndex = splitIndex + 1\n" +
-                    "end\n" +
-                    "return splitArray\n" +
-                    "end\n" +
-                    "local list = split(ARGV[1], \";\")\n" +
-                    "local array = {}\n" +
-                    "for i = 1, #list do\n" +
-                    "\t  local temp = list[i]\n" +
-                    "\t  local tempArray = split(temp, \",\")\n" +
-                    "\t  for j = 1,#tempArray do\n" +
-                    "\t  \t\tlocal key = KEYS[1] .. '_' .. j .. '{' .. KEYS[1] .. '}'\n" +
-                    "\t\t\tlocal m = redis.call('r.getbit',key,math.abs(tonumber(tempArray[j],36)));\n" +
-                    "\t\t\tif(m == 0)\n" +
-                    "\t\t\tthen\n" +
-                    "\t\t\t\tarray[i] = 0\n" +
-                    "\t\t\t\tbreak\n" +
-                    "\t\t\telse\n" +
-                    "\t\t\t\tarray[i] = 1\n" +
-                    "\t\t\tend\n" +
-                    "\t  end\t\n" +
-                    "end\n" +
-                    "local notExistSize = 0\n" +
-                    "for i = 1,#array do\n" +
-                    "\tlocal temp = array[i];\n" +
-                    "\tif(temp == 0)\n" +
-                    "\tthen\n" +
-                    "\t\tnotExistSize=notExistSize + 1\n" +
-                    "\t\tlocal tempArray = split(list[i], \",\")\n" +
-                    "\t\tfor j = 1,#tempArray do\n" +
-                    "\t  \t\tlocal key = KEYS[1] .. '_' .. j .. '{' .. KEYS[1] .. '}'\n" +
-                    "\t\t\tredis.call('r.setbit',key,math.abs(tonumber(tempArray[j],36)),1);\n" +
-                    "\t\tend\n" +
-                    "\tend\n" +
-                    "end\n" +
-                    "if(tonumber(ARGV[2]) ~= -1) then\n" +
-                    "\tredis.call('expire',KEYS[1],ARGV[2])\t\n" +
-                    "end\n" +
-                    "return notExistSize";
+            "local function split(fullStr, separator) \n" +
+                    "    local startIndex = 1 \n" +
+                    "    local splitIndex = 1 \n" +
+                    "    local splitArray = {} \n" +
+                    "    while true do \n" +
+                    "        local lastIndex = string.find(fullStr, separator, startIndex) \n" +
+                    "        if not lastIndex then \n" +
+                    "            splitArray[splitIndex] = string.sub(fullStr, startIndex, string.len(fullStr)) \n" +
+                    "            break \n" +
+                    "        end \n" +
+                    "        splitArray[splitIndex] = string.sub(fullStr, startIndex, lastIndex - 1) \n" +
+                    "        startIndex = lastIndex + string.len(separator) \n" +
+                    "        splitIndex = splitIndex + 1 \n" +
+                    "    end \n" +
+                    "    return splitArray \n" +
+                    "end \n" +
+                    "\n" +
+                    "local list = split(ARGV[1], \";\") \n" +
+                    "local array = {} \n" +
+                    "for i = 1, #list do \n" +
+                    "    local temp = list[i] \n" +
+                    "    local tempArray = split(temp, \",\") \n" +
+                    "    for j = 1, #tempArray do \n" +
+                    "        local key = KEYS[1] .. '_' .. j .. '{' .. KEYS[1] .. '}' \n" +
+                    "        local m = redis.call('r.getbit', key, math.abs(tonumber(tempArray[j], 36))) \n" +
+                    "        if(m == 0) then \n" +
+                    "            array[i] = 0 \n" +
+                    "            break \n" +
+                    "        else \n" +
+                    "            array[i] = 1 \n" +
+                    "        end \n" +
+                    "    end \n" +
+                    "end \n" +
+                    "\n" +
+                    "local notExistSize = 0 \n" +
+                    "for i = 1, #array do \n" +
+                    "    local temp = array[i] \n" +
+                    "    if(temp == 0) then \n" +
+                    "        notExistSize = notExistSize + 1 \n" +
+                    "        local tempArray = split(list[i], \",\") \n" +
+                    "        for j = 1, #tempArray do \n" +
+                    "            local key = KEYS[1] .. '_' .. j .. '{' .. KEYS[1] .. '}' \n" +
+                    "            redis.call('r.setbit', key, math.abs(tonumber(tempArray[j], 36)), 1) \n" +
+                    "            if(tonumber(ARGV[2]) ~= -1) then \n" +
+                    "                redis.call('expire', key, ARGV[2]) \n" +
+                    "            end \n" +
+                    "        end \n" +
+                    "    end \n" +
+                    "end \n" +
+                    "\n" +
+                    "return notExistSize\n";
 
 
     private String sha;
