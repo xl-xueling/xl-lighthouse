@@ -294,4 +294,11 @@ public class DateUtilTest {
         long hoursSinceStart = ChronoUnit.HOURS.between(Instant.ofEpochMilli(t1), Instant.ofEpochMilli(currentTimestamp));
         System.out.println("t1:" + hoursSinceStart);
     }
+
+    @Test
+    public void testHoursBefore() throws Exception {
+        long t = System.currentTimeMillis();
+        long t2 = DateUtil.getHourStartTime(DateUtil.getHourBefore(t,2));
+        System.out.println("t2:" + t2);
+    }
 }
