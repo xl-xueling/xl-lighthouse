@@ -121,8 +121,12 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
                     return HttpProcessor.stats(requestBody);
                 case "dataQuery":
                     return HttpProcessor.dataQuery(callerName,callerKey,requestBody);
+                case "dataDurationQuery":
+                    return HttpProcessor.dataDurationQuery(callerName,callerKey,requestBody);
                 case "dataQueryWithDimensList":
                     return HttpProcessor.dataQueryWithDimensList(callerName,callerKey,requestBody);
+                case "dataDurationQueryWithDimensList":
+                    return HttpProcessor.dataDurationQueryWithDimensList(callerName,callerKey,requestBody);
                 case "limitQuery":
                     return HttpProcessor.limitQuery(callerName,callerKey,requestBody);
             }

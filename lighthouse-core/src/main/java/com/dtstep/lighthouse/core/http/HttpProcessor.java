@@ -400,7 +400,6 @@ public class HttpProcessor {
         }
         List<LimitValue> data;
         try{
-//            data = LightHouse.limitQuery(callerName,callerKey,Integer.parseInt(statIdObj.toString()),Long.parseLong(batchTimeObj.toString()));
             data = rpc.limitQuery(Integer.parseInt(statIdObj.toString()),Long.parseLong(batchTimeObj.toString()));
         }catch (Exception ex){
             ApiResultCode apiResultCode = ApiResultCode.ProcessError;
