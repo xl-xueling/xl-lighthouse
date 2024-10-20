@@ -184,7 +184,7 @@ public final class LightHouse {
         return RPCClientProxy.instance().dataQueryV2(callerName,callerKey,statId,dimensValue,batchList);
     }
 
-    public static List<StatValue> dataQuery(String callerName,String callerKey,int statId, String dimensValue, long startTime, long endTime) throws Exception {
+    public static List<StatValue> dataDurationQuery(String callerName,String callerKey,int statId, String dimensValue, long startTime, long endTime) throws Exception {
         if(!_InitFlag.get()){
             throw new InitializationException("connection is not initialized or the connection is abnormal, request ignored!");
         }
@@ -211,7 +211,7 @@ public final class LightHouse {
         return RPCClientProxy.instance().dataQueryWithDimensListV2(callerName,callerKey,statId,dimensValueList,batchList);
     }
 
-    public static Map<String,List<StatValue>> dataQueryWithDimensList(String callerName,String callerKey,int statId, List<String> dimensValueList, long startTime,long endTime) throws Exception {
+    public static Map<String,List<StatValue>> dataDurationQueryWithDimensList(String callerName,String callerKey,int statId, List<String> dimensValueList, long startTime,long endTime) throws Exception {
         if(!_InitFlag.get()){
             throw new InitializationException("connection is not initialized or the connection is abnormal, request ignored!");
         }

@@ -49,7 +49,7 @@ public class RpcDataQueryTest {
         long startTime = DateUtil.getDayStartTime(t);
         long endTime = DateUtil.getDayEndTime(t);
         //statId为对应统计项ID，dimensValue为纬度值，startTime和endTime为查询起止时间范围
-        List<StatValue> statValues = LightHouse.dataQuery(callerName,callerKey,statId,dimensValue,startTime,endTime);
+        List<StatValue> statValues = LightHouse.dataDurationQuery(callerName,callerKey,statId,dimensValue,startTime,endTime);
         for (StatValue statValue : statValues) {
             //返回结果：batchTime为对应批次时间，dimensValue为相应纬度值，value为统计结果,statesValue如果统计项中包含多个统计函数，则按按顺序返回每一个统计函数的结果
             System.out.println("batchTime:" + statValue.getDisplayBatchTime() + ",dimensValue:" + statValue.getDimensValue() + ",value:" + statValue.getValue()
@@ -104,7 +104,7 @@ public class RpcDataQueryTest {
         long t = System.currentTimeMillis();
         long startTime = DateUtil.getDayStartTime(t);
         long endTime = DateUtil.getDayEndTime(t);
-        Map<String,List<StatValue>> resultMap = LightHouse.dataQueryWithDimensList(callerName,callerKey,statId,dimensValueList,startTime,endTime);
+        Map<String,List<StatValue>> resultMap = LightHouse.dataDurationQueryWithDimensList(callerName,callerKey,statId,dimensValueList,startTime,endTime);
         for(String dimensValue : resultMap.keySet()){
             List<StatValue> statValues = resultMap.get(dimensValue);
             for (StatValue statValue : statValues) {

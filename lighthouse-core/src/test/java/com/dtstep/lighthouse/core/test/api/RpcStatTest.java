@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class RpcAPITest {
+public class RpcStatTest {
 
     static {
         try{
@@ -22,16 +22,16 @@ public class RpcAPITest {
     @Test
     public void orderStat() throws Exception {
         long t = System.currentTimeMillis();
-        for(int i=0;i<81657;i++){
+        for(int i=0;i<6657;i++){
             HashMap<String,Object> paramMap = new HashMap<>();
             paramMap.put("order_id", RandomID.id(6));
             paramMap.put("biz", RandomID.id(2));
             paramMap.put("user_id", RandomID.id(6));
             Double d = ThreadLocalRandom.current().nextDouble(1000);
             paramMap.put("amount",String.format("%.3f", d));//防止上面随机数出现科学计数法
-            LightHouse.stat("N4C:test_order","mfbWuKc17e8hGNwGRlR2JGSfS2GgvqD0wIxjMuqm",paramMap,t);
+            LightHouse.stat("N4C:order_stat","YEWU3tGjNQL1AevvC9FjNj9SCuvzpYPmLY5akKYz",paramMap,t);
         }
         System.out.println("send ok!");
-        Thread.sleep(30000);//client为异步发送，防止进程结束时内存中部分消息没有发送出去
+        Thread.sleep(300000);//client为异步发送，防止进程结束时内存中部分消息没有发送出去
     }
 }
