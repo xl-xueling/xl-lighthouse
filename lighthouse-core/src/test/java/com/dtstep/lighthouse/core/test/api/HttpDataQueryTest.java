@@ -63,7 +63,7 @@ public class HttpDataQueryTest {
     }
 
     /**
-     * 根据时间范围查询单个维度的统计结果
+     * 按照时间范围查询单个维度的统计结果
      *
      * Header参数：Caller-Name和Caller-Key
      * Body参数格式：{"dimensValue":"山东省","endTime":1729439999999,"startTime":1729353600000,"statId":"1100607"}
@@ -95,7 +95,7 @@ public class HttpDataQueryTest {
     }
 
     /**
-     * 按照批次时间批量查询多个维度的数据
+     * 按照批次时间批量查询多个维度的统计结果
      * Header参数：Caller-Name和Caller-Key
      * 包体参数格式：{"batchList":[1725498000000,1725494400000,1725490800000,1725487200000,1725483600000],"dimensValueList2":["21","72","36"],"statId":"1100613"}
      * @throws Exception
@@ -132,7 +132,7 @@ public class HttpDataQueryTest {
     }
 
     /**
-     * 按照起止时间批量查询多个维度的数据
+     * 按照时间范围批量查询多个维度的统计结果
      * Header参数：Caller-Name和Caller-Key
      * 包体参数格式：{"dimensValueList":["21","72","36"],"endTime":1729439999999,"startTime":1729353600000,"statId":"1100613"}
      * @throws Exception
@@ -166,7 +166,7 @@ public class HttpDataQueryTest {
     /**
      * 按照批次时间查询Limit统计结果数据
      * Header参数：Caller-Name和Caller-Key
-     * 包体参数格式：{"batchTime":1729415100000,"secretKey":"dTdYSwzPz5GRMm1GDAMYKouGKoeD5IW8YVDiAAdH","statId":"1100617"}
+     * 包体参数格式：{"batchTime":1729415100000,"statId":"1100617"}
      * @throws Exception
      */
     @Test
