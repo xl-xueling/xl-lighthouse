@@ -10,10 +10,14 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
+import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.management.ManagementFactory;
+import java.nio.charset.StandardCharsets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
@@ -22,12 +26,16 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-        if (request.method() == HttpMethod.GET) {
-            handleGetRequest(ctx, request);
-        }
-        else if (request.method() == HttpMethod.POST) {
-            handlePostRequest(ctx, request);
-        }
+       try{
+           if (request.method() == HttpMethod.GET) {
+               handleGetRequest(ctx, request);
+           }
+           else if (request.method() == HttpMethod.POST) {
+               handlePostRequest(ctx, request);
+           }
+       }finally{
+           ReferenceCountUtil.release(request);
+       }
     }
 
     private void handleGetRequest(ChannelHandlerContext ctx, FullHttpRequest request) {
@@ -39,11 +47,12 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
             long time = ManagementFactory.getRuntimeMXBean().getStartTime();
             clusterInfo.setStartTime(time);
             clusterInfo.setRunningTime(System.currentTimeMillis() - time);
-            result = JsonUtil.toJSONString(clusterInfo);
+            byte[] responseData = JsonUtil.toJSONString(clusterInfo).getBytes(StandardCharsets.UTF_8);
             FullHttpResponse response = new DefaultFullHttpResponse(
-                    HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(result.getBytes()));
-            response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
-            response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
+                    HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(responseData));
+            HttpHeaders responseHeaders = response.headers();
+            responseHeaders.set(HttpHeaderNames.CONTENT_TYPE, "application/json; charset=utf-8");
+            responseHeaders.set(HttpHeaderNames.CONTENT_LENGTH, responseData.length);
             ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
         }else{
             result = "The current http service does not allow GET request type!";
@@ -60,32 +69,33 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
     private void handlePostRequest(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
         String requestBody = request.content().toString(io.netty.util.CharsetUtil.UTF_8);
         String uri = request.uri();
-        String result;
+        byte[] responseData;
         if(uri.startsWith("/clusterInfo")){
             ClusterInfo clusterInfo = new ClusterInfo();
             clusterInfo.setRunningMode(LDPConfig.getRunningMode());
             long time = ManagementFactory.getRuntimeMXBean().getStartTime();
             clusterInfo.setStartTime(time);
             clusterInfo.setRunningTime(System.currentTimeMillis() - time);
-            result = JsonUtil.toJSONString(clusterInfo);
+            responseData = JsonUtil.toJSONString(clusterInfo).getBytes(StandardCharsets.UTF_8);
         }else{
             HttpHeaders headers = request.headers();
             String callerName = headers.get("Caller-Name");
             String callerKey = headers.get("Caller-Key");
             ApiResultData apiResultData;
-            try{
-                apiResultData = request(uri,callerName,callerKey,requestBody);
-            }catch (Exception ex){
-                logger.error("http request process error!",ex);
+            try {
+                apiResultData = request(uri, callerName, callerKey, requestBody);
+            } catch (Exception ex) {
+                logger.error("http request process error!", ex);
                 ApiResultCode apiResultCode = ApiResultCode.SystemError;
-                apiResultData = new ApiResultData(apiResultCode.getCode(),ex.getMessage());
+                apiResultData = new ApiResultData(apiResultCode.getCode(), ex.getMessage());
             }
-            result = JsonUtil.toJSONString(apiResultData);
+            responseData = JsonUtil.toJSONString(apiResultData).getBytes(StandardCharsets.UTF_8);
         }
         FullHttpResponse response = new DefaultFullHttpResponse(
-                HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(result.getBytes()));
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
-        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
+                HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(responseData));
+        HttpHeaders responseHeaders = response.headers();
+        responseHeaders.set(HttpHeaderNames.CONTENT_TYPE, "application/json; charset=utf-8");
+        responseHeaders.set(HttpHeaderNames.CONTENT_LENGTH, responseData.length);
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
@@ -108,10 +118,17 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
         return new ApiResultData(ApiResultCode.ApiNotSupported.getCode(), ApiResultCode.ApiNotSupported.getMessage());
     }
 
+    private static final Pattern API_PATTERN = Pattern.compile("/api/rpc/v1/([^/]+)");
+
     private String getInterfaceName(String uri) {
-        String[] segments = uri.split("/");
-        return segments.length > 4 ? segments[4] : "";
+        String cleanedUrl = uri.replaceAll("/+", "/");
+        Matcher matcher = API_PATTERN.matcher(cleanedUrl);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return "";
     }
+
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();

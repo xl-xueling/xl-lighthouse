@@ -4,7 +4,7 @@
   <groupId>com.dtstep.lighthouse</groupId>
   <artifactId>lighthouse-client</artifactId>
   <name>XL-LightHouse - Client</name>
-  <version>2.2.7</version>
+  <version>2.2.8</version>
   <description>Parent pom providing dependency and plugin management for applications built with Maven</description>
   <url>http://maven.apache.org/lighthouse-build-configuration/lighthouse-client</url>
   <developers>
@@ -94,7 +94,7 @@
     <dependency>
       <groupId>com.dtstep.lighthouse</groupId>
       <artifactId>lighthouse-common</artifactId>
-      <version>2.2.7</version>
+      <version>2.2.8</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>

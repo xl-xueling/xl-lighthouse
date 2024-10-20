@@ -31,7 +31,7 @@ public class LightStandaloneService {
 
     private static final int port = 4061;
 
-    public void start() throws Exception {
+    public static void start() {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         NettyServerHandler.register();
@@ -44,7 +44,7 @@ public class LightStandaloneService {
             logger.info("ldp standalone service start,listen:{}",port);
             future.channel().closeFuture().sync();
         }catch (Exception ex){
-            logger.error("ldp standalone service startup exception!",ex);
+            logger.error("ldp standalone rpc service startup exception!",ex);
         }finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();

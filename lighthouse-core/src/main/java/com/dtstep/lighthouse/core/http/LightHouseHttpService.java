@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.common.util.IpUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollChannelOption;
@@ -26,81 +27,47 @@ public class LightHouseHttpService {
 
     private static final Logger logger = LoggerFactory.getLogger(LightHouseHttpService.class);
 
-    public void start() throws Exception {
+    public static void start() {
+        EventLoopGroup bossGroup;
+        EventLoopGroup workerGroup;
+
         if (Epoll.isAvailable()) {
-            EventLoopGroup bossGroup = new EpollEventLoopGroup();
-            EventLoopGroup workerGroup = new EpollEventLoopGroup();
-            try {
-                ServerBootstrap bootstrap = new ServerBootstrap();
-                bootstrap.group(bossGroup, workerGroup)
-                        .channel(EpollServerSocketChannel.class)
-                        .option(EpollChannelOption.SO_REUSEPORT, true)
-                        .childHandler(new ChannelInitializer<SocketChannel>() {
-                            @Override
-                            protected void initChannel(SocketChannel ch) throws Exception {
-                                ch.pipeline()
-                                        .addLast(new HttpRequestDecoder())
-                                        .addLast(new HttpResponseEncoder())
-                                        .addLast(new HttpObjectAggregator(1024 * 1024))
-                                        .addLast(new HttpServiceHandler());
-                            }
-                    });
-                ChannelFuture f = bootstrap.bind(SysConst.CLUSTER_MONITOR_SERVICE_PORT).sync();
-                f.channel().closeFuture().sync();
-            } finally {
-                bossGroup.shutdownGracefully();
-                workerGroup.shutdownGracefully();
-            }
+            bossGroup = new EpollEventLoopGroup();
+            workerGroup = new EpollEventLoopGroup();
         } else if (KQueue.isAvailable()) {
-            EventLoopGroup bossGroup = new KQueueEventLoopGroup();
-            EventLoopGroup workerGroup = new KQueueEventLoopGroup();
-            try {
-                ServerBootstrap bootstrap = new ServerBootstrap();
-                bootstrap.group(bossGroup, workerGroup)
-                        .channel(KQueueServerSocketChannel.class)
-                        .option(EpollChannelOption.SO_REUSEPORT, true)
-                        .childHandler(new ChannelInitializer<SocketChannel>() {
-                            @Override
-                            protected void initChannel(SocketChannel ch) throws Exception {
-                                ch.pipeline()
-                                        .addLast(new HttpRequestDecoder())
-                                        .addLast(new HttpResponseEncoder())
-                                        .addLast(new HttpObjectAggregator(1024 * 1024))
-                                        .addLast(new HttpServiceHandler());
-                            }
-                        });
-
-                ChannelFuture f = bootstrap.bind(SysConst.CLUSTER_MONITOR_SERVICE_PORT).sync();
-                f.channel().closeFuture().sync();
-            } finally {
-                bossGroup.shutdownGracefully();
-                workerGroup.shutdownGracefully();
-            }
+            bossGroup = new KQueueEventLoopGroup();
+            workerGroup = new KQueueEventLoopGroup();
         } else {
-            EventLoopGroup bossGroup = new NioEventLoopGroup();
-            EventLoopGroup workerGroup = new NioEventLoopGroup();
-            try {
-                ServerBootstrap bootstrap = new ServerBootstrap();
-                bootstrap.group(bossGroup, workerGroup)
-                        .channel(NioServerSocketChannel.class)
-                        .childHandler(new ChannelInitializer<SocketChannel>() {
-                            @Override
-                            protected void initChannel(SocketChannel ch) throws Exception {
-                                ch.pipeline()
-                                        .addLast(new HttpRequestDecoder())
-                                        .addLast(new HttpResponseEncoder())
-                                        .addLast(new HttpObjectAggregator(1024 * 1024))
-                                        .addLast(new HttpServiceHandler());
-                            }
-                        });
+            bossGroup = new NioEventLoopGroup();
+            workerGroup = new NioEventLoopGroup();
+        }
 
-                ChannelFuture f = bootstrap.bind(SysConst.CLUSTER_MONITOR_SERVICE_PORT).sync();
-                f.channel().closeFuture().sync();
-            } finally {
-                bossGroup.shutdownGracefully();
-                workerGroup.shutdownGracefully();
-            }
+        try {
+            ServerBootstrap bootstrap = new ServerBootstrap();
+            bootstrap.group(bossGroup, workerGroup)
+                    .channel(Epoll.isAvailable() ? EpollServerSocketChannel.class :
+                            (KQueue.isAvailable() ? KQueueServerSocketChannel.class : NioServerSocketChannel.class))
+                    .option(EpollChannelOption.SO_REUSEPORT, true)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ch.pipeline()
+                                    .addLast(new HttpRequestDecoder())
+                                    .addLast(new HttpResponseEncoder())
+                                    .addLast(new HttpObjectAggregator(50 * 1024 * 1024))
+                                    .addLast(new HttpServiceHandler());
+                        }
+                    })
+                    .childOption(ChannelOption.SO_BACKLOG, 1024)
+                    .childOption(ChannelOption.SO_SNDBUF, 10 * 1024 * 1024)
+                    .childOption(ChannelOption.SO_RCVBUF, 10 * 1024 * 1024);
+            ChannelFuture f = bootstrap.bind(SysConst.CLUSTER_MONITOR_SERVICE_PORT).sync();
+            f.channel().closeFuture().sync();
+        } catch (Exception ex) {
+            logger.error("ldp standalone http service startup exception!", ex);
+        } finally {
+            bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
         }
     }
-
 }

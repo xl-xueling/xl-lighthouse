@@ -27,6 +27,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,41 +51,45 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, RpcRequest request) throws Exception {
-        Object result = new Object();
-        String error = null;
-        if(request.getType() == RpcMsgType.Normal){
-            if(registryMap.containsKey(request.getClassName())){
-                try{
-                    Object provider = registryMap.get(request.getClassName());
-                    Method method = provider.getClass().getMethod(request.getMethodName(),request.getParameterTypes());
-                    result = method.invoke(provider,request.getParameterValues());
-                }catch (InvocationTargetException ex){
-                    Throwable cause = ex.getCause();
-                    if(cause instanceof LightRpcException){
-                        LightRpcException lightRpcException = (LightRpcException) cause;
-                        String errorMessage = lightRpcException.getMessage();
-                        error = errorMessage == null ? "Remote Server process error!" : errorMessage;
-                    }else{
+        try{
+            Object result = new Object();
+            String error = null;
+            if(request.getType() == RpcMsgType.Normal){
+                if(registryMap.containsKey(request.getClassName())){
+                    try{
+                        Object provider = registryMap.get(request.getClassName());
+                        Method method = provider.getClass().getMethod(request.getMethodName(),request.getParameterTypes());
+                        result = method.invoke(provider,request.getParameterValues());
+                    }catch (InvocationTargetException ex){
+                        Throwable cause = ex.getCause();
+                        if(cause instanceof LightRpcException){
+                            LightRpcException lightRpcException = (LightRpcException) cause;
+                            String errorMessage = lightRpcException.getMessage();
+                            error = errorMessage == null ? "Remote Server process error!" : errorMessage;
+                        }else{
+                            logger.error("method process error,request:{}!", JsonUtil.toJSONString(request),ex);
+                            error = ex.getMessage() == null ? "Remote Server process error!" : cause.getMessage();
+                        }
+                    }catch (Exception ex){
                         logger.error("method process error,request:{}!", JsonUtil.toJSONString(request),ex);
-                        error = ex.getMessage() == null ? "Remote Server process error!" : cause.getMessage();
+                        error = ex.getMessage() == null ? "Remote Server process error!" : ex.getMessage();
                     }
-                }catch (Exception ex){
-                    logger.error("method process error,request:{}!", JsonUtil.toJSONString(request),ex);
-                    error = ex.getMessage() == null ? "Remote Server process error!" : ex.getMessage();
                 }
+                RpcResponse response = new RpcResponse();
+                response.setRequestId(request.getRequestId());
+                response.setType(RpcMsgType.Normal);
+                response.setResult(result);
+                response.setError(error);
+                ctx.writeAndFlush(response);
+            }else if(request.getType() == RpcMsgType.HeartBeat){
+                RpcResponse response = new RpcResponse();
+                response.setRequestId(request.getRequestId());
+                response.setType(RpcMsgType.HeartBeat);
+                response.setError(error);
+                ctx.writeAndFlush(response);
             }
-            RpcResponse response = new RpcResponse();
-            response.setRequestId(request.getRequestId());
-            response.setType(RpcMsgType.Normal);
-            response.setResult(result);
-            response.setError(error);
-            ctx.writeAndFlush(response);
-        }else if(request.getType() == RpcMsgType.HeartBeat){
-            RpcResponse response = new RpcResponse();
-            response.setRequestId(request.getRequestId());
-            response.setType(RpcMsgType.HeartBeat);
-            response.setError(error);
-            ctx.writeAndFlush(response);
+        }finally {
+            ReferenceCountUtil.release(request);
         }
     }
 

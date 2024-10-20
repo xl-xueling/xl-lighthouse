@@ -1,6 +1,8 @@
 package com.dtstep.lighthouse.common.entity;
 
-public class ApiResultData {
+import java.io.Serializable;
+
+public class ApiResultData implements Serializable {
 
     private String code;
 

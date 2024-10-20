@@ -8,6 +8,9 @@ import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.modal.Caller;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import com.dtstep.lighthouse.core.config.LDPConfig;
+import com.dtstep.lighthouse.core.ipc.RPCServer;
+import com.dtstep.lighthouse.core.ipc.impl.RPCServerImpl;
 import com.dtstep.lighthouse.core.wrapper.CallerDBWrapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +28,16 @@ public class HttpProcessor {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    private static final RPCServer rpc = new RPCServerImpl();
+
     public static ApiResultData stats(String requestBody) throws Exception {
+        try{
+            if(!LightHouse.isInit()){
+                LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
+            }
+        }catch (Exception ex){
+            logger.error("CallerStat initialization error!",ex);
+        }
         List<Map<String, Object>> list;
         try{
             list = objectMapper.readValue(requestBody, new TypeReference<>() {});
@@ -47,6 +59,13 @@ public class HttpProcessor {
     }
 
     public static ApiResultData stat(String requestBody) throws Exception {
+        try{
+            if(!LightHouse.isInit()){
+                LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
+            }
+        }catch (Exception ex){
+            logger.error("CallerStat initialization error!",ex);
+        }
         Map<String, Object> requestMap;
         try{
             requestMap =  objectMapper.readValue(requestBody,new TypeReference<>() {});
@@ -173,7 +192,7 @@ public class HttpProcessor {
             }
             List<StatValue> list;
             try{
-                list = LightHouse.dataQuery(callerName,callerKey,Integer.parseInt(statIdObj.toString()),dimensValue,startTimeStamp,endTimeStamp);
+                list = rpc.dataDurationQuery(Integer.parseInt(statIdObj.toString()),dimensValue,startTimeStamp,endTimeStamp);
             }catch (Exception ex){
                 ApiResultCode apiResultCode = ApiResultCode.ProcessError;
                 return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
@@ -186,7 +205,7 @@ public class HttpProcessor {
             }
             List<StatValue> list;
             try{
-                list = LightHouse.dataQuery(callerName,callerKey,Integer.parseInt(statIdObj.toString()),dimensValue,(List<Long>)batchList);
+                list = rpc.dataQuery(Integer.parseInt(statIdObj.toString()),dimensValue,(List<Long>)batchList);
             }catch (Exception ex){
                 ApiResultCode apiResultCode = ApiResultCode.ProcessError;
                 return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
@@ -263,7 +282,8 @@ public class HttpProcessor {
 
             Map<String,List<StatValue>> data;
             try{
-                data = LightHouse.dataQueryWithDimensList(callerName,callerKey,Integer.parseInt(statIdObj.toString()),(List<String>)dimensValueListObj,startTimeStamp,endTimeStamp);
+//                data = LightHouse.dataQueryWithDimensList(callerName,callerKey,Integer.parseInt(statIdObj.toString()),(List<String>)dimensValueListObj,startTimeStamp,endTimeStamp);
+                data = rpc.dataDurationQueryWithDimensList(Integer.parseInt(statIdObj.toString()),(List<String>)dimensValueListObj,startTimeStamp,endTimeStamp);
             }catch (Exception ex){
                 ApiResultCode apiResultCode = ApiResultCode.ProcessError;
                 return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
@@ -276,7 +296,8 @@ public class HttpProcessor {
             }
             Map<String,List<StatValue>> data;
             try{
-                data = LightHouse.dataQueryWithDimensList(callerName,callerKey,Integer.parseInt(statIdObj.toString()),(List<String>)dimensValueListObj,(List<Long>)batchList);
+//                data = LightHouse.dataQueryWithDimensList(callerName,callerKey,Integer.parseInt(statIdObj.toString()),(List<String>)dimensValueListObj,(List<Long>)batchList);
+                data = rpc.dataQueryWithDimensList(Integer.parseInt(statIdObj.toString()),(List<String>)dimensValueListObj,(List<Long>)batchList);
             }catch (Exception ex){
                 ApiResultCode apiResultCode = ApiResultCode.ProcessError;
                 return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
@@ -325,7 +346,8 @@ public class HttpProcessor {
         }
         List<LimitValue> data;
         try{
-            data = LightHouse.limitQuery(callerName,callerKey,Integer.parseInt(statIdObj.toString()),Long.parseLong(batchTimeObj.toString()));
+//            data = LightHouse.limitQuery(callerName,callerKey,Integer.parseInt(statIdObj.toString()),Long.parseLong(batchTimeObj.toString()));
+            data = rpc.limitQuery(Integer.parseInt(statIdObj.toString()),Long.parseLong(batchTimeObj.toString()));
         }catch (Exception ex){
             ApiResultCode apiResultCode = ApiResultCode.ProcessError;
             return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
