@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `ldp_callers` (
                                `name` varchar(45) NOT NULL,
                                `desc` varchar(500) DEFAULT NULL,
                                `state` tinyint(1) NOT NULL,
+                               `department_id` int NOT NULL DEFAULT '0',
                                `secret_key` varchar(80) NOT NULL,
                                `create_time` timestamp NOT NULL,
                                `update_time` timestamp NOT NULL,
