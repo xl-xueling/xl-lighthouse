@@ -6,6 +6,7 @@ import com.dtstep.lighthouse.common.entity.monitor.ClusterInfo;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -91,12 +92,23 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
             }
             responseData = JsonUtil.toJSONString(apiResultData).getBytes(StandardCharsets.UTF_8);
         }
+        boolean keepAlive = HttpUtil.isKeepAlive(request);
         FullHttpResponse response = new DefaultFullHttpResponse(
                 HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(responseData));
         HttpHeaders responseHeaders = response.headers();
+        if (keepAlive) {
+            if (!request.protocolVersion().isKeepAliveDefault()) {
+                response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
+            }
+        } else {
+            response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
+        }
         responseHeaders.set(HttpHeaderNames.CONTENT_TYPE, "application/json; charset=utf-8");
         responseHeaders.set(HttpHeaderNames.CONTENT_LENGTH, responseData.length);
-        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+        ChannelFuture f = ctx.writeAndFlush(response);
+        if (!keepAlive) {
+            f.addListener(ChannelFutureListener.CLOSE);
+        }
     }
 
     private ApiResultData request(String uri,String callerName,String callerKey, String requestBody) throws Exception {

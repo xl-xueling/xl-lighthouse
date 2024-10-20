@@ -40,14 +40,19 @@ public class HttpProcessorTest extends CoreBaseTest {
         String text = "";
     }
 
+    private final String callerName = "caller:app_waimai_order";
+
+    private final String callerKey = "bK7dImv3HCzBBTQvS9pvlieSfXlVeyMDbWs8RNmj";
+
     @Test
     public void testDataQuery() throws Exception {
         Map<String,Object> requestMap = new HashMap<>();
         requestMap.put("statId","1100607");
-        requestMap.put("secretKey","dTdYSwzPz5GRMm1GDAMYKouGKoeD5IW8YVDiAAdH");
         requestMap.put("startTime", DateUtil.getDayStartTime(System.currentTimeMillis()));
         requestMap.put("endTime", DateUtil.getDayEndTime(System.currentTimeMillis()));
         String requestData = JsonUtil.toJSONString(requestMap);
         System.out.println("requestData:" + requestData);
+        ApiResultData apiResultData = HttpProcessor.dataQuery(callerName,callerKey,requestData);
+        System.out.println("apiResultData is:" + JsonUtil.toJSONString(apiResultData));
     }
 }

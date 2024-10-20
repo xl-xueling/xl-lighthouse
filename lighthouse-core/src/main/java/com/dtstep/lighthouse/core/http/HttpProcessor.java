@@ -30,6 +30,16 @@ public class HttpProcessor {
 
     private static final RPCServer rpc = new RPCServerImpl();
 
+    static {
+        try{
+            if(!LightHouse.isInit()){
+                LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
+            }
+        }catch (Exception ex){
+            logger.error("CallerStat initialization error!",ex);
+        }
+    }
+
     public static ApiResultData stats(String requestBody) throws Exception {
         List<Map<String, Object>> list;
         try{
@@ -67,27 +77,20 @@ public class HttpProcessor {
     }
 
     public static ApiResultData stat(Map<String,Object> requestMap) throws Exception {
-        try{
-            if(!LightHouse.isInit()){
-                LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
-            }
-        }catch (Exception ex){
-            logger.error("CallerStat initialization error!",ex);
-        }
-        Object tokenObj = requestMap.get("token");
-        Object secretKeyObj = requestMap.get("secretKey");
-        Object paramsObj = requestMap.get("params");
-        Object timestamp = requestMap.get("timestamp");
-        Object repeat = requestMap.get("repeat");
-        if(tokenObj == null){
+        String token = (String) requestMap.get("token");
+        String secretKey = (String) requestMap.get("secretKey");
+        Map<String, Object> params = (Map<String, Object>) requestMap.get("params");
+        Long timestamp = (Long) requestMap.get("timestamp");
+        Integer repeat = (Integer) requestMap.get("repeat");
+        if(token == null){
             ApiResultCode apiResultCode = ApiResultCode.MissingParam;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("token"));
         }
-        if(secretKeyObj == null){
+        if(secretKey == null){
             ApiResultCode apiResultCode = ApiResultCode.MissingParam;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("secretKey"));
         }
-        if(paramsObj == null){
+        if(params == null){
             ApiResultCode apiResultCode = ApiResultCode.MissingParam;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("params"));
         }
@@ -104,18 +107,11 @@ public class HttpProcessor {
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("repeat <= 0"));
         }
 
-        if(timestamp == null){
-            timestamp = System.currentTimeMillis();
-        }
-        if(repeat == null){
-            repeat = 1;
-        }
-        if(!(paramsObj instanceof Map)){
-            ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
-            return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("params"));
-        }
+        if (timestamp == null) timestamp = System.currentTimeMillis();
+        if (repeat == null) repeat = 1;
+
         try{
-            LightHouse.stat(tokenObj.toString(),secretKeyObj.toString(),(Map<String,Object>)paramsObj,Integer.parseInt(repeat.toString()),Long.parseLong(timestamp.toString()));
+            LightHouse.stat(token,secretKey,params,Integer.parseInt(repeat.toString()),Long.parseLong(timestamp.toString()));
         }catch (Exception ex){
             ApiResultCode apiResultCode = ApiResultCode.ProcessError;
             return new ApiResultData(apiResultCode.getCode(),ex.getMessage());

@@ -48,8 +48,7 @@ final class Producer {
         }
         String md5 = AuxHandler.cacheGetMd5(secretKey);
         if(!groupVerifyEntity.getVerifyKey().equals(md5)){
-            logger.error("client key validation failed,token:{},key:{}",token,secretKey);
-            return;
+            throw new IllegalArgumentException(String.format("client key validation failed,token:%s,key:%s",token,secretKey));
         }
         if(groupVerifyEntity.getState() != GroupStateEnum.RUNNING){
             logger.error("group state is abnormal,token:{}",token);
