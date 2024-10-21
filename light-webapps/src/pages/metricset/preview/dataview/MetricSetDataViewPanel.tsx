@@ -21,7 +21,7 @@ export default function MetricSetDataViewPanel({parentLoading}) {
 
     const [selectedItem,setSelectedItem] = useState<Item>(null);
 
-    const {PRO_ViewPreview} = useContext(MetricSetPreviewContext);
+    const {PRO_ViewPreview,PRO_StatPreview} = useContext(MetricSetPreviewContext);
 
     const handlerCallback = async (type,p1,p2) => {
         if(type == 'clickStatMenu'){
@@ -43,7 +43,11 @@ export default function MetricSetDataViewPanel({parentLoading}) {
 
     const render = () => {
         if(selectedItem.resourceType == ResourceTypeEnum.Stat){
-            return <StatPreviewPanel size={'small'} id={selectedItem.resourceId} specifyTitle={selectedItem.specifyTitle}/>
+            if(PRO_StatPreview == null){
+                return <StatPreviewPanel size={'small'} id={selectedItem.resourceId} specifyTitle={selectedItem.specifyTitle}/>
+            }else{
+                return PRO_StatPreview(selectedItem.resourceId,selectedItem.specifyTitle,'small');
+            }
         }else if(selectedItem.resourceType == ResourceTypeEnum.View){
             if(PRO_ViewPreview == null){
                 return <ErrorPage errorCode={'403'} />

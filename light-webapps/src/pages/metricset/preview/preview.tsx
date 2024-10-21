@@ -47,7 +47,7 @@ import {requestDeleteById} from "@/api/metricset";
 import {MetricSetPreviewContext} from "@/pages/common/context";
 import {updateStoreStaredMetricInfo} from "@/store";
 
-export default function MetricPreviewPanel ({id,PRO_ViewBindTab = null,PRO_ViewPreview = null}) {
+export default function MetricPreviewPanel ({id,PRO_ViewBindTab = null,PRO_ViewPreview = null,PRO_StatPreview = null}) {
 
     const t = useLocale(locale);
     const history = useHistory();
@@ -146,7 +146,7 @@ export default function MetricPreviewPanel ({id,PRO_ViewBindTab = null,PRO_ViewP
     }, [reloadTime])
 
     return (
-        <MetricSetPreviewContext.Provider value={{metricSetInfo, setMetricSetInfo, reloadTime, setReloadTime,PRO_ViewBindTab,PRO_ViewPreview}}>
+        <MetricSetPreviewContext.Provider value={{metricSetInfo, setMetricSetInfo, reloadTime, setReloadTime,PRO_ViewBindTab,PRO_ViewPreview,PRO_StatPreview}}>
             <>
                 {
                     errorCode ? <ErrorPage errorCode={errorCode}/>
