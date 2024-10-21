@@ -81,5 +81,7 @@ public final class SysConst {
 
     public final static int USER_STAR_PROJECT_LIMIT = 100;
 
-    public final static int CLUSTER_MONITOR_SERVICE_PORT = 18101;
+    public final static int CLUSTER_HTTP_SERVICE_PORT = 18101;
+
+    public final static int CLUSTER_RPC_SERVICE_PORT = 4061;
 }

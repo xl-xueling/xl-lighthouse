@@ -27,7 +27,6 @@ import com.dtstep.lighthouse.common.entity.stat.StatVerifyEntity;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.enums.RunningMode;
-import com.dtstep.lighthouse.common.exception.KeyVerificationFailedException;
 import com.dtstep.lighthouse.common.exception.StatisticNotFoundException;
 import com.dtstep.lighthouse.common.fusing.FusingToken;
 import com.dtstep.lighthouse.common.fusing.FusingSwitch;
@@ -107,7 +106,7 @@ public final class LightHouse {
             String[] arr = conf.split(":");
             String ip = arr[0];
             try{
-                String response = OkHttpUtil.post(String.format("http://%s:%s/clusterInfo)", ip, SysConst.CLUSTER_MONITOR_SERVICE_PORT),"");
+                String response = OkHttpUtil.post(String.format("http://%s:%s/clusterInfo)", ip, SysConst.CLUSTER_HTTP_SERVICE_PORT),"");
                 if(StringUtil.isNotEmpty(response)){
                     clusterInfo = JsonUtil.toJavaObject(response,ClusterInfo.class);
                     if(clusterInfo != null){
@@ -115,7 +114,7 @@ public final class LightHouse {
                     }
                 }
             }catch (Exception ex){
-                logger.error("Request remote service failed,ip:{},port:{}",ip,SysConst.CLUSTER_MONITOR_SERVICE_PORT);
+                logger.error("Request remote service failed,ip:{},port:{}",ip,SysConst.CLUSTER_HTTP_SERVICE_PORT);
             }
         }
         return clusterInfo;

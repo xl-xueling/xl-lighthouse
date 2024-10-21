@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.ice.servant.rpc.ice;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.exception.InitializationException;
 import com.dtstep.lighthouse.common.ice.RemoteLightServer;
 import com.dtstep.lighthouse.core.config.LDPConfig;
@@ -46,6 +47,7 @@ public class ICELightHouseService implements Service {
         adapter.add(servant, Util.stringToIdentity("LightHouseServiceIdentity"));
         adapter.activate();
         System.out.println("ice server start success!");
+        logger.info("ldp rpc service start,listen:{}", SysConst.CLUSTER_RPC_SERVICE_PORT);
     }
 
     @Override

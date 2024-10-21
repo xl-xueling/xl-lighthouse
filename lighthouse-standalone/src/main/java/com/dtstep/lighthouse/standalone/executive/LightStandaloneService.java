@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.standalone.executive;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.standalone.rpc.NettyServerHandler;
 import com.dtstep.lighthouse.standalone.rpc.ServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
@@ -36,7 +37,7 @@ public class LightStandaloneService {
 
     private static final Logger logger = LoggerFactory.getLogger(LightStandaloneService.class);
 
-    private static final int port = 4061;
+    private static final int port = SysConst.CLUSTER_RPC_SERVICE_PORT;
 
     public static void start() {
         EventLoopGroup bossGroup;

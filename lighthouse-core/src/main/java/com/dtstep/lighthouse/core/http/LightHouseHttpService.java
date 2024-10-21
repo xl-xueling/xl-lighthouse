@@ -1,7 +1,6 @@
 package com.dtstep.lighthouse.core.http;
 
 import com.dtstep.lighthouse.common.constant.SysConst;
-import com.dtstep.lighthouse.common.util.IpUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
@@ -63,11 +62,11 @@ public class LightHouseHttpService {
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childOption(ChannelOption.SO_SNDBUF, 100 * 1024 * 1024)
                     .childOption(ChannelOption.SO_RCVBUF, 100 * 1024 * 1024);
-            ChannelFuture future = bootstrap.bind(SysConst.CLUSTER_MONITOR_SERVICE_PORT).sync();
-            logger.info("ldp standalone http service start,listen:{}",SysConst.CLUSTER_MONITOR_SERVICE_PORT);
+            ChannelFuture future = bootstrap.bind(SysConst.CLUSTER_HTTP_SERVICE_PORT).sync();
+            logger.info("ldp http service start,listen:{}",SysConst.CLUSTER_HTTP_SERVICE_PORT);
             future.channel().closeFuture().sync();
         } catch (Exception ex) {
-            logger.error("ldp standalone http service startup exception!", ex);
+            logger.error("ldp http service startup exception!", ex);
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
