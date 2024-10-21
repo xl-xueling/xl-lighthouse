@@ -107,9 +107,7 @@ export default function GroupBasicPanel({groupInfo}) {
                                     {t['group.basic.label.description']}
                                 </Typography.Title>
                                 <Form.Item field="desc">
-                                    <Input.TextArea disabled={true}
-                                        style={{ minHeight: 18, width: '100%' }}
-                                    />
+                                    <Input.TextArea rows={3} disabled={true}/>
                                 </Form.Item>
                                 <Typography.Title
                                     style={{ marginTop: 0, marginBottom: 15 ,fontSize:14}}
