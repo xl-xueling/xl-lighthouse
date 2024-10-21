@@ -9,6 +9,9 @@ function initPath(){
   local user=${1}
   local LDP_HOME=${2}
   local LDP_DATA_DIR=${3}
+  if [ -d "${LDP_DATA_DIR}" ] && [ "${LDP_DATA_DIR}" != "/" ]; then
+    rm -r "${LDP_DATA_DIR}"
+  fi
   mkdir -p ${LDP_DATA_DIR}/hadoop
   mkdir -p ${LDP_DATA_DIR}/hadoop/name
   mkdir -p ${LDP_DATA_DIR}/hadoop/hdfsdata
