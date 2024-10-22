@@ -21,7 +21,7 @@ const i18n = {
     'updateMetricSet.form.title.errMsg':'名称不可为空',
     'updateMetricSet.form.description.errMsg':'描述不可为空',
     'updateMetricSet.form.private.type.private':'私有',
-    'updateMetricSet.form.private.type.public':'公有',
+    'updateMetricSet.form.private.type.public':'公开',
     'updateMetricSet.form.label.grant.privilege':'初始权限',
     'updateMetricSet.form.submit.success':'修改指标集成功！'
   },

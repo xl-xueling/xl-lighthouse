@@ -21,7 +21,7 @@ const i18n = {
     'createMetricSet.form.title.errMsg':'名称不可为空',
     'createMetricSet.form.description.errMsg':'描述不可为空',
     'createMetricSet.form.private.type.private':'私有',
-    'createMetricSet.form.private.type.public':'公有',
+    'createMetricSet.form.private.type.public':'公开',
     'createMetricSet.form.label.grant.privilege':'初始权限',
     'createMetricSet.form.submit.success':'创建指标集成功！'
   },

@@ -33,7 +33,7 @@ const i18n = {
     'projectUpdate.form.label.crowdPickUp':'人群权限',
     'projectUpdate.form.button.grantPrivilege':'初始权限',
     'projectUpdate.form.label.privateType.private':'私有',
-    'projectUpdate.form.label.privateType.public':'公有',
+    'projectUpdate.form.label.privateType.public':'公开',
   },
 };
 
