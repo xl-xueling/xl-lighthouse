@@ -179,6 +179,6 @@ XL-LightHouse商业版提供更加强大和便利的数据统计分析功能，�
 
 ### Contact
 
-如果您有任何问题、意见或建议，请您添加以下微信。
+如果您有任何问题、意见、建议或者加入交流群，请您添加以下微信。
 
 ![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/contact/contact_20240627_084143.jpg)
