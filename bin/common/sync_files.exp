@@ -5,6 +5,9 @@
 # Email:better_xueling@126.com
 #-----------------------------------------
 
+set env(LANG) "en_US.UTF-8"
+set env(LC_ALL) "C"
+
 set user [lindex $argv 0]
 set source_path [lindex $argv 1]
 set dest_ip [lindex $argv 2]
