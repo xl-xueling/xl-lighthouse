@@ -256,3 +256,21 @@ export interface ErrorInfo {
     errorCode?:string,
     errorMessage?:string,
 }
+
+export enum NumberCompareType {
+    GT=1,
+    GE=2,
+    LT=3,
+    LE=4,
+    EQ=5,
+}
+
+export enum CalculateMethod {
+    ADD=1,
+    SUB=2,
+    MUL=3,
+    DIVIDE=4,
+    MAX=5,
+    MIN=6,
+    AVG=7,
+}
