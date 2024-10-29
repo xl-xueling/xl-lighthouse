@@ -20,7 +20,7 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null})
     const [options, setOptions] = useState([]);
     const [values, setValues] = useState([]);
     const [fetching, setFetching] = useState(false);
-    const refFetchId = useRef(null);
+    const refFetchId = useRef<any>(null);
 
     const fetchInitData = async () => {
         if(initValues){
@@ -54,7 +54,7 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null})
             const fetchId = refFetchId.current;
             setFetching(true);
             setOptions([]);
-            requestTermList(null).then((result) => {
+            requestTermList({text:inputValue}).then((result) => {
                 if(result.code === '0'){
                     if (refFetchId.current === fetchId) {
                         const users:Array<User> = result.data;
