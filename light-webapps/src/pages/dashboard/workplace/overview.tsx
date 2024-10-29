@@ -19,7 +19,6 @@ import IconIncrease from './assets/increase.svg';
 import {GlobalState} from "@/store";
 import ChartPanel from "@/pages/stat/preview/chart_panel";
 import {HomePageContext} from "@/pages/common/context";
-import UserTermQuery from "@/pages/user/common/userTermQuery";
 
 const { Row, Col } = Grid;
 
@@ -117,7 +116,6 @@ export default function Overview({loading = false}) {
           </Typography.Paragraph>
           <Link href={'/project/preview/1'}>{t['workplace.seeMore']}</Link>
         </div>
-        <UserTermQuery initValues={[110239]} />
         {statInfo && <ChartPanel parentLoading={false} statInfo={statInfo} size={'default'}/>}
       </div>
     </Card>

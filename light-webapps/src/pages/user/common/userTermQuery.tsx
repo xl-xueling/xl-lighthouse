@@ -8,7 +8,7 @@ import { useCallback } from 'react';
 import { Spin } from '@arco-design/web-react';
 import debounce from 'lodash/debounce';
 import {IconUser} from "@arco-design/web-react/icon";
-import {requestQueryByIds, requestTermList} from "@/api/user";
+import {requestTermQueryByIds, requestTermList} from "@/api/user";
 import {User} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
@@ -24,7 +24,7 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null,l
 
     const fetchInitData = async () => {
         if(initValues){
-            const result = await requestQueryByIds(initValues);
+            const result = await requestTermQueryByIds({ids:initValues});
             console.log("result is:" + JSON.stringify(result));
             const options = Object.entries(result.data).map(([id,user]) => (
                 {

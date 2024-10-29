@@ -35,11 +35,11 @@ export async function requestFetchUserInfo():Promise<ResultData<User>>  {
 }
 
 
-export async function requestQueryByIds(ids:Array<number>) :Promise<ResultData<Record<number,User>>>  {
+export async function requestTermQueryByIds(data) :Promise<ResultData<Record<number,User>>>  {
     return request({
-        url:'/user/queryByIds',
+        url:'/user/termQueryByIds',
         method:'POST',
-        ids,
+        data,
     })
 }
 
