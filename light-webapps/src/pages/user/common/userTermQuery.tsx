@@ -13,36 +13,41 @@ import {User} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 
-const UserTermQuery = ({ formRef, field,limit }) => {
+const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null,limit=4}) => {
+
     const t = useLocale(locale);
     const [selectedValues, setSelectedValues] = useState([]);
     const [options, setOptions] = useState([]);
+    const [values, setValues] = useState([]);
     const [fetching, setFetching] = useState(false);
-    const refFetchId = useRef(null);
+    const refFetchId = useRef<any>(null);
 
     const fetchInitData = async () => {
-        if (field.value) {
-            const result = await requestQueryByIds(field.value);
-            const options = Object.entries(result.data).map(([id, user]) => ({
+        if(initValues){
+            const result = await requestQueryByIds(initValues);
+            console.log("result is:" + JSON.stringify(result));
+            const options = Object.entries(result.data).map(([id,user]) => (
+                {
                 label: (
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <IconUser style={{ marginRight: 5 }} />
+                        <IconUser style={{ marginRight:5 }}/>
                         {user.username}
                     </div>
                 ),
                 value: user.id,
-                checked: true,
-                selected: true,
+                checked:true,
+                selected:true,
             }));
             setFetching(false);
             setOptions(options);
-            setSelectedValues(field.value);
+            setSelectedValues(initValues)
         }
-    };
+    }
 
     useEffect(() => {
         fetchInitData().then();
-    }, [field.value]);
+    },[initValues])
+
 
     const debouncedFetchUser = useCallback(
         debounce((inputValue) => {
@@ -50,33 +55,34 @@ const UserTermQuery = ({ formRef, field,limit }) => {
             const fetchId = refFetchId.current;
             setFetching(true);
             setOptions([]);
-            requestTermList({ text: inputValue }).then((result) => {
-                if (result.code === '0') {
+            requestTermList({text:inputValue}).then((result) => {
+                if(result.code === '0'){
                     if (refFetchId.current === fetchId) {
-                        const users = result.data;
+                        const users:Array<User> = result.data;
                         const options = users.map((user) => ({
                             label: (
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <IconUser style={{ marginRight: 5 }} />
+                                <div style={{display: 'flex', alignItems: 'center'}}>
+                                    <IconUser style={{marginRight: 5}}/>
                                     {user.username}
                                 </div>
                             ),
                             value: user.id,
-                        }));
+                        }))
                         setFetching(false);
                         setOptions(options);
                     }
                 }
-            });
+            })
         }, 500),
         []
     );
 
+
     const handleSelectChange = (values) => {
         if (values.length <= limit) {
             setSelectedValues(values);
-            formRef.current.setFieldValue(field,values);
-        } else {
+            formRef.current.setFieldValue('userIds',values);
+        }else{
             Message.error(t['userTerm.exceed.limit']);
         }
     };
@@ -94,7 +100,13 @@ const UserTermQuery = ({ formRef, field,limit }) => {
             onChange={handleSelectChange}
             notFoundContent={
                 fetching ? (
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
                         <Spin style={{ margin: 12 }} />
                     </div>
                 ) : null
@@ -102,12 +114,6 @@ const UserTermQuery = ({ formRef, field,limit }) => {
             onSearch={debouncedFetchUser}
         />
     );
-};
+}
 
-const UserTermQueryWrapper = ({ formRef,limit = 4 }) => {
-    return (
-        <UserTermQuery formRef={formRef} field={'userIds'} limit={limit} />
-    );
-};
-
-export default UserTermQueryWrapper;
+export default UserTermQuery;

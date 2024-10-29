@@ -42,6 +42,8 @@ public interface UserDao {
 
     List<User> termQuery(String search);
 
+    List<User> termQueryByIds(List<Integer> ids);
+
     List<User> queryList(@Param("queryParam")UserQueryParam queryParam);
 
     int count(@Param("queryParam")UserQueryParam queryParam);

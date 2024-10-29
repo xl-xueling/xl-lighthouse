@@ -217,7 +217,6 @@ public class UserController {
         }
     }
 
-
     @AuthPermission(roleTypeEnum = RoleTypeEnum.OPT_MANAGE_PERMISSION)
     @PostMapping("/user/list")
     public ResultData<ListData<UserVO>> list(
@@ -227,7 +226,6 @@ public class UserController {
         return ResultData.success(listData);
     }
 
-
     @PostMapping("/user/termList")
     public ResultData<List<User>> termList(@RequestBody TextParam text){
         String search = text.getText();
@@ -235,6 +233,12 @@ public class UserController {
             return ResultData.result(ResultCode.paramValidateFailed);
         }
         List<User> users = userService.termQuery(search);
+        return ResultData.success(users);
+    }
+
+    @PostMapping("/user/termQueryByIds")
+    public ResultData<List<User>> termQueryByIds(@RequestBody IDParams idParams){
+        List<User> users = userService.termQueryByIds(idParams.getIds());
         return ResultData.success(users);
     }
 

@@ -34,6 +34,8 @@ public interface UserService {
 
     List<User> termQuery(String search);
 
+    List<User> termQueryByIds(List<Integer> ids);
+
     boolean isUserNameExist(String username);
 
     User cacheQueryById(int id);

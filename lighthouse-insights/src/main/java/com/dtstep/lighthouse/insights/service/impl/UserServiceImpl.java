@@ -142,6 +142,11 @@ public class UserServiceImpl implements UserService {
         return userDao.termQuery(search);
     }
 
+    @Override
+    public List<User> termQueryByIds(List<Integer> ids) {
+        return userDao.termQueryByIds(ids);
+    }
+
     @Transactional
     @Override
     public int deleteById(int id) {

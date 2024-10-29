@@ -7,12 +7,14 @@ import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.UserDao;
 import com.dtstep.lighthouse.insights.dto.UserQueryParam;
 import com.dtstep.lighthouse.common.modal.User;
+import com.dtstep.lighthouse.insights.test.listener.SpringTestExecutionListener;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
@@ -21,6 +23,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LightHouseInsightsApplication.class,properties = {"spring.config.location=classpath:lighthouse-insights.yml"})
+@TestExecutionListeners(listeners = SpringTestExecutionListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 public class TestUserDao {
 
     @Autowired
@@ -95,5 +98,12 @@ public class TestUserDao {
         String s = "test";
         List<User> users = userDao.termQuery(s);
         System.out.println("users:" + JsonUtil.toJSONString(users));
+    }
+
+    @Test
+    public void testTermQueryByIds() throws Exception {
+        List<Integer> ids = List.of(110239);
+        List<User> users = userDao.termQueryByIds(ids);
+        System.out.println("user info is:" + JsonUtil.toJSONString(users));
     }
 }

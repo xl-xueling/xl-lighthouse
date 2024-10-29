@@ -58,6 +58,13 @@
         SELECT `id`,`username` FROM ldp_users WHERE username LIKE CONCAT('%', #{search}, '%') limit 10
     </select>
 
+    <select id="termQueryByIds" resultMap="userResultMap">
+        SELECT `id`,`username` FROM ldp_users WHERE id in
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+
     <select id="queryList" resultMap="userResultMap">
         WITH RECURSIVE cte AS (
         SELECT d.id
