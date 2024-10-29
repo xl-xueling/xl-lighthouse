@@ -28,6 +28,10 @@ public class Alarm implements Serializable {
 
     private String desc;
 
+    private Integer dimensMatchType;
+
+    private String dimens;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
