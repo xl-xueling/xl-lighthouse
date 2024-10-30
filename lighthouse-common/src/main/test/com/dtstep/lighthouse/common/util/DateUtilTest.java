@@ -4,6 +4,7 @@ import com.dtstep.lighthouse.common.constant.StatConst;
 import org.junit.Test;
 
 import java.time.Instant;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
@@ -297,8 +298,8 @@ public class DateUtilTest {
 
     @Test
     public void testHoursBefore() throws Exception {
-        long t = System.currentTimeMillis();
-        long t2 = DateUtil.getHourStartTime(DateUtil.getHourBefore(t,2));
-        System.out.println("t2:" + t2);
+        LocalTime localTime = LocalTime.now();
+        String s = DateUtil.formatLocalTime(localTime,"HH:mm:ss");
+        System.out.println(s);
     }
 }

@@ -281,6 +281,15 @@ public final class DateUtil {
         }
     }
 
+    public static String formatLocalTime(LocalTime localTime,String fmt){
+        if(FORMAT_STR_7.equals(fmt)){
+            return localTime.format(TIME_FORMATTER7);
+        }else if(FORMAT_STR_8.equals(fmt)){
+            return localTime.format(TIME_FORMATTER8);
+        }
+        return null;
+    }
+
     public static long parseDate(String dateStr,String fmt){
         if(FORMAT_STR_6.equals(fmt)){
             LocalDate ldt = LocalDate.parse(dateStr, TIME_FORMATTER6);

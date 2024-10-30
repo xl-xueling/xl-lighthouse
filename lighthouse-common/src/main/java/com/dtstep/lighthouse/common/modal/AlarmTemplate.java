@@ -2,14 +2,23 @@ package com.dtstep.lighthouse.common.modal;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class AlarmTemplate implements Serializable {
 
     private Integer id;
 
+    private String title;
+
     private String config;
 
-    private Integer userId;
+    private String desc;
+
+    private Integer createUser;
+
+    private List<Integer> userIds;
+
+    private List<Integer> departmentIds;
 
     private LocalDateTime createTime;
 
@@ -31,14 +40,6 @@ public class AlarmTemplate implements Serializable {
         this.config = config;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -53,5 +54,45 @@ public class AlarmTemplate implements Serializable {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public Integer getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(Integer createUser) {
+        this.createUser = createUser;
+    }
+
+    public List<Integer> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<Integer> userIds) {
+        this.userIds = userIds;
+    }
+
+    public List<Integer> getDepartmentIds() {
+        return departmentIds;
+    }
+
+    public void setDepartmentIds(List<Integer> departmentIds) {
+        this.departmentIds = departmentIds;
     }
 }

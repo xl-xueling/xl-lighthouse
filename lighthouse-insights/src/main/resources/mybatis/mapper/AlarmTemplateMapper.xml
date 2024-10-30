@@ -4,27 +4,35 @@
 
     <resultMap id="alarmTemplateResultMap" type="com.dtstep.lighthouse.common.modal.AlarmTemplate">
         <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="desc" column="desc"/>
         <result property="config" column="config"/>
-        <result property="userId" column="user_id"/>
+        <result property="createUser" column="create_user"/>
+        <result property="userIds" column="user_ids" typeHandler="com.dtstep.lighthouse.insights.types.ListIntegerTypeHandler"/>
+        <result property="departmentIds" column="department_ids" typeHandler="com.dtstep.lighthouse.insights.types.ListIntegerTypeHandler"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.AlarmTemplate" >
-        INSERT INTO ldp_alarm_templates (`config`,`user_id`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_alarm_templates (`title`,`config`,`create_user`,`desc`,`user_ids`,`department_ids`,`create_time`,`update_time`) VALUES
         (
+            #{title,jdbcType=VARCHAR},
             #{config,jdbcType=VARCHAR},
-            #{userId,jdbcType=VARCHAR},
+            #{createUser,jdbcType=INTEGER},
+            #{desc,jdbcType=VARCHAR},
+            #{userIds,typeHandler=com.dtstep.lighthouse.insights.types.ListIntegerTypeHandler},
+            #{departmentIds,typeHandler=com.dtstep.lighthouse.insights.types.ListIntegerTypeHandler},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
     <select id="queryById" resultMap="alarmTemplateResultMap">
-        SELECT `id`,`config`,`user_id`,`create_time`,`update_time` FROM ldp_alarm_templates WHERE id = #{id}
+        SELECT `id`,`title`,`config`,`create_user`,`desc`,`user_ids`,`department_ids`,`create_time`,`update_time` FROM ldp_alarm_templates WHERE id = #{id}
     </select>
 
     <select id="queryByUserId" resultMap="alarmTemplateResultMap">
-        SELECT `id`,`config`,`user_id`,`create_time`,`update_time` FROM ldp_alarm_templates WHERE id = #{userId}
+        SELECT `id`,`title`,`config`,`create_user`,`desc`,`user_ids`,`department_ids`,`create_time`,`update_time` FROM ldp_alarm_templates WHERE id = #{userId}
     </select>
 </mapper>
