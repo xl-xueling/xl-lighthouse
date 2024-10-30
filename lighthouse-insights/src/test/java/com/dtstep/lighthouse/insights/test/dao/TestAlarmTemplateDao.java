@@ -37,6 +37,14 @@ public class TestAlarmTemplateDao {
     }
 
     @Test
+    public void testUpdate() throws Exception {
+        AlarmTemplate alarmTemplate = new AlarmTemplate();
+        alarmTemplate.setUserIds(List.of(1,2));
+        alarmTemplate.setId(17);
+        alarmTemplateDao.update(alarmTemplate);
+    }
+
+    @Test
     public void testQueryByUserId() throws Exception {
 
     }
