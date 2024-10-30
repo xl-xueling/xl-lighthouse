@@ -1,46 +1,23 @@
 package com.dtstep.lighthouse.insights.vo;
 
+import com.dtstep.lighthouse.common.entity.AlarmTemplateExtEntity;
 import com.dtstep.lighthouse.common.modal.AlarmTemplate;
 import com.dtstep.lighthouse.common.modal.Department;
 import com.dtstep.lighthouse.common.modal.User;
-
-import java.time.LocalTime;
+import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import java.util.List;
 
-public class AlarmTemplateVO extends AlarmTemplate {
-
-    private List<String> weekdays;
-
-    private LocalTime startTime;
-
-    private LocalTime endTime;
+public class AlarmTemplateVO extends AlarmTemplateExtEntity {
 
     private List<User> userList;
 
     private List<Department> departmentList;
 
-    public List<String> getWeekdays() {
-        return weekdays;
-    }
+    public AlarmTemplateVO(){}
 
-    public void setWeekdays(List<String> weekdays) {
-        this.weekdays = weekdays;
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+    public AlarmTemplateVO(AlarmTemplate alarmTemplate){
+        assert alarmTemplate != null;
+        BeanCopyUtil.copy(alarmTemplate,this);
     }
 
     public List<User> getUserList() {
