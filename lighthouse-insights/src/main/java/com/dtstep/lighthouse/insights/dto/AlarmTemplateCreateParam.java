@@ -6,7 +6,7 @@ import java.util.List;
 
 public class AlarmTemplateCreateParam implements Serializable {
 
-    private List<String> days;
+    private List<Integer> weekdays;
 
     private LocalTime startTime;
 
@@ -16,12 +16,12 @@ public class AlarmTemplateCreateParam implements Serializable {
 
     private List<Integer> departmentIds;
 
-    public List<String> getDays() {
-        return days;
+    public List<Integer> getWeekdays() {
+        return weekdays;
     }
 
-    public void setDays(List<String> days) {
-        this.days = days;
+    public void setWeekdays(List<Integer> weekdays) {
+        this.weekdays = weekdays;
     }
 
     public LocalTime getStartTime() {

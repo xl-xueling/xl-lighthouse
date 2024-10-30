@@ -34,6 +34,7 @@ import org.springframework.web.servlet.config.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Configuration
@@ -79,6 +80,7 @@ public class WebConfig implements WebMvcConfigurer {
         simpleModule.addDeserializer(LocalDate.class, new LocalDateTimeSerdeConfig.LocalDateFromEpochDeserializer());
         simpleModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerdeConfig.LocalDateTimeToEpochSerializer());
         simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeSerdeConfig.LocalDateTimeFromEpochDeserializer());
+        simpleModule.addDeserializer(LocalTime.class, new LocalDateTimeSerdeConfig.LocalTimeFromEpochDeserializer());
         objectMapper.registerModule(simpleModule);
         converters.add(new MappingJackson2HttpMessageConverter(objectMapper));
     }

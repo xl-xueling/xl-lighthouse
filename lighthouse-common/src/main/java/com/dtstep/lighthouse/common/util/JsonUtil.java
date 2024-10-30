@@ -29,10 +29,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -62,6 +59,8 @@ public class JsonUtil {
         SimpleModule simpleModule = new SimpleModule();
         simpleModule.addSerializer(LocalDateTime.class, new LocalDateTimeToEpochSerializer());
         simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeFromEpochDeserializer());
+        simpleModule.addSerializer(LocalTime.class, new LocalTimeToEpochSerializer());
+        simpleModule.addDeserializer(LocalTime.class, new LocalTimeFromEpochDeserializer());
         objectMapper.registerModule(simpleModule);
     }
 
@@ -210,6 +209,18 @@ public class JsonUtil {
         }
     }
 
+    public static class LocalTimeToEpochSerializer extends JsonSerializer<LocalTime> {
+
+        @Override
+        public void serialize(LocalTime value, JsonGenerator gen, SerializerProvider serializers)
+                throws IOException {
+            if (value != null) {
+                gen.writeString(value.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+            }
+        }
+    }
+
+
     public static class LocalDateToEpochSerializer extends JsonSerializer<LocalDate> {
 
         @Override
@@ -224,7 +235,7 @@ public class JsonUtil {
 
     private static final Pattern DATE_TIME_PATTERN = Pattern.compile("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}");
     private static final Pattern DATE_PATTERN = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
-
+    private static final Pattern TIME_PATTERN = Pattern.compile("\\d{2}:\\d{2}:\\d{2}");
 
     public static class LocalDateTimeFromEpochDeserializer extends JsonDeserializer<LocalDateTime> {
         @Override
@@ -239,6 +250,18 @@ public class JsonUtil {
             }else{
                 long epoch = Long.parseLong(text);
                 return LocalDateTime.ofInstant(Instant.ofEpochSecond(epoch), ZoneId.systemDefault());
+            }
+        }
+    }
+
+    public static class LocalTimeFromEpochDeserializer extends JsonDeserializer<LocalTime> {
+        @Override
+        public LocalTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+            String text = p.getText();
+            if(TIME_PATTERN.matcher(text).matches()){
+                return LocalTime.parse(text, DateTimeFormatter.ofPattern("HH:mm:ss"));
+            }else{
+                throw new IOException();
             }
         }
     }

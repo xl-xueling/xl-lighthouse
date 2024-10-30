@@ -1,13 +1,18 @@
 package com.dtstep.lighthouse.insights.test.utils;
 
+import com.dtstep.lighthouse.common.modal.AlarmTemplate;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.modal.PermissionEnum;
 import com.dtstep.lighthouse.common.modal.Order;
 import com.dtstep.lighthouse.common.modal.Project;
+import com.dtstep.lighthouse.insights.dto.AlarmTemplateCreateParam;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import net.sf.cglib.core.Local;
 import org.junit.Test;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -82,6 +87,25 @@ public class TestUtil {
         arrayNode2.add(objectNode22);
         objectNode2.set("children",arrayNode2);
         System.out.println(arrayNode.toString());
+    }
+
+    @Test
+    public void test3() throws Exception {
+        String t = "12:39:32";
+        LocalTime localTime = LocalTime.parse(t, DateTimeFormatter.ofPattern("HH:mm:ss"));
+        System.out.println("localTime:" + localTime);
+        String s = JsonUtil.toJSONString(localTime);
+        System.out.println("s is:" + s);
+        LocalTime localTime1 = JsonUtil.toJavaObject(s, LocalTime.class);
+        System.out.println("localTime1:" + localTime1);
+    }
+
+    @Test
+    public void test4() throws Exception {
+//        String s = "{\"weekdays\":[1,2,3],\"startTime\":{\"hour\":0,\"minute\":30,\"second\":0,\"nano\":0},\"endTime\":{\"hour\":23,\"minute\":59,\"second\":59,\"nano\":0},\"userIds\":[1,2,3],\"departmentIds\":[1,2,3]}";
+//        AlarmTemplateCreateParam alarmTemplate = JsonUtil.toJavaObject(s,AlarmTemplateCreateParam.class);
+//        System.out.println("alarmTemplate:" + alarmTemplate);
+
     }
 
 }

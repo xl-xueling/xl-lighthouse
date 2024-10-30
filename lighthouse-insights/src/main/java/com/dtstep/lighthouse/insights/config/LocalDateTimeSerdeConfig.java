@@ -30,10 +30,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
@@ -66,6 +63,7 @@ public class LocalDateTimeSerdeConfig {
 
     private static final Pattern DATE_TIME_PATTERN = Pattern.compile("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}");
     private static final Pattern DATE_PATTERN = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+    private static final Pattern TIME_PATTERN = Pattern.compile("\\d{2}:\\d{2}:\\d{2}");
 
 
     public static class LocalDateTimeFromEpochDeserializer extends JsonDeserializer<LocalDateTime> {
@@ -96,6 +94,18 @@ public class LocalDateTimeSerdeConfig {
             }else{
                 long epoch = Long.parseLong(text);
                 return LocalDate.ofInstant(Instant.ofEpochMilli(epoch), ZoneId.systemDefault());
+            }
+        }
+    }
+
+    public static class LocalTimeFromEpochDeserializer extends JsonDeserializer<LocalTime> {
+        @Override
+        public LocalTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+            String text = p.getText();
+            if(TIME_PATTERN.matcher(text).matches()){
+                return LocalTime.parse(text, DateTimeFormatter.ofPattern("HH:mm:ss"));
+            }else{
+                throw new IOException();
             }
         }
     }
