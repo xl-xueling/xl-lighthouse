@@ -76,6 +76,7 @@ public class WebConfig implements WebMvcConfigurer {
         SimpleModule simpleModule = new SimpleModule();
         simpleModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerdeConfig.LocalDateTimeToEpochSerializer());
         simpleModule.addSerializer(LocalDate.class, new LocalDateTimeSerdeConfig.LocalDateToEpochSerializer());
+        simpleModule.addSerializer(LocalTime.class, new LocalDateTimeSerdeConfig.LocalTimeToEpochSerializer());
         simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeSerdeConfig.LocalDateTimeFromEpochDeserializer());
         simpleModule.addDeserializer(LocalDate.class, new LocalDateTimeSerdeConfig.LocalDateFromEpochDeserializer());
         simpleModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerdeConfig.LocalDateTimeToEpochSerializer());

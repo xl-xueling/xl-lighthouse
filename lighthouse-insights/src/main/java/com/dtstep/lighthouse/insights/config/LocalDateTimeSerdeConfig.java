@@ -25,6 +25,8 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +38,8 @@ import java.util.regex.Pattern;
 
 @Configuration
 public class LocalDateTimeSerdeConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(LocalDateTimeSerdeConfig.class);
 
     public static class LocalDateTimeToEpochSerializer extends JsonSerializer<LocalDateTime> {
 
@@ -57,6 +61,17 @@ public class LocalDateTimeSerdeConfig {
             if (value != null) {
                 long timestamp = value.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
                 gen.writeNumber(timestamp);
+            }
+        }
+    }
+
+    public static class LocalTimeToEpochSerializer extends JsonSerializer<LocalTime> {
+
+        @Override
+        public void serialize(LocalTime value, JsonGenerator gen, SerializerProvider serializers)
+                throws IOException {
+            if (value != null) {
+                gen.writeString(value.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
             }
         }
     }
