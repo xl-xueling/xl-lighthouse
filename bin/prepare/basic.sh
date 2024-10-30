@@ -560,11 +560,15 @@ function loadScriptConfig(){
         	loadClusterConfig;
 	fi
 	if [ ! -n "${DEPLOY_USER}" ];then
-                log_error "Deployment username cannot be empty!"
+                log_error "[deploy_user] cannot be empty!"
+                exit -1;
+        fi
+        if [ "${DEPLOY_USER}" = "root" ]; then
+                log_error "[deploy_user] verification failed, the cluster cannot be deployed to 'root' account!"
                 exit -1;
         fi
         if [ ! -n "${DEPLOY_PASSWD}" ];then
-                log_error "Deployment user password cannot be empty!"
+                log_error "[deploy_user_passwd] cannot be empty!"
                 exit -1;
         fi
         log_info "The program current deployment user is:${DEPLOY_USER}"
