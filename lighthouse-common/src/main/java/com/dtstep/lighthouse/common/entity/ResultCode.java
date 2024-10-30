@@ -182,6 +182,7 @@ public enum ResultCode {
 
     apiCallerKeyIncorrect("50002","apiCallerKeyIncorrect"),
 
+    alarmTemplateCreateExceedLimit("60001","alarmTemplateCreateExceedLimit"),
 
     ;
 

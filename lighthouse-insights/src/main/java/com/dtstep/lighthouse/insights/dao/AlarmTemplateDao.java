@@ -15,4 +15,6 @@ public interface AlarmTemplateDao {
     AlarmTemplate queryById(Integer id);
 
     List<AlarmTemplate> queryByUserId(Integer userId);
+
+    int countByUserId(Integer userId);
 }

@@ -33,6 +33,10 @@
     </select>
 
     <select id="queryByUserId" resultMap="alarmTemplateResultMap">
-        SELECT `id`,`title`,`config`,`create_user`,`desc`,`user_ids`,`department_ids`,`create_time`,`update_time` FROM ldp_alarm_templates WHERE id = #{userId}
+        SELECT `id`,`title`,`config`,`create_user`,`desc`,`user_ids`,`department_ids`,`create_time`,`update_time` FROM ldp_alarm_templates WHERE create_user = #{userId}
+    </select>
+
+    <select id="countByUserId" resultType="int">
+        SELECT count(1) FROM ldp_alarm_templates WHERE create_user = #{userId}
     </select>
 </mapper>
