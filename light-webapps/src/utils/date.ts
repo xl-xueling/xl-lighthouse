@@ -65,6 +65,16 @@ export function getDayAfter(timestamp,afterDays) {
     return moment(timestamp).tz(timezone).add(afterDays, 'days');
 }
 
+export function convertToSeconds (interval, unit) {
+    const unitsInSeconds = {
+        SECONDS: 1,
+        MINUTES: 60,
+        HOURS: 3600,
+        DAYS: 86400,
+    };
+    return interval * unitsInSeconds[unit];
+}
+
 
 
 
