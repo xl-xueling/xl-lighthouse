@@ -39,7 +39,7 @@ public class TestAlarmTemplateDao {
     @Test
     public void testUpdate() throws Exception {
         AlarmTemplate alarmTemplate = new AlarmTemplate();
-        alarmTemplate.setUserIds(List.of(1,2));
+        alarmTemplate.setUserIds(List.of());
         alarmTemplate.setId(17);
         alarmTemplateDao.update(alarmTemplate);
     }

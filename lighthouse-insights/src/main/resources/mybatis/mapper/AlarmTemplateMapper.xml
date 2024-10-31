@@ -40,10 +40,10 @@
             <if test="desc != null">
                 `desc` = #{desc},
             </if>
-            <if test="userIds != null and userIds.size > 0">
+            <if test="userIds != null">
                 `user_ids` = #{userIds,typeHandler=com.dtstep.lighthouse.insights.types.ListIntegerTypeHandler},
             </if>
-            <if test="departmentIds != null and departmentIds.size > 0">
+            <if test="departmentIds != null">
                 `department_ids` = #{departmentIds,typeHandler=com.dtstep.lighthouse.insights.types.ListIntegerTypeHandler},
             </if>
             <if test="updateTime != null">
