@@ -18,7 +18,7 @@ export default function UserGroup(props:Props) {
     return (
         <>
         {
-            users?.map((option,index) => {
+            users?.filter(x => x != null).map((option,index) => {
                 const fullPathNodes:TreeNode[] = getFullPathNodes(option?.departmentId,allDepartInfo);
                 return (
                     <Popover
