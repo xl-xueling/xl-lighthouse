@@ -64,4 +64,8 @@
     <select id="countByUserId" resultType="int">
         SELECT count(1) FROM ldp_alarm_templates WHERE create_user = #{userId}
     </select>
+
+    <delete id="deleteById">
+        delete from ldp_alarm_templates where id = #{id}
+    </delete>
 </mapper>

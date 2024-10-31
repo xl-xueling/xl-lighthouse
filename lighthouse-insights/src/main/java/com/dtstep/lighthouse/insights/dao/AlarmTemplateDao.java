@@ -12,6 +12,8 @@ public interface AlarmTemplateDao {
 
     int update(AlarmTemplate caller);
 
+    int deleteById(Integer id);
+
     AlarmTemplate queryById(Integer id);
 
     List<AlarmTemplate> queryByUserId(Integer userId);
