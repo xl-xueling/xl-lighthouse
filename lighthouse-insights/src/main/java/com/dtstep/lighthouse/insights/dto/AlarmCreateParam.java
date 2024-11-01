@@ -1,28 +1,53 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import com.dtstep.lighthouse.common.enums.AlarmMatchEnum;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.modal.AlarmCondition;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class AlarmCreateParam {
 
+    private Integer id;
+
     private String title;
-
-    private boolean divide;
-
-    private String desc;
-
-    private List<String> dimens;
-
-    private boolean status;
-
-    private Integer templateId;
 
     private String uniqueCode;
 
-    private Integer delay;
+    private boolean divide;
+
+    private Integer resourceId;
+
+    private ResourceTypeEnum resourceType;
+
+    private boolean state;
+
+    private AlarmMatchEnum match;
 
     private List<AlarmCondition> conditions;
+
+    private Integer templateId;
+
+    private boolean recover;
+
+    private Integer delay;
+
+    private String desc;
+
+    private List<String> dimensList;
+
+    private LocalDateTime createTime;
+
+    private LocalDateTime updateTime;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -46,22 +71,6 @@ public class AlarmCreateParam {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public List<String> getDimens() {
-        return dimens;
-    }
-
-    public void setDimens(List<String> dimens) {
-        this.dimens = dimens;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public Integer getTemplateId() {
@@ -94,5 +103,69 @@ public class AlarmCreateParam {
 
     public void setConditions(List<AlarmCondition> conditions) {
         this.conditions = conditions;
+    }
+
+    public AlarmMatchEnum getMatch() {
+        return match;
+    }
+
+    public void setMatch(AlarmMatchEnum match) {
+        this.match = match;
+    }
+
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    public Integer getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(Integer resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public ResourceTypeEnum getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(ResourceTypeEnum resourceType) {
+        this.resourceType = resourceType;
+    }
+
+    public boolean isRecover() {
+        return recover;
+    }
+
+    public void setRecover(boolean recover) {
+        this.recover = recover;
+    }
+
+    public List<String> getDimensList() {
+        return dimensList;
+    }
+
+    public void setDimensList(List<String> dimensList) {
+        this.dimensList = dimensList;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 }
