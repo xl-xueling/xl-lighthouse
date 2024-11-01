@@ -1,20 +1,22 @@
 package com.dtstep.lighthouse.common.modal;
 
+import com.dtstep.lighthouse.common.enums.AlarmMatchEnum;
 import com.dtstep.lighthouse.common.enums.AlarmStateEnum;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Alarm implements Serializable {
 
     private Integer id;
 
-    private String name;
+    private String title;
 
     private String uniqueCode;
 
-    private Integer divide;
+    private boolean divide;
 
     private Integer resourceId;
 
@@ -22,13 +24,15 @@ public class Alarm implements Serializable {
 
     private AlarmStateEnum state;
 
-    private String config;
+    private AlarmMatchEnum match;
+
+    private List<AlarmCondition> conditions;
 
     private Integer templateId;
 
-    private String desc;
+    private Integer delay;
 
-    private Integer dimensMatchType;
+    private String desc;
 
     private String dimens;
 
@@ -42,14 +46,6 @@ public class Alarm implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Integer getResourceId() {
@@ -66,14 +62,6 @@ public class Alarm implements Serializable {
 
     public void setState(AlarmStateEnum state) {
         this.state = state;
-    }
-
-    public String getConfig() {
-        return config;
-    }
-
-    public void setConfig(String config) {
-        this.config = config;
     }
 
     public Integer getTemplateId() {
@@ -108,11 +96,11 @@ public class Alarm implements Serializable {
         this.uniqueCode = uniqueCode;
     }
 
-    public Integer getDivide() {
+    public boolean isDivide() {
         return divide;
     }
 
-    public void setDivide(Integer divide) {
+    public void setDivide(boolean divide) {
         this.divide = divide;
     }
 
@@ -130,5 +118,45 @@ public class Alarm implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public AlarmMatchEnum getMatch() {
+        return match;
+    }
+
+    public void setMatch(AlarmMatchEnum match) {
+        this.match = match;
+    }
+
+    public List<AlarmCondition> getConditions() {
+        return conditions;
+    }
+
+    public void setConditions(List<AlarmCondition> conditions) {
+        this.conditions = conditions;
+    }
+
+    public Integer getDelay() {
+        return delay;
+    }
+
+    public void setDelay(Integer delay) {
+        this.delay = delay;
+    }
+
+    public String getDimens() {
+        return dimens;
+    }
+
+    public void setDimens(String dimens) {
+        this.dimens = dimens;
     }
 }

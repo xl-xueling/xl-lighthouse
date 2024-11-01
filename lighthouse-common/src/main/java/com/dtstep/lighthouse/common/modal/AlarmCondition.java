@@ -1,6 +1,5 @@
 package com.dtstep.lighthouse.common.modal;
 
-import com.dtstep.lighthouse.common.enums.CalculateMethod;
 import com.dtstep.lighthouse.common.enums.NumberCompareType;
 
 import java.io.Serializable;
@@ -12,8 +11,6 @@ public class AlarmCondition implements Serializable {
     private Integer last;
 
     private NumberCompareType compare;
-
-    private CalculateMethod calc;
 
     private boolean divide;
 
@@ -49,14 +46,6 @@ public class AlarmCondition implements Serializable {
 
     public void setCompare(NumberCompareType compare) {
         this.compare = compare;
-    }
-
-    public CalculateMethod getCalc() {
-        return calc;
-    }
-
-    public void setCalc(CalculateMethod calc) {
-        this.calc = calc;
     }
 
     public boolean isDivide() {
