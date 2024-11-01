@@ -1,14 +1,13 @@
 package com.dtstep.lighthouse.common.modal;
 
 import com.dtstep.lighthouse.common.enums.AlarmMatchEnum;
-import com.dtstep.lighthouse.common.enums.AlarmStateEnum;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.modal.AlarmCondition;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Alarm implements Serializable {
+public class Alarm {
 
     private Integer id;
 
@@ -22,13 +21,15 @@ public class Alarm implements Serializable {
 
     private ResourceTypeEnum resourceType;
 
-    private AlarmStateEnum state;
+    private boolean state;
 
     private AlarmMatchEnum match;
 
     private List<AlarmCondition> conditions;
 
     private Integer templateId;
+
+    private boolean recover;
 
     private Integer delay;
 
@@ -48,20 +49,28 @@ public class Alarm implements Serializable {
         this.id = id;
     }
 
-    public Integer getResourceId() {
-        return resourceId;
+    public String getTitle() {
+        return title;
     }
 
-    public void setResourceId(Integer resourceId) {
-        this.resourceId = resourceId;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public AlarmStateEnum getState() {
-        return state;
+    public boolean isDivide() {
+        return divide;
     }
 
-    public void setState(AlarmStateEnum state) {
-        this.state = state;
+    public void setDivide(boolean divide) {
+        this.divide = divide;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public Integer getTemplateId() {
@@ -70,6 +79,78 @@ public class Alarm implements Serializable {
 
     public void setTemplateId(Integer templateId) {
         this.templateId = templateId;
+    }
+
+    public String getUniqueCode() {
+        return uniqueCode;
+    }
+
+    public void setUniqueCode(String uniqueCode) {
+        this.uniqueCode = uniqueCode;
+    }
+
+    public Integer getDelay() {
+        return delay;
+    }
+
+    public void setDelay(Integer delay) {
+        this.delay = delay;
+    }
+
+    public List<AlarmCondition> getConditions() {
+        return conditions;
+    }
+
+    public void setConditions(List<AlarmCondition> conditions) {
+        this.conditions = conditions;
+    }
+
+    public AlarmMatchEnum getMatch() {
+        return match;
+    }
+
+    public void setMatch(AlarmMatchEnum match) {
+        this.match = match;
+    }
+
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    public Integer getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(Integer resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public ResourceTypeEnum getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(ResourceTypeEnum resourceType) {
+        this.resourceType = resourceType;
+    }
+
+    public boolean isRecover() {
+        return recover;
+    }
+
+    public void setRecover(boolean recover) {
+        this.recover = recover;
+    }
+
+    public String getDimens() {
+        return dimens;
+    }
+
+    public void setDimens(String dimens) {
+        this.dimens = dimens;
     }
 
     public LocalDateTime getCreateTime() {
@@ -86,77 +167,5 @@ public class Alarm implements Serializable {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public String getUniqueCode() {
-        return uniqueCode;
-    }
-
-    public void setUniqueCode(String uniqueCode) {
-        this.uniqueCode = uniqueCode;
-    }
-
-    public boolean isDivide() {
-        return divide;
-    }
-
-    public void setDivide(boolean divide) {
-        this.divide = divide;
-    }
-
-    public ResourceTypeEnum getResourceType() {
-        return resourceType;
-    }
-
-    public void setResourceType(ResourceTypeEnum resourceType) {
-        this.resourceType = resourceType;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public AlarmMatchEnum getMatch() {
-        return match;
-    }
-
-    public void setMatch(AlarmMatchEnum match) {
-        this.match = match;
-    }
-
-    public List<AlarmCondition> getConditions() {
-        return conditions;
-    }
-
-    public void setConditions(List<AlarmCondition> conditions) {
-        this.conditions = conditions;
-    }
-
-    public Integer getDelay() {
-        return delay;
-    }
-
-    public void setDelay(Integer delay) {
-        this.delay = delay;
-    }
-
-    public String getDimens() {
-        return dimens;
-    }
-
-    public void setDimens(String dimens) {
-        this.dimens = dimens;
     }
 }

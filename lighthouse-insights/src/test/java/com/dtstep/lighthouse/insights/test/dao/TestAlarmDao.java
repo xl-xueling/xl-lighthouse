@@ -1,12 +1,11 @@
 package com.dtstep.lighthouse.insights.test.dao;
 
-import com.dtstep.lighthouse.common.enums.AlarmStateEnum;
 import com.dtstep.lighthouse.common.enums.NumberCompareType;
-import com.dtstep.lighthouse.common.modal.Alarm;
 import com.dtstep.lighthouse.common.modal.AlarmCondition;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.AlarmDao;
+import com.dtstep.lighthouse.common.modal.Alarm;
 import com.dtstep.lighthouse.insights.test.listener.SpringTestExecutionListener;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +46,6 @@ public class TestAlarmDao {
         alarm.setTitle("tttssss");
         alarm.setDesc("ssswewe");
         alarm.setTemplateId(111);
-        alarm.setState(AlarmStateEnum.DISABLE);
         alarmDao.insert(alarm);
     }
 

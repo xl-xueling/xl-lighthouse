@@ -9,7 +9,7 @@
         <result property="divide" column="divide" typeHandler="com.dtstep.lighthouse.insights.types.BooleanTypeHandler"/>
         <result property="resourceId" column="resource_id"/>
         <result property="resourceType" column="resource_type" typeHandler="com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler"/>
-        <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.AlarmStateEnumTypeHandler"/>
+        <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.BooleanTypeHandler"/>
         <result property="match" column="match" typeHandler="com.dtstep.lighthouse.insights.types.AlarmMatchEnumTypeHandler"/>
         <result property="conditions" column="conditions" typeHandler="com.dtstep.lighthouse.insights.types.ListConfigTypeHandler"/>
         <result property="templateId" column="template_id"/>
@@ -29,7 +29,7 @@
             #{divide,typeHandler=com.dtstep.lighthouse.insights.types.BooleanTypeHandler},
             #{resourceId,jdbcType=INTEGER},
             #{resourceType,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
-            #{state,typeHandler=com.dtstep.lighthouse.insights.types.AlarmStateEnumTypeHandler},
+            #{state,typeHandler=com.dtstep.lighthouse.insights.types.BooleanTypeHandler},
             #{match,typeHandler=com.dtstep.lighthouse.insights.types.AlarmMatchEnumTypeHandler},
             #{conditions,typeHandler=com.dtstep.lighthouse.insights.types.ListConfigTypeHandler},
             #{templateId,jdbcType=INTEGER},
