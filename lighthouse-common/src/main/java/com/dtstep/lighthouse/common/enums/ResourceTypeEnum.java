@@ -25,6 +25,8 @@ public enum ResourceTypeEnum {
 
     Caller(9),
 
+    Alarm(10),
+
     ;
 
     ResourceTypeEnum(Integer resourceType){

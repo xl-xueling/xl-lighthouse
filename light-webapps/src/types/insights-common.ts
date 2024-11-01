@@ -107,6 +107,7 @@ export enum ResourceTypeEnum {
     Metric=7,
     View=8,
     Caller=9,
+    Alarm=10,
 }
 
 export enum RoleTypeEnum {

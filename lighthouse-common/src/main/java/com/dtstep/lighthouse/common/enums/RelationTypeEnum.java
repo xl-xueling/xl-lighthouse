@@ -20,7 +20,9 @@ public enum RelationTypeEnum {
     StatSubsequentIndicator(6),
 
     UserStarViewRelation(7),
-    
+
+    StatBindAlarmRelation(8),
+
     ;
 
     RelationTypeEnum(int relationType){
