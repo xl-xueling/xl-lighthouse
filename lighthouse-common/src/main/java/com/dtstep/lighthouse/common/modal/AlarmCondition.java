@@ -96,7 +96,7 @@ public class AlarmCondition implements Serializable {
         this.p3 = p3;
     }
 
-    private static class ThresholdConfig {
+    public static class ThresholdConfig {
 
         private Double threshold;
 

@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 public interface AlarmDao {
 
     int insert(Alarm alarm);
+
+    Alarm queryById(Integer id);
 }
