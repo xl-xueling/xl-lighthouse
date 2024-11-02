@@ -201,4 +201,13 @@ public final class ReflectUtil {
         }
         return types;
     }
+
+    public static boolean isClassPresent(String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
 }
