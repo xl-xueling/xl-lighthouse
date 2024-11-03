@@ -173,11 +173,11 @@ public final class RedisRoaringFilter<T> {
 
     public String getBloomFilterKey(StatExtEntity statExtEntity, String dimensValue, int functionIndex, long batchTime){
         if(StringUtil.isEmpty(statExtEntity.getTemplateEntity().getDimens())){
-            long aggregateTime = DateUtil.batchTime(10, TimeUnit.MINUTES,batchTime);
+            long aggregateTime = DateUtil.batchTime(20, TimeUnit.MINUTES,batchTime);
             String aggregateKey = keyGenerator.resultKey(statExtEntity,functionIndex,null,aggregateTime);
             return RedisConst.RT_BLOOM_DISTINCT_PREFIX + aggregateKey;
         }else{
-            long aggregateTime = DateUtil.batchTime(10, TimeUnit.MINUTES,batchTime);
+            long aggregateTime = DateUtil.batchTime(20, TimeUnit.MINUTES,batchTime);
             String aggregateKey = keyGenerator.resultKey(statExtEntity,functionIndex,null,aggregateTime);
             return RedisConst.RT_BLOOM_DISTINCT_PREFIX + aggregateKey + "_" + Math.abs(dimensValue.hashCode()) % 3;
         }
