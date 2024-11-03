@@ -16,13 +16,12 @@ package com.dtstep.lighthouse.common.entity.stat;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.common.enums.GroupStateEnum;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
+import com.dtstep.lighthouse.common.modal.Alarm;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
-import com.dtstep.lighthouse.common.constant.StatConst;
 
-import java.time.ZoneId;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -41,6 +40,10 @@ public class StatExtEntity extends Stat {
     private Set<String> relatedColumnSet;
 
     private boolean isBuiltIn = false;
+
+    private boolean needAlarm;
+
+    private List<Alarm> alarmList;
 
     public StatExtEntity(){}
 
@@ -95,6 +98,22 @@ public class StatExtEntity extends Stat {
 
     public void setBuiltIn(boolean builtIn) {
         isBuiltIn = builtIn;
+    }
+
+    public boolean isNeedAlarm() {
+        return needAlarm;
+    }
+
+    public void setNeedAlarm(boolean needAlarm) {
+        this.needAlarm = needAlarm;
+    }
+
+    public List<Alarm> getAlarmList() {
+        return alarmList;
+    }
+
+    public void setAlarmList(List<Alarm> alarmList) {
+        this.alarmList = alarmList;
     }
 
     public static boolean isLimitedExpired(StatExtEntity statExtEntity){

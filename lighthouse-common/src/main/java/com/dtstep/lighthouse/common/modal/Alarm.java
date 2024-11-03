@@ -2,7 +2,6 @@ package com.dtstep.lighthouse.common.modal;
 
 import com.dtstep.lighthouse.common.enums.AlarmMatchEnum;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.common.modal.AlarmCondition;
 
 import java.time.LocalDateTime;
 import java.util.List;
