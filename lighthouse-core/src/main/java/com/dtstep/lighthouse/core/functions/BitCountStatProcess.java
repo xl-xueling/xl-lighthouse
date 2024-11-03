@@ -128,7 +128,8 @@ public final class BitCountStatProcess extends StatProcess<Pair<String,Long>> {
         }
         int limit = groupExtEntity.getExtendConfig().getLimitingConfig().getOrDefault(LimitingStrategyEnum.GROUP_MESSAGE_SIZE_LIMITING,-1);
         int part = (limit > RedisConst.DISTINCT_LIMIT_THRESHOLD)? 5 : 1;
-        long expireSeconds = statExtEntity.getTimeUnit() == TimeUnit.DAYS ? TimeUnit.DAYS.toSeconds(2) : TimeUnit.HOURS.toSeconds(3);
+        long expireSeconds = (statExtEntity.getTimeUnit() == TimeUnit.DAYS) ? TimeUnit.DAYS.toSeconds(2) : (statExtEntity.getTimeUnit() == TimeUnit.HOURS
+                ? TimeUnit.HOURS.toSeconds(2) : TimeUnit.HOURS.toSeconds(1));
         long result = RedisRoaringFilter.getInstance().filterWithRoaringMap(distinctKey,distinctList,expireSeconds,part);
         if(logger.isTraceEnabled()){
             logger.trace("lighthouse trace,distinct evaluate,statId:{},bloomDistinctKey:{},dimens:{},distinctList:{},bloom filter result:{}"
