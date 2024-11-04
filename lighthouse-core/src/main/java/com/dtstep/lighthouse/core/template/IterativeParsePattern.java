@@ -177,11 +177,11 @@ public final class IterativeParsePattern implements Parser {
         return ServiceResult.result(ResultCode.success,templateEntity);
     }
 
+    private static final Pattern columnExtractPattern = Pattern.compile("(?<!')\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b(?!\\s*\\()");
+
     public static List<String> extractColumnsList(String input) {
         List<String> validMatches = new ArrayList<>();
-        String regex = "(?<!')\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b(?!\\s*\\()";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(input);
+        Matcher matcher = columnExtractPattern.matcher(input);
         while (matcher.find()) {
             String match = matcher.group(1);
             if (isValidMatch(match)) {
