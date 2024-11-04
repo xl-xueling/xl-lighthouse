@@ -36,7 +36,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public final class IterativeParsePattern implements Parser {
@@ -80,12 +83,18 @@ public final class IterativeParsePattern implements Parser {
         }
         templateEntity.setStat(stat);
         List<Column> columnList = context.getColumnList();
+        List<String> groupColumnList = columnList.stream().map(Column::getName).collect(Collectors.toList());
+
+        List<String> statFormulaColumnsList = extractColumnsList(stat);
+        statFormulaColumnsList.removeAll(groupColumnList);
+        if(statFormulaColumnsList.size() > 0){
+            return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserColumnNotExist,String.join(",", statFormulaColumnsList)));
+        }
         String dimensFormula = element.attr("dimens");
         if(!StringUtil.isEmpty(dimensFormula)){
-            List<String> groupColumnName = columnList.stream().map(Column::getName).collect(Collectors.toList());
             String[] dimensArray = TemplateUtil.split(dimensFormula);
             for(String dimens:dimensArray){
-                if(StringUtil.isLetterNumOrUnderLine(dimens) && !groupColumnName.contains(dimens)){
+                if(StringUtil.isLetterNumOrUnderLine(dimens) && !groupColumnList.contains(dimens)){
                     return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserDimensNotExist,dimens));
                 }
                 boolean checkFlag = ImitateCompile.imitateDimensFormula(context.getStatId(),dimens,columnList);
@@ -95,6 +104,12 @@ public final class IterativeParsePattern implements Parser {
             }
             templateEntity.setDimens(dimensFormula);
             templateEntity.setDimensArray(dimensArray);
+
+            List<String> dimensFormulaColumnsList = extractColumnsList(dimensFormula);
+            dimensFormulaColumnsList.removeAll(groupColumnList);
+            if(dimensFormulaColumnsList.size() > 0){
+                return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserColumnNotExist,String.join(",", dimensFormulaColumnsList)));
+            }
         }
         String limit = element.attr("limit");
         if(!StringUtil.isEmpty(limit)){
@@ -162,5 +177,23 @@ public final class IterativeParsePattern implements Parser {
         }
         templateEntity.setStatStateList(stateList);
         return ServiceResult.result(ResultCode.success,templateEntity);
+    }
+
+    public static List<String> extractColumnsList(String input) {
+        List<String> validMatches = new ArrayList<>();
+        String regex = "(?<!')\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b(?!\\s*\\()";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()) {
+            String match = matcher.group(1);
+            if (isValidMatch(match)) {
+                validMatches.add(match);
+            }
+        }
+        return validMatches;
+    }
+
+    private static boolean isValidMatch(String match) {
+        return match.matches(".*[a-zA-Z].*");
     }
 }

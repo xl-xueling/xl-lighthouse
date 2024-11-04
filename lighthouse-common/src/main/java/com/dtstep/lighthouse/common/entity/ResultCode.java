@@ -148,6 +148,8 @@ public enum ResultCode {
 
     createRelationAlreadyExist("2023","createRelationAlreadyExist"),
 
+    templateParserColumnNotExist("2024","templateParserColumnNotExist"),
+
     userStarMetricLimitExceed("3001","userStarMetricLimitExceed"),
 
     userStarProjectLimitExceed("3001","userStarProjectLimitExceed"),

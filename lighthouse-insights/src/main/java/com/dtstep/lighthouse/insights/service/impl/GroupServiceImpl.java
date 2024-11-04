@@ -153,6 +153,10 @@ public class GroupServiceImpl implements GroupService {
             for (Stat stat : statList) {
                 String template = stat.getTemplate();
                 ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(stat.getId(),template,stat.getTimeparam(),columnList));
+                if(!serviceResult.isSuccess()){
+                    logger.error("load stat error,id:{},template:{}.", stat.getId(),template);
+                    continue;
+                }
                 List<Column> statRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList, template);
                 if (CollectionUtils.isNotEmpty(statRelatedColumns)) {
                     for (Column column : statRelatedColumns) {

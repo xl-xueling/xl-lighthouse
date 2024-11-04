@@ -264,6 +264,10 @@ public final class GroupDBWrapper {
                 String template = stat.getTemplate();
                 List<Column> statRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,template);
                 ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(stat.getId(),template,stat.getTimeparam(),columnList));
+                if(!serviceResult.isSuccess()){
+                    logger.error("load stat error,id:{},template:{}.", stat.getId(),template);
+                    continue;
+                }
                 String dimens = serviceResult.getData().getDimens();
                 List<Column> dimensRelatedColumns = null;
                 if(!StringUtil.isEmpty(dimens)){
