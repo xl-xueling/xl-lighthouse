@@ -16,7 +16,7 @@ public class PluginManager {
 
     private static final String PRO_STAT_PLUGIN_CLASS = "com.dtstep.lighthouse.pro.core.alarm.impl.DefaultStatAlarmPluginImpl";
 
-    public static void initializePlugins(){
+    static {
         loadStatAlarmPlugin();
     }
 

@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.core.test.wrapper;
 
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
@@ -38,7 +39,9 @@ public class StatDBWrapperTest {
     }
 
     @Test
-    public void testGuava() throws Exception{
-
+    public void testQueryById() throws Exception{
+        int statId = 1100619;
+        StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
+        System.out.println("statExtEntity is:" + JsonUtil.toJSONString(statExtEntity));
     }
 }

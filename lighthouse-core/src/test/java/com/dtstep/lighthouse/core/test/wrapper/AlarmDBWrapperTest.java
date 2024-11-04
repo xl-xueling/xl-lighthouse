@@ -2,11 +2,14 @@ package com.dtstep.lighthouse.core.test.wrapper;
 
 import com.dtstep.lighthouse.common.entity.AlarmExtEntity;
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.core.plugins.PluginManager;
+import com.dtstep.lighthouse.core.plugins.StatAlarmPlugin;
 import com.dtstep.lighthouse.core.test.CoreBaseTest;
 import com.dtstep.lighthouse.core.wrapper.AlarmDBWrapper;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 public class AlarmDBWrapperTest extends CoreBaseTest {
 
@@ -24,5 +27,11 @@ public class AlarmDBWrapperTest extends CoreBaseTest {
         for(AlarmExtEntity alarmExtEntity : alarmExtEntityList){
             System.out.println("alarmExtEntity is:" + JsonUtil.toJSONString(alarmExtEntity));
         }
+    }
+
+    @Test
+    public void testPluginManager() throws Exception {
+        Optional<StatAlarmPlugin> s  =  PluginManager.getAlarmPlugin();
+        System.out.println("s is:" + s.isPresent());
     }
 }

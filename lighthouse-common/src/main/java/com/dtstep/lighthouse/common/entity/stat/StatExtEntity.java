@@ -41,7 +41,7 @@ public class StatExtEntity extends Stat {
 
     private boolean isBuiltIn = false;
 
-    private boolean needAlarm;
+    private boolean needAlarm = false;
 
     private List<AlarmExtEntity> alarmList;
 

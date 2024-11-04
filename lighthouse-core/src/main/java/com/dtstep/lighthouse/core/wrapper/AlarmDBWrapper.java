@@ -122,12 +122,12 @@ public class AlarmDBWrapper {
         return alarm;
     }
 
-    private static List<Alarm> queryAlarmListFromDB(Integer id) throws Exception {
+    private static List<Alarm> queryAlarmListFromDB(Integer statId) throws Exception {
         Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         List<Alarm> alarmList;
         try{
-            alarmList = queryRunner.query(conn, String.format("select `id`,`title`,`unique_code`,`divide`,`state`,`match`,`conditions`,`template_id`,`recover`,`delay`,`dimens`,`create_time`,`update_time` from ldp_alarms where resource_id = '%s' and resource_type = '%s'",id, ResourceTypeEnum.Stat.getResourceType()), new AlarmListSetHandler());
+            alarmList = queryRunner.query(conn, String.format("select `id`,`title`,`unique_code`,`divide`,`state`,`match`,`conditions`,`template_id`,`recover`,`delay`,`dimens`,`create_time`,`update_time` from ldp_alarms where resource_id = '%s' and resource_type = '%s' and state = 1",statId, ResourceTypeEnum.Stat.getResourceType()), new AlarmListSetHandler());
         }finally {
             storageEngine.closeConnection();
         }

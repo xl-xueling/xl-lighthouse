@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.core.wrapper;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.constant.StatConst;
+import com.dtstep.lighthouse.common.entity.AlarmExtEntity;
 import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.stat.TemplateEntity;
@@ -35,6 +36,7 @@ import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
 import com.dtstep.lighthouse.common.schedule.ScheduledThreadPoolBuilder;
+import com.dtstep.lighthouse.core.plugins.PluginManager;
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
 import com.dtstep.lighthouse.core.template.TemplateContext;
@@ -317,6 +319,11 @@ public class StatDBWrapper {
             }
         }
         statExtEntity.setRelatedColumnSet(relatedColumns.stream().map(Column::getName).collect(Collectors.toSet()));
+        if(PluginManager.getAlarmPlugin().isPresent()){
+            List<AlarmExtEntity> alarmList = AlarmDBWrapper.queryByStatId(statEntity.getId());
+            statExtEntity.setAlarmList(alarmList);
+            statExtEntity.setNeedAlarm(CollectionUtils.isNotEmpty(alarmList));
+        }
         return statExtEntity;
     }
 
