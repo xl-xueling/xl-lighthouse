@@ -84,7 +84,6 @@ public final class IterativeParsePattern implements Parser {
         templateEntity.setStat(stat);
         List<Column> columnList = context.getColumnList();
         List<String> groupColumnList = columnList.stream().map(Column::getName).collect(Collectors.toList());
-
         List<String> statFormulaColumnsList = extractColumnsList(stat);
         statFormulaColumnsList.removeAll(groupColumnList);
         if(statFormulaColumnsList.size() > 0){
@@ -104,7 +103,6 @@ public final class IterativeParsePattern implements Parser {
             }
             templateEntity.setDimens(dimensFormula);
             templateEntity.setDimensArray(dimensArray);
-
             List<String> dimensFormulaColumnsList = extractColumnsList(dimensFormula);
             dimensFormulaColumnsList.removeAll(groupColumnList);
             if(dimensFormulaColumnsList.size() > 0){
