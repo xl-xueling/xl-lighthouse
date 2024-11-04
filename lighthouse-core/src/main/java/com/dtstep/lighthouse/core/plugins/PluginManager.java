@@ -14,7 +14,9 @@ public class PluginManager {
 
     private static final Map<String,Plugin> plugins = new HashMap<>();
 
-    private static final String PRO_STAT_PLUGIN_CLASS = "com.dtstep.lighthouse.pro.core.alarm.impl.DefaultStatAlarmPluginImpl";
+    private static final String PRO_STAT_PLUGIN_CLASS = "com.dtstep.lighthouse.pro.core.alarm.DefaultStatAlarmPluginImpl";
+
+    private static final String PRO_NOTIFICATION_PLUGIN_CLASS = "com.dtstep.lighthouse.pro.core.notification.DefaultNotificationPluginImpl";
 
     static {
         loadStatAlarmPlugin();
@@ -36,8 +38,29 @@ public class PluginManager {
         }
     }
 
+    private static void loadNotificationPlugin(){
+        if(ReflectUtil.isClassPresent(PRO_NOTIFICATION_PLUGIN_CLASS)){
+            try{
+                Class<?> clazz = Class.forName(PRO_NOTIFICATION_PLUGIN_CLASS);
+                if(NotificationPlugin.class.isAssignableFrom(clazz)){
+                    NotificationPlugin notificationPlugin = (NotificationPlugin) clazz.getDeclaredConstructor().newInstance();
+                    plugins.put(notificationPlugin.getName(),notificationPlugin);
+                    notificationPlugin.initialize();
+                    logger.info(String.format("Plugin[%s] loaded!",notificationPlugin.getName()));
+                }
+            } catch (Exception ex){
+                logger.error("Plugin loaded failed!",ex);
+            }
+        }
+    }
+
     public static Optional<StatAlarmPlugin> getAlarmPlugin() {
         Plugin plugin = plugins.get("StatAlarm");
         return Optional.ofNullable(plugin instanceof StatAlarmPlugin ? (StatAlarmPlugin) plugin : null);
+    }
+
+    public static Optional<NotificationPlugin> getNotificationPlugin() {
+        Plugin plugin = plugins.get("Notification");
+        return Optional.ofNullable(plugin instanceof NotificationPlugin ? (NotificationPlugin) plugin : null);
     }
 }

@@ -9,8 +9,4 @@ import java.util.List;
 public interface StatAlarmPlugin extends Plugin {
 
     List<LdpNotification> trigger(StatExtEntity statExtEntity, long batchTime, String dimensValue, Alarm alarm);
-
-    void send(List<LdpNotification> notifications);
-
-    void sendMessage(String message);
 }
