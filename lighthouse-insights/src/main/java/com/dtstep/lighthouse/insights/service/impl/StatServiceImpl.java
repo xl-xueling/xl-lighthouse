@@ -154,6 +154,9 @@ public class StatServiceImpl implements StatService {
     }
 
     private StatVO translate(StatExtEntity stat) throws Exception {
+        if(stat == null){
+            return null;
+        }
         Owner owner = baseService.getCurrentOwner();
         StatVO statVO = new StatVO(stat);
         if(stat.isBuiltIn()){
@@ -179,6 +182,9 @@ public class StatServiceImpl implements StatService {
         String timeParam = stat.getTimeparam();
         Group group = groupService.queryById(stat.getGroupId());
         ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(template,timeParam, group.getColumns()));
+        if(!serviceResult.isSuccess()){
+            return null;
+        }
         TemplateEntity templateEntity = serviceResult.getData();
         statVO.setTemplateEntity(templateEntity);
         statVO.setTitle(templateEntity.getTitle());
@@ -194,7 +200,9 @@ public class StatServiceImpl implements StatService {
             for(Integer id : builtInIds){
                 StatExtEntity statExtEntity = BuiltinLoader.getBuiltinStat(id);
                 StatVO statVO = translate(statExtEntity);
-                voList.add(statVO);
+                if(statVO != null){
+                    voList.add(statVO);
+                }
             }
         }
         if(CollectionUtils.isNotEmpty(nonBuiltInIds)){
@@ -204,7 +212,9 @@ public class StatServiceImpl implements StatService {
             for(Stat stat : statList){
                 StatExtEntity statExtEntity = StatDBWrapper.combineExtInfo(stat,false);
                 StatVO statVO = translate(statExtEntity);
-                voList.add(statVO);
+                if(statVO != null){
+                    voList.add(statVO);
+                }
             }
         }
         return voList;
@@ -225,7 +235,9 @@ public class StatServiceImpl implements StatService {
             try{
                 StatExtEntity statExtEntity = StatDBWrapper.combineExtInfo(stat,false);
                 StatVO statVo = translate(statExtEntity);
-                dtoList.add(statVo);
+                if(statVo != null){
+                    dtoList.add(statVo);
+                }
             }catch (Exception ex){
                 logger.error("translate item info error,itemId:{}!",stat.getId(),ex);
             }

@@ -249,7 +249,9 @@ public class StatDBWrapper {
         entityList.forEach(z -> {
             try{
                 StatExtEntity statExtEntity = combineExtInfo(z,false);
-                extEntityList.add(statExtEntity);
+                if(statExtEntity != null){
+                    extEntityList.add(statExtEntity);
+                }
             }catch (Exception ex){
                 logger.error("query stat info error,id:{}",z.getId(),ex);
             }
@@ -285,6 +287,9 @@ public class StatDBWrapper {
         }
         String template = statExtEntity.getTemplate();
         ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(statEntity.getId(),template,timeParam,groupColumnList));
+        if(!serviceResult.isSuccess()){
+            return null;
+        }
         TemplateEntity templateEntity = serviceResult.getData();
         statExtEntity.setTemplateEntity(templateEntity);
         List<Column> relatedColumns = new ArrayList<>();
