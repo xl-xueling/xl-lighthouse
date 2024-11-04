@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.core.wrapper;
 
 import com.dtstep.lighthouse.common.entity.AlarmExtEntity;
+import com.dtstep.lighthouse.common.entity.AlarmTemplateExtEntity;
 import com.dtstep.lighthouse.common.enums.AlarmMatchEnum;
 import com.dtstep.lighthouse.common.modal.Alarm;
 import com.dtstep.lighthouse.common.modal.AlarmCondition;
@@ -48,8 +49,19 @@ public class AlarmDBWrapper {
         AlarmExtEntity alarmExtEntity = null;
         try{
             Alarm alarm = queryAlarmFromDB(id);
+            alarmExtEntity = new AlarmExtEntity(alarm);
             int templateId = alarm.getTemplateId();
-            AlarmTemplate alarmTemplate = queryAlarmTemplateFromDB(templateId);
+            if(templateId != 0){
+                AlarmTemplate alarmTemplate = queryAlarmTemplateFromDB(templateId);
+                AlarmTemplateExtEntity alarmTemplateExtEntity;
+                if(alarmTemplate != null){
+                    String config = alarmTemplate.getConfig();
+                    AlarmTemplateExtEntity.AlarmTemplateConfig alarmTemplateConfig = JsonUtil.toJavaObject(config, AlarmTemplateExtEntity.AlarmTemplateConfig.class);
+                    alarmTemplateExtEntity = new AlarmTemplateExtEntity(alarmTemplate);
+                    alarmTemplateExtEntity.setTemplateConfig(alarmTemplateConfig);
+                    alarmExtEntity.setTemplateList(List.of(alarmTemplateExtEntity));
+                }
+            }
         }catch (Exception ex){
             logger.error("query alarm info error!", ex);
         }
@@ -114,7 +126,6 @@ public class AlarmDBWrapper {
                 alarm.setUpdateTime(DateUtil.timestampToLocalDateTime(updateTime));
                 alarm.setTemplateId(templateId);
                 alarm.setRecover(recover);
-                System.out.println("alarm is:" + JsonUtil.toJSONString(alarm));
             }
             return alarm;
         }
@@ -142,7 +153,6 @@ public class AlarmDBWrapper {
                 alarmTemplate.setId(id);
                 alarmTemplate.setConfig(config);
             }
-            System.out.println("template:" + JsonUtil.toJSONString(alarmTemplate));
             return alarmTemplate;
         }
     }
