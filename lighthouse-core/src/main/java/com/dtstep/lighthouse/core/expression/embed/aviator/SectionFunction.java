@@ -50,18 +50,18 @@ public class SectionFunction extends AbstractFunction{
         while (iterator.hasNext()){
             String compB = iterator.next();
             if(!StringUtil.isNumber(compB)){
-                return "[-E,+E]";
+                return "[-E ~ +E]";
             }
             if(!pre.equals("-E") && Double.parseDouble(pre) >= Double.parseDouble(compB)){
-                return "[-E,+E]";
+                return "[-E ~ +E]";
             }
             if(compA < Double.parseDouble(compB)){
-                return "[" + pre + "," + compB + "]";
+                return "[" + pre + " ~ " + compB + "]";
             }else{
                 pre = compB;
             }
         }
-        return "[" + pre + ",+E]";
+        return "[" + pre + " ~ +E]";
     }
 
     @Override
