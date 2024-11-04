@@ -3,10 +3,11 @@ package com.dtstep.lighthouse.common.modal;
 import com.dtstep.lighthouse.common.enums.AlarmMatchEnum;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Alarm {
+public class Alarm implements Serializable {
 
     private Integer id;
 

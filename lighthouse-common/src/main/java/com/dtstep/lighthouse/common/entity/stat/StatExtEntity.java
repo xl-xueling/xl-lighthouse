@@ -16,8 +16,8 @@ package com.dtstep.lighthouse.common.entity.stat;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.AlarmExtEntity;
 import com.dtstep.lighthouse.common.enums.StatStateEnum;
-import com.dtstep.lighthouse.common.modal.Alarm;
 import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 
@@ -43,7 +43,7 @@ public class StatExtEntity extends Stat {
 
     private boolean needAlarm;
 
-    private List<Alarm> alarmList;
+    private List<AlarmExtEntity> alarmList;
 
     public StatExtEntity(){}
 
@@ -108,11 +108,11 @@ public class StatExtEntity extends Stat {
         this.needAlarm = needAlarm;
     }
 
-    public List<Alarm> getAlarmList() {
+    public List<AlarmExtEntity> getAlarmList() {
         return alarmList;
     }
 
-    public void setAlarmList(List<Alarm> alarmList) {
+    public void setAlarmList(List<AlarmExtEntity> alarmList) {
         this.alarmList = alarmList;
     }
 
