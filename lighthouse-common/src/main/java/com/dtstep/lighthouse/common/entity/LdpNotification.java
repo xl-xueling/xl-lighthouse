@@ -6,31 +6,15 @@ import java.util.List;
 
 public class LdpNotification {
 
-    private Integer id;
+    private Integer alarmId;
 
-    private String origin;
+    private List<String> reasons;
 
     private List<Integer> userIds;
 
     private List<Integer> departmentIds;
 
     private NotificationTypeEnum notificationType;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
 
     public List<Integer> getUserIds() {
         return userIds;
@@ -54,5 +38,21 @@ public class LdpNotification {
 
     public void setNotificationType(NotificationTypeEnum notificationType) {
         this.notificationType = notificationType;
+    }
+
+    public Integer getAlarmId() {
+        return alarmId;
+    }
+
+    public void setAlarmId(Integer alarmId) {
+        this.alarmId = alarmId;
+    }
+
+    public List<String> getReasons() {
+        return reasons;
+    }
+
+    public void setReasons(List<String> reasons) {
+        this.reasons = reasons;
     }
 }
