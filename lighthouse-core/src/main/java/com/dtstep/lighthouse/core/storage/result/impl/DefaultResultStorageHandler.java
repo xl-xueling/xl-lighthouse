@@ -23,6 +23,7 @@ import com.dtstep.lighthouse.common.entity.state.StatState;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.modal.MetaTable;
 import com.dtstep.lighthouse.common.util.DateUtil;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.expression.embed.AviatorHandler;
@@ -32,6 +33,7 @@ import com.dtstep.lighthouse.core.storage.common.*;
 import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngineProxy;
 import com.dtstep.lighthouse.core.storage.result.ResultStorageHandler;
 import com.dtstep.lighthouse.core.wrapper.MetaTableWrapper;
+import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -393,5 +395,74 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         }
         statValue.setLastUpdateTime(lastUpdateTime);
         return statValue;
+    }
+
+    @Override
+    public LinkedHashMap<IndicatorGet, Object> query(List<IndicatorGet> indicators) throws Exception {
+        LinkedHashMap<IndicatorGet,Object> resultMap = new LinkedHashMap<>();
+        if(CollectionUtils.isEmpty(indicators)){
+            return resultMap;
+        }
+        HashMap<String,List<String>> keyMap = new HashMap<>();
+        HashMap<Integer,StatExtEntity> statMap = new HashMap<>();
+        for(IndicatorGet indicatorGet : indicators){
+            int statId = indicatorGet.getStatId();
+            StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
+            if(statExtEntity == null){
+                continue;
+            }
+            int metaId = statExtEntity.getMetaId();
+            MetaTable metaTable = MetaTableWrapper.queryById(metaId);
+            if(metaTable == null){
+                continue;
+            }
+            statMap.put(statExtEntity.getId(),statExtEntity);
+            String metaName = metaTable.getMetaName();
+            int indicator = indicatorGet.getIndicatorIndex();
+            long batchTime = indicatorGet.getBatchTime();
+            String dimensValue = indicatorGet.getDimensValue();
+            if(indicator == 0){
+                for(StatState statState : statExtEntity.getTemplateEntity().getStatStateList()){
+                    String rowKey = keyGenerator.resultKey(statExtEntity,statState.getFunctionIndex(),dimensValue,batchTime);
+                    List<String> list = keyMap.getOrDefault(metaName,new ArrayList<>());
+                    list.add(rowKey);
+                    keyMap.put(metaName,list);
+                }
+            }else{
+                String rowKey = keyGenerator.resultKey(statExtEntity,indicator - 1,dimensValue,batchTime);
+                List<String> list = keyMap.getOrDefault(metaName,new ArrayList<>());
+                list.add(rowKey);
+                keyMap.put(metaName,list);
+            }
+        }
+        List<LdpGet> getList = new ArrayList<>();
+        Map<String,LdpResult<Long>> allResultMap = new HashMap<>();
+        for(String metaName : keyMap.keySet()){
+            List<String> keyList = keyMap.get(metaName);
+            for(String rowKey : keyList){
+                String [] keyArr = rowKey.split(";");
+                String key = keyArr[0];
+                String column = keyArr[1];
+                LdpGet ldpGet = LdpGet.with(key,column);
+                getList.add(ldpGet);
+            }
+            List<LdpResult<Long>> results = WarehouseStorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
+            Map<String,LdpResult<Long>> subResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
+            allResultMap.putAll(subResultMap);
+        }
+        for(IndicatorGet indicatorGet : indicators){
+            int indicator = indicatorGet.getIndicatorIndex();
+            StatExtEntity statExtEntity = statMap.get(indicatorGet.getStatId());
+            if(indicator == 0){
+                StatValue statValue = calculate(statExtEntity, indicatorGet.getDimensValue() , indicatorGet.getBatchTime(),allResultMap);
+                resultMap.put(indicatorGet,statValue.getValue());
+            }else{
+                String rowKey = keyGenerator.resultKey(statExtEntity,indicator - 1,indicatorGet.getDimensValue(),indicatorGet.getBatchTime());
+                LdpResult<Long> ldpResult = allResultMap.get(rowKey);
+                BigDecimal value = BigDecimal.valueOf(ldpResult.getData()).divide(BigDecimal.valueOf(1000D),3, RoundingMode.HALF_UP).stripTrailingZeros();
+                resultMap.put(indicatorGet,Double.parseDouble(value.toPlainString()));
+            }
+        }
+        return resultMap;
     }
 }

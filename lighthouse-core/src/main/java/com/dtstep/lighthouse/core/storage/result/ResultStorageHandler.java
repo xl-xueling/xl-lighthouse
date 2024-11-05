@@ -18,7 +18,10 @@ package com.dtstep.lighthouse.core.storage.result;
  */
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
+import com.dtstep.lighthouse.core.storage.common.IndicatorGet;
+import com.dtstep.lighthouse.core.storage.common.LdpResult;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,4 +45,6 @@ public interface ResultStorageHandler<W,R> {
     LinkedHashMap<String,List<R>> queryWithDimensList(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception;
 
     LinkedHashMap<String,List<R>> queryWithDimensList0(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception;
+
+    HashMap<IndicatorGet, Object> query(List<IndicatorGet> indicators) throws Exception;
 }

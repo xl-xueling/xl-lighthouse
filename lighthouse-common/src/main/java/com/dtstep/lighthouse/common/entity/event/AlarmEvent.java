@@ -24,7 +24,7 @@ public class AlarmEvent extends SlotEvent<AlarmEvent> {
         if(this.getTimestamp() > o.getTimestamp()){
             return 1;
         }else if(this.getTimestamp() == o.getTimestamp()){
-            return this.getStatId() - o.getStatId();
+            return (this.getStatId() + "_" + this.getDimensValue()).compareTo(o.getStatId() + "_" + o.getDimensValue());
         }else {
             return -1;
         }
