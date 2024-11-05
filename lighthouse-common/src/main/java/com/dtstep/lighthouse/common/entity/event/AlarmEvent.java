@@ -2,7 +2,7 @@ package com.dtstep.lighthouse.common.entity.event;
 
 import java.io.Serializable;
 
-public class AlarmEvent implements Serializable {
+public class AlarmEvent extends SlotEvent<AlarmEvent> {
 
     private int statId;
 
@@ -16,6 +16,17 @@ public class AlarmEvent implements Serializable {
         this.statId = statId;
         this.batchTime = batchTime;
         this.dimensValue = dimensValue;
+    }
+
+    @Override
+    public int compareTo(AlarmEvent o) {
+        if(this.getTimestamp() > o.getTimestamp()){
+            return 1;
+        }else if(this.getTimestamp() == o.getTimestamp()){
+            return this.getStatId() - o.getStatId();
+        }else {
+            return -1;
+        }
     }
 
     public int getStatId() {
