@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.common.entity.event;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class AlarmEvent extends SlotEvent<AlarmEvent> {
 
