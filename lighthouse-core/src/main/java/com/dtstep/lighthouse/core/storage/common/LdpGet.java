@@ -1,4 +1,7 @@
 package com.dtstep.lighthouse.core.storage.common;
+
+import java.util.Objects;
+
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -27,6 +30,19 @@ public class LdpGet {
         ldpGet.setKey(key);
         ldpGet.setColumn(column);
         return ldpGet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LdpGet myObject = (LdpGet) o;
+        return Objects.equals(key, myObject.key) && Objects.equals(column, myObject.column);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, column);
     }
 
     public String getKey() {

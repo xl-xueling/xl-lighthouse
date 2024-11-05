@@ -444,7 +444,9 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                 String key = keyArr[0];
                 String column = keyArr[1];
                 LdpGet ldpGet = LdpGet.with(key,column);
-                getList.add(ldpGet);
+                if(!getList.contains(ldpGet)){
+                    getList.add(ldpGet);
+                }
             }
             List<LdpResult<Long>> results = WarehouseStorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
             Map<String,LdpResult<Long>> subResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
