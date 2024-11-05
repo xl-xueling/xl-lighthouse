@@ -45,7 +45,17 @@ public class IndicatorGet implements Serializable, Comparable<IndicatorGet> {
 
     @Override
     public int compareTo(@NotNull IndicatorGet o) {
-        return this.statId - o.statId;
+        if (batchTime != o.batchTime) {
+            return Double.compare(batchTime,o.batchTime);
+        }
+        if (statId != o.statId) {
+            return Double.compare(statId,o.statId);
+        }
+
+        if (indicatorIndex != o.indicatorIndex) {
+            return Double.compare(indicatorIndex,o.indicatorIndex);
+        }
+        return String.valueOf(dimensValue).compareTo(String.valueOf(o.dimensValue));
     }
 
     public int getStatId() {
