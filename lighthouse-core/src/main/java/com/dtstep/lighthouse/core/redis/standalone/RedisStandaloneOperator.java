@@ -45,6 +45,11 @@ public class RedisStandaloneOperator implements RedisOperator {
     }
 
     @Override
+    public Object evalsha(String sha1,List<String> keys, List<String> params) {
+        return masterJedis.evalsha(sha1,keys,params);
+    }
+
+    @Override
     public Boolean scriptExists(String sha1, String sampleKey) {
         return masterJedis.scriptExists(sha1);
     }

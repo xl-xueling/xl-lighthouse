@@ -1,6 +1,6 @@
 package com.dtstep.lighthouse.common.entity.event;
 
-import java.io.Serializable;
+
 import java.util.Objects;
 
 public class AlarmEvent extends SlotEvent<AlarmEvent> {
@@ -28,6 +28,11 @@ public class AlarmEvent extends SlotEvent<AlarmEvent> {
         }else {
             return -1;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(statId, batchTime, dimensValue);
     }
 
     public int getStatId() {

@@ -83,6 +83,11 @@ public class RedisClusterOperator implements RedisOperator {
     }
 
     @Override
+    public Object evalsha(String sha1,List<String> keys, List<String> params) {
+        return jedisCluster.evalsha(sha1,keys,params);
+    }
+
+    @Override
     public void del(String key) {
         jedisCluster.del(key);
     }

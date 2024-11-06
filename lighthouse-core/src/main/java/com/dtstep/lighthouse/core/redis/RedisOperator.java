@@ -26,6 +26,8 @@ public interface RedisOperator {
 
     Object evalsha(String sha1, int keyCount, String... params);
 
+    Object evalsha(String sha1,List<String> keys, List<String> params);
+
     void del(String key);
 
     List<Tuple> zrevrangeWithScores(String key, long start, long stop);
