@@ -4,7 +4,7 @@ import com.dtstep.lighthouse.common.enums.NotificationTypeEnum;
 
 import java.util.List;
 
-public class LdpNotification {
+public class AlarmNotification {
 
     private String silentKey;
 
