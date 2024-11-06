@@ -1,8 +1,10 @@
 package com.dtstep.lighthouse.core.wrapper;
 
 import com.dtstep.lighthouse.common.modal.Notification;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
@@ -22,8 +24,8 @@ public class NotificationDBWrapper {
             BigInteger result = queryRunner.insert(conn, "INSERT INTO ldp_notifications (`resource_id`, `resource_type`,`content`,`state`,`user_ids`,`department_ids`,`notification_type`,`create_time`,`update_time`) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", keyHandler,notification.getResourceId(),notification.getResourceType().getResourceType(),
                     notification.getContent(),notification.getState().getState(),
-                    "[1,2]",
-                    "[1,2]",
+                    CollectionUtils.isNotEmpty(notification.getUserIds()) ? JsonUtil.toJSONString(notification.getUserIds()) : null,
+                    CollectionUtils.isNotEmpty(notification.getDepartmentIds()) ? JsonUtil.toJSONString(notification.getDepartmentIds()) : null,
                     notification.getNotificationType().getType(),
                     notification.getCreateTime(),notification.getUpdateTime()
             );
