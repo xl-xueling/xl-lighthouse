@@ -6,6 +6,7 @@ import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Alarm implements Serializable {
 
@@ -28,6 +29,8 @@ public class Alarm implements Serializable {
     private List<AlarmCondition> conditions;
 
     private Integer templateId;
+
+    private long silent = TimeUnit.MINUTES.toSeconds(5);
 
     private boolean recover;
 
@@ -151,6 +154,14 @@ public class Alarm implements Serializable {
 
     public void setDimens(String dimens) {
         this.dimens = dimens;
+    }
+
+    public long getSilent() {
+        return silent;
+    }
+
+    public void setSilent(long silent) {
+        this.silent = silent;
     }
 
     public LocalDateTime getCreateTime() {

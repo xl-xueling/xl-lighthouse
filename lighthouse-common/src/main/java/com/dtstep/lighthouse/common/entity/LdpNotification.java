@@ -6,6 +6,10 @@ import java.util.List;
 
 public class LdpNotification {
 
+    private String silentKey;
+
+    private long silentSeconds;
+
     private Integer alarmId;
 
     private List<String> reasons;
@@ -34,5 +38,21 @@ public class LdpNotification {
 
     public void setReasons(List<String> reasons) {
         this.reasons = reasons;
+    }
+
+    public String getSilentKey() {
+        return silentKey;
+    }
+
+    public void setSilentKey(String silentKey) {
+        this.silentKey = silentKey;
+    }
+
+    public long getSilentSeconds() {
+        return silentSeconds;
+    }
+
+    public void setSilentSeconds(long silentSeconds) {
+        this.silentSeconds = silentSeconds;
     }
 }
