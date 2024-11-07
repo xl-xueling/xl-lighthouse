@@ -221,7 +221,7 @@ function PageLayout() {
     if(pathname.startsWith('/metricset/preview/')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"metricset/list"])
     }
-    if(pathname.startsWith('/stat/preview/') || pathname.startsWith('/track/stat/')){
+    if(pathname.startsWith('/stat/preview/') || pathname.startsWith('/track/stat/') || pathname.startsWith('/stat/alarm/')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"stat/list"])
     }
     if(pathname.startsWith('/view/preview/') || pathname.startsWith('/view/simulate/') || pathname.startsWith('/view/track/')){
