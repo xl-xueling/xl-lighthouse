@@ -59,4 +59,50 @@
         </where>
         order by create_time desc limit 1;
     </select>
+
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.Alarm">
+        UPDATE ldp_alarms
+        <set>
+            <if test="title != null">
+                `title` = #{title},
+            </if>
+            <if test="uniqueCode != null">
+                `unique_code` = #{uniqueCode},
+            </if>
+            <if test="divide != null">
+                `divide` = #{divide,typeHandler=com.dtstep.lighthouse.insights.types.BooleanTypeHandler},
+            </if>
+            <if test="resourceId != null">
+                `resource_id` = #{resourceId},
+            </if>
+            <if test="resourceType != null">
+                `resource_type` = #{resourceType,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
+            </if>
+            <if test="state != null">
+                `state` = #{state,typeHandler=com.dtstep.lighthouse.insights.types.BooleanTypeHandler},
+            </if>
+            <if test="conditions != null">
+                `conditions` = #{conditions,typeHandler=com.dtstep.lighthouse.insights.types.ListConfigTypeHandler},
+            </if>
+            <if test="templateId != null">
+                `template_id` = #{templateId},
+            </if>
+            <if test="delay != null">
+                `delay` = #{delay},
+            </if>
+            <if test="desc != null">
+                `desc` = #{desc},
+            </if>
+            <if test="dimens != null">
+                `dimens` = #{dimens},
+            </if>
+            <if test="delay != null">
+                `delay` = #{delay},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
 </mapper>

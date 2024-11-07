@@ -55,4 +55,13 @@ public class TestAlarmDao {
         Alarm alarm = alarmDao.queryById(id);
         System.out.println("alarm is:" + JsonUtil.toJSONString(alarm));
     }
+
+    @Test
+    public void testUpdate() throws Exception {
+        String s = "{\"id\":39,\"title\":\"asdagasg333\",\"uniqueCode\":\"default.gEXMbC\",\"divide\":false,\"resourceId\":1100617,\"resourceType\":6,\"state\":false,\"match\":1,\"conditions\":[{\"key\":\"Condition-uvFzV\",\"indicator\":0,\"last\":1,\"compare\":\"GE\",\"divide\":false,\"overall\":{\"threshold\":0,\"state\":true},\"p0\":{\"threshold\":0,\"state\":false},\"p1\":{\"threshold\":0,\"state\":false},\"p2\":{\"threshold\":0,\"state\":false},\"p3\":{\"threshold\":0,\"state\":false}}],\"templateId\":0,\"silent\":300,\"recover\":false,\"delay\":60,\"desc\":\"asdgag\",\"dimens\":\"asdasgd\",\"createTime\":1730978049000,\"updateTime\":1730978049000}";
+        Alarm alarm = JsonUtil.toJavaObject(s,Alarm.class);
+        alarm.setUpdateTime(LocalDateTime.now());
+        System.out.println("alarm is:" + JsonUtil.toJSONString(alarm));
+        alarmDao.update(alarm);
+    }
 }

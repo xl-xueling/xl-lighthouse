@@ -10,6 +10,8 @@ public interface AlarmDao {
 
     int insert(Alarm alarm);
 
+    int update(Alarm alarm);
+
     Alarm queryById(Integer id);
 
     Alarm queryByParam(@Param("queryParam")AlarmQueryParam queryParam);
