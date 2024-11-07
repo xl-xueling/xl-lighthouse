@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.common.modal;
 
+import com.dtstep.lighthouse.common.enums.CalculateMethod;
 import com.dtstep.lighthouse.common.enums.NumberCompareType;
 
 import java.io.Serializable;
@@ -11,6 +12,8 @@ public class AlarmCondition implements Serializable {
     private Integer indicator;
 
     private Integer last;
+
+    private CalculateMethod calc;
 
     private NumberCompareType compare;
 
@@ -104,6 +107,14 @@ public class AlarmCondition implements Serializable {
 
     public void setP3(ThresholdConfig p3) {
         this.p3 = p3;
+    }
+
+    public CalculateMethod getCalc() {
+        return calc;
+    }
+
+    public void setCalc(CalculateMethod calc) {
+        this.calc = calc;
     }
 
     public static class ThresholdConfig {

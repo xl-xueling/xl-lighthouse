@@ -1,5 +1,10 @@
 package com.dtstep.lighthouse.common.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
+
 public enum NumberCompareType {
 
     GT(1),
@@ -14,6 +19,7 @@ public enum NumberCompareType {
 
     ;
 
+    @JsonValue
     private Integer type;
 
     NumberCompareType(int type){
@@ -28,5 +34,10 @@ public enum NumberCompareType {
         this.type = type;
     }
 
+    @JsonCreator
+    public static NumberCompareType forValue(int type){
+        NumberCompareType[] values = NumberCompareType.values();
+        return Stream.of(values).filter(it -> it.getType() == type).findAny().orElse(null);
+    }
 
 }

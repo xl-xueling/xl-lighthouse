@@ -14,6 +14,7 @@
         <result property="conditions" column="conditions" typeHandler="com.dtstep.lighthouse.insights.types.ListConfigTypeHandler"/>
         <result property="templateId" column="template_id"/>
         <result property="delay" column="delay"/>
+        <result property="silent" column="silent"/>
         <result property="desc" column="desc"/>
         <result property="dimens" column="dimens"/>
         <result property="createTime" column="create_time"/>
@@ -22,7 +23,7 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.AlarmTemplate" >
         INSERT INTO ldp_alarms (`title`,`unique_code`,`divide`,`resource_id`,`resource_type`,`state`
-                               ,`match`,`conditions`,`template_id`,`delay`,`desc`,`dimens`,`create_time`,`update_time`) VALUES
+                               ,`match`,`conditions`,`template_id`,`delay`,`silent`,`desc`,`dimens`,`create_time`,`update_time`) VALUES
         (
             #{title,jdbcType=VARCHAR},
             #{uniqueCode,jdbcType=VARCHAR},
@@ -34,6 +35,7 @@
             #{conditions,typeHandler=com.dtstep.lighthouse.insights.types.ListConfigTypeHandler},
             #{templateId,jdbcType=INTEGER},
             #{delay,jdbcType=INTEGER},
+            #{silent,jdbcType=INTEGER},
             #{desc,jdbcType=VARCHAR},
             #{dimens,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP},
@@ -43,12 +45,12 @@
 
     <select id="queryById" resultMap="alarmResultMap">
         SELECT `id`,`title`,`unique_code`,`divide`,`resource_id`,`resource_type`,`state`
-             ,`match`,`conditions`,`template_id`,`delay`,`desc`,`dimens`,`create_time`,`update_time` FROM ldp_alarms WHERE id = #{id}
+             ,`match`,`conditions`,`template_id`,`delay`,`silent`,`desc`,`dimens`,`create_time`,`update_time` FROM ldp_alarms WHERE id = #{id}
     </select>
 
     <select id="queryByParam" resultMap="alarmResultMap">
         SELECT `id`,`title`,`unique_code`,`divide`,`resource_id`,`resource_type`,`state`
-             ,`match`,`conditions`,`template_id`,`delay`,`desc`,`dimens`,`create_time`,`update_time` FROM ldp_alarms
+             ,`match`,`conditions`,`template_id`,`delay`,`silent`,`desc`,`dimens`,`create_time`,`update_time` FROM ldp_alarms
         <where>
             <if test="queryParam.resourceId != null">
                 AND resource_id = #{queryParam.resourceId}
@@ -92,6 +94,9 @@
             </if>
             <if test="delay != null">
                 `delay` = #{delay},
+            </if>
+            <if test="silent != null">
+                `silent` = #{silent},
             </if>
             <if test="desc != null">
                 `desc` = #{desc},

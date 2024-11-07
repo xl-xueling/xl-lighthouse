@@ -1,5 +1,10 @@
 package com.dtstep.lighthouse.common.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
+
 public enum CalculateMethod {
 
     ADD(1),
@@ -18,8 +23,8 @@ public enum CalculateMethod {
 
     ;
 
+    @JsonValue
     private Integer type;
-
 
     CalculateMethod(int type){
         this.type = type;
@@ -33,4 +38,9 @@ public enum CalculateMethod {
         this.type = type;
     }
 
+    @JsonCreator
+    public static CalculateMethod forValue(int type){
+        CalculateMethod[] values = CalculateMethod.values();
+        return Stream.of(values).filter(it -> it.getType() == type).findAny().orElse(null);
+    }
 }

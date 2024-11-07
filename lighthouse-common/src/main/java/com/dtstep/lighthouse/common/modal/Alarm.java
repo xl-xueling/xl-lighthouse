@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.common.modal;
 
 import com.dtstep.lighthouse.common.enums.AlarmMatchEnum;
+import com.dtstep.lighthouse.common.enums.CalculateMethod;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 
 import java.io.Serializable;
@@ -30,11 +31,11 @@ public class Alarm implements Serializable {
 
     private Integer templateId;
 
-    private long silent = TimeUnit.MINUTES.toSeconds(5);
-
     private boolean recover;
 
     private Integer delay;
+
+    private long silent = TimeUnit.MINUTES.toSeconds(5);
 
     private String desc;
 
