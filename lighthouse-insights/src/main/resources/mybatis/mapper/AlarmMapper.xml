@@ -81,6 +81,9 @@
             <if test="state != null">
                 `state` = #{state,typeHandler=com.dtstep.lighthouse.insights.types.BooleanTypeHandler},
             </if>
+            <if test="match != null">
+                `match` = #{match,typeHandler=com.dtstep.lighthouse.insights.types.AlarmMatchEnumTypeHandler},
+            </if>
             <if test="conditions != null">
                 `conditions` = #{conditions,typeHandler=com.dtstep.lighthouse.insights.types.ListConfigTypeHandler},
             </if>
@@ -95,9 +98,6 @@
             </if>
             <if test="dimens != null">
                 `dimens` = #{dimens},
-            </if>
-            <if test="delay != null">
-                `delay` = #{delay},
             </if>
             <if test="updateTime != null">
                 `update_time` = #{updateTime},
