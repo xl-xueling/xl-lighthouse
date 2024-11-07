@@ -63,23 +63,31 @@ public class AlarmDBWrapper {
         AlarmExtEntity alarmExtEntity = null;
         try{
             Alarm alarm = queryAlarmFromDB(id);
-            alarmExtEntity = new AlarmExtEntity(alarm);
-            int templateId = alarm.getTemplateId();
-            if(templateId != 0){
-                AlarmTemplate alarmTemplate = queryAlarmTemplateFromDB(templateId);
-                AlarmTemplateExtEntity alarmTemplateExtEntity;
-                if(alarmTemplate != null){
-                    String config = alarmTemplate.getConfig();
-                    AlarmTemplateExtEntity.AlarmTemplateConfig alarmTemplateConfig = JsonUtil.toJavaObject(config, AlarmTemplateExtEntity.AlarmTemplateConfig.class);
-                    alarmTemplateExtEntity = new AlarmTemplateExtEntity(alarmTemplate);
-                    alarmTemplateExtEntity.setTemplateConfig(alarmTemplateConfig);
-                    alarmExtEntity.setTemplateList(List.of(alarmTemplateExtEntity));
-                }
-            }
+            alarmExtEntity = translate(alarm);
         }catch (Exception ex){
             logger.error("query alarm info error!", ex);
         }
         return Optional.ofNullable(alarmExtEntity);
+    }
+
+    public static AlarmExtEntity translate(Alarm alarm) throws Exception {
+        if(alarm == null){
+            return null;
+        }
+        AlarmExtEntity alarmExtEntity = new AlarmExtEntity(alarm);
+        int templateId = alarm.getTemplateId();
+        if(templateId != 0){
+            AlarmTemplate alarmTemplate = queryAlarmTemplateFromDB(templateId);
+            AlarmTemplateExtEntity alarmTemplateExtEntity;
+            if(alarmTemplate != null){
+                String config = alarmTemplate.getConfig();
+                AlarmTemplateExtEntity.AlarmTemplateConfig alarmTemplateConfig = JsonUtil.toJavaObject(config, AlarmTemplateExtEntity.AlarmTemplateConfig.class);
+                alarmTemplateExtEntity = new AlarmTemplateExtEntity(alarmTemplate);
+                alarmTemplateExtEntity.setTemplateConfig(alarmTemplateConfig);
+                alarmExtEntity.setTemplateList(List.of(alarmTemplateExtEntity));
+            }
+        }
+        return alarmExtEntity;
     }
 
     private static Optional<List<AlarmExtEntity>> actualQueryByStatId(Integer statId){
@@ -127,7 +135,7 @@ public class AlarmDBWrapper {
         QueryRunner queryRunner = new QueryRunner();
         List<Alarm> alarmList;
         try{
-            alarmList = queryRunner.query(conn, String.format("select `id`,`title`,`unique_code`,`divide`,`state`,`match`,`conditions`,`template_id`,`recover`,`delay`,`dimens`,`create_time`,`update_time` from ldp_alarms where resource_id = '%s' and resource_type = '%s' and state = 1",statId, ResourceTypeEnum.Stat.getResourceType()), new AlarmListSetHandler());
+            alarmList = queryRunner.query(conn, String.format("select `id`,`title`,`unique_code`,`divide`,`state`,`match`,`conditions`,`template_id`,`recover`,`delay`,`dimens`,`create_time`,`update_time` from ldp_alarms where resource_id = '%s' and resource_type = '%s'",statId, ResourceTypeEnum.Stat.getResourceType()), new AlarmListSetHandler());
         }finally {
             storageEngine.closeConnection();
         }

@@ -45,4 +45,18 @@
         SELECT `id`,`title`,`unique_code`,`divide`,`resource_id`,`resource_type`,`state`
              ,`match`,`conditions`,`template_id`,`delay`,`desc`,`dimens`,`create_time`,`update_time` FROM ldp_alarms WHERE id = #{id}
     </select>
+
+    <select id="queryByParam" resultMap="alarmResultMap">
+        SELECT `id`,`title`,`unique_code`,`divide`,`resource_id`,`resource_type`,`state`
+             ,`match`,`conditions`,`template_id`,`delay`,`desc`,`dimens`,`create_time`,`update_time` FROM ldp_alarms
+        <where>
+            <if test="queryParam.resourceId != null">
+                AND resource_id = #{queryParam.resourceId}
+            </if>
+            <if test="queryParam.resourceType != null">
+                AND resource_type = #{queryParam.resourceType.resourceType}
+            </if>
+        </where>
+        order by create_time desc limit 1;
+    </select>
 </mapper>
