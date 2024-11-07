@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 public class AlarmCondition implements Serializable {
 
+    private String key;
+
     private Integer indicator;
 
     private Integer last;
@@ -23,6 +25,14 @@ public class AlarmCondition implements Serializable {
     private ThresholdConfig p2;
 
     private ThresholdConfig p3;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public Integer getIndicator() {
         return indicator;

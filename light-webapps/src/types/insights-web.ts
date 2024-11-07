@@ -7,6 +7,7 @@ import {
     ResourceTypeEnum, RoleTypeEnum, StatStateEnum, UserStateEnum, PrivateTypeEnum, RenderChartConfig
 } from "@/types/insights-common";
 import Decimal from "decimal.js";
+import {Alarm} from "@/types/alarm";
 
 export interface HomeData {
     projectCount?:number;
@@ -113,7 +114,6 @@ export enum RelationTypeEnum {
     StatSubsequentIndicator=5,
 }
 
-
 export interface Column {
     key?:number|string;
     name?:string;
@@ -150,6 +150,7 @@ export interface Stat {
     renderConfig?:{datepicker:RenderDateConfig,filters:Array<RenderFilterConfig>,charts:Array<RenderChartConfig>}
     permissions?:PermissionEnum[];
     builtIn?:boolean;
+    alarmList?:Array<Alarm>;
 }
 
 
