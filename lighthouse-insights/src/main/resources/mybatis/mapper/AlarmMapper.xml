@@ -21,7 +21,7 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.AlarmTemplate" >
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Alarm" >
         INSERT INTO ldp_alarms (`title`,`unique_code`,`divide`,`resource_id`,`resource_type`,`state`
                                ,`match`,`conditions`,`template_id`,`delay`,`silent`,`recover`,`desc`,`dimens`,`create_time`,`update_time`) VALUES
         (
