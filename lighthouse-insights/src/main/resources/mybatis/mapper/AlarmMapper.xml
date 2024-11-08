@@ -23,7 +23,7 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.AlarmTemplate" >
         INSERT INTO ldp_alarms (`title`,`unique_code`,`divide`,`resource_id`,`resource_type`,`state`
-                               ,`match`,`conditions`,`template_id`,`delay`,`silent`,`desc`,`dimens`,`create_time`,`update_time`) VALUES
+                               ,`match`,`conditions`,`template_id`,`delay`,`silent`,`recover`,`desc`,`dimens`,`create_time`,`update_time`) VALUES
         (
             #{title,jdbcType=VARCHAR},
             #{uniqueCode,jdbcType=VARCHAR},
@@ -36,6 +36,7 @@
             #{templateId,jdbcType=INTEGER},
             #{delay,jdbcType=INTEGER},
             #{silent,jdbcType=INTEGER},
+            #{recover,typeHandler=com.dtstep.lighthouse.insights.types.BooleanTypeHandler},
             #{desc,jdbcType=VARCHAR},
             #{dimens,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP},

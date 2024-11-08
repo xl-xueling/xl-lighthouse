@@ -31,7 +31,7 @@ public class Alarm implements Serializable {
 
     private Integer templateId;
 
-    private boolean recover;
+    private boolean recover = false;
 
     private Integer delay;
 
