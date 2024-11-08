@@ -85,6 +85,8 @@ public class AlarmDBWrapper {
                 alarmTemplateExtEntity = new AlarmTemplateExtEntity(alarmTemplate);
                 alarmTemplateExtEntity.setTemplateConfig(alarmTemplateConfig);
                 alarmExtEntity.setTemplateList(List.of(alarmTemplateExtEntity));
+            }else{
+                alarmExtEntity.setTemplateId(0);
             }
         }
         return alarmExtEntity;
