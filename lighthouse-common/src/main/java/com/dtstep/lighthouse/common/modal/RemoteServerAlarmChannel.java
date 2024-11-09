@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RemoteServerAlarmChannel implements Serializable {
 
-    private List<String> serverList;
+    private List<String> servers;
 
     private List<KV<String,String>> headers;
 
@@ -15,12 +15,12 @@ public class RemoteServerAlarmChannel implements Serializable {
 
     private boolean state;
 
-    public List<String> getServerList() {
-        return serverList;
+    public List<String> getServers() {
+        return servers;
     }
 
-    public void setServerList(List<String> serverList) {
-        this.serverList = serverList;
+    public void setServers(List<String> servers) {
+        this.servers = servers;
     }
 
     public List<KV<String, String>> getHeaders() {
