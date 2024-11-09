@@ -186,6 +186,10 @@ public enum ResultCode {
 
     alarmTemplateCreateExceedLimit("60001","alarmTemplateCreateExceedLimit"),
 
+    alarmSettingsServiceNotReachable ("70001","alarmSettingsServiceNotReachable"),
+
+    alarmSettingsHttpsNotSupported ("70001","alarmSettingsHttpsNotSupported"),
+
     ;
 
     ResultCode(String code , String i18nLabel){
