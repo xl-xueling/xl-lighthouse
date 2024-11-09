@@ -6,19 +6,9 @@ import java.io.Serializable;
 
 public class AlarmChannel implements Serializable {
 
-    private boolean state;
-
     private AlarmChannelEnum channel;
 
     private RemoteServerAlarmChannel remoteServer;
-
-    public boolean isState() {
-        return state;
-    }
-
-    public void setState(boolean state) {
-        this.state = state;
-    }
 
     public AlarmChannelEnum getChannel() {
         return channel;

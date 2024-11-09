@@ -7,9 +7,9 @@ import java.util.stream.Stream;
 
 public enum AlarmChannelEnum {
 
-    SiteMessage(0),
+    SiteMessage(1),
 
-    RemoteService(1),
+    RemoteService(2),
 
     ;
 
