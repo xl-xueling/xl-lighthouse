@@ -188,7 +188,9 @@ public enum ResultCode {
 
     alarmSettingsServiceNotReachable ("70001","alarmSettingsServiceNotReachable"),
 
-    alarmSettingsHttpsNotSupported ("70001","alarmSettingsHttpsNotSupported"),
+    alarmSettingsHttpsNotSupported ("70002","alarmSettingsHttpsNotSupported"),
+
+    alarmSettingsTestingError ("70003","alarmSettingsTestingError"),
 
     ;
 
