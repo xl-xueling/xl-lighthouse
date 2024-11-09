@@ -246,6 +246,10 @@ function PageLayout() {
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"user/list"]);
       newOpenKeys = arrayDistinct([...newOpenKeys,"system"]);
     }
+    if(pathname.startsWith('/settings')){
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"settings"]);
+      newOpenKeys = arrayDistinct([...newOpenKeys,"system"]);
+    }
     if(pathname.startsWith('/authorize')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"authorize"]);
       newOpenKeys = arrayDistinct([...newOpenKeys,"system"]);
