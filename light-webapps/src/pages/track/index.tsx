@@ -105,19 +105,28 @@ export default function TrackStatPage() {
                             key: key,
                             render: (value,record) => {
                                 if(key == 'batchTime' || key == 'processTime' || key == 'messageTime'){
-                                    return <Text>{formatTimeStamp(value,TimeFormat)}</Text>
+                                    return <Popover
+                                        style={{ maxWidth: '600px' }}
+                                        content={<div dangerouslySetInnerHTML={{ __html: record.params.replace(/;/g, "<br>") }} />}
+                                        trigger="click">
+                                        <Text>{formatTimeStamp(value,TimeFormat)}</Text>
+                                    </Popover>
                                 }else if(key == 'No'){
                                     return (
                                         <Popover
                                             style={{ maxWidth: '600px' }}
                                             content={<div dangerouslySetInnerHTML={{ __html: record.params.replace(/;/g, "<br>") }} />}
-                                            trigger="click"
-                                        >
+                                            trigger="click">
                                             <span style={{ width:'30px',cursor:'pointer', display: 'inline-block' }}>{value}</span>
                                         </Popover>
                                         )
                                 }else if(key != 'params'){
-                                    return <Text>{value}</Text>
+                                    return <Popover
+                                        style={{ maxWidth: '600px' }}
+                                        content={<div dangerouslySetInnerHTML={{ __html: record.params.replace(/;/g, "<br>") }} />}
+                                        trigger="click">
+                                        <Text>{value}</Text>
+                                    </Popover>
                                 }
                             },
                         }
