@@ -5,24 +5,18 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.stream.Stream;
 
-public enum NotificationChannelEnum {
+public enum AlarmChannelEnum {
 
     SiteMessage(0),
 
     RemoteService(1),
-
-    Tencent_Sms(2),
-
-    Tencent_Email(3),
-
-    Tencent_WeiXin(4),
 
     ;
 
     @JsonValue
     private int type;
 
-    NotificationChannelEnum(int type){
+    AlarmChannelEnum(int type){
         this.type = type;
     }
 
@@ -35,8 +29,8 @@ public enum NotificationChannelEnum {
     }
 
     @JsonCreator
-    public static NotificationChannelEnum forValue(int type){
-        NotificationChannelEnum[] values = NotificationChannelEnum.values();
+    public static AlarmChannelEnum forValue(int type){
+        AlarmChannelEnum[] values = AlarmChannelEnum.values();
         return Stream.of(values).filter(it -> it.getType() == type).findAny().orElse(null);
     }
 }

@@ -8,22 +8,15 @@ import java.util.stream.Stream;
 
 public enum NotificationTypeEnum {
 
-    StatAlarm(1,List.of(NotificationChannelEnum.RemoteService)),
+    StatAlarm(1),
 
     ;
 
     @JsonValue
     private int type;
 
-    private List<NotificationChannelEnum> channelEnumList;
-
     NotificationTypeEnum(int type){
         this.type = type;
-    }
-
-    NotificationTypeEnum(int type,List<NotificationChannelEnum> channelEnumList){
-        this.type = type;
-        this.channelEnumList = channelEnumList;
     }
 
     public int getType() {
@@ -32,14 +25,6 @@ public enum NotificationTypeEnum {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    public List<NotificationChannelEnum> getChannelEnumList() {
-        return channelEnumList;
-    }
-
-    public void setChannelEnumList(List<NotificationChannelEnum> channelEnumList) {
-        this.channelEnumList = channelEnumList;
     }
 
     @JsonCreator
