@@ -38,7 +38,6 @@
 
     <select id="queryList" resultMap="notificationResultMap">
         WITH RECURSIVE user_department_paths AS (
-            -- 获取用户所在部门及其所有上级部门
             SELECT
                 d.id,
                 d.pid
@@ -52,10 +51,9 @@
             FROM ldp_departments p
                      INNER JOIN user_department_paths dp ON p.id = dp.pid
         )
-
         SELECT DISTINCT n.*
         FROM ldp_notifications n
-        WHERE
+        WHERE 1 = 1
             <if test="queryParam.resourceId != null">
                 AND resource_id = #{queryParam.resourceId}
             </if>
@@ -64,10 +62,8 @@
             </if>
           AND
             (
-                -- 直接发给用户的消息
                     JSON_CONTAINS(n.user_ids, CAST(#{queryParam.userId} AS JSON), '$')
                     OR
-                    -- 发给用户所在部门或其上级部门的消息
                     EXISTS (
                             SELECT 1
                             FROM user_department_paths dp
