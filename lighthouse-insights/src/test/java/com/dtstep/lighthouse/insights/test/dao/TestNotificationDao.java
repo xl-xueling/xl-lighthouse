@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.test.dao;
 import com.dtstep.lighthouse.common.enums.NotificationStateEnum;
 import com.dtstep.lighthouse.common.enums.NotificationTypeEnum;
 import com.dtstep.lighthouse.common.modal.Notification;
+import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.NotificationDao;
@@ -48,6 +49,12 @@ public class TestNotificationDao {
     public void testQueryList() throws Exception {
         NotificationQueryParam queryParam = new NotificationQueryParam();
         queryParam.setUserId(110240);
+        long t1 = 1730390400000L;
+        long t2 = 1730563199999L;
+        System.out.println("p1:" + DateUtil.formatTimeStamp(t1,"yyyy-MM-dd HH:mm:ss"));
+        System.out.println("p2:" + DateUtil.formatTimeStamp(t2,"yyyy-MM-dd HH:mm:ss"));
+        queryParam.setCreateStartTime(DateUtil.timestampToLocalDateTime(t1));
+        queryParam.setCreateEndTime(DateUtil.timestampToLocalDateTime(t2));
         List<Notification> list = notificationDao.queryList(queryParam);
         for(Notification notification : list){
             System.out.println("notification:" + JsonUtil.toJSONString(notification));

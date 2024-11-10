@@ -60,6 +60,12 @@
             <if test="queryParam.resourceType != null">
                 AND resource_type = #{queryParam.resourceType.resourceType}
             </if>
+        <if test="queryParam.createStartTime!=null">
+            AND create_time &gt;= #{queryParam.createStartTime}
+        </if>
+        <if test="queryParam.createEndTime!=null">
+            AND create_time &lt;= #{queryParam.createEndTime}
+        </if>
           AND
             (
                     JSON_CONTAINS(n.user_ids, CAST(#{queryParam.userId} AS JSON), '$')
