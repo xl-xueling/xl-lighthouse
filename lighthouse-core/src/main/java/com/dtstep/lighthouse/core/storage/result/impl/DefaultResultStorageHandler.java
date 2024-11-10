@@ -457,12 +457,16 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
             StatExtEntity statExtEntity = statMap.get(indicatorGet.getStatId());
             if(indicator == 0){
                 StatValue statValue = calculate(statExtEntity, indicatorGet.getDimensValue() , indicatorGet.getBatchTime(),allResultMap);
-                resultMap.put(indicatorGet,statValue.getValue());
+                resultMap.put(indicatorGet,Double.parseDouble(statValue.getValue().toString()));
             }else{
                 String rowKey = keyGenerator.resultKey(statExtEntity,indicator - 1,indicatorGet.getDimensValue(),indicatorGet.getBatchTime());
                 LdpResult<Long> ldpResult = allResultMap.get(rowKey);
-                BigDecimal value = BigDecimal.valueOf(ldpResult.getData()).divide(BigDecimal.valueOf(1000D),3, RoundingMode.HALF_UP).stripTrailingZeros();
-                resultMap.put(indicatorGet,Double.parseDouble(value.toPlainString()));
+                if(ldpResult != null){
+                    BigDecimal value = BigDecimal.valueOf(ldpResult.getData()).divide(BigDecimal.valueOf(1000D),3, RoundingMode.HALF_UP).stripTrailingZeros();
+                    resultMap.put(indicatorGet,Double.parseDouble(value.toPlainString()));
+                }else{
+                    resultMap.put(indicatorGet,0D);
+                }
             }
         }
         return resultMap;
