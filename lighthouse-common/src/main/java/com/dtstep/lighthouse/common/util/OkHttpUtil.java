@@ -19,10 +19,15 @@ package com.dtstep.lighthouse.common.util;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class OkHttpUtil {
 
-    private static final OkHttpClient client = new OkHttpClient();
+    private static final OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build();
 
     public static String post(String url, String requestBody) throws IOException {
         RequestBody body = RequestBody.create(MediaType.parse("application/json"),requestBody);
