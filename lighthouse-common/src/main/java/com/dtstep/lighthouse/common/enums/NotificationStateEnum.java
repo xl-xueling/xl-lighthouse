@@ -11,7 +11,7 @@ public enum NotificationStateEnum {
 
     Sent(2),
 
-    Received(3),
+    ReportingFailed(3),
 
     Failed(4),
 
