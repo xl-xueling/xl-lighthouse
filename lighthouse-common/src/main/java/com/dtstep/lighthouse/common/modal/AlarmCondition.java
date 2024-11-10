@@ -121,8 +121,6 @@ public class AlarmCondition implements Serializable {
 
         private Double threshold;
 
-        private Integer silent;
-
         private Boolean state;
 
         public Double getThreshold() {
@@ -131,14 +129,6 @@ public class AlarmCondition implements Serializable {
 
         public void setThreshold(Double threshold) {
             this.threshold = threshold;
-        }
-
-        public Integer getSilent() {
-            return silent;
-        }
-
-        public void setSilent(Integer silent) {
-            this.silent = silent;
         }
 
         public Boolean getState() {
