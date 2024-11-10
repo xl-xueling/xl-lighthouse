@@ -5,6 +5,7 @@ import com.dtstep.lighthouse.common.entity.AlarmTemplateExtEntity;
 import com.dtstep.lighthouse.common.enums.AlarmMatchEnum;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.modal.Alarm;
+import com.dtstep.lighthouse.common.modal.AlarmChannel;
 import com.dtstep.lighthouse.common.modal.AlarmCondition;
 import com.dtstep.lighthouse.common.modal.AlarmTemplate;
 import com.dtstep.lighthouse.common.util.DateUtil;
@@ -31,13 +32,19 @@ public class AlarmDBWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(AlarmDBWrapper.class);
 
-    private static final Integer _CacheExpireMinutes = 5;
+    private static final Integer _CacheExpireMinutes = 8;
 
     private static final CMDBStorageEngine<Connection> storageEngine = CMDBStorageEngineProxy.getInstance();
 
     private static final Cache<Integer, Optional<AlarmExtEntity>> ALARM_CACHE = Caffeine.newBuilder()
             .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
             .maximumSize(100000)
+            .softValues()
+            .build();
+
+    private static final Cache<Integer, Optional<AlarmChannel>> AlarmChannelCache = Caffeine.newBuilder()
+            .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
+            .maximumSize(100)
             .softValues()
             .build();
 

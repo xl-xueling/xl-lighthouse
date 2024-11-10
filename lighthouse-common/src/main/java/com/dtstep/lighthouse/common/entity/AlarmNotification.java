@@ -10,7 +10,9 @@ public class AlarmNotification {
 
     private long silentSeconds;
 
-    private Integer alarmId;
+    private AlarmExtEntity alarmEntity;
+
+    private Integer level;
 
     private List<String> reasons;
 
@@ -24,12 +26,12 @@ public class AlarmNotification {
         this.notificationType = notificationType;
     }
 
-    public Integer getAlarmId() {
-        return alarmId;
+    public AlarmExtEntity getAlarmEntity() {
+        return alarmEntity;
     }
 
-    public void setAlarmId(Integer alarmId) {
-        this.alarmId = alarmId;
+    public void setAlarmEntity(AlarmExtEntity alarmEntity) {
+        this.alarmEntity = alarmEntity;
     }
 
     public List<String> getReasons() {
@@ -54,5 +56,13 @@ public class AlarmNotification {
 
     public void setSilentSeconds(long silentSeconds) {
         this.silentSeconds = silentSeconds;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 }
