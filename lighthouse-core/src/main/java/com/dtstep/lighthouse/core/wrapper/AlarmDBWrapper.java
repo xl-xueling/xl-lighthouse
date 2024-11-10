@@ -2,14 +2,13 @@ package com.dtstep.lighthouse.core.wrapper;
 
 import com.dtstep.lighthouse.common.entity.AlarmExtEntity;
 import com.dtstep.lighthouse.common.entity.AlarmTemplateExtEntity;
+import com.dtstep.lighthouse.common.enums.AlarmChannelEnum;
 import com.dtstep.lighthouse.common.enums.AlarmMatchEnum;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.common.modal.Alarm;
-import com.dtstep.lighthouse.common.modal.AlarmChannel;
-import com.dtstep.lighthouse.common.modal.AlarmCondition;
-import com.dtstep.lighthouse.common.modal.AlarmTemplate;
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -60,6 +59,12 @@ public class AlarmDBWrapper {
         return optional.orElse(null);
     }
 
+    public static AlarmChannel queryAlarmChannel(){
+        Optional<AlarmChannel> optional =  AlarmChannelCache.get(0, k -> actualQueryAlarmChannel());
+        assert optional != null;
+        return optional.orElse(null);
+    }
+
     public static List<AlarmExtEntity> queryByStatId(Integer statId){
         Optional<List<AlarmExtEntity>> optional =  STAT_ALARM_CACHE.get(statId, k -> actualQueryByStatId(statId));
         assert optional != null;
@@ -76,6 +81,17 @@ public class AlarmDBWrapper {
         }
         return Optional.ofNullable(alarmExtEntity);
     }
+
+    private static Optional<AlarmChannel> actualQueryAlarmChannel(){
+        AlarmChannel alarmChannel = null;
+        try{
+            alarmChannel = queryAlarmChannelFromDB();
+        }catch (Exception ex){
+            logger.error("query alarm info error!", ex);
+        }
+        return Optional.ofNullable(alarmChannel);
+    }
+
 
     public static AlarmExtEntity translate(Alarm alarm) throws Exception {
         if(alarm == null){
@@ -161,6 +177,19 @@ public class AlarmDBWrapper {
             storageEngine.closeConnection();
         }
         return alarmTemplate;
+    }
+
+
+    private static AlarmChannel queryAlarmChannelFromDB() throws Exception {
+        Connection conn = storageEngine.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+        AlarmChannel alarmChannel;
+        try{
+            alarmChannel = queryRunner.query(conn, "select value from ldp_env where param = 'alarm_settings'", new AlarmChannelSetHandler());
+        }finally {
+            storageEngine.closeConnection();
+        }
+        return alarmChannel;
     }
 
 
@@ -268,6 +297,30 @@ public class AlarmDBWrapper {
                 alarmTemplate.setConfig(config);
             }
             return alarmTemplate;
+        }
+    }
+
+    private static class AlarmChannelSetHandler implements ResultSetHandler<AlarmChannel>{
+
+        @Override
+        public AlarmChannel handle(ResultSet resultSet) throws SQLException {
+            AlarmChannel alarmChannel = null;
+            if(resultSet.next()){
+                alarmChannel = new AlarmChannel();
+                String alarmSettings = resultSet.getString("value");
+                if(StringUtil.isNotEmpty(alarmSettings)){
+                    alarmChannel = JsonUtil.toJavaObject(alarmSettings,AlarmChannel.class);
+                    if(alarmChannel != null){
+                        RemoteServerAlarmChannel remoteServerAlarmChannel = alarmChannel.getRemoteServer();
+                        if(remoteServerAlarmChannel.isState()){
+                            alarmChannel.setChannel(AlarmChannelEnum.RemoteService);
+                        }else{
+                            alarmChannel.setChannel(null);
+                        }
+                    }
+                }
+            }
+            return alarmChannel;
         }
     }
 
