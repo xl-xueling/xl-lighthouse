@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.common.modal;
 
+import com.dtstep.lighthouse.common.enums.LanguageEnum;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,6 +16,8 @@ public class RemoteServerAlarmChannel implements Serializable {
     private int fuseSeconds;
 
     private boolean state;
+
+    private LanguageEnum lang = LanguageEnum.CHINESE;
 
     public List<String> getServers() {
         return servers;
@@ -53,5 +57,13 @@ public class RemoteServerAlarmChannel implements Serializable {
 
     public void setState(boolean state) {
         this.state = state;
+    }
+
+    public LanguageEnum getLang() {
+        return lang;
+    }
+
+    public void setLang(LanguageEnum lang) {
+        this.lang = lang;
     }
 }
