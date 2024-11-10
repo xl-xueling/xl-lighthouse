@@ -12,11 +12,11 @@ public class Notification implements Serializable {
 
     private Integer id;
 
-    private String content;
-
     private Integer resourceId;
 
     private ResourceTypeEnum resourceType;
+
+    private String content;
 
     private NotificationTypeEnum notificationType;
 

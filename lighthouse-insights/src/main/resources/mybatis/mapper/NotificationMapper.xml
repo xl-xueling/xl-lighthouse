@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dtstep.lighthouse.insights.dao.NotificationDao">
+    <resultMap id="notificationResultMap" type="com.dtstep.lighthouse.common.modal.Notification">
+        <id column="id" property="id"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="resourceType" column="resource_type" typeHandler="com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler"/>
+        <result column="content" property="content"/>
+        <result column="state" property="state" typeHandler="com.dtstep.lighthouse.insights.types.NotificationStateTypeHandler"/>
+        <result property="userIds" column="user_ids" typeHandler="com.dtstep.lighthouse.insights.types.ListIntegerTypeHandler"/>
+        <result property="departmentIds" column="department_ids" typeHandler="com.dtstep.lighthouse.insights.types.ListIntegerTypeHandler"/>
+        <result property="notificationType" column="notification_type" typeHandler="com.dtstep.lighthouse.insights.types.NotificationTypeHandler"/>
+        <result column="p1" property="p1"/>
+        <result column="p2" property="p2"/>
+        <result column="p3" property="p3"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Notification" >
+        INSERT INTO ldp_notifications (`resource_id`,`resource_type`,`content`,`state`,`user_ids`,`department_ids`,
+                                       `notification_type`,`p1`,`p2`,`p3`,`create_time`,`update_time`) VALUES
+        (
+            #{resourceId,jdbcType=INTEGER},
+            #{resourceType,jdbcType=VARCHAR},
+            #{content,jdbcType=VARCHAR},
+            #{state,typeHandler=com.dtstep.lighthouse.insights.types.NotificationStateTypeHandler},
+            #{userIds,typeHandler=com.dtstep.lighthouse.insights.types.ListIntegerTypeHandler},
+            #{departmentIds,typeHandler=com.dtstep.lighthouse.insights.types.ListIntegerTypeHandler},
+            #{notificationType,typeHandler=com.dtstep.lighthouse.insights.types.NotificationTypeHandler},
+            #{p1,jdbcType=VARCHAR},
+            #{p2,jdbcType=VARCHAR},
+            #{p3,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="queryList" resultMap="notificationResultMap">
+        WITH RECURSIVE user_department_paths AS (
+            -- 获取用户所在部门及其所有上级部门
+            SELECT
+                d.id,
+                d.pid
+            FROM ldp_departments d
+                     INNER JOIN ldp_users u ON u.department_id = d.id
+            WHERE u.id = #{queryParam.userId}
+            UNION ALL
+            SELECT
+                p.id,
+                p.pid
+            FROM ldp_departments p
+                     INNER JOIN user_department_paths dp ON p.id = dp.pid
+        )
+
+        SELECT DISTINCT n.*
+        FROM ldp_notifications n
+        WHERE
+            <if test="queryParam.resourceId != null">
+                AND resource_id = #{queryParam.resourceId}
+            </if>
+            <if test="queryParam.resourceType != null">
+                AND resource_type = #{queryParam.resourceType.resourceType}
+            </if>
+          AND
+            (
+                -- 直接发给用户的消息
+                    JSON_CONTAINS(n.user_ids, CAST(#{queryParam.userId} AS JSON), '$')
+                    OR
+                    -- 发给用户所在部门或其上级部门的消息
+                    EXISTS (
+                            SELECT 1
+                            FROM user_department_paths dp
+                            WHERE JSON_CONTAINS(n.department_ids, CAST(dp.id AS JSON), '$')
+                        )
+                )
+        ORDER BY n.create_time DESC
+    </select>
+
+</mapper>
