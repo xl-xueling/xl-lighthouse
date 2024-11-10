@@ -209,7 +209,7 @@ const vi18n = {
         'basic.notification.state.sent':'已发送',
         'basic.notification.state.reportingFailed':'数据上报失败',
         'basic.notification.state.failed':'系统错误',
-        'basic.notification.type.alarm':'Indicator Alarm',
+        'basic.notification.type.alarm':'指标监控',
         'basic.warning.relateElementDeleted':'相关元素已被删除！',
         'components.type.dateSelect':'日期选择',
         'components.type.dateRangeSelect':'日期范围选择',
