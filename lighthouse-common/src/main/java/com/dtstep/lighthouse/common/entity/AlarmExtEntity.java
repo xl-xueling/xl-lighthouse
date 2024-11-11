@@ -3,11 +3,9 @@ package com.dtstep.lighthouse.common.entity;
 import com.dtstep.lighthouse.common.modal.Alarm;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 
-import java.util.List;
-
 public class AlarmExtEntity extends Alarm {
 
-    private List<AlarmTemplateExtEntity> templateList;
+    private AlarmTemplateExtEntity templateExtEntity;
 
     public AlarmExtEntity(){}
 
@@ -16,11 +14,11 @@ public class AlarmExtEntity extends Alarm {
         BeanCopyUtil.copy(alarm,this);
     }
 
-    public List<AlarmTemplateExtEntity> getTemplateList() {
-        return templateList;
+    public AlarmTemplateExtEntity getTemplateExtEntity() {
+        return templateExtEntity;
     }
 
-    public void setTemplateList(List<AlarmTemplateExtEntity> templateList) {
-        this.templateList = templateList;
+    public void setTemplateExtEntity(AlarmTemplateExtEntity templateExtEntity) {
+        this.templateExtEntity = templateExtEntity;
     }
 }

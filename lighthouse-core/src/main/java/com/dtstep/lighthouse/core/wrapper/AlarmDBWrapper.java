@@ -107,7 +107,7 @@ public class AlarmDBWrapper {
                 AlarmTemplateExtEntity.AlarmTemplateConfig alarmTemplateConfig = JsonUtil.toJavaObject(config, AlarmTemplateExtEntity.AlarmTemplateConfig.class);
                 alarmTemplateExtEntity = new AlarmTemplateExtEntity(alarmTemplate);
                 alarmTemplateExtEntity.setTemplateConfig(alarmTemplateConfig);
-                alarmExtEntity.setTemplateList(List.of(alarmTemplateExtEntity));
+                alarmExtEntity.setTemplateExtEntity(alarmTemplateExtEntity);
             }else{
                 alarmExtEntity.setTemplateId(0);
             }
@@ -131,7 +131,7 @@ public class AlarmDBWrapper {
                             AlarmTemplateExtEntity.AlarmTemplateConfig alarmTemplateConfig = JsonUtil.toJavaObject(config, AlarmTemplateExtEntity.AlarmTemplateConfig.class);
                             alarmTemplateExtEntity = new AlarmTemplateExtEntity(alarmTemplate);
                             alarmTemplateExtEntity.setTemplateConfig(alarmTemplateConfig);
-                            alarmExtEntity.setTemplateList(List.of(alarmTemplateExtEntity));
+                            alarmExtEntity.setTemplateExtEntity(alarmTemplateExtEntity);
                         }
                     }
                     alarmExtEntityList.add(alarmExtEntity);

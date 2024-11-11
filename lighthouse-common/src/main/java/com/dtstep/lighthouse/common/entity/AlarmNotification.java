@@ -14,6 +14,10 @@ public class AlarmNotification {
 
     private Integer level;
 
+    private Long batchTime;
+
+    private String content;
+
     private List<String> reasons;
 
     private NotificationTypeEnum notificationType;
@@ -64,5 +68,21 @@ public class AlarmNotification {
 
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public Long getBatchTime() {
+        return batchTime;
+    }
+
+    public void setBatchTime(Long batchTime) {
+        this.batchTime = batchTime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

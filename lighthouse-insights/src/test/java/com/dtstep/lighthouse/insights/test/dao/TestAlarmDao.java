@@ -36,7 +36,6 @@ public class TestAlarmDao {
         alarmCondition.setIndicator(1);
         AlarmCondition.ThresholdConfig thresholdConfig = new AlarmCondition.ThresholdConfig();
         thresholdConfig.setThreshold(1.0d);
-        thresholdConfig.setSilent(23);
         thresholdConfig.setState(true);
         alarmCondition.setOverall(thresholdConfig);
         List<AlarmCondition> conditionList = new ArrayList<>();
