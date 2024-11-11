@@ -194,7 +194,11 @@ public final class BuiltinLoader {
                     statEntity.setRenderConfig(JsonUtil.toJavaObject(renderConfig, RenderConfig.class));
                 }
                 StatExtEntity statExtEntity = StatDBWrapper.combineExtInfo(statEntity,true);
+                if(statExtEntity == null){
+                    continue;
+                }
                 statExtEntity.setBuiltIn(true);
+                statExtEntity.setNeedAlarm(false);
                 statExtEntity.setToken(token);
                 statExtEntity.setDataVersion(dataVersion);
                 statExtEntity.setTitle(statExtEntity.getTemplateEntity().getTitle());
