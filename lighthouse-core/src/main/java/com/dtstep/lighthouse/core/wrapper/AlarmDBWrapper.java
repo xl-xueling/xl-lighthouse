@@ -136,7 +136,7 @@ public class AlarmDBWrapper {
                     String dimens = alarmExtEntity.getDimens();
                     if(StringUtil.isNotEmpty(dimens)){
                         String[] matchList = dimens.split("\n");
-                        Map<String,Pattern> dimensMatchMap = new HashMap<>();
+                        LinkedHashMap<String,Pattern> dimensMatchMap = new LinkedHashMap<>();
                         for(String matchDimens : matchList){
                             if(StringUtil.isNotEmpty(matchDimens)){
                                 try{
