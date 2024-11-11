@@ -26,6 +26,8 @@ public enum FusingRules {
 
     CLIENT_DATA_QUERY_RULE("ClientDataQueryFusing",1500,5,TimeUnit.SECONDS),
 
+    ALARM_EXCEPTION_RULE("AlarmExceptionFusing",3,15,TimeUnit.MINUTES),
+
     ;
 
     private String fusingName;
