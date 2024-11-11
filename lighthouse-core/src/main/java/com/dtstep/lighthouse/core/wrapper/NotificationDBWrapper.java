@@ -10,6 +10,7 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.math.BigInteger;
 import java.sql.Connection;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class NotificationDBWrapper {
@@ -41,6 +42,7 @@ public class NotificationDBWrapper {
         Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
         int[] result;
+        LocalDateTime localDateTime = LocalDateTime.now();
         String sql = "INSERT INTO ldp_notifications (`resource_id`, `resource_type`,`content`,`state`,`user_ids`,`department_ids`,`notification_type`,`create_time`,`update_time`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Object[][] params = notifications.stream()
@@ -52,8 +54,8 @@ public class NotificationDBWrapper {
                         CollectionUtils.isNotEmpty(notification.getUserIds()) ? JsonUtil.toJSONString(notification.getUserIds()) : null,
                         CollectionUtils.isNotEmpty(notification.getDepartmentIds()) ? JsonUtil.toJSONString(notification.getDepartmentIds()) : null,
                         notification.getNotificationType().getType(),
-                        notification.getCreateTime(),
-                        notification.getUpdateTime()
+                        localDateTime,
+                        localDateTime
                 })
                 .toArray(Object[][]::new);
         try {
