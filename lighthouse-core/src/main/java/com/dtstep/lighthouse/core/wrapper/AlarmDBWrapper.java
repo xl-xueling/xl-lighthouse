@@ -22,10 +22,9 @@ import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class AlarmDBWrapper {
 
@@ -133,6 +132,23 @@ public class AlarmDBWrapper {
                             alarmTemplateExtEntity.setTemplateConfig(alarmTemplateConfig);
                             alarmExtEntity.setTemplateExtEntity(alarmTemplateExtEntity);
                         }
+                    }
+                    String dimens = alarmExtEntity.getDimens();
+                    if(StringUtil.isNotEmpty(dimens)){
+                        String[] matchList = dimens.split("\n");
+                        Map<String,Pattern> dimensMatchMap = new HashMap<>();
+                        for(String matchDimens : matchList){
+                            if(StringUtil.isNotEmpty(matchDimens)){
+                                try{
+                                    Pattern pattern = Pattern.compile(matchDimens);
+                                    dimensMatchMap.put(matchDimens,pattern);
+                                }catch (Exception ex){
+                                    ex.printStackTrace();
+                                    dimensMatchMap.put(matchDimens,null);
+                                }
+                            }
+                        }
+                        alarmExtEntity.setDimensMatchMap(dimensMatchMap);
                     }
                     alarmExtEntityList.add(alarmExtEntity);
                 }
