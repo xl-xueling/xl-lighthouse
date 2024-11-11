@@ -148,7 +148,7 @@ public class AlarmDBWrapper {
         QueryRunner queryRunner = new QueryRunner();
         Alarm alarm;
         try{
-            alarm = queryRunner.query(conn, String.format("select `id`,`title`,`unique_code`,`divide`,`state`,`match`,`conditions`,`template_id`,`recover`,`delay`,`dimens`,`create_time`,`update_time` from ldp_alarms where id = '%s'",id), new AlarmSetHandler());
+            alarm = queryRunner.query(conn, String.format("select `id`,`title`,`unique_code`,`divide`,`state`,`silent`,`match`,`conditions`,`template_id`,`recover`,`delay`,`dimens`,`create_time`,`update_time` from ldp_alarms where id = '%s'",id), new AlarmSetHandler());
         }finally {
             storageEngine.closeConnection();
         }
@@ -160,7 +160,7 @@ public class AlarmDBWrapper {
         QueryRunner queryRunner = new QueryRunner();
         List<Alarm> alarmList;
         try{
-            alarmList = queryRunner.query(conn, String.format("select `id`,`title`,`unique_code`,`divide`,`state`,`match`,`conditions`,`template_id`,`recover`,`delay`,`dimens`,`create_time`,`update_time` from ldp_alarms where resource_id = '%s' and resource_type = '%s'",statId, ResourceTypeEnum.Stat.getResourceType()), new AlarmListSetHandler());
+            alarmList = queryRunner.query(conn, String.format("select `id`,`title`,`unique_code`,`divide`,`state`,`silent`,`match`,`conditions`,`template_id`,`recover`,`delay`,`dimens`,`create_time`,`update_time` from ldp_alarms where resource_id = '%s' and resource_type = '%s'",statId, ResourceTypeEnum.Stat.getResourceType()), new AlarmListSetHandler());
         }finally {
             storageEngine.closeConnection();
         }
@@ -207,6 +207,7 @@ public class AlarmDBWrapper {
                 boolean state = rs.getBoolean("state");
                 int match = rs.getInt("match");
                 Integer delay = rs.getInt("delay");
+                int silent = rs.getInt("silent");
                 String conditions = rs.getString("conditions");
                 Integer templateId = rs.getInt("template_id");
                 boolean recover = rs.getBoolean("recover");
@@ -217,6 +218,7 @@ public class AlarmDBWrapper {
                 alarm.setTitle(title);
                 alarm.setUniqueCode(uniqueCode);
                 alarm.setDelay(delay);
+                alarm.setSilent(silent);
                 alarm.setDivide(divide);
                 alarm.setMatch(AlarmMatchEnum.forValue(match));
                 alarm.setDimens(dimens);
@@ -247,6 +249,7 @@ public class AlarmDBWrapper {
                 boolean state = rs.getBoolean("state");
                 int match = rs.getInt("match");
                 Integer delay = rs.getInt("delay");
+                int silent = rs.getInt("silent");
                 String conditions = rs.getString("conditions");
                 Integer templateId = rs.getInt("template_id");
                 boolean recover = rs.getBoolean("recover");
@@ -261,6 +264,7 @@ public class AlarmDBWrapper {
                 alarm.setMatch(AlarmMatchEnum.forValue(match));
                 alarm.setDimens(dimens);
                 alarm.setState(state);
+                alarm.setSilent(silent);
                 List<AlarmCondition> conditionList = JsonUtil.toJavaObjectList(conditions,AlarmCondition.class);
                 alarm.setConditions(conditionList);
                 alarm.setCreateTime(DateUtil.timestampToLocalDateTime(createTime));
