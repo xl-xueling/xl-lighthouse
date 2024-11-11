@@ -1,11 +1,7 @@
 package com.dtstep.lighthouse.core.wrapper;
 
-import com.dtstep.lighthouse.common.enums.CallerStateEnum;
 import com.dtstep.lighthouse.common.enums.UserStateEnum;
-import com.dtstep.lighthouse.common.modal.Caller;
 import com.dtstep.lighthouse.common.modal.User;
-import com.dtstep.lighthouse.common.util.DateUtil;
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -37,6 +33,12 @@ public class UserDBWrapper {
             .softValues()
             .build();
 
+    private static final Cache<Integer, Optional<List<Integer>>> USER_ROLE_CACHE = Caffeine.newBuilder()
+            .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
+            .maximumSize(100000)
+            .softValues()
+            .build();
+
     private static final Cache<Integer, Optional<User>> USER_CACHE = Caffeine.newBuilder()
             .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
             .maximumSize(100000)
@@ -45,6 +47,12 @@ public class UserDBWrapper {
 
     public static List<Integer> queryUseIdListByDepartment(Integer departmentId){
         Optional<List<Integer>> optional =  DEPARTMENT_USER_CACHE.get(departmentId, k -> actualQueryUserIdListByDepartment(departmentId));
+        assert optional != null;
+        return optional.orElse(null);
+    }
+
+    public static List<Integer> queryUserIdListByRoleId(Integer roleId){
+        Optional<List<Integer>> optional =  USER_ROLE_CACHE.get(roleId, k -> actualQueryUserIdListByRoleId(roleId));
         assert optional != null;
         return optional.orElse(null);
     }
@@ -59,6 +67,16 @@ public class UserDBWrapper {
         List<Integer> userIdList = null;
         try{
             userIdList = queryUserIdListByDepartmentFromDB(departmentId);
+        }catch (Exception ex){
+            logger.error("query caller info error!", ex);
+        }
+        return Optional.ofNullable(userIdList);
+    }
+
+    private static Optional<List<Integer>> actualQueryUserIdListByRoleId(Integer roleId){
+        List<Integer> userIdList = null;
+        try{
+            userIdList = queryUserIdListByRoleFromDB(roleId);
         }catch (Exception ex){
             logger.error("query caller info error!", ex);
         }
@@ -87,6 +105,19 @@ public class UserDBWrapper {
         return user;
     }
 
+    private static List<Integer> queryUserIdListByRoleFromDB(Integer roleId) throws Exception {
+        Connection conn = storageEngine.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+        List<Integer> userIds;
+        try{
+            String sql = "select owner_id from ldp_permissions where owner_type = '1' and role_id = ? limit 100";
+            userIds = queryRunner.query(conn, sql, new ColumnListHandler<>(), roleId);
+        }finally {
+            storageEngine.closeConnection();
+        }
+        return userIds;
+    }
+
     private static List<Integer> queryUserIdListByDepartmentFromDB(Integer departmentId) throws Exception {
         Connection conn = storageEngine.getConnection();
         QueryRunner queryRunner = new QueryRunner();
@@ -99,7 +130,7 @@ public class UserDBWrapper {
                     "  INNER JOIN sub_departments sd ON d.pid = sd.id " +
                     ") " +
                     "SELECT u.id AS user_id FROM ldp_users u " +
-                    "WHERE u.`state` = 2 and u.department_id IN (SELECT id FROM sub_departments)";
+                    "WHERE u.`state` = 2 and u.department_id IN (SELECT id FROM sub_departments) limit 100";
             userIds = queryRunner.query(conn, sql, new ColumnListHandler<>(), departmentId);
         }finally {
             storageEngine.closeConnection();

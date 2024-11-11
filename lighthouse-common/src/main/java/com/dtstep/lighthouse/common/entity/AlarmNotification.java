@@ -1,5 +1,6 @@
 package com.dtstep.lighthouse.common.entity;
 
+import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.enums.NotificationTypeEnum;
 
 import java.util.List;
@@ -11,6 +12,8 @@ public class AlarmNotification {
     private long silentSeconds;
 
     private AlarmExtEntity alarmEntity;
+
+    private StatExtEntity statExtEntity;
 
     private Integer level;
 
@@ -84,5 +87,13 @@ public class AlarmNotification {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public StatExtEntity getStatExtEntity() {
+        return statExtEntity;
+    }
+
+    public void setStatExtEntity(StatExtEntity statExtEntity) {
+        this.statExtEntity = statExtEntity;
     }
 }

@@ -23,4 +23,11 @@ public class UserDBWrapperTest extends CoreBaseTest {
         List<Integer> userIdList = UserDBWrapper.queryUseIdListByDepartment(departmentId);
         System.out.println("userIdList is:" + JsonUtil.toJSONString(userIdList));
     }
+
+    @Test
+    public void testQueryByRoleId() throws Exception {
+        int roleId = 10285;
+        List<Integer> userIdList = UserDBWrapper.queryUserIdListByRoleId(roleId);
+        System.out.println("userIdList is:" + JsonUtil.toJSONString(userIdList));
+    }
 }

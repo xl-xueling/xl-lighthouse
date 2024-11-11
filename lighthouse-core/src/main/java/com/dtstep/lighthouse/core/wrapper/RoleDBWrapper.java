@@ -49,7 +49,7 @@ public class RoleDBWrapper {
         return optional.orElse(null);
     }
 
-    public static Role queryManageRoleByResource(Integer resourceId, ResourceTypeEnum resourceTypeEnum) throws Exception {
+    public static Role queryManageRoleByResource(Integer resourceId, ResourceTypeEnum resourceTypeEnum){
         RoleTypeEnum roleTypeEnum = null;
         if(resourceTypeEnum == ResourceTypeEnum.Project){
             roleTypeEnum = RoleTypeEnum.PROJECT_MANAGE_PERMISSION;
