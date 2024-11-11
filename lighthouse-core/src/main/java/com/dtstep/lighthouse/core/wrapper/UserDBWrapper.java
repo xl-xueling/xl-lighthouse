@@ -99,7 +99,7 @@ public class UserDBWrapper {
                     "  INNER JOIN sub_departments sd ON d.pid = sd.id " +
                     ") " +
                     "SELECT u.id AS user_id FROM ldp_users u " +
-                    "WHERE u.department_id IN (SELECT id FROM sub_departments)";
+                    "WHERE u.`state` = 2 and u.department_id IN (SELECT id FROM sub_departments)";
             userIds = queryRunner.query(conn, sql, new ColumnListHandler<>(), departmentId);
         }finally {
             storageEngine.closeConnection();
