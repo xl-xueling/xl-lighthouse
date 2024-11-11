@@ -153,6 +153,7 @@ public final class RedisRoaringFilter<T> {
             }).mapToLong(x -> x).sum();
         }catch (JedisNoScriptException ex){
             IntStream.range(0, part).forEach((x) ->{
+                logger.info("put roaring lua-script to remote server again,key:{}",key);
                 sha = redisOperator.scriptLoad(BLOOM_LUA_SCRIPT_LOCAL_HASH, Md5Util.get16MD5(key + "_" + x));
             });
             return filterWithRoaringMap(key,valueList,expireSeconds,part);

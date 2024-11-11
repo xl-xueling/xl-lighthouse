@@ -87,6 +87,7 @@ public final class RedisClient {
             }
             redisOperator.evalsha(sha_limit_set, 1, key, value, String.valueOf(limit), String.valueOf(expireSeconds));
         }catch (JedisNoScriptException ex){
+            logger.info("put limit-set lua-script to remote server again,key:{}",key);
             sha_limit_set = redisOperator.scriptLoad(LIMIT_SET_LUA, key);
             limitSet(key, value, limit,expireSeconds);
         }catch (Exception ex){
@@ -137,6 +138,7 @@ public final class RedisClient {
             }
             redisOperator.evalsha(sha_topN, 1, key, scores,members,String.valueOf(limit), String.valueOf(expireSeconds));
         }catch (JedisNoScriptException ex){
+            logger.info("put topN lua-script to remote server again,key:{}",key);
             sha_topN = redisOperator.scriptLoad(LUA_PUT_TOP_N, key);
             batchPutTopN(key,memberMap,limit,expireSeconds);
         }catch (Exception ex){
@@ -181,6 +183,7 @@ public final class RedisClient {
             }
             redisOperator.evalsha(sha_lastN, 1, key, scores,members,String.valueOf(limit), String.valueOf(expireSeconds));
         }catch (JedisNoScriptException ex){
+            logger.info("put lastN lua-script to remote server again,key:{}",key);
             sha_lastN = redisOperator.scriptLoad(LUA_PUT_LAST_N, key);
             batchPutLastN(key,memberMap,limit,expireSeconds);
         }catch (Exception ex){

@@ -93,6 +93,7 @@ public final class RedisLimitingAspect {
             Object result = redisOperator.evalsha(sha, 1, Md5Util.get16MD5(limitKey), String.valueOf(expireSeconds), String.valueOf(step), String.valueOf(limitValue));
             return Integer.parseInt(String.valueOf(result));
         }catch (JedisNoScriptException ex){
+            logger.info("put limiting lua-script to remote server again,key:{}",limitKey);
             sha = redisOperator.scriptLoad(LUA_LIMIT_SCRIPT, limitKey);
             return getRemainSize(limitKey, step, limitValue,expireSeconds);
         }catch (Exception ex){
