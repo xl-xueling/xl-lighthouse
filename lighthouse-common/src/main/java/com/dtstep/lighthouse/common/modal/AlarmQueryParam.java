@@ -8,6 +8,8 @@ public class AlarmQueryParam {
 
     private ResourceTypeEnum resourceType;
 
+    private String uniqueCode;
+
     public Integer getResourceId() {
         return resourceId;
     }
@@ -22,5 +24,13 @@ public class AlarmQueryParam {
 
     public void setResourceType(ResourceTypeEnum resourceType) {
         this.resourceType = resourceType;
+    }
+
+    public String getUniqueCode() {
+        return uniqueCode;
+    }
+
+    public void setUniqueCode(String uniqueCode) {
+        this.uniqueCode = uniqueCode;
     }
 }

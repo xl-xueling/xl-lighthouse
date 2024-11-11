@@ -15,4 +15,6 @@ public interface AlarmDao {
     Alarm queryById(Integer id);
 
     Alarm queryByParam(@Param("queryParam")AlarmQueryParam queryParam);
+
+    int countByParam(@Param("queryParam")AlarmQueryParam queryParam);
 }

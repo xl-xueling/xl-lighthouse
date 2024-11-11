@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.insights.test.dao;
 
 import com.dtstep.lighthouse.common.enums.NumberCompareType;
 import com.dtstep.lighthouse.common.modal.AlarmCondition;
+import com.dtstep.lighthouse.common.modal.AlarmQueryParam;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.AlarmDao;
@@ -62,5 +63,14 @@ public class TestAlarmDao {
         alarm.setUpdateTime(LocalDateTime.now());
         System.out.println("alarm is:" + JsonUtil.toJSONString(alarm));
         alarmDao.update(alarm);
+    }
+
+    @Test
+    public void testCountByParam() throws Exception {
+        String uniqueCode = "default.j3L5L52";
+        AlarmQueryParam queryParam = new AlarmQueryParam();
+        queryParam.setUniqueCode(uniqueCode);
+        int size = alarmDao.countByParam(queryParam);
+        System.out.println("size:" + size);
     }
 }

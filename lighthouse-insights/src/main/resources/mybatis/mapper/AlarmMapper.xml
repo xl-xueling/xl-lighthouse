@@ -63,6 +63,15 @@
         order by create_time desc limit 1;
     </select>
 
+    <select id="countByParam" resultType="int">
+        SELECT count(1) FROM ldp_alarms
+        <where>
+            <if test="queryParam.uniqueCode != null">
+                AND unique_code = #{queryParam.uniqueCode}
+            </if>
+        </where>
+    </select>
+
     <update id="update" parameterType="com.dtstep.lighthouse.common.modal.Alarm">
         UPDATE ldp_alarms
         <set>

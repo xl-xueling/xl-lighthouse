@@ -192,6 +192,8 @@ public enum ResultCode {
 
     alarmSettingsTestingError ("70003","alarmSettingsTestingError"),
 
+    alarmSettingsUniqueCodeExist ("70004","alarmSettingsUniqueCodeExist"),
+
     ;
 
     ResultCode(String code , String i18nLabel){
