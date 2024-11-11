@@ -19,6 +19,8 @@ public class AlarmNotification {
 
     private Long batchTime;
 
+    private String dimensValue;
+
     private String content;
 
     private List<String> reasons;
@@ -95,5 +97,13 @@ public class AlarmNotification {
 
     public void setStatExtEntity(StatExtEntity statExtEntity) {
         this.statExtEntity = statExtEntity;
+    }
+
+    public String getDimensValue() {
+        return dimensValue;
+    }
+
+    public void setDimensValue(String dimensValue) {
+        this.dimensValue = dimensValue;
     }
 }

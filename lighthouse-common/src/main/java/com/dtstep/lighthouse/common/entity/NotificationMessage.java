@@ -14,6 +14,8 @@ public class NotificationMessage implements Serializable {
 
     private String uniqueCode;
 
+    private String dimensValue;
+
     private List<User> users;
 
     public String getUniqueCode() {
@@ -46,5 +48,13 @@ public class NotificationMessage implements Serializable {
 
     public void setType(NotificationTypeEnum type) {
         this.type = type;
+    }
+
+    public String getDimensValue() {
+        return dimensValue;
+    }
+
+    public void setDimensValue(String dimensValue) {
+        this.dimensValue = dimensValue;
     }
 }
