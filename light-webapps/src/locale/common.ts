@@ -35,7 +35,7 @@ const vi18n = {
         'basic.notification.state.sent':'Sent',
         'basic.notification.state.reportingFailed':'ReportingFailed',
         'basic.notification.state.failed':'Failed',
-        'basic.notification.type.alarm':'Indicator Alarm',
+        'basic.notification.type.alarm':'IndicatorMonitor',
         'basic.warning.relateElementDeleted':'Related element have been deleted!',
         'orderApprove.roleType.description.systemManager':'System Manager',
         'orderApprove.roleType.description.operationManager':'Operation Manager',

@@ -12,7 +12,17 @@ public class NotificationMessage implements Serializable {
 
     private String message;
 
+    private String uniqueCode;
+
     private List<User> users;
+
+    public String getUniqueCode() {
+        return uniqueCode;
+    }
+
+    public void setUniqueCode(String uniqueCode) {
+        this.uniqueCode = uniqueCode;
+    }
 
     public String getMessage() {
         return message;
