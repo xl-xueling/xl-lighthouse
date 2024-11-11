@@ -1,11 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Department, TreeNode, User} from "@/types/insights-web";
-import {Descriptions, Popover} from "@arco-design/web-react";
+import {Descriptions, Popover, Typography} from "@arco-design/web-react";
 import useLocale from "@/utils/useLocale";
 import locale from "@/pages/stat/common/locale";
 
 
-export default function StatLabel({statInfo}) {
+export default function StatLabel({statInfo,size = 'default'}) {
 
     const t = useLocale(locale);
 
@@ -35,7 +35,7 @@ export default function StatLabel({statInfo}) {
                         labelStyle={{ textAlign: 'right', paddingRight: 15}}
                     />
             }>
-                <span>{statInfo?.title}</span>
+                <Typography.Text style={{fontSize:size == 'mini'? 12 : 14}}>{statInfo?.title}</Typography.Text>
             </Popover>
         );
     }
