@@ -21,6 +21,79 @@ USE `cluster_${ldp_lighthouse_cluster_id}_ldp_cmdb`;
 -- Table structure for table `ldp_components`
 --
 
+DROP TABLE IF EXISTS `ldp_alarm_templates`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ldp_alarm_templates` (
+                                       `id` int NOT NULL AUTO_INCREMENT,
+                                       `title` varchar(80) NOT NULL,
+                                       `config` mediumtext NOT NULL,
+                                       `create_user` int NOT NULL,
+                                       `desc` varchar(500) DEFAULT NULL,
+                                       `user_ids` json DEFAULT NULL,
+                                       `department_ids` json DEFAULT NULL,
+                                       `create_time` timestamp NOT NULL,
+                                       `update_time` timestamp NOT NULL,
+                                       PRIMARY KEY (`id`),
+                                       KEY `index_title` (`title`),
+                                       KEY `index_create_time` (`create_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+DROP TABLE IF EXISTS `ldp_alarms`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ldp_alarms` (
+                              `id` int NOT NULL AUTO_INCREMENT,
+                              `title` varchar(60) NOT NULL,
+                              `unique_code` varchar(60) NOT NULL,
+                              `divide` tinyint DEFAULT NULL,
+                              `resource_id` int NOT NULL,
+                              `resource_type` tinyint DEFAULT NULL,
+                              `state` tinyint NOT NULL,
+                              `match` tinyint NOT NULL,
+                              `conditions` mediumtext NOT NULL,
+                              `template_id` int NOT NULL,
+                              `recover` tinyint NOT NULL,
+                              `silent` int NOT NULL,
+                              `delay` int NOT NULL,
+                              `desc` varchar(500) NOT NULL,
+                              `dimens` mediumtext,
+                              `extend` varchar(3000) DEFAULT NULL,
+                              `create_time` timestamp NOT NULL,
+                              `update_time` timestamp NOT NULL,
+                              PRIMARY KEY (`id`),
+                              KEY `index_title` (`title`),
+                              KEY `index_relationa` (`resource_id`,`resource_type`),
+                              KEY `index_create_time` (`create_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+DROP TABLE IF EXISTS `ldp_notifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ldp_notifications` (
+                                     `id` int NOT NULL AUTO_INCREMENT,
+                                     `resource_id` int DEFAULT NULL,
+                                     `resource_type` tinyint DEFAULT NULL,
+                                     `content` varchar(1000) NOT NULL,
+                                     `state` tinyint NOT NULL,
+                                     `user_ids` json DEFAULT NULL,
+                                     `department_ids` json DEFAULT NULL,
+                                     `notification_type` tinyint NOT NULL,
+                                     `p1` varchar(45) DEFAULT NULL,
+                                     `p2` varchar(45) DEFAULT NULL,
+                                     `p3` varchar(45) DEFAULT NULL,
+                                     `create_time` timestamp NOT NULL,
+                                     `update_time` timestamp NOT NULL,
+                                     PRIMARY KEY (`id`),
+                                     KEY `index_relationa` (`resource_id`,`resource_type`),
+                                     KEY `index_user_ids` ((CAST(JSON_EXTRACT(user_ids, "$[0]") AS UNSIGNED))),
+                                     KEY `index_department_ids` ((CAST(JSON_EXTRACT(department_ids, "$[0]") AS UNSIGNED))),
+                                     KEY `index_create_time` (`create_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=1001011 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 DROP TABLE IF EXISTS `ldp_components`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
