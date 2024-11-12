@@ -55,7 +55,7 @@ export default function RegisterForm() {
                   setTimeout(() => {
                       window.location.href = '/login';
                       setLoading(false);
-                  },3000)
+                  },2000)
               } else {
                   Notification.warning({
                       style: { width: 420 },

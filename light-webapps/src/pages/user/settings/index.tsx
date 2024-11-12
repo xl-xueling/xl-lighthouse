@@ -47,7 +47,7 @@ export default function UserSettings() {
             <InfoHeader userInfo={userInfo} />
           </Card>
           <Card style={{ marginTop: '16px' }}>
-            <Tabs activeTab={activeTab} onChange={setActiveTab} type="rounded">
+            <Tabs activeTab={activeTab} onChange={setActiveTab} type="rounded" size={'small'}>
               <Tabs.TabPane key="basic" title={t['userSetting.title.basicInfo']}>
                   {userInfo && <InfoForm userInfo={userInfo} allDepartInfo={allDepartInfo} callback={callback}/>}
               </Tabs.TabPane>
