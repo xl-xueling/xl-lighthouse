@@ -177,18 +177,45 @@ public final class IterativeParsePattern implements Parser {
         return ServiceResult.result(ResultCode.success,templateEntity);
     }
 
-    private static final Pattern columnExtractPattern = Pattern.compile("(?<!')\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b(?!\\s*\\()");
+    private static final Pattern columnExtractPattern = Pattern.compile("(?![^']*'[^']*(?:'[^']*')*$)\\b(?=\\w*[a-zA-Z])\\w+\\b(?!\\s*\\()");
 
     public static List<String> extractColumnsList(String input) {
+        String replaceInput = replaceQuotedContent(input);
         List<String> validMatches = new ArrayList<>();
-        Matcher matcher = columnExtractPattern.matcher(input);
+        Matcher matcher = columnExtractPattern.matcher(replaceInput);
         while (matcher.find()) {
-            String match = matcher.group(1);
+            String match = matcher.group();
             if (isValidMatch(match)) {
                 validMatches.add(match);
             }
         }
         return validMatches;
+    }
+
+    public static String replaceQuotedContent(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+        StringBuilder result = new StringBuilder();
+        boolean inQuotes = false;
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (c == '\'') {
+                if (!inQuotes) {
+                    inQuotes = true;
+                    result.append('-');
+                } else {
+                    inQuotes = false;
+                }
+            } else {
+                if (inQuotes) {
+                    result.append('-');
+                } else {
+                    result.append(c);
+                }
+            }
+        }
+        return result.toString();
     }
 
     private static boolean isValidMatch(String match) {
