@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS `ldp_notifications` (
                                      `update_time` timestamp NOT NULL,
                                      PRIMARY KEY (`id`),
                                      KEY `index_relationa` (`resource_id`,`resource_type`),
-                                     KEY `index_user_ids` ((CAST(JSON_EXTRACT(user_ids, "$[0]") AS UNSIGNED))),
-                                     KEY `index_department_ids` ((CAST(JSON_EXTRACT(department_ids, "$[0]") AS UNSIGNED))),
+                                     KEY `index_user_ids` ((CAST(user_ids AS UNSIGNED ARRAY))),
+                                     KEY `index_department_ids` ((CAST(department_ids AS UNSIGNED ARRAY))),
                                      KEY `index_create_time` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1001011 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
