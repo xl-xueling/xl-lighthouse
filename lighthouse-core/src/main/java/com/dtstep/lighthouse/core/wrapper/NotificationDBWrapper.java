@@ -43,7 +43,7 @@ public class NotificationDBWrapper {
         QueryRunner queryRunner = new QueryRunner();
         int[] result;
         LocalDateTime localDateTime = LocalDateTime.now();
-        String sql = "INSERT INTO ldp_notifications (`resource_id`, `resource_type`,`content`,`state`,`user_ids`,`department_ids`,`notification_type`,`create_time`,`update_time`) " +
+        String sql = "INSERT INTO ldp_notifications (`resource_id`, `resource_type`,`content`,`state`,`user_ids`,`department_ids`,`notification_type`,`p1`,`p2`,`p3`,`create_time`,`update_time`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Object[][] params = notifications.stream()
                 .map(notification -> new Object[]{
@@ -54,6 +54,9 @@ public class NotificationDBWrapper {
                         CollectionUtils.isNotEmpty(notification.getUserIds()) ? JsonUtil.toJSONString(notification.getUserIds()) : null,
                         CollectionUtils.isNotEmpty(notification.getDepartmentIds()) ? JsonUtil.toJSONString(notification.getDepartmentIds()) : null,
                         notification.getNotificationType().getType(),
+                        notification.getP1(),
+                        notification.getP2(),
+                        notification.getP3(),
                         localDateTime,
                         localDateTime
                 })
