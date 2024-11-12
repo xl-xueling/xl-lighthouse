@@ -30,7 +30,7 @@ public class AlarmDBWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(AlarmDBWrapper.class);
 
-    private static final Integer _CacheExpireMinutes = 6;
+    private static final Integer _CacheExpireMinutes = 5;
 
     private static final CMDBStorageEngine<Connection> storageEngine = CMDBStorageEngineProxy.getInstance();
 
