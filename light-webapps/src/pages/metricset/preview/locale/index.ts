@@ -22,7 +22,7 @@ const i18n = {
     'metricSetPreview.tab.title.dataView':'数据展示',
     'metricSetPreview.tab.title.bindItems':'绑定元素',
     'metricSetPreview.tab.title.permissions':'权限管理',
-    'metricSetPreview.tab.title.structure':'树结构',
+    'metricSetPreview.tab.title.structure':'层级结构',
     'metricSetPreview.updateMetricSet':'修改指标集',
     'metricSetPreview.permissionsManage':'权限管理',
     'metricSetPreview.deleteMetricSet':'删除指标集',
