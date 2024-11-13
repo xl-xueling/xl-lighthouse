@@ -54,7 +54,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
         },
         {
             title: t['statList.label.state'],
-            headerCellStyle: {minWidth:'100px' },
+            headerCellStyle: {minWidth:'110px' },
             dataIndex: 'state',
             render: (value) => {
                 return getStatStateDescriptionWithBadge(t,value)
@@ -63,7 +63,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
         {
             title: t['statList.label.operations'],
             dataIndex: 'operations',
-            headerCellStyle: {width:'300px' },
+            headerCellStyle: {minWidth:'200px' },
             render: (_, record) => {
                 let viewButton;
                 let updateButton;
