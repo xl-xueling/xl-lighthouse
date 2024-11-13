@@ -23,14 +23,14 @@ source "${CUR_DIR}/run/stop.sh"
 source "${CUR_DIR}/run/reload.sh"
 
 main(){
-    [ -e ${LOCKFILE} ] && `cat ${LOCKFILE} | xargs --no-run-if-empty kill -9 >/dev/null 2>&1`;
-    trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
-	  echo $$ > ${LOCKFILE}
   	prepare;
 	if [[ ${USER} != ${DEPLOY_USER} ]];then
         	log_error "The operation is prohibited, only user[\"${DEPLOY_USER}\"] is allowed to execute!"
         	exit -1;
   	fi
+  [ -e ${LOCKFILE} ] && `cat ${LOCKFILE} | xargs --no-run-if-empty kill -9 >/dev/null 2>&1`;
+    trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
+	  echo $$ > ${LOCKFILE}
 	stop_all;
 	echo "service has stopped!"
 	rm -f ${LOCKFILE}
