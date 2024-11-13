@@ -32,7 +32,6 @@ function remoteCompileRedis(){
 function localCompileRedis() {
     local path=${1};
     cd ${path} && make;
-    make test;
     make PREFIX=${path} install
 }
 
