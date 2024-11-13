@@ -23,6 +23,7 @@ import {HomePageContext} from "@/pages/common/context";
 const { Row, Col } = Grid;
 
 type StatisticItemType = {
+  index?:number;
   icon?: ReactNode;
   title?: ReactNode;
   count?: ReactNode;
@@ -30,11 +31,23 @@ type StatisticItemType = {
   unit?: ReactNode;
 };
 
+const getIcon = (index,icon) => {
+  if(index == 1){
+    return <div className={styles.icon} onClick={() => {window.open('/project/list','_href')}} style={{cursor:"pointer"}}>{icon}</div>
+  }else if(index == 2){
+    return <div className={styles.icon} onClick={() => {window.open('/stat/list','_href')}} style={{cursor:"pointer"}}>{icon}</div>
+  }else if(index == 3){
+    return <div className={styles.icon} onClick={() => {window.open('/metricset/list','_href')}} style={{cursor:"pointer"}}>{icon}</div>
+  }else{
+    return <div className={styles.icon}>{icon}</div>
+  }
+}
+
 function StatisticItem(props: StatisticItemType) {
-  const { icon, title, count, loading, unit } = props;
+  const { index,icon, title, count, loading, unit } = props;
   return (
     <div className={styles.item}>
-      <div className={styles.icon}>{icon}</div>
+      {getIcon(index,icon)}
       <div>
         <Skeleton loading={loading} text={{ rows: 2, width: 60 }} animation>
           <div className={styles.title}>{title}</div>
@@ -68,6 +81,7 @@ export default function Overview({loading = false}) {
             title={t['workplace.label.projectCount']}
             count={homeData?.projectCount}
             loading={loading}
+            index={1}
             unit={t['workplace.pecs']}
           />
         </Col>
@@ -78,6 +92,7 @@ export default function Overview({loading = false}) {
             title={t['workplace.label.statCount']}
             count={homeData?.statCount}
             loading={loading}
+            index={2}
             unit={t['workplace.pecs']}
           />
         </Col>
@@ -88,6 +103,7 @@ export default function Overview({loading = false}) {
             title={t['workplace.label.metricCount']}
             count={homeData?.metricCount}
             loading={loading}
+            index={3}
             unit={t['workplace.pecs']}
           />
         </Col>
@@ -98,6 +114,7 @@ export default function Overview({loading = false}) {
               title={t['workplace.label.userCount']}
               count={homeData?.userCount}
               loading={loading}
+              index={4}
               unit={t['workplace.pecs']}
           />
         </Col>
