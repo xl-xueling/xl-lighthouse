@@ -158,10 +158,12 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
         },
         {
             title: t['statList.label.timeparam'],
+            headerCellStyle: {minWidth:'100px' },
             dataIndex: 'timeparam',
         },
         {
             title: t['statList.label.expired'],
+            headerCellStyle: {minWidth:'100px' },
             dataIndex: 'expired',
             render:(value,record) => {
                 return getStatExpiredEnumDescription(value);
@@ -169,6 +171,7 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
         },
         {
             title: t['statList.label.state'],
+            headerCellStyle: {minWidth:'120px' },
             dataIndex: 'state',
             render: (value) => {
                 return getStatStateDescriptionWithBadge(t,value)
