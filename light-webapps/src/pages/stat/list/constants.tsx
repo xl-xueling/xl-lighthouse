@@ -22,6 +22,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
     return [
         {
             title: t['statList.label.id'],
+            headerCellStyle: {minWidth:'90px' },
             dataIndex: 'id',
         },
         {
@@ -40,10 +41,12 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
         // },
         {
             title: t['statList.label.timeparam'],
+            headerCellStyle: {minWidth:'100px' },
             dataIndex: 'timeparam',
         },
         {
             title: t['statList.label.expired'],
+            headerCellStyle: {minWidth:'100px' },
             dataIndex: 'expired',
             render:(value,record) => {
                 return getStatExpiredEnumDescription(value);
@@ -51,6 +54,7 @@ export function getColumnsOfManage(t: any, callback: (record: Record<string, any
         },
         {
             title: t['statList.label.state'],
+            headerCellStyle: {minWidth:'100px' },
             dataIndex: 'state',
             render: (value) => {
                 return getStatStateDescriptionWithBadge(t,value)
