@@ -21,6 +21,8 @@ import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 
 public class RelationDeleteParam {
 
+    private Integer id;
+
     private Integer subjectId;
 
     private RelationTypeEnum relationType;
@@ -28,6 +30,14 @@ public class RelationDeleteParam {
     private Integer resourceId;
 
     private ResourceTypeEnum resourceType;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getSubjectId() {
         return subjectId;

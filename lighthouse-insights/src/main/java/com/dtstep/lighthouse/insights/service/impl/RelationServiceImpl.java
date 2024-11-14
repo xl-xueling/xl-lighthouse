@@ -96,6 +96,11 @@ public class RelationServiceImpl implements RelationService {
     }
 
     @Override
+    public int deleteById(Integer id) {
+        return relationDao.deleteById(id);
+    }
+
+    @Override
     public boolean isExist(String hash) {
         return relationDao.isExist(hash);
     }
@@ -187,5 +192,10 @@ public class RelationServiceImpl implements RelationService {
     @Override
     public int count(RelationQueryParam queryParam) {
         return relationDao.count(queryParam);
+    }
+
+    @Override
+    public Relation queryRelation(RelationQueryParam queryParam) {
+        return relationDao.queryRelation(queryParam);
     }
 }

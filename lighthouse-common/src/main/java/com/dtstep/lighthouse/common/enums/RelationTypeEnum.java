@@ -23,6 +23,8 @@ public enum RelationTypeEnum {
 
     StatBindAlarmRelation(8),
 
+    UserCacheStatFiltersRelation(9),
+
     ;
 
     RelationTypeEnum(int relationType){

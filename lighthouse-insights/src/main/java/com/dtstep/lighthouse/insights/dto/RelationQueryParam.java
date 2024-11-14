@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.insights.dto;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.enums.RelationTypeEnum;
+import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 
 import java.io.Serializable;
 
@@ -25,6 +26,10 @@ public class RelationQueryParam implements Serializable {
     private Integer subjectId;
 
     private RelationTypeEnum relationType;
+
+    private Integer resourceId;
+
+    private ResourceTypeEnum resourceType;
 
     private String search;
 
@@ -50,5 +55,21 @@ public class RelationQueryParam implements Serializable {
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    public Integer getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(Integer resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public ResourceTypeEnum getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(ResourceTypeEnum resourceType) {
+        this.resourceType = resourceType;
     }
 }

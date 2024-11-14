@@ -32,6 +32,8 @@ public interface RelationService {
 
     int delete(RelationDeleteParam deleteParam);
 
+    int deleteById(Integer id);
+
     ResultCode create(Relation relation);
 
     boolean isExist(String hash);
@@ -41,4 +43,6 @@ public interface RelationService {
     ListData<RelationVO> queryList(RelationQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception;
 
     int count(RelationQueryParam queryParam);
+
+    Relation queryRelation(RelationQueryParam queryParam);
 }

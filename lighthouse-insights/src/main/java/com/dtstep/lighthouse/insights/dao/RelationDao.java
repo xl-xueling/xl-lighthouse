@@ -44,6 +44,8 @@ public interface RelationDao {
 
     int count(@Param("queryParam")RelationQueryParam queryParam);
 
+    Relation queryRelation(@Param("queryParam")RelationQueryParam queryParam);
+
     Relation queryById(Integer id);
 
     int deleteById(Integer id);

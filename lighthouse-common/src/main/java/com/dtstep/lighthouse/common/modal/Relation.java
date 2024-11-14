@@ -37,6 +37,8 @@ public class Relation {
 
     private String hash;
 
+    private String config;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
@@ -111,5 +113,13 @@ public class Relation {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getConfig() {
+        return config;
+    }
+
+    public void setConfig(String config) {
+        this.config = config;
     }
 }

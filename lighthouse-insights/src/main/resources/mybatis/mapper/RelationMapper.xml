@@ -9,25 +9,27 @@
         <result property="resourceTitle" column="resource_title"/>
         <result property="resourceId" column="resource_id"/>
         <result property="resourceType" column="resource_type" typeHandler="com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler"/>
+        <result property="config" column="config"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Relation" >
-        INSERT INTO ldp_relations (`subject_id`, `relation_type`,`resource_id`, `resource_type`,`hash`, `create_time`,`update_time`) VALUES
+        INSERT INTO ldp_relations (`subject_id`, `relation_type`,`resource_id`, `resource_type`,`hash`,`config`, `create_time`,`update_time`) VALUES
         (
             #{subjectId,jdbcType=INTEGER},
             #{relationType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.RelationTypeEnumTypeHandler},
             #{resourceId,jdbcType=INTEGER},
             #{resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
             #{hash,jdbcType=VARCHAR},
+            #{config,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO ldp_relations (`subject_id`, `relation_type`,`resource_id`, `resource_type`,`hash`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_relations (`subject_id`, `relation_type`,`resource_id`, `resource_type`,`hash`,`config`,`create_time`,`update_time`) VALUES
         <foreach collection="list" item="item" separator=",">
             (
             #{item.subjectId,jdbcType=INTEGER},
@@ -35,6 +37,7 @@
             #{item.resourceId,jdbcType=INTEGER},
             #{item.resourceType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
             #{item.hash,jdbcType=VARCHAR},
+            #{item.config,jdbcType=VARCHAR},
             #{item.createTime,jdbcType=TIMESTAMP},
             #{item.updateTime,jdbcType=TIMESTAMP}
             )
@@ -119,6 +122,23 @@
                 OR (r.resource_type = '6' AND s.title LIKE CONCAT('%', #{queryParam.search}, '%')))
             </if>
         </where>
+    </select>
+
+    <select id="queryRelation" resultMap="relationResultMap">
+        SELECT r.`id`,r.`subject_id`, r.`relation_type`,r.`resource_id`, r.`resource_type`, r.`create_time` ,r.`config`
+        FROM ldp_relations r
+        <where>
+            <if test="queryParam.subjectId != null">
+                AND subject_id = #{queryParam.subjectId}
+            </if>
+            <if test="queryParam.relationType != null">
+                AND relation_type = #{queryParam.relationType.relationType}
+            </if>
+            <if test="queryParam.resourceId != null">
+                AND resource_id = #{queryParam.resourceId}
+            </if>
+        </where>
+        limit 1
     </select>
 
     <select id="isExist" resultType="boolean">
