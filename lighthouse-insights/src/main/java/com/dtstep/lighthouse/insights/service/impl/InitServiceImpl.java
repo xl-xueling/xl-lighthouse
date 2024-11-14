@@ -233,6 +233,6 @@ public class InitServiceImpl implements InitService {
 
     @Override
     public void createCMDBColumnsIfNotExist() throws Exception {
-        CMDBUtil.addColumnIfNotExist("ldp_relations","extend","MEDIUMTEXT");
+        CMDBUtil.addColumnIfNotExist("ldp_relations","config","MEDIUMTEXT");
     }
 }
