@@ -32,6 +32,8 @@ public class MySQLCMDBStorageEngine implements CMDBStorageEngine<Connection> {
 
     private static final BasicDataSource basicDataSource;
 
+    private static final RDBMSConfiguration rdbmsConfiguration;
+
     private static final ThreadLocal<Connection> connectionHolder = new ThreadLocal<>();
 
     static {
@@ -39,9 +41,9 @@ public class MySQLCMDBStorageEngine implements CMDBStorageEngine<Connection> {
         String connectionUrl = LDPConfig.getVal("cmdb.storage.engine.javax.jdo.option.ConnectionURL");
         String connectionUserName = LDPConfig.getVal("cmdb.storage.engine.javax.jdo.option.ConnectionUserName");
         String connectionPassword = LDPConfig.getVal("cmdb.storage.engine.javax.jdo.option.ConnectionPassword");
-        RDBMSConfiguration mySQLConfiguration = new RDBMSConfiguration(driverClassName,connectionUrl,connectionUserName,connectionPassword);
+        rdbmsConfiguration = new RDBMSConfiguration(driverClassName,connectionUrl,connectionUserName,connectionPassword);
         try{
-            basicDataSource = DBConnectionSource.getBasicDataSource(mySQLConfiguration);
+            basicDataSource = DBConnectionSource.getBasicDataSource(rdbmsConfiguration);
         }catch (Exception ex){
             logger.error("init mysql warehouse connection error!",ex);
             throw new InitializationException("init mysql warehouse connection error!");
@@ -70,5 +72,10 @@ public class MySQLCMDBStorageEngine implements CMDBStorageEngine<Connection> {
                 connectionHolder.remove();
             }
         }
+    }
+
+    @Override
+    public RDBMSConfiguration getConfiguration() throws Exception {
+        return rdbmsConfiguration;
     }
 }

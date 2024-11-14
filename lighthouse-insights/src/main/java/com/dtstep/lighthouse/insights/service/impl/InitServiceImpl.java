@@ -30,6 +30,7 @@ import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
 import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngine;
 import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngineProxy;
+import com.dtstep.lighthouse.core.tools.CMDBUtil;
 import com.dtstep.lighthouse.insights.service.*;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -171,7 +172,7 @@ public class InitServiceImpl implements InitService {
     }
 
     @Override
-    public void cmdbUpgrade() throws Exception {
+    public void createCMDBTablesIfNotExist() throws Exception {
         String ldpHome = System.getenv("LDP_HOME");
         String upgradeSqlFile = ldpHome + "/conf/ldp_upgrade.sql";
         File sqlFile = new File(upgradeSqlFile);
@@ -207,7 +208,7 @@ public class InitServiceImpl implements InitService {
             conn.commit();
             br.close();
         } catch (SQLException | IOException e) {
-            e.printStackTrace();
+            logger.error("execute update cmdb error!",e);
             try {
                 if (conn != null) {
                     conn.rollback();
@@ -228,5 +229,10 @@ public class InitServiceImpl implements InitService {
                 se.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void createCMDBColumnsIfNotExist() throws Exception {
+        CMDBUtil.addColumnIfNotExist("ldp_relations","extend","MEDIUMTEXT");
     }
 }

@@ -17,9 +17,7 @@ package com.dtstep.lighthouse.insights.init;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.insights.service.InitService;
-import com.dtstep.lighthouse.insights.service.RoleService;
 import com.dtstep.lighthouse.insights.service.SystemEnvService;
-import com.dtstep.lighthouse.insights.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +83,8 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
         }
 
         try{
-            initService.cmdbUpgrade();
+            initService.createCMDBTablesIfNotExist();
+            initService.createCMDBColumnsIfNotExist();
         }catch (Exception ex){
             logger.error("CMDB database upgrade failed!",ex);
             System.exit(-1);

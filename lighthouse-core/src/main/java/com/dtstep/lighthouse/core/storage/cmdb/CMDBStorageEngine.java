@@ -1,4 +1,7 @@
 package com.dtstep.lighthouse.core.storage.cmdb;
+
+import com.dtstep.lighthouse.core.dao.RDBMSConfiguration;
+
 /*
  * Copyright (C) 2022-2024 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -21,4 +24,7 @@ public interface CMDBStorageEngine<CONNECTION> {
     CONNECTION getConnection() throws Exception;
 
     void closeConnection() throws Exception;
+
+    RDBMSConfiguration getConfiguration() throws Exception;
+
 }

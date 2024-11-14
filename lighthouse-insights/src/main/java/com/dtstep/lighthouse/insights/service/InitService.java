@@ -28,5 +28,7 @@ public interface InitService {
 
     void initStorageEngine() throws Exception;
 
-    void cmdbUpgrade() throws Exception;
+    void createCMDBTablesIfNotExist() throws Exception;
+
+    void createCMDBColumnsIfNotExist() throws Exception;
 }
