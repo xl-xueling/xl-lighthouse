@@ -32,11 +32,16 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
     const { Row, Col } = Grid;
 
         React.useImperativeHandle(ref,() => ({
-            getData
+            getData,
+            setFieldsValue
         }));
 
         const getData = () => {
             return form.getFieldsValue();
+        }
+
+        const setFieldsValue = (values) => {
+            form.setFieldsValue(values);
         }
 
     useEffect(() => {
