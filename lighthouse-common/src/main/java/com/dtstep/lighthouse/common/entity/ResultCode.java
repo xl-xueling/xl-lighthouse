@@ -92,6 +92,8 @@ public enum ResultCode {
 
     renderConfigConfigCannotBeEmpty("2008","renderConfigConfigCannotBeEmpty"),
 
+    commonlyFiltersExceedLimit("2009","commonlyFiltersExceedLimit"),
+
     orderCreateRepeatSubmit("2301","orderCreateRepeatSubmit"),
 
     orderTypeNotExists("2302","orderTypeNotExists"),
@@ -193,6 +195,9 @@ public enum ResultCode {
     alarmSettingsTestingError ("70003","alarmSettingsTestingError"),
 
     alarmSettingsUniqueCodeExist ("70004","alarmSettingsUniqueCodeExist"),
+
+
+
 
     ;
 
