@@ -17,10 +17,23 @@ package com.dtstep.lighthouse.insights.vo;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.modal.RenderConfig;
+import com.dtstep.lighthouse.insights.dto.CommonlyFilterConfigParam;
+
+import java.util.List;
 
 public class StatExtendVO extends StatVO {
 
     private RenderConfig renderConfig;
+
+    private List<CommonlyFilterConfigParam> commonlyFilters;
+
+    public List<CommonlyFilterConfigParam> getCommonlyFilters() {
+        return commonlyFilters;
+    }
+
+    public void setCommonlyFilters(List<CommonlyFilterConfigParam> commonlyFilters) {
+        this.commonlyFilters = commonlyFilters;
+    }
 
     public StatExtendVO(StatVO stat) {
         super(stat);

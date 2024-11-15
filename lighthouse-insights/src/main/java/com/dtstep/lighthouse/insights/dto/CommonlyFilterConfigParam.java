@@ -1,10 +1,7 @@
 package com.dtstep.lighthouse.insights.dto;
 
-import com.dtstep.lighthouse.common.modal.RenderFilterConfig;
-
 import java.io.Serializable;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 public class CommonlyFilterConfigParam implements Serializable {
 

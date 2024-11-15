@@ -50,6 +50,9 @@
             <if test="updateTime != null">
                 `update_time` = #{updateTime},
             </if>
+            <if test="config != null">
+                `config` = #{config},
+            </if>
         </set>
         WHERE hash = #{hash}
     </update>
