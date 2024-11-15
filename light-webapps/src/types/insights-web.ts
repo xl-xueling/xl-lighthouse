@@ -8,6 +8,7 @@ import {
 } from "@/types/insights-common";
 import Decimal from "decimal.js";
 import {Alarm} from "@/types/alarm";
+import {CommonlyFilterConfigParam} from "../../../../light-pro-webapps/.yalc/light-webapps/build/types/stat";
 
 export interface HomeData {
     projectCount?:number;
@@ -147,6 +148,7 @@ export interface Stat {
     desc?:string;
     templateEntity?:any,
     state?:StatStateEnum;
+    commonlyFilters?:CommonlyFilterConfigParam[],
     renderConfig?:{datepicker:RenderDateConfig,filters:Array<RenderFilterConfig>,charts:Array<RenderChartConfig>}
     permissions?:PermissionEnum[];
     builtIn?:boolean;

@@ -44,5 +44,5 @@ public interface RelationService {
 
     int count(RelationQueryParam queryParam);
 
-    Relation queryRelation(RelationQueryParam queryParam);
+    Relation queryRelationByHash(String hash);
 }

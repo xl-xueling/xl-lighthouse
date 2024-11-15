@@ -195,7 +195,7 @@ public class RelationServiceImpl implements RelationService {
     }
 
     @Override
-    public Relation queryRelation(RelationQueryParam queryParam) {
-        return relationDao.queryRelation(queryParam);
+    public Relation queryRelationByHash(String hash) {
+        return relationDao.queryRelationByHash(hash);
     }
 }

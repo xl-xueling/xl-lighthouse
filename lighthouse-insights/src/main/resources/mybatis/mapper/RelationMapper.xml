@@ -127,18 +127,12 @@
         </where>
     </select>
 
-    <select id="queryRelation" resultMap="relationResultMap">
+    <select id="queryRelationByHash" resultMap="relationResultMap">
         SELECT r.`id`,r.`subject_id`, r.`relation_type`,r.`resource_id`, r.`resource_type`, r.`create_time` ,r.`config`
         FROM ldp_relations r
         <where>
-            <if test="queryParam.subjectId != null">
-                AND subject_id = #{queryParam.subjectId}
-            </if>
-            <if test="queryParam.relationType != null">
-                AND relation_type = #{queryParam.relationType.relationType}
-            </if>
-            <if test="queryParam.resourceId != null">
-                AND resource_id = #{queryParam.resourceId}
+            <if test="hash != null">
+                AND hash = #{hash}
             </if>
         </where>
         limit 1
