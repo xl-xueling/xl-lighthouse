@@ -62,6 +62,22 @@ export async function requestGetSecretKey(data) :Promise<ResultData<string>> {
     })
 }
 
+export async function requestQueryDimensList(data):Promise<ResultData<Array<string>>> {
+    return request({
+        url:'/group/queryDimensList',
+        method:'POST',
+        data,
+    })
+}
+
+export async function requestQueryDimensValueList(data):Promise<ResultData<Array<string>>> {
+    return request({
+        url:'/group/queryDimensValueList',
+        method:'POST',
+        data,
+    })
+}
+
 
 
 
