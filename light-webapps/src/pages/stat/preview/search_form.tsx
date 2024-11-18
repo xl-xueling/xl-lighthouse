@@ -56,7 +56,7 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
     const Option = Select.Option;
 
     const [filtersConfig,setFiltersConfig] = useState<Array<RenderFilterConfig>>([]);
-
+    const [resetTime, setResetTime] = useState<any>(Date.now());
     const [form] = useForm();
 
     const handleSubmit = () => {
@@ -81,6 +81,7 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
         form.resetFields();
         const initDateParam = getInitDateParam();
         form.setFieldValue("date",initDateParam);
+        setResetTime(Date.now());
     };
 
     const handleTreeSelectChange =  (key) => (selectedValue, selectedLabel) => {
@@ -94,11 +95,11 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
             )
         }if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_SELECT){
             return (
-                <TreeSelectorExtend onChange={handleTreeSelectChange} placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"} treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)}/>
+                <TreeSelectorExtend resetTime={resetTime} onChange={handleTreeSelectChange} placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"} treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)}/>
             )
         }else{
             return (
-                <TreeSelectorExtend onChange={handleTreeSelectChange} placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"} treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)}/>
+                <TreeSelectorExtend resetTime={resetTime} onChange={handleTreeSelectChange} placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"} treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)}/>
             )
         }
     }

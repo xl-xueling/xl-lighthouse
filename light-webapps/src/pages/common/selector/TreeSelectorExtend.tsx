@@ -5,9 +5,13 @@ import {ArcoTreeNode} from "@/types/insights-web";
 import {useUpdateEffect} from "ahooks";
 
 
-export default function TreeSelectorExtend ({treeData,onChange,placeholder = 'Please Select'}){
+export default function TreeSelectorExtend ({resetTime , treeData,onChange,placeholder = 'Please Select'}){
 
     const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+
+    useUpdateEffect(() => {
+        setSelectedKeys([]);
+    },[resetTime])
 
     const handleSelectChange = (value: string[]) => {
         setSelectedKeys(value);
