@@ -577,6 +577,21 @@ public class HBaseWarehouseStorageEngine implements WarehouseStorageEngine {
         }
     }
 
+    @Override
+    public void deletes(String tableName, List<String> keyList) throws Exception {
+        try(Table table = getConnection().getTable(getTableName(tableName))){
+            List<Delete> deletes = new ArrayList<>();
+            for(String key : keyList){
+                Delete delete = new Delete(Bytes.toBytes(key));
+                deletes.add(delete);
+            }
+            table.delete(deletes);
+        }catch (Exception ex){
+            logger.error("delete table {} data error!",tableName,ex);
+            throw ex;
+        }
+    }
+
     private static final int batchSalt = 4;
 
     private static final String COMPARE_PUT_LOCK_PREFIX = "COMPARE_PUT_LOCK";

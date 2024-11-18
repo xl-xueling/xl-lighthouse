@@ -638,6 +638,33 @@ public class MySQLWarehouseStorageEngine implements WarehouseStorageEngine {
     }
 
     @Override
+    public void deletes(String tableName, List<String> keyList) throws Exception {
+        if (keyList == null || keyList.isEmpty()) {
+            logger.warn("Key list is empty, nothing to delete.");
+            return;
+        }
+        StringBuilder sql = new StringBuilder("DELETE FROM " + tableName + " WHERE k IN (");
+        sql.append("?,".repeat(keyList.size()));
+        sql.setLength(sql.length() - 1);
+        sql.append(")");
+        Connection connection = null;
+        PreparedStatement ps = null;
+        try {
+            connection = getConnection();
+            ps = connection.prepareStatement(sql.toString());
+            for (int i = 0; i < keyList.size(); i++) {
+                ps.setString(i + 1, keyList.get(i));
+            }
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            logger.error("Batch delete mysql data error!", ex);
+            ex.printStackTrace();
+        } finally {
+            release(null, ps, connection);
+        }
+    }
+
+    @Override
     public boolean isAppendable(String tableName) throws Exception {
         return true;
     }

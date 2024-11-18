@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.insights.service;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.insights.dto.DimensValueDeleteParam;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.insights.vo.GroupVO;
@@ -42,4 +43,12 @@ public interface GroupService {
     String getSecretKey(Integer id);
 
     List<Group> queryByProjectId(Integer projectId);
+
+    List<String> queryDimensList(Integer id) throws Exception;
+
+    List<String> queryDimensValueList(Integer groupId,String dimens) throws Exception;
+
+    void deleteDimensValue(List<DimensValueDeleteParam> deleteParams) throws Exception;
+
+    void clearDimensValue(Integer groupId) throws Exception;
 }

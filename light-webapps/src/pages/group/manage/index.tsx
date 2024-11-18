@@ -31,6 +31,10 @@ import GroupUpdatePanel from "@/pages/group/update";
 import SecretKeyModal from "@/pages/group/basic/secret_key";
 import {LimitingSettingsModal} from "@/pages/group/limiting/LimitingSettingsModal";
 import {GroupManageContext} from "@/pages/common/context";
+import { HiOutlineRectangleGroup } from "react-icons/hi2";
+import { CiMap } from "react-icons/ci";
+import { RiRecycleLine } from "react-icons/ri";
+import {DimensManageModal} from "@/pages/group/dimens/DimensManageModal";
 
 export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
     const TabPane = Tabs.TabPane;
@@ -38,6 +42,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
     const [showStatAddPanel, setShowsStatAddPanel] = useState(false);
     const [showGroupEditPanel, setShowGroupEditPanel] = useState(false);
     const [showLimitingManagerPanel, setShowLimitingManagerPanel] = useState(false);
+    const [showDimensManageModal,setShowDimensManageModal] = useState(false);
     const [showSecretKeyModal, setShowSecretKeyModal] = useState(false);
     const [formParams,setFormParams] = useState(null);
     const [loading,setLoading] = useState<boolean>(true);
@@ -67,6 +72,10 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
             }
             case 'limitedRecord':{
                 setShowLimitingManagerPanel(true);
+                break;
+            }
+            case 'dimensManage':{
+                setShowDimensManageModal(true);
                 break;
             }
             case 'secretKey': {
@@ -175,8 +184,11 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                                             <Menu.Item key={'limitedRecord'}>
                                                 <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<HiMiniBoltSlash/>} />&nbsp;&nbsp;
                                                 {t['groupManage.operations.button.limiting.settings']}</Menu.Item>
+                                            <Menu.Item key={'dimensManage'}>
+                                                <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<RiRecycleLine size={13}/>} />&nbsp;&nbsp;
+                                                {t['groupManage.operations.button.dimensManage']}</Menu.Item>
                                             <Menu.Item key={'secretKey'}>
-                                                <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<RiShieldKeyholeLine/>} />&nbsp;&nbsp;
+                                                <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<RiShieldKeyholeLine size={13}/>} />&nbsp;&nbsp;
                                                 {t['groupManage.operations.button.secret.key']}</Menu.Item>
                                             <Menu.Item key={'deleteGroup'}>
                                                 <Button type={"secondary"} shape={"circle"} size={"mini"} icon={<IconDelete/>} />&nbsp;&nbsp;
@@ -230,6 +242,7 @@ export default function GroupManagePanel({projectInfo,groupId,deleteCallback}) {
                         {showGroupEditPanel && <GroupUpdatePanel groupInfo={groupInfo} onClose={() => setShowGroupEditPanel(false)} callback={callback}/>}
                         {showLimitingManagerPanel && <LimitingSettingsModal groupInfo={groupInfo} onClose={() => setShowLimitingManagerPanel(false)}/>}
                         {showSecretKeyModal && <SecretKeyModal groupId={groupInfo?.id} onClose={() => setShowSecretKeyModal(false)}/>}
+                       {showDimensManageModal && <DimensManageModal groupInfo={groupInfo} onClose={() => setShowDimensManageModal(false)}/>}
                   </Card>
               </Spin>
             </GroupManageContext.Provider>

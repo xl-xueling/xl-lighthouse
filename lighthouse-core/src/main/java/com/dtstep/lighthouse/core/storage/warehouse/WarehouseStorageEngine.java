@@ -52,6 +52,8 @@ public interface WarehouseStorageEngine {
 
     void delete(String tableName,String key) throws Exception;
 
+    void deletes(String tableName,List<String> keyList) throws Exception;
+
     boolean isAppendable(String tableName) throws Exception;
 
     long getTableMaxValidPeriod() throws Exception;

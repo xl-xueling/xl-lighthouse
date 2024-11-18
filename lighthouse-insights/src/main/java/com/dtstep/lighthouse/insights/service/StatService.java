@@ -40,6 +40,8 @@ public interface StatService {
 
     List<Stat> queryByProjectId(Integer projectId);
 
+    List<Stat> queryByGroupId(Integer groupId);
+
     ListData<StatVO> queryList(StatQueryParam queryParam, Integer pageNum, Integer pageSize);
 
     List<StatVO> queryByIds(List<Integer> ids) throws Exception;

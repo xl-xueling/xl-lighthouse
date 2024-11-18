@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.insights.service.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.constant.StatConst;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ServiceResult;
 import com.dtstep.lighthouse.common.entity.group.GroupExtEntity;
@@ -25,21 +26,29 @@ import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
 import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.common.modal.Column;
 import com.dtstep.lighthouse.common.modal.Stat;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.formula.FormulaTranslate;
+import com.dtstep.lighthouse.core.rowkey.KeyGenerator;
+import com.dtstep.lighthouse.core.rowkey.impl.DefaultKeyGenerator;
+import com.dtstep.lighthouse.core.storage.dimens.DimensStorageSelector;
+import com.dtstep.lighthouse.core.storage.warehouse.WarehouseStorageEngineProxy;
 import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
+import com.dtstep.lighthouse.core.wrapper.DimensDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.GroupDBWrapper;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.dtstep.lighthouse.insights.dao.GroupDao;
 import com.dtstep.lighthouse.insights.dao.ProjectDao;
+import com.dtstep.lighthouse.insights.dto.DimensValueDeleteParam;
 import com.dtstep.lighthouse.insights.dto.GroupQueryParam;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.modal.Group;
 import com.dtstep.lighthouse.common.modal.ResourceDto;
 import com.dtstep.lighthouse.insights.service.GroupService;
 import com.dtstep.lighthouse.insights.service.ResourceService;
+import com.dtstep.lighthouse.insights.service.StatService;
 import com.dtstep.lighthouse.insights.vo.GroupVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -67,7 +76,12 @@ public class GroupServiceImpl implements GroupService {
     private ProjectDao projectDao;
 
     @Autowired
+    private StatService statService;
+
+    @Autowired
     private ResourceService resourceService;
+
+    private static final KeyGenerator keyGenerator = new DefaultKeyGenerator();
 
     @Override
     public ListData<GroupVO> queryList(GroupQueryParam groupQueryParam, Integer pageNum, Integer pageSize) throws Exception {
@@ -196,5 +210,79 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public String getSecretKey(Integer id) {
         return groupDao.getSecretKey(id);
+    }
+
+    @Override
+    public List<String> queryDimensList(Integer id) throws Exception{
+        GroupExtEntity groupEntity = queryById(id);
+        if(groupEntity == null){
+            return null;
+        }
+        List<Stat> statList = statService.queryByGroupId(id);
+        List<String> dimensList = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(statList)){
+            List<Column> columnList = groupEntity.getColumns();
+            for(Stat stat : statList){
+                String template = stat.getTemplate();
+                ServiceResult<TemplateEntity> serviceResult = TemplateParser.parseConfig(new TemplateContext(stat.getId(),template,stat.getTimeparam(),columnList));
+                if(!serviceResult.isSuccess()){
+                    logger.error("load stat error,id:{},template:{}.", stat.getId(),template);
+                    continue;
+                }
+                String dimens = serviceResult.getData().getDimens();
+                if(!StringUtil.isEmpty(dimens)){
+                    List<Column> dimensRelatedColumns = FormulaTranslate.queryRelatedColumns(columnList,dimens);
+                    if(CollectionUtils.isNotEmpty(dimensRelatedColumns)){
+                        for(Column relatedColumn : dimensRelatedColumns){
+                            String columnName = relatedColumn.getName();
+                            if(!dimensList.contains(columnName)){
+                                dimensList.add(columnName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return dimensList;
+    }
+
+    @Override
+    public List<String> queryDimensValueList(Integer groupId, String dimens) throws Exception {
+        GroupExtEntity groupEntity = queryById(groupId);
+        if(groupEntity == null){
+            return null;
+        }
+        return DimensStorageSelector.query(groupEntity,dimens, null, StatConst.DIMENS_THRESHOLD_LIMIT_COUNT);
+    }
+
+    @Override
+    public void deleteDimensValue(List<DimensValueDeleteParam> deleteParams) throws Exception {
+        List<String> keyList = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(deleteParams)){
+            for(DimensValueDeleteParam deleteParam : deleteParams){
+                int groupId = deleteParam.getGroupId();
+                Group group = GroupDBWrapper.queryById(groupId);
+                if(group == null){
+                    continue;
+                }
+                String dimens = deleteParam.getDimens();
+                String dimensValue = deleteParam.getDimensValue();
+                String rowKey = keyGenerator.dimensKey(group,dimens,dimensValue);
+                keyList.add(rowKey);
+            }
+        }
+        WarehouseStorageEngineProxy.getInstance().deletes(StatConst.DIMENS_STORAGE_TABLE,keyList);
+    }
+
+    @Override
+    public void clearDimensValue(Integer groupId) throws Exception {
+        Group dbGroup = queryById(groupId);
+        if(dbGroup == null){
+            return;
+        }
+        Group group = new Group();
+        group.setId(groupId);
+        group.setDataVersion(dbGroup.getDataVersion() + 1);
+        update(group);
     }
 }

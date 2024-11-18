@@ -441,4 +441,11 @@ public class StatServiceImpl implements StatService {
     public List<DBStatistics> getTopDepartmentStatSize() {
         return statDao.getTopDepartmentStatSize();
     }
+
+    @Override
+    public List<Stat> queryByGroupId(Integer groupId) {
+        StatQueryParam statQueryParam = new StatQueryParam();
+        statQueryParam.setGroupIds(List.of(groupId));
+        return statDao.queryList(statQueryParam);
+    }
 }

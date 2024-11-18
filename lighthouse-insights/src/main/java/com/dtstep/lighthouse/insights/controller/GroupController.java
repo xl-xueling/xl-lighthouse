@@ -147,4 +147,32 @@ public class GroupController {
         List<Group> groupList = groupService.queryByProjectId(queryParam.getProjectId());
         return ResultData.success(groupList);
     }
+
+    @RequestMapping("/group/queryDimensList")
+    public ResultData<List<String>> queryDimensList(@Validated @RequestBody IDParam idParam) throws Exception {
+        Integer id = idParam.getId();
+        List<String> dimensList = groupService.queryDimensList(id);
+        return ResultData.success(dimensList);
+    }
+
+    @RequestMapping("/group/queryDimensValueList")
+    public ResultData<List<String>> queryDimensValueList(@Validated @RequestBody GroupDimensQueryParam queryParam) throws Exception {
+        Integer groupId = queryParam.getGroupId();
+        String dimens = queryParam.getDimens();
+        List<String> dimensValueList = groupService.queryDimensValueList(groupId,dimens);
+        return ResultData.success(dimensValueList);
+    }
+
+    @RequestMapping("/group/deleteDimensValue")
+    public ResultData<Integer> deleteDimensValue(@Validated @RequestBody List<DimensValueDeleteParam> deleteParams) throws Exception {
+        groupService.deleteDimensValue(deleteParams);
+        return ResultData.success(null);
+    }
+
+    @RequestMapping("/group/clearDimensValue")
+    public ResultData<Integer> clearDimensValue(@Validated @RequestBody IDParam idParam) throws Exception {
+        Integer groupId = idParam.getId();;
+        groupService.clearDimensValue(groupId);
+        return ResultData.success(null);
+    }
 }

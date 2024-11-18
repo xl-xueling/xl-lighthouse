@@ -70,6 +70,9 @@
             <if test="desc != null">
                 `desc` = #{desc},
             </if>
+            <if test="dataVersion != null">
+                `data_version` = #{dataVersion},
+            </if>
             <if test="updateTime != null">
                 `update_time` = #{updateTime},
             </if>
