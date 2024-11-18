@@ -148,6 +148,19 @@ export const translateToCascadeTreeNodes = (list,parentKey = ""):Array<ArcoTreeN
 }
 
 
+export const isSingleLevel = (nodes: Array<ArcoTreeNode>): boolean => {
+    if (!nodes || nodes.length === 0) {
+        return true;
+    }
+    for (const node of nodes) {
+        if (node.children && node.children.length > 0) {
+            return false;
+        }
+    }
+    return true;
+};
+
+
 export const countNodesByType = (list:Array<TreeNode>, targetType:string) => {
     let count = 0;
     function traverse(node) {

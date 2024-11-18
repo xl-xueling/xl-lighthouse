@@ -19,6 +19,7 @@ import {formatString, getRandomString} from "@/utils/util";
 import StructurePanel from "@/pages/metricset/structure/structure";
 import dayjs from "dayjs";
 import {StatInfoPreviewContext} from "@/pages/common/context";
+import TreeSelectorExtend from "@/pages/common/selector/TreeSelectorExtend";
 
 const { useForm } = Form;
 
@@ -93,46 +94,11 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
             )
         }if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_SELECT){
             return (
-                <TreeSelect size={"small"}
-                            onChange={handleTreeSelectChange}
-                            placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"}
-                            multiple={true}
-                            treeCheckable={true}
-                            treeProps={{
-                                height: 200,
-                                renderTitle: (props) => {
-                                    return (
-                                        <span style={{ whiteSpace: 'nowrap', }} >
-                                            {props.title}
-                                        </span>
-                                    );
-                                },
-                            }}
-                            treeCheckStrictly={false}
-                            allowClear={true}
-                            showSearch={true}
-                            treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)} />
+                <TreeSelectorExtend onChange={handleTreeSelectChange} placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"} treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)}/>
             )
         }else{
             return (
-                <TreeSelect size={"small"}
-                            placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"}
-                            multiple={true}
-                            treeCheckable={true}
-                            treeProps={{
-                                height: 200,
-                                renderTitle: (props) => {
-                                    return (
-                                        <span style={{ whiteSpace: 'nowrap', }} >
-                                            {props.title}
-                                        </span>
-                                    );
-                                },
-                            }}
-                            treeCheckStrictly={false}
-                            allowClear={true}
-                            showSearch={true}
-                            treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)} />
+                <TreeSelectorExtend onChange={handleTreeSelectChange} placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"} treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)}/>
             )
         }
     }
