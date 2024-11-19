@@ -43,7 +43,7 @@ public class TestGroupService {
     @Test
     public void testQueryDimensValuesList() throws Exception {
         int groupId = 100309;
-        List<String> list = groupService.queryDimensValueList(groupId,"province");
+        List<String> list = groupService.queryDimensValueList(groupId,"behavior_type");
         for(String dimensValue : list){
             System.out.println("dimensValue:" + dimensValue);
         }
@@ -54,10 +54,20 @@ public class TestGroupService {
         int groupId = 100309;
         List<DimensValueDeleteParam> deleteParams = new ArrayList<>();
         DimensValueDeleteParam deleteParam = new DimensValueDeleteParam();
-        deleteParam.setDimensValue("山东省");
+        deleteParam.setDimensValue("2");
         deleteParam.setGroupId(groupId);
-        deleteParam.setDimens("province");
+        deleteParam.setDimens("behavior_type");
         deleteParams.add(deleteParam);
         groupService.deleteDimensValue(deleteParams);
+        List<String> list = groupService.queryDimensValueList(groupId,"behavior_type");
+        for(String dimensValue : list){
+            System.out.println("dimensValue:" + dimensValue);
+        }
+    }
+
+    @Test
+    public void testClearDimensValue() throws Exception {
+        int groupId = 100309;
+        groupService.clearDimensValue(groupId);
     }
 }

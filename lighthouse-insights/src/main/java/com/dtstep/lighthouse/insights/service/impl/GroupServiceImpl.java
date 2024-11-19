@@ -268,7 +268,7 @@ public class GroupServiceImpl implements GroupService {
                 String dimens = deleteParam.getDimens();
                 String dimensValue = deleteParam.getDimensValue();
                 String rowKey = keyGenerator.dimensKey(group,dimens,dimensValue);
-                keyList.add(rowKey);
+                keyList.add(rowKey+";v");
             }
         }
         WarehouseStorageEngineProxy.getInstance().deletes(StatConst.DIMENS_STORAGE_TABLE,keyList);
@@ -276,13 +276,11 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void clearDimensValue(Integer groupId) throws Exception {
-        Group dbGroup = queryById(groupId);
+        Group dbGroup = groupDao.queryById(groupId);
         if(dbGroup == null){
             return;
         }
-        Group group = new Group();
-        group.setId(groupId);
-        group.setDataVersion(dbGroup.getDataVersion() + 1);
-        update(group);
+        dbGroup.setDataVersion(dbGroup.getDataVersion() + 1);
+        update(dbGroup);
     }
 }

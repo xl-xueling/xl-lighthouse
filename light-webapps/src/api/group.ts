@@ -79,5 +79,21 @@ export async function requestQueryDimensValueList(data):Promise<ResultData<Array
 }
 
 
+export async function requestDeleteDimensValue(data):Promise<ResultData> {
+    return request({
+        url:'/group/deleteDimensValue',
+        method:'POST',
+        data,
+    })
+}
+
+export async function requestClearDimensValue(data):Promise<ResultData> {
+    return request({
+        url:'/group/clearDimensValue',
+        method:'POST',
+        data,
+    })
+}
+
 
 

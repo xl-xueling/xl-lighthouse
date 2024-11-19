@@ -16,7 +16,12 @@ import {
 import useLocale from "@/utils/useLocale";
 import locale from "./locale/index";
 import {getRandomString} from "@/utils/util";
-import {requestQueryDimensList, requestQueryDimensValueList} from "@/api/group";
+import {
+    requestClearDimensValue,
+    requestDeleteDimensValue,
+    requestQueryDimensList,
+    requestQueryDimensValueList
+} from "@/api/group";
 import {Simulate} from "react-dom/test-utils";
 import {useUpdateEffect} from "ahooks";
 
@@ -77,6 +82,33 @@ export function DimensManageModal({groupInfo,onClose}){
         })
     }
 
+    const handlerDeleteDimensValue = async (dimensValue) => {
+        const requestParam = {
+            groupId:groupInfo?.id,
+            dimens:currentDimens,
+            dimensValue:dimensValue,
+        };
+        await requestDeleteDimensValue([requestParam]).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                setDimensValueList(dimensValueList.filter(x => x.dimensValue !== dimensValue));
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        })
+    }
+
+    const handlerClearDimensValue = async () => {
+        await requestClearDimensValue({id:groupInfo?.id}).then((response) => {
+            const {code, data ,message} = response;
+            if(code == '0'){
+                // setDimensValueList(dimensValueList.filter(x => x.dimensValue !== dimensValue));
+            }else{
+                Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+            }
+        })
+    }
+
     useUpdateEffect(() => {
         fetchDimensValueList().then();
     },[currentDimens])
@@ -96,12 +128,10 @@ export function DimensManageModal({groupInfo,onClose}){
             headerCellStyle: { paddingLeft: '15px',width:'150px' },
             render: (value, record) => {
                 let deleteButton;
-                deleteButton = <Button key={getRandomString()}
-                        type="text"
-                        size="mini">
-                    {'删除'}
-                </Button>
-                return  <Space key={getRandomString()} size={0} direction="horizontal">{[deleteButton]}</Space>;
+                deleteButton = <Popconfirm key={getRandomString()} focusLock position={"tr"} title='Confirm' content={'是否确认删除当前维度值？'} onOk={function () { return handlerDeleteDimensValue(record.dimensValue); }}>
+                            <Button type="text" size="mini">{'删除'}</Button>
+                    </Popconfirm>
+                return <Space key={getRandomString()} size={0} direction="horizontal">{[deleteButton]}</Space>;
             }
         },
     ];
@@ -143,7 +173,9 @@ export function DimensManageModal({groupInfo,onClose}){
                             </Space>}
                     </TabPane>
                     <TabPane key='2' title='批量删除' style={{padding:'10px'}}>
-                        <Button size={'mini'}>全部删除</Button>
+                        <Popconfirm key={getRandomString()} focusLock position={"tr"} title='Confirm' content={'是否确认清除当前统计组所有维度值？'} onOk={function () { return handlerClearDimensValue(); }}>
+                            <Button size={'mini'}>全部删除</Button>
+                        </Popconfirm>
                         <Typography.Text style={{fontSize:12}}>
                             （将清除当前统计组所有维度筛选参数，随着原始消息的后续接入会重新累积维度数据，只清除筛选参数，原统计结果不受影响！）
                         </Typography.Text>
