@@ -38,11 +38,11 @@ export function DimensManageModal({groupInfo,onClose}){
     const [initialFlag,setInitialFlag] = useState<boolean>(false);
     const [currentDimens,setCurrentDimens] = useState<string>(null);
     const [dimensValueList,setDimensValueList] = useState<Array<any>>([]);
+    const [reloadTime,setReloadTime] = useState<number>(Date.now());
 
     const fetchQueryDimensList = async () => {
         setLoading(true);
         await requestQueryDimensList({id:groupInfo?.id}).then((response) => {
-            console.log("data is:" + JSON.stringify(response));
             const {code, data ,message} = response;
             if(code == '0'){
                 setDimensList(data);
@@ -92,6 +92,7 @@ export function DimensManageModal({groupInfo,onClose}){
             const {code, data ,message} = response;
             if(code == '0'){
                 setDimensValueList(dimensValueList.filter(x => x.dimensValue !== dimensValue));
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['dimensManage.tabs.label.singleValueDelete.operations.delete.success']});
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -102,7 +103,8 @@ export function DimensManageModal({groupInfo,onClose}){
         await requestClearDimensValue({id:groupInfo?.id}).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
-                // setDimensValueList(dimensValueList.filter(x => x.dimensValue !== dimensValue));
+                setReloadTime(Date.now());
+                Notification.info({style: { width: 420 }, title: 'Notification', content: t['dimensManage.tabs.label.batchValueDelete.success']});
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
             }
@@ -111,25 +113,25 @@ export function DimensManageModal({groupInfo,onClose}){
 
     useUpdateEffect(() => {
         fetchDimensValueList().then();
-    },[currentDimens])
+    },[currentDimens,reloadTime])
 
     useEffect(() => {
         fetchQueryDimensList().then();
-    },[])
+    },[reloadTime])
 
     const columns: TableColumnProps[] = [
         {
-            title: 'DimensValue',
+            title: t['dimensManage.label.dimensValue'],
             dataIndex: 'dimensValue',
         },
         {
-            title: 'Operations',
+            title: t['dimensManage.label.operations'],
             dataIndex: 'operations',
             headerCellStyle: { paddingLeft: '15px',width:'150px' },
             render: (value, record) => {
                 let deleteButton;
-                deleteButton = <Popconfirm key={getRandomString()} focusLock position={"tr"} title='Confirm' content={'是否确认删除当前维度值？'} onOk={function () { return handlerDeleteDimensValue(record.dimensValue); }}>
-                            <Button type="text" size="mini">{'删除'}</Button>
+                deleteButton = <Popconfirm key={getRandomString()} focusLock position={"tr"} title='Confirm' content={t['dimensManage.tabs.label.singleValueDelete.operations.delete.confirm']} onOk={function () { return handlerDeleteDimensValue(record.dimensValue); }}>
+                            <Button type="text" size="mini">{t['dimensManage.tabs.label.singleValueDelete.operations.delete']}</Button>
                     </Popconfirm>
                 return <Space key={getRandomString()} size={0} direction="horizontal">{[deleteButton]}</Space>;
             }
@@ -149,8 +151,8 @@ export function DimensManageModal({groupInfo,onClose}){
             onCancel={onClose}
             footer={null}>
             <Spin loading={loading} style={{ display: 'block'}}>
-                <Tabs size={'small'} defaultActiveTab='1' tabPosition={'top'} type={'card-gutter'}>
-                    <TabPane key='1' title='键值清理' style={{padding:'6px'}}>
+                <Tabs destroyOnHide={true} size={'small'} defaultActiveTab='1' tabPosition={'top'} type={'card-gutter'}>
+                    <TabPane key='1' title={t['dimensManage.tabs.label.singleValueDelete']} style={{padding:'6px'}}>
                             {initialFlag && <Space size={10} direction={"vertical"} style={{width:'100%'}}>
                                 <Row>
                                     <Col span={17}>
@@ -160,7 +162,6 @@ export function DimensManageModal({groupInfo,onClose}){
                                             style={{ width: 300 }}
                                             onChange={changeCurrentDimens}
                                             defaultValue={currentDimens}>
-
                                             {dimensList.map((option, index) => (
                                                 <Option key={option} value={option}>
                                                     {option}
@@ -172,12 +173,12 @@ export function DimensManageModal({groupInfo,onClose}){
                                 <Table rowKey={'dimensValue'} size={'mini'} columns={columns} data={dimensValueList} />
                             </Space>}
                     </TabPane>
-                    <TabPane key='2' title='批量删除' style={{padding:'10px'}}>
-                        <Popconfirm key={getRandomString()} focusLock position={"tr"} title='Confirm' content={'是否确认清除当前统计组所有维度值？'} onOk={function () { return handlerClearDimensValue(); }}>
-                            <Button size={'mini'}>全部删除</Button>
+                    <TabPane key='2' title={t['dimensManage.tabs.label.batchValueDelete']} style={{padding:'10px'}}>
+                        <Popconfirm key={getRandomString()} focusLock position={"tr"} title='Confirm' content={t['dimensManage.tabs.label.batchValueDelete.confirm']} onOk={function () { return handlerClearDimensValue(); }}>
+                            <Button size={'mini'}>{t['dimensManage.tabs.label.batchValueDelete.button']}</Button>
                         </Popconfirm>
                         <Typography.Text style={{fontSize:12}}>
-                            （将清除当前统计组所有维度筛选参数，随着原始消息的后续接入会重新累积维度数据，只清除筛选参数，原统计结果不受影响！）
+                            {t['dimensManage.tabs.label.batchValueDelete.button.tips']}
                         </Typography.Text>
                     </TabPane>
                 </Tabs>
