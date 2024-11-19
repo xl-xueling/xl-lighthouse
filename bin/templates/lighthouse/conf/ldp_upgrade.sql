@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `ldp_alarms` (
                               `update_time` timestamp NOT NULL,
                               PRIMARY KEY (`id`),
                               KEY `index_title` (`title`),
+                              KEY `index_uniqueCode` (`unique_code`),
                               KEY `index_relationa` (`resource_id`,`resource_type`),
                               KEY `index_create_time` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
