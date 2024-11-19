@@ -60,7 +60,24 @@
                 AND resource_type = #{queryParam.resourceType.resourceType}
             </if>
         </where>
-        order by create_time desc limit 1;
+        order by create_time desc limit 1
+    </select>
+
+    <select id="queryList" resultMap="alarmResultMap">
+        SELECT `id`,`title`,`unique_code`,`divide`,`resource_id`,`resource_type`,`state`
+        ,`match`,`conditions`,`template_id`,`delay`,`silent`,`desc`,`dimens`,`create_time`,`update_time` FROM ldp_alarms
+        <where>
+            <if test="queryParam.resourceId != null">
+                AND resource_id = #{queryParam.resourceId}
+            </if>
+            <if test="queryParam.resourceType != null">
+                AND resource_type = #{queryParam.resourceType.resourceType}
+            </if>
+            <if test="queryParam.search != null">
+                AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search} or unique_code like CONCAT('%', #{queryParam.search}, '%'))
+            </if>
+        </where>
+        order by create_time desc
     </select>
 
     <select id="countByParam" resultType="int">

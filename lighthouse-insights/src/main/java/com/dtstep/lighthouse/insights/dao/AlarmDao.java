@@ -5,6 +5,8 @@ import com.dtstep.lighthouse.common.modal.AlarmQueryParam;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface AlarmDao {
 
@@ -17,4 +19,6 @@ public interface AlarmDao {
     Alarm queryByParam(@Param("queryParam")AlarmQueryParam queryParam);
 
     int countByParam(@Param("queryParam")AlarmQueryParam queryParam);
+
+    List<Alarm> queryList(@Param("queryParam")AlarmQueryParam queryParam);
 }

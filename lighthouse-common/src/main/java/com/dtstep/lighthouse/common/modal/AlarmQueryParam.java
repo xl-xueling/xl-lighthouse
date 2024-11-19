@@ -10,6 +10,8 @@ public class AlarmQueryParam {
 
     private String uniqueCode;
 
+    private String search;
+
     public Integer getResourceId() {
         return resourceId;
     }
@@ -32,5 +34,13 @@ public class AlarmQueryParam {
 
     public void setUniqueCode(String uniqueCode) {
         this.uniqueCode = uniqueCode;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 }
