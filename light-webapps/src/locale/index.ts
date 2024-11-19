@@ -165,7 +165,7 @@ const i18n = {
     'menu.toolbox':'辅助工具',
     'menu.toolbox.filterComponents':'筛选组件',
     'menu.toolbox.apiCaller':'API调用方',
-    'menu.toolbox.alarms':'监控告警',
+    'menu.toolbox.alarms':'告警策略',
     'menu.toolbox.notifications':'消息通知',
     'menu.system':'系统管理',
     'menu.system.department':'部门管理',

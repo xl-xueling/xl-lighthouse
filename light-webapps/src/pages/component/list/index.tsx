@@ -11,7 +11,7 @@ import {
     Breadcrumb, Notification, Divider,
 } from '@arco-design/web-react';
 
-import {IconHome, IconPlus} from "@arco-design/web-react/icon";
+import {IconFolderAdd, IconHome, IconPlus, IconSearch} from "@arco-design/web-react/icon";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import {Component} from "@/types/insights-common";
@@ -128,7 +128,7 @@ export default function ComponentList() {
                         <Input.Search style={{width: '50%'}} placeholder={t['componentList.label.title']} allowClear onSearch={(v) => {handleSearch({search:v})}} />
                     </Grid.Col>
                     <Grid.Col span={8} style={{ textAlign: 'right' }}>
-                        <Button size={"small"} type="primary" onClick={() => setShowCreateModal(true)}>{t['componentList.button.create']}</Button>
+                        <Button size={"small"} type="primary" icon={<IconPlus />} onClick={() => setShowCreateModal(true)}>{t['componentList.button.create']}</Button>
                     </Grid.Col>
                 </Grid.Row>
                 <Divider/>
