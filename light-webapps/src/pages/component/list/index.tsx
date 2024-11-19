@@ -125,7 +125,7 @@ export default function ComponentList() {
             <Card>
                 <Grid.Row justify="space-between" align="center" style={{marginBottom:'15px'}}>
                     <Grid.Col span={16} style={{ textAlign: 'left' }}>
-                        <Input.Search style={{width: 380}} placeholder={t['componentList.label.title']} allowClear onSearch={(v) => {handleSearch({search:v})}} />
+                        <Input.Search style={{width: '50%'}} placeholder={t['componentList.label.title']} allowClear onSearch={(v) => {handleSearch({search:v})}} />
                     </Grid.Col>
                     <Grid.Col span={8} style={{ textAlign: 'right' }}>
                         <Button size={"small"} type="primary" onClick={() => setShowCreateModal(true)}>{t['componentList.button.create']}</Button>
