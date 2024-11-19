@@ -4,6 +4,8 @@ import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 
 public class AlarmQueryParam {
 
+    private Integer userId;
+
     private Integer resourceId;
 
     private ResourceTypeEnum resourceType;
@@ -11,6 +13,14 @@ public class AlarmQueryParam {
     private String uniqueCode;
 
     private String search;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public Integer getResourceId() {
         return resourceId;

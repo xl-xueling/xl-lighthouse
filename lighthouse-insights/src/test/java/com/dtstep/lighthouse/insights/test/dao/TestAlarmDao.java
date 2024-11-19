@@ -73,4 +73,14 @@ public class TestAlarmDao {
         int size = alarmDao.countByParam(queryParam);
         System.out.println("size:" + size);
     }
+
+    @Test
+    public void testQueryList() throws Exception {
+        AlarmQueryParam queryParam = new AlarmQueryParam();
+        queryParam.setUserId(110239);
+        List<Alarm> alarmList = alarmDao.queryList(queryParam);
+        for(Alarm alarm : alarmList){
+            System.out.println("alarm is:" + JsonUtil.toJSONString(alarm));
+        }
+    }
 }

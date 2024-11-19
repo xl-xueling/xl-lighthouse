@@ -64,19 +64,30 @@
     </select>
 
     <select id="queryList" resultMap="alarmResultMap">
-        SELECT `id`,`title`,`unique_code`,`divide`,`resource_id`,`resource_type`,`state`
-        ,`match`,`conditions`,`template_id`,`delay`,`silent`,`desc`,`dimens`,`create_time`,`update_time` FROM ldp_alarms
-        <where>
-            <if test="queryParam.resourceId != null">
-                AND resource_id = #{queryParam.resourceId}
-            </if>
-            <if test="queryParam.resourceType != null">
-                AND resource_type = #{queryParam.resourceType.resourceType}
-            </if>
-            <if test="queryParam.search != null">
-                AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search} or unique_code like CONCAT('%', #{queryParam.search}, '%'))
-            </if>
-        </where>
+        WITH RECURSIVE RoleHierarchy AS (
+        SELECT r.id AS role_id, r.resource_id, r.role_type
+        FROM ldp_permissions p
+        JOIN ldp_roles r ON p.role_id = r.id
+        WHERE p.owner_id = #{queryParam.userId} and p.owner_type = 1
+        UNION ALL
+        SELECT r.id AS role_id, r.resource_id, r.role_type
+        FROM ldp_roles r
+        JOIN RoleHierarchy rh ON r.pid = rh.role_id
+        )
+        SELECT a.`id`, a.`title`, a.`unique_code`, a.`divide`, a.`resource_id`, a.`resource_type`, a.`state`,
+        a.`match`, a.`conditions`, a.`template_id`, a.`delay`, a.`silent`, a.`desc`, a.`dimens`,
+        a.`create_time`, a.`update_time`
+        FROM ldp_alarms a
+        JOIN ldp_stats s ON a.resource_id = s.id
+        WHERE a.resource_type = 6
+        AND a.resource_id IN (
+        SELECT resource_id
+        FROM RoleHierarchy
+        WHERE role_type = 13
+        )
+        <if test="queryParam.search != null">
+            AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search} or unique_code like CONCAT('%', #{queryParam.search}, '%'))
+        </if>
         order by create_time desc
     </select>
 
