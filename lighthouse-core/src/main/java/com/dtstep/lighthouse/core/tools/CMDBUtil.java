@@ -2,6 +2,8 @@ package com.dtstep.lighthouse.core.tools;
 
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngine;
 import com.dtstep.lighthouse.core.storage.cmdb.CMDBStorageEngineProxy;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +50,29 @@ public class CMDBUtil {
                 e.printStackTrace();
             }
         }
+    }
 
+    public static void addIndexIfNotExist(String tableName,String indexName,String columnName) throws Exception{
+        CMDBStorageEngine<Connection> storageEngine = CMDBStorageEngineProxy.getInstance();
+        String checkIndexSql = "SELECT COUNT(1) FROM INFORMATION_SCHEMA.STATISTICS " +
+                "WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND INDEX_NAME = ?";
+        String createIndexSql = String.format("ALTER TABLE %s ADD INDEX %s (%s)", tableName, indexName, columnName);
+        Connection connection = null;
+        try{
+            connection = storageEngine.getConnection();
+            QueryRunner queryRunner = new QueryRunner();
+            Long count = queryRunner.query(connection, checkIndexSql, new ScalarHandler<>(), storageEngine.getConfiguration().getDatabase(), tableName, indexName);
+            if (count == null || count == 0) {
+                queryRunner.update(connection, createIndexSql);
+            }
+        }catch (Exception ex){
+            logger.error("add cmdb index[{}:{}] error!",tableName,indexName);
+        }finally {
+            try {
+                if (connection != null) storageEngine.closeConnection();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

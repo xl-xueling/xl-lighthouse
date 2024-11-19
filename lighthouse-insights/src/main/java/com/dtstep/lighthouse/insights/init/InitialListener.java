@@ -85,6 +85,7 @@ public class InitialListener implements ApplicationListener<ContextRefreshedEven
         try{
             initService.createCMDBTablesIfNotExist();
             initService.createCMDBColumnsIfNotExist();
+            initService.createCMDBIndexIfNotExist();
         }catch (Exception ex){
             logger.error("CMDB database upgrade failed!",ex);
             System.exit(-1);

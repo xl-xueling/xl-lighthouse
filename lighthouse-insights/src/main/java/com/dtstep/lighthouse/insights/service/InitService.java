@@ -31,4 +31,6 @@ public interface InitService {
     void createCMDBTablesIfNotExist() throws Exception;
 
     void createCMDBColumnsIfNotExist() throws Exception;
+
+    void createCMDBIndexIfNotExist() throws Exception;
 }
