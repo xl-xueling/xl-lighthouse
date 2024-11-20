@@ -221,7 +221,7 @@ function PageLayout() {
     if(pathname.startsWith('/metricset/preview/')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"metricset/list"])
     }
-    if(pathname.startsWith('/stat/preview/') || pathname.startsWith('/track/stat/') || pathname.startsWith('/stat/alarm/')){
+    if(pathname.startsWith('/stat/preview/') || pathname.startsWith('/track/stat/')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"stat/list"])
     }
     if(pathname.startsWith('/view/preview/') || pathname.startsWith('/view/simulate/') || pathname.startsWith('/view/track/')){
@@ -240,6 +240,14 @@ function PageLayout() {
     }
     if(pathname.startsWith('/caller/list') || pathname.startsWith('/caller/manage')){
       newSelectedKeys = arrayDistinct([...newSelectedKeys,"caller/list"]);
+      newOpenKeys = arrayDistinct([...newOpenKeys,"toolbox"]);
+    }
+    if(pathname.startsWith('/notification/list')){
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"notification/list"]);
+      newOpenKeys = arrayDistinct([...newOpenKeys,"toolbox"]);
+    }
+    if(pathname.startsWith('/alarm/list') || pathname.startsWith('/stat/alarm/')){
+      newSelectedKeys = arrayDistinct([...newSelectedKeys,"alarm/list"]);
       newOpenKeys = arrayDistinct([...newOpenKeys,"toolbox"]);
     }
     if(pathname.startsWith('/user/list')){
