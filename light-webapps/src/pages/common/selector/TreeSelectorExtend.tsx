@@ -30,7 +30,7 @@ export default function TreeSelectorExtend ({value = [] , treeData,onChange,plac
     };
 
     const getAllSelect = () => {
-        if(treeData && treeData.length <= 30 && isSingleLevel(treeData)){
+        if(treeData && treeData.length > 0 && treeData.length <= 30 && isSingleLevel(treeData)){
             return <>
                 <Divider style={{ margin: 0 }} />
                 <div
