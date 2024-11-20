@@ -9,6 +9,7 @@ const i18n = {
         'statDisplay.chart.empty.warning':'No Data!',
         'statDisplay.commonlyFilters.label':'Filters',
         'statDisplay.commonlyFilters.confirm':'Are you sure you to save current filters data?',
+        'statDisplay.label.selectAll':'All',
     },
     'zh-CN': {
         'statDisplay.breadcrumbItem':'数据指标',
@@ -20,6 +21,7 @@ const i18n = {
         'statDisplay.chart.empty.warning':'暂无数据！',
         'statDisplay.commonlyFilters.label':'筛选项',
         'statDisplay.commonlyFilters.confirm':'是否确定保存当前筛选信息？',
+        'statDisplay.label.selectAll':'全选',
     },
 };
 

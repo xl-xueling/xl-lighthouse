@@ -84,22 +84,22 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
         setResetTime(Date.now());
     };
 
-    const handleTreeSelectChange =  (key) => (selectedValue, selectedLabel) => {
-        console.log("key:" + key);
+    const handleTreeSelectChange =  (field,value) => {
+        form.setFieldValue(field,value);
     }
 
-    const getFilterRender = (renderFilterConfig:RenderFilterConfig) => {
+    const getFilterRender = (field,renderFilterConfig:RenderFilterConfig) => {
         if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_INPUT){
             return (
                 <Input size={"small"} allowClear={true} placeholder={size == 'mini' ? renderFilterConfig.label : "Search Value"}  autoComplete={'off'}/>
             )
         }if(renderFilterConfig.componentType == ComponentTypeEnum.FILTER_SELECT){
             return (
-                <TreeSelectorExtend resetTime={resetTime} onChange={handleTreeSelectChange} placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"} treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)}/>
+                <TreeSelectorExtend value={form.getFieldValue(field)} onChange={(value) => handleTreeSelectChange(field,value)} placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"} treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)}/>
             )
         }else{
             return (
-                <TreeSelectorExtend resetTime={resetTime} onChange={handleTreeSelectChange} placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"} treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)}/>
+                <TreeSelectorExtend value={form.getFieldValue(field)} onChange={(value) => handleTreeSelectChange(field,value)} placeholder={size == 'mini' ? renderFilterConfig.label : "Please Select"} treeData={translateToCascadeTreeNodes(renderFilterConfig.configData)}/>
             )
         }
     }
@@ -179,7 +179,7 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
                         return (
                             <Col span={12} key={index}>
                                 <Form.Item label={option.label} field={option.dimens}>
-                                    {getFilterRender(option)}
+                                    {getFilterRender(option.dimens,option)}
                                 </Form.Item>
                             </Col>
                         );
