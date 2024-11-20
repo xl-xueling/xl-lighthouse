@@ -382,9 +382,9 @@ export function getResourceTypeDescription(t:any,resourceType:ResourceTypeEnum){
 
 export function getAlarmStateDescription(t:any,stateEnum:AlarmStateEnum){
     if(stateEnum == AlarmStateEnum.DISABLE){
-        return <Badge status="error" text={t['basic.alarm.state.disable']}/>;
+        return <Badge status="default" text={t['basic.alarm.state.disable']}/>;
     }else if(stateEnum == AlarmStateEnum.ENABLE){
-        return <Badge status="success" text={t['basic.alarm.state.enable']}/>;
+        return <Badge status="processing" text={t['basic.alarm.state.enable']}/>;
     }
 }
 
