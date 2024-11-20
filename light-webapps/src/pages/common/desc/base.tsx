@@ -1,8 +1,8 @@
 import React from "react";
 import {Badge} from "@arco-design/web-react";
 import {
-    ApproveStateEnum, CallerStateEnum,
-    ChartTypeEnum,
+    ApproveStateEnum,
+    CallerStateEnum,
     ComponentTypeEnum,
     LimitingStrategyEnum,
     OrderStateEnum,
@@ -15,7 +15,7 @@ import {
     StatStateEnum,
     UserStateEnum
 } from "@/types/insights-common";
-import {PiCubeTransparentLight, PiDiamondsFour, PiLinkSimple, PiLockKeyOpenThin, PiLockKeyThin} from "react-icons/pi";
+import {PiDiamondsFour, PiLinkSimple, PiLockKeyThin} from "react-icons/pi";
 import {CiViewTable} from "react-icons/ci";
 import {IconCalendarClock, IconMindMapping, IconStar, IconStarFill, IconTag} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
@@ -24,6 +24,7 @@ import {VscGistSecret, VscOutput} from "react-icons/vsc";
 import {HiMiniBoltSlash} from "react-icons/hi2";
 import {TbBrandVisualStudio} from "react-icons/tb";
 import {formatString} from "@/utils/util";
+import {AlarmStateEnum} from "@/types/alarm";
 
 export function getStatStateDescriptionWithBadge (t: any, value:StatStateEnum) {
     if(value === StatStateEnum.PENDING){
@@ -376,6 +377,14 @@ export function getResourceTypeDescription(t:any,resourceType:ResourceTypeEnum){
         return t['basic.resourceType.group'];
     }else if(resourceType == ResourceTypeEnum.Domain){
         return t['basic.resourceType.domain'];
+    }
+}
+
+export function getAlarmStateDescription(t:any,stateEnum:AlarmStateEnum){
+    if(stateEnum == AlarmStateEnum.DISABLE){
+        return <Badge status="error" text={t['basic.alarm.state.disable']}/>;
+    }else if(stateEnum == AlarmStateEnum.ENABLE){
+        return <Badge status="success" text={t['basic.alarm.state.enable']}/>;
     }
 }
 

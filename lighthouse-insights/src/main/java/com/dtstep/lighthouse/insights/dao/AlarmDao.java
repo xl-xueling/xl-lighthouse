@@ -14,6 +14,8 @@ public interface AlarmDao {
 
     int update(Alarm alarm);
 
+    int deleteById(Integer id);
+
     Alarm queryById(Integer id);
 
     Alarm queryByParam(@Param("queryParam")AlarmQueryParam queryParam);

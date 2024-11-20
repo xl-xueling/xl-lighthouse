@@ -148,4 +148,8 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <delete id="deleteById">
+        delete from ldp_alarms where id = #{id}
+    </delete>
 </mapper>

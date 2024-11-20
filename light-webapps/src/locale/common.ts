@@ -172,6 +172,8 @@ const vi18n = {
         'basic.shortcuts.last3m':'3 Month ago',
         'basic.view.label.lastWeek':'Week',
         'basic.view.label.lastMonth':'Month',
+        'basic.alarm.state.disable':'Disable',
+        'basic.alarm.state.enable':'Enable',
     },
     'zh-CN': {
         'system.error':'系统异常!',
@@ -353,6 +355,8 @@ const vi18n = {
         'basic.shortcuts.last3m':'前三月',
         'basic.view.label.lastWeek':'周同比',
         'basic.view.label.lastMonth':'月同比',
+        'basic.alarm.state.disable':'已停用',
+        'basic.alarm.state.enable':'已启用',
     }
 }
 export default vi18n;

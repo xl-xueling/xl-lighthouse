@@ -12,7 +12,13 @@ export interface Alarm {
     dimens?:string[],
     delay?:number,
     recover?:boolean,
+    state?:AlarmStateEnum,
     conditions?:AlarmCondition[],
+}
+
+export enum AlarmStateEnum {
+    DISABLE=0,
+    ENABLE=1,
 }
 
 export interface AlarmCondition {
