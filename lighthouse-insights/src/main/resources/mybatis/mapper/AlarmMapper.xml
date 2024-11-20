@@ -86,9 +86,9 @@
         WHERE role_type = 13
         )
         <if test="queryParam.search != null">
-            AND (title LIKE CONCAT('%', #{queryParam.search}, '%') or id = #{queryParam.search} or unique_code like CONCAT('%', #{queryParam.search}, '%'))
+            AND (a.title LIKE CONCAT('%', #{queryParam.search}, '%') or a.id = #{queryParam.search} or a.unique_code like CONCAT('%', #{queryParam.search}, '%'))
         </if>
-        order by create_time desc
+        order by a.create_time desc
     </select>
 
     <select id="countByParam" resultType="int">
