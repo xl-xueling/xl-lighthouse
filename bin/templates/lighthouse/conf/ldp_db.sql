@@ -177,7 +177,7 @@ CREATE TABLE `ldp_groups` (
                               `project_id` int NOT NULL,
                               `data_version` int NOT NULL DEFAULT '0',
                               `debug_mode` int DEFAULT '0',
-                              `columns` varchar(3000) NOT NULL,
+                              `columns` TEXT NOT NULL,
                               `desc` varchar(800) NOT NULL,
                               `random_id` varchar(45) NOT NULL,
                               `secret_key` varchar(60) NOT NULL,

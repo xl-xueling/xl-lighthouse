@@ -1,5 +1,8 @@
 USE `cluster_${ldp_lighthouse_cluster_id}_ldp_cmdb`;
 
+ALTER TABLE ldp_groups
+    MODIFY COLUMN columns TEXT NOT NULL;
+
 CREATE TABLE IF NOT EXISTS `ldp_alarms` (
                               `id` int NOT NULL AUTO_INCREMENT,
                               `title` varchar(60) NOT NULL,
