@@ -166,7 +166,8 @@ public class HttpProcessor {
         try{
             callerId = rpc.authVerification(callerName,callerKey,Integer.parseInt(statIdObj.toString()), ResourceTypeEnum.Stat);
         }catch (Exception ex){
-            throw new LightRpcException(ex);
+            ApiResultCode apiResultCode = ApiResultCode.AuthorizationError;
+            return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
         }
         long inBytes = ObjectSize.getObjectSize(callerName) + ObjectSize.getObjectSize(callerKey) + ObjectSize.getObjectSize(batchList);
         long outBytes = 0;
@@ -245,7 +246,8 @@ public class HttpProcessor {
         try{
             callerId = rpc.authVerification(callerName,callerKey,Integer.parseInt(statIdObj.toString()), ResourceTypeEnum.Stat);
         }catch (Exception ex){
-            throw new LightRpcException(ex);
+            ApiResultCode apiResultCode = ApiResultCode.AuthorizationError;
+            return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
         }
         long inBytes = ObjectSize.getObjectSize(callerName) + ObjectSize.getObjectSize(callerKey) + ObjectSize.getObjectSize(dimensValue);
         long outBytes = 0;
@@ -305,7 +307,8 @@ public class HttpProcessor {
         try{
             callerId = rpc.authVerification(callerName,callerKey,Integer.parseInt(statIdObj.toString()), ResourceTypeEnum.Stat);
         }catch (Exception ex){
-            throw new LightRpcException(ex);
+            ApiResultCode apiResultCode = ApiResultCode.AuthorizationError;
+            return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
         }
         long inBytes = ObjectSize.getObjectSize(callerName) + ObjectSize.getObjectSize(callerKey) + ObjectSize.getObjectSize(dimensValueListObj) + ObjectSize.getObjectSize(batchList);
         long outBytes = 0;
@@ -389,7 +392,8 @@ public class HttpProcessor {
         try{
             callerId = rpc.authVerification(callerName,callerKey,Integer.parseInt(statIdObj.toString()), ResourceTypeEnum.Stat);
         }catch (Exception ex){
-            throw new LightRpcException(ex);
+            ApiResultCode apiResultCode = ApiResultCode.AuthorizationError;
+            return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
         }
         long inBytes = ObjectSize.getObjectSize(callerName) + ObjectSize.getObjectSize(callerKey) + ObjectSize.getObjectSize(dimensValueListObj);
         long outBytes = 0;
@@ -448,7 +452,8 @@ public class HttpProcessor {
         try{
             callerId = rpc.authVerification(callerName,callerKey,Integer.parseInt(statIdObj.toString()), ResourceTypeEnum.Stat);
         }catch (Exception ex){
-            throw new LightRpcException(ex);
+            ApiResultCode apiResultCode = ApiResultCode.AuthorizationError;
+            return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
         }
         long inBytes = ObjectSize.getObjectSize(callerName) + ObjectSize.getObjectSize(callerKey) + ObjectSize.getObjectSize(batchTimeObj);
         long outBytes = 0;

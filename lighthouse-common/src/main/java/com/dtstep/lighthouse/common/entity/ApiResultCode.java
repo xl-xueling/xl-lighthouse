@@ -4,6 +4,8 @@ public enum ApiResultCode {
 
     Success("0","success!"),
 
+    AuthorizationError("100","Authorization Error!"),
+
     SystemError("101","System Error!"),
 
     ProcessError("102","Process Error!"),
