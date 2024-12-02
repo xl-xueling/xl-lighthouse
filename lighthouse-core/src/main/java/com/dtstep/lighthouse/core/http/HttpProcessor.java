@@ -6,11 +6,14 @@ import com.dtstep.lighthouse.common.entity.ApiResultData;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
+import com.dtstep.lighthouse.common.ice.LightRpcException;
 import com.dtstep.lighthouse.common.modal.Caller;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import com.dtstep.lighthouse.core.builtin.CallerStat;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.ipc.RPCServer;
 import com.dtstep.lighthouse.core.ipc.impl.RPCServerImpl;
+import com.dtstep.lighthouse.core.tools.ObjectSize;
 import com.dtstep.lighthouse.core.wrapper.CallerDBWrapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -159,14 +162,25 @@ public class HttpProcessor {
         if(dimensValueObj != null){
             dimensValue = dimensValueObj.toString();
         }
-        List<StatValue> list;
+        int callerId;
         try{
-            list = rpc.dataQuery(Integer.parseInt(statIdObj.toString()),dimensValue,(List<Long>)batchList);
+            callerId = rpc.authVerification(callerName,callerKey,Integer.parseInt(statIdObj.toString()), ResourceTypeEnum.Stat);
         }catch (Exception ex){
+            throw new LightRpcException(ex);
+        }
+        long inBytes = ObjectSize.getObjectSize(callerName) + ObjectSize.getObjectSize(callerKey) + ObjectSize.getObjectSize(batchList);
+        long outBytes = 0;
+        List<StatValue> data;
+        try{
+            data = rpc.dataQuery(Integer.parseInt(statIdObj.toString()),dimensValue,(List<Long>)batchList);
+            outBytes = ObjectSize.getObjectSize(data);
+            CallerStat.stat(callerId,"dataQuery",0,inBytes,outBytes);
+        }catch (Exception ex){
+            CallerStat.stat(callerId,"dataQuery",1,inBytes,outBytes);
             ApiResultCode apiResultCode = ApiResultCode.ProcessError;
             return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
         }
-        return new ApiResultData(ApiResultCode.Success.getCode(), ApiResultCode.Success.getMessage(),list);
+        return new ApiResultData(ApiResultCode.Success.getCode(), ApiResultCode.Success.getMessage(),data);
     }
 
     public static ApiResultData dataDurationQuery(String callerName,String callerKey,String requestBody) throws Exception {
@@ -227,14 +241,25 @@ public class HttpProcessor {
             ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("startTime >= endTime"));
         }
-        List<StatValue> list;
+        int callerId;
         try{
-            list = rpc.dataDurationQuery(Integer.parseInt(statIdObj.toString()),dimensValue,startTimeStamp,endTimeStamp);
+            callerId = rpc.authVerification(callerName,callerKey,Integer.parseInt(statIdObj.toString()), ResourceTypeEnum.Stat);
         }catch (Exception ex){
+            throw new LightRpcException(ex);
+        }
+        long inBytes = ObjectSize.getObjectSize(callerName) + ObjectSize.getObjectSize(callerKey) + ObjectSize.getObjectSize(dimensValue);
+        long outBytes = 0;
+        List<StatValue> data;
+        try{
+            data = rpc.dataDurationQuery(Integer.parseInt(statIdObj.toString()),dimensValue,startTimeStamp,endTimeStamp);
+            outBytes = ObjectSize.getObjectSize(data);
+            CallerStat.stat(callerId,"dataDurationQuery",0,inBytes,outBytes);
+        }catch (Exception ex){
+            CallerStat.stat(callerId,"dataDurationQuery",1,inBytes,outBytes);
             ApiResultCode apiResultCode = ApiResultCode.ProcessError;
             return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
         }
-        return new ApiResultData(ApiResultCode.Success.getCode(), ApiResultCode.Success.getMessage(),list);
+        return new ApiResultData(ApiResultCode.Success.getCode(), ApiResultCode.Success.getMessage(),data);
     }
 
     public static ApiResultData dataQueryWithDimensList(String callerName,String callerKey,String requestBody) throws Exception {
@@ -276,10 +301,21 @@ public class HttpProcessor {
             ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("batchList"));
         }
+        int callerId;
+        try{
+            callerId = rpc.authVerification(callerName,callerKey,Integer.parseInt(statIdObj.toString()), ResourceTypeEnum.Stat);
+        }catch (Exception ex){
+            throw new LightRpcException(ex);
+        }
+        long inBytes = ObjectSize.getObjectSize(callerName) + ObjectSize.getObjectSize(callerKey) + ObjectSize.getObjectSize(dimensValueListObj) + ObjectSize.getObjectSize(batchList);
+        long outBytes = 0;
         Map<String,List<StatValue>> data;
         try{
             data = rpc.dataQueryWithDimensList(Integer.parseInt(statIdObj.toString()),dimensValueListObj,(List<Long>)batchList);
+            outBytes = ObjectSize.getObjectSize(data);
+            CallerStat.stat(callerId,"dataQueryWithDimensList",0,inBytes,outBytes);
         }catch (Exception ex){
+            CallerStat.stat(callerId,"dataQueryWithDimensList",1,inBytes,outBytes);
             ApiResultCode apiResultCode = ApiResultCode.ProcessError;
             return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
         }
@@ -349,11 +385,21 @@ public class HttpProcessor {
             ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("startTime >= endTime"));
         }
-
+        int callerId;
+        try{
+            callerId = rpc.authVerification(callerName,callerKey,Integer.parseInt(statIdObj.toString()), ResourceTypeEnum.Stat);
+        }catch (Exception ex){
+            throw new LightRpcException(ex);
+        }
+        long inBytes = ObjectSize.getObjectSize(callerName) + ObjectSize.getObjectSize(callerKey) + ObjectSize.getObjectSize(dimensValueListObj);
+        long outBytes = 0;
         Map<String,List<StatValue>> data;
         try{
             data = rpc.dataDurationQueryWithDimensList(Integer.parseInt(statIdObj.toString()),(List<String>)dimensValueListObj,startTimeStamp,endTimeStamp);
+            outBytes = ObjectSize.getObjectSize(data);
+            CallerStat.stat(callerId,"dataDurationQueryWithDimensList",0,inBytes,outBytes);
         }catch (Exception ex){
+            CallerStat.stat(callerId,"dataDurationQueryWithDimensList",1,inBytes,outBytes);
             ApiResultCode apiResultCode = ApiResultCode.ProcessError;
             return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
         }
@@ -398,10 +444,21 @@ public class HttpProcessor {
             ApiResultCode apiResultCode = ApiResultCode.IllegalParam;
             return new ApiResultData(apiResultCode.getCode(),apiResultCode.formatMessage("batchTime"));
         }
+        int callerId;
+        try{
+            callerId = rpc.authVerification(callerName,callerKey,Integer.parseInt(statIdObj.toString()), ResourceTypeEnum.Stat);
+        }catch (Exception ex){
+            throw new LightRpcException(ex);
+        }
+        long inBytes = ObjectSize.getObjectSize(callerName) + ObjectSize.getObjectSize(callerKey) + ObjectSize.getObjectSize(batchTimeObj);
+        long outBytes = 0;
         List<LimitValue> data;
         try{
             data = rpc.limitQuery(Integer.parseInt(statIdObj.toString()),Long.parseLong(batchTimeObj.toString()));
+            outBytes = ObjectSize.getObjectSize(data);
+            CallerStat.stat(callerId,"limitQuery",0,inBytes,outBytes);
         }catch (Exception ex){
+            CallerStat.stat(callerId,"limitQuery",1,inBytes,outBytes);
             ApiResultCode apiResultCode = ApiResultCode.ProcessError;
             return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
         }
