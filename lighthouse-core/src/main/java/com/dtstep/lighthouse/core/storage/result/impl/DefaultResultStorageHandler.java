@@ -208,6 +208,9 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
             MetaTable metaTable = MetaTableWrapper.queryById(resMeta);
             metaName = metaTable.getMetaName();
         }
+        if(dimensValueList != null){
+            Validate.isTrue(dimensValueList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
+        }
         List<LdpGet> getList = new ArrayList<>();
         for (long batchTime : batchTimeList) {
             if(dimensValueList == null){
@@ -231,8 +234,8 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                     }
                 }
             }
+            Validate.isTrue(getList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
         }
-        Validate.isTrue(getList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
         List<LdpResult<Long>> results = WarehouseStorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
         Map<String,LdpResult<Long>> dbResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
         LinkedHashMap<String,List<StatValue>> resultMap = new LinkedHashMap<>();
@@ -265,6 +268,9 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         }else{
             MetaTable metaTable = MetaTableWrapper.queryById(resMeta);
             metaName = metaTable.getMetaName();
+        }
+        if(dimensValueList != null){
+            Validate.isTrue(dimensValueList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
         }
         List<LdpGet> getList = new ArrayList<>();
         List<LdpGet> compatibleGetList = new ArrayList<>();
@@ -303,8 +309,8 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                     }
                 }
             }
+            Validate.isTrue(getList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
         }
-        Validate.isTrue(getList.size() <= StatConst.QUERY_RESULT_LIMIT_SIZE);
         List<LdpResult<Long>> results = WarehouseStorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
         List<LdpResult<Long>> compatibleResults = WarehouseStorageEngineProxy.getInstance().gets(metaName,compatibleGetList,Long.class);
         Map<String,LdpResult<Long>> dbResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
