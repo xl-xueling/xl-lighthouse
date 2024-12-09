@@ -36,8 +36,8 @@ expect {
 }
 
 expect {
-	"*#" {send "echo \"${deploy_user}:${deploy_passwd}\" | chpasswd\r"}
-	"*${user}@*" {send "echo \"${deploy_user}:${deploy_passwd}\" | chpasswd\r"}
+    "*#" {send "echo \'${deploy_user}:${deploy_passwd}\' | chpasswd\r"}
+    "*${user}@*" {send "echo \'${deploy_user}:${deploy_passwd}\' | chpasswd\r"}
 }
 
 
