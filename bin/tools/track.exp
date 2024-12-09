@@ -11,6 +11,9 @@ set env(LC_ALL) "C"
 set user [lindex $argv 0]
 set ip [lindex $argv 1]
 set passwd [lindex $argv 2]
+if { $passwd != "-" } {
+    set passwd [exec echo $passwd | base64 -d]
+}
 set ldp_home [lindex $argv 3]
 set daytime [exec date +%y%m%d%H%M%S]
 set prompt "*${user}@*\\\$"

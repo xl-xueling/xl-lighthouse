@@ -54,8 +54,19 @@ function getVal(){
 	echo ${value}
 }
 
+function getAllIps() {
+    local ip_addresses=();
+    while IFS= read -r line; do
+        ip=$(echo "$line" | awk '{print $2}' | cut -d/ -f1)
+        if [[ -n "$ip" ]]; then
+            ip_addresses+=("$ip")
+        fi
+    done < <(ip addr show | grep 'inet ')
+    echo "${ip_addresses[@]}"
+}
+
 function getLocalIP(){
-        local ipArray=(`ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"`);
+        local ipArray=($(getAllIps));
         for ip in "${ipArray[@]}"
                 do
                         for var in "${NODES[@]}"

@@ -19,7 +19,8 @@ function loadNodesPWD() {
       if [[ -n "$row" && "$row" != \#* ]]; then
         local ip=${row%%;*}
         local passwd=${row#*;}
-        NODES_MAP[${ip}]=${passwd}
+        local base64Pwd=$(echo ${passwd} | base64);
+        NODES_MAP[${ip}]=${base64Pwd}
       fi
           done < ${FILE}
   fi
@@ -241,7 +242,8 @@ function loadDeployAttrs() {
 		fi	
         done
 	DEPLOY_USER=${ATTRS_MAP['ldp_lighthouse_deploy_user']}
-        DEPLOY_PASSWD=${ATTRS_MAP['ldp_lighthouse_deploy_user_passwd']}
+	local base64Pwd=$(echo ${ATTRS_MAP['ldp_lighthouse_deploy_user_passwd']} | base64);
+  DEPLOY_PASSWD=${base64Pwd}
 }
 
 function loadConfigAttrs() {

@@ -13,6 +13,9 @@ set exclude [lindex $argv 1]
 set source_path [lindex $argv 2]
 set dest_ip [lindex $argv 3]
 set dest_passwd [lindex $argv 4]
+if { $dest_passwd != "-" } {
+    set dest_passwd [exec echo $dest_passwd | base64 -d]
+}
 set dest_path [lindex $argv 5]
 spawn ssh ${user}@${dest_ip}
 set timeout -1
