@@ -83,10 +83,10 @@ XL-LightHouse可应用在企业生产的众多环节，可以帮助职场人从�
 
 更多示例可参考：
 
-- [即时通讯场景演示](https://dtstep.com/zh/scene/01.html)
-- [技术类场景演示](https://dtstep.com/zh/scene/02.html)
-- [电商类场景演示](https://dtstep.com/zh/scene/03.html)
-- [资讯类场景演示](https://dtstep.com/zh/scene/04.html)
+- [即时通讯场景演示](https://dtstep.com/docs/110041/)
+- [技术类场景演示](https://dtstep.com/docs/110042/)
+- [电商类场景演示](https://dtstep.com/docs/110043/)
+- [资讯类场景演示](https://dtstep.com/docs/110044/)
 
 XL-LightHouse面向企业至上而下所有职能人员共同使用，期望帮助企业以极低的成本，搭建起"遍布全身"的数据化运营体系！
 
@@ -108,34 +108,35 @@ XL-LightHouse除了大数据版本外，同时支持单机版。单机模式成�
 
 ### Hello World
 
-- [ICON点击数据统计](https://dtstep.com/zh/helloworld/01.html)
-- [电商订单数据统计](https://dtstep.com/zh/helloworld/02.html)
-- [订单支付状态数据统计](https://dtstep.com/zh/helloworld/03.html)
+- [创建第一个数据指标](https://dtstep.com/docs/110029/)
+- [ICON点击数据统计](https://dtstep.com/docs/110030/)
+- [电商订单数据统计](https://dtstep.com/docs/110031/)
+- [订单支付状态数据统计](https://dtstep.com/docs/110032/)
 
 ### XL-LightHouse与Flink和ClickHouse之类技术对比
 
--  [系统介绍](https://dtstep.com/zh/architecture/01.html)
--  [与Flink和ClickHouse之类技术对比](https://dtstep.com/zh/architecture/02.html)
+-  [系统介绍](https://dtstep.com/docs/110011/)
+-  [与Flink和ClickHouse之类技术对比](https://dtstep.com/docs/110036/)
 
 ###  版本记录
 
--  [安装包下载](https://dtstep.com/zh/versions/02.html)
--  [开源版本（最新：v2.2.9）](https://dtstep.com/zh/versions/02.html)
--  [商业版本（最新：v2.2.9-pro.3）](https://dtstep.com/zh/commercial/01.html)
+-  [安装包下载](https://dtstep.com/docs/110027/)
+-  [开源版本（最新：v2.2.9）](https://dtstep.com/docs/110027/)
+-  [商业版本（最新：v2.2.9-pro.3）](https://dtstep.com/docs/110072/)
 
 ###  日常运维
 
--  [一键部署](https://dtstep.com/zh/deploy/01.html)
--  [一键升级](https://dtstep.com/zh/management/06.html)
--  [数据备份](https://dtstep.com/zh/management/07.html)
--  [日常运维](https://dtstep.com/zh/management/03.html)
+-  [一键部署](https://dtstep.com/docs/110033/)
+-  [一键升级](https://dtstep.com/docs/110048/)
+-  [数据备份](https://dtstep.com/docs/110049/)
+-  [日常运维](https://dtstep.com/docs/110047/)
 
 ###  版权声明
 
 - 企业、机构内部使用或个人使用XL-LightHouse源程序不受任何限制，但不可删除程序中的Logo标识、版权声明等信息。
 - 销售基于XL-LightHouse源码或相关设计方案的软硬件产品及服务，需要向开发者缴纳一定比例的授权费用(0.2%~2%)。
 
-创作者权益受法律保护，为避免不必要的版权纠纷，在销售相关产品或服务前，请务必查阅：[版权声明](https://dtstep.com/zh/copyright/01.html)
+创作者权益受法律保护，为避免不必要的版权纠纷，在销售相关产品或服务前，请务必查阅：[版权声明](https://dtstep.com/docs/110073/)
 
 ###  开发者承诺
 
