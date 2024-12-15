@@ -27,16 +27,32 @@ import com.dtstep.lighthouse.test.mode.BehaviorModalSample;
 import com.dtstep.lighthouse.test.mode.ModalSample;
 import org.apache.commons.lang3.Validate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LDPFlowTestInstance {
 
     public static void main(String[] args) throws Exception {
         int minuteSize = Integer.parseInt(args[0]);
+        String method = "rpc";
+        if(args.length > 1 && args[1].equals("http")){
+            method = "http";
+        }
         LDPConfig.loadConfiguration();
-        LightHouse.init(LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS));
+        String locators = LDPConfig.getVal(LDPConfig.KEY_LIGHTHOUSE_ICE_LOCATORS);
+        String [] nodesArray = locators.split(",");
+        List<String> ips = new ArrayList<>();
+        for(String node : nodesArray){
+            String ip = node.split(":")[0];
+            ips.add(ip);
+        }
+        LightHouse.init(locators);
         TestConfigContext testConfigContext = new TestConfigContext();
         ModalSample<BehaviorSampleEntity> modalSample = new BehaviorModalSample();
         String token = modalSample.getToken();
         testConfigContext.setToken(token);
+        testConfigContext.setMethod(method);
+        testConfigContext.setIps(ips);
         GroupExtEntity groupExtEntity = GroupDBWrapper.queryByToken(token);
         Validate.notNull(groupExtEntity);
         testConfigContext.setSecretKey(groupExtEntity.getSecretKey());

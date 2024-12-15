@@ -19,6 +19,8 @@ package com.dtstep.lighthouse.test.config;
 import com.dtstep.lighthouse.test.entity.BehaviorSampleEntity;
 import com.dtstep.lighthouse.test.mode.ModalSample;
 
+import java.util.List;
+
 public class TestConfigContext {
 
     private String token;
@@ -26,6 +28,10 @@ public class TestConfigContext {
     private String secretKey;
 
     private int messageSize;
+
+    private String method;
+
+    private List<String> ips;
 
     private ModalSample<BehaviorSampleEntity> modalSample;
 
@@ -59,5 +65,21 @@ public class TestConfigContext {
 
     public void setModalSample(ModalSample<BehaviorSampleEntity> modalSample) {
         this.modalSample = modalSample;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public List<String> getIps() {
+        return ips;
+    }
+
+    public void setIps(List<String> ips) {
+        this.ips = ips;
     }
 }

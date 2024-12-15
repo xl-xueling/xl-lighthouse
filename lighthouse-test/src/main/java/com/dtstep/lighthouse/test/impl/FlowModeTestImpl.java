@@ -18,12 +18,18 @@ package com.dtstep.lighthouse.test.impl;
  */
 import com.dtstep.lighthouse.client.LightHouse;
 import com.dtstep.lighthouse.common.util.DateUtil;
+import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.common.util.OkHttpUtil;
 import com.dtstep.lighthouse.test.entity.BehaviorSampleEntity;
 import com.dtstep.lighthouse.test.entity.SampleEntity;
 import com.dtstep.lighthouse.test.mode.ModalSample;
 import com.dtstep.lighthouse.test.config.TestConfigContext;
 import com.dtstep.lighthouse.test.util.BeanUtil;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
@@ -44,13 +50,34 @@ public class FlowModeTestImpl implements TestModel {
                 String secretKey = testConfigContext.getSecretKey();
                 ModalSample<BehaviorSampleEntity> modalSample = testConfigContext.getModalSample();
                 int size = testConfigContext.getMessageSize();
-                for(int i=0;i < size * 30;i++){
-                    SampleEntity sampleEntity = modalSample.generateSample();
-                    LightHouse.stat(token,secretKey, BeanUtil.beanToMap(sampleEntity),messageTime);
+                String method = testConfigContext.getMethod();
+                if(method.equals("rpc")){
+                    for(int i=0;i < size * 30;i++){
+                        SampleEntity sampleEntity = modalSample.generateSample();
+                        LightHouse.stat(token,secretKey, BeanUtil.beanToMap(sampleEntity),messageTime);
+                    }
+                    long t2 = System.currentTimeMillis();
+                    System.out.println("send result:success,batchTime:" + DateUtil.formatTimeStamp(timestamp,"yyyy-MM-dd HH:mm:ss")
+                            + ",execute time:" + DateUtil.formatTimeStamp(t1,"yyyy-MM-dd HH:mm:ss") + ",cost:" + (t2 - t1));
+                }else{
+                    List<Map<String,Object>> requestList = new ArrayList<>();
+                    for(int i=0;i < size * 30;i++){
+                        Map<String,Object> requestMap = new HashMap<>();
+                        requestMap.put("token",token);
+                        requestMap.put("secretKey",secretKey);
+                        requestMap.put("timestamp",messageTime);
+                        SampleEntity sampleEntity = modalSample.generateSample();
+                        Map<String,Object> paramsMap = BeanUtil.beanToMap(sampleEntity);
+                        requestMap.put("params",paramsMap);
+                        requestList.add(requestMap);
+                    }
+                    String requestParams = JsonUtil.toJSONString(requestList);
+                    String apiUrl = String .format("http://%s:18101/api/rpc/v1/stats",testConfigContext.getIps().get(ThreadLocalRandom.current().nextInt(testConfigContext.getIps().size())));
+                    String response = OkHttpUtil.post(apiUrl,requestParams);
+                    long t2 = System.currentTimeMillis();
+                    System.out.println("send result:"+response+",batchTime:" + DateUtil.formatTimeStamp(timestamp,"yyyy-MM-dd HH:mm:ss")
+                            + ",execute time:" + DateUtil.formatTimeStamp(t1,"yyyy-MM-dd HH:mm:ss") + ",cost:" + (t2 - t1));
                 }
-                long t2 = System.currentTimeMillis();
-                System.out.println("send success,batchTime:" + DateUtil.formatTimeStamp(timestamp,"yyyy-MM-dd HH:mm:ss")
-                        + ",execute time:" + DateUtil.formatTimeStamp(t1,"yyyy-MM-dd HH:mm:ss") + ",cost:" + (t2 - t1));
             }catch (Exception ex){
                 ex.printStackTrace();
             }
