@@ -23,6 +23,7 @@ source "${CUR_DIR}/clean/clean.sh"
 source "${CUR_DIR}/run/start.sh"
 source "${CUR_DIR}/run/stop.sh"
 source "${CUR_DIR}/run/reload.sh"
+LOG_FILE="${CUR_DIR}/log/log.txt"
             
 easy_deploy(){
 	trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
@@ -66,6 +67,7 @@ main(){
 	if [[ "${args[@]}" =~ "--without-checkosversion" ]];then
 	  CHECK_OS_VERSION="false";
 	fi
+	log_info "The deployment task has been started, and log is being output to the file:[${LOG_FILE}]."
 	`ps -ef|grep "easy-deploy.sh"|grep -v grep |grep -v $$|awk '{print $2}' |xargs --no-run-if-empty kill -9`
   `ps -ef|grep "lighthouse"|grep -v grep |grep -v $$|awk '{print $2}' |xargs --no-run-if-empty kill -9`
 	easy_deploy > ${LOG_FILE} 2>&1 &
