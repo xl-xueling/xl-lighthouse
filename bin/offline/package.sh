@@ -1,0 +1,122 @@
+#!/bin/bash
+
+MODE="cluster";
+CUR_DIR=$(cd "$(dirname "$0")";pwd)
+
+declare -A DOWNLOAD_URLS
+#DOWNLOAD_URLS["cmake"]="https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/cmake-3.25.3-linux-x86_64.tar.gz"
+#DOWNLOAD_URLS["jdk"]="https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/OpenJDK11U-jdk_x64_linux_hotspot_11.0.20_8.tar.gz"
+DOWNLOAD_URLS["scala"]="https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/scala-2.13.10.tgz"
+#DOWNLOAD_URLS["nginx"]="https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/nginx-1.25.4.tar.gz"
+#DOWNLOAD_URLS["zookeeper"]="https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/apache-zookeeper-3.5.8-bin.tar.gz"
+#DOWNLOAD_URLS["kafka"]="https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/kafka_2.12-2.8.2.tgz"
+#DOWNLOAD_URLS["hadoop"]="https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/hadoop-3.3.5.tar.gz"
+#DOWNLOAD_URLS["hbase"]="https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/hbase-2.5.4-hadoop3-bin.tar.gz"
+#DOWNLOAD_URLS["spark"]="https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/spark-3.3.2-bin-hadoop3.tgz"
+#DOWNLOAD_URLS["redis"]="https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/redis-6.2.6.tar.gz"
+#DOWNLOAD_URLS["mysql"]="https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/mysql-8.0.30-linux-glibc2.12-x86_64.tar.xz"
+
+main(){
+	local lsb=($(getLSBName));
+	local major=($(getLSBMajorVersion))
+	local args=$@
+	if [[ "${args[@]}" =~ "--standalone" ]];then
+		MODE="standalone";	
+	else
+		MODE="cluster";
+	fi
+	if [ ${MODE} == "standalone" ];then
+                for value in 'scala'; do
+                        download ${value}
+                done
+        else
+                for value in "${!DOWNLOAD_URLS[@]}"; do
+                        download ${value}
+                done
+        fi      
+	local packageManager=($(getPackageManager));
+	if [[ $packageManager == "yum" ]];then
+		yumPackage;
+	elif [[ $packageManager == "apt-get" ]] ;then
+		aptPackage;
+	fi
+	echo "start to package files!"
+	cd ${CUR_DIR};
+	local archive_dir="packages"
+	local archive_name="packages.tar.gz"
+	tar -zcvf ${archive_name} ${archive_dir}
+	echo "success!";	
+}
+
+function getLSBName(){
+	local DISTRO='';
+    if grep -Eqii "CentOS" /etc/issue || grep -Eq "CentOS" /etc/*-release; then
+        DISTRO='CentOS'
+    elif grep -Eqi "Red Hat Enterprise Linux" /etc/issue || grep -Eq "Red Hat Enterprise Linux" /etc/*-release; then
+        DISTRO='RHEL'
+    elif grep -Eqi "Debian" /etc/issue || grep -Eq "Debian" /etc/*-release; then
+        DISTRO='Debian'
+    elif grep -Eqi "Ubuntu" /etc/issue || grep -Eq "Ubuntu" /etc/*-release; then
+        DISTRO='Ubuntu'
+    elif grep -Eqi "Rocky" /etc/issue || grep -Eq "Rocky" /etc/*-release; then
+	      DISTRO='Rocky'
+    elif grep -Eqi "Alma" /etc/issue || grep -Eq "AlmaLinux" /etc/*-release; then
+	      DISTRO='Alma'
+    fi
+	      echo $DISTRO;
+} 
+
+getLSBMajorVersion(){
+	local lsb=($(getLSBName));
+  local major=''
+  if [ $lsb == "CentOS" ];then
+    major=`cat /etc/redhat-release|sed -r 's/.* ([0-9]+)\..*/\1/'`
+  elif [ $lsb == "Rocky" ];then
+    major=`cat /etc/redhat-release|sed -r 's/.* ([0-9]+)\..*/\1/'`
+  elif [ $lsb == "Alma" ];then
+    major=`cat /etc/redhat-release|sed -r 's/.* ([0-9]+)\..*/\1/'`
+  elif [ $lsb == "RHEL" ];then
+    major=`cat /etc/redhat-release|sed -r 's/.* ([0-9]+)\..*/\1/'`
+  elif [ $lsb == "Ubuntu" ];then
+    major=`lsb_release -rs`
+  elif [ $lsb == "Debian" ];then
+     local debianVersion=`cat /etc/debian_version`
+     major=${debianVersion%%.*}
+  else
+    major=`cat /etc/redhat-release|sed -r 's/.* ([0-9]+)\..*/\1/'`
+  fi
+  echo $major;
+}
+
+function download(){
+	local service=${1}
+	local archive_dir=${CUR_DIR}/packages/${service}
+	mkdir -p ${archive_dir} && rm -rf ${archive_dir}/*
+	wget ${DOWNLOAD_URLS[$service]} -P ${archive_dir}
+}
+
+function yumPackage(){
+	mkdir -p ${CUR_DIR}/packages/baselib && rm -rf ${CUR_DIR}/packages/baselib/*
+	cd ${CUR_DIR}/packages/baselib;
+	repotrack yum-utils epel-release expect jq rsync  libtool autoconf gcc gcc-c++ make autoconf automake cmake gzip kernel-devel openssl openssl-devel tcl glibc-devel numactl nc git maven libncurses* libaio-devel.x86_64 tcl tcl-devel snappy* libzstd* sysstat iotop wget pcre pcre-devel acl ice-all-runtime ice-all-devel createrepo
+}
+
+function aptPackage(){
+	apt-get install -y dpkg-dev;
+        mkdir -p ${CUR_DIR}/packages/baselib && rm -rf ${CUR_DIR}/packages/baselib/*;
+        apt-get -y -d install software-properties-common expect jq rsync gcc gcc-multilib g++ g++-multilib cmake pkg-config libncurses* libtinfo5 libmecab2 libaio1 libssl-dev openssl zstd libzstd* tcl tk libncurses5 build-essential *snappy* sysstat iotop wget zlib1g-dev libpcre3 libpcre3-dev acl;
+        cp /var/cache/apt/archives/*.deb ${CUR_DIR}/packages/baselib/ 
+        cd ${CUR_DIR}/packages/baselib && dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz;
+}
+
+function getPackageManager() {
+    if command -v yum &>/dev/null; then
+        echo "yum"
+    elif command -v apt-get &>/dev/null; then
+        echo "apt-get"
+    else
+        echo "No valid package manager[yum/apt-get] found!"
+        exit -1;
+    fi
+}
+main $@;
