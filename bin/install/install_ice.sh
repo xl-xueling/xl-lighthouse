@@ -6,6 +6,7 @@
 #-----------------------------------------
 
 LDP_HOME=${1}
+NET_MODE=${2}
 
 source ${LDP_HOME}/bin/common/const.sh
 source ${LDP_HOME}/bin/common/common.sh
@@ -17,8 +18,13 @@ installICEWithYum(){
 	if [ $? == '0' ];then
     wget http://${_CDN_PACKAGE_MIRROR_IP}:${_CDN_PACKAGE_MIRROR_PORT}/yum-mirror/ice/repo/zeroc-ice-el${major}-cdn.repo -P /etc/yum.repos.d
   fi
-  sudo yum install -y https://zeroc.com/download/ice/3.7/el${major}/ice-repo-3.7.el${major}.noarch.rpm
-	sudo yum install -y ice-all-runtime ice-all-devel
+  local YUM_OPTS="";
+  if [ ${NET_MODE} == "offline" ];then
+     YUM_OPTS="--disablerepo=* --enablerepo=xl-lighthouse-repo";
+  else
+    sudo yum install -y https://zeroc.com/download/ice/3.7/el${major}/ice-repo-3.7.el${major}.noarch.rpm
+  fi
+	sudo yum install -y ice-all-runtime ice-all-devel ${YUM_OPTS}
 	rm -f /etc/yum.repos.d/zeroc-ice-*-cdn.repo
 }
 

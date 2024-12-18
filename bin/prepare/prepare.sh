@@ -12,7 +12,7 @@ source "${CUR_DIR}/compile/compile.sh"
 pre(){
 	local packageManager=($(getPackageManager));
   if [[ $packageManager == "yum" ]];then
-    sudo yum install -y epel-release
+    sudo yum install -y epel-release ${YUM_OPTS}
   elif [[ $packageManager == "apt-get" ]] ;then
     sudo apt-get install -y software-properties-common
   fi
@@ -38,7 +38,7 @@ pre(){
         local packageManager=($(getPackageManager));
         if [[ $packageManager == "yum" ]];then
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/run/yum.pid"
-			    remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo yum -y install rsync"
+			    remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo yum -y install rsync ${YUM_OPTS}"
         elif [[ $packageManager == "apt-get" ]] ;then
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/lib/dpkg/lock-frontend"
 			    remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/cache/apt/archives/lock"
@@ -59,6 +59,10 @@ syncPackage(){
 			remoteExecute ${CUR_DIR}/check/check_file_exist.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}/lib
       remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${CUR_USER} "" ${LDP_HOME}/light-webapps ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}
 			remoteExecute ${CUR_DIR}/check/check_file_exist.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}/light-webapps
+			if [ ${NET_MODE} == "offline" ];then
+			  remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${CUR_USER} "" ${LDP_HOME}/package ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}
+			  remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${CUR_USER} "" /etc/yum.repos.d/xl-lighthouse.repo ${ip} ${NODES_MAP[$ip]} /etc/yum.repos.d/
+			fi
 		done
 		log_info "Program progress,sync package complete!"
 }
@@ -125,10 +129,32 @@ hostsInit(){
 }
 
 
+createLocalRepo(){
+        if [ ${NET_MODE} == "offline" ];then
+            local packageManager=($(getPackageManager));
+      if [[ $packageManager == "yum" ]];then
+        local baselibdir="${LDP_HOME}/package/baselib";
+        rpm -ivh ${baselibdir}/createrepo*.rpm ${baselibdir}/python-deltarpm*.rpm
+        createrepo ${baselibdir}
+        REPO_FILE="/etc/yum.repos.d/xl-lighthouse.repo"
+        cat > "$REPO_FILE" <<EOL
+[xl-lighthouse-repo]
+name=Local Repository
+baseurl=file://$baselibdir
+enabled=1
+gpgcheck=0
+EOL
+        elif [[ $packageManager == "apt-get" ]] ;then
+          echo "----sss";
+        fi
+      fi
+}
+
 prepare_for_deploy(){
   local lsb=($(getLSBName));
   local major=($(getLSBMajorVersion));
   log_info "Current environment os:${lsb},version:${major}"
+  createLocalRepo;
   pre;
   syncPackage;
   baseInit;

@@ -12,6 +12,9 @@ ROOT_HOME=$(dirname "$LDP_HOME")
 CUR_USER=${USER}
 DEPLOY_FLAG="true"
 CHECK_OS_VERSION="true"
+NET_MODE="online"
+YUM_OPTS=""
+APT_OPTS=""
 LOCKFILE=/tmp/lighthouse_deploy.lock
 source "${CUR_DIR}/common/lib.sh"
 source "${CUR_DIR}/prepare/prepare.sh"
@@ -67,6 +70,10 @@ main(){
 	if [[ "${args[@]}" =~ "--without-checkosversion" ]];then
 	  CHECK_OS_VERSION="false";
 	fi
+	if [[ "${args[@]}" =~ "--offline" ]];then
+    NET_MODE="offline"
+    YUM_OPTS="--disablerepo=* --enablerepo=xl-lighthouse-repo";
+  fi
 	log_info "The deployment task has been started, and log is being output to the file:[${LOG_FILE}]."
 	`ps -ef|grep "easy-deploy.sh"|grep -v grep |grep -v $$|awk '{print $2}' |xargs --no-run-if-empty kill -9`
   `ps -ef|grep "lighthouse"|grep -v grep |grep -v $$|awk '{print $2}' |xargs --no-run-if-empty kill -9`

@@ -22,7 +22,7 @@ function log_error(){
 function batch_install(){
 	if command -v yum >/dev/null 2>&1;then
 	  	sudo rm -f /var/run/yum.pid
-		sudo yum -y install $@;
+		sudo yum -y install $@ ${YUM_OPTS};
 	elif command -v apt >/dev/null 2>&1;then
 	  sudo rm -f /var/lib/dpkg/lock-frontend
 	  sudo rm -f /var/cache/apt/archives/lock

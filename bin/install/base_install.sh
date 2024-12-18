@@ -6,31 +6,37 @@
 #-----------------------------------------
 
 LDP_HOME=${1}
+NET_MODE=${2}
 
 source ${LDP_HOME}/bin/common/common.sh
 
 baseInstallWithYum(){
+        local YUM_OPTS="";
+        if [ ${NET_MODE} == "offline" ];then
+          YUM_OPTS="--disablerepo=* --enablerepo=xl-lighthouse-repo";
+        fi
         sudo rm -f /var/run/yum.pid
         sudo yum clean packages
-        sudo yum install -y yum-utils
+        sudo yum install -y yum-utils ${YUM_OPTS}
         sudo yum-config-manager --setopt=timeout=500 --save
         sudo yum-config-manager --setopt=minrate=1 --save
-        sudo yum install -y epel-release
-        sudo yum install -y expect jq rsync
-	      sudo yum install -y libtool autoconf gcc gcc-c++ make autoconf automake
-        sudo yum install -y cmake gzip  kernel-devel openssl openssl-devel
-        sudo yum install -y tcl glibc-devel numactl
-        sudo yum install -y nc
-        sudo yum install -y git maven
-        sudo yum install -y libncurses*
-        sudo yum install -y libaio-devel.x86_64
-        sudo yum install -y tcl tcl-devel
-        sudo yum install -y snappy*
-        sudo yum install -y libzstd*
-        sudo yum install -y sysstat iotop
-        sudo yum install -y wget
-        sudo yum install -y pcre pcre-devel
-        sudo yum install -y acl
+        sudo yum install -y epel-release ${YUM_OPTS}
+        sudo yum install -y expect jq rsync ${YUM_OPTS}
+	      sudo yum install -y libtool autoconf gcc gcc-c++ make autoconf automake ${YUM_OPTS}
+        sudo yum install -y cmake gzip kernel-devel openssl openssl-devel ${YUM_OPTS}
+        sudo yum install -y tcl glibc-devel numactl ${YUM_OPTS}
+        sudo yum install -y nc ${YUM_OPTS}
+        sudo yum install -y git maven ${YUM_OPTS}
+        sudo yum install -y libncurses* ${YUM_OPTS}
+        sudo yum install -y libaio-devel.x86_64 ${YUM_OPTS}
+        sudo yum install -y tcl tcl-devel ${YUM_OPTS}
+        sudo yum install -y snappy* ${YUM_OPTS}
+        sudo yum install -y libzstd* ${YUM_OPTS}
+        sudo yum install -y sysstat iotop ${YUM_OPTS}
+        sudo yum install -y wget ${YUM_OPTS}
+        sudo yum install -y pcre pcre-devel ${YUM_OPTS}
+        sudo yum install -y acl ${YUM_OPTS}
+        sudo yum install -y nmap-ncat ${YUM_OPTS}
 }
 
 
