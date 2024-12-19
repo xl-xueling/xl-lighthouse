@@ -45,6 +45,7 @@ pre(){
         if [[ $packageManager == "yum" ]];then
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/run/yum.pid"
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/lib/rpm/.rpm.lock"
+          remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/lib/rpm/__db*"
 			    remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo yum -y install rsync ${YUM_OPTS}"
         elif [[ $packageManager == "apt-get" ]] ;then
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/lib/dpkg/lock-frontend"
@@ -137,8 +138,6 @@ createLocalRepo(){
             local packageManager=($(getPackageManager));
       if [[ $packageManager == "yum" ]];then
         local baselibdir="${LDP_HOME}/package/baselib";
-        rpm -ivh ${baselibdir}/createrepo*.rpm ${baselibdir}/python-deltarpm*.rpm
-        createrepo ${baselibdir}
         REPO_FILE="/etc/yum.repos.d/xl-lighthouse.repo"
         cat > "$REPO_FILE" <<EOL
 [xl-lighthouse-repo]
