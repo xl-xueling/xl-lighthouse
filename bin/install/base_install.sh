@@ -15,27 +15,30 @@ baseInstallWithYum(){
         if [ ${NET_MODE} == "offline" ];then
           YUM_OPTS="--disablerepo=* --enablerepo=xl-lighthouse-repo";
         fi
+        pgrep -f 'dnf|yum' | xargs -r kill -9
         sudo rm -f /var/run/yum.pid
+        sudo rm -f /var/lib/rpm/.rpm.lock
+        sudo rm -f /var/lib/rpm/__db*
         sudo yum clean packages
-        sudo yum install -y yum-utils ${YUM_OPTS}
+        sudo yum install --nobest -y yum-utils ${YUM_OPTS}
         sudo yum-config-manager --setopt=timeout=500 --save
         sudo yum-config-manager --setopt=minrate=1 --save
-        sudo yum install -y epel-release ${YUM_OPTS}
-        sudo yum install -y expect jq rsync ${YUM_OPTS}
-	      sudo yum install -y libtool autoconf gcc gcc-c++ make autoconf automake ${YUM_OPTS}
-        sudo yum install -y cmake gzip kernel-devel openssl openssl-devel ${YUM_OPTS}
-        sudo yum install -y tcl glibc-devel numactl ${YUM_OPTS}
-        sudo yum install -y nc ${YUM_OPTS}
-        sudo yum install -y libncurses* ${YUM_OPTS}
-        sudo yum install -y libaio-devel.x86_64 ${YUM_OPTS}
-        sudo yum install -y tcl tcl-devel ${YUM_OPTS}
-        sudo yum install -y snappy* ${YUM_OPTS}
-        sudo yum install -y libzstd* ${YUM_OPTS}
-        sudo yum install -y sysstat iotop ${YUM_OPTS}
-        sudo yum install -y wget ${YUM_OPTS}
-        sudo yum install -y pcre pcre-devel ${YUM_OPTS}
-        sudo yum install -y acl ${YUM_OPTS}
-        sudo yum install -y nmap-ncat ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y epel-release ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y expect jq rsync ${YUM_OPTS}
+	      sudo yum install --allowerasing --nobest -y libtool autoconf gcc gcc-c++ make autoconf automake ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y cmake gzip kernel-devel openssl openssl-devel ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y tcl glibc-devel numactl ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y nc ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y libncurses* ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y libaio-devel.x86_64 ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y tcl tcl-devel ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y snappy* ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y libzstd* ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y sysstat iotop ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y wget ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y pcre pcre-devel ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y acl ${YUM_OPTS}
+        sudo yum install --allowerasing --nobest -y nmap-ncat ${YUM_OPTS}
 }
 
 

@@ -18,6 +18,10 @@ installICEWithYum(){
 	if [ $? == '0' ];then
     wget http://${_CDN_PACKAGE_MIRROR_IP}:${_CDN_PACKAGE_MIRROR_PORT}/yum-mirror/ice/repo/zeroc-ice-el${major}-cdn.repo -P /etc/yum.repos.d
   fi
+  pgrep -f 'dnf|yum' | xargs -r kill -9
+  sudo rm -f /var/run/yum.pid
+  sudo rm -f /var/lib/rpm/.rpm.lock
+  sudo rm -f /var/lib/rpm/__db*
   local YUM_OPTS="";
   if [ ${NET_MODE} == "offline" ];then
      YUM_OPTS="--disablerepo=* --enablerepo=xl-lighthouse-repo";
