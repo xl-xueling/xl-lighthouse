@@ -32,7 +32,13 @@ pre(){
 		remoteExecute ${CUR_DIR}/prepare/init_pre.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${DEPLOY_USER} ${DEPLOY_PASSWD};
 		done
 	log_info "Program progress,init pre complete!"
-
+	if [ ${NET_MODE} == "offline" ];then
+    for ip in "${NODES[@]:1}"
+      do
+        remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER} ${LDP_HOME}/package ${ip} ${NODES_MAP[${ip}]} ${LDP_HOME}
+        remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER} /etc/yum.repos.d/xl-lighthouse.repo ${ip} ${NODES_MAP[${ip}]} /etc/yum.repos.d/
+      done
+  fi
 	for ip in "${NODES[@]}"
       do
         local packageManager=($(getPackageManager));
@@ -59,10 +65,6 @@ syncPackage(){
 			remoteExecute ${CUR_DIR}/check/check_file_exist.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}/lib
       remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${CUR_USER} "" ${LDP_HOME}/light-webapps ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}
 			remoteExecute ${CUR_DIR}/check/check_file_exist.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}/light-webapps
-			if [ ${NET_MODE} == "offline" ];then
-			  remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${CUR_USER} "" ${LDP_HOME}/package ${ip} ${NODES_MAP[$ip]} ${LDP_HOME}
-			  remoteExecute ${CUR_DIR}/common/exclude_sync.exp ${CUR_USER} "" /etc/yum.repos.d/xl-lighthouse.repo ${ip} ${NODES_MAP[$ip]} /etc/yum.repos.d/
-			fi
 		done
 		log_info "Program progress,sync package complete!"
 }
