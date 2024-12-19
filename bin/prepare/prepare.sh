@@ -43,6 +43,7 @@ pre(){
       do
         local packageManager=($(getPackageManager));
         if [[ $packageManager == "yum" ]];then
+          remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "ps -ef | grep -E 'dnf|yum' | grep -v grep | awk '{print $2}' | xargs -r kill -9"
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/run/yum.pid"
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/lib/rpm/.rpm.lock"
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/lib/rpm/__db*"
