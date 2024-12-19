@@ -44,6 +44,7 @@ pre(){
         local packageManager=($(getPackageManager));
         if [[ $packageManager == "yum" ]];then
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/run/yum.pid"
+          remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/lib/rpm/.rpm.lock"
 			    remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo yum -y install rsync ${YUM_OPTS}"
         elif [[ $packageManager == "apt-get" ]] ;then
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "sudo rm -f /var/lib/dpkg/lock-frontend"
