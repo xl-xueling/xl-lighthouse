@@ -21,6 +21,10 @@ installICEWithYum(){
   local YUM_OPTS="";
   if [ ${NET_MODE} == "offline" ];then
      YUM_OPTS="--disablerepo=* --enablerepo=xl-lighthouse-repo";
+     sudo yum install -y icegrid icebox ice-compilers ice-slice icebridge icegridgui ${YUM_OPTS}
+     rpm -ivh ${LDP_HOME}/package/baselib/python2*
+     rpm -ivh ${LDP_HOME}/package/baselib/php*
+     rpm -ivh ${LDP_HOME}/package/baselib/javapackages-filesystem-*
   else
     sudo yum install -y https://zeroc.com/download/ice/3.7/el${major}/ice-repo-3.7.el${major}.noarch.rpm
   fi

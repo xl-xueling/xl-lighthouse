@@ -26,7 +26,6 @@ baseInstallWithYum(){
         sudo yum install -y cmake gzip kernel-devel openssl openssl-devel ${YUM_OPTS}
         sudo yum install -y tcl glibc-devel numactl ${YUM_OPTS}
         sudo yum install -y nc ${YUM_OPTS}
-        sudo yum install -y git maven ${YUM_OPTS}
         sudo yum install -y libncurses* ${YUM_OPTS}
         sudo yum install -y libaio-devel.x86_64 ${YUM_OPTS}
         sudo yum install -y tcl tcl-devel ${YUM_OPTS}
