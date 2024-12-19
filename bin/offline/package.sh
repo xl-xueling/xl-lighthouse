@@ -102,13 +102,16 @@ function download(){
 }
 
 function yumPackage(){
+  yum -y install yum-utils;
+  yum -y install createrepo*
 	mkdir -p ${CUR_DIR}/package/baselib && rm -rf ${CUR_DIR}/package/baselib/*
 	cd ${CUR_DIR}/package/baselib;
 	wget http://123.207.64.67:39192/yum-mirror/ice/repo/zeroc-ice-el${major}-cdn.repo -P /etc/yum.repos.d
 	yum install -y https://zeroc.com/download/ice/3.7/el${major}/ice-repo-3.7.el${major}.noarch.rpm
 	repotrack ice-all-runtime ice-all-devel
 	repotrack yum-utils epel-release expect jq rsync  libtool autoconf gcc gcc-c++ make autoconf automake cmake gzip kernel-devel openssl openssl-devel tcl glibc-devel numactl nc git maven libncurses* libaio-devel.x86_64 tcl tcl-devel snappy* libzstd* sysstat iotop wget pcre pcre-devel acl ice-all-runtime ice-all-devel createrepo
-	repotrack nmap-ncat
+	repotrack nmap-ncat;
+	createrepo ${CUR_DIR}/package/baselib;
 }
 
 function aptPackage(){
