@@ -144,6 +144,13 @@ installICEONUbuntu(){
         sed -i '/'${_CDN_PACKAGE_MIRROR_IP}'/d' /etc/apt/sources.list
 }
 
+function checkPortExist(){
+        local ip=$1
+        local port=$2
+        nc -v -z -w 5 ${ip} ${port} >/dev/null 2>&1
+        return $?;
+}
+
 function aptPackage(){
         apt-get install -y dpkg-dev;
         mkdir -p ${CUR_DIR}/package/baselib && rm -rf ${CUR_DIR}/package/baselib/*;
