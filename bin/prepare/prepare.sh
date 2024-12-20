@@ -36,7 +36,12 @@ pre(){
     for ip in "${NODES[@]:1}"
       do
         remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER} ${LDP_HOME}/package ${ip} ${NODES_MAP[${ip}]} ${LDP_HOME}
-        remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER} /etc/yum.repos.d/xl-lighthouse.repo ${ip} ${NODES_MAP[${ip}]} /etc/yum.repos.d/
+        if [[ $packageManager == "yum" ]];then
+          remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER} /etc/yum.repos.d/xl-lighthouse.repo ${ip} ${NODES_MAP[${ip}]} /etc/yum.repos.d/
+        elif [[ $packageManager == "apt-get" ]] ;then
+          remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER} /etc/apt/sources.list.d/xl-lighthouse.list ${ip} ${NODES_MAP[${ip}]} /etc/apt/sources.list.d/
+          remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "apt-get update"
+        fi
       done
   fi
 	for ip in "${NODES[@]}"
@@ -136,9 +141,9 @@ hostsInit(){
 
 createLocalRepo(){
         if [ ${NET_MODE} == "offline" ];then
+            local baselibdir="${LDP_HOME}/package/baselib";
             local packageManager=($(getPackageManager));
       if [[ $packageManager == "yum" ]];then
-        local baselibdir="${LDP_HOME}/package/baselib";
         REPO_FILE="/etc/yum.repos.d/xl-lighthouse.repo"
         cat > "$REPO_FILE" <<EOL
 [xl-lighthouse-repo]
@@ -148,7 +153,10 @@ enabled=1
 gpgcheck=0
 EOL
         elif [[ $packageManager == "apt-get" ]] ;then
-          echo "----sss";
+        REPO_FILE="/etc/apt/sources.list.d/xl-lighthouse.list"
+        cat > "$REPO_FILE" <<EOL
+deb [trusted=yes] file://$baselibdir ./
+EOL
         fi
       fi
 }
