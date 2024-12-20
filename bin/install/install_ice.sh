@@ -55,14 +55,19 @@ installICEONUbuntu(){
 }
 
 installICEONDebian(){
-  local major=($(getLSBMajorVersion))
-	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv B6391CB2CFBA643D
-	checkPortExist ${_CDN_PACKAGE_MIRROR_IP} ${_CDN_PACKAGE_MIRROR_PORT}
-	if [ $? == '0' ];then
-    sudo apt-add-repository -y -s "deb http://${_CDN_PACKAGE_MIRROR_IP}:${_CDN_PACKAGE_MIRROR_PORT}/apt-mirror/ice/download/ice/3.7/debian${major} stable main"
+  sudo rm -f /var/lib/dpkg/lock-frontend
+  sudo rm -f /var/cache/apt/archives/lock
+  sudo rm -f /var/lib/dpkg/lock
+  if [ "${NET_MODE}" != "offline" ]; then
+    local major=($(getLSBMajorVersion))
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv B6391CB2CFBA643D
+    checkPortExist ${_CDN_PACKAGE_MIRROR_IP} ${_CDN_PACKAGE_MIRROR_PORT}
+    if [ $? == '0' ];then
+      sudo apt-add-repository -y -s "deb http://${_CDN_PACKAGE_MIRROR_IP}:${_CDN_PACKAGE_MIRROR_PORT}/apt-mirror/ice/download/ice/3.7/debian${major} stable main"
+    fi
+    sudo apt-add-repository -y -s "deb http://zeroc.com/download/ice/3.7/debian${major} stable main"
+    sudo apt-get update
   fi
-	sudo apt-add-repository -y -s "deb http://zeroc.com/download/ice/3.7/debian${major} stable main"
-	sudo apt-get update
   sudo apt-get -y install zeroc-ice-all-runtime zeroc-ice-all-dev
   sed -i '/'${_CDN_PACKAGE_MIRROR_IP}'/d' /etc/apt/sources.list
 }

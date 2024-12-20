@@ -154,7 +154,10 @@ function aptPackage(){
         fi
         apt-get -y -d install software-properties-common expect jq rsync gcc gcc-multilib g++ g++-multilib cmake pkg-config libncurses* libtinfo5 libmecab2 libaio1 libssl-dev openssl zstd netcat-openbsd netcat* libzstd* tcl tk libncurses5 build-essential *snappy* sysstat iotop wget zlib1g-dev libpcre3 libpcre3-dev acl;
         cp /var/cache/apt/archives/*.deb ${CUR_DIR}/package/baselib/
-        cd ${CUR_DIR}/package/baselib && dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz;
+        cd ${CUR_DIR}/package/baselib
+        dpkg-scanpackages . /dev/null > Packages
+        gzip -k Packages
+        xz -k Packages
 }
 
 function getPackageManager() {

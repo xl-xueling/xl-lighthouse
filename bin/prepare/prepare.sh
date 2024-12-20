@@ -155,7 +155,7 @@ EOL
         elif [[ $packageManager == "apt-get" ]] ;then
         REPO_FILE="/etc/apt/sources.list.d/xl-lighthouse.list"
         cat > "$REPO_FILE" <<EOL
-deb [trusted=yes] file://$baselibdir ./
+deb [trusted=yes lang=none acquire::CompressionTypes::Order::=gz] file://$baselibdir ./
 EOL
 apt-get update;
         fi
