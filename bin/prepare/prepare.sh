@@ -157,6 +157,7 @@ EOL
         cat > "$REPO_FILE" <<EOL
 deb [trusted=yes] file://$baselibdir ./
 EOL
+apt-get update;
         fi
       fi
 }
