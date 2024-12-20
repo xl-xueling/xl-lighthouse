@@ -58,7 +58,8 @@ baseInstallWithApt(){
 	sudo apt-get install -y libssl-dev
 	sudo apt-get install -y openssl
 	sudo apt-get install -y zstd
-	sudo apt-get install -y netcat
+	sudo apt-get install -y netcat-openbsd
+	sudo apt-get install -y netcat*
 	sudo apt-get install -y libzstd*
 	sudo apt-get install -y tcl tk
 	sudo apt-get install -y libncurses5

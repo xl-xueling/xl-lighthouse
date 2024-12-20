@@ -17,6 +17,8 @@ DOWNLOAD_URLS["redis"]="https://ldp-soft-1300542249.cos.accelerate.myqcloud.com/
 DOWNLOAD_URLS["mysql"]="https://ldp-soft-1300542249.cos.ap-nanjing.myqcloud.com/mysql-8.0.30-linux-glibc2.12-x86_64-mininal.tar.xz"
 lsb=""
 major=""
+_CDN_PACKAGE_MIRROR_IP=123.207.64.67
+_CDN_PACKAGE_MIRROR_PORT=39192
 
 main(){
 	lsb=($(getLSBName));
@@ -117,11 +119,41 @@ function yumPackage(){
 	modifyrepo --mdtype=modules modules.yaml repodata/
 }
 
+installICEONDebian(){
+  local major=($(getLSBMajorVersion))
+        sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv B6391CB2CFBA643D
+        checkPortExist ${_CDN_PACKAGE_MIRROR_IP} ${_CDN_PACKAGE_MIRROR_PORT}
+        if [ $? == '0' ];then
+    sudo apt-add-repository -y -s "deb http://${_CDN_PACKAGE_MIRROR_IP}:${_CDN_PACKAGE_MIRROR_PORT}/apt-mirror/ice/download/ice/3.7/debian${major} stable main"
+  fi
+        sudo apt-add-repository -y -s "deb http://zeroc.com/download/ice/3.7/debian${major} stable main"
+        sudo apt-get update
+  sudo apt-get -y install zeroc-ice-all-runtime zeroc-ice-all-dev
+  sed -i '/'${_CDN_PACKAGE_MIRROR_IP}'/d' /etc/apt/sources.list
+}
+
+installICEONUbuntu(){
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv B6391CB2CFBA643D
+  checkPortExist ${_CDN_PACKAGE_MIRROR_IP} ${_CDN_PACKAGE_MIRROR_PORT}
+        if [ $? == '0' ];then
+    sudo apt-add-repository -y -s "deb http://${_CDN_PACKAGE_MIRROR_IP}:${_CDN_PACKAGE_MIRROR_PORT}/apt-mirror/ice/download/Ice/3.7/ubuntu`lsb_release -rs` stable main"
+  fi
+        sudo apt-add-repository -y -s "deb http://zeroc.com/download/Ice/3.7/ubuntu`lsb_release -rs` stable main"
+        sudo apt-get update
+        sudo apt-get -y install zeroc-ice-all-runtime zeroc-ice-all-dev
+        sed -i '/'${_CDN_PACKAGE_MIRROR_IP}'/d' /etc/apt/sources.list
+}
+
 function aptPackage(){
-	apt-get install -y dpkg-dev;
+        apt-get install -y dpkg-dev;
         mkdir -p ${CUR_DIR}/package/baselib && rm -rf ${CUR_DIR}/package/baselib/*;
-        apt-get -y -d install software-properties-common expect jq rsync gcc gcc-multilib g++ g++-multilib cmake pkg-config libncurses* libtinfo5 libmecab2 libaio1 libssl-dev openssl zstd libzstd* tcl tk libncurses5 build-essential *snappy* sysstat iotop wget zlib1g-dev libpcre3 libpcre3-dev acl;
-        cp /var/cache/apt/archives/*.deb ${CUR_DIR}/package/baselib/ 
+        if [[ "${lsb}" == "Debian" ]];then
+                installICEONDebian;
+        elif [ "${lsb}" == "Ubuntu" ];then
+                installICEONUbuntu;
+        fi
+        apt-get -y -d install software-properties-common expect jq rsync gcc gcc-multilib g++ g++-multilib cmake pkg-config libncurses* libtinfo5 libmecab2 libaio1 libssl-dev openssl zstd netcat-openbsd netcat* libzstd* tcl tk libncurses5 build-essential *snappy* sysstat iotop wget zlib1g-dev libpcre3 libpcre3-dev acl;
+        cp /var/cache/apt/archives/*.deb ${CUR_DIR}/package/baselib/
         cd ${CUR_DIR}/package/baselib && dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz;
 }
 
