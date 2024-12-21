@@ -149,9 +149,9 @@ hostsInit(){
 
 
 createLocalRepo() {
+   local packageManager=($(getPackageManager));
    if [ ${NET_MODE} == "offline" ]; then
        local baselibdir="${LDP_HOME}/package/baselib"
-       local packageManager=($(getPackageManager))
        if [[ $packageManager == "yum" ]]; then
            REPO_FILE="/etc/yum.repos.d/xl-lighthouse.repo"
            cat > "$REPO_FILE" <<EOL
