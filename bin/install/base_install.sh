@@ -15,30 +15,35 @@ baseInstallWithYum(){
         if [ ${NET_MODE} == "offline" ];then
           YUM_OPTS="--disablerepo=* --enablerepo=xl-lighthouse-repo";
         fi
+        local major=($(getLSBMajorVersion));
+        local YUM_EXT_OPTS="";
+        if [ "$major" -ge 8 ]; then
+          YUM_EXT_OPTS = "--allowerasing --nobest";
+        fi
         pgrep -f 'dnf|yum' | xargs -r kill -9
         sudo rm -f /var/run/yum.pid
         sudo rm -f /var/lib/rpm/.rpm.lock
         sudo rm -f /var/lib/rpm/__db*
         sudo yum clean packages
-        sudo yum install --nobest -y yum-utils ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y yum-utils ${YUM_OPTS}
         sudo yum-config-manager --setopt=timeout=500 --save
         sudo yum-config-manager --setopt=minrate=1 --save
-        sudo yum install --allowerasing --nobest -y epel-release ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y expect jq rsync ${YUM_OPTS}
-	      sudo yum install --allowerasing --nobest -y libtool autoconf gcc gcc-c++ make autoconf automake ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y cmake gzip kernel-devel openssl openssl-devel ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y tcl glibc-devel numactl ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y nc ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y libncurses* ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y libaio-devel.x86_64 ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y tcl tcl-devel ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y snappy* ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y libzstd* ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y sysstat iotop ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y wget ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y pcre pcre-devel ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y acl ${YUM_OPTS}
-        sudo yum install --allowerasing --nobest -y nmap-ncat ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y epel-release ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y expect jq rsync ${YUM_OPTS}
+	      sudo yum install ${YUM_EXT_OPTS} -y libtool autoconf gcc gcc-c++ make autoconf automake ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y cmake gzip kernel-devel openssl openssl-devel ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y tcl glibc-devel numactl ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y nc ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y libncurses* ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y libaio-devel.x86_64 ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y tcl tcl-devel ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y snappy* ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y libzstd* ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y sysstat iotop ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y wget ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y pcre pcre-devel ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y acl ${YUM_OPTS}
+        sudo yum install ${YUM_EXT_OPTS} -y nmap-ncat ${YUM_OPTS}
 }
 
 

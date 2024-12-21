@@ -115,8 +115,10 @@ function yumPackage(){
 	repotrack yum-utils epel-release expect jq rsync libtool autoconf gcc gcc-c++ make autoconf automake cmake gzip kernel-devel openssl openssl-devel tcl glibc-devel numactl nc git maven libncurses* libaio-devel.x86_64 tcl tcl-devel snappy* libzstd* sysstat iotop wget pcre pcre-devel acl ice-all-runtime ice-all-devel createrepo
 	repotrack nmap-ncat;
 	createrepo ${CUR_DIR}/package/baselib;
-  repo2module ./
-	modifyrepo --mdtype=modules modules.yaml repodata/
+	if [ "$major" -ge 8 ]; then
+    repo2module ./
+	  modifyrepo --mdtype=modules modules.yaml repodata/
+  fi
 }
 
 installICEONDebian(){
