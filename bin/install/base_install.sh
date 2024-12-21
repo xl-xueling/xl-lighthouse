@@ -18,7 +18,7 @@ baseInstallWithYum(){
         local major=($(getLSBMajorVersion));
         local YUM_EXT_OPTS="";
         if [ "$major" -ge 8 ]; then
-          YUM_EXT_OPTS = "--allowerasing --nobest";
+          YUM_EXT_OPTS="--allowerasing --nobest";
         fi
         pgrep -f 'dnf|yum' | xargs -r kill -9
         sudo rm -f /var/run/yum.pid
