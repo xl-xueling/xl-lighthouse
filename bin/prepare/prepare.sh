@@ -46,7 +46,6 @@ pre(){
   else
     for ip in "${NODES[@]:1}"
       do
-        remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER} ${LDP_HOME}/package ${ip} ${NODES_MAP[${ip}]} ${LDP_HOME}
         if [[ $packageManager == "yum" ]];then
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "rm -f /etc/yum.repos.d/xl-lighthouse.repo"
         elif [[ $packageManager == "apt-get" ]] ;then
