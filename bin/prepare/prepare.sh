@@ -43,6 +43,16 @@ pre(){
           remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "apt-get update"
         fi
       done
+  else
+    for ip in "${NODES[@]:1}"
+      do
+        remoteExecute ${CUR_DIR}/common/sync.exp ${CUR_USER} ${LDP_HOME}/package ${ip} ${NODES_MAP[${ip}]} ${LDP_HOME}
+        if [[ $packageManager == "yum" ]];then
+          remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "rm -f /etc/yum.repos.d/xl-lighthouse.repo"
+        elif [[ $packageManager == "apt-get" ]] ;then
+          remoteExecute ${CUR_DIR}/common/exec.exp ${CUR_USER} ${ip} ${NODES_MAP[$ip]} "rm -f /etc/apt/sources.list.d/xl-lighthouse.list"
+        fi
+      done
   fi
 	for ip in "${NODES[@]}"
       do
@@ -139,27 +149,33 @@ hostsInit(){
 }
 
 
-createLocalRepo(){
-        if [ ${NET_MODE} == "offline" ];then
-            local baselibdir="${LDP_HOME}/package/baselib";
-            local packageManager=($(getPackageManager));
-      if [[ $packageManager == "yum" ]];then
-        REPO_FILE="/etc/yum.repos.d/xl-lighthouse.repo"
-        cat > "$REPO_FILE" <<EOL
+createLocalRepo() {
+   if [ ${NET_MODE} == "offline" ]; then
+       local baselibdir="${LDP_HOME}/package/baselib"
+       local packageManager=($(getPackageManager))
+       if [[ $packageManager == "yum" ]]; then
+           REPO_FILE="/etc/yum.repos.d/xl-lighthouse.repo"
+           cat > "$REPO_FILE" <<EOL
 [xl-lighthouse-repo]
 name=Local Repository
 baseurl=file://$baselibdir
 enabled=1
 gpgcheck=0
 EOL
-        elif [[ $packageManager == "apt-get" ]] ;then
-        REPO_FILE="/etc/apt/sources.list.d/xl-lighthouse.list"
-        cat > "$REPO_FILE" <<EOL
+       elif [[ $packageManager == "apt-get" ]]; then
+           REPO_FILE="/etc/apt/sources.list.d/xl-lighthouse.list"
+           cat > "$REPO_FILE" <<EOL
 deb [trusted=yes lang=none acquire::CompressionTypes::Order::=gz] file://$baselibdir ./
 EOL
-apt-get update;
-        fi
-      fi
+           apt-get update
+       fi
+   else
+       if [[ $packageManager == "yum" ]]; then
+           [ -f "/etc/yum.repos.d/xl-lighthouse.repo" ] && rm -f "/etc/yum.repos.d/xl-lighthouse.repo"
+       elif [[ $packageManager == "apt-get" ]]; then
+           [ -f "/etc/apt/sources.list.d/xl-lighthouse.list" ] && rm -f "/etc/apt/sources.list.d/xl-lighthouse.list"
+       fi
+   fi
 }
 
 prepare_for_deploy(){
