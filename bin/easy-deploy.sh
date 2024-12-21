@@ -71,6 +71,10 @@ main(){
 	  CHECK_OS_VERSION="false";
 	fi
 	if [[ "${args[@]}" =~ "--offline" ]];then
+	  if [ ! -d "${LDP_HOME}/package/baselib" ]; then
+	    echo "Missing required packages in offline mode,process exit!";
+      exit -1;
+    fi
     NET_MODE="offline"
     YUM_OPTS="--disablerepo=* --enablerepo=xl-lighthouse-repo";
   fi
