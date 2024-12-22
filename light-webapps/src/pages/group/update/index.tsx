@@ -254,7 +254,7 @@ export default function GroupUpdatePanel({groupInfo,onClose,callback}) {
                 <Form.Item field="desc" rules={[
                     { required: true, message: t['groupUpdate.form.validate.desc.notEmpty.errorMsg'], validateTrigger : ['onSubmit'] },
                 ]}>
-                    <Input.TextArea maxLength={200} rows={3}  showWordLimit={true}/>
+                    <Input.TextArea maxLength={500} rows={3}  showWordLimit={true}/>
                 </Form.Item>
             </Form>
         </Modal>
