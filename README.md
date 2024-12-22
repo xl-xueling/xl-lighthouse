@@ -129,8 +129,8 @@ XL-LightHouse除了大数据版本外，同时支持单机版。单机模式成�
 ###  版本记录
 
 -  [安装包下载](https://dtstep.com/docs/110027/)
--  [开源版本（最新：v2.3.0）](https://dtstep.com/docs/110027/)
--  [商业版本（最新：v2.3.0-pro.2）](https://dtstep.com/docs/110072/)
+-  [开源版本（最新：v2.3.1）](https://dtstep.com/docs/110027/)
+-  [商业版本（最新：v2.3.1-pro.1）](https://dtstep.com/docs/110072/)
 
 ###  日常运维
 
@@ -187,8 +187,10 @@ XL-LightHouse商业版提供更加强大和便利的数据统计分析功能，�
 ![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/52.jpeg)
 ![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/screenshot_v2/51.jpeg)
 
-### Contact
+### 联系作者
 
 如果您有任何问题、意见或建议，请您添加以下微信。
 
 ![XL-LightHouse](https://lighthousedp-1300542249.cos.ap-nanjing.myqcloud.com/contact/contact_20240627_084143.jpg)
+
+邮箱：better_xueling@126.com
