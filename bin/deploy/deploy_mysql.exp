@@ -48,7 +48,7 @@ send "${mysql_home}/bin/mysqld_safe --defaults-file=${mysql_home}/support-files/
 send "exit\r"
 expect eof
 
-after 5000
+after 10000
 
 spawn sh -c "ssh ${user}@${ip}"
 set timeout -1
