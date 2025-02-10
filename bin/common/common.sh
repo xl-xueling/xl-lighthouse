@@ -60,8 +60,10 @@ function getLSBName(){
 	      DISTRO='Rocky'
     elif grep -Eqi "Alma" /etc/issue || grep -Eq "AlmaLinux" /etc/*-release; then
 	      DISTRO='Alma'
+    elif grep -Eqi "openEuler" /etc/issue || grep -Eqi "openEuler" /etc/*-release; then
+	      DISTRO='openEuler'
     fi
-	      echo $DISTRO;
+	  echo $DISTRO;
 } 
 
 getLSBMajorVersion(){
@@ -76,6 +78,8 @@ getLSBMajorVersion(){
   elif [ $lsb == "RHEL" ];then
     major=`cat /etc/redhat-release|sed -r 's/.* ([0-9]+)\..*/\1/'`
   elif [ $lsb == "Ubuntu" ];then
+    major=`lsb_release -rs`
+  elif [ $lsb == "openEuler" ];then
     major=`lsb_release -rs`
   elif [ $lsb == "Debian" ];then
      local debianVersion=`cat /etc/debian_version`
