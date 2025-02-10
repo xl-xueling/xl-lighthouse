@@ -17,7 +17,7 @@ baseInstallWithYum(){
         fi
         local major=($(getLSBMajorVersion));
         local YUM_EXT_OPTS="";
-        if [ "$major" -ge 8 ]; then
+        if [[ "$major" =~ ^[0-9]+$ ]] && [ "$major" -ge 8 ]; then
           YUM_EXT_OPTS="--allowerasing --nobest";
         fi
         pgrep -f 'dnf|yum' | xargs -r kill -9
