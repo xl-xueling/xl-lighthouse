@@ -121,9 +121,9 @@ XL-LightHouse除了大数据版本外，同时支持单机版。单机模式成�
 - [电商订单数据统计](https://dtstep.com/docs/110031/)
 - [订单支付状态数据统计](https://dtstep.com/docs/110032/)
 
-### XL-LightHouse与Flink和ClickHouse之类技术对比
+### XL-LightHouse介绍
 
--  [系统介绍](https://dtstep.com/docs/110011/)
+-  [什么是通用型流式数据统计](https://dtstep.com/docs/110088/)
 -  [与Flink和ClickHouse之类技术对比](https://dtstep.com/docs/110036/)
 
 ###  版本记录
