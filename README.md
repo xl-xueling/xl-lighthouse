@@ -126,7 +126,13 @@ XL-LightHouse除了大数据版本外，同时支持单机版。单机模式成�
 
 + 用于初步体验XL-LightHouse或作为二次开发的联调测试环境；
 
-### Hello World
+### 项目地址
+
+- Github：[https://github.com/xl-xueling/xl-lighthouse](https://github.com/xl-xueling/xl-lighthouse)
+- Gitee：[https://gitee.com/xl-xueling/xl-lighthouse](https://gitee.com/xl-xueling/xl-lighthouse)
+- 文档地址：[https://dtstep.com/](https://dtstep.com/)
+
+### 快速上手
 
 - [创建第一个数据指标](https://dtstep.com/docs/110029/)
 - [ICON点击数据统计](https://dtstep.com/docs/110030/)
