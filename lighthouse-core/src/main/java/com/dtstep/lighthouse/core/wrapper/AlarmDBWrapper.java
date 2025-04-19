@@ -47,7 +47,7 @@ public class AlarmDBWrapper {
 
     private static final Cache<Integer, Optional<List<AlarmExtEntity>>> STAT_ALARM_CACHE = Caffeine.newBuilder()
             .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
-            .maximumSize(100000)
+            .maximumSize(200000)
             .softValues()
             .build();
 
