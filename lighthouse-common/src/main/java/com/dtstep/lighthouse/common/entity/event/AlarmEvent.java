@@ -5,6 +5,8 @@ import java.util.Objects;
 
 public class AlarmEvent extends SlotEvent<AlarmEvent> {
 
+    private int alarmId;
+
     private int statId;
 
     private long batchTime;
@@ -13,7 +15,8 @@ public class AlarmEvent extends SlotEvent<AlarmEvent> {
 
     public AlarmEvent(){}
 
-    public AlarmEvent(Integer statId,Long batchTime,String dimensValue){
+    public AlarmEvent(Integer alarmId,Integer statId,Long batchTime,String dimensValue){
+        this.alarmId = alarmId;
         this.statId = statId;
         this.batchTime = batchTime;
         this.dimensValue = dimensValue;
@@ -24,7 +27,7 @@ public class AlarmEvent extends SlotEvent<AlarmEvent> {
         if(this.getTimestamp() > o.getTimestamp()){
             return 1;
         }else if(this.getTimestamp() == o.getTimestamp()){
-            return (this.getStatId() + "_" + this.getDimensValue()).compareTo(o.getStatId() + "_" + o.getDimensValue());
+            return (this.getAlarmId() + "_" + this.getDimensValue()).compareTo(o.getAlarmId() + "_" + o.getDimensValue());
         }else {
             return -1;
         }
@@ -57,5 +60,13 @@ public class AlarmEvent extends SlotEvent<AlarmEvent> {
 
     public void setDimensValue(String dimensValue) {
         this.dimensValue = dimensValue;
+    }
+
+    public int getAlarmId() {
+        return alarmId;
+    }
+
+    public void setAlarmId(int alarmId) {
+        this.alarmId = alarmId;
     }
 }
