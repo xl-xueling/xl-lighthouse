@@ -34,7 +34,8 @@ public class OkHttpUtil {
             .build();
 
     public static String post(String url, String requestBody) throws IOException {
-        RequestBody body = RequestBody.create(MediaType.parse("application/json"),requestBody);
+        MediaType mediaType = MediaType.get("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(requestBody,mediaType);
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)

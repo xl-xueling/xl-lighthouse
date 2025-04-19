@@ -30,6 +30,7 @@
     <netty.version>4.1.84.Final</netty.version>
     <jedis.version>5.1.2</jedis.version>
     <log4j.version>2.20.0</log4j.version>
+    <okhttp.version>4.9.3</okhttp.version>
     <slf4j.version>2.0.6</slf4j.version>
     <snappy.version>1.1.7.3</snappy.version>
     <RoaringBitmap.version>0.9.25</RoaringBitmap.version>

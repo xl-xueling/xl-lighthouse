@@ -7,6 +7,7 @@ public class BinaryUtilTest {
 
     @Test
     public void test02() throws Exception{
+
 //        long t = System.currentTimeMillis();
 //        String hex = BinaryUtil.translateTenTo36(t);
 //        String hex2 = Long.toString(t,36);
