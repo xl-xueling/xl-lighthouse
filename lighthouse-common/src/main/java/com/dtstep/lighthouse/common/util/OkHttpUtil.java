@@ -17,8 +17,11 @@ package com.dtstep.lighthouse.common.util;
  * limitations under the License.
  */
 import okhttp3.*;
+import org.apache.commons.collections.MapUtils;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 public class OkHttpUtil {
@@ -36,6 +39,24 @@ public class OkHttpUtil {
                 .url(url)
                 .post(body)
                 .build();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            return response.body().string();
+        }
+    }
+
+    public static String post(HttpUrl httpUrl, TreeMap<String, String> headers,RequestBody requestBody) throws IOException {
+           Request.Builder requestBuilder = new Request.Builder()
+                    .url(httpUrl)
+                    .method("POST", requestBody);
+           if(MapUtils.isNotEmpty(headers)){
+               for (Map.Entry<String, String> header : headers.entrySet()) {
+                   requestBuilder.addHeader(header.getKey(), header.getValue());
+               }
+           }
+            Request request = requestBuilder.build();
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response);

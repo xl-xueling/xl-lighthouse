@@ -2,7 +2,6 @@ package com.dtstep.lighthouse.core.wrapper;
 
 import com.dtstep.lighthouse.common.entity.AlarmExtEntity;
 import com.dtstep.lighthouse.common.entity.AlarmTemplateExtEntity;
-import com.dtstep.lighthouse.common.enums.AlarmChannelEnum;
 import com.dtstep.lighthouse.common.enums.AlarmMatchEnum;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
 import com.dtstep.lighthouse.common.modal.*;
@@ -326,17 +325,12 @@ public class AlarmDBWrapper {
         public AlarmChannel handle(ResultSet resultSet) throws SQLException {
             AlarmChannel alarmChannel = null;
             if(resultSet.next()){
-                alarmChannel = new AlarmChannel();
-                String alarmSettings = resultSet.getString("value");
-                if(StringUtil.isNotEmpty(alarmSettings)){
-                    alarmChannel = JsonUtil.toJavaObject(alarmSettings,AlarmChannel.class);
-                    if(alarmChannel != null){
-                        RemoteServerAlarmChannel remoteServerAlarmChannel = alarmChannel.getRemoteServer();
-                        if(remoteServerAlarmChannel.isState()){
-                            alarmChannel.setChannel(AlarmChannelEnum.RemoteService);
-                        }else{
-                            alarmChannel.setChannel(null);
-                        }
+                String alarmSettingsStr = resultSet.getString("value");
+                if(StringUtil.isNotEmpty(alarmSettingsStr)){
+                    AlarmSettings settings = JsonUtil.toJavaObject(alarmSettingsStr, AlarmSettings.class);
+                    if(settings != null){
+                        String activeChannel = settings.getActiveChannel();
+                        alarmChannel = settings.getChannels().get(activeChannel);
                     }
                 }
             }

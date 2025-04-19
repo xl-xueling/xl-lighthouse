@@ -24,6 +24,8 @@ public enum ApiResultCode {
 
     ApiCallerKeyIncorrect("109","Caller[%s] secret-key verification failed!"),
 
+    UnavailableError("999","Remote service[%s] is unavailable!"),
+
     ;
 
     private String code;

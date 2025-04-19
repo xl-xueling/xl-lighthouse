@@ -15,13 +15,21 @@ public class AlarmNotification {
 
     private StatExtEntity statExtEntity;
 
-    private Integer level;
+    private Integer priority;
 
-    private Long batchTime;
+    private Long time;
 
     private String dimensValue;
 
+    private String operator;
+
+    private double current;
+
+    private double threshold;
+
     private String content;
+
+    private String comparator;
 
     private List<String> reasons;
 
@@ -67,20 +75,20 @@ public class AlarmNotification {
         this.silentSeconds = silentSeconds;
     }
 
-    public Integer getLevel() {
-        return level;
+    public Integer getPriority() {
+        return priority;
     }
 
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
-    public Long getBatchTime() {
-        return batchTime;
+    public Long getTime() {
+        return time;
     }
 
-    public void setBatchTime(Long batchTime) {
-        this.batchTime = batchTime;
+    public void setTime(Long time) {
+        this.time = time;
     }
 
     public String getContent() {
@@ -105,5 +113,37 @@ public class AlarmNotification {
 
     public void setDimensValue(String dimensValue) {
         this.dimensValue = dimensValue;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public double getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(double current) {
+        this.current = current;
+    }
+
+    public double getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(double threshold) {
+        this.threshold = threshold;
+    }
+
+    public String getComparator() {
+        return comparator;
+    }
+
+    public void setComparator(String comparator) {
+        this.comparator = comparator;
     }
 }
