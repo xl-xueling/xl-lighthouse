@@ -34,7 +34,7 @@ public class Notification implements Serializable {
 
     private String p3;
 
-    private NotificationStateEnum state = NotificationStateEnum.Failed;
+    private NotificationStateEnum state = NotificationStateEnum.ReportingFailed;
 
     public Integer getId() {
         return id;

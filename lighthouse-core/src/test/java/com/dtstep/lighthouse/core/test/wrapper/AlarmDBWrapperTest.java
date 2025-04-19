@@ -24,7 +24,7 @@ public class AlarmDBWrapperTest extends CoreBaseTest {
 
     @Test
     public void testQueryByStatId() throws Exception {
-        int statId = 1100619;
+        int statId = 1100611;
         List<AlarmExtEntity> alarmExtEntityList = AlarmDBWrapper.queryByStatId(statId);
         for(AlarmExtEntity alarmExtEntity : alarmExtEntityList){
             System.out.println("alarmExtEntity is:" + JsonUtil.toJSONString(alarmExtEntity));

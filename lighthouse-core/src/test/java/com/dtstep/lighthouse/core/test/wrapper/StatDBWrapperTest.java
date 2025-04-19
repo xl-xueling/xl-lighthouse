@@ -40,7 +40,7 @@ public class StatDBWrapperTest {
 
     @Test
     public void testQueryById() throws Exception{
-        int statId = 1100617;
+        int statId = 1100611;
         StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
         System.out.println("statExtEntity is:" + JsonUtil.toJSONString(statExtEntity));
     }
