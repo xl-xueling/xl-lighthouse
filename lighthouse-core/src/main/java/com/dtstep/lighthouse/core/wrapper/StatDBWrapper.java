@@ -327,7 +327,7 @@ public class StatDBWrapper {
         if(PluginManager.getAlarmPlugin().isPresent()){
             List<AlarmExtEntity> alarmList = AlarmDBWrapper.queryByStatId(statEntity.getId());
             statExtEntity.setAlarmList(alarmList);
-            statExtEntity.setNeedAlarm(CollectionUtils.isNotEmpty(alarmList));
+            statExtEntity.setNeedAlarm(CollectionUtils.isNotEmpty(alarmList) && alarmList.stream().anyMatch(AlarmExtEntity::isState));
         }
         return statExtEntity;
     }

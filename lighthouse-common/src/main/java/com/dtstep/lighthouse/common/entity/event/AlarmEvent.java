@@ -35,7 +35,7 @@ public class AlarmEvent extends SlotEvent<AlarmEvent> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(statId, batchTime, dimensValue);
+        return Objects.hash(alarmId, batchTime, dimensValue);
     }
 
     public int getStatId() {
