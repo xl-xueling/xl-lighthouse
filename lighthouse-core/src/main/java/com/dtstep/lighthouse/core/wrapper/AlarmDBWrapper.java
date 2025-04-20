@@ -90,7 +90,6 @@ public class AlarmDBWrapper {
         return Optional.ofNullable(alarmChannel);
     }
 
-
     public static AlarmExtEntity translate(Alarm alarm) throws Exception {
         if(alarm == null){
             return null;
@@ -106,9 +105,24 @@ public class AlarmDBWrapper {
                 alarmTemplateExtEntity = new AlarmTemplateExtEntity(alarmTemplate);
                 alarmTemplateExtEntity.setTemplateConfig(alarmTemplateConfig);
                 alarmExtEntity.setTemplateExtEntity(alarmTemplateExtEntity);
-            }else{
-                alarmExtEntity.setTemplateId(0);
             }
+        }
+        String dimens = alarmExtEntity.getDimens();
+        if(StringUtil.isNotEmpty(dimens)){
+            String[] matchList = dimens.split("\n");
+            LinkedHashMap<String,Pattern> dimensMatchMap = new LinkedHashMap<>();
+            for(String matchDimens : matchList){
+                if(StringUtil.isNotEmpty(matchDimens)){
+                    try{
+                        Pattern pattern = Pattern.compile(matchDimens);
+                        dimensMatchMap.put(matchDimens,pattern);
+                    }catch (Exception ex){
+                        logger.error("regular expression parsing error!",ex);
+                        dimensMatchMap.put(matchDimens,null);
+                    }
+                }
+            }
+            alarmExtEntity.setDimensMatchMap(dimensMatchMap);
         }
         return alarmExtEntity;
     }
@@ -119,36 +133,7 @@ public class AlarmDBWrapper {
             List<Alarm> alarmList = queryAlarmListFromDB(statId);
             if(CollectionUtils.isNotEmpty(alarmList)){
                 for(Alarm alarm : alarmList){
-                    AlarmExtEntity alarmExtEntity = new AlarmExtEntity(alarm);
-                    int templateId = alarm.getTemplateId();
-                    if(templateId != 0){
-                        AlarmTemplate alarmTemplate = queryAlarmTemplateFromDB(templateId);
-                        AlarmTemplateExtEntity alarmTemplateExtEntity;
-                        if(alarmTemplate != null){
-                            String config = alarmTemplate.getConfig();
-                            AlarmTemplateExtEntity.AlarmTemplateConfig alarmTemplateConfig = JsonUtil.toJavaObject(config, AlarmTemplateExtEntity.AlarmTemplateConfig.class);
-                            alarmTemplateExtEntity = new AlarmTemplateExtEntity(alarmTemplate);
-                            alarmTemplateExtEntity.setTemplateConfig(alarmTemplateConfig);
-                            alarmExtEntity.setTemplateExtEntity(alarmTemplateExtEntity);
-                        }
-                    }
-                    String dimens = alarmExtEntity.getDimens();
-                    if(StringUtil.isNotEmpty(dimens)){
-                        String[] matchList = dimens.split("\n");
-                        LinkedHashMap<String,Pattern> dimensMatchMap = new LinkedHashMap<>();
-                        for(String matchDimens : matchList){
-                            if(StringUtil.isNotEmpty(matchDimens)){
-                                try{
-                                    Pattern pattern = Pattern.compile(matchDimens);
-                                    dimensMatchMap.put(matchDimens,pattern);
-                                }catch (Exception ex){
-                                    ex.printStackTrace();
-                                    dimensMatchMap.put(matchDimens,null);
-                                }
-                            }
-                        }
-                        alarmExtEntity.setDimensMatchMap(dimensMatchMap);
-                    }
+                    AlarmExtEntity alarmExtEntity = translate(alarm);
                     alarmExtEntityList.add(alarmExtEntity);
                 }
             }
