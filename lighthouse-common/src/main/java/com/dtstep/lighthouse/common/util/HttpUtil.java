@@ -7,11 +7,15 @@ import java.net.URL;
 public class HttpUtil {
 
     public static boolean isUrlReachable(String urlString) {
+        return isReachableWithMethod(urlString, "HEAD") || isReachableWithMethod(urlString, "GET");
+    }
+
+    private static boolean isReachableWithMethod(String urlString, String method) {
         HttpURLConnection connection = null;
         try {
             URL url = new URL(urlString);
             connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            connection.setRequestMethod(method);
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
             connection.setInstanceFollowRedirects(true);
