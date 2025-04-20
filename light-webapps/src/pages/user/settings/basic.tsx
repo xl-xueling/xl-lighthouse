@@ -119,7 +119,7 @@ export default function BasicInfoForm({userInfo,allDepartInfo,callback}) {
             label={t['userSetting.info.phone']}
             field="phone"
             rules={[
-                { required: false, match: new RegExp(/^[\d()\\-]{5,20}$/,"g"),message: t['userSetting.form.phone.validate.errMsg'] , validateTrigger : ['onSubmit']},
+                { required: false, match: new RegExp(/^(\+?[1-9]\d{1,14}|\d{5,20})$/,"g"),message: t['userSetting.form.phone.validate.errMsg'] , validateTrigger : ['onSubmit']},
             ]}
         >
             <Input placeholder={t['userSetting.info.phone.placeholder']} />
