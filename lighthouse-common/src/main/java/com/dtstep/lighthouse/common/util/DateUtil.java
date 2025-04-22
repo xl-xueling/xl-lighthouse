@@ -354,10 +354,10 @@ public final class DateUtil {
     }
 
     public static long getDateAfterMonths(long timestamp, int months) {
-        LocalDate date = Instant.ofEpochMilli(timestamp)
+        LocalDateTime date = Instant.ofEpochMilli(timestamp)
                 .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        LocalDate newDate = date.plusMonths(months);
-        return newDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                .toLocalDateTime();
+        LocalDateTime newDate = date.plusMonths(months);
+        return newDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 }
