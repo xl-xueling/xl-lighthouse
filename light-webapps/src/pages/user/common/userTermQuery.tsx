@@ -12,6 +12,7 @@ import {requestTermQueryByIds, requestTermList} from "@/api/user";
 import {User} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
+import {IconIdcard} from "@arco-design/web-react/icon";
 
 const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null,limit=4}) => {
 
@@ -94,6 +95,7 @@ const UserTermQuery = ({formRef = null,initValues = null,completeCallBack=null,l
             options={options}
             maxTagCount={3}
             allowClear
+            prefix={<IconIdcard/>}
             value={selectedValues}
             placeholder='Search User'
             filterOption={false}

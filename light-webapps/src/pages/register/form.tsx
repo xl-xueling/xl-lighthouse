@@ -15,6 +15,7 @@ import {fetchAllDepartmentData, translate} from "@/pages/department/base";
 import {ArcoTreeNode, User} from "@/types/insights-web";
 import {requestRegister} from "@/api/user";
 import {md5} from 'js-md5';
+import { RiNodeTree } from "react-icons/ri";
 
 export default function RegisterForm() {
 
@@ -143,7 +144,7 @@ export default function RegisterForm() {
                 rules={[
                     { required: true, message: t['register.form.department.errMsg'] , validateTrigger : ['onBlur']},
                 ]}>
-                <TreeSelect prefix={<IconIdcard/>} showSearch={true}
+                <TreeSelect prefix={<RiNodeTree/>} showSearch={true}
                             filterTreeNode={(inputText,node) => {
                                 return node.props.title.toLowerCase().indexOf(inputText.toLowerCase()) > -1;
                             }}
