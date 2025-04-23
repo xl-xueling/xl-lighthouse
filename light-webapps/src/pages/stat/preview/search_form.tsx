@@ -20,6 +20,7 @@ import StructurePanel from "@/pages/metricset/structure/structure";
 import dayjs from "dayjs";
 import {StatInfoPreviewContext} from "@/pages/common/context";
 import TreeSelectorExtend from "@/pages/common/selector/TreeSelectorExtend";
+import StatViewDatePicker from "@/pages/common/date/StatViewDatePicker";
 
 const { useForm } = Form;
 
@@ -166,12 +167,15 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
             labelAlign="left"
             colon={": "}
             labelCol={{ span: size == 'mini' ? 0 : 5 }}
-            wrapperCol={{ span: size == 'mini' ? 24:19 }}
-        >
+            wrapperCol={{ span: size == 'mini' ? 24:19 }}>
             <Row gutter={24}>
                 <Col span={12}>
                     <Form.Item label={t['basic.form.label.date']} field={"date"}>
-                        {getDatePicker()}
+                        <StatViewDatePicker
+                            statInfo={statInfo}
+                            value={form.getFieldValue('date')}
+                            onChange={(newDate) => form.setFieldsValue({ date: newDate })}
+                        />
                     </Form.Item>
                 </Col>
                 {

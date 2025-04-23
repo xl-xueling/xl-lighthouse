@@ -1,0 +1,49 @@
+import React, {forwardRef} from 'react';
+import {DatePicker} from "@arco-design/web-react";
+import dayjs from "dayjs";
+
+const StatViewDatePicker = forwardRef((props: any, ref) => {
+
+    const { statInfo,value, onChange } = props;
+
+    const handleDateChange = (date: any) => {
+        onChange(date);
+    };
+
+    const getDatePicker = () => {
+        if(statInfo.timeparam.endsWith("second")){
+            return <DatePicker.RangePicker ref={ref} mode={"date"} style={{width:'100%'}} value={value ? value : null} format="YYYY-MM-DD" allowClear={false}
+                                           disabledDate={(date) => dayjs(date).isAfter(dayjs())} onChange={handleDateChange}
+            />;
+        }else if(statInfo.timeparam.endsWith("minute")){
+            return <DatePicker.RangePicker ref={ref} mode={"date"} style={{width:'100%'}} value={value ? value : null} format="YYYY-MM-DD" allowClear={false}
+                                           disabledDate={(date) => dayjs(date).isAfter(dayjs())} onChange={handleDateChange}
+            />;
+        }else if(statInfo.timeparam.endsWith("hour")){
+            return <DatePicker.RangePicker ref={ref} mode={"date"} style={{width:'100%'}} value={value ? value : null} format="YYYY-MM-DD" allowClear={false}
+                                           disabledDate={(date) => dayjs(date).isAfter(dayjs())} onChange={handleDateChange}
+            />;
+        }else if(statInfo.timeparam.endsWith("day")){
+            return <DatePicker.RangePicker ref={ref} style={{width:'100%'}} format="YYYY-MM-DD" value={value ? value : null} allowClear={false}
+                                           disabledDate={(date) => dayjs(date).isAfter(dayjs())} onChange={handleDateChange}
+            />;
+        }else if(statInfo.timeparam.endsWith("month")){
+            return <DatePicker.RangePicker ref={ref} mode={"month"} style={{width:'100%'}} value={value ? value : null} allowClear={false}
+                                           disabledDate={(date) => dayjs(date).isAfter(dayjs())} onChange={handleDateChange}
+            />;
+        }else if(statInfo.timeparam.endsWith("year")){
+            return <DatePicker.RangePicker ref={ref} mode={"year"} style={{width:'100%'}} value={value ? value : null} allowClear={false}
+                                           disabledDate={(date) => dayjs(date).isAfter(dayjs())} onChange={handleDateChange}
+            />;
+        }
+    }
+
+    return (
+        <>
+            {getDatePicker()}
+        </>
+    );
+});
+
+StatViewDatePicker.displayName = 'StatViewDatePicker';
+export default StatViewDatePicker;
