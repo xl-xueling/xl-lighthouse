@@ -133,31 +133,6 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
         return [startDate,endDate];
     }
 
-    const getDatePicker = () => {
-        if(statInfo.timeparam.endsWith("second")){
-            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false}
-                                           disabledDate={(date) => dayjs(date).isAfter(dayjs())}
-            />;
-        }else if(statInfo.timeparam.endsWith("minute")){
-            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false}
-                                           disabledDate={(date) => dayjs(date).isAfter(dayjs())}
-            />;
-        }else if(statInfo.timeparam.endsWith("hour")){
-            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false}
-                                           disabledDate={(date) => dayjs(date).isAfter(dayjs())}
-            />;
-        }else if(statInfo.timeparam.endsWith("day")){
-            return <DatePicker.RangePicker style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false}
-                                           disabledDate={(date) => dayjs(date).isAfter(dayjs())}
-            />;
-        }else if(statInfo.timeparam.endsWith("month")){
-            return <DatePicker.RangePicker mode={"month"} style={{width:'100%'}} allowClear={false} disabledDate={(date) => dayjs(date).isAfter(dayjs())}
-            />;
-        }else if(statInfo.timeparam.endsWith("year")){
-            return <DatePicker.RangePicker mode={"year"} style={{width:'100%'}} allowClear={false} disabledDate={(date) => dayjs(date).isAfter(dayjs())}/>;
-        }
-    }
-
     return (
         <div className={styles['search-form-wrapper']}>
         <Form
