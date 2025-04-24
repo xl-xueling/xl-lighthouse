@@ -12,27 +12,27 @@ const StatViewDatePicker = forwardRef((props: any, ref) => {
 
     const getDatePicker = () => {
         if(statInfo.timeparam.endsWith("second")){
-            return <DatePicker.RangePicker ref={ref} mode={"date"} style={{width:'100%'}} value={value ? value : null} format="YYYY-MM-DD" allowClear={false}
+            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} value={value ? value : null} format="YYYY-MM-DD" allowClear={false}
                                            disabledDate={(date) => dayjs(date).isAfter(dayjs())} onChange={handleDateChange}
             />;
         }else if(statInfo.timeparam.endsWith("minute")){
-            return <DatePicker.RangePicker ref={ref} mode={"date"} style={{width:'100%'}} value={value ? value : null} format="YYYY-MM-DD" allowClear={false}
+            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} value={value ? value : null} format="YYYY-MM-DD" allowClear={false}
                                            disabledDate={(date) => dayjs(date).isAfter(dayjs())} onChange={handleDateChange}
             />;
         }else if(statInfo.timeparam.endsWith("hour")){
-            return <DatePicker.RangePicker ref={ref} mode={"date"} style={{width:'100%'}} value={value ? value : null} format="YYYY-MM-DD" allowClear={false}
+            return <DatePicker.RangePicker mode={"date"} style={{width:'100%'}} value={value ? value : null} format="YYYY-MM-DD" allowClear={false}
                                            disabledDate={(date) => dayjs(date).isAfter(dayjs())} onChange={handleDateChange}
             />;
         }else if(statInfo.timeparam.endsWith("day")){
-            return <DatePicker.RangePicker ref={ref} style={{width:'100%'}} format="YYYY-MM-DD" value={value ? value : null} allowClear={false}
+            return <DatePicker.RangePicker style={{width:'100%'}} format="YYYY-MM-DD" value={value ? value : null} allowClear={false}
                                            disabledDate={(date) => dayjs(date).isAfter(dayjs())} onChange={handleDateChange}
             />;
         }else if(statInfo.timeparam.endsWith("month")){
-            return <DatePicker.RangePicker ref={ref} mode={"month"} style={{width:'100%'}} value={value ? value : null} allowClear={false}
+            return <DatePicker.RangePicker mode={"month"} style={{width:'100%'}} value={value ? value : null} allowClear={false}
                                            disabledDate={(date) => dayjs(date).isAfter(dayjs())} onChange={handleDateChange}
             />;
         }else if(statInfo.timeparam.endsWith("year")){
-            return <DatePicker.RangePicker ref={ref} mode={"year"} style={{width:'100%'}} value={value ? value : null} allowClear={false}
+            return <DatePicker.RangePicker mode={"year"} style={{width:'100%'}} value={value ? value : null} allowClear={false}
                                            disabledDate={(date) => dayjs(date).isAfter(dayjs())} onChange={handleDateChange}
             />;
         }
