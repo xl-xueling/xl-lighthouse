@@ -5,7 +5,15 @@ import {ArcoTreeNode} from "@/types/insights-web";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale/index";
 
-export default function TreeSelectorExtend ({value = [] , treeData,onChange,placeholder = 'Please Select'}){
+interface TreeSelectorExtendProps {
+    value?: any[];
+    treeData: any;
+    onChange?: any;
+    placeholder?: string;
+    size?: 'small' | 'default' | 'large'| 'mini';
+}
+
+export default function TreeSelectorExtend ({value = [] , treeData,onChange,placeholder = 'Please Select',size = 'small'}:TreeSelectorExtendProps){
 
     const t = useLocale(locale);
 
@@ -51,7 +59,7 @@ export default function TreeSelectorExtend ({value = [] , treeData,onChange,plac
     }
 
     return (
-        <TreeSelect className={'disable-select'} size={"small"}
+        <TreeSelect className={'disable-select'} size={size}
                     onChange={onChange}
                     placeholder={placeholder}
                     multiple={true}

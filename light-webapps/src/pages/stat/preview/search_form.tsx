@@ -147,6 +147,7 @@ const SearchForm = React.forwardRef(( props:{size,onSearch},ref) => {
                 <Col span={12}>
                     <Form.Item label={t['basic.form.label.date']} field={"date"}>
                         <StatViewDatePicker
+                            size={size == 'mini' ? "mini" :"small"}
                             statInfo={statInfo}
                             value={form.getFieldValue('date')}
                             onChange={(newDate) => form.setFieldsValue({ date: newDate })}
