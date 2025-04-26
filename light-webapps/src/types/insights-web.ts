@@ -8,7 +8,7 @@ import {
 } from "@/types/insights-common";
 import Decimal from "decimal.js";
 import {Alarm} from "@/types/alarm";
-import {CommonlyFilterConfigParam} from "../../../../light-pro-webapps/.yalc/light-webapps/build/types/stat";
+import {CommonlyFilterConfigParam} from "@/types/stat";
 
 export interface HomeData {
     projectCount?:number;
