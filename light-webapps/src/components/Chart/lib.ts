@@ -17,6 +17,33 @@ export const getEchartsErrorOption = (theme,message,chartHeight = null) => {
     };
 }
 
+export const getEchartsErrorOptionBySize = (theme,message,size = 'default') => {
+    let top = 80;
+    if(size === 'default'){
+        top = 90;
+    }else if(size === 'small'){
+        top = 80;
+    }else if(size === 'mini'){
+        top = 60;
+    }
+    return {
+        title: {
+            text: message,
+            x: 'center',
+            top:top,
+            textStyle: {
+                color: theme == 'light' ? '#000' : '#fff',
+                fontSize: 12,
+                lineWidth: 2,
+                lineHeight:20,
+                fontColor:'black',
+                fontFamily : 'sans-serif',
+                fontWeight: 'normal',
+            }
+        }
+    };
+}
+
 export const getEchartsLoadingOption = (theme) => {
     return {
         animation: false,

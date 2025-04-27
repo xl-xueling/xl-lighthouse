@@ -6,7 +6,12 @@ import locale from "@/pages/stat/preview/locale";
 import dark1Theme from "@/components/Chart/themes/dark1-theme.json"
 import light1Theme from "@/components/Chart/themes/light1-theme.json"
 import {GlobalContext} from "@/context";
-import {getEchartsEmptyOption, getEchartsErrorOption, getEchartsLoadingOption} from "@/components/Chart/lib";
+import {
+    getEchartsEmptyOption,
+    getEchartsErrorOption,
+    getEchartsErrorOptionBySize,
+    getEchartsLoadingOption
+} from "@/components/Chart/lib";
 
 export default function StatBasicLineChart({data = null,errorMessage = null,stateIndex = -1,size="default", loading = false,group=null,showDimens = true}) {
 
@@ -134,7 +139,7 @@ export default function StatBasicLineChart({data = null,errorMessage = null,stat
         }else{
             const chart = chartRef.current.getEchartsInstance();
             chart.clear();
-            const errorOption = getEchartsErrorOption(theme,errorMessage);
+            const errorOption = getEchartsErrorOptionBySize(theme,errorMessage,size);
             chart.setOption(errorOption);
         }
     },[JSON.stringify(data),errorMessage,theme])
