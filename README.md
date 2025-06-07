@@ -26,16 +26,16 @@ Easier to use, supports a larger amount of data, and can complete more statistic
       </a>
 </p>
 
+<p align="center"><font size="4">新一代实时业务监控系统，除大数据版本外，同时支持单机版！</font></p>
 <p align="center"><font size="4">一键部署，一行代码接入，无需大数据研发运维经验，轻松驾驭海量数据实时统计。</font></p>
-<p align="center"><font size="4">支撑百万量级数据指标，打造成本最低的数据化运营方案，帮助企业快速搭建数据化运营体系。</font></p>
+<p align="center"><font size="4">支撑百万量级数据指标，打造成本最低的数据化运营方案，帮助企业快速搭建数据化指标监控体系。</font></p>
 <p align="center"><font size="4">流式统计运算性能超越Flink/Spark 100倍！</font></p>
-<p align="center"><font size="4">开源、免费、可商用的自助式BI系统，除大数据版本外，同时支持单机版！</font></p>
 
 ### 概述
 
 ![XL-LightHouse](https://ldp-dtstep-1300542249.cos.ap-guangzhou.myqcloud.com/readme/01.jpg)
 
-* XL-LightHouse是针对企业繁杂的数据统计需求而开发的一套集成了数据写入、数据运算和数据可视化等一系列功能，支持超大数据量，支持超高并发的【通用型流式大数据统计系统】。
+* XL-LightHouse是针对企业繁杂的数据统计需求而开发的一套集成了数据写入、数据运算和数据可视化等一系列功能，支持超大数据量，支持超高并发的【实时业务监控系统】。
 * XL-LightHouse目前已涵盖了各种流式数据统计场景，包括count、sum、max、min、avg、distinct、topN/lastN等多种运算，支持多维度计算，支持分钟级、小时级、天级多种时间粒度的统计，支持自定义统计周期的配置。
 * XL-LightHouse内置丰富的转化类函数、支持表达式解析，可以满足各种复杂的条件筛选和逻辑判断。
 * XL-LightHouse提供了完善的可视化查询功能，对外提供API查询接口，此外还包括数据指标管理、权限管理、统计限流等多种功能。
