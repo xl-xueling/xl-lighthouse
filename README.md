@@ -26,7 +26,7 @@ Easier to use, supports a larger amount of data, and can complete more statistic
       </a>
 </p>
 
-<p align="center"><font size="4">新一代实时业务监控系统，即时掌控业务运行状态，全面提升业务驾驭能力。</font></p>
+<p align="center"><font size="4">新一代全景式实时业务监控系统，即时掌控业务运行状态，全面提升业务驾驭能力。</font></p>
 <p align="center"><font size="4">除大数据版本外，同时支持单机版！</font></p>
 <p align="center"><font size="4">一键部署，一行代码接入，无需大数据研发运维经验，轻松驾驭海量数据实时统计。</font></p>
 <p align="center"><font size="4">支撑百万量级数据指标，打造成本最低的数据化运营方案，帮助企业快速搭建业务指标监控体系。</font></p>
