@@ -31,6 +31,8 @@ import ErrorPage from "@/pages/common/error";
 import {PermissionManageModal} from "@/pages/permission/PermissionManageModal";
 import {ResourceTypeEnum} from "@/types/insights-common";
 import {getIcon} from "@/pages/common/desc/base";
+import {useSelector} from "react-redux";
+import {GlobalState} from "@/store";
 const {Row, Col} = Grid;
 const { Text } = Typography;
 
@@ -40,6 +42,8 @@ export default function ProjectManagePage() {
 
     const t = useLocale(locale);
     const history = useHistory();
+    const userInfo = useSelector((state: GlobalState) => state.userInfo);
+    const proEdition = userInfo?.sysInfo?.proEdition || false;
     const [groupId, setGroupId] = useState<number>(null);
     const [showGroupCreatePanel, setShowGroupCreatePanel] = useState(false);
     const [showManagePanel, setShowManagePanel] = useState(false);
@@ -221,7 +225,7 @@ export default function ProjectManagePage() {
                                                                            onClose={() => setShowGroupCreatePanel(false)}/>}
                                 {showPermissionManageModal &&
                                 <PermissionManageModal resourceId={id} resourceType={ResourceTypeEnum.Project}
-                                                       onClose={() => setShowPermissionManageModal(false)}/>}
+                                                       onClose={() => setShowPermissionManageModal(false)} showTabs={proEdition?['1','2','3']:['3']}/>}
                             </div>
                         </Spin>
                     </>

@@ -20,7 +20,7 @@ export function PermissionManageModal({type = 2,resourceId,resourceType,onClose,
         <Modal
             title= {t['permissionManage.modal.title']}
             alignCenter={false}
-            style={{width:'1180px',maxWidth:'80%', top: '130px' }}
+            style={{width:'1180px',maxWidth:'80%', top: '100px' }}
             visible={true}
             footer={null}
             onCancel={onClose}>

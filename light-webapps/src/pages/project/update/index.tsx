@@ -19,6 +19,7 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
     const [loading, setLoading] = useState(true);
     const [admins,setAdmins] = useState<Array<number>>([]);
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
+    const proEdition = userInfo?.sysInfo?.proEdition || false;
     const [departmentListData,setDepartmentListData] = useState<ArcoFlatNode[]>();
     const staredProjectInfo = useSelector((state: {staredProjectInfo:Array<Project>}) => state.staredProjectInfo);
     const dispatch = useDispatch();
@@ -48,7 +49,7 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
             title:values.title,
             departmentId:Number(values.departmentId),
             desc:values.desc,
-            privateType:values.privateType,
+            privateType:proEdition ? values.privateType : 1,
         }
         requestUpdateById(project).then((response) => {
             const {code, data ,message} = response;
@@ -131,12 +132,15 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
                     ]}>
                         <Input.TextArea placeholder='Please enter description' style={{ minHeight: 64}} maxLength={90} showWordLimit={true}/>
                     </Form.Item>
-                    <Form.Item label={t['projectUpdate.form.label.privateType']}  field="privateType" rules={[{required:true}]}>
-                        <Radio.Group defaultValue={0}>
-                            <Radio value={0}>{t['projectUpdate.form.label.privateType.private']}</Radio>
-                            <Radio value={1}>{t['projectUpdate.form.label.privateType.public']}</Radio>
-                        </Radio.Group>
-                    </Form.Item>
+                    {
+                        proEdition &&
+                            <Form.Item label={t['projectUpdate.form.label.privateType']}  field="privateType" rules={[{required:true}]}>
+                                <Radio.Group defaultValue={0}>
+                                    <Radio value={0}>{t['projectUpdate.form.label.privateType.private']}</Radio>
+                                    <Radio value={1}>{t['projectUpdate.form.label.privateType.public']}</Radio>
+                                </Radio.Group>
+                            </Form.Item>
+                    }
                 </Form>
         </Modal>
     );

@@ -127,12 +127,13 @@ export function getColumns(t: any, staredProjectInfo:Array<Project>, callback: (
                   </Button>
                   </Popconfirm>
           }else if(record.permissions.includes('AccessAble')){
-              viewButton = <Button key={getRandomString()}
+              viewButton = <Link key={getRandomString()} href={'/project/preview/'+record.id} onClick={(e) => {e.preventDefault();callback(record, 'preview')}} style={{ textDecoration: 'none' }}>
+                  <Button
                       type="text"
-                      onClick={() => window.open('/project/preview/' + record.id)}
                       size="mini">
                       {t['projectList.columns.operations.view']}
-                  </Button>;
+                  </Button>
+              </Link>
           }else{
               applyButton =
                   <Button

@@ -25,6 +25,7 @@ import {TEXT_BASE_PATTERN_2} from "@/utils/constants";
 
 function ProjectCreatePanel({onClose,allDepartInfo,onSuccess}){
     const { userInfo, userLoading } = useSelector((state: GlobalState) => state);
+    const proEdition = userInfo?.sysInfo?.proEdition || false;
     const { Col, Row } = Grid;
     const t = useLocale(locale);
     const formRef = useRef(null);
@@ -55,7 +56,7 @@ function ProjectCreatePanel({onClose,allDepartInfo,onSuccess}){
         }
         const values = formRef.current.getFieldsValue();
         setLoading(true);
-        const privateType = values.privateType;
+        const privateType = proEdition ? values.privateType : 1;
         let departmentsPermission = [];
         let usersPermission = [];
         if(privateType == 0 && departmentTransferRef?.current){
@@ -154,45 +155,50 @@ function ProjectCreatePanel({onClose,allDepartInfo,onSuccess}){
                         ]}>
                         <Input.TextArea placeholder='Please enter ...' style={{ minHeight: 64}} maxLength={90} showWordLimit={true}/>
                     </Form.Item>
-                    <Form.Item style={{ marginBottom: 0 }} label={t['projectCreate.form.label.privateType']} rules={[{ required: true }]} >
-                        <Grid.Row gutter={8}>
-                            <Grid.Col span={20}>
-                                <Form.Item field={"privateType"}>
-                                    <Radio.Group defaultValue={0} onChange={changeVisibleType}>
-                                        <Radio value={0}>{t['projectCreate.form.label.privateType.private']}</Radio>
-                                        <Radio value={1}>{t['projectCreate.form.label.privateType.public']}</Radio>
-                                    </Radio.Group>
-                                </Form.Item>
-                            </Grid.Col>
-                            <Grid.Col span={4} style={{ textAlign:"right" }}>
-                                {showGrantPrivileges &&
-                                <div style={{cursor:"pointer",userSelect:"none"}} onClick={toggleShowPickupPanel}>
-                                    {showPickUpPanel?<IconCaretDown />:<IconCaretRight />}
-                                    <Typography.Text>{t['projectCreate.form.button.grantPrivilege']}</Typography.Text>
-                                </div>
-                                }
-                            </Grid.Col>
-                        </Grid.Row>
-                    </Form.Item>
+                    {
+                        proEdition &&
+                        <>
+                            <Form.Item style={{ marginBottom: 0 }} label={t['projectCreate.form.label.privateType']} rules={[{ required: true }]} >
+                                <Grid.Row gutter={8}>
+                                    <Grid.Col span={20}>
+                                        <Form.Item field={"privateType"}>
+                                            <Radio.Group defaultValue={0} onChange={changeVisibleType}>
+                                                <Radio value={0}>{t['projectCreate.form.label.privateType.private']}</Radio>
+                                                <Radio value={1}>{t['projectCreate.form.label.privateType.public']}</Radio>
+                                            </Radio.Group>
+                                        </Form.Item>
+                                    </Grid.Col>
+                                    <Grid.Col span={4} style={{ textAlign:"right" }}>
+                                        {showGrantPrivileges &&
+                                        <div style={{cursor:"pointer",userSelect:"none"}} onClick={toggleShowPickupPanel}>
+                                            {showPickUpPanel?<IconCaretDown />:<IconCaretRight />}
+                                            <Typography.Text>{t['projectCreate.form.button.grantPrivilege']}</Typography.Text>
+                                        </div>
+                                        }
+                                    </Grid.Col>
+                                </Grid.Row>
+                            </Form.Item>
 
-                    {showPickUpPanel &&
-                    <Form.Item label={t['projectCreate.form.label.crowdPickUp']}>
-                        <Row>
-                            <Col
-                                span={24}
-                                style={{ marginBottom: 12 }}
-                            >
-                                <Tabs key='card' tabPosition={"right"}>
-                                    <Tabs.TabPane key='1' title='Tab1'>
-                                        <DepartmentsTransfer ref={departmentTransferRef}/>
-                                    </Tabs.TabPane>
-                                    <Tabs.TabPane key='2' title='Tab2'>
-                                        <UsersTransfer ref={userTransferRef}/>
-                                    </Tabs.TabPane>
-                                </Tabs>
-                            </Col>
-                        </Row>
-                    </Form.Item>
+                            {showPickUpPanel &&
+                            <Form.Item label={t['projectCreate.form.label.crowdPickUp']}>
+                                <Row>
+                                    <Col
+                                        span={24}
+                                        style={{ marginBottom: 12 }}
+                                    >
+                                        <Tabs key='card' tabPosition={"right"}>
+                                            <Tabs.TabPane key='1' title='Tab1'>
+                                                <DepartmentsTransfer ref={departmentTransferRef}/>
+                                            </Tabs.TabPane>
+                                            <Tabs.TabPane key='2' title='Tab2'>
+                                                <UsersTransfer ref={userTransferRef}/>
+                                            </Tabs.TabPane>
+                                        </Tabs>
+                                    </Col>
+                                </Row>
+                            </Form.Item>
+                            }
+                        </>
                     }
                 </Form>
             </div>

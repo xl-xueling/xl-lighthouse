@@ -79,6 +79,7 @@ export interface User {
     avatar?:string;
     permissions?: any;
     defaultDomain?:any;
+    sysInfo?:any;
 }
 
 export interface Project {
