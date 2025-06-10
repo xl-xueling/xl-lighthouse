@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.insights.vo;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.modal.Domain;
+import com.dtstep.lighthouse.common.modal.SysInfo;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 import com.dtstep.lighthouse.common.modal.PermissionEnum;
 import com.dtstep.lighthouse.common.modal.User;
@@ -27,6 +28,8 @@ import java.util.Set;
 public class UserVO extends User {
 
     private Domain defaultDomain;
+
+    private SysInfo sysInfo;
 
     public UserVO(User user){
         assert user != null;
@@ -39,6 +42,14 @@ public class UserVO extends User {
 
     public void setDefaultDomain(Domain defaultDomain) {
         this.defaultDomain = defaultDomain;
+    }
+
+    public SysInfo getSysInfo() {
+        return sysInfo;
+    }
+
+    public void setSysInfo(SysInfo sysInfo) {
+        this.sysInfo = sysInfo;
     }
 
     private Set<PermissionEnum> permissions = new HashSet<>();
