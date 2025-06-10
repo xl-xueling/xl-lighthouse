@@ -16,7 +16,7 @@ export const request = async <T>(config): Promise<ResultData<T>> => {
         if (language) {
             config.headers['Accept-Language'] = language;
         }else{
-            config.headers['Accept-Language'] = 'en-US';
+            config.headers['Accept-Language'] = 'zh-CN';
         }
         config.headers['accessKey'] = window.localStorage.getItem('accessKey');
         return config;

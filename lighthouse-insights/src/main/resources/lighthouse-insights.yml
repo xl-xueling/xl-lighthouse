@@ -11,7 +11,7 @@ spring:
     basename: i18n/messages
   mvc:
     locale-resolver: fixed
-    locale: en_US
+    locale: zh_CN
     static-path-pattern: /static/**
     hiddenmethod:
       filter:
