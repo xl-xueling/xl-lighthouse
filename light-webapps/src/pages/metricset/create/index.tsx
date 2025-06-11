@@ -90,6 +90,8 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
             confirmLoading={loading}
             onCancel={onClose}
             onOk={handlerSubmit}
+            autoFocus={false}
+            focusLock={true}
         >
             <Form
                 form={form}
@@ -97,7 +99,7 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
                 ref={formRef}
                 autoComplete={"off"}
                 initialValues={{privateType: 0}}
-                style={{ minHeight:'300px' }}
+                style={{ minHeight:'220px' }}
                 labelCol={{span: 4, offset: 0}}
                 layout={"horizontal"}>
                 <Form.Item field="title" label={t['createMetricSet.form.label.title']}

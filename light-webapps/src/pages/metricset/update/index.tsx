@@ -103,7 +103,7 @@ export default function MetricSetUpdateModal({onClose,onSuccess}) {
                     privateType: metricSetInfo?.privateType,
                     desc:metricSetInfo?.desc,
                 }}
-                style={{ minHeight:'300px' }}
+                style={{ minHeight:'220px' }}
                 labelCol={{span: 4, offset: 0}}
                 layout={"horizontal"}>
                 <Form.Item field="title" label={t['updateMetricSet.form.label.title']}
