@@ -86,7 +86,10 @@ export default function ProjectUpdatePanel({projectInfo,allDepartInfo,onClose,on
             style={{ width:'960px',maxWidth:'80%',verticalAlign:'top', top: '150px' }}
             onOk={handlerSubmit}
             confirmLoading={loading}
-            onCancel={onClose}>
+            onCancel={onClose}
+            focusLock={false}
+            autoFocus={false}
+        >
             <Form
                 form={form}
                 ref={formRef}

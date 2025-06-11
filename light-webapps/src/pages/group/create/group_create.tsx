@@ -173,7 +173,10 @@ export default function GroupCreateModal({projectId,callback,onClose}) {
           alignCenter={false}
           style={{width:'1060px',maxWidth:'80%',top: '100px'}}
           confirmLoading={confirmLoading}
-          onCancel={onClose}>
+          onCancel={onClose}
+          focusLock={false}
+          autoFocus={false}
+      >
         <Form
             ref={formRef}
             autoComplete={"off"}

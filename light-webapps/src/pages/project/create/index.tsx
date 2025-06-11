@@ -103,6 +103,8 @@ function ProjectCreatePanel({onClose,allDepartInfo,onSuccess}){
             confirmLoading={loading}
             onOk={handlerSubmit}
             onCancel={() => onClose()}
+            focusLock={false}
+            autoFocus={false}
         >
             <div>
                 <Form

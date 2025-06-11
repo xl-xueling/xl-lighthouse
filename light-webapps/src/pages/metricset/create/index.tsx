@@ -90,8 +90,8 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
             confirmLoading={loading}
             onCancel={onClose}
             onOk={handlerSubmit}
+            focusLock={false}
             autoFocus={false}
-            focusLock={true}
         >
             <Form
                 form={form}

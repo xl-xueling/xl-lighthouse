@@ -92,6 +92,8 @@ export default function MetricSetUpdateModal({onClose,onSuccess}) {
             confirmLoading={loading}
             onCancel={onClose}
             onOk={handlerSubmit}
+            focusLock={false}
+            autoFocus={false}
         >
             <Form
                 form={form}
