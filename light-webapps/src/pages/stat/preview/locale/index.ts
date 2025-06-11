@@ -10,6 +10,13 @@ const i18n = {
         'statDisplay.commonlyFilters.label':'Filters',
         'statDisplay.commonlyFilters.confirm':'Are you sure you to save current filters data?',
         'statDisplay.label.selectAll':'All',
+        'statDisplay.label.today':'Today',
+        'statDisplay.label.yesterday':'Yesterday',
+        'statDisplay.label.last3day':'Last 3 Days',
+        'statDisplay.label.last7day':'Last 7 Days',
+        'statDisplay.label.last14day':'Last 14 Days',
+        'statDisplay.label.last1month':'Last 1 Month',
+        'statDisplay.label.last2month':'Last 2 Month',
     },
     'zh-CN': {
         'statDisplay.breadcrumbItem':'数据指标',
@@ -22,6 +29,13 @@ const i18n = {
         'statDisplay.commonlyFilters.label':'筛选项',
         'statDisplay.commonlyFilters.confirm':'是否确定保存当前筛选信息？',
         'statDisplay.label.selectAll':'全选',
+        'statDisplay.label.today':'今天',
+        'statDisplay.label.yesterday':'昨天',
+        'statDisplay.label.last3day':'最近3天',
+        'statDisplay.label.last7day':'最近7天',
+        'statDisplay.label.last14day':'最近14天',
+        'statDisplay.label.last1month':'最近1月',
+        'statDisplay.label.last2month':'最近2月',
     },
 };
 
