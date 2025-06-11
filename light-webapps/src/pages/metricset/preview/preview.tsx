@@ -45,7 +45,7 @@ import {addMetricPreviewHistory} from "@/pages/metricset/preview/history";
 import {deepCopyObject} from "@/utils/util";
 import {requestDeleteById} from "@/api/metricset";
 import {MetricSetPreviewContext} from "@/pages/common/context";
-import {updateStoreStaredMetricInfo} from "@/store";
+import {GlobalState, updateStoreStaredMetricInfo} from "@/store";
 
 export default function MetricPreviewPanel ({id,PRO_ViewBindTab = null,PRO_ViewPreview = null,PRO_StatPreview = null,PRO_ProjectApplyModal = null,PRO_StatApplyModal = null}) {
 
@@ -62,6 +62,8 @@ export default function MetricPreviewPanel ({id,PRO_ViewBindTab = null,PRO_ViewP
     const [showPermissionManageModal,setShowPermissionManageModal] = useState<boolean>(false);
     const [showUpdatePanel,setShowUpdatePanel] = useState<boolean>(false);
     const [showDeleteMetricConfirm,setShowDeleteMetricConfirm] = useState<boolean>(false);
+    const userInfo = useSelector((state: GlobalState) => state.userInfo);
+    const proEdition = userInfo?.sysInfo?.proEdition || false;
 
     const handlerProcess = async (action):Promise<void> => {
         switch (action){
@@ -146,7 +148,7 @@ export default function MetricPreviewPanel ({id,PRO_ViewBindTab = null,PRO_ViewP
     }, [reloadTime])
 
     return (
-        <MetricSetPreviewContext.Provider value={{metricSetInfo, setMetricSetInfo, reloadTime, setReloadTime,PRO_ViewBindTab,PRO_ViewPreview,PRO_StatPreview}}>
+        <MetricSetPreviewContext.Provider value={{metricSetInfo, setMetricSetInfo, reloadTime, setReloadTime,PRO_ViewBindTab,PRO_ViewPreview,PRO_StatPreview,PRO_ProjectApplyModal,PRO_StatApplyModal}}>
             <>
                 {
                     errorCode ? <ErrorPage errorCode={errorCode}/>
@@ -236,7 +238,7 @@ export default function MetricPreviewPanel ({id,PRO_ViewBindTab = null,PRO_ViewP
 
                 {showPermissionManageModal &&
                 <PermissionManageModal resourceId={id} resourceType={ResourceTypeEnum.Metric}
-                                       onClose={() => setShowPermissionManageModal(false)}/>}
+                                       onClose={() => setShowPermissionManageModal(false)} showTabs={proEdition?['1','2','3']:['3']}/>}
                 {showUpdatePanel && <MetricSetUpdateModal onClose={() => setShowUpdatePanel(false)} onSuccess={() => {console.log("-")}} />}
                 {deleteMetricConfirm}
             </>

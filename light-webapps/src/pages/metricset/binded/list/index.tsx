@@ -34,7 +34,7 @@ const { Text } = Typography;
 export default function MetricSetBindListPanel() {
 
     const t = useLocale(locale);
-    const { metricSetInfo, setMetricSetInfo,PRO_ViewBindTab,PRO_ProjectApplyModal,PRO_StatApplyModal} = useContext(MetricSetPreviewContext);
+    const { metricSetInfo, setMetricSetInfo,PRO_ViewBindTab} = useContext(MetricSetPreviewContext);
     const { reloadTime, setReloadTime } = useContext(MetricSetPreviewContext);
     const [listData, setListData] = useState<Relation[]>([]);
     const [loading,setLoading] = useState<boolean>(true);

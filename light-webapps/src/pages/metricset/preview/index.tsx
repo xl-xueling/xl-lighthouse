@@ -45,7 +45,7 @@ import {addMetricPreviewHistory} from "@/pages/metricset/preview/history";
 import {deepCopyObject} from "@/utils/util";
 import {requestDeleteById} from "@/api/metricset";
 import {MetricSetPreviewContext} from "@/pages/common/context";
-import {updateStoreStaredMetricInfo} from "@/store";
+import {GlobalState, updateStoreStaredMetricInfo} from "@/store";
 
 export default function Index() {
     const {id} = useParams();
@@ -53,6 +53,8 @@ export default function Index() {
     const history = useHistory();
     const { Text } = Typography;
     const dispatch = useDispatch();
+    const userInfo = useSelector((state: GlobalState) => state.userInfo);
+    const proEdition = userInfo?.sysInfo?.proEdition || false;
     const [loading, setLoading] = useState<boolean>(false);
     const [initLoading, setInitLoading] = useState<boolean>(true);
     const staredMetricInfo = useSelector((state: {staredMetricInfo:Array<MetricSet>}) => state.staredMetricInfo || []);
@@ -238,7 +240,7 @@ export default function Index() {
 
                 {showPermissionManageModal &&
                 <PermissionManageModal resourceId={id} resourceType={ResourceTypeEnum.Metric}
-                                       onClose={() => setShowPermissionManageModal(false)}/>}
+                                       onClose={() => setShowPermissionManageModal(false)} showTabs={proEdition?['1','2','3']:['3']}/>}
                 {showUpdatePanel && <MetricSetUpdateModal onClose={() => setShowUpdatePanel(false)} onSuccess={() => {console.log("-")}} />}
                 {deleteMetricConfirm}
             </>
