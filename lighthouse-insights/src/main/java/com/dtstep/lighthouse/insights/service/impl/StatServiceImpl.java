@@ -36,6 +36,7 @@ import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
 import com.dtstep.lighthouse.insights.config.SoftEdition;
+import com.dtstep.lighthouse.insights.dao.PermissionDao;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.service.*;

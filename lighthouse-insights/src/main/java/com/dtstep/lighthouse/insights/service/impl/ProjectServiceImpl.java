@@ -84,6 +84,9 @@ public class ProjectServiceImpl implements ProjectService {
     private RelationDao relationDao;
 
     @Autowired
+    private PermissionDao permissionDao;
+
+    @Autowired
     private SoftEdition softEdition;
 
     @Transactional
@@ -156,7 +159,7 @@ public class ProjectServiceImpl implements ProjectService {
         Integer ownerId = permission.getOwnerId();
         Integer roleId = permission.getRoleId();
         if(releaseParam.getRoleType() == RoleTypeEnum.PROJECT_MANAGE_PERMISSION){
-            List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(roleId,3);
+            List<Integer> adminIds = permissionDao.queryUserPermissionsByRoleId(roleId,3);
             if(adminIds.size() <= 1){
                 return ResultCode.releasePermissionAdminAtLeastOne;
             }

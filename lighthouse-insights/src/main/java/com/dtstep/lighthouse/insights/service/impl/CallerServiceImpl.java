@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.common.enums.*;
 import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.insights.dao.CallerDao;
+import com.dtstep.lighthouse.insights.dao.PermissionDao;
 import com.dtstep.lighthouse.insights.dto.PermissionGrantParam;
 import com.dtstep.lighthouse.insights.dto.PermissionReleaseParam;
 import com.dtstep.lighthouse.insights.service.*;
@@ -47,6 +48,9 @@ public class CallerServiceImpl implements CallerService {
 
     @Autowired
     private PermissionService permissionService;
+
+    @Autowired
+    private PermissionDao permissionDao;
 
     @Autowired
     private RoleService roleService;
@@ -212,7 +216,7 @@ public class CallerServiceImpl implements CallerService {
         Integer ownerId = permission.getOwnerId();
         Integer roleId = permission.getRoleId();
         if(releaseParam.getRoleType() == RoleTypeEnum.CALLER_MANAGER_PERMISSION){
-            List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(roleId,3);
+            List<Integer> adminIds = permissionDao.queryUserPermissionsByRoleId(roleId,3);
             if(adminIds.size() <= 1){
                 return ResultCode.releasePermissionAdminAtLeastOne;
             }

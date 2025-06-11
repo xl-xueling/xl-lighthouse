@@ -61,6 +61,9 @@ public class MetricSetServiceImpl implements MetricSetService {
     private PermissionService permissionService;
 
     @Autowired
+    private PermissionDao permissionDao;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -169,7 +172,7 @@ public class MetricSetServiceImpl implements MetricSetService {
         Integer ownerId = permission.getOwnerId();
         Integer roleId = permission.getRoleId();
         if(releaseParam.getRoleType() == RoleTypeEnum.METRIC_MANAGE_PERMISSION){
-            List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(roleId,3);
+            List<Integer> adminIds = permissionDao.queryUserPermissionsByRoleId(roleId,3);
             if(adminIds.size() <= 1){
                 return ResultCode.releasePermissionAdminAtLeastOne;
             }
