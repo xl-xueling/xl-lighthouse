@@ -56,10 +56,6 @@ export default function CallerCreateModal({onClose,onSuccess}){
         })
     }
 
-    useEffect(() => {
-        console.log("userInfo is:" + JSON.stringify(userInfo));
-    },[userInfo])
-
     return (
         <Modal
             title= {t['callerCreate.title']}
@@ -70,6 +66,8 @@ export default function CallerCreateModal({onClose,onSuccess}){
             confirmLoading={loading}
             onCancel={onClose}
             okText={t['basic.form.button.submit']}
+            focusLock={false}
+            autoFocus={false}
             >
             <Form
                 autoComplete='off'

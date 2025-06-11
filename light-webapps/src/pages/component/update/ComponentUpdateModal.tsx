@@ -166,6 +166,8 @@ export default function ComponentUpdateModal({componentInfo,onClose,onSuccess}) 
             onCancel={onClose}
             onOk={handlerSubmit}
             style={{ width:'800px' }}
+            focusLock={false}
+            autoFocus={false}
         >
             <Form ref={formRef} layout={"vertical"}
                   initialValues={{

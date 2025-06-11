@@ -67,6 +67,8 @@ export default function CallerUpdateModal({callerInfo = null,onClose,onSuccess})
             confirmLoading={loading}
             onCancel={onClose}
             okText={t['basic.form.button.submit']}
+            focusLock={false}
+            autoFocus={false}
             >
             <Form
                 autoComplete='off'
