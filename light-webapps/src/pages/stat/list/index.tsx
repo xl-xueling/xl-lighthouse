@@ -11,9 +11,10 @@ import {IconHome} from "@arco-design/web-react/icon";
 import StatList from "@/pages/stat/list/list";
 import {KeepAlive, useAliveController} from "react-activation";
 import {useHistory } from 'react-router-dom';
+import {StatListContext} from "@/pages/common/context";
 const BreadcrumbItem = Breadcrumb.Item;
 
-export default function Index() {
+export default function Index({PRO_StatApplyModal = null}) {
 
     const t = useLocale(locale);
     const [formParams, setFormParams] = useState({});
@@ -43,7 +44,9 @@ export default function Index() {
                 const targetPath = history.location?.pathname;
                 return targetPath && targetPath.startsWith("/stat/preview");
             }}>
-                <StatList/>
+                <StatListContext.Provider value={{PRO_StatApplyModal:PRO_StatApplyModal}}>
+                    <StatList/>
+                </StatListContext.Provider>
             </KeepAlive>
         </>
     );

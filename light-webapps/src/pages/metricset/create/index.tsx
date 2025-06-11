@@ -8,6 +8,8 @@ import {IconCaretDown, IconCaretRight} from "@arco-design/web-react/icon";
 import {GrantPrivileges, MetricSet} from "@/types/insights-web";
 import {ResultData} from "@/types/insights-common";
 import {requestCreate} from "@/api/metricset";
+import {GlobalState} from "@/store";
+import {useSelector} from "react-redux";
 
 export default function MetricSetAddPanel({onClose,onSuccess}) {
 
@@ -16,6 +18,8 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
     const FormItem = Form.Item;
     const formRef = useRef(null);
     const { Col, Row } = Grid;
+    const userInfo = useSelector((state: GlobalState) => state.userInfo);
+    const proEdition = userInfo?.sysInfo?.proEdition || false;
     const [showPickUpPanel,setShowPickUpPanel] = useState<boolean>(false);
     const [showGrantPrivileges,setShowGrantPrivileges] = useState<boolean>(true);
     const departmentTransferRef = useRef(null);
@@ -57,7 +61,7 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
         const createParams:MetricSet = {
             title:values.title,
             desc:values.desc,
-            privateType:values.privateType,
+            privateType:proEdition ? values.privateType : 1,
             initUsersPermission:initUsersPermission,
             initDepartmentsPermission:initDepartmentsPermission,
         }
@@ -110,46 +114,50 @@ export default function MetricSetAddPanel({onClose,onSuccess}) {
                 ]}>
                     <Input.TextArea maxLength={90} rows={3}  showWordLimit={true}  placeholder={'Please Input Description'}/>
                 </Form.Item>
-
-                <Form.Item style={{ marginBottom: 0 }} label={t['createMetricSet.form.label.private.type']} rules={[{ required: true }]} >
-                    <Grid.Row gutter={8}>
-                        <Grid.Col span={20}>
-                            <Form.Item field={"privateType"}>
-                                <Radio.Group defaultValue={0} onChange={changeVisibleType}>
-                                    <Radio value={0}>{t['createMetricSet.form.private.type.private']}</Radio>
-                                    <Radio value={1}>{t['createMetricSet.form.private.type.public']}</Radio>
-                                </Radio.Group>
+                {
+                    proEdition &&
+                        <>
+                            <Form.Item style={{ marginBottom: 0 }} label={t['createMetricSet.form.label.private.type']} rules={[{ required: true }]} >
+                                <Grid.Row gutter={8}>
+                                    <Grid.Col span={20}>
+                                        <Form.Item field={"privateType"}>
+                                            <Radio.Group defaultValue={0} onChange={changeVisibleType}>
+                                                <Radio value={0}>{t['createMetricSet.form.private.type.private']}</Radio>
+                                                <Radio value={1}>{t['createMetricSet.form.private.type.public']}</Radio>
+                                            </Radio.Group>
+                                        </Form.Item>
+                                    </Grid.Col>
+                                    <Grid.Col span={4} style={{ textAlign:"right" }}>
+                                        {showGrantPrivileges &&
+                                        <div style={{cursor:"pointer",userSelect:"none"}} onClick={toggleShowPickupPanel}>
+                                            {showPickUpPanel?<IconCaretDown />:<IconCaretRight />}
+                                            <Typography.Text>{t['createMetricSet.form.label.grant.privilege']}</Typography.Text>
+                                        </div>
+                                        }
+                                    </Grid.Col>
+                                </Grid.Row>
                             </Form.Item>
-                        </Grid.Col>
-                        <Grid.Col span={4} style={{ textAlign:"right" }}>
-                                {showGrantPrivileges &&
-                                <div style={{cursor:"pointer",userSelect:"none"}} onClick={toggleShowPickupPanel}>
-                                    {showPickUpPanel?<IconCaretDown />:<IconCaretRight />}
-                                    <Typography.Text>{t['createMetricSet.form.label.grant.privilege']}</Typography.Text>
-                                </div>
-                                }
-                        </Grid.Col>
-                    </Grid.Row>
-                </Form.Item>
 
-                {showPickUpPanel &&
-                <Form.Item label={t['createMetricSet.form.label.crowd.pickup']}>
-                    <Row>
-                        <Col
-                            span={24}
-                            style={{ marginBottom: 12 }}
-                        >
-                            <Tabs key='card' tabPosition={"right"}>
-                                <Tabs.TabPane key='1' title='Tab1'>
-                                    <DepartmentsTransfer ref={departmentTransferRef}/>
-                                </Tabs.TabPane>
-                                <Tabs.TabPane key='2' title='Tab2'>
-                                    <UsersTransfer ref={userTransferRef}/>
-                                </Tabs.TabPane>
-                            </Tabs>
-                        </Col>
-                    </Row>
-                </Form.Item>
+                            {showPickUpPanel &&
+                            <Form.Item label={t['createMetricSet.form.label.crowd.pickup']}>
+                                <Row>
+                                    <Col
+                                        span={24}
+                                        style={{ marginBottom: 12 }}
+                                    >
+                                        <Tabs key='card' tabPosition={"right"}>
+                                            <Tabs.TabPane key='1' title='Tab1'>
+                                                <DepartmentsTransfer ref={departmentTransferRef}/>
+                                            </Tabs.TabPane>
+                                            <Tabs.TabPane key='2' title='Tab2'>
+                                                <UsersTransfer ref={userTransferRef}/>
+                                            </Tabs.TabPane>
+                                        </Tabs>
+                                    </Col>
+                                </Row>
+                            </Form.Item>
+                            }
+                        </>
                 }
             </Form>
         </Modal>

@@ -12,8 +12,7 @@ import {getBindColumns, getColumns, getColumnsOfManage} from "@/pages/stat/list/
 import StatUpdateModal from "@/pages/stat/update";
 import {ResourceTypeEnum, StatStateEnum} from "@/types/insights-common";
 import {requestBinded} from "@/api/metricset";
-import {MetricSetBindListContext} from "@/pages/common/context";
-import StatApplyModal from "@/pages/stat/apply";
+import {MetricSetBindListContext, StatListContext} from "@/pages/common/context";
 import {GroupManageContext} from "@/pages/common/context";
 import {useUpdateEffect} from "ahooks";
 import useNavigateTo from "@/pages/common/redirect/useNavigateTo";
@@ -55,6 +54,7 @@ const StatisticalListPanel:React.FC<Props> = ({
     const { handleMetricBindListReloadCallback } = useContext(MetricSetBindListContext) || {};
     const handlerStatDeleteCallback = useContext(GroupManageContext);
     const [pagination, setPagination] = useState<PaginationProps>(defaultPagination);
+    const {PRO_StatApplyModal = null} = useContext(StatListContext) || {};
 
     const tableCallback = async (record, type) => {
         if(type == 'showUpdateModal'){
@@ -236,8 +236,7 @@ const StatisticalListPanel:React.FC<Props> = ({
                pagination={pagination}
                loading={parentLoading ? false : loading}/>
             {updateModalVisible && <StatUpdateModal statInfo={selectedStat} onClose={() => setUpdateModalVisible(false)} listCallback={tableCallback}/>}
-
-            {applyVisible && <StatApplyModal statInfo={selectedStat} onClose={() => setApplyVisible(false)}/>}
+            {applyVisible && PRO_StatApplyModal && <PRO_StatApplyModal statInfo={selectedStat} onClose={() => setApplyVisible(false)}/>}
         </>
         );
 };

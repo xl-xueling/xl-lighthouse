@@ -24,6 +24,7 @@ import com.dtstep.lighthouse.common.util.Md5Util;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.common.util.StringUtil;
+import com.dtstep.lighthouse.insights.config.SoftEdition;
 import com.dtstep.lighthouse.insights.dao.*;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.service.*;
@@ -91,6 +92,9 @@ public class MetricSetServiceImpl implements MetricSetService {
 
     @Autowired
     private ViewDao viewDao;
+
+    @Autowired
+    private SoftEdition softEdition;
 
     @Transactional
     @Override
@@ -200,7 +204,7 @@ public class MetricSetServiceImpl implements MetricSetService {
         if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
             metricSetVO.addPermission(PermissionEnum.ManageAble);
             metricSetVO.addPermission(PermissionEnum.AccessAble);
-        }else if(metricSetVO.getPrivateType() == PrivateTypeEnum.Public || permissionService.checkUserPermission(currentUserId,accessRole.getId())){
+        }else if(softEdition.isOpenSource() || metricSetVO.getPrivateType() == PrivateTypeEnum.Public || permissionService.checkUserPermission(currentUserId,accessRole.getId())){
             metricSetVO.addPermission(PermissionEnum.AccessAble);
         }
         Integer userId = metricSet.getCreateUserId();

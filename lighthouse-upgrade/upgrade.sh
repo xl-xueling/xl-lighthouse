@@ -27,6 +27,7 @@ if [ -d "$LDP_HOME" ]; then
   cp -rf $LDP_HOME/bin/config ${UPGRADE_HOME}/bin
 fi
 
+
 main(){
   if [ ${USER} != "root" ];then
        echo "The operation is prohibited, only the \"root\" user is allowed to execute!"

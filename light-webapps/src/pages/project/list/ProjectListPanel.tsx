@@ -20,11 +20,10 @@ import {Department, MetricSet, Project, TreeNode} from "@/types/insights-web";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import {useDispatch, useSelector} from "react-redux";
 import ProjectUpdatePanel from "@/pages/project/update";
-import ProjectApplyModal from "@/pages/project/apply";
 import {ResourceTypeEnum} from "@/types/insights-common";
 import {GlobalState} from "@/store";
 import {requestBinded} from "@/api/metricset";
-import {MetricSetBindListContext} from "@/pages/common/context";
+import {MetricSetBindListContext, ProjectListContext} from "@/pages/common/context";
 import {updateStoreStaredProjectInfo} from "@/store";
 import {convertDateToTimestamp, DateFormat, getDayEndTimestamp, getDayStartTimestamp} from "@/utils/date";
 import {useUpdateEffect} from "ahooks";
@@ -58,6 +57,7 @@ const ProjectListPanel:React.FC<Props> = ({
 }) => {
     const t = useLocale(locale);
     const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
+    const { PRO_ProjectApplyModal = null } = useContext(ProjectListContext) || {};
     const [listData, setListData] = useState<Project[]>([]);
     const [selectedProject,setSelectedProject] = useState<Project>(null);
     const [form] = useForm();
@@ -295,7 +295,7 @@ const ProjectListPanel:React.FC<Props> = ({
                 data={listData}
             />
             {updateVisible && <ProjectUpdatePanel projectInfo={selectedProject} allDepartInfo={allDepartInfo} onClose={() => setUpdateVisible(false)} onSuccess={() => setReloadTime(Date.now())}/>}
-            {applyVisible && <ProjectApplyModal projectInfo={selectedProject} onClose={() => setApplyVisible(false)}/>}
+            {applyVisible && PRO_ProjectApplyModal && <PRO_ProjectApplyModal projectInfo={selectedProject} onClose={() => setApplyVisible(false)}/>}
         </>
     );
 }

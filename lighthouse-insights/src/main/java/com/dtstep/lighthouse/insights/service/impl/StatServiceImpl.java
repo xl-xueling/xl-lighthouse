@@ -35,6 +35,7 @@ import com.dtstep.lighthouse.core.storage.dimens.DimensStorageSelector;
 import com.dtstep.lighthouse.core.template.TemplateContext;
 import com.dtstep.lighthouse.core.template.TemplateParser;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
+import com.dtstep.lighthouse.insights.config.SoftEdition;
 import com.dtstep.lighthouse.insights.dao.StatDao;
 import com.dtstep.lighthouse.insights.dto.StatQueryParam;
 import com.dtstep.lighthouse.insights.service.*;
@@ -94,6 +95,9 @@ public class StatServiceImpl implements StatService {
 
     @Autowired
     private MetaTableService metaTableService;
+
+    @Autowired
+    private SoftEdition softEdition;
 
     @Transactional
     @Override
@@ -167,7 +171,7 @@ public class StatServiceImpl implements StatService {
             if(permissionService.checkOwnerPermission(owner, manageRole.getId())){
                 statVO.addPermission(PermissionEnum.ManageAble);
                 statVO.addPermission(PermissionEnum.AccessAble);
-            }else if(statVO.getPrivateType() == PrivateTypeEnum.Public || permissionService.checkOwnerPermission(owner,accessRole.getId())){
+            }else if(softEdition.isOpenSource() || statVO.getPrivateType() == PrivateTypeEnum.Public || permissionService.checkOwnerPermission(owner,accessRole.getId())){
                 statVO.addPermission(PermissionEnum.AccessAble);
             }
             Role projectManageRole = roleService.cacheQueryRole(RoleTypeEnum.PROJECT_MANAGE_PERMISSION,statVO.getProjectId());

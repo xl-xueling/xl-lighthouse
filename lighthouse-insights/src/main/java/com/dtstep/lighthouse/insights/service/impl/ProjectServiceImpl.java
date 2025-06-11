@@ -24,6 +24,7 @@ import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
+import com.dtstep.lighthouse.insights.config.SoftEdition;
 import com.dtstep.lighthouse.insights.dao.*;
 import com.dtstep.lighthouse.insights.dto.*;
 import com.dtstep.lighthouse.insights.service.*;
@@ -81,6 +82,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private RelationDao relationDao;
+
+    @Autowired
+    private SoftEdition softEdition;
 
     @Transactional
     @Override
@@ -209,7 +213,7 @@ public class ProjectServiceImpl implements ProjectService {
             if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
                 projectVO.addPermission(PermissionEnum.ManageAble);
                 projectVO.addPermission(PermissionEnum.AccessAble);
-            }else if(project.getPrivateType() == PrivateTypeEnum.Public
+            }else if(softEdition.isOpenSource() || project.getPrivateType() == PrivateTypeEnum.Public
                     || permissionService.checkUserPermission(currentUserId, accessRole.getId())){
                 projectVO.addPermission(PermissionEnum.AccessAble);
             }

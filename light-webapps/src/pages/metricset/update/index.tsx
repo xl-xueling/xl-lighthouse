@@ -10,7 +10,7 @@ import {ResultData} from "@/types/insights-common";
 import {requestCreate, requestUpdate} from "@/api/metricset";
 import {useDispatch, useSelector} from "react-redux";
 import {MetricSetPreviewContext} from "@/pages/common/context";
-import {updateStoreStaredMetricInfo} from "@/store";
+import {GlobalState, updateStoreStaredMetricInfo} from "@/store";
 
 
 export default function MetricSetUpdateModal({onClose,onSuccess}) {
@@ -24,6 +24,8 @@ export default function MetricSetUpdateModal({onClose,onSuccess}) {
     const [showPickUpPanel,setShowPickUpPanel] = useState<boolean>(false);
     const [showGrantPrivileges,setShowGrantPrivileges] = useState<boolean>(true);
     const { metricSetInfo, setMetricSetInfo } = useContext(MetricSetPreviewContext);
+    const userInfo = useSelector((state: GlobalState) => state.userInfo);
+    const proEdition = userInfo?.sysInfo?.proEdition || false;
     const departmentTransferRef = useRef(null);
     const userTransferRef = useRef(null);
     const [loading,setLoading] = useState<boolean>(false);
@@ -50,7 +52,7 @@ export default function MetricSetUpdateModal({onClose,onSuccess}) {
             id:metricSetInfo?.id,
             title:values.title,
             desc:values.desc,
-            privateType:values.privateType,
+            privateType:proEdition ? values.privateType : 1,
         }
         await requestUpdate(updateParams).then((response) => {
             const {code, data ,message} = response;
@@ -118,19 +120,21 @@ export default function MetricSetUpdateModal({onClose,onSuccess}) {
                 ]}>
                     <Input.TextArea maxLength={90} rows={3}  showWordLimit={true}  placeholder={'Please Input Description'}/>
                 </Form.Item>
-
-                <Form.Item style={{ marginBottom: 0 }} label={t['updateMetricSet.form.label.private.type']} rules={[{ required: true }]} >
-                    <Grid.Row gutter={8}>
-                        <Grid.Col span={20}>
-                            <Form.Item field={"privateType"}>
-                                <Radio.Group defaultValue={0} onChange={changeVisibleType}>
-                                    <Radio value={0}>{t['updateMetricSet.form.private.type.private']}</Radio>
-                                    <Radio value={1}>{t['updateMetricSet.form.private.type.public']}</Radio>
-                                </Radio.Group>
-                            </Form.Item>
-                        </Grid.Col>
-                    </Grid.Row>
-                </Form.Item>
+                {
+                    proEdition &&
+                        <Form.Item style={{ marginBottom: 0 }} label={t['updateMetricSet.form.label.private.type']} rules={[{ required: true }]} >
+                            <Grid.Row gutter={8}>
+                                <Grid.Col span={20}>
+                                    <Form.Item field={"privateType"}>
+                                        <Radio.Group defaultValue={0} onChange={changeVisibleType}>
+                                            <Radio value={0}>{t['updateMetricSet.form.private.type.private']}</Radio>
+                                            <Radio value={1}>{t['updateMetricSet.form.private.type.public']}</Radio>
+                                        </Radio.Group>
+                                    </Form.Item>
+                                </Grid.Col>
+                            </Grid.Row>
+                        </Form.Item>
+                }
             </Form>
         </Modal>
     );

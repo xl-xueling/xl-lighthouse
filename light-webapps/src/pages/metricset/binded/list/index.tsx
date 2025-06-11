@@ -24,7 +24,6 @@ import DepartmentLabel from "@/pages/department/common/depart";
 import {getRandomString} from "@/utils/util";
 import {getColumns} from "./constants";
 import {requestDeleteById} from "@/api/project";
-import ProjectApplyModal from "@/pages/project/apply";
 import ApplyModal from "@/pages/order/apply/modal/ApplyModal";
 import NewMetricBindedModal from "@/pages/metricset/binded/binded";
 import {MetricSetBindListContext, MetricSetPreviewContext} from "@/pages/common/context";
@@ -35,7 +34,7 @@ const { Text } = Typography;
 export default function MetricSetBindListPanel() {
 
     const t = useLocale(locale);
-    const { metricSetInfo, setMetricSetInfo,PRO_ViewBindTab} = useContext(MetricSetPreviewContext);
+    const { metricSetInfo, setMetricSetInfo,PRO_ViewBindTab,PRO_ProjectApplyModal,PRO_StatApplyModal} = useContext(MetricSetPreviewContext);
     const { reloadTime, setReloadTime } = useContext(MetricSetPreviewContext);
     const [listData, setListData] = useState<Relation[]>([]);
     const [loading,setLoading] = useState<boolean>(true);

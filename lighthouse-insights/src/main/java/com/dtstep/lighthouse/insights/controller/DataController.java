@@ -28,6 +28,7 @@ import com.dtstep.lighthouse.common.modal.Stat;
 import com.dtstep.lighthouse.core.batch.BatchAdapter;
 import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
 import com.dtstep.lighthouse.core.wrapper.StatDBWrapper;
+import com.dtstep.lighthouse.insights.config.SoftEdition;
 import com.dtstep.lighthouse.insights.dto.LimitStatQueryParam;
 import com.dtstep.lighthouse.insights.service.*;
 import com.dtstep.lighthouse.insights.vo.ResultData;
@@ -61,12 +62,15 @@ public class DataController {
     @Autowired
     private StatService statService;
 
+    @Autowired
+    private SoftEdition softEdition;
+
     @RequestMapping("/data/stat")
     public ResultData<List<StatDataObject>> dataQuery(@Validated @RequestBody DataStatQueryParam queryParam) throws Exception{
         int statId = queryParam.getStatId();
         StatExtEntity stat = statService.queryById(statId);
         Validate.notNull(stat);
-        if(!BuiltinLoader.isBuiltinStat(statId) && stat.getPrivateType() == PrivateTypeEnum.Private){
+        if(softEdition.isPro() && !BuiltinLoader.isBuiltinStat(statId) && stat.getPrivateType() == PrivateTypeEnum.Private){
             Owner owner = baseService.getCurrentOwner();
             Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
             boolean hasManagePermission = permissionService.checkOwnerPermission(owner,manageRole.getId());
@@ -95,7 +99,7 @@ public class DataController {
         int statId = queryParam.getStatId();
         StatExtEntity stat = statService.queryById(statId);
         Validate.notNull(stat);
-        if(!BuiltinLoader.isBuiltinStat(statId) && stat.getPrivateType() == PrivateTypeEnum.Private){
+        if(softEdition.isPro() && !BuiltinLoader.isBuiltinStat(statId) && stat.getPrivateType() == PrivateTypeEnum.Private){
             Owner owner = baseService.getCurrentOwner();
             Role manageRole = roleService.queryRole(RoleTypeEnum.STAT_MANAGE_PERMISSION,statId);
             boolean hasManagePermission = permissionService.checkOwnerPermission(owner,manageRole.getId());

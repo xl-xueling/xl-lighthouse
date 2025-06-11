@@ -16,6 +16,10 @@ export const ViewRenderContext = React.createContext(null);
 
 export const CallerManageContext = React.createContext(null);
 
+export const ProjectListContext = React.createContext(null);
+
+export const StatListContext = React.createContext(null);
+
 export default function Constants() {
     return <>{/* nothing */}</>;
 }

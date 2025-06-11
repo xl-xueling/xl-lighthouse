@@ -26,9 +26,10 @@ import ProjectList from "@/pages/project/list/list";
 import {KeepAlive, useAliveController} from "react-activation";
 import {useHistory,useLocation } from 'react-router-dom';
 import {stringifyObj} from "@/utils/util";
+import {ProjectListContext} from "@/pages/common/context";
 const BreadcrumbItem = Breadcrumb.Item;
 
-export default function Index() {
+export default function Index({PRO_ProjectApplyModal=null}) {
   const t = useLocale(locale);
   const allDepartInfo = useSelector((state: {allDepartInfo:Array<TreeNode>}) => state.allDepartInfo);
   const [listData, setListData] = useState<Project[]>([]);
@@ -96,7 +97,9 @@ export default function Index() {
           const targetPath = history.location?.pathname;
           return targetPath && (targetPath.startsWith("/project/manage") || targetPath.startsWith("/project/preview"));
         }}>
-          <ProjectList />
+          <ProjectListContext.Provider value={{PRO_ProjectApplyModal:PRO_ProjectApplyModal}}>
+            <ProjectList />
+          </ProjectListContext.Provider>
         </KeepAlive>
       </>
   );

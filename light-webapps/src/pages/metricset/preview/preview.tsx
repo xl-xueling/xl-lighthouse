@@ -47,7 +47,7 @@ import {requestDeleteById} from "@/api/metricset";
 import {MetricSetPreviewContext} from "@/pages/common/context";
 import {updateStoreStaredMetricInfo} from "@/store";
 
-export default function MetricPreviewPanel ({id,PRO_ViewBindTab = null,PRO_ViewPreview = null,PRO_StatPreview = null}) {
+export default function MetricPreviewPanel ({id,PRO_ViewBindTab = null,PRO_ViewPreview = null,PRO_StatPreview = null,PRO_ProjectApplyModal = null,PRO_StatApplyModal = null}) {
 
     const t = useLocale(locale);
     const history = useHistory();
@@ -217,7 +217,6 @@ export default function MetricPreviewPanel ({id,PRO_ViewBindTab = null,PRO_ViewP
                                                 </TabPane>
                                                 :null
                                         }
-
                                         {
                                             metricSetInfo?.permissions.includes(PermissionEnum.ManageAble)?
                                                 <TabPane key='3' title={
