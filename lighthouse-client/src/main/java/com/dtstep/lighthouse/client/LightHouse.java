@@ -145,6 +145,9 @@ public final class LightHouse {
                 return;
             }
             _producer.send(token,secretKey,paramMap,repeat,timestamp);
+        }catch (IllegalArgumentException ex){
+            logger.error("lighthouse client failed to send message!",ex);
+            throw new LightSendException(ex);
         }catch (NotRegisteredException ex){
             LightHouse._InitFlag.set(false);
             logger.error("lighthouse client failed to send message!",ex);
