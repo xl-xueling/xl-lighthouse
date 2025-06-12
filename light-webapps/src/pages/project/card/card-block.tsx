@@ -79,6 +79,27 @@ function CardBlock(props: CardBlockType) {
         }
     };
 
+   const getActions = (permissions) => {
+       if(permissions && permissions.includes(PermissionEnum.ManageAble)){
+            return [
+                    <Link to={`/project/preview/${item.id}`} onClick={redirectPreview} style={{ textDecoration: 'none' }}>
+                        <Button type={"secondary"} size={"mini"}>{t['basic.form.button.preview']}</Button>
+                    </Link>,
+                    <Link to={`/project/manage/${item.id}`} onClick={redirectManage} style={{ textDecoration: 'none' }}>
+                        <Button type={"primary"} style={{opacity:0.8}} size={"mini"}>{t['basic.form.button.manage']}</Button>
+                    </Link>
+            ];
+       }else if(permissions && permissions.includes(PermissionEnum.AccessAble)){
+            return [
+                <Link to={`/project/preview/${item.id}`} onClick={redirectPreview} style={{ textDecoration: 'none' }}>
+                    <Button type={"secondary"} size={"mini"}>{t['basic.form.button.preview']}</Button>
+                </Link>
+            ]
+       }else{
+           return null;
+       }
+   }
+
   return (
       <Link to={`/project/preview/${item.id}`} onClick={(e) => {redirectPreview(e)}} style={{ textDecoration: 'none',width:'100%'}} >
         <Card
@@ -87,18 +108,8 @@ function CardBlock(props: CardBlockType) {
           size="small"
           style={{cursor:'pointer',height:size == 'small'?'150px':'190px'}}
           actions={
-              [
-              item.permissions.includes(PermissionEnum.AccessAble)?
-                  <Link to={`/project/preview/${item.id}`} onClick={redirectPreview} style={{ textDecoration: 'none' }}>
-                      <Button type={"secondary"} size={"mini"}>{t['basic.form.button.preview']}</Button>
-                  </Link>
-                  :null,
-                  item.permissions.includes(PermissionEnum.ManageAble)?
-                  <Link to={`/project/manage/${item.id}`} onClick={redirectManage} style={{ textDecoration: 'none' }}>
-                      <Button type={"primary"} style={{opacity:0.8}} size={"mini"}>{t['basic.form.button.manage']}</Button>
-                  </Link>
-                  :null,
-            ]}
+             getActions(item.permissions)
+          }
 
           title={
               <div>
