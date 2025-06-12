@@ -193,7 +193,7 @@ function EditableCell(props) {
                     initialValue={rowData[column.dataIndex]}
                     field={column.dataIndex}
                 >
-                    <Input size={"mini"} ref={refInput} onChange={cellValueChangeHandler} disabled={isLock}/>
+                    <Input name="custom-input" size={"mini"} ref={refInput} onChange={cellValueChangeHandler} disabled={isLock}/>
                 </FormItem>
             </div>
         );
