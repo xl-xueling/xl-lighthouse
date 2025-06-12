@@ -61,6 +61,7 @@ public class ResultStorageSelector {
         return resultStorageHandler.queryWithDimensList(statExtEntity, dimensValueList, batchTimeList);
     }
 
+    @Deprecated
     public static LinkedHashMap<String,List<StatValue>> queryWithDimensList0(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
         return resultStorageHandler.queryWithDimensList0(statExtEntity, dimensValueList, batchTimeList);
     }

@@ -241,7 +241,7 @@ public class DataServiceImpl implements DataService {
         if(eliminateDimensList != null && eliminateDimensList.size() * batchList.size() > StatConst.QUERY_RESULT_LIMIT_SIZE){
             return ServiceResult.result(ResultCode.dataQueryLimitExceed);
         }
-        LinkedHashMap<String,List<StatValue>> valuesMap = ResultStorageSelector.queryWithDimensList0(statExtEntity,eliminateDimensList,batchList);
+        LinkedHashMap<String,List<StatValue>> valuesMap = ResultStorageSelector.queryWithDimensList(statExtEntity,eliminateDimensList,batchList);
         List<StatDataObject> dataObjects = new ArrayList<>();
         if(MapUtils.isNotEmpty(valuesMap)){
             for(String dimensValue : valuesMap.keySet()){

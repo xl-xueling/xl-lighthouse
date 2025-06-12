@@ -26,7 +26,7 @@ public class ResultStorageHandler extends CoreBaseTest {
         long startTime = DateUtil.getDayStartTime(System.currentTimeMillis());
         long endTime = DateUtil.getDayEndTime(System.currentTimeMillis());
         List<Long> batchList = BatchAdapter.queryBatchTimeList(statExtEntity.getTimeparam(), startTime, endTime);
-        Map<String,List<StatValue>> result = resultStorageHandler.queryWithDimensList0(statExtEntity,null,batchList);
+        Map<String,List<StatValue>> result = resultStorageHandler.queryWithDimensList(statExtEntity,null,batchList);
         System.out.println("result:" + JsonUtil.toJSONString(result));
     }
 

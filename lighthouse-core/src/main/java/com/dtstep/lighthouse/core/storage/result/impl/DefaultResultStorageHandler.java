@@ -259,6 +259,7 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         return resultMap;
     }
 
+    @Deprecated
     public LinkedHashMap<String,List<StatValue>> queryWithDimensList0(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
         List<StatState> statStates = statExtEntity.getTemplateEntity().getStatStateList();
         int resMeta = statExtEntity.getMetaId();
