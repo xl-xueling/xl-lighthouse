@@ -77,25 +77,16 @@ export default function StatUpdateModal({statInfo,onClose,listCallback}) {
         <>
             <Draggable>
                 <Modal
-                    title= {<>
-                        <Row>
-                            <Grid.Col span={2} style={{textAlign:"left"}}>
-                                <Button className={"modal-draggable-handle"} size={"mini"} shape={"circle"} icon={<MdOutlineDragIndicator/>} />
-                            </Grid.Col>
-                            <Grid.Col span={20}>
-                                <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-                                    <p style={{ margin: '0 auto' }}>{t['statUpdate.modal.title']}</p>
-                                </div>
-                            </Grid.Col>
-                        </Row>
-                    </>}
+                    title={t['statUpdate.modal.title']}
                     visible={true}
                     confirmLoading={loading}
                     onCancel={onClose}
                     onOk={handlerSubmit}
-                    modalRender={(modal) => <Draggable bounds="parent" handle=".modal-draggable-handle" disabled={false}>{modal}</Draggable>}
+                    modalRender={(modal) => <Draggable bounds="parent" handle=".modal-draggable-handle" disabled={true}>{modal}</Draggable>}
                     alignCenter={false}
                     style={{width:'960px',maxWidth:'80%', top: '130px' }}
+                    focusLock={false}
+                    autoFocus={false}
                 >
                     <Form
                         ref={formRef}
