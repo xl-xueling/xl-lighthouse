@@ -103,7 +103,7 @@ public final class StatConst {
 
     public static final int QUERY_RESULT_DIMENS_SIZE = 50;
 
-    public static final int QUERY_RESULT_LIMIT_SIZE = 80000;
+    public static final int QUERY_RESULT_LIMIT_SIZE = 150000;
 
     public static final int EXPORT_RESULT_LIMIT_SIZE = 300000;
 
