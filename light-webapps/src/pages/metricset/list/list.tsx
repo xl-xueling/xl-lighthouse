@@ -37,6 +37,7 @@ export default function MetricListPanel() {
     const [listData,setListData] = useState<MetricSet[]>([]);
     const [reloadTime,setReloadTime] = useState<number>(Date.now);
     const userInfo = useSelector((state: GlobalState) => state.userInfo);
+    const proEdition = userInfo?.sysInfo?.proEdition || false;
     const { Meta } = Card;
     const [activeKey, setActiveKey] = useState('1');
     const [formParams, setFormParams] = useState<any>({});
@@ -158,7 +159,7 @@ export default function MetricListPanel() {
                     onChange={setActiveKey}
                     extra={
                         <Space size={20}>
-                            {activeKey == '0' && <Typography.Text style={{fontSize:12,color:'var(--color-text-2)',display:"flex"}}>
+                            {activeKey == '0' && proEdition && <Typography.Text style={{fontSize:12,color:'var(--color-text-2)',display:"flex"}}>
                                 <div style={{fontSize:'12px',marginRight:'5px',marginTop:'2px'}}>*</div>
                                 {t['metricSetList.onlyShow.tooltips']}
                             </Typography.Text>}

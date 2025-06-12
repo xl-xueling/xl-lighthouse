@@ -76,7 +76,7 @@ The term "System" refers to the XL-LightHouse system.
 
 The term "Developer" refers to the developers of the XL-LightHouse system, i.e., the copyright holders and the providers of technical services for this system.
 
-The terms "User" and "End User" refer to any individual, company, organization, or other entity that installs or uses this system.
+The terms "User" refer to any individual, company, organization, or other entity that installs or uses this system.
 
 ## Legal permission
 
