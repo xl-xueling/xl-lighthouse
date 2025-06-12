@@ -21,21 +21,20 @@ import com.dtstep.lighthouse.common.entity.ApiResultData;
 import com.dtstep.lighthouse.common.entity.monitor.ClusterInfo;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.core.config.LDPConfig;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
-import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.management.ManagementFactory;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
@@ -43,17 +42,24 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-       try{
-           if (request.method() == HttpMethod.GET) {
-               handleGetRequest(ctx, request);
-           }
-           else if (request.method() == HttpMethod.POST) {
-               handlePostRequest(ctx, request);
-           }
-       }finally{
-           ReferenceCountUtil.release(request);
-       }
+        request.retain();
+        try {
+            if (request.method() == HttpMethod.GET) {
+                handleGetRequest(ctx, request);
+            } else if (request.method() == HttpMethod.POST) {
+                handlePostRequest(ctx, request);
+            } else {
+                sendError(ctx, HttpResponseStatus.METHOD_NOT_ALLOWED, "Unsupported HTTP method.");
+            }
+        } catch (Exception ex) {
+            logger.error("Unhandled exception in channelRead0", ex);
+            sendError(ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR, "Internal server error.");
+        }finally {
+            request.release();
+        }
     }
+
+    private static final long JVM_START_TIME = ManagementFactory.getRuntimeMXBean().getStartTime();
 
     private void handleGetRequest(ChannelHandlerContext ctx, FullHttpRequest request) {
         String uri = request.uri();
@@ -61,69 +67,39 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
         if(uri.startsWith("/clusterInfo")){
             ClusterInfo clusterInfo = new ClusterInfo();
             clusterInfo.setRunningMode(LDPConfig.getRunningMode());
-            long time = ManagementFactory.getRuntimeMXBean().getStartTime();
-            clusterInfo.setStartTime(time);
-            clusterInfo.setRunningTime(System.currentTimeMillis() - time);
-            byte[] responseData = JsonUtil.toJSONString(clusterInfo).getBytes(StandardCharsets.UTF_8);
-            FullHttpResponse response = new DefaultFullHttpResponse(
-                    HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(responseData));
-            HttpHeaders responseHeaders = response.headers();
-            responseHeaders.set(HttpHeaderNames.CONTENT_TYPE, "application/json; charset=utf-8");
-            responseHeaders.set(HttpHeaderNames.CONTENT_LENGTH, responseData.length);
-            ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+            clusterInfo.setStartTime(JVM_START_TIME);
+            clusterInfo.setRunningTime(System.currentTimeMillis() - JVM_START_TIME);
+            sendObjectResponse(ctx, request, HttpResponseStatus.OK, clusterInfo);
         }else{
             result = "The current http service does not allow GET request type!";
             logger.warn(result);
-            FullHttpResponse response = new DefaultFullHttpResponse(
-                    HttpVersion.HTTP_1_1, HttpResponseStatus.METHOD_NOT_ALLOWED, Unpooled.wrappedBuffer(result.getBytes()));
-            response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
-            response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
-            ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+            sendError(ctx, HttpResponseStatus.METHOD_NOT_ALLOWED, "The current http service does not allow GET request type!");
         }
     }
 
-
     private void handlePostRequest(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-        String requestBody = request.content().toString(io.netty.util.CharsetUtil.UTF_8);
+        ByteBuf byteBuf = request.content();
+        String requestBody = byteBuf.isReadable() ? byteBuf.toString(StandardCharsets.UTF_8) : "";
         String uri = request.uri();
-        byte[] responseData;
-        if(uri.startsWith("/clusterInfo")){
-            ClusterInfo clusterInfo = new ClusterInfo();
-            clusterInfo.setRunningMode(LDPConfig.getRunningMode());
-            long time = ManagementFactory.getRuntimeMXBean().getStartTime();
-            clusterInfo.setStartTime(time);
-            clusterInfo.setRunningTime(System.currentTimeMillis() - time);
-            responseData = JsonUtil.toJSONString(clusterInfo).getBytes(StandardCharsets.UTF_8);
-        }else{
-            HttpHeaders headers = request.headers();
-            String callerName = headers.get("Caller-Name");
-            String callerKey = headers.get("Caller-Key");
-            ApiResultData apiResultData;
-            try {
-                apiResultData = request(uri, callerName, callerKey, requestBody);
-            } catch (Exception ex) {
-                logger.error("http request process error!", ex);
-                ApiResultCode apiResultCode = ApiResultCode.SystemError;
-                apiResultData = new ApiResultData(apiResultCode.getCode(), ex.getMessage());
+        Object responsePayload;
+        try{
+            if(uri.startsWith("/clusterInfo")){
+                ClusterInfo clusterInfo = new ClusterInfo();
+                clusterInfo.setRunningMode(LDPConfig.getRunningMode());
+                clusterInfo.setStartTime(JVM_START_TIME);
+                clusterInfo.setRunningTime(System.currentTimeMillis() - JVM_START_TIME);
+                responsePayload = clusterInfo;
+            }else{
+                HttpHeaders headers = request.headers();
+                String callerName = Optional.ofNullable(headers.get("Caller-Name")).orElse("");
+                String callerKey = Optional.ofNullable(headers.get("Caller-Key")).orElse("");
+                responsePayload = request(uri, callerName, callerKey, requestBody);
             }
-            responseData = JsonUtil.toJSONString(apiResultData).getBytes(StandardCharsets.UTF_8);
-        }
-        boolean keepAlive = HttpUtil.isKeepAlive(request);
-        FullHttpResponse response = new DefaultFullHttpResponse(
-                HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(responseData));
-        HttpHeaders responseHeaders = response.headers();
-        if (keepAlive) {
-            if (!request.protocolVersion().isKeepAliveDefault()) {
-                response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
-            }
-        } else {
-            response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
-        }
-        responseHeaders.set(HttpHeaderNames.CONTENT_TYPE, "application/json; charset=utf-8");
-        responseHeaders.set(HttpHeaderNames.CONTENT_LENGTH, responseData.length);
-        ChannelFuture f = ctx.writeAndFlush(response);
-        if (!keepAlive) {
-            f.addListener(ChannelFutureListener.CLOSE);
+            sendObjectResponse(ctx, request, HttpResponseStatus.OK, responsePayload);
+        }catch (Exception ex){
+            logger.error("HTTP POST processing failed", ex);
+            ApiResultData errorResult = new ApiResultData(ApiResultCode.SystemError.getCode(), ex.getMessage());
+            sendObjectResponse(ctx, request, HttpResponseStatus.INTERNAL_SERVER_ERROR, errorResult);
         }
     }
 
@@ -145,6 +121,9 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
                     return HttpProcessor.dataDurationQueryWithDimensList(callerName,callerKey,requestBody);
                 case "limitQuery":
                     return HttpProcessor.limitQuery(callerName,callerKey,requestBody);
+                default:
+                    logger.warn("Unsupported API interface: {}", interfaceName);
+                    return new ApiResultData(ApiResultCode.ApiNotSupported.getCode(), ApiResultCode.ApiNotSupported.getMessage());
             }
         }
         return new ApiResultData(ApiResultCode.ApiNotSupported.getCode(), ApiResultCode.ApiNotSupported.getMessage());
@@ -163,7 +142,38 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
+        logger.error("Unhandled exception caught in pipeline, closing channel", cause);
         ctx.close();
+    }
+
+    private void sendObjectResponse(ChannelHandlerContext ctx, FullHttpRequest request, HttpResponseStatus status, Object responseObj) {
+        byte[] responseBytes = JsonUtil.toJSONString(responseObj).getBytes(StandardCharsets.UTF_8);
+        ByteBuf buf = ctx.alloc().ioBuffer(responseBytes.length);
+        buf.writeBytes(responseBytes);
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, buf);
+        HttpHeaders headers = response.headers();
+        headers.set(HttpHeaderNames.CONTENT_TYPE, "application/json; charset=utf-8");
+        headers.set(HttpHeaderNames.CONTENT_LENGTH, responseBytes.length);
+        boolean keepAlive = HttpUtil.isKeepAlive(request);
+        if (keepAlive) {
+            headers.set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
+        } else {
+            headers.set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
+        }
+        ChannelFuture future = ctx.writeAndFlush(response);
+        if (!keepAlive) {
+            future.addListener(ChannelFutureListener.CLOSE);
+        }
+    }
+
+    private void sendError(ChannelHandlerContext ctx, HttpResponseStatus status, String message) {
+        byte[] content = message.getBytes(StandardCharsets.UTF_8);
+        ByteBuf buf = ctx.alloc().ioBuffer(content.length);
+        buf.writeBytes(content);
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, buf);
+        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=utf-8");
+        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, content.length);
+        response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
+        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 }
