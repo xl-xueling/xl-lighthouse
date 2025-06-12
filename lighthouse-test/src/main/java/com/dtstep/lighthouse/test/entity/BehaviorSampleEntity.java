@@ -5,7 +5,7 @@ import com.dtstep.lighthouse.common.entity.annotation.DBColumnAnnotation;
 import com.dtstep.lighthouse.common.entity.annotation.DBNameAnnotation;
 
 /*
- * Copyright (C) 2022-2024 XueLing.雪灵
+ * Copyright (C) 2022-2025 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
