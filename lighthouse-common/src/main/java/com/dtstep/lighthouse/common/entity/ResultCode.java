@@ -152,6 +152,8 @@ public enum ResultCode {
 
     templateParserColumnNotExist("2024","templateParserColumnNotExist"),
 
+    dimensColumnsExceedLimit("2025","dimensColumnsExceedLimit"),
+
     userStarMetricLimitExceed("3001","userStarMetricLimitExceed"),
 
     userStarProjectLimitExceed("3001","userStarProjectLimitExceed"),

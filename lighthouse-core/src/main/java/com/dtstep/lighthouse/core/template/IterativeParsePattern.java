@@ -101,6 +101,9 @@ public final class IterativeParsePattern implements Parser {
                     return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.templateParserDimensValidFailed,dimens));
                 }
             }
+            if(dimensArray.length > 5){
+                return ServiceResult.result(ResultCode.getExtendResultCode(ResultCode.dimensColumnsExceedLimit,String.format("%s > %s",dimensArray.length,5)));
+            }
             templateEntity.setDimens(dimensFormula);
             templateEntity.setDimensArray(dimensArray);
             List<String> dimensFormulaColumnsList = extractColumnsList(dimensFormula);
