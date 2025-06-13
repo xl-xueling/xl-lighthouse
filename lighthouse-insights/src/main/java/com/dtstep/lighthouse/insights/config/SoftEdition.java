@@ -32,8 +32,4 @@ public class SoftEdition {
     public boolean isOpenSource() {
         return "opensource".equalsIgnoreCase(edition);
     }
-
-    public String getEdition() {
-        return edition;
-    }
 }
