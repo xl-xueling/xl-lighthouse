@@ -57,7 +57,7 @@ public class FlowModeTestImpl implements TestModel {
                         LightHouse.stat(token,secretKey, BeanUtil.beanToMap(sampleEntity),messageTime);
                     }
                     long t2 = System.currentTimeMillis();
-                    System.out.println("send result:success,batchTime:" + DateUtil.formatTimeStamp(timestamp,"yyyy-MM-dd HH:mm:ss")
+                    System.out.println("send result:success,method:rpc,batchTime:" + DateUtil.formatTimeStamp(timestamp,"yyyy-MM-dd HH:mm:ss")
                             + ",execute time:" + DateUtil.formatTimeStamp(t1,"yyyy-MM-dd HH:mm:ss") + ",cost:" + (t2 - t1));
                 }else{
                     List<Map<String,Object>> requestList = new ArrayList<>();
@@ -72,10 +72,10 @@ public class FlowModeTestImpl implements TestModel {
                         requestList.add(requestMap);
                     }
                     String requestParams = JsonUtil.toJSONString(requestList);
-                    String apiUrl = String .format("http://%s:18101/api/rpc/v1/stats",testConfigContext.getIps().get(ThreadLocalRandom.current().nextInt(testConfigContext.getIps().size())));
+                    String apiUrl = String.format("http://%s:18101/api/rpc/v1/stats",testConfigContext.getIps().get(ThreadLocalRandom.current().nextInt(testConfigContext.getIps().size())));
                     String response = OkHttpUtil.post(apiUrl,requestParams);
                     long t2 = System.currentTimeMillis();
-                    System.out.println("send result:"+response+",batchTime:" + DateUtil.formatTimeStamp(timestamp,"yyyy-MM-dd HH:mm:ss")
+                    System.out.println("send result:"+response+",method:http,batchTime:" + DateUtil.formatTimeStamp(timestamp,"yyyy-MM-dd HH:mm:ss")
                             + ",execute time:" + DateUtil.formatTimeStamp(t1,"yyyy-MM-dd HH:mm:ss") + ",cost:" + (t2 - t1));
                 }
             }catch (Exception ex){
