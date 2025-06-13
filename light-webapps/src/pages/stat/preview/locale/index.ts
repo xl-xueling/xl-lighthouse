@@ -17,6 +17,7 @@ const i18n = {
         'statDisplay.label.last14day':'Last 14 Days',
         'statDisplay.label.last1month':'Last 1 Month',
         'statDisplay.label.last2month':'Last 2 Month',
+        'statDisplay.label.last3month':'Last 3 Month',
     },
     'zh-CN': {
         'statDisplay.breadcrumbItem':'数据指标',
@@ -36,6 +37,7 @@ const i18n = {
         'statDisplay.label.last14day':'最近14天',
         'statDisplay.label.last1month':'最近1月',
         'statDisplay.label.last2month':'最近2月',
+        'statDisplay.label.last3month':'最近3月',
     },
 };
 
