@@ -172,6 +172,8 @@ export default function OrderDetail({orderInfo}:{orderInfo:Order}) {
             return t['basic.orderExpired.description.expired3'];
         }else if(expired == 31104000){
             return t['basic.orderExpired.description.expired4'];
+        }else if(expired == 62208000){
+            return t['basic.orderExpired.description.expired5'];
         }
     }
 
