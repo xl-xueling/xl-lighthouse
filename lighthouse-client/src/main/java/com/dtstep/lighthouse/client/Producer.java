@@ -43,14 +43,14 @@ final class Producer {
     void send(String token, String secretKey, Map<String, Object> paramMap, int repeat, long timestamp) throws Exception{
         GroupVerifyEntity groupVerifyEntity = AuxHandler.queryGroupInfo(token);
         if(groupVerifyEntity == null){
-            throw new IllegalArgumentException(String.format("statistics group(%s) does not exist!",token));
+            throw new IllegalArgumentException(String.format("statistic group(%s) does not exist!",token));
         }
         String md5 = AuxHandler.cacheGetMd5(secretKey);
         if(!groupVerifyEntity.getVerifyKey().equals(md5)){
-            throw new IllegalArgumentException(String.format("statistics group(%s) key verification failed!",token));
+            throw new IllegalArgumentException(String.format("statistic group(%s) key verification failed!",token));
         }
         if(groupVerifyEntity.getState() != GroupStateEnum.RUNNING){
-            throw new IllegalArgumentException(String.format("statistics group(%s) status is abnormal!",token));
+            throw new IllegalArgumentException(String.format("statistic group(%s) status is abnormal!",token));
         }
         TimeParam timeParam = groupVerifyEntity.getMinTimeParam();
         if(timeParam != null && timeParam.getInterval() != 0){
