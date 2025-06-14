@@ -198,8 +198,7 @@ public enum ResultCode {
 
     alarmSettingsUniqueCodeExist ("70004","alarmSettingsUniqueCodeExist"),
 
-
-
+    metricStructureReset("80004","metricStructureReset"),
 
     ;
 

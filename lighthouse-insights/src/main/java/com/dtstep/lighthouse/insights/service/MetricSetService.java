@@ -56,7 +56,7 @@ public interface MetricSetService {
 
     TreeNode getStructure(MetricSetVO metricSet) throws Exception;
 
-    void updateStructure(MetricUpdateStructureParam updateStructureParam);
+    ResultCode updateStructure(MetricUpdateStructureParam updateStructureParam);
 
     ListData<Indicator> queryIndicatorList(MetricPendQueryParam queryParam, Integer pageNum, Integer pageSize);
 }

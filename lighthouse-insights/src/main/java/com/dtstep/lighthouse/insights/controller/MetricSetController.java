@@ -148,8 +148,8 @@ public class MetricSetController {
     @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")
     @RequestMapping("/metricset/updateStructure")
     public ResultData<Integer> updateStructure(@Validated @RequestBody MetricUpdateStructureParam updateStructureParam) {
-        metricSetService.updateStructure(updateStructureParam);
-        return ResultData.success();
+        ResultCode resultCode = metricSetService.updateStructure(updateStructureParam);
+        return ResultData.result(resultCode);
     }
 
     @AuthPermission(roleTypeEnum = RoleTypeEnum.METRIC_MANAGE_PERMISSION,relationParam = "id")

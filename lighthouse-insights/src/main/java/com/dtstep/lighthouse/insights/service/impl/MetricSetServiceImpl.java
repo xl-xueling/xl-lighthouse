@@ -462,13 +462,14 @@ public class MetricSetServiceImpl implements MetricSetService {
     }
 
     @Override
-    public void updateStructure(MetricUpdateStructureParam updateStructureParam){
+    public ResultCode updateStructure(MetricUpdateStructureParam updateStructureParam){
         TreeNode treeNode = updateStructureParam.getStructure();
         modifyStructure(List.of(treeNode));
         MetricSet metricSet = new MetricSet();
         metricSet.setId(updateStructureParam.getId());
         metricSet.setStructure(treeNode);
         metricSetDao.update(metricSet);
+        return CollectionUtils.isEmpty(treeNode.getChildren()) ? ResultCode.metricStructureReset : ResultCode.success;
     }
 
     private void modifyStructure(List<TreeNode> nodeList){

@@ -83,6 +83,7 @@ export default function MetricSetStructure() {
                 setReloadTime(Date.now());
             }else{
                 Notification.warning({style: { width: 420 }, title: 'Warning', content: message || t['system.error']});
+                setReloadTime(Date.now());
             }
         }).catch((error) => {
             console.log(error);
