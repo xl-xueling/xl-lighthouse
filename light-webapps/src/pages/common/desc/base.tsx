@@ -17,7 +17,13 @@ import {
 } from "@/types/insights-common";
 import {PiDiamondsFour, PiLinkSimple, PiLockKeyThin} from "react-icons/pi";
 import {CiViewTable} from "react-icons/ci";
-import {IconCalendarClock, IconMindMapping, IconStar, IconStarFill, IconTag} from "@arco-design/web-react/icon";
+import {
+    IconCalendarClock, IconFolder,
+    IconMindMapping,
+    IconStar,
+    IconStarFill,
+    IconTag
+} from "@arco-design/web-react/icon";
 import {LuLayers} from "react-icons/lu";
 import {RxCube} from "react-icons/rx";
 import {VscGistSecret, VscOutput} from "react-icons/vsc";
@@ -308,9 +314,11 @@ export const getTreeResourceIcon= (type,level) => {
     }else if(type == 'view'){
         return <TbBrandVisualStudio size={15} style={{marginRight:'8px',position: 'relative',top:'2px',opacity:0.8}}/>
     }else if(type == 'dir' && level == 1){
-        return <RxCube size={15} style={{marginRight:'8px',position: 'relative', top: '1px'}}/>
+        // return <RxCube size={15} style={{marginRight:'8px',position: 'relative', top: '1px'}}/>
+        return <IconFolder style={{marginRight:'8px',position: 'relative'}}/>
     } else if(type == 'dir' && level == 2){
-        return <IconMindMapping  style={{marginRight:'8px',position: 'relative', top: '2px'}}/>
+        // return <IconMindMapping  style={{marginRight:'8px',position: 'relative', top: '0px'}}/>
+        return <IconFolder style={{marginRight:'8px',position: 'relative'}}/>
     }
 }
 
