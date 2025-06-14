@@ -79,8 +79,8 @@ main(){
     YUM_OPTS="--disablerepo=* --enablerepo=xl-lighthouse-repo";
   fi
 	log_info "The deployment task has been started, and log is being output to the file:[${LOG_FILE}]."
-	`ps -ef|grep "easy-deploy.sh"|grep -v grep |grep -v $$|awk '{print $2}' |xargs --no-run-if-empty kill -9`
-  `ps -ef|grep "lighthouse"|grep -v grep |grep -v $$|awk '{print $2}' |xargs --no-run-if-empty kill -9`
+	`ps -ef|grep "easy-deploy.sh"|grep -v grep |grep -v $$|awk '{print $2}' |xargs --no-run-if-empty kill -9 > /dev/null 2>&1`
+  `ps -ef|grep "lighthouse"|grep -v grep |grep -v $$|awk '{print $2}' |xargs --no-run-if-empty kill -9 > /dev/null 2>&1`
 	easy_deploy > ${LOG_FILE} 2>&1 &
 	exit 0;	
 }
