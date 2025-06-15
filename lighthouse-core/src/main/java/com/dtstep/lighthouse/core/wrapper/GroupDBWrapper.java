@@ -62,7 +62,7 @@ public final class GroupDBWrapper {
 
     private static final Cache<Object, Optional<GroupExtEntity>> groupCache = Caffeine.newBuilder()
             .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
-            .maximumSize(100000)
+            .maximumSize(500000)
             .softValues()
             .build();
 

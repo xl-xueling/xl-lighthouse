@@ -71,12 +71,12 @@ public class StatDBWrapper {
     private static final LoadingCache<Integer, Optional<StatExtEntity>> statCache = Caffeine.newBuilder()
             .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
             .softValues()
-            .maximumSize(100000)
+            .maximumSize(500000)
             .build(StatDBWrapper::actualQueryById);
 
     private final static LoadingCache<Integer, Optional<List<StatExtEntity>>> groupStatListCache = Caffeine.newBuilder()
             .expireAfterWrite(_CacheExpireMinutes, TimeUnit.MINUTES)
-            .maximumSize(100000)
+            .maximumSize(500000)
             .softValues()
             .build(StatDBWrapper::actualQueryListByGroupId);
 
