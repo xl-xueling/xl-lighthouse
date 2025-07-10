@@ -22,6 +22,32 @@ export const getDataWithLocalCache = async <T>(key: string, seconds: number, cal
     return result;
 }
 
-const clearLocalCache = (key:string):void => {
+export const clearLocalCache = (key:string):void => {
     localStorage.removeItem(key);
+}
+
+export function setLocalStorageWithExpiry(key: string, data: any, seconds: number) {
+    const now = Date.now();
+    const item = {
+        value: data,
+        expiry: now + seconds * 1000,
+    };
+    localStorage.setItem(key, JSON.stringify(item));
+}
+
+export function getLocalStorageWithExpiry<T = any>(key: string): T | null {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) return null;
+    try {
+        const item = JSON.parse(itemStr);
+        const now = Date.now();
+        if (item.expiry && now > item.expiry) {
+            localStorage.removeItem(key);
+            return null;
+        }
+        return item.value as T;
+    } catch {
+        localStorage.removeItem(key);
+        return null;
+    }
 }
