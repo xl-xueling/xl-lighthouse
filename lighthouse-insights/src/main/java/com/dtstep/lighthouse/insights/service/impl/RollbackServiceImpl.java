@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.insights.service.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.enums.RollbackStateEnum;
 import com.dtstep.lighthouse.common.enums.RollbackTypeEnum;
 import com.dtstep.lighthouse.common.modal.RollbackModal;
@@ -26,15 +27,22 @@ import com.dtstep.lighthouse.insights.dto.RollbackQueryParam;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.RollbackService;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class RollbackServiceImpl implements RollbackService {
+
+    private static final Logger logger = LoggerFactory.getLogger(RollbackServiceImpl.class);
 
     @Autowired
     private RollbackDao rollbackDao;
@@ -73,7 +81,15 @@ public class RollbackServiceImpl implements RollbackService {
     }
 
     @Override
-    public List<RollbackModal> queryVersionList(RollbackQueryParam queryParam) throws Exception {
-        return rollbackDao.queryVersionList(queryParam);
+    public ListData<RollbackModal> queryList(RollbackQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception {
+        PageHelper.startPage(pageNum,pageSize);
+        PageInfo<RollbackModal> pageInfo;
+        try{
+            List<RollbackModal> rollbackList = rollbackDao.queryList(queryParam);
+            pageInfo = new PageInfo<>(rollbackList);
+        }finally {
+            PageHelper.clearPage();
+        }
+        return ListData.newInstance(pageInfo.getList(),pageInfo.getTotal(),pageNum,pageSize);
     }
 }

@@ -33,7 +33,7 @@ public interface RollbackDao {
 
     RollbackModal queryByVersion(@Param("queryParam")RollbackQueryParam queryParam) throws Exception;
 
-    List<RollbackModal> queryVersionList(@Param("queryParam")RollbackQueryParam queryParam) throws Exception;
+    List<RollbackModal> queryList(@Param("queryParam")RollbackQueryParam queryParam) throws Exception;
 
     Integer update(RollbackModal rollbackModal);
 }

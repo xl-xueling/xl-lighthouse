@@ -48,9 +48,9 @@
         order by create_time desc limit 1
     </select>
 
-    <select id="queryVersionList" resultMap="rollbackResultMap">
+    <select id="queryList" resultMap="rollbackResultMap">
         SELECT `id`,`user_id`, `resource_id`,`data_type`,`version`,`state`,`create_time`
-        FROM ldp_rollbacks  WHERE resource_id = #{queryParam.resourceId} and data_type = #{queryParam.dataType.type} order by create_time desc limit 300
+        FROM ldp_rollbacks  WHERE resource_id = #{queryParam.resourceId} and data_type = #{queryParam.dataType.type} order by create_time desc
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.common.modal.RollbackModal">

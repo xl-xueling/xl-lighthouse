@@ -16,6 +16,7 @@ package com.dtstep.lighthouse.insights.service;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.modal.RollbackModal;
 import com.dtstep.lighthouse.insights.dto.RollbackQueryParam;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -28,5 +29,5 @@ public interface RollbackService {
 
     RollbackModal queryByVersion(RollbackQueryParam queryParam) throws Exception;
 
-    List<RollbackModal> queryVersionList(RollbackQueryParam queryParam) throws Exception;
+    ListData<RollbackModal> queryList(RollbackQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception;
 }
