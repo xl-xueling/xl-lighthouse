@@ -22,10 +22,7 @@ import com.dtstep.lighthouse.common.modal.User;
 import com.dtstep.lighthouse.common.modal.View;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ViewVO extends View {
 
@@ -35,7 +32,7 @@ public class ViewVO extends View {
 
     private Map<String,List<TreeNode>> filtersData;
 
-    private List<ResourceVO> resourceList;
+    private List<ResourceVO> resourceList = new ArrayList<>();
 
     private Integer currentVersion;
 
