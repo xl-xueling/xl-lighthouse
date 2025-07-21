@@ -33,11 +33,11 @@ type StatisticItemType = {
 
 const getIcon = (index,icon) => {
   if(index == 1){
-    return <div className={styles.icon} onClick={() => {window.open('/project/list','_href')}} style={{cursor:"pointer"}}>{icon}</div>
+    return <div className={styles.icon} onClick={() => {window.open('/project/list','_self')}} style={{cursor:"pointer"}}>{icon}</div>
   }else if(index == 2){
-    return <div className={styles.icon} onClick={() => {window.open('/stat/list','_href')}} style={{cursor:"pointer"}}>{icon}</div>
+    return <div className={styles.icon} onClick={() => {window.open('/stat/list','_self')}} style={{cursor:"pointer"}}>{icon}</div>
   }else if(index == 3){
-    return <div className={styles.icon} onClick={() => {window.open('/metricset/list','_href')}} style={{cursor:"pointer"}}>{icon}</div>
+    return <div className={styles.icon} onClick={() => {window.open('/metricset/list','_self')}} style={{cursor:"pointer"}}>{icon}</div>
   }else{
     return <div className={styles.icon}>{icon}</div>
   }
