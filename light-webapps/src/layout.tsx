@@ -327,7 +327,7 @@ function PageLayout() {
                   </Breadcrumb>
                 </div>
               )}
-              <Content style={{minHeight:'calc(100vh - 120px)'}}>
+              <Content style={{minHeight:'calc(100vh - 100px)'}}>
                 <AliveScope>
                 <Switch>
                   <Route path="/project/manage/:id" component={ProjectManagePage}/>
