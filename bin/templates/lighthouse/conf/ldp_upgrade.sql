@@ -110,3 +110,21 @@ CREATE TABLE IF NOT EXISTS `ldp_callers` (
                                KEY `index_name` (`name`),
                                KEY `index_create_time` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE IF NOT EXISTS `ldp_links` (
+                             `id` int NOT NULL AUTO_INCREMENT,
+                             `short_code` varchar(32) NOT NULL,
+                             `full_url` varchar(500) DEFAULT NULL,
+                             `resource_id` int NOT NULL,
+                             `resource_type` tinyint NOT NULL,
+                             `link_type` tinyint NOT NULL,
+                             `params` text,
+                             `state` tinyint NOT NULL DEFAULT '0',
+                             `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+                             `expire_time` datetime DEFAULT NULL,
+                             PRIMARY KEY (`id`),
+                             UNIQUE KEY `short_code` (`short_code`),
+                             KEY `idx_resource` (`resource_id`,`resource_type`),
+                             KEY `idx_expire` (`expire_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=10009 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

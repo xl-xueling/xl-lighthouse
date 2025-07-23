@@ -197,6 +197,28 @@ CREATE TABLE `ldp_groups` (
 ) ENGINE=InnoDB AUTO_INCREMENT=100309 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+DROP TABLE IF EXISTS `ldp_links`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ldp_links` (
+                             `id` int NOT NULL AUTO_INCREMENT,
+                             `short_code` varchar(32) NOT NULL,
+                             `full_url` varchar(500) DEFAULT NULL,
+                             `resource_id` int NOT NULL,
+                             `resource_type` tinyint NOT NULL,
+                             `link_type` tinyint NOT NULL,
+                             `params` text,
+                             `state` tinyint NOT NULL DEFAULT '0',
+                             `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+                             `expire_time` datetime DEFAULT NULL,
+                             PRIMARY KEY (`id`),
+                             UNIQUE KEY `short_code` (`short_code`),
+                             KEY `idx_resource` (`resource_id`,`resource_type`),
+                             KEY `idx_expire` (`expire_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=10009 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
 --
 -- Table structure for table `ldp_metas`
 --

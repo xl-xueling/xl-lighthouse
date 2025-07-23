@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dtstep.lighthouse.insights.dao.ShortLinkDao">
+    <resultMap id="linkResultMap" type="com.dtstep.lighthouse.common.modal.ShortLink">
+        <id property="id" column="id"/>
+        <result property="shortCode" column="short_code"/>
+        <result property="fullUrl" column="fullUrl"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="resourceType" column="resource_type" typeHandler="com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler"/>
+        <result column="params" property="params"/>
+        <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler"/>
+        <result property="createTime" column="create_time"/>
+        <result property="expireTime" column="expire_time"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.dtstep.lighthouse.common.modal.ShortLink" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ldp_links
+        (
+            short_code,
+            full_url,
+            resource_id,
+            resource_type,
+            link_type,
+            params,
+            state,
+            create_time,
+            expire_time
+        )
+        VALUES
+        (
+            #{shortCode},
+            #{fullUrl},
+            #{resourceId},
+            #{resourceType, typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
+            #{linkType, typeHandler=com.dtstep.lighthouse.insights.types.LinkTypeEnumTypeHandler},
+            #{params},
+            #{state, typeHandler=com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler},
+            #{createTime},
+            #{expireTime}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.ShortLink">
+        UPDATE ldp_links
+        <set>
+            <if test="shortCode != null">short_code = #{shortCode},</if>
+            <if test="fullUrl != null">full_url = #{fullUrl},</if>
+            <if test="resourceId != null">resource_id = #{resourceId},</if>
+            <if test="resourceType != null">
+                resource_type = #{resourceType, typeHandler=com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler},
+            </if>
+            <if test="linkType != null">
+                link_type = #{linkType, typeHandler=com.dtstep.lighthouse.insights.types.LinkTypeEnumTypeHandler},
+            </if>
+            <if test="params != null">params = #{params},</if>
+            <if test="state != null">
+                state = #{state, typeHandler=com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler},
+            </if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="expireTime != null">expire_time = #{expireTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="queryById" parameterType="int" resultMap="linkResultMap">
+        SELECT
+            id,
+            short_code,
+            full_url,
+            resource_id,
+            resource_type,
+            link_type,
+            params,
+            state,
+            create_time,
+            expire_time
+        FROM ldp_links
+        WHERE id = #{id}
+    </select>
+</mapper>
