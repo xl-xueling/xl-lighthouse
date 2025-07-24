@@ -45,13 +45,13 @@ public class TestLinkDao {
         ShortLink shortLink = new ShortLink();
         shortLink.setState(SwitchStateEnum.OPEN);
         shortLink.setParams("test2");
-        shortLink.setId(1);
+        shortLink.setId(10009);
         shortLinkDao.update(shortLink);
     }
 
     @Test
     public void testQueryLink() throws Exception {
-        ShortLink shortLink = shortLinkDao.queryById(1);
+        ShortLink shortLink = shortLinkDao.queryById(10009);
         System.out.println("shortLink is:" + JsonUtil.toJSONString(shortLink));
     }
 }
