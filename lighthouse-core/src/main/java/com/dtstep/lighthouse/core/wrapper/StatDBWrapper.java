@@ -187,6 +187,7 @@ public class StatDBWrapper {
                     stat.setLimitingParam(statLimitingParam);
                 }
                 int privateType = rs.getInt("private_type");
+                String projectTitle = rs.getString("project_title");
                 Integer metaId = rs.getInt("meta_id");
                 long createTime = rs.getTimestamp("create_time").getTime();
                 long updateTime = rs.getTimestamp("update_time").getTime();
@@ -201,6 +202,7 @@ public class StatDBWrapper {
                 stat.setTemplate(template);
                 stat.setTimeparam(timeparam);
                 stat.setExpired(expired);
+                stat.setProjectTitle(projectTitle);
                 StatStateEnum statStateEnum = StatStateEnum.getByState(state);
                 stat.setState(statStateEnum);
                 stat.setPrivateType(PrivateTypeEnum.forValue(privateType));
@@ -221,7 +223,7 @@ public class StatDBWrapper {
         QueryRunner queryRunner = new QueryRunner();
         Stat stat;
         try{
-            stat = queryRunner.query(conn, String.format("select a.*,b.token,b.columns,c.private_type from ldp_stats a left join ldp_groups b on a.group_id = b.id left join ldp_projects c on a.project_id = c.id where a.id = '%s'",statId), new StatResultSetHandler());
+            stat = queryRunner.query(conn, String.format("select a.*,b.token,b.columns,c.private_type,c.title as project_title from ldp_stats a left join ldp_groups b on a.group_id = b.id left join ldp_projects c on a.project_id = c.id where a.id = '%s'",statId), new StatResultSetHandler());
         }finally {
             storageEngine.closeConnection();
         }
