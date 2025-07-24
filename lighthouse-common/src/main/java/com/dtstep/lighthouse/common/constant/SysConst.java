@@ -86,4 +86,7 @@ public final class SysConst {
     public final static int CLUSTER_RPC_SERVICE_PORT = 4061;
 
     public final static String SYSTEM_ALARM_SETTINGS_KEY = "alarm_settings";
+
+    public final static String SHORT_LINK_PREFIX_VIEW_PUBLIC = "/v/";
+
 }

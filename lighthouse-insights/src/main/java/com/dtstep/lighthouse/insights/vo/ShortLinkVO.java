@@ -7,9 +7,19 @@ public class ShortLinkVO extends ShortLink {
 
     private CallerVO callerVO;
 
+    private String link;
+
     public ShortLinkVO(ShortLink shortLink){
         assert shortLink != null;
         BeanCopyUtil.copy(shortLink,this);
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public CallerVO getCallerVO() {

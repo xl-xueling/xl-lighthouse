@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.insights.service.impl;
 
+import com.dtstep.lighthouse.common.constant.SysConst;
+import com.dtstep.lighthouse.common.enums.LinkTypeEnum;
 import com.dtstep.lighthouse.common.modal.ShortLink;
 import com.dtstep.lighthouse.insights.dao.ShortLinkDao;
 import com.dtstep.lighthouse.insights.dto.LinkQueryParam;
@@ -42,6 +44,9 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         if(callerId != null){
             CallerVO callerVO = callerService.queryById(callerId);
             shortLinkVO.setCallerVO(callerVO);
+        }
+        if(shortLink.getLinkType() == LinkTypeEnum.VIEW_PUBLIC){
+            shortLinkVO.setLink(SysConst.SHORT_LINK_PREFIX_VIEW_PUBLIC + shortLink.getShortCode());
         }
         return shortLinkVO;
     }
