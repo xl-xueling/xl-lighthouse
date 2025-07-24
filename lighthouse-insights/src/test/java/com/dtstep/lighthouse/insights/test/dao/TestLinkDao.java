@@ -34,7 +34,7 @@ public class TestLinkDao {
         shortLink.setCreateTime(localDateTime);
         shortLink.setExpireTime(localDateTime);
         shortLink.setShortCode("Test");
-        shortLink.setLinkType(LinkTypeEnum.VIEW_DRAFT);
+        shortLink.setLinkType(LinkTypeEnum.VIEW_PUBLIC);
         shortLink.setFullUrl("https://dbstep.com/test/");
         shortLink.setResourceId(1);
         shortLink.setResourceType(ResourceTypeEnum.View);
@@ -60,7 +60,7 @@ public class TestLinkDao {
     @Test
     public void testQueryList() throws Exception {
         LinkQueryParam queryParam = new LinkQueryParam();
-        queryParam.setLinkType(LinkTypeEnum.VIEW_DRAFT);
+        queryParam.setLinkType(LinkTypeEnum.VIEW_PUBLIC);
         queryParam.setResourceId(1);
         List<ShortLink> links = shortLinkDao.queryList(queryParam);
         System.out.println("links is:" + JsonUtil.toJSONString(links));

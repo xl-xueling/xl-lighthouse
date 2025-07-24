@@ -100,15 +100,17 @@
         FROM ldp_links
         <where>
             <if test="queryParam != null and queryParam.resourceId != null">
-                AND `resource_id` = ${queryParam.resourceId}
+                AND `resource_id` = #{queryParam.resourceId}
             </if>
             <if test="queryParam != null and queryParam.resourceType != null">
-                AND `resource_type` = ${queryParam.resourceType.resourceType}
+                AND `resource_type` = #{queryParam.resourceType.resourceType}
             </if>
             <if test="queryParam != null and queryParam.linkType != null">
-                AND `link_type` = ${queryParam.linkType.type}
+                AND `link_type` = #{queryParam.linkType.type}
             </if>
         </where>
+        order by create_time desc
+        limit 100
     </select>
 
 </mapper>

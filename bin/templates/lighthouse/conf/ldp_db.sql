@@ -215,7 +215,7 @@ CREATE TABLE `ldp_links` (
                              PRIMARY KEY (`id`),
                              UNIQUE KEY `short_code` (`short_code`),
                              KEY `idx_resource` (`resource_id`,`resource_type`),
-                             KEY `idx_expire` (`expire_time`)
+                             KEY `idx_create_time` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10009 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
