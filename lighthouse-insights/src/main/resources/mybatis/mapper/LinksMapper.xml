@@ -7,6 +7,7 @@
         <result property="shortCode" column="short_code"/>
         <result property="fullUrl" column="fullUrl"/>
         <result property="resourceId" column="resource_id"/>
+        <result property="callerId" column="caller_id"/>
         <result property="resourceType" column="resource_type" typeHandler="com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler"/>
         <result column="params" property="params"/>
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler"/>
@@ -24,6 +25,7 @@
             link_type,
             params,
             state,
+            caller_id,
             create_time,
             expire_time
         )
@@ -36,6 +38,7 @@
             #{linkType, typeHandler=com.dtstep.lighthouse.insights.types.LinkTypeEnumTypeHandler},
             #{params},
             #{state, typeHandler=com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler},
+            #{callerId},
             #{createTime},
             #{expireTime}
         )
@@ -57,6 +60,7 @@
             <if test="state != null">
                 state = #{state, typeHandler=com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler},
             </if>
+            <if test="callerId != null">caller_id = #{callerId},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="expireTime != null">expire_time = #{expireTime},</if>
         </set>
@@ -73,9 +77,38 @@
             link_type,
             params,
             state,
+            caller_id,
             create_time,
             expire_time
         FROM ldp_links
         WHERE id = #{id}
     </select>
+
+    <select id="queryList"  resultMap="linkResultMap">
+        SELECT
+        id,
+        short_code,
+        full_url,
+        resource_id,
+        resource_type,
+        link_type,
+        params,
+        state,
+        caller_id,
+        create_time,
+        expire_time
+        FROM ldp_links
+        <where>
+            <if test="queryParam != null and queryParam.resourceId != null">
+                AND `resource_id` = ${queryParam.resourceId}
+            </if>
+            <if test="queryParam != null and queryParam.resourceType != null">
+                AND `resource_type` = ${queryParam.resourceType.resourceType}
+            </if>
+            <if test="queryParam != null and queryParam.linkType != null">
+                AND `link_type` = ${queryParam.linkType.type}
+            </if>
+        </where>
+    </select>
+
 </mapper>

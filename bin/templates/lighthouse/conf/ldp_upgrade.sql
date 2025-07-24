@@ -121,6 +121,7 @@ CREATE TABLE IF NOT EXISTS `ldp_links` (
                              `link_type` tinyint NOT NULL,
                              `params` text,
                              `state` tinyint NOT NULL DEFAULT '0',
+                             `caller_id` int NOT NULL,
                              `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                              `expire_time` timestamp NULL DEFAULT NULL,
                              PRIMARY KEY (`id`),

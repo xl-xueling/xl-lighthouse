@@ -7,6 +7,7 @@ import com.dtstep.lighthouse.common.modal.ShortLink;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.ShortLinkDao;
+import com.dtstep.lighthouse.insights.dto.LinkQueryParam;
 import com.dtstep.lighthouse.insights.test.listener.SpringTestExecutionListener;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LightHouseInsightsApplication.class,properties = {"spring.config.location=classpath:lighthouse-insights.yml"})
@@ -53,5 +55,14 @@ public class TestLinkDao {
     public void testQueryLink() throws Exception {
         ShortLink shortLink = shortLinkDao.queryById(10009);
         System.out.println("shortLink is:" + JsonUtil.toJSONString(shortLink));
+    }
+
+    @Test
+    public void testQueryList() throws Exception {
+        LinkQueryParam queryParam = new LinkQueryParam();
+        queryParam.setLinkType(LinkTypeEnum.VIEW_DRAFT);
+        queryParam.setResourceId(1);
+        List<ShortLink> links = shortLinkDao.queryList(queryParam);
+        System.out.println("links is:" + JsonUtil.toJSONString(links));
     }
 }
