@@ -8,6 +8,13 @@ public class Owner {
 
     private OwnerTypeEnum ownerType;
 
+    public Owner(){}
+
+    public Owner(Integer ownerId,OwnerTypeEnum ownerType){
+        this.ownerId = ownerId;
+        this.ownerType = ownerType;
+    }
+
     public Integer getOwnerId() {
         return ownerId;
     }
