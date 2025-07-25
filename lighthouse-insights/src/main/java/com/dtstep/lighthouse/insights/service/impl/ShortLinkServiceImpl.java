@@ -66,4 +66,9 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         }
         return shortLinkVO;
     }
+
+    @Override
+    public void updateShortLink(ShortLink shortLink) throws Exception {
+        shortLinkDao.update(shortLink);
+    }
 }

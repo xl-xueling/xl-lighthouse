@@ -11,4 +11,6 @@ public interface ShortLinkService {
     List<ShortLinkVO> queryList(LinkQueryParam queryParam) throws Exception;
 
     String createShortLink(ShortLink shortLink) throws Exception;
+
+    void updateShortLink(ShortLink shortLink) throws Exception;
 }
