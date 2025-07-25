@@ -23,8 +23,6 @@ public class ShortLink implements Serializable {
 
     private String params;
 
-    private Integer callerId;
-
     private SwitchStateEnum state = SwitchStateEnum.CLOSE;
 
     private LocalDateTime createTime;
@@ -111,11 +109,4 @@ public class ShortLink implements Serializable {
         this.linkType = linkType;
     }
 
-    public Integer getCallerId() {
-        return callerId;
-    }
-
-    public void setCallerId(Integer callerId) {
-        this.callerId = callerId;
-    }
 }

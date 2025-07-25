@@ -7,6 +7,7 @@
         <id property="id" column="id"/>
         <result property="title" column="title"/>
         <result property="userId" column="user_id"/>
+        <result property="callerId" column="caller_id"/>
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.ViewStateEnumTypeHandler"/>
         <result property="privateType" column="private_type" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
         <result property="version" column="version"/>
@@ -20,6 +21,7 @@
         (
             #{title,jdbcType=VARCHAR},
             #{userId,jdbcType=INTEGER},
+            #{callerId,jdbcType=INTEGER},
             #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ViewStateEnumTypeHandler},
             #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
             #{version,jdbcType=INTEGER},
@@ -30,7 +32,7 @@
     </insert>
 
     <select id="queryById" resultMap="viewResultMap">
-        SELECT `id`,`title`,`user_id`,`state`,`private_type`,`version`,`desc`,`create_time`,`update_time` FROM ldp_views WHERE id = #{id}
+        SELECT `id`,`title`,`user_id`,`caller_id`,`state`,`private_type`,`version`,`desc`,`create_time`,`update_time` FROM ldp_views WHERE id = #{id}
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.common.modal.View">
@@ -54,12 +56,15 @@
             <if test="version != null">
                 `version` = #{version},
             </if>
+            <if test="callerId != null">
+                `caller_id` = #{callerId},
+            </if>
         </set>
         WHERE id = #{id}
     </update>
 
     <select id="queryList" resultMap="viewResultMap">
-        select * from (select `id`,`title`,`state`,`private_type`,`version`,`desc`,`create_time`,`update_time` from ldp_views
+        select * from (select `id`,`title`,`caller_id`,`state`,`private_type`,`version`,`desc`,`create_time`,`update_time` from ldp_views
         <where>
             <if test="queryParam.ids != null and queryParam.ids.size > 0">
                 AND id IN

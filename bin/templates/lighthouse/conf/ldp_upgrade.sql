@@ -2,6 +2,8 @@ USE `cluster_${ldp_lighthouse_cluster_id}_ldp_cmdb`;
 
 ALTER TABLE ldp_groups MODIFY COLUMN columns TEXT NOT NULL;
 
+ALTER TABLE ldp_views ADD COLUMN caller_id INT DEFAULT NULL;
+
 CREATE TABLE IF NOT EXISTS `ldp_alarms` (
                               `id` int NOT NULL AUTO_INCREMENT,
                               `title` varchar(60) NOT NULL,
@@ -121,7 +123,6 @@ CREATE TABLE IF NOT EXISTS `ldp_links` (
                              `link_type` tinyint NOT NULL,
                              `params` text,
                              `state` tinyint NOT NULL DEFAULT '0',
-                             `caller_id` int NOT NULL,
                              `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                              `expire_time` timestamp NULL DEFAULT NULL,
                              PRIMARY KEY (`id`),
