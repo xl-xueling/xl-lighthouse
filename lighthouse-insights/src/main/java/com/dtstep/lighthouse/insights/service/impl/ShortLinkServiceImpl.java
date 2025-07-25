@@ -62,11 +62,6 @@ public class ShortLinkServiceImpl implements ShortLinkService {
 
     private ShortLinkVO translate(ShortLink shortLink) throws Exception {
         ShortLinkVO shortLinkVO = new ShortLinkVO(shortLink);
-        Integer callerId = shortLinkVO.getCallerId();
-        if(callerId != null){
-            CallerVO callerVO = callerService.queryById(callerId);
-            shortLinkVO.setCallerVO(callerVO);
-        }
         if(shortLink.getLinkType() == LinkTypeEnum.VIEW_PUBLIC){
             shortLinkVO.setLink(SysConst.SHORT_LINK_PREFIX_VIEW_PUBLIC + shortLink.getShortCode());
         }

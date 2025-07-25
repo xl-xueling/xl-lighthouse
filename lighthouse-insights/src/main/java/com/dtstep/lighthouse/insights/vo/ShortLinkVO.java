@@ -4,9 +4,7 @@ import com.dtstep.lighthouse.common.modal.ShortLink;
 import com.dtstep.lighthouse.common.util.BeanCopyUtil;
 
 public class ShortLinkVO extends ShortLink {
-
-    private CallerVO callerVO;
-
+    
     private String link;
 
     public ShortLinkVO(ShortLink shortLink){
@@ -20,13 +18,5 @@ public class ShortLinkVO extends ShortLink {
 
     public void setLink(String link) {
         this.link = link;
-    }
-
-    public CallerVO getCallerVO() {
-        return callerVO;
-    }
-
-    public void setCallerVO(CallerVO callerVO) {
-        this.callerVO = callerVO;
     }
 }
