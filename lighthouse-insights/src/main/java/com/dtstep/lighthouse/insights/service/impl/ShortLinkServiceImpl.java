@@ -24,11 +24,8 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     @Autowired
     private ShortLinkDao shortLinkDao;
 
-    @Autowired
-    private CallerService callerService;
-
     @Override
-    public void createShortLink(ShortLink shortLink) throws Exception {
+    public String createShortLink(ShortLink shortLink) throws Exception {
         String shortCode;
         int attempts = 0;
         final int MAX_ATTEMPTS = 30;
@@ -45,6 +42,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
             }
         }
         shortLinkDao.insert(shortLink);
+        return shortCode;
     }
 
     @Override
