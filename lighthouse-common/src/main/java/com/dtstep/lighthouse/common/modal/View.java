@@ -14,6 +14,8 @@ public class View implements Serializable {
 
     private Integer userId;
 
+    private Integer callerId;
+
     private PrivateTypeEnum privateType;
 
     private ViewStateEnum state;
@@ -96,5 +98,13 @@ public class View implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public Integer getCallerId() {
+        return callerId;
+    }
+
+    public void setCallerId(Integer callerId) {
+        this.callerId = callerId;
     }
 }

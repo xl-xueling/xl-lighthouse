@@ -17,4 +17,6 @@ public interface ShortLinkDao {
     ShortLink queryById(Integer id);
 
     List<ShortLink> queryList(@Param("queryParam") LinkQueryParam queryParam);
+
+    boolean isExist(String shortCode);
 }

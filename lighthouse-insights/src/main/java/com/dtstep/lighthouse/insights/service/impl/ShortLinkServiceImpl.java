@@ -3,6 +3,7 @@ package com.dtstep.lighthouse.insights.service.impl;
 import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.enums.LinkTypeEnum;
 import com.dtstep.lighthouse.common.modal.ShortLink;
+import com.dtstep.lighthouse.common.random.RandomID;
 import com.dtstep.lighthouse.insights.dao.ShortLinkDao;
 import com.dtstep.lighthouse.insights.dto.LinkQueryParam;
 import com.dtstep.lighthouse.insights.service.CallerService;
@@ -13,6 +14,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,26 @@ public class ShortLinkServiceImpl implements ShortLinkService {
 
     @Autowired
     private CallerService callerService;
+
+    @Override
+    public void createShortLink(ShortLink shortLink) throws Exception {
+        String shortCode;
+        int attempts = 0;
+        final int MAX_ATTEMPTS = 30;
+        while (true) {
+            shortCode = RandomID.id(6);
+            boolean isExist = shortLinkDao.isExist(shortCode);
+            if (!isExist) {
+                shortLink.setShortCode(shortCode);
+                break;
+            }
+            attempts++;
+            if (attempts >= MAX_ATTEMPTS) {
+                throw new Exception();
+            }
+        }
+        shortLinkDao.insert(shortLink);
+    }
 
     @Override
     public List<ShortLinkVO> queryList(LinkQueryParam queryParam) throws Exception {

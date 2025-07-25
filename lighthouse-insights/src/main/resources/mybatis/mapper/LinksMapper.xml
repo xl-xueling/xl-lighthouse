@@ -113,4 +113,9 @@
         limit 100
     </select>
 
+    <select id="isExist" resultType="boolean" parameterType="String">
+        SELECT COUNT(1) > 0
+        FROM ldp_links
+        WHERE short_code = #{shortCode}
+    </select>
 </mapper>

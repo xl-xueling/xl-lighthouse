@@ -1,4 +1,7 @@
 package com.dtstep.lighthouse.insights.dto;
+
+import java.util.List;
+
 /*
  * Copyright (C) 2022-2025 XueLing.雪灵
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -22,6 +25,14 @@ public class ViewPublishParam {
 
     private Integer version;
 
+    private boolean externalLinkEnabled;
+
+    private List<ResourceParam> applyResources;
+
+    private Integer callerId;
+
+    private String reason;
+
     public Integer getId() {
         return id;
     }
@@ -36,5 +47,37 @@ public class ViewPublishParam {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public boolean isExternalLinkEnabled() {
+        return externalLinkEnabled;
+    }
+
+    public void setExternalLinkEnabled(boolean externalLinkEnabled) {
+        this.externalLinkEnabled = externalLinkEnabled;
+    }
+
+    public List<ResourceParam> getApplyResources() {
+        return applyResources;
+    }
+
+    public void setApplyResources(List<ResourceParam> applyResources) {
+        this.applyResources = applyResources;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Integer getCallerId() {
+        return callerId;
+    }
+
+    public void setCallerId(Integer callerId) {
+        this.callerId = callerId;
     }
 }
