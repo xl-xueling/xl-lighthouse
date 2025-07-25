@@ -8,6 +8,7 @@
         <result property="fullUrl" column="fullUrl"/>
         <result property="resourceId" column="resource_id"/>
         <result property="resourceType" column="resource_type" typeHandler="com.dtstep.lighthouse.insights.types.ResourceTypeEnumTypeHandler"/>
+        <result property="linkType" column="link_type" typeHandler="com.dtstep.lighthouse.insights.types.LinkTypeEnumTypeHandler"/>
         <result column="params" property="params"/>
         <result property="state" column="state" typeHandler="com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler"/>
         <result property="createTime" column="create_time"/>

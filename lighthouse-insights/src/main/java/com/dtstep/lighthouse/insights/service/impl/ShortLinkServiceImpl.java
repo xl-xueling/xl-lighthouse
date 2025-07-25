@@ -4,22 +4,23 @@ import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.enums.LinkTypeEnum;
 import com.dtstep.lighthouse.common.modal.ShortLink;
 import com.dtstep.lighthouse.common.random.RandomID;
+import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dao.ShortLinkDao;
 import com.dtstep.lighthouse.insights.dto.LinkQueryParam;
-import com.dtstep.lighthouse.insights.service.CallerService;
 import com.dtstep.lighthouse.insights.service.ShortLinkService;
-import com.dtstep.lighthouse.insights.vo.CallerVO;
 import com.dtstep.lighthouse.insights.vo.ShortLinkVO;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ShortLinkServiceImpl implements ShortLinkService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ShortLinkServiceImpl.class);
 
     @Autowired
     private ShortLinkDao shortLinkDao;

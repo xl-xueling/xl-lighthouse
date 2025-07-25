@@ -61,7 +61,7 @@ public class TestLinkDao {
     public void testQueryList() throws Exception {
         LinkQueryParam queryParam = new LinkQueryParam();
         queryParam.setLinkType(LinkTypeEnum.VIEW_PUBLIC);
-        queryParam.setResourceId(1);
+        queryParam.setResourceId(1100047);
         List<ShortLink> links = shortLinkDao.queryList(queryParam);
         System.out.println("links is:" + JsonUtil.toJSONString(links));
     }
