@@ -11,12 +11,12 @@ public enum DefinitionsEnum {
 
     ;
 
-    @JsonValue
-    private int type;
-
     DefinitionsEnum(int type){
         this.type = type;
     }
+
+    @JsonValue
+    private int type;
 
     public int getType() {
         return type;

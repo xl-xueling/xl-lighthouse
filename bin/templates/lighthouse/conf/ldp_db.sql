@@ -132,6 +132,22 @@ CREATE TABLE `ldp_departments` (
 ) ENGINE=InnoDB AUTO_INCREMENT=10251 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+
+DROP TABLE IF EXISTS `ldp_definitions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ldp_definitions` (
+                                   `id` int NOT NULL AUTO_INCREMENT,
+                                   `user_id` int NOT NULL,
+                                   `type` tinyint NOT NULL,
+                                   `name` varchar(100) NOT NULL,
+                                   `desc` varchar(300) DEFAULT NULL,
+                                   `extend` varchar(5000) DEFAULT NULL,
+                                   `create_time` timestamp NOT NULL,
+                                   `update_time` timestamp NOT NULL,
+                                   PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10200 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 --
 -- Table structure for table `ldp_domains`
 --

@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.dao;
 
 import com.dtstep.lighthouse.common.modal.Definitions;
-import com.dtstep.lighthouse.insights.dto.ComponentQueryParam;
+import com.dtstep.lighthouse.insights.dto.DefinitionsQueryParam;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,7 @@ public interface DefinitionsDao {
 
     int insert(Definitions definitions);
 
-    Definitions queryById(Integer id);
+    void deleteById(Integer id);
 
-    List<Definitions> queryList(@Param("queryParam") ComponentQueryParam queryParam);
+    List<Definitions> queryList(@Param("queryParam") DefinitionsQueryParam queryParam);
 }

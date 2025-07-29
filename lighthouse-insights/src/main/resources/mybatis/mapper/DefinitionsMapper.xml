@@ -4,7 +4,7 @@
     <resultMap id="definitionsResultMap" type="com.dtstep.lighthouse.common.modal.Definitions">
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
-        <result column="type" property="type"/>
+        <result column="type" property="type" typeHandler="com.dtstep.lighthouse.insights.types.DefinitionsEnumTypeHandler"/>
         <result column="name" property="name"/>
         <result column="desc" property="desc"/>
         <result column="extend" property="extend"/>
