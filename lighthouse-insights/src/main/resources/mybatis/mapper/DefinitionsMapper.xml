@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dtstep.lighthouse.insights.dao.DefinitionsDao">
+    <resultMap id="definitionsResultMap" type="com.dtstep.lighthouse.common.modal.Definitions">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="type" property="type"/>
+        <result column="name" property="name"/>
+        <result column="desc" property="desc"/>
+        <result column="extend" property="extend"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Definitions">
+        INSERT INTO ldp_definitions (`user_id`,`type`,`name`,`desc`,`extend`,`create_time`,`update_time`) VALUES
+        (
+            #{userId,jdbcType=INTEGER},
+            #{type,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.DefinitionsEnumTypeHandler},
+            #{name,jdbcType=VARCHAR},
+            #{desc,jdbcType=VARCHAR},
+            #{extend,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="queryList" resultMap="definitionsResultMap">
+        select `id`,`user_id`,`type`,`name`,`desc`,`extend`,`create_time`,`update_time` from ldp_definitions
+        <where>
+            <if test="queryParam.userId!=null">
+                AND user_id = #{queryParam.userId}
+            </if>
+            <if test="queryParam.type != null ">
+                AND type = #{queryParam.type.type}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteById" parameterType="int">
+        delete from ldp_definitions where id = #{id}
+    </delete>
+
+</mapper>
