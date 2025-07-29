@@ -4,7 +4,7 @@ import com.dtstep.lighthouse.common.enums.DefinitionsEnum;
 
 import java.time.LocalDateTime;
 
-public class Definitions {
+public class Definition {
 
     private Integer id;
 

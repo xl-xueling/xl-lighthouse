@@ -1,7 +1,7 @@
 package com.dtstep.lighthouse.insights.test.dao;
 
 import com.dtstep.lighthouse.common.enums.DefinitionsEnum;
-import com.dtstep.lighthouse.common.modal.Definitions;
+import com.dtstep.lighthouse.common.modal.Definition;
 import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.LightHouseInsightsApplication;
 import com.dtstep.lighthouse.insights.dao.DefinitionsDao;
@@ -26,7 +26,7 @@ public class TestDefinitionsDao {
 
     @Test
     public void testCreate() throws Exception {
-        Definitions definitions = new Definitions();
+        Definition definitions = new Definition();
         definitions.setCreateTime(LocalDateTime.now());
         definitions.setUpdateTime(LocalDateTime.now());
         definitions.setDesc("test");
@@ -41,7 +41,7 @@ public class TestDefinitionsDao {
     public void testQueryList() throws Exception {
         DefinitionsQueryParam queryParam = new DefinitionsQueryParam();
         queryParam.setType(DefinitionsEnum.VIEW_CATEGORY);
-        List<Definitions> list = definitionsDao.queryList(queryParam);
+        List<Definition> list = definitionsDao.queryList(queryParam);
         System.out.println("list:" + JsonUtil.toJSONString(list));
     }
 

@@ -182,6 +182,8 @@ public enum ResultCode {
 
     viewNotAuthorized("11004","viewNotAuthorized"),
 
+    viewCategoryLimitExceed("11005","viewCategoryLimitExceed"),
+
     callerNameAlreadyExist("12001","callerNameAlreadyExist"),
 
     apiCallerNotExist("50001","apiCallerNotExist"),

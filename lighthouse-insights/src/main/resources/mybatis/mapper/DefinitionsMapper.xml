@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dtstep.lighthouse.insights.dao.DefinitionsDao">
-    <resultMap id="definitionsResultMap" type="com.dtstep.lighthouse.common.modal.Definitions">
+    <resultMap id="definitionsResultMap" type="com.dtstep.lighthouse.common.modal.Definition">
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="type" property="type" typeHandler="com.dtstep.lighthouse.insights.types.DefinitionsEnumTypeHandler"/>
@@ -12,7 +12,7 @@
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Definitions">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Definition">
         INSERT INTO ldp_definitions (`user_id`,`type`,`name`,`desc`,`extend`,`create_time`,`update_time`) VALUES
         (
             #{userId,jdbcType=INTEGER},
@@ -25,8 +25,36 @@
         )
     </insert>
 
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.Definition">
+        UPDATE ldp_definitions
+        <set>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="desc != null">
+                `desc` = #{desc},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
     <select id="queryList" resultMap="definitionsResultMap">
         select `id`,`user_id`,`type`,`name`,`desc`,`extend`,`create_time`,`update_time` from ldp_definitions
+        <where>
+            <if test="queryParam.userId!=null">
+                AND user_id = #{queryParam.userId}
+            </if>
+            <if test="queryParam.type != null ">
+                AND type = #{queryParam.type.type}
+            </if>
+        </where>
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT count(1) FROM ldp_definitions
         <where>
             <if test="queryParam.userId!=null">
                 AND user_id = #{queryParam.userId}
