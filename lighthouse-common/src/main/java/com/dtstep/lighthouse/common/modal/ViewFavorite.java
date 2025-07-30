@@ -8,6 +8,8 @@ public class ViewFavorite {
 
     private Integer id;
 
+    private Integer userId;
+
     private Integer categoryId;
 
     private ViewElementType elementType;
@@ -64,5 +66,13 @@ public class ViewFavorite {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

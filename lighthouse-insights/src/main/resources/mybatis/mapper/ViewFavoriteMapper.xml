@@ -34,4 +34,8 @@
         delete from ldp_views_favorites where id = #{id}
     </delete>
 
+    <delete id="deleteByCategoryId" parameterType="int">
+        delete from ldp_views_favorites where category_id = #{categoryId}
+    </delete>
+
 </mapper>

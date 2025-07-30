@@ -15,4 +15,6 @@ public interface ViewFavoriteDao {
     List<ViewFavorite> queryList(@Param("queryParam") ViewFavoriteQueryParam queryParam);
 
     void deleteById(Integer id);
+
+    void deleteByCategoryId(Integer categoryId);
 }

@@ -184,6 +184,8 @@ public enum ResultCode {
 
     viewCategoryLimitExceed("11005","viewCategoryLimitExceed"),
 
+    viewCategoryAtLeastOne("11006","viewCategoryAtLeastOne"),
+
     callerNameAlreadyExist("12001","callerNameAlreadyExist"),
 
     apiCallerNotExist("50001","apiCallerNotExist"),
