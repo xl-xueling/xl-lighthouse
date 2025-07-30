@@ -14,7 +14,7 @@ public class ViewFavorite {
 
     private ViewElementType elementType;
 
-    private String config;
+    private Object config;
 
     private LocalDateTime createTime;
 
@@ -44,11 +44,11 @@ public class ViewFavorite {
         this.elementType = elementType;
     }
 
-    public String getConfig() {
+    public Object getConfig() {
         return config;
     }
 
-    public void setConfig(String config) {
+    public void setConfig(Object config) {
         this.config = config;
     }
 

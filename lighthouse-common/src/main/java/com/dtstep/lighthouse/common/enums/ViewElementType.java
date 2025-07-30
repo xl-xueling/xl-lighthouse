@@ -31,6 +31,7 @@ public enum ViewElementType {
     DATE_PICKER(58),
     TEMPLATE(59),
 
+    Complex(999),
     ;
 
     ViewElementType(int elementType){
