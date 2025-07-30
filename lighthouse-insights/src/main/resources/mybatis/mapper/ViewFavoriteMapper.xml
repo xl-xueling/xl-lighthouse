@@ -12,7 +12,7 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.ViewFavorite">
-        INSERT INTO ldp_views_favorites (`category_id`,`element_type`,`config`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_views_favorites (`category_id`,`user_id`,`element_type`,`config`,`create_time`,`update_time`) VALUES
         (
             #{categoryId,jdbcType=INTEGER},
             #{userId,jdbcType=INTEGER},
