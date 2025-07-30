@@ -1,0 +1,68 @@
+package com.dtstep.lighthouse.common.modal;
+
+import com.dtstep.lighthouse.common.enums.ViewElementType;
+
+import java.time.LocalDateTime;
+
+public class ViewFavorite {
+
+    private Integer id;
+
+    private Integer categoryId;
+
+    private ViewElementType elementType;
+
+    private String config;
+
+    private LocalDateTime createTime;
+
+    private LocalDateTime updateTime;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public ViewElementType getElementType() {
+        return elementType;
+    }
+
+    public void setElementType(ViewElementType elementType) {
+        this.elementType = elementType;
+    }
+
+    public String getConfig() {
+        return config;
+    }
+
+    public void setConfig(String config) {
+        this.config = config;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+}

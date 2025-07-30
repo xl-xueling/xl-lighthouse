@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dtstep.lighthouse.insights.dao.ViewFavoriteDao">
+    <resultMap id="viewFavoriteResultMap" type="com.dtstep.lighthouse.common.modal.ViewFavorite">
+        <id column="id" property="id"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="element_type" property="elementType" typeHandler="com.dtstep.lighthouse.insights.types.ViewElementEnumTypeHandler"/>
+        <result column="config" property="config"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.ViewFavorite">
+        INSERT INTO ldp_views_favorites (`category_id`,`element_type`,`config`,`create_time`,`update_time`) VALUES
+        (
+            #{categoryId,jdbcType=INTEGER},
+            #{elementType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ViewElementEnumTypeHandler},
+            #{config,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="queryList" resultMap="viewFavoriteResultMap">
+        select `id`,`category_id`,`element_type`,`config`,`create_time`,`update_time` from ldp_views_favorites
+        <where>
+            <if test="queryParam.categoryId!=null">
+                AND category_id = #{queryParam.categoryId}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteById" parameterType="int">
+        delete from ldp_views_favorites where id = #{id}
+    </delete>
+
+</mapper>
