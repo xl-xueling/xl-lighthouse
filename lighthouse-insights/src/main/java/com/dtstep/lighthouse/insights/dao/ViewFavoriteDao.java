@@ -17,4 +17,5 @@ public interface ViewFavoriteDao {
     void deleteById(Integer id);
 
     void deleteByCategoryId(Integer categoryId);
+
 }
