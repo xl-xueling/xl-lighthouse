@@ -8,9 +8,19 @@ public class ViewFavoriteCreateParam implements Serializable {
 
     private Integer categoryId;
 
+    private String name;
+
     private ViewElementType elementType;
 
     private Object config;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Integer getCategoryId() {
         return categoryId;

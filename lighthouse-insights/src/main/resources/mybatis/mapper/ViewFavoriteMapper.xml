@@ -3,6 +3,7 @@
 <mapper namespace="com.dtstep.lighthouse.insights.dao.ViewFavoriteDao">
     <resultMap id="viewFavoriteResultMap" type="com.dtstep.lighthouse.common.modal.ViewFavorite">
         <id column="id" property="id"/>
+        <result column="name" property="name"/>
         <result column="category_id" property="categoryId"/>
         <result column="user_id" property="userId"/>
         <result column="element_type" property="elementType" typeHandler="com.dtstep.lighthouse.insights.types.ViewElementEnumTypeHandler"/>
@@ -12,8 +13,9 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.ViewFavorite">
-        INSERT INTO ldp_views_favorites (`category_id`,`user_id`,`element_type`,`config`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_views_favorites (`name`,`category_id`,`user_id`,`element_type`,`config`,`create_time`,`update_time`) VALUES
         (
+            #{name,jdbcType=VARCHAR},
             #{categoryId,jdbcType=INTEGER},
             #{userId,jdbcType=INTEGER},
             #{elementType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ViewElementEnumTypeHandler},
@@ -24,7 +26,7 @@
     </insert>
 
     <select id="queryList" resultMap="viewFavoriteResultMap">
-        select `id`,`category_id`,`user_id`,`element_type`,`config`,`create_time`,`update_time` from ldp_views_favorites
+        select `id`,`name`,`category_id`,`user_id`,`element_type`,`config`,`create_time`,`update_time` from ldp_views_favorites
         <where>
             <if test="queryParam.categoryId!=null">
                 AND category_id = #{queryParam.categoryId}
