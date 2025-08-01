@@ -204,6 +204,14 @@ public enum ResultCode {
 
     metricStructureReset("80004","metricStructureReset"),
 
+    uploadErrorCreateDirectoryFailed("90001","uploadErrorCreateDirectoryFailed"),
+
+    uploadErrorUnsupportedFileFormat("90002","uploadErrorUnsupportedFileFormat"),
+
+    uploadErrorExceedLimit("90003","uploadErrorExceedLimit"),
+
+    uploadError("90004","uploadError"),
+
     ;
 
     ResultCode(String code , String i18nLabel){
