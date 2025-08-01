@@ -34,17 +34,11 @@
     <select id="queryList" resultMap="assetResultMap">
         select `id`,`asset_type`,`path`,`user_id`,`private_type`,`create_time`,`update_time` from ldp_assets
         <where>
-            <if test="queryParam.id!=null">
-                AND id = #{queryParam.id}
-            </if>
             <if test="queryParam.assetType != null ">
                 AND asset_type = #{queryParam.assetType.type}
             </if>
             <if test="queryParam.userId != null">
                 AND user_id = #{queryParam.userId}
-            </if>
-            <if test="queryParam.search != null">
-                AND title LIKE CONCAT('%', #{queryParam.search}, '%')
             </if>
         </where>
     </select>
