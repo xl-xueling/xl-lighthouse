@@ -6,9 +6,16 @@ server:
       timeout: 18000
   tomcat:
     uri-encoding: utf-8
+    max-swallow-size: 100MB
+    max-http-post-size: 100MB
+    connection-timeout: 60000
 spring:
   messages:
     basename: i18n/messages
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   mvc:
     locale-resolver: fixed
     locale: zh_CN
@@ -30,3 +37,5 @@ mybatis:
   config-location: classpath:mybatis-config.xml
   mapper-locations:
     - classpath*:mybatis/mapper/*.xml
+upload:
+  dir: ./uploads

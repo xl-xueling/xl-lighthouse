@@ -25,6 +25,7 @@ import com.dtstep.lighthouse.insights.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -82,8 +83,9 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
         SeedAuthenticationToken authentication = new SeedAuthenticationToken(id,seed);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        RepeatableRequestWrapper requestWrapper  = new RepeatableRequestWrapper(request);
-        filterChain.doFilter(requestWrapper, response);
+        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+        HttpServletRequest effectiveRequest = isMultipart ? request : new RepeatableRequestWrapper(request);
+        filterChain.doFilter(effectiveRequest, response);
     }
 
 }
