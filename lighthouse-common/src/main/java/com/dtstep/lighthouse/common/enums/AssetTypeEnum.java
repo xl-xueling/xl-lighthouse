@@ -7,6 +7,8 @@ import java.util.stream.Stream;
 
 public enum AssetTypeEnum {
 
+    SYSTEM(0),
+
     BACKGROUND(1),
 
     DECORATION(2),
