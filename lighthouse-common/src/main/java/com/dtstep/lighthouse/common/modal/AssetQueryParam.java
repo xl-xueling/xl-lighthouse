@@ -8,6 +8,8 @@ public class AssetQueryParam {
 
     private AssetTypeEnum assetType;
 
+    private String search;
+
     public Integer getUserId() {
         return userId;
     }
@@ -22,5 +24,13 @@ public class AssetQueryParam {
 
     public void setAssetType(AssetTypeEnum assetType) {
         this.assetType = assetType;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 }

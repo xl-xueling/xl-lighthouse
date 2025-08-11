@@ -10,6 +10,8 @@ public class Asset implements Serializable {
 
     private Integer id;
 
+    private String name;
+
     private AssetTypeEnum assetType;
 
     private String path;
@@ -30,6 +32,14 @@ public class Asset implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public AssetTypeEnum getAssetType() {

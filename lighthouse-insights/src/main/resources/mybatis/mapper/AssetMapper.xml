@@ -3,6 +3,7 @@
 <mapper namespace="com.dtstep.lighthouse.insights.dao.AssetDao">
     <resultMap id="assetResultMap" type="com.dtstep.lighthouse.common.modal.Asset">
         <id property="id" column="id"/>
+        <result property="name" column="name"/>
         <result property="assetType" column="asset_type" typeHandler="com.dtstep.lighthouse.insights.types.AssetTypeEnumTypeHandler"/>
         <result property="path" column="path"/>
         <result property="userId" column="user_id"/>
@@ -13,8 +14,9 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Asset" >
-        INSERT INTO ldp_assets (`asset_type`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_assets (`name`,`asset_type`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time`) VALUES
         (
+            #{name,jdbcType=VARCHAR},
             #{assetType,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.AssetTypeEnumTypeHandler},
             #{path,jdbcType=VARCHAR},
             #{userId,jdbcType=INTEGER},
@@ -30,17 +32,20 @@
     </delete>
 
     <select id="queryById" resultMap="assetResultMap">
-        SELECT `id`,`asset_type`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time` FROM ldp_assets WHERE id = #{id}
+        SELECT `id`,`name`,`asset_type`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time` FROM ldp_assets WHERE id = #{id}
     </select>
 
     <select id="queryList" resultMap="assetResultMap">
-        select `id`,`asset_type`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time` from ldp_assets
+        select `id`,`name`,`asset_type`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time` from ldp_assets
         <where>
             <if test="queryParam.assetType != null ">
                 AND asset_type = #{queryParam.assetType.type}
             </if>
             <if test="queryParam.userId != null">
                 AND user_id = #{queryParam.userId}
+            </if>
+            <if test="queryParam.search != null">
+                AND `name` LIKE CONCAT('%', #{queryParam.search}, '%')
             </if>
         </where>
         order by create_time desc
