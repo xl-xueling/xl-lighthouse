@@ -18,6 +18,8 @@ public class Asset implements Serializable {
 
     private PrivateTypeEnum privateType;
 
+    private String configs;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
@@ -76,5 +78,13 @@ public class Asset implements Serializable {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getConfigs() {
+        return configs;
+    }
+
+    public void setConfigs(String configs) {
+        this.configs = configs;
     }
 }

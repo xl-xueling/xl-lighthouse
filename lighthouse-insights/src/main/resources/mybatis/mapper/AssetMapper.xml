@@ -7,17 +7,19 @@
         <result property="path" column="path"/>
         <result property="userId" column="user_id"/>
         <result column="private_type" property="privateType" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
+        <result property="configs" column="configs"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Asset" >
-        INSERT INTO ldp_assets (`asset_type`,`path`,`user_id`,`private_type`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_assets (`asset_type`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time`) VALUES
         (
             #{assetType,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.AssetTypeEnumTypeHandler},
             #{path,jdbcType=VARCHAR},
             #{userId,jdbcType=INTEGER},
             #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
+            #{configs,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
         )
@@ -28,11 +30,11 @@
     </delete>
 
     <select id="queryById" resultMap="assetResultMap">
-        SELECT `id`,`asset_type`,`path`,`user_id`,`private_type`,`create_time`,`update_time` FROM ldp_assets WHERE id = #{id}
+        SELECT `id`,`asset_type`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time` FROM ldp_assets WHERE id = #{id}
     </select>
 
     <select id="queryList" resultMap="assetResultMap">
-        select `id`,`asset_type`,`path`,`user_id`,`private_type`,`create_time`,`update_time` from ldp_assets
+        select `id`,`asset_type`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time` from ldp_assets
         <where>
             <if test="queryParam.assetType != null ">
                 AND asset_type = #{queryParam.assetType.type}
