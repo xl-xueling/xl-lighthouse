@@ -43,5 +43,6 @@
                 AND user_id = #{queryParam.userId}
             </if>
         </where>
+        order by create_time desc
     </select>
 </mapper>
