@@ -31,6 +31,9 @@
             <if test="queryParam.categoryId!=null">
                 AND category_id = #{queryParam.categoryId}
             </if>
+            <if test="queryParam.search != null">
+                AND name LIKE CONCAT('%', #{queryParam.search}, '%')
+            </if>
         </where>
     </select>
 
