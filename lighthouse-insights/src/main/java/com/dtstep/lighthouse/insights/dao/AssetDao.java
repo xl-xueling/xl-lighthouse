@@ -12,6 +12,8 @@ public interface AssetDao {
 
     int insert(Asset asset);
 
+    int update(Asset asset);
+
     int deleteById(Integer id);
 
     Asset queryById(Integer id);

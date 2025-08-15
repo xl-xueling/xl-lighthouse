@@ -50,4 +50,20 @@
         </where>
         order by create_time desc
     </select>
+
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.Asset">
+        UPDATE ldp_assets
+        <set>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="assetType != null">
+                `asset_type` = #{assetType.type},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -45,4 +45,19 @@
         delete from ldp_views_favorites where category_id = #{categoryId}
     </delete>
 
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.ViewFavorite">
+        UPDATE ldp_views_favorites
+        <set>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="categoryId != null">
+                `category_id` = #{categoryId},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
 </mapper>
