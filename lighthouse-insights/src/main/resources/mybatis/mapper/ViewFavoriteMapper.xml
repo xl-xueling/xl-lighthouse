@@ -35,6 +35,7 @@
                 AND name LIKE CONCAT('%', #{queryParam.search}, '%')
             </if>
         </where>
+        order by create_time desc
     </select>
 
     <delete id="deleteById" parameterType="int">
