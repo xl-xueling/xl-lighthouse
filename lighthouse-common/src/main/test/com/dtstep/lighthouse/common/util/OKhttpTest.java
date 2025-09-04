@@ -46,7 +46,7 @@ public class OKhttpTest {
         ));
 
         RequestBodyDTO body = new RequestBodyDTO();
-        body.setType("form-data");
+        body.setType("x-www-form-urlencoded");
         body.setContent(List.of(
                 new KeyValue("body1", "bodev2."),
                 new KeyValue("body2", "bodyv3")
