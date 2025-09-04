@@ -8,6 +8,13 @@ public class KeyValue implements Serializable {
 
     private String value;
 
+    public KeyValue(){}
+
+    public KeyValue(String key,String value){
+        this.key = key;
+        this.value = value;
+    }
+
     public String getKey() {
         return key;
     }

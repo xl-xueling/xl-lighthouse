@@ -1,6 +1,12 @@
 package com.dtstep.lighthouse.common.util;
 
+import com.dtstep.lighthouse.common.modal.HttpRequestConfig;
+import com.dtstep.lighthouse.common.modal.KeyValue;
+import com.dtstep.lighthouse.common.modal.RequestBodyDTO;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.util.List;
 
 public class OKhttpTest {
 
@@ -23,5 +29,43 @@ public class OKhttpTest {
         }
         long t2 = System.currentTimeMillis();
         System.out.println("response:" + response + ",cost:" + (t2 - t1));
+    }
+
+    @Test
+    public void testPostFormData() throws IOException {
+        // 1. 构造请求配置
+        HttpRequestConfig config = new HttpRequestConfig();
+        config.setMethod("POST");
+        config.setUrl("http://localhost:3180/test");
+        config.setParams(List.of(
+                new KeyValue("key1", "value1"),
+                new KeyValue("key2", "value2")
+        ));
+        config.setHeaders(List.of(
+                new KeyValue("asss", "vvvvv")
+        ));
+
+        RequestBodyDTO body = new RequestBodyDTO();
+        body.setType("form-data");
+        body.setContent(List.of(
+                new KeyValue("body1", "bodev2."),
+                new KeyValue("body2", "bodyv3")
+        ));
+        config.setBody(body);
+        String resp = OkHttpUtil.request(config);
+        System.out.println("Response = " + resp);
+    }
+
+    @Test
+    public void testPostJson() throws IOException {
+        HttpRequestConfig config = new HttpRequestConfig();
+        config.setMethod("POST");
+        config.setUrl("http://localhost:3180/test");
+        RequestBodyDTO body = new RequestBodyDTO();
+        body.setType("json");
+        body.setJson("{\"foo\":\"bar\",\"num\":123}");
+        config.setBody(body);
+        String resp = OkHttpUtil.request(config);
+        System.out.println("Response = " + resp);
     }
 }

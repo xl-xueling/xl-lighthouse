@@ -24,7 +24,10 @@ import okhttp3.*;
 import org.apache.commons.collections.MapUtils;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
@@ -83,7 +86,7 @@ public class OkHttpUtil {
     }
 
     public static String request(HttpRequestConfig requestConfig) throws IOException {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(requestConfig.getUrl()).newBuilder();
+        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(requestConfig.getUrl())).newBuilder();
         if (requestConfig.getParams() != null) {
             for (KeyValue param : requestConfig.getParams()) {
                 urlBuilder.addQueryParameter(param.getKey(), param.getValue());
@@ -95,20 +98,33 @@ public class OkHttpUtil {
         if (bodyDTO != null) {
             String type = bodyDTO.getType();
             if ("form-data".equalsIgnoreCase(type) && bodyDTO.getContent() != null) {
-                FormBody.Builder formBuilder = new FormBody.Builder();
+                MultipartBody.Builder multipartBuilder = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM);
                 for (KeyValue kv : bodyDTO.getContent()) {
-                    formBuilder.add(kv.getKey(), kv.getValue());
+                    multipartBuilder.addFormDataPart(kv.getKey(), kv.getValue());
                 }
-                body = formBuilder.build();
+                body = multipartBuilder.build();
+            } else if ("x-www-form-urlencoded".equalsIgnoreCase(type) && bodyDTO.getContent() != null) {
+                StringBuilder encoded = new StringBuilder();
+                for (KeyValue kv : bodyDTO.getContent()) {
+                    if (encoded.length() > 0) {
+                        encoded.append("&");
+                    }
+                    encoded.append(URLEncoder.encode(kv.getKey(), StandardCharsets.UTF_8))
+                            .append("=")
+                            .append(URLEncoder.encode(kv.getValue(), StandardCharsets.UTF_8));
+                }
+                MediaType mediaType = MediaType.get("application/x-www-form-urlencoded; charset=utf-8");
+                body = RequestBody.create(encoded.toString(), mediaType);
             } else if ("json".equalsIgnoreCase(type) && bodyDTO.getJson() != null) {
-                MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
-                body = RequestBody.create(mediaType, bodyDTO.getJson().toString());
+                MediaType mediaType = MediaType.get("application/json; charset=utf-8");
+                body = RequestBody.create(bodyDTO.getJson().toString(), mediaType);
             } else if ("xml".equalsIgnoreCase(type) && bodyDTO.getXml() != null) {
-                MediaType mediaType = MediaType.parse("application/xml; charset=utf-8");
-                body = RequestBody.create(mediaType, bodyDTO.getXml());
+                MediaType mediaType = MediaType.get("application/xml; charset=utf-8");
+                body = RequestBody.create(bodyDTO.getXml(), mediaType);
             } else if ("raw".equalsIgnoreCase(type) && bodyDTO.getRaw() != null) {
-                MediaType mediaType = MediaType.parse("text/plain; charset=utf-8");
-                body = RequestBody.create(mediaType, bodyDTO.getRaw());
+                MediaType mediaType = MediaType.get("text/plain; charset=utf-8");
+                body = RequestBody.create(bodyDTO.getRaw(), mediaType);
             }
         }
         Request.Builder requestBuilder = new Request.Builder().url(url);
@@ -123,10 +139,10 @@ public class OkHttpUtil {
                 requestBuilder.get();
                 break;
             case "POST":
-                requestBuilder.post(body != null ? body : RequestBody.create(null, new byte[0]));
+                requestBuilder.post(body != null ? body : RequestBody.create(new byte[0], null));
                 break;
             case "PUT":
-                requestBuilder.put(body != null ? body : RequestBody.create(null, new byte[0]));
+                requestBuilder.post(body != null ? body : RequestBody.create(new byte[0], null));
                 break;
             case "DELETE":
                 if (body != null) {
