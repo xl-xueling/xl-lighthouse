@@ -7,7 +7,9 @@ public class RequestBodyDTO implements Serializable {
 
     private String type;
 
-    private List<KeyValue> content;
+    private List<KeyValue> formData;
+
+    private List<KeyValue> urlencodedData;
 
     private Object json;
 
@@ -21,14 +23,6 @@ public class RequestBodyDTO implements Serializable {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public List<KeyValue> getContent() {
-        return content;
-    }
-
-    public void setContent(List<KeyValue> content) {
-        this.content = content;
     }
 
     public Object getJson() {
@@ -53,5 +47,21 @@ public class RequestBodyDTO implements Serializable {
 
     public void setRaw(String raw) {
         this.raw = raw;
+    }
+
+    public List<KeyValue> getFormData() {
+        return formData;
+    }
+
+    public void setFormData(List<KeyValue> formData) {
+        this.formData = formData;
+    }
+
+    public List<KeyValue> getUrlencodedData() {
+        return urlencodedData;
+    }
+
+    public void setUrlencodedData(List<KeyValue> urlencodedData) {
+        this.urlencodedData = urlencodedData;
     }
 }

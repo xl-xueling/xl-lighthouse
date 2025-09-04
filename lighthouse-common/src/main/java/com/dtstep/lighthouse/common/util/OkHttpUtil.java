@@ -139,18 +139,18 @@ public class OkHttpUtil {
         String type = bodyDTO.getType().toLowerCase();
         switch (type) {
             case "form-data":
-                if (bodyDTO.getContent() != null) {
+                if (bodyDTO.getFormData() != null) {
                     MultipartBody.Builder multipartBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                    for (KeyValue kv : bodyDTO.getContent()) {
+                    for (KeyValue kv : bodyDTO.getFormData()) {
                         multipartBuilder.addFormDataPart(kv.getKey(), kv.getValue());
                     }
                     return multipartBuilder.build();
                 }
                 break;
             case "x-www-form-urlencoded":
-                if (bodyDTO.getContent() != null) {
+                if (bodyDTO.getUrlencodedData() != null) {
                     StringBuilder encoded = new StringBuilder();
-                    for (KeyValue kv : bodyDTO.getContent()) {
+                    for (KeyValue kv : bodyDTO.getUrlencodedData()) {
                         if (encoded.length() > 0) encoded.append("&");
                         encoded.append(URLEncoder.encode(kv.getKey(), StandardCharsets.UTF_8))
                                 .append("=")
