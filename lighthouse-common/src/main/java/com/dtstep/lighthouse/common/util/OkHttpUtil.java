@@ -86,6 +86,7 @@ public class OkHttpUtil {
     }
 
     public static String request(HttpRequestConfig requestConfig) throws IOException {
+        Objects.requireNonNull(requestConfig.getUrl(), "URL must not be null");
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(requestConfig.getUrl())).newBuilder();
         if (requestConfig.getParams() != null) {
             for (KeyValue param : requestConfig.getParams()) {
@@ -93,40 +94,7 @@ public class OkHttpUtil {
             }
         }
         HttpUrl url = urlBuilder.build();
-        RequestBody body = null;
-        RequestBodyDTO bodyDTO = requestConfig.getBody();
-        if (bodyDTO != null) {
-            String type = bodyDTO.getType();
-            if ("form-data".equalsIgnoreCase(type) && bodyDTO.getContent() != null) {
-                MultipartBody.Builder multipartBuilder = new MultipartBody.Builder()
-                        .setType(MultipartBody.FORM);
-                for (KeyValue kv : bodyDTO.getContent()) {
-                    multipartBuilder.addFormDataPart(kv.getKey(), kv.getValue());
-                }
-                body = multipartBuilder.build();
-            } else if ("x-www-form-urlencoded".equalsIgnoreCase(type) && bodyDTO.getContent() != null) {
-                StringBuilder encoded = new StringBuilder();
-                for (KeyValue kv : bodyDTO.getContent()) {
-                    if (encoded.length() > 0) {
-                        encoded.append("&");
-                    }
-                    encoded.append(URLEncoder.encode(kv.getKey(), StandardCharsets.UTF_8))
-                            .append("=")
-                            .append(URLEncoder.encode(kv.getValue(), StandardCharsets.UTF_8));
-                }
-                MediaType mediaType = MediaType.get("application/x-www-form-urlencoded; charset=utf-8");
-                body = RequestBody.create(encoded.toString(), mediaType);
-            } else if ("json".equalsIgnoreCase(type) && bodyDTO.getJson() != null) {
-                MediaType mediaType = MediaType.get("application/json; charset=utf-8");
-                body = RequestBody.create(bodyDTO.getJson().toString(), mediaType);
-            } else if ("xml".equalsIgnoreCase(type) && bodyDTO.getXml() != null) {
-                MediaType mediaType = MediaType.get("application/xml; charset=utf-8");
-                body = RequestBody.create(bodyDTO.getXml(), mediaType);
-            } else if ("raw".equalsIgnoreCase(type) && bodyDTO.getRaw() != null) {
-                MediaType mediaType = MediaType.get("text/plain; charset=utf-8");
-                body = RequestBody.create(bodyDTO.getRaw(), mediaType);
-            }
-        }
+        RequestBody body = buildRequestBody(requestConfig.getBody());
         Request.Builder requestBuilder = new Request.Builder().url(url);
         if (requestConfig.getHeaders() != null) {
             for (KeyValue header : requestConfig.getHeaders()) {
@@ -139,27 +107,76 @@ public class OkHttpUtil {
                 requestBuilder.get();
                 break;
             case "POST":
-                requestBuilder.post(body != null ? body : RequestBody.create(new byte[0], null));
+                requestBuilder.post(body != null ? body : emptyBody());
                 break;
             case "PUT":
-                requestBuilder.post(body != null ? body : RequestBody.create(new byte[0], null));
+                requestBuilder.put(body != null ? body : emptyBody());
                 break;
             case "DELETE":
-                if (body != null) {
-                    requestBuilder.delete(body);
-                } else {
-                    requestBuilder.delete();
-                }
+                requestBuilder.delete(body != null ? body : emptyBody());
                 break;
             default:
-                requestBuilder.method(method, body);
+                requestBuilder.method(method, body != null ? body : emptyBody());
                 break;
         }
+
         try (Response response = client.newCall(requestBuilder.build()).execute()) {
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response);
             }
             return response.body() != null ? response.body().string() : null;
         }
+    }
+
+    private static RequestBody buildRequestBody(RequestBodyDTO bodyDTO) {
+        if (bodyDTO == null || bodyDTO.getType() == null) return null;
+        String type = bodyDTO.getType().toLowerCase();
+        switch (type) {
+            case "form-data":
+                if (bodyDTO.getContent() != null) {
+                    MultipartBody.Builder multipartBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                    for (KeyValue kv : bodyDTO.getContent()) {
+                        multipartBuilder.addFormDataPart(kv.getKey(), kv.getValue());
+                    }
+                    return multipartBuilder.build();
+                }
+                break;
+            case "x-www-form-urlencoded":
+                if (bodyDTO.getContent() != null) {
+                    StringBuilder encoded = new StringBuilder();
+                    for (KeyValue kv : bodyDTO.getContent()) {
+                        if (encoded.length() > 0) encoded.append("&");
+                        encoded.append(URLEncoder.encode(kv.getKey(), StandardCharsets.UTF_8))
+                                .append("=")
+                                .append(URLEncoder.encode(kv.getValue(), StandardCharsets.UTF_8));
+                    }
+                    MediaType mediaType = MediaType.get("application/x-www-form-urlencoded; charset=utf-8");
+                    return RequestBody.create(encoded.toString(), mediaType);
+                }
+                break;
+            case "json":
+                if (bodyDTO.getJson() != null) {
+                    MediaType mediaType = MediaType.get("application/json; charset=utf-8");
+                    return RequestBody.create(bodyDTO.getJson().toString(), mediaType);
+                }
+                break;
+            case "xml":
+                if (bodyDTO.getXml() != null) {
+                    MediaType mediaType = MediaType.get("application/xml; charset=utf-8");
+                    return RequestBody.create(bodyDTO.getXml(), mediaType);
+                }
+                break;
+            case "raw":
+                if (bodyDTO.getRaw() != null) {
+                    MediaType mediaType = MediaType.get("text/plain; charset=utf-8");
+                    return RequestBody.create(bodyDTO.getRaw(), mediaType);
+                }
+                break;
+        }
+        return null;
+    }
+
+    private static RequestBody emptyBody() {
+        return RequestBody.create(new byte[0], null);
     }
 }
