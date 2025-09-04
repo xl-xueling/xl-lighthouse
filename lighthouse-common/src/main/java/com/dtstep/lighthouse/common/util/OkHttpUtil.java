@@ -40,6 +40,13 @@ public class OkHttpUtil {
             .retryOnConnectionFailure(false)
             .build();
 
+    private static final OkHttpClient retryClient = new OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
+            .build();
+
     public static String post(String url, String requestBody) throws IOException {
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(requestBody,mediaType);
@@ -119,8 +126,7 @@ public class OkHttpUtil {
                 requestBuilder.method(method, body != null ? body : emptyBody());
                 break;
         }
-
-        try (Response response = client.newCall(requestBuilder.build()).execute()) {
+        try (Response response = retryClient.newCall(requestBuilder.build()).execute()) {
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response);
             }

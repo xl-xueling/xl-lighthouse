@@ -68,4 +68,12 @@ public class OKhttpTest {
         String resp = OkHttpUtil.request(config);
         System.out.println("Response = " + resp);
     }
+
+    @Test
+    public void testRequest2() throws Exception {
+        String s = "{\"method\":\"POST\",\"url\":\"http://10.206.6.47:3180/test\",\"params\":[{\"key\":\"ssss\",\"value\":\"sssgds\"}],\"headers\":[{\"key\":\"header1\",\"value\":\"header2\"},{\"key\":\"hader3\",\"value\":\"header4\"}],\"body\":{\"type\":\"form-data\",\"content\":[{\"key\":\"aaa\",\"value\":\"bbb\"},{\"key\":\"aaa2\",\"value\":\"bbbb2\"},{\"key\":\"aaa3\",\"value\":\"bbb3\"}]}}";
+        HttpRequestConfig config = JsonUtil.toJavaObject(s,HttpRequestConfig.class);
+        String resp = OkHttpUtil.request(config);
+        System.out.println("Response = " + resp);
+    }
 }
