@@ -75,9 +75,11 @@ public class OKhttpTest {
 
     @Test
     public void testRequest3() throws Exception{
-        String s = "{\"method\":\"GET\",\"url\":\"http://10.206.6.47:3180/testsss\",\"params\":[],\"headers\":[],\"body\":{\"type\":\"raw\",\"json\":\"\",\"xml\":\"\",\"raw\":\"sssss\"}}";
+        String s = "{\"requestType\":\"common\",\"name\":\"ssss\",\"method\":\"POST\",\"url\":\"http://10.206.6.47:31810/test\",\"interval\":3600,\"params\":[],\"headers\":[],\"body\":{\"type\":\"none\",\"formData\":null,\"urlencodedData\":null,\"json\":null,\"xml\":null,\"raw\":null},\"sql\":\"\"}";
         HttpRequestConfig config = JsonUtil.toJavaObject(s,HttpRequestConfig.class);
         String resp = OkHttpUtil.request(config);
         System.out.println("Response = " + resp);
     }
+
+
 }

@@ -24,7 +24,10 @@ import okhttp3.*;
 import org.apache.commons.collections.MapUtils;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
@@ -132,6 +135,14 @@ public class OkHttpUtil {
                         + ", URL:" + response.request().url() + ", Time:" + DateUtil.formatTimeStamp(System.currentTimeMillis(),"yyyy-MM-dd HH:mm:ss")  + ", ResponseBody:" + response.body().string();
             }
             return response.body() != null ? response.body().string() : null;
+        }catch (UnknownHostException e) {
+            return "Network error: Unknown host - " + requestConfig.getUrl();
+        } catch (SocketTimeoutException e) {
+            return "Network error: Request timed out - " + requestConfig.getUrl();
+        } catch (ConnectException e) {
+            return "Network error: Connection refused - " + requestConfig.getUrl();
+        } catch (Exception e) {
+            return "Network error: " + e.getMessage();
         }
     }
 
