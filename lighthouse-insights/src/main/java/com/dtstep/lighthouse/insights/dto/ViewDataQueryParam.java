@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 public class ViewDataQueryParam implements Serializable {
 
-    private String type;
+    private String source;
 
     private String config;
 
-    public String getType() {
-        return type;
+    public String getSource() {
+        return source;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getConfig() {
