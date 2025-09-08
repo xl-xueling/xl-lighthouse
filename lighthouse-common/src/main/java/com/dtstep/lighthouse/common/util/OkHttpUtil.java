@@ -128,7 +128,8 @@ public class OkHttpUtil {
         }
         try (Response response = retryClient.newCall(requestBuilder.build()).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Unexpected code " + response);
+                return "ErrorCode:" + response.code() + ", Message:" + response.message()
+                        + ", URL:" + response.request().url()  + ", Body:" + response.body().string();
             }
             return response.body() != null ? response.body().string() : null;
         }

@@ -72,4 +72,12 @@ public class OKhttpTest {
         String resp = OkHttpUtil.request(config);
         System.out.println("Response = " + resp);
     }
+
+    @Test
+    public void testRequest3() throws Exception{
+        String s = "{\"method\":\"GET\",\"url\":\"http://10.206.6.47:3180/testsss\",\"params\":[],\"headers\":[],\"body\":{\"type\":\"raw\",\"json\":\"\",\"xml\":\"\",\"raw\":\"sssss\"}}";
+        HttpRequestConfig config = JsonUtil.toJavaObject(s,HttpRequestConfig.class);
+        String resp = OkHttpUtil.request(config);
+        System.out.println("Response = " + resp);
+    }
 }
