@@ -87,7 +87,7 @@ public class ResultData<T> {
         String message = messageSource.getMessage(resultCode.getI18nLabel(),null,LocaleContextHolder.getLocale());
         message = String.format(message,params);
         ResultData<T> resultData = new ResultData<>();
-        resultData.setCode("-1");
+        resultData.setCode(resultCode.getCode());
         resultData.setMessage(message);
         return resultData;
     }

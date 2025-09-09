@@ -22,6 +22,7 @@ import com.dtstep.lighthouse.common.entity.ResultCode;
 import com.dtstep.lighthouse.insights.vo.ResultData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -64,6 +65,15 @@ public class DefaultExceptionHandler {
     {
         logger.error("globalErrorHandler",e);
         return ResultData.result(ResultCode.paramValidateFailed);
+    }
+
+    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    @ResponseBody
+    public Object globalHttpRequestMethodNotSupportedErrorHandler(HttpServletRequest request, HttpRequestMethodNotSupportedException e)
+    {
+        logger.error("HttpRequest Method Not Supported!",e);
+        String method = e.getMethod();
+        return ResultData.result(ResultCode.methodNotAllowed,method);
     }
 
     @ExceptionHandler(value = Exception.class)

@@ -12,6 +12,8 @@ public enum ResultCode {
 
     elementNotFound("404","elementNotFound"),
 
+    methodNotAllowed("405","methodNotAllowed"),
+
     systemError("500","systemError"),
 
     systemUnauthorized("1000","systemUnauthorized"),

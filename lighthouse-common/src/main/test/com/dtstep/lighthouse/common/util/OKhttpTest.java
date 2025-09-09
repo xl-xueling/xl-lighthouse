@@ -75,7 +75,7 @@ public class OKhttpTest {
 
     @Test
     public void testRequest3() throws Exception{
-        String s = "{\"requestType\":\"common\",\"name\":\"ssss\",\"method\":\"POST\",\"url\":\"http://10.206.6.47:31810/test\",\"interval\":3600,\"params\":[],\"headers\":[],\"body\":{\"type\":\"none\",\"formData\":null,\"urlencodedData\":null,\"json\":null,\"xml\":null,\"raw\":null},\"sql\":\"\"}";
+        String s = "{\"requestType\":\"common\",\"name\":\"ssss\",\"method\":\"POST\",\"url\":\"http://10.206.6.47:9089/api/v1/anonymous/viewdata?type=line2\",\"interval\":3600,\"params\":[],\"headers\":[],\"body\":{\"type\":\"none\",\"formData\":null,\"urlencodedData\":null,\"json\":null,\"xml\":null,\"raw\":null},\"sql\":\"\"}";
         HttpRequestConfig config = JsonUtil.toJavaObject(s,HttpRequestConfig.class);
         String resp = OkHttpUtil.request(config);
         System.out.println("Response = " + resp);
