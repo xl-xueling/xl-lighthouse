@@ -6,7 +6,7 @@ public class IndicatorValue implements Serializable {
 
     private String category;
 
-    private String dimens;
+    private String series;
 
     private Object value;
 
@@ -18,12 +18,12 @@ public class IndicatorValue implements Serializable {
         this.category = category;
     }
 
-    public String getDimens() {
-        return dimens;
+    public String getSeries() {
+        return series;
     }
 
-    public void setDimens(String dimens) {
-        this.dimens = dimens;
+    public void setSeries(String series) {
+        this.series = series;
     }
 
     public Object getValue() {
