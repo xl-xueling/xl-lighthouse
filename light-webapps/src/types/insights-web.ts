@@ -153,6 +153,8 @@ export interface Stat {
     renderConfig?:{datepicker:RenderDateConfig,filters:Array<RenderFilterConfig>,charts:Array<RenderChartConfig>}
     permissions?:PermissionEnum[];
     builtIn?:boolean;
+    timeParamInterval?:number;
+    timeUnit?:string;
     alarmList?:Array<Alarm>;
 }
 
