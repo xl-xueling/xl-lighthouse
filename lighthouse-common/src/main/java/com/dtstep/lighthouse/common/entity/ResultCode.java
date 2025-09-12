@@ -6,6 +6,10 @@ public enum ResultCode {
 
     paramValidateFailed("1","paramValidateFailed"),
 
+    requiredParameterMissing("2","requiredParameterMissing"),
+
+    requiredParameterMissingWithName("3","requiredParameterMissingWithName"),
+
     unauthorized("401","unauthorized"),
 
     accessDenied("403","accessDenied"),
