@@ -111,8 +111,6 @@ function areValuesEqual(value1, value2) {
     }
 }
 
-
-
 export function deepCopyObject(originalObject) {
     if (typeof originalObject !== 'object' || originalObject === null) {
         return originalObject;
@@ -124,6 +122,21 @@ export function deepCopyObject(originalObject) {
         }
     }
     return copiedObject;
+}
+
+export function deepMerge(target: any, source: any): any {
+    if (typeof target !== 'object' || target === null) {
+        return source;
+    }
+    const output = { ...target };
+    if (typeof source === 'object' && source !== null) {
+        Object.keys(source).forEach(key => {
+            output[key] = (source[key] instanceof Object && key in target)
+                ? deepMerge(target[key], source[key])
+                : source[key];
+        });
+    }
+    return output;
 }
 
 export function windowRedirect(href){
