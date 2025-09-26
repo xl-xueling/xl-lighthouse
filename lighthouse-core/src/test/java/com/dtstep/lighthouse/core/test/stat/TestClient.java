@@ -2,6 +2,7 @@ package com.dtstep.lighthouse.core.test.stat;
 
 import com.dtstep.lighthouse.client.LightHouse;
 import com.dtstep.lighthouse.common.enums.RunningMode;
+import com.dtstep.lighthouse.common.util.DateUtil;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ public class TestClient {
         try{
             //修改rpc服务注册中心地址,集群模式为一主一从，默认为部署集群的前两个节点IP,使用逗号分割，单机模式为当前节点IP
             //LightHouse.init("10.206.6.11:4061,10.206.6.12:4061");//集群模式初始化
-            LightHouse.init("10.206.6.31:4061");//单机模式初始化
+            LightHouse.init("10.206.6.27:4061");//单机模式初始化
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -48,5 +49,17 @@ public class TestClient {
         }
         System.out.println("send ok!");
         Thread.sleep(500000);
+    }
+
+    @Test
+    public void testAlarm() throws Exception {
+        String token = "0E0:orderstat";
+        HashMap<String,Object> paramMap = new HashMap<>();
+        paramMap.put("memberid", DateUtil.formatTimeStamp(System.currentTimeMillis(),"yyyyMMddHHmmss"));
+        double d = ThreadLocalRandom.current().nextDouble(1,19999);
+        paramMap.put("amount",String.format("%.2f", d));
+        LightHouse.stat(token,"C6R0wvoU1ZbdBohY8upmzrKKyWibCbCvsy2RPlsU",paramMap,System.currentTimeMillis());
+        System.out.println("send ok!");
+        Thread.sleep(50000);
     }
 }

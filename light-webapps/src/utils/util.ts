@@ -24,6 +24,31 @@ export function blockMainThread(seconds) {
 }
 
 
+export function isNumeric(value) {
+    if (value === null || value === undefined) return false;
+    switch (typeof value) {
+        case 'number':
+            return !isNaN(value) && isFinite(value);
+        case 'string':
+            if (value === '') return false;
+            const str = value.trim();
+            if (str === '') return false;
+            const num = Number(str);
+            return !isNaN(num) && isFinite(num);
+        default:
+            return false;
+    }
+}
+
+export function formatDecimal(value, maxDecimals = 2) {
+    if (value === null || value === undefined || isNaN(value)) {
+        return value;
+    }
+    const num = Number(value);
+    if (isNaN(num)) return value;
+    return Number(num.toFixed(maxDecimals));
+}
+
 export function formatString(format, ...args) {
     return format.replace(/%s/g, function() {
         return args.shift();
