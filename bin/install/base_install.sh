@@ -95,6 +95,9 @@ local packageManager=($(getPackageManager));
   if [[ -f "/usr/lib/x86_64-linux-gnu/libtinfo.so.6" ]] && [[ ! -f "/usr/lib/x86_64-linux-gnu/libtinfo.so.5" ]];then
     ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
   fi
+  if [[ -f "/usr/lib/x86_64-linux-gnu/libaio.so.1t64" ]] && [[ ! -f "/usr/lib/x86_64-linux-gnu/libaio.so.1" ]];then
+    ln -s /usr/lib/x86_64-linux-gnu/libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1
+  fi
 }
 
 baseInstall $@;

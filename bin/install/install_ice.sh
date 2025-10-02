@@ -41,13 +41,17 @@ installICEONUbuntu(){
   sudo rm -f /var/lib/dpkg/lock-frontend
   sudo rm -f /var/cache/apt/archives/lock
   sudo rm -f /var/lib/dpkg/lock
+  local UBUNTU_VERSION=$(lsb_release -rs)
+  if [[ $(echo "$UBUNTU_VERSION 22.04" | awk '{if ($1 > $2) print 1; else print 0}') -eq 1 ]]; then
+    UBUNTU_VERSION="22.04"
+  fi
   if [ "${NET_MODE}" != "offline" ]; then
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv B6391CB2CFBA643D
     checkPortExist ${_CDN_PACKAGE_MIRROR_IP} ${_CDN_PACKAGE_MIRROR_PORT}
     if [ $? == '0' ];then
-      sudo apt-add-repository -y -s "deb http://${_CDN_PACKAGE_MIRROR_IP}:${_CDN_PACKAGE_MIRROR_PORT}/apt-mirror/ice/download/Ice/3.7/ubuntu`lsb_release -rs` stable main"
+      sudo apt-add-repository -y -s "deb http://${_CDN_PACKAGE_MIRROR_IP}:${_CDN_PACKAGE_MIRROR_PORT}/apt-mirror/ice/download/Ice/3.7/ubuntu${UBUNTU_VERSION} stable main"
     fi
-    sudo apt-add-repository -y -s "deb http://zeroc.com/download/Ice/3.7/ubuntu`lsb_release -rs` stable main"
+    sudo apt-add-repository -y -s "deb http://zeroc.com/download/Ice/3.7/ubuntu${UBUNTU_VERSION} stable main"
     sudo apt-get update
   fi
 	sudo apt-get -y install zeroc-ice-all-runtime zeroc-ice-all-dev
