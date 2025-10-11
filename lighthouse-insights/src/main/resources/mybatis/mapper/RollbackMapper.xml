@@ -65,7 +65,7 @@
 
     <select id="queryList" resultMap="rollbackResultMap">
         SELECT `id`,`user_id`, `resource_id`,`data_type`,`config`,`version`,`state`,`create_time`
-        FROM ldp_rollbacks  WHERE resource_id = #{queryParam.resourceId} and data_type = #{queryParam.dataType.type} order by create_time desc
+        FROM ldp_rollbacks  WHERE resource_id = #{queryParam.resourceId} and data_type = #{queryParam.dataType.type} order by create_time desc,version desc
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.common.modal.RollbackModal">
