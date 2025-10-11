@@ -20,6 +20,7 @@ import com.dtstep.lighthouse.common.entity.ListData;
 import com.dtstep.lighthouse.common.enums.RollbackTypeEnum;
 import com.dtstep.lighthouse.common.modal.RollbackModal;
 import com.dtstep.lighthouse.insights.dto.RollbackQueryParam;
+import com.dtstep.lighthouse.insights.vo.RollbackVO;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.List;
@@ -32,5 +33,5 @@ public interface RollbackService {
 
     RollbackModal queryByVersion(RollbackQueryParam queryParam) throws Exception;
 
-    ListData<RollbackModal> queryList(RollbackQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception;
+    ListData<RollbackVO> queryList(RollbackQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception;
 }

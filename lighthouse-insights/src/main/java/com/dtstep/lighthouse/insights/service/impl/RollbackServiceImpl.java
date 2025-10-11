@@ -17,18 +17,25 @@ package com.dtstep.lighthouse.insights.service.impl;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.enums.PrivateTypeEnum;
+import com.dtstep.lighthouse.common.enums.RoleTypeEnum;
 import com.dtstep.lighthouse.common.enums.RollbackStateEnum;
 import com.dtstep.lighthouse.common.enums.RollbackTypeEnum;
-import com.dtstep.lighthouse.common.modal.RollbackModal;
+import com.dtstep.lighthouse.common.modal.*;
 import com.dtstep.lighthouse.common.util.DateUtil;
 import com.dtstep.lighthouse.common.util.JsonUtil;
+import com.dtstep.lighthouse.core.builtin.BuiltinLoader;
+import com.dtstep.lighthouse.core.wrapper.UserDBWrapper;
 import com.dtstep.lighthouse.insights.dao.RollbackDao;
 import com.dtstep.lighthouse.insights.dto.RollbackQueryParam;
 import com.dtstep.lighthouse.insights.service.BaseService;
 import com.dtstep.lighthouse.insights.service.RollbackService;
+import com.dtstep.lighthouse.insights.vo.ProjectVO;
+import com.dtstep.lighthouse.insights.vo.RollbackVO;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RollbackServiceImpl implements RollbackService {
@@ -85,8 +93,17 @@ public class RollbackServiceImpl implements RollbackService {
         return rollbackDao.queryByVersion(queryParam);
     }
 
+    private RollbackVO translate(RollbackModal rollbackModal){
+        RollbackVO rollbackVO = new RollbackVO(rollbackModal);
+        if(rollbackModal.getUserId() != null){
+            User user = UserDBWrapper.queryById(rollbackModal.getUserId());
+            rollbackVO.setCreateUser(user);
+        }
+        return rollbackVO;
+    }
+
     @Override
-    public ListData<RollbackModal> queryList(RollbackQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception {
+    public ListData<RollbackVO> queryList(RollbackQueryParam queryParam, Integer pageNum, Integer pageSize) throws Exception {
         PageHelper.startPage(pageNum,pageSize);
         PageInfo<RollbackModal> pageInfo;
         try{
@@ -95,7 +112,17 @@ public class RollbackServiceImpl implements RollbackService {
         }finally {
             PageHelper.clearPage();
         }
-        return ListData.newInstance(pageInfo.getList(),pageInfo.getTotal(),pageNum,pageSize);
+        List<RollbackVO> dtoList = new ArrayList<>();
+        for(RollbackModal rollbackModal : pageInfo.getList()){
+            RollbackVO rollbackVO;
+            try{
+                rollbackVO = translate(rollbackModal);
+                dtoList.add(rollbackVO);
+            }catch (Exception ex){
+                logger.error("translate item info error,itemId:{}!",rollbackModal.getId(),ex);
+            }
+        }
+        return ListData.newInstance(dtoList,pageInfo.getTotal(),pageNum,pageSize);
     }
 
     @Override
