@@ -55,14 +55,19 @@ public class RollbackServiceImpl implements RollbackService {
     public ObjectNode put(RollbackModal rollbackModal) throws Exception {
         Integer resourceId = rollbackModal.getResourceId();
         RollbackTypeEnum rollbackTypeEnum = rollbackModal.getDataType();
-        Integer dbVersion = rollbackDao.getLatestVersion(resourceId,rollbackTypeEnum);
-        int version = 1;
-        if(dbVersion != null){
-            version = dbVersion + 1;
+        int version;
+        if(rollbackModal.getVersion() == null){
+            Integer dbVersion = rollbackDao.getLatestVersion(resourceId,rollbackTypeEnum);
+            version = 1;
+            if(dbVersion != null){
+                version = dbVersion + 1;
+            }
+            rollbackModal.setVersion(version);
+        }else{
+            version = rollbackModal.getVersion();
         }
         LocalDateTime localDateTime = LocalDateTime.now();
         int userId = baseService.getCurrentUserId();
-        rollbackModal.setVersion(version);
         rollbackModal.setCreateTime(localDateTime);
         rollbackModal.setState(RollbackStateEnum.UNPUBLISHED);
         rollbackModal.setUserId(userId);

@@ -21,7 +21,6 @@
         (
             #{title,jdbcType=VARCHAR},
             #{userId,jdbcType=INTEGER},
-            #{callerId,jdbcType=INTEGER},
             #{state,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ViewStateEnumTypeHandler},
             #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
             #{version,jdbcType=INTEGER},
