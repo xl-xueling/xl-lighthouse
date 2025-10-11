@@ -17,6 +17,7 @@ package com.dtstep.lighthouse.insights.service;
  * limitations under the License.
  */
 import com.dtstep.lighthouse.common.entity.ListData;
+import com.dtstep.lighthouse.common.enums.RollbackTypeEnum;
 import com.dtstep.lighthouse.common.modal.RollbackModal;
 import com.dtstep.lighthouse.insights.dto.RollbackQueryParam;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -26,6 +27,8 @@ import java.util.List;
 public interface RollbackService {
 
     ObjectNode put(RollbackModal rollbackModal) throws Exception;
+
+    void deleteByQueryParam(RollbackQueryParam queryParam) throws Exception;
 
     RollbackModal queryByVersion(RollbackQueryParam queryParam) throws Exception;
 

@@ -48,6 +48,21 @@
         order by create_time desc limit 1
     </select>
 
+    <delete id="deleteByQueryParam">
+        DELETE FROM ldp_rollbacks
+        <where>
+            <if test="queryParam.resourceId != null">
+                AND resource_id = #{queryParam.resourceId}
+            </if>
+            <if test="queryParam.dataType != null">
+                AND data_type = #{queryParam.dataType.type}
+            </if>
+            <if test="queryParam.version != null">
+                AND version = #{queryParam.version}
+            </if>
+        </where>
+    </delete>
+
     <select id="queryList" resultMap="rollbackResultMap">
         SELECT `id`,`user_id`, `resource_id`,`data_type`,`config`,`version`,`state`,`create_time`
         FROM ldp_rollbacks  WHERE resource_id = #{queryParam.resourceId} and data_type = #{queryParam.dataType.type} order by create_time desc

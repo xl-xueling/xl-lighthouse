@@ -29,6 +29,8 @@ public interface RollbackDao {
 
     int insert(RollbackModal rollbackModal);
 
+    void deleteByQueryParam(@Param("queryParam")RollbackQueryParam queryParam) throws Exception;
+
     Integer getLatestVersion(Integer resourceId, RollbackTypeEnum rollbackTypeEnum) throws Exception;
 
     RollbackModal queryByVersion(@Param("queryParam")RollbackQueryParam queryParam) throws Exception;

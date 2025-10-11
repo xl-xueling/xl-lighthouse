@@ -97,4 +97,9 @@ public class RollbackServiceImpl implements RollbackService {
         }
         return ListData.newInstance(pageInfo.getList(),pageInfo.getTotal(),pageNum,pageSize);
     }
+
+    @Override
+    public void deleteByQueryParam(RollbackQueryParam queryParam) throws Exception {
+        rollbackDao.deleteByQueryParam(queryParam);
+    }
 }
