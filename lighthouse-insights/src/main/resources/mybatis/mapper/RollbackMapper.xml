@@ -45,7 +45,7 @@
                 AND version = #{queryParam.version}
             </if>
         </where>
-        order by create_time desc limit 1
+        order by create_time desc,version desc limit 1
     </select>
 
     <delete id="deleteByQueryParam">
