@@ -10,6 +10,8 @@ public class IndicatorValue implements Serializable {
 
     private Object value;
 
+    private String alias;
+
     public String getCategory() {
         return category;
     }
@@ -32,5 +34,13 @@ public class IndicatorValue implements Serializable {
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 }
