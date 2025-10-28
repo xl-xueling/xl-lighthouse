@@ -442,21 +442,20 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
                 keyMap.put(metaName,list);
             }
         }
-        List<LdpGet> getList = new ArrayList<>();
         Map<String,LdpResult<Long>> allResultMap = new HashMap<>();
-        for(String metaName : keyMap.keySet()){
-            List<String> keyList = keyMap.get(metaName);
-            for(String rowKey : keyList){
-                String [] keyArr = rowKey.split(";");
-                String key = keyArr[0];
-                String column = keyArr[1];
-                LdpGet ldpGet = LdpGet.with(key,column);
-                if(!getList.contains(ldpGet)){
-                    getList.add(ldpGet);
-                }
+        for (Map.Entry<String, List<String>> entry : keyMap.entrySet()) {
+            String metaName = entry.getKey();
+            Set<LdpGet> getSet = new HashSet<>((int)(entry.getValue().size() / 0.75f) + 1);
+            for (String rowKey : entry.getValue()) {
+                int idx = rowKey.indexOf(';');
+                if (idx == -1) continue;
+                String key = rowKey.substring(0, idx);
+                String column = rowKey.substring(idx + 1);
+                getSet.add(LdpGet.with(key, column));
             }
-            List<LdpResult<Long>> results = WarehouseStorageEngineProxy.getInstance().gets(metaName,getList,Long.class);
-            Map<String,LdpResult<Long>> subResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
+            List<LdpGet> getList = new ArrayList<>(getSet);
+            List<LdpResult<Long>> results = WarehouseStorageEngineProxy.getInstance().gets(metaName, getList, Long.class);
+            Map<String, LdpResult<Long>> subResultMap = results.stream().filter(x -> x.getData() != null).collect(Collectors.toMap(x -> x.getKey() + ";" + x.getColumn(), x -> x));
             allResultMap.putAll(subResultMap);
         }
         for(IndicatorGet indicatorGet : indicators){
