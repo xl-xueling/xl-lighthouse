@@ -9,6 +9,10 @@ server:
     max-swallow-size: 100MB
     max-http-post-size: 100MB
     connection-timeout: 60000
+  compression:
+    enabled: true
+    mime-types: application/json,application/javascript,text/html,text/plain
+    min-response-size: 1024
 spring:
   messages:
     basename: i18n/messages
