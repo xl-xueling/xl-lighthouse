@@ -412,10 +412,15 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
         }
         HashMap<String,List<String>> keyMap = new HashMap<>();
         HashMap<Integer,StatExtEntity> statMap = new HashMap<>();
+        long current = System.currentTimeMillis();
         for(IndicatorGet indicatorGet : indicators){
             int statId = indicatorGet.getStatId();
             StatExtEntity statExtEntity = StatDBWrapper.queryById(statId);
             if(statExtEntity == null){
+                continue;
+            }
+            long batchTime = indicatorGet.getBatchTime();
+            if(batchTime > current){
                 continue;
             }
             int metaId = statExtEntity.getMetaId();
@@ -426,7 +431,6 @@ public class DefaultResultStorageHandler implements ResultStorageHandler<MicroBu
             statMap.put(statExtEntity.getId(),statExtEntity);
             String metaName = metaTable.getMetaName();
             int indicator = indicatorGet.getIndicatorIndex();
-            long batchTime = indicatorGet.getBatchTime();
             String dimensValue = indicatorGet.getDimensValue();
             if(indicator == 0){
                 for(StatState statState : statExtEntity.getTemplateEntity().getStatStateList()){
