@@ -9,6 +9,10 @@
         <value>standalone</value>
     </property>
     <property>
+        <name>lighthouse.data.dir</name>
+        <value>${ldp_data_dir}</value>
+    </property>
+    <property>
         <name>cmdb.storage.engine</name>
         <value>mysql</value>
         <properties>

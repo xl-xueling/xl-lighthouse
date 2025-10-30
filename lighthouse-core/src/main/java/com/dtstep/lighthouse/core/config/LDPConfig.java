@@ -69,7 +69,7 @@ public final class LDPConfig {
 
     public static final String KEY_HOME_PATH = "ldp_home";
 
-    public static final String KEY_DATA_DIR = "ldp_data_dir";
+    public static final String KEY_DATA_DIR = "lighthouse.data.dir";
 
     public static final String KEY_CMDB_STORAGE_ENGINE = "cmdb.storage.engine";
 
