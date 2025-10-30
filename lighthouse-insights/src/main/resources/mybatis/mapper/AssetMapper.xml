@@ -4,7 +4,7 @@
     <resultMap id="assetResultMap" type="com.dtstep.lighthouse.common.modal.Asset">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="assetType" column="asset_type" typeHandler="com.dtstep.lighthouse.insights.types.AssetTypeEnumTypeHandler"/>
+        <result property="cateId" column="cate_id"/>
         <result property="path" column="path"/>
         <result property="userId" column="user_id"/>
         <result column="private_type" property="privateType" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
@@ -14,10 +14,10 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Asset" >
-        INSERT INTO ldp_assets (`name`,`asset_type`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_assets (`name`,`cate_id`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time`) VALUES
         (
             #{name,jdbcType=VARCHAR},
-            #{assetType,jdbcType=VARCHAR,typeHandler=com.dtstep.lighthouse.insights.types.AssetTypeEnumTypeHandler},
+            #{cateId,jdbcType=INTEGER},
             #{path,jdbcType=VARCHAR},
             #{userId,jdbcType=INTEGER},
             #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
@@ -32,14 +32,14 @@
     </delete>
 
     <select id="queryById" resultMap="assetResultMap">
-        SELECT `id`,`name`,`asset_type`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time` FROM ldp_assets WHERE id = #{id}
+        SELECT `id`,`name`,`cate_id`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time` FROM ldp_assets WHERE id = #{id}
     </select>
 
     <select id="queryList" resultMap="assetResultMap">
-        select `id`,`name`,`asset_type`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time` from ldp_assets
+        select `id`,`name`,`cate_id`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time` from ldp_assets
         <where>
-            <if test="queryParam.assetType != null ">
-                AND asset_type = #{queryParam.assetType.type}
+            <if test="queryParam.cateId != null ">
+                AND cate_id = #{queryParam.cateId}
             </if>
             <if test="queryParam.userId != null">
                 AND user_id = #{queryParam.userId}
@@ -51,14 +51,29 @@
         order by create_time desc
     </select>
 
+    <select id="count" resultType="int">
+        select count(*) from ldp_assets
+        <where>
+            <if test="queryParam.cateId != null">
+                AND cate_id = #{queryParam.cateId}
+            </if>
+            <if test="queryParam.userId != null">
+                AND user_id = #{queryParam.userId}
+            </if>
+            <if test="queryParam.search != null">
+                AND `name` LIKE CONCAT('%', #{queryParam.search}, '%')
+            </if>
+        </where>
+    </select>
+
     <update id="update" parameterType="com.dtstep.lighthouse.common.modal.Asset">
         UPDATE ldp_assets
         <set>
             <if test="name != null">
                 `name` = #{name},
             </if>
-            <if test="assetType != null">
-                `asset_type` = #{assetType.type},
+            <if test="cateId != null">
+                `cate_id` = #{cateId},
             </if>
             <if test="updateTime != null">
                 `update_time` = #{updateTime},

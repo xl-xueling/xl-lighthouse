@@ -4,7 +4,7 @@
     <resultMap id="viewFavoriteResultMap" type="com.dtstep.lighthouse.common.modal.ViewFavorite">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
-        <result column="category_id" property="categoryId"/>
+        <result column="cate_id" property="cateId"/>
         <result column="user_id" property="userId"/>
         <result column="element_type" property="elementType" typeHandler="com.dtstep.lighthouse.insights.types.ViewElementEnumTypeHandler"/>
         <result column="config" property="config"/>
@@ -13,10 +13,10 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.ViewFavorite">
-        INSERT INTO ldp_views_favorites (`name`,`category_id`,`user_id`,`element_type`,`config`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_views_favorites (`name`,`cate_id`,`user_id`,`element_type`,`config`,`create_time`,`update_time`) VALUES
         (
             #{name,jdbcType=VARCHAR},
-            #{categoryId,jdbcType=INTEGER},
+            #{cateId,jdbcType=INTEGER},
             #{userId,jdbcType=INTEGER},
             #{elementType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.ViewElementEnumTypeHandler},
             #{config,jdbcType=VARCHAR},
@@ -26,10 +26,10 @@
     </insert>
 
     <select id="queryList" resultMap="viewFavoriteResultMap">
-        select `id`,`name`,`category_id`,`user_id`,`element_type`,`config`,`create_time`,`update_time` from ldp_views_favorites
+        select `id`,`name`,`cate_id`,`user_id`,`element_type`,`config`,`create_time`,`update_time` from ldp_views_favorites
         <where>
-            <if test="queryParam.categoryId!=null">
-                AND category_id = #{queryParam.categoryId}
+            <if test="queryParam.cateId!=null">
+                AND cate_id = #{queryParam.cateId}
             </if>
             <if test="queryParam.search != null">
                 AND name LIKE CONCAT('%', #{queryParam.search}, '%')
@@ -38,12 +38,20 @@
         order by create_time desc
     </select>
 
+    <select id="count" resultType="int">
+        select count(*) from ldp_views_favorites
+        <where>
+            <if test="queryParam.cateId != null">
+                AND cate_id = #{queryParam.cateId}
+            </if>
+            <if test="queryParam.search != null">
+                AND name LIKE CONCAT('%', #{queryParam.search}, '%')
+            </if>
+        </where>
+    </select>
+
     <delete id="deleteById" parameterType="int">
         delete from ldp_views_favorites where id = #{id}
-    </delete>
-
-    <delete id="deleteByCategoryId" parameterType="int">
-        delete from ldp_views_favorites where category_id = #{categoryId}
     </delete>
 
     <update id="update" parameterType="com.dtstep.lighthouse.common.modal.ViewFavorite">
@@ -52,8 +60,8 @@
             <if test="name != null">
                 `name` = #{name},
             </if>
-            <if test="categoryId != null">
-                `category_id` = #{categoryId},
+            <if test="cateId != null">
+                `cate_id` = #{cateId},
             </if>
             <if test="updateTime != null">
                 `update_time` = #{updateTime},

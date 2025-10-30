@@ -4,18 +4,18 @@ import java.io.Serializable;
 
 public class ViewFavoriteQueryParam implements Serializable {
 
-    private Integer categoryId;
+    private Integer cateId;
 
     private String search;
 
     private Integer userId;
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public Integer getCateId() {
+        return cateId;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setCateId(Integer cateId) {
+        this.cateId = cateId;
     }
 
     public Integer getUserId() {

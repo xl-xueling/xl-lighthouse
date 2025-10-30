@@ -1,6 +1,5 @@
 package com.dtstep.lighthouse.common.modal;
 
-import com.dtstep.lighthouse.common.enums.AssetTypeEnum;
 import com.dtstep.lighthouse.common.enums.PrivateTypeEnum;
 
 import java.io.Serializable;

@@ -1,7 +1,5 @@
 package com.dtstep.lighthouse.common.modal;
 
-import com.dtstep.lighthouse.common.enums.AssetTypeEnum;
-
 public class AssetUpdateParam {
 
     private Integer id;

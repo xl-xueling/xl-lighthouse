@@ -1,12 +1,10 @@
 package com.dtstep.lighthouse.common.modal;
 
-import com.dtstep.lighthouse.common.enums.AssetTypeEnum;
-
 public class AssetQueryParam {
 
     private Integer userId;
 
-    private AssetTypeEnum assetType;
+    private Integer cateId;
 
     private String search;
 
@@ -18,12 +16,12 @@ public class AssetQueryParam {
         this.userId = userId;
     }
 
-    public AssetTypeEnum getAssetType() {
-        return assetType;
+    public Integer getCateId() {
+        return cateId;
     }
 
-    public void setAssetType(AssetTypeEnum assetType) {
-        this.assetType = assetType;
+    public void setCateId(Integer cateId) {
+        this.cateId = cateId;
     }
 
     public String getSearch() {

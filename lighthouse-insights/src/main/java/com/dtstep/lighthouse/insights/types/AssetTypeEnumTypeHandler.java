@@ -16,8 +16,6 @@ package com.dtstep.lighthouse.insights.types;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.dtstep.lighthouse.common.enums.AlarmMatchEnum;
-import com.dtstep.lighthouse.common.enums.AssetTypeEnum;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 public class AssetTypeEnumTypeHandler extends BaseObjectTypeHandler<AssetTypeEnum>{

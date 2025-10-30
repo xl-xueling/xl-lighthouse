@@ -192,6 +192,8 @@ public enum ResultCode {
 
     viewCategoryAtLeastOne("11006","viewCategoryAtLeastOne"),
 
+    viewCategoryContainsSubItems("11007","viewCategoryContainsSubItems"),
+
     callerNameAlreadyExist("12001","callerNameAlreadyExist"),
 
     apiCallerNotExist("50001","apiCallerNotExist"),

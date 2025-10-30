@@ -19,4 +19,6 @@ public interface AssetDao {
     Asset queryById(Integer id);
 
     List<Asset> queryList(@Param("queryParam") AssetQueryParam queryParam);
+
+    int count(@Param("queryParam") AssetQueryParam queryParam);
 }
