@@ -6,7 +6,7 @@ public class AssetUpdateParam {
 
     private String name;
 
-    private AssetTypeEnum assetType;
+    private Integer cateId;
 
     public Integer getId() {
         return id;
@@ -24,11 +24,11 @@ public class AssetUpdateParam {
         this.name = name;
     }
 
-    public AssetTypeEnum getAssetType() {
-        return assetType;
+    public Integer getCateId() {
+        return cateId;
     }
 
-    public void setAssetType(AssetTypeEnum assetType) {
-        this.assetType = assetType;
+    public void setCateId(Integer cateId) {
+        this.cateId = cateId;
     }
 }
