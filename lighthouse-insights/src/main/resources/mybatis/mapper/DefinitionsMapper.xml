@@ -42,13 +42,17 @@
     </update>
 
     <select id="queryList" resultMap="definitionsResultMap">
-        select `id`,`user_id`,`type`,`name`,`desc`,`extend`,`create_time`,`update_time` from ldp_definitions
+        SELECT `id`,`user_id`,`type`,`name`,`desc`,`extend`,`create_time`,`update_time`
+        FROM ldp_definitions
         <where>
-            <if test="queryParam.userId!=null">
+            <if test="queryParam.userId != null">
                 AND user_id = #{queryParam.userId}
             </if>
-            <if test="queryParam.type != null ">
-                AND type = #{queryParam.type.type}
+            <if test="queryParam.types != null and queryParam.types.size() > 0">
+                AND type IN
+                <foreach collection="queryParam.types" item="t" open="(" separator="," close=")">
+                    #{t.type}
+                </foreach>
             </if>
         </where>
     </select>

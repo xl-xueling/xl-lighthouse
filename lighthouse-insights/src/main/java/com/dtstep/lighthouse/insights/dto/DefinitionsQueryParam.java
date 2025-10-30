@@ -18,11 +18,13 @@ package com.dtstep.lighthouse.insights.dto;
  */
 import com.dtstep.lighthouse.common.enums.DefinitionsEnum;
 
+import java.util.List;
+
 public class DefinitionsQueryParam {
 
     private Integer userId;
 
-    private DefinitionsEnum type;
+    private List<DefinitionsEnum> types;
 
     public Integer getUserId() {
         return userId;
@@ -32,11 +34,11 @@ public class DefinitionsQueryParam {
         this.userId = userId;
     }
 
-    public DefinitionsEnum getType() {
-        return type;
+    public List<DefinitionsEnum> getTypes() {
+        return types;
     }
 
-    public void setType(DefinitionsEnum type) {
-        this.type = type;
+    public void setTypes(List<DefinitionsEnum> types) {
+        this.types = types;
     }
 }

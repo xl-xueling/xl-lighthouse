@@ -7,7 +7,9 @@ import java.util.stream.Stream;
 
 public enum DefinitionsEnum {
 
-    VIEW_CATEGORY(1),
+    VIEW_FAVORITE_CATEGORY(1),
+
+    VIEW_ASSET_CATEGORY(2),
 
     ;
 

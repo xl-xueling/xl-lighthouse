@@ -33,17 +33,10 @@ public class TestDefinitionsDao {
         definitions.setName("test");
         definitions.setUserId(1);
         definitions.setExtend("extend");
-        definitions.setType(DefinitionsEnum.VIEW_CATEGORY);
+        definitions.setType(DefinitionsEnum.VIEW_FAVORITE_CATEGORY);
         definitionsDao.insert(definitions);
     }
 
-    @Test
-    public void testQueryList() throws Exception {
-        DefinitionsQueryParam queryParam = new DefinitionsQueryParam();
-        queryParam.setType(DefinitionsEnum.VIEW_CATEGORY);
-        List<Definition> list = definitionsDao.queryList(queryParam);
-        System.out.println("list:" + JsonUtil.toJSONString(list));
-    }
 
     @Test
     public void testDelete() throws Exception {
