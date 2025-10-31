@@ -220,6 +220,8 @@ public enum ResultCode {
 
     uploadError("90004","uploadError"),
 
+    deleteFileError("90005","deleteFileError"),
+
     ;
 
     ResultCode(String code , String i18nLabel){
