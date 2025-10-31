@@ -6,6 +6,8 @@ public class AssetUpdateParam {
 
     private String name;
 
+    private String desc;
+
     private Integer cateId;
 
     public Integer getId() {
@@ -22,6 +24,14 @@ public class AssetUpdateParam {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public Integer getCateId() {

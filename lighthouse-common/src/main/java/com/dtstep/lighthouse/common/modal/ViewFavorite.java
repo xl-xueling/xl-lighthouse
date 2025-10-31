@@ -18,6 +18,8 @@ public class ViewFavorite {
 
     private Object config;
 
+    private String desc;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
@@ -84,5 +86,13 @@ public class ViewFavorite {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

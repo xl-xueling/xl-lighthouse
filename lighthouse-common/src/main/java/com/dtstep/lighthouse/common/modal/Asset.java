@@ -21,6 +21,8 @@ public class Asset implements Serializable {
 
     private String configs;
 
+    private String desc;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
@@ -95,5 +97,13 @@ public class Asset implements Serializable {
 
     public void setConfigs(String configs) {
         this.configs = configs;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

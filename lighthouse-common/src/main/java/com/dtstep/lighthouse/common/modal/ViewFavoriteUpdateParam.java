@@ -6,6 +6,8 @@ public class ViewFavoriteUpdateParam {
 
     private String name;
 
+    private String desc;
+
     private Integer categoryId;
 
     public Integer getId() {
@@ -22,6 +24,14 @@ public class ViewFavoriteUpdateParam {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public Integer getCategoryId() {

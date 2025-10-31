@@ -9,12 +9,13 @@
         <result property="userId" column="user_id"/>
         <result column="private_type" property="privateType" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
         <result property="configs" column="configs"/>
+        <result property="desc" column="desc"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Asset" >
-        INSERT INTO ldp_assets (`name`,`cate_id`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_assets (`name`,`cate_id`,`path`,`user_id`,`private_type`,`configs`,`desc`,`create_time`,`update_time`) VALUES
         (
             #{name,jdbcType=VARCHAR},
             #{cateId,jdbcType=INTEGER},
@@ -22,6 +23,7 @@
             #{userId,jdbcType=INTEGER},
             #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
             #{configs,jdbcType=VARCHAR},
+            #{desc,jdbcType=VARCHAR},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
         )
@@ -32,11 +34,11 @@
     </delete>
 
     <select id="queryById" resultMap="assetResultMap">
-        SELECT `id`,`name`,`cate_id`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time` FROM ldp_assets WHERE id = #{id}
+        SELECT `id`,`name`,`cate_id`,`path`,`user_id`,`private_type`,`configs`,`desc`,`create_time`,`update_time` FROM ldp_assets WHERE id = #{id}
     </select>
 
     <select id="queryList" resultMap="assetResultMap">
-        select `id`,`name`,`cate_id`,`path`,`user_id`,`private_type`,`configs`,`create_time`,`update_time` from ldp_assets
+        select `id`,`name`,`cate_id`,`path`,`user_id`,`private_type`,`configs`,`desc`,`create_time`,`update_time` from ldp_assets
         <where>
             <if test="queryParam.cateId != null ">
                 AND cate_id = #{queryParam.cateId}
@@ -74,6 +76,9 @@
             </if>
             <if test="cateId != null">
                 `cate_id` = #{cateId},
+            </if>
+            <if test="desc != null">
+                `desc` = #{desc},
             </if>
             <if test="updateTime != null">
                 `update_time` = #{updateTime},
