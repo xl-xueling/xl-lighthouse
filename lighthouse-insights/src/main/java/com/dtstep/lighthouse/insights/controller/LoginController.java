@@ -38,7 +38,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -89,7 +91,13 @@ public class LoginController {
         refreshMap.put("seed", UUID.randomUUID().toString());
         refreshMap.put("username",user.getUsername());
         refreshMap.put("password",dbUser.getPassword());
-        refreshMap.put("expired", DateUtil.getHourAfter(now,168));
+        LocalDateTime target = Instant.ofEpochMilli(now)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .plusDays(8)
+                .atStartOfDay();
+        long timestamp = target.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        refreshMap.put("expired", timestamp);
         String refreshKey = Jwts.builder().setClaims(refreshMap).signWith(SignatureAlgorithm.HS512,signKey).compact();
         Map<String,String> tokenMap = new HashMap<>();
         tokenMap.put("accessKey",accessKey);
