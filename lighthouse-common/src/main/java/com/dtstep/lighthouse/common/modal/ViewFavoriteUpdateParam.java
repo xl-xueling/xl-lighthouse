@@ -8,7 +8,7 @@ public class ViewFavoriteUpdateParam {
 
     private String desc;
 
-    private Integer categoryId;
+    private Integer cateId;
 
     public Integer getId() {
         return id;
@@ -34,11 +34,11 @@ public class ViewFavoriteUpdateParam {
         this.desc = desc;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public Integer getCateId() {
+        return cateId;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setCateId(Integer cateId) {
+        this.cateId = cateId;
     }
 }

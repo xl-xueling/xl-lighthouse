@@ -1,7 +1,5 @@
 package com.dtstep.lighthouse.common.modal;
 
-import com.dtstep.lighthouse.common.enums.ViewElementType;
-
 import java.time.LocalDateTime;
 
 public class ViewFavorite {
@@ -12,9 +10,7 @@ public class ViewFavorite {
 
     private String name;
 
-    private Integer categoryId;
-
-    private ViewElementType elementType;
+    private Integer cateId;
 
     private Object config;
 
@@ -32,20 +28,12 @@ public class ViewFavorite {
         this.id = id;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public Integer getCateId() {
+        return cateId;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public ViewElementType getElementType() {
-        return elementType;
-    }
-
-    public void setElementType(ViewElementType elementType) {
-        this.elementType = elementType;
+    public void setCateId(Integer cateId) {
+        this.cateId = cateId;
     }
 
     public Object getConfig() {
