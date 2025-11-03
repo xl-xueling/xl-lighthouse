@@ -19,7 +19,7 @@ public class Asset implements Serializable {
 
     private PrivateTypeEnum privateType;
 
-    private String configs;
+    private String config;
 
     private String desc;
 
@@ -91,12 +91,12 @@ public class Asset implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getConfigs() {
-        return configs;
+    public String getConfig() {
+        return config;
     }
 
-    public void setConfigs(String configs) {
-        this.configs = configs;
+    public void setConfig(String config) {
+        this.config = config;
     }
 
     public String getDesc() {
