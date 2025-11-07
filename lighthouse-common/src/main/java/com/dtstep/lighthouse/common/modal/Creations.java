@@ -1,10 +1,15 @@
 package com.dtstep.lighthouse.common.modal;
 
+import com.dtstep.lighthouse.common.enums.CreationsTypeEnum;
+import com.dtstep.lighthouse.common.enums.PrivateTypeEnum;
+
 import java.time.LocalDateTime;
 
-public class ViewFavorite {
+public class Creations {
 
     private Integer id;
+
+    private CreationsTypeEnum type;
 
     private Integer userId;
 
@@ -16,6 +21,8 @@ public class ViewFavorite {
 
     private String desc;
 
+    private PrivateTypeEnum privateType;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
@@ -26,6 +33,14 @@ public class ViewFavorite {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public CreationsTypeEnum getType() {
+        return type;
+    }
+
+    public void setType(CreationsTypeEnum type) {
+        this.type = type;
     }
 
     public Integer getCateId() {
@@ -82,5 +97,13 @@ public class ViewFavorite {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public PrivateTypeEnum getPrivateType() {
+        return privateType;
+    }
+
+    public void setPrivateType(PrivateTypeEnum privateType) {
+        this.privateType = privateType;
     }
 }

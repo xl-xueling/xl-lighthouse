@@ -1,14 +1,18 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import com.dtstep.lighthouse.common.enums.CreationsTypeEnum;
+
 import java.io.Serializable;
 
-public class ViewFavoriteQueryParam implements Serializable {
+public class CreationsQueryParam implements Serializable {
 
     private Integer cateId;
 
     private String search;
 
     private Integer userId;
+
+    private CreationsTypeEnum type;
 
     public Integer getCateId() {
         return cateId;
@@ -32,5 +36,13 @@ public class ViewFavoriteQueryParam implements Serializable {
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    public CreationsTypeEnum getType() {
+        return type;
+    }
+
+    public void setType(CreationsTypeEnum type) {
+        this.type = type;
     }
 }

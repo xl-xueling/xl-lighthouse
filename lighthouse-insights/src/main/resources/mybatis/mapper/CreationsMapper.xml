@@ -1,32 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dtstep.lighthouse.insights.dao.ViewFavoriteDao">
-    <resultMap id="viewFavoriteResultMap" type="com.dtstep.lighthouse.common.modal.ViewFavorite">
+<mapper namespace="com.dtstep.lighthouse.insights.dao.CreationsDao">
+    <resultMap id="creationsResultMap" type="com.dtstep.lighthouse.common.modal.Creations">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
+        <result column="type" property="type" typeHandler="com.dtstep.lighthouse.insights.types.CreationsTypeEnumTypeHandler"/>
         <result column="cate_id" property="cateId"/>
         <result column="user_id" property="userId"/>
         <result column="config" property="config"/>
         <result column="desc" property="desc"/>
+        <result property="privateType" column="private_type" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.ViewFavorite">
-        INSERT INTO ldp_views_favorites (`name`,`cate_id`,`user_id`,`config`,`desc`,`create_time`,`update_time`) VALUES
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.Creations">
+        INSERT INTO ldp_creations (`name`,`type`,`cate_id`,`user_id`,`config`,`desc`,`private_type`,`create_time`,`update_time`) VALUES
         (
             #{name,jdbcType=VARCHAR},
+            #{type,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.CreationsTypeEnumTypeHandler},
             #{cateId,jdbcType=INTEGER},
             #{userId,jdbcType=INTEGER},
             #{config,jdbcType=VARCHAR},
             #{desc,jdbcType=VARCHAR},
+            #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
-    <select id="queryList" resultMap="viewFavoriteResultMap">
-        select `id`,`name`,`cate_id`,`user_id`,`config`,`desc`,`create_time`,`update_time` from ldp_views_favorites
+    <select id="queryList" resultMap="creationsResultMap">
+        select `id`,`name`,`type`,`cate_id`,`user_id`,`config`,`desc`,`private_type`,`create_time`,`update_time` from ldp_creations
         <where>
             <if test="queryParam.cateId!=null">
                 AND cate_id = #{queryParam.cateId}
@@ -34,12 +38,15 @@
             <if test="queryParam.search != null">
                 AND name LIKE CONCAT('%', #{queryParam.search}, '%')
             </if>
+            <if test="queryParam.type!=null">
+                AND type = #{queryParam.type.type}
+            </if>
         </where>
         order by create_time desc
     </select>
 
     <select id="count" resultType="int">
-        select count(*) from ldp_views_favorites
+        select count(*) from ldp_creations
         <where>
             <if test="queryParam.cateId != null">
                 AND cate_id = #{queryParam.cateId}
@@ -51,11 +58,11 @@
     </select>
 
     <delete id="deleteById" parameterType="int">
-        delete from ldp_views_favorites where id = #{id}
+        delete from ldp_creations where id = #{id}
     </delete>
 
-    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.ViewFavorite">
-        UPDATE ldp_views_favorites
+    <update id="update" parameterType="com.dtstep.lighthouse.common.modal.Creations">
+        UPDATE ldp_creations
         <set>
             <if test="name != null">
                 `name` = #{name},
@@ -65,6 +72,9 @@
             </if>
             <if test="desc != null">
                 `desc` = #{desc},
+            </if>
+            <if test="privateType != null">
+                `private_type` = #{privateType.privateType},
             </if>
             <if test="updateTime != null">
                 `update_time` = #{updateTime},
