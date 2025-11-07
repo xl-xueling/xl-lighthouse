@@ -87,6 +87,6 @@ public final class SysConst {
 
     public final static String SYSTEM_ALARM_SETTINGS_KEY = "alarm_settings";
 
-    public final static String SHORT_LINK_PREFIX_VIEW_PUBLIC = "/v/";
+    public final static String SHORT_LINK_PREFIX_VIEW_PUBLIC = "/s/";
 
 }

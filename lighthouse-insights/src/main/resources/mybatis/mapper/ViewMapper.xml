@@ -12,12 +12,13 @@
         <result property="privateType" column="private_type" typeHandler="com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler"/>
         <result property="version" column="version"/>
         <result property="desc" column="desc"/>
+        <result property="shareLinkEnabled" column="sharelink_enabled" typeHandler="com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dtstep.lighthouse.common.modal.View" >
-        INSERT INTO ldp_views (`title`,`user_id`,`state`,`private_type`,`version`,`desc`,`create_time`,`update_time`) VALUES
+        INSERT INTO ldp_views (`title`,`user_id`,`state`,`private_type`,`version`,`desc`,`sharelink_enabled`,`create_time`,`update_time`) VALUES
         (
             #{title,jdbcType=VARCHAR},
             #{userId,jdbcType=INTEGER},
@@ -25,13 +26,14 @@
             #{privateType,jdbcType=INTEGER,typeHandler=com.dtstep.lighthouse.insights.types.PrivateTypeEnumTypeHandler},
             #{version,jdbcType=INTEGER},
             #{desc,jdbcType=VARCHAR},
+            #{shareLinkEnabled, typeHandler=com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler},
             #{createTime,jdbcType=TIMESTAMP},
             #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
     <select id="queryById" resultMap="viewResultMap">
-        SELECT `id`,`title`,`user_id`,`caller_id`,`state`,`private_type`,`version`,`desc`,`create_time`,`update_time` FROM ldp_views WHERE id = #{id}
+        SELECT `id`,`title`,`user_id`,`caller_id`,`state`,`private_type`,`version`,`desc`,`sharelink_enabled`,`create_time`,`update_time` FROM ldp_views WHERE id = #{id}
     </select>
 
     <update id="update" parameterType="com.dtstep.lighthouse.common.modal.View">
@@ -58,12 +60,15 @@
             <if test="callerId != null">
                 `caller_id` = #{callerId},
             </if>
+            <if test="shareLinkEnabled != null">
+                sharelink_enabled = #{shareLinkEnabled, typeHandler=com.dtstep.lighthouse.insights.types.SwitchStateEnumTypeHandler},
+            </if>
         </set>
         WHERE id = #{id}
     </update>
 
     <select id="queryList" resultMap="viewResultMap">
-        select * from (select `id`,`title`,`caller_id`,`state`,`private_type`,`version`,`desc`,`create_time`,`update_time` from ldp_views
+        select * from (select `id`,`title`,`caller_id`,`state`,`private_type`,`version`,`desc`,`sharelink_enabled`,`create_time`,`update_time` from ldp_views
         <where>
             <if test="queryParam.ids != null and queryParam.ids.size > 0">
                 AND id IN

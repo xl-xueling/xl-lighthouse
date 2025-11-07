@@ -1,5 +1,7 @@
 package com.dtstep.lighthouse.insights.dto;
 
+import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
+
 import java.util.List;
 
 /*
@@ -25,7 +27,7 @@ public class ViewPublishParam {
 
     private Integer version;
 
-    private boolean externalLinkEnabled;
+    private SwitchStateEnum shareLinkEnabled;
 
     private List<ResourceParam> applyResources;
 
@@ -49,12 +51,12 @@ public class ViewPublishParam {
         this.version = version;
     }
 
-    public boolean isExternalLinkEnabled() {
-        return externalLinkEnabled;
+    public SwitchStateEnum getShareLinkEnabled() {
+        return shareLinkEnabled;
     }
 
-    public void setExternalLinkEnabled(boolean externalLinkEnabled) {
-        this.externalLinkEnabled = externalLinkEnabled;
+    public void setShareLinkEnabled(SwitchStateEnum shareLinkEnabled) {
+        this.shareLinkEnabled = shareLinkEnabled;
     }
 
     public List<ResourceParam> getApplyResources() {

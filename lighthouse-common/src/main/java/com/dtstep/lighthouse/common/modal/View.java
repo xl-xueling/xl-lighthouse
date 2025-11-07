@@ -1,6 +1,7 @@
 package com.dtstep.lighthouse.common.modal;
 
 import com.dtstep.lighthouse.common.enums.PrivateTypeEnum;
+import com.dtstep.lighthouse.common.enums.SwitchStateEnum;
 import com.dtstep.lighthouse.common.enums.ViewStateEnum;
 
 import java.io.Serializable;
@@ -23,6 +24,8 @@ public class View implements Serializable {
     private String desc;
 
     private Integer version;
+
+    private SwitchStateEnum shareLinkEnabled;
 
     private LocalDateTime createTime;
 
@@ -106,5 +109,13 @@ public class View implements Serializable {
 
     public void setCallerId(Integer callerId) {
         this.callerId = callerId;
+    }
+
+    public SwitchStateEnum getShareLinkEnabled() {
+        return shareLinkEnabled;
+    }
+
+    public void setShareLinkEnabled(SwitchStateEnum shareLinkEnabled) {
+        this.shareLinkEnabled = shareLinkEnabled;
     }
 }
