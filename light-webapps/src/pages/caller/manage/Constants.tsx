@@ -84,6 +84,22 @@ export function getColumns(t: any, callback: (record: Record<string, any>, type:
             }
         },
         {
+            title: t['callerAuthList.column.label.state'],
+            dataIndex: 'state',
+            render: (_, record) => {
+                const expireTime = new Date(record.expireTime).getTime();
+                const now = Date.now();
+                const oneMonthLater = now + 30 * 24 * 60 * 60 * 1000;
+                if (expireTime < now) {
+                    return <span style={{ fontWeight:'bold',color: '#F53F3F' }}>{t['callerAuthList.column.label.state.expired']}</span>;
+                } else if (expireTime < oneMonthLater) {
+                    return <span style={{ fontWeight:'bold',color: '#FFA800' }}>{t['callerAuthList.column.label.state.expiring']}</span>;
+                } else {
+                    return <span style={{ fontWeight:'bold',color: '#00B42A' }}>{t['callerAuthList.column.label.state.normal']}</span>;
+                }
+            },
+        },
+        {
             title: t['callerAuthList.column.label.admins'],
             dataIndex: 'admins',
             render: (value,record) =>
