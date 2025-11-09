@@ -80,6 +80,22 @@
         WHERE id = #{id}
     </select>
 
+    <select id="queryByCode" parameterType="string" resultMap="linkResultMap">
+        SELECT
+            id,
+            short_code,
+            full_url,
+            resource_id,
+            resource_type,
+            link_type,
+            params,
+            state,
+            create_time,
+            expire_time
+        FROM ldp_links
+        WHERE short_code = #{shortCode}
+    </select>
+
     <select id="queryList"  resultMap="linkResultMap">
         SELECT
         id,

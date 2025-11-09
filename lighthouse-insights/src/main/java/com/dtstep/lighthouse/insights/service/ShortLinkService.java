@@ -12,5 +12,7 @@ public interface ShortLinkService {
 
     String createShortLink(ShortLink shortLink) throws Exception;
 
+    ShortLinkVO queryByCode(String code) throws Exception;
+
     void updateShortLink(ShortLink shortLink) throws Exception;
 }

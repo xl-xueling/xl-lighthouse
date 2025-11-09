@@ -4,7 +4,6 @@ import com.dtstep.lighthouse.common.constant.SysConst;
 import com.dtstep.lighthouse.common.enums.LinkTypeEnum;
 import com.dtstep.lighthouse.common.modal.ShortLink;
 import com.dtstep.lighthouse.common.random.RandomID;
-import com.dtstep.lighthouse.common.util.JsonUtil;
 import com.dtstep.lighthouse.insights.dao.ShortLinkDao;
 import com.dtstep.lighthouse.insights.dto.LinkQueryParam;
 import com.dtstep.lighthouse.insights.service.ShortLinkService;
@@ -59,9 +58,18 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         return voList;
     }
 
+    @Override
+    public ShortLinkVO queryByCode(String shortCode) throws Exception {
+        ShortLink shortLink = shortLinkDao.queryByCode(shortCode);
+        return translate(shortLink);
+    }
+
     private ShortLinkVO translate(ShortLink shortLink) throws Exception {
+        if(shortLink == null){
+            return null;
+        }
         ShortLinkVO shortLinkVO = new ShortLinkVO(shortLink);
-        if(shortLink.getLinkType() == LinkTypeEnum.VIEW_PUBLIC){
+        if(shortLink.getLinkType() == LinkTypeEnum.VIEW_SHARE_LINK){
             shortLinkVO.setLink(SysConst.SHORT_LINK_PREFIX_VIEW_PUBLIC + shortLink.getShortCode());
         }
         return shortLinkVO;

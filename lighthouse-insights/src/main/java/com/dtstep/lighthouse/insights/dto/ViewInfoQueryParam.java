@@ -20,18 +20,18 @@ import java.io.Serializable;
 
 public class ViewInfoQueryParam implements Serializable {
 
-    private String from = "preview";
+    private String queryMode = "latest"; // "latest", "specific", "published"
 
     private Integer id;
 
     private Integer version;
 
-    public String getFrom() {
-        return from;
+    public String getQueryMode() {
+        return queryMode;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setQueryMode(String queryMode) {
+        this.queryMode = queryMode;
     }
 
     public Integer getId() {
