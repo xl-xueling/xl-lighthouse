@@ -18,27 +18,27 @@ package com.dtstep.lighthouse.common.exception;
  */
 
 
-public class LimitingException extends RuntimeException {
+public class LimitExceedException extends RuntimeException {
 
     private static final long serialVersionUID = 3885684863181861336L;
 
-    public LimitingException() {
+    public LimitExceedException() {
         super();
     }
 
-    public LimitingException(String message) {
+    public LimitExceedException(String message) {
         super(message);
     }
 
-    public LimitingException(String message, Throwable cause) {
+    public LimitExceedException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public LimitingException(Throwable cause) {
+    public LimitExceedException(Throwable cause) {
         super(cause);
     }
 
-    protected LimitingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected LimitExceedException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

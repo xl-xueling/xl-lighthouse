@@ -24,6 +24,8 @@ public enum ApiResultCode {
 
     ApiCallerKeyIncorrect("109","Caller[%s] secret-key verification failed!"),
 
+    DataQueryLimitExceedsError("110","Data query exceeds limit!"),
+
     UnavailableError("999","Remote service[%s] is unavailable!"),
 
     ;

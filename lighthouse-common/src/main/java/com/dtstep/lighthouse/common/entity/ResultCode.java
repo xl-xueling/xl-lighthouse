@@ -222,6 +222,10 @@ public enum ResultCode {
 
     deleteFileError("90005","deleteFileError"),
 
+    shortLinkNotExist("100001","shortLinkNotExist"),
+
+    shortLinkInvalid("100002","shortLinkInvalid"),
+
     ;
 
     ResultCode(String code , String i18nLabel){

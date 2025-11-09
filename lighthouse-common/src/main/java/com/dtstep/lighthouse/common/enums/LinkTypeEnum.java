@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 public enum LinkTypeEnum {
 
-    VIEW_PUBLIC(1),
+    VIEW_SHARE_LINK(1),
 
     ;
 

@@ -29,9 +29,7 @@ import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class OkHttpUtil {
@@ -192,6 +190,94 @@ public class OkHttpUtil {
                 break;
         }
         return null;
+    }
+
+
+    public static Response forwardRequest(String targetUrl, String method,
+                                          Map<String, String> headers, byte[] body) throws IOException {
+        Request.Builder requestBuilder = new Request.Builder().url(targetUrl);
+        setHttpMethod(requestBuilder, method, body, headers);
+        if (headers != null) {
+            headers.forEach((headerName, headerValue) -> {
+                if (!isHopByHopHeader(headerName) && headerValue != null) {
+                    requestBuilder.addHeader(headerName, headerValue);
+                }
+            });
+        }
+        Request request = requestBuilder.build();
+        OkHttpClient executeClient = "GET".equalsIgnoreCase(method) ? retryClient : client;
+        return executeClient.newCall(request).execute();
+    }
+
+    public static void forwardRequestAsync(String targetUrl, String method,
+                                           Map<String, String> headers, byte[] body,
+                                           Callback callback) {
+        Request.Builder requestBuilder = new Request.Builder().url(targetUrl);
+        setHttpMethod(requestBuilder, method, body, headers);
+        if (headers != null) {
+            headers.forEach((headerName, headerValue) -> {
+                if (!isHopByHopHeader(headerName) && headerValue != null) {
+                    requestBuilder.addHeader(headerName, headerValue);
+                }
+            });
+        }
+        Request request = requestBuilder.build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    private static void setHttpMethod(Request.Builder requestBuilder, String method,
+                                      byte[] body, Map<String, String> headers) {
+        String contentType = headers != null ? headers.get("Content-Type") : null;
+        if ("GET".equalsIgnoreCase(method)) {
+            requestBuilder.get();
+        } else if ("POST".equalsIgnoreCase(method)) {
+            RequestBody requestBody = createRequestBody(body, contentType);
+            requestBuilder.post(requestBody);
+        } else if ("PUT".equalsIgnoreCase(method)) {
+            RequestBody requestBody = createRequestBody(body, contentType);
+            requestBuilder.put(requestBody);
+        } else if ("DELETE".equalsIgnoreCase(method)) {
+            if (body != null && body.length > 0) {
+                RequestBody requestBody = createRequestBody(body, contentType);
+                requestBuilder.delete(requestBody);
+            } else {
+                requestBuilder.delete();
+            }
+        } else if ("PATCH".equalsIgnoreCase(method)) {
+            RequestBody requestBody = createRequestBody(body, contentType);
+            requestBuilder.patch(requestBody);
+        } else if ("HEAD".equalsIgnoreCase(method)) {
+            requestBuilder.head();
+        } else {
+            throw new IllegalArgumentException("Unsupported HTTP method: " + method);
+        }
+    }
+
+    private static RequestBody createRequestBody(byte[] body, String contentType) {
+        if (body == null || body.length == 0) {
+            return RequestBody.create(new byte[0],
+                    contentType != null ? MediaType.parse(contentType) : null);
+        }
+        MediaType mediaType = contentType != null ?
+                MediaType.parse(contentType) : MediaType.parse("application/octet-stream");
+
+        return RequestBody.create(body, mediaType);
+    }
+
+    private static final Set<String> HOP_BY_HOP_HEADERS = Set.of(
+            "Connection",
+            "Keep-Alive",
+            "Proxy-Authenticate",
+            "Proxy-Authorization",
+            "TE",
+            "Trailer",
+            "Transfer-Encoding",
+            "Upgrade"
+    );
+
+    private static boolean isHopByHopHeader(String headerName) {
+        return headerName != null && HOP_BY_HOP_HEADERS.stream()
+                .anyMatch(h -> h.equalsIgnoreCase(headerName));
     }
 
     private static RequestBody emptyBody() {
