@@ -152,6 +152,7 @@ function loadStandaloneIPS() {
                 local standalone_ips=${ATTRS_MAP['ldp_lighthouse_standalone_nodes_ips']}
                 local iceNodesArray=($(echo $standalone_ips | tr ',' ' '))
                 ATTRS_MAP["ldp_lighthouse_ice_locators"]=${iceNodesArray[0]}:4061
+                ATTRS_MAP["ldp_lighthouse_ice_nodes_ips"]=${standalone_ips}
         fi
 }
 

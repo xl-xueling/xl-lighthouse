@@ -61,6 +61,8 @@ public final class LDPConfig {
 
     public static final String KEY_LIGHTHOUSE_ICE_LOCATORS = "lighthouse.ice.locators";
 
+    public static final String KEY_LIGHTHOUSE_ICE_IPS = "lighthouse.ice.ips";
+
     public static final String KEY_DATA_COMPRESSION_TYPE = "data.storage.compression.type";
 
     public static final String KEY_CLUSTER_ID = "lighthouse.cluster.id";

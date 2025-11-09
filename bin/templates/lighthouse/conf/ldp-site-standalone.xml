@@ -70,6 +70,10 @@
         <value>${ldp_lighthouse_ice_locators}</value>
     </property>
     <property>
+        <name>lighthouse.ice.ips</name>
+        <value>${ldp_lighthouse_ice_nodes_ips}</value>
+    </property>
+    <property>
         <name>limiting.enabled</name>
         <value>true</value>
     </property>
