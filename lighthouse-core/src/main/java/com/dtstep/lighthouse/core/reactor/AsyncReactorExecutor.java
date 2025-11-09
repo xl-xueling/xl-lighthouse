@@ -34,7 +34,7 @@ public class AsyncReactorExecutor {
 
     private static final Scheduler SCHEDULER = Schedulers.fromExecutor(EXECUTOR);
 
-    private static final long DEFAULT_TIMEOUT = 10000L;
+    private static final long DEFAULT_TIMEOUT = 60000L;
 
     private AsyncReactorExecutor() {
     }
