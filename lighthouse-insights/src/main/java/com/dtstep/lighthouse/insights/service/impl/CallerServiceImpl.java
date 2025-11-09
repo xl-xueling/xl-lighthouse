@@ -140,10 +140,12 @@ public class CallerServiceImpl implements CallerService {
             List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
             callerVO.setAdmins(admins);
         }
-        int currentUserId = baseService.getCurrentUserId();
-        if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
-            callerVO.addPermission(PermissionEnum.ManageAble);
-            callerVO.addPermission(PermissionEnum.AccessAble);
+        Integer currentUserId = baseService.getCurrentUserId();
+        if(currentUserId != null){
+            if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
+                callerVO.addPermission(PermissionEnum.ManageAble);
+                callerVO.addPermission(PermissionEnum.AccessAble);
+            }
         }
         return callerVO;
     }
