@@ -121,6 +121,8 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
                     return HttpProcessor.dataDurationQueryWithDimensList(callerName,callerKey,requestBody);
                 case "limitQuery":
                     return HttpProcessor.limitQuery(callerName,callerKey,requestBody);
+                case "viewQuery":
+                    return HttpProcessor.viewQuery(callerName,callerKey,requestBody);
                 default:
                     logger.warn("Unsupported API interface: {}", interfaceName);
                     return new ApiResultData(ApiResultCode.ApiNotSupported.getCode(), ApiResultCode.ApiNotSupported.getMessage());

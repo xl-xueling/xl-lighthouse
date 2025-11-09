@@ -19,11 +19,12 @@ package com.dtstep.lighthouse.core.storage.result;
 import com.dtstep.lighthouse.common.entity.calculate.MicroBucket;
 import com.dtstep.lighthouse.common.entity.stat.StatExtEntity;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
+import com.dtstep.lighthouse.core.storage.common.IndicatorGet;
 import com.dtstep.lighthouse.core.storage.result.impl.DefaultResultStorageHandler;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ResultStorageSelector {
 
@@ -64,5 +65,9 @@ public class ResultStorageSelector {
     @Deprecated
     public static LinkedHashMap<String,List<StatValue>> queryWithDimensList0(StatExtEntity statExtEntity, List<String> dimensValueList, List<Long> batchTimeList) throws Exception {
         return resultStorageHandler.queryWithDimensList0(statExtEntity, dimensValueList, batchTimeList);
+    }
+
+    public static HashMap<IndicatorGet, Object> query(List<IndicatorGet> indicatorGets) throws Exception {
+        return resultStorageHandler.query(indicatorGets);
     }
 }

@@ -22,15 +22,14 @@ import com.dtstep.lighthouse.common.entity.ApiResultData;
 import com.dtstep.lighthouse.common.entity.view.LimitValue;
 import com.dtstep.lighthouse.common.entity.view.StatValue;
 import com.dtstep.lighthouse.common.enums.ResourceTypeEnum;
-import com.dtstep.lighthouse.common.ice.LightRpcException;
-import com.dtstep.lighthouse.common.modal.Caller;
+import com.dtstep.lighthouse.common.exception.LimitExceedException;
+import com.dtstep.lighthouse.common.exception.PermissionException;
 import com.dtstep.lighthouse.common.util.StringUtil;
 import com.dtstep.lighthouse.core.builtin.CallerStat;
 import com.dtstep.lighthouse.core.config.LDPConfig;
 import com.dtstep.lighthouse.core.ipc.RPCServer;
 import com.dtstep.lighthouse.core.ipc.impl.RPCServerImpl;
 import com.dtstep.lighthouse.core.tools.ObjectSize;
-import com.dtstep.lighthouse.core.wrapper.CallerDBWrapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.CollectionUtils;
@@ -484,5 +483,52 @@ public class HttpProcessor {
             return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
         }
         return new ApiResultData(ApiResultCode.Success.getCode(), ApiResultCode.Success.getMessage(),data);
+    }
+
+    public static ApiResultData viewQuery(String callerName,String callerKey,String requestBody) throws Exception {
+        Map<String, Object> requestMap;
+        try{
+            requestMap =  objectMapper.readValue(requestBody,new TypeReference<>() {});
+        }catch (Exception ex){
+            ApiResultCode apiResultCode = ApiResultCode.ParametersParseException;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
+        }
+        if(MapUtils.isEmpty(requestMap)){
+            ApiResultCode apiResultCode = ApiResultCode.MissingParams;
+            return new ApiResultData(apiResultCode.getCode(),apiResultCode.getMessage());
+        }
+
+        if (StringUtil.isEmpty(callerName)) {
+            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+            return new ApiResultData(apiResultCode.getCode(), apiResultCode.formatMessage("callerName"));
+        }
+        if (StringUtil.isEmpty(callerKey)) {
+            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+            return new ApiResultData(apiResultCode.getCode(), apiResultCode.formatMessage("callerKey"));
+        }
+        Object source = requestMap.get("source");
+        Object config = requestMap.get("config");
+        if(source == null || StringUtil.isEmpty(source.toString())){
+            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+            return new ApiResultData(apiResultCode.getCode(), apiResultCode.formatMessage("source"));
+        }
+        if(config == null || StringUtil.isEmpty(config.toString())){
+            ApiResultCode apiResultCode = ApiResultCode.MissingParam;
+            return new ApiResultData(apiResultCode.getCode(), apiResultCode.formatMessage("config"));
+        }
+        Object result;
+        try{
+            result = rpc.viewQuery(callerName,callerKey,source.toString(),config.toString());
+        }catch (PermissionException ex){
+            ApiResultCode apiResultCode = ApiResultCode.AuthorizationError;
+            return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
+        }catch (LimitExceedException ex){
+            ApiResultCode apiResultCode = ApiResultCode.DataQueryLimitExceedsError;
+            return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
+        }catch (Exception ex){
+            ApiResultCode apiResultCode = ApiResultCode.ProcessError;
+            return new ApiResultData(apiResultCode.getCode(),ex.getMessage());
+        }
+        return new ApiResultData(ApiResultCode.Success.getCode(), ApiResultCode.Success.getMessage(),result);
     }
 }

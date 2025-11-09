@@ -44,4 +44,6 @@ public interface RPCServer {
     Map<String,List<StatValue>> dataDurationQueryWithDimensList(int statId, List<String> dimensValueList, long startTime, long endTime) throws Exception;
 
     List<LimitValue> limitQuery(int statId, long batchTime) throws Exception;
+
+    Object viewQuery(String callerName,String callerKey,String source,String config) throws Exception;
 }
