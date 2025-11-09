@@ -103,7 +103,7 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
                 logger.error("Error executing async task for URI: {}", uri, e);
                 throw new RuntimeException("Async task execution failed: " + e.getMessage(), e);
             }
-        }, 30000L)
+        }, 60000L)
                 .subscribe(
                         result -> {
                             ctx.executor().execute(() -> {
