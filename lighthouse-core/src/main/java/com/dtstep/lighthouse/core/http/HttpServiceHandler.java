@@ -48,7 +48,7 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
             if (request.method() == HttpMethod.GET) {
                 handleGetRequest(ctx, request);
             } else if (request.method() == HttpMethod.POST) {
-                handlePostRequestAsync(ctx, request);
+                handlePostRequest(ctx, request);
             } else {
                 sendError(ctx, request, HttpResponseStatus.METHOD_NOT_ALLOWED, "Unsupported HTTP method.");
             }
@@ -79,7 +79,7 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
         }
     }
 
-    private void handlePostRequestAsync(ChannelHandlerContext ctx, FullHttpRequest request) {
+    private void handlePostRequest(ChannelHandlerContext ctx, FullHttpRequest request) {
         request.retain();
         ByteBuf byteBuf = request.content();
         String requestBody = byteBuf.isReadable() ? byteBuf.toString(StandardCharsets.UTF_8) : "";
@@ -88,25 +88,42 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
         String callerName = Optional.ofNullable(headers.get("Caller-Name")).orElse("");
         String callerKey = Optional.ofNullable(headers.get("Caller-Key")).orElse("");
         long startTime = System.currentTimeMillis();
-        AsyncReactorExecutor.executeAsync(() -> {
+        boolean isSync = uri.startsWith("/clusterInfo")
+                || uri.startsWith("/api/rpc/v1/stat")
+                || uri.startsWith("/api/rpc/v1/stats");
+        if (isSync) {
             try {
+                Object result;
                 if (uri.startsWith("/clusterInfo")) {
                     ClusterInfo clusterInfo = new ClusterInfo();
                     clusterInfo.setRunningMode(LDPConfig.getRunningMode());
                     clusterInfo.setStartTime(System.currentTimeMillis());
-                    clusterInfo.setRunningTime(System.currentTimeMillis() + JVM_START_TIME);
-                    return clusterInfo;
+                    clusterInfo.setRunningTime(System.currentTimeMillis() - JVM_START_TIME);
+                    result = clusterInfo;
                 } else {
-                    return request(uri, callerName, callerKey, requestBody);
+                    result = request(uri, callerName, callerKey, requestBody);
                 }
+                long duration = System.currentTimeMillis() - startTime;
+                logger.debug("Sync request completed in {}ms: {}", duration, uri);
+                sendObjectResponse(ctx, request, HttpResponseStatus.OK, result);
             } catch (Exception e) {
-                logger.error("Error executing async task for URI: {}", uri, e);
-                throw new RuntimeException("Async task execution failed: " + e.getMessage(), e);
+                logger.error("Sync request failed for {}: {}", uri, e.getMessage(), e);
+                ApiResultData errorResult = buildErrorResult(e);
+                sendObjectResponse(ctx, request, HttpResponseStatus.INTERNAL_SERVER_ERROR, errorResult);
+            } finally {
+                request.release();
             }
-        }, 60000L)
-                .subscribe(
-                        result -> {
-                            ctx.executor().execute(() -> {
+        } else {
+            AsyncReactorExecutor.executeAsync(() -> {
+                try {
+                    return request(uri, callerName, callerKey, requestBody);
+                } catch (Exception e) {
+                    logger.error("Error executing async task for URI: {}", uri, e);
+                    throw new RuntimeException("Async task execution failed: " + e.getMessage(), e);
+                }
+            }, 60000L)
+                    .subscribe(
+                            result -> ctx.executor().execute(() -> {
                                 try {
                                     long duration = System.currentTimeMillis() - startTime;
                                     logger.debug("Async request completed in {}ms: {}", duration, uri);
@@ -117,10 +134,8 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
                                 } finally {
                                     request.release();
                                 }
-                            });
-                        },
-                        error -> {
-                            ctx.executor().execute(() -> {
+                            }),
+                            error -> ctx.executor().execute(() -> {
                                 try {
                                     long duration = System.currentTimeMillis() - startTime;
                                     logger.error("Async HTTP POST processing failed in {}ms: {}", duration, uri, error);
@@ -132,9 +147,9 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
                                 } finally {
                                     request.release();
                                 }
-                            });
-                        }
-                );
+                            })
+                    );
+        }
     }
 
     private ApiResultData request(String uri, String callerName, String callerKey, String requestBody) {
