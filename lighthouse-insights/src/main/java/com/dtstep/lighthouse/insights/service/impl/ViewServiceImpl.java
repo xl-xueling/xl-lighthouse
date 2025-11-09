@@ -77,20 +77,22 @@ public class ViewServiceImpl implements ViewService {
 
     private ViewVO translate(View view){
         ViewVO viewVO = new ViewVO(view);
-        int currentUserId = baseService.getCurrentUserId();
+        Integer currentUserId = baseService.getCurrentUserId();
         Role manageRole = roleService.cacheQueryRole(RoleTypeEnum.VIEW_MANAGE_PERMISSION, view.getId());
         Role accessRole = roleService.cacheQueryRole(RoleTypeEnum.VIEW_ACCESS_PERMISSION, view.getId());
+        if(currentUserId != null){
+            if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
+                viewVO.addPermission(PermissionEnum.ManageAble);
+                viewVO.addPermission(PermissionEnum.AccessAble);
+            }else if(view.getPrivateType() == PrivateTypeEnum.Public
+                    || permissionService.checkUserPermission(currentUserId, accessRole.getId())){
+                viewVO.addPermission(PermissionEnum.AccessAble);
+            }
+        }
         List<Integer> adminIds = permissionService.queryUserPermissionsByRoleId(manageRole.getId(),3);
         if(CollectionUtils.isNotEmpty(adminIds)){
             List<User> admins = adminIds.stream().map(z -> userService.cacheQueryById(z)).collect(Collectors.toList());
             viewVO.setAdmins(admins);
-        }
-        if(permissionService.checkUserPermission(currentUserId, manageRole.getId())){
-            viewVO.addPermission(PermissionEnum.ManageAble);
-            viewVO.addPermission(PermissionEnum.AccessAble);
-        }else if(view.getPrivateType() == PrivateTypeEnum.Public
-                || permissionService.checkUserPermission(currentUserId, accessRole.getId())){
-            viewVO.addPermission(PermissionEnum.AccessAble);
         }
         return viewVO;
     }
