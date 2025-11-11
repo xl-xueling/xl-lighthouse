@@ -13,7 +13,7 @@ function checkInstall() {
     if [[ "${SERVICES[@]}" =~ "scala" ]];then
       checkScalaCommand;
     fi
-    if [[ ${_DEPLOY_LIGHTHOUSE_ICE} == "true" ]];then
+    if [[ ${RUNNING_MODE} == "cluster" ]] && [[ ${_DEPLOY_LIGHTHOUSE_ICE} == "true" ]];then
       checkICECommand;
     fi
     checkNginxCommand;
