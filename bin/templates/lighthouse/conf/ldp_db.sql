@@ -568,38 +568,44 @@ CREATE TABLE `ldp_views` (
                              `user_id` int NOT NULL,
                              `state` tinyint(1) NOT NULL,
                              `private_type` tinyint(1) NOT NULL,
-                             `caller_id` int,
+                             `caller_id` int DEFAULT NULL,
                              `version` int NOT NULL,
                              `config` mediumtext,
                              `desc` varchar(500) NOT NULL,
                              `create_time` timestamp NOT NULL,
                              `update_time` timestamp NOT NULL,
+                             `sharelink_enabled` tinyint(1) DEFAULT '0',
                              PRIMARY KEY (`id`),
                              KEY `index_state` (`state`),
                              KEY `index_title` (`title`),
                              KEY `index_create_time` (`create_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=1100023 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1100108 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 --
--- Table structure for table `ldp_views_favorites`
+-- Table structure for table `ldp_creations`
 --
 
-DROP TABLE IF EXISTS `ldp_views_favorites`;
+DROP TABLE IF EXISTS `ldp_creations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `ldp_views_favorites` (
-                                       `id` int NOT NULL,
-                                       `category_id` int NOT NULL,
-                                       `element_type` tinyint NOT NULL,
-                                       `config` varchar(5000) NOT NULL,
-                                       `create_time` timestamp NOT NULL,
-                                       `update_time` timestamp NOT NULL,
-                                       PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `ldp_creations` (
+                                 `id` int NOT NULL AUTO_INCREMENT,
+                                 `user_id` int NOT NULL,
+                                 `type` int NOT NULL,
+                                 `cate_id` int DEFAULT NULL,
+                                 `name` varchar(100) DEFAULT NULL,
+                                 `config` text,
+                                 `private_type` tinyint NOT NULL DEFAULT '0',
+                                 `desc` varchar(500) DEFAULT NULL,
+                                 `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                                 `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                 PRIMARY KEY (`id`),
+                                 KEY `idx_user_type` (`user_id`,`type`),
+                                 KEY `idx_type` (`type`)
+) ENGINE=InnoDB AUTO_INCREMENT=111001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

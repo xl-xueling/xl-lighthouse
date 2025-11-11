@@ -234,6 +234,8 @@ public class InitServiceImpl implements InitService {
     @Override
     public void createCMDBColumnsIfNotExist() throws Exception {
         CMDBUtil.addColumnIfNotExist("ldp_relations","config","MEDIUMTEXT");
+        CMDBUtil.addColumnIfNotExist("ldp_views","caller_id","INT");
+        CMDBUtil.addColumnIfNotExist("ldp_views","sharelink_enabled","TINYINT(1)");
     }
 
     @Override

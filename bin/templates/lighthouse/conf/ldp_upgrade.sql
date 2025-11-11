@@ -2,8 +2,6 @@ USE `cluster_${ldp_lighthouse_cluster_id}_ldp_cmdb`;
 
 ALTER TABLE ldp_groups MODIFY COLUMN columns TEXT NOT NULL;
 
-ALTER TABLE ldp_views ADD COLUMN caller_id INT DEFAULT NULL;
-
 CREATE TABLE IF NOT EXISTS `ldp_alarms` (
                               `id` int NOT NULL AUTO_INCREMENT,
                               `title` varchar(60) NOT NULL,
@@ -67,20 +65,22 @@ CREATE TABLE IF NOT EXISTS `ldp_notifications` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1001011 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS `ldp_views` (
-                               `id` int NOT NULL AUTO_INCREMENT,
-                               `title` varchar(100) NOT NULL,
-                                `user_id` int NOT NULL,
-                                `state` tinyint(1) NOT NULL,
-                                `private_type` tinyint(1) NOT NULL,
-                                `version` int NOT NULL,
-                                `config` mediumtext,
-                                `desc` varchar(500) NOT NULL,
-                                `create_time` timestamp NOT NULL,
-                                `update_time` timestamp NOT NULL,
-                                PRIMARY KEY (`id`),
-                                KEY `index_state` (`state`),
-                                KEY `index_title` (`title`),
-                                KEY `index_create_time` (`create_time`)
+                                           `id` int NOT NULL AUTO_INCREMENT,
+                                           `title` varchar(100) NOT NULL,
+                                            `user_id` int NOT NULL,
+                                            `state` tinyint(1) NOT NULL,
+                                            `private_type` tinyint(1) NOT NULL,
+                                            `caller_id` int DEFAULT NULL,
+                                            `version` int NOT NULL,
+                                            `config` mediumtext,
+                                            `desc` varchar(500) NOT NULL,
+                                            `create_time` timestamp NOT NULL,
+                                            `update_time` timestamp NOT NULL,
+                                            `sharelink_enabled` tinyint(1) DEFAULT '0',
+                                            PRIMARY KEY (`id`),
+                                            KEY `index_state` (`state`),
+                                            KEY `index_title` (`title`),
+                                            KEY `index_create_time` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1100023 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS `ldp_rollbacks` (
@@ -130,3 +130,20 @@ CREATE TABLE IF NOT EXISTS `ldp_links` (
                              KEY `idx_resource` (`resource_id`,`resource_type`),
                              KEY `idx_create_time` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10009 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE IF NOT EXISTS `ldp_creations` (
+                                 `id` int NOT NULL AUTO_INCREMENT,
+                                 `user_id` int NOT NULL,
+                                 `type` int NOT NULL,
+                                 `cate_id` int DEFAULT NULL,
+                                 `name` varchar(100) DEFAULT NULL,
+                                 `config` text,
+                                 `private_type` tinyint NOT NULL DEFAULT '0',
+                                 `desc` varchar(500) DEFAULT NULL,
+                                 `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                                 `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                 PRIMARY KEY (`id`),
+                                 KEY `idx_user_type` (`user_id`,`type`),
+                                 KEY `idx_type` (`type`)
+) ENGINE=InnoDB AUTO_INCREMENT=111001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
