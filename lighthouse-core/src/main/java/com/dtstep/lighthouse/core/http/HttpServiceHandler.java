@@ -74,8 +74,8 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
                 sendError(ctx, request, HttpResponseStatus.METHOD_NOT_ALLOWED,
                         "The current http service does not allow GET request type!");
             }
-        } finally {
-            request.release();
+        } catch (Exception ex){
+            logger.error("process get error!",ex);
         }
     }
 
@@ -111,7 +111,7 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
                 ApiResultData errorResult = buildErrorResult(e);
                 sendObjectResponse(ctx, request, HttpResponseStatus.INTERNAL_SERVER_ERROR, errorResult);
             } finally {
-                request.release();
+                safeRelease(request);
             }
         } else {
             AsyncReactorExecutor.executeAsync(() -> {
@@ -132,7 +132,7 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
                                     logger.error("Failed to send async response for {}: {}", uri, ex.getMessage(), ex);
                                     sendError(ctx, request, HttpResponseStatus.INTERNAL_SERVER_ERROR, "Failed to send response");
                                 } finally {
-                                    request.release();
+                                    safeRelease(request);
                                 }
                             }),
                             error -> ctx.executor().execute(() -> {
@@ -145,7 +145,7 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
                                     logger.error("Failed to send async error response for {}: {}", uri, ex.getMessage(), ex);
                                     sendError(ctx, request, HttpResponseStatus.INTERNAL_SERVER_ERROR, "Failed to send error response");
                                 } finally {
-                                    request.release();
+                                    safeRelease(request);
                                 }
                             })
                     );
@@ -263,6 +263,12 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
         } catch (Exception e) {
             logger.error("Failed to send error response", e);
             ctx.close();
+        }
+    }
+
+    private void safeRelease(FullHttpRequest request) {
+        if (request != null && request.refCnt() > 0) {
+            request.release();
         }
     }
 }
