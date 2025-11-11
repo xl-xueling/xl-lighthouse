@@ -147,3 +147,18 @@ CREATE TABLE IF NOT EXISTS `ldp_creations` (
                                  KEY `idx_user_type` (`user_id`,`type`),
                                  KEY `idx_type` (`type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=111001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE IF NOT EXISTS `ldp_assets` (
+                              `id` int NOT NULL AUTO_INCREMENT,
+                              `name` varchar(300) NOT NULL,
+                              `cate_id` tinyint NOT NULL,
+                              `path` varchar(500) NOT NULL,
+                              `user_id` int NOT NULL,
+                              `config` varchar(3000) DEFAULT NULL,
+                              `private_type` tinyint NOT NULL,
+                              `desc` varchar(500) DEFAULT NULL,
+                              `create_time` timestamp NOT NULL,
+                              `update_time` timestamp NOT NULL,
+                              PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11574 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

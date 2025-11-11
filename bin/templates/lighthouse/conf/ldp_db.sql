@@ -165,6 +165,25 @@ CREATE TABLE `ldp_domains` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+
+DROP TABLE IF EXISTS `ldp_assets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ldp_assets` (
+                              `id` int NOT NULL AUTO_INCREMENT,
+                              `name` varchar(300) NOT NULL,
+                              `cate_id` tinyint NOT NULL,
+                              `path` varchar(500) NOT NULL,
+                              `user_id` int NOT NULL,
+                              `config` varchar(3000) DEFAULT NULL,
+                              `private_type` tinyint NOT NULL,
+                              `desc` varchar(500) DEFAULT NULL,
+                              `create_time` timestamp NOT NULL,
+                              `update_time` timestamp NOT NULL,
+                              PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11574 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 --
 -- Table structure for table `ldp_env`
 --
