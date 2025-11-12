@@ -10,6 +10,8 @@ public enum ResultCode {
 
     requiredParameterMissingWithName("3","requiredParameterMissingWithName"),
 
+    callerNotFound("4","callerNotFound"),
+
     unauthorized("401","unauthorized"),
 
     accessDenied("403","accessDenied"),
