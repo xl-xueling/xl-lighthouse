@@ -196,6 +196,10 @@ public enum ResultCode {
 
     viewCategoryContainsSubItems("11007","viewCategoryContainsSubItems"),
 
+    viewPublishStopped("11008","viewPublishStopped"),
+
+    viewShareLinkStopped("11009","viewShareLinkStopped"),
+
     callerNameAlreadyExist("12001","callerNameAlreadyExist"),
 
     apiCallerNotExist("50001","apiCallerNotExist"),
