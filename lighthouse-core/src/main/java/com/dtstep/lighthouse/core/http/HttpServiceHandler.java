@@ -97,7 +97,7 @@ public class HttpServiceHandler extends SimpleChannelInboundHandler<FullHttpRequ
                 if (uri.startsWith("/clusterInfo")) {
                     ClusterInfo clusterInfo = new ClusterInfo();
                     clusterInfo.setRunningMode(LDPConfig.getRunningMode());
-                    clusterInfo.setStartTime(System.currentTimeMillis());
+                    clusterInfo.setStartTime(JVM_START_TIME);
                     clusterInfo.setRunningTime(System.currentTimeMillis() - JVM_START_TIME);
                     result = clusterInfo;
                 } else {
