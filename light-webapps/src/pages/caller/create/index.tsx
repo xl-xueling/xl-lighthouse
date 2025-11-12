@@ -34,7 +34,6 @@ export default function CallerCreateModal({onClose,onSuccess}){
             departmentId:values.departmentId,
             desc:values.desc,
         }
-        console.log("---caller info is:" + JSON.stringify(caller));
         requestCreate(caller).then((response) => {
             const {code, data ,message} = response;
             if(code == '0'){
@@ -79,19 +78,20 @@ export default function CallerCreateModal({onClose,onSuccess}){
                 labelCol={{span: 4, offset: 0}}>
                 <Form.Item label={t['callerCreate.form.label.name']} field='name' rules={[
                     { required: true, message: t['basic.form.verification.empty.warning'] , validateTrigger : ['onSubmit']},
-                    { required: true, match: new RegExp(TEXT_BASE_PATTERN_4,"g"),message: t['basic.form.verification.failed.warning'] , validateTrigger : ['onSubmit']},
                     {
                         required:true,
                         validator: (v, cb) => {
                             if (getTextBlenLength(v) < 5) {
                                 return cb(t['basic.form.verification.length.less.warning'])
-                            }else if (getTextBlenLength(v) > 30) {
+                            }else if (getTextBlenLength(v) > 25) {
                                 return cb(t['basic.form.verification.length.larger.warning'])
                             }
                             cb(null);
                         }
                         , validateTrigger : ['onSubmit']
-                    }]}>
+                    },
+                    { required: true, match: new RegExp(TEXT_BASE_PATTERN_4,"g"),message: t['basic.form.verification.failed.warning'] , validateTrigger : ['onSubmit']}
+                    ]}>
                     <Input addBefore={'caller:'} autoFocus={false} />
                 </Form.Item>
                 <Form.Item label={t['callerCreate.form.label.department']} field="departmentId" rules={[{ required: true ,message: t['callerCreate.form.department.errMsg'], validateTrigger : ['onSubmit']}]}>
