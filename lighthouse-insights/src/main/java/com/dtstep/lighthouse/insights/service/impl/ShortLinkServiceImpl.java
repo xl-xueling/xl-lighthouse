@@ -30,7 +30,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         int attempts = 0;
         final int MAX_ATTEMPTS = 30;
         while (true) {
-            shortCode = RandomID.id(6);
+            shortCode = RandomID.id(5);
             boolean isExist = shortLinkDao.isExist(shortCode);
             if (!isExist) {
                 shortLink.setShortCode(shortCode);
