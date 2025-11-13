@@ -224,7 +224,13 @@ public enum ResultCode {
 
     uploadErrorExceedLimit("90003","uploadErrorExceedLimit"),
 
-    uploadError("90004","uploadError"),
+    uploadErrorExceedCountLimit("90004","uploadErrorExceedCountLimit"),
+
+    uploadFileTypeNotSupported("90005","uploadFileTypeNotSupported"),
+
+    uploadDemoImageNotAllowed("90006","uploadDemoImageNotAllowed"),
+
+    uploadError("90007","uploadError"),
 
     deleteFileError("90005","deleteFileError"),
 
