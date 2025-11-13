@@ -220,17 +220,15 @@ public enum ResultCode {
 
     uploadErrorCreateDirectoryFailed("90001","uploadErrorCreateDirectoryFailed"),
 
-    uploadErrorUnsupportedFileFormat("90002","uploadErrorUnsupportedFileFormat"),
+    uploadErrorExceedLimit("90002","uploadErrorExceedLimit"),
 
-    uploadErrorExceedLimit("90003","uploadErrorExceedLimit"),
+    uploadErrorExceedCountLimit("90003","uploadErrorExceedCountLimit"),
 
-    uploadErrorExceedCountLimit("90004","uploadErrorExceedCountLimit"),
+    uploadFileTypeNotSupported("90004","uploadFileTypeNotSupported"),
 
-    uploadFileTypeNotSupported("90005","uploadFileTypeNotSupported"),
+    uploadDemoImageNotAllowed("90005","uploadDemoImageNotAllowed"),
 
-    uploadDemoImageNotAllowed("90006","uploadDemoImageNotAllowed"),
-
-    uploadError("90007","uploadError"),
+    uploadError("90006","uploadError"),
 
     deleteFileError("90005","deleteFileError"),
 
