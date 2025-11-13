@@ -30,6 +30,8 @@ public class ViewVO extends View {
 
     private Object config;
 
+    private String shareLink;
+
     private Map<String,List<TreeNode>> filtersData;
 
     private List<ResourceVO> resourceList = new ArrayList<>();
@@ -52,6 +54,14 @@ public class ViewVO extends View {
 
     public void setPermissions(Set<PermissionEnum> permissions) {
         this.permissions = permissions;
+    }
+
+    public String getShareLink() {
+        return shareLink;
+    }
+
+    public void setShareLink(String shareLink) {
+        this.shareLink = shareLink;
     }
 
     public void addPermission(PermissionEnum permission){
