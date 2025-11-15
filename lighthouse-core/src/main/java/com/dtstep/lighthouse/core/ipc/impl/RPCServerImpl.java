@@ -217,8 +217,7 @@ public class RPCServerImpl implements RPCServer {
                 throw new IllegalArgumentException();
             }
             Validate.notNull(httpRequestConfig);
-            String result = OkHttpUtil.request(httpRequestConfig);
-            return ServiceResult.success(result);
+            return OkHttpUtil.request(httpRequestConfig);
         }else if("stat".equals(source)){
             ViewStatBindsInfo bindsInfo = JsonUtil.toJavaObject(config, ViewStatBindsInfo.class);
             if(bindsInfo == null || bindsInfo.getBinds() == null){
