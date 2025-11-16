@@ -67,21 +67,21 @@ public class RPCServerImpl implements RPCServer {
         }
         Caller caller = CallerDBWrapper.queryByName(callerName);
         if(caller == null){
-            throw new PermissionException("Api caller[" + callerName + "] does not exist!");
+            throw new PermissionException("API caller[" + callerName + "] does not exist!");
         }
         if(caller.getState() != CallerStateEnum.NORMAL){
-            throw new PermissionException("Api caller[" + callerName + "] status is unavailable!");
+            throw new PermissionException("API caller[" + callerName + "] status is unavailable!");
         }
         if(!callerKey.equals(caller.getSecretKey())){
-            throw new PermissionException("Api caller[" + callerName + "] secret-key verification failed!");
+            throw new PermissionException("API caller[" + callerName + "] secret-key verification failed!");
         }
         Role role = RoleDBWrapper.queryAccessRoleByResource(resourceId,resourceTypeEnum);
         if(role == null){
-            throw new PermissionException("Api caller[" + callerName + "] does not have access authorization!");
+            throw new PermissionException("API caller[" + callerName + "] is not authorized to access this resource!");
         }
         boolean hasPermission = PermissionDBWrapper.hasPermission(caller.getId(), OwnerTypeEnum.CALLER,role.getId());
         if(!hasPermission){
-            throw new PermissionException("Api caller[" + callerName + "] does not have access authorization!");
+            throw new PermissionException("API caller[" + callerName + "] is not authorized to access this resource!");
         }
         return caller.getId();
     }
