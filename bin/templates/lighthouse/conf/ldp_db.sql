@@ -172,7 +172,7 @@ DROP TABLE IF EXISTS `ldp_assets`;
 CREATE TABLE `ldp_assets` (
                               `id` int NOT NULL AUTO_INCREMENT,
                               `name` varchar(300) NOT NULL,
-                              `cate_id` tinyint NOT NULL,
+                              `cate_id` int DEFAULT NULL,
                               `path` varchar(500) NOT NULL,
                               `user_id` int NOT NULL,
                               `config` varchar(3000) DEFAULT NULL,
@@ -181,7 +181,7 @@ CREATE TABLE `ldp_assets` (
                               `create_time` timestamp NOT NULL,
                               `update_time` timestamp NOT NULL,
                               PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11574 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=111001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
