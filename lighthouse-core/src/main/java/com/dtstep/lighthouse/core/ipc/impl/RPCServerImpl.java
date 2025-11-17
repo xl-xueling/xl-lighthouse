@@ -281,7 +281,7 @@ public class RPCServerImpl implements RPCServer {
             TimeUnit timeUnit = statExtEntity.getTimeUnit();
             timeUnits.add(timeUnit);
             String alias = bindItem.getAlias();
-            if(StringUtil.isEmpty(alias)){
+            if(alias == null || "".equals(alias)){
                 if(indicator == 0){
                     alias = "["+statId+"]-Default";
                 }else{
@@ -398,7 +398,7 @@ public class RPCServerImpl implements RPCServer {
                 localDimensMap.put(statId+"-"+indicator, statMapper);
             }
             String alias = bindItem.getAlias();
-            if(StringUtil.isEmpty(alias)){
+            if(alias == null || "".equals(alias)){
                 if(indicator == 0){
                     alias = "["+statId+"]-Default";
                 }else{
