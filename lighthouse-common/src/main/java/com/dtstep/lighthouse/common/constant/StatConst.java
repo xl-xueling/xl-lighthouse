@@ -105,6 +105,8 @@ public final class StatConst {
 
     public static final int QUERY_RESULT_LIMIT_SIZE = 150000;
 
+    public static final int VIEW_QUERY_RESULT_LIMIT_SIZE = 50000;
+
     public static final int EXPORT_RESULT_LIMIT_SIZE = 300000;
 
     public static final Set<String> _KeyWordsSet = new HashSet<>(Arrays.asList("count","bitcount","token","sum","max","min","seq","avg","default","distinct","stat","limit","goto","if","else","then","stat-item","dimens","timestamp","where","while","for","loop","variable","variables","const"));

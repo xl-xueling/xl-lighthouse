@@ -312,7 +312,7 @@ public class RPCServerImpl implements RPCServer {
                         indicatorGet.setStatId(statId);
                         indicatorGet.setBatchTime(batchTime);
                         indicatorGet.setIndicatorIndex(indicator);
-                        if(indicatorGets.size() > StatConst.QUERY_RESULT_LIMIT_SIZE){
+                        if(indicatorGets.size() > StatConst.VIEW_QUERY_RESULT_LIMIT_SIZE){
                             throw new LimitExceedException();
                         }
                         indicatorGets.add(indicatorGet);
@@ -325,7 +325,7 @@ public class RPCServerImpl implements RPCServer {
                     indicatorGet.setStatId(statId);
                     indicatorGet.setBatchTime(batchTime);
                     indicatorGet.setIndicatorIndex(bindItem.getIndicator());
-                    if(indicatorGets.size() > StatConst.QUERY_RESULT_LIMIT_SIZE){
+                    if(indicatorGets.size() > StatConst.VIEW_QUERY_RESULT_LIMIT_SIZE){
                         throw new LimitExceedException();
                     }
                     indicatorGets.add(indicatorGet);
@@ -423,7 +423,7 @@ public class RPCServerImpl implements RPCServer {
                     indicatorGet.setStatId(statId);
                     indicatorGet.setBatchTime(batchTime);
                     indicatorGet.setIndicatorIndex(indicator);
-                    if(indicatorGets.size() > StatConst.QUERY_RESULT_LIMIT_SIZE){
+                    if(indicatorGets.size() > StatConst.VIEW_QUERY_RESULT_LIMIT_SIZE){
                         throw new LimitExceedException();
                     }
                     indicatorGets.add(indicatorGet);
@@ -434,7 +434,7 @@ public class RPCServerImpl implements RPCServer {
                 indicatorGet.setStatId(statId);
                 indicatorGet.setBatchTime(batchTime);
                 indicatorGet.setIndicatorIndex(bindItem.getIndicator());
-                if(indicatorGets.size() > StatConst.QUERY_RESULT_LIMIT_SIZE){
+                if(indicatorGets.size() > StatConst.VIEW_QUERY_RESULT_LIMIT_SIZE){
                     throw new LimitExceedException();
                 }
                 indicatorGets.add(indicatorGet);
