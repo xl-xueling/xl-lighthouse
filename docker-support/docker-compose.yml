@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: mysql8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_USER: "lighthouse"
+      MYSQL_PASSWORD: "123456"
+      MYSQL_DATABASE: lighthouse_db
+      TZ: "Asia/Shanghai"
+    ports:
+      - "3906:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+
+volumes:
+  mysql_data:
