@@ -16,6 +16,20 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - ./mysql/init:/docker-entrypoint-initdb.d:ro
 
+  redis:
+    image: redis:6.2.6
+    container_name: redis6
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./redis/conf/redis.conf:/etc/redis/redis.conf:ro
+    command: redis-server /etc/redis/redis.conf
 volumes:
   mysql_data:
+  redis_data:
