@@ -18,18 +18,210 @@ services:
       - ./mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf:ro
       - ./mysql/init:/docker-entrypoint-initdb.d:ro
 
-  redis:
+  redis-node-1:
     image: redis:6.2.6
-    container_name: redis6
+    container_name: redis-node-1
     restart: always
     environment:
       - TZ=Asia/Shanghai
     ports:
       - "6379:6379"
+      - "16379:16379"
     volumes:
-      - redis_data:/data
-      - ./redis/conf/redis.conf:/etc/redis/redis.conf:ro
-    command: redis-server /etc/redis/redis.conf
+      - redis_data_1:/data
+      - ./redis/conf/redis-6379.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - redis-cluster-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "6379", "-a", "naJKcZEoGGeSSAad", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis-node-2:
+    image: redis:6.2.6
+    container_name: redis-node-2
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "6380:6380"
+      - "16380:16380"
+    volumes:
+      - redis_data_2:/data
+      - ./redis/conf/redis-6380.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - redis-cluster-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "6380", "-a", "naJKcZEoGGeSSAad", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis-node-3:
+    image: redis:6.2.6
+    container_name: redis-node-3
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "6381:6381"
+      - "16381:16381"
+    volumes:
+      - redis_data_3:/data
+      - ./redis/conf/redis-6381.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - redis-cluster-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "6381", "-a", "naJKcZEoGGeSSAad", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis-node-4:
+    image: redis:6.2.6
+    container_name: redis-node-4
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "6382:6382"
+      - "16382:16382"
+    volumes:
+      - redis_data_4:/data
+      - ./redis/conf/redis-6382.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - redis-cluster-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "6382", "-a", "naJKcZEoGGeSSAad", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis-node-5:
+    image: redis:6.2.6
+    container_name: redis-node-5
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "6383:6383"
+      - "16383:16383"
+    volumes:
+      - redis_data_5:/data
+      - ./redis/conf/redis-6383.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - redis-cluster-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "6383", "-a", "naJKcZEoGGeSSAad", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis-node-6:
+    image: redis:6.2.6
+    container_name: redis-node-6
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "6384:6384"
+      - "16384:16384"
+    volumes:
+      - redis_data_6:/data
+      - ./redis/conf/redis-6384.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - redis-cluster-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "6384", "-a", "naJKcZEoGGeSSAad", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis-cluster-init:
+    image: redis:6.2.6
+    container_name: redis-cluster-init
+    restart: "no"
+    depends_on:
+      redis-node-1:
+        condition: service_healthy
+      redis-node-2:
+        condition: service_healthy
+      redis-node-3:
+        condition: service_healthy
+      redis-node-4:
+        condition: service_healthy
+      redis-node-5:
+        condition: service_healthy
+      redis-node-6:
+        condition: service_healthy
+    network_mode: "host"
+    command: |
+      bash -c '
+        REDIS_PASSWORD="naJKcZEoGGeSSAad"
+        HOST_IP="10.206.6.27"
+
+        echo "等待 Redis 节点完全启动..."
+        sleep 10
+
+        echo "检查节点状态..."
+        redis-cli -h $$HOST_IP -p 6379 -a "$$REDIS_PASSWORD" ping || exit 1
+        redis-cli -h $$HOST_IP -p 6380 -a "$$REDIS_PASSWORD" ping || exit 1
+        redis-cli -h $$HOST_IP -p 6381 -a "$$REDIS_PASSWORD" ping || exit 1
+        redis-cli -h $$HOST_IP -p 6382 -a "$$REDIS_PASSWORD" ping || exit 1
+        redis-cli -h $$HOST_IP -p 6383 -a "$$REDIS_PASSWORD" ping || exit 1
+        redis-cli -h $$HOST_IP -p 6384 -a "$$REDIS_PASSWORD" ping || exit 1
+
+        echo "所有节点状态正常，开始创建 Redis 集群 (3主3从)..."
+        echo "yes" | redis-cli -a "$$REDIS_PASSWORD" --cluster create \
+          $$HOST_IP:6379 \
+          $$HOST_IP:6380 \
+          $$HOST_IP:6381 \
+          $$HOST_IP:6382 \
+          $$HOST_IP:6383 \
+          $$HOST_IP:6384 \
+          --cluster-replicas 1
+
+        if [ $$? -eq 0 ]; then
+          echo "等待集群稳定..."
+          sleep 10
+
+          echo ""
+          echo "=========================================="
+          echo "Redis 集群创建完成！"
+          echo "=========================================="
+          echo ""
+          echo "=== 集群信息 ==="
+          redis-cli -h $$HOST_IP -p 6379 -a "$$REDIS_PASSWORD" cluster info
+          echo ""
+          echo "=== 节点信息 ==="
+          redis-cli -h $$HOST_IP -p 6379 -a "$$REDIS_PASSWORD" cluster nodes
+          echo ""
+          echo "=========================================="
+          echo "集群初始化成功完成"
+          echo "=========================================="
+        else
+          echo "集群创建失败，请检查日志"
+          exit 1
+        fi
+      '
+
 volumes:
   mysql_data:
-  redis_data:
+  redis_data_1:
+  redis_data_2:
+  redis_data_3:
+  redis_data_4:
+  redis_data_5:
+  redis_data_6:
+
+networks:
+  redis-cluster-network:
+    name: redis-cluster-network
+    driver: bridge
