@@ -1,6 +1,26 @@
 version: "3.9"
 
 services:
+  init-env:
+    image: bash:5.2-alpine3.18
+    container_name: init-env
+    volumes:
+      - ./scripts:/scripts
+      - ./templates:/templates
+      - ./generated:/generated
+    restart: "no"
+    command: |
+      bash -c "
+        ls -la /scripts/ &&
+        chmod +x /scripts/init.sh &&
+        bash /scripts/init.sh &&
+        touch /generated/.init_complete
+      "
+    healthcheck:
+      test: ["CMD", "test", "-f", "/generated/.init_complete"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
   mysql:
     image: mysql:8.0.30
     container_name: mysql8
