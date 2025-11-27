@@ -2,14 +2,14 @@ version: "3.9"
 
 services:
   mysql:
-    image: mysql:8.4
+    image: mysql:8.0.30
     container_name: mysql8
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "root"
       MYSQL_USER: "lighthouse"
       MYSQL_PASSWORD: "123456"
-      MYSQL_DATABASE: lighthouse_db
+      MYSQL_DATABASE: ldp_cmdb
       TZ: "Asia/Shanghai"
     ports:
       - "3906:3306"
@@ -191,26 +191,30 @@ services:
         if [ $$? -eq 0 ]; then
           echo "等待集群稳定..."
           sleep 10
-
-          echo ""
-          echo "=========================================="
           echo "Redis 集群创建完成！"
-          echo "=========================================="
-          echo ""
-          echo "=== 集群信息 ==="
-          redis-cli -h $$HOST_IP -p 6379 -a "$$REDIS_PASSWORD" cluster info
-          echo ""
-          echo "=== 节点信息 ==="
-          redis-cli -h $$HOST_IP -p 6379 -a "$$REDIS_PASSWORD" cluster nodes
-          echo ""
-          echo "=========================================="
-          echo "集群初始化成功完成"
-          echo "=========================================="
         else
           echo "集群创建失败，请检查日志"
           exit 1
         fi
       '
+
+  myapp:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: myapp
+    restart: always
+    depends_on:
+      - mysql
+      - redis-node-1
+    environment:
+      SPRING_REDIS_HOST: redis-node-1
+      SPRING_REDIS_PORT: 6379
+      SPRING_REDIS_PASSWORD: naJKcZEoGGeSSAad
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config/application.yml:/app/config/application.yml:ro
 
 volumes:
   mysql_data:
@@ -225,3 +229,4 @@ networks:
   redis-cluster-network:
     name: redis-cluster-network
     driver: bridge
+
