@@ -5,8 +5,10 @@ services:
     image: bash:5.2-alpine3.18
     container_name: init-env
     volumes:
+      - ./logs:/logs
       - ./scripts:/scripts
       - ./templates:/templates
+      - ./config:/config
       - ./generated:/generated
     restart: "no"
     command: |
@@ -27,17 +29,17 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_USER: "lighthouse"
-      MYSQL_PASSWORD: "123456"
-      MYSQL_DATABASE: ldp_cmdb
       TZ: "Asia/Shanghai"
     ports:
-      - "3906:3306"
+      - "3906:3906"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-      - ./mysql/init:/docker-entrypoint-initdb.d:ro
-
+      - mysql_home:/usr
+      - ./logs/mysql:/usr/log
+      - ./generated/mysql/support-files/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - ./generated/lighthouse/conf/ldp_docker.sql:/docker-entrypoint-initdb.d/10-ldp_docker.sql:ro
+      - ./generated/lighthouse/conf/ldp_db.sql:/docker-entrypoint-initdb.d/20-ldp_db.sql:ro
+  
   redis-node-1:
     image: redis:6.2.6
     container_name: redis-node-1
@@ -238,6 +240,7 @@ services:
 
 volumes:
   mysql_data:
+  mysql_home:  
   redis_data_1:
   redis_data_2:
   redis_data_3:

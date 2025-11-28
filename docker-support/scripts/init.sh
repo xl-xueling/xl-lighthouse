@@ -1,17 +1,43 @@
 #!/bin/bash
 set -e
 
+setup_log_permissions() {
+    CURRENT_UID=${CURRENT_UID:-$(id -u)}
+    CURRENT_GID=${CURRENT_GID:-$(id -g)}
+    LOG_DIRS=(
+        "../logs/mysql"
+        "../logs/redis" 
+        "../logs/nginx"
+        "../logs/springboot"
+        "../logs/lighthouse"
+    )
+    for host_dir in "${LOG_DIRS[@]}"; do
+        mkdir -p "$host_dir"
+        chown -R $CURRENT_UID:$CURRENT_GID "$host_dir" 2>/dev/null
+        chmod -R 777 "$host_dir" 2>/dev/null
+        if [ -d "$host_dir" ]; then
+            echo "  目录创建成功: $host_dir"
+        else
+            echo "  目录创建失败: $host_dir"
+        fi
+    done
+    
+    for host_dir in "${LOG_DIRS[@]}"; do
+        if [ -d "$host_dir" ]; then
+            perms=$(stat -c "%A %U:%G" "$host_dir" 2>/dev/null || echo "未知权限")
+            echo "  $host_dir : $perms"
+        else
+            echo "  $host_dir : 目录不存在"
+        fi
+    done
+}
 
 generate_cluster_id() {
     local id=""
-
-    # 优先 openssl + md5sum
     if command -v openssl >/dev/null 2>&1 && command -v md5sum >/dev/null 2>&1; then
         openssl rand -hex 8 | md5sum | cut -c1-8
         return
     fi
-
-    # 其他备选方案（保证至少 8 字符）
     while [ "${#id}" -lt 8 ]; do
         if command -v openssl >/dev/null 2>&1; then
             id="${id}$(openssl rand -base64 32 2>/dev/null | tr -dc '0-9a-z')"
@@ -27,6 +53,8 @@ generate_cluster_id() {
     echo "${id:0:8}"
 }
 
+setup_log_permissions;
+
 RANDOM_CLUSTER_ID=$(generate_cluster_id)
 echo "[INFO] Cluster ID: $RANDOM_CLUSTER_ID"
 
@@ -36,20 +64,20 @@ CONFIG_DIR="../config"
 
 TARGET_COMPONENTS=("lighthouse" "redis" "mysql" "nginx")
 
+
 declare -A VARS_MAP=(
   ["ldp_lighthouse_cluster_id"]="$RANDOM_CLUSTER_ID"
-  ["ldp_mysql_operate_user"]="lighthouse"
+  ["ldp_mysql_master"]="mysql"
+  ["ldp_mysql_home"]="/usr"
+  ["ldp_data_dir"]="/var/lib"	
 )
-
 
 parse_json_without_jq() {
     local json_file="$1"
     local content
     content=$(tr -d ' \t\r\n' < "$json_file")
-
     local components
     components=$(echo "$content" | grep -o '"[^"]*":{' | sed 's/":{//' | tr -d '"')
-
     for comp in $components; do
         local block
         block=$(echo "$content" | grep -o "\"$comp\":{[^}]*}" | sed -e "s/\"$comp\":{//" -e 's/}$//')
@@ -63,32 +91,27 @@ parse_json_without_jq() {
             local var_name
             var_name="ldp_${comp}_${key}"
             var_name=$(echo "$var_name" | tr 'A-Z' 'a-z')
+
             VARS_MAP["$var_name"]="$val"
             echo "[LOAD] $var_name = $val"
         done <<< "$(echo "$block" | tr ',' '\n')"
     done
 }
 
-echo
-echo "[INFO] 加载 config/*.json 配置..."
-
 for file in "$CONFIG_DIR"/*.json; do
     [ -f "$file" ] || continue
-    echo "[INFO] 解析: $file"
     parse_json_without_jq "$file"
 done
 
 if [ -d "$OUTPUT_DIR" ]; then
-  rm -rf "$OUTPUT_DIR"
+	  find "$OUTPUT_DIR" -mindepth 1 -exec rm -rf {} + 2>/dev/null || true
 fi
 mkdir -p "$OUTPUT_DIR"
 
 process_directory() {
   local src_dir="$1"
   local dest_dir="$2"
-
   mkdir -p "$dest_dir"
-
   for entry in "$src_dir"/*; do
     if [ -d "$entry" ]; then
       process_directory "$entry" "$dest_dir/$(basename "$entry")"
@@ -110,15 +133,9 @@ for comp in "${TARGET_COMPONENTS[@]}"; do
   SRC="$TEMPLATE_DIR/$comp"
   DEST="$OUTPUT_DIR/$comp"
   if [ -d "$SRC" ]; then
+    echo "[COMPONENT] 处理 $comp"
     process_directory "$SRC" "$DEST"
   else
     echo "[WARN] 模板缺失: $SRC"
   fi
-done
-
-echo
-echo "========== 完成 =========="
-echo "生成目录：$OUTPUT_DIR"
-echo "Cluster ID：$RANDOM_CLUSTER_ID"
-echo "==================================="
-
+done  
