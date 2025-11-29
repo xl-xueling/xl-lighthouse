@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   init-env:
     image: bash:5.2-alpine3.18
@@ -42,10 +40,14 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
+  
   mysql:
     image: mysql:8.0.30
-    container_name: mysql8
+    container_name: mysql
     restart: always
+    depends_on:
+      init-env:
+        condition: service_healthy
     environment:
       MYSQL_ROOT_PASSWORD: "root"
       TZ: "Asia/Shanghai"
@@ -69,13 +71,18 @@ services:
     environment:
       - TZ=Asia/Shanghai
     ports:
+      # 数据端口 (Data Port)
       - "7101:7101"
+      # 集群总线端口 (Cluster Bus Port)
       - "17101:17101"
     volumes:
       - redis_data_1:/data
+      - ./docker/plugins:/plugins  
       - ./generated/redis/conf/redis-7101.conf:/usr/local/etc/redis/redis.conf:ro
+    # 显式启动命令：启用集群、指定端口、关闭守护进程、确保日志输出到 stdout
     command: redis-server /usr/local/etc/redis/redis.conf
     healthcheck:
+      # 检查数据端口和密码
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7101", "ping"]
       interval: 5s
       timeout: 3s
@@ -91,13 +98,18 @@ services:
     environment:
       - TZ=Asia/Shanghai
     ports:
+      # 数据端口 (Data Port)
       - "7102:7102"
+      # 集群总线端口 (Cluster Bus Port)
       - "17102:17102"
     volumes:
       - redis_data_2:/data
+      - ./docker/plugins:/plugins  
       - ./generated/redis/conf/redis-7102.conf:/usr/local/etc/redis/redis.conf:ro
+    # 显式启动命令：启用集群、指定端口、关闭守护进程、确保日志输出到 stdout
     command: redis-server /usr/local/etc/redis/redis.conf
     healthcheck:
+      # 检查数据端口和密码
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7102", "ping"]
       interval: 5s
       timeout: 3s
@@ -113,13 +125,18 @@ services:
     environment:
       - TZ=Asia/Shanghai
     ports:
+      # 数据端口 (Data Port)
       - "7103:7103"
+      # 集群总线端口 (Cluster Bus Port)
       - "17103:17103"
     volumes:
       - redis_data_3:/data
+      - ./docker/plugins:/plugins  
       - ./generated/redis/conf/redis-7103.conf:/usr/local/etc/redis/redis.conf:ro
+    # 显式启动命令：启用集群、指定端口、关闭守护进程、确保日志输出到 stdout
     command: redis-server /usr/local/etc/redis/redis.conf
     healthcheck:
+      # 检查数据端口和密码
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7103", "ping"]
       interval: 5s
       timeout: 3s
@@ -135,13 +152,18 @@ services:
     environment:
       - TZ=Asia/Shanghai
     ports:
+      # 数据端口 (Data Port)
       - "7104:7104"
+      # 集群总线端口 (Cluster Bus Port)
       - "17104:17104"
     volumes:
       - redis_data_4:/data
+      - ./docker/plugins:/plugins  
       - ./generated/redis/conf/redis-7104.conf:/usr/local/etc/redis/redis.conf:ro
+    # 显式启动命令：启用集群、指定端口、关闭守护进程、确保日志输出到 stdout
     command: redis-server /usr/local/etc/redis/redis.conf
     healthcheck:
+      # 检查数据端口和密码
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7104", "ping"]
       interval: 5s
       timeout: 3s
@@ -157,13 +179,18 @@ services:
     environment:
       - TZ=Asia/Shanghai
     ports:
+      # 数据端口 (Data Port)
       - "7105:7105"
+      # 集群总线端口 (Cluster Bus Port)
       - "17105:17105"
     volumes:
       - redis_data_5:/data
+      - ./docker/plugins:/plugins  
       - ./generated/redis/conf/redis-7105.conf:/usr/local/etc/redis/redis.conf:ro
+    # 显式启动命令：启用集群、指定端口、关闭守护进程、确保日志输出到 stdout
     command: redis-server /usr/local/etc/redis/redis.conf
     healthcheck:
+      # 检查数据端口和密码
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7105", "ping"]
       interval: 5s
       timeout: 3s
@@ -179,13 +206,18 @@ services:
     environment:
       - TZ=Asia/Shanghai
     ports:
+      # 数据端口 (Data Port)
       - "7106:7106"
+      # 集群总线端口 (Cluster Bus Port)
       - "17106:17106"
     volumes:
       - redis_data_6:/data
+      - ./docker/plugins:/plugins  
       - ./generated/redis/conf/redis-7106.conf:/usr/local/etc/redis/redis.conf:ro
+    # 显式启动命令：启用集群、指定端口、关闭守护进程、确保日志输出到 stdout
     command: redis-server /usr/local/etc/redis/redis.conf
     healthcheck:
+      # 检查数据端口和密码
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7106", "ping"]
       interval: 5s
       timeout: 3s
@@ -210,6 +242,7 @@ services:
         condition: service_healthy
     volumes:
       - ./config:/config:ro
+      - ./docker/plugins:/plugins  
     command: |
       bash -c '
         REDIS_PASSWORD=$(grep "cluster_passwd" /config/standalone-deploy.json | cut -d ":" -f 2 | tr -d " \n\r\t\",}")
@@ -250,23 +283,54 @@ services:
           exit 1
         fi
       '        
-  myapp:
+  lighthouse-insights:
     build:
       context: .
-      dockerfile: ./Dockerfile
-    container_name: myapp
+      dockerfile: ./docker/Dockerfile-insights
+    container_name: lighthouse-insights
     restart: always
+    ports:
+      - "9089:9089"  
     depends_on:
+      - init-env
       - mysql
-      - redis-node-1
+      - redis-cluster-init
     environment:
       SPRING_REDIS_HOST: redis-node-1
       SPRING_REDIS_PORT: 6379
       SPRING_REDIS_PASSWORD: naJKcZEoGGeSSAad
-    ports:
-      - "8080:8080"
     volumes:
-      - ./config/application.yml:/app/config/application.yml:ro
+      - ./generated/lighthouse/conf/:/app/conf/:ro     
+
+  lighthouse-frontend:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile-frontend
+    container_name: lighthouse-frontend
+    restart: always
+    ports:
+      - "8181:80"
+    depends_on:
+      - init-env
+      - lighthouse-insights
+    volumes:
+      - ./generated/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro    
+
+  lighthouse-standalone:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile-standalone
+    container_name: lighthouse-standalone
+    restart: always
+    ports:
+      - "18101:18101"
+      - "4061:4061"  
+    depends_on:
+      - init-env
+      - mysql
+      - redis-cluster-init
+    volumes:
+      - ./generated/lighthouse/conf/:/app/conf/:ro    
 
 volumes:
   mysql_data:
@@ -277,9 +341,4 @@ volumes:
   redis_data_4:
   redis_data_5:
   redis_data_6:
-
-networks:
-  redis-cluster-network:
-    name: redis-cluster-network
-    driver: bridge
 

@@ -1,6 +1,15 @@
 #!/bin/bash
 set -e
 
+HOST_IP="$1"
+if [ -z "$HOST_IP" ]; then
+    echo "错误: 未接收到IP参数"
+    echo "用法: $0 <host_ip>"
+    exit 1
+fi
+
+echo "[INFO] 接收到宿主机IP参数: $HOST_IP"
+
 setup_log_permissions() {
     CURRENT_UID=${CURRENT_UID:-$(id -u)}
     CURRENT_GID=${CURRENT_GID:-$(id -g)}
@@ -61,15 +70,19 @@ echo "[INFO] Cluster ID: $RANDOM_CLUSTER_ID"
 TEMPLATE_DIR="../templates"
 OUTPUT_DIR="../generated"
 CONFIG_DIR="../config"
-
-TARGET_COMPONENTS=("lighthouse" "redis" "mysql" "nginx")
-
+TARGET_COMPONENTS=("lighthouse" "mysql" "nginx") 
 
 declare -A VARS_MAP=(
   ["ldp_lighthouse_cluster_id"]="$RANDOM_CLUSTER_ID"
   ["ldp_mysql_master"]="mysql"
   ["ldp_mysql_home"]="/usr"
-  ["ldp_data_dir"]="/var/lib"	
+  ["ldp_data_dir"]="/var/lib"
+  ["ldp_plugins_dir"]="/plugins"
+  ["ldp_redis_home"]="/usr"  
+  ["ldp_redis_cluster_enabled"]="yes"
+  ["ldp_host_ip"]=$HOST_IP
+  ["ldp_lighthouse_home"]="/app"
+  ["ldp_redis_cluster"]="redis-node-1:7101,redis-node-2:7102,redis-node-3:7103,redis-node-4:7104,redis-node-5:7105,redis-node-6:7106"	  
 )
 
 parse_json_without_jq() {
@@ -104,10 +117,11 @@ for file in "$CONFIG_DIR"/*.json; do
 done
 
 if [ -d "$OUTPUT_DIR" ]; then
-	  find "$OUTPUT_DIR" -mindepth 1 -exec rm -rf {} + 2>/dev/null || true
+	find "$OUTPUT_DIR" -mindepth 1 -exec rm -rf {} + 2>/dev/null || true
 fi
 mkdir -p "$OUTPUT_DIR"
 
+# 通用文件处理函数，用于非 Redis 组件
 process_directory() {
   local src_dir="$1"
   local dest_dir="$2"
@@ -119,15 +133,42 @@ process_directory() {
     elif [ -f "$entry" ]; then
       local filename=$(basename "$entry")
       tmp_content=$(cat "$entry")
-for key in "${!VARS_MAP[@]}"; do
-    value="${VARS_MAP[$key]}"
-    value_escaped=${value//&/\\&}
-    tmp_content=$(echo "$tmp_content" | sed "s|\${$key}|$value_escaped|g")
-done
-echo "$tmp_content" > "$dest_dir/$filename"	
+      # 替换所有普通变量
+      for key in "${!VARS_MAP[@]}"; do
+          value="${VARS_MAP[$key]}"
+          value_escaped=${value//&/\\&}
+          tmp_content=$(echo "$tmp_content" | sed "s|\${$key}|$value_escaped|g")
+      done
+      echo "$tmp_content" > "$dest_dir/$filename"	
     fi
   done
 }
+
+process_redis_cluster() {
+    local src_dir="$TEMPLATE_DIR/redis/conf"
+    local dest_dir="$OUTPUT_DIR/redis/conf"
+    local template_file="$src_dir/redis.conf"
+    if [ ! -f "$template_file" ]; then
+        echo "[WARN] Redis 模板文件缺失: $template_file"
+        return 1
+    fi
+    mkdir -p "$dest_dir"
+    for i in {1..6}; do
+        local port_base=7100
+        local port=$((port_base + i))
+        local output_filename="redis-$port.conf"
+        local tmp_content=$(cat "$template_file") 
+        for key in "${!VARS_MAP[@]}"; do
+            value="${VARS_MAP[$key]}"
+            value_escaped=${value//&/\\&}
+            tmp_content=$(echo "$tmp_content" | sed "s|\${$key}|$value_escaped|g")
+        done
+        tmp_content=$(echo "$tmp_content" | sed "s|\${port}|$port|g")
+        echo "$tmp_content" > "$dest_dir/$output_filename"
+        echo "[GENERATE] 生成 $output_filename (Port: $port)"
+    done
+}
+
 
 for comp in "${TARGET_COMPONENTS[@]}"; do
   SRC="$TEMPLATE_DIR/$comp"
@@ -138,4 +179,11 @@ for comp in "${TARGET_COMPONENTS[@]}"; do
   else
     echo "[WARN] 模板缺失: $SRC"
   fi
-done  
+done
+
+
+process_redis_cluster
+
+mv $OUTPUT_DIR/lighthouse/conf/ldp-site-standalone.xml $OUTPUT_DIR/lighthouse/conf/ldp-site.xml
+
+echo "[INFO] 配置生成完毕。"
