@@ -11,13 +11,32 @@ services:
       - ./config:/config
       - ./generated:/generated
     restart: "no"
+    network_mode: "host"   
     command: |
-      bash -c "
+      bash -c '
+        PRIMARY_INTERFACE=$(ip route | awk "/default/ {print \$5}" | head -n 1)
+        if [[ -z "$$PRIMARY_INTERFACE" ]]; then
+          echo "无法识别主网卡."
+          exit 1
+        fi
+        HOST_IP=$(ip -4 addr show "$$PRIMARY_INTERFACE" \
+          | awk "/inet / {print \$2}" \
+          | cut -d"/" -f1 \
+          | head -n 1)
+        if [[ -z "$$HOST_IP" ]]; then
+          echo "无法获取内网 IP."
+          exit 1
+        fi
+        echo "内网IP:$${HOST_IP}"
         ls -la /scripts/ &&
         chmod +x /scripts/init.sh &&
-        bash /scripts/init.sh &&
+        bash /scripts/init.sh $${HOST_IP} &&
         touch /generated/.init_complete
-      "
+         # 然后保持容器运行，不执行 init.sh
+        echo "=== 进入调试模式 ==="
+        echo "容器将保持运行，请使用 docker exec 进入检查"
+        sleep 36000
+      '
     healthcheck:
       test: ["CMD", "test", "-f", "/generated/.init_complete"]
       interval: 5s
@@ -44,128 +63,134 @@ services:
     image: redis:6.2.6
     container_name: redis-node-1
     restart: always
+    depends_on:
+      init-env:
+        condition: service_healthy
     environment:
       - TZ=Asia/Shanghai
     ports:
-      - "6379:6379"
-      - "16379:16379"
+      - "7101:7101"
+      - "17101:17101"
     volumes:
       - redis_data_1:/data
-      - ./redis/conf/redis-6379.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./generated/redis/conf/redis-7101.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
-    networks:
-      - redis-cluster-network
     healthcheck:
-      test: ["CMD", "redis-cli", "-p", "6379", "-a", "naJKcZEoGGeSSAad", "ping"]
+      test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7101", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5
+      retries: 5        
 
   redis-node-2:
     image: redis:6.2.6
     container_name: redis-node-2
     restart: always
+    depends_on:
+      init-env:
+        condition: service_healthy
     environment:
       - TZ=Asia/Shanghai
     ports:
-      - "6380:6380"
-      - "16380:16380"
+      - "7102:7102"
+      - "17102:17102"
     volumes:
       - redis_data_2:/data
-      - ./redis/conf/redis-6380.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./generated/redis/conf/redis-7102.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
-    networks:
-      - redis-cluster-network
     healthcheck:
-      test: ["CMD", "redis-cli", "-p", "6380", "-a", "naJKcZEoGGeSSAad", "ping"]
+      test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7102", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5
+      retries: 5  
 
   redis-node-3:
     image: redis:6.2.6
     container_name: redis-node-3
     restart: always
+    depends_on:
+      init-env:
+        condition: service_healthy
     environment:
       - TZ=Asia/Shanghai
     ports:
-      - "6381:6381"
-      - "16381:16381"
+      - "7103:7103"
+      - "17103:17103"
     volumes:
       - redis_data_3:/data
-      - ./redis/conf/redis-6381.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./generated/redis/conf/redis-7103.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
-    networks:
-      - redis-cluster-network
     healthcheck:
-      test: ["CMD", "redis-cli", "-p", "6381", "-a", "naJKcZEoGGeSSAad", "ping"]
+      test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7103", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5
+      retries: 5  
 
   redis-node-4:
     image: redis:6.2.6
     container_name: redis-node-4
     restart: always
+    depends_on:
+      init-env:
+        condition: service_healthy
     environment:
       - TZ=Asia/Shanghai
     ports:
-      - "6382:6382"
-      - "16382:16382"
+      - "7104:7104"
+      - "17104:17104"
     volumes:
       - redis_data_4:/data
-      - ./redis/conf/redis-6382.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./generated/redis/conf/redis-7104.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
-    networks:
-      - redis-cluster-network
     healthcheck:
-      test: ["CMD", "redis-cli", "-p", "6382", "-a", "naJKcZEoGGeSSAad", "ping"]
+      test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7104", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5
-
+      retries: 5  
+      
   redis-node-5:
     image: redis:6.2.6
     container_name: redis-node-5
     restart: always
+    depends_on:
+      init-env:
+        condition: service_healthy
     environment:
       - TZ=Asia/Shanghai
     ports:
-      - "6383:6383"
-      - "16383:16383"
+      - "7105:7105"
+      - "17105:17105"
     volumes:
       - redis_data_5:/data
-      - ./redis/conf/redis-6383.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./generated/redis/conf/redis-7105.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
-    networks:
-      - redis-cluster-network
     healthcheck:
-      test: ["CMD", "redis-cli", "-p", "6383", "-a", "naJKcZEoGGeSSAad", "ping"]
+      test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7105", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5
-
+      retries: 5  
+      
   redis-node-6:
     image: redis:6.2.6
     container_name: redis-node-6
     restart: always
+    depends_on:
+      init-env:
+        condition: service_healthy
     environment:
       - TZ=Asia/Shanghai
     ports:
-      - "6384:6384"
-      - "16384:16384"
+      - "7106:7106"
+      - "17106:17106"
     volumes:
       - redis_data_6:/data
-      - ./redis/conf/redis-6384.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./generated/redis/conf/redis-7106.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
-    networks:
-      - redis-cluster-network
     healthcheck:
-      test: ["CMD", "redis-cli", "-p", "6384", "-a", "naJKcZEoGGeSSAad", "ping"]
+      test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7106", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5
-
+      retries: 5                  
+  
   redis-cluster-init:
     image: redis:6.2.6
     container_name: redis-cluster-init
@@ -183,31 +208,37 @@ services:
         condition: service_healthy
       redis-node-6:
         condition: service_healthy
-    network_mode: "host"
+    volumes:
+      - ./config:/config:ro
     command: |
       bash -c '
-        REDIS_PASSWORD="naJKcZEoGGeSSAad"
-        HOST_IP="10.206.6.27"
-
-        echo "等待 Redis 节点完全启动..."
+        REDIS_PASSWORD=$(grep "cluster_passwd" /config/standalone-deploy.json | cut -d ":" -f 2 | tr -d " \n\r\t\",}")
+        HOST_IP="redis-node-1"
+        HOST_NAME="redis-node-1"
+        echo "等待 Redis 节点完全启动,password:$$REDIS_PASSWORD"
         sleep 10
-
+        IP_NODE1=$$(getent hosts redis-node-1 | awk "{print \$$1}")
+        IP_NODE2=$$(getent hosts redis-node-2 | awk "{print \$$1}")
+        IP_NODE3=$$(getent hosts redis-node-3 | awk "{print \$$1}")
+        IP_NODE4=$$(getent hosts redis-node-4 | awk "{print \$$1}")
+        IP_NODE5=$$(getent hosts redis-node-5 | awk "{print \$$1}")
+        IP_NODE6=$$(getent hosts redis-node-6 | awk "{print \$$1}")
         echo "检查节点状态..."
-        redis-cli -h $$HOST_IP -p 6379 -a "$$REDIS_PASSWORD" ping || exit 1
-        redis-cli -h $$HOST_IP -p 6380 -a "$$REDIS_PASSWORD" ping || exit 1
-        redis-cli -h $$HOST_IP -p 6381 -a "$$REDIS_PASSWORD" ping || exit 1
-        redis-cli -h $$HOST_IP -p 6382 -a "$$REDIS_PASSWORD" ping || exit 1
-        redis-cli -h $$HOST_IP -p 6383 -a "$$REDIS_PASSWORD" ping || exit 1
-        redis-cli -h $$HOST_IP -p 6384 -a "$$REDIS_PASSWORD" ping || exit 1
+        redis-cli -h $$IP_NODE1 -p 7101 -a "$$REDIS_PASSWORD" ping || exit 1
+        redis-cli -h $$IP_NODE2 -p 7102 -a "$$REDIS_PASSWORD" ping || exit 1
+        redis-cli -h $$IP_NODE3 -p 7103 -a "$$REDIS_PASSWORD" ping || exit 1
+        redis-cli -h $$IP_NODE4 -p 7104 -a "$$REDIS_PASSWORD" ping || exit 1
+        redis-cli -h $$IP_NODE5 -p 7105 -a "$$REDIS_PASSWORD" ping || exit 1
+        redis-cli -h $$IP_NODE6 -p 7106 -a "$$REDIS_PASSWORD" ping || exit 1
 
         echo "所有节点状态正常，开始创建 Redis 集群 (3主3从)..."
         echo "yes" | redis-cli -a "$$REDIS_PASSWORD" --cluster create \
-          $$HOST_IP:6379 \
-          $$HOST_IP:6380 \
-          $$HOST_IP:6381 \
-          $$HOST_IP:6382 \
-          $$HOST_IP:6383 \
-          $$HOST_IP:6384 \
+          $$IP_NODE1:7101 \
+          $$IP_NODE2:7102 \
+          $$IP_NODE3:7103 \
+          $$IP_NODE4:7104 \
+          $$IP_NODE5:7105 \
+          $$IP_NODE6:7106 \
           --cluster-replicas 1
 
         if [ $$? -eq 0 ]; then
@@ -218,8 +249,7 @@ services:
           echo "集群创建失败，请检查日志"
           exit 1
         fi
-      '
-
+      '        
   myapp:
     build:
       context: .
