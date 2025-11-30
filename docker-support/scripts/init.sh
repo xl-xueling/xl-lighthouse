@@ -3,30 +3,21 @@ set -e
 
 get_host_ip() {
     local host_ip=""
-
-    # 方法1: 使用ip命令（主要方法）
     if command -v ip >/dev/null 2>&1; then
         local primary_interface=$(ip route | awk '/default/ {print $5}' | head -n1)
         if [ -n "$primary_interface" ]; then
             host_ip=$(ip -4 addr show "$primary_interface" | awk '/inet / {print $2}' | cut -d'/' -f1 | head -n1)
         fi
     fi
-
-    # 方法2: 使用ifconfig（备用）
     if [ -z "$host_ip" ] && command -v ifconfig >/dev/null 2>&1; then
         host_ip=$(ifconfig | awk '/inet / {print $2}' | grep -v '127.0.0.1' | head -n1)
     fi
-
-    # 方法3: 使用hostname（最后手段）
     if [ -z "$host_ip" ]; then
         host_ip=$(hostname -I 2>/dev/null | awk '{print $1}')
     fi
-
-    # 方法4: 检查环境变量（Docker环境）
     if [ -z "$host_ip" ]; then
         host_ip=$(env | grep -E '(HOST_IP|HOSTIP|HOST_ADDR)' | cut -d'=' -f2 | head -n1)
     fi
-
     echo "$host_ip"
 }
 
@@ -153,7 +144,6 @@ if [ -d "$OUTPUT_DIR" ]; then
 fi
 mkdir -p "$OUTPUT_DIR"
 
-# 通用文件处理函数，用于非 Redis 组件
 process_directory() {
   local src_dir="$1"
   local dest_dir="$2"
