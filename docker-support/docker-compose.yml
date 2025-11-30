@@ -1,38 +1,27 @@
+x-common-env: &common-env
+  TZ: "Asia/Shanghai"
+  LANG: en_US.UTF-8
+  LC_ALL: en_US.UTF-8
+
 services:
   init-env:
     image: bash:5.2-alpine3.18
     container_name: init-env
     volumes:
-      - ./logs:/logs
       - ./scripts:/scripts
       - ./templates:/templates
       - ./config:/config
       - ./generated:/generated
+      - ./logs:/logs
     restart: "no"
-    network_mode: "host"   
+    network_mode: "host"
     command: |
       bash -c '
-        PRIMARY_INTERFACE=$(ip route | awk "/default/ {print \$5}" | head -n 1)
-        if [[ -z "$$PRIMARY_INTERFACE" ]]; then
-          echo "无法识别主网卡."
-          exit 1
-        fi
-        HOST_IP=$(ip -4 addr show "$$PRIMARY_INTERFACE" \
-          | awk "/inet / {print \$2}" \
-          | cut -d"/" -f1 \
-          | head -n 1)
-        if [[ -z "$$HOST_IP" ]]; then
-          echo "无法获取内网 IP."
-          exit 1
-        fi
-        echo "内网IP:$${HOST_IP}"
         ls -la /scripts/ &&
         chmod +x /scripts/init.sh &&
-        bash /scripts/init.sh $${HOST_IP} &&
+        bash /scripts/init.sh &&
         touch /generated/.init_complete
-         # 然后保持容器运行，不执行 init.sh
-        echo "=== 进入调试模式 ==="
-        echo "容器将保持运行，请使用 docker exec 进入检查"
+        echo "容器将保持运行"
         sleep 36000
       '
     healthcheck:
@@ -40,23 +29,23 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
-  
+
   mysql:
     image: mysql:8.0.30
     container_name: mysql
     restart: always
+    user: "1001:1001"
     depends_on:
       init-env:
         condition: service_healthy
     environment:
+      <<: *common-env
       MYSQL_ROOT_PASSWORD: "root"
-      TZ: "Asia/Shanghai"
     ports:
       - "3906:3906"
     volumes:
       - mysql_data:/var/lib/mysql
-      - mysql_home:/usr
-      - ./logs/mysql:/usr/log
+      - ./logs/mysql:/var/log/mysql
       - ./generated/mysql/support-files/my.cnf:/etc/mysql/conf.d/my.cnf:ro
       - ./generated/lighthouse/conf/ldp_docker.sql:/docker-entrypoint-initdb.d/10-ldp_docker.sql:ro
       - ./generated/lighthouse/conf/ldp_db.sql:/docker-entrypoint-initdb.d/20-ldp_db.sql:ro
