@@ -1,0 +1,16 @@
+FROM redis:6.2.6
+
+RUN groupadd -g 1001 lighthouse \
+    && useradd -u 1001 -g 1001 -m -s /bin/bash lighthouse
+
+RUN mkdir -p /var/lib/redis/data && \
+    chown -R 1001:1001 /var/lib/redis/data && \
+    chmod -R 755 /var/lib/redis/data
+
+RUN mkdir -p /usr/local/lib/redis/modules /usr/local/etc/redis/default-conf
+
+COPY ./docker/plugins/redis-roaring/build/libredis-roaring.so /usr/local/lib/redis/modules/
+
+COPY ./generated/redis/conf/*.conf /usr/local/etc/redis/default-conf/
+
+CMD ["redis-server"]

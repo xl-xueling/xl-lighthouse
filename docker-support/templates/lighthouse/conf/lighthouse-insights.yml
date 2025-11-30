@@ -1,0 +1,32 @@
+server:
+  port: 9089
+  servlet:
+    context-path: /api/v1
+    session:
+      timeout: 18000
+  tomcat:
+    uri-encoding: utf-8
+spring:
+  messages:
+    basename: i18n/messages
+  mvc:
+    locale-resolver: fixed
+    locale: en_US
+    static-path-pattern: /static/**
+    hiddenmethod:
+      filter:
+        enabled: true
+  main:
+    allow-circular-references: true
+  devtools:
+    restart:
+      enabled: false
+  thymeleaf:
+    cache: false
+  cache:
+    redis:
+      time-to-live: 86400000
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations:
+    - classpath*:mybatis/mapper/*.xml

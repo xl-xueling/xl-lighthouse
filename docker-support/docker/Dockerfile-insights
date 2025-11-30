@@ -1,0 +1,28 @@
+FROM eclipse-temurin:11-jre
+
+RUN groupadd -g 1001 lighthouse \
+    && useradd -u 1001 -g 1001 -m -s /bin/bash lighthouse
+
+RUN mkdir -p /app/lib /app/conf /app/logs \
+    && chown -R lighthouse:lighthouse /app \
+    && chmod -R 755 /app
+
+USER lighthouse
+
+WORKDIR /app
+
+ENV LDP_HOME=/app
+
+COPY --chown=lighthouse:lighthouse docker/lib/ ./temp/
+
+RUN find ./temp -name "lighthouse-*insights*.jar" -exec mv {} app.jar \; \
+    && find ./temp -name "*.jar" -exec mv {} ./lib/ \; \
+    && rm -rf ./temp
+
+CMD ["java", \
+    "-Dloader.path=/app/lib", \
+    "-Duser.timezone=Asia/Shanghai", \
+    "-Dfile.encoding=UTF-8", \
+    "-Dlog4j.configurationFile=/app/conf/log4j2-insights.xml", \
+    "-Dspring.config.location=file:/app/conf/lighthouse-insights.yml", \
+    "-jar", "app.jar"]
