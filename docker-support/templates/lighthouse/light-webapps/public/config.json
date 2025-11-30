@@ -1,4 +1,0 @@
-{
-    "REACT_APP_BASE_URL":"http://${ldp_lighthouse_nodeip}:9089",
-    "AXIOS_TIMEOUT":60000
-}
