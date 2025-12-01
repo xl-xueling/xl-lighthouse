@@ -2,7 +2,7 @@ x-common-env: &common-env
   TZ: "Asia/Shanghai"
   LANG: en_US.UTF-8
   LC_ALL: en_US.UTF-8
-
+    
 services:
   setup-env:
     image: bash:5.2-alpine3.18
@@ -11,10 +11,10 @@ services:
       - ./templates:/templates
       - ./config:/config
       - ./generated:/generated
-      - ./logs:/logs
+      - ./logs:/logs  
     restart: "no"
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_setup-env
-    network_mode: "host"
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_setup-env  
+    network_mode: "host"   
     command: |
       bash -c '
         chmod +x /scripts/init.sh &&
@@ -28,12 +28,12 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
-
+  
   mysql:
     image: mysql:8.0.30
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_mysql
-    user: "1001:1001"
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_mysql  
+    user: "1001:1001"  
     depends_on:
       setup-env:
         condition: service_healthy
@@ -48,6 +48,9 @@ services:
       - ./generated/mysql/support-files/my.cnf:/etc/mysql/conf.d/my.cnf:ro
       - ./generated/lighthouse/conf/ldp_docker.sql:/docker-entrypoint-initdb.d/10-ldp_docker.sql:ro
       - ./generated/lighthouse/conf/ldp_db.sql:/docker-entrypoint-initdb.d/20-ldp_db.sql:ro
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.2
 
   redis-node-1:
     build:
@@ -58,12 +61,12 @@ services:
       - "17101:17101"
     volumes:
       - redis_data_1:/var/lib/redis/data
-      - ./logs/redis:/var/log/redis
+      - ./logs/redis:/var/log/redis   
       - ./generated/redis/conf/redis-7101.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-1
-    user: "1001:1001"
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-1  
+    user: "1001:1001"      
     depends_on:
       setup-env:
         condition: service_healthy
@@ -74,7 +77,10 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
-
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.3
+  
   redis-node-2:
     build:
       context: .
@@ -88,7 +94,7 @@ services:
       - ./generated/redis/conf/redis-7102.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-2
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-2  
     user: "1001:1001"
     depends_on:
       setup-env:
@@ -100,6 +106,9 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.4        
 
   redis-node-3:
     build:
@@ -114,7 +123,7 @@ services:
       - ./generated/redis/conf/redis-7103.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-3
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-3  
     user: "1001:1001"
     depends_on:
       setup-env:
@@ -126,6 +135,9 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.5
 
   redis-node-4:
     build:
@@ -140,7 +152,7 @@ services:
       - ./generated/redis/conf/redis-7104.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-4
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-4  
     user: "1001:1001"
     depends_on:
       setup-env:
@@ -152,6 +164,9 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.6
 
   redis-node-5:
     build:
@@ -166,7 +181,7 @@ services:
       - ./generated/redis/conf/redis-7105.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-5
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-5  
     user: "1001:1001"
     depends_on:
       setup-env:
@@ -178,6 +193,9 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.7
 
   redis-node-6:
     build:
@@ -192,7 +210,7 @@ services:
       - ./generated/redis/conf/redis-7106.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-6
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-6  
     user: "1001:1001"
     depends_on:
       setup-env:
@@ -203,13 +221,16 @@ services:
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7106", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5
+      retries: 5        
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.8
 
   redis-cluster-init:
     image: redis:6.2.6
     restart: "no"
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-cluster-init
-    user: "1001:1001"
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-cluster-init  
+    user: "1001:1001"   
     depends_on:
       redis-node-1:
         condition: service_healthy
@@ -225,7 +246,9 @@ services:
         condition: service_healthy
     volumes:
       - ./config:/config:ro
-
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.9
     healthcheck:
       test: ["CMD", "sh", "-c", "test -f /tmp/cluster-ready && redis-cli -h redis-node-1 -p 7101 -a $(grep 'cluster_passwd' /config/standalone-deploy.json | cut -d':' -f2 | tr -d ' \",}') cluster info | grep -q 'cluster_state:ok'"]
       interval: 5s
@@ -236,7 +259,7 @@ services:
       bash -c '
         set -e
         REDIS_PASSWORD=$$(grep "cluster_passwd" /config/standalone-deploy.json | cut -d ":" -f 2 | tr -d " \n\r\t\",}")
-        sleep 10
+        sleep 15
         IP_NODE1=$$(getent hosts redis-node-1 | awk "{print \$$1}")
         IP_NODE2=$$(getent hosts redis-node-2 | awk "{print \$$1}")
         IP_NODE3=$$(getent hosts redis-node-3 | awk "{print \$$1}")
@@ -247,6 +270,7 @@ services:
           echo "Redis集群已存在"
           touch /tmp/cluster-ready
         else
+          # 创建集群
           echo "开始创建Redis集群..."
           echo "yes" | redis-cli -a "$$REDIS_PASSWORD" --cluster create \
             $$IP_NODE1:7101 \
@@ -259,14 +283,14 @@ services:
           echo "Redis集群创建完成"
           touch /tmp/cluster-ready
         fi
-
-        for i in $$(seq 1 36); do
+      
+        for i in $$(seq 1 90); do
           if redis-cli -h $$IP_NODE1 -p 7101 -a "$$REDIS_PASSWORD" cluster info 2>/dev/null | grep -q "cluster_state:ok"; then
             echo "状态检查通过，容器将在5秒后退出"
-            sleep 5
+            sleep 10
             exit 0
           fi
-          sleep 5
+          sleep 2
         done
         echo "状态检查超时，容器退出"
         exit 1
@@ -276,10 +300,10 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile-insights
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_insights
-    user: "1001:1001"
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_insights  
+    user: "1001:1001"  
     ports:
-      - "9089:9089"
+      - "9089:9089"  
     depends_on:
       setup-env:
         condition: service_healthy
@@ -289,14 +313,17 @@ services:
         condition: service_healthy
     volumes:
       - ./generated/lighthouse/conf/:/app/conf/:ro
-      - ./logs/lighthouse-insights:/app/logs/lighthouse-insights
+      - ./logs/lighthouse-insights:/app/logs/lighthouse-insights     
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.21
 
   frontend:
     build:
       context: .
       dockerfile: ./docker/Dockerfile-frontend
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_frontend
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_frontend  
     user: "1001:1001"
     ports:
       - "8181:80"
@@ -309,18 +336,21 @@ services:
         condition: service_healthy
     volumes:
       - ./generated/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./logs/nginx:/var/log/nginx
+      - ./logs/nginx:/var/log/nginx    
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.22
 
   standalone:
     build:
       context: .
       dockerfile: ./docker/Dockerfile-standalone
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_standalone
-    user: "1001:1001"
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_standalone  
+    user: "1001:1001"  
     ports:
       - "18101:18101"
-      - "4061:4061"
+      - "4061:4061"  
     depends_on:
       setup-env:
         condition: service_healthy
@@ -330,11 +360,14 @@ services:
         condition: service_healthy
     volumes:
       - ./generated/lighthouse/conf/:/app/conf/:ro
-      - ./logs/lighthouse-standalone:/app/logs/lighthouse-standalone
+      - ./logs/lighthouse-standalone:/app/logs/lighthouse-standalone    
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.23
 
 volumes:
   mysql_data:
-  mysql_home:
+  mysql_home:  
   redis_data_1:
   redis_data_2:
   redis_data_3:
@@ -342,3 +375,10 @@ volumes:
   redis_data_5:
   redis_data_6:
 
+networks:
+  private_net: 
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.183.0.0/24
+          gateway: 10.183.0.1   
