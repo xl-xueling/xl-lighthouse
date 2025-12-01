@@ -76,7 +76,7 @@ services:
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7101", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5
+      retries: 20
     networks:
       private_net:
         ipv4_address: 10.183.0.3
@@ -105,7 +105,7 @@ services:
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7102", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5
+      retries: 20
     networks:
       private_net:
         ipv4_address: 10.183.0.4        
@@ -134,7 +134,7 @@ services:
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7103", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5
+      retries: 20
     networks:
       private_net:
         ipv4_address: 10.183.0.5
@@ -163,7 +163,7 @@ services:
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7104", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5
+      retries: 20
     networks:
       private_net:
         ipv4_address: 10.183.0.6
@@ -192,7 +192,7 @@ services:
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7105", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5
+      retries: 20
     networks:
       private_net:
         ipv4_address: 10.183.0.7
@@ -221,7 +221,7 @@ services:
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7106", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 5        
+      retries: 20        
     networks:
       private_net:
         ipv4_address: 10.183.0.8
@@ -317,7 +317,12 @@ services:
     networks:
       private_net:
         ipv4_address: 10.183.0.21
-
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/9089'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s          
   frontend:
     build:
       context: .
@@ -340,6 +345,12 @@ services:
     networks:
       private_net:
         ipv4_address: 10.183.0.22
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/80'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s          
 
   standalone:
     build:
@@ -361,10 +372,35 @@ services:
     volumes:
       - ./generated/lighthouse/conf/:/app/conf/:ro
       - ./logs/lighthouse-standalone:/app/logs/lighthouse-standalone    
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/4061'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     networks:
       private_net:
         ipv4_address: 10.183.0.23
-
+  
+  verifier:
+    image: busybox:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_verifier
+    restart: "no"
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.24  
+    depends_on:
+      standalone:
+        condition: service_healthy
+      insights:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+    command: |
+      sh -c '
+        echo "Start Complete, All services are healthy."
+        touch /tmp/start-complete
+      '
 volumes:
   mysql_data:
   mysql_home:  
