@@ -13,10 +13,8 @@ service_status() {
     fi
 }
 
-INIT_STATUS=$(service_status "demo_init")
 START_STATUS=$(service_status "demo_start")
 
-echo "demo_init 状态: $INIT_STATUS"
 echo "demo_start 状态: $START_STATUS"
 
 if [ "$START_STATUS" = "running" ]; then
