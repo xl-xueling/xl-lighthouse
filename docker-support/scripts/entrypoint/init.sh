@@ -3,21 +3,26 @@ set -e
 
 get_host_ip() {
     local host_ip=""
+
     if command -v ip >/dev/null 2>&1; then
         local primary_interface=$(ip route | awk '/default/ {print $5}' | head -n1)
         if [ -n "$primary_interface" ]; then
             host_ip=$(ip -4 addr show "$primary_interface" | awk '/inet / {print $2}' | cut -d'/' -f1 | head -n1)
         fi
     fi
+
     if [ -z "$host_ip" ] && command -v ifconfig >/dev/null 2>&1; then
         host_ip=$(ifconfig | awk '/inet / {print $2}' | grep -v '127.0.0.1' | head -n1)
     fi
+
     if [ -z "$host_ip" ]; then
         host_ip=$(hostname -I 2>/dev/null | awk '{print $1}')
     fi
+
     if [ -z "$host_ip" ]; then
         host_ip=$(env | grep -E '(HOST_IP|HOSTIP|HOST_ADDR)' | cut -d'=' -f2 | head -n1)
     fi
+
     echo "$host_ip"
 }
 
@@ -34,11 +39,12 @@ setup_log_permissions() {
     CURRENT_UID=${CURRENT_UID:-$(id -u)}
     CURRENT_GID=${CURRENT_GID:-$(id -g)}
     LOG_DIRS=(
-        "../logs/mysql"
-        "../logs/redis" 
-        "../logs/nginx"
-        "../logs/lighthouse-insights"
-        "../logs/lighthouse-standalone"
+        "/logs/mysql"
+        "/logs/redis" 
+        "/logs/nginx"
+        "/logs/lighthouse-insights"
+        "/logs/lighthouse-standalone"
+	"/logs/lighthouse-demo"
     )
     for host_dir in "${LOG_DIRS[@]}"; do
         mkdir -p "$host_dir"
@@ -99,9 +105,9 @@ else
 fi
 echo "[INFO] Cluster ID: $RANDOM_CLUSTER_ID"
 
-TEMPLATE_DIR="../templates"
-OUTPUT_DIR="../generated"
-CONFIG_DIR="../config"
+TEMPLATE_DIR="/templates"
+OUTPUT_DIR="/generated"
+CONFIG_DIR="/config"
 TARGET_COMPONENTS=("lighthouse" "mysql" "nginx") 
 
 declare -A VARS_MAP=(
@@ -113,8 +119,8 @@ declare -A VARS_MAP=(
   ["ldp_host_ip"]=$HOST_IP
   ["ldp_lighthouse_home"]="/app"
   ["ldp_redis_cluster"]="redis-node-1:7101,redis-node-2:7102,redis-node-3:7103,redis-node-4:7104,redis-node-5:7105,redis-node-6:7106"	  
-  ["ldp_lighthouse_ice_locators"]="lighthouse-standalone:4061"
-  ["ldp_lighthouse_ice_nodes_ips"]="lighthouse-standalone"
+  ["ldp_lighthouse_ice_locators"]="standalone:4061"
+  ["ldp_lighthouse_ice_nodes_ips"]="standalone"
 )
 
 parse_json_without_jq() {
