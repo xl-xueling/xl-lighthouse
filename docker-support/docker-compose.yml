@@ -17,8 +17,8 @@ services:
     network_mode: "host"   
     command: |
       bash -c '
-        chmod +x /scripts/init.sh &&
-        bash /scripts/init.sh &&
+        chmod +x /scripts/entrypoint/init.sh &&
+        bash /scripts/entrypoint/init.sh &&
         touch /generated/.init_complete
         echo "容器将保持运行"
         sleep 36000
@@ -48,6 +48,12 @@ services:
       - ./generated/mysql/support-files/my.cnf:/etc/mysql/conf.d/my.cnf:ro
       - ./generated/lighthouse/conf/ldp_docker.sql:/docker-entrypoint-initdb.d/10-ldp_docker.sql:ro
       - ./generated/lighthouse/conf/ldp_db.sql:/docker-entrypoint-initdb.d/20-ldp_db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/3906'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     networks:
       private_net:
         ipv4_address: 10.183.0.2
@@ -301,14 +307,16 @@ services:
       dockerfile: ./docker/Dockerfile-insights
     restart: always
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_insights  
-    user: "1001:1001"  
+    user: "1001:1001"
+    environment:
+      <<: *common-env
     ports:
       - "9089:9089"  
     depends_on:
       setup-env:
         condition: service_healthy
       mysql:
-        condition: service_started
+        condition: service_healthy
       redis-cluster-init:
         condition: service_healthy
     volumes:
@@ -330,13 +338,15 @@ services:
     restart: always
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_frontend  
     user: "1001:1001"
+    environment:
+      <<: *common-env  
     ports:
       - "8181:80"
     depends_on:
       setup-env:
         condition: service_healthy
       mysql:
-        condition: service_started
+        condition: service_healthy
       redis-cluster-init:
         condition: service_healthy
     volumes:
@@ -358,7 +368,9 @@ services:
       dockerfile: ./docker/Dockerfile-standalone
     restart: always
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_standalone  
-    user: "1001:1001"  
+    user: "1001:1001"
+    environment:
+      <<: *common-env  
     ports:
       - "18101:18101"
       - "4061:4061"  
@@ -366,7 +378,7 @@ services:
       setup-env:
         condition: service_healthy
       mysql:
-        condition: service_started
+        condition: service_healthy
       redis-cluster-init:
         condition: service_healthy
     volumes:
@@ -381,20 +393,77 @@ services:
     networks:
       private_net:
         ipv4_address: 10.183.0.23
-  
+ 
+  demo_init:
+    profiles: 
+      - demo
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile-demoInit
+    restart: "no"
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_demo_init
+    user: "1001:1001"
+    environment:
+      <<: *common-env  
+    depends_on:
+      insights:
+        condition: service_healthy
+      standalone:
+        condition: service_healthy
+    volumes:
+      - ./generated/lighthouse/conf/:/app/conf/:ro
+      - ./logs/lighthouse-demo:/app/logs/lighthouse-demo
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.24  
+    healthcheck:
+      test: ["CMD", "test", "-f", "/tmp/init_complete"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  demo_start:
+    profiles: 
+      - demo
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile-demoStart
+    restart: "no"
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_demo_start
+    user: "1001:1001"
+    environment:
+      <<: *common-env
+    depends_on:
+      insights:
+        condition: service_healthy
+      standalone:
+        condition: service_healthy
+      demo_init:
+        condition: service_completed_successfully
+    volumes:
+      - ./generated/lighthouse/conf/:/app/conf/:ro
+      - ./logs/lighthouse-demo:/app/logs/lighthouse-demo
+    networks:
+      private_net:
+        ipv4_address: 10.183.0.25         
+          
   verifier:
     image: busybox:latest
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_verifier
     restart: "no"
     networks:
       private_net:
-        ipv4_address: 10.183.0.24  
+        ipv4_address: 10.183.0.30  
     depends_on:
+      redis-cluster-init:
+        condition: service_healthy
       standalone:
         condition: service_healthy
       insights:
         condition: service_healthy
       frontend:
+        condition: service_healthy
+      setup-env:
         condition: service_healthy
     command: |
       sh -c '
