@@ -3,6 +3,7 @@ FROM nginx:1.25
 RUN groupadd -g 1001 lighthouse \
     && useradd -u 1001 -g 1001 -m -s /bin/bash lighthouse
 
+
 RUN mkdir -p /var/cache/nginx/client_temp \
     && mkdir -p /var/run/nginx \
     && chown -R lighthouse:lighthouse /var/cache/nginx /var/run/nginx \

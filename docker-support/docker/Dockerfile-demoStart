@@ -1,5 +1,7 @@
 FROM eclipse-temurin:11-jre
 
+ENV TZ=${TZ}
+
 RUN groupadd -g 1001 lighthouse \
     && useradd -u 1001 -g 1001 -m -s /bin/bash lighthouse
 
@@ -7,31 +9,27 @@ RUN mkdir -p /app/lib /app/conf /app/logs \
     && chown -R lighthouse:lighthouse /app \
     && chmod -R 755 /app
 
-ENV TZ=${TZ}
-
-RUN echo "Timezone: $TZ" \
-    && echo "Language: $LANG" \
-    && echo "LC_ALL: $LC_ALL"
-
 USER lighthouse
 
 WORKDIR /app
+
+ENV LDP_PARAM 100
 
 ENV LDP_HOME=/app
 
 COPY --chown=lighthouse:lighthouse docker/lib/ ./temp/
 
-RUN find ./temp -name "lighthouse-*insights*.jar" -exec mv {} app.jar \; \
+RUN find ./temp -name "lighthouse-*test*.jar" -exec mv {} app.jar \; \
     && find ./temp -name "*.jar" -exec mv {} ./lib/ \; \
     && rm -rf ./temp
 
-CMD ["bash", "-c", "\
-    java \
-    -Dloader.path=/app/lib \
+
+CMD java \
+    -XX:+UseG1GC \
     -Duser.timezone=${TZ} \
     -Dfile.encoding=UTF-8 \
-    -Dlog4j.configurationFile=/app/conf/log4j2-insights.xml \
-    -Dspring.config.location=file:/app/conf/lighthouse-insights.yml \
-    -jar app.jar \
-    "]
-
+    -Dlog4j.configurationFile=/app/conf/log4j2-demo.xml \
+    -cp /app/lib/*:/app/app.jar \
+    com.dtstep.lighthouse.test.LDPFlowTestInstance \
+    $LDP_PARAM \
+    2>&1 | tee -a /app/logs/lighthouse-demo/system_console.log

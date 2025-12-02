@@ -1,0 +1,32 @@
+FROM eclipse-temurin:11-jre
+
+ENV TZ=${TZ}
+
+RUN groupadd -g 1001 lighthouse \
+    && useradd -u 1001 -g 1001 -m -s /bin/bash lighthouse
+
+RUN mkdir -p /app/lib /app/conf /app/logs /tmp \
+    && chown -R lighthouse:lighthouse /app /tmp \
+    && chmod -R 755 /app
+
+USER lighthouse
+
+WORKDIR /app
+
+ENV LDP_HOME=/app
+
+COPY --chown=lighthouse:lighthouse docker/lib/ ./temp/
+
+RUN find ./temp -name "lighthouse-*test*.jar" -exec mv {} app.jar \; \
+    && find ./temp -name "*.jar" -exec mv {} ./lib/ \; \
+    && rm -rf ./temp
+
+CMD ["bash", "-c", "\
+    touch /tmp/demo-init-started && \
+    java \
+        -XX:+UseG1GC \
+        -Duser.timezone=${TZ} \
+        -Dfile.encoding=UTF-8 \
+        -Dlog4j.configurationFile=/app/conf/log4j2-demo.xml \
+        -cp /app/lib/*:/app/app.jar \
+        com.dtstep.lighthouse.test.example.StartExample"]

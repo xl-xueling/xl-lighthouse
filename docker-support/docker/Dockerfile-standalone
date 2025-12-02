@@ -1,23 +1,31 @@
 FROM eclipse-temurin:11-jre
 
+ENV TZ=${TZ}
+
 RUN groupadd -g 1001 lighthouse \
     && useradd -u 1001 -g 1001 -m -s /bin/bash lighthouse
+
+RUN mkdir -p /app/lib /app/conf /app/logs \
+    && chown -R lighthouse:lighthouse /app \
+    && chmod -R 755 /app
+
+USER lighthouse
 
 WORKDIR /app
 
 ENV LDP_HOME=/app
 
-COPY docker/lib/lighthouse-*insights*.jar app.jar
-COPY docker/lib ./lib
+COPY --chown=lighthouse:lighthouse docker/lib/ ./temp/
 
-RUN mkdir -p /app/conf
+RUN find ./temp -name "lighthouse-*standalone*.jar" -exec mv {} app.jar \; \
+    && find ./temp -name "*.jar" -exec mv {} ./lib/ \; \
+    && rm -rf ./temp
 
-CMD ["java", \
-    "-XX:+UseG1GC", \
-    "-Duser.timezone=Asia/Shanghai", \
-    "-Dfile.encoding=UTF-8", \
-    "-Dlog4j.configurationFile=/app/conf/log4j2-standalone.xml", \
-    "-Dloader.path=/app/lib", \
-    "-Dspring.config.location=file:/app/conf/lighthouse-insights.yml", \
-    "-cp", "/app/lib/*:/app/app.jar", \
-    "com.dtstep.lighthouse.standalone.executive.LightStandaloneEntrance"]
+
+CMD ["bash", "-c", "\
+    java -XX:+UseG1GC \
+    -Duser.timezone=${TZ} \
+    -Dfile.encoding=UTF-8 \
+    -Dlog4j.configurationFile=/app/conf/log4j2-standalone.xml \
+    -cp /app/lib/*:/app/app.jar \
+    com.dtstep.lighthouse.standalone.executive.LightStandaloneEntrance"]
