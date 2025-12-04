@@ -1,37 +1,50 @@
-FROM eclipse-temurin:11-jre
+FROM alpine:3.19 AS preparer
+COPY docker/lib/ /temp/
+RUN mkdir -p /output/lib /output/app && \
+    find /temp -name "lighthouse-*insights*.jar" -exec mv {} /output/app/app.jar \; && \
+    find /temp -name "*.jar" -exec mv {} /output/lib/ \; && \
+    rm -rf /temp
 
-RUN groupadd -g 1001 lighthouse \
-    && useradd -u 1001 -g 1001 -m -s /bin/bash lighthouse
+FROM eclipse-temurin:11-jdk-alpine AS jre-builder
+ARG JAVA_HOME=/usr/lib/jvm/java-11-temurin
+ENV JAVA_HOME=${JAVA_HOME}
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+RUN apk add --no-cache bash zip unzip curl
+COPY --from=preparer /output/app/app.jar /tmp/app.jar
+COPY --from=preparer /output/lib /tmp/lib
 
-RUN mkdir -p /app/lib /app/conf /app/logs \
-    && chown -R lighthouse:lighthouse /app \
-    && chmod -R 755 /app
+RUN jlink \
+    --output /opt/jlink-jre \
+    --add-modules java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.naming,java.net.http,java.prefs,java.rmi,java.scripting,java.security.jgss,java.security.sasl,java.sql,java.transaction.xa,java.xml,jdk.accessibility,jdk.crypto.ec,jdk.httpserver,jdk.management,jdk.unsupported,jdk.xml.dom \
+    --strip-debug \
+    --compress=2 \
+    --no-man-pages \
+    --no-header-files
 
-ENV TZ=${TZ}
-
-RUN echo "Timezone: $TZ" \
-    && echo "Language: $LANG" \
-    && echo "LC_ALL: $LC_ALL"
-
+FROM alpine:3.19 AS runtime
+RUN apk add --no-cache bash tzdata libc6-compat && rm -rf /var/cache/apk/*
+RUN addgroup -g 1001 lighthouse && \
+    adduser -u 1001 -G lighthouse -D -s /bin/bash lighthouse && \
+    mkdir -p /app/lib /app/conf /app/logs && \
+    chown -R lighthouse:lighthouse /app
 USER lighthouse
-
 WORKDIR /app
+ARG TZ=Asia/Shanghai
+ENV TZ=${TZ} \
+    LDP_HOME=/app \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0" \
+    PATH="/app/jre/bin:${PATH}"
+COPY --from=jre-builder /opt/jlink-jre /app/jre
+COPY --from=preparer --chown=lighthouse:lighthouse /output/lib/*.jar ./lib/
+COPY --from=preparer --chown=lighthouse:lighthouse /output/app/app.jar ./app.jar
 
-ENV LDP_HOME=/app
-
-COPY --chown=lighthouse:lighthouse docker/lib/ ./temp/
-
-RUN find ./temp -name "lighthouse-*insights*.jar" -exec mv {} app.jar \; \
-    && find ./temp -name "*.jar" -exec mv {} ./lib/ \; \
-    && rm -rf ./temp
-
-CMD ["bash", "-c", "\
-    java \
+CMD ["sh", "-c", "java ${JAVA_OPTS} \
     -Dloader.path=/app/lib \
     -Duser.timezone=${TZ} \
     -Dfile.encoding=UTF-8 \
     -Dlog4j.configurationFile=/app/conf/log4j2-insights.xml \
     -Dspring.config.location=file:/app/conf/lighthouse-insights.yml \
-    -jar app.jar \
-    "]
+    -jar app.jar"]
 

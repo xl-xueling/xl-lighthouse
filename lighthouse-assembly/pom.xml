@@ -201,6 +201,10 @@
                     <artifactId>org.apache.spark</artifactId>
                     <groupId>*</groupId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.rocksdb</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
