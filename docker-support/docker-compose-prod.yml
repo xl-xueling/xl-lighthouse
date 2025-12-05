@@ -4,6 +4,30 @@ x-common-env: &common-env
   LC_ALL: en_US.UTF-8
 
 services:
+  setup-env:
+    image: bash:5.2-alpine3.18
+    volumes:
+      - ./scripts:/scripts
+      - ./templates:/templates
+      - ./config:/config
+      - ./generated:/generated
+      - ./logs:/logs
+    restart: "no"
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_setup-env
+    network_mode: "host"
+    command: |
+      bash -c '
+        chmod +x /scripts/entrypoint/init.sh &&
+        bash /scripts/entrypoint/init.sh &&
+        touch /generated/.init_complete
+        echo "容器将保持运行"
+        sleep 36000
+      '
+    healthcheck:
+      test: [ "CMD", "test", "-f", "/generated/.init_complete" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
   mysql:
     image: mysql:8.0.30
     restart: always
