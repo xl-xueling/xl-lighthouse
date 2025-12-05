@@ -36,37 +36,11 @@
                                 </goals>
                                 <configuration>
                                     <file>${project.parent.basedir}/docker-support/.env.template</file>
-                                    <outputFile>${project.parent.basedir}/docker-support/.env.prod</outputFile>
+                                    <outputFile>${project.parent.basedir}/docker-support/.env</outputFile>
                                     <replacements>
                                         <replacement>
                                             <token>\$\{revision\}</token>
                                             <value>${revision}</value>
-                                        </replacement>
-                                        <replacement>
-                                            <token>\$\{composeFile\}</token>
-                                            <value>docker-compose.yml</value>
-                                        </replacement>
-                                    </replacements>
-                                </configuration>
-                            </execution>
-
-                            <execution>
-                                <id>replace-env-dev</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>replace</goal>
-                                </goals>
-                                <configuration>
-                                    <file>${project.parent.basedir}/docker-support/.env.template</file>
-                                    <outputFile>${project.parent.basedir}/docker-support/.env.dev</outputFile>
-                                    <replacements>
-                                        <replacement>
-                                            <token>\$\{revision\}</token>
-                                            <value>${revision}</value>
-                                        </replacement>
-                                        <replacement>
-                                            <token>\$\{composeFile\}</token>
-                                            <value>docker-compose-dev.yml</value>
                                         </replacement>
                                     </replacements>
                                 </configuration>
@@ -124,7 +98,7 @@
                                     <finalName>lighthouse-docker-${project.version}</finalName>
                                     <appendAssemblyId>false</appendAssemblyId>
                                     <descriptors>
-                                        <descriptor>src/main/resources/assembly.xml</descriptor>
+                                        <descriptor>src/main/resources/assembly-prod.xml</descriptor>
                                     </descriptors>
                                     <tarLongFileMode>gnu</tarLongFileMode>
                                 </configuration>

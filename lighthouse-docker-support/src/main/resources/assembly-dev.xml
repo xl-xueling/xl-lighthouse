@@ -6,13 +6,23 @@
     <includeBaseDirectory>true</includeBaseDirectory>
     <files>
         <file>
-            <source>${project.parent.basedir}/docker-support/.env.dev</source>
+            <source>${project.parent.basedir}/docker-support/docker-compose-dev.yml</source>
             <outputDirectory>/</outputDirectory>
-            <destName>.env</destName>
+            <destName>docker-compose.yml</destName>
             <fileMode>0644</fileMode>
         </file>
     </files>
     <fileSets>
+        <fileSet>
+            <directory>${project.parent.basedir}/docker-support</directory>
+            <excludes>
+                <exclude>docker-compose-prod.yml</exclude>
+            </excludes>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
         <fileSet>
             <directory>${project.parent.basedir}/bin/config/</directory>
             <includes>
@@ -47,18 +57,6 @@
                 <include>conf/*</include>
             </includes>
             <outputDirectory>/templates/lighthouse</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>${project.parent.basedir}/docker-support</directory>
-            <excludes>
-                <exclude>.env.dev</exclude>
-                <exclude>.env.prod</exclude>
-                <exclude>docker-compose.yml</exclude>
-            </excludes>
-            <includes>
-                <include>**/*</include>
-            </includes>
-            <outputDirectory>/</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.parent.basedir}/docker-support/docker</directory>
