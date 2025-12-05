@@ -53,6 +53,7 @@
             <excludes>
                 <exclude>.env.dev</exclude>
                 <exclude>.env.prod</exclude>
+                <exclude>docker-compose.yml</exclude>
             </excludes>
             <includes>
                 <include>**/*</include>
