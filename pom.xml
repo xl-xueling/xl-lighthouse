@@ -92,6 +92,7 @@
         <module>lighthouse-insights</module>
         <module>lighthouse-assembly</module>
         <module>lighthouse-upgrade</module>
+        <module>lighthouse-docker-support</module>
       </modules>
       <distributionManagement>
         <snapshotRepository>
@@ -249,7 +250,6 @@
             <configuration>
               <publishingServerId>central</publishingServerId>
               <autoPublish>true</autoPublish>
-              <tokenAuth>true</tokenAuth>
             </configuration>
           </plugin>
 

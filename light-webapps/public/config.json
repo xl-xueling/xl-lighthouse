@@ -1,4 +1,4 @@
 {
-    "REACT_APP_BASE_URL":"http://10.206.6.27:9089",
+    "REACT_APP_BASE_URL":"",
     "AXIOS_TIMEOUT":90000
 }

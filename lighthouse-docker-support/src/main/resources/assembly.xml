@@ -1,0 +1,31 @@
+<assembly>
+    <id>deploy</id>
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>${project.parent.basedir}/bin/config/</directory>
+            <includes>
+                <include>**/standalone-*</include>
+            </includes>
+            <outputDirectory>/config</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/lighthouse-docker-support/docker</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>/docker</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/lighthouse-docker-support/scripts</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>/scripts</outputDirectory>
+        </fileSet>
+
+    </fileSets>
+</assembly>
