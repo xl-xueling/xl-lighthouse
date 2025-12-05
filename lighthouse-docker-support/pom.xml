@@ -23,6 +23,33 @@
             <build>
                 <plugins>
                     <plugin>
+                        <!--替换变量-->
+                        <groupId>com.google.code.maven-replacer-plugin</groupId>
+                        <artifactId>replacer</artifactId>
+                        <version>1.5.3</version>
+                        <executions>
+                            <execution>
+                                <id>replace-env-variables</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>replace</goal>
+                                </goals>
+                                <configuration>
+                                    <file>${project.parent.basedir}/docker-support/.env.template</file>
+                                    <outputFile>${project.parent.basedir}/docker-support/.env</outputFile>
+                                    <replacements>
+                                        <replacement>
+                                            <token>\$\{revision\}</token>
+                                            <value>${revision}</value>
+                                        </replacement>
+                                    </replacements>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-clean-plugin</artifactId>
                         <version>3.1.0</version>
