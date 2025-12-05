@@ -1,5 +1,5 @@
 <assembly>
-    <id>docker-support</id>
+    <id>docker-support-dev</id>
     <formats>
         <format>tar.gz</format>
     </formats>
@@ -46,6 +46,31 @@
                 <include>**/*</include>
             </includes>
             <outputDirectory>/</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/docker-support/docker</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>/docker</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/lighthouse-assembly/target/lib/</directory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <outputDirectory>/docker/lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/light-webapps</directory>
+            <excludes>
+                <exclude>/node_modules/**</exclude>
+                <exclude>/node/**</exclude>
+            </excludes>
+            <includes>
+                <include>/build/**</include>
+            </includes>
+            <outputDirectory>/docker/light-webapps</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>
