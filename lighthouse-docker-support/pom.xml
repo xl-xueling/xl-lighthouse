@@ -29,18 +29,44 @@
                         <version>1.5.3</version>
                         <executions>
                             <execution>
-                                <id>replace-env-variables</id>
+                                <id>replace-env-prod</id>
                                 <phase>generate-resources</phase>
                                 <goals>
                                     <goal>replace</goal>
                                 </goals>
                                 <configuration>
                                     <file>${project.parent.basedir}/docker-support/.env.template</file>
-                                    <outputFile>${project.parent.basedir}/docker-support/.env</outputFile>
+                                    <outputFile>${project.parent.basedir}/docker-support/.env.prod</outputFile>
                                     <replacements>
                                         <replacement>
                                             <token>\$\{revision\}</token>
                                             <value>${revision}</value>
+                                        </replacement>
+                                        <replacement>
+                                            <token>\$\{composeFile\}</token>
+                                            <value>docker-compose.yml</value>
+                                        </replacement>
+                                    </replacements>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>replace-env-dev</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>replace</goal>
+                                </goals>
+                                <configuration>
+                                    <file>${project.parent.basedir}/docker-support/.env.template</file>
+                                    <outputFile>${project.parent.basedir}/docker-support/.env.dev</outputFile>
+                                    <replacements>
+                                        <replacement>
+                                            <token>\$\{revision\}</token>
+                                            <value>${revision}</value>
+                                        </replacement>
+                                        <replacement>
+                                            <token>\$\{composeFile\}</token>
+                                            <value>docker-compose-dev.yml</value>
                                         </replacement>
                                     </replacements>
                                 </configuration>

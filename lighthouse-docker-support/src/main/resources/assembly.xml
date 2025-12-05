@@ -4,6 +4,14 @@
         <format>tar.gz</format>
     </formats>
     <includeBaseDirectory>true</includeBaseDirectory>
+    <files>
+        <file>
+            <source>${project.parent.basedir}/docker-support/.env.prod</source>
+            <outputDirectory>/</outputDirectory>
+            <destName>.env</destName>
+            <fileMode>0644</fileMode>
+        </file>
+    </files>
     <fileSets>
         <fileSet>
             <directory>${project.parent.basedir}/bin/config/</directory>
@@ -42,6 +50,10 @@
         </fileSet>
         <fileSet>
             <directory>${project.parent.basedir}/docker-support</directory>
+            <excludes>
+                <exclude>.env.dev</exclude>
+                <exclude>.env.prod</exclude>
+            </excludes>
             <includes>
                 <include>**/*</include>
             </includes>
