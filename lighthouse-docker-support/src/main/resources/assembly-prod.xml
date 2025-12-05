@@ -16,7 +16,7 @@
         <fileSet>
             <directory>${project.parent.basedir}/docker-support</directory>
             <excludes>
-                <exclude>docker-compose-dev.yml</exclude>
+                <exclude>docker-compose-*.yml</exclude>
             </excludes>
             <includes>
                 <include>**/*</include>
