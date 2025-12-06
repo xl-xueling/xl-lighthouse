@@ -17,7 +17,7 @@ echo "$MESSAGE_START_DOCKER"
 
 # 启动容器
 echo "$MESSAGE_START_CONTAINERS"
-docker compose start
+docker compose up -d --build
 
 docker compose ps -a
 echo "$MESSAGE_START_DONE"

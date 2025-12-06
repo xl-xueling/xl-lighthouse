@@ -16,7 +16,7 @@ echo "$MESSAGE_STOP_DOCKER"
 
 # 停止容器
 echo "$MESSAGE_STOP_CONTAINERS"
-docker compose stop
+docker compose down
 
 echo "$MESSAGE_STOP_DONE"
 

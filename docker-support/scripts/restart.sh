@@ -16,7 +16,7 @@ echo "$MESSAGE_RESTART_DOCKER"
 
 # 重启容器
 echo "$MESSAGE_RESTART_CONTAINERS"
-docker compose stop
-docker compose start
+docker compose down
+docker compose up -d --build
 echo "$MESSAGE_RESTART_DONE"
 
