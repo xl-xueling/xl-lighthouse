@@ -104,6 +104,7 @@
                                 </configuration>
                             </execution>
 
+                            <!--
                             <execution>
                                 <id>make-dev-assembly</id>
                                 <phase>package</phase>
@@ -115,6 +116,23 @@
                                     <appendAssemblyId>false</appendAssemblyId>
                                     <descriptors>
                                         <descriptor>src/main/resources/assembly-dev.xml</descriptor>
+                                    </descriptors>
+                                    <tarLongFileMode>gnu</tarLongFileMode>
+                                </configuration>
+                            </execution>
+                            -->
+
+                            <execution>
+                                <id>make-upgrade-assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <finalName>lighthouse-docker-upgrade-${project.version}</finalName>
+                                    <appendAssemblyId>false</appendAssemblyId>
+                                    <descriptors>
+                                        <descriptor>src/main/resources/assembly-upgrade.xml</descriptor>
                                     </descriptors>
                                     <tarLongFileMode>gnu</tarLongFileMode>
                                 </configuration>
