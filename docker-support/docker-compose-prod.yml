@@ -4,7 +4,7 @@ x-common-env: &common-env
   LC_ALL: en_US.UTF-8
 
 services:
-  setup-env:
+  setup_env:
     image: bash:5.2-alpine3.18
     volumes:
       - ./scripts:/scripts
@@ -13,7 +13,7 @@ services:
       - ./generated:/generated
       - ./logs:/logs
     restart: "no"
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_setup-env
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_setup_env
     network_mode: "host"
     user: "root"
     command: |
@@ -38,7 +38,7 @@ services:
       <<: *common-env
       MYSQL_ROOT_PASSWORD: "root"
     depends_on:
-      setup-env:
+      setup_env:
         condition: service_healthy
     ports:
       - "3906:3906"
@@ -58,7 +58,7 @@ services:
       private_net:
         ipv4_address: 10.183.0.2
 
-  redis-node-1:
+  redis_node_1:
     image: dtstep/ldp-redis:${VERSION}
     ports:
       - "7101:7101"
@@ -69,7 +69,7 @@ services:
       - ./generated/redis/conf/redis-7101.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-1
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_1
     user: "1001:1001"
     depends_on:
       mysql:
@@ -85,7 +85,7 @@ services:
       private_net:
         ipv4_address: 10.183.0.3
 
-  redis-node-2:
+  redis_node_2:
     image: dtstep/ldp-redis:${VERSION}
     ports:
       - "7102:7102"
@@ -96,7 +96,7 @@ services:
       - ./generated/redis/conf/redis-7102.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-2
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_2
     user: "1001:1001"
     depends_on:
       mysql:
@@ -112,7 +112,7 @@ services:
       private_net:
         ipv4_address: 10.183.0.4
 
-  redis-node-3:
+  redis_node_3:
     image: dtstep/ldp-redis:${VERSION}
     ports:
       - "7103:7103"
@@ -123,7 +123,7 @@ services:
       - ./generated/redis/conf/redis-7103.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-3
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_3
     user: "1001:1001"
     depends_on:
       mysql:
@@ -139,7 +139,7 @@ services:
       private_net:
         ipv4_address: 10.183.0.5
 
-  redis-node-4:
+  redis_node_4:
     image: dtstep/ldp-redis:${VERSION}
     ports:
       - "7104:7104"
@@ -150,7 +150,7 @@ services:
       - ./generated/redis/conf/redis-7104.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-4
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_4
     user: "1001:1001"
     depends_on:
       mysql:
@@ -166,7 +166,7 @@ services:
       private_net:
         ipv4_address: 10.183.0.6
 
-  redis-node-5:
+  redis_node_5:
     image: dtstep/ldp-redis:${VERSION}
     ports:
       - "7105:7105"
@@ -177,7 +177,7 @@ services:
       - ./generated/redis/conf/redis-7105.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-5
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_5
     user: "1001:1001"
     depends_on:
       mysql:
@@ -193,7 +193,7 @@ services:
       private_net:
         ipv4_address: 10.183.0.7
 
-  redis-node-6:
+  redis_node_6:
     image: dtstep/ldp-redis:${VERSION}
     ports:
       - "7106:7106"
@@ -204,7 +204,7 @@ services:
       - ./generated/redis/conf/redis-7106.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-node-6
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_6
     user: "1001:1001"
     depends_on:
       mysql:
@@ -220,23 +220,23 @@ services:
       private_net:
         ipv4_address: 10.183.0.8
 
-  redis-cluster-init:
+  redis_cluster:
     image: dtstep/ldp-redis:${VERSION}
     restart: "no"
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis-cluster-init
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_cluster
     user: "1001:1001"
     depends_on:
-      redis-node-1:
+      redis_node_1:
         condition: service_healthy
-      redis-node-2:
+      redis_node_2:
         condition: service_healthy
-      redis-node-3:
+      redis_node_3:
         condition: service_healthy
-      redis-node-4:
+      redis_node_4:
         condition: service_healthy
-      redis-node-5:
+      redis_node_5:
         condition: service_healthy
-      redis-node-6:
+      redis_node_6:
         condition: service_healthy
     volumes:
       - ./config:/config:ro
@@ -244,7 +244,7 @@ services:
       private_net:
         ipv4_address: 10.183.0.9
     healthcheck:
-      test: ["CMD", "sh", "-c", "test -f /tmp/cluster-ready && redis-cli -h redis-node-1 -p 7101 -a $(grep 'cluster_passwd' /config/standalone-deploy.json | cut -d':' -f2 | tr -d ' \",}') cluster info | grep -q 'cluster_state:ok'"]
+      test: ["CMD", "sh", "-c", "test -f /tmp/cluster-ready && redis-cli -h redis_node_1 -p 7101 -a $(grep 'cluster_passwd' /config/standalone-deploy.json | cut -d':' -f2 | tr -d ' \",}') cluster info | grep -q 'cluster_state:ok'"]
       interval: 5s
       timeout: 5s
       retries: 30
@@ -254,12 +254,12 @@ services:
         set -e
         REDIS_PASSWORD=$$(grep "cluster_passwd" /config/standalone-deploy.json | cut -d ":" -f 2 | tr -d " \n\r\t\",}")
         sleep 15
-        IP_NODE1=$$(getent hosts redis-node-1 | awk "{print \$$1}")
-        IP_NODE2=$$(getent hosts redis-node-2 | awk "{print \$$1}")
-        IP_NODE3=$$(getent hosts redis-node-3 | awk "{print \$$1}")
-        IP_NODE4=$$(getent hosts redis-node-4 | awk "{print \$$1}")
-        IP_NODE5=$$(getent hosts redis-node-5 | awk "{print \$$1}")
-        IP_NODE6=$$(getent hosts redis-node-6 | awk "{print \$$1}")
+        IP_NODE1=$$(getent hosts redis_node_1 | awk "{print \$$1}")
+        IP_NODE2=$$(getent hosts redis_node_2 | awk "{print \$$1}")
+        IP_NODE3=$$(getent hosts redis_node_3 | awk "{print \$$1}")
+        IP_NODE4=$$(getent hosts redis_node_4 | awk "{print \$$1}")
+        IP_NODE5=$$(getent hosts redis_node_5 | awk "{print \$$1}")
+        IP_NODE6=$$(getent hosts redis_node_6 | awk "{print \$$1}")
         if redis-cli -h $$IP_NODE1 -p 7101 -a "$$REDIS_PASSWORD" cluster info 2>/dev/null | grep -q "cluster_state:ok"; then
           echo "Redis集群已存在"
           touch /tmp/cluster-ready
@@ -302,7 +302,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      redis-cluster-init:
+      redis_cluster:
         condition: service_healthy
     volumes:
       - ./generated/lighthouse/conf/:/app/conf/:ro
@@ -329,7 +329,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      redis-cluster-init:
+      redis_cluster:
         condition: service_healthy
     volumes:
       - ./generated/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
@@ -357,7 +357,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      redis-cluster-init:
+      redis_cluster:
         condition: service_healthy
     volumes:
       - ./generated/lighthouse/conf/:/app/conf/:ro
@@ -425,7 +425,7 @@ services:
       private_net:
         ipv4_address: 10.183.0.30
     depends_on:
-      redis-cluster-init:
+      redis_cluster:
         condition: service_healthy
       standalone:
         condition: service_healthy

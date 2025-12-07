@@ -119,7 +119,7 @@ declare -A VARS_MAP=(
   ["ldp_redis_cluster_enabled"]="yes"
   ["ldp_host_ip"]=$HOST_IP
   ["ldp_lighthouse_home"]="/app"
-  ["ldp_redis_cluster"]="redis-node-1:7101,redis-node-2:7102,redis-node-3:7103,redis-node-4:7104,redis-node-5:7105,redis-node-6:7106"	  
+  ["ldp_redis_cluster"]="redis_node_1:7101,redis_node_2:7102,redis_node_3:7103,redis_node_4:7104,redis_node_5:7105,redis_node_6:7106"
   ["ldp_lighthouse_ice_locators"]="standalone:4061"
   ["ldp_lighthouse_ice_nodes_ips"]="standalone"
 )

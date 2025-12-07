@@ -34,13 +34,9 @@ echo "$MESSAGE_STOP_CONTAINERS"
 docker compose down -v
 
 echo "$MESSAGE_START_UNINSTALL"
-docker ps -aq --filter name="^dtstep" | xargs -r docker rm -f
-docker network ls -q --filter name="^dtstep" | xargs -r docker network rm
-
-echo "$MESSAGE_DELETE_VOLUMES"
-docker volume ls --filter name="^dtstep" -q | xargs -r docker volume rm
+docker network ls -q --filter name="^ldp_private_net" | xargs -r docker network rm
 
 echo "$MESSAGE_DELETE_IMAGES"
-docker images -q --filter reference="dtstep*" | xargs -r docker rmi -f
+docker images --format "{{.Repository}}:{{.Tag}}" | grep '^dtstep'| xargs -r docker rmi -f
 
 echo "$MESSAGE_UNINSTALL_DONE"
