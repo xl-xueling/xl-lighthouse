@@ -15,6 +15,7 @@ services:
     restart: "no"
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_setup-env
     network_mode: "host"
+    user: "root"
     command: |
       bash -c '
         chmod +x /scripts/entrypoint/init.sh &&
@@ -36,6 +37,9 @@ services:
     environment:
       <<: *common-env
       MYSQL_ROOT_PASSWORD: "root"
+    depends_on:
+      setup-env:
+        condition: service_healthy
     ports:
       - "3906:3906"
     volumes:
