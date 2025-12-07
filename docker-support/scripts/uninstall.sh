@@ -30,18 +30,17 @@ if [[ "$input" != "yes" ]]; then
   exit 1
 fi
 
-echo "$MESSAGE_START_UNINSTALL"
-
 echo "$MESSAGE_STOP_CONTAINERS"
-docker compose down
+docker compose down -v
+
+echo "$MESSAGE_START_UNINSTALL"
+docker ps -aq --filter name="^dtstep" | xargs -r docker rm -f
+docker network ls -q --filter name="^dtstep" | xargs -r docker network rm
 
 echo "$MESSAGE_DELETE_VOLUMES"
-docker volume prune -f
+docker volume ls --filter name="^dtstep" -q | xargs -r docker volume rm
 
 echo "$MESSAGE_DELETE_IMAGES"
-images=$(docker images -q)
-if [[ -n "$images" ]]; then
-  docker rmi $images
-fi
+docker images -q --filter reference="dtstep*" | xargs -r docker rmi -f
 
 echo "$MESSAGE_UNINSTALL_DONE"
