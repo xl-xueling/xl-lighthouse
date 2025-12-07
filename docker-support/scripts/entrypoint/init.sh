@@ -40,7 +40,7 @@ setup_log_permissions() {
     CURRENT_GID=${CURRENT_GID:-$(id -g)}
     LOG_DIRS=(
         "/logs/mysql"
-        "/logs/redis" 
+        "/logs/redis"
         "/logs/nginx"
         "/logs/lighthouse-insights"
         "/logs/lighthouse-standalone"
@@ -59,7 +59,7 @@ setup_log_permissions() {
             echo "  目录创建失败: $host_dir"
         fi
     done
-    
+
     for host_dir in "${LOG_DIRS[@]}"; do
         if [ -d "$host_dir" ]; then
             perms=$(stat -c "%A %U:%G" "$host_dir" 2>/dev/null || echo "未知权限")
@@ -108,7 +108,8 @@ echo "[INFO] Cluster ID: $RANDOM_CLUSTER_ID"
 TEMPLATE_DIR="/templates"
 OUTPUT_DIR="/generated"
 CONFIG_DIR="/config"
-TARGET_COMPONENTS=("lighthouse" "mysql" "nginx") 
+LOGS_DIR="/logs"
+TARGET_COMPONENTS=("lighthouse" "mysql" "nginx")
 
 declare -A VARS_MAP=(
   ["ldp_lighthouse_cluster_id"]="$RANDOM_CLUSTER_ID"
@@ -178,7 +179,7 @@ process_directory() {
           value_escaped=${value//&/\\&}
           tmp_content=$(echo "$tmp_content" | sed "s|\${$key}|$value_escaped|g")
       done
-      echo "$tmp_content" > "$dest_dir/$filename"	
+      echo "$tmp_content" > "$dest_dir/$filename"
     fi
   done
 }
@@ -196,7 +197,7 @@ process_redis_cluster() {
         local port_base=7100
         local port=$((port_base + i))
         local output_filename="redis-$port.conf"
-        local tmp_content=$(cat "$template_file") 
+        local tmp_content=$(cat "$template_file")
         for key in "${!VARS_MAP[@]}"; do
             value="${VARS_MAP[$key]}"
             value_escaped=${value//&/\\&}
@@ -222,6 +223,10 @@ done
 
 
 process_redis_cluster
+
+chown -R 1001:1001 $TEMPLATE_DIR
+chown -R 1001:1001 $OUTPUT_DIR
+chown -R 1001:1001 $LOGS_DIR
 
 mv $OUTPUT_DIR/lighthouse/conf/ldp-site-standalone.xml $OUTPUT_DIR/lighthouse/conf/ldp-site.xml
 
