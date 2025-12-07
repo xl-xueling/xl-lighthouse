@@ -8,8 +8,6 @@ if [[ "$current_language" == "zh" ]]; then
   MESSAGE_ABORT="卸载已被中止。"
   MESSAGE_START_UNINSTALL="开始卸载 Docker 环境..."
   MESSAGE_STOP_CONTAINERS="停止并删除容器..."
-  MESSAGE_DELETE_VOLUMES="删除所有卷..."
-  MESSAGE_DELETE_IMAGES="删除所有镜像..."
   MESSAGE_UNINSTALL_DONE="卸载完成！所有相关资源已被删除。"
 else
   MESSAGE_UNINSTALL="You are about to perform a one-click uninstallation. The system will stop and remove all containers, volumes, and images."
@@ -17,8 +15,6 @@ else
   MESSAGE_ABORT="Uninstallation has been aborted."
   MESSAGE_START_UNINSTALL="Starting Docker environment uninstallation..."
   MESSAGE_STOP_CONTAINERS="Stopping and removing containers..."
-  MESSAGE_DELETE_VOLUMES="Removing all volumes..."
-  MESSAGE_DELETE_IMAGES="Removing all images..."
   MESSAGE_UNINSTALL_DONE="Uninstallation completed! All related resources have been deleted."
 fi
 
@@ -32,11 +28,12 @@ fi
 
 echo "$MESSAGE_STOP_CONTAINERS"
 docker compose down -v
+docker compose down -v demo_init
+docker compose down -v demo_start
 
 echo "$MESSAGE_START_UNINSTALL"
 docker network ls -q --filter name="^ldp_private_net" | xargs -r docker network rm
 
-echo "$MESSAGE_DELETE_IMAGES"
 docker images --format "{{.Repository}}:{{.Tag}}" | grep '^dtstep'| xargs -r docker rmi -f
 
 echo "$MESSAGE_UNINSTALL_DONE"
