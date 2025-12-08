@@ -10,10 +10,8 @@ ARG JAVA_HOME=/usr/lib/jvm/java-11-temurin
 ENV JAVA_HOME=${JAVA_HOME}
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 RUN apk add --no-cache bash zip unzip curl
-
 COPY --from=preparer /output/app/app.jar /tmp/app.jar
 COPY --from=preparer /output/lib /tmp/lib
-
 
 RUN jlink \
     --output /opt/jlink-jre \
@@ -23,38 +21,25 @@ RUN jlink \
     --no-man-pages \
     --no-header-files
 
-
 FROM alpine:3.19 AS runtime
-
-RUN apk add --no-cache bash tzdata libc6-compat && rm -rf /var/cache/apk/*
-
+RUN apk add --no-cache bash tzdata libc6-compat jq && rm -rf /var/cache/apk/*
 RUN addgroup -g 1001 lighthouse && \
     adduser -u 1001 -G lighthouse -D -s /bin/bash lighthouse && \
-    mkdir -p /app/lib /app/conf /app/logs /tmp && \
-    chown -R lighthouse:lighthouse /app /tmp
+    mkdir -p /app/lib /app/conf /app/logs && \
+    chown -R lighthouse:lighthouse /app
 
+COPY --chown=lighthouse:lighthouse scripts/entrypoint/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 USER lighthouse
 WORKDIR /app
-
 ARG TZ=Asia/Shanghai
 ENV TZ=${TZ} \
     LDP_HOME=/app \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
-    JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0" \
     PATH="/app/jre/bin:${PATH}"
-
 COPY --from=jre-builder /opt/jlink-jre /app/jre
-
 COPY --from=preparer --chown=lighthouse:lighthouse /output/lib/*.jar ./lib/
 COPY --from=preparer --chown=lighthouse:lighthouse /output/app/app.jar ./app.jar
 
-CMD ["sh", "-c", "\
-    touch /tmp/demo-init-started && \
-    java ${JAVA_OPTS} \
-        -Duser.timezone=${TZ} \
-        -Dfile.encoding=UTF-8 \
-        -Dlog4j.configurationFile=/app/conf/log4j2-demo.xml \
-        -cp /app/lib/*:/app/app.jar \
-        com.dtstep.lighthouse.test.example.StartExample \
-    "]
+ENTRYPOINT ["/app/entrypoint.sh", "demo-init"]

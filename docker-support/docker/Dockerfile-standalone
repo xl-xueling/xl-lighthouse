@@ -1,7 +1,7 @@
 FROM alpine:3.19 AS preparer
 COPY docker/lib/ /temp/
 RUN mkdir -p /output/lib /output/app && \
-    find /temp -name "lighthouse-*insights*.jar" -exec mv {} /output/app/app.jar \; && \
+    find /temp -name "lighthouse-*standalone*.jar" -exec mv {} /output/app/app.jar \; && \
     find /temp -name "*.jar" -exec mv {} /output/lib/ \; && \
     rm -rf /temp
 
@@ -22,11 +22,14 @@ RUN jlink \
     --no-header-files
 
 FROM alpine:3.19 AS runtime
-RUN apk add --no-cache bash tzdata libc6-compat && rm -rf /var/cache/apk/*
+RUN apk add --no-cache bash tzdata libc6-compat jq && rm -rf /var/cache/apk/*
 RUN addgroup -g 1001 lighthouse && \
     adduser -u 1001 -G lighthouse -D -s /bin/bash lighthouse && \
     mkdir -p /app/lib /app/conf /app/logs && \
     chown -R lighthouse:lighthouse /app
+
+COPY --chown=lighthouse:lighthouse scripts/entrypoint/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 USER lighthouse
 WORKDIR /app
 ARG TZ=Asia/Shanghai
@@ -34,17 +37,9 @@ ENV TZ=${TZ} \
     LDP_HOME=/app \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
-    JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0" \
     PATH="/app/jre/bin:${PATH}"
 COPY --from=jre-builder /opt/jlink-jre /app/jre
 COPY --from=preparer --chown=lighthouse:lighthouse /output/lib/*.jar ./lib/
 COPY --from=preparer --chown=lighthouse:lighthouse /output/app/app.jar ./app.jar
 
-
-CMD ["bash", "-c", "\
-    java -XX:+UseG1GC \
-    -Duser.timezone=${TZ} \
-    -Dfile.encoding=UTF-8 \
-    -Dlog4j.configurationFile=/app/conf/log4j2-standalone.xml \
-    -cp /app/lib/*:/app/app.jar \
-    com.dtstep.lighthouse.standalone.executive.LightStandaloneEntrance"]
+ENTRYPOINT ["/app/entrypoint.sh", "standalone"]
