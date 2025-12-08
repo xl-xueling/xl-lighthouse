@@ -306,6 +306,7 @@ services:
       redis_cluster:
         condition: service_healthy
     volumes:
+      - ./config/standalone-config.json:/app/runtime/config.json:ro
       - ./generated/lighthouse/conf/:/app/conf/:ro
       - ./logs/lighthouse-insights:/app/logs/lighthouse-insights
     networks:
@@ -361,6 +362,7 @@ services:
       redis_cluster:
         condition: service_healthy
     volumes:
+      - ./config/standalone-config.json:/app/runtime/config.json:ro
       - ./generated/lighthouse/conf/:/app/conf/:ro
       - ./logs/lighthouse-standalone:/app/logs/lighthouse-standalone
     healthcheck:
@@ -386,6 +388,7 @@ services:
       standalone:
         condition: service_healthy
     volumes:
+      - ./config/standalone-config.json:/app/runtime/config.json:ro
       - ./generated/lighthouse/conf/:/app/conf/:ro
       - ./logs/lighthouse-demo:/app/logs/lighthouse-demo
     networks:
@@ -412,6 +415,7 @@ services:
       demo_init:
         condition: service_completed_successfully
     volumes:
+      - ./config/standalone-config.json:/app/runtime/config.json:ro
       - ./generated/lighthouse/conf/:/app/conf/:ro
       - ./logs/lighthouse-demo:/app/logs/lighthouse-demo
     networks:
