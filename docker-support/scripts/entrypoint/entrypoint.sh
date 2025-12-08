@@ -3,12 +3,35 @@ set -e
 
 CONFIG_FILE="${CONFIG_FILE:-/app/runtime/config.json}"
 SERVICE_TYPE="${1:-${SERVICE_TYPE:-insights}}"
-TZ="${TZ:-Asia/Shanghai}"
+
+read_timezone() {
+    local default_tz="Asia/Shanghai"
+    local cfg_tz=""
+    if [ -f "$CONFIG_FILE" ]; then
+        if command -v jq >/dev/null 2>&1; then
+            cfg_tz=$(jq -r '.lighthouse.timezone // empty' "$CONFIG_FILE")
+        else
+            cfg_tz=$(grep '"timezone"' "$CONFIG_FILE" 2>/dev/null | \
+                     sed 's/.*"\([^"]*\)".*/\1/')
+        fi
+        if [ -n "$cfg_tz" ]; then
+            echo "$cfg_tz"
+            return
+        fi
+    fi
+    if [ -n "$TZ" ]; then
+        echo "$TZ"
+        return
+    fi
+    echo "$default_tz"
+}
+
+TZ=$(read_timezone)
+
 echo "Service Type: $SERVICE_TYPE"
 echo "Config File: $CONFIG_FILE"
 echo "Timezone: $TZ"
 echo "Current Time: $(date)"
-echo ""
 
 read_memory_config() {
     local service=$1
@@ -64,9 +87,7 @@ case "$SERVICE_TYPE" in
         echo "Log Config: $LOG_CONFIG"
         echo "Spring Config: $SPRING_CONFIG"
         echo "JAVA_OPTS: $FINAL_JAVA_OPTS"
-        echo ""
         echo "Starting application..."
-        echo ""
         exec java ${FINAL_JAVA_OPTS} \
             -Dloader.path=/app/lib \
             -Dlog4j.configurationFile=/app/conf/${LOG_CONFIG} \
@@ -84,9 +105,7 @@ case "$SERVICE_TYPE" in
         echo "Log Config: $LOG_CONFIG"
         echo "Main Class: $MAIN_CLASS"
         echo "JAVA_OPTS: $FINAL_JAVA_OPTS"
-        echo ""
         echo "Starting application..."
-        echo ""
         exec java ${FINAL_JAVA_OPTS} \
             -Dlog4j.configurationFile=/app/conf/${LOG_CONFIG} \
             -cp /app/lib/*:/app/app.jar \
@@ -95,7 +114,7 @@ case "$SERVICE_TYPE" in
 
     demo-start)
         echo "Starting Demo Start Service..."
-        set_fixed_memory "128M" "128M"
+        set_fixed_memory "256M" "256M"
         FINAL_JAVA_OPTS=$(build_base_java_opts)
         LOG_CONFIG="${LOG_CONFIG:-log4j2-demo.xml}"
         MAIN_CLASS="${MAIN_CLASS:-com.dtstep.lighthouse.test.LDPFlowTestInstance}"
@@ -106,9 +125,7 @@ case "$SERVICE_TYPE" in
         echo "JAVA_OPTS: $FINAL_JAVA_OPTS"
         echo "LDP_PARAM: $LDP_PARAM"
         echo "Console Log: $LOG_FILE"
-        echo ""
         echo "Starting application..."
-        echo ""
         mkdir -p "$(dirname "$LOG_FILE")"
         exec java ${FINAL_JAVA_OPTS} \
             -Dlog4j.configurationFile=/app/conf/${LOG_CONFIG} \
@@ -119,16 +136,14 @@ case "$SERVICE_TYPE" in
         ;;
     demo-init)
         echo "Starting Demo Init Service..."
-        set_fixed_memory "128M" "128M"
+        set_fixed_memory "256M" "256M"
         FINAL_JAVA_OPTS=$(build_base_java_opts)
         LOG_CONFIG="${LOG_CONFIG:-log4j2-demo.xml}"
         MAIN_CLASS="${MAIN_CLASS:-com.dtstep.lighthouse.test.example.StartExample}"
         echo "Log Config: $LOG_CONFIG"
         echo "Main Class: $MAIN_CLASS"
         echo "JAVA_OPTS: $FINAL_JAVA_OPTS"
-        echo ""
         echo "Starting application..."
-        echo ""
         exec java ${FINAL_JAVA_OPTS} \
             -Dlog4j.configurationFile=/app/conf/${LOG_CONFIG} \
             -cp /app/lib/*:/app/app.jar \

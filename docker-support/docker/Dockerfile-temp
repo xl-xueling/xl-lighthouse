@@ -1,0 +1,34 @@
+FROM alpine:3.19 AS preparer
+COPY docker/lib/ /temp/
+RUN mkdir -p /output/lib /output/app && \
+    find /temp -name "lighthouse-*insights*.jar" -exec mv {} /output/app/app.jar \; && \
+    find /temp -name "*.jar" -exec mv {} /output/lib/ \; && \
+    rm -rf /temp
+
+FROM eclipse-temurin:11-jdk-alpine AS runtime
+
+RUN apk add --no-cache bash tzdata libc6-compat jq curl && \
+    rm -rf /var/cache/apk/*
+
+RUN addgroup -g 1001 lighthouse && \
+    adduser -u 1001 -G lighthouse -D -s /bin/bash lighthouse && \
+    mkdir -p /app/lib /app/conf /app/logs /app/tools && \
+    chown -R lighthouse:lighthouse /app
+
+COPY --from=preparer --chown=lighthouse:lighthouse /output/lib/*.jar /app/lib/
+COPY --from=preparer --chown=lighthouse:lighthouse /output/app/app.jar /app/app.jar
+
+COPY --chown=lighthouse:lighthouse scripts/entrypoint/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+WORKDIR /app
+USER lighthouse
+ARG TZ=Asia/Shanghai
+ENV TZ=${TZ} \
+    LDP_HOME=/app \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    JAVA_HOME=/opt/java/openjdk \
+    PATH="/opt/java/openjdk/bin:${PATH}"
+
+ENTRYPOINT ["/app/entrypoint.sh", "insights"]
