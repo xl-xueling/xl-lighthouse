@@ -227,6 +227,9 @@ process_redis_cluster
 chown -R 1001:1001 $TEMPLATE_DIR
 chown -R 1001:1001 $OUTPUT_DIR
 chown -R 1001:1001 $LOGS_DIR
+chown -R 1001:1001 /config
+chown -R 1001:1001 /scripts
+chown -R 1001:1001 /templates
 
 mv $OUTPUT_DIR/lighthouse/conf/ldp-site-standalone.xml $OUTPUT_DIR/lighthouse/conf/ldp-site.xml
 
