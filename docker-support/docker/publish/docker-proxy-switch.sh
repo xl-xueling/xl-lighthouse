@@ -31,8 +31,8 @@ case "$1" in
         ;;
     *)
         echo "用法: $0 {on|off|status}"
-        echo "  on     - 启用代理（用于推送镜像到 Docker Hub）"
-        echo "  off    - 禁用代理（用于拉取镜像，使用国内源）"
+        echo "  on     - 启用代理"
+        echo "  off    - 禁用代理"
         echo "  status - 查看当前代理状态"
         exit 1
         ;;
