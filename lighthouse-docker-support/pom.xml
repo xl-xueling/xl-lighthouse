@@ -104,6 +104,7 @@
                                 </configuration>
                             </execution>
 
+                            <!--
                             <execution>
                                 <id>make-dev-assembly</id>
                                 <phase>package</phase>
@@ -119,6 +120,7 @@
                                     <tarLongFileMode>gnu</tarLongFileMode>
                                 </configuration>
                             </execution>
+                            -->
 
                             <execution>
                                 <id>make-upgrade-assembly</id>

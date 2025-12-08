@@ -40,6 +40,7 @@ services:
     environment:
       <<: *common-env
       MYSQL_ROOT_PASSWORD: "root"
+      UMASK: "0555"
     ports:
       - "3906:3906"
     volumes:
