@@ -20,7 +20,7 @@ IMAGES=(
 
 read -s -p "Enter push password for Docker images: " DOCKER_PASSWORD
 echo
-PROXY_SCRIPT="$PROJECT_ROOT/scripts/publish/docker-proxy-switch.sh"
+PROXY_SCRIPT="./scripts/tools/docker-proxy-switch.sh"
 "$PROXY_SCRIPT" on
 
 echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
