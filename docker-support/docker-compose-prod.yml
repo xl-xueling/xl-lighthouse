@@ -306,6 +306,7 @@ services:
       redis_cluster:
         condition: service_healthy
     volumes:
+      - ldp_data:/app/data
       - ./config/standalone-config.json:/app/runtime/config.json:ro
       - ./generated/lighthouse/conf/:/app/conf/:ro
       - ./logs/lighthouse-insights:/app/logs/lighthouse-insights
@@ -362,6 +363,7 @@ services:
       redis_cluster:
         condition: service_healthy
     volumes:
+      - ldp_data:/app/data
       - ./config/standalone-config.json:/app/runtime/config.json:ro
       - ./generated/lighthouse/conf/:/app/conf/:ro
       - ./logs/lighthouse-standalone:/app/logs/lighthouse-standalone
@@ -388,6 +390,7 @@ services:
       standalone:
         condition: service_healthy
     volumes:
+      - ldp_data:/app/data
       - ./config/standalone-config.json:/app/runtime/config.json:ro
       - ./generated/lighthouse/conf/:/app/conf/:ro
       - ./logs/lighthouse-demo:/app/logs/lighthouse-demo
@@ -415,6 +418,7 @@ services:
       demo_init:
         condition: service_completed_successfully
     volumes:
+      - ldp_data:/app/data
       - ./config/standalone-config.json:/app/runtime/config.json:ro
       - ./generated/lighthouse/conf/:/app/conf/:ro
       - ./logs/lighthouse-demo:/app/logs/lighthouse-demo
@@ -447,6 +451,7 @@ services:
       '
 
 volumes:
+  ldp_data:
   mysql_data:
   redis_data_1:
   redis_data_2:
