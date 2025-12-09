@@ -16,9 +16,8 @@ echo "$MESSAGE_STOP_DOCKER"
 
 # 停止容器
 echo "$MESSAGE_STOP_CONTAINERS"
+./example/stop_example.sh
 docker compose down
-docker compose down -v demo_init
-docker compose down -v demo_start
 
 echo "$MESSAGE_STOP_DONE"
 

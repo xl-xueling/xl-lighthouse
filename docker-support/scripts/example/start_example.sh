@@ -13,12 +13,25 @@ service_status() {
     fi
 }
 
+check_required_services() {
+    local services=("ldp_insights" "ldp_frontend" "setup_env" "ldp_standalone")
+    for service in "${services[@]}"; do
+        STATUS=$(service_status "$service")
+        if [ "$STATUS" != "running" ]; then
+            echo "Error: Please start xl-lighthouse before starting the demo service."
+            exit 1
+        fi
+    done
+}
+
+check_required_services
+
 START_STATUS=$(service_status "demo_start")
 
-echo "demo_start 状态: $START_STATUS"
+echo "Current status of demo: $START_STATUS"
 
 if [ "$START_STATUS" = "running" ]; then
-    echo "demo_start 已经在运行，无需操作"
+    echo "Demo service is already running. "
     exit 0
 fi
 
@@ -32,3 +45,4 @@ case "$START_STATUS" in
 esac
 
 docker compose ps demo_start
+
