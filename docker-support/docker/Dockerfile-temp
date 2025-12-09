@@ -12,7 +12,7 @@ RUN apk add --no-cache bash tzdata libc6-compat jq curl && \
 
 RUN addgroup -g 1001 lighthouse && \
     adduser -u 1001 -G lighthouse -D -s /bin/bash lighthouse && \
-    mkdir -p /app/lib /app/conf /app/logs /app/tools && \
+    mkdir -p /app/lib /app/conf /app/logs /app/data && \
     chown -R lighthouse:lighthouse /app
 
 COPY --from=preparer --chown=lighthouse:lighthouse /output/lib/*.jar /app/lib/
