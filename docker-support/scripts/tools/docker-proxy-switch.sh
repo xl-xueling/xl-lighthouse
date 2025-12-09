@@ -1,40 +1,37 @@
 #!/bin/bash
-
 PROXY_CONF="/etc/systemd/system/docker.service.d/http-proxy.conf"
 PROXY_CONF_BACKUP="/etc/systemd/system/docker.service.d/http-proxy.conf.disabled"
-
 case "$1" in
     on)
-        echo "启用 Docker 代理..."
+        echo "Enabling Docker proxy..."
         if [ -f "$PROXY_CONF_BACKUP" ]; then
             sudo mv "$PROXY_CONF_BACKUP" "$PROXY_CONF"
         fi
-	sudo systemctl restart trojan
+        sudo systemctl restart trojan
         sudo systemctl daemon-reload
         sudo systemctl restart docker
-        echo "代理已启用"
+        echo "Proxy enabled"
         sudo systemctl show --property=Environment docker | grep PROXY
         ;;
     off)
-        echo "禁用 Docker 代理..."
+        echo "Disabling Docker proxy..."
         if [ -f "$PROXY_CONF" ]; then
             sudo mv "$PROXY_CONF" "$PROXY_CONF_BACKUP"
         fi
-	sudo systemctl stop trojan
+        sudo systemctl stop trojan
         sudo systemctl daemon-reload
         sudo systemctl restart docker
-        echo "代理已禁用"
+        echo "Proxy disabled"
         ;;
     status)
-        echo "当前 Docker 代理状态:"
-        sudo systemctl show --property=Environment docker | grep PROXY || echo "未配置代理"
+        echo "Current Docker proxy status:"
+        sudo systemctl show --property=Environment docker | grep PROXY || echo "No proxy configured"
         ;;
     *)
-        echo "用法: $0 {on|off|status}"
-        echo "  on     - 启用代理"
-        echo "  off    - 禁用代理"
-        echo "  status - 查看当前代理状态"
+        echo "Usage: $0 {on|off|status}"
+        echo "  on     - Enable proxy"
+        echo "  off    - Disable proxy"
+        echo "  status - Show current proxy status"
         exit 1
         ;;
 esac
-
