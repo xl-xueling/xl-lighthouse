@@ -37,6 +37,7 @@ services:
     environment:
       <<: *common-env
       MYSQL_ROOT_PASSWORD: "root"
+      UMASK: "0555"
     depends_on:
       setup_env:
         condition: service_healthy
