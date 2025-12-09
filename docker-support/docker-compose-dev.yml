@@ -14,7 +14,8 @@ services:
       - ./logs:/logs  
     restart: "no"
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_setup_env
-    network_mode: "host"   
+    network_mode: "host"
+    user: "root"
     command: |
       bash -c '
         chmod +x /scripts/entrypoint/init.sh &&
@@ -293,7 +294,7 @@ services:
       
         for i in $$(seq 1 90); do
           if redis-cli -h $$IP_NODE1 -p 7101 -a "$$REDIS_PASSWORD" cluster info 2>/dev/null | grep -q "cluster_state:ok"; then
-            echo "状态检查通过，容器将在5秒后退出"
+            echo "状态检查通过，容器将在10秒后退出"
             sleep 10
             exit 0
           fi
@@ -319,7 +320,7 @@ services:
       mysql:
         condition: service_healthy
       redis_cluster:
-        condition: service_healthy
+        condition: service_completed_successfully
     volumes:
       - ./config/standalone-config.json:/app/runtime/config.json:ro
       - ./generated/lighthouse/conf/:/app/conf/:ro
@@ -350,6 +351,8 @@ services:
       mysql:
         condition: service_healthy
       redis_cluster:
+        condition: service_completed_successfully
+      insights:
         condition: service_healthy
     volumes:
       - ./generated/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
@@ -382,7 +385,7 @@ services:
       mysql:
         condition: service_healthy
       redis_cluster:
-        condition: service_healthy
+        condition: service_completed_successfully
     volumes:
       - ./config/standalone-config.json:/app/runtime/config.json:ro
       - ./generated/lighthouse/conf/:/app/conf/:ro
@@ -461,7 +464,7 @@ services:
         ipv4_address: 10.183.0.30  
     depends_on:
       redis_cluster:
-        condition: service_healthy
+        condition: service_completed_successfully
       standalone:
         condition: service_healthy
       insights:
