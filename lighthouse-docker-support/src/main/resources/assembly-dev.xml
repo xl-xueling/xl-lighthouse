@@ -81,6 +81,7 @@
             <excludes>
                 <exclude>/node_modules/**</exclude>
                 <exclude>/node/**</exclude>
+                <exclude>/build/config.json</exclude>
             </excludes>
             <includes>
                 <include>/build/**</include>
