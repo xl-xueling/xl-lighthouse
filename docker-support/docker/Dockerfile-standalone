@@ -25,7 +25,7 @@ FROM alpine:3.19 AS runtime
 RUN apk add --no-cache bash tzdata libc6-compat jq && rm -rf /var/cache/apk/*
 RUN addgroup -g 1001 lighthouse && \
     adduser -u 1001 -G lighthouse -D -s /bin/bash lighthouse && \
-    mkdir -p /app/lib /app/conf /app/logs && \
+    mkdir -p /app/lib /app/conf /app/logs /app/data && \
     chown -R lighthouse:lighthouse /app
 
 COPY --chown=lighthouse:lighthouse scripts/entrypoint/entrypoint.sh /app/entrypoint.sh
