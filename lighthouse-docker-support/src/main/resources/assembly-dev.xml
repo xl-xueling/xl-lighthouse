@@ -53,6 +53,10 @@
         </fileSet>
         <fileSet>
             <directory>${project.parent.basedir}/bin/templates/lighthouse</directory>
+            <excludes>
+                <exclude>conf/ice*</exclude>
+                <exclude>conf/*cluster*</exclude>
+            </excludes>
             <includes>
                 <include>conf/*</include>
             </includes>
@@ -82,6 +86,13 @@
                 <include>/build/**</include>
             </includes>
             <outputDirectory>/docker/light-webapps</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/bin/templates/lighthouse/light-webapps/public/</directory>
+            <includes>
+                <include>config.json</include>
+            </includes>
+            <outputDirectory>/docker/light-webapps/build/</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>
