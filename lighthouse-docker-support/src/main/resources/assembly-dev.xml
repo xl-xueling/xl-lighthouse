@@ -62,13 +62,8 @@
             </includes>
             <outputDirectory>/templates/lighthouse</outputDirectory>
         </fileSet>
-        <fileSet>
-            <directory>${project.parent.basedir}/docker-support/docker</directory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-            <outputDirectory>/docker</outputDirectory>
-        </fileSet>
+
+
         <fileSet>
             <directory>${project.parent.basedir}/lighthouse-assembly/target/lib/</directory>
             <includes>

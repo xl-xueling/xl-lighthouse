@@ -53,6 +53,10 @@
         </fileSet>
         <fileSet>
             <directory>${project.parent.basedir}/bin/templates/lighthouse</directory>
+            <excludes>
+                <exclude>conf/ice*</exclude>
+                <exclude>conf/*cluster*</exclude>
+            </excludes>
             <includes>
                 <include>conf/*</include>
             </includes>
