@@ -93,8 +93,6 @@ shopt -s dotglob
 cp -r "$UPGRADE_DIR"/* "$INSTALL_DIR"/
 shopt -u dotglob
 
-docker images --filter "dangling=true" --filter "reference=dtstep/*" -q | xargs -r docker rmi 2>/dev/null || true
-
 NEW_INSTALL_DIR="$(dirname "$INSTALL_DIR")/lighthouse-docker-${VERSION}"
 
 if [[ "$INSTALL_DIR" != "$NEW_INSTALL_DIR" ]]; then
@@ -104,10 +102,19 @@ else
     echo "$MSG_NO_RENAME"
 fi
 
+cd "$NEW_INSTALL_DIR"
+
 echo "$MSG_PULL_IMAGES"
 docker compose pull
 
 echo "$MSG_RESTART_SERVICES"
 docker compose up -d --build
+
+docker images --filter "reference=dtstep/*" --format "{{.ID}}" | while read id; do
+    if ! docker ps -a --filter "ancestor=$id" --format "{{.ID}}" | grep -q .; then
+        echo "delete image is: $id"
+        docker rmi "$id"
+    fi
+done
 
 echo "$MSG_COMPLETE"
