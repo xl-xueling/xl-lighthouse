@@ -4,11 +4,11 @@ set -euo pipefail  # 开启严格模式
 
 current_language=$(echo $LANG | cut -d_ -f1)
 
-if [[ "$$current_language" == "zh" ]]; then
+if [[ "$current_language" == "zh" ]]; then
     MSG_UPGRADE_TEMPLATE="您即将执行一键升级到目标版本：%s，系统将自动拉取镜像并重启所有服务。"
     MSG_INPUT_PROMPT="请输入 'yes' 以继续升级: "
     MSG_START="开始升级 Docker 环境..."
-    MSG_INVALID_PATH="未找到有效的 Compose 文件路径，请检查部署状态。"
+    MSG_INVALID_PATH="未找到有效的安装路径，请检查部署状态。"
     MSG_PULL_IMAGES="正在拉取最新镜像..."
     MSG_RESTART_SERVICES="正在重启服务..."
     MSG_COPY_FILES="正在将升级包文件覆盖到安装路径..."
@@ -22,7 +22,7 @@ else
     MSG_UPGRADE_TEMPLATE="You are about to perform a one-click upgrade to version %s. The system will pull images and restart all services."
     MSG_INPUT_PROMPT="Please enter 'yes' to continue the upgrade: "
     MSG_START="Starting Docker environment upgrade..."
-    MSG_INVALID_PATH="No valid Compose file path found. Please check deployment status."
+    MSG_INVALID_PATH="No valid install path found. Please check deployment status."
     MSG_PULL_IMAGES="Pulling the latest images..."
     MSG_RESTART_SERVICES="Restarting services..."
     MSG_COPY_FILES="Copying upgrade files to installation path..."
@@ -53,22 +53,39 @@ fi
 INSTALL_DIR=$(dirname "$COMPOSE_FILE_PATH")
 printf "$MSG_CURRENT_PATH\n" "$INSTALL_DIR"
 
+if [ -z "${INSTALL_DIR+x}" ]; then
+    echo "Error:$MSG_INVALID_PATH"
+    exit 1
+fi
+
+required_dirs=("scripts" "templates" "docker" "config")
+
+for d in "${required_dirs[@]}"; do
+    if [[ ! -d "$INSTALL_DIR/$d" ]]; then
+        echo "Error:$MSG_INVALID_PATH"
+        echo "Error:Missing directory $INSTALL_DIR/$d
+        exit 1
+    fi
+done
+
 if command -v realpath >/dev/null 2>&1; then
     UPGRADE_DIR=$(realpath "$(dirname "$0")/upgrade-files")
 else
     UPGRADE_DIR="$(cd "$(dirname "$0")/upgrade-files" && pwd)"
 fi
 
-
 cd "$INSTALL_DIR"
-./scripts/stop.sh
+if [ -x ./scripts/stop.sh ]; then
+  ./scripts/stop.sh
+fi
+
 docker compose down || true
-
-
 echo "$MSG_COPY_FILES"
 shopt -s dotglob
 cp -r "$UPGRADE_DIR"/* "$INSTALL_DIR"/
 shopt -u dotglob
+
+docker images --filter "dangling=true" --filter "reference=dtstep/*" -q | xargs -r docker rmi 2>/dev/null || true
 
 NEW_INSTALL_DIR="$(dirname "$INSTALL_DIR")/lighthouse-docker-${VERSION}"
 
@@ -84,7 +101,5 @@ docker compose pull
 
 echo "$MSG_RESTART_SERVICES"
 docker compose up -d --build
-
-docker images --filter "dangling=true" --filter "reference=dtstep/*" -q | xargs -r docker rmi 2>/dev/null || true
 
 echo "$MSG_COMPLETE"
