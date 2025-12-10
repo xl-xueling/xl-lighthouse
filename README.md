@@ -25,11 +25,11 @@ Easier to use, supports a larger amount of data, and can complete more statistic
         <img src="https://img.shields.io/github/release-date/xl-xueling/xl-lighthouse.svg" alt="GitHub release date" />
       </a>
 </p>
-
+<p align="center"><font size="4">通用型流式大数据统计技术开创者、布道者、引领者。</font></p>
+<p align="center"><font size="4">并行承载1000万个数据指标，每天处理5000亿条消息。</font></p>
 <p align="center"><font size="4">新一代全景式实时业务监控系统，即时掌控业务运行状态，全面提升业务驾驭能力。</font></p>
 <p align="center"><font size="4">除大数据版本外，同时支持单机版！</font></p>
-<p align="center"><font size="4">一键部署，一行代码接入，无需大数据研发运维经验，轻松驾驭海量数据实时统计。</font></p>
-<p align="center"><font size="4">支撑百万量级数据指标，打造成本最低的数据化运营方案，帮助企业快速搭建业务指标监控体系。</font></p>
+<p align="center"><font size="4">打造成本最低的数据化运营方案，帮助企业快速搭建业务指标监控体系。</font></p>
 
 ### 概述
 
@@ -43,7 +43,7 @@ Easier to use, supports a larger amount of data, and can complete more statistic
 
 ### 项目特点
 
-+  可承载数百万个监控项，每天可高效处理1000亿条消息，基于通用型流式数据统计技术实现，依据流式统计的运算特点而设计，并对每一种运算单元进行反复优化，使得每一种运算单元可以以非常低的成本，无限制复用；
++  并行承载1000万个数据指标，每天高效处理5000亿条消息，基于通用型流式数据统计技术实现，依据流式统计的运算特点而设计，并对每一种运算单元进行反复优化，使得每一种运算单元可以以非常低的成本，无限制复用；
 +  可以短时间内快速实现庞大量级数据指标，而这是Flink、Spark、ClickHouse、Doris、Prometheus、时序数据库等之类技术所远远不能比拟的，可以支撑支撑百万量级数据指标，低成本触达每一个细微的产品模块，帮助企业搭建遍布全身的数据化运营体系；
 +  对单个流式统计场景的数据量无限制，可以非常庞大，也可以非常稀少，既可以使用它完成十亿级用户量APP的DAU统计、几十万台服务器的运维监控、一线互联网大厂数据量级的日志统计、一线电商企业的订单统计、全世界最大的社交类产品的消息量统计、也可以用它统计一天只有零星几次的接口调用量、耗时状况。XL-LightHouse拥有强大的实时计算能力，可以承载上述所有业务场景，并且一套XL-LightHouse服务，可以同时承载上述所有业务场景；
 +  与同领域其他技术方案不同，XL-Lighthouse擅长应对“繁杂”的数据统计需求，企业规模越大、业务场景越多、数据指标需求越多，XL-LightHouse的优势就越明显；
@@ -127,6 +127,7 @@ XL-LightHouse除了大数据版本外，同时支持单机版。单机模式成�
 
 ### 日常运维
 
+-  [Docker两分钟快速部署](https://dtstep.com/docs/110150/)
 -  [一键部署](https://dtstep.com/docs/110033/)
 -  [一键升级](https://dtstep.com/docs/110048/)
 -  [数据备份](https://dtstep.com/docs/110049/)
