@@ -34,6 +34,26 @@ else
     MSG_CURRENT_PATH="Current Docker Compose installation path: %s"
 fi
 
+
+INSTALL_DIR=""
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --install-path=*)
+            INSTALL_DIR="${1#*=}"
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1"
+            exit 1
+            ;;
+    esac
+done
+
+if [[ -z "$INSTALL_DIR" ]]; then
+    echo "Error: --install-path is required."
+    exit 1
+fi
+
 VERSION=$(grep -oP '^VERSION=\K.*' ./upgrade-files/.env)
 printf "$MSG_UPGRADE_TEMPLATE\n" "$VERSION"
 
@@ -43,28 +63,16 @@ if [[ "$user_input" != "yes" ]]; then
     exit 1
 fi
 
-COMPOSE_FILE_PATH=$(docker compose ls --all --filter name='ldp' | awk 'NR>1 {print $NF}')
+INSTALL_DIR=$(realpath "$INSTALL_DIR")
 
-if [[ -z "$COMPOSE_FILE_PATH" ]]; then
-    echo "$MSG_INVALID_PATH"
-    exit 1
-fi
-
-INSTALL_DIR=$(dirname "$COMPOSE_FILE_PATH")
 printf "$MSG_CURRENT_PATH\n" "$INSTALL_DIR"
-
-if [ -z "${INSTALL_DIR+x}" ]; then
-    echo "Error:$MSG_INVALID_PATH"
-    exit 1
-fi
 
 required_dirs=("scripts" "templates" "docker" "config")
 
 for d in "${required_dirs[@]}"; do
     if [[ ! -d "$INSTALL_DIR/$d" ]]; then
         echo "Error:$MSG_INVALID_PATH"
-        echo "Error:Missing directory $INSTALL_DIR/$d
-        exit 1
+	      exit 1
     fi
 done
 

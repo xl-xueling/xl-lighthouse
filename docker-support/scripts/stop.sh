@@ -16,7 +16,8 @@ echo "$MESSAGE_STOP_DOCKER"
 
 # 停止容器
 echo "$MESSAGE_STOP_CONTAINERS"
-./example/stop_example.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+$SCRIPT_DIR/example/stop_example.sh
 docker compose down
 
 echo "$MESSAGE_STOP_DONE"
