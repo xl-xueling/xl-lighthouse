@@ -330,10 +330,14 @@ services:
     ports:
       - "8181:80"
     depends_on:
-      mysql:
+      setup_env:
         condition: service_healthy
-      redis_cluster:
-        condition: service_healthy
+        mysql:
+          condition: service_healthy
+        redis_cluster:
+          condition: service_completed_successfully
+        insights:
+          condition: service_healthy
     volumes:
       - ./generated/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./logs/nginx:/var/log/nginx
