@@ -73,7 +73,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_1
     user: "1001:1001"
     depends_on:
-      mysql:
+      setup_env:
         condition: service_healthy
     environment:
       <<: *common-env
@@ -100,7 +100,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_2
     user: "1001:1001"
     depends_on:
-      mysql:
+      setup_env:
         condition: service_healthy
     environment:
       <<: *common-env
@@ -127,7 +127,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_3
     user: "1001:1001"
     depends_on:
-      mysql:
+      setup_env:
         condition: service_healthy
     environment:
       <<: *common-env
@@ -154,7 +154,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_4
     user: "1001:1001"
     depends_on:
-      mysql:
+      setup_env:
         condition: service_healthy
     environment:
       <<: *common-env
@@ -181,7 +181,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_5
     user: "1001:1001"
     depends_on:
-      mysql:
+      setup_env:
         condition: service_healthy
     environment:
       <<: *common-env
@@ -208,7 +208,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_6
     user: "1001:1001"
     depends_on:
-      mysql:
+      setup_env:
         condition: service_healthy
     environment:
       <<: *common-env
@@ -301,10 +301,12 @@ services:
     ports:
       - "9089:9089"
     depends_on:
+      setup_env:
+        condition: service_healthy
       mysql:
         condition: service_healthy
       redis_cluster:
-        condition: service_healthy
+        condition: service_completed_successfully
     volumes:
       - ldp_data:/app/data
       - ./config/standalone-config.json:/app/runtime/config.json:ro
@@ -332,12 +334,12 @@ services:
     depends_on:
       setup_env:
         condition: service_healthy
-        mysql:
-          condition: service_healthy
-        redis_cluster:
-          condition: service_completed_successfully
-        insights:
-          condition: service_healthy
+      mysql:
+        condition: service_healthy
+      redis_cluster:
+        condition: service_completed_successfully
+      insights:
+        condition: service_healthy
     volumes:
       - ./generated/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./logs/nginx:/var/log/nginx
@@ -362,10 +364,12 @@ services:
       - "18101:18101"
       - "4061:4061"
     depends_on:
+      setup_env:
+        condition: service_healthy
       mysql:
         condition: service_healthy
       redis_cluster:
-        condition: service_healthy
+        condition: service_completed_successfully
     volumes:
       - ldp_data:/app/data
       - ./config/standalone-config.json:/app/runtime/config.json:ro
@@ -439,14 +443,14 @@ services:
         ipv4_address: 10.183.0.30
     depends_on:
       redis_cluster:
-        condition: service_healthy
+        condition: service_completed_successfully
       standalone:
         condition: service_healthy
       insights:
         condition: service_healthy
       frontend:
         condition: service_healthy
-      mysql:
+      setup_env:
         condition: service_healthy
     command: |
       sh -c '
