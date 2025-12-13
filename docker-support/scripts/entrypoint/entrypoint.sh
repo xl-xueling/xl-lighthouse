@@ -114,7 +114,7 @@ case "$SERVICE_TYPE" in
 
     demo-start)
         echo "Starting Demo Start Service..."
-        set_fixed_memory "256M" "256M"
+        set_fixed_memory "128M" "128M"
         FINAL_JAVA_OPTS=$(build_base_java_opts)
         LOG_CONFIG="${LOG_CONFIG:-log4j2-demo.xml}"
         MAIN_CLASS="${MAIN_CLASS:-com.dtstep.lighthouse.test.LDPFlowTestInstance}"
@@ -136,7 +136,7 @@ case "$SERVICE_TYPE" in
         ;;
     demo-init)
         echo "Starting Demo Init Service..."
-        set_fixed_memory "256M" "256M"
+        set_fixed_memory "128M" "128M"
         FINAL_JAVA_OPTS=$(build_base_java_opts)
         LOG_CONFIG="${LOG_CONFIG:-log4j2-demo.xml}"
         MAIN_CLASS="${MAIN_CLASS:-com.dtstep.lighthouse.test.example.StartExample}"
