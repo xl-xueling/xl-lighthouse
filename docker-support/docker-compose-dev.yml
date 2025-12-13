@@ -2,7 +2,7 @@ x-common-env: &common-env
   TZ: "Asia/Shanghai"
   LANG: en_US.UTF-8
   LC_ALL: en_US.UTF-8
-    
+
 services:
   setup_env:
     image: bash:5.2-alpine3.18
@@ -11,7 +11,7 @@ services:
       - ./templates:/templates
       - ./config:/config
       - ./generated:/generated
-      - ./logs:/logs  
+      - ./logs:/logs
     restart: "no"
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_setup_env
     network_mode: "host"
@@ -29,12 +29,12 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
-  
+
   mysql:
     image: mysql:8.0.30
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_mysql  
-    user: "1001:1001"  
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_mysql
+    user: "1001:1001"
     depends_on:
       setup_env:
         condition: service_healthy
@@ -51,7 +51,7 @@ services:
       - ./generated/lighthouse/conf/ldp_docker.sql:/docker-entrypoint-initdb.d/10-ldp_docker.sql:ro
       - ./generated/lighthouse/conf/ldp_db.sql:/docker-entrypoint-initdb.d/20-ldp_db.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/3906'"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -69,12 +69,12 @@ services:
       - "17101:17101"
     volumes:
       - redis_data_1:/var/lib/redis/data
-      - ./logs/redis:/var/log/redis   
+      - ./logs/redis:/var/log/redis
       - ./generated/redis/conf/redis-7101.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_node_1
-    user: "1001:1001"      
+    user: "1001:1001"
     depends_on:
       setup_env:
         condition: service_healthy
@@ -116,7 +116,7 @@ services:
       retries: 20
     networks:
       private_net:
-        ipv4_address: 10.183.0.4        
+        ipv4_address: 10.183.0.4
 
   redis_node_3:
     build:
@@ -229,7 +229,7 @@ services:
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "7106", "ping"]
       interval: 5s
       timeout: 3s
-      retries: 20        
+      retries: 20
     networks:
       private_net:
         ipv4_address: 10.183.0.8
@@ -238,7 +238,7 @@ services:
     image: redis:6.2.6
     restart: "no"
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_redis_cluster
-    user: "1001:1001"   
+    user: "1001:1001"
     depends_on:
       redis_node_1:
         condition: service_healthy
@@ -291,7 +291,7 @@ services:
           echo "Redis集群创建完成"
           touch /tmp/cluster-ready
         fi
-      
+
         for i in $$(seq 1 90); do
           if redis-cli -h $$IP_NODE1 -p 7101 -a "$$REDIS_PASSWORD" cluster info 2>/dev/null | grep -q "cluster_state:ok"; then
             echo "状态检查通过，容器将在10秒后退出"
@@ -308,12 +308,12 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile-insights
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_insights  
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_insights
     user: "1001:1001"
     environment:
       <<: *common-env
     ports:
-      - "9089:9089"  
+      - "9089:9089"
     depends_on:
       setup_env:
         condition: service_healthy
@@ -325,25 +325,25 @@ services:
       - ldp_data:/app/data
       - ./config/standalone-config.json:/app/runtime/config.json:ro
       - ./generated/lighthouse/conf/:/app/conf/:ro
-      - ./logs/lighthouse-insights:/app/logs/lighthouse-insights     
+      - ./logs/lighthouse-insights:/app/logs/lighthouse-insights
     networks:
       private_net:
         ipv4_address: 10.183.0.21
     healthcheck:
-      test: ["CMD-SHELL", "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/9089'"]
+      test: ["CMD", "nc", "-z", "127.0.0.1", "9089"]
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 30s          
+      start_period: 30s
   frontend:
     build:
       context: .
       dockerfile: ./docker/Dockerfile-frontend
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_frontend  
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_frontend
     user: "1001:1001"
     environment:
-      <<: *common-env  
+      <<: *common-env
     ports:
       - "8181:80"
     depends_on:
@@ -357,29 +357,29 @@ services:
         condition: service_healthy
     volumes:
       - ./generated/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./logs/nginx:/var/log/nginx    
+      - ./logs/nginx:/var/log/nginx
     networks:
       private_net:
         ipv4_address: 10.183.0.22
     healthcheck:
-      test: ["CMD-SHELL", "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/80'"]
+      test: ["CMD", "nc", "-z", "127.0.0.1", "80"]
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 30s          
+      start_period: 30s
 
   standalone:
     build:
       context: .
       dockerfile: ./docker/Dockerfile-standalone
     restart: always
-    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_standalone  
+    container_name: ${COMPOSE_PROJECT_NAME:-ldp}_standalone
     user: "1001:1001"
     environment:
       <<: *common-env
     ports:
       - "18101:18101"
-      - "4061:4061"  
+      - "4061:4061"
     depends_on:
       setup_env:
         condition: service_healthy
@@ -391,9 +391,9 @@ services:
       - ldp_data:/app/data
       - ./config/standalone-config.json:/app/runtime/config.json:ro
       - ./generated/lighthouse/conf/:/app/conf/:ro
-      - ./logs/lighthouse-standalone:/app/logs/lighthouse-standalone    
+      - ./logs/lighthouse-standalone:/app/logs/lighthouse-standalone
     healthcheck:
-      test: ["CMD-SHELL", "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/4061'"]
+      test: ["CMD", "nc", "-z", "127.0.0.1", "4061"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -401,9 +401,9 @@ services:
     networks:
       private_net:
         ipv4_address: 10.183.0.23
- 
+
   demo_init:
-    profiles: 
+    profiles:
       - demo
     build:
       context: .
@@ -412,7 +412,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_demo_init
     user: "1001:1001"
     environment:
-      <<: *common-env  
+      <<: *common-env
     depends_on:
       insights:
         condition: service_healthy
@@ -425,7 +425,7 @@ services:
       - ./logs/lighthouse-demo:/app/logs/lighthouse-demo
     networks:
       private_net:
-        ipv4_address: 10.183.0.24  
+        ipv4_address: 10.183.0.24
     healthcheck:
       test: ["CMD", "test", "-f", "/tmp/init_complete"]
       interval: 5s
@@ -433,7 +433,7 @@ services:
       retries: 10
 
   demo_start:
-    profiles: 
+    profiles:
       - demo
     build:
       context: .
@@ -457,15 +457,15 @@ services:
       - ./logs/lighthouse-demo:/app/logs/lighthouse-demo
     networks:
       private_net:
-        ipv4_address: 10.183.0.25         
-          
+        ipv4_address: 10.183.0.25
+
   verifier:
     image: busybox:latest
     container_name: ${COMPOSE_PROJECT_NAME:-ldp}_verifier
     restart: "no"
     networks:
       private_net:
-        ipv4_address: 10.183.0.30  
+        ipv4_address: 10.183.0.30
     depends_on:
       redis_cluster:
         condition: service_completed_successfully
@@ -485,7 +485,7 @@ services:
 volumes:
   ldp_data:
   mysql_data:
-  mysql_home:  
+  mysql_home:
   redis_data_1:
   redis_data_2:
   redis_data_3:
@@ -494,9 +494,9 @@ volumes:
   redis_data_6:
 
 networks:
-  private_net: 
+  private_net:
     driver: bridge
     ipam:
       config:
         - subnet: 10.183.0.0/24
-          gateway: 10.183.0.1   
+          gateway: 10.183.0.1
