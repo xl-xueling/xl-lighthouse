@@ -19,6 +19,20 @@
                 <exclude>docker-compose-*.yml</exclude>
             </excludes>
             <includes>
+                <include>**/*.sh</include>
+            </includes>
+            <outputDirectory>/upgrade-files</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+
+        <!-- 2. 处理目录下的其他所有文件，保持默认权限 -->
+        <fileSet>
+            <directory>${project.parent.basedir}/docker-support</directory>
+            <excludes>
+                <exclude>docker-compose-*.yml</exclude>
+                <exclude>**/*.sh</exclude>
+            </excludes>
+            <includes>
                 <include>**/*</include>
             </includes>
             <outputDirectory>/upgrade-files</outputDirectory>
